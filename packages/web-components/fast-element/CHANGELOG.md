@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 14 Feb 2023 04:02:35 GMT and should not be manually modified.
+This log was last generated on Sat, 11 Mar 2023 00:09:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.22
+
+Sat, 11 Mar 2023 00:09:48 GMT
+
+### Changes
+
+- feat: add Context.for (rob@bluespire.com)
+- feat: enable data binding in CSS (rob@bluespire.com)
+- add directives support for createElementTemplate (32497422+KingOfTac@users.noreply.github.com)
+- fix: clean up toJSON noop on core fast-element types (rob@bluespire.com)
 
 ## 2.0.0-beta.21
 

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "add directives support for createElementTemplate",
-  "packageName": "@microsoft/fast-element",
-  "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

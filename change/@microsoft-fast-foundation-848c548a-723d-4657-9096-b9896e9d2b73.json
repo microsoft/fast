@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: remove focus management from slider",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

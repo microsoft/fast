@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "data grid header fix",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "stephcomeau@msn.com",
-  "dependentChangeType": "prerelease"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "update slider to increment and decrement without a default value for the step attribute",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

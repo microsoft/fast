@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.22",
+      "version": "2.0.0-beta.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1c81922fbc9a7596330d53251975fb3f47357361",
+            "comment": "feat: add Context.for"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "70eb15bc13d9f4d849bc5b1fe4d591a23e57c935",
+            "comment": "feat: enable data binding in CSS"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d0ef0d6b1540ed90730187b45bdaf47aa9dcb183",
+            "comment": "add directives support for createElementTemplate"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "24ec7cb05e955c5b916f611e96c47da665556604",
+            "comment": "fix: clean up toJSON noop on core fast-element types"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Feb 2023 04:02:35 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.21",
       "version": "2.0.0-beta.21",

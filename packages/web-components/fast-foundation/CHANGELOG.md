@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 14 Feb 2023 04:02:34 GMT and should not be manually modified.
+This log was last generated on Sat, 11 Mar 2023 00:09:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.26
+
+Sat, 11 Mar 2023 00:09:48 GMT
+
+### Changes
+
+- remove readonly support from fast radio (yinon@hotmail.com)
+- update slider to increment and decrement without a default value for the step attribute (chhol@microsoft.com)
+- picker should work in shadow dom (stephcomeau@msn.com)
+- data grid header fix (stephcomeau@msn.com)
+- fix: update components to new binding APIs (rob@bluespire.com)
+- fix: remove focus management from slider (jes@microsoft.com)
+- remove className logic from switch checkedChanged (chhol@microsoft.com)
+- Fixes Slider vertical orientation so adjusting the slider increases the value when the thumb is moved upwards and corrects keyboard handling (ryan@ryanmerrill.net)
+- Bump @microsoft/fast-element to v2.0.0-beta.22
 
 ## 3.0.0-alpha.25
 

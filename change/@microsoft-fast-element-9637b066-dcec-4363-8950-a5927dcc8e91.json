@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: enable data binding in CSS",
-  "packageName": "@microsoft/fast-element",
-  "email": "rob@bluespire.com",
-  "dependentChangeType": "prerelease"
-}

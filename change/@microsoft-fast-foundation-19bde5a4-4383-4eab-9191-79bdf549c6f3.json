@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-"comment": "Fixes Slider vertical orientation so adjusting the slider increases the value when the thumb is moved upwards and corrects keyboard handling",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "ryan@ryanmerrill.net",
-  "dependentChangeType": "prerelease"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: update components to new binding APIs",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "rob@bluespire.com",
-  "dependentChangeType": "prerelease"
-}

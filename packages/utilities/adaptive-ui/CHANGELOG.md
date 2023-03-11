@@ -1,8 +1,17 @@
 # Change Log - @microsoft/adaptive-ui
 
-This log was last generated on Tue, 14 Feb 2023 04:02:36 GMT and should not be manually modified.
+This log was last generated on Sat, 11 Mar 2023 00:09:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.26
+
+Sat, 11 Mar 2023 00:09:48 GMT
+
+### Changes
+
+- Marked @microsoft/adaptive-ui package for deprecation (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.26
 
 ## 1.0.0-alpha.25
 

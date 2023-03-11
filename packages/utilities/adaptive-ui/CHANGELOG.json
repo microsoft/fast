@@ -2,6 +2,27 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.26",
+      "version": "1.0.0-alpha.26",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "c0ae1948ddddbb1c279a4adecb4fd590422f7791",
+            "comment": "Marked @microsoft/adaptive-ui package for deprecation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.26",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Feb 2023 04:02:36 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.25",
       "version": "1.0.0-alpha.25",

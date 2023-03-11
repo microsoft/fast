@@ -2,6 +2,69 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.26",
+      "version": "3.0.0-alpha.26",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f",
+            "comment": "remove readonly support from fast radio"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f9a97566884c338cd83ce96ac2996aacf8b360f9",
+            "comment": "update slider to increment and decrement without a default value for the step attribute"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e57f033cfb538e22a2c38182c863912a68d985fa",
+            "comment": "picker should work in shadow dom"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "c766483f75ac05292d54f91bc6119dbeb6059633",
+            "comment": "data grid header fix"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "70eb15bc13d9f4d849bc5b1fe4d591a23e57c935",
+            "comment": "fix: update components to new binding APIs"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4ce7cdb80bedf8115d3994f56e93f50b6d9f181a",
+            "comment": "fix: remove focus management from slider"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1e89f8ea00d14fac3d3794782c3eef94ccb3ae67",
+            "comment": "remove className logic from switch checkedChanged"
+          },
+          {
+            "author": "ryan@ryanmerrill.net",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0535a97f2712fc25e68910518890e00d7c1e9c2b",
+            "comment": "Fixes Slider vertical orientation so adjusting the slider increases the value when the thumb is moved upwards and corrects keyboard handling"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.22",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Feb 2023 04:02:34 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.25",
       "version": "3.0.0-alpha.25",
