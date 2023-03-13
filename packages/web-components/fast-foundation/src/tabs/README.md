@@ -126,12 +126,12 @@ export const myTabs = Tabs.compose({
 
 #### Fields
 
-| Name                  | Privacy | Type              | Default | Description                                 | Inherited From |
-| --------------------- | ------- | ----------------- | ------- | ------------------------------------------- | -------------- |
-| `orientation`         | public  | `TabsOrientation` |         | The orientation                             |                |
-| `activeid`            | public  | `string`          |         | The id of the active tab                    |                |
-| `hideActiveIndicator` | public  | `boolean`         | `false` | Whether or not to show the active indicator |                |
-| `activetab`           | public  | `HTMLElement`     |         | A reference to the active tab               |                |
+| Name          | Privacy   | Type              | Default | Description                   | Inherited From |
+| ------------- | --------- | ----------------- | ------- | ----------------------------- | -------------- |
+| `orientation` | public    | `TabsOrientation` |         | The orientation               |                |
+| `activeid`    | public    | `string`          |         | The id of the active tab      |                |
+| `activetab`   | public    | `HTMLElement`     |         | A reference to the active tab |                |
+| `setTabs`     | protected |                   |         |                               |                |
 
 #### Methods
 
@@ -147,18 +147,16 @@ export const myTabs = Tabs.compose({
 
 #### Attributes
 
-| Name                    | Field               | Inherited From |
-| ----------------------- | ------------------- | -------------- |
-| `orientation`           | orientation         |                |
-| `activeid`              | activeid            |                |
-| `hide-active-indicator` | hideActiveIndicator |                |
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `orientation` | orientation |                |
+| `activeid`    | activeid    |                |
 
 #### CSS Parts
 
-| Name              | Description                       |
-| ----------------- | --------------------------------- |
-| `tablist`         | The element wrapping for the tabs |
-| `activeIndicator` | The visual indicator              |
+| Name      | Description                       |
+| --------- | --------------------------------- |
+| `tablist` | The element wrapping for the tabs |
 
 #### Slots
 

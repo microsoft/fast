@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "remove activeindicator from tabs component",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
