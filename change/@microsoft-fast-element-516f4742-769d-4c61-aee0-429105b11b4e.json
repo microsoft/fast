@@ -3,5 +3,5 @@
   "comment": "docs: add missing API docs",
   "packageName": "@microsoft/fast-element",
   "email": "rob@bluespire.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
