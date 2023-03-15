@@ -3,5 +3,5 @@
   "comment": "update @microsoft/fast-element to be fixed for foundation package",
   "packageName": "@microsoft/fast-foundation",
   "email": "tebin.raouf@gmail.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
