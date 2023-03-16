@@ -9,7 +9,7 @@ export interface DesignSystemData {
     anchorText: string;
 }
 
-export const designSystemData = [
+export const designSystemData: DesignSystemData[] = [
     {
         url: "https://www.fast.design/docs/design-systems/fast-frame",
         anchorText: "FAST Frame",
