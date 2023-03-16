@@ -14,7 +14,16 @@ const subscribers: Record<
     undefined | Subscriber | Set<Subscriber>
 > = Object.create(null);
 
+/**
+ * The gateway to signal APIs.
+ * @public
+ */
 export const Signal = Object.freeze({
+    /**
+     * Subscribes to a signal.
+     * @param signal The signal to subscribe to.
+     * @param subscriber The subscriber.
+     */
     subscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
 
@@ -27,6 +36,11 @@ export const Signal = Object.freeze({
         }
     },
 
+    /**
+     * Unsubscribes from the signal.
+     * @param signal The signal to unsubscribe from.
+     * @param subscriber The subscriber.
+     */
     unsubscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
 
@@ -38,9 +52,8 @@ export const Signal = Object.freeze({
     },
 
     /**
-     * Sends the specified signal to signaled bindings.
+     * Sends the specified signal to subscribers.
      * @param signal - The signal to send.
-     * @public
      */
     send(signal: string): void {
         const found = subscribers[signal];
