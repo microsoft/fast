@@ -23,6 +23,7 @@ export * from "./observation/update-queue.js";
 export * from "./binding/binding.js";
 export * from "./binding/one-way.js";
 export * from "./binding/one-time.js";
+export * from "./binding/normalize.js";
 
 // Styles
 export * from "./styles/element-styles.js";

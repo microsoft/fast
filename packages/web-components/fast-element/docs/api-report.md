@@ -613,6 +613,9 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
 }
 
 // @public
+export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}): Binding<TSource, TReturn, TParent>;
+
+// @public
 export interface Notifier {
     notify(args: any): void;
     readonly subject: any;
