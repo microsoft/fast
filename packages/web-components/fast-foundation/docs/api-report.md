@@ -1812,15 +1812,23 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     // (undocumented)
     protected keypressHandler: (e: KeyboardEvent) => void;
     max: number;
+    // (undocumented)
+    protected maxChanged(): void;
     min: number;
+    // (undocumented)
+    protected minChanged(): void;
     mode: SliderMode;
     orientation: Orientation;
+    // (undocumented)
+    protected orientationChanged(): void;
     // @internal (undocumented)
     position: string;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
     step: number | undefined;
+    // (undocumented)
+    protected stepChanged(): void;
     // @internal (undocumented)
     stepMultiplier: number;
     // @internal (undocumented)

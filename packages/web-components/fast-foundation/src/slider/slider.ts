@@ -166,7 +166,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      */
     @attr({ converter: nullableNumberConverter })
     public min: number = 0; // Map to proxy element.
-    private minChanged(): void {
+    protected minChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.min = `${this.min}`;
         }
@@ -184,7 +184,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      */
     @attr({ converter: nullableNumberConverter })
     public max: number = 10; // Map to proxy element.
-    private maxChanged(): void {
+    protected maxChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.max = `${this.max}`;
         }
@@ -200,7 +200,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      */
     @attr({ converter: nullableNumberConverter })
     public step: number | undefined;
-    private stepChanged(): void {
+    protected stepChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.step = `${this.step}`;
         }
@@ -218,7 +218,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
      */
     @attr
     public orientation: Orientation = Orientation.horizontal;
-    private orientationChanged(): void {
+    protected orientationChanged(): void {
         if (this.$fastController.isConnected) {
             this.setThumbPositionForOrientation(this.direction);
         }
