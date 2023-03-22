@@ -2,20 +2,19 @@ const _ = require("lodash");
 const path = require("path");
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlBundlerPlugin = require("html-bundler-webpack-plugin");
 const manifest = require("@microsoft/site-utilities/src/curated-html.json").join("");
 
 const appDir = path.resolve(__dirname, "src/app");
 const distDir = path.resolve(__dirname, "dist");
 
+const isDev = process.env.NODE_ENV === "development";
+
 module.exports = {
-    entry: {
-        main: path.resolve(appDir, "index.ts"),
-    },
     resolve: {
         extensions: [".svg", ".ts", ".tsx", ".js"],
         alias: {
+            app: appDir,
             svg: path.resolve(appDir, "svg"),
         },
     },
@@ -37,42 +36,40 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            esModule: false,
-                        },
-                    },
-                    {
-                        loader: "css-loader",
-                    },
-                ],
+                loader: "css-loader",
             },
             {
                 test: /\.svg$/,
                 type: "asset/source",
-            },
-            {
-                test: /\.ejs$/,
-                use: [
-                    {
-                        loader: "ejs-loader",
-                        options: {
-                            esModule: false,
-                        },
-                    },
-                ],
             },
         ],
     },
     plugins: [
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({ _: "lodash-es" }),
-        new HtmlWebpackPlugin({
-            title: "FAST",
-            manifest,
-            template: path.resolve(__dirname, "src/public/index.ejs"),
+        new HtmlBundlerPlugin({
+            entry: {
+                // define templates here
+                index: {
+                    // => dist/index.html
+                    import: "src/public/index.ejs",
+                    data: {
+                        title: "FAST",
+                        manifest,
+                    },
+                },
+            },
+            js: {
+                // output filename of extracted JS
+                filename: isDev ? "[name].js" : "bundle/[name].[contenthash:8].js",
+            },
+            css: {
+                // output filename of extracted CSS
+                filename: isDev ? "[name].css" : "bundle/[name].[contenthash:8].css",
+            },
+            loaderOptions: {
+                preprocessor: "ejs", // compile EJS templates to HTML
+            },
         }),
     ],
 };

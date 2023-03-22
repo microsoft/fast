@@ -3,7 +3,6 @@ import {
     baseLayerLuminance,
     provideFASTDesignSystem,
 } from "@microsoft/fast-components";
-import "./css/style.css";
 
 provideFASTDesignSystem().register(allComponents);
 

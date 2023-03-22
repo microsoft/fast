@@ -1,20 +1,21 @@
-<% const include = name => require(`./${name}.ejs`)(); %>
 <!DOCTYPE html>
 <html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title><%= htmlWebpackPlugin.options.title %></title>
-        <%= htmlWebpackPlugin.options.manifest %>
-        <meta property="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
-        <meta name="title" property="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
+        <title><%= title %></title>
+        <%- manifest %>
+        <meta property="twitter:title" content="<%= title %>" />
+        <meta name="title" property="og:title" content="<%= title %>" />
         <link href="https://use.typekit.net/spx2dgm.css" rel="stylesheet" />
         <style type="text/css">*:not(:defined){visibility:hidden}</style>
+        <link href="app/css/style.css" rel="stylesheet">
+        <script src="app/index.ts" defer="defer"></script>
     </head>
     <body>
         <div class="body-provider">
             <div class="site-wrapper">
-                <%= include('header') %>
+                <%- include('header') %>
                 <section class="section hero-section" id="hero">
                     <div class="section-content">
                         <site-section-header class="section-header">
@@ -206,7 +207,7 @@
                     ></site-side-navigation>
                 </aside>
                 <fast-divider class="footer-divider" role="separator"></fast-divider>
-                <%= include('footer') %>
+                <%- include('footer') %>
             </div>
             <background-design></background-design>
         </div>
