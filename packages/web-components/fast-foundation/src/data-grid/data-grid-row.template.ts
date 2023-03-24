@@ -59,6 +59,7 @@ export function dataGridRowTemplate<T extends FASTDataGridRow>(
             role="row"
             :defaultCellItemTemplate="${cellItemTemplate(options)}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
+            aria-selected="${x => (x.selected !== undefined ? x.selected : void 0)}"
             ${children({
                 property: "cellElements",
                 filter: elements(

@@ -352,6 +352,26 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
+export const DataGridSelectionBehavior: {
+    readonly programmatic: "programmatic";
+    readonly keyboardOnly: "keyboard-only";
+    readonly auto: "auto";
+};
+
+// @public
+export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;
+
+// @public
+export const DataGridSelectionMode: {
+    readonly none: "none";
+    readonly singleRow: "single-row";
+    readonly multiRow: "multi-row";
+};
+
+// @public
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+// @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
 
 // @public
@@ -973,7 +993,6 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 
 // @public
 export class FASTDataGrid extends FASTElement {
-    constructor();
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
@@ -999,7 +1018,10 @@ export class FASTDataGrid extends FASTElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
+    // (undocumented)
+    handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
+    initialRowSelection: string;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1011,6 +1033,11 @@ export class FASTDataGrid extends FASTElement {
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
+    rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean;
+    get selectedRowIndexes(): number[];
+    set selectedRowIndexes(next: number[]);
+    selectionBehavior: DataGridSelectionBehavior;
+    selectionMode: DataGridSelectionMode;
 }
 
 // @public
@@ -1056,11 +1083,13 @@ export class FASTDataGridRow extends FASTElement {
     gridTemplateColumns: string;
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleCellFocus(e: Event): void;
+    // @internal (undocumented)
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     // @internal
@@ -1070,8 +1099,14 @@ export class FASTDataGridRow extends FASTElement {
     protected rowDataChanged(): void;
     rowIndex: number;
     rowType: DataGridRowTypes;
+    // @internal
+    selected: boolean;
+    // @internal
+    selectionBehavior: DataGridSelectionBehavior;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+    // Warning: (ae-forgotten-export) The symbol "DataGridSelectionChangeDetail" needs to be exported by the entry point index.d.ts
+    toggleSelected(detail: DataGridSelectionChangeDetail): void;
 }
 
 // @public
