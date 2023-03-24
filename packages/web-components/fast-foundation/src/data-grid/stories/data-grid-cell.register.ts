@@ -16,7 +16,7 @@ const styles = css`
     }
 
     :host([cell-type="columnheader"]),
-    :host([cell-type="rowheader"]){
+    :host([cell-type="rowheader"]) {
         font-weight: 600;
     }
 

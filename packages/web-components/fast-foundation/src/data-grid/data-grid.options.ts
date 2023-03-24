@@ -104,9 +104,8 @@ export interface DataGridSelectionChangeDetail {
     ctrlKey: boolean;
 
     // is keyboard event
-    isKeyboardEvent: boolean
+    isKeyboardEvent: boolean;
 }
-
 
 /**
  * Enumerates the data grid selection mode options

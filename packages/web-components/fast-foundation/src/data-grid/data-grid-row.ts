@@ -18,7 +18,11 @@ import {
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
-import { DataGridRowTypes, DataGridSelectionBehavior, DataGridSelectionChangeDetail } from "./data-grid.options.js";
+import {
+    DataGridRowTypes,
+    DataGridSelectionBehavior,
+    DataGridSelectionChangeDetail,
+} from "./data-grid.options.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
@@ -307,7 +311,7 @@ export class FASTDataGridRow extends FASTElement {
                         newValue: !this.isSelected(),
                         shiftKey: e.shiftKey,
                         ctrlKey: e.ctrlKey,
-                        isKeyboardEvent : true,
+                        isKeyboardEvent: true,
                     });
                 }
                 break;
@@ -334,7 +338,7 @@ export class FASTDataGridRow extends FASTElement {
             newValue: !this.isSelected(),
             shiftKey: e.shiftKey,
             ctrlKey: e.ctrlKey,
-            isKeyboardEvent: false
+            isKeyboardEvent: false,
         });
     }
 
