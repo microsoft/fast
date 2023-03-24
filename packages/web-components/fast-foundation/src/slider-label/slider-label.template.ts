@@ -1,5 +1,4 @@
 import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import type { FASTSliderLabel } from "./slider-label.js";
 
 /**

@@ -2,6 +2,132 @@
   "name": "@microsoft/adaptive-ui",
   "entries": [
     {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.26",
+      "version": "1.0.0-alpha.26",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/adaptive-ui",
+            "commit": "c0ae1948ddddbb1c279a4adecb4fd590422f7791",
+            "comment": "Marked @microsoft/adaptive-ui package for deprecation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.26",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Feb 2023 04:02:36 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.25",
+      "version": "1.0.0-alpha.25",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.25",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 11 Jan 2023 22:07:48 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.24",
+      "version": "1.0.0-alpha.24",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.24",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.23",
+      "version": "1.0.0-alpha.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.23",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Nov 2022 02:40:35 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.22",
+      "version": "1.0.0-alpha.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.22",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 04 Nov 2022 22:28:49 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.21",
+      "version": "1.0.0-alpha.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.21",
+            "commit": "e60decc0627e763249e74937e00fab61c5c748e6"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 23:26:26 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.20",
+      "version": "1.0.0-alpha.20",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.20",
+            "commit": "32d18d0900047899d1dadfe94f7923b6164b0cf3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.19",
+      "version": "1.0.0-alpha.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/adaptive-ui",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.19",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 20:24:32 GMT",
       "tag": "@microsoft/adaptive-ui_v1.0.0-alpha.18",
       "version": "1.0.0-alpha.18",

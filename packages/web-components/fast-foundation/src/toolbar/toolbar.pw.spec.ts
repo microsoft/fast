@@ -1,7 +1,7 @@
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
+import { ToolbarOrientation } from "./toolbar.options.js";
 
 test.describe("Toolbar", () => {
     let page: Page;
@@ -23,7 +23,10 @@ test.describe("Toolbar", () => {
     });
 
     test("should have a default orientation of `horizontal`", async () => {
-        await expect(element).toHaveAttribute("orientation", Orientation.horizontal);
+        await expect(element).toHaveAttribute(
+            "orientation",
+            ToolbarOrientation.horizontal
+        );
     });
 
     test("should move focus to its first focusable element when it receives focus", async () => {

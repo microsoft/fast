@@ -2,6 +2,426 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.26",
+      "version": "3.0.0-alpha.26",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f",
+            "comment": "remove readonly support from fast radio"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f9a97566884c338cd83ce96ac2996aacf8b360f9",
+            "comment": "update slider to increment and decrement without a default value for the step attribute"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e57f033cfb538e22a2c38182c863912a68d985fa",
+            "comment": "picker should work in shadow dom"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "c766483f75ac05292d54f91bc6119dbeb6059633",
+            "comment": "data grid header fix"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "70eb15bc13d9f4d849bc5b1fe4d591a23e57c935",
+            "comment": "fix: update components to new binding APIs"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4ce7cdb80bedf8115d3994f56e93f50b6d9f181a",
+            "comment": "fix: remove focus management from slider"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1e89f8ea00d14fac3d3794782c3eef94ccb3ae67",
+            "comment": "remove className logic from switch checkedChanged"
+          },
+          {
+            "author": "ryan@ryanmerrill.net",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0535a97f2712fc25e68910518890e00d7c1e9c2b",
+            "comment": "Fixes Slider vertical orientation so adjusting the slider increases the value when the thumb is moved upwards and corrects keyboard handling"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.22",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Feb 2023 04:02:34 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.25",
+      "version": "3.0.0-alpha.25",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e",
+            "comment": "fix radio group disabled handling"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a85467bdbf2241628dc3007610cb017017da04d0",
+            "comment": "remove readonly classname from switch"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4a616b4a3b1c3c3b060756c74ec8802e09e6600e",
+            "comment": "add explicit exports for component orientations"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "48a29ca6d68093fb2b70abfd99e888f75085ade2",
+            "comment": "ensure single expand mode accordions support explicitly expanded items"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5a27a1cebf1ada23f41863e3ec909f5229d7888e",
+            "comment": "Cleaned up `start` and `end` definitions"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f8dde59eee21a1152263447d22a76593ee5ed9e5",
+            "comment": "add default slot to divider"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "26a07b9c59e9a6bdc94c35577eb96cd934523ced",
+            "comment": "observe accordion children to accommodate single expand scenarios with programmatic changes"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "92c0d0da33ff43ed0c520dbd84bfb959384985ee",
+            "comment": "Fix Picker template missing quote and dependent tag names"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0ae312ee9be8f451519187c0925a6c6ac6071f22",
+            "comment": "remove paused attribute from progress"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "91beb0e43a390692240e62e085c2f49256500852",
+            "comment": "remove status messages from switch template"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2a2fe957ccb823a40a8eebdc25fd2c3f8e444070",
+            "comment": "fixes an issue where accordion expand-mode changes were not reflected in the component"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "21c210f2164c5cf285cade1a328460c67e4b97e6",
+            "comment": "Remove link from Avatar"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.21",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e"
+          }
+        ],
+        "none": [
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2f8c3d3b2176571dc2cf4038af33a0dc22d1932e",
+            "comment": "Import icons for fast-foundation stories"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 11 Jan 2023 22:07:43 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.24",
+      "version": "3.0.0-alpha.24",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "Mathieu.Salois@goto.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "dfab11aed93627f28d0985a376f6fd461b27cdb6",
+            "comment": "fix(Calendar): add fix for the timezones from #5539"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4e39f28dfca811ef5b977c0ab706669fca732ed7",
+            "comment": "export staticallyCompose function"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6",
+            "comment": "remove deprecation notice from display helpers"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d003ef9f7980a7e3697592f28a14ec01fad6aaed",
+            "comment": "add disabled attribute support to accordion item"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "02ae46b6bc91f73f0d77fa4c1a2517925f4295d5",
+            "comment": "add ValuesOf helper for mapping types from a const object"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b28b297e014939aba1810fe8d22ff35b2ad86efb",
+            "comment": "Removed legacy unsupported delegates focus from Anchor and Button now that `delgatesFocus` is supported in firefox since version 94."
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "52cd5171c3e9061af8066443023782bca2b0e59b",
+            "comment": "updates types for default slotted content to remove string and support DangerousHTMLDirective"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d29b0a0c840cc9a5dedd5f3c79508cc7d6355986",
+            "comment": "update default value of menu item checked attribute to false"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3a3bd3ab29344c8b98bf88d8528cbfa4e07958f9",
+            "comment": "add missing part attribute for tabpanel in tabs"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a3d8260e210a2ed94d76b89226c2ed15e12ac229",
+            "comment": "clean up header on disconnect"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d33b910a8fabe927e0afb63bba843c20cf67f2f4",
+            "comment": "Fixed bug in DesignTokenNode reparenting"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "03ec71cfce57046ee857088f44362910050cc0f8",
+            "comment": "rework scroll into view"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3c5495be5875ac01527d99855ab912fa0298d3cf",
+            "comment": "ensure submenu items are navigable after parent menu item has been clicked"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5c3b2f0431ae8f840d3dc778ff93be73b585c6e2",
+            "comment": "refactor(fast-foundation): template inline options and html.partial"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "555f1b2cd614a1d5a9bc3985fb892d040c110cb3",
+            "comment": "rewrite tooltip to use floating-ui"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.20",
+            "commit": "2bb85c931a84d4de3a8b61d6f26f89f2d9a525f6"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "fedf41e5222c14cf27be1886161d6acad0fcbfab",
+            "comment": "convert form-associated tests to playwright"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7d3b7f3741523c27adce82ef4e1eca202954dee4",
+            "comment": "fix FancyMenu example class issues"
+          },
+          {
+            "author": "rina.oksman@vonage.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2f51c838340d27b7b73a253f6e0a87f8de333728",
+            "comment": "add user-select to button"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.23",
+      "version": "3.0.0-alpha.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "yinon@hotmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "802443ffb2b19a078f9b48f62e6d1a35e3276fb5",
+            "comment": "checkbox remove irrelevant read-only property"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.19",
+            "commit": "040867e9a2a9e0ae25b78dfb3265fbe8f60fe023"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Nov 2022 02:40:34 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.22",
+      "version": "3.0.0-alpha.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "olaf-k@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923",
+            "comment": "add aria-orientation to radio-group"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e4a2bfccc07e65f9cfd1db9a943d93a84fb13ae4",
+            "comment": "Fixing bug in DesignToken causing RangeError"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1a1fc0b9e85f1e65c605e32f6724402291ffbcaa",
+            "comment": "chore: move ViewBehaviorOrchestrator to utilities"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "3c14603089495a7af8ed5b55122c418b47c45fd5",
+            "comment": "feat: add new DOM Policy protection throughout"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.18",
+            "commit": "416dc9167e9d41e6ffe11d87ed79b2f455357923"
+          }
+        ],
+        "none": [
+          {
+            "author": "steph@huynhicode.dev",
+            "package": "@microsoft/fast-foundation",
+            "commit": "c35569f91f83e3c776461624d80dc32c8fa50823",
+            "comment": "update links for svelte and vite integration guides - current and legacy doc versions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 04 Nov 2022 22:28:49 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.21",
+      "version": "3.0.0-alpha.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "9c594ef006d5189b3660de0e4d61dd6c5bb16496",
+            "comment": "feat: enable using design tokens in html"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 23:26:26 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.20",
+      "version": "3.0.0-alpha.20",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.17",
+            "commit": "32d18d0900047899d1dadfe94f7923b6164b0cf3"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.19",
+      "version": "3.0.0-alpha.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7aaf156483ac6f5922a529b5b54e04e87445d882",
+            "comment": "use floating-ui for menu-item submenus"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "45b9c12961ea49694276b6a6d4d1f932ee9f83e8",
+            "comment": "use floating-ui for select and combobox"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a614cb8270fe4b1d389cc3775c96913424dfc71b",
+            "comment": "remove indent logic from foundation menu and menu item, move to example"
+          },
+          {
+            "author": "tebin.raouf@thomsonreuters.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f7186f122613e3cc66f9cf3700138c2b41175ed4",
+            "comment": "remove unnecessary composedParent & composedContains exports from Foundation"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.16",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 20:24:32 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.18",
       "version": "3.0.0-alpha.18",

@@ -5,7 +5,7 @@
 export type Callable = typeof Function.prototype.call | { call(): void };
 
 /**
- * Allows for the creation of Constructable mixin classes.
+ * Represents a type which can be constructed with the new operator.
  *
  * @public
  */
@@ -14,20 +14,16 @@ export type Constructable<T = {}> = {
 };
 
 /**
- * Represents a class.
+ * Represents a constructable class with a prototype.
  * @public
  */
-export type Class<T, C = {}> = C & {
-    /**
-     * The class's prototype;
-     */
-    readonly prototype: T;
-
-    /**
-     * The class's constructor.
-     */
-    new (...args: any[]): T;
-};
+export type Class<T, C = {}> = C &
+    Constructable<T> & {
+        /**
+         * The class's prototype;
+         */
+        readonly prototype: T;
+    };
 
 /**
  * Provides a mechanism for releasing resources.
@@ -39,14 +35,6 @@ export interface Disposable {
      */
     dispose(): void;
 }
-
-/**
- * Reverses all readonly members, making them mutable.
- * @internal
- */
-export type Mutable<T> = {
-    -readonly [P in keyof T]: T[P];
-};
 
 /**
  * A policy for use with the standard trustedTypes platform API.
@@ -61,21 +49,16 @@ export type TrustedTypesPolicy = {
 };
 
 /**
- * Enables working with trusted types.
+ * Reverses all readonly members, making them mutable.
  * @public
  */
-export type TrustedTypes = {
-    /**
-     * Creates a trusted types policy.
-     * @param name - The policy name.
-     * @param rules - The policy rules implementation.
-     */
-    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
+export type Mutable<T> = {
+    -readonly [P in keyof T]: T[P];
 };
 
 /**
  * The FAST global.
- * @internal
+ * @public
  */
 export interface FASTGlobal {
     /**
@@ -115,63 +98,64 @@ export interface FASTGlobal {
     addMessages(messages: Record<number, string>): void;
 }
 
+let kernelMode;
+const kernelAttr = "fast-kernel";
+
+try {
+    if (document.currentScript) {
+        kernelMode = document.currentScript.getAttribute(kernelAttr);
+    } else {
+        const scripts = document.getElementsByTagName("script");
+        const currentScript = scripts[scripts.length - 1];
+        kernelMode = currentScript.getAttribute(kernelAttr);
+    }
+} catch (e) {
+    kernelMode = "isolate";
+}
+
 /**
- * Core services shared across FAST instances.
+ * Core services that can be shared across FAST instances.
  * @internal
  */
-export const enum KernelServiceId {
-    updateQueue = 1,
-    observable = 2,
-    contextEvent = 3,
-    elementRegistry = 4,
+type KernelServiceId = {
+    readonly updateQueue: string | number;
+    readonly observable: string | number;
+    readonly contextEvent: string | number;
+    readonly elementRegistry: string | number;
+};
+
+let KernelServiceId: KernelServiceId;
+
+switch (kernelMode) {
+    case "share": // share the kernel across major versions
+        KernelServiceId = Object.freeze({
+            updateQueue: 1,
+            observable: 2,
+            contextEvent: 3,
+            elementRegistry: 4,
+        });
+        break;
+    case "share-v2": // only share the kernel with other v2 instances
+        KernelServiceId = Object.freeze({
+            updateQueue: 1.2,
+            observable: 2.2,
+            contextEvent: 3.2,
+            elementRegistry: 4.2,
+        });
+        break;
+    default:
+        // fully isolate the kernel from all other FAST instances
+        const postfix = `-${Math.random().toString(36).substring(2, 8)}`;
+        KernelServiceId = Object.freeze({
+            updateQueue: `1.2${postfix}`,
+            observable: `2.2${postfix}`,
+            contextEvent: `3.2${postfix}`,
+            elementRegistry: `4.2${postfix}`,
+        });
+        break;
 }
 
-/**
- * A node that can be targeted by styles.
- * @public
- */
-export interface StyleTarget extends Pick<Node, "getRootNode"> {
-    /**
-     * Stylesheets to be adopted by the node.
-     */
-    adoptedStyleSheets?: CSSStyleSheet[];
-
-    /**
-     * Adds styles to the target by appending the styles.
-     * @param styles - The styles element to add.
-     */
-    append(styles: HTMLStyleElement): void;
-
-    /**
-     * Removes styles from the target.
-     * @param styles - The styles element to remove.
-     */
-    removeChild(styles: HTMLStyleElement): void;
-
-    /**
-     * Returns all element descendants of node that match selectors.
-     * @param selectors - The CSS selector to use for the query.
-     */
-    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-}
-/**
- * Implemented to provide specific behavior when adding/removing styles
- * for elements.
- * @public
- */
-export interface StyleStrategy {
-    /**
-     * Adds styles to the target.
-     * @param target - The target to add the styles to.
-     */
-    addStylesTo(target: StyleTarget): void;
-
-    /**
-     * Removes styles from the target.
-     * @param target - The target to remove the styles from.
-     */
-    removeStylesFrom(target: StyleTarget): void;
-}
+export { KernelServiceId };
 
 /**
  * Warning and error messages.
@@ -182,11 +166,15 @@ export const enum Message {
     // 1101 - 1200 Observation
     needsArrayObservation = 1101,
     // 1201 - 1300 Templating
-    onlySetHTMLPolicyOnce = 1201,
+    onlySetDOMPolicyOnce = 1201,
     bindingInnerHTMLRequiresTrustedTypes = 1202,
     twoWayBindingRequiresObservables = 1203,
     hostBindingWithoutHost = 1204,
     unsupportedBindingBehavior = 1205,
+    directCallToHTMLTagNotAllowed = 1206,
+    onlySetTemplatePolicyOnce = 1207,
+    cannotSetTemplatePolicyAfterCompilation = 1208,
+    blockedByDOMPolicy = 1209,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,
@@ -208,17 +196,20 @@ export const enum Message {
 }
 
 /**
- * @internal
+ * Determines whether or not an object is a function.
+ * @public
  */
 export const isFunction = (object: any): object is Function =>
     typeof object === "function";
 
 /**
- * @internal
+ * Determines whether or not an object is a string.
+ * @public
  */
 export const isString = (object: any): object is string => typeof object === "string";
 
 /**
- * @internal
+ * A function which does nothing.
+ * @public
  */
 export const noop = () => void 0;

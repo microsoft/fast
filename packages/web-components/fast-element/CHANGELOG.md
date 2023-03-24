@@ -1,8 +1,74 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 25 Oct 2022 20:24:32 GMT and should not be manually modified.
+This log was last generated on Sat, 11 Mar 2023 00:09:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.22
+
+Sat, 11 Mar 2023 00:09:48 GMT
+
+### Changes
+
+- feat: add Context.for (rob@bluespire.com)
+- feat: enable data binding in CSS (rob@bluespire.com)
+- add directives support for createElementTemplate (32497422+KingOfTac@users.noreply.github.com)
+- fix: clean up toJSON noop on core fast-element types (rob@bluespire.com)
+
+## 2.0.0-beta.21
+
+Tue, 14 Feb 2023 04:02:35 GMT
+
+### Changes
+
+- fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release (rob@bluespire.com)
+- Remove un-necessary expression from StyleElementStrategy (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.20
+
+Wed, 11 Jan 2023 22:07:47 GMT
+
+### Changes
+
+- add nullableBooleanConverter for attributes (863023+radium-v@users.noreply.github.com)
+- update return type for dangerousHTML to DangerousHTMLDirective (chhol@microsoft.com)
+- chore: remove deprecated APIs from fast-element (rob@bluespire.com)
+- chore: cleanup fast-element interfaces (roeisenb@microsoft.com)
+- refactor(fast-element): replace dangerousHTML with html.partial (roeisenb@microsoft.com)
+- feat: add ability to inline templates (roeisenb@microsoft.com)
+
+## 2.0.0-beta.19
+
+Fri, 02 Dec 2022 01:18:22 GMT
+
+### Changes
+
+- feat: add kernel mode with isolation by default (roeisenb@microsoft.com)
+
+## 2.0.0-beta.18
+
+Tue, 15 Nov 2022 02:40:34 GMT
+
+### Changes
+
+- chore: move ViewBehaviorOrchestrator to utilities (roeisenb@microsoft.com)
+- feat: add new DOM Policy protection throughout (roeisenb@microsoft.com)
+
+## 2.0.0-beta.17
+
+Tue, 01 Nov 2022 23:26:26 GMT
+
+### Changes
+
+- fix: prevent circular reference errors when stringifying DOM nodes controlled by FAST's rendering engine (roeisenb@microsoft.com)
+
+## 2.0.0-beta.16
+
+Fri, 28 Oct 2022 20:44:44 GMT
+
+### Changes
+
+- Fixed bug preventing main component stylesheet behaviors from being connected during connectedCallback (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0-beta.15
 

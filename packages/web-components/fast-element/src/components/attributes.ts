@@ -2,7 +2,7 @@ import { Accessor, Observable } from "../observation/observable.js";
 import type { Notifier } from "../observation/notifier.js";
 import { isString } from "../interfaces.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM } from "../templating/dom.js";
+import { DOM } from "../dom.js";
 import { createMetadataLocator } from "../platform.js";
 
 /**
@@ -87,6 +87,22 @@ export const booleanConverter: ValueConverter = {
             value === 0
             ? false
             : true;
+    },
+};
+
+/**
+ * A {@link ValueConverter} that converts to and from `boolean` values. `null`, `undefined`, `""`, and `void` values are converted to `null`.
+ * @public
+ */
+export const nullableBooleanConverter: ValueConverter = {
+    toView(value: any): string {
+        return typeof value === "boolean" ? value.toString() : "";
+    },
+
+    fromView(value: any): any {
+        return [null, undefined, void 0].includes(value)
+            ? null
+            : booleanConverter.fromView(value);
     },
 };
 

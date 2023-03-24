@@ -2,10 +2,11 @@ import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { ArrayObserver, Splice } from "../observation/arrays.js";
-import { Markup, nextId } from "./markup.js";
+import type { Binding, BindingDirective } from "../binding/binding.js";
+import { normalizeBinding } from "../binding/normalize.js";
+import { Markup } from "./markup.js";
 import {
     AddViewBehaviorFactory,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -13,7 +14,6 @@ import {
 } from "./html-directive.js";
 import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
-import { normalizeBinding } from "./binding.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -88,10 +88,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param options - Options used to turn on special repeat features.
      */
     public constructor(private directive: RepeatDirective) {
-        this.itemsBindingObserver = directive.dataBinding.createObserver(directive, this);
+        this.itemsBindingObserver = directive.dataBinding.createObserver(this, directive);
         this.templateBindingObserver = directive.templateBinding.createObserver(
-            directive,
-            this
+            this,
+            directive
         );
 
         if (directive.options.positioning) {
@@ -104,7 +104,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param controller - The view controller that manages the lifecycle of this behavior.
      */
     public bind(controller: ViewController): void {
-        this.location = controller.targets[this.directive.nodeId];
+        this.location = controller.targets[this.directive.targetNodeId];
         this.controller = controller;
         this.items = this.itemsBindingObserver.bind(controller);
         this.template = this.templateBindingObserver.bind(controller);
@@ -293,16 +293,11 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RepeatDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory {
-    /**
-     * The unique id of the factory.
-     */
-    id: string = nextId();
-
+    implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId: string;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.

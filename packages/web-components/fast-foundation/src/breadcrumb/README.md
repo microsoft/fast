@@ -165,6 +165,22 @@ This component is built with the expectation that focus is delegated to the anch
 | `target`         | target         | FASTAnchor     |
 | `type`           | type           | FASTAnchor     |
 
+#### CSS Parts
+
+| Name        | Description                                                         |
+| ----------- | ------------------------------------------------------------------- |
+| `listitem`  | The wrapping container for the item, represents a semantic listitem |
+| `separator` | The wrapping element for the separator                              |
+
+#### Slots
+
+| Name        | Description                                                                             |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `start`     | Content which can be provided before the breadcrumb content                             |
+| `end`       | Content which can be provided after the breadcrumb content                              |
+|             | The default slot for when no href is provided or for providing your own custom elements |
+| `separator` | The slot for providing a custom separator                                               |
+
 <hr/>
 
 

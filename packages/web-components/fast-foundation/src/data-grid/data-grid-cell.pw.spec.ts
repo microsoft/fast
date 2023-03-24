@@ -4,6 +4,8 @@ import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 
+declare const FAST: any;
+
 test.describe("Data grid cell", () => {
     let page: Page;
     let element: Locator;
@@ -124,7 +126,7 @@ test.describe("Data grid cell", () => {
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
                 columnDataKey: "item2",
-                cellTemplate: /* html */ `<template>custom cell template</template>`,
+                cellTemplate: FAST.html`custom cell template`,
             };
         });
 
@@ -141,7 +143,7 @@ test.describe("Data grid cell", () => {
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
                 columnDataKey: "item2",
-                headerCellTemplate: /* html */ `<template>custom header cell template</template>`,
+                headerCellTemplate: FAST.html`custom header cell template`,
             };
         });
 
@@ -179,7 +181,7 @@ test.describe("Data grid cell", () => {
                 columnDataKey: "item2",
                 cellFocusTargetCallback: cell =>
                     cell.querySelector("button") as HTMLButtonElement,
-                cellTemplate: /* html */ `<template><button>test button</button></template>`,
+                cellTemplate: FAST.html`<button>test button</button>`,
             };
         });
 
@@ -201,7 +203,7 @@ test.describe("Data grid cell", () => {
             node.cellType = DataGridCellTypes.columnHeader;
             node.columnDefinition = {
                 columnDataKey: "item2",
-                headerCellTemplate: /* html */ `<template><button>test header button</button></template>`,
+                headerCellTemplate: FAST.html`<button>test header button</button>`,
                 headerCellFocusTargetCallback: cell =>
                     cell.querySelector("button") as HTMLButtonElement,
             };

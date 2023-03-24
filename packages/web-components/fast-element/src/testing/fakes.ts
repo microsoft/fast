@@ -1,9 +1,10 @@
-import {
-    ExecutionContext,
+import { noop } from "../interfaces.js";
+import { ExecutionContext } from "../observation/observable.js";
+import type {
     ViewBehavior,
     ViewBehaviorTargets,
     ViewController,
-} from "../index.js";
+} from "../templating/html-directive.js";
 
 export const Fake = Object.freeze({
     executionContext<TParent = any>(
@@ -108,6 +109,7 @@ export const Fake = Object.freeze({
             },
             source: (null as any) as TSource,
             targets,
+            toJSON: noop,
             bind(
                 source: TSource,
                 context: ExecutionContext<TParent> = Fake.executionContext()

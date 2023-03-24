@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTMenuItem } from "../menu-item.js";
 import { menuItemTemplate } from "../menu-item.template.js";
@@ -76,20 +77,22 @@ export const styles = css`
         fill: var(--neutral-foreground-rest);
     }
 
-    .expand-collapse-glyph,
-    ::slotted(svg) {
+    .expand-collapse-glyph {
         width: 16px;
         height: 16px;
-    }
-
-    ::slotted(svg) {
-        fill: currentcolor;
     }
 
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
-        justify-content: center;
+    }
+
+    ::slotted([slot="start"]) {
+        margin-inline-start: 10px;
+    }
+
+    ::slotted([slot="end"]) {
+        margin-inline-end: 10px;
     }
 
     :host(:hover) ::slotted([slot="start"]),
@@ -201,27 +204,33 @@ export const styles = css`
 FASTMenuItem.define({
     name: "fast-menu-item",
     template: menuItemTemplate({
-        checkboxIndicator: /* html */ `
+        checkboxIndicator: /* html */ html`
             <svg
                 part="checkbox-indicator"
                 class="checkbox-indicator"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <path fill-rule="evenodd" clip-rule="evenodd" d="m8.1 12.7 7.1-8.2 1.6 1.4-8.6 9.9-4.4-4.5 1.5-1.5L8 12.7Z"/>
+                <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="m8.1 12.7 7.1-8.2 1.6 1.4-8.6 9.9-4.4-4.5 1.5-1.5L8 12.7Z"
+                />
             </svg>
         `,
-        expandCollapseGlyph: /* html */ `
+        expandCollapseGlyph: /* html */ html`
             <svg
                 viewBox="0 0 16 16"
                 xmlns="http://www.w3.org/2000/svg"
                 class="expand-collapse-glyph"
                 part="expand-collapse-glyph"
             >
-                <path d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"/>
+                <path
+                    d="M5 12.3a1 1 0 0 0 1.6.8L11 8.8a1.5 1.5 0 0 0 0-2.3L6.6 2.2A1 1 0 0 0 5 3v9.3Z"
+                />
             </svg>
         `,
-        radioIndicator: /* html */ `
+        radioIndicator: /* html */ html`
             <span part="radio-indicator" class="radio-indicator"></span>
         `,
     }),

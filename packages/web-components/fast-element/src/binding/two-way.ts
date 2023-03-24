@@ -1,3 +1,4 @@
+import type { DOMPolicy } from "../dom.js";
 import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
@@ -8,9 +9,8 @@ import {
     Observable,
     ObservationRecord,
 } from "../observation/observable.js";
-import { FAST } from "../platform.js";
-import type { HTMLBindingDirective } from "./binding.js";
-import { Binding } from "./html-directive.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
+import { Binding, BindingDirective } from "./binding.js";
 
 /**
  * The twoWay binding options.
@@ -32,10 +32,10 @@ const defaultOptions: TwoWayBindingOptions = {
 export interface TwoWaySettings {
     /**
      * Determines which event to listen to, to detect changes in the view.
-     * @param directive - The directive to determine the change event for.
+     * @param bindingSource - The directive to determine the change event for.
      * @param target - The target element to determine the change event for.
      */
-    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
+    determineChangeEvent(bindingSource: BindingDirective, target: HTMLElement): string;
 }
 
 let twoWaySettings: TwoWaySettings = {
@@ -44,6 +44,9 @@ let twoWaySettings: TwoWaySettings = {
     },
 };
 
+/**
+ * Enables configuring two-way binding settings.
+ */
 export const TwoWaySettings = Object.freeze({
     /**
      * Configures two-way binding.
@@ -65,7 +68,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     changeEvent: string;
 
     constructor(
-        private directive: HTMLBindingDirective,
+        private directive: BindingDirective,
         private subscriber: Subscriber,
         private dataBinding: TwoWayBinding
     ) {
@@ -102,7 +105,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     }
 
     handleEvent(event: Event): void {
-        const directive = this.directive;
+        const bindingSource = this.directive;
         const target = event.currentTarget as HTMLElement;
         const notifier = this.notifier;
         const last = (notifier as any).last as ObservationRecord; // using internal API!!!
@@ -114,18 +117,18 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
 
         let value;
 
-        switch (directive.aspectType) {
+        switch (bindingSource.aspectType) {
             case 1:
-                value = target.getAttribute(directive.targetAspect);
+                value = target.getAttribute(bindingSource.targetAspect!);
                 break;
             case 2:
-                value = target.hasAttribute(directive.targetAspect);
+                value = target.hasAttribute(bindingSource.targetAspect!);
                 break;
             case 4:
                 value = target.innerText;
                 break;
             default:
-                value = target[directive.targetAspect];
+                value = target[bindingSource.targetAspect!];
                 break;
         }
 
@@ -135,16 +138,18 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     }
 }
 
+makeSerializationNoop(TwoWayObserver);
+
 class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
     TReturn,
     TParent
 > {
     createObserver(
-        directive: HTMLBindingDirective,
-        subscriber: Subscriber
+        subscriber: Subscriber,
+        bindingSource: BindingDirective
     ): ExpressionObserver<TSource, TReturn, TParent> {
-        return new TwoWayObserver(directive, subscriber, this);
+        return new TwoWayObserver(bindingSource, subscriber, this);
     }
 }
 
@@ -152,6 +157,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
  * Creates a default binding.
  * @param expression - The binding to refresh when changed.
  * @param optionsOrChangeEvent - The binding options or the name of the change event to use.
+ * @param policy - The security policy to associate with the binding.
  * @param isBindingVolatile - Indicates whether the binding is volatile or not.
  * @returns A binding.
  * @public
@@ -159,6 +165,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 export function twoWay<T = any>(
     expression: Expression<T>,
     optionsOrChangeEvent?: TwoWayBindingOptions | string,
+    policy?: DOMPolicy,
     isBindingVolatile = Observable.isVolatileBinding(expression)
 ): Binding<T> {
     if (isString(optionsOrChangeEvent)) {
@@ -171,7 +178,7 @@ export function twoWay<T = any>(
         optionsOrChangeEvent.fromView = defaultOptions.fromView;
     }
 
-    const binding = new TwoWayBinding(expression, isBindingVolatile);
+    const binding = new TwoWayBinding(expression, policy, isBindingVolatile);
     binding.options = optionsOrChangeEvent;
     return binding;
 }

@@ -1,63 +1,21 @@
-import type { Subscriber } from "../index.js";
-import { isFunction, Message } from "../interfaces.js";
+import { Message } from "../interfaces.js";
 import {
     ExecutionContext,
     Expression,
-    ExpressionController,
     ExpressionObserver,
-    Observable,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { DOM } from "./dom.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import type { Binding, BindingDirective } from "../binding/binding.js";
 import {
     AddViewBehaviorFactory,
-    Aspect,
     Aspected,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
     ViewController,
 } from "./html-directive.js";
-import { Markup, nextId } from "./markup.js";
-
-declare class TrustedHTML {}
-const createInnerHTMLBinding = globalThis.TrustedHTML
-    ? (binding: Expression) => (s, c) => {
-          const value = binding(s, c);
-
-          if (value instanceof TrustedHTML) {
-              return value;
-          }
-
-          throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
-      }
-    : (binding: Expression) => binding;
-
-class OnChangeBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
-    TSource,
-    TReturn,
-    TParent
-> {
-    createObserver(
-        _: HTMLBindingDirective,
-        subscriber: Subscriber
-    ): ExpressionObserver<TSource, TReturn, TParent> {
-        return Observable.binding(this.evaluate, subscriber, this.isVolatile);
-    }
-}
-
-class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
-    extends Binding<TSource, TReturn, TParent>
-    implements ExpressionObserver<TSource, TReturn, TParent> {
-    createObserver(): ExpressionObserver<TSource, TReturn, TParent> {
-        return this;
-    }
-
-    bind(controller: ExpressionController): TReturn {
-        return this.evaluate(controller.source, controller.context);
-    }
-}
+import { Markup } from "./markup.js";
 
 type UpdateTarget = (
     this: HTMLBindingDirective,
@@ -239,27 +197,48 @@ function updateTokenList(
     }
 }
 
-const setProperty = (t, a, v) => (t[a] = v);
-const eventTarget = () => void 0;
+const sinkLookup: Record<DOMAspect, UpdateTarget> = {
+    [DOMAspect.attribute]: DOM.setAttribute,
+    [DOMAspect.booleanAttribute]: DOM.setBooleanAttribute,
+    [DOMAspect.property]: (t, a, v) => (t[a] = v),
+    [DOMAspect.content]: updateContent,
+    [DOMAspect.tokenList]: updateTokenList,
+    [DOMAspect.event]: () => void 0,
+};
 
 /**
  * A directive that applies bindings.
  * @public
  */
 export class HTMLBindingDirective
-    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+    implements
+        HTMLDirective,
+        ViewBehaviorFactory,
+        ViewBehavior,
+        Aspected,
+        BindingDirective {
     private data: string;
     private updateTarget: UpdateTarget | null = null;
 
     /**
      * The unique id of the factory.
      */
-    id: string = nextId();
+    id: string;
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    nodeId: string;
+    targetNodeId: string;
+
+    /**
+     * The tagname associated with the target node.
+     */
+    targetTagName: string | null;
+
+    /**
+     * The policy that the created behavior must run under.
+     */
+    policy: DOMPolicy;
 
     /**
      * The original source aspect exactly as represented in markup.
@@ -274,15 +253,13 @@ export class HTMLBindingDirective
     /**
      * The type of aspect to target.
      */
-    aspectType: Aspect = Aspect.content;
+    aspectType: DOMAspect = DOMAspect.content;
 
     /**
      * Creates an instance of HTMLBindingDirective.
      * @param dataBinding - The binding configuration to apply.
      */
-    constructor(public dataBinding: Binding) {
-        this.data = `${this.id}-d`;
-    }
+    constructor(public dataBinding: Binding) {}
 
     /**
      * Creates HTML to be used within a template.
@@ -297,34 +274,20 @@ export class HTMLBindingDirective
      */
     createBehavior(): ViewBehavior {
         if (this.updateTarget === null) {
-            if (this.targetAspect === "innerHTML") {
-                this.dataBinding.evaluate = createInnerHTMLBinding(
-                    this.dataBinding.evaluate
-                );
+            const sink = sinkLookup[this.aspectType];
+            const policy = this.dataBinding.policy ?? this.policy;
+
+            if (!sink) {
+                throw FAST.error(Message.unsupportedBindingBehavior);
             }
 
-            switch (this.aspectType) {
-                case 1:
-                    this.updateTarget = DOM.setAttribute;
-                    break;
-                case 2:
-                    this.updateTarget = DOM.setBooleanAttribute;
-                    break;
-                case 3:
-                    this.updateTarget = setProperty;
-                    break;
-                case 4:
-                    this.updateTarget = updateContent;
-                    break;
-                case 5:
-                    this.updateTarget = updateTokenList;
-                    break;
-                case 6:
-                    this.updateTarget = eventTarget;
-                    break;
-                default:
-                    throw FAST.error(Message.unsupportedBindingBehavior);
-            }
+            this.data = `${this.id}-d`;
+            this.updateTarget = policy.protect(
+                this.targetTagName,
+                this.aspectType,
+                this.targetAspect,
+                sink
+            );
         }
 
         return this;
@@ -332,10 +295,10 @@ export class HTMLBindingDirective
 
     /** @internal */
     bind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId];
+        const target = controller.targets[this.targetNodeId];
 
-        switch (this.updateTarget) {
-            case eventTarget:
+        switch (this.aspectType) {
+            case DOMAspect.event:
                 target[this.data] = controller;
                 target.addEventListener(
                     this.targetAspect,
@@ -343,7 +306,7 @@ export class HTMLBindingDirective
                     this.dataBinding.options
                 );
                 break;
-            case updateContent:
+            case DOMAspect.content:
                 controller.onUnbind(this);
             // intentional fall through
             default:
@@ -366,7 +329,7 @@ export class HTMLBindingDirective
 
     /** @internal */
     unbind(controller: ViewController): void {
-        const target = controller.targets[this.nodeId] as ContentTarget;
+        const target = controller.targets[this.targetNodeId] as ContentTarget;
         const view = target.$fastView as ComposableView;
 
         if (view !== void 0 && view.isComposed) {
@@ -407,59 +370,3 @@ export class HTMLBindingDirective
 }
 
 HTMLDirective.define(HTMLBindingDirective, { aspected: true });
-
-/**
- * Creates an standard binding.
- * @param expression - The binding to refresh when changed.
- * @param isVolatile - Indicates whether the binding is volatile or not.
- * @returns A binding configuration.
- * @public
- */
-export function bind<T = any>(
-    expression: Expression<T>,
-    isVolatile = Observable.isVolatileBinding(expression)
-): Binding<T> {
-    return new OnChangeBinding(expression, isVolatile);
-}
-
-/**
- * Creates a one time binding
- * @param expression - The binding to refresh when signaled.
- * @returns A binding configuration.
- * @public
- */
-export function oneTime<T = any>(expression: Expression<T>): Binding<T> {
-    return new OneTimeBinding(expression);
-}
-
-/**
- * Creates an event listener binding.
- * @param expression - The binding to invoke when the event is raised.
- * @param options - Event listener options.
- * @returns A binding configuration.
- * @public
- */
-export function listener<T = any>(
-    expression: Expression<T>,
-    options?: AddEventListenerOptions
-): Binding<T> {
-    const config = new OnChangeBinding(expression, false);
-    config.options = options;
-    return config;
-}
-
-/**
- * Normalizes the input value into a binding.
- * @param value - The value to create the default binding for.
- * @returns A binding configuration for the provided value.
- * @public
- */
-export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(
-    value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}
-): Binding<TSource, TReturn, TParent> {
-    return isFunction(value)
-        ? bind(value)
-        : value instanceof Binding
-        ? value
-        : oneTime(() => value);
-}

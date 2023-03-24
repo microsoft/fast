@@ -7,6 +7,7 @@ const styles = css`
         display: inline-flex;
         font-family: var(--body-font);
         outline: none;
+        user-select: none;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
         height: calc(
@@ -33,7 +34,7 @@ const styles = css`
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
-        align-items: baseline;
+        align-items: center;
         padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
         white-space: nowrap;
         outline: none;
@@ -67,33 +68,23 @@ const styles = css`
         border: 0;
     }
 
-    .start,
-    .content,
-    .end {
-        align-self: center;
-    }
-
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="content"]),
+    ::slotted([slot="end"]),
+    .content {
         display: flex;
     }
 
     .control.icon-only {
-        padding: 0;
         line-height: 0;
+        padding: 0;
     }
 
-    ::slotted(svg) {
-        height: 16px;
-        pointer-events: none;
-        width: 16px;
-    }
-
-    .start {
+    ::slotted([slot="start"]) {
         margin-inline-end: 11px;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         margin-inline-start: 11px;
     }
 `;

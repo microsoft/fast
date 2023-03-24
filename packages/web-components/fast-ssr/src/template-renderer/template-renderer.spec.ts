@@ -112,7 +112,7 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
         });
-        test("should a custom element with a static attribute", () => {
+        test("should render a custom element with a static attribute", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`)
 
@@ -136,7 +136,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}></${name}>`);
+            const result = templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}></${name}>`);
         });
@@ -150,7 +150,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}></${name}>`);
+            const result = templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
@@ -166,7 +166,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}></${name}>`);
+            const result = templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>With styles</p></${name}>`);
         });
@@ -179,7 +179,7 @@ test.describe("TemplateRenderer", () => {
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
-            const result = templateRenderer.render(html`<${name}><p>Hello world</p></${name}>`);
+            const result = templateRenderer.render(html`<${html.partial(name)}><p>Hello world</p></${html.partial(name)}>`);
 
             expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
@@ -207,9 +207,9 @@ test.describe("TemplateRenderer", () => {
 
         for (const key of [name, definition, MyElement]) {
             const  { ElementRenderer, templateRenderer } = fastSSR();
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
             ElementRenderer.disable(key);
-            expect(consolidate(templateRenderer.render(html`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
         }
     });
 

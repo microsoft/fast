@@ -2,6 +2,171 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.22",
+      "version": "2.0.0-beta.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1c81922fbc9a7596330d53251975fb3f47357361",
+            "comment": "feat: add Context.for"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "70eb15bc13d9f4d849bc5b1fe4d591a23e57c935",
+            "comment": "feat: enable data binding in CSS"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d0ef0d6b1540ed90730187b45bdaf47aa9dcb183",
+            "comment": "add directives support for createElementTemplate"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "24ec7cb05e955c5b916f611e96c47da665556604",
+            "comment": "fix: clean up toJSON noop on core fast-element types"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Feb 2023 04:02:35 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.21",
+      "version": "2.0.0-beta.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d38d31d2dd7496b5eb1e7c65b57de9a5e05e8546",
+            "comment": "fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "09d57ca18700331d054515c3b3f6fae07528cca0",
+            "comment": "Remove un-necessary expression from StyleElementStrategy"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 11 Jan 2023 22:07:47 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.20",
+      "version": "2.0.0-beta.20",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "555f1b2cd614a1d5a9bc3985fb892d040c110cb3",
+            "comment": "add nullableBooleanConverter for attributes"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "52cd5171c3e9061af8066443023782bca2b0e59b",
+            "comment": "update return type for dangerousHTML to DangerousHTMLDirective"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4c58813ec1b770b1f95c1b5993f8e3013a7544e2",
+            "comment": "chore: remove deprecated APIs from fast-element"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "84fd72febb4dff874db9322a6cb27e698b3ec790",
+            "comment": "chore: cleanup fast-element interfaces"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "5c3b2f0431ae8f840d3dc778ff93be73b585c6e2",
+            "comment": "refactor(fast-element): replace dangerousHTML with html.partial"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d14f697ed3449db50384f5c1304f6bb384f9cfe0",
+            "comment": "feat: add ability to inline templates"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 02 Dec 2022 01:18:22 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.19",
+      "version": "2.0.0-beta.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "e576aa70c22780fffba03097277e2db9a2ec1cd8",
+            "comment": "feat: add kernel mode with isolation by default"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Nov 2022 02:40:34 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.18",
+      "version": "2.0.0-beta.18",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1a1fc0b9e85f1e65c605e32f6724402291ffbcaa",
+            "comment": "chore: move ViewBehaviorOrchestrator to utilities"
+          },
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "3c14603089495a7af8ed5b55122c418b47c45fd5",
+            "comment": "feat: add new DOM Policy protection throughout"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 01 Nov 2022 23:26:26 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.17",
+      "version": "2.0.0-beta.17",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "roeisenb@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a4982f452702a8fee67397767b603d4a67702b10",
+            "comment": "fix: prevent circular reference errors when stringifying DOM nodes controlled by FAST's rendering engine"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 28 Oct 2022 20:44:44 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.16",
+      "version": "2.0.0-beta.16",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "5b745b1fb3bf249a7a2d172b7fb69cb08694aadd",
+            "comment": "Fixed bug preventing main component stylesheet behaviors from being connected during connectedCallback"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 20:24:32 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.15",
       "version": "2.0.0-beta.15",

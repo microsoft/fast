@@ -1,6 +1,7 @@
 import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
-import type { FASTTabs, TabsOptions } from "./tabs.js";
+import type { FASTTabs } from "./tabs.js";
+import type { TabsOptions } from "./tabs.options.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTTabs:class)} component.
@@ -13,20 +14,9 @@ export function tabsTemplate<T extends FASTTabs>(
         ${startSlotTemplate(options)}
         <div class="tablist" part="tablist" role="tablist">
             <slot name="tab" ${slotted("tabs")}></slot>
-
-            ${when(
-                x => x.showActiveIndicator,
-                html<T>`
-                    <div
-                        ${ref("activeIndicatorRef")}
-                        class="active-indicator"
-                        part="active-indicator"
-                    ></div>
-                `
-            )}
         </div>
         ${endSlotTemplate(options)}
-        <div class="tabpanel">
+        <div class="tabpanel" part="tabpanel">
             <slot name="tabpanel" ${slotted("tabpanels")}></slot>
         </div>
     `;

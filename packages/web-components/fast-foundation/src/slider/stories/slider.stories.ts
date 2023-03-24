@@ -1,10 +1,9 @@
 import { css, html, repeat, Updates } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { storyTemplate as sliderLabelStoryTemplate } from "../../slider-label/stories/slider-label.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSlider } from "../slider.js";
-import { SliderMode } from "../slider.options.js";
+import { SliderMode, SliderOrientation } from "../slider.options.js";
 
 const storyTemplate = html<StoryArgs<FASTSlider>>`
     <fast-slider
@@ -30,7 +29,7 @@ export default {
         max: { control: "number" },
         min: { control: "number" },
         mode: { control: "radio", options: Object.values(SliderMode) },
-        orientation: { control: "radio", options: Object.values(Orientation) },
+        orientation: { control: "radio", options: Object.values(SliderOrientation) },
         step: { control: "number" },
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },
@@ -73,7 +72,7 @@ SliderWithLabels.decorators = [
 
 export const SliderVerticalOrientation: Story<FASTSlider> = Slider.bind({});
 SliderVerticalOrientation.args = {
-    orientation: Orientation.vertical,
+    orientation: SliderOrientation.vertical,
 };
 
 export const SliderInForm: Story<FASTSlider> = renderComponent(

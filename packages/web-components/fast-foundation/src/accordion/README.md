@@ -124,9 +124,16 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### Fields
 
-| Name         | Privacy | Type                  | Default | Description                                                                                   | Inherited From |
-| ------------ | ------- | --------------------- | ------- | --------------------------------------------------------------------------------------------- | -------------- |
-| `expandmode` | public  | `AccordionExpandMode` |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion. |                |
+| Name             | Privacy   | Type                  | Default | Description                                                                                   | Inherited From |
+| ---------------- | --------- | --------------------- | ------- | --------------------------------------------------------------------------------------------- | -------------- |
+| `expandmode`     | public    | `AccordionExpandMode` |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion. |                |
+| `accordionItems` | protected | `Element[]`           |         |                                                                                               |                |
+
+#### Methods
+
+| Name                | Privacy | Description | Parameters                                             | Return | Inherited From |
+| ------------------- | ------- | ----------- | ------------------------------------------------------ | ------ | -------------- |
+| `expandmodeChanged` | public  |             | `prev: AccordionExpandMode, next: AccordionExpandMode` |        |                |
 
 #### Events
 
@@ -164,6 +171,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | -------------- | ------- | ---------------------------- | ------- | -------------------------------------------------------------------------------------------------- | -------------- |
 | `headinglevel` | public  | `1 or 2 or 3 or 4 or 5 or 6` | `2`     | Configures the [level](https://www.w3.org/TR/wai-aria-1.1/#aria-level) of the heading element. |                |
 | `expanded`     | public  | `boolean`                    | `false` | Expands or collapses the item.                                                                     |                |
+| `disabled`     | public  | `boolean`                    | `false` | Disables an accordion item                                                                         |                |
 | `id`           | public  | `string`                     |         | The item ID                                                                                        |                |
 
 #### Events
@@ -178,6 +186,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | --------------- | ------------ | -------------- |
 | `heading-level` | headinglevel |                |
 |                 | expanded     |                |
+|                 | disabled     |                |
 | `id`            | id           |                |
 
 #### CSS Parts

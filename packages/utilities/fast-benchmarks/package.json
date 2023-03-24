@@ -22,14 +22,13 @@
     "help": "node ./scripts/index.js --help"
   },
   "dependencies": {
-    "@microsoft/fast-element": "2.0.0-beta.15",
+    "@microsoft/fast-element": "2.0.0-beta.22",
     "tachometer": "^0.7.0"
   },
   "devDependencies": {
     "chalk": "^5.0.1",
-    "chromedriver": "^105.0.0",
     "commander": "^9.2.0",
     "cross-spawn": "^7.0.3",
-    "typescript": "^4.6.2"
+    "typescript": "^4.7.2"
   }
 }

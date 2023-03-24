@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTNumberField } from "../number-field.js";
 import { numberFieldTemplate } from "../number-field.template.js";
@@ -16,12 +17,13 @@ const styles = css`
     }
 
     .root {
-        align-items: baseline;
+        align-items: center;
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
+        fill: currentcolor;
         display: flex;
         flex-direction: row;
         height: calc(
@@ -41,7 +43,6 @@ const styles = css`
         margin-bottom: auto;
         margin-top: auto;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
-        width: 100%;
     }
 
     .control:hover,
@@ -68,17 +69,10 @@ const styles = css`
         visibility: hidden;
     }
 
-    .start,
-    .control,
-    .controls,
-    .end {
-        align-self: center;
-    }
-
-    .start,
-    .end {
-        fill: currentcolor;
-        margin: auto;
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+        margin-inline: 11px;
     }
 
     .step-up-glyph,
@@ -101,19 +95,6 @@ const styles = css`
 
     .step-down-glyph:before {
         border-top-color: var(--neutral-foreground-rest);
-    }
-
-    ::slotted(svg) {
-        height: 16px;
-        width: 16px;
-    }
-
-    .start {
-        margin-inline-start: 11px;
-    }
-
-    .end {
-        margin-inline-end: 11px;
     }
 
     :host(:hover:not([disabled])) .root {
@@ -165,8 +146,12 @@ FASTNumberField.define({
     name: "fast-number-field",
     styles,
     template: numberFieldTemplate({
-        stepDownGlyph: /* html */ `<span class="step-down-glyph" part="step-down-glyph"></span>`,
-        stepUpGlyph: /* html */ `<span class="step-up-glyph" part="step-up-glyph"></span>`,
+        stepDownGlyph: /* html */ html`
+            <span class="step-down-glyph" part="step-down-glyph"></span>
+        `,
+        stepUpGlyph: /* html */ html`
+            <span class="step-up-glyph" part="step-up-glyph"></span>
+        `,
     }),
     shadowOptions: {
         delegatesFocus: true,

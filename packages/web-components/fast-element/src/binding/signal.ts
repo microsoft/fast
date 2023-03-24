@@ -5,15 +5,25 @@ import type {
 } from "../observation/observable.js";
 import { isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
-import type { HTMLBindingDirective } from "./binding.js";
-import { Binding } from "./html-directive.js";
+import type { DOMPolicy } from "../dom.js";
+import { makeSerializationNoop } from "../platform.js";
+import { Binding } from "./binding.js";
 
 const subscribers: Record<
     string,
     undefined | Subscriber | Set<Subscriber>
 > = Object.create(null);
 
+/**
+ * The gateway to signal APIs.
+ * @public
+ */
 export const Signal = Object.freeze({
+    /**
+     * Subscribes to a signal.
+     * @param signal The signal to subscribe to.
+     * @param subscriber The subscriber.
+     */
     subscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
 
@@ -26,6 +36,11 @@ export const Signal = Object.freeze({
         }
     },
 
+    /**
+     * Unsubscribes from the signal.
+     * @param signal The signal to unsubscribe from.
+     * @param subscriber The subscriber.
+     */
     unsubscribe(signal: string, subscriber: Subscriber) {
         const found = subscribers[signal];
 
@@ -37,9 +52,8 @@ export const Signal = Object.freeze({
     },
 
     /**
-     * Sends the specified signal to signaled bindings.
+     * Sends the specified signal to subscribers.
      * @param signal - The signal to send.
-     * @public
      */
     send(signal: string): void {
         const found = subscribers[signal];
@@ -86,13 +100,14 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Sub
     }
 }
 
+makeSerializationNoop(SignalObserver);
+
 class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
     TReturn,
     TParent
 > {
     createObserver(
-        directive: HTMLBindingDirective,
         subscriber: Subscriber
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return new SignalObserver(this, subscriber);
@@ -103,14 +118,16 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
  * Creates a signal binding configuration with the supplied options.
  * @param expression - The binding to refresh when signaled.
  * @param options - The signal name or a binding to use to retrieve the signal name.
+ * @param policy - The security policy to associate with th binding.
  * @returns A binding configuration.
  * @public
  */
 export function signal<T = any>(
     expression: Expression<T>,
-    options: string | Expression<T>
+    options: string | Expression<T>,
+    policy?: DOMPolicy
 ): Binding<T> {
-    const binding = new SignalBinding(expression);
+    const binding = new SignalBinding(expression, policy);
     binding.options = options;
     return binding;
 }

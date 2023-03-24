@@ -22,9 +22,6 @@ Any time an author wants to display tabular data.
 - Authors can take advantage of multiple customization points to control the grid display.
 - Manages keyboard navigation across the grid.
 
-### Risks and Challenges
-- Unique identifiers are not required per row/data item, this may cause an unstable relationships between data rows and component representations. Authors should be cautious about storing references to grid elements as the data associated with a particular cell or row can change as data is updated.
-
 ### Prior Art/Examples
 
 [FAST React](https://github.com/microsoft/fast-react/tree/master/packages/react/fast-components-react-msft/src/data-grid)
@@ -69,6 +66,101 @@ Note: using a custom `gridColumn` property allows authors to place cells anywher
 - Can render based on a custom template included in the provided `columnDefinition`.
 - Manages keyboard interactions to pass focus in/out of custom cells with focusable elements.
 - Supports rendering of slotted elements.
+
+### Grid Navigation
+
+Users can navigate the component's grid cells using arrow keys as described [here](https://w3c.github.io/aria-practices/#keyboard-interaction-for-data-grids):
+
+- Right Arrow: Moves focus one cell to the right. If focus is on the right-most cell in the row, focus does not move.
+
+- Left Arrow: Moves focus one cell to the left. If focus is on the left-most cell in the row, focus does not move.
+
+- Down Arrow: Moves focus one cell down. If focus is on the bottom cell in the column, focus does not move.
+
+- Up Arrow: Moves focus one cell Up. If focus is on the top cell in the column, focus does not move.
+
+- Page Down: Moves focus down an author-determined number of rows, typically scrolling so the bottom row in the currently visible set of rows becomes one of the first visible rows. If focus is in the last row of the grid, focus does not move.
+
+- Page Up: Moves focus up an author-determined number of rows, typically scrolling so the top row in the currently visible set of rows becomes one of the last visible rows. If focus is in the first row of the grid, focus does not move.
+
+- Home: Moves focus to the first cell in the row that contains focus.
+
+- End: Moves focus to the last cell in the row that contains focus.
+
+- Control + Home: Moves focus to the first cell in the first row.
+
+- Control + End: Moves focus to the last cell in the last row.
+
+Further, authors can enable navigation within a cell as described [here](https://w3c.github.io/aria-practices/#gridNav_inside) using the `ColumnDefinition` for that cell's column.
+
+For example given a nested grid scenario like this:
+
+```
+<fast-data-grid id="nestedGrid" grid-template-columns="1fr 1fr" generate-header="none">
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2">
+            <fast-data-grid
+                grid-template-columns="1fr 1fr"
+                generate-header="none"
+                no-tabbing="true"
+            >
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.1.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.1.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.2.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.2.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        </fast-data-grid-cell>
+    </fast-data-grid-row>
+</fast-data-grid>
+```
+
+An author could define a `ColumnDefinition` that specifies that the cells in that column have an internal focus queue and a callback that species where focus goes inside the cell: 
+
+```
+function getFocusTarget(cell: DataGridCell): HTMLElement {
+    return cell.children[0] as HTMLElement;
+}
+const nestedColumn: ColumnDefinition = {
+    ...
+    cellInternalFocusQueue: true,
+    cellFocusTargetCallback: getFocusTarget,
+    ...
+};
+```
+
+### Grid Selection
+
+Selection of cells and rows within the grid can be enabled via the grid's `selection-mode` attribute.  It is set to "none" by default.  
+
+Keyboard selection model is based on guidance [here](https://w3c.github.io/aria-practices/#keyboard-interaction-for-data-grids) when applicable.
+
+#### "single-row" selection mode: 
+
+When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
+
+When the grid's `disable-click-select` attribute is set to "false", the default, any click on a selectable row will select that row, or deselect if already selected. Setting it to `true` will disable automatically selecting a row via a mouse click. 
+Keyboard:
+- Shift + Space: Selects the currently focused row, or deselects it if already selected.
+
+#### "multi-row" selection mode: 
+When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
+
+When the grid's `disable-click-select` attribute is set to "false", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. Setting it to `true` will disable automatically selecting a row via a mouse click.  
+
+Keyboard: 
+
+- Space: Selects the currently focused row, or deselects it if already selected.  Deselects all other rows
+
+- Space + Shift: Selects the currently focused row and all rows between it and the last non-shift selected row, if any. 
+
+- Space + Ctrl: Selects/Deselects the currently focused row, does not affect the selection state of other rows.
+
+- "a" + Ctrl: Selects all rows, or deselects all if all rows already selected.
 
 ### API
 
@@ -121,6 +213,21 @@ Can be either "none", "default" or "sticky" (the `GeneratHeaderOptions` enum). A
 - `grid-template-columns`  
 String that gets applied to the the css gridTemplateColumns attribute of child rows. Corresponds to the [grid-template-columns css attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
 
+- `selection-mode`
+Sets how the grid handles selection.
+"none" - The default.  The grid does not enable selection.
+"single-row" - Single row elements are selectable.
+"multi-row" - Multiple rows can be selected.
+
+- `selection-behavior`
+Determines what ui interactions can invoke selection.  
+    "programmatic" - Elements can only be selected programmatically.
+    "keyboard-only" - Programmatic + keyboard.
+    "auto" - Programmatic + keyboard + pointer events.
+
+- `initial-row-selection`
+ The initially selected row elements. The format should be a comma delimited list of row indexes. ie. "1,3,5"
+
 - `no-tabbing`
 Boolean, defaults to false.  When true the grid does not add itself to the tab queue.
 Useful when a grid is nested within a parent grid cell.
@@ -156,8 +263,12 @@ Custom generated rows can be placed here
 - `generateColumns(object): ColumnDefinition`   
 Static function that creates a basic set of columns from an object representing a row.
 
+- `selectedRowIndexes`
+The currently selected rows. Authors may set or get the current selection via this property.
+
 *Events*
-- none
+- `selectionchanged`
+Emitted when the selected elements of the grid have been updated.
 
 *parts:*
 - none
@@ -178,6 +289,10 @@ The index of the row in the parent grid. This is typically set by the parent gri
 - `row-type`  
 The row can either be either "default", "header" or "sticky-header" type according to the `DataGridRowTypes` enum. This determines the type of cells the row generates and what css classes get applied to it.
 
+- `page-size`  
+The number of rows to move selection on page up/down keystrokes.
+When undefined the grid will use viewport height/the height of the first non-header row. If the grid itself is a scrolling container it will be considered the viewport for this purpose, otherwise the document will be used.
+
 *properties:*
 - `rowData`  
 The object that contains the data to be displayed in this row.
@@ -197,6 +312,9 @@ Default slot for items
 
 *Events*
 - `row-focused` - Event triggered when a row or one of its internal elements is focused.
+
+- `selectionchanged`
+Emitted when the selected elements of the grid have been updated.
 
 *parts:*
 - `cellsSlot`

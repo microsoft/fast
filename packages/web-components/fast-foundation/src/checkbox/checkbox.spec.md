@@ -39,8 +39,6 @@ Extends [form associated custom element](../form-associated/form-associated-cust
   - The indeterminate state. Independent of checked
 
 *Content attributes*
-- `readonly`
-  - The checkbox should be submitted with the form but should not be editable.
 - `value`
   - Defaults to "on" to match `input[type="checkbox"]`
 - `checked`
@@ -70,7 +68,6 @@ Extends [form associated custom element](../form-associated/form-associated-cust
 - checked
 - disabled
 - required
-- readonly
 
 *Slotted Content/Slotted Classes*
 *CSS Parts*
@@ -89,9 +86,6 @@ The checked state can be toggled by:
 
 **disabled**: `true` or `false`
 When disabled, the value will not be changeable through user interaction. It should also not expose it's value to a form submission.
-
-**readonly**: `true` or `false`
-When readonly, the value will not be changeable through user interaction. The value will still be exposed to forms on submission.
 
 ### Accessibility
 The root element inside the shadow-dom of the checkbox will be a focusable element with the following accessability content attributes:

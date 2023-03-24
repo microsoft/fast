@@ -1,4 +1,6 @@
 import { css } from "@microsoft/fast-element";
+import chevronDownIcon from "../../../statics/svg/chevron_down_12_regular.svg";
+import chevronUpIcon from "../../../statics/svg/chevron_up_12_regular.svg";
 import { FASTAccordionItem } from "../accordion-item.js";
 import { accordionItemTemplate } from "../accordion-item.template.js";
 
@@ -12,6 +14,10 @@ const styles = css`
         line-height: var(--type-ramp-minus-1-line-height);
         border-bottom: calc(var(--stroke-width) * 1px) solid
             var(--neutral-stroke-divider-rest);
+    }
+
+    :host([disabled]) {
+        opacity: var(--disabled-opacity);
     }
 
     .region {
@@ -103,18 +109,19 @@ const styles = css`
         display: flex;
     }
 
-    .start {
+    ::slotted([slot="start"]) {
         display: flex;
         align-items: center;
-        padding-inline-start: calc(var(--design-unit) * 1px);
+        margin-inline-end: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 1;
         position: relative;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         display: flex;
         align-items: center;
+        margin-inline-start: calc(var(--design-unit) * 1px);
         justify-content: center;
         grid-column: 3;
         position: relative;
@@ -123,6 +130,9 @@ const styles = css`
 
 FASTAccordionItem.define({
     name: "fast-accordion-item",
-    template: accordionItemTemplate(),
+    template: accordionItemTemplate({
+        collapsedIcon: chevronDownIcon,
+        expandedIcon: chevronUpIcon,
+    }),
     styles,
 });

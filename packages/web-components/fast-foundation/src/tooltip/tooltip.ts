@@ -1,638 +1,450 @@
+import { autoUpdate, computePosition, flip, shift } from "@floating-ui/dom";
 import {
     attr,
+    css,
+    ElementStyles,
     FASTElement,
-    nullableNumberConverter,
+    nullableBooleanConverter,
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
-import type { FASTAnchoredRegion } from "../anchored-region/anchored-region.js";
-import type {
-    AutoUpdateMode,
-    AxisPositioningMode,
-    AxisScalingMode,
-} from "../anchored-region/anchored-region.options.js";
-import { getDirection } from "../utilities/direction.js";
-import { TooltipPosition } from "./tooltip.options.js";
-
-export { TooltipPosition };
+import { keyEscape, uniqueId } from "@microsoft/fast-web-utilities";
+import { TooltipPlacement } from "./tooltip.options.js";
 
 /**
- * An Tooltip Custom HTML Element.
+ * A Tooltip Custom HTML Element.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.2/#tooltip | ARIA tooltip }.
  *
  * @slot - The default slot for the tooltip content
- * @csspart tooltip - The tooltip element
  * @fires dismiss - Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed
  *
  * @public
  */
 export class FASTTooltip extends FASTElement {
     /**
-     * Whether the tooltip is visible or not.
-     * If undefined tooltip is shown when anchor element is hovered
+     * The visibility of the tooltip.
      *
-     * @defaultValue - undefined
-     * @public
-     * HTML Attribute: visible
-     */
-    @attr({ mode: "boolean" })
-    public visible: boolean;
-    protected visibleChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            this.updateTooltipVisibility();
-            this.updateLayout();
-        }
-    }
-
-    /**
-     * The id of the element the tooltip is anchored to
-     *
-     * @defaultValue - undefined
-     * @public
-     * HTML Attribute: anchor
-     */
-    @attr
-    public anchor: string = "";
-    protected anchorChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            this.anchorElement = this.getAnchor();
-        }
-    }
-
-    /**
-     * The delay in milliseconds before a tooltip is shown after a hover event
-     *
-     * @defaultValue - 300
-     * @public
-     * HTML Attribute: delay
-     */
-    @attr({ attribute: "delay", converter: nullableNumberConverter })
-    public delay: number = 300;
-
-    /**
-     * Controls the placement of the tooltip relative to the anchor.
-     * When the position is undefined the tooltip is placed above or below the anchor based on available space.
-     *
-     * @defaultValue - undefined
-     * @public
-     * HTML Attribute: position
-     */
-    @attr
-    public position: TooltipPosition;
-    private positionChanged(): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            this.updateLayout();
-        }
-    }
-
-    /**
-     * Controls when the tooltip updates its position, default is 'anchor' which only updates when
-     * the anchor is resized.  'auto' will update on scroll/resize events.
-     * Corresponds to anchored-region auto-update-mode.
-     * @public
-     * @remarks
-     * HTML Attribute: auto-update-mode
-     */
-    @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: AutoUpdateMode = "anchor";
-
-    /**
-     * Controls if the tooltip will always remain fully in the viewport on the horizontal axis
-     * @public
-     * @remarks
-     * HTML Attribute: horizontal-viewport-lock
-     */
-    @attr({ attribute: "horizontal-viewport-lock" })
-    public horizontalViewportLock: boolean;
-
-    /**
-     * Controls if the tooltip will always remain fully in the viewport on the vertical axis
-     * @public
-     * @remarks
-     * HTML Attribute: vertical-viewport-lock
-     */
-    @attr({ attribute: "vertical-viewport-lock" })
-    public verticalViewportLock: boolean;
-
-    /**
-     * the html element currently being used as anchor.
-     * Setting this directly overrides the anchor attribute.
-     *
-     * @public
+     * @internal
      */
     @observable
-    public anchorElement: HTMLElement | null = null;
-    protected anchorElementChanged(oldValue: HTMLElement | null): void {
-        if ((this as FASTElement).$fastController.isConnected) {
-            if (oldValue !== null && oldValue !== undefined) {
-                oldValue.removeEventListener("mouseover", this.handleAnchorMouseOver);
-                oldValue.removeEventListener("mouseout", this.handleAnchorMouseOut);
-                oldValue.removeEventListener("focusin", this.handleAnchorFocusIn);
-                oldValue.removeEventListener("focusout", this.handleAnchorFocusOut);
+    private _visible: boolean = false;
+
+    /**
+     * The id of the element the tooltip is anchored to.
+     *
+     * @defaultValue - undefined
+     * @public
+     * @remarks
+     * HTML Attribute: `anchor`
+     */
+    @attr({ attribute: "anchor" })
+    public anchor: string;
+
+    /**
+     * Removes listeners from the previous anchor element and updates the anchor element reference.
+     *
+     * @param prev - the previous anchor string
+     * @param next - the current anchor string
+     *
+     * @internal
+     */
+    protected anchorChanged(prev: string | undefined, next: string): void {
+        if (this.$fastController.isConnected) {
+            this.removeListeners();
+
+            this.removeAnchorAriaDescribedBy(this.id);
+
+            this.anchorElement = this.getAnchorElement(next);
+
+            this.addAnchorAriaDescribedBy();
+
+            if (!this.controlledVisibility) {
+                this.addListeners();
             }
+        }
+    }
 
-            if (this.anchorElement !== null && this.anchorElement !== undefined) {
-                this.anchorElement.addEventListener(
-                    "mouseover",
-                    this.handleAnchorMouseOver,
-                    { passive: true }
-                );
-                this.anchorElement.addEventListener(
-                    "mouseout",
-                    this.handleAnchorMouseOut,
-                    { passive: true }
-                );
-                this.anchorElement.addEventListener("focusin", this.handleAnchorFocusIn, {
-                    passive: true,
-                });
-                this.anchorElement.addEventListener(
-                    "focusout",
-                    this.handleAnchorFocusOut,
-                    { passive: true }
-                );
+    /**
+     * A reference to the anchor element.
+     *
+     * @internal
+     */
+    public anchorElement: Element | null;
 
-                const anchorId: string = this.anchorElement.id;
+    /**
+     * Cleanup function for the tooltip positioner.
+     *
+     * @public
+     */
+    public cleanup: () => void;
 
-                if (this.anchorElement.parentElement !== null) {
-                    this.anchorElement.parentElement
-                        .querySelectorAll(":hover")
-                        .forEach(element => {
-                            if (element.id === anchorId) {
-                                this.startShowDelayTimer();
-                            }
-                        });
+    /**
+     * Indicates if the tooltip visibility is controlled by the `visible` attribute.
+     *
+     * When `true`, the tooltip visibility is controlled by the `visible` attribute.
+     * When `false`, the tooltip visibility is controlled by the `mouseover` and `focusin` events on the anchor element.
+     *
+     * @internal
+     */
+    @observable
+    private controlledVisibility: boolean = false;
+
+    /**
+     * Switches between controlled and uncontrolled visibility.
+     *
+     * @param prev - the previous forced visibility state
+     * @param next - the current forced visibility state
+     * @internal
+     */
+    protected controlledVisibilityChanged(
+        prev: boolean | undefined,
+        next: boolean
+    ): void {
+        if (!next) {
+            this.addListeners();
+            this.hideTooltip();
+            return;
+        }
+
+        this.removeListeners();
+    }
+
+    /**
+     * Hides the tooltip when the anchor element loses focus.
+     *
+     * @internal
+     */
+    protected focusoutAnchorHandler = (): void => {
+        if (!this.controlledVisibility && this._visible) {
+            this.hideTooltip();
+        }
+    };
+
+    /**
+     * Shows the tooltip when the anchor element gains focus.
+     *
+     * @internal
+     */
+    protected focusinAnchorHandler = (): void => {
+        if (!this.controlledVisibility && !this._visible) {
+            this.showTooltip();
+        }
+    };
+
+    /**
+     * The tooltip ID attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: `id`
+     */
+    @attr
+    id: string;
+    public idChanged(prev: string, next: string): void {
+        this.removeAnchorAriaDescribedBy(prev);
+        Updates.enqueue(() => {
+            this.addAnchorAriaDescribedBy();
+        });
+    }
+
+    /**
+     * Hides the tooltip when the `Escape` key is pressed.
+     *
+     * @param e - the keyboard event
+     *
+     * @internal
+     */
+    private keydownDocumentHandler = (e: KeyboardEvent): void => {
+        if (!e.defaultPrevented && this.visible) {
+            switch (e.key) {
+                case keyEscape: {
+                    this.dismiss();
+                    break;
                 }
             }
+        }
+    };
 
-            if (
-                this.region !== null &&
-                this.region !== undefined &&
-                this.tooltipVisible
-            ) {
-                this.region.anchorElement = this.anchorElement;
-            }
+    /**
+     * Shows the tooltip when the mouse is over the anchor element.
+     *
+     * @internal
+     */
+    private mouseoverAnchorHandler = (): void => {
+        if (!document.activeElement?.isSameNode(this.anchorElement)) {
+            this.showTooltip();
+        }
+    };
 
-            this.updateLayout();
+    /**
+     * Hides the tooltip when the mouse leaves the anchor element.
+     *
+     * @internal
+     */
+    private mouseoutAnchorHandler = (e: MouseEvent): void => {
+        if (
+            !document.activeElement?.isSameNode(this.anchorElement) &&
+            !this.isSameNode(e.relatedTarget as HTMLElement)
+        ) {
+            this.hideTooltip();
+        }
+    };
+
+    /**
+     * The placement of the tooltip relative to the anchor element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: `placement`
+     */
+    @attr
+    public placement: TooltipPlacement = TooltipPlacement.bottom;
+
+    /**
+     * Calculated styles for the tooltip position.
+     *
+     * @internal
+     */
+    @observable
+    protected positionStyles: ElementStyles;
+
+    /**
+     * Updates the styles for the tooltip position.
+     *
+     * @param prev - the previous placement styles
+     * @param next - the current placement styles
+     *
+     * @internal
+     */
+    protected positionStylesChanged(
+        prev: ElementStyles | undefined,
+        next: ElementStyles | undefined
+    ): void {
+        this.$fastController.removeStyles(prev);
+        this.$fastController.addStyles(next);
+    }
+
+    /**
+     * The visibility state of the tooltip.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: `show`
+     */
+    @attr({
+        attribute: "show",
+        converter: nullableBooleanConverter,
+        mode: "fromView",
+    })
+    public show: boolean | undefined;
+    public showChanged(prev: boolean | undefined, next: boolean | undefined): void {
+        this.visible = next;
+    }
+
+    /**
+     * Returns the current visibility of the tooltip.
+     * @public
+     */
+    public get visible(): boolean | undefined {
+        return this._visible;
+    }
+
+    /**
+     * Sets the forced visibility state and shows or hides the tooltip.
+     *
+     * @internal
+     */
+    private set visible(value: boolean | undefined) {
+        this.controlledVisibility = typeof value === "boolean";
+        if (this.controlledVisibility) {
+            this.show = value;
+        }
+
+        if (value) {
+            this.showTooltip();
+            return;
+        }
+
+        this.hideTooltip();
+    }
+
+    /**
+     * Adds the `id` of the tooltip to the `aria-describedby` attribute of the anchor element.
+     *
+     * @internal
+     */
+    private addAnchorAriaDescribedBy(): void {
+        if (!this.id) {
+            this.id = uniqueId("tooltip-");
+            return;
+        }
+
+        if (!this.anchorElement) {
+            return;
+        }
+
+        const anchorElementDescribedBy = this.anchorElement
+            .getAttribute("aria-describedby")
+            ?.concat(" ", this.id)
+            .trim();
+
+        if (anchorElementDescribedBy) {
+            this.anchorElement.setAttribute("aria-describedby", anchorElementDescribedBy);
         }
     }
 
     /**
-     * The current viewport element instance
+     * Adds event listeners to the anchor element, the tooltip element, and the document.
      *
      * @internal
      */
-    @observable
-    public viewportElement: HTMLElement | null = null;
-    protected viewportElementChanged(): void {
-        if (this.region !== null && this.region !== undefined) {
-            this.region.viewportElement = this.viewportElement;
+    private addListeners(): void {
+        if (!this.anchorElement) {
+            return;
         }
-        this.updateLayout();
+
+        this.anchorElement.addEventListener("focusin", this.focusinAnchorHandler);
+        this.anchorElement.addEventListener("focusout", this.focusoutAnchorHandler);
+        this.anchorElement.addEventListener("mouseout", this.mouseoutAnchorHandler);
+        this.anchorElement.addEventListener("mouseover", this.mouseoverAnchorHandler);
+
+        this.addEventListener("mouseout", this.mouseoutAnchorHandler);
+        this.addEventListener("mouseover", this.mouseoverAnchorHandler);
+
+        document.addEventListener("keydown", this.keydownDocumentHandler);
     }
-
-    /**
-     * @internal
-     * @defaultValue "dynamic"
-     */
-    @observable
-    public verticalPositioningMode: AxisPositioningMode = "dynamic";
-
-    /**
-     * @internal
-     * @defaultValue "dynamic"
-     */
-    @observable
-    public horizontalPositioningMode: AxisPositioningMode = "dynamic";
-
-    /**
-     * @internal
-     */
-    @observable
-    public horizontalInset: string = "false";
-
-    /**
-     * @internal
-     */
-    @observable
-    public verticalInset: string = "false";
-
-    /**
-     * @internal
-     */
-    @observable
-    public horizontalScaling: AxisScalingMode = "content";
-
-    /**
-     * @internal
-     */
-    @observable
-    public verticalScaling: AxisScalingMode = "content";
-
-    /**
-     * @internal
-     */
-    @observable
-    public verticalDefaultPosition: string | undefined = undefined;
-
-    /**
-     * @internal
-     */
-    @observable
-    public horizontalDefaultPosition: string | undefined = undefined;
-
-    /**
-     * @internal
-     */
-    @observable
-    public tooltipVisible: boolean = false;
-
-    /**
-     * Track current direction to pass to the anchored region
-     * updated when tooltip is shown
-     *
-     * @internal
-     */
-    @observable
-    public currentDirection: Direction = Direction.ltr;
-
-    /**
-     * reference to the anchored region
-     *
-     * @internal
-     */
-    public region: FASTAnchoredRegion;
-
-    /**
-     * The timer that tracks delay time before the tooltip is shown on hover
-     */
-    private showDelayTimer: number | null = null;
-
-    /**
-     * The timer that tracks delay time before the tooltip is hidden
-     */
-    private hideDelayTimer: number | null = null;
-
-    /**
-     * Indicates whether the anchor is currently being hovered or has focus
-     */
-    private isAnchorHoveredFocused: boolean = false;
-
-    /**
-     * Indicates whether the region is currently being hovered
-     */
-    private isRegionHovered: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.anchorElement = this.getAnchor();
-        this.updateTooltipVisibility();
-    }
-
-    public disconnectedCallback(): void {
-        this.hideTooltip();
-        this.clearShowDelayTimer();
-        this.clearHideDelayTimer();
-        super.disconnectedCallback();
+        this.anchorChanged(undefined, this.anchor);
     }
 
     /**
-     * invoked when the anchored region's position relative to the anchor changes
+     * Hides the tooltip and emits a custom `dismiss` event.
      *
      * @internal
      */
-    public handlePositionChange = (ev: Event): void => {
-        this.classList.toggle("top", this.region.verticalPosition === "start");
-        this.classList.toggle("bottom", this.region.verticalPosition === "end");
-        this.classList.toggle("inset-top", this.region.verticalPosition === "insetStart");
-        this.classList.toggle(
-            "inset-bottom",
-            this.region.verticalPosition === "insetEnd"
-        );
-        this.classList.toggle(
-            "center-vertical",
-            this.region.verticalPosition === "center"
-        );
-
-        this.classList.toggle("left", this.region.horizontalPosition === "start");
-        this.classList.toggle("right", this.region.horizontalPosition === "end");
-        this.classList.toggle(
-            "inset-left",
-            this.region.horizontalPosition === "insetStart"
-        );
-        this.classList.toggle(
-            "inset-right",
-            this.region.horizontalPosition === "insetEnd"
-        );
-        this.classList.toggle(
-            "center-horizontal",
-            this.region.horizontalPosition === "center"
-        );
-    };
+    private dismiss(): void {
+        this.hideTooltip();
+        this.$emit("dismiss");
+    }
 
     /**
-     * mouse enters region
+     * Hides the tooltip.
+     *
+     * @internal
      */
-    private handleRegionMouseOver = (ev: Event): void => {
-        this.isRegionHovered = true;
-    };
+    public hideTooltip(): void {
+        this._visible = false;
+        this.cleanup?.();
+    }
 
     /**
-     * mouse leaves region
+     * Gets the anchor element by id.
+     *
+     * @param id - the id of the anchor element
+     *
+     * @internal
      */
-    private handleRegionMouseOut = (ev: Event): void => {
-        this.isRegionHovered = false;
-        this.startHideDelayTimer();
-    };
-
-    /**
-     * mouse enters anchor
-     */
-    private handleAnchorMouseOver = (ev: Event): void => {
-        if (this.tooltipVisible) {
-            // tooltip is already visible, just set the anchor hover flag
-            this.isAnchorHoveredFocused = true;
-            return;
-        }
-        this.startShowDelayTimer();
-    };
-
-    /**
-     * mouse leaves anchor
-     */
-    private handleAnchorMouseOut = (ev: Event): void => {
-        this.isAnchorHoveredFocused = false;
-        this.clearShowDelayTimer();
-        this.startHideDelayTimer();
-    };
-
-    /**
-     * anchor gets focus
-     */
-    private handleAnchorFocusIn = (ev: Event): void => {
-        this.startShowDelayTimer();
-    };
-
-    /**
-     * anchor loses focus
-     */
-    private handleAnchorFocusOut = (ev: Event): void => {
-        this.isAnchorHoveredFocused = false;
-        this.clearShowDelayTimer();
-        this.startHideDelayTimer();
-    };
-
-    /**
-     * starts the hide timer
-     */
-    private startHideDelayTimer = (): void => {
-        this.clearHideDelayTimer();
-
-        if (!this.tooltipVisible) {
-            return;
+    private getAnchorElement(id: string = ""): HTMLElement | null {
+        const rootNode = this.getRootNode();
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(id);
         }
 
-        // allow 60 ms for account for pointer to move between anchor/tooltip
-        // without hiding tooltip
-        this.hideDelayTimer = window.setTimeout((): void => {
-            this.updateTooltipVisibility();
-        }, 60);
-    };
+        return document.getElementById(id);
+    }
 
     /**
-     * clears the hide delay
+     * Removes the `id` of the tooltip from the `aria-describedby` attribute of the anchor element.
+     *
+     * @param id - the id of the tooltip
+     *
+     * @internal
      */
-    private clearHideDelayTimer = (): void => {
-        if (this.hideDelayTimer !== null) {
-            clearTimeout(this.hideDelayTimer);
-            this.hideDelayTimer = null;
-        }
-    };
+    private removeAnchorAriaDescribedBy(id: string): void {
+        if (this.anchorElement) {
+            const anchorElementDescribedBy = this.anchorElement
+                .getAttribute("aria-describedby")
+                ?.split(" ");
 
-    /**
-     * starts the show timer if not currently running
-     */
-    private startShowDelayTimer = (): void => {
-        if (this.isAnchorHoveredFocused) {
-            return;
-        }
+            this.anchorElement.setAttribute(
+                "aria-describedby",
+                (anchorElementDescribedBy ?? []).filter(i => i !== id).join(" ")
+            );
 
-        if (this.delay > 1) {
-            if (this.showDelayTimer === null)
-                this.showDelayTimer = window.setTimeout((): void => {
-                    this.startHover();
-                }, this.delay);
-            return;
-        }
-
-        this.startHover();
-    };
-
-    /**
-     * start hover
-     */
-    private startHover = (): void => {
-        this.isAnchorHoveredFocused = true;
-        this.updateTooltipVisibility();
-    };
-
-    /**
-     * clears the show delay
-     */
-    private clearShowDelayTimer = (): void => {
-        if (this.showDelayTimer !== null) {
-            clearTimeout(this.showDelayTimer);
-            this.showDelayTimer = null;
-        }
-    };
-
-    /**
-     * updated the properties being passed to the anchored region
-     */
-    private updateLayout(): void {
-        this.verticalPositioningMode = "locktodefault";
-        this.horizontalPositioningMode = "locktodefault";
-
-        switch (this.position) {
-            case TooltipPosition.top:
-            case TooltipPosition.bottom:
-                this.verticalDefaultPosition = this.position;
-                this.horizontalDefaultPosition = "center";
-                break;
-
-            case TooltipPosition.right:
-            case TooltipPosition.left:
-            case TooltipPosition.start:
-            case TooltipPosition.end:
-                this.verticalDefaultPosition = "center";
-                this.horizontalDefaultPosition = this.position;
-                break;
-
-            case TooltipPosition.center:
-                this.verticalDefaultPosition = "center";
-                this.horizontalDefaultPosition = "center";
-                break;
-
-            case TooltipPosition.topLeft:
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "left";
-                break;
-
-            case TooltipPosition.topCenter:
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "center";
-                break;
-
-            case TooltipPosition.bottomCenter:
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "center";
-                break;
-
-            case TooltipPosition.topRight:
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "right";
-                break;
-
-            case TooltipPosition.bottomLeft:
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "left";
-                break;
-
-            case TooltipPosition.bottomRight:
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "right";
-                break;
-
-            case TooltipPosition.topStart:
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "start";
-                break;
-
-            case TooltipPosition.topEnd:
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "end";
-                break;
-
-            case TooltipPosition.bottomStart:
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "start";
-                break;
-
-            case TooltipPosition.bottomEnd:
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "end";
-                break;
-
-            default:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "dynamic";
-                this.verticalDefaultPosition = void 0;
-                this.horizontalDefaultPosition = "center";
-                break;
+            if (this.anchorElement.getAttribute("aria-describedby") === "") {
+                this.anchorElement.removeAttribute("aria-describedby");
+            }
         }
     }
 
     /**
-     *  Gets the anchor element by id
+     * Removes event listeners from the anchor element, the tooltip element, and the document.
+     *
+     * @internal
      */
-    private getAnchor = (): HTMLElement | null => {
-        const rootNode = this.getRootNode();
-
-        if (rootNode instanceof ShadowRoot) {
-            return rootNode.getElementById(this.anchor);
+    private removeListeners(): void {
+        if (!this.anchorElement) {
+            return;
         }
 
-        return document.getElementById(this.anchor);
-    };
+        this.anchorElement.removeEventListener("focusin", this.focusinAnchorHandler);
+        this.anchorElement.removeEventListener("focusout", this.focusoutAnchorHandler);
+        this.anchorElement.removeEventListener("mouseout", this.mouseoutAnchorHandler);
+        this.anchorElement.removeEventListener("mouseover", this.mouseoverAnchorHandler);
+
+        this.removeEventListener("mouseout", this.mouseoutAnchorHandler);
+        this.removeEventListener("mouseover", this.mouseoverAnchorHandler);
+
+        document.removeEventListener("keydown", this.keydownDocumentHandler);
+    }
 
     /**
-     * handles key down events to check for dismiss
+     * Sets the tooltip position.
+     *
+     * @public
      */
-    private handleDocumentKeydown = (e: KeyboardEvent): void => {
-        if (!e.defaultPrevented && this.tooltipVisible) {
-            switch (e.key) {
-                case keyEscape:
-                    this.isAnchorHoveredFocused = false;
-                    this.updateTooltipVisibility();
-                    this.$emit("dismiss");
-                    break;
-            }
-        }
-    };
+    public setPositioning(): void {
+        this.cleanup?.();
 
-    /**
-     * determines whether to show or hide the tooltip based on current state
-     */
-    private updateTooltipVisibility = (): void => {
-        if (this.visible === false) {
+        if (!this.anchorElement) {
             this.hideTooltip();
-        } else if (this.visible === true) {
-            this.showTooltip();
             return;
-        } else {
-            if (this.isAnchorHoveredFocused || this.isRegionHovered) {
-                this.showTooltip();
-                return;
+        }
+
+        const anchorElement = this.anchorElement;
+
+        this.cleanup = autoUpdate(anchorElement, this, async () => {
+            const middleware = [shift()];
+
+            if (!this.placement) {
+                middleware.unshift(flip());
             }
-            this.hideTooltip();
-        }
-    };
 
-    /**
-     * shows the tooltip
-     */
-    private showTooltip = (): void => {
-        if (this.tooltipVisible) {
-            return;
-        }
-        this.currentDirection = getDirection(this);
-        this.tooltipVisible = true;
-        document.addEventListener("keydown", this.handleDocumentKeydown);
-        Updates.enqueue(this.setRegionProps);
-    };
+            const { x, y } = await computePosition(anchorElement, this, {
+                placement: this.placement,
+                strategy: "fixed",
+                middleware,
+            });
 
-    /**
-     * hides the tooltip
-     */
-    private hideTooltip = (): void => {
-        if (!this.tooltipVisible) {
-            return;
-        }
-        this.clearHideDelayTimer();
-        if (this.region !== null && this.region !== undefined) {
-            (this.region as any).removeEventListener(
-                "positionchange",
-                this.handlePositionChange
-            );
-            this.region.viewportElement = null;
-            this.region.anchorElement = null;
-
-            this.region.removeEventListener("mouseover", this.handleRegionMouseOver);
-            this.region.removeEventListener("mouseout", this.handleRegionMouseOut);
-        }
-        document.removeEventListener("keydown", this.handleDocumentKeydown);
-        this.tooltipVisible = false;
-    };
-
-    /**
-     * updates the tooltip anchored region props after it has been
-     * added to the DOM
-     */
-    private setRegionProps = (): void => {
-        if (!this.tooltipVisible) {
-            return;
-        }
-        this.region.viewportElement = this.viewportElement;
-        this.region.anchorElement = this.anchorElement;
-        (this.region as any).addEventListener(
-            "positionchange",
-            this.handlePositionChange
-        );
-
-        this.region.addEventListener("mouseover", this.handleRegionMouseOver, {
-            passive: true,
+            this.positionStyles = css`
+                :host {
+                    position: fixed;
+                    left: ${x.toString()}px;
+                    top: ${y.toString()}px;
+                }
+            `;
         });
-        this.region.addEventListener("mouseout", this.handleRegionMouseOut, {
-            passive: true,
-        });
-    };
+    }
+
+    /**
+     * Shows the tooltip.
+     *
+     * @internal
+     */
+    private showTooltip(): void {
+        this._visible = true;
+        Updates.enqueue(() => this.setPositioning());
+    }
 }

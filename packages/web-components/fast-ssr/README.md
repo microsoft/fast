@@ -129,6 +129,39 @@ const result = templateRenderer.render(html`
 
 > Unsupported directives are no-ops. To understand more about why, see the [Design Philosophy.](#design-philosophy)
 
+##### Rendering Custom Directives
+`@microsoft/fast-element` supports creating custom directives, and `@microsoft/fast-ssr` supports *rendering* 
+those custom directives by associating a SSR *renderer* to the custom directive.
+
+> This section does not cover *creating* a FAST directives - that documentation is coming to fast-element.
+
+With your directive (`MyDirective`) created, create a `ViewBehaviorFactoryRenderer` using the Directive
+
+```ts
+const MyDirectiveRenderer: ViewBehaviorFactoryRenderer<MyDirective> = {
+    // Instructs the TemplateRenderer to use this renderer when instances of
+    // 'MyDirective' are found in a template
+    matches: MyDirective,
+    *render(directive, renderInfo, source, templateRenderer, context) {
+        // Yield something, or do nothing
+    }
+}
+```
+
+What a custom directive should *do* on the server depends highly on the scenario. As discussed above, several FAST directives are no-ops because the use-case doesn't make sense in an SSR context. The `render()` function is provided the directive instance, the SSR renderInfo object, any source data, the `TemplateRenderer`, and the `ExecutionContext` - use these to render what makes sense for the custom directive.
+
+To use the custom renderer, you must configure `fastSSR`:
+```ts
+import fastSSR from "@microsoft/fast-ssr";
+
+const { templateRenderer} = fastSSR({viewBehaviorFactoryRenderers: [MyDirectiveRenderer]});
+```
+
+Then, templates that use `MyDirective` can be rendered:
+
+```ts
+templateRenderer.render(html`<p ${new MyDirective("some-option")}></p>`);
+```
 #### Rendering Asynchronous Components
 Sometimes it is necessary for a component to do asynchronous work prior to rending it's template, and `@microsoft/fast-ssr` can be configured to support async work by supplying the `renderMode: "async"` configuration to the SSR factory:
 
@@ -189,6 +222,34 @@ ElementRenderer.disable("my-element");
 // Does not render template contents of the custom element
 templateRenderer.render(html`<my-element></my-element>`);
 ```
+
+### Hydration
+#### `defer-hydration` Attribute
+The `defer-hydration` attribute is an attribute that indicates to client-side code that the element should not hydrate it's view. When the attribute is removed, the element is free to hydrate itself.
+
+The SSR renderer can be configured to emit the `defer-hydration` attribute to all FAST custom elements:
+```ts
+const { templateRenderer } = fastSSR({deferHydration: true});
+```
+
+> For more information on this community-protocol, see https://github.com/webcomponents-cg/community-protocols/pull/15
+#### Configuring FAST-Element
+`@microsoft/fast-element` must be configured to respect the `defer-hydration` attribute. To do this, simply import the install code into the client-side application before defining the custom elements:
+```ts
+import "@microsoft/fast-element/install-element-hydration";
+
+// Define custom elements
+```
+
+Alternatively, the `HydratableElementController` can be imported and installed manually:
+
+```ts
+import { HydratableElementController } from "@microsoft/fast-element/element-hydration";
+
+HydratableElementController.install();
+```
+
+After you do this, `@microsoft/fast-element` will wait until the `defer-hydration` attribute is removed (if present during connection) before doing connection work like rendering templates, applying stylesheets, and binding behaviors.
 
 ### Configuring the RenderInfo Object
 `TemplateRenderer.render()` must be invoked with a `RenderInfo` object. Its purpose is to provide different element renderers to the process, as well as metadata about the rendering process. It can be used to render custom elements from different templating libraries in the same process. By default, `TemplateRenderer.render()` will create a `RenderInfo` object for you, but you can also easily construct your own using `TemplateRenderer.createRenderInfo()`: 

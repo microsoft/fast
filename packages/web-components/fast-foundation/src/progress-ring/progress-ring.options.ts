@@ -1,9 +1,10 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import type { FASTProgressRing } from "./progress-ring.js";
 
 /**
  * ProgressRing configuration options
  * @public
  */
 export type ProgressRingOptions = {
-    indeterminateIndicator?: string | SyntheticViewTemplate;
+    indeterminateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
 };

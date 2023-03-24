@@ -2,7 +2,7 @@ import { expect } from "chai";
 import {
     AdoptedStyleSheetsStrategy, StyleElementStrategy
 } from "../components/element-controller.js";
-import type { StyleTarget } from "../interfaces.js";
+import type { StyleTarget } from "./style-strategy.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
 import { css } from "./css.js";
@@ -14,6 +14,10 @@ import type { HostBehavior } from "./host.js";
 import { html} from "../templating/template.js"
 import { ref} from "../templating/ref.js"
 import { FASTElement, customElement } from "../components/fast-element.js";
+import { ExecutionContext } from "../observation/observable.js";
+import { CSSBindingDirective } from "./css-binding-directive.js";
+import { Binding } from "../binding/binding.js";
+import { oneTime } from "../binding/one-time.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
@@ -454,6 +458,42 @@ describe("css", () => {
             expect(styles.behaviors?.includes(behavior)).to.equal(true)
         });
     })
+
+    describe("bindings", () => {
+        class Model { constructor(public color: string) {} };
+
+        it("can be created from interpolated functions", () => {
+            const styles = css<Model>`host: { color: ${x => x.color}; }`;
+            const bindings = styles.behaviors!.filter(x => x instanceof CSSBindingDirective);
+
+            expect(bindings.length).equals(1);
+
+            const b = bindings[0] as CSSBindingDirective;
+            expect(b.dataBinding).instanceof(Binding);
+            expect(b.targetAspect.startsWith("--v")).true;
+
+            const result = b.dataBinding.evaluate(new Model("red"), ExecutionContext.default);
+            expect(result).equals("red");
+
+            expect((styles.styles[0] as string).indexOf("var(--")).not.equal(-1);
+        });
+
+        it("can be created from interpolated bindings", () => {
+            const styles = css<Model>`host: { color: ${oneTime(x => x.color)}; }`;
+            const bindings = styles.behaviors!.filter(x => x instanceof CSSBindingDirective);
+
+            expect(bindings.length).equals(1);
+
+            const b = bindings[0] as CSSBindingDirective;
+            expect(b.dataBinding).instanceof(Binding);
+            expect(b.targetAspect.startsWith("--v")).true;
+
+            const result = b.dataBinding.evaluate(new Model("red"), ExecutionContext.default);
+            expect(result).equals("red");
+
+            expect((styles.styles[0] as string).indexOf("var(--")).not.equal(-1);
+        });
+    });
 });
 
 describe("cssPartial", () => {
@@ -511,7 +551,9 @@ describe("cssPartial", () => {
         const controller = {
             mainStyles: null,
             isConnected: false,
+            isBound: false,
             source: {},
+            context: ExecutionContext.default,
             addStyles(style: ElementStyles) {
                 expect(style.styles.includes(styles)).to.be.true;
                 addStylesCalled = true;
@@ -519,6 +561,7 @@ describe("cssPartial", () => {
             removeStyles(styles) {},
             addBehavior() {},
             removeBehavior() {},
+            onUnbind() {}
         };
 
         const add = (x: HostBehavior) => capturedBehaviors.push(x);

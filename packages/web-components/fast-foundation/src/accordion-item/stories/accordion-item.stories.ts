@@ -31,7 +31,19 @@ export const AccordionItem: Story<FASTAccordionItem> = renderComponent(
 ).bind({});
 AccordionItem.args = {
     storyContent: html`
+        <span slot="heading">Accordion Item Heading</span>
         Accordion Item Content
-        <div slot="heading">Accordion Item Heading</div>
+    `,
+};
+
+export const AccordionItemWithSlottedStartEnd: Story<FASTAccordionItem> = renderComponent(
+    storyTemplate
+).bind({});
+AccordionItemWithSlottedStartEnd.args = {
+    storyContent: html`
+        <fast-badge slot="start">start</fast-badge>
+        <span slot="heading">Accordion Item Heading</span>
+        <fast-badge slot="end">end</fast-badge>
+        Accordion Item Content
     `,
 };

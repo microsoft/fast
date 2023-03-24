@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Button type values.
  *
@@ -14,4 +16,4 @@ export const ButtonType = {
  *
  * @public
  */
-export type ButtonType = typeof ButtonType[keyof typeof ButtonType];
+export type ButtonType = ValuesOf<typeof ButtonType>;

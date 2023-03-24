@@ -14,7 +14,7 @@ export type DataGridOptions = {
 function rowItemTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
 ): ViewTemplate<any, T> {
-    const rowTag = tagFor(options.dataGridRow);
+    const rowTag = html.partial(tagFor(options.dataGridRow));
     return html<any, T>`
     <${rowTag}
         :rowData="${x => x}"
@@ -38,7 +38,7 @@ export function dataGridTemplate<T extends FASTDataGrid>(
         <template
             role="grid"
             tabindex="0"
-            :rowElementTag="${() => rowTag}"
+            :rowElementTag="${rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate(options)}"
             ${children({
                 property: "rowElements",

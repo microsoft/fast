@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTSlider } from "../slider.js";
 import { sliderTemplate } from "../slider.template.js";
@@ -38,7 +39,7 @@ const styles = css`
         grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
 
-    :host(:focus-visible) .thumb-cursor {
+    :host(:focus) .thumb-cursor {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
 
@@ -80,7 +81,7 @@ const styles = css`
     }
     :host([orientation="vertical"]) .thumb-container {
         transform: translateX(calc(var(--thumb-translate) * 1px))
-            translateY(calc(var(--thumb-size) * 0.5px));
+            translateY(calc(var(--thumb-size) * -0.5px));
     }
     :host([orientation="horizontal"]) {
         touch-action: pan-y;
@@ -112,7 +113,7 @@ const styles = css`
     :host([orientation="vertical"]) .track-start {
         height: auto;
         width: 100%;
-        top: 0;
+        bottom: 0;
     }
     :host([disabled]) {
         cursor: var(--disabled-cursor);
@@ -123,7 +124,9 @@ const styles = css`
 FASTSlider.define({
     name: "fast-slider",
     template: sliderTemplate({
-        thumb: /* html */ `<div class="thumb-cursor"></div>`,
+        thumb: /* html */ html`
+            <div class="thumb-cursor"></div>
+        `,
     }),
     styles,
 });

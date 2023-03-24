@@ -1,9 +1,15 @@
-import { Message, Mutable, StyleStrategy, StyleTarget } from "../interfaces.js";
+import { Message, Mutable } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { Observable, SourceLifetime } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import {
+    ExecutionContext,
+    ExpressionController,
+    Observable,
+    SourceLifetime,
+} from "../observation/observable.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
+import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
@@ -33,6 +39,13 @@ export interface ElementControllerStrategy {
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
+const enum Stages {
+    connecting,
+    connected,
+    disconnecting,
+    disconnected,
+}
+
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
@@ -44,7 +57,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
-    private _isConnected: boolean = false;
+    private stage: Stages = Stages.disconnected;
+    /**
+     * A guard against connecting behaviors multiple times
+     * during connect in scenarios where a behavior adds
+     * another behavior during it's connectedCallback
+     */
+    private guardBehaviorConnection = false;
     private behaviors: Map<HostBehavior<TElement>, number> | null = null;
     private _mainStyles: ElementStyles | null = null;
 
@@ -82,12 +101,28 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public get isConnected(): boolean {
         Observable.track(this, isConnectedPropertyName);
-        return this._isConnected;
+        return this.stage === Stages.connected;
     }
 
-    private setIsConnected(value: boolean): void {
-        this._isConnected = value;
-        Observable.notify(this, isConnectedPropertyName);
+    /**
+     * The context the expression is evaluated against.
+     */
+    public get context(): ExecutionContext {
+        return this.view?.context ?? ExecutionContext.default;
+    }
+
+    /**
+     * Indicates whether the controller is bound.
+     */
+    public get isBound(): boolean {
+        return this.view?.isBound ?? false;
+    }
+
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    public get sourceLifetime(): SourceLifetime | undefined {
+        return this.view?.sourceLifetime;
     }
 
     /**
@@ -211,6 +246,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     /**
+     * Registers an unbind handler with the controller.
+     * @param behavior - An object to call when the controller unbinds.
+     */
+    onUnbind(behavior: { unbind(controller: ExpressionController<TElement>) }): void {
+        this.view?.onUnbind(behavior);
+    }
+
+    /**
      * Adds the behavior to the component.
      * @param behavior - The behavior to add.
      */
@@ -222,7 +265,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             targetBehaviors.set(behavior, 1);
             behavior.addedCallback && behavior.addedCallback(this);
 
-            if (behavior.connectedCallback && this.isConnected) {
+            if (
+                behavior.connectedCallback &&
+                !this.guardBehaviorConnection &&
+                (this.stage === Stages.connected || this.stage === Stages.connecting)
+            ) {
                 behavior.connectedCallback(this);
             }
         } else {
@@ -249,7 +296,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (count === 1 || force) {
             targetBehaviors.delete(behavior);
 
-            if (behavior.disconnectedCallback && this.isConnected) {
+            if (behavior.disconnectedCallback && this.stage !== Stages.disconnected) {
                 behavior.disconnectedCallback(this);
             }
 
@@ -318,9 +365,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Runs connected lifecycle behavior on the associated element.
      */
     public connect(): void {
-        if (this._isConnected) {
+        if (this.stage !== Stages.disconnected) {
             return;
         }
+
+        this.stage = Stages.connecting;
 
         // If we have any observables that were bound, re-apply their values.
         if (this.boundObservables !== null) {
@@ -338,9 +387,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         const behaviors = this.behaviors;
         if (behaviors !== null) {
+            this.guardBehaviorConnection = true;
             for (const key of behaviors.keys()) {
                 key.connectedCallback && key.connectedCallback(this);
             }
+
+            this.guardBehaviorConnection = false;
         }
 
         if (this.needsInitialization) {
@@ -352,18 +404,20 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.bind(this.source);
         }
 
-        this.setIsConnected(true);
+        this.stage = Stages.connected;
+        Observable.notify(this, isConnectedPropertyName);
     }
 
     /**
      * Runs disconnected lifecycle behavior on the associated element.
      */
     public disconnect(): void {
-        if (!this._isConnected) {
+        if (this.stage !== Stages.connected) {
             return;
         }
 
-        this.setIsConnected(false);
+        this.stage = Stages.disconnecting;
+        Observable.notify(this, isConnectedPropertyName);
 
         if (this.view !== null) {
             this.view.unbind();
@@ -375,6 +429,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 key.disconnectedCallback && key.disconnectedCallback(this);
             }
         }
+
+        this.stage = Stages.disconnected;
     }
 
     /**
@@ -408,7 +464,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         detail?: any,
         options?: Omit<CustomEventInit, "detail">
     ): void | boolean {
-        if (this._isConnected) {
+        if (this.stage === Stages.connected) {
             return this.source.dispatchEvent(
                 new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
             );
@@ -481,6 +537,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         elementControllerStrategy = strategy;
     }
 }
+
+makeSerializationNoop(ElementController);
 
 // Set default strategy for ElementController
 ElementController.setStrategy(ElementController);
@@ -584,8 +642,6 @@ export class StyleElementStrategy implements StyleStrategy {
         const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
             `.${this.styleClass}`
         );
-
-        styles[0].parentNode;
 
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);

@@ -7,6 +7,8 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { StartEnd } from "../patterns/start-end.js";
 import type { HorizontalScrollView } from "./horizontal-scroll.options.js";
 import { ScrollEasing } from "./horizontal-scroll.options.js";
 
@@ -554,3 +556,12 @@ export class FASTHorizontalScroll extends FASTElement {
         }, this.frameTime) as any) as number;
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTHorizontalScroll extends StartEnd {}
+applyMixins(FASTHorizontalScroll, StartEnd);

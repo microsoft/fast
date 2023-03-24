@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Text field sub-types
  * @public
@@ -33,4 +35,4 @@ export const TextFieldType = {
  * Types for the text field sub-types
  * @public
  */
-export type TextFieldType = typeof TextFieldType[keyof typeof TextFieldType];
+export type TextFieldType = ValuesOf<typeof TextFieldType>;
