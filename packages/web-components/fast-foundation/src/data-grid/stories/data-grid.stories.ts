@@ -1,7 +1,12 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import type { FASTDataGrid } from "../data-grid.js";
+import {
+    DataGridSelectionBehavior,
+    DataGridSelectionMode,
+    FASTDataGrid,
+    GenerateHeaderOptions,
+} from "../data-grid.js";
 
 const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <fast-data-grid
@@ -12,6 +17,10 @@ const storyTemplate = html<StoryArgs<FASTDataGrid>>`
         generate-header="${x => x.generateHeader}"
         grid-template-columns="${x => x.gridTemplateColumns}"
         page-size="${x => x.pageSize}"
+        disable-click-select="${x => x.disableClickSelect}"
+        selection-mode="${x => x.selectionMode}"
+        initial-row-selection="${x => x.initialRowSelection}"
+        selection-behavior="${x => x.selectionBehavior}"
     >
         ${x => x.content}
     </fast-data-grid>
@@ -40,24 +49,41 @@ export default {
     },
     argTypes: {
         style: {
-            control: { type: "text" },
+            control: "text",
         },
         content: { table: { disable: true } },
         noTabbing: {
-            control: { type: "boolean" },
+            control: "boolean",
         },
         generateHeader: {
-            options: ["none", "default", "sticky"],
-            control: { type: "select" },
+            options: Object.values(GenerateHeaderOptions),
+            control: "select",
         },
         pageSize: {
-            control: { type: "number" },
+            control: "number",
         },
         gridTemplateColumns: {
-            control: { type: "text" },
+            control: "text",
         },
         columnDefinitions: {
             control: { type: "object" },
+        },
+        storyContent: {
+            table: { disable: true },
+        },
+        selectionMode: {
+            options: Object.values(DataGridSelectionMode),
+            control: "select",
+        },
+        selectionBehavior: {
+            options: Object.values(DataGridSelectionBehavior),
+            control: "select",
+        },
+        disableClickSelect: {
+            control: "boolean",
+        },
+        initialRowSelection: {
+            control: "text",
         },
     },
 } as Meta<FASTDataGrid>;

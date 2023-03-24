@@ -37,6 +37,29 @@
       "mapsToAttribute": "page-size",
       "type": "number"
     },
+    "selection-mode": {
+      "enum": [
+        "none",
+        "single-row",
+        "multi-row"
+      ],
+      "title": "Selection mode",
+      "description": "Defines how the grid handles row or cell selection.",
+      "mapsToAttribute": "selection-mode",
+      "type": "string"
+    },
+    "click-select": {
+      "title": "Click select",
+      "description": "Determines if clicks can automatically select when selection is enabled.",
+      "mapsToAttribute": "click-select",
+      "type": "boolean"
+    },
+    "initial-row-selection": {
+      "title": "Initial row selection",
+      "description": "The initially selected rows, the format should be a comma delimited list of row indexes. ie. '1,3,5'",
+      "mapsToAttribute": "initial-row-selection",
+      "type": "boolean"
+    },
     "Slot": {
       "title": "Default slot",
       "description": "The content as data grid rows",

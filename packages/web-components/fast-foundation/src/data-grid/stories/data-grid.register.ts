@@ -6,6 +6,10 @@ const styles = css`
     :host {
         display: block;
     }
+
+    :host([selection-mode="multi-row"]) {
+        user-select: none;
+    }
 `;
 
 FASTDataGrid.define({
