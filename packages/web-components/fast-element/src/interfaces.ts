@@ -57,6 +57,16 @@ export type Mutable<T> = {
 };
 
 /**
+ * A temporary type as a workaround for the TS compiler's erroneous built-in ParameterDecorator type.
+ * @public
+ */
+export type ParameterDecorator = (
+    target: Object,
+    propertyKey: string | undefined,
+    parameterIndex: number
+) => void;
+
+/**
  * The FAST global.
  * @public
  */

@@ -1,4 +1,4 @@
-import { Constructable, Message } from "./interfaces.js";
+import { Constructable, Message, ParameterDecorator } from "./interfaces.js";
 import { Metadata } from "./metadata.js";
 import { FAST } from "./platform.js";
 
