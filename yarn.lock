@@ -3271,10 +3271,10 @@
   resolved "https://registry.yarnpkg.com/@microsoft/fast-components-foundation-react/-/fast-components-foundation-react-3.2.0.tgz#1dcd6818b7d235b33a61ad5c285adf1544b4676e"
   integrity sha512-Lne/ijIf7aU0ixiVr8HWuJyrVLtmCgzE3Ays6T6JFzw0GoOS67wc3kVzykl6EZseo44VzOogXrW+wsOCB79fnA==
 
-"@microsoft/fast-components@^2.30.6":
-  version "2.30.6"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-2.30.6.tgz#22449f41c300060831b3545c27906cea03a72476"
-  integrity sha512-q6nPiRyA/8HHqCbN4ClziJfOfFaTIVIyBUTSJTcO7ODzkr8oEin7VzKJNoIP/qMpKMkg90wxwLOucr6nsokApw==
+"@microsoft/fast-components@2.30.5", "@microsoft/fast-components@^2.9.2":
+  version "2.30.5"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-2.30.5.tgz#77a84e2e3e59d7599a82a6320ecdc02b5ee5a491"
+  integrity sha512-1FutX7T8Cc5gpp3RzQ8kL3PnBl/KK1i/61K41L+QGOoSD+HNIpSQ6AZ/+E+CfFAhqzyG0SEZ2LLUrFeFY+aLFQ==
   dependencies:
     "@microsoft/fast-colors" "^5.3.0"
     "@microsoft/fast-element" "^1.10.1"
@@ -3282,10 +3282,10 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
-"@microsoft/fast-components@^2.9.2":
-  version "2.30.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-2.30.5.tgz#77a84e2e3e59d7599a82a6320ecdc02b5ee5a491"
-  integrity sha512-1FutX7T8Cc5gpp3RzQ8kL3PnBl/KK1i/61K41L+QGOoSD+HNIpSQ6AZ/+E+CfFAhqzyG0SEZ2LLUrFeFY+aLFQ==
+"@microsoft/fast-components@^2.30.6":
+  version "2.30.6"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-2.30.6.tgz#22449f41c300060831b3545c27906cea03a72476"
+  integrity sha512-q6nPiRyA/8HHqCbN4ClziJfOfFaTIVIyBUTSJTcO7ODzkr8oEin7VzKJNoIP/qMpKMkg90wxwLOucr6nsokApw==
   dependencies:
     "@microsoft/fast-colors" "^5.3.0"
     "@microsoft/fast-element" "^1.10.1"
