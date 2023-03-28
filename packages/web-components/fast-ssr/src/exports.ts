@@ -32,10 +32,10 @@ import "./configure-fast-element.js";
  */
 export interface SSRConfiguration {
     /**
-     * When 'async', configures the renderer to support async rendering.
-     * 'async' rendering will yield 'string | Promise<string>'
+     * When `async`, configures the renderer to support async rendering.
+     * `async` rendering will yield `string | Promise<string>`
      *
-     * Defaults to 'sync'.
+     * @defaultValue `sync`.
      */
     renderMode?: "sync" | "async";
 

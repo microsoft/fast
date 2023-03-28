@@ -56,10 +56,10 @@ module.exports = {
                     position: "left",
                 },
                 // TODO: uncomment when ready to display dropdown for doc versions (lines 55-58)
-                // {
-                //     type: "docsVersionDropdown",
-                //     position: "left",
-                // },
+                {
+                    type: "docsVersionDropdown",
+                    position: "left",
+                },
                 {
                     href: "https://www.fast.design",
                     label: "Home",
@@ -156,19 +156,19 @@ module.exports = {
                     remarkPlugins: [require("mdx-mermaid")],
                     // The "includeCurrentVersion" plugin includes the ./docs folder of the docs - setting to false as current docs are in progress
                     // TODO: remove when ready to display both the current and legacy versions (line 155)
-                    includeCurrentVersion: false,
+                    includeCurrentVersion: true,
                     // The "lastVersion" plugin sets which version the /docs route refers to
                     // TODO: update lastVersion to "current" when ready for /docs route to be set to the current version (line 158)
-                    lastVersion: "legacy",
+                    lastVersion: "current",
                     // TODO: Uncomment to begin displaying the doc versions labels (lines 160-167)
-                    // versions: {
-                    //     current: {
-                    //         label: "current version",
-                    //     },
-                    //     legacy: {
-                    //         label: "legacy version",
-                    //     },
-                    // },
+                    versions: {
+                        current: {
+                            label: "current version",
+                        },
+                        legacy: {
+                            label: "legacy version",
+                        },
+                    },
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),

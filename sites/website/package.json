@@ -34,7 +34,7 @@
     "@docusaurus/core": "2.0.0-beta.20",
     "@docusaurus/preset-classic": "2.0.0-beta.20",
     "@docusaurus/theme-live-codeblock": "2.0.0-beta.20",
-    "@microsoft/api-documenter": "7.8.13",
+    "@microsoft/api-documenter": "7.21.6",
     "concurrently": "^6.2.0"
   },
   "dependencies": {
