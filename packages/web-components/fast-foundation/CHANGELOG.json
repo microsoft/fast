@@ -2,6 +2,45 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 28 Mar 2023 22:14:10 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.27",
+      "version": "3.0.0-alpha.27",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "tebin.raouf@gmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "24a23de4c342988c162552aeeab9dc83d10cf501",
+            "comment": "update @microsoft/fast-element to be fixed for foundation package"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ae07a0142cf35ae1c6b246140f1ebc419cbaf0e0",
+            "comment": "update slider changed methods to protected"
+          },
+          {
+            "author": "scomea@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "27070ef2fc7aa5cdaeb827f1266eb3c5a0ad2c3e",
+            "comment": "support row selection in data grid"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "6f37a826129ea14d6e69d0f916bb9561c5c09566",
+            "comment": "remove activeindicator from tabs component"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.23",
+            "commit": "032285c2bf0311f9f44cbc875b40696fc8f62857"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 11 Mar 2023 00:09:48 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.26",
       "version": "3.0.0-alpha.26",

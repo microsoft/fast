@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: correct types for a break in TypeScript 5 legacy decorators",
-  "packageName": "@microsoft/fast-element",
-  "email": "rob@bluespire.com",
-  "dependentChangeType": "prerelease"
-}
