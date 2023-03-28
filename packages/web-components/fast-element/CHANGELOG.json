@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 28 Mar 2023 22:14:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.23",
+      "version": "2.0.0-beta.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1d9c23ecd77a4079126b1156567b906efff66350",
+            "comment": "docs: add missing API docs"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "032285c2bf0311f9f44cbc875b40696fc8f62857",
+            "comment": "fix: correct types for a break in TypeScript 5 legacy decorators"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 11 Mar 2023 00:09:48 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.22",
       "version": "2.0.0-beta.22",

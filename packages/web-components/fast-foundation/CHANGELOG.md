@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sat, 11 Mar 2023 00:09:48 GMT and should not be manually modified.
+This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.27
+
+Tue, 28 Mar 2023 22:14:10 GMT
+
+### Changes
+
+- update @microsoft/fast-element to be fixed for foundation package (tebin.raouf@gmail.com)
+- update slider changed methods to protected (chhol@microsoft.com)
+- support row selection in data grid (scomea@microsoft.com)
+- remove activeindicator from tabs component (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.23
 
 ## 3.0.0-alpha.26
 
