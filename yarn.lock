@@ -3282,7 +3282,7 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tslib "^1.13.0"
 
-"@microsoft/fast-components@^2.30.6":
+"@microsoft/fast-components@^2.30.5", "@microsoft/fast-components@^2.30.6":
   version "2.30.6"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-components/-/fast-components-2.30.6.tgz#22449f41c300060831b3545c27906cea03a72476"
   integrity sha512-q6nPiRyA/8HHqCbN4ClziJfOfFaTIVIyBUTSJTcO7ODzkr8oEin7VzKJNoIP/qMpKMkg90wxwLOucr6nsokApw==
