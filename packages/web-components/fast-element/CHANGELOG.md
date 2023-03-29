@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Sat, 11 Mar 2023 00:09:48 GMT and should not be manually modified.
+This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.23
+
+Tue, 28 Mar 2023 22:14:10 GMT
+
+### Changes
+
+- docs: add missing API docs (rob@bluespire.com)
+- fix: correct types for a break in TypeScript 5 legacy decorators (rob@bluespire.com)
 
 ## 2.0.0-beta.22
 

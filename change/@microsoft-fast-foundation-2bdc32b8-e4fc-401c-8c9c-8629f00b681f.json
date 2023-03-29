@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "support row selection in data grid",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
