@@ -75,3 +75,5 @@ sites/website/i18n/
 # Ignore Build Artefacts
 bin/
 obj/
+
+!sites/fast-website/dist/

@@ -12,6 +12,7 @@ module.exports = merge(baseConfig, {
         allowedHosts: "all",
     },
     mode: "development",
+    devtool: false,
     output: {
         filename: "[name].js",
     },

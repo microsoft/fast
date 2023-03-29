@@ -40,7 +40,7 @@
   "scripts": {
     "build:all": "yarn build:rollup && yarn build:webpack",
     "build:rollup": "rollup -c",
-    "build:webpack": "webpack --config=./webpack.prod.js --progress",
+    "build:webpack": "webpack --config=./webpack.dev.js --progress",
     "clean": "rimraf dist temp",
     "prepare": "yarn clean && yarn build:rollup",
     "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",

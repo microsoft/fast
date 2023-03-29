@@ -1,12 +1,8 @@
-import {
-    allComponents,
-    baseLayerLuminance,
-    provideFASTDesignSystem,
-} from "@microsoft/fast-components";
+import { fastAnchor, provideFASTDesignSystem } from "@microsoft/fast-components";
 import "./css/style.css";
 
-provideFASTDesignSystem().register(allComponents);
+provideFASTDesignSystem().register([fastAnchor()]);
 
-baseLayerLuminance.setValueFor(document.body, 0.09);
+// baseLayerLuminance.setValueFor(document.body, 0.09);
 
-export * from "./components";
+// export * from "./components";
