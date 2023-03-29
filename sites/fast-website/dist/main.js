@@ -3581,7 +3581,10 @@ __webpack_require__.r(__webpack_exports__);
  */
 const anchorStyles = (context, definition) => _microsoft_fast_element__WEBPACK_IMPORTED_MODULE_0__.css `
         ${_styles_index_js__WEBPACK_IMPORTED_MODULE_1__.BaseButtonStyles}
-    `.withBehaviors((0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("accent", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.AccentButtonStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("hypertext", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.HypertextStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("lightweight", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.LightweightButtonStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("outline", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.OutlineButtonStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("stealth", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.StealthButtonStyles));
+    `.withBehaviors(
+        (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("accent", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.AccentButtonStyles),
+       // (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("hypertext", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.HypertextStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("lightweight", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.LightweightButtonStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("outline", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.OutlineButtonStyles), (0,_utilities_behaviors_js__WEBPACK_IMPORTED_MODULE_2__.appearanceBehavior)("stealth", _styles_index_js__WEBPACK_IMPORTED_MODULE_1__.StealthButtonStyles)
+        );
 
 
 /***/ }),
@@ -5404,43 +5407,7 @@ const AccentButtonStyles = _microsoft_fast_element__WEBPACK_IMPORTED_MODULE_0__.
         box-shadow: 0 0 0 calc((${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.focusStrokeWidth} - ${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.strokeWidth}) * 1px) ${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.focusStrokeOuter} inset,
             0 0 0 calc((${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.focusStrokeWidth} + ${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.strokeWidth}) * 1px) ${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.focusStrokeInner} inset;
     }
-`.withBehaviors((0,_microsoft_fast_foundation__WEBPACK_IMPORTED_MODULE_5__.forcedColorsStylesheetBehavior)(_microsoft_fast_element__WEBPACK_IMPORTED_MODULE_0__.css `
-            :host([appearance="accent"]) .control {
-                forced-color-adjust: none;
-                background: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.Highlight};
-                color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.HighlightText};
-            }
-
-            :host([appearance="accent"]) .control:hover,
-            :host([appearance="accent"]:active) .control:active {
-                background: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.HighlightText};
-                border-color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.Highlight};
-                color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.Highlight};
-            }
-
-            :host([appearance="accent"]) .control:${_microsoft_fast_foundation__WEBPACK_IMPORTED_MODULE_4__.focusVisible} {
-                border-color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.Highlight};
-                box-shadow: 0 0 0 calc(${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.focusStrokeWidth} * 1px) ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.HighlightText} inset;
-            }
-
-            :host([appearance="accent"][href]) .control{
-                background: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.LinkText};
-                color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.HighlightText};
-            }
-
-            :host([appearance="accent"][href]) .control:hover {
-                background: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.ButtonFace};
-                border-color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.LinkText};
-                box-shadow: none;
-                color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.LinkText};
-                fill: currentColor;
-            }
-
-            :host([appearance="accent"][href]) .control:${_microsoft_fast_foundation__WEBPACK_IMPORTED_MODULE_4__.focusVisible} {
-                border-color: ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.LinkText};
-                box-shadow: 0 0 0 calc(${_design_tokens_js__WEBPACK_IMPORTED_MODULE_2__.focusStrokeWidth} * 1px) ${_microsoft_fast_web_utilities__WEBPACK_IMPORTED_MODULE_6__.SystemColors.HighlightText} inset;
-            }
-        `));
+`;
 /**
  * @internal
  */
@@ -7756,13 +7723,17 @@ class AdoptedStyleSheetsStyles extends ElementStyles {
         return this._styleSheets;
     }
     addStylesTo(target) {
+        console.log("adding styles: initial length", target.adoptedStyleSheets.length);
         target.adoptedStyleSheets = [...target.adoptedStyleSheets, ...this.styleSheets];
         super.addStylesTo(target);
+        console.log("adding styles: after length", target.adoptedStyleSheets.length);
     }
     removeStylesFrom(target) {
+        console.log("removing styles: initial length", target.adoptedStyleSheets.length);
         const sourceSheets = this.styleSheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets.filter((x) => sourceSheets.indexOf(x) === -1);
         super.removeStylesFrom(target);
+        console.log("removing styles: after length", target.adoptedStyleSheets.length);
     }
 }
 let styleClassId = 0;
@@ -8980,8 +8951,10 @@ class Anchor extends _foundation_element_foundation_element_js__WEBPACK_IMPORTED
      * @internal
      */
     connectedCallback() {
+        console.log("Anchor connecting");
         super.connectedCallback();
         this.handleUnsupportedDelegatesFocus();
+        console.log("Anchor connected");
     }
 }
 (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
