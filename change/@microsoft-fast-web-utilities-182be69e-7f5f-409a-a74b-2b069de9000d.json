@@ -3,5 +3,5 @@
   "comment": "fix: removed flaky test",
   "packageName": "@microsoft/fast-web-utilities",
   "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "none"
 }
