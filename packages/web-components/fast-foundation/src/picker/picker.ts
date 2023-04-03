@@ -1002,8 +1002,10 @@ export class FASTPicker extends FormAssociatedPicker {
             );
         }
         if (this.filterQuery && this.query !== "" && this.query !== undefined) {
+            // compare case-insensitive
+            const filterQuery = this.query.toLowerCase();
             this.filteredOptionsList = this.filteredOptionsList.filter(
-                el => el.indexOf(this.query) !== -1
+                el => el.toLowerCase().indexOf(filterQuery) !== -1
             );
         }
     }
