@@ -2,10 +2,11 @@ import { isFunction } from "../interfaces.js";
 import type { ExecutionContext, Expression } from "../observation/observable.js";
 import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
+const noTemplate = () => null;
 function normalizeBinding<TSource>(
     value: SyntheticViewTemplate | Expression<TSource, SyntheticViewTemplate> | undefined
 ) {
-    return value === undefined ? () => null : isFunction(value) ? value : () => value;
+    return value === undefined ? noTemplate : isFunction(value) ? value : () => value;
 }
 /**
  * A directive that enables basic conditional rendering in a template.
