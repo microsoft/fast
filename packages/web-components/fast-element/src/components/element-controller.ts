@@ -649,8 +649,44 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 }
 
-ElementStyles.setDefaultStrategy(
-    ElementStyles.supportsAdoptedStyleSheets
-        ? AdoptedStyleSheetsStrategy
-        : StyleElementStrategy
-);
+let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => {
+    target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
+};
+let removeAdoptedStyleSheets = (
+    target: Required<StyleTarget>,
+    sheets: CSSStyleSheet[]
+) => {
+    target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
+        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+    );
+};
+
+if (ElementStyles.supportsAdoptedStyleSheets) {
+    try {
+        // Test if browser implementation uses FrozenArray.
+        // If not, use push / splice to alter the stylesheets
+        // in place. This circumvents a bug in Safari 16.4 where
+        // periodically, assigning the array would previously
+        // cause sheets to be removed.
+        (document as any).adoptedStyleSheets.push();
+        (document as any).adoptedStyleSheets.splice();
+        addAdoptedStyleSheets = (target, sheets) => {
+            target.adoptedStyleSheets.push(...sheets);
+        };
+        removeAdoptedStyleSheets = (target, sheets) => {
+            for (const sheet of sheets) {
+                const index = target.adoptedStyleSheets.indexOf(sheet);
+                if (index !== -1) {
+                    target.adoptedStyleSheets.splice(index, 1);
+                }
+            }
+        };
+    } catch (e) {
+        // Do nothing if this fails, the initial implementation
+        // handles adoptedStyleSheets being a FrozenArray
+    }
+
+    ElementStyles.setDefaultStrategy(AdoptedStyleSheetsStrategy);
+} else {
+    ElementStyles.setDefaultStrategy(StyleElementStrategy);
+}
