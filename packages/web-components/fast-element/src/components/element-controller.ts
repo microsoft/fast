@@ -649,17 +649,9 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 }
 
-let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => {
-    target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
-};
-let removeAdoptedStyleSheets = (
-    target: Required<StyleTarget>,
-    sheets: CSSStyleSheet[]
-) => {
-    target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
-    );
-};
+type StylesheetMutator = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => void;
+let addAdoptedStyleSheets: StylesheetMutator;
+let removeAdoptedStyleSheets: StylesheetMutator;
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     try {
@@ -682,8 +674,22 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
             }
         };
     } catch (e) {
-        // Do nothing if this fails, the initial implementation
-        // handles adoptedStyleSheets being a FrozenArray
+        // Fallback to array assignment, which is compatible with the
+        // FrozenArray implementation
+        addAdoptedStyleSheets = (
+            target: Required<StyleTarget>,
+            sheets: CSSStyleSheet[]
+        ) => {
+            target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
+        };
+        removeAdoptedStyleSheets = (
+            target: Required<StyleTarget>,
+            sheets: CSSStyleSheet[]
+        ) => {
+            target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
+                (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+            );
+        };
     }
 
     ElementStyles.setDefaultStrategy(AdoptedStyleSheetsStrategy);
