@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Update adoptedStyleSheets strategy to use push/splice when available to fix Safari 16.4 bug",
+  "packageName": "@microsoft/fast-element",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
