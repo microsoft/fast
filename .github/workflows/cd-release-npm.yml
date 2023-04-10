@@ -21,6 +21,10 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.GH_TOKEN }}
 
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.20.0
+
     - name: Add or Update packages
       run: sudo yarn global add lerna
 
