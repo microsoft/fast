@@ -133,6 +133,45 @@ function reduceBehaviors(
             return prev.concat(curr);
         }, null as Behavior[] | null);
 }
+let addAdoptedStyleSheets = (
+    target: Required<StyleTarget>,
+    sheets: CSSStyleSheet[]
+): void => {
+    target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
+};
+let removeAdoptedStyleSheets = (
+    target: Required<StyleTarget>,
+    sheets: CSSStyleSheet[]
+): void => {
+    target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
+        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+    );
+};
+if (DOM.supportsAdoptedStyleSheets) {
+    try {
+        // Test if browser implementation uses FrozenArray.
+        // If not, use push / splice to alter the stylesheets
+        // in place. This circumvents a bug in Safari 16.4 where
+        // periodically, assigning the array would previously
+        // cause sheets to be removed.
+        (document as any).adoptedStyleSheets.push();
+        (document as any).adoptedStyleSheets.splice();
+        addAdoptedStyleSheets = (target, sheets) => {
+            target.adoptedStyleSheets.push(...sheets);
+        };
+        removeAdoptedStyleSheets = (target, sheets) => {
+            for (const sheet of sheets) {
+                const index = target.adoptedStyleSheets.indexOf(sheet);
+                if (index !== -1) {
+                    target.adoptedStyleSheets.splice(index, 1);
+                }
+            }
+        };
+    } catch (e) {
+        // Do nothing if an error is thrown, the default
+        // case handles FrozenArray.
+    }
+}
 
 /**
  * https://wicg.github.io/construct-stylesheets/
@@ -177,16 +216,13 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
         this.behaviors = reduceBehaviors(styles);
     }
 
-    public addStylesTo(target: StyleTarget): void {
-        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.styleSheets];
+    public addStylesTo(target: Required<StyleTarget>): void {
+        addAdoptedStyleSheets(target, this.styleSheets);
         super.addStylesTo(target);
     }
 
-    public removeStylesFrom(target: StyleTarget): void {
-        const sourceSheets = this.styleSheets;
-        target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sourceSheets.indexOf(x) === -1
-        );
+    public removeStylesFrom(target: Required<StyleTarget>): void {
+        removeAdoptedStyleSheets(target, this.styleSheets);
         super.removeStylesFrom(target);
     }
 }
