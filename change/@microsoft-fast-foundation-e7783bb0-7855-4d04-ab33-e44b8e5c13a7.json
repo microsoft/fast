@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "revert: token typings that broke build",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}

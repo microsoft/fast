@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Mon, 10 Apr 2023 18:32:45 GMT",
+      "tag": "@microsoft/fast-foundation_v2.48.0",
+      "version": "2.48.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "195a1b4e2e9e4c81a7ee6e7d8e5605d982d8f8f6",
+            "comment": "add missing part to tabpanel in tabs component"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a53309ea027b232d5bf1b65bcc2d2594dd8611b7",
+            "comment": "update anchor reference type to support undefined and suppress breadcrumb linting issue"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "64805bea23260b23f1db51e545963875e573a8a7",
+            "comment": "revert: token typings that broke build"
+          }
+        ],
+        "minor": [
+          {
+            "author": "Mathieu.Salois@goto.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "363319d3503bbbc99c29c30971ac823afebaf49b",
+            "comment": "fix(Calendar): add fix for the timezones from #5539"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 28 Nov 2022 18:28:05 GMT",
       "tag": "@microsoft/fast-foundation_v2.47.1-0",
       "version": "2.47.1-0",

@@ -57,7 +57,7 @@
     "@microsoft/fast-colors": "^5.3.0",
     "@microsoft/fast-components": "^2.30.6",
     "@microsoft/fast-element": "^1.11.0",
-    "@microsoft/fast-foundation": "^2.47.1-0",
+    "@microsoft/fast-foundation": "^2.48.0",
     "@microsoft/fast-web-utilities": "^5.4.1"
   }
 }

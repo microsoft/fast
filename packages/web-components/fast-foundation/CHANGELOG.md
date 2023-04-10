@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 28 Nov 2022 18:28:05 GMT and should not be manually modified.
+This log was last generated on Mon, 10 Apr 2023 18:32:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.48.0
+
+Mon, 10 Apr 2023 18:32:45 GMT
+
+### Minor changes
+
+- fix(Calendar): add fix for the timezones from #5539 (Mathieu.Salois@goto.com)
+
+### Patches
+
+- add missing part to tabpanel in tabs component (chhol@microsoft.com)
+- update anchor reference type to support undefined and suppress breadcrumb linting issue (chhol@microsoft.com)
+- revert: token typings that broke build (jes@microsoft.com)
 
 ## 2.47.1-0
 

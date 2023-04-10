@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add missing part to tabpanel in tabs component",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
