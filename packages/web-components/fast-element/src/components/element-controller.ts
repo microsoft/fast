@@ -550,9 +550,9 @@ ElementController.setStrategy(ElementController);
  * @param target
  * @returns
  */
-function normalizeStyleTarget(target: StyleTarget): StyleTarget {
+function normalizeStyleTarget(target: StyleTarget): Required<StyleTarget> {
     if ("adoptedStyleSheets" in target) {
-        return target;
+        return target as Required<StyleTarget>;
     } else {
         return (
             (getShadowRoot(target as any) as null | StyleTarget) ??
@@ -595,16 +595,11 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
     }
 
     public addStylesTo(target: StyleTarget): void {
-        const t = normalizeStyleTarget(target);
-        t.adoptedStyleSheets = [...t.adoptedStyleSheets!, ...this.sheets];
+        addAdoptedStyleSheets(normalizeStyleTarget(target), this.sheets);
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        const t = normalizeStyleTarget(target);
-        const sheets = this.sheets;
-        t.adoptedStyleSheets = t.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
-        );
+        removeAdoptedStyleSheets(normalizeStyleTarget(target), this.sheets);
     }
 }
 
