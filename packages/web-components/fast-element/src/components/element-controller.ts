@@ -644,10 +644,17 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 }
 
-type StylesheetMutator = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => void;
-let addAdoptedStyleSheets: StylesheetMutator;
-let removeAdoptedStyleSheets: StylesheetMutator;
-
+let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => {
+    target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
+};
+let removeAdoptedStyleSheets = (
+    target: Required<StyleTarget>,
+    sheets: CSSStyleSheet[]
+) => {
+    target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
+        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+    );
+};
 if (ElementStyles.supportsAdoptedStyleSheets) {
     try {
         // Test if browser implementation uses FrozenArray.
@@ -669,22 +676,8 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
             }
         };
     } catch (e) {
-        // Fallback to array assignment, which is compatible with the
-        // FrozenArray implementation
-        addAdoptedStyleSheets = (
-            target: Required<StyleTarget>,
-            sheets: CSSStyleSheet[]
-        ) => {
-            target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
-        };
-        removeAdoptedStyleSheets = (
-            target: Required<StyleTarget>,
-            sheets: CSSStyleSheet[]
-        ) => {
-            target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-                (x: CSSStyleSheet) => sheets.indexOf(x) === -1
-            );
-        };
+        // Do nothing if an error is thrown, the default
+        // case handles FrozenArray.
     }
 
     ElementStyles.setDefaultStrategy(AdoptedStyleSheetsStrategy);
