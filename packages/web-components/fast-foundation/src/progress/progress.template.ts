@@ -28,10 +28,7 @@ export function progressTemplate<T extends FASTProgress>(
                             style="width: ${x => x.percentComplete}%"
                         ></div>
                     </div>
-                `
-            )}
-            ${when(
-                x => typeof x.value !== "number",
+                `,
                 html<T>`
                     <div class="progress" part="progress" slot="indeterminate">
                         <slot name="indeterminate">
