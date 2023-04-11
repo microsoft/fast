@@ -47,10 +47,7 @@ export function progressRingTemplate<T extends FASTProgressRing>(
                             r="7px"
                         ></circle>
                     </svg>
-                `
-            )}
-            ${when(
-                x => typeof x.value !== "number",
+                `,
                 html<T>`
                     <slot name="indeterminate">
                         ${staticallyCompose(options.indeterminateIndicator)}

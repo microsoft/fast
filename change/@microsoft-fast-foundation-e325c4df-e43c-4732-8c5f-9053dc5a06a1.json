@@ -1,0 +1,7 @@
+{
+    "type": "prerelease",
+    "comment": "Updates when directive instances to use 'else' template option",
+    "packageName": "@microsoft/fast-foundation",
+    "email": "nicholasrice@users.noreply.github.com",
+    "dependentChangeType": "prerelease"
+}
