@@ -88,7 +88,6 @@ const pickerListStyles = css`
         height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
-        min-width: 250px;
         width: auto;
         box-sizing: border-box;
         border: none;
@@ -123,12 +122,15 @@ const pickerListItemStyles = css`
         user-select: none;
         white-space: nowrap;
     }
-    :host(:focus-visible),
-    :host(:hover) {
+    :host([disabled]) {
+        cursor: not-allowed;
+    }
+    :host(:focus-visible:not([disabled])),
+    :host(:hover:not([disabled])) {
         background: var(--accent-fill-rest);
         color: var(--foreground-on-accent-rest);
     }
-    :host(:focus-visible) {
+    :host(:focus-visible:not([disabled])) {
         border-color: var(--focus-stroke-outer);
     }
 `;
