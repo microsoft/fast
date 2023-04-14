@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 14 Apr 2023 19:08:49 GMT",
+      "tag": "@microsoft/fast-foundation_v2.48.1",
+      "version": "2.48.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.11.1",
+            "commit": "bed585ca0b36e31aed53b0669a7f8363d917f514"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 10 Apr 2023 18:32:45 GMT",
       "tag": "@microsoft/fast-foundation_v2.48.0",
       "version": "2.48.0",

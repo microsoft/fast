@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 14 Apr 2023 19:08:49 GMT",
+      "tag": "@microsoft/fast-element_v1.11.1",
+      "version": "1.11.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "bed585ca0b36e31aed53b0669a7f8363d917f514",
+            "comment": "Use push and splice for adoptedStyleSheet mutation when available to avoid Safari 16.4 bug"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Oct 2022 03:07:31 GMT",
       "tag": "@microsoft/fast-element_v1.11.0",
       "version": "1.11.0",

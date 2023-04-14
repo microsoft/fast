@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 10 Apr 2023 18:32:45 GMT and should not be manually modified.
+This log was last generated on Fri, 14 Apr 2023 19:08:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.48.1
+
+Fri, 14 Apr 2023 19:08:49 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.11.1
 
 ## 2.48.0
 
