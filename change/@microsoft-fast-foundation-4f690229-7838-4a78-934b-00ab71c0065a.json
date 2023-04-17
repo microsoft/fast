@@ -3,5 +3,5 @@
   "comment": "fix picker scroll into view",
   "packageName": "@microsoft/fast-foundation",
   "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
