@@ -972,7 +972,7 @@ export class FASTPicker extends FormAssociatedPicker {
 
         focusedOption.setAttribute("aria-selected", "true");
 
-        this.menuElement.scrollTo(0, focusedOption.offsetTop);
+        focusedOption.scrollIntoView(true);
     }
 
     /**
