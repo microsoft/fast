@@ -65,7 +65,7 @@ export class FASTTextField extends TextField {}
 | `disabledChanged`         | protected |             |                    | `void`    |                |
 | `contentsTemplateChanged` | protected |             |                    | `void`    |                |
 | `handleKeyDown`           | public    |             | `e: KeyboardEvent` | `boolean` |                |
-| `handleClick`             | public    |             | `e: MouseEvent`    | `boolean` |                |
+| `handleClick`             | public    |             | `e: MouseEvent`    | `void`    |                |
 
 #### Attributes
 

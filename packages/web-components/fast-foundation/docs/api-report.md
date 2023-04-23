@@ -1637,7 +1637,7 @@ export class FASTPickerListItem extends FASTElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    handleClick(e: MouseEvent): boolean;
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleKeyDown(e: KeyboardEvent): boolean;
     value: string;
