@@ -3,5 +3,5 @@
   "comment": "add picker disabled state",
   "packageName": "@microsoft/fast-foundation",
   "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
