@@ -8,7 +8,7 @@ function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
     const pickerListItemTag = html.partial(tagFor(options.pickerListItem));
     return html`
     <${pickerListItemTag}
-        disabled = "${(x, c) => c.parent.disabled}"
+        ?disabled = "${(x, c) => c.parent.disabled}"
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
     >

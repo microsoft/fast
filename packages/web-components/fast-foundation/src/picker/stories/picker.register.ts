@@ -97,6 +97,9 @@ const pickerListStyles = css`
         user-select: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
     }
+    ::slotted([role="combobox"][disabled]) {
+        cursor: not-allowed;
+    }
 `;
 
 const pickerListItemStyles = css`

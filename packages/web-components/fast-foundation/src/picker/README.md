@@ -256,7 +256,7 @@ export class FASTTextField extends TextField {}
 | `no-suggestions-text`        | noSuggestionsText        |                |
 | `suggestions-available-text` | suggestionsAvailableText |                |
 | `loading-text`               | loadingText              |                |
-| `disabled`                   | disabled                 |                |
+|                              | disabled                 |                |
 | `label`                      | label                    |                |
 | `labelledby`                 | labelledBy               |                |
 | `placeholder`                | placeholder              |                |

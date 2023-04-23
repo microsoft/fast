@@ -28,6 +28,7 @@ export default {
         // TODO: These are always true https://github.com/microsoft/fast/issues/6311
         filterQuery: true,
         filterSelected: true,
+        disabled: false,
     },
     argTypes: {
         filterQuery: { control: "boolean" },
