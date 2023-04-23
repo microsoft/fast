@@ -116,6 +116,7 @@ export const DataGridSelectionMode = {
     none: "none",
     singleRow: "single-row",
     multiRow: "multi-row",
+    singleCell: "single-cell",
 } as const;
 
 /**
@@ -142,3 +143,8 @@ export const DataGridSelectionBehavior = {
  * @public
  */
 export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;
+
+export interface CellIndex {
+    row: number;
+    column: number;
+}

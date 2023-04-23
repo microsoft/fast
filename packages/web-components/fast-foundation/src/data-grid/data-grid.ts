@@ -23,6 +23,8 @@ import {
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import {
+    CellIndex,
+    DataGridCellTypes,
     DataGridRowTypes,
     DataGridSelectionBehavior,
     DataGridSelectionChangeDetail,
@@ -159,6 +161,36 @@ export class FASTDataGrid extends FASTElement {
     }
 
     /**
+     * Default callback to determine if a cell is selectable (also depends on selectionMode)
+     * By default all cells except for header cells are selectable
+     */
+    private static defaultCellSelectableCallback(
+        cellIndex: CellIndex,
+        grid: FASTDataGrid
+    ): boolean {
+        if (
+            grid.rowElements.length < cellIndex.row ||
+            (grid.rowElements[cellIndex.row] as FASTDataGridRow).rowType !==
+                DataGridRowTypes.default
+        ) {
+            return false;
+        }
+
+        const rowElement: FASTDataGridRow = grid.rowElements[
+            cellIndex.row
+        ] as FASTDataGridRow;
+        if (
+            rowElement.cellElements.length < cellIndex.column ||
+            (rowElement.cellElements[cellIndex.column] as FASTDataGridCell).cellType !==
+                DataGridCellTypes.default
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * When true the component will not add itself to the tab queue.
      * Default is false.
      *
@@ -266,7 +298,7 @@ export class FASTDataGrid extends FASTElement {
 
     /**
      * The indexes of initially selected grid elements. Includes header rows.
-     * In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
+     * The format should be a comma delimited list of row indexes. ie. "1,3,5"
      *
      * @public
      * @remarks
@@ -274,6 +306,17 @@ export class FASTDataGrid extends FASTElement {
      */
     @attr({ attribute: "initial-row-selection" })
     public initialRowSelection: string;
+
+    /**
+     * The indexes of initially selected cell elements. Includes header rows.
+     * The format should be a comma delimited list of indexes. ie. "1,3,5"
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: initial-row-selection
+     */
+    @attr({ attribute: "initial-cell-selection" })
+    public initialCellSelection: string;
 
     /**
      * Callback that determines whether a particular row is selectable or not (depends on selectionMode also)
@@ -284,6 +327,16 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean =
         FASTDataGrid.defaultRowSelectableCallback;
+
+    /**
+     * Callback that determines whether a particular cell is selectable or not (depends on selectionMode also)
+     * By default all cells except header cells are selectable.
+     *
+     * @public
+     */
+    @observable
+    public cellSelectableCallback: (cellIndex: CellIndex, grid: FASTDataGrid) => boolean =
+        FASTDataGrid.defaultCellSelectableCallback;
 
     /**
      * The data being displayed in the grid
@@ -443,6 +496,35 @@ export class FASTDataGrid extends FASTElement {
         this.queueRowIndexUpdate();
     }
 
+    /**
+     * Selected cell indexes
+     *
+     */
+    private _selectedCellIndexes: CellIndex[] = [];
+
+    /**
+     * The selectedCellIndexes property.
+     *
+     * @public
+     */
+    public get selectedCellIndexes() {
+        return this._selectedCellIndexes.slice();
+    }
+
+    public set selectedCellIndexes(next: CellIndex[]) {
+        if (this.selectionMode !== DataGridSelectionMode.singleCell) {
+            return;
+        }
+
+        // cull unselectable cells
+        next = next.filter(cellIndex => this.cellSelectableCallback(cellIndex, this));
+
+        this._selectedCellIndexes.splice(0, this.selectedCellIndexes.length, next[0]);
+
+        this.selectionUpdated = true;
+        this.queueRowIndexUpdate();
+    }
+
     private rowsPlaceholder: Node | null = null;
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
@@ -512,16 +594,33 @@ export class FASTDataGrid extends FASTElement {
         // apply initial selection after the grid is populated
         Updates.enqueue(() => {
             if (
-                this.selectionMode !== DataGridSelectionMode.none &&
+                (this.selectionMode === DataGridSelectionMode.multiRow ||
+                    this.selectionMode === DataGridSelectionMode.singleRow) &&
                 this.initialRowSelection
             ) {
-                const selectionAsArray: string[] = this.initialRowSelection.split(",");
-                const initialSelection: number[] = [];
-                selectionAsArray.forEach((element: string): void => {
-                    initialSelection.push(parseInt(element.trim()));
+                const rowSelectionAsArray: string[] = this.initialRowSelection.split(",");
+                const initialRowSelection: number[] = [];
+                rowSelectionAsArray.forEach((element: string): void => {
+                    initialRowSelection.push(parseInt(element.trim()));
                 });
 
-                this.updateSelectedRows(initialSelection);
+                this.updateSelectedRows(initialRowSelection);
+                return;
+            }
+            if (
+                this.selectionMode === DataGridSelectionMode.singleCell &&
+                this.initialCellSelection
+            ) {
+                const cellSelectionAsArray: string[] = this.initialCellSelection.split(
+                    ","
+                );
+                const initialCellSelection: number[] = [];
+                cellSelectionAsArray.forEach((element: string): void => {
+                    initialCellSelection.push(parseInt(element.trim()));
+                });
+
+                this.updateSelectedCells(initialCellSelection);
+                return;
             }
         });
 
@@ -835,6 +934,13 @@ export class FASTDataGrid extends FASTElement {
         this.selectedRowIndexes = newSelection;
     }
 
+    /**
+     * Validates that new selected rows are selectable and updates the selectedRowIndexes prop
+     */
+    private updateSelectedCells(newSelection: CellIndex[]): void {
+        this.selectedCellIndexes = newSelection;
+    }
+
     private selectAllRows(): void {
         if (
             this.selectionMode !== DataGridSelectionMode.multiRow ||
@@ -1014,6 +1120,8 @@ export class FASTDataGrid extends FASTElement {
                 thisRow.selected = this._selectedRowIndexes.includes(index)
                     ? true
                     : false;
+            } else if (this.selectionMode === DataGridSelectionMode.singleCell) {
+                thisRow.selected = false;
             }
 
             if (this.columnDefinitionsStale) {
