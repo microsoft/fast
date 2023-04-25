@@ -42,7 +42,7 @@ npm install @microsoft/fast-components @microsoft/fast-element tslib --save
 We also need to install the Rollup build tooling:
 
 ```shell
-npm install rollup typescript @rollup/plugin-typescript @rollup/plugin-node-resolve rollup-plugin-cleaner rollup-plugin-copy rollup-plugin-serve rollup-plugin-terser --save-dev
+npm install rollup typescript @rollup/plugin-typescript @rollup/plugin-node-resolve rollup-plugin-cleaner rollup-plugin-copy rollup-plugin-serve rollup-plugin-terser rollup-plugin-transform-tagged-template --save-dev
 ```
 
 ## Adding configuration and source
@@ -200,7 +200,7 @@ There's nothing special about the HTML yet, other than the `script` tag in the `
 
 ## Using the components
 
-With all the basic pieces in place, let's run our app with `npm run build`. 
+With all the basic pieces in place, let's run our app with `npm run build`.
 
 Rollup should build your project and open your default browser with your `index.html` page. Right now, it should be blank, since we haven't added any code or interesting HTML. Let's change that.
 
@@ -220,7 +220,7 @@ provideFASTDesignSystem()
   );
 ```
 
-This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. To get some UI showing, we need to write some HTML that uses our components. 
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. To get some UI showing, we need to write some HTML that uses our components.
 
 Replace the contents of the `<body>` in your `index.html` file with the following markup:
 
