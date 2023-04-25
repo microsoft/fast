@@ -171,7 +171,7 @@ Properties can also be set directly on an HTML element. To do so, prepend the pr
 :::warning
 Avoid scenarios that require you to directly set HTML, especially when the content is coming from an external source. If you must do this, you should always sanitize the HTML.
 
-The best way to accomplish HTML sanitization is to configure [a trusted types policy](https://w3c.github.io/webappsec-trusted-types/dist/spec/) with FASTElement's template engine. FASTElement ensures that all HTML strings pass through the configured policy. Also, by leveraging the platform's trusted types capabilities, you get native enforcement of the policy through CSP headers. Here's an example of how to configure a custom policy to sanitize HTML:
+The best way to accomplish HTML sanitization is to configure [a trusted types policy](https://w3c.github.io/trusted-types/dist/spec/) with FASTElement's template engine. FASTElement ensures that all HTML strings pass through the configured policy. Also, by leveraging the platform's trusted types capabilities, you get native enforcement of the policy through CSP headers. Here's an example of how to configure a custom policy to sanitize HTML:
 
 ```ts
 import { DOM } from '@microsoft/fast-element';
