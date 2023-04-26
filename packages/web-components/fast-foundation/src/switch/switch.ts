@@ -17,14 +17,9 @@ export type SwitchOptions = {
  *
  * @slot - The default slot for the label
  * @slot thumb - The thumb inside the control
- * @slot checked-message - The message when in a checked state
- * @slot unchecked-message - The message when in an unchecked state
  * @csspart label - The label
  * @csspart control - The element representing the switch, which wraps the indicator
  * @csspart thumb - The default thumb element
- * @csspart status-message - The wrapper for the status messages
- * @csspart checked-message - The checked message
- * @csspart unchecked-message - The unchecked message
  * @fires change - Emits a custom change event when the checked state changes
  *
  * @public
