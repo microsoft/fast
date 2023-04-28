@@ -134,6 +134,7 @@ const styles = css`
     }
 
     .indicator {
+        fill: var(--neutral-foreground-rest);
         flex: 0 0 auto;
         margin-inline-start: 1em;
     }

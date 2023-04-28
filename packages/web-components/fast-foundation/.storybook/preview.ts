@@ -60,8 +60,9 @@ import "../src/tree-item/stories/tree-item.register.js";
 import "../src/tree-view/stories/tree-view.register.js";
 
 import { FAST, html } from "@microsoft/fast-element";
+import "@microsoft/fast-element";
 
-FAST.html = html;
+(FAST as any).html = html;
 
 export const decorators = [
     (Story, context) => {

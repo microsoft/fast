@@ -5,7 +5,7 @@ import type {
     Observable as FASTObservable,
     Updates as FASTUpdates,
 } from "@microsoft/fast-element";
-import type { Locator, Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { DesignTokenResolver } from "./core/design-token-node.js";
@@ -49,11 +49,9 @@ function uniqueTokenName(): string {
 
 test.describe("A DesignToken", () => {
     let page: Page;
-    let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
-        root = page.locator("#root");
 
         await page.goto(fixtureURL("debug-designtoken--design-token"));
         await page.evaluate(() => DesignToken.registerDefaultStyleTarget());
@@ -69,6 +67,7 @@ test.describe("A DesignToken", () => {
 
     test("should support declared types", async () => {
         await page.evaluate((name: string) => {
+            /* eslint-disable @typescript-eslint/no-unused-vars */
             const number = DesignToken.create<number>(name);
             const nil = DesignToken.create<null>(name);
             const bool = DesignToken.create<boolean>(name);
@@ -77,6 +76,7 @@ test.describe("A DesignToken", () => {
             class Foo {}
             const _class = DesignToken.create<Foo>(name);
             const sym = DesignToken.create<symbol>(name);
+            /* eslint-enable @typescript-eslint/no-unused-vars */
         }, uniqueTokenName());
     });
 
@@ -506,7 +506,7 @@ test.describe("A DesignToken", () => {
                         const parent = addElement();
                         const child = addElement(parent);
                         const target = createElement();
-                        child.shadowRoot!.appendChild(target);
+                        child.shadowRoot?.appendChild(target);
                         const tokenA = DesignToken.create<number>(uniqueTokenName());
                         const tokenB = DesignToken.create<number>(uniqueTokenName());
 
@@ -1181,6 +1181,7 @@ test.describe("A DesignToken", () => {
                     : never;
                 DesignToken.create<number>("css").subscribe({
                     handleChange(token, record) {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         const test: AssertCSSDesignToken<typeof record.token> =
                             record.token;
                     },
@@ -1190,6 +1191,7 @@ test.describe("A DesignToken", () => {
 
                 DesignToken.create<number>({ name: "no-css" }).subscribe({
                     handleChange(token, record) {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         const test: AssertDesignToken<typeof record.token> = record.token;
                     },
                 });
@@ -1333,6 +1335,7 @@ test.describe("A DesignToken", () => {
 
                     const grandparent = addElement();
                     const parent = addElement(grandparent);
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const child = addElement(parent);
 
                     tokenA.withDefault(() => 6);

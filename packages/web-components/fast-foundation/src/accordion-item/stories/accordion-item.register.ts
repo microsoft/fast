@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css, html } from "@microsoft/fast-element";
 import chevronDownIcon from "../../../statics/svg/chevron_down_12_regular.svg";
 import chevronUpIcon from "../../../statics/svg/chevron_up_12_regular.svg";
 import { FASTAccordionItem } from "../accordion-item.js";

@@ -27,7 +27,7 @@
     "chalk": "^4.1.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
-    "favicons": "^6.2.2",
+    "favicons": "^7.1.2",
     "fs-extra": "^9.0.1",
     "rimraf": "^3.0.2"
   },
