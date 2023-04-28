@@ -3,8 +3,9 @@ import type {
     AnnotatedStoryFn,
     Args,
     ComponentAnnotations,
+    Renderer,
     StoryAnnotations,
-    StoryContext,
+    StoryContext
 } from "@storybook/csf";
 import qs from "qs";
 
@@ -63,7 +64,7 @@ export function renderComponent<TArgs = Args>(
 /**
  * A helper that returns a function to bind a Storybook story to a ViewTemplate.
  */
-export type FASTFramework = {
+export type FASTFramework = Renderer & {
     component: typeof FASTElement;
     storyResult: FASTElement | Element | DocumentFragment;
 };

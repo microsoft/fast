@@ -4,7 +4,7 @@
  * rather than start with a pre-determined element.
  */
 
-import type { Meta } from "@storybook/html";
+import type { Meta } from "../src/__test__/helpers.js";
 
 export default {
     title: "Debug",
