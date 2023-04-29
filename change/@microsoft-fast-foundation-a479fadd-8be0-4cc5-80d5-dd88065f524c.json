@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "open menu on delete",
+  "comment": "open picker menu on delete",
   "packageName": "@microsoft/fast-foundation",
   "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
