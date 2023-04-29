@@ -9,7 +9,11 @@ import {
     keyFunction2,
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
-import { DataGridCellTypes } from "./data-grid.options.js";
+import {
+    DataGridCellTypes,
+    DataGridSelectionBehavior,
+    DataGridSelectionChangeDetail,
+} from "./data-grid.options.js";
 
 export { DataGridCellTypes };
 
@@ -98,6 +102,21 @@ export class FASTDataGridCell extends FASTElement {
             this.updateCellView();
         }
     }
+
+    /**
+     * If the cell is selected.
+     *
+     * @internal
+     */
+    @observable
+    public selected: boolean;
+
+    /**
+     * Selection behavior
+     *
+     * @internal
+     */
+    public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
 
     private isActiveCell: boolean = false;
     private customCellView: HTMLView | null = null;
@@ -248,6 +267,35 @@ export class FASTDataGridCell extends FASTElement {
                 }
                 break;
         }
+    }
+
+    /**
+     * @internal
+     */
+    public handleClick(e: MouseEvent): void {
+        if (
+            e.defaultPrevented ||
+            this.selectionBehavior !== DataGridSelectionBehavior.auto ||
+            this.selected === undefined
+        ) {
+            return;
+        }
+        e.preventDefault();
+        this.toggleSelected({
+            newValue: !this.selected,
+            shiftKey: e.shiftKey,
+            ctrlKey: e.ctrlKey,
+            isKeyboardEvent: false,
+        });
+    }
+
+    /**
+     * Attempts to set the selected state of the row
+     *
+     * @public
+     */
+    public toggleSelected(detail: DataGridSelectionChangeDetail): void {
+        this.$emit("cellselectionchange", detail);
     }
 
     private updateCellView(): void {

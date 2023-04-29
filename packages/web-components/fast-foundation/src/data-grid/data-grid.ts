@@ -190,6 +190,17 @@ export class FASTDataGrid extends FASTElement {
         return true;
     }
 
+    private static parseCellIndex(cellIndex: string): CellIndex | null {
+        const indexAsArray: string[] = cellIndex.split("-");
+        if (indexAsArray.length !== 2) {
+            return null;
+        }
+        return {
+            row: parseInt(indexAsArray[0].trim()),
+            column: parseInt(indexAsArray[1].trim()),
+        };
+    }
+
     /**
      * When true the component will not add itself to the tab queue.
      * Default is false.
@@ -283,6 +294,41 @@ export class FASTDataGrid extends FASTElement {
                 this.addEventListener("rowselectionchange", this.handleRowSelectedChange);
             }
             this.deselectAllRows();
+        }
+    }
+
+    private addSelectionListener(selectionMode: DataGridSelectionMode) {
+        switch (selectionMode) {
+            case DataGridSelectionMode.singleRow:
+            case DataGridSelectionMode.multiRow:
+                this.addEventListener("rowselectionchange", this.handleRowSelectedChange);
+                break;
+
+            case DataGridSelectionMode.singleCell:
+                this.addEventListener(
+                    "cellselectionchange",
+                    this.handleCellSelectedChange
+                );
+                break;
+        }
+    }
+
+    private removeSelectionListener(selectionMode: DataGridSelectionMode) {
+        switch (selectionMode) {
+            case DataGridSelectionMode.singleRow:
+            case DataGridSelectionMode.multiRow:
+                this.removeEventListener(
+                    "rowselectionchange",
+                    this.handleRowSelectedChange
+                );
+                break;
+
+            case DataGridSelectionMode.singleCell:
+                this.removeEventListener(
+                    "cellselectionchange",
+                    this.handleCellSelectedChange
+                );
+                break;
         }
     }
 
@@ -600,8 +646,8 @@ export class FASTDataGrid extends FASTElement {
             ) {
                 const rowSelectionAsArray: string[] = this.initialRowSelection.split(",");
                 const initialRowSelection: number[] = [];
-                rowSelectionAsArray.forEach((element: string): void => {
-                    initialRowSelection.push(parseInt(element.trim()));
+                rowSelectionAsArray.forEach((row: string): void => {
+                    initialRowSelection.push(parseInt(row.trim()));
                 });
 
                 this.updateSelectedRows(initialRowSelection);
@@ -614,9 +660,13 @@ export class FASTDataGrid extends FASTElement {
                 const cellSelectionAsArray: string[] = this.initialCellSelection.split(
                     ","
                 );
-                const initialCellSelection: number[] = [];
-                cellSelectionAsArray.forEach((element: string): void => {
-                    initialCellSelection.push(parseInt(element.trim()));
+                const initialCellSelection: CellIndex[] = [];
+                let thisCellIndex: CellIndex | null = null;
+                cellSelectionAsArray.forEach((cellIndex: string): void => {
+                    thisCellIndex = FASTDataGrid.parseCellIndex(cellIndex);
+                    if (thisCellIndex) {
+                        initialCellSelection.push(thisCellIndex);
+                    }
                 });
 
                 this.updateSelectedCells(initialCellSelection);
@@ -772,8 +822,21 @@ export class FASTDataGrid extends FASTElement {
         }
     }
 
+    public handleCellSelectedChange(e: CustomEvent): void {
+        if (
+            e.defaultPrevented ||
+            this.selectionMode !== DataGridSelectionMode.singleCell
+        ) {
+            return;
+        }
+    }
+
     public handleRowSelectedChange(e: CustomEvent): void {
-        if (e.defaultPrevented || this.selectionMode === DataGridSelectionMode.none) {
+        if (
+            e.defaultPrevented ||
+            (this.selectionMode !== DataGridSelectionMode.singleRow &&
+                this.selectionMode !== DataGridSelectionMode.multiRow)
+        ) {
             return;
         }
 
@@ -1108,6 +1171,21 @@ export class FASTDataGrid extends FASTElement {
             newGridTemplateColumns = this.generatedGridTemplateColumns;
         }
 
+        let selectedCellsByRow: Map<number, number[]> | undefined;
+
+        if (this.selectionMode === DataGridSelectionMode.singleCell) {
+            selectedCellsByRow = new Map<number, number[]>();
+            this._selectedCellIndexes.forEach(
+                (cellIndex: CellIndex, index: number): void => {
+                    if (selectedCellsByRow?.has(cellIndex.row)) {
+                        selectedCellsByRow[cellIndex.row].push(cellIndex.column);
+                    } else {
+                        selectedCellsByRow?.set(cellIndex.row, [cellIndex.column]);
+                    }
+                }
+            );
+        }
+
         this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
@@ -1120,8 +1198,14 @@ export class FASTDataGrid extends FASTElement {
                 thisRow.selected = this._selectedRowIndexes.includes(index)
                     ? true
                     : false;
-            } else if (this.selectionMode === DataGridSelectionMode.singleCell) {
-                thisRow.selected = false;
+            }
+
+            if (this.selectionMode === DataGridSelectionMode.singleCell) {
+                if (selectedCellsByRow?.has(index)) {
+                    thisRow.selectedColumns = selectedCellsByRow[index];
+                } else if (thisRow.selectedColumns.length) {
+                    thisRow.selectedColumns = [];
+                }
             }
 
             if (this.columnDefinitionsStale) {

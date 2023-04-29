@@ -28,6 +28,8 @@ function cellItemTemplate<T extends FASTDataGridRow>(
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
+        :selectionBehavior="${(x, c) => c.parent.selectionBehavior}"
+        :selected="${(x, c) => c.parent.selectedColumns.includes(c.index)}"
     ></${cellTag}>
 `;
 }

@@ -156,6 +156,7 @@ export class FASTDataGridRow extends FASTElement {
     public cellElements: HTMLElement[];
 
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
+
     /**
      * If the row is selected.
      *
@@ -163,6 +164,14 @@ export class FASTDataGridRow extends FASTElement {
      */
     @observable
     public selected: boolean;
+
+    /**
+     * The currently selected columns in this row
+     *
+     * @public
+     */
+    @observable
+    public selectedColumns: number[] = [];
 
     /**
      * Selection behavior
@@ -308,7 +317,7 @@ export class FASTDataGridRow extends FASTElement {
                 ) {
                     e.preventDefault();
                     this.toggleSelected({
-                        newValue: !this.isSelected(),
+                        newValue: !this.selected,
                         shiftKey: e.shiftKey,
                         ctrlKey: e.ctrlKey,
                         isKeyboardEvent: true,
@@ -316,10 +325,6 @@ export class FASTDataGridRow extends FASTElement {
                 }
                 break;
         }
-    }
-
-    private isSelected(): boolean {
-        return this.selected;
     }
 
     /**
@@ -335,7 +340,7 @@ export class FASTDataGridRow extends FASTElement {
         }
         e.preventDefault();
         this.toggleSelected({
-            newValue: !this.isSelected(),
+            newValue: !this.selected,
             shiftKey: e.shiftKey,
             ctrlKey: e.ctrlKey,
             isKeyboardEvent: false,
