@@ -29,6 +29,7 @@ function cellItemTemplate<T extends FASTDataGridRow>(
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
         :selectionBehavior="${(x, c) => c.parent.selectionBehavior}"
+        :selectionMode="${(x, c) => c.parent.selectionMode}"
         :selected="${(x, c) => c.parent.selectedColumns.includes(c.index)}"
     ></${cellTag}>
 `;

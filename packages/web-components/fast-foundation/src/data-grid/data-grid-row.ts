@@ -22,6 +22,7 @@ import {
     DataGridRowTypes,
     DataGridSelectionBehavior,
     DataGridSelectionChangeDetail,
+    DataGridSelectionMode,
 } from "./data-grid.options.js";
 
 /**
@@ -130,6 +131,14 @@ export class FASTDataGridRow extends FASTElement {
      */
     @observable
     public activeCellItemTemplate?: ViewTemplate;
+
+    /**
+     * The grid's current selection mode
+     *
+     * @internal
+     */
+    @observable
+    public selectionMode: DataGridSelectionMode = DataGridSelectionMode.none;
 
     /**
      * The default cell item template.  Set by the component templates.

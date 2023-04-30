@@ -1,18 +1,21 @@
 import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
 import { attr, FASTElement, html, observable } from "@microsoft/fast-element";
 import {
+    eventClick,
     eventFocusIn,
     eventFocusOut,
     eventKeyDown,
     keyEnter,
     keyEscape,
     keyFunction2,
+    keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
 import {
     DataGridCellTypes,
     DataGridSelectionBehavior,
     DataGridSelectionChangeDetail,
+    DataGridSelectionMode,
 } from "./data-grid.options.js";
 
 export { DataGridCellTypes };
@@ -118,6 +121,14 @@ export class FASTDataGridCell extends FASTElement {
      */
     public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
 
+    /**
+     * The grid's current selection mode
+     *
+     * @internal
+     */
+    @observable
+    public selectionMode: DataGridSelectionMode = DataGridSelectionMode.none;
+
     private isActiveCell: boolean = false;
     private customCellView: HTMLView | null = null;
 
@@ -130,6 +141,7 @@ export class FASTDataGridCell extends FASTElement {
         this.addEventListener(eventFocusIn, this.handleFocusin);
         this.addEventListener(eventFocusOut, this.handleFocusout);
         this.addEventListener(eventKeyDown, this.handleKeydown);
+        this.addEventListener(eventClick, this.handleClick);
 
         this.style.gridColumn = `${
             this.columnDefinition?.gridColumn === undefined
@@ -150,6 +162,7 @@ export class FASTDataGridCell extends FASTElement {
         this.removeEventListener(eventFocusIn, this.handleFocusin);
         this.removeEventListener(eventFocusOut, this.handleFocusout);
         this.removeEventListener(eventKeyDown, this.handleKeydown);
+        this.removeEventListener(eventClick, this.handleClick);
 
         this.disconnectCellView();
     }
@@ -206,8 +219,28 @@ export class FASTDataGridCell extends FASTElement {
     }
 
     public handleKeydown(e: KeyboardEvent): void {
+        if (e.defaultPrevented) {
+            return;
+        }
+
+        // check selection
         if (
-            e.defaultPrevented ||
+            this.selected !== undefined &&
+            this.selectionBehavior !== DataGridSelectionBehavior.programmatic &&
+            e.key === keySpace
+        ) {
+            e.preventDefault();
+            this.toggleSelected({
+                newValue: !this.selected,
+                shiftKey: e.shiftKey,
+                ctrlKey: e.ctrlKey,
+                isKeyboardEvent: true,
+            });
+            return;
+        }
+
+        // bail if we don't need to check focus
+        if (
             this.columnDefinition === null ||
             (this.cellType === DataGridCellTypes.default &&
                 this.columnDefinition.cellInternalFocusQueue !== true) ||
@@ -276,7 +309,8 @@ export class FASTDataGridCell extends FASTElement {
         if (
             e.defaultPrevented ||
             this.selectionBehavior !== DataGridSelectionBehavior.auto ||
-            this.selected === undefined
+            this.selected === undefined ||
+            this.selectionMode !== DataGridSelectionMode.singleCell
         ) {
             return;
         }

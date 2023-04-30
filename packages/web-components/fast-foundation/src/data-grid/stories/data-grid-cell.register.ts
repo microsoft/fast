@@ -23,6 +23,11 @@ const styles = css`
     :host(:focus-visible) {
         border-color: var(--focus-stroke-outer);
     }
+
+    :host([aria-selected="true"]) {
+        background: var(--accent-fill-rest);
+        color: var(--foreground-on-accent-active);
+    }
 `;
 
 FASTDataGridCell.define({
