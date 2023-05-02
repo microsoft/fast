@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add else case to when directive",
+  "packageName": "@microsoft/fast-element",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
