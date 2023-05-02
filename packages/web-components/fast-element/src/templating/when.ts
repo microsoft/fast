@@ -1,33 +1,33 @@
 import { isFunction } from "../interfaces.js";
-import type { ExecutionContext, Expression } from "../observation/observable.js";
+import type { Binding, ExecutionContext } from "../observation/observable.js";
 import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 const noTemplate: () => null = () => null;
 function normalizeBinding<TSource>(
-    value: SyntheticViewTemplate | Expression<TSource, SyntheticViewTemplate> | undefined
-): (() => null) | Expression<TSource, SyntheticViewTemplate> {
+    value: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate> | undefined
+): (() => null) | Binding<TSource, SyntheticViewTemplate> {
     return value === undefined ? noTemplate : isFunction(value) ? value : () => value;
 }
 
 /**
  * A directive that enables basic conditional rendering in a template.
- * @param condition - The condition to test for rendering.
+ * @param binding - The condition to test for rendering.
  * @param templateOrTemplateBinding - The template or a binding that gets
  * the template to render when the condition is true.
  * @param elseTemplateOrTemplateBinding - Optional template or binding that that
  * gets the template to render when the conditional is false.
  * @public
  */
-export function when<TSource = any, TReturn = any, TParent = any>(
-    condition: Expression<TSource, TReturn, TParent> | boolean,
+export function when<TSource = any, TReturn = any>(
+    binding: Binding<TSource, TReturn>,
     templateOrTemplateBinding:
-        | SyntheticViewTemplate<TSource, TParent>
-        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>,
+        | SyntheticViewTemplate
+        | Binding<TSource, SyntheticViewTemplate>,
     elseTemplateOrTemplateBinding?:
-        | SyntheticViewTemplate<TSource, TParent>
-        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>
+        | SyntheticViewTemplate
+        | Binding<TSource, SyntheticViewTemplate>
 ): CaptureType<TSource> {
-    const dataBinding = isFunction(condition) ? condition : () => condition;
+    const dataBinding = isFunction(binding) ? binding : () => binding;
     const templateBinding = normalizeBinding(templateOrTemplateBinding);
     const elseBinding = normalizeBinding(elseTemplateOrTemplateBinding);
 
