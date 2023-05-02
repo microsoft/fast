@@ -1,24 +1,38 @@
-import type { Binding, ExecutionContext } from "../observation/observable.js";
+import { isFunction } from "../interfaces.js";
+import type { ExecutionContext, Expression } from "../observation/observable.js";
 import type { CaptureType, SyntheticViewTemplate } from "./template.js";
+
+const noTemplate: () => null = () => null;
+function normalizeBinding<TSource>(
+    value: SyntheticViewTemplate | Expression<TSource, SyntheticViewTemplate> | undefined
+): (() => null) | Expression<TSource, SyntheticViewTemplate> {
+    return value === undefined ? noTemplate : isFunction(value) ? value : () => value;
+}
 
 /**
  * A directive that enables basic conditional rendering in a template.
- * @param binding - The condition to test for rendering.
+ * @param condition - The condition to test for rendering.
  * @param templateOrTemplateBinding - The template or a binding that gets
  * the template to render when the condition is true.
+ * @param elseTemplateOrTemplateBinding - Optional template or binding that that
+ * gets the template to render when the conditional is false.
  * @public
  */
-export function when<TSource = any, TReturn = any>(
-    binding: Binding<TSource, TReturn>,
+export function when<TSource = any, TReturn = any, TParent = any>(
+    condition: Expression<TSource, TReturn, TParent> | boolean,
     templateOrTemplateBinding:
-        | SyntheticViewTemplate
-        | Binding<TSource, SyntheticViewTemplate>
+        | SyntheticViewTemplate<TSource, TParent>
+        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>,
+    elseTemplateOrTemplateBinding?:
+        | SyntheticViewTemplate<TSource, TParent>
+        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>
 ): CaptureType<TSource> {
-    const getTemplate =
-        typeof templateOrTemplateBinding === "function"
-            ? templateOrTemplateBinding
-            : (): SyntheticViewTemplate => templateOrTemplateBinding;
+    const dataBinding = isFunction(condition) ? condition : () => condition;
+    const templateBinding = normalizeBinding(templateOrTemplateBinding);
+    const elseBinding = normalizeBinding(elseTemplateOrTemplateBinding);
 
     return (source: TSource, context: ExecutionContext): SyntheticViewTemplate | null =>
-        binding(source, context) ? getTemplate(source, context) : null;
+        dataBinding(source, context)
+            ? templateBinding(source, context)
+            : elseBinding(source, context);
 }

@@ -29,6 +29,16 @@ export interface Accessor {
 
 /**
  * The signature of an arrow function capable of being evaluated
+ * against source data and within an execution context.
+ * @public
+ */
+export type Expression<TSource = any, TReturn = any, TParent = any> = (
+    source: TSource,
+    context: ExecutionContext<TParent>
+) => TReturn;
+
+/**
+ * The signature of an arrow function capable of being evaluated
  * as part of a template binding update.
  * @public
  */
