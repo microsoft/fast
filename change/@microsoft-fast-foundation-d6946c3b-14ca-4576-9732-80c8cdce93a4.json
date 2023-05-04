@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add else case to when directive",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
