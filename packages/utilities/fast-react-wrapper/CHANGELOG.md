@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Fri, 14 Apr 2023 19:08:49 GMT and should not be manually modified.
+This log was last generated on Thu, 04 May 2023 17:35:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.18
+
+Thu, 04 May 2023 17:35:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.12.0
+- Bump @microsoft/fast-foundation to v2.49.0
 
 ## 0.3.17
 

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 04 May 2023 17:35:08 GMT",
+      "tag": "@microsoft/fast-element_v1.12.0",
+      "version": "1.12.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a29696c6c5e90d0e5e6121146628c188d95736d0",
+            "comment": "add else case to when directive"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 14 Apr 2023 19:08:49 GMT",
       "tag": "@microsoft/fast-element_v1.11.1",
       "version": "1.11.1",
