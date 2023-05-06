@@ -11,6 +11,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import type { ElementStyles } from '@microsoft/fast-element';
 import type { ElementViewTemplate } from '@microsoft/fast-element';
+import { FASTContext } from '@microsoft/fast-element/context';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import type { HostBehavior } from '@microsoft/fast-element';
@@ -1524,6 +1525,7 @@ export interface FASTNumberField extends StartEnd, DelegatesARIATextbox {
 //
 // @beta
 export class FASTPicker extends FormAssociatedPicker {
+    constructor();
     // @internal
     activeListItemTemplate?: ViewTemplate;
     // @internal
@@ -1598,6 +1600,10 @@ export class FASTPicker extends FormAssociatedPicker {
     // (undocumented)
     protected optionsChanged(): void;
     optionsList: string[];
+    // Warning: (ae-forgotten-export) The symbol "PickerContext" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    pickerContext: PickerContext;
     placeholder: string;
     query: string;
     // (undocumented)

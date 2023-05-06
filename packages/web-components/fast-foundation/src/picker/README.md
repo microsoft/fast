@@ -42,6 +42,26 @@ export class FASTTextField extends TextField {}
 
 
 
+### class: `pickerContext`
+
+#### Fields
+
+| Name       | Privacy | Type      | Default | Description | Inherited From |
+| ---------- | ------- | --------- | ------- | ----------- | -------------- |
+| `disabled` | public  | `boolean` | `false` |             |                |
+
+<hr/>
+
+### Variables
+
+| Name            | Description | Type |
+| --------------- | ----------- | ---- |
+| `PickerContext` |             |      |
+
+<hr/>
+
+
+
 ### class: `FASTPickerListItem`
 
 #### Superclass
@@ -194,6 +214,7 @@ export class FASTTextField extends TextField {}
 
 | Name                         | Privacy | Type                        | Default                      | Description                                                                                                                   | Inherited From       |
 | ---------------------------- | ------- | --------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `pickerContext`              |         | `PickerContext`             |                              |                                                                                                                               |                      |
 | `selection`                  | public  | `string`                    | `""`                         | Currently selected items. Comma delineated string ie. "apples,oranges".                                                       |                      |
 | `options`                    | public  | `string`                    |                              | Currently available options. Comma delineated string ie. "apples,oranges".                                                    |                      |
 | `filterSelected`             | public  | `boolean`                   | `true`                       | Whether the component should remove an option from the list when it is in the selection                                       |                      |
