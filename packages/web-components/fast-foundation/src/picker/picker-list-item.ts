@@ -13,7 +13,8 @@ const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
  * @beta
  */
 export class FASTPickerListItem extends FASTElement {
-    @inject(PickerContext) pickerContext!: PickerContext;
+    @PickerContext
+    pickerContext: PickerContext;
 
     /**
      * The underlying string value of the item
