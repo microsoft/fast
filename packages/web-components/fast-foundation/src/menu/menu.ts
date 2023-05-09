@@ -218,24 +218,18 @@ export class FASTMenu extends FASTElement {
 
         this.menuItems = newItems;
 
-        const splitMenuItems: Element[] = this.menuItems.filter(
-            this.isSplitMenuItemElement
-        );
-
-        splitMenuItems.forEach((child: Element) => {
+        this.menuItems.filter(this.isSplitMenuItemElement).forEach((child: Element) => {
             const indexOfSplit = this.menuItems?.indexOf(child);
             const children: Element[] = Array.from(child.children);
-            console.log("inside split", children, indexOfSplit);
-            let i = 0;
-            children.forEach((menuItem: Element) => {
-                if (indexOfSplit) {
-                    i += 1;
-                    this.menuItems?.splice(indexOfSplit + i, 0, menuItem);
-                }
-            });
+            if (indexOfSplit) {
+                this.menuItems?.splice(indexOfSplit, 0, ...children);
+            }
+            // children.forEach((menuItem: Element, index: number) => {
+            //     if(indexOfSplit) {
+            //         this.menuItems?.splice(indexOfSplit + index, 0, menuItem);
+            //     }
+            // });
         });
-
-        console.log("children", this.menuItems);
 
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
 

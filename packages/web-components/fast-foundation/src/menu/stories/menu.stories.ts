@@ -39,24 +39,27 @@ const fancyMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
     </fancy-menu-item>
 `;
 
-const fancySplitMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
+const menuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
+    <fast-menu-item
+        ?expanded="${x => x.expanded}"
+        ?checked="${x => x.checked}"
+        ?disabled="${x => x.disabled}"
+        id="${x => x.id}"
+        role="${x => x.role}"
+    >
+        ${x => x.storyContent}
+    </fast-menu-item>
+`;
+
+const fancyGroupedMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
     <div role="group">
         ${repeat(
             x => x.storyItems,
             html<StoryArgs<FASTMenuItem>>`
-                ${x => x.template ?? fancyMenuItemStoryTemplate}
+                ${x => x.template ?? menuItemStoryTemplate}
             `
         )}
     </div>
-`;
-
-const fancyStoryContentTemplate = html`
-    ${repeat(
-        x => x.storyItems,
-        html<StoryArgs<MyFancyMenuItem>>`
-            ${x => x.template ?? fancyMenuItemStoryTemplate}
-        `
-    )}
 `;
 
 export default {
@@ -184,8 +187,8 @@ MenuWithNestedItems.args = {
     ],
 };
 
-export const MenuWithSplitNestedItems: Story<FASTMenu> = Menu.bind({});
-MenuWithSplitNestedItems.args = {
+export const MenuWithGroupedNestedItems: Story<FASTMenu> = Menu.bind({});
+MenuWithGroupedNestedItems.args = {
     storyItems: [
         {
             storyContent: html`
@@ -204,7 +207,7 @@ MenuWithSplitNestedItems.args = {
             ],
         },
         {
-            template: fancySplitMenuItemStoryTemplate,
+            template: fancyGroupedMenuItemStoryTemplate,
             storyItems: [
                 { storyContent: "Menu Item 1" },
                 { storyContent: "Menu Item 2" },
@@ -239,6 +242,13 @@ MenuWithSplitNestedItems.args = {
                         { storyContent: "Menu Item 2.3" },
                     ],
                 },
+            ],
+        },
+        {
+            template: fancyGroupedMenuItemStoryTemplate,
+            storyItems: [
+                { storyContent: "Menu Item 1" },
+                { storyContent: "Menu Item 2" },
             ],
         },
         {
