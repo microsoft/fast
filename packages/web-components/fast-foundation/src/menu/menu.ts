@@ -218,17 +218,12 @@ export class FASTMenu extends FASTElement {
 
         this.menuItems = newItems;
 
-        this.menuItems.filter(this.isSplitMenuItemElement).forEach((child: Element) => {
-            const indexOfSplit = this.menuItems?.indexOf(child);
+        this.menuItems.filter(this.isGroupedMenuItemElement).forEach((child: Element) => {
+            const indexOfGrouped = this.menuItems?.indexOf(child);
             const children: Element[] = Array.from(child.children);
-            if (indexOfSplit) {
-                this.menuItems?.splice(indexOfSplit, 0, ...children);
+            if (indexOfGrouped) {
+                this.menuItems?.splice(indexOfGrouped, 0, ...children);
             }
-            // children.forEach((menuItem: Element, index: number) => {
-            //     if(indexOfSplit) {
-            //         this.menuItems?.splice(indexOfSplit + index, 0, menuItem);
-            //     }
-            // });
         });
 
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
@@ -307,7 +302,7 @@ export class FASTMenu extends FASTElement {
     /**
      * check if the item is a split menu item
      */
-    protected isSplitMenuItemElement = (el: Element): el is HTMLElement => {
+    protected isGroupedMenuItemElement = (el: Element): el is HTMLElement => {
         return (el.getAttribute("role") as string) === "group";
     };
 
