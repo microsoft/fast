@@ -39,6 +39,17 @@ const fancyMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
     </fancy-menu-item>
 `;
 
+const fancySplitMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
+    <div role="group">
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? fancyMenuItemStoryTemplate}
+            `
+        )}
+    </div>
+`;
+
 const fancyStoryContentTemplate = html`
     ${repeat(
         x => x.storyItems,
@@ -121,6 +132,82 @@ MenuWithNestedItems.args = {
                         { storyContent: "Menu Item 1.3" },
                     ],
                 },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 2 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        {
+                            storyContent: html`
+                                Menu Item 2.1 ${repeat(x => x.storyItems, storyTemplate)}
+                            `,
+                            storyItems: [
+                                {
+                                    slot: "submenu",
+                                    storyContent: storyContentTemplate,
+                                    storyItems: [
+                                        { storyContent: "Menu Item 2.1.1" },
+                                        { storyContent: "Menu Item 2.1.2" },
+                                        { storyContent: "Menu Item 2.1.3" },
+                                    ],
+                                },
+                            ],
+                        },
+                        { storyContent: "Menu Item 2.2" },
+                        { storyContent: "Menu Item 2.3" },
+                    ],
+                },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 3 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 3.1" },
+                        { storyContent: "Menu Item 3.2" },
+                        { storyContent: "Menu Item 3.3" },
+                    ],
+                },
+            ],
+        },
+    ],
+};
+
+export const MenuWithSplitNestedItems: Story<FASTMenu> = Menu.bind({});
+MenuWithSplitNestedItems.args = {
+    storyItems: [
+        {
+            storyContent: html`
+                Menu Item 1 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 1.1" },
+                        { storyContent: "Menu Item 1.2" },
+                        { storyContent: "Menu Item 1.3" },
+                    ],
+                },
+            ],
+        },
+        {
+            template: fancySplitMenuItemStoryTemplate,
+            storyItems: [
+                { storyContent: "Menu Item 1" },
+                { storyContent: "Menu Item 2" },
             ],
         },
         {

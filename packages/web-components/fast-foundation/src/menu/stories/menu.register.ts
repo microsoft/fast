@@ -31,6 +31,10 @@ const styles = css`
         width: max-content;
     }
 
+    ::slotted(*[role="group"]) {
+        display: flex;
+    }
+
     ::slotted(fast-divider) {
         border: none;
         border-top: calc(var(--stroke-width) * 1px) solid

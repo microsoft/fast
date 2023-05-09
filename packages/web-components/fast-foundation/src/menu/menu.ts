@@ -218,6 +218,25 @@ export class FASTMenu extends FASTElement {
 
         this.menuItems = newItems;
 
+        const splitMenuItems: Element[] = this.menuItems.filter(
+            this.isSplitMenuItemElement
+        );
+
+        splitMenuItems.forEach((child: Element) => {
+            const indexOfSplit = this.menuItems?.indexOf(child);
+            const children: Element[] = Array.from(child.children);
+            console.log("inside split", children, indexOfSplit);
+            let i = 0;
+            children.forEach((menuItem: Element) => {
+                if (indexOfSplit) {
+                    i += 1;
+                    this.menuItems?.splice(indexOfSplit + i, 0, menuItem);
+                }
+            });
+        });
+
+        console.log("children", this.menuItems);
+
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
@@ -289,6 +308,13 @@ export class FASTMenu extends FASTElement {
             (isHTMLElement(el) &&
                 (el.getAttribute("role") as string) in FASTMenu.focusableElementRoles)
         );
+    };
+
+    /**
+     * check if the item is a split menu item
+     */
+    protected isSplitMenuItemElement = (el: Element): el is HTMLElement => {
+        return (el.getAttribute("role") as string) === "group";
     };
 
     /**
