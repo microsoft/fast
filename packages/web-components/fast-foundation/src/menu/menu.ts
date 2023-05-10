@@ -206,8 +206,6 @@ export class FASTMenu extends FASTElement {
     protected setItems(): void {
         const children = Array.from(this.children);
 
-        console.log("children", children);
-
         this.removeItemListeners(children);
 
         children.forEach((child: Element) =>
@@ -220,15 +218,11 @@ export class FASTMenu extends FASTElement {
 
         this.menuItems = newItems;
 
-        console.log("Items before splice", this.menuItems);
-
         this.menuItems.filter(this.isGroupedMenuItemElement).forEach((child: Element) => {
             const indexOfGrouped = this.menuItems?.indexOf(child);
             const children: Element[] = Array.from(child.children);
-            console.log("hits", indexOfGrouped, children);
             if (indexOfGrouped !== undefined) {
                 this.menuItems?.splice(indexOfGrouped, 0, ...children);
-                console.log("Test", this.menuItems);
             }
         });
 
