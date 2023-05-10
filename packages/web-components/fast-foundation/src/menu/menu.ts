@@ -300,7 +300,7 @@ export class FASTMenu extends FASTElement {
     };
 
     /**
-     * check if the item is a split menu item
+     * check if the item is a grouped menu item
      */
     protected isGroupedMenuItemElement = (el: Element): el is HTMLElement => {
         return (el.getAttribute("role") as string) === "group";

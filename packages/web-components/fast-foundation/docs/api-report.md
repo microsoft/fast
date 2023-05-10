@@ -1395,6 +1395,7 @@ export class FASTMenu extends FASTElement {
     handleFocusOut: (e: FocusEvent) => void;
     // @internal (undocumented)
     handleMenuKeyDown(e: KeyboardEvent): void | boolean;
+    protected isGroupedMenuItemElement: (el: Element) => el is HTMLElement;
     protected isMenuItemElement: (el: Element) => el is HTMLElement;
     // @internal (undocumented)
     readonly isNestedMenu: () => boolean;
