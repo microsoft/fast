@@ -191,6 +191,28 @@ export const MenuWithGroupedNestedItems: Story<FASTMenu> = Menu.bind({});
 MenuWithGroupedNestedItems.args = {
     storyItems: [
         {
+            template: fancyGroupedMenuItemStoryTemplate,
+            storyItems: [
+                {
+                    storyContent: html`
+                        Menu Item 1 ${repeat(x => x.storyItems, storyTemplate)}
+                    `,
+                    storyItems: [
+                        {
+                            slot: "submenu",
+                            storyContent: storyContentTemplate,
+                            storyItems: [
+                                { storyContent: "Menu Item 2.1.1" },
+                                { storyContent: "Menu Item 2.1.2" },
+                                { storyContent: "Menu Item 2.1.3" },
+                            ],
+                        },
+                    ],
+                },
+                { storyContent: "Menu Item 2" },
+            ],
+        },
+        {
             storyContent: html`
                 Menu Item 1 ${repeat(x => x.storyItems, storyTemplate)}
             `,

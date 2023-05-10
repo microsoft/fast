@@ -50,6 +50,23 @@ test.describe("Menu", () => {
         await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
     });
 
+    test("should set `tabindex` of the first grouped focusable menu item to 0", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <div role="group">
+                        <fast-menu-item>Menu item</fast-menu-item>
+                        <fast-menu-item>Menu item</fast-menu-item>
+                    </div>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
+
+        await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
+    });
+
     test("should NOT set any `tabindex` on non-menu-item elements", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -69,6 +86,35 @@ test.describe("Menu", () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                    <fast-menu-item>Menu item</fast-menu-item>
+                </fast-menu>
+            `;
+        });
+
+        await element.waitFor({ state: "attached" });
+
+        await expect(menuItems.first()).toHaveAttribute("tabindex", "0");
+
+        await root.evaluate(node => {
+            document.querySelector<FASTMenu>("fast-menu")?.focus();
+        });
+
+        expect(
+            await menuItems.first().evaluate(node => {
+                return node.isSameNode(document.activeElement);
+            })
+        ).toBeTruthy();
+    });
+
+    test("should focus on first grouped menu item when focus is called", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-menu>
+                    <div role="group">
+                        <fast-menu-item>Menu item</fast-menu-item>
+                        <fast-menu-item>Menu item</fast-menu-item>
+                    </div>
                     <fast-menu-item>Menu item</fast-menu-item>
                     <fast-menu-item>Menu item</fast-menu-item>
                 </fast-menu>
