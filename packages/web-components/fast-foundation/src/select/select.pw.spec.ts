@@ -283,6 +283,68 @@ test.describe("Select", () => {
         await expect(listbox).toBeVisible();
     });
 
+    test("pressing Enter key while closed should open the dropdown", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select>
+              <fast-option>Option 1</fast-option>
+              <fast-option>Option 2</fast-option>
+              <fast-option>Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        await element.evaluate((node: FASTSelect) => {
+            const event = new KeyboardEvent("keydown", { key: "Enter" });
+            node.dispatchEvent(event);
+        });
+
+        await expect(element).toHaveBooleanAttribute("open");
+    });
+
+    test("should select an option when the Enter key is pressed and the select is open", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select>
+              <fast-option>Option 1</fast-option>
+              <fast-option>Option 2</fast-option>
+              <fast-option>Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        // Open the select
+        await element.evaluate((node: FASTSelect) => {
+            node.open = true;
+        });
+
+        await element.evaluate((node: FASTSelect) => {
+            const event = new KeyboardEvent("keydown", { key: "Enter" });
+            node.dispatchEvent(event);
+        });
+
+        await expect(element).toHaveJSProperty("selectedIndex", 0);
+    });
+
+    test("pressing Escape key while open should close the dropdown", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select open>
+              <fast-option>Option 1</fast-option>
+              <fast-option>Option 2</fast-option>
+              <fast-option>Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        await element.evaluate((node: FASTSelect) => {
+            const event = new KeyboardEvent("keydown", { key: "Escape" });
+            node.dispatchEvent(event);
+        });
+
+        await expect(element).not.toHaveBooleanAttribute("open");
+    });
+
     ["input", "change"].forEach(eventName => {
         [
             { expectedValue: "Option 2", key: "ArrowDown" },
@@ -512,5 +574,82 @@ test.describe("Select", () => {
         });
 
         await expect(element).toHaveJSProperty("displayValue", "textContent value");
+    });
+
+    test("should set the displayValue to the selected options separated by commas when the multiple attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select multiple>
+              <fast-option selected>Option 1</fast-option>
+              <fast-option selected>Option 2</fast-option>
+              <fast-option>Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        await expect(element).toHaveJSProperty("displayValue", "Option 1, Option 2");
+    });
+
+    test("should not close on click when the multiple attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select multiple>
+              <fast-option>Option 1</fast-option>
+              <fast-option>Option 2</fast-option>
+              <fast-option>Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        const listbox = element.locator(".listbox");
+
+        // Open the select
+        await element.evaluate((node: FASTSelect) => {
+            node.open = true;
+        });
+
+        // Simulate a click on the select
+        await element.click();
+
+        await expect(element).toHaveBooleanAttribute("open");
+        await expect(listbox).toBeVisible();
+    });
+
+    test("when listbox-mode attribute is present, the select renders the listbox only without control", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select listbox-mode>
+              <fast-option>Option 1</fast-option>
+              <fast-option>Option 2</fast-option>
+              <fast-option>Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        const listbox = element.locator(".listbox");
+        const control = element.locator(".control");
+
+        await expect(listbox).toBeVisible();
+        await expect(control).not.toBeVisible();
+    });
+
+    test("should display the placeholder when no option is selected", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-select placeholder="Select an option">
+              <fast-option value="1">Option 1</fast-option>
+              <fast-option value="2">Option 2</fast-option>
+              <fast-option value="3">Option 3</fast-option>
+            </fast-select>
+          `;
+        });
+
+        await expect(element).toHaveJSProperty("displayValue", "Select an option");
+
+        await element.evaluate<void, FASTSelect>(node => {
+            node.value = "2";
+        });
+
+        await expect(element).toHaveJSProperty("displayValue", "Option 2");
     });
 });
