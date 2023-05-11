@@ -18,6 +18,7 @@ export function selectTemplate<T extends FASTSelect>(
             aria-expanded="${x => x.ariaExpanded}"
             aria-haspopup="${x => (x.collapsible ? "listbox" : null)}"
             aria-multiselectable="${x => x.ariaMultiSelectable}"
+            ?listbox-mode="${x => x.listboxMode}"
             ?open="${x => x.open}"
             role="combobox"
             tabindex="${x => (!x.disabled ? "0" : null)}"
@@ -28,7 +29,7 @@ export function selectTemplate<T extends FASTSelect>(
             @mousedown="${(x, c) => x.mousedownHandler(c.event as MouseEvent)}"
         >
             ${when(
-                x => x.collapsible,
+                x => !x.listboxMode && x.collapsible,
                 html<T>`
                     <div
                         class="control"
@@ -57,7 +58,8 @@ export function selectTemplate<T extends FASTSelect>(
                 part="listbox"
                 role="listbox"
                 ?disabled="${x => x.disabled}"
-                ?hidden="${x => (x.collapsible ? !x.open : false)}"
+                ?hidden="${x =>
+                    !x.listboxMode ? (x.collapsible ? !x.open : false) : false}"
                 ${ref("listbox")}
             >
                 <slot

@@ -54,6 +54,16 @@ export type SelectOptions = StartEndOptions & {
  */
 export class FASTSelect extends FormAssociatedSelect {
     /**
+     * The listbox mode attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: listbox-mode
+     */
+    @attr({ attribute: "listbox-mode", mode: "boolean" })
+    public listboxMode: boolean = false;
+
+    /**
      * The open attribute.
      *
      * @public
@@ -62,6 +72,16 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
+
+    /**
+     * The placeholder attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: placeholder
+     */
+    @attr({ attribute: "placeholder" })
+    public placeholder: string;
 
     /**
      * Sets focus and synchronizes ARIA attributes when the open property changes.
@@ -117,7 +137,7 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     @volatile
     public get collapsible(): boolean {
-        return !(this.multiple || typeof this.size === "number");
+        return !this.listboxMode;
     }
 
     /**
@@ -268,6 +288,18 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     public get displayValue(): string {
         Observable.track(this, "displayValue");
+        if (
+            this.placeholder &&
+            (this.selectedOptions.length == 0 || this.selectedIndex == -1)
+        ) {
+            this.currentValue = this.firstSelectedOption?.text;
+            return this.placeholder;
+        }
+        if (this.multiple) {
+            const selectedOptionsText = this.selectedOptions.map(option => option.text);
+            this.currentValue = this.firstSelectedOption?.text;
+            return selectedOptionsText.join(", ") || "";
+        }
         return this.firstSelectedOption?.text ?? "";
     }
 
@@ -325,7 +357,7 @@ export class FASTSelect extends FormAssociatedSelect {
 
         super.clickHandler(e);
 
-        this.open = this.collapsible && !this.open;
+        this.open = this.multiple || (this.collapsible && !this.open);
 
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
@@ -464,17 +496,15 @@ export class FASTSelect extends FormAssociatedSelect {
         const options: FASTListboxOption[] =
             this.options ??
             Array.from(this.children).filter(FASTListbox.slottedOptionFilter);
-
-        const selectedIndex = options?.findIndex(
+        const selectedOption = options.find(
             el => el.hasAttribute("selected") || el.selected || el.value === this.value
         );
 
-        if (selectedIndex !== -1) {
-            this.selectedIndex = selectedIndex;
-            return;
-        }
-
-        this.selectedIndex = 0;
+        this.selectedIndex = selectedOption
+            ? options.indexOf(selectedOption)
+            : this.placeholder || this.multiple
+            ? -1
+            : 0;
     }
 
     /**
@@ -505,45 +535,63 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     public keydownHandler(e: KeyboardEvent): boolean | void {
         super.keydownHandler(e);
+
         const key = e.key || e.key.charCodeAt(0);
+        let preventDefault = false;
 
         switch (key) {
             case keySpace: {
-                e.preventDefault();
-                if (this.collapsible && this.typeAheadExpired) {
+                if (this.multiple || this.listboxMode) {
+                    this.open = true;
+                } else if (this.collapsible && this.typeAheadExpired) {
                     this.open = !this.open;
                 }
+                preventDefault = true;
                 break;
             }
 
             case keyHome:
             case keyEnd: {
-                e.preventDefault();
+                preventDefault = true;
                 break;
             }
 
             case keyEnter: {
-                e.preventDefault();
-                this.open = !this.open;
+                if (this.multiple || this.listboxMode) {
+                    if (!this.open) {
+                        this.open = true;
+                        break;
+                    }
+                    const option = this._options[this.activeIndex];
+                    option.selected = !option.selected;
+                    preventDefault = true;
+                    break;
+                } else {
+                    this.open = this.collapsible && !this.open;
+                }
+                preventDefault = true;
                 break;
             }
 
             case keyEscape: {
                 if (this.collapsible && this.open) {
-                    e.preventDefault();
                     this.open = false;
+                    preventDefault = true;
                 }
                 break;
             }
 
             case keyTab: {
                 if (this.collapsible && this.open) {
-                    e.preventDefault();
                     this.open = false;
+                    preventDefault = true;
                 }
-
                 return true;
             }
+        }
+
+        if (preventDefault) {
+            e.preventDefault();
         }
 
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {

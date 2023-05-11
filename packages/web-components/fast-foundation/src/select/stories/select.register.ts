@@ -6,7 +6,6 @@ const styles = css`
     :host {
         display: inline-flex;
         --elevation: 14;
-        background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
@@ -36,12 +35,14 @@ const styles = css`
         display: flex;
         flex-direction: column;
         padding: calc(var(--design-unit) * 1px) 0;
-        max-height: calc(
+        --max-height: calc(
             (
-                    var(--size, 0) * var(--height-number) +
+                    var(--size) * var(--height-number) +
                         (var(--design-unit) * var(--stroke-width) * 2)
                 ) * 1px
         );
+
+        height: var(--max-height, fit-content);
         overflow-y: auto;
         position: fixed;
         top: 0;
@@ -53,12 +54,6 @@ const styles = css`
         max-height: none;
     }
 
-    .control + .listbox {
-        --stroke-size: calc(var(--design-unit) * var(--stroke-width) * 2);
-        max-height: calc(
-            (var(--listbox-max-height) * var(--height-number) + var(--stroke-size)) * 1px
-        );
-    }
     :host(:not([aria-haspopup])) .listbox {
         left: auto;
         position: static;
@@ -78,6 +73,7 @@ const styles = css`
         min-height: 100%;
         padding: 0 calc(var(--design-unit) * 2.25px);
         width: 100%;
+        max-width: 250px;
     }
     :host(:not([disabled]):hover) {
         background: var(--neutral-fill-input-hover);
@@ -192,13 +188,9 @@ export class Select extends FASTSelect {
     protected updateComputedStylesheet(): void {
         this.$fastController.removeStyles(this.computedStylesheet);
 
-        if (this.collapsible) {
-            return;
-        }
-
         this.computedStylesheet = css`
             :host {
-                --size: ${`${this.size ?? (this.multiple ? 4 : 0)}`};
+                --size: ${`${this.size ?? (this.listboxMode ? 4 : undefined)}`};
             }
         `;
 

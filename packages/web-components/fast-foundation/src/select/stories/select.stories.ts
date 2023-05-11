@@ -11,6 +11,8 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
         ?multiple="${x => x.multiple}"
         size="${x => x.size}"
         value="${x => x.value}"
+        listbox-mode="${x => x.listboxMode}"
+        placeholder="${x => x.placeholder}"
     >
         ${x => x.storyContent}
     </fast-select>
@@ -22,6 +24,8 @@ export default {
         disabled: false,
         multiple: false,
         open: false,
+        listboxMode: false,
+        placeholder: undefined,
         storyContent: html<StoryArgs<FASTSelect>>`
             ${repeat(x => x.storyItems, ListboxOptionTemplate)}
         `,
@@ -43,10 +47,12 @@ export default {
         ],
     },
     argTypes: {
+        listboxMode: { control: "boolean" },
         disabled: { control: "boolean" },
         name: { control: "text" },
         multiple: { control: "boolean" },
         open: { control: "boolean" },
+        placeholder: { control: "text" },
         size: { control: "number" },
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },
@@ -59,6 +65,7 @@ export const Select: Story<FASTSelect> = renderComponent(storyTemplate).bind({})
 export const SelectMultiple: Story<FASTSelect> = Select.bind({});
 SelectMultiple.args = {
     multiple: true,
+    placeholder: "Select an option",
 };
 
 export const SelectWithSize: Story<FASTSelect> = Select.bind({});
@@ -69,6 +76,16 @@ SelectWithSize.args = {
 export const SelectDisabled: Story<FASTSelect> = Select.bind({});
 SelectDisabled.args = {
     disabled: true,
+};
+
+export const SelectListboxMode: Story<FASTSelect> = Select.bind({});
+SelectListboxMode.args = {
+    listboxMode: true,
+};
+
+export const SelectPlaceholder: Story<FASTSelect> = Select.bind({});
+SelectPlaceholder.args = {
+    placeholder: "Select an option",
 };
 
 export const SelectInForm: Story<FASTSelect> = renderComponent(html<Meta<FASTSelect>>`
