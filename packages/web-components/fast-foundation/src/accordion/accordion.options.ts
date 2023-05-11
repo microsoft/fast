@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Expand mode for {@link FASTAccordion}
  * @public
@@ -18,4 +20,4 @@ export const AccordionExpandMode = {
  * Type for the {@link FASTAccordion} Expand Mode
  * @public
  */
-export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof AccordionExpandMode];
+export type AccordionExpandMode = ValuesOf<typeof AccordionExpandMode>;

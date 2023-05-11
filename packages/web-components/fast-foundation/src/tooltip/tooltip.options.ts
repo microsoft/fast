@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Enumerates possible tooltip placements.
  *
@@ -23,4 +25,4 @@ export const TooltipPlacement = {
  *
  * @public
  */
-export type TooltipPlacement = typeof TooltipPlacement[keyof typeof TooltipPlacement];
+export type TooltipPlacement = ValuesOf<typeof TooltipPlacement>;

@@ -83,6 +83,16 @@ export const myToolbar = Toolbar.compose({
 
 
 
+### Variables
+
+| Name                 | Description                                                                     | Type |
+| -------------------- | ------------------------------------------------------------------------------- | ---- |
+| `ToolbarOrientation` | The orientation of the @microsoft/fast-foundation#(FASTToolbar:class) component |      |
+
+<hr/>
+
+
+
 ### class: `FASTToolbar`
 
 #### Superclass
@@ -93,11 +103,11 @@ export const myToolbar = Toolbar.compose({
 
 #### Fields
 
-| Name          | Privacy | Type          | Default | Description                     | Inherited From |
-| ------------- | ------- | ------------- | ------- | ------------------------------- | -------------- |
-| `activeIndex` |         |               |         |                                 |                |
-| `orientation` | public  | `Orientation` |         | The orientation of the toolbar. |                |
-| `childItems`  | public  | `Element[]`   |         |                                 |                |
+| Name          | Privacy | Type                 | Default | Description                     | Inherited From |
+| ------------- | ------- | -------------------- | ------- | ------------------------------- | -------------- |
+| `activeIndex` |         |                      |         |                                 |                |
+| `orientation` | public  | `ToolbarOrientation` |         | The orientation of the toolbar. |                |
+| `childItems`  | public  | `Element[]`          |         |                                 |                |
 
 #### Methods
 

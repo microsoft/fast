@@ -36,6 +36,15 @@ TreeItem.args = {
     storyContent: "Tree Item",
 };
 
+export const TreeItemWithSlottedStartEnd: Story<FASTTreeItem> = TreeItem.bind({});
+TreeItemWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Tree Item
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
 export const TreeItemWithNestedItems: Story<FASTTreeItem> = TreeItem.bind({});
 TreeItemWithNestedItems.args = {
     storyContent: html`

@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Resize mode for a TextArea
  * @public
@@ -28,4 +30,4 @@ export const TextAreaResize = {
  * Types for the Text Area resize mode
  * @public
  */
-export type TextAreaResize = typeof TextAreaResize[keyof typeof TextAreaResize];
+export type TextAreaResize = ValuesOf<typeof TextAreaResize>;

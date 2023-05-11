@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "add missing part attribute for tabpanel in tabs",
+  "comment": "fix picker scroll into view",
   "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
+  "email": "stephcomeau@msn.com",
   "dependentChangeType": "prerelease"
 }

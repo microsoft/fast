@@ -147,9 +147,10 @@ export const mySliderLabel = SliderLabel.compose({
 
 ### Variables
 
-| Name         | Description                                                             | Type                               |
-| ------------ | ----------------------------------------------------------------------- | ---------------------------------- |
-| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
+| Name                | Description                                                             | Type                               |
+| ------------------- | ----------------------------------------------------------------------- | ---------------------------------- |
+| `SliderOrientation` | The orientation of a @microsoft/fast-foundation#(FASTSlider:class).     |                                    |
+| `SliderMode`        | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
 
 <hr/>
 
@@ -172,7 +173,7 @@ export const mySliderLabel = SliderLabel.compose({
 | `valueTextFormatter` | public    | `(value: string) => string or null` |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                          |                      |
 | `min`                | public    | `number`                            | `0`     | The minimum allowed value.                                                                                                                                                                  |                      |
 | `max`                | public    | `number`                            | `10`    | The maximum allowed value.                                                                                                                                                                  |                      |
-| `step`               | public    | `number`                            | `1`     | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                        |                      |
+| `step`               | public    | `number or undefined`               |         | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                        |                      |
 | `orientation`        | public    | `Orientation`                       |         | The orientation of the slider.                                                                                                                                                              |                      |
 | `mode`               | public    | `SliderMode`                        |         | The selection mode.                                                                                                                                                                         |                      |
 | `keypressHandler`    | protected |                                     |         |                                                                                                                                                                                             |                      |
@@ -183,6 +184,10 @@ export const mySliderLabel = SliderLabel.compose({
 | Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From |
 | -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | -------------- |
 | `readOnlyChanged`                | protected |                                             |                        | `void` |                |
+| `minChanged`                     | protected |                                             |                        | `void` |                |
+| `maxChanged`                     | protected |                                             |                        | `void` |                |
+| `stepChanged`                    | protected |                                             |                        | `void` |                |
+| `orientationChanged`             | protected |                                             |                        | `void` |                |
 | `increment`                      | public    | Increment the value by the step             |                        | `void` |                |
 | `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                |
 | `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                |
@@ -236,12 +241,12 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Fields
 
-| Name          | Privacy | Type          | Default        | Description                                                                                                                   | Inherited From |
-| ------------- | ------- | ------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `position`    | public  | `string`      |                | The position of the label relative to the min and max value of the parent @microsoft/fast-foundation#(FASTSlider:class).      |                |
-| `hideMark`    | public  | `boolean`     | `false`        | Hides the tick mark.                                                                                                          |                |
-| `disabled`    | public  | `boolean`     |                | The disabled state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class).    |                |
-| `orientation` | public  | `Orientation` | `"horizontal"` | The orientation state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class). |                |
+| Name          | Privacy | Type                | Default | Description                                                                                                                   | Inherited From |
+| ------------- | ------- | ------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `position`    | public  | `string`            |         | The position of the label relative to the min and max value of the parent @microsoft/fast-foundation#(FASTSlider:class).      |                |
+| `hideMark`    | public  | `boolean`           | `false` | Hides the tick mark.                                                                                                          |                |
+| `disabled`    | public  | `boolean`           |         | The disabled state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class).    |                |
+| `orientation` | public  | `SliderOrientation` |         | The orientation state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class). |                |
 
 #### Methods
 

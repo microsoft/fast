@@ -37,7 +37,6 @@ import {
     neutralStrokeRest,
     neutralStrokeStrongRest,
     strokeWidth,
-    Swatch,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
     typeRampMinus1FontSize,
@@ -65,18 +64,16 @@ import {
 } from "./design-token-registry.js";
 import { docBaseColor, docFillRest, docForeground } from "./custom-recipes.js";
 
-interface DesignTokenStore<
-    T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
-> {
+interface DesignTokenStore {
     [key: string]: {
         name: string;
-        token: DesignToken<T>;
+        token: DesignToken<any>;
         type?: DesignTokenType;
         formControlId?: string;
     };
 }
 
-const designTokens: DesignTokenStore<any> = {
+const designTokens: DesignTokenStore = {
     accentBaseColor: {
         token: accentBaseColor,
         name: "Accent color",
@@ -100,7 +97,7 @@ const designTokens: DesignTokenStore<any> = {
     },
 };
 
-const layerRecipes: DesignTokenStore<Swatch> = {
+const layerRecipes: DesignTokenStore = {
     neutralLayerCardContainer: {
         token: neutralLayerCardContainer,
         name: "Card Container",
@@ -112,7 +109,7 @@ const layerRecipes: DesignTokenStore<Swatch> = {
     neutralLayer4: { token: neutralLayer4, name: "Layer 4" },
 };
 
-const fillRecipes: DesignTokenStore<Swatch> = {
+const fillRecipes: DesignTokenStore = {
     accentFillRest: { token: accentFillRest, name: "Accent" },
     neutralFillRest: { token: neutralFillRest, name: "Neutral" },
     neutralFillLayerRest: { token: neutralFillLayerRest, name: "Neutral Layer" },
@@ -134,7 +131,7 @@ const fillRecipes: DesignTokenStore<Swatch> = {
     docFillRest: { token: docFillRest, name: "Doc" },
 };
 
-const strokeRecipes: DesignTokenStore<Swatch> = {
+const strokeRecipes: DesignTokenStore = {
     accentStrokeControlRest: { token: accentStrokeControlRest, name: "Accent Control" },
     focusStrokeOuter: { token: focusStrokeOuter, name: "Focus Outer" },
     focusStrokeInner: { token: focusStrokeInner, name: "Focus Inner" },
@@ -149,12 +146,12 @@ const strokeRecipes: DesignTokenStore<Swatch> = {
     neutralStrokeInputRest: { token: neutralStrokeInputRest, name: "Neutral Input" },
 };
 
-const strokeWidthRecipes: DesignTokenStore<number> = {
+const strokeWidthRecipes: DesignTokenStore = {
     strokeWidth: { token: strokeWidth, name: "Stroke width" },
     focusStrokeWidth: { token: focusStrokeWidth, name: "Focus stroke width" },
 };
 
-const textFillRecipes: DesignTokenStore<Swatch> = {
+const textFillRecipes: DesignTokenStore = {
     neutralForegroundRest: { token: neutralForegroundRest, name: "Neutral" },
     neutralForegroundHint: { token: neutralForegroundHint, name: "Hint" },
     accentForegroundRest: { token: accentForegroundRest, name: "Accent" },
@@ -162,12 +159,12 @@ const textFillRecipes: DesignTokenStore<Swatch> = {
     docForegroundRest: { token: docForeground, name: "Doc" },
 };
 
-const cornerRadiusRecipes: DesignTokenStore<number> = {
+const cornerRadiusRecipes: DesignTokenStore = {
     controlCornerRadius: { token: controlCornerRadius, name: "Control" },
     layerCornerRadius: { token: layerCornerRadius, name: "Layer" },
 };
 
-const textRecipes: DesignTokenStore<any> = {
+const textRecipes: DesignTokenStore = {
     bodyFont: { type: DesignTokenType.fontName, token: bodyFont, name: "Font" },
     typeRampPlus6FontSize: {
         type: DesignTokenType.fontSize,
@@ -261,11 +258,9 @@ const textRecipes: DesignTokenStore<any> = {
     },
 };
 
-function registerStore<
-    T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}
->(
+function registerStore(
     type: DesignTokenType | null,
-    store: DesignTokenStore<T>,
+    store: DesignTokenStore,
     title: string,
     registry: DesignTokenRegistry
 ): void {

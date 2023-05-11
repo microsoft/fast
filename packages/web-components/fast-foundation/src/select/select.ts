@@ -1,13 +1,5 @@
 import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
-import {
-    attr,
-    DangerousHTMLDirective,
-    Observable,
-    observable,
-    SyntheticViewTemplate,
-    Updates,
-    volatile,
-} from "@microsoft/fast-element";
+import { attr, Observable, observable, Updates, volatile } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -19,9 +11,11 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 
@@ -29,8 +23,8 @@ import { FormAssociatedSelect } from "./select.form-associated.js";
  * Select configuration options
  * @public
  */
-export type SelectOptions = StartEndOptions & {
-    indicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type SelectOptions = StartEndOptions<FASTSelect> & {
+    indicator?: StaticallyComposableHTML<FASTSelect>;
 };
 
 /**

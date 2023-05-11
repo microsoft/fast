@@ -1,12 +1,7 @@
-import {
-    dangerousHTML,
-    ElementViewTemplate,
-    html,
-    repeat,
-    when,
-} from "@microsoft/fast-element";
+import { ElementViewTemplate, html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type {
     CalendarDateInfo,
     CalendarOptions,
@@ -48,7 +43,7 @@ export function calendarTitleTemplate<T extends FASTCalendar>(): ViewTemplate<T>
 export function calendarWeekdayTemplate(
     options: CalendarOptions
 ): ViewTemplate<WeekdayText> {
-    const cellTag = dangerousHTML(tagFor(options.dataGridCell));
+    const cellTag = html.partial(tagFor(options.dataGridCell));
     return html<WeekdayText>`
         <${cellTag}
             class="week-day"
@@ -73,7 +68,7 @@ export function calendarCellTemplate(
     options: CalendarOptions,
     todayString: string
 ): ViewTemplate<CalendarDateInfo> {
-    const cellTag = dangerousHTML(tagFor(options.dataGridCell));
+    const cellTag = html.partial(tagFor(options.dataGridCell));
     return html<CalendarDateInfo>`
         <${cellTag}
             class="${(x, c) => c.parentContext.parent.getDayClassNames(x, todayString)}"
@@ -112,7 +107,7 @@ export function calendarRowTemplate(
     options: CalendarOptions,
     todayString: string
 ): ViewTemplate {
-    const rowTag = tagFor(options.dataGridRow);
+    const rowTag = html.partial(tagFor(options.dataGridRow));
     return html`
         <${rowTag}
             class="week"
@@ -140,8 +135,8 @@ export function interactiveCalendarGridTemplate<T extends FASTCalendar>(
     options: CalendarOptions,
     todayString: string
 ): ViewTemplate<T> {
-    const gridTag = dangerousHTML(tagFor(options.dataGrid));
-    const rowTag = dangerousHTML(tagFor(options.dataGridRow));
+    const gridTag = html.partial(tagFor(options.dataGrid));
+    const rowTag = html.partial(tagFor(options.dataGridRow));
 
     return html<T>`
     <${gridTag} class="days interact" part="days" generate-header="none">
@@ -247,18 +242,13 @@ export function calendarTemplate<T extends FASTCalendar>(
         today.getMonth() + 1
     }-${today.getDate()}-${today.getFullYear()}`;
     return html<T>`
-        <template>
-            ${startSlotTemplate(options)} ${options.title ?? ""}
-            <slot></slot>
-            ${when(
-                x => x.readonly === false,
-                interactiveCalendarGridTemplate(options, todayString)
-            )}
-            ${when(
-                x => x.readonly === true,
-                noninteractiveCalendarTemplate(options, todayString)
-            )}
-            ${endSlotTemplate(options)}
-        </template>
+        ${startSlotTemplate(options)} ${staticallyCompose(options.title)}
+        <slot></slot>
+        ${when(
+            x => x.readonly,
+            noninteractiveCalendarTemplate(options, todayString),
+            interactiveCalendarGridTemplate(options, todayString)
+        )}
+        ${endSlotTemplate(options)}
     `;
 }

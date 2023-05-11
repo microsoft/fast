@@ -79,3 +79,23 @@ Anchor.args = {
     href: "https://www.fast.design/",
     storyContent: "Anchor",
 };
+
+export const AnchorWithSlottedStartEnd: Story<FASTAnchor> = renderComponent(
+    storyTemplate
+).bind({});
+AnchorWithSlottedStartEnd.args = {
+    href: "https://www.fast.design/",
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Anchor
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
+export const AnchorWithSlottedIconContent: Story<FASTAnchor> = Anchor.bind({});
+AnchorWithSlottedIconContent.args = {
+    href: "https://www.fast.design/",
+    storyContent: html`
+        <svg width="20" height="20"><use href="#test-icon" /></svg>
+    `,
+};

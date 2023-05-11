@@ -6,6 +6,7 @@ import {
     DOM,
     FASTElement,
     html,
+    Updates,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
@@ -532,7 +533,7 @@ export class ColorBlock extends FASTElement {
 
     @attr color: string;
     private colorChanged(): void {
-        DOM.queueUpdate(() => this.updateColor());
+        Updates.enqueue(() => this.updateColor());
     }
 
     @attr({ attribute: "layer-name" })
