@@ -1,5 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { storyTemplate as ListboxOptionTemplate } from "../../listbox-option/stories/listbox-option.stories.js";
+import { storyTemplate as listboxOptionTemplate } from "../../listbox-option/stories/listbox-option.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSelect } from "../select.js";
@@ -27,7 +27,7 @@ export default {
         listboxMode: false,
         placeholder: undefined,
         storyContent: html<StoryArgs<FASTSelect>>`
-            ${repeat(x => x.storyItems, ListboxOptionTemplate)}
+            ${repeat(x => x.storyItems, listboxOptionTemplate)}
         `,
         storyItems: [
             { storyContent: "William Hartnell" },
@@ -86,6 +86,15 @@ SelectListboxMode.args = {
 export const SelectPlaceholder: Story<FASTSelect> = Select.bind({});
 SelectPlaceholder.args = {
     placeholder: "Select an option",
+};
+
+export const SelectWithSlottedStartEnd: Story<FASTSelect> = Select.bind({});
+SelectWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        ${repeat(x => x.storyItems, listboxOptionTemplate)}
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
 };
 
 export const SelectInForm: Story<FASTSelect> = renderComponent(html<Meta<FASTSelect>>`
