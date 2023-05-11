@@ -238,7 +238,7 @@ export class FASTTooltip extends FASTElement {
     })
     public show: boolean | undefined;
     public showChanged(prev: boolean | undefined, next: boolean | undefined): void {
-        this.visible = next;
+        this.setVisible(next);
     }
 
     /**
@@ -254,7 +254,7 @@ export class FASTTooltip extends FASTElement {
      *
      * @internal
      */
-    private set visible(value: boolean | undefined) {
+    private setVisible(value: boolean | undefined) {
         this.controlledVisibility = typeof value === "boolean";
         if (this.controlledVisibility) {
             this.show = value;
