@@ -1,7 +1,7 @@
 import { Checkbox, RadioGroup } from "@microsoft/fast-components";
 import { html, repeat } from "@microsoft/fast-element";
-import { ColorPicker } from "@microsoft/fast-tooling/dist/dts/web-components/color-picker/color-picker";
 import { ComponentTypes } from "../../app";
+import { ColorPicker } from "../color-picker/color-picker";
 import { ControlPane } from "./control-pane";
 
 function titleCase(str: string): string {

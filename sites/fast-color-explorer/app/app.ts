@@ -30,8 +30,10 @@ import { DesignToken } from "@microsoft/fast-foundation";
 import { AppColorBlock } from "./components/color-block";
 import { AppControlPane } from "./components/control-pane";
 import { AppGradient } from "./components/gradient";
+import { AppLayerBackground } from "./components/layer-background";
 import { AppSampleApp } from "./components/sample-app";
 
+AppLayerBackground;
 AppColorBlock;
 AppControlPane;
 AppGradient;

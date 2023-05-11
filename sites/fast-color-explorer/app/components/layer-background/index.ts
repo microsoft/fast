@@ -9,13 +9,30 @@ import {
     neutralPalette,
     Swatch,
 } from "@microsoft/fast-components";
-import { attr, css, html, nullableNumberConverter } from "@microsoft/fast-element";
+import {
+    attr,
+    css,
+    customElement,
+    html,
+    nullableNumberConverter,
+} from "@microsoft/fast-element";
 import {
     DesignToken,
     DesignTokenChangeRecord,
     display,
     FoundationElement,
 } from "@microsoft/fast-foundation";
+
+export const layerBackgroundTemplate = html`
+    <slot></slot>
+`;
+
+export const layerBackgroundStyles = css`
+    ${display("block")} :host {
+        background: ${fillColor};
+        color: ${neutralForegroundRest};
+    }
+`;
 
 export class LayerBackground extends FoundationElement {
     @attr({ attribute: "base-layer-luminance", converter: nullableNumberConverter })
@@ -74,19 +91,9 @@ export class LayerBackground extends FoundationElement {
     }
 }
 
-export const layerBackgroundTemplate = html`
-    <slot></slot>
-`;
-
-export const layerBackgroundStyles = css`
-    ${display("block")} :host {
-        background: ${fillColor};
-        color: ${neutralForegroundRest};
-    }
-`;
-
-export const layerBackground = LayerBackground.compose({
-    baseName: "layer-background",
+@customElement({
+    name: "app-layer-background",
     template: layerBackgroundTemplate,
     styles: layerBackgroundStyles,
-});
+})
+export class AppLayerBackground extends LayerBackground {}
