@@ -363,6 +363,10 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleKeyDown(e: KeyboardEvent): boolean {
+        
+        if (this.readOnly) {
+            return true;
+        }
         const key = e.key;
 
         switch (key) {
