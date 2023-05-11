@@ -190,7 +190,7 @@ export class Select extends FASTSelect {
 
         this.computedStylesheet = css`
             :host {
-                --size: ${`${this.size ?? (this.listboxMode ? 4 : undefined)}`};
+                --size: ${`${this.size ? this.size : undefined}`};
             }
         `;
 
