@@ -138,6 +138,7 @@ const styles = css`
     .indicator {
         flex: 0 0 auto;
         margin-inline-start: 1em;
+        fill: var(--neutral-foreground-rest);
     }
     slot[name="listbox"] {
         display: none;
@@ -151,6 +152,7 @@ const styles = css`
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
+        fill: var(--neutral-foreground-rest);
     }
     ::slotted([slot="start"]) {
         margin-inline-end: 11px;
