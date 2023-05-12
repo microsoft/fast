@@ -5,6 +5,7 @@ import {
     density,
     designUnit,
     disabledOpacity,
+    focusStrokeInner,
     focusStrokeOuter,
     foregroundOnAccentRest,
     neutralForegroundRest,
@@ -90,7 +91,7 @@ ${display("inline-flex")} :host {
 }
 
 :host(:${focusVisible}) .control {
-    box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+    box-shadow: 0 0 0 2px ${focusStrokeInner} inset;
     border-color: ${focusStrokeOuter};
 }
 
