@@ -1,25 +1,30 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { storyTemplate as tabPanelStoryTemplate } from "../../tab-panel/stories/tab-panel.stories.js";
+import type { FASTTab } from "../../tab/tab.js";
 import { storyTemplate as tabStoryTemplate } from "../../tab/stories/tab.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
+import { TabsOrientation } from "../tabs.options.js";
 import type { FASTTabs } from "../tabs.js";
 
 const storyTemplate = html<StoryArgs<FASTTabs>>`
-    <fast-tabs
-        ?hide-active-indicator="${x => x.hideActiveIndicator}"
-        activeid="${x => x.activeid}"
-        orientation="${x => x.orientation}"
-    >
+    <fast-tabs activeid="${x => x.activeid}" orientation="${x => x.orientation}">
         ${x => x.storyContent}
     </fast-tabs>
+`;
+
+const tabWithIconsStoryTemplate = html<StoryArgs<FASTTab>>`
+    <fast-tab ?disabled="${x => x.disabled}">
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        ${x => x.storyContent}
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    </fast-tab>
 `;
 
 export default {
     title: "Tabs",
     args: {
-        hideActiveIndicator: false,
+        orientation: TabsOrientation.horizontal,
         storyContent: html<StoryArgs<FASTTabs>>`
             ${repeat(x => x.storyItems.tabs, tabStoryTemplate)}
             ${repeat(x => x.storyItems.tabPanels, tabPanelStoryTemplate)}
@@ -27,8 +32,7 @@ export default {
     },
     argTypes: {
         activeid: { control: "text" },
-        hideActiveIndicator: { control: "boolean" },
-        orientation: { control: "radio", options: Object.values(Orientation) },
+        orientation: { control: "radio", options: Object.values(TabsOrientation) },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
     },
@@ -36,6 +40,28 @@ export default {
 
 export const Tabs: Story<FASTTabs> = renderComponent(storyTemplate).bind({});
 Tabs.args = {
+    storyItems: {
+        tabs: [
+            { storyContent: "Tab one" },
+            { storyContent: "Tab two" },
+            { storyContent: "Tab three" },
+        ],
+        tabPanels: [
+            { storyContent: "Tab panel one" },
+            { storyContent: "Tab panel two" },
+            { storyContent: "Tab panel three" },
+        ],
+    },
+};
+
+export const TabsWithSlottedStartEnd: Story<FASTTabs> = Tabs.bind({});
+TabsWithSlottedStartEnd.args = {
+    storyContent: html<StoryArgs<FASTTabs>>`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        ${repeat(x => x.storyItems.tabs, tabWithIconsStoryTemplate)}
+        ${repeat(x => x.storyItems.tabPanels, tabPanelStoryTemplate)}
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
     storyItems: {
         tabs: [
             { storyContent: "Tab one" },

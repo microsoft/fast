@@ -102,7 +102,13 @@ export class DateFormatter {
         locale: string = this.locale
     ): string {
         const dateObj = this.getDateObject(date);
-        const optionsWithTimeZone = { timeZone: "utc", ...format };
+        if (!dateObj.getTime()) {
+            return "";
+        }
+        const optionsWithTimeZone = {
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            ...format,
+        };
 
         return new Intl.DateTimeFormat(locale, optionsWithTimeZone).format(dateObj);
     }

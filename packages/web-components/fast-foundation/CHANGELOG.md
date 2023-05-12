@@ -1,8 +1,79 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 02 Dec 2022 01:18:22 GMT and should not be manually modified.
+This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.27
+
+Tue, 28 Mar 2023 22:14:10 GMT
+
+### Changes
+
+- update @microsoft/fast-element to be fixed for foundation package (tebin.raouf@gmail.com)
+- update slider changed methods to protected (chhol@microsoft.com)
+- support row selection in data grid (scomea@microsoft.com)
+- remove activeindicator from tabs component (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.23
+
+## 3.0.0-alpha.26
+
+Sat, 11 Mar 2023 00:09:48 GMT
+
+### Changes
+
+- remove readonly support from fast radio (yinon@hotmail.com)
+- update slider to increment and decrement without a default value for the step attribute (chhol@microsoft.com)
+- picker should work in shadow dom (stephcomeau@msn.com)
+- data grid header fix (stephcomeau@msn.com)
+- fix: update components to new binding APIs (rob@bluespire.com)
+- fix: remove focus management from slider (jes@microsoft.com)
+- remove className logic from switch checkedChanged (chhol@microsoft.com)
+- Fixes Slider vertical orientation so adjusting the slider increases the value when the thumb is moved upwards and corrects keyboard handling (ryan@ryanmerrill.net)
+- Bump @microsoft/fast-element to v2.0.0-beta.22
+
+## 3.0.0-alpha.25
+
+Tue, 14 Feb 2023 04:02:34 GMT
+
+### Changes
+
+- fix radio group disabled handling (chhol@microsoft.com)
+- remove readonly classname from switch (chhol@microsoft.com)
+- add explicit exports for component orientations (chhol@microsoft.com)
+- ensure single expand mode accordions support explicitly expanded items (chhol@microsoft.com)
+- Cleaned up `start` and `end` definitions (47367562+bheston@users.noreply.github.com)
+- add default slot to divider (chhol@microsoft.com)
+- observe accordion children to accommodate single expand scenarios with programmatic changes (chhol@microsoft.com)
+- Fix Picker template missing quote and dependent tag names (47367562+bheston@users.noreply.github.com)
+- remove paused attribute from progress (chhol@microsoft.com)
+- remove status messages from switch template (chhol@microsoft.com)
+- fixes an issue where accordion expand-mode changes were not reflected in the component (chhol@microsoft.com)
+- Remove link from Avatar (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.21
+
+## 3.0.0-alpha.24
+
+Wed, 11 Jan 2023 22:07:43 GMT
+
+### Changes
+
+- fix(Calendar): add fix for the timezones from #5539 (Mathieu.Salois@goto.com)
+- export staticallyCompose function (chhol@microsoft.com)
+- remove deprecation notice from display helpers (chhol@microsoft.com)
+- add disabled attribute support to accordion item (chhol@microsoft.com)
+- add ValuesOf helper for mapping types from a const object (chhol@microsoft.com)
+- Removed legacy unsupported delegates focus from Anchor and Button now that `delgatesFocus` is supported in firefox since version 94. (32497422+KingOfTac@users.noreply.github.com)
+- updates types for default slotted content to remove string and support DangerousHTMLDirective (chhol@microsoft.com)
+- update default value of menu item checked attribute to false (chhol@microsoft.com)
+- add missing part attribute for tabpanel in tabs (chhol@microsoft.com)
+- clean up header on disconnect (stephcomeau@msn.com)
+- Fixed bug in DesignTokenNode reparenting (nicholasrice@users.noreply.github.com)
+- rework scroll into view (stephcomeau@msn.com)
+- ensure submenu items are navigable after parent menu item has been clicked (chhol@microsoft.com)
+- refactor(fast-foundation): template inline options and html.partial (roeisenb@microsoft.com)
+- rewrite tooltip to use floating-ui (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.20
 
 ## 3.0.0-alpha.23
 

@@ -1,9 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import type { AnchorTarget } from "./anchor.options.js";
 
@@ -11,7 +8,7 @@ import type { AnchorTarget } from "./anchor.options.js";
  * Anchor configuration options
  * @public
  */
-export type AnchorOptions = StartEndOptions;
+export type AnchorOptions = StartEndOptions<FASTAnchor>;
 
 /**
  * An Anchor Custom HTML Element.
@@ -111,33 +108,6 @@ export class FASTAnchor extends FASTElement {
      * References the root element
      */
     public control: HTMLAnchorElement;
-
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        this.handleUnsupportedDelegatesFocus();
-    }
-
-    /**
-     * Overrides the focus call for where delegatesFocus is unsupported.
-     * This check works for Chrome, Edge Chromium, FireFox, and Safari
-     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
-     */
-    private handleUnsupportedDelegatesFocus = () => {
-        // Check to see if delegatesFocus is supported
-        if (
-            window.ShadowRoot &&
-            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
-            this.$fastController.definition.shadowOptions?.delegatesFocus
-        ) {
-            this.focus = () => {
-                this.control.focus();
-            };
-        }
-    };
 }
 
 /**

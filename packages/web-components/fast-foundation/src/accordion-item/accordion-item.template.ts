@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { AccordionItemOptions, FASTAccordionItem } from "./accordion-item.js";
 
@@ -20,6 +21,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 class="button"
                 part="button"
                 ${ref("expandbutton")}
+                ?disabled="${x => (x.disabled ? "true" : void 0)}"
                 aria-expanded="${x => x.expanded}"
                 aria-controls="${x => x.id}-panel"
                 id="${x => x.id}"
@@ -33,10 +35,10 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
             ${endSlotTemplate(options)}
             <span class="icon" part="icon" aria-hidden="true">
                 <slot name="expanded-icon">
-                    ${options.expandedIcon ?? ""}
+                    ${staticallyCompose(options.expandedIcon)}
                 </slot>
                 <slot name="collapsed-icon">
-                    ${options.collapsedIcon ?? ""}
+                    ${staticallyCompose(options.collapsedIcon)}
                 </slot>
             <span>
         </div>

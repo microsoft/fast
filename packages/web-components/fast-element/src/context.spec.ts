@@ -108,6 +108,26 @@ describe("Context", () => {
         });
     });
 
+    describe("for()", () => {
+        it("returns the same context for successive calls with the same name", () => {
+            const ctx1 = Context.for("test");
+            const ctx2 = Context.for("test");
+
+            expect(ctx1).equals(ctx2);
+            expect(ctx1.name).equals("test");
+            expect(ctx2.name).equals("test");
+        });
+
+        it("returns different context for successive calls with different names", () => {
+            const ctx1 = Context.for("test1");
+            const ctx2 = Context.for("test2");
+
+            expect(ctx1).not.equals(ctx2);
+            expect(ctx1.name).equals("test1");
+            expect(ctx2.name).equals("test2");
+        });
+    });
+
     describe(`get()`, () => {
         it(`gets the value for a context`, () => {
             const value = "hello world";

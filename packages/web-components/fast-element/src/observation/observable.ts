@@ -4,9 +4,8 @@ import {
     isString,
     KernelServiceId,
     Message,
-    noop,
 } from "../interfaces.js";
-import { createMetadataLocator, FAST } from "../platform.js";
+import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
 import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
@@ -255,11 +254,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             super(expression, initialSubscriber);
         }
 
-        /**
-         * Opts out of JSON stringification.
-         */
-        toJSON = noop;
-
         public setMode(isAsync: boolean): void {
             this.isAsync = this.needsQueue = isAsync;
         }
@@ -384,6 +378,8 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             }
         }
     }
+
+    makeSerializationNoop(ExpressionNotifierImplementation);
 
     return Object.freeze({
         /**

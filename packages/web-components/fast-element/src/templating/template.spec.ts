@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "./template.js";
-import { Markup, Parser } from "./markup.js";
-import { bind, HTMLBindingDirective } from "./binding.js";
+import { Markup, nextId, Parser } from "./markup.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, CompiledViewBehaviorFactory } from "./html-directive.js";
 import { Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
-import { dangerousHTML } from "./dangerous-html.js";
 import { DOMAspect, DOMPolicy } from "../dom.js";
 import { createTrackableDOMPolicy } from "../__test__/helpers.js";
 import { Compiler } from "./compiler.js";
+import { oneWay } from "../binding/one-way.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -287,7 +287,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures an attribute with a binding`, () => {
-        const template = html<Model>`<my-element some-attribute=${bind(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element some-attribute=${oneWay(x => x.value)}></my-element>`;
 
         expectTemplateEquals(
             template,
@@ -361,7 +361,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a boolean attribute with a binding`, () => {
-        const template = html<Model>`<my-element ?some-attribute=${bind(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element ?some-attribute=${oneWay(x => x.value)}></my-element>`;
 
         expectTemplateEquals(
             template,
@@ -415,7 +415,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a case-sensitive property with a binding`, () => {
-        const template = html<Model>`<my-element :someAttribute=${bind(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element :someAttribute=${oneWay(x => x.value)}></my-element>`;
 
         expectTemplateEquals(
             template,
@@ -536,7 +536,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it("Should properly interpolate HTML tags with opening / closing tags using dangerousHTML", () => {
-      const element = dangerousHTML("button");
+      const element = html.partial("button");
       const template = html`<${element}></${element}>`
       expect(template.html).to.equal('<button></button>')
     })
@@ -586,5 +586,58 @@ describe("The ViewTemplate", () => {
             const differentPolicy = createTrackableDOMPolicy();
             template.withPolicy(differentPolicy);
         }).to.throw();
+    });
+
+    it("can inline a basic template built by the tagged template helper", () => {
+        const nested = html`Nested`;
+
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal("BeforeNestedAfter");
+    });
+
+    it("can inline a basic template built from a template element", () => {
+        const template = document.createElement("template");
+        template.innerHTML = "Nested";
+        const nested = new ViewTemplate(template);
+
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal("BeforeNestedAfter");
+    });
+
+    function getFirstBehavior(template: ViewTemplate) {
+        for (const key in template.factories) {
+            return template.factories[key];
+        }
+    }
+
+    it("can inline a template with directives built by the tagged template helper", () => {
+        const nested = html`Nested${x => x.foo}`;
+
+        const root = html`Before${nested.inline()}After`;
+
+        const nestedBehavior = getFirstBehavior(nested);
+        const nestedBehaviorId = nestedBehavior?.id!;
+        const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
+
+        expect(root.html).to.equal(`BeforeNested${nestedBehaviorPlaceholder}After`);
+        expect(getFirstBehavior(root)).equals(nestedBehavior);
+    });
+
+    it("can inline a template with directives built from a template element", () => {
+        const nestedBehaviorId = nextId();
+        const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
+        const template = document.createElement("template");
+        template.innerHTML = `Nested${nestedBehaviorPlaceholder}`;
+        const nested = new ViewTemplate(template, {
+            nestedBehaviorId: new HTMLBindingDirective(oneWay(x => x.foo))
+        });
+
+        const nestedBehavior = getFirstBehavior(nested);
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal(`BeforeNested${nestedBehaviorPlaceholder}After`);
+        expect(getFirstBehavior(root)).equals(nestedBehavior);
     });
 });

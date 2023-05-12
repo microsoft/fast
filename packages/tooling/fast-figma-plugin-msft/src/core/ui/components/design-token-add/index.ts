@@ -77,7 +77,7 @@ const styles = css`
 })
 export class DesignTokenAdd extends FASTElement {
     @observable
-    designTokens: DesignTokenDefinition<any>[] = [];
+    designTokens: DesignTokenDefinition[] = [];
 
     @observable
     selectedDesignToken?: DesignTokenDefinition;

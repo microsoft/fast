@@ -25,7 +25,7 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         height: calc(var(--height-number) * 1px);
-        align-items: baseline;
+        align-items: center;
     }
     .control {
         -webkit-appearance: none;
@@ -82,7 +82,6 @@ const styles = css`
     .input-wrapper {
         display: flex;
         position: relative;
-        width: 100%;
         height: 100%;
     }
     .label {
@@ -97,31 +96,10 @@ const styles = css`
         display: none;
         visibility: hidden;
     }
-    .input-wrapper,
-    .start,
-    .end {
-        align-self: center;
-    }
-    .start,
-    .end {
-        display: flex;
-        margin: 1px;
-        fill: currentcolor;
-    }
+    ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
-        height: 100%;
-    }
-    .end {
-        margin-inline-end: 1px;
-        height: calc(100% - 2px);
-    }
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
-        margin-inline-end: 11px;
-        margin-inline-start: 11px;
-        margin-top: auto;
-        margin-bottom: auto;
+        display: flex;
+        margin-inline: 11px;
     }
     :host(:hover:not([disabled])) .root {
         background: var(--neutral-fill-input-hover);

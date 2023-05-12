@@ -1,3 +1,4 @@
+import type { ExpressionController } from "../observation/observable.js";
 import type { ElementStyles } from "./element-styles.js";
 
 /**
@@ -5,12 +6,7 @@ import type { ElementStyles } from "./element-styles.js";
  * associated with a component host.
  * @public
  */
-export interface HostController<TSource = any> {
-    /**
-     * The component source.
-     */
-    readonly source: TSource;
-
+export interface HostController<TSource = any> extends ExpressionController<TSource> {
     /**
      * Indicates whether the host is connected or not.
      */

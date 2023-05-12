@@ -1,10 +1,6 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
@@ -12,7 +8,7 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
+    switch?: StaticallyComposableHTML<FASTSwitch>;
 };
 
 /**
@@ -44,10 +40,6 @@ export class FASTSwitch extends FormAssociatedSwitch {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     /**
@@ -94,15 +86,4 @@ export class FASTSwitch extends FormAssociatedSwitch {
             this.checked = !this.checked;
         }
     };
-
-    /**
-     * @internal
-     */
-    public checkedChanged(prev: boolean | undefined, next: boolean) {
-        super.checkedChanged(prev, next);
-        /**
-         * @deprecated - this behavior already exists in the template and should not exist in the class.
-         */
-        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
-    }
 }

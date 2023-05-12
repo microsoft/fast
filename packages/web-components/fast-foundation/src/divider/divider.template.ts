@@ -7,9 +7,8 @@ import type { FASTDivider } from "./divider.js";
  */
 export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T> {
     return html<T>`
-        <template
-            role="${x => x.role}"
-            aria-orientation="${x => x.orientation}"
-        ></template>
+        <template role="${x => x.role}" aria-orientation="${x => x.orientation}">
+            <slot></slot>
+        </template>
     `;
 }

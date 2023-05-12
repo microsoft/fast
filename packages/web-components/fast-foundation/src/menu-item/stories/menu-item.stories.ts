@@ -40,8 +40,8 @@ MenuItem.args = {
 export const MenuItemWithSlottedStart: Story<FASTMenuItem> = MenuItem.bind({});
 MenuItemWithSlottedStart.args = {
     storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
         Menu item with slotted start icon
-        <svg slot="start"><use href="#test-icon"></svg>
     `,
 };
 
@@ -49,7 +49,16 @@ export const MenuItemWithSlottedEnd: Story<FASTMenuItem> = MenuItem.bind({});
 MenuItemWithSlottedEnd.args = {
     storyContent: html`
         Menu item with slotted end icon
-        <svg slot="end"><use href="#test-icon"></svg>
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};
+
+export const MenuItemWithSlottedStartEnd: Story<FASTMenuItem> = MenuItem.bind({});
+MenuItemWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Menu item with slotted start & end icon
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
     `,
 };
 

@@ -47,9 +47,10 @@ export const myDivider = Divider.compose({
 
 ### Variables
 
-| Name          | Description   | Type                                                        |
-| ------------- | ------------- | ----------------------------------------------------------- |
-| `DividerRole` | Divider roles | `{ separator: "separator", presentation: "presentation", }` |
+| Name                 | Description         | Type                                                        |
+| -------------------- | ------------------- | ----------------------------------------------------------- |
+| `DividerRole`        | Divider roles       | `{ separator: "separator", presentation: "presentation", }` |
+| `DividerOrientation` | Divider orientation |                                                             |
 
 <hr/>
 
@@ -65,10 +66,10 @@ export const myDivider = Divider.compose({
 
 #### Fields
 
-| Name          | Privacy | Type          | Default | Description                     | Inherited From |
-| ------------- | ------- | ------------- | ------- | ------------------------------- | -------------- |
-| `role`        | public  | `DividerRole` |         | The role of the element.        |                |
-| `orientation` | public  | `Orientation` |         | The orientation of the divider. |                |
+| Name          | Privacy | Type                 | Default | Description                     | Inherited From |
+| ------------- | ------- | -------------------- | ------- | ------------------------------- | -------------- |
+| `role`        | public  | `DividerRole`        |         | The role of the element.        |                |
+| `orientation` | public  | `DividerOrientation` |         | The orientation of the divider. |                |
 
 #### Attributes
 

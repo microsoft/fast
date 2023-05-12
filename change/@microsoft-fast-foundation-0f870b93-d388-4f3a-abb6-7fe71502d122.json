@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "update default value of menu item checked attribute to false",
+  "comment": "picker filter ignores case",
   "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
+  "email": "stephcomeau@msn.com",
   "dependentChangeType": "prerelease"
 }

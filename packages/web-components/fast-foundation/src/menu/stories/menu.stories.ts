@@ -203,21 +203,21 @@ FancyMenuWithItemsWithIcons.args = {
     storyItems: [
         {
             storyContent: html`
-                <svg slot="start"><use href="#test-icon" /></svg>
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
                 Slotted start icon
             `,
         },
         {
             storyContent: html`
-                <svg slot="end"><use href="#test-icon" /></svg>
                 Slotted end icon
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
             `,
         },
         {
             storyContent: html`
-                <svg slot="start"><use href="#test-icon" /></svg>
-                <svg slot="end"><use href="#test-icon" /></svg>
-                Slotted start and end icons
+                <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+                Slotted start & end icons
+                <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
             `,
         },
     ],

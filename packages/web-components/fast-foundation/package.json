@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "3.0.0-alpha.23",
+  "version": "3.0.0-alpha.27",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -87,6 +87,7 @@
     "rollup": "^2.71.1",
     "source-map-loader": "^0.2.4",
     "source-map": "^0.7.3",
+    "svg-inline-loader": "^0.8.2",
     "ts-loader": "^7.0.2",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
@@ -95,7 +96,7 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.0.3",
-    "@microsoft/fast-element": "^2.0.0-beta.19",
+    "@microsoft/fast-element": "2.0.0-beta.23",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
     "tslib": "^2.4.0"

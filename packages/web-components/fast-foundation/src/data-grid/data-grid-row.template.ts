@@ -1,6 +1,5 @@
 import {
     children,
-    dangerousHTML,
     elements,
     ElementViewTemplate,
     html,
@@ -22,7 +21,7 @@ export type CellItemTemplateOptions = {
 function cellItemTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
 ): ViewTemplate<ColumnDefinition, T> {
-    const cellTag = dangerousHTML(tagFor(options.dataGridCell));
+    const cellTag = html.partial(tagFor(options.dataGridCell));
     return html<ColumnDefinition, T>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
@@ -36,7 +35,7 @@ function cellItemTemplate<T extends FASTDataGridRow>(
 function headerCellItemTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
 ): ViewTemplate<ColumnDefinition, T> {
-    const cellTag = dangerousHTML(tagFor(options.dataGridCell));
+    const cellTag = html.partial(tagFor(options.dataGridCell));
     return html<ColumnDefinition, T>`
     <${cellTag}
         cell-type="columnheader"
@@ -60,6 +59,7 @@ export function dataGridRowTemplate<T extends FASTDataGridRow>(
             role="row"
             :defaultCellItemTemplate="${cellItemTemplate(options)}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
+            aria-selected="${x => (x.selected !== undefined ? x.selected : void 0)}"
             ${children({
                 property: "cellElements",
                 filter: elements(

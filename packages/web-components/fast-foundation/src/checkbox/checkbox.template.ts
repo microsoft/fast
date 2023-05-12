@@ -1,4 +1,5 @@
 import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { CheckboxOptions, FASTCheckbox } from "./checkbox.js";
 
 /**
@@ -20,10 +21,10 @@ export function checkboxTemplate<T extends FASTCheckbox>(
         >
             <div part="control" class="control">
                 <slot name="checked-indicator">
-                    ${options.checkedIndicator ?? ""}
+                    ${staticallyCompose(options.checkedIndicator)}
                 </slot>
                 <slot name="indeterminate-indicator">
-                    ${options.indeterminateIndicator ?? ""}
+                    ${staticallyCompose(options.indeterminateIndicator)}
                 </slot>
             </div>
             <label

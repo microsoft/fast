@@ -19,7 +19,7 @@ export default {
         hiddenFromAT: true,
     },
     argTypes: {
-        direction: { control: "select", options: Object.values(FlipperDirection) },
+        direction: { control: "radio", options: Object.values(FlipperDirection) },
         disabled: { control: "boolean" },
         hiddenFromAT: { control: "boolean" },
     },
