@@ -12,8 +12,8 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
-import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
-import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
+import { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -428,7 +428,7 @@ export class FASTSelect extends FormAssociatedSelect {
     }
 
     /**
-     * Prevents focus when size is set and a scrollbar is clicked.
+     * Prevents focus when listbox mode is set and a scrollbar is clicked.
      *
      * @param e - the mouse event object
      *
@@ -481,7 +481,8 @@ export class FASTSelect extends FormAssociatedSelect {
 
     /**
      * Sets the selected index to match the first option with the selected attribute, or
-     * the first selectable option.
+     * the first selectable option when in single select mode and no placeholder is present.
+     * When in multiple select mode or a placeholder is present, the selected index is set to -1.
      *
      * @override
      * @internal
@@ -489,10 +490,10 @@ export class FASTSelect extends FormAssociatedSelect {
     protected setDefaultSelectedOption(): void {
         const options: FASTListboxOption[] =
             this.options ??
-            Array.from(this.children).filter(FASTListbox.slottedOptionFilter);
-        const selectedOption = options.find(
-            el => el.hasAttribute("selected") || el.selected || el.value === this.value
-        );
+            Array.from(this.children).filter(
+                (el): el is FASTListboxOption => el instanceof FASTListboxOption
+            );
+        const selectedOption = options.find(el => el.selected || el.value === this.value);
 
         this.selectedIndex = selectedOption
             ? options.indexOf(selectedOption)
@@ -566,7 +567,6 @@ export class FASTSelect extends FormAssociatedSelect {
                 preventDefault = true;
                 break;
             }
-
             case keyEscape: {
                 if (this.collapsible && this.open) {
                     this.open = false;
