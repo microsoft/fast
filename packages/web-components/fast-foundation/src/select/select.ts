@@ -125,7 +125,7 @@ export class FASTSelect extends FormAssociatedSelect {
     private _value: string;
 
     /**
-     * The component is collapsible when in single-selection mode with no size attribute.
+     * The component is collapsible when not in listbox mode.
      *
      * @internal
      */
