@@ -286,7 +286,6 @@ export class FASTSelect extends FormAssociatedSelect {
             this.placeholder &&
             (this.selectedOptions.length == 0 || this.selectedIndex == -1)
         ) {
-            this.currentValue = this.firstSelectedOption?.text;
             return this.placeholder;
         }
         if (this.multiple) {
@@ -294,6 +293,7 @@ export class FASTSelect extends FormAssociatedSelect {
             this.currentValue = this.firstSelectedOption?.text;
             return selectedOptionsText.join(", ") || "";
         }
+        this.currentValue = this.firstSelectedOption?.text;
         return this.firstSelectedOption?.text ?? "";
     }
 
