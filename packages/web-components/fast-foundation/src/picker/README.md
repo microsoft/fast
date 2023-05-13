@@ -42,13 +42,7 @@ export class FASTTextField extends TextField {}
 
 
 
-### class: `pickerContext`
-
-#### Fields
-
-| Name       | Privacy | Type      | Default | Description | Inherited From |
-| ---------- | ------- | --------- | ------- | ----------- | -------------- |
-| `disabled` | public  | `boolean` | `false` |             |                |
+### class: `DefaultPickerContext`
 
 <hr/>
 
@@ -72,27 +66,25 @@ export class FASTTextField extends TextField {}
 
 #### Fields
 
-| Name               | Privacy | Type           | Default | Description                                               | Inherited From |
-| ------------------ | ------- | -------------- | ------- | --------------------------------------------------------- | -------------- |
-| `value`            | public  | `string`       |         | The underlying string value of the item                   |                |
-| `disabled`         | public  | `boolean`      |         | Disables the picker-list-item.                            |                |
-| `contentsTemplate` | public  | `ViewTemplate` |         | The template used to render the contents of the list item |                |
+| Name               | Privacy | Type            | Default | Description                                               | Inherited From |
+| ------------------ | ------- | --------------- | ------- | --------------------------------------------------------- | -------------- |
+| `pickerContext`    |         | `PickerContext` |         | Context object for the parent picker                      |                |
+| `value`            | public  | `string`        |         | The underlying string value of the item                   |                |
+| `contentsTemplate` | public  | `ViewTemplate`  |         | The template used to render the contents of the list item |                |
 
 #### Methods
 
 | Name                      | Privacy   | Description | Parameters         | Return    | Inherited From |
 | ------------------------- | --------- | ----------- | ------------------ | --------- | -------------- |
-| `disabledChanged`         | protected |             |                    | `void`    |                |
 | `contentsTemplateChanged` | protected |             |                    | `void`    |                |
 | `handleKeyDown`           | public    |             | `e: KeyboardEvent` | `boolean` |                |
 | `handleClick`             | public    |             | `e: MouseEvent`    | `void`    |                |
 
 #### Attributes
 
-| Name       | Field    | Inherited From |
-| ---------- | -------- | -------------- |
-| `value`    | value    |                |
-| `disabled` | disabled |                |
+| Name    | Field | Inherited From |
+| ------- | ----- | -------------- |
+| `value` | value |                |
 
 <hr/>
 
@@ -214,7 +206,6 @@ export class FASTTextField extends TextField {}
 
 | Name                         | Privacy | Type                        | Default                      | Description                                                                                                                   | Inherited From       |
 | ---------------------------- | ------- | --------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `pickerContext`              |         | `PickerContext`             |                              |                                                                                                                               |                      |
 | `selection`                  | public  | `string`                    | `""`                         | Currently selected items. Comma delineated string ie. "apples,oranges".                                                       |                      |
 | `options`                    | public  | `string`                    |                              | Currently available options. Comma delineated string ie. "apples,oranges".                                                    |                      |
 | `filterSelected`             | public  | `boolean`                   | `true`                       | Whether the component should remove an option from the list when it is in the selection                                       |                      |

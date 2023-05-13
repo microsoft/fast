@@ -1525,7 +1525,6 @@ export interface FASTNumberField extends StartEnd, DelegatesARIATextbox {
 //
 // @beta
 export class FASTPicker extends FormAssociatedPicker {
-    constructor();
     // @internal
     activeListItemTemplate?: ViewTemplate;
     // @internal
@@ -1600,17 +1599,13 @@ export class FASTPicker extends FormAssociatedPicker {
     // (undocumented)
     protected optionsChanged(): void;
     optionsList: string[];
-    // Warning: (ae-forgotten-export) The symbol "PickerContext" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    pickerContext: PickerContext;
     placeholder: string;
     query: string;
     // (undocumented)
     protected queryChanged(): void;
     // @internal
     region: FASTAnchoredRegion;
-    // @internal (undocumented)
+    // @internal
     selectedItems: string[];
     // @internal
     selectedListTag: string;
@@ -1636,16 +1631,14 @@ export class FASTPickerListItem extends FASTElement {
     contentsTemplate: ViewTemplate;
     // (undocumented)
     protected contentsTemplateChanged(): void;
-    // @public
-    disabled: boolean;
-    // (undocumented)
-    protected disabledChanged(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
     handleClick(e: MouseEvent): void;
     // (undocumented)
     handleKeyDown(e: KeyboardEvent): boolean;
+    // Warning: (ae-forgotten-export) The symbol "PickerContext" needs to be exported by the entry point index.d.ts
+    pickerContext: PickerContext;
     value: string;
 }
 
