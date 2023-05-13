@@ -17,7 +17,6 @@ import {
     keyHome,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { ColumnDefinition } from "./data-grid.js";
 import {
     DataGridRowTypes,
     DataGridSelectionBehavior,
@@ -69,14 +68,6 @@ export class FASTDataGridRow extends FASTElement {
             return;
         }
     }
-
-    /**
-     * The column definitions of the row
-     *
-     * @public
-     */
-    @observable
-    public columnDefinitions: ColumnDefinition[] | null = null;
 
     /**
      * The template used to render cells in generated rows.
@@ -185,7 +176,7 @@ export class FASTDataGridRow extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGridRow>(
-                    oneWay(x => x.columnDefinitions),
+                    oneWay(x => x.dataGridContext.columnDefinitions),
                     oneWay(x => x.activeCellItemTemplate),
                     { positioning: true }
                 ),

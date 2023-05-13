@@ -1,8 +1,9 @@
 import { observable } from "@microsoft/fast-element";
 import { Context } from "@microsoft/fast-element/context";
-import { DataGridSelectionBehavior } from "./data-grid.options.js";
+import { ColumnDefinition, DataGridSelectionBehavior } from "./data-grid.options.js";
 
 export interface DataGridContext {
+    columnDefinitions: ColumnDefinition[] | [];
     gridTemplateColumns: string;
     selectionBehavior: DataGridSelectionBehavior;
 }
@@ -25,4 +26,12 @@ export class DefaultDataGridContext implements DataGridContext {
      */
     @observable
     public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
+
+    /**
+     * The column definitions of the grid
+     *
+     * @internal
+     */
+    @observable
+    public columnDefinitions: ColumnDefinition[] = [];
 }

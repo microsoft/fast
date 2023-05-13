@@ -8,7 +8,7 @@ import {
     keyEscape,
     keyFunction2,
 } from "@microsoft/fast-web-utilities";
-import type { ColumnDefinition } from "./data-grid.js";
+import type { ColumnDefinition } from "./data-grid.options.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 import { DataGridContext } from "./data-grid-context.js";
 

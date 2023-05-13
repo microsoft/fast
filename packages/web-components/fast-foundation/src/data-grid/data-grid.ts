@@ -1,4 +1,4 @@
-import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     FASTElement,
@@ -21,9 +21,9 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import {
+    ColumnDefinition,
     DataGridRowTypes,
     DataGridSelectionBehavior,
     DataGridSelectionChangeDetail,
@@ -38,75 +38,6 @@ export {
     DataGridSelectionMode,
     GenerateHeaderOptions,
 };
-
-/**
- * Defines a column in the grid
- *
- * @public
- */
-export interface ColumnDefinition {
-    /**
-     * Identifies the data item to be displayed in this column
-     * (i.e. how the data item is labelled in each row)
-     */
-    columnDataKey: string;
-
-    /**
-     * Sets the css grid-column property on the cell which controls its placement in
-     * the parent row. If left unset the cells will set this value to match the index
-     * of their column in the parent collection of ColumnDefinitions.
-     */
-    gridColumn?: string;
-
-    /**
-     *  Column title, if not provided columnDataKey is used as title
-     */
-    title?: string;
-
-    /**
-     *  Header cell template
-     */
-    headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
-
-    /**
-     * Whether the header cell has an internal focus queue
-     */
-    headerCellInternalFocusQueue?: boolean;
-
-    /**
-     * Callback function that returns the element to focus in a custom cell.
-     * When headerCellInternalFocusQueue is false this function is called when the cell is first focused
-     * to immediately move focus to a cell element, for example a cell that is a checkbox could move
-     * focus directly to the checkbox.
-     * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
-     */
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
-
-    /**
-     * cell template
-     */
-    cellTemplate?: ViewTemplate | SyntheticViewTemplate;
-
-    /**
-     * Whether the cell has an internal focus queue
-     */
-    cellInternalFocusQueue?: boolean;
-
-    /**
-     * Callback function that returns the element to focus in a custom cell.
-     * When cellInternalFocusQueue is false this function is called when the cell is first focused
-     * to immediately move focus to a cell element, for example a cell that is a checkbox could move
-     * focus directly to the checkbox.
-     * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
-     */
-
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
-
-    /**
-     * Whether this column is the row header
-     */
-    isRowHeader?: boolean;
-}
 
 /**
  * A Data Grid Custom HTML Element.
@@ -317,15 +248,12 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
     protected columnDefinitionsChanged(): void {
-        if (!this.columnDefinitions) {
-            return;
-        }
-        this.generatedGridTemplateColumns = FASTDataGrid.generateTemplateColumns(
-            this.columnDefinitions
-        );
         if (this.$fastController.isConnected) {
-            this.columnDefinitionsStale = true;
-            this.queueRowIndexUpdate();
+            this.dataGridContext.columnDefinitions = this.columnDefinitions || [];
+            this.generatedGridTemplateColumns = this.columnDefinitions
+                ? FASTDataGrid.generateTemplateColumns(this.columnDefinitions)
+                : "";
+            this.updateGridTemplateColumns();
         }
     }
 
@@ -463,7 +391,7 @@ export class FASTDataGrid extends FASTElement {
     private observer: MutationObserver;
 
     private rowindexUpdateQueued: boolean = false;
-    private columnDefinitionsStale: boolean = true;
+    // private columnDefinitionsStale: boolean = true;
 
     private generatedGridTemplateColumns: string = "";
 
@@ -480,6 +408,8 @@ export class FASTDataGrid extends FASTElement {
         super.connectedCallback();
         this.updateGridTemplateColumns();
         this.dataGridContext.selectionBehavior = this.selectionBehavior;
+
+        this.dataGridContext.columnDefinitions = this.columnDefinitions || [];
         Context.provide(this, DataGridContext, this.dataGridContext);
 
         if (this.rowItemTemplate === undefined) {
@@ -1027,14 +957,9 @@ export class FASTDataGrid extends FASTElement {
                     ? true
                     : false;
             }
-
-            if (this.columnDefinitionsStale) {
-                thisRow.columnDefinitions = this.columnDefinitions;
-            }
         });
 
         this.rowindexUpdateQueued = false;
-        this.columnDefinitionsStale = false;
 
         if (this.selectionUpdated) {
             this.selectionUpdated = false;
