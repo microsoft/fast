@@ -8,6 +8,7 @@ import {
     RepeatDirective,
     Updates,
 } from "@microsoft/fast-element";
+import { Context } from "@microsoft/fast-element/context";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     eventFocus,
@@ -29,6 +30,7 @@ import {
     DataGridSelectionMode,
     GenerateHeaderOptions,
 } from "./data-grid.options.js";
+import { DataGridContext, DefaultDataGridContext } from "./data-grid-context.js";
 
 export {
     DataGridRowTypes,
@@ -210,7 +212,7 @@ export class FASTDataGrid extends FASTElement {
     public gridTemplateColumns: string;
     protected gridTemplateColumnsChanged(): void {
         if (this.$fastController.isConnected) {
-            this.updateRowIndexes();
+            this.updateGridTemplateColumns();
         }
     }
 
@@ -263,6 +265,11 @@ export class FASTDataGrid extends FASTElement {
      */
     @attr({ attribute: "selection-behavior" })
     public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
+    protected selectionBehaviorChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.dataGridContext.selectionBehavior = this.selectionBehavior;
+        }
+    }
 
     /**
      * The indexes of initially selected grid elements. Includes header rows.
@@ -464,12 +471,16 @@ export class FASTDataGrid extends FASTElement {
     private preShiftRowSelection: number[] | null = null;
 
     private selectionUpdated: boolean = false;
+    private dataGridContext: DataGridContext = new DefaultDataGridContext();
 
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.updateGridTemplateColumns();
+        this.dataGridContext.selectionBehavior = this.selectionBehavior;
+        Context.provide(this, DataGridContext, this.dataGridContext);
 
         if (this.rowItemTemplate === undefined) {
             this.rowItemTemplate = this.defaultRowItemTemplate;
@@ -941,7 +952,7 @@ export class FASTDataGrid extends FASTElement {
             );
             this.generatedHeader = (generatedHeaderElement as unknown) as FASTDataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
-            this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
+            // this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
@@ -985,10 +996,10 @@ export class FASTDataGrid extends FASTElement {
         }
     };
 
-    private updateRowIndexes = (): void => {
+    private updateGridTemplateColumns() {
         let newGridTemplateColumns = this.gridTemplateColumns;
 
-        if (newGridTemplateColumns === undefined) {
+        if (!newGridTemplateColumns) {
             // try to generate columns based on manual rows
             if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
                 const firstRow: FASTDataGridRow = this.rowElements[0] as FASTDataGridRow;
@@ -1001,12 +1012,13 @@ export class FASTDataGrid extends FASTElement {
 
             newGridTemplateColumns = this.generatedGridTemplateColumns;
         }
+        this.dataGridContext.gridTemplateColumns = newGridTemplateColumns;
+    }
 
+    private updateRowIndexes = (): void => {
         this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
-            thisRow.gridTemplateColumns = newGridTemplateColumns;
-            thisRow.selectionBehavior = this.selectionBehavior;
             if (
                 this.selectionMode === DataGridSelectionMode.singleRow ||
                 this.selectionMode === DataGridSelectionMode.multiRow

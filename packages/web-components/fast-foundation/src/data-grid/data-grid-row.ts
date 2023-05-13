@@ -23,6 +23,7 @@ import {
     DataGridSelectionBehavior,
     DataGridSelectionChangeDetail,
 } from "./data-grid.options.js";
+import { DataGridContext } from "./data-grid-context.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
@@ -33,19 +34,12 @@ import {
  */
 export class FASTDataGridRow extends FASTElement {
     /**
-     * String that gets applied to the the css gridTemplateColumns attribute for the row
+     * Context for the parent data grid
      *
      * @public
-     * @remarks
-     * HTML Attribute: grid-template-columns
      */
-    @attr({ attribute: "grid-template-columns" })
-    public gridTemplateColumns: string;
-    protected gridTemplateColumnsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateRowStyle();
-        }
-    }
+    @DataGridContext
+    public dataGridContext: DataGridContext;
 
     /**
      * The type of row
@@ -165,13 +159,6 @@ export class FASTDataGridRow extends FASTElement {
     public selected: boolean;
 
     /**
-     * Selection behavior
-     *
-     * @internal
-     */
-    public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
-
-    /**
      * @internal
      */
     public slottedCellElements: HTMLElement[];
@@ -210,8 +197,6 @@ export class FASTDataGridRow extends FASTElement {
         this.addEventListener(eventFocusOut, this.handleFocusout);
         this.addEventListener(eventKeyDown, this.handleKeydown);
         this.addEventListener(eventClick, this.handleClick);
-
-        this.updateRowStyle();
 
         if (this.refocusOnLoad) {
             // if focus was on the row when data changed try to refocus on same cell
@@ -304,7 +289,8 @@ export class FASTDataGridRow extends FASTElement {
             case keySpace:
                 if (
                     this.selected !== undefined &&
-                    this.selectionBehavior !== DataGridSelectionBehavior.programmatic
+                    this.dataGridContext.selectionBehavior !==
+                        DataGridSelectionBehavior.programmatic
                 ) {
                     e.preventDefault();
                     this.toggleSelected({
@@ -328,7 +314,7 @@ export class FASTDataGridRow extends FASTElement {
     public handleClick(e: MouseEvent): void {
         if (
             e.defaultPrevented ||
-            this.selectionBehavior !== DataGridSelectionBehavior.auto ||
+            this.dataGridContext.selectionBehavior !== DataGridSelectionBehavior.auto ||
             this.selected === undefined
         ) {
             return;
@@ -354,8 +340,4 @@ export class FASTDataGridRow extends FASTElement {
                 ? this.headerCellItemTemplate
                 : this.defaultHeaderCellItemTemplate;
     }
-
-    private updateRowStyle = (): void => {
-        this.style.gridTemplateColumns = this.gridTemplateColumns;
-    };
 }

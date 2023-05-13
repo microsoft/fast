@@ -2,8 +2,9 @@ import { css } from "@microsoft/fast-element";
 import { FASTDataGridRow } from "../data-grid-row.js";
 import { dataGridRowTemplate } from "../data-grid-row.template.js";
 
-const styles = css`
+const styles = css<FASTDataGridRow>`
     :host {
+        grid-template-columns: ${x => x.dataGridContext.gridTemplateColumns};
         display: grid;
         padding: 1px 0;
         box-sizing: border-box;

@@ -10,6 +10,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
+import { DataGridContext } from "./data-grid-context.js";
 
 export { DataGridCellTypes };
 
@@ -43,6 +44,14 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<FASTDataGridCell> = html`
  * @public
  */
 export class FASTDataGridCell extends FASTElement {
+    /**
+     * Context for the parent data grid
+     *
+     * @public
+     */
+    @DataGridContext
+    dataGridContext: DataGridContext;
+
     /**
      * The type of cell
      *
