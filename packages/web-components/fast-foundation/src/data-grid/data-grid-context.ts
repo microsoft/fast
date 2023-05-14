@@ -21,7 +21,7 @@ export class DefaultDataGridContext implements DataGridContext {
     public rowsData: object[] = [];
 
     /**
-     * The disabled state of the picker
+     * The grid-template-columns value to be applied to rows
      *
      * @internal
      */
