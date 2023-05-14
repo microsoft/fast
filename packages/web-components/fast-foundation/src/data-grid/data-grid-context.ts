@@ -5,12 +5,21 @@ import { ColumnDefinition, DataGridSelectionBehavior } from "./data-grid.options
 export interface DataGridContext {
     columnDefinitions: ColumnDefinition[] | [];
     gridTemplateColumns: string;
+    rowsData: object[];
     selectionBehavior: DataGridSelectionBehavior;
 }
 
 export const DataGridContext = Context.create<DataGridContext>("data-grid-context");
 
 export class DefaultDataGridContext implements DataGridContext {
+    /**
+     * The data being displayed in the grid
+     *
+     * @internal
+     */
+    @observable
+    public rowsData: object[] = [];
+
     /**
      * The disabled state of the picker
      *

@@ -1,6 +1,5 @@
 import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 import type { ValuesOf } from "../utilities/index.js";
-import type { FASTDataGridCell } from "./data-grid-cell.js";
 
 /**
  * Enumerates the data grid auto generated header options
@@ -186,7 +185,7 @@ export interface ColumnDefinition {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: HTMLElement) => HTMLElement;
 
     /**
      * cell template
@@ -206,7 +205,7 @@ export interface ColumnDefinition {
      * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
 
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: HTMLElement) => HTMLElement;
 
     /**
      * Whether this column is the row header

@@ -8,7 +8,7 @@ import {
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { tagFor, TemplateElementDependency } from "../patterns/index.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
-import type { ColumnDefinition } from "./data-grid.js";
+import type { ColumnDefinition } from "./data-grid.options.js";
 
 /**
  * Options for data grid cells.

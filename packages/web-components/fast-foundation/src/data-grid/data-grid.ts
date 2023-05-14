@@ -235,6 +235,7 @@ export class FASTDataGrid extends FASTElement {
             this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
         if (this.$fastController.isConnected) {
+            this.dataGridContext.rowsData = this.rowsData;
             this.toggleGeneratedHeader();
             this.deselectAllRows();
         }
@@ -407,6 +408,7 @@ export class FASTDataGrid extends FASTElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.updateGridTemplateColumns();
+        this.dataGridContext.rowsData = this.rowsData;
         this.dataGridContext.selectionBehavior = this.selectionBehavior;
 
         this.dataGridContext.columnDefinitions = this.columnDefinitions || [];
@@ -881,8 +883,6 @@ export class FASTDataGrid extends FASTElement {
                 this.rowElementTag
             );
             this.generatedHeader = (generatedHeaderElement as unknown) as FASTDataGridRow;
-            this.generatedHeader.columnDefinitions = this.columnDefinitions;
-            // this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
@@ -904,17 +904,6 @@ export class FASTDataGrid extends FASTElement {
     ): void => {
         this.deselectAllRows();
         if (mutations && mutations.length) {
-            mutations.forEach((mutation: MutationRecord): void => {
-                mutation.addedNodes.forEach((newNode: Node): void => {
-                    if (
-                        newNode.nodeType === 1 &&
-                        (newNode as Element).getAttribute("role") === "row"
-                    ) {
-                        (newNode as FASTDataGridRow).columnDefinitions = this.columnDefinitions;
-                    }
-                });
-            });
-
             this.queueRowIndexUpdate();
         }
     };
