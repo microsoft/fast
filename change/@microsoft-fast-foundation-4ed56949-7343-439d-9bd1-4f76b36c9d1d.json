@@ -3,5 +3,5 @@
   "comment": "picker show no options",
   "packageName": "@microsoft/fast-foundation",
   "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
