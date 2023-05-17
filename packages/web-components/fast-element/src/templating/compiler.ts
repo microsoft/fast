@@ -189,9 +189,9 @@ function compileAttributes(
 function compileContent(
     context: CompilationContext,
     node: Text,
-    parentId,
-    nodeId,
-    nodeIndex
+    parentId: string,
+    nodeId: string,
+    nodeIndex: number
 ): NextNode {
     const parseResult = Parser.parse(node.textContent!, context.directives);
     if (parseResult === null) {

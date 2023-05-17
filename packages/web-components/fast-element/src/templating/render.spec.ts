@@ -171,7 +171,7 @@ describe("The render", () => {
             it(`can ${operation} an instruction from type and template`, () => {
                 class TestClass {};
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     type: TestClass,
                     template: parentTemplate
                 });
@@ -184,7 +184,7 @@ describe("The render", () => {
             it(`can ${operation} an instruction from type, template, and name`, () => {
                 class TestClass {};
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     type: TestClass,
                     template: parentTemplate,
                     name: "test"
@@ -203,7 +203,7 @@ describe("The render", () => {
                 @customElement(tagName)
                 class TestElement extends FASTElement {}
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     element: TestElement,
                     type: TestClass
                 });
@@ -223,7 +223,7 @@ describe("The render", () => {
                 @customElement(tagName)
                 class TestElement extends FASTElement {}
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     element: TestElement,
                     type: TestClass,
                     name: "test"
@@ -246,7 +246,7 @@ describe("The render", () => {
                 @customElement(tagName)
                 class TestElement extends FASTElement {}
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     element: TestElement,
                     type: TestClass,
                     content
@@ -268,7 +268,7 @@ describe("The render", () => {
                 @customElement(tagName)
                 class TestElement extends FASTElement {}
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     element: TestElement,
                     type: TestClass,
                     content,
@@ -292,7 +292,7 @@ describe("The render", () => {
                 class TestClass {};
                 const tagName = uniqueElementName();
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     tagName,
                     type: TestClass
                 });
@@ -309,7 +309,7 @@ describe("The render", () => {
                 class TestClass {};
                 const tagName = uniqueElementName();
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     tagName,
                     type: TestClass,
                     name: "test"
@@ -329,7 +329,7 @@ describe("The render", () => {
                 const tagName = uniqueElementName();
                 const content = "Hello World!";
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     tagName,
                     type: TestClass,
                     content
@@ -348,7 +348,7 @@ describe("The render", () => {
                 const tagName = uniqueElementName();
                 const content = "Hello World!";
 
-                const instruction = RenderInstruction[operation]({
+                const instruction = (RenderInstruction as any)[operation]({
                     tagName,
                     type: TestClass,
                     content,
@@ -614,11 +614,11 @@ describe("The render", () => {
         }
 
         function createController(source: any, targets: ViewBehaviorTargets) {
-            const unbindables: { unbind(controller: ViewController) }[] = [];
+            const unbindables: { unbind(controller: ViewController): any }[] = [];
 
             return {
                 context: Fake.executionContext(),
-                onUnbind(object) {
+                onUnbind(object:any) {
                     unbindables.push(object);
                 },
                 source,
@@ -728,8 +728,8 @@ describe("The render", () => {
         class RenderSource {
             id = 'child-1';
             @observable knownValue: string = "value";
-            @observable ref: HTMLElement;
-            @observable childElements: Array<HTMLElement>;
+            @observable ref!: HTMLElement;
+            @observable childElements!: Array<HTMLElement>;
         }
 
         it(`creates a template from a tag name`, () => {

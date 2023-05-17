@@ -7,14 +7,14 @@ import { Updates } from "./update-queue.js";
 describe("The ArrayObserver", () => {
     it("can be retrieved through Observable.getNotifier()", () => {
         ArrayObserver.enable();
-        const array = [];
+        const array: any[] = [];
         const notifier = Observable.getNotifier(array);
         expect(notifier).to.be.instanceOf(SubscriberSet);
     });
 
     it("is the same instance for multiple calls to Observable.getNotifier() on the same array", () => {
         ArrayObserver.enable();
-        const array = [];
+        const array: any[] = [];
         const notifier = Observable.getNotifier(array);
         const notifier2 = Observable.getNotifier(array);
         expect(notifier).to.equal(notifier2);
@@ -221,7 +221,7 @@ describe("The ArrayObserver", () => {
         array.sort((a, b) => b - a);
         expect(array).members([4, 3, 2, 1]);
 
-        Array.prototype.sort.call(array, (a, b) => a - b);
+        Array.prototype.sort.call(array, (a: number, b: number) => a - b);
         expect(array).members([1, 2, 3, 4]);
 
         const observer = Observable.getNotifier<ArrayObserver>(array);
@@ -244,7 +244,7 @@ describe("The ArrayObserver", () => {
         expect(changeArgs![0].index).equal(0);
         expect(changeArgs![0].reset).equal(true);
 
-        Array.prototype.sort.call(array, (a, b) => a - b);
+        Array.prototype.sort.call(array, (a: number, b: number) => a - b);
         expect(array).members([1, 2, 3, 4]);
 
         await Updates.next();
@@ -437,7 +437,7 @@ describe("The ArrayObserver", () => {
 
 describe("The array length observer", () => {
     class Model {
-        items: any[];
+        items!: any[];
     }
 
     it("returns zero length if the array is undefined", async () => {

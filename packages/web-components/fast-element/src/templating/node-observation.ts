@@ -49,8 +49,8 @@ export const elements = (selector?: string): ElementsFilter =>
 export abstract class NodeObservationDirective<
     T extends NodeBehaviorOptions
 > extends StatelessAttachedAttributeDirective<T> {
-    private _id: string;
-    private _controllerProperty: string;
+    private _id!: string;
+    private _controllerProperty!: string;
 
     /**
      * The unique id of the factory.
@@ -67,7 +67,7 @@ export abstract class NodeObservationDirective<
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    public targetNodeId: string;
+    public targetNodeId!: string;
 
     /**
      * Bind this behavior to the source.
@@ -102,7 +102,7 @@ export abstract class NodeObservationDirective<
      * @returns The source.
      */
     protected getSource(target: Node) {
-        return target[this._controllerProperty].source;
+        return (target as any)[this._controllerProperty].source;
     }
 
     /**

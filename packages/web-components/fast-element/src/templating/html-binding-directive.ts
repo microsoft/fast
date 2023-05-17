@@ -147,7 +147,7 @@ function updateContent(
 }
 
 interface TokenListState {
-    cv: {};
+    cv: Record<string, any>;
     v: number;
 }
 
@@ -159,10 +159,11 @@ function updateTokenList(
 ): void {
     const lookup = `${this.id}-t`;
     const state: TokenListState =
-        target[lookup] ?? (target[lookup] = { v: 0, cv: Object.create(null) });
+        (target as any)[lookup] ??
+        ((target as any)[lookup] = { v: 0, cv: Object.create(null) });
     const classVersions = state.cv;
     let version = state.v;
-    const tokenList = target[aspect] as DOMTokenList;
+    const tokenList = (target as any)[aspect] as DOMTokenList;
 
     // Add the classes, tracking the version at which they were added.
     if (value !== null && value !== undefined && value.length) {
@@ -191,7 +192,7 @@ function updateTokenList(
     version -= 1;
 
     for (const name in classVersions) {
-        if (classVersions[name] === version) {
+        if (classVersions[name as keyof typeof classVersions] === version) {
             tokenList.remove(name);
         }
     }
@@ -200,7 +201,7 @@ function updateTokenList(
 const sinkLookup: Record<DOMAspect, UpdateTarget> = {
     [DOMAspect.attribute]: DOM.setAttribute,
     [DOMAspect.booleanAttribute]: DOM.setBooleanAttribute,
-    [DOMAspect.property]: (t, a, v) => (t[a] = v),
+    [DOMAspect.property]: (t, a, v) => ((t as any)[a] = v),
     [DOMAspect.content]: updateContent,
     [DOMAspect.tokenList]: updateTokenList,
     [DOMAspect.event]: () => void 0,
@@ -217,38 +218,38 @@ export class HTMLBindingDirective
         ViewBehavior,
         Aspected,
         BindingDirective {
-    private data: string;
+    private data!: string;
     private updateTarget: UpdateTarget | null = null;
 
     /**
      * The unique id of the factory.
      */
-    id: string;
+    id!: string;
 
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    targetNodeId: string;
+    targetNodeId!: string;
 
     /**
      * The tagname associated with the target node.
      */
-    targetTagName: string | null;
+    targetTagName!: string | null;
 
     /**
      * The policy that the created behavior must run under.
      */
-    policy: DOMPolicy;
+    policy!: DOMPolicy;
 
     /**
      * The original source aspect exactly as represented in markup.
      */
-    sourceAspect: string;
+    sourceAspect!: string;
 
     /**
      * The evaluated target aspect, determined after processing the source.
      */
-    targetAspect: string;
+    targetAspect!: string;
 
     /**
      * The type of aspect to target.
@@ -299,7 +300,7 @@ export class HTMLBindingDirective
 
         switch (this.aspectType) {
             case DOMAspect.event:
-                target[this.data] = controller;
+                (target as any)[this.data] = controller;
                 target.addEventListener(
                     this.targetAspect,
                     this,
@@ -311,8 +312,11 @@ export class HTMLBindingDirective
             // intentional fall through
             default:
                 const observer =
-                    target[this.data] ??
-                    (target[this.data] = this.dataBinding.createObserver(this, this));
+                    (target as any)[this.data] ??
+                    ((target as any)[this.data] = this.dataBinding.createObserver(
+                        this,
+                        this
+                    ));
 
                 (observer as any).target = target;
                 (observer as any).controller = controller;
@@ -340,7 +344,9 @@ export class HTMLBindingDirective
 
     /** @internal */
     handleEvent(event: Event): void {
-        const controller = event.currentTarget![this.data] as ViewController;
+        const controller = event.currentTarget![
+            this.data as keyof typeof event.currentTarget
+        ] as ViewController;
 
         if (controller.isBound) {
             ExecutionContext.setEvent(event);

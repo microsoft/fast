@@ -1,6 +1,6 @@
 import type { FASTGlobal } from "./interfaces.js";
 
-if (globalThis.FAST === void 0) {
+if ((globalThis as any).FAST === void 0) {
     Reflect.defineProperty(globalThis, "FAST", {
         value: Object.create(null),
         configurable: false,
@@ -9,7 +9,7 @@ if (globalThis.FAST === void 0) {
     });
 }
 
-const FAST: FASTGlobal = globalThis.FAST;
+const FAST: FASTGlobal = (globalThis as any).FAST;
 
 const debugMessages = {
     [1101 /* needsArrayObservation */]: "Must call enableArrayObservation before observing arrays.",
@@ -58,11 +58,13 @@ Object.assign(FAST, {
         Object.assign(debugMessages, messages);
     },
     warn(code: number, values: Record<string, any> = noValues) {
-        const message = debugMessages[code] ?? "Unknown Warning";
+        const message =
+            debugMessages[code as keyof typeof debugMessages] ?? "Unknown Warning";
         console.warn(formatMessage(message, values));
     },
     error(code: number, values: Record<string, any> = noValues) {
-        const message = debugMessages[code] ?? "Unknown Error";
+        const message =
+            debugMessages[code as keyof typeof debugMessages] ?? "Unknown Error";
         return new Error(formatMessage(message, values));
     },
 });

@@ -285,7 +285,7 @@ export function computedState<T>(
     computedNotifier = Observable.binding(computer, computedSubscriber);
     computedNotifier.setMode(false);
 
-    let cleanup;
+    let cleanup: any;
     let setupNotifier: ExpressionNotifier;
 
     if (setupCallback) {

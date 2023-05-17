@@ -62,7 +62,7 @@ describe("State", () => {
 
         let callCount = 0;
         const subscriber = {
-            handleChange(binding, observer) {
+            handleChange(binding:any, observer: any) {
                 callCount++;
             }
         };
@@ -154,7 +154,7 @@ describe("OwnedState", () => {
 
         let callCount = 0;
         const subscriber = {
-            handleChange(binding, observer) {
+            handleChange(binding: any, observer: any) {
                 callCount++;
             }
         };

@@ -1,3 +1,5 @@
+import type { DOMAspect, DOMSink } from "../dom.js";
+
 export function toHTML(node: Node, preserveCommentMarkup: boolean = false): string {
     return Array.from(node.childNodes)
         .map((x: any) => {
@@ -14,8 +16,13 @@ export function createTrackableDOMPolicy() {
     return {
         used: false,
         createHTML: (html: string) => html,
-        protect(tagName, aspect, aspectName, sink) {
-            return (node, aspectName, value, ...args) => {
+        protect(
+            tagName: string | null,
+            aspect: DOMAspect,
+            aspectName: string,
+            sink: DOMSink
+        ) {
+            return (node: Node, aspectName:string, value: string, ...args: any[]) => {
                 this.used = true;
                 sink(node, aspectName, value, ...args);
             };

@@ -116,7 +116,7 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
                     }
                 })
                 class MyElement extends FASTElement {
-                    public pChild: HTMLParagraphElement;
+                    public pChild!: HTMLParagraphElement;
 
                     public get styleTarget(): StyleTarget {
                         return this.pChild.getRootNode() as ShadowRoot;
@@ -264,7 +264,7 @@ describe("StyleElementStrategy", () => {
             }
         })
         class MyElement extends FASTElement {
-            public pChild: HTMLParagraphElement;
+            public pChild!: HTMLParagraphElement;
 
             public get styleTarget(): ShadowRoot {
                 return this.pChild.getRootNode() as ShadowRoot;
@@ -558,7 +558,7 @@ describe("cssPartial", () => {
                 expect(style.styles.includes(styles)).to.be.true;
                 addStylesCalled = true;
             },
-            removeStyles(styles) {},
+            removeStyles() {},
             addBehavior() {},
             removeBehavior() {},
             onUnbind() {}

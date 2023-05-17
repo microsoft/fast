@@ -59,7 +59,7 @@ export const CSSDirective = Object.freeze({
      * Defines a CSSDirective.
      * @param type - The type to define as a directive.
      */
-    define<TType extends Constructable<CSSDirective>>(type): TType {
+    define<TType extends Constructable<CSSDirective>>(type: any): TType {
         registry.register({ type });
         return type;
     },

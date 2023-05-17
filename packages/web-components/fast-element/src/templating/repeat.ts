@@ -65,10 +65,10 @@ function bindWithPositioning(
  * @public
  */
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
-    private location: Node;
-    private controller: ViewController;
+    private location!: Node;
+    private controller!: ViewController;
 
-    private template: SyntheticViewTemplate;
+    private template!: SyntheticViewTemplate;
     private templateBindingObserver: ExpressionObserver<TSource, SyntheticViewTemplate>;
     private items: readonly any[] | null = null;
     private itemsObserver: Notifier | null = null;
@@ -138,9 +138,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             this.template = this.templateBindingObserver.bind(this.controller);
 
             this.refreshAllViews(true);
-        } else if (!args[0]) {
+        } else if (!(args as Splice[])[0]) {
             return;
-        } else if (args[0].reset) {
+        } else if ((args as Splice[])[0].reset) {
             this.refreshAllViews();
         } else {
             this.updateViews(args as Splice[]);
@@ -297,7 +297,7 @@ export class RepeatDirective<TSource = any>
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    targetNodeId: string;
+    targetNodeId!: string;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.

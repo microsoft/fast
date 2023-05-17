@@ -85,9 +85,9 @@ export interface DOMPolicy {
     ): DOMSink;
 }
 
-const createHTML = html => html;
-const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
-    ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+const createHTML = (html: HTMLElement) => html;
+const fastTrustedType: TrustedTypesPolicy = (globalThis as any).trustedTypes
+    ? (globalThis as any).trustedTypes.createPolicy("fast-html", { createHTML })
     : { createHTML };
 
 let defaultPolicy: DOMPolicy = Object.freeze({

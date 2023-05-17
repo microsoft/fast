@@ -8,7 +8,7 @@ const propConfig = {
     writable: false,
 };
 
-if (globalThis.FAST === void 0) {
+if ((globalThis as any).FAST === void 0) {
     Reflect.defineProperty(globalThis, "FAST", {
         value: Object.create(null),
         ...propConfig,
@@ -19,7 +19,7 @@ if (globalThis.FAST === void 0) {
  * The FAST global.
  * @public
  */
-export const FAST: FASTGlobal = globalThis.FAST;
+export const FAST: FASTGlobal = (globalThis as any).FAST;
 
 if (FAST.getById === void 0) {
     const storage = Object.create(null);

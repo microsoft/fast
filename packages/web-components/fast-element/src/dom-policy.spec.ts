@@ -3,18 +3,18 @@ import { DOMPolicy, DOMPolicyOptions } from "./dom-policy.js";
 import { DOM, DOMAspect, DOMSink } from "./dom.js";
 
 describe("the dom policy helper", () => {
-    const setProperty = (node, name, value) => node[name] = value;
+    const setProperty: DOMSink = (node, name, value) => (node as any)[name] = value;
 
     it("can create a policy with a custom trusted types policy", () => {
         let invoked = false;
         function createTrustedType() {
-            const createHTML = html => {
+            const createHTML = (html: HTMLElement) => {
                 invoked = true;
                 return html;
             };
 
-            return globalThis.trustedTypes
-                ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+            return (globalThis as any).trustedTypes
+                ? (globalThis as any).trustedTypes.createPolicy("fast-html", { createHTML })
                 : { createHTML };
         }
 

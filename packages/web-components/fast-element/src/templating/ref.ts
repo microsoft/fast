@@ -13,7 +13,7 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    targetNodeId: string;
+    targetNodeId!: string;
 
     /**
      * Bind this behavior.

@@ -3,7 +3,7 @@ import { ElementStyles } from "../index.debug.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { observable, Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
-import { html } from "../templating/template.js";
+import { html, ViewTemplate } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
 import { ElementController } from "./element-controller.js";
@@ -28,7 +28,8 @@ describe("The ElementController", () => {
         const name = uniqueElementName();
         const definition = FASTElementDefinition.compose(
             class ControllerTest extends BaseClass {
-                static definition = { ...config, name };
+                static definition: Omit<PartialFASTElementDefinition, "name"> & { name: string; }
+                = { ...config, name };
             }
         ).define();
 
@@ -445,7 +446,7 @@ describe("The ElementController", () => {
                     controller.addBehavior(this.child);
                 }
 
-                disconnectedCallback(controller) {
+                disconnectedCallback(controller: HostController<any>) {
                     controller.removeBehavior(this.child);
                 }
             }
@@ -561,7 +562,7 @@ describe("The ElementController", () => {
 
             FASTElementDefinition.compose(
                 class TestElement extends FASTElement {
-                    static definition = {
+                    static definition: {name: string; template: ViewTemplate<any, any>} = {
                         name,
                         template: html`Test 2`
                     };

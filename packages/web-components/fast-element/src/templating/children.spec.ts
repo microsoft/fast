@@ -25,8 +25,8 @@ describe("The children", () => {
 
     context("behavior", () => {
         class Model {
-            @observable nodes;
-            reference: HTMLElement;
+            @observable nodes: any;
+            reference!: HTMLElement;
         }
 
         function createAndAppendChildren(host: HTMLElement, elementName = "div") {

@@ -204,7 +204,7 @@ export class AttributeDefinition implements Accessor {
      * @param value - The value to set the attribute/property to.
      */
     public setValue(source: HTMLElement, newValue: any): void {
-        const oldValue = source[this.fieldName];
+        const oldValue = (source as any)[this.fieldName];
         const converter = this.converter;
 
         if (converter !== void 0) {
@@ -212,12 +212,12 @@ export class AttributeDefinition implements Accessor {
         }
 
         if (oldValue !== newValue) {
-            source[this.fieldName] = newValue;
+            (source as any)[this.fieldName] = newValue;
 
             this.tryReflectToAttribute(source);
 
             if (this.hasCallback) {
-                source[this.callbackName](oldValue, newValue);
+                (source as any)[this.callbackName](oldValue, newValue);
             }
 
             ((source as any).$fastController as Notifier).notify(this.name);
@@ -230,7 +230,7 @@ export class AttributeDefinition implements Accessor {
      */
     public getValue(source: HTMLElement): any {
         Observable.track(source, this.name);
-        return source[this.fieldName];
+        return (source as any)[this.fieldName];
     }
 
     /** @internal */
@@ -255,7 +255,7 @@ export class AttributeDefinition implements Accessor {
         Updates.enqueue(() => {
             guards.add(element);
 
-            const latestValue = element[this.fieldName];
+            const latestValue = (element as any)[this.fieldName];
 
             switch (mode) {
                 case reflectMode:

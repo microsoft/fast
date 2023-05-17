@@ -46,7 +46,7 @@ export type FASTContextRequestStrategy = <T extends UnknownContext>(
     target: EventTarget,
     context: T,
     callback: ContextCallback<ContextType<T>>,
-    multiple
+    multiple: boolean
 ) => void;
 
 const contextsByName = new Map<string, FASTContext<unknown>>();
@@ -260,7 +260,10 @@ export const Context = Object.freeze({
 
         Reflect.defineProperty(target, propertyName, {
             get: function (this: EventTarget) {
-                return this[field] ?? (this[field] = Context.get(this, context));
+                return (
+                    (this as any)[field] ??
+                    ((this as any)[field] = Context.get(this, context))
+                );
             },
         });
     },
