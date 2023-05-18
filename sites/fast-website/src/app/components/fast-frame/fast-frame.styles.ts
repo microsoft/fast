@@ -87,7 +87,7 @@ export const FastFrameStyles = css`
     }
 
     .content .content-badge .content-badge-highlight {
-        color: ${neutralForegroundHint};
+        color: ${neutralForegroundRest};
     }
 
     .content .heading {

@@ -33,7 +33,7 @@ module.exports = {
         },
         navbar: {
             logo: {
-                alt: `Line drawing of a small moon orbiting around a planet with the words FAST next to it`,
+                alt: `FAST`,
                 srcDark: "/fast-inline-logo.svg",
                 src: "/fast-inline-logo-light.svg",
 
