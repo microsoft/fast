@@ -311,10 +311,11 @@ export class FASTPicker extends FormAssociatedPicker {
     public filteredOptionsList: string[] = [];
     protected filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
-            this.showNoOptions =
-                this.filteredOptionsList.length === 0 &&
-                this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
-            this.setFocusedOption(this.showNoOptions ? -1 : 0);
+            Updates.enqueue(() => {
+                this.showNoOptions =
+                    this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
+                this.setFocusedOption(this.showNoOptions ? -1 : 0);
+            });
         }
     }
 
@@ -972,7 +973,7 @@ export class FASTPicker extends FormAssociatedPicker {
 
         focusedOption.setAttribute("aria-selected", "true");
 
-        this.menuElement.scrollTo(0, focusedOption.offsetTop);
+        focusedOption.scrollIntoView(true);
     }
 
     /**
