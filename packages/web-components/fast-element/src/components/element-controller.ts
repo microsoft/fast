@@ -355,7 +355,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    this.addBehavior(sourceBehaviors[i]);
+                    this.removeBehavior(sourceBehaviors[i]);
                 }
             }
         }
