@@ -24,7 +24,7 @@ export interface PixelBlob {
 export function loadImageData(source: string): Promise<ImageData> {
     return new Promise<ImageData>(
         (
-            resolve: (value?: ImageData | PromiseLike<ImageData>) => void,
+            resolve: (value: ImageData | PromiseLike<ImageData>) => void,
             reject: (reason?: any) => void
         ): void => {
             const image: HTMLImageElement = new Image();

@@ -1,15 +1,13 @@
 {
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
-        "strictNullChecks": false,
-        "noImplicitAny": false,
-        "strictPropertyInitialization": false,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "strictPropertyInitialization": true,
         "outDir": "dist",
         "rootDir": "src",
         "baseUrl": ".",
-        "types": [
-            "mocha"
-        ]
+        "types": ["mocha"]
     },
     "include": ["src"]
 }

@@ -117,7 +117,7 @@ function calcRgbOverlay(
 export function calculateOverlayColor(
     rgbMatch: ColorRGBA64,
     rgbBackground: ColorRGBA64,
-    rgbOverlay: ColorRGBA64 = null
+    rgbOverlay: ColorRGBA64 = null!
 ): ColorRGBA64 {
     let alpha: number = 0;
     let overlay: ColorRGBA64 = rgbOverlay;

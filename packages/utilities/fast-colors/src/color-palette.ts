@@ -82,15 +82,26 @@ export class ColorPalette {
     public updatePaletteGenerationValues(newConfig: ColorPaletteConfig): boolean {
         let changed: boolean = false;
         for (const key in newConfig) {
-            if (this.config[key]) {
-                if (this.config[key].equalValue) {
-                    if (!this.config[key].equalValue(newConfig[key])) {
-                        this.config[key] = newConfig[key];
+            if (this.config[key as keyof typeof this.config]) {
+                if ((this.config[key as keyof typeof this.config] as any).equalValue) {
+                    if (
+                        !(this.config[key as keyof typeof this.config] as any).equalValue(
+                            newConfig[key as keyof typeof this.config]
+                        )
+                    ) {
+                        (this.config[key as keyof typeof this.config] as any) = newConfig[
+                            key as keyof typeof this.config
+                        ];
                         changed = true;
                     }
                 } else {
-                    if (newConfig[key] !== this.config[key]) {
-                        this.config[key] = newConfig[key];
+                    if (
+                        newConfig[key as keyof typeof this.config] !==
+                        this.config[key as keyof typeof this.config]
+                    ) {
+                        (this.config[key as keyof typeof this.config] as any) = newConfig[
+                            key as keyof typeof this.config
+                        ];
                         changed = true;
                     }
                 }
@@ -104,9 +115,9 @@ export class ColorPalette {
 
     private updatePaletteColors(): void {
         const scale: ColorScale = this.generatePaletteColorScale();
-        for (let i: number = 0; i < this.config.steps; i++) {
+        for (let i: number = 0; i < this.config.steps!; i++) {
             this.palette[i] = scale.getColor(
-                i / (this.config.steps - 1),
+                i / (this.config.steps! - 1),
                 this.config.interpolationMode
             );
         }
@@ -116,34 +127,34 @@ export class ColorPalette {
         // Even when config.baseScalePosition is specified, using 0.5 for the baseColor
         // in the baseScale gives better results. Otherwise very off-center palettes
         // tend to go completely grey at the end furthest from the specified base color.
-        const baseColorHSL: ColorHSL = rgbToHSL(this.config.baseColor);
+        const baseColorHSL: ColorHSL = rgbToHSL(this.config.baseColor!);
         const baseScale: ColorScale = new ColorScale([
-            { position: 0, color: this.config.scaleColorLight },
-            { position: 0.5, color: this.config.baseColor },
-            { position: 1, color: this.config.scaleColorDark },
+            { position: 0, color: this.config.scaleColorLight! },
+            { position: 0.5, color: this.config.baseColor! },
+            { position: 1, color: this.config.scaleColorDark! },
         ]);
         const trimmedScale: ColorScale = baseScale.trim(
-            this.config.clipLight,
-            1 - this.config.clipDark
+            this.config.clipLight!,
+            1 - this.config.clipDark!
         );
         const trimmedLight: ColorRGBA64 = trimmedScale.getColor(0);
         const trimmedDark: ColorRGBA64 = trimmedScale.getColor(1);
         let adjustedLight: ColorRGBA64 = trimmedLight;
         let adjustedDark: ColorRGBA64 = trimmedDark;
 
-        if (baseColorHSL.s >= this.config.saturationAdjustmentCutoff) {
-            adjustedLight = saturateViaLCH(adjustedLight, this.config.saturationLight);
-            adjustedDark = saturateViaLCH(adjustedDark, this.config.saturationDark);
+        if (baseColorHSL.s >= this.config.saturationAdjustmentCutoff!) {
+            adjustedLight = saturateViaLCH(adjustedLight, this.config.saturationLight!);
+            adjustedDark = saturateViaLCH(adjustedDark, this.config.saturationDark!);
         }
 
         if (this.config.multiplyLight !== 0) {
             const multiply: ColorRGBA64 = blendMultiply(
-                this.config.baseColor,
+                this.config.baseColor!,
                 adjustedLight
             );
             adjustedLight = interpolateByColorSpace(
-                this.config.multiplyLight,
-                this.config.interpolationMode,
+                this.config.multiplyLight!,
+                this.config.interpolationMode!,
                 adjustedLight,
                 multiply
             );
@@ -151,12 +162,12 @@ export class ColorPalette {
 
         if (this.config.multiplyDark !== 0) {
             const multiply: ColorRGBA64 = blendMultiply(
-                this.config.baseColor,
+                this.config.baseColor!,
                 adjustedDark
             );
             adjustedDark = interpolateByColorSpace(
-                this.config.multiplyDark,
-                this.config.interpolationMode,
+                this.config.multiplyDark!,
+                this.config.interpolationMode!,
                 adjustedDark,
                 multiply
             );
@@ -164,12 +175,12 @@ export class ColorPalette {
 
         if (this.config.overlayLight !== 0) {
             const overlay: ColorRGBA64 = blendOverlay(
-                this.config.baseColor,
+                this.config.baseColor!,
                 adjustedLight
             );
             adjustedLight = interpolateByColorSpace(
-                this.config.overlayLight,
-                this.config.interpolationMode,
+                this.config.overlayLight!,
+                this.config.interpolationMode!,
                 adjustedLight,
                 overlay
             );
@@ -177,12 +188,12 @@ export class ColorPalette {
 
         if (this.config.overlayDark !== 0) {
             const overlay: ColorRGBA64 = blendOverlay(
-                this.config.baseColor,
+                this.config.baseColor!,
                 adjustedDark
             );
             adjustedDark = interpolateByColorSpace(
-                this.config.overlayDark,
-                this.config.interpolationMode,
+                this.config.overlayDark!,
+                this.config.interpolationMode!,
                 adjustedDark,
                 overlay
             );
@@ -191,27 +202,27 @@ export class ColorPalette {
         if (this.config.baseScalePosition) {
             if (this.config.baseScalePosition <= 0) {
                 return new ColorScale([
-                    { position: 0, color: this.config.baseColor },
+                    { position: 0, color: this.config.baseColor! },
                     { position: 1, color: adjustedDark.clamp() },
                 ]);
             } else if (this.config.baseScalePosition >= 1) {
                 return new ColorScale([
                     { position: 0, color: adjustedLight.clamp() },
-                    { position: 1, color: this.config.baseColor },
+                    { position: 1, color: this.config.baseColor! },
                 ]);
             }
             return new ColorScale([
                 { position: 0, color: adjustedLight.clamp() },
                 {
                     position: this.config.baseScalePosition,
-                    color: this.config.baseColor,
+                    color: this.config.baseColor!,
                 },
                 { position: 1, color: adjustedDark.clamp() },
             ]);
         }
         return new ColorScale([
             { position: 0, color: adjustedLight.clamp() },
-            { position: 0.5, color: this.config.baseColor },
+            { position: 0.5, color: this.config.baseColor! },
             { position: 1, color: adjustedDark.clamp() },
         ]);
     }
@@ -336,8 +347,8 @@ export interface CenteredRescaleConfig {
 export const defaultCenteredRescaleConfig: CenteredRescaleConfig = {
     targetSize: 63,
     spacing: 4,
-    scaleColorLight: ColorPalette.defaultPaletteConfig.scaleColorLight,
-    scaleColorDark: ColorPalette.defaultPaletteConfig.scaleColorDark,
+    scaleColorLight: ColorPalette.defaultPaletteConfig.scaleColorLight!,
+    scaleColorDark: ColorPalette.defaultPaletteConfig.scaleColorDark!,
 };
 
 /**

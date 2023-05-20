@@ -28,7 +28,7 @@ export interface ComponentStateColorPaletteConfig {
  */
 export class ComponentStateColorPalette {
     public static readonly defaultPaletteConfig: ComponentStateColorPaletteConfig = {
-        baseColor: parseColorHexRGB("#808080"),
+        baseColor: parseColorHexRGB("#808080")!,
         steps: 94,
     };
 
@@ -45,7 +45,7 @@ export class ComponentStateColorPalette {
     }
 
     private regenPalettes(): void {
-        let steps: number = this.config.steps;
+        let steps: number = this.config.steps!;
         if (isNaN(steps) || steps < 3) {
             steps = 3;
         }
@@ -79,8 +79,8 @@ export class ComponentStateColorPalette {
 
         // Find the requested base color on the adjusted luminance reference ramp.
         // There is no _right_ way to desaturate a color, and both methods we've tested have value, so average them out.
-        const baseColorLum1: number = rgbToLinearLuminance(this.config.baseColor);
-        const baseColorLum2: number = rgbToHSL(this.config.baseColor).l;
+        const baseColorLum1: number = rgbToLinearLuminance(this.config.baseColor!);
+        const baseColorLum2: number = rgbToHSL(this.config.baseColor!).l;
         const baseColorLum: number = (baseColorLum1 + baseColorLum2) / 2;
         const baseColorRefIndex: number = this.matchRelativeLuminanceIndex(
             baseColorLum,
@@ -100,20 +100,20 @@ export class ComponentStateColorPalette {
         // luminace as above. Need to derive a relative luminance version of the color to better match on the dark end.
 
         // Find the dark cutoff and darkest variations of the requested base color.
-        const baseColorHSL: ColorHSL = rgbToHSL(this.config.baseColor);
+        const baseColorHSL: ColorHSL = rgbToHSL(this.config.baseColor!);
         const darkBaseColor: ColorRGBA64 = hslToRGB(
             ColorHSL.fromObject({
                 h: baseColorHSL.h,
                 s: baseColorHSL.s,
                 l: darkLum,
-            })
+            })!
         );
         const darkestBaseColor: ColorRGBA64 = hslToRGB(
             ColorHSL.fromObject({
                 h: baseColorHSL.h,
                 s: baseColorHSL.s,
                 l: darkestLum,
-            })
+            })!
         );
 
         // Create the gradient stops, including the base color and anchor colors for the dark end compression.
@@ -124,7 +124,7 @@ export class ComponentStateColorPalette {
         };
         fullColorScaleStops[1] = {
             position: baseColorPercent,
-            color: this.config.baseColor,
+            color: this.config.baseColor!,
         };
         fullColorScaleStops[2] = {
             position: darkPercent,

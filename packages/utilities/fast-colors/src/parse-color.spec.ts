@@ -70,8 +70,8 @@ describe("Color parsing and toString", (): void => {
                     const hex: string = `#${r + r + g + g + b + b}`;
                     const shorthandHex: string = `#${r + g + b}`;
 
-                    const hexColor: ColorRGBA64 = parseColorHexRGB(hex);
-                    const hexShorthandColor: ColorRGBA64 = parseColorHexRGB(shorthandHex);
+                    const hexColor: ColorRGBA64 = parseColorHexRGB(hex)!;
+                    const hexShorthandColor: ColorRGBA64 = parseColorHexRGB(shorthandHex)!;
 
                     expect(hexColor!.r).to.equal(hexShorthandColor!.r);
                     expect(hexColor!.g).to.equal(hexShorthandColor!.g);
@@ -114,10 +114,10 @@ describe("Color parsing and toString", (): void => {
                         const hex: string = `#${a + a + r + r + g + g + b + b}`;
                         const shorthandHex: string = `#${a + r + g + b}`;
 
-                        const hexColor: ColorRGBA64 = parseColorHexARGB(hex);
+                        const hexColor: ColorRGBA64 = parseColorHexARGB(hex)!;
                         const hexShorthandColor: ColorRGBA64 = parseColorHexARGB(
                             shorthandHex
-                        );
+                        )!;
 
                         expect(hexColor!.a).to.equal(hexShorthandColor!.a);
                         expect(hexColor!.r).to.equal(hexShorthandColor!.r);
@@ -154,10 +154,10 @@ describe("Color parsing and toString", (): void => {
                         const hex: string = `#${r + r + g + g + b + b + a + a}`;
                         const shorthandHex: string = `#${r + g + b + a}`;
 
-                        const hexColor: ColorRGBA64 = parseColorHexRGBA(hex);
+                        const hexColor: ColorRGBA64 = parseColorHexRGBA(hex)!;
                         const hexShorthandColor: ColorRGBA64 = parseColorHexRGBA(
                             shorthandHex
-                        );
+                        )!;
 
                         expect(hexColor!.r).to.equal(hexShorthandColor!.r);
                         expect(hexColor!.g).to.equal(hexShorthandColor!.g);
