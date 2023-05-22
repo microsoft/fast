@@ -1,0 +1,7 @@
+{
+    "type": "prerelease",
+    "comment": "fixed a bug where re-binding a ChildrenDirective instance would throw a runtime exception from the mutation handler",
+    "packageName": "@microsoft/fast-element",
+    "email": "nicholasrice@users.noreply.github.com",
+    "dependentChangeType": "prerelease"
+}
