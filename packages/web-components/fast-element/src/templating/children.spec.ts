@@ -5,7 +5,7 @@ import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
 import { Fake } from "../testing/fakes.js";
 import { html } from "./template.js";
-import { ref, RefDirective } from "./ref.js";
+import { ref } from "./ref.js";
 
 describe("The children", () => {
     context("template function", () => {
