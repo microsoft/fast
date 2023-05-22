@@ -45,7 +45,7 @@ export type ChildrenDirectiveOptions<T = any> =
 export class ChildrenDirective extends NodeObservationDirective<
     ChildrenDirectiveOptions
 > {
-    private observerProperty = `${this.id}-o`;
+    private observerProperty = Symbol();
 
     /**
      * Creates an instance of ChildrenDirective.
