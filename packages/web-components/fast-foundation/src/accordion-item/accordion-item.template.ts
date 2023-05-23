@@ -17,6 +17,7 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
             role="heading"
             aria-level="${x => x.headinglevel}"
         >
+            ${startSlotTemplate(options)}
             <button
                 class="button"
                 part="button"
@@ -27,17 +28,16 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             >
-                ${startSlotTemplate(options)}
                 <span class="heading-content" part="heading-content">
                     <slot name="heading"></slot>
                 </span>
-                ${endSlotTemplate(options)}
-                <span class="expand-collapse-icon" part="expand-collapse-icon" aria-hidden="true">
-                    <slot name="expand-collapse-icon">
-                        ${staticallyCompose(options.expandCollapseIcon)}
-                    </slot>
-                <span>
             </button>
+            ${endSlotTemplate(options)}
+            <span class="expand-collapse-icon" part="expand-collapse-icon" aria-hidden="true">
+                <slot name="expand-collapse-icon">
+                    ${staticallyCompose(options.expandCollapseIcon)}
+                </slot>
+            <span>
         </div>
         <div
             class="panel"
