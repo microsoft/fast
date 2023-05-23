@@ -3,5 +3,5 @@
   "comment": "Adds displayName to exported React wrappers",
   "packageName": "@microsoft/fast-react-wrapper",
   "email": "ryan@ryanmerrill.net",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
