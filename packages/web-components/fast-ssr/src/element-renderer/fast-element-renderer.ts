@@ -116,13 +116,17 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
     }
 }
 
-export abstract class SyncFASTElementRenderer extends FASTElementRenderer
-    implements ElementRenderer {
+export abstract class SyncFASTElementRenderer
+    extends FASTElementRenderer
+    implements ElementRenderer
+{
     renderAttributes = renderAttributesSync;
     renderShadow = renderShadow;
 }
-export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
-    implements AsyncElementRenderer {
+export abstract class AsyncFASTElementRenderer
+    extends FASTElementRenderer
+    implements AsyncElementRenderer
+{
     constructor(tagName: string, renderInfo: RenderInfo) {
         super(tagName, renderInfo);
 
@@ -207,7 +211,7 @@ function* renderShadow(
 
     if (view !== null) {
         yield* this.templateRenderer.renderOpCodes(
-            ((view as unknown) as SSRView).codes,
+            (view as unknown as SSRView).codes,
             renderInfo,
             this.element,
             ExecutionContext.default
