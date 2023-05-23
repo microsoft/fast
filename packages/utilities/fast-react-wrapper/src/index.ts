@@ -1,9 +1,9 @@
-import type ReactModule from "react";
 import {
     Constructable,
     FASTElementDefinition,
     Observable,
 } from "@microsoft/fast-element";
+import type ReactModule from "react";
 
 const reservedReactProperties = new Set([
     "children",
@@ -79,9 +79,10 @@ export type ReactWrapperProps<
  * A React component that wraps a Web Component.
  * @public
  */
-export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<
-    ReactModule.Component<ReactWrapperProps<TElement, TEvents>>
->;
+export interface ReactWrapper<TElement extends HTMLElement, TEvents>
+    extends Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>> {
+    displayName?: string;
+}
 
 // There are 2 kinds of refs and there's no built in React API to set one.
 function setRef(ref: React.Ref<unknown>, value: Element | null) {
@@ -311,7 +312,7 @@ export function reactWrapper(
             }
         }
 
-        ReactComponent.displayName = config.name ?? "UnnamedComponent";
+        ReactComponent.displayName = getTagName(type, config);
 
         const reactComponent = React.forwardRef(
             (
@@ -323,24 +324,17 @@ export function reactWrapper(
                     { ...props, __forwardedRef: ref } as InternalProps,
                     props?.children
                 )
-        ) as React.ComponentType<any>;
+        ) as ReactWrapper<TElement, TEvents>;
 
-        reactComponent.displayName = config.name ?? "UnnamedComponent";
-
-        const reactWrapperComponent = (reactComponent as unknown) as ReactWrapper<
-            TElement,
-            TEvents
-        >;
+        reactComponent.displayName = getTagName(type, config);
 
         if (!wrappersCache.has(type)) {
             wrappersCache.set(type, new Map<string, any>());
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        wrappersCache
-            .get(type)!
-            .set(config.name ?? DEFAULT_CACHE_NAME, reactWrapperComponent);
+        wrappersCache.get(type)!.set(config.name ?? DEFAULT_CACHE_NAME, reactComponent);
 
-        return reactWrapperComponent;
+        return reactComponent;
     }
     return wrap;
 }
