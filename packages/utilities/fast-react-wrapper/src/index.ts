@@ -311,6 +311,8 @@ export function reactWrapper(
             }
         }
 
+        ReactComponent.displayName = config.name ?? "UnnamedComponent";
+
         const reactComponent = React.forwardRef(
             (
                 props?: ReactWrapperProps<TElement, TEvents>,
@@ -321,16 +323,24 @@ export function reactWrapper(
                     { ...props, __forwardedRef: ref } as InternalProps,
                     props?.children
                 )
-        ) as ReactWrapper<TElement, TEvents>;
+        ) as React.ComponentType<any>;
+
+        reactComponent.displayName = config.name ?? "UnnamedComponent";
+
+        const reactWrapperComponent = (reactComponent as unknown) as ReactWrapper<
+            TElement,
+            TEvents
+        >;
 
         if (!wrappersCache.has(type)) {
             wrappersCache.set(type, new Map<string, any>());
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        wrappersCache.get(type)!.set(config.name ?? DEFAULT_CACHE_NAME, reactComponent);
+        wrappersCache
+            .get(type)!
+            .set(config.name ?? DEFAULT_CACHE_NAME, reactWrapperComponent);
 
-        return reactComponent;
+        return reactWrapperComponent;
     }
-
     return wrap;
 }
