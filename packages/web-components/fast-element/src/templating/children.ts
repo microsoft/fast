@@ -66,10 +66,10 @@ export class ChildrenDirective extends NodeObservationDirective<
         if (!observer) {
             observer = new MutationObserver(this.handleEvent);
             observer.toJSON = noop;
-            observer.target = target;
             target[this.observerProperty] = observer;
         }
 
+        observer.target = target;
         observer.observe(target, this.options);
     }
 

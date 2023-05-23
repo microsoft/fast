@@ -6,6 +6,7 @@ import { Updates } from "../observation/update-queue.js";
 import { Fake } from "../testing/fakes.js";
 import { html } from "./template.js";
 import { ref } from "./ref.js";
+import { computedState } from "../state/state.js";
 
 describe("The children", () => {
     context("template function", () => {
@@ -184,6 +185,27 @@ describe("The children", () => {
             await Updates.next();
 
             expect(model.nodes).members([]);
+        });
+        it("re-watches when re-bound", async () => {
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
+            const behavior = new ChildrenDirective({
+                property: "nodes",
+            });
+            behavior.targetNodeId = nodeId;
+            const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            behavior.unbind(controller);
+            behavior.bind(controller);
+
+            const element = document.createElement("div");
+            host.appendChild(element);
+
+            await Updates.next();
+
+            expect(model.nodes.includes(element)).to.equal(true)
         });
 
         it("should not throw if DOM stringified", () => {
