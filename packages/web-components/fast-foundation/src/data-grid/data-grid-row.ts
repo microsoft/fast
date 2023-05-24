@@ -294,9 +294,9 @@ export class FASTDataGridRow extends FASTElement {
             case keyEnd:
                 if (!e.ctrlKey) {
                     // focus last cell of the row
-                    (this.cellElements[
-                        this.cellElements.length - 1
-                    ] as HTMLElement).focus();
+                    (
+                        this.cellElements[this.cellElements.length - 1] as HTMLElement
+                    ).focus();
                     e.preventDefault();
                 }
                 break;

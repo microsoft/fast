@@ -636,7 +636,7 @@ export const PaletteDirectionValue: Readonly<{
 }>;
 
 // @public
-export type PaletteDirectionValue = typeof PaletteDirectionValue[keyof typeof PaletteDirectionValue];
+export type PaletteDirectionValue = (typeof PaletteDirectionValue)[keyof typeof PaletteDirectionValue];
 
 // @public
 export class PaletteRGB extends BasePalette<SwatchRGB> {

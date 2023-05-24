@@ -14,24 +14,21 @@ export const communityContentPlacementData: CommunityContentPlacementData[] = [
     {
         url: "https://discord.gg/FcSNfg4",
         anchorText: "Join the Discord Chat",
-        body:
-            "Join our active community on Discord. Follow the latest updates and contributions, ask questions, give feedback, or keep up on our reading list.",
+        body: "Join our active community on Discord. Follow the latest updates and contributions, ask questions, give feedback, or keep up on our reading list.",
         header: "Discord",
         icon: DiscordIcon,
     },
     {
         url: "https://twitter.com/FAST_UI",
         anchorText: "Follow us on Twitter",
-        body:
-            "Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks.",
+        body: "Follow along as we share out the latest happenings on Twitter. You will find important updates, announcements, and sneak peeks.",
         header: "Twitter",
         icon: TwitterIcon,
     },
     {
         url: "https://github.com/microsoft/fast",
         anchorText: "Get Started on GitHub",
-        body:
-            "Explore the FAST repository on GitHub and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
+        body: "Explore the FAST repository on GitHub and try out our components, utilities, and tools. Or, mix-and-match with your own solutions.",
         header: "GitHub",
         icon: GithubIcon,
     },

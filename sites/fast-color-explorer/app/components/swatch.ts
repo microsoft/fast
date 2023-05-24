@@ -17,12 +17,8 @@ const template = html<AppSwatch>`
             style="${x => x.iconStyle}"
             title="${x => x.contrastMessage}"
         ></div>
-        <code class="recipe-name">
-            ${x => x.recipeName}
-        </code>
-        <code class="hex-code">
-            ${x => x.colorValue}
-        </code>
+        <code class="recipe-name">${x => x.recipeName}</code>
+        <code class="hex-code">${x => x.colorValue}</code>
     </template>
 `;
 

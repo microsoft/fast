@@ -4,9 +4,7 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTabPanel } from "../tab-panel.js";
 
 export const storyTemplate = html<StoryArgs<FASTTabPanel>>`
-    <fast-tab-panel>
-        ${x => x.storyContent}
-    </fast-tab-panel>
+    <fast-tab-panel>${x => x.storyContent}</fast-tab-panel>
 `;
 
 export default {

@@ -64,23 +64,17 @@ function fastSSR(): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
-function fastSSR(
-    config: Omit<SSRConfiguration, "renderMode">
-): {
+function fastSSR(config: Omit<SSRConfiguration, "renderMode">): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 /** @beta */
-function fastSSR(
-    config: SSRConfiguration & Record<"renderMode", "sync">
-): {
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "sync">): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
 /** @beta */
-function fastSSR(
-    config: SSRConfiguration & Record<"renderMode", "async">
-): {
+function fastSSR(config: SSRConfiguration & Record<"renderMode", "async">): {
     templateRenderer: AsyncTemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<AsyncFASTElementRenderer>;
 };
@@ -100,9 +94,11 @@ function fastSSR(
  * @beta
  */
 function fastSSR(config?: SSRConfiguration): any {
-    config = { renderMode: "sync", deferHydration: false, ...config } as Required<
-        SSRConfiguration
-    >;
+    config = {
+        renderMode: "sync",
+        deferHydration: false,
+        ...config,
+    } as Required<SSRConfiguration>;
     const templateRenderer = new DefaultTemplateRenderer();
 
     const elementRenderer = class extends (config.renderMode !== "async"
@@ -141,7 +137,7 @@ function fastSSR(config?: SSRConfiguration): any {
     };
 
     templateRenderer.withDefaultElementRenderers(
-        (elementRenderer as unknown) as ConstructableElementRenderer
+        elementRenderer as unknown as ConstructableElementRenderer
     );
 
     // Configure out-of-box ViewBehaviorFactory renderers first
