@@ -261,8 +261,10 @@ export class DesignToken<T> {
  */
 @cssDirective()
 @htmlDirective()
-export class CSSDesignToken<T> extends DesignToken<T>
-    implements CSSDirective, HTMLDirective {
+export class CSSDesignToken<T>
+    extends DesignToken<T>
+    implements CSSDirective, HTMLDirective
+{
     /**
      * The CSS Custom property name of the token.
      */

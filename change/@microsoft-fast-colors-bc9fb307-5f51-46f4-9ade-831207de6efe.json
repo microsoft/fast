@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update prettier and eslint-config-prettier versions",
+  "packageName": "@microsoft/fast-colors",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

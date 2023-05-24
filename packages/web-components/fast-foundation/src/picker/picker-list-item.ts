@@ -9,9 +9,7 @@ import {
 import { keyEnter } from "@microsoft/fast-web-utilities";
 
 const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
-    <template>
-        ${x => x.value}
-    </template>
+    <template>${x => x.value}</template>
 `;
 
 /**

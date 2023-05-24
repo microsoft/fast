@@ -234,7 +234,8 @@ export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
  * @public
  */
 export abstract class StatelessAttachedAttributeDirective<TOptions>
-    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior
+{
     /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.

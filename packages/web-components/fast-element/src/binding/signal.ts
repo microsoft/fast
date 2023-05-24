@@ -9,10 +9,8 @@ import type { DOMPolicy } from "../dom.js";
 import { makeSerializationNoop } from "../platform.js";
 import { Binding } from "./binding.js";
 
-const subscribers: Record<
-    string,
-    undefined | Subscriber | Set<Subscriber>
-> = Object.create(null);
+const subscribers: Record<string, undefined | Subscriber | Set<Subscriber>> =
+    Object.create(null);
 
 /**
  * The gateway to signal APIs.
