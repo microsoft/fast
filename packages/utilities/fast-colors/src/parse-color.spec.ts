@@ -115,9 +115,8 @@ describe("Color parsing and toString", (): void => {
                         const shorthandHex: string = `#${a + r + g + b}`;
 
                         const hexColor: ColorRGBA64 = parseColorHexARGB(hex);
-                        const hexShorthandColor: ColorRGBA64 = parseColorHexARGB(
-                            shorthandHex
-                        );
+                        const hexShorthandColor: ColorRGBA64 =
+                            parseColorHexARGB(shorthandHex);
 
                         expect(hexColor!.a).to.equal(hexShorthandColor!.a);
                         expect(hexColor!.r).to.equal(hexShorthandColor!.r);
@@ -155,9 +154,8 @@ describe("Color parsing and toString", (): void => {
                         const shorthandHex: string = `#${r + g + b + a}`;
 
                         const hexColor: ColorRGBA64 = parseColorHexRGBA(hex);
-                        const hexShorthandColor: ColorRGBA64 = parseColorHexRGBA(
-                            shorthandHex
-                        );
+                        const hexShorthandColor: ColorRGBA64 =
+                            parseColorHexRGBA(shorthandHex);
 
                         expect(hexColor!.r).to.equal(hexShorthandColor!.r);
                         expect(hexColor!.g).to.equal(hexShorthandColor!.g);

@@ -1,0 +1,7 @@
+{
+    "type": "prerelease",
+    "comment": "fixes a bug where ChildrenDirective could not be used multiple times for the same element",
+    "packageName": "@microsoft/fast-element",
+    "email": "nicholasrice@users.noreply.github.com",
+    "dependentChangeType": "prerelease"
+}

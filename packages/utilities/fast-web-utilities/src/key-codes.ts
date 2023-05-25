@@ -46,4 +46,4 @@ export const ArrowKeys = {
     ArrowUp: keyArrowUp,
 } as const;
 
-export type ArrowKeys = typeof ArrowKeys[keyof typeof ArrowKeys];
+export type ArrowKeys = (typeof ArrowKeys)[keyof typeof ArrowKeys];

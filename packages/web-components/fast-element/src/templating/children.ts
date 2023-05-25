@@ -42,10 +42,8 @@ export type ChildrenDirectiveOptions<T = any> =
  * The runtime behavior for child node observation.
  * @public
  */
-export class ChildrenDirective extends NodeObservationDirective<
-    ChildrenDirectiveOptions
-> {
-    private observerProperty = `${this.id}-o`;
+export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
+    private observerProperty = Symbol();
 
     /**
      * Creates an instance of ChildrenDirective.
@@ -66,10 +64,10 @@ export class ChildrenDirective extends NodeObservationDirective<
         if (!observer) {
             observer = new MutationObserver(this.handleEvent);
             observer.toJSON = noop;
-            observer.target = target;
             target[this.observerProperty] = observer;
         }
 
+        observer.target = target;
         observer.observe(target, this.options);
     }
 

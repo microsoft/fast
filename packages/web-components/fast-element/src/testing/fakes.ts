@@ -103,11 +103,11 @@ export const Fake = Object.freeze({
 
         return {
             isBound: false,
-            context: (null as any) as ExecutionContext<TParent>,
+            context: null as any as ExecutionContext<TParent>,
             onUnbind(object) {
                 unbindables.add(object);
             },
-            source: (null as any) as TSource,
+            source: null as any as TSource,
             targets,
             toJSON: noop,
             bind(

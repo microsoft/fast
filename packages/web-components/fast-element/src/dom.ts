@@ -46,7 +46,7 @@ export const DOMAspect = Object.freeze({
  * The type of HTML aspect to target.
  * @public
  */
-export type DOMAspect = typeof DOMAspect[Exclude<keyof typeof DOMAspect, "none">];
+export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
 
 /**
  * A function used to send values to a DOM sink.

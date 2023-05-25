@@ -270,22 +270,20 @@ export class App extends FASTElement implements AppAttributes {
 
         this.backgrounds = this.showOnlyLayerBackgrounds
             ? layers
-            : this.neutralColors.map(
-                  (color: string, index: number): SwatchInfo => {
-                      const neutralLayerIndex: number = layers.findIndex(
-                          (config: SwatchInfo): boolean => config.color === color
-                      );
+            : this.neutralColors.map((color: string, index: number): SwatchInfo => {
+                  const neutralLayerIndex: number = layers.findIndex(
+                      (config: SwatchInfo): boolean => config.color === color
+                  );
 
-                      return {
-                          index,
-                          color,
-                          title:
-                              neutralLayerIndex !== -1
-                                  ? layers[neutralLayerIndex].title
-                                  : undefined,
-                      };
-                  }
-              );
+                  return {
+                      index,
+                      color,
+                      title:
+                          neutralLayerIndex !== -1
+                              ? layers[neutralLayerIndex].title
+                              : undefined,
+                  };
+              });
     }
 
     private layerTokens: Array<[DesignToken<Swatch>, string]> = [
@@ -301,18 +299,16 @@ export class App extends FASTElement implements AppAttributes {
         layerFillBaseLuminance.setValueFor(this.designSystemElement, luminance);
 
         return this.layerTokens
-            .map(
-                (conf: [DesignToken<Swatch>, string]): SwatchInfo => {
-                    const color = conf[0]
-                        .getValueFor(this.designSystemElement)
-                        .toColorString();
-                    return {
-                        index: this.neutralColors.indexOf(color),
-                        color: color,
-                        title: conf[1],
-                    };
-                }
-            )
+            .map((conf: [DesignToken<Swatch>, string]): SwatchInfo => {
+                const color = conf[0]
+                    .getValueFor(this.designSystemElement)
+                    .toColorString();
+                return {
+                    index: this.neutralColors.indexOf(color),
+                    color: color,
+                    title: conf[1],
+                };
+            })
             .reduce((accumulated: SwatchInfo[], value: SwatchInfo): Array<SwatchInfo> => {
                 const colorIndex: number = accumulated.findIndex(
                     (config: SwatchInfo): boolean => config.color === value.color
