@@ -311,8 +311,6 @@ export function reactWrapper(
             }
         }
 
-        ReactComponent.displayName = getTagName(type, config);
-
         const reactComponent = React.forwardRef(
             (
                 props?: ReactWrapperProps<TElement, TEvents>,
