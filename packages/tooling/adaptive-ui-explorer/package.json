@@ -31,10 +31,10 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "@microsoft/adaptive-ui": "^1.0.0-alpha.24",
+    "@microsoft/adaptive-ui": "^1.0.0-alpha.27",
     "@microsoft/fast-colors": "^5.3.1",
-    "@microsoft/fast-element": "^2.0.0-beta.20",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.24"
+    "@microsoft/fast-element": "^2.0.0-beta.23",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.27"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",

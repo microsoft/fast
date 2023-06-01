@@ -352,6 +352,26 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
+export const DataGridSelectionBehavior: {
+    readonly programmatic: "programmatic";
+    readonly keyboardOnly: "keyboard-only";
+    readonly auto: "auto";
+};
+
+// @public
+export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;
+
+// @public
+export const DataGridSelectionMode: {
+    readonly none: "none";
+    readonly singleRow: "single-row";
+    readonly multiRow: "multi-row";
+};
+
+// @public
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+// @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
 
 // @public
@@ -609,6 +629,15 @@ export function disclosureTemplate<T extends FASTDisclosure>(options?: Disclosur
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
+export const DividerOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type DividerOrientation = ValuesOf<typeof DividerOrientation>;
+
+// @public
 export const DividerRole: {
     readonly separator: "separator";
     readonly presentation: "presentation";
@@ -630,15 +659,17 @@ export function endSlotTemplate<TSource extends StartEnd = StartEnd, TParent = a
 
 // @public
 export class FASTAccordion extends FASTElement {
-    // @internal (undocumented)
-    accordionItems: HTMLElement[];
     // (undocumented)
-    protected _accordionItems: Element[];
-    // @internal (undocumented)
-    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    protected accordionItems: Element[];
     expandmode: AccordionExpandMode;
+    // (undocumented)
+    expandmodeChanged(prev: AccordionExpandMode, next: AccordionExpandMode): void;
     // @internal (undocumented)
     handleChange(source: any, propertyName: string): void;
+    // @internal (undocumented)
+    slottedAccordionItems: HTMLElement[];
+    // @internal (undocumented)
+    slottedAccordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -753,7 +784,6 @@ export class FASTAnchoredRegion extends FASTElement {
 
 // @public
 export class FASTAvatar extends FASTElement {
-    link: string;
 }
 
 // @public
@@ -770,7 +800,6 @@ export class FASTBaseProgress extends FASTElement {
     min: number;
     // (undocumented)
     protected minChanged(): void;
-    paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
@@ -964,7 +993,6 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 
 // @public
 export class FASTDataGrid extends FASTElement {
-    constructor();
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
@@ -990,7 +1018,10 @@ export class FASTDataGrid extends FASTElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
+    // (undocumented)
+    handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
+    initialRowSelection: string;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1002,6 +1033,11 @@ export class FASTDataGrid extends FASTElement {
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
+    rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean;
+    get selectedRowIndexes(): number[];
+    set selectedRowIndexes(next: number[]);
+    selectionBehavior: DataGridSelectionBehavior;
+    selectionMode: DataGridSelectionMode;
 }
 
 // @public
@@ -1047,11 +1083,13 @@ export class FASTDataGridRow extends FASTElement {
     gridTemplateColumns: string;
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleCellFocus(e: Event): void;
+    // @internal (undocumented)
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     // @internal
@@ -1061,8 +1099,14 @@ export class FASTDataGridRow extends FASTElement {
     protected rowDataChanged(): void;
     rowIndex: number;
     rowType: DataGridRowTypes;
+    // @internal
+    selected: boolean;
+    // @internal
+    selectionBehavior: DataGridSelectionBehavior;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+    // Warning: (ae-forgotten-export) The symbol "DataGridSelectionChangeDetail" needs to be exported by the entry point index.d.ts
+    toggleSelected(detail: DataGridSelectionChangeDetail): void;
 }
 
 // @public
@@ -1113,7 +1157,7 @@ export interface FASTDisclosure extends StartEnd {
 
 // @public
 export class FASTDivider extends FASTElement {
-    orientation: Orientation;
+    orientation: DividerOrientation;
     role: DividerRole;
 }
 
@@ -1618,8 +1662,6 @@ export class FASTProgressRing extends FASTBaseProgress {
 // @public
 export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     constructor();
-    // @beta
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
@@ -1631,9 +1673,6 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     // @beta
     keypressHandler(e: KeyboardEvent): boolean | void;
     name: string;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
 }
 
 // @public
@@ -1641,7 +1680,7 @@ export class FASTRadioGroup extends FASTElement {
     // (undocumented)
     childItems: HTMLElement[];
     // @internal (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    clickHandler: (e: MouseEvent) => void | boolean;
     // @internal (undocumented)
     connectedCallback(): void;
     disabled: boolean;
@@ -1651,15 +1690,15 @@ export class FASTRadioGroup extends FASTElement {
     disconnectedCallback(): void;
     // @internal (undocumented)
     focusOutHandler: (e: FocusEvent) => boolean | void;
+    // @internal (undocumented)
+    handleDisabledClick: (e: MouseEvent) => void | boolean;
     // @internal
     keydownHandler: (e: KeyboardEvent) => boolean | void;
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation | "horizontal" | "vertical";
+    orientation: RadioGroupOrientation;
     readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
     // (undocumented)
@@ -1808,15 +1847,23 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     // (undocumented)
     protected keypressHandler: (e: KeyboardEvent) => void;
     max: number;
+    // (undocumented)
+    protected maxChanged(): void;
     min: number;
+    // (undocumented)
+    protected minChanged(): void;
     mode: SliderMode;
     orientation: Orientation;
+    // (undocumented)
+    protected orientationChanged(): void;
     // @internal (undocumented)
     position: string;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    step: number;
+    step: number | undefined;
+    // (undocumented)
+    protected stepChanged(): void;
     // @internal (undocumented)
     stepMultiplier: number;
     // @internal (undocumented)
@@ -1851,7 +1898,7 @@ export class FASTSliderLabel extends FASTElement {
     handleChange(source: any, propertyName: string): void;
     hideMark: boolean;
     // @deprecated
-    orientation: Orientation;
+    orientation: SliderOrientation;
     // @internal (undocumented)
     protected orientationChanged(): void;
     position: string;
@@ -1874,8 +1921,6 @@ export class FASTSliderLabel extends FASTElement {
 // @public
 export class FASTSwitch extends FormAssociatedSwitch {
     constructor();
-    // @internal (undocumented)
-    checkedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
@@ -1913,18 +1958,15 @@ export class FASTTabs extends FASTElement {
     activeid: string;
     // @internal (undocumented)
     activeidChanged(oldValue: string, newValue: string): void;
-    // @internal (undocumented)
-    activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
     // @internal (undocumented)
     connectedCallback(): void;
-    hideActiveIndicator: boolean;
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
-    // @internal (undocumented)
-    showActiveIndicator: boolean;
+    // (undocumented)
+    protected setTabs: () => void;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
@@ -2061,7 +2103,7 @@ export class FASTToolbar extends FASTElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    orientation: Orientation;
+    orientation: ToolbarOrientation;
     // @internal
     protected reduceFocusableElements(): void;
     // @internal
@@ -2525,7 +2567,16 @@ export interface PropertyTarget {
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
 // @public
-export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
+export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "focus" | "setAttribute" | "getAttribute">;
+
+// @public
+export const RadioGroupOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type RadioGroupOrientation = ValuesOf<typeof RadioGroupOrientation>;
 
 // @public
 export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTemplate<T>;
@@ -2545,7 +2596,7 @@ export function reflectAttributes<TSource = any, TParent = any>(...attributes: s
 //
 // @internal (undocumented)
 export const roleForMenuItem: {
-    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
+    [value in keyof typeof MenuItemRole]: (typeof MenuItemRole)[value];
 };
 
 // @public
@@ -2596,7 +2647,7 @@ export interface SliderConfiguration {
     // (undocumented)
     min: number;
     // (undocumented)
-    orientation?: Orientation;
+    orientation?: SliderOrientation;
 }
 
 // @public
@@ -2614,6 +2665,15 @@ export type SliderMode = ValuesOf<typeof SliderMode>;
 export type SliderOptions = {
     thumb?: StaticallyComposableHTML<FASTSlider>;
 };
+
+// @public
+export const SliderOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type SliderOrientation = ValuesOf<typeof SliderOrientation>;
 
 // @public
 export function sliderTemplate<T extends FASTSlider>(options?: SliderOptions): ElementViewTemplate<T>;
@@ -2668,8 +2728,8 @@ export type TabsOptions = StartEndOptions<FASTTabs>;
 
 // @public
 export const TabsOrientation: {
-    readonly vertical: "vertical";
     readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
 };
 
 // @public
@@ -2721,6 +2781,15 @@ export type TextFieldType = ValuesOf<typeof TextFieldType>;
 
 // @public
 export type ToolbarOptions = StartEndOptions<FASTToolbar>;
+
+// @public
+export const ToolbarOrientation: {
+    readonly horizontal: "horizontal";
+    readonly vertical: "vertical";
+};
+
+// @public
+export type ToolbarOrientation = ValuesOf<typeof ToolbarOrientation>;
 
 // @public
 export function toolbarTemplate<T extends FASTToolbar>(options?: ToolbarOptions): ElementViewTemplate<T>;

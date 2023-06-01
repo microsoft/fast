@@ -1,10 +1,10 @@
 import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
-    bind,
     FASTElement,
     nullableNumberConverter,
     observable,
+    oneWay,
     RepeatDirective,
     Updates,
 } from "@microsoft/fast-element";
@@ -22,9 +22,20 @@ import {
 } from "@microsoft/fast-web-utilities";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
-import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
+import {
+    DataGridRowTypes,
+    DataGridSelectionBehavior,
+    DataGridSelectionChangeDetail,
+    DataGridSelectionMode,
+    GenerateHeaderOptions,
+} from "./data-grid.options.js";
 
-export { DataGridRowTypes, GenerateHeaderOptions };
+export {
+    DataGridRowTypes,
+    DataGridSelectionBehavior,
+    DataGridSelectionMode,
+    GenerateHeaderOptions,
+};
 
 /**
  * Defines a column in the grid
@@ -115,7 +126,7 @@ export class FASTDataGrid extends FASTElement {
     };
 
     /**
-     *  generates a gridTemplateColumns based on columndata array
+     *  generates a gridTemplateColumns based on columndefinitions
      */
     private static generateTemplateColumns(
         columnDefinitions: ColumnDefinition[]
@@ -127,6 +138,24 @@ export class FASTDataGrid extends FASTElement {
             }${"1fr"}`;
         });
         return templateColumns;
+    }
+
+    /**
+     * Default callback to determine if a row is selectable (also depends on selectionMode)
+     * By default all rows except for header rows are selectable
+     */
+    private static defaultRowSelectableCallback(
+        rowIndex: number,
+        grid: FASTDataGrid
+    ): boolean {
+        if (
+            grid.rowElements.length < rowIndex ||
+            (grid.rowElements[rowIndex] as FASTDataGridRow).rowType !==
+                DataGridRowTypes.default
+        ) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -199,6 +228,64 @@ export class FASTDataGrid extends FASTElement {
     public pageSize: number | undefined;
 
     /**
+     * Defines how the grid handles row or cell selection.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: selection-mode
+     */
+    @attr({ attribute: "selection-mode" })
+    public selectionMode: DataGridSelectionMode = DataGridSelectionMode.none;
+    private selectionModeChanged(
+        prev: DataGridSelectionMode,
+        next: DataGridSelectionMode
+    ): void {
+        if (this.$fastController.isConnected) {
+            if (prev === "single-row" || prev === "multi-row") {
+                this.removeEventListener(
+                    "rowselectionchange",
+                    this.handleRowSelectedChange
+                );
+            }
+            if (next === "single-row" || next === "multi-row") {
+                this.addEventListener("rowselectionchange", this.handleRowSelectedChange);
+            }
+            this.deselectAllRows();
+        }
+    }
+
+    /**
+     * Controls selection behavior
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: selection-behavior
+     */
+    @attr({ attribute: "selection-behavior" })
+    public selectionBehavior: DataGridSelectionBehavior = DataGridSelectionBehavior.auto;
+
+    /**
+     * The indexes of initially selected grid elements. Includes header rows.
+     * In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: initial-row-selection
+     */
+    @attr({ attribute: "initial-row-selection" })
+    public initialRowSelection: string;
+
+    /**
+     * Callback that determines whether a particular row is selectable or not (depends on selectionMode also)
+     * By default all rows except header rows are selectable.
+     *
+     * @public
+     */
+    @observable
+    public rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean =
+        FASTDataGrid.defaultRowSelectableCallback;
+
+    /**
      * The data being displayed in the grid
      *
      * @public
@@ -211,6 +298,7 @@ export class FASTDataGrid extends FASTElement {
         }
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
+            this.deselectAllRows();
         }
     }
 
@@ -222,8 +310,7 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public columnDefinitions: ColumnDefinition[] | null = null;
     protected columnDefinitionsChanged(): void {
-        if (this.columnDefinitions === null) {
-            this.generatedGridTemplateColumns = "";
+        if (!this.columnDefinitions) {
             return;
         }
         this.generatedGridTemplateColumns = FASTDataGrid.generateTemplateColumns(
@@ -321,11 +408,48 @@ export class FASTDataGrid extends FASTElement {
     @observable
     public rowElements: HTMLElement[];
 
+    /**
+     * Selected row indexes
+     *
+     */
+    private _selectedRowIndexes: number[] = [];
+
+    /**
+     * The selectedRowIndexes property.
+     *
+     * @public
+     */
+    public get selectedRowIndexes() {
+        return this._selectedRowIndexes.slice();
+    }
+
+    public set selectedRowIndexes(next: number[]) {
+        if (
+            this.selectionMode !== DataGridSelectionMode.multiRow &&
+            this.selectionMode !== DataGridSelectionMode.singleRow
+        ) {
+            return;
+        }
+
+        // cull unselectable rows
+        next = next.filter(rowIndex => this.rowSelectableCallback(rowIndex, this));
+
+        if (this.selectionMode === DataGridSelectionMode.singleRow && next.length > 1) {
+            this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, next[0]);
+        } else {
+            this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, ...next);
+        }
+        this.selectionUpdated = true;
+        this.queueRowIndexUpdate();
+    }
+
     private rowsPlaceholder: Node | null = null;
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
     private generatedHeader: FASTDataGridRow | null = null;
 
+    // flag to indicate whether the grid is actively updating focus
+    // (so we don't self-trigger changes)
     private isUpdatingFocus: boolean = false;
     private pendingFocusUpdate: boolean = false;
 
@@ -336,9 +460,10 @@ export class FASTDataGrid extends FASTElement {
 
     private generatedGridTemplateColumns: string = "";
 
-    constructor() {
-        super();
-    }
+    private lastNotShiftSelectedRowIndex = -1;
+    private preShiftRowSelection: number[] | null = null;
+
+    private selectionUpdated: boolean = false;
 
     /**
      * @internal
@@ -355,8 +480,8 @@ export class FASTDataGrid extends FASTElement {
             this.$fastController.addBehavior(this.behaviorOrchestrator);
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective<FASTDataGrid>(
-                    bind(x => x.rowsData),
-                    bind(x => x.rowItemTemplate),
+                    oneWay(x => x.rowsData),
+                    oneWay(x => x.rowItemTemplate),
                     { positioning: true }
                 ),
                 this.appendChild((this.rowsPlaceholder = document.createComment("")))
@@ -369,6 +494,13 @@ export class FASTDataGrid extends FASTElement {
         this.addEventListener(eventKeyDown, this.handleKeydown);
         this.addEventListener(eventFocusOut, this.handleFocusOut);
 
+        if (
+            this.selectionMode === DataGridSelectionMode.singleRow ||
+            this.selectionMode === DataGridSelectionMode.multiRow
+        ) {
+            this.addEventListener("rowselectionchange", this.handleRowSelectedChange);
+        }
+
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
         this.observer.observe(this, { childList: true });
@@ -377,7 +509,23 @@ export class FASTDataGrid extends FASTElement {
             this.setAttribute("tabindex", "-1");
         }
 
-        Updates.enqueue(this.queueRowIndexUpdate);
+        // apply initial selection after the grid is populated
+        Updates.enqueue(() => {
+            if (
+                this.selectionMode !== DataGridSelectionMode.none &&
+                this.initialRowSelection
+            ) {
+                const selectionAsArray: string[] = this.initialRowSelection.split(",");
+                const initialSelection: number[] = [];
+                selectionAsArray.forEach((element: string): void => {
+                    initialSelection.push(parseInt(element.trim()));
+                });
+
+                this.updateSelectedRows(initialSelection);
+            }
+        });
+
+        this.queueRowIndexUpdate();
     }
 
     /**
@@ -390,6 +538,13 @@ export class FASTDataGrid extends FASTElement {
         this.removeEventListener(eventFocus, this.handleFocus);
         this.removeEventListener(eventKeyDown, this.handleKeydown);
         this.removeEventListener(eventFocusOut, this.handleFocusOut);
+
+        if (
+            this.selectionMode === DataGridSelectionMode.singleRow ||
+            this.selectionMode === DataGridSelectionMode.multiRow
+        ) {
+            this.removeEventListener("rowselectionchange", this.handleRowSelectedChange);
+        }
 
         this.observer.disconnect();
 
@@ -503,6 +658,142 @@ export class FASTDataGrid extends FASTElement {
                     );
                 }
                 break;
+
+            case "a":
+                if (!e.ctrlKey) {
+                    return;
+                }
+                switch (this.selectionMode) {
+                    case "multi-row":
+                        this.selectAllRows();
+                        e.preventDefault();
+                        return;
+                }
+                break;
+        }
+    }
+
+    public handleRowSelectedChange(e: CustomEvent): void {
+        if (e.defaultPrevented || this.selectionMode === DataGridSelectionMode.none) {
+            return;
+        }
+
+        const path: EventTarget[] = e.composedPath();
+        const rowMatch: EventTarget | undefined = path.find((target: EventTarget) => {
+            return this.rowElements.indexOf(target as HTMLElement) !== -1;
+        });
+
+        if (rowMatch) {
+            e.preventDefault();
+            const changedRow: FASTDataGridRow = rowMatch as FASTDataGridRow;
+            const changeEventDetail: DataGridSelectionChangeDetail = e.detail;
+
+            switch (this.selectionMode) {
+                case DataGridSelectionMode.singleRow:
+                    this.handleSingleRowSelection(changedRow, changeEventDetail);
+                    break;
+
+                case DataGridSelectionMode.multiRow:
+                    if (changeEventDetail.isKeyboardEvent) {
+                        this.handleMultiRowKeyboardSelection(
+                            changedRow,
+                            changeEventDetail
+                        );
+                    } else {
+                        this.handleMultiRowPointerSelection(
+                            changedRow,
+                            changeEventDetail
+                        );
+                    }
+                    break;
+            }
+        }
+    }
+
+    private handleMultiRowPointerSelection(
+        changedRow: FASTDataGridRow,
+        changeEventDetail: DataGridSelectionChangeDetail
+    ): void {
+        let newSelection: number[] = this.selectedRowIndexes.slice();
+        if (changeEventDetail.shiftKey) {
+            if (this.lastNotShiftSelectedRowIndex === -1) {
+                this.handleSingleRowSelection(changedRow, changeEventDetail);
+            } else {
+                if (this.preShiftRowSelection !== null) {
+                    // undo the last thing
+                    newSelection = this.preShiftRowSelection.slice();
+                } else {
+                    this.preShiftRowSelection = newSelection.slice();
+                }
+
+                const dirMod: number =
+                    changedRow.rowIndex > this.lastNotShiftSelectedRowIndex ? 1 : -1;
+                let i: number = this.lastNotShiftSelectedRowIndex + dirMod;
+                for (i; i !== changedRow.rowIndex + dirMod; i = i + dirMod) {
+                    const selectedRowIndex: number = newSelection.indexOf(i);
+                    if (
+                        !newSelection.includes(changedRow.rowIndex) &&
+                        selectedRowIndex === -1
+                    ) {
+                        newSelection.push(i);
+                    }
+                }
+            }
+            this.updateSelectedRows(newSelection);
+        } else if (changeEventDetail.ctrlKey) {
+            if (
+                changeEventDetail.newValue &&
+                !newSelection.includes(changedRow.rowIndex)
+            ) {
+                newSelection.push(changedRow.rowIndex);
+                this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
+            }
+            if (
+                !changeEventDetail.newValue &&
+                newSelection.includes(changedRow.rowIndex)
+            ) {
+                newSelection.splice(newSelection.indexOf(changedRow.rowIndex), 1);
+                this.lastNotShiftSelectedRowIndex = -1;
+            }
+            this.preShiftRowSelection = null;
+            this.updateSelectedRows(newSelection);
+        } else {
+            this.handleSingleRowSelection(changedRow, changeEventDetail);
+            this.preShiftRowSelection = null;
+        }
+    }
+
+    private handleMultiRowKeyboardSelection(
+        changedRow: FASTDataGridRow,
+        changeEventDetail: DataGridSelectionChangeDetail
+    ): void {
+        if (changeEventDetail.isKeyboardEvent && !changeEventDetail.shiftKey) {
+            return;
+        }
+        this.preShiftRowSelection = null;
+        this.lastNotShiftSelectedRowIndex = -1;
+        const newSelection: number[] = this.selectedRowIndexes.slice();
+        if (newSelection.includes(changedRow.rowIndex)) {
+            newSelection.splice(newSelection.indexOf(changedRow.rowIndex), 1);
+        } else {
+            newSelection.push(changedRow.rowIndex);
+        }
+        this.updateSelectedRows(newSelection);
+    }
+
+    private handleSingleRowSelection(
+        changedRow: FASTDataGridRow,
+        changeEventDetail: DataGridSelectionChangeDetail
+    ): void {
+        if (changeEventDetail.isKeyboardEvent && !changeEventDetail.shiftKey) {
+            return;
+        }
+        if (changeEventDetail.newValue) {
+            this.updateSelectedRows([changedRow.rowIndex]);
+            this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
+        } else {
+            this.updateSelectedRows([]);
+            this.lastNotShiftSelectedRowIndex = -1;
         }
     }
 
@@ -537,6 +828,56 @@ export class FASTDataGrid extends FASTElement {
         return pageSize;
     }
 
+    /**
+     * Validates that new selected rows are selectable and updates the selectedRowIndexes prop
+     */
+    private updateSelectedRows(newSelection: number[]): void {
+        this.selectedRowIndexes = newSelection;
+    }
+
+    private selectAllRows(): void {
+        if (
+            this.selectionMode !== DataGridSelectionMode.multiRow ||
+            this.rowElements.length === 0
+        ) {
+            return;
+        }
+
+        const unselectableRowIndexes = [];
+
+        for (
+            let index: number = 0, maxIndex = this.rowElements.length;
+            index < maxIndex;
+            index++
+        ) {
+            if (!this.rowSelectableCallback(index, this)) {
+                unselectableRowIndexes.push(index);
+            }
+        }
+
+        const selectableRowCount: number = Math.max(
+            this.rowElements.length - unselectableRowIndexes.length,
+            0
+        );
+
+        if (this._selectedRowIndexes.length === selectableRowCount) {
+            // deselect all if all are already selected
+            this.updateSelectedRows([]);
+            return;
+        }
+        const newSelection: number[] = [];
+        this.rowElements.forEach(element => {
+            newSelection.push((element as FASTDataGridRow).rowIndex);
+        });
+        this.lastNotShiftSelectedRowIndex = -1;
+        this.updateSelectedRows(newSelection);
+    }
+
+    private deselectAllRows(): void {
+        this.updateSelectedRows([]);
+        this.lastNotShiftSelectedRowIndex = -1;
+    }
+
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
@@ -560,9 +901,10 @@ export class FASTDataGrid extends FASTElement {
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
 
         const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
-
-        focusTarget.scrollIntoView({ block: alignment });
-        focusTarget.focus();
+        if (focusTarget) {
+            focusTarget.scrollIntoView({ block: alignment });
+            focusTarget.focus();
+        }
     };
 
     private queueFocusUpdate(): void {
@@ -591,12 +933,13 @@ export class FASTDataGrid extends FASTElement {
 
         if (
             this.generateHeader !== GenerateHeaderOptions.none &&
-            this.rowsData.length > 0
+            this.columnDefinitions &&
+            this.columnDefinitions.length
         ) {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
-            this.generatedHeader = (generatedHeaderElement as unknown) as FASTDataGridRow;
+            this.generatedHeader = generatedHeaderElement as unknown as FASTDataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
@@ -618,6 +961,7 @@ export class FASTDataGrid extends FASTElement {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: MutationObserver
     ): void => {
+        this.deselectAllRows();
         if (mutations && mutations.length) {
             mutations.forEach((mutation: MutationRecord): void => {
                 mutation.addedNodes.forEach((newNode: Node): void => {
@@ -625,7 +969,8 @@ export class FASTDataGrid extends FASTElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as FASTDataGridRow).columnDefinitions = this.columnDefinitions;
+                        (newNode as FASTDataGridRow).columnDefinitions =
+                            this.columnDefinitions;
                     }
                 });
             });
@@ -662,6 +1007,16 @@ export class FASTDataGrid extends FASTElement {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
+            thisRow.selectionBehavior = this.selectionBehavior;
+            if (
+                this.selectionMode === DataGridSelectionMode.singleRow ||
+                this.selectionMode === DataGridSelectionMode.multiRow
+            ) {
+                thisRow.selected = this._selectedRowIndexes.includes(index)
+                    ? true
+                    : false;
+            }
+
             if (this.columnDefinitionsStale) {
                 thisRow.columnDefinitions = this.columnDefinitions;
             }
@@ -669,5 +1024,10 @@ export class FASTDataGrid extends FASTElement {
 
         this.rowindexUpdateQueued = false;
         this.columnDefinitionsStale = false;
+
+        if (this.selectionUpdated) {
+            this.selectionUpdated = false;
+            this.$emit("selectionchange");
+        }
     };
 }

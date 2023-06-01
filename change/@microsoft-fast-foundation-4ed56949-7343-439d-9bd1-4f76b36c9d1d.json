@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "Cleaned up `start` and `end` definitions",
+  "comment": "picker show no options",
   "packageName": "@microsoft/fast-foundation",
-  "email": "47367562+bheston@users.noreply.github.com",
+  "email": "stephcomeau@msn.com",
   "dependentChangeType": "prerelease"
 }

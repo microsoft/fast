@@ -23,7 +23,7 @@ DesignTokenAdd;
 DesignTokensForm;
 
 const assignedTokensTemplate = (
-    tokens: DesignTokenDefinition<any>[] | null,
+    tokens: DesignTokenDefinition[] | null,
     title: string | null,
     glyphType: TokenGlyphType = TokenGlyphType.backgroundSwatch
 ) => html<App>`
@@ -457,25 +457,25 @@ export class App extends FASTElement {
     supportsText: boolean;
 
     @observable
-    layerRecipes: DesignTokenDefinition<any>[] | null;
+    layerRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    backgroundRecipes: DesignTokenDefinition<any>[] | null;
+    backgroundRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    foregroundRecipes: DesignTokenDefinition<any>[] | null;
+    foregroundRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    strokeRecipes: DesignTokenDefinition<any>[] | null;
+    strokeRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    strokeWidthRecipes: DesignTokenDefinition<any>[] | null;
+    strokeWidthRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    cornerRadiusRecipes: DesignTokenDefinition<any>[] | null;
+    cornerRadiusRecipes: DesignTokenDefinition[] | null;
 
     @observable
-    textRecipes: DesignTokenDefinition<any>[] | null;
+    textRecipes: DesignTokenDefinition[] | null;
 
     @observable
     supportsDesignSystem: boolean;
@@ -484,7 +484,7 @@ export class App extends FASTElement {
     appliedDesignTokens: UIDesignTokenValue[] | null;
 
     @observable
-    availableDesignTokens: DesignTokenDefinition<any>[] | null;
+    availableDesignTokens: DesignTokenDefinition[] | null;
 
     @observable
     selectedNodes: PluginUINodeData[] | null;

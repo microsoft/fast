@@ -1,18 +1,14 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { storyTemplate as tabPanelStoryTemplate } from "../../tab-panel/stories/tab-panel.stories.js";
 import type { FASTTab } from "../../tab/tab.js";
 import { storyTemplate as tabStoryTemplate } from "../../tab/stories/tab.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
+import { TabsOrientation } from "../tabs.options.js";
 import type { FASTTabs } from "../tabs.js";
 
 const storyTemplate = html<StoryArgs<FASTTabs>>`
-    <fast-tabs
-        ?hide-active-indicator="${x => x.hideActiveIndicator}"
-        activeid="${x => x.activeid}"
-        orientation="${x => x.orientation}"
-    >
+    <fast-tabs activeid="${x => x.activeid}" orientation="${x => x.orientation}">
         ${x => x.storyContent}
     </fast-tabs>
 `;
@@ -28,8 +24,7 @@ const tabWithIconsStoryTemplate = html<StoryArgs<FASTTab>>`
 export default {
     title: "Tabs",
     args: {
-        hideActiveIndicator: false,
-        orientation: Orientation.horizontal,
+        orientation: TabsOrientation.horizontal,
         storyContent: html<StoryArgs<FASTTabs>>`
             ${repeat(x => x.storyItems.tabs, tabStoryTemplate)}
             ${repeat(x => x.storyItems.tabPanels, tabPanelStoryTemplate)}
@@ -37,8 +32,7 @@ export default {
     },
     argTypes: {
         activeid: { control: "text" },
-        hideActiveIndicator: { control: "boolean" },
-        orientation: { control: "radio", options: Object.values(Orientation) },
+        orientation: { control: "radio", options: Object.values(TabsOrientation) },
         storyContent: { table: { disable: true } },
         storyItems: { table: { disable: true } },
     },

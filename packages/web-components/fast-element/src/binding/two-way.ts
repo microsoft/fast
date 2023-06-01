@@ -1,5 +1,5 @@
 import type { DOMPolicy } from "../dom.js";
-import { isString, Message, noop } from "../interfaces.js";
+import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -9,9 +9,8 @@ import {
     Observable,
     ObservationRecord,
 } from "../observation/observable.js";
-import { FAST } from "../platform.js";
-import type { HTMLBindingDirective } from "./binding.js";
-import { Binding } from "./html-directive.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
+import { Binding, BindingDirective } from "./binding.js";
 
 /**
  * The twoWay binding options.
@@ -33,10 +32,10 @@ const defaultOptions: TwoWayBindingOptions = {
 export interface TwoWaySettings {
     /**
      * Determines which event to listen to, to detect changes in the view.
-     * @param directive - The directive to determine the change event for.
+     * @param bindingSource - The directive to determine the change event for.
      * @param target - The target element to determine the change event for.
      */
-    determineChangeEvent(directive: HTMLBindingDirective, target: HTMLElement): string;
+    determineChangeEvent(bindingSource: BindingDirective, target: HTMLElement): string;
 }
 
 let twoWaySettings: TwoWaySettings = {
@@ -45,6 +44,9 @@ let twoWaySettings: TwoWaySettings = {
     },
 };
 
+/**
+ * Enables configuring two-way binding settings.
+ */
 export const TwoWaySettings = Object.freeze({
     /**
      * Configures two-way binding.
@@ -56,7 +58,8 @@ export const TwoWaySettings = Object.freeze({
 });
 
 class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
-    implements ExpressionObserver<TSource, TReturn, TParent> {
+    implements ExpressionObserver<TSource, TReturn, TParent>
+{
     private notifier: ExpressionObserver;
     private isNotBound = true;
 
@@ -66,7 +69,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     changeEvent: string;
 
     constructor(
-        private directive: HTMLBindingDirective,
+        private directive: BindingDirective,
         private subscriber: Subscriber,
         private dataBinding: TwoWayBinding
     ) {
@@ -103,7 +106,7 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     }
 
     handleEvent(event: Event): void {
-        const directive = this.directive;
+        const bindingSource = this.directive;
         const target = event.currentTarget as HTMLElement;
         const notifier = this.notifier;
         const last = (notifier as any).last as ObservationRecord; // using internal API!!!
@@ -115,32 +118,27 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
 
         let value;
 
-        switch (directive.aspectType) {
+        switch (bindingSource.aspectType) {
             case 1:
-                value = target.getAttribute(directive.targetAspect);
+                value = target.getAttribute(bindingSource.targetAspect!);
                 break;
             case 2:
-                value = target.hasAttribute(directive.targetAspect);
+                value = target.hasAttribute(bindingSource.targetAspect!);
                 break;
             case 4:
                 value = target.innerText;
                 break;
             default:
-                value = target[directive.targetAspect];
+                value = target[bindingSource.targetAspect!];
                 break;
         }
 
-        last.propertySource[last.propertyName] = this.dataBinding.options.fromView!(
-            value
-        );
+        last.propertySource[last.propertyName] =
+            this.dataBinding.options.fromView!(value);
     }
-
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
 }
+
+makeSerializationNoop(TwoWayObserver);
 
 class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
     TSource,
@@ -148,10 +146,10 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TParent
 > {
     createObserver(
-        directive: HTMLBindingDirective,
-        subscriber: Subscriber
+        subscriber: Subscriber,
+        bindingSource: BindingDirective
     ): ExpressionObserver<TSource, TReturn, TParent> {
-        return new TwoWayObserver(directive, subscriber, this);
+        return new TwoWayObserver(bindingSource, subscriber, this);
     }
 }
 

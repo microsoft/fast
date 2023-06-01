@@ -22,6 +22,10 @@ const styles = css`
     :host([orientation="horizontal"]) .positioning-region {
         flex-direction: row;
     }
+
+    :host([disabled]) {
+        opacity: var(--disabled-opacity);
+    }
 `;
 
 FASTRadioGroup.define({

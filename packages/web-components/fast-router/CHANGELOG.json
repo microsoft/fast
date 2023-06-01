@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Tue, 28 Mar 2023 22:14:10 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.23",
+      "version": "1.0.0-alpha.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.23",
+            "commit": "032285c2bf0311f9f44cbc875b40696fc8f62857"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 11 Mar 2023 00:09:49 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.22",
+      "version": "1.0.0-alpha.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.22",
+            "commit": "dcf64d0383f613fd0c79b6f4f5ef010fccdbc11f"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Feb 2023 04:02:36 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.21",
+      "version": "1.0.0-alpha.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.21",
+            "commit": "e504d092f81623e6332fa8cdf72ce9114e6c842e"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Jan 2023 22:07:44 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.20",
       "version": "1.0.0-alpha.20",

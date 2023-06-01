@@ -1,9 +1,9 @@
 import {
     attr,
-    bind,
     html,
     HTMLView,
     observable,
+    oneWay,
     ref,
     RepeatDirective,
     Updates,
@@ -311,10 +311,11 @@ export class FASTPicker extends FormAssociatedPicker {
     public filteredOptionsList: string[] = [];
     protected filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
-            this.showNoOptions =
-                this.filteredOptionsList.length === 0 &&
-                this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
-            this.setFocusedOption(this.showNoOptions ? -1 : 0);
+            Updates.enqueue(() => {
+                this.showNoOptions =
+                    this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
+                this.setFocusedOption(this.showNoOptions ? -1 : 0);
+            });
         }
     }
 
@@ -518,8 +519,8 @@ export class FASTPicker extends FormAssociatedPicker {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(
-                    bind(x => x.selectedItems),
-                    bind(x => x.activeListItemTemplate),
+                    oneWay(x => x.selectedItems),
+                    oneWay(x => x.activeListItemTemplate),
                     { positioning: true }
                 ),
                 this.itemsPlaceholderElement
@@ -527,8 +528,8 @@ export class FASTPicker extends FormAssociatedPicker {
 
             this.behaviorOrchestrator.addBehaviorFactory(
                 new RepeatDirective(
-                    bind(x => x.filteredOptionsList),
-                    bind(x => x.activeMenuOptionTemplate),
+                    oneWay(x => x.filteredOptionsList),
+                    oneWay(x => x.activeMenuOptionTemplate),
                     { positioning: true }
                 ),
                 this.optionsPlaceholder
@@ -554,7 +555,7 @@ export class FASTPicker extends FormAssociatedPicker {
             return;
         }
 
-        if (open && document.activeElement === this.inputElement) {
+        if (open && this.getRootActiveElement() === this.inputElement) {
             this.flyoutOpen = open;
             Updates.enqueue(() => {
                 if (this.menuElement !== undefined) {
@@ -603,6 +604,7 @@ export class FASTPicker extends FormAssociatedPicker {
         if (e.defaultPrevented) {
             return false;
         }
+        const activeElement = this.getRootActiveElement();
         switch (e.key) {
             // TODO: what should "home" and "end" keys do, exactly?
             //
@@ -672,7 +674,7 @@ export class FASTPicker extends FormAssociatedPicker {
             }
 
             case keyArrowRight: {
-                if (document.activeElement !== this.inputElement) {
+                if (activeElement !== this.inputElement) {
                     this.incrementFocusedItem(1);
                     return false;
                 }
@@ -691,11 +693,11 @@ export class FASTPicker extends FormAssociatedPicker {
 
             case keyDelete:
             case keyBackspace: {
-                if (document.activeElement === null) {
+                if (activeElement === null) {
                     return true;
                 }
 
-                if (document.activeElement === this.inputElement) {
+                if (activeElement === this.inputElement) {
                     if (this.inputElement.selectionStart === 0) {
                         this.selection = this.selectedItems
                             .slice(0, this.selectedItems.length - 1)
@@ -708,9 +710,8 @@ export class FASTPicker extends FormAssociatedPicker {
                 }
 
                 const selectedItems: Element[] = Array.from(this.listElement.children);
-                const currentFocusedItemIndex: number = selectedItems.indexOf(
-                    document.activeElement
-                );
+                const currentFocusedItemIndex: number =
+                    selectedItems.indexOf(activeElement);
 
                 if (currentFocusedItemIndex > -1) {
                     // delete currently focused item
@@ -718,9 +719,11 @@ export class FASTPicker extends FormAssociatedPicker {
                         .splice(currentFocusedItemIndex, 1)
                         .toString();
                     Updates.enqueue(() => {
-                        (selectedItems[
-                            Math.min(selectedItems.length, currentFocusedItemIndex)
-                        ] as HTMLElement).focus();
+                        (
+                            selectedItems[
+                                Math.min(selectedItems.length, currentFocusedItemIndex)
+                            ] as HTMLElement
+                        ).focus();
                     });
                     return false;
                 }
@@ -806,18 +809,28 @@ export class FASTPicker extends FormAssociatedPicker {
             this.maxSelected !== undefined &&
             this.selectedItems.length >= this.maxSelected
         ) {
-            if (document.activeElement === this.inputElement) {
+            if (this.getRootActiveElement() === this.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
                     this.listElement.querySelectorAll("[role='listitem']")
                 );
-                (selectedItemInstances[
-                    selectedItemInstances.length - 1
-                ] as HTMLElement).focus();
+                (
+                    selectedItemInstances[selectedItemInstances.length - 1] as HTMLElement
+                ).focus();
             }
             this.inputElement.hidden = true;
         } else {
             this.inputElement.hidden = false;
         }
+    }
+
+    private getRootActiveElement(): Element | null {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.activeElement;
+        }
+
+        return document.activeElement;
     }
 
     /**
@@ -882,10 +895,10 @@ export class FASTPicker extends FormAssociatedPicker {
             this.listElement.querySelectorAll("[role='listitem']")
         );
 
-        if (document.activeElement !== null) {
-            let currentFocusedItemIndex: number = selectedItemsAsElements.indexOf(
-                document.activeElement
-            );
+        const activeElement = this.getRootActiveElement();
+        if (activeElement !== null) {
+            let currentFocusedItemIndex: number =
+                selectedItemsAsElements.indexOf(activeElement);
             if (currentFocusedItemIndex === -1) {
                 // use the input element
                 currentFocusedItemIndex = selectedItemsAsElements.length;
@@ -900,9 +913,9 @@ export class FASTPicker extends FormAssociatedPicker {
                     this.maxSelected !== undefined &&
                     this.selectedItems.length >= this.maxSelected
                 ) {
-                    (selectedItemsAsElements[
-                        newFocusedItemIndex - 1
-                    ] as HTMLElement).focus();
+                    (
+                        selectedItemsAsElements[newFocusedItemIndex - 1] as HTMLElement
+                    ).focus();
                 } else {
                     this.inputElement.focus();
                 }
@@ -960,7 +973,7 @@ export class FASTPicker extends FormAssociatedPicker {
 
         focusedOption.setAttribute("aria-selected", "true");
 
-        this.menuElement.scrollTo(0, focusedOption.offsetTop);
+        focusedOption.scrollIntoView(true);
     }
 
     /**
@@ -990,8 +1003,10 @@ export class FASTPicker extends FormAssociatedPicker {
             );
         }
         if (this.filterQuery && this.query !== "" && this.query !== undefined) {
+            // compare case-insensitive
+            const filterQuery = this.query.toLowerCase();
             this.filteredOptionsList = this.filteredOptionsList.filter(
-                el => el.indexOf(this.query) !== -1
+                el => el.toLowerCase().indexOf(filterQuery) !== -1
             );
         }
     }

@@ -40,10 +40,6 @@ export class FASTSwitch extends FormAssociatedSwitch {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     /**
@@ -90,15 +86,4 @@ export class FASTSwitch extends FormAssociatedSwitch {
             this.checked = !this.checked;
         }
     };
-
-    /**
-     * @internal
-     */
-    public checkedChanged(prev: boolean | undefined, next: boolean) {
-        super.checkedChanged(prev, next);
-        /**
-         * @deprecated - this behavior already exists in the template and should not exist in the class.
-         */
-        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
-    }
 }

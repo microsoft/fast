@@ -1,11 +1,29 @@
-import { isString } from "../interfaces.js";
+import { isFunction, isString } from "../interfaces.js";
+import type { Expression } from "../observation/observable.js";
+import { Binding } from "../binding/binding.js";
+import { oneWay } from "../binding/one-way.js";
 import type { HostBehavior, HostController } from "./host.js";
 import { AddBehavior, CSSDirective } from "./css-directive.js";
 import { ComposableStyles, ElementStyles } from "./element-styles.js";
+import { CSSBindingDirective } from "./css-binding-directive.js";
 
-function collectStyles(
+/**
+ * Represents the types of values that can be interpolated into a template.
+ * @public
+ */
+export type CSSValue<TSource, TParent = any> =
+    | Expression<TSource, any, TParent>
+    | Binding<TSource, any, TParent>
+    | ComposableStyles
+    | CSSDirective;
+
+const marker = `${Math.random().toString(36).substring(2, 8)}`;
+let varId = 0;
+const nextCSSVariable = (): string => `--v${marker}${++varId}`;
+
+function collectStyles<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    values: (ComposableStyles | CSSDirective)[]
+    values: CSSValue<TSource, TParent>[]
 ): { styles: ComposableStyles[]; behaviors: HostBehavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
     let cssString = "";
@@ -18,7 +36,13 @@ function collectStyles(
         cssString += strings[i];
         let value = values[i];
 
-        if (CSSDirective.getForInstance(value) !== void 0) {
+        if (isFunction(value)) {
+            value = new CSSBindingDirective(oneWay(value), nextCSSVariable()).createCSS(
+                add
+            );
+        } else if (value instanceof Binding) {
+            value = new CSSBindingDirective(value, nextCSSVariable()).createCSS(add);
+        } else if (CSSDirective.getForInstance(value) !== void 0) {
             value = (value as CSSDirective).createCSS(add);
         }
 
@@ -55,9 +79,9 @@ function collectStyles(
  * Use the .partial method to create partial CSS fragments.
  * @public
  */
-export type CSSTemplateTag = ((
+export type CSSTemplateTag = (<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: (ComposableStyles | CSSDirective)[]
+    ...values: CSSValue<TSource, TParent>[]
 ) => ElementStyles) & {
     /**
      * Transforms a template literal string into partial CSS.
@@ -65,9 +89,9 @@ export type CSSTemplateTag = ((
      * @param values - The values that are interpolated with the string fragments.
      * @public
      */
-    partial(
+    partial<TSource = any, TParent = any>(
         strings: TemplateStringsArray,
-        ...values: (ComposableStyles | CSSDirective)[]
+        ...values: CSSValue<TSource, TParent>[]
     ): CSSDirective;
 };
 
@@ -79,9 +103,9 @@ export type CSSTemplateTag = ((
  * The css helper supports interpolation of strings and ElementStyle instances.
  * @public
  */
-export const css: CSSTemplateTag = ((
+export const css: CSSTemplateTag = (<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: (ComposableStyles | CSSDirective)[]
+    ...values: CSSValue<TSource, TParent>[]
 ): ElementStyles => {
     const { styles, behaviors } = collectStyles(strings, values);
     const elementStyles = new ElementStyles(styles);
@@ -96,24 +120,22 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
         styles: ComposableStyles[],
         private behaviors: HostBehavior<HTMLElement>[]
     ) {
-        const stylesheets: ReadonlyArray<Exclude<
-            ComposableStyles,
-            string
-        >> = styles.reduce(
-            (
-                accumulated: Exclude<ComposableStyles, string>[],
-                current: ComposableStyles
-            ) => {
-                if (isString(current)) {
-                    this.css += current;
-                } else {
-                    accumulated.push(current);
-                }
+        const stylesheets: ReadonlyArray<Exclude<ComposableStyles, string>> =
+            styles.reduce(
+                (
+                    accumulated: Exclude<ComposableStyles, string>[],
+                    current: ComposableStyles
+                ) => {
+                    if (isString(current)) {
+                        this.css += current;
+                    } else {
+                        accumulated.push(current);
+                    }
 
-                return accumulated;
-            },
-            []
-        );
+                    return accumulated;
+                },
+                []
+            );
 
         if (stylesheets.length) {
             this.styles = new ElementStyles(stylesheets);
@@ -141,9 +163,9 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
 
 CSSDirective.define(CSSPartial);
 
-css.partial = (
+css.partial = <TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    ...values: (ComposableStyles | CSSDirective)[]
+    ...values: CSSValue<TSource, TParent>[]
 ): CSSDirective => {
     const { styles, behaviors } = collectStyles(strings, values);
     return new CSSPartial(styles, behaviors);

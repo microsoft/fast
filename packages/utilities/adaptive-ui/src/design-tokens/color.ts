@@ -42,9 +42,8 @@ export const fillColor = create<Swatch>("fill-color").withDefault(
 );
 
 /** @public */
-export const neutralAsOverlay = createNonCss<boolean>("neutral-as-overlay").withDefault(
-    false
-);
+export const neutralAsOverlay =
+    createNonCss<boolean>("neutral-as-overlay").withDefault(false);
 
 // Accent Fill
 
@@ -953,10 +952,8 @@ export const focusStrokeOuterRecipe = createNonCss<ColorRecipe>(
 });
 
 /** @public */
-export const focusStrokeOuter = create<Swatch>(
-    "focus-stroke-outer"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(focusStrokeOuterRecipe).evaluate(resolve)
+export const focusStrokeOuter = create<Swatch>("focus-stroke-outer").withDefault(
+    (resolve: DesignTokenResolver) => resolve(focusStrokeOuterRecipe).evaluate(resolve)
 );
 
 // Focus Stroke Inner
@@ -974,8 +971,6 @@ export const focusStrokeInnerRecipe = createNonCss<ColorRecipe>(
 });
 
 /** @public */
-export const focusStrokeInner = create<Swatch>(
-    "focus-stroke-inner"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(focusStrokeInnerRecipe).evaluate(resolve)
+export const focusStrokeInner = create<Swatch>("focus-stroke-inner").withDefault(
+    (resolve: DesignTokenResolver) => resolve(focusStrokeInnerRecipe).evaluate(resolve)
 );

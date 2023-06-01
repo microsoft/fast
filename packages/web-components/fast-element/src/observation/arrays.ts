@@ -78,7 +78,8 @@ export const SpliceStrategySupport = Object.freeze({
  * The available values for SpliceStrategySupport.
  * @public
  */
-export type SpliceStrategySupport = typeof SpliceStrategySupport[keyof typeof SpliceStrategySupport];
+export type SpliceStrategySupport =
+    (typeof SpliceStrategySupport)[keyof typeof SpliceStrategySupport];
 
 /**
  * An approach to tracking changes in an array.

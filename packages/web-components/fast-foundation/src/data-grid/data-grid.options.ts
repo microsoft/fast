@@ -87,3 +87,58 @@ export const DataGridCellRole = {
  * @public
  */
 export type DataGridCellRole = ValuesOf<typeof DataGridCellRole>;
+
+/**
+ * Event detail for DataGridRow row/cell selectionchanged events
+ *
+ * @internal
+ */
+export interface DataGridSelectionChangeDetail {
+    // the new selected value
+    newValue: boolean;
+
+    // if the shiftKey is pressed
+    shiftKey: boolean;
+
+    // if the control key is pressed
+    ctrlKey: boolean;
+
+    // is keyboard event
+    isKeyboardEvent: boolean;
+}
+
+/**
+ * Enumerates the data grid selection mode options
+ *
+ * @public
+ */
+export const DataGridSelectionMode = {
+    none: "none",
+    singleRow: "single-row",
+    multiRow: "multi-row",
+} as const;
+
+/**
+ * The types for the data grid selection mode options
+ *
+ * @public
+ */
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+/**
+ * Enumerates the data grid selection behavior options
+ *
+ * @public
+ */
+export const DataGridSelectionBehavior = {
+    programmatic: "programmatic",
+    keyboardOnly: "keyboard-only",
+    auto: "auto",
+} as const;
+
+/**
+ * The types for the data grid selection mode options
+ *
+ * @public
+ */
+export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;

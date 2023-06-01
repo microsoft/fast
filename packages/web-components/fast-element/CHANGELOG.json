@@ -2,6 +2,81 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 28 Mar 2023 22:14:10 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.23",
+      "version": "2.0.0-beta.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1d9c23ecd77a4079126b1156567b906efff66350",
+            "comment": "docs: add missing API docs"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "032285c2bf0311f9f44cbc875b40696fc8f62857",
+            "comment": "fix: correct types for a break in TypeScript 5 legacy decorators"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 11 Mar 2023 00:09:48 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.22",
+      "version": "2.0.0-beta.22",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1c81922fbc9a7596330d53251975fb3f47357361",
+            "comment": "feat: add Context.for"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "70eb15bc13d9f4d849bc5b1fe4d591a23e57c935",
+            "comment": "feat: enable data binding in CSS"
+          },
+          {
+            "author": "32497422+KingOfTac@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d0ef0d6b1540ed90730187b45bdaf47aa9dcb183",
+            "comment": "add directives support for createElementTemplate"
+          },
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "24ec7cb05e955c5b916f611e96c47da665556604",
+            "comment": "fix: clean up toJSON noop on core fast-element types"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Feb 2023 04:02:35 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.21",
+      "version": "2.0.0-beta.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "rob@bluespire.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d38d31d2dd7496b5eb1e7c65b57de9a5e05e8546",
+            "comment": "fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "09d57ca18700331d054515c3b3f6fae07528cca0",
+            "comment": "Remove un-necessary expression from StyleElementStrategy"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Jan 2023 22:07:47 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.20",
       "version": "2.0.0-beta.20",
