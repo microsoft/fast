@@ -849,7 +849,10 @@ export class FASTPicker extends FormAssociatedPicker {
                 const newSelection: string[] = this.selectedItems.slice();
                 newSelection.splice(itemIndex, 1);
                 this.selection = newSelection.toString();
-                Updates.enqueue(() => this.incrementFocusedItem(0));
+                Updates.enqueue(() => {
+                    this.incrementFocusedItem(0);
+                    this.toggleFlyout(true);
+                });
             }
             return false;
         }
