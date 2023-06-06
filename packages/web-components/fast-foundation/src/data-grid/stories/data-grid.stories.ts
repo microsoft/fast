@@ -113,6 +113,7 @@ DataGridColumnDefinitions.args = {
 const editCellTemplate = html`
     <template>
         <fast-text-field
+            tabIndex="-1"
             value="${x => x.rowData[x.columnDefinition.columnDataKey]}"
         ></fast-text-field>
     </template>

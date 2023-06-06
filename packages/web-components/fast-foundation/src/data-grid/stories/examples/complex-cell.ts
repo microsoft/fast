@@ -48,20 +48,20 @@ export class ComplexCell extends FASTElement {
 export function complexCellTemplate<T extends ComplexCell>(): ElementViewTemplate<T> {
     return html<T>`
         <template>
-            <button
+            <fast-button
                 ${ref("buttonA")}
                 tabindex="-1"
                 @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
             >
                 A
-            </button>
-            <button
+            </fast-button>
+            <fast-button
                 ${ref("buttonB")}
                 tabindex="-1"
                 @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
             >
                 B
-            </button>
+            </fast-button>
         </template>
     `;
 }

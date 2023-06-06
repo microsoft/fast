@@ -16,6 +16,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { isFocusable } from "tabbable";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 
@@ -47,8 +48,10 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<FASTDataGridCell> = html`
 export const defaultCellFocusTargetCallback = (
     cell: FASTDataGridCell
 ): HTMLElement | null => {
-    if (cell.children.length && cell.children[0] instanceof HTMLElement) {
-        return cell.children[0] as HTMLElement;
+    for (let i = 0; i < cell.children.length; i++) {
+        if (isFocusable(cell.children[i])) {
+            return cell.children[i] as HTMLElement;
+        }
     }
     return null;
 };
