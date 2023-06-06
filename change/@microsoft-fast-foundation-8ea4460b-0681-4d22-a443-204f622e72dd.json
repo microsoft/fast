@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: prevents incrementing via keyboard and click for disabled AND readonly number field",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
