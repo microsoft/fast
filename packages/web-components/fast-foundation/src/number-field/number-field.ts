@@ -266,6 +266,10 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
+        if (this.disabled || this.readOnly) {
+            return;
+        }
+
         const value = parseFloat(this.value);
         const stepUpValue = !isNaN(value)
             ? value + this.step
@@ -286,6 +290,10 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
+        if (this.disabled || this.readOnly) {
+            return;
+        }
+
         const value = parseFloat(this.value);
         const stepDownValue = !isNaN(value)
             ? value - this.step
@@ -362,7 +370,11 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * Handles the internal control's `keydown` event
      * @internal
      */
-    public handleKeyDown(e: KeyboardEvent): boolean {
+    public handleKeyDown(e: KeyboardEvent): void | boolean {
+        if (this.disabled || this.readOnly) {
+            return;
+        }
+
         const key = e.key;
 
         switch (key) {

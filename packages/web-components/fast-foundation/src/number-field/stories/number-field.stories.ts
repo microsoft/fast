@@ -96,6 +96,23 @@ export const NumberField: Story<FASTNumberField> = renderComponent(storyTemplate
     {}
 );
 
+export const NumberFieldDisabled: Story<FASTNumberField> = renderComponent(
+    storyTemplate
+).bind({});
+
+NumberFieldDisabled.args = {
+    disabled: true,
+};
+
+export const NumberFieldReadOnly: Story<FASTNumberField> = renderComponent(
+    storyTemplate
+).bind({});
+
+NumberFieldReadOnly.args = {
+    readOnly: true,
+    value: "15",
+};
+
 export const NumberFieldWithSlottedStartEnd: Story<FASTNumberField> = NumberField.bind(
     {}
 );
