@@ -47,9 +47,8 @@ export const LayerBaseLuminance = Object.freeze({
  *
  * @public
  */
-export const layerPalette = createNonCss<Palette>("layer-palette").withDefault(
-    neutralPalette
-);
+export const layerPalette =
+    createNonCss<Palette>("layer-palette").withDefault(neutralPalette);
 
 /**
  * The ideal luminance value for the "Base" layer, {@link layerFillFixedBase}.
@@ -126,10 +125,8 @@ export const layerFillFixedRecipe = createNonCss<LayerRecipe>(
  *
  * @public
  */
-export const layerFillFixedBase = create<Swatch>(
-    "layer-fill-fixed-base"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(layerFillFixedRecipe).evaluate(resolve, 0)
+export const layerFillFixedBase = create<Swatch>("layer-fill-fixed-base").withDefault(
+    (resolve: DesignTokenResolver) => resolve(layerFillFixedRecipe).evaluate(resolve, 0)
 );
 
 /**
@@ -181,10 +178,8 @@ export const layerFillFixedMinus4 = create<Swatch>(
  *
  * @public
  */
-export const layerFillFixedPlus1 = create<Swatch>(
-    "layer-fill-fixed-plus-1"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(layerFillFixedRecipe).evaluate(resolve, 1)
+export const layerFillFixedPlus1 = create<Swatch>("layer-fill-fixed-plus-1").withDefault(
+    (resolve: DesignTokenResolver) => resolve(layerFillFixedRecipe).evaluate(resolve, 1)
 );
 
 /**
@@ -192,10 +187,8 @@ export const layerFillFixedPlus1 = create<Swatch>(
  *
  * @public
  */
-export const layerFillFixedPlus2 = create<Swatch>(
-    "layer-fill-fixed-plus-2"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(layerFillFixedRecipe).evaluate(resolve, 2)
+export const layerFillFixedPlus2 = create<Swatch>("layer-fill-fixed-plus-2").withDefault(
+    (resolve: DesignTokenResolver) => resolve(layerFillFixedRecipe).evaluate(resolve, 2)
 );
 
 /**
@@ -203,10 +196,8 @@ export const layerFillFixedPlus2 = create<Swatch>(
  *
  * @public
  */
-export const layerFillFixedPlus3 = create<Swatch>(
-    "layer-fill-fixed-plus-3"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(layerFillFixedRecipe).evaluate(resolve, 3)
+export const layerFillFixedPlus3 = create<Swatch>("layer-fill-fixed-plus-3").withDefault(
+    (resolve: DesignTokenResolver) => resolve(layerFillFixedRecipe).evaluate(resolve, 3)
 );
 
 /**
@@ -214,10 +205,8 @@ export const layerFillFixedPlus3 = create<Swatch>(
  *
  * @public
  */
-export const layerFillFixedPlus4 = create<Swatch>(
-    "layer-fill-fixed-plus-4"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(layerFillFixedRecipe).evaluate(resolve, 4)
+export const layerFillFixedPlus4 = create<Swatch>("layer-fill-fixed-plus-4").withDefault(
+    (resolve: DesignTokenResolver) => resolve(layerFillFixedRecipe).evaluate(resolve, 4)
 );
 
 /**

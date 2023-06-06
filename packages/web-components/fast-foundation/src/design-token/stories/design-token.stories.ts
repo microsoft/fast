@@ -12,12 +12,12 @@ export const DesignToken: Story = () => {
     const fixtureElementName = uniqueElementName();
 
     // Define element that can have token mutated for it
-    (class extends FASTElement {}.define({
+    (class extends FASTElement {}).define({
         name: fixtureElementName,
         template: html`
             <slot></slot>
         `,
-    }));
+    });
 
     const elementCache = new Set<HTMLElement>();
     // The objects required for unit-testing
@@ -100,7 +100,7 @@ export const DesignToken: Story = () => {
                 delete globalThis[key];
             });
         }
-    }.define({
+    }).define({
         name: controllerElementName,
         template: html`
             <h1>Nothing to see here, folks.</h1>
@@ -109,7 +109,7 @@ export const DesignToken: Story = () => {
                 used for programmatic purposes
             </p>
         `,
-    }));
+    });
 
     return document.createElement(controllerElementName);
 };

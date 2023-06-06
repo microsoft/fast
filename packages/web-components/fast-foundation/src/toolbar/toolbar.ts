@@ -229,9 +229,8 @@ export class FASTToolbar extends FASTElement {
 
         // If the previously active item is still focusable, adjust the active index to the
         // index of that item.
-        const adjustedActiveIndex = this.focusableElements.indexOf(
-            previousFocusedElement
-        );
+        const adjustedActiveIndex =
+            this.focusableElements.indexOf(previousFocusedElement);
         this.activeIndex = Math.max(0, adjustedActiveIndex);
 
         this.setFocusableElements();

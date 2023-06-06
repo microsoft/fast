@@ -4,9 +4,7 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTreeView } from "../tree-view.js";
 
 const storyTemplate = html<StoryArgs<FASTTreeView>>`
-    <fast-tree-view>
-        ${x => x.storyContent}
-    </fast-tree-view>
+    <fast-tree-view>${x => x.storyContent}</fast-tree-view>
 `;
 
 export default {
@@ -54,9 +52,7 @@ TreeView.args = {
             <fast-tree-item>Nested item 2</fast-tree-item>
             <fast-tree-item>Nested item 3</fast-tree-item>
         </fast-tree-item>
-        <fast-tree-item>
-            Root item 3
-        </fast-tree-item>
+        <fast-tree-item>Root item 3</fast-tree-item>
     `,
 };
 

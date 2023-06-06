@@ -241,9 +241,8 @@ export function reactWrapper(
                     const event = events[key as keyof TEvents];
 
                     if (event === undefined) {
-                        element[
-                            key as keyof TElement
-                        ] = newValue as TElement[keyof TElement];
+                        element[key as keyof TElement] =
+                            newValue as TElement[keyof TElement];
                     } else {
                         const oldValue = previousProps[key];
 

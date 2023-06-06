@@ -23,7 +23,8 @@ export const DeclarativeShadowDOMPolyfill = Object.freeze({
      * This is a one-time operation that should be placed at the end of the SSR'd
      * HTML but before any other scripts run.
      */
-    nonStreamingTemplateUpgrade: `if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot')) {
+    nonStreamingTemplateUpgrade:
+        `if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRoot')) {
     (function attachShadowRoots(root) {
         root.querySelectorAll("template[shadowroot]").forEach(template => {
             const mode = template.getAttribute("shadowroot");
