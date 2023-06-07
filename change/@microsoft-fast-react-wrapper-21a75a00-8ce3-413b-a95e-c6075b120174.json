@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update react wrapper duplication test for equality",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
