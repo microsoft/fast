@@ -196,7 +196,7 @@ for (const scenario of scenarios) {
 
     it('does not recreate the same component twice', async () => {
       const SameWrappedComponent = scenario.wrap(wrap);
-      expect(WrappedComponent).to.eq(SameWrappedComponent);
+      expect(SameWrappedComponent === WrappedComponent).to.equal(true);
     });
 
     it('wrapper renders custom element that updates', async () => {
