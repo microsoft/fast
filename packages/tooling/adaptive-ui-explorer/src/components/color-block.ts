@@ -471,9 +471,7 @@ const template = html<ColorBlock>`
         )}
     </p>
 
-    <div class="content">
-        ${x => x.componentTypeTemplate()}
-    </div>
+    <div class="content">${x => x.componentTypeTemplate()}</div>
 `;
 
 const styles = css`

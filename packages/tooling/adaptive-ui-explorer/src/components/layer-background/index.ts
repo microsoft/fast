@@ -109,9 +109,9 @@ export class LayerBackground extends FASTElement {
     }
 }
 
-export function layerBackgroundTemplate<T extends LayerBackground>(): ElementViewTemplate<
-    T
-> {
+export function layerBackgroundTemplate<
+    T extends LayerBackground
+>(): ElementViewTemplate<T> {
     return html<T>`
         <slot></slot>
     `;

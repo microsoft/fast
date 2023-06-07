@@ -44,31 +44,27 @@ export const elevationCardFocusSize = createNonCss<number>(
 ).withDefault(4);
 
 /** @public */
-export const elevationCardRest = create<string>(
-    "elevation-card-rest"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardRestSize))
+export const elevationCardRest = create<string>("elevation-card-rest").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardRestSize))
 );
 
 /** @public */
-export const elevationCardHover = create<string>(
-    "elevation-card-hover"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardHoverSize))
+export const elevationCardHover = create<string>("elevation-card-hover").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardHoverSize))
 );
 
 /** @public */
-export const elevationCardActive = create<string>(
-    "elevation-card-active"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardActiveSize))
+export const elevationCardActive = create<string>("elevation-card-active").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardActiveSize))
 );
 
 /** @public */
-export const elevationCardFocus = create<string>(
-    "elevation-card-focus"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardFocusSize))
+export const elevationCardFocus = create<string>("elevation-card-focus").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationCardFocusSize))
 );
 
 /** @public */
@@ -77,10 +73,9 @@ export const elevationTooltipSize = createNonCss<number>(
 ).withDefault(16);
 
 /** @public */
-export const elevationTooltip = create<string>(
-    "elevation-tooltip"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(elevationRecipe).evaluate(resolve, resolve(elevationTooltipSize))
+export const elevationTooltip = create<string>("elevation-tooltip").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationTooltipSize))
 );
 
 /** @public */
@@ -89,10 +84,9 @@ export const elevationFlyoutSize = createNonCss<number>(
 ).withDefault(32);
 
 /** @public */
-export const elevationFlyout = create<string>(
-    "elevation-flyout"
-).withDefault((resolve: DesignTokenResolver) =>
-    resolve(elevationRecipe).evaluate(resolve, resolve(elevationFlyoutSize))
+export const elevationFlyout = create<string>("elevation-flyout").withDefault(
+    (resolve: DesignTokenResolver) =>
+        resolve(elevationRecipe).evaluate(resolve, resolve(elevationFlyoutSize))
 );
 
 /** @public */

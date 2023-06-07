@@ -120,7 +120,8 @@ export class HTMLView<TSource = any, TParent = any>
     implements
         ElementView<TSource, TParent>,
         SyntheticView<TSource, TParent>,
-        ExecutionContext<TParent> {
+        ExecutionContext<TParent>
+{
     private behaviors: ViewBehavior[] | null = null;
     private unbindables: { unbind(controller: ViewController) }[] = [];
 

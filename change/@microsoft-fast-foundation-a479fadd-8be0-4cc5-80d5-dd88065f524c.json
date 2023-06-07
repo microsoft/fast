@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "open picker menu on delete",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "prerelease"
+}
