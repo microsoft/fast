@@ -36,6 +36,15 @@ describe(`The HTMLView`, () => {
             expect(view.firstChild).not.to.be.null;
             expect(view.lastChild).not.to.be.null;
         });
+        it("gracefully handles empty template literals", () => {
+            const template = html``;
+
+            const view = template.create();
+            view.bind({});
+
+            expect(view.firstChild).not.to.be.null;
+            expect(view.lastChild).not.to.be.null;
+        });
         it("warns on class bindings when host not present", () => {
             const template = html`
                 <template class="foo"></template>
