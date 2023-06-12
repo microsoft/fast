@@ -358,8 +358,13 @@ export const Compiler = {
             template = html;
         }
 
+        if (!template.content.firstChild && !template.content.lastChild) {
+            template.content.appendChild(document.createComment(""));
+        }
+
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
         const fragment = document.adoptNode(template.content);
+
         const context = new CompilationContext<TSource, TParent>(
             fragment,
             factories,
