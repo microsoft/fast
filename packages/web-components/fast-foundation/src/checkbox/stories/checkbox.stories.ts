@@ -8,7 +8,7 @@ const storyTemplate = html<StoryArgs<FASTCheckbox>>`
         ?checked="${x => x.checked}"
         ?disabled="${x => x.disabled}"
         ?required="${x => x.required}"
-        ?readonly="${x => x.readOnly}"
+        name="${x => x.name ?? "something"}"
         :indeterminate="${x => x.indeterminate}"
         value="${x => x.value}"
     >
@@ -23,14 +23,12 @@ export default {
         disabled: false,
         indeterminate: false,
         storyContent: "Checkbox",
-        readOnly: false,
         required: false,
     },
     argTypes: {
         checked: { control: "boolean" },
         disabled: { control: "boolean" },
         indeterminate: { control: "boolean" },
-        readOnly: { control: "boolean" },
         required: { control: "boolean" },
         value: { control: "text" },
         storyContent: { table: { disable: true } },
@@ -74,7 +72,7 @@ CheckboxIndeterminate.args = {
 
 export const CheckboxInForm: Story<FASTCheckbox> = renderComponent(
     html<StoryArgs<FASTCheckbox>>`
-        <form @submit="${() => false}">
+        <form id="someForm" @submit="${() => false}">
             ${storyTemplate}
             <fast-button type="submit">Submit</fast-button>
         </form>

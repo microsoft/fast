@@ -75,6 +75,7 @@
     "@storybook/html": "6.5.10",
     "@storybook/manager-webpack5": "6.5.10",
     "concurrently": "^7.3.0",
+    "element-internals-polyfill": "^1.1.17",
     "esm": "^3.2.25",
     "express": "^4.18.1",
     "expect": "29.2.1",
@@ -97,6 +98,7 @@
   "dependencies": {
     "@floating-ui/dom": "^1.0.3",
     "@microsoft/fast-element": "2.0.0-beta.23",
+    "@open-wc/form-control": "^0.7.0",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
     "tslib": "^2.4.0"

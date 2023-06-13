@@ -3845,6 +3845,11 @@
   dependencies:
     "@octokit/openapi-types" "^13.11.0"
 
+"@open-wc/form-control@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@open-wc/form-control/-/form-control-0.7.0.tgz#5b313a2caacdc84cbcd6b3fc3daea41f0124518a"
+  integrity sha512-BpB86Im6EJj83Dv3jp8t3Wfk0nVAAuxYUqFvMXlk7bTCi9e62zaVf5cldNfjyWK/obvLzMvhPzxGI2Nh+v4QTg==
+
 "@parcel/watcher@2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@parcel/watcher/-/watcher-2.0.4.tgz#f300fef4cc38008ff4b8c29d92588eced3ce014b"
@@ -10562,6 +10567,11 @@ electron-to-chromium@^1.4.172:
   version "1.4.180"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.180.tgz#380b06037836055d12c7de181ee90b8ed911c3e7"
   integrity sha512-7at5ash3FD9U5gPa3/wPr6OdiZd/zBjvDZaaHBpcqFOFUhZiWnb7stkqk8xUFL9H9nk7Yok5vCCNK8wyC/+f8A==
+
+element-internals-polyfill@^1.1.17:
+  version "1.1.17"
+  resolved "https://registry.yarnpkg.com/element-internals-polyfill/-/element-internals-polyfill-1.1.17.tgz#74b74232dda8d20098c614969007af7e2728bcf5"
+  integrity sha512-sMDJyJiwvcHB6wLnyG+y/9FRxi/9OyI8bmjyw18K6b5iVlBjmA5CJVTFz4K2I7R53yqevK8WkTrfBmSHJXH9Rw==
 
 elliptic@^6.5.3:
   version "6.5.4"

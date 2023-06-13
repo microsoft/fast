@@ -252,6 +252,7 @@ test.describe("Checkbox", () => {
         );
 
         // Playwright doesn't yet see our components as input elements
+        await expect(element).toHaveJSProperty("dirtyValue", false);
         await expect(element).toHaveJSProperty("value", initialValue);
     });
 
@@ -363,7 +364,7 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("checked", false);
     });
 
-    test("should set its checked property to true if the checked attribute is set", async () => {
+    test("should set its `checked` and `defaultChecked` property to true if the checked attribute is set", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
@@ -373,18 +374,21 @@ test.describe("Checkbox", () => {
         });
 
         await expect(element).toHaveJSProperty("checked", false);
+        await expect(element).toHaveJSProperty("defaultChecked", false);
 
         await element.evaluate((node: FASTCheckbox) => {
             node.setAttribute("checked", "");
         });
 
         await expect(element).toHaveJSProperty("checked", true);
+        await expect(element).toHaveJSProperty("defaultChecked", true);
 
         await form.evaluate((node: HTMLFormElement) => {
             node.reset();
         });
 
         await expect(element).toHaveJSProperty("checked", true);
+        await expect(element).toHaveJSProperty("defaultChecked", true);
     });
 
     test("should put the control into a clean state, where checked attribute modifications change the checked property prior to user or programmatic interaction", async () => {
@@ -415,4 +419,81 @@ test.describe("Checkbox", () => {
 
         expect(await element.evaluate((node: FASTCheckbox) => node.value)).toBeTruthy();
     });
+
+    test("should communicate if `checked` to the parent form", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-checkbox checked name="test"></fast-checkbox>
+                </form>
+            `;
+        });
+
+        const form = page.locator("form");
+
+        expect(
+            await form.evaluate((node: HTMLFormElement) => {
+                const formData = new FormData(node);
+
+                return formData.get("test");
+            })
+        ).toBe("on");
+    });
+
+    test("should not communicate when `disabled` and `checked` to the parent form", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-checkbox checked disabled name="test"></fast-checkbox>
+                </form>
+            `;
+        });
+
+        const form = page.locator("form");
+
+        expect(
+            await form.evaluate((node: HTMLFormElement) => {
+                const formData = new FormData(node);
+
+                return formData.get("test");
+            })
+        ).toBe(null);
+    });
+
+    test("should align the `checked` property and `current-checked` and `aria-checked` attribute changes", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-checkbox></fast-checkbox>
+            `;
+        });
+
+        const element = page.locator("fast-checkbox");
+
+        await expect(element).toHaveJSProperty("checked", false);
+
+        await expect(element).toHaveAttribute("current-checked", "false");
+
+        await expect(element).toHaveAttribute("aria-checked", "false");
+
+        await element.evaluate((node: FASTCheckbox) => {
+            node.setAttribute("current-checked", "true");
+        });
+
+        await expect(element).toHaveJSProperty("checked", true);
+
+        await expect(element).toHaveAttribute("current-checked", "true");
+
+        await expect(element).toHaveAttribute("aria-checked", "true");
+
+        await element.evaluate((node: FASTCheckbox) => {
+            node.setAttribute("current-checked", "false");
+        });
+
+        await expect(element).toHaveJSProperty("checked", false);
+
+        await expect(element).toHaveAttribute("current-checked", "false");
+
+        await expect(element).toHaveAttribute("aria-checked", "false");
+    });
+
 });

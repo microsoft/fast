@@ -114,8 +114,6 @@ const styles = css`
     }
 
     :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
     :host([disabled]) .control {
         cursor: var(--disabled-cursor);
     }
