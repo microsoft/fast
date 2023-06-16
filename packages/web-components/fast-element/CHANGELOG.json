@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 16 Jun 2023 18:17:12 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.24",
+      "version": "2.0.0-beta.24",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8250aa8352940584ff443b550ee756d49f01c478",
+            "comment": "fix: update compiler to ensure first and last child references are defined"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "e678a782dd06a1c9ca79726da4a5765244858d21",
+            "comment": "Adds 'else' template option to the when directive"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "58f7ce2ca73cf59dd957889e0763f45d087c77c9",
+            "comment": "fixed a bug where re-binding a ChildrenDirective instance would throw a runtime exception from the mutation handler"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "88a0d7feb71b2452fa521b72ce308b1e499dfd94",
+            "comment": "Update adoptedStyleSheets strategy to use push/splice when available to fix Safari 16.4 bug"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "9793634f3d06316a6a8689a909f4d41bdd667e99",
+            "comment": "fixes a bug where ChildrenDirective could not be used multiple times for the same element"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "86c1952373b1fa0d7100cf0d8e942a0580cda725",
+            "comment": "fixed bug causing behaviors attached to stylesheets not to be removed when the stylesheet was removed"
+          }
+        ],
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ca0e62ee8d05f72d1d8c1ad66bd6eea8e3f0a4eb",
+            "comment": "update prettier and eslint-config-prettier versions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 28 Mar 2023 22:14:10 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.23",
       "version": "2.0.0-beta.23",

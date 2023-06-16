@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "picker filter ignores case",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "stephcomeau@msn.com",
-  "dependentChangeType": "prerelease"
-}
