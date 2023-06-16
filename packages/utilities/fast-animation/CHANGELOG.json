@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Fri, 16 Jun 2023 18:17:14 GMT",
+      "tag": "@microsoft/fast-animation_v4.2.4",
+      "version": "4.2.4",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-animation",
+            "commit": "ca0e62ee8d05f72d1d8c1ad66bd6eea8e3f0a4eb",
+            "comment": "update prettier and eslint-config-prettier versions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Jul 2022 21:10:01 GMT",
       "tag": "@microsoft/fast-animation_v4.2.4",
       "version": "4.2.4",

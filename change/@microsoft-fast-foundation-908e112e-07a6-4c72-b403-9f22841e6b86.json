@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "remove keyboard ability to change value for readonly state in fast-number-field",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "saicharan0124@gmail.com",
-  "dependentChangeType": "prerelease"
-}

@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 16 Jun 2023 18:17:13 GMT",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.24",
+      "version": "1.0.0-alpha.24",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-router",
+            "commit": "ca0e62ee8d05f72d1d8c1ad66bd6eea8e3f0a4eb",
+            "comment": "update prettier and eslint-config-prettier versions"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.24",
+            "commit": "8250aa8352940584ff443b550ee756d49f01c478"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 28 Mar 2023 22:14:10 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.23",
       "version": "1.0.0-alpha.23",

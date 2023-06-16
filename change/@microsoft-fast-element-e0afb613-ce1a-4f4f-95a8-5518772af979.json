@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: update compiler to ensure first and last child references are defined",
-  "packageName": "@microsoft/fast-element",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

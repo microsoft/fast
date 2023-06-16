@@ -2,6 +2,77 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 16 Jun 2023 18:17:12 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.28",
+      "version": "3.0.0-alpha.28",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "saicharan0124@gmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "50e3fcd207adca50c5e666b12fc7c72b3cc0ba07",
+            "comment": "remove keyboard ability to change value for readonly state in fast-number-field"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2f944b3d72a65743cbba9da44471b70ac0c9fe27",
+            "comment": "open picker menu on delete"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f994643b29c179fe2cced616dedcff5dbb26af64",
+            "comment": "set activeid when setting active tab"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "bc731b8291bc0de4ada910ccb37225b227706861",
+            "comment": "Fix api-extractor doc warnings"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e678a782dd06a1c9ca79726da4a5765244858d21",
+            "comment": "Updates when directive instances to use 'else' template option"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "00140c2a3462bf73b5173f8f18a37d547df3b1e0",
+            "comment": "picker show no options"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "864303b923a10fd8b1d88444efb05e3f64c9524d",
+            "comment": "fix picker scroll into view"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f05058084183576b641d33b18e0cdd205814ffdf",
+            "comment": "picker filter ignores case"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.24",
+            "commit": "8250aa8352940584ff443b550ee756d49f01c478"
+          }
+        ],
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ca0e62ee8d05f72d1d8c1ad66bd6eea8e3f0a4eb",
+            "comment": "update prettier and eslint-config-prettier versions"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 28 Mar 2023 22:14:10 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.27",
       "version": "3.0.0-alpha.27",

@@ -1,7 +1,0 @@
-{
-    "type": "prerelease",
-    "comment": "fixed bug causing behaviors attached to stylesheets not to be removed when the stylesheet was removed",
-    "packageName": "@microsoft/fast-element",
-    "email": "nicholasrice@users.noreply.github.com",
-    "dependentChangeType": "prerelease"
-}

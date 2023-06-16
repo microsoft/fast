@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "set activeid when setting active tab",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
