@@ -4,15 +4,13 @@ const { exec } = require("child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("../../../build/get-package-json");
 
+// TODO: Still need to fetch component readme files
 const fastFoundation = getPackageJsonDir("@microsoft/fast-foundation");
-const fastElement = getPackageJsonDir("@microsoft/fast-element");
-const fastRouter = getPackageJsonDir("@microsoft/fast-router");
-const fastSSR = getPackageJsonDir("@microsoft/fast-ssr");
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
 const root = path.resolve(projectRoot, "../../");
-const outputDir = path.resolve(projectRoot, "docs");
+const outputDir = path.resolve(root, "docs/current");
 
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
@@ -88,30 +86,12 @@ async function moveMarkdownFiles(src, docsFolderDest) {
 }
 
 async function copyArticleMarkdown() {
-    // await moveMarkdownFiles(
-    //     path.resolve(fastFoundation, "docs/integrations"),
-    //     "integrations"
-    // );
-    // await moveMarkdownFiles(path.resolve(fastFoundation, "docs/tools"), "tools");
-    // await moveMarkdownFiles(path.resolve(fastElement, "docs/guide"), "fast-element");
-    // await moveMarkdownFiles(path.resolve(fastComponents, "docs/design"), "design");
-
-    // const componentDocs = findFiles(path.resolve(fastFoundation, "src"), "README.md");
-
-    // for (const source of componentDocs) {
-    //     const folder = path.dirname(source);
-    //     const dest = path.join(
-    //         "./docs/components",
-    //         `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.mdx`
-    //     );
-
-    //     await safeCopy(source, dest);
-    // }
+    await fs.cp(outputDir, "./docs", { recursive: true }, err => console.log(err));
 
     const mergeDocs = [
         {
             src: path.resolve(root, "CODE_OF_CONDUCT.md"),
-            dest: path.resolve(outputDir, "community/code-of-conduct.md"),
+            dest: path.resolve(outputDir, "community-contribution/code-of-conduct.md"),
             metadata: {
                 id: "code-of-conduct",
                 title: "Code of Conduct",
@@ -125,7 +105,7 @@ async function copyArticleMarkdown() {
         },
         {
             src: path.resolve(root, "CONTRIBUTING.md"),
-            dest: path.resolve(outputDir, "community/contributor-guide.md"),
+            dest: path.resolve(outputDir, "community-contribution/contributor-guide.md"),
             metadata: {
                 id: "contributor-guide",
                 title: "Contributor Guide",
@@ -138,7 +118,7 @@ async function copyArticleMarkdown() {
         },
         {
             src: path.resolve(root, "BRANCH_GUIDE.md"),
-            dest: path.resolve(outputDir, "community/branch-guide.md"),
+            dest: path.resolve(outputDir, "community-contribution/branch-guide.md"),
             metadata: {
                 id: "branch-guide",
                 title: "Branch Guide",
@@ -175,40 +155,6 @@ async function copyArticleMarkdown() {
                 keywords: ["security"],
             },
         },
-        // {
-        //     src: path.resolve(
-        //         getPackageJsonDir("@microsoft/fast-element"),
-        //         "./docs/ACKNOWLEDGEMENTS.md"
-        //     ), // require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
-        //     dest: path.resolve(outputDir, "resources/acknowledgements.md"),
-        //     metadata: {
-        //         id: "acknowledgements",
-        //         title: "Acknowledgements",
-        //         sidebar_label: "Acknowledgements",
-        //         custom_edit_url:
-        //             "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
-        //         description:
-        //             "There are many great open source projects that have inspired us and enabled us to build FAST.",
-        //         keywords: ["acknowlegements"],
-        //     },
-        // },
-        // {
-        //     src: path.resolve(
-        //         getPackageJsonDir("@microsoft/fast-element"),
-        //         "./README.md"
-        //     ),
-        //     dest: path.resolve(outputDir, "fast-element/getting-started.md"),
-        //     metadata: {
-        //         id: "getting-started",
-        //         title: "Getting Started with FAST Element",
-        //         sidebar_label: "Getting Started",
-        //         custom_edit_url:
-        //             "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
-        //         description:
-        //             "The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.",
-        //         keywords: ["fast-element", "web components"],
-        //     },
-        // },
     ];
 
     for (const file of mergeDocs) {
@@ -294,7 +240,7 @@ async function buildAPIMarkdown() {
 
     await new Promise((resolve, reject) =>
         exec(
-            "yarn api-documenter markdown -i src/docs/api -o docs/api",
+            `yarn api-documenter markdown -i src/docs/api -o docs/api-reference`,
             (err, stdout, stderr) => {
                 console.log(stdout);
                 console.error(stderr);
@@ -307,7 +253,7 @@ async function buildAPIMarkdown() {
         )
     );
 
-    const dir = "./docs/api";
+    const dir = "./docs/api-reference";
     const docFiles = await fs.readdir(dir);
     for (const docFile of docFiles) {
         try {

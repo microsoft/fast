@@ -2,10 +2,8 @@
 id: code-of-conduct
 title: Code of Conduct
 sidebar_label: Code of Conduct
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/code-of-conduct.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/CODE_OF_CONDUCT.md
 description: In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone.
-keywords:
-  - code of conduct
 ---
 
 ## Our Pledge

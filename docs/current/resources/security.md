@@ -2,10 +2,8 @@
 id: security
 title: Security
 sidebar_label: Security
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/security.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/SECURITY.md
 description: Microsoft takes the security of our software products and services seriously, which includes all source code repositories managed through our GitHub organizations.
-keywords:
-  - security
 ---
 <!-- BEGIN MICROSOFT SECURITY.MD V0.0.3 BLOCK -->
 
