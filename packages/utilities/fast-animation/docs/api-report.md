@@ -24,7 +24,7 @@ export abstract class Animate {
     pause: () => void;
     play: () => void;
     reverse: () => void;
-    }
+}
 
 // @public
 export class AnimateFrom extends Animate {
@@ -70,7 +70,7 @@ export function fadeIn(element: HTMLElement, effectTiming?: EffectTiming): Anima
 // @public
 export function fadeOut(element: HTMLElement, effectTiming?: EffectTiming): AnimateTo;
 
-// Warning: (ae-forgotten-export) The symbol "ScrollTrigger" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ScrollTrigger_2" needs to be exported by the entry point index.d.ts
 //
 // @public
 export class ScrollTrigger extends ScrollTrigger_2 {
@@ -86,7 +86,6 @@ export class ViewEnterTrigger extends ScrollTrigger_2 {
 export class ViewExitTrigger extends ScrollTrigger_2 {
     protected update(): void;
 }
-
 
 // (No @packageDocumentation comment for this package)
 

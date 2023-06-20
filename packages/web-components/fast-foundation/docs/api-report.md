@@ -582,7 +582,7 @@ export const enum DesignTokenMutationType {
     delete = 2
 }
 
-// Warning: (ae-forgotten-export) The symbol "DesignToken" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "DesignToken_2" needs to be exported by the entry point index.d.ts
 //
 // @public
 export type DesignTokenResolver = <T>(token: DesignToken_2<T>) => T;
@@ -2263,7 +2263,7 @@ export const forcedColorsStylesheetBehavior: (styles: ElementStyles) => MatchMed
 // @beta
 export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
 
-// Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ElementInternals_2" needs to be exported by the entry point index.d.ts
 //
 // @beta
 export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {

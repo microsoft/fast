@@ -47,7 +47,7 @@
     "@microsoft/fast-foundation": "3.0.0-alpha.28"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.24.2",
+    "@microsoft/api-extractor": "7.36.0",
     "@microsoft/eslint-config-fast-dna": "^2.1.0",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
@@ -55,6 +55,6 @@
     "eslint-config-prettier": "^8.8.0",
     "mocha": "^7.1.2",
     "prettier": "2.8.8",
-    "typescript": "^4.7.0"
+    "typescript": "^4.9.0"
   }
 }
