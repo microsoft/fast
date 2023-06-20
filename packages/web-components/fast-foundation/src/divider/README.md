@@ -71,13 +71,6 @@ export const myDivider = Divider.compose({
 | `role`        | public  | `DividerRole`        |         | The role of the element.        |                |
 | `orientation` | public  | `DividerOrientation` |         | The orientation of the divider. |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `role`        | role        |                |
-| `orientation` | orientation |                |
-
 <hr/>
 
 

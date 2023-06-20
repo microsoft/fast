@@ -183,16 +183,6 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | `scrollstart` |      | Fires a custom 'scrollstart' event when scrolling     |                |
 | `scrollend`   |      | Fires a custom 'scrollend' event when scrolling stops |                |
 
-#### Attributes
-
-| Name                      | Field                | Inherited From |
-| ------------------------- | -------------------- | -------------- |
-|                           | speed                |                |
-| `duration`                | duration             |                |
-| `easing`                  | easing               |                |
-| `flippers-hidden-from-at` | flippersHiddenFromAT |                |
-| `view`                    | view                 |                |
-
 #### CSS Parts
 
 | Name                     | Description                               |

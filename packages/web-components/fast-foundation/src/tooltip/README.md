@@ -91,15 +91,6 @@ export const myTooltip = Tooltip.compose({
 | --------- | ---- | ------------------------------------------------------------------------------------ | -------------- |
 | `dismiss` |      | Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed |                |
 
-#### Attributes
-
-| Name        | Field     | Inherited From |
-| ----------- | --------- | -------------- |
-| `anchor`    | anchor    |                |
-| `id`        | id        |                |
-| `placement` | placement |                |
-| `show`      | show      |                |
-
 #### Slots
 
 | Name | Description                              |

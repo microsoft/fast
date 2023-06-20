@@ -127,12 +127,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `selectFirstOption`  | public  | Moves focus to the first selectable option.    |            | `void` | FASTListbox    |
 | `setSelectedOptions` | public  | Sets an option as selected and gives it focus. |            |        | FASTListbox    |
 
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | disabled | FASTListbox    |
-
 <hr/>
 
 
@@ -194,15 +188,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name     | Type | Description                                          | Inherited From |
 | -------- | ---- | ---------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the value updates |                |
-
-#### Attributes
-
-| Name           | Field        | Inherited From |
-| -------------- | ------------ | -------------- |
-| `autocomplete` | autocomplete |                |
-| `open`         | open         |                |
-| `placeholder`  | placeholder  |                |
-|                | disabled     | FASTListbox    |
 
 #### CSS Parts
 

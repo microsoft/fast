@@ -122,20 +122,6 @@ This component is built with the expectation that focus is delegated to the inpu
 | `validate`           | public    | {@inheritDoc (FormAssociated:interface).validate} |            | `void` |                |
 | `handleClearInput`   | public    | Handles the control's clear value event           |            | `void` |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
-|               | autofocus   |                |
-| `placeholder` | placeholder |                |
-| `list`        | list        |                |
-|               | maxlength   |                |
-|               | minlength   |                |
-| `pattern`     | pattern     |                |
-|               | size        |                |
-|               | spellcheck  |                |
-
 #### CSS Parts
 
 | Name           | Description                                                     |
