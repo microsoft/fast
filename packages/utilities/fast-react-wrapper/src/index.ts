@@ -79,9 +79,10 @@ export type ReactWrapperProps<
  * A React component that wraps a Web Component.
  * @public
  */
-export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<
-    ReactModule.Component<ReactWrapperProps<TElement, TEvents>>
->;
+export interface ReactWrapper<TElement extends HTMLElement, TEvents>
+    extends Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>> {
+    displayName: string;
+}
 
 // There are 2 kinds of refs and there's no built in React API to set one.
 function setRef(ref: React.Ref<unknown>, value: Element | null) {
@@ -101,7 +102,7 @@ function getTagName<TElement, TEvents>(
         const definition = FASTElementDefinition.getByType(type)!;
 
         if (definition) {
-            config.name = definition.name;
+            return definition.name;
         } else {
             throw new Error(
                 "React wrappers must wrap a FASTElement or be configured with a name."
@@ -211,9 +212,11 @@ export function reactWrapper(
             type = type.type;
         }
 
+        const name = getTagName(type, config);
+
         const cachedCandidates = wrappersCache.get(type);
         if (cachedCandidates) {
-            const cachedWrapper = cachedCandidates.get(config.name ?? DEFAULT_CACHE_NAME);
+            const cachedWrapper = cachedCandidates.get(name ?? DEFAULT_CACHE_NAME);
             if (cachedWrapper) {
                 return cachedWrapper;
             }
@@ -306,7 +309,7 @@ export function reactWrapper(
                     }
                 }
 
-                return React.createElement(getTagName(type, config), newReactProps);
+                return React.createElement(name, newReactProps);
             }
         }
 
@@ -322,11 +325,13 @@ export function reactWrapper(
                 )
         ) as ReactWrapper<TElement, TEvents>;
 
+        reactComponent.displayName = name;
+
         if (!wrappersCache.has(type)) {
             wrappersCache.set(type, new Map<string, any>());
         }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        wrappersCache.get(type)!.set(config.name ?? DEFAULT_CACHE_NAME, reactComponent);
+        wrappersCache.get(type)!.set(name ?? DEFAULT_CACHE_NAME, reactComponent);
 
         return reactComponent;
     }
