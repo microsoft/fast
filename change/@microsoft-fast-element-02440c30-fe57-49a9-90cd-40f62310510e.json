@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "split custom element name into prefix and basename",
+  "comment": "add derive method to FASTElementDefinition for creating new definitions from existing instances.",
   "packageName": "@microsoft/fast-element",
   "email": "32497422+KingOfTac@users.noreply.github.com",
   "dependentChangeType": "prerelease"
