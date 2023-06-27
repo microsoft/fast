@@ -46,17 +46,11 @@
     "check": "beachball check ",
     "publish": "beachball publish",
     "publish-ci": "beachball publish -y --access public",
-    "integration-tests:alpha": "node build/testing/sauce-labs/test-browsers.js alpha",
-    "integration-tests:beta": "node build/testing/sauce-labs/test-browsers.js beta",
-    "integration-tests:release": "node build/testing/sauce-labs/test-browsers.js release",
     "prepare": "lerna run prepare",
     "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
     "test:validation": "yarn test:diff",
     "test": "yarn eslint \"/**/*.{ts}\" ",
-    "unit-tests": "jest --maxWorkers=4",
-    "coverage": "yarn jest --coverage",
-    "unit-tests:watch": "jest --watch",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "lerna run prettier:diff",
     "format": "lerna run prettier"
@@ -110,22 +104,15 @@
     "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
-    "eyes.selenium": "3.6.2",
     "glob": "^7.1.2",
     "husky": "^4.2.5",
-    "jest": "^25.4.0",
     "lerna": "^5.5.2",
     "lint-staged": "^10.1.2",
     "markdown-it": "^12.3.2",
     "prettier": "2.8.8",
     "rimraf": "^3.0.2",
-    "ts-jest": "^25.4.0",
     "ts-node": "^8.8.2",
     "typescript": "^4.7.0",
     "yargs": "^16.2.0"
-  },
-  "dependencies": {
-    "saucelabs": "^1.5.0",
-    "selenium-webdriver": "^3.6.0"
   }
 }
