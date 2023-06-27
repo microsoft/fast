@@ -426,13 +426,15 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
+    readonly baseName: string;
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
-    readonly name: string;
+    get name(): string;
+    prefix: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @internal
     static registerBaseType(type: Function): void;
