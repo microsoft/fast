@@ -3,5 +3,5 @@
   "comment": "split custom element name into prefix and basename",
   "packageName": "@microsoft/fast-element",
   "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
