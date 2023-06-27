@@ -95,22 +95,9 @@ export class FASTElementDefinition<
     }
 
     /**
-     * The prefix of the custom element's name
-     */
-    public prefix: string;
-
-    /**
-     * The base name of the custom element.
-     * Combined with the prefix, this creates the element name that is registered with the platform.
-     */
-    public readonly baseName: string;
-
-    /**
      * The name of the custom element.
      */
-    public get name(): string {
-        return `${this.prefix}-${this.baseName}`;
-    }
+    public readonly name: string;
 
     /**
      * The custom attributes of the custom element.
@@ -162,9 +149,7 @@ export class FASTElementDefinition<
 
         this.type = type;
 
-        const nameSeparatorIndex = nameOrConfig.name.indexOf("-");
-        this.prefix = nameOrConfig.name.substring(0, nameSeparatorIndex);
-        this.baseName = nameOrConfig.name.substring(nameSeparatorIndex + 1);
+        this.name = nameOrConfig.name;
         this.template = nameOrConfig.template;
         this.registry = nameOrConfig.registry ?? customElements;
 
@@ -223,6 +208,30 @@ export class FASTElementDefinition<
         }
 
         return this;
+    }
+
+    /**
+     * Derives a FASTElementDefinition from an existing instance.
+     * @param nameOrConfig - The new name or overrides to create a new definition from.
+     */
+    public derive(nameOrConfig: string | PartialFASTElementDefinition) {
+        if (isString(nameOrConfig)) {
+            nameOrConfig = { name: nameOrConfig };
+        }
+
+        nameOrConfig = {
+            ...this,
+            ...nameOrConfig,
+        };
+
+        if (
+            fastElementBaseTypes.has(this.type) ||
+            fastElementRegistry.getByType(this.type)
+        ) {
+            return new FASTElementDefinition(class extends this.type {}, nameOrConfig);
+        } else {
+            return new FASTElementDefinition(this.type, nameOrConfig);
+        }
     }
 
     /**

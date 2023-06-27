@@ -125,6 +125,37 @@ describe("FASTElementDefinition", () => {
 
             expect(def.isDefined).to.be.true;
         });
+
+        it("new definitions can be derived from an instance", () => {;
+            const name = uniqueElementName();
+            const def = FASTElementDefinition.compose(MyElement, `my-${name}`);
+            const derivedDef = def.derive(`foo-${name}`);
+
+            expect(derivedDef.isDefined).to.be.false;
+
+            derivedDef.define();
+
+            expect(derivedDef.isDefined).to.be.true;
+        });
+
+        it("an instance and a derived instance can both be defined", () => {
+            const name = uniqueElementName();
+            const def = FASTElementDefinition.compose(MyElement, `my-${name}`);
+
+            expect(def.isDefined).to.be.false;
+
+            def.define();
+
+            expect(def.isDefined).to.be.true;
+
+            const derivedDef = def.derive(`foo-${name}`);
+
+            expect(derivedDef.isDefined).to.be.false;
+
+            derivedDef.define();
+
+            expect(derivedDef.isDefined).to.be.true;
+        });
     });
 
     context("compose", () => {
