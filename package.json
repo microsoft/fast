@@ -66,49 +66,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "build/helpers/*.ts"
-    ],
-    "coverageReporters": [
-      "json",
-      [
-        "lcov",
-        {
-          "projectRoot": "."
-        }
-      ]
-    ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 100,
-        "branches": 100,
-        "functions": 100,
-        "lines": 100
-      }
-    },
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.ts?$": "ts-jest",
-      "^.+\\.js?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "!<rootDir>/node_modules/lodash-es",
-      "node_modules/jss-*",
-      "node_modules/css-vendor"
-    ],
-    "testPathIgnorePatterns": [
-      "packages/",
-      "build/helpers/__tests__/*",
-      "build/helpers/"
-    ],
-    "testRegex": "/__tests__/.*\\.(test|spec)\\.(js|ts|tsx)$",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ]
-  },
   "lint-staged": {
     "*.{ts,tsx,js,html}": [
       "prettier --write"
