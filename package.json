@@ -104,6 +104,7 @@
     "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
+    "jest-mock": "29.5.0",
     "glob": "^7.1.2",
     "husky": "^4.2.5",
     "lerna": "^5.5.2",
