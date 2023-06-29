@@ -148,7 +148,6 @@ export class FASTElementDefinition<
         }
 
         this.type = type;
-
         this.name = nameOrConfig.name;
         this.template = nameOrConfig.template;
         this.registry = nameOrConfig.registry ?? customElements;
