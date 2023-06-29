@@ -223,14 +223,7 @@ export class FASTElementDefinition<
             ...nameOrConfig,
         };
 
-        if (
-            fastElementBaseTypes.has(this.type) ||
-            fastElementRegistry.getByType(this.type)
-        ) {
-            return new FASTElementDefinition(class extends this.type {}, nameOrConfig);
-        } else {
-            return new FASTElementDefinition(this.type, nameOrConfig);
-        }
+        return FASTElementDefinition.compose(this.type, nameOrConfig);
     }
 
     /**
