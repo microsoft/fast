@@ -83,7 +83,7 @@ test.describe("Divider", () => {
             DividerOrientation.vertical
         );
 
-        await element.evaluate((node: FASTDivider, DividerOrientation) => {
+        await element.evaluate((node: FASTDivider, DividerRole) => {
             node.role = DividerRole.presentation;
         }, DividerOrientation);
 
