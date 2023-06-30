@@ -212,8 +212,11 @@ export class FASTElementDefinition<
     /**
      * Derives a FASTElementDefinition from an existing instance.
      * @param nameOrConfig - The new name or overrides to create a new definition from.
+     * @remarks This API is only available if a FASTElementDefinition instance has not been frozen.
      */
-    public derive(nameOrConfig: string | PartialFASTElementDefinition) {
+    public derive: Function | undefined = (
+        nameOrConfig: string | PartialFASTElementDefinition
+    ): FASTElementDefinition<TType> => {
         if (isString(nameOrConfig)) {
             nameOrConfig = { name: nameOrConfig };
         }
@@ -224,6 +227,14 @@ export class FASTElementDefinition<
         };
 
         return FASTElementDefinition.compose(this.type, nameOrConfig);
+    };
+
+    /**
+     * Removes the derive API and returns a frozen version of a FASTElementDefinition instance.
+     */
+    public freeze(): Readonly<Omit<FASTElementDefinition, "derive">> {
+        this.derive = undefined;
+        return Object.freeze(this);
     }
 
     /**

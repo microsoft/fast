@@ -129,7 +129,7 @@ describe("FASTElementDefinition", () => {
         it("new definitions can be derived from an instance", () => {;
             const name = uniqueElementName();
             const def = FASTElementDefinition.compose(MyElement, `my-${name}`);
-            const derivedDef = def.derive(`foo-${name}`);
+            const derivedDef = def.derive?.(`foo-${name}`);
 
             expect(derivedDef.isDefined).to.be.false;
 
@@ -148,7 +148,7 @@ describe("FASTElementDefinition", () => {
 
             expect(def.isDefined).to.be.true;
 
-            const derivedDef = def.derive(`foo-${name}`);
+            const derivedDef = def.derive?.(`foo-${name}`);
 
             expect(derivedDef.isDefined).to.be.false;
 
@@ -166,12 +166,20 @@ describe("FASTElementDefinition", () => {
                 styles: styles
             });
 
-            const derivedDef = def.derive({
+            const derivedDef = def.derive?.({
                 name: `foo-${name}`,
                 styles: overrideStyles
             });
 
             expect(def.styles).to.not.equal(derivedDef.styles);
+        });
+
+        it("a derived instance cannot be created from a frozen instance", () => {
+            const name = uniqueElementName();
+            const def = FASTElementDefinition.compose(MyElement, `my-${name}`).freeze();
+
+            expect(def["derive"]).to.be.undefined;
+            expect(def).to.not.be.extensible;
         });
     });
 

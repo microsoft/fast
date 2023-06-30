@@ -428,8 +428,9 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
     define(registry?: CustomElementRegistry): this;
-    derive(nameOrConfig: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
+    derive: Function | undefined;
     readonly elementOptions: ElementDefinitionOptions;
+    freeze(): Readonly<Omit<FASTElementDefinition, "derive">>;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
