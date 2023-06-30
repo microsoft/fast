@@ -207,11 +207,10 @@ export class FASTToolbar extends FASTElement {
      * @internal
      */
     protected get allSlottedItems(): (HTMLElement | Node)[] {
-        return [
-            ...this.start.assignedElements(),
-            ...this.slottedItems,
-            ...this.end.assignedElements(),
-        ];
+        const start = this.start?.assignedElements() ?? [];
+        const end = this.end?.assignedElements() ?? [];
+
+        return [...start, ...this.slottedItems, ...end];
     }
 
     /**
