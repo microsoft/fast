@@ -11,7 +11,7 @@ export function dividerTemplate<T extends FASTDivider>(): ElementViewTemplate<T>
         <template
             role="${x => x.role}"
             aria-orientation="${x =>
-                x.role === DividerRole.separator ? x.orientation : void 0}"
+                x.role !== DividerRole.presentation ? x.orientation : void 0}"
         >
             <slot></slot>
         </template>

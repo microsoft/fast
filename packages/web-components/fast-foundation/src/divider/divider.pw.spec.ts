@@ -85,7 +85,7 @@ test.describe("Divider", () => {
 
         await element.evaluate((node: FASTDivider, DividerRole) => {
             node.role = DividerRole.presentation;
-        }, DividerOrientation);
+        }, DividerRole);
 
         await expect(element).not.toHaveAttribute(
             "aria-orientation",
