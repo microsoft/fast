@@ -156,6 +156,23 @@ describe("FASTElementDefinition", () => {
 
             expect(derivedDef.isDefined).to.be.true;
         });
+
+        it("a derived instance should replace properties passed through new definition configuration", () => {
+            const name = uniqueElementName();
+            const styles = new ElementStyles([".class { color: red; }"]);
+            const overrideStyles = new ElementStyles([".class { color: blue }"]);
+            const def = FASTElementDefinition.compose(MyElement, {
+                name: `my-${name}`,
+                styles: styles
+            });
+
+            const derivedDef = def.derive({
+                name: `foo-${name}`,
+                styles: overrideStyles
+            });
+
+            expect(def.styles).to.not.equal(derivedDef.styles);
+        });
     });
 
     context("compose", () => {
