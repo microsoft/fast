@@ -100,38 +100,56 @@ export class FASTPicker extends FormAssociatedPicker {
     }
 
     /**
-     * Whether the component should remove an option from the list when it is in the selection
-     *
-     * @remarks
-     * HTML Attribute: filter-selected
+     * DEPRACATED -- use disableSelectionFilter. Whether the component should remove an option from the list when it is in the selection
      */
-    @attr({ attribute: "filter-selected", mode: "boolean" })
+    @observable
     public filterSelected: boolean = false;
+    protected filterSelectedChanged(): void {
+        // keep the main prop in sync
+        if (this.disableSelectionFilter === this.filterSelected) {
+            this.disableSelectionFilter = !this.filterSelected;
+        }
+    }
 
     /**
-     * DEPRACATED -- use queryFilterDisabled. Whether the component should remove options based on the current query
+     * Whether the component should remove an option from the list when it is in the selection. Default is false.
+     *
+     * @remarks
+     * HTML Attribute: disable-selection-filter
+     */
+    @attr({ attribute: "disable-selection-filter", mode: "boolean" })
+    public disableSelectionFilter: boolean = false;
+    protected disableSelectionFilterChanged(): void {
+        // keep depracated prop in sync
+        if (this.disableSelectionFilter === this.filterQuery) {
+            this.filterSelected = !this.disableSelectionFilter;
+        }
+    }
+
+    /**
+     * DEPRACATED -- use disableQueryFilter. Whether the component should remove options based on the current query
      */
     @observable
     public filterQuery: boolean = true;
     protected filterQueryChanged(): void {
         // keep the main prop in sync
-        if (this.queryFilterDisabled === this.filterQuery) {
-            this.queryFilterDisabled = !this.filterQuery;
+        if (this.disableQueryFilter === this.filterQuery) {
+            this.disableQueryFilter = !this.filterQuery;
         }
     }
 
     /**
-     * Whether the component should remove options based on the current query
+     * Whether the component should remove options based on the current query. Default is false.
      *
      * @remarks
-     * HTML Attribute: query-filter-disabled
+     * HTML Attribute: disable-query-filter
      */
-    @attr({ attribute: "query-filter-disabled", mode: "boolean" })
-    public queryFilterDisabled: boolean = false;
-    protected queryFilterDisabledChanged(): void {
+    @attr({ attribute: "disable-query-filter", mode: "boolean" })
+    public disableQueryFilter: boolean = false;
+    protected disableQueryFilterChanged(): void {
         // keep depracated prop in sync
-        if (this.queryFilterDisabled === this.filterQuery) {
-            this.filterQuery = !this.queryFilterDisabled;
+        if (this.disableQueryFilter === this.filterQuery) {
+            this.filterQuery = !this.disableQueryFilter;
         }
     }
 
@@ -1018,12 +1036,12 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     private updateFilteredOptions(): void {
         this.filteredOptionsList = this.optionsList.slice(0);
-        if (this.filterSelected) {
+        if (!this.disableSelectionFilter) {
             this.filteredOptionsList = this.filteredOptionsList.filter(
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
-        if (!this.queryFilterDisabled && this.query !== "" && this.query !== undefined) {
+        if (!this.disableQueryFilter && this.query !== "" && this.query !== undefined) {
             // compare case-insensitive
             const filterQuery = this.query.toLowerCase();
             this.filteredOptionsList = this.filteredOptionsList.filter(

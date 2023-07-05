@@ -237,8 +237,10 @@ export class FASTTextField extends TextField {}
 | ---------------------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | -------------- |
 | `selectionChanged`                 | protected |                                                               |                    | `void`    |                |
 | `optionsChanged`                   | protected |                                                               |                    | `void`    |                |
+| `filterSelectedChanged`            | protected |                                                               |                    | `void`    |                |
+| `disableSelectionFilterChanged`    | protected |                                                               |                    | `void`    |                |
 | `filterQueryChanged`               | protected |                                                               |                    | `void`    |                |
-| `queryFilterDisabledChanged`       | protected |                                                               |                    | `void`    |                |
+| `disableQueryFilterChanged`        | protected |                                                               |                    | `void`    |                |
 | `menuPlacementChanged`             | protected |                                                               |                    | `void`    |                |
 | `showLoadingChanged`               | protected |                                                               |                    | `void`    |                |
 | `listItemTemplateChanged`          | protected |                                                               |                    | `void`    |                |
@@ -262,8 +264,8 @@ export class FASTTextField extends TextField {}
 | ---------------------------- | ------------------------ | -------------- |
 | `selection`                  | selection                |                |
 | `options`                    | options                  |                |
-| `filter-selected`            | filterSelected           |                |
-| `query-filter-disabled`      | queryFilterDisabled      |                |
+| `disable-selection-filter`   | disableSelectionFilter   |                |
+| `disable-query-filter`       | disableQueryFilter       |                |
 | `max-selected`               | maxSelected              |                |
 | `no-suggestions-text`        | noSuggestionsText        |                |
 | `suggestions-available-text` | suggestionsAvailableText |                |

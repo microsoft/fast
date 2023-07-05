@@ -8,8 +8,8 @@ const storyTemplate = html<StoryArgs<FASTPicker>>`
     <fast-picker
         selection="${x => x.selection}"
         options="${x => x.options}"
-        filter-selected="${x => x.filterSelected}"
-        query-filter-disabled="${x => x.queryFilterDisabled}"
+        disable-selection-filter="${x => x.disableSelectionFilter}"
+        disable-query-filter="${x => x.disableQueryFilter}"
         :showLoading="${x => x.showLoading}"
         ?disabled="${x => x.disabled}"
         max-selected="${x => x.maxSelected}"
@@ -28,8 +28,9 @@ export default {
     args: {},
     argTypes: {
         queryFilterDisabled: { control: "boolean" },
-        filterSelected: { control: "boolean" },
         disabled: { control: "boolean" },
+        disableQueryFilter: { control: "boolean" },
+        disableSelectionFilter: { control: "boolean" },
         showLoading: { control: "boolean" },
         label: { control: "text" },
         labelledBy: { control: "text" },

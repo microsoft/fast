@@ -50,7 +50,7 @@ Picker is the top level container which hosts both a `picker-list` component to 
 - `labelledby`: The text applied to the `aria-labelledby` attribute of the internal input element.  
 - `placeholder`: The text used as the `placeholder` value for the internal input element.
 - `filter-selected`:  Whether to remove selected elements from the option list (default=false)
-- `query-filter-disabled`:  Whether to remove elements that don't match the query string (default=false)
+- `disable-query-filter`:  Whether to remove elements that don't match the query string (default=false)
 - `menu-placement`: Controls the placement of the menu relative to the input element.
 (default="bottom-fill")
 
