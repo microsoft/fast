@@ -109,6 +109,18 @@ export class FASTPicker extends FormAssociatedPicker {
     public filterSelected: boolean = false;
 
     /**
+     * DEPRACATED -- use queryFilterDisabled. Whether the component should remove options based on the current query
+     */
+    @observable
+    public filterQuery: boolean = true;
+    protected filterQueryChanged(): void {
+        // keep the main prop in sync
+        if (this.queryFilterDisabled === this.filterQuery) {
+            this.queryFilterDisabled = !this.filterQuery;
+        }
+    }
+
+    /**
      * Whether the component should remove options based on the current query
      *
      * @remarks
@@ -116,6 +128,12 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @attr({ attribute: "query-filter-disabled", mode: "boolean" })
     public queryFilterDisabled: boolean = false;
+    protected queryFilterDisabledChanged(): void {
+        // keep depracated prop in sync
+        if (this.queryFilterDisabled === this.filterQuery) {
+            this.filterQuery = !this.queryFilterDisabled;
+        }
+    }
 
     /**
      * The maximum number of items that can be selected.

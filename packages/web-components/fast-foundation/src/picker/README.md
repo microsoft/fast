@@ -237,6 +237,8 @@ export class FASTTextField extends TextField {}
 | ---------------------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | -------------- |
 | `selectionChanged`                 | protected |                                                               |                    | `void`    |                |
 | `optionsChanged`                   | protected |                                                               |                    | `void`    |                |
+| `filterQueryChanged`               | protected |                                                               |                    | `void`    |                |
+| `queryFilterDisabledChanged`       | protected |                                                               |                    | `void`    |                |
 | `menuPlacementChanged`             | protected |                                                               |                    | `void`    |                |
 | `showLoadingChanged`               | protected |                                                               |                    | `void`    |                |
 | `listItemTemplateChanged`          | protected |                                                               |                    | `void`    |                |
