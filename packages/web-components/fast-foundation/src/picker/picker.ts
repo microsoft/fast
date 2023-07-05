@@ -106,16 +106,16 @@ export class FASTPicker extends FormAssociatedPicker {
      * HTML Attribute: filter-selected
      */
     @attr({ attribute: "filter-selected", mode: "boolean" })
-    public filterSelected: boolean = true;
+    public filterSelected: boolean = false;
 
     /**
      * Whether the component should remove options based on the current query
      *
      * @remarks
-     * HTML Attribute: filter-query
+     * HTML Attribute: query-filter-disabled
      */
-    @attr({ attribute: "filter-query", mode: "boolean" })
-    public filterQuery: boolean = true;
+    @attr({ attribute: "query-filter-disabled", mode: "boolean" })
+    public queryFilterDisabled: boolean = false;
 
     /**
      * The maximum number of items that can be selected.
@@ -336,15 +336,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public filteredOptionsList: string[] = [];
-    protected filteredOptionsListChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.showNoOptions =
-                    this.menuElement.querySelectorAll('[role="option"]').length === 0;
-                this.setFocusedOption(this.showNoOptions ? -1 : 0);
-            });
-        }
-    }
 
     /**
      *  Indicates if the flyout menu is open or not
@@ -408,14 +399,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public showNoOptions: boolean = false;
-    private showNoOptionsChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.setFocusedOption(0);
-            });
-        }
-    }
+    public showNoOptions: boolean = true;
 
     /**
      *  The anchored region config to apply.
@@ -585,13 +569,6 @@ export class FASTPicker extends FormAssociatedPicker {
 
         if (open && getRootActiveElement(this) === this.inputElement) {
             this.flyoutOpen = open;
-            Updates.enqueue(() => {
-                if (this.menuElement !== undefined) {
-                    this.setFocusedOption(0);
-                } else {
-                    this.disableMenu();
-                }
-            });
             return;
         }
 
@@ -621,12 +598,12 @@ export class FASTPicker extends FormAssociatedPicker {
     /**
      * Handle the menu options updated event from the child menu
      */
-    private handleMenuOptionsUpdated(e: Event): void {
+    private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
-        if (this.flyoutOpen) {
+        Updates.enqueue(() => {
             this.setFocusedOption(0);
-        }
-    }
+        });
+    };
 
     /**
      * Handle key down events.
@@ -809,7 +786,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     public handleRegionLoaded(e: Event): void {
         Updates.enqueue(() => {
-            this.setFocusedOption(0);
             this.$emit("menuloaded", { bubbles: false });
         });
     }
@@ -966,6 +942,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * Sets the currently focused menu option by index
      */
     private setFocusedOption(optionIndex: number): void {
+        this.updateNoOptions();
         if (
             !this.flyoutOpen ||
             optionIndex === -1 ||
@@ -1028,7 +1005,7 @@ export class FASTPicker extends FormAssociatedPicker {
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
-        if (this.filterQuery && this.query !== "" && this.query !== undefined) {
+        if (!this.queryFilterDisabled && this.query !== "" && this.query !== undefined) {
             // compare case-insensitive
             const filterQuery = this.query.toLowerCase();
             this.filteredOptionsList = this.filteredOptionsList.filter(
@@ -1067,4 +1044,8 @@ export class FASTPicker extends FormAssociatedPicker {
         "bottom-fill": FlyoutPosBottomFill,
         "tallest-fill": FlyoutPosTallestFill,
     };
+
+    private updateNoOptions(): void {
+        this.showNoOptions = this.menuElement.optionElements.length === 0;
+    }
 }
