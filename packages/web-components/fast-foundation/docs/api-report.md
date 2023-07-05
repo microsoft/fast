@@ -1551,9 +1551,11 @@ export class FASTPicker extends FormAssociatedPicker {
     disconnectedCallback(): void;
     // @internal
     filteredOptionsList: string[];
+    // @deprecated (undocumented)
     filterQuery: boolean;
     // (undocumented)
     protected filterQueryChanged(): void;
+    // @deprecated (undocumented)
     filterSelected: boolean;
     // (undocumented)
     protected filterSelectedChanged(): void;
