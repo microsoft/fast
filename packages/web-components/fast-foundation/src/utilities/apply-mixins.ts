@@ -3,7 +3,7 @@ import { AttributeConfiguration } from "@microsoft/fast-element";
 /**
  * Apply mixins to a constructor.
  * Sourced from {@link https://www.typescriptlang.org/docs/handbook/mixins.html | TypeScript Documentation }.
- * @public
+ * @internal
  */
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
     const derivedAttributes = AttributeConfiguration.locate(derivedCtor);

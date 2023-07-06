@@ -92,9 +92,6 @@ export type AnchorTarget = ValuesOf<typeof AnchorTarget>;
 export function anchorTemplate<T extends FASTAnchor>(options?: AnchorOptions): ViewTemplate<T>;
 
 // @public
-export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
-
-// @public
 export class ARIAGlobalStatesAndProperties {
     ariaAtomic: "true" | "false" | string | null;
     ariaBusy: "true" | "false" | string | null;
