@@ -1,4 +1,4 @@
-import {
+fimport {
     attr,
     nullableNumberConverter,
     observable,
@@ -216,7 +216,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
-        console.log("valueChanged");
         const value = this.getValidValue(next);
 
         if (next !== value) {
@@ -343,7 +342,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public select(): void {
-        console.log("select");
         this.control.select();
 
         /**
@@ -360,7 +358,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
-        console.log("handleTextInput");
         this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
         this.isUserInput = true;
         this.value = this.control.value;
