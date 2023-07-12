@@ -250,7 +250,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
      */
     private getValidValue(value: string): string {
         let validValue: string = value;
-
         if (isNaN(parseFloat(value))) {
             validValue = "";
         } else {
