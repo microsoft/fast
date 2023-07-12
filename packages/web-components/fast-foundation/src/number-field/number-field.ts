@@ -216,6 +216,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
+        console.log("valueChanged");
         const value = this.getValidValue(next);
 
         if (next !== value) {
@@ -249,12 +250,21 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     private getValidValue(value: string): string {
-        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
-        if (isNaN(validValue)) {
+        let validValue: string = value;
+
+        if (isNaN(parseFloat(value))) {
             validValue = "";
         } else {
-            validValue = Math.min(validValue, this.max ?? validValue);
-            validValue = Math.max(validValue, this.min ?? validValue).toString();
+            const numericValue: number = parseFloat(parseFloat(value).toPrecision(12));
+            const minValue: number = this.min !== undefined ? this.min : numericValue;
+            const maxValue: number = this.max !== undefined ? this.max : numericValue;
+
+            // Check if the value falls within the valid range
+            if (numericValue < minValue) {
+                validValue = minValue.toString();
+            } else if (numericValue > maxValue) {
+                validValue = maxValue.toString();
+            }
         }
 
         return validValue;
@@ -267,8 +277,13 @@ export class FASTNumberField extends FormAssociatedNumberField {
      */
     public stepUp(): void {
         const value = parseFloat(this.value);
+        const decimalString = this.step.toString();
+        const decimalPlaces = decimalString.includes(".")
+            ? decimalString.split(".")[1].length
+            : 0;
+
         const stepUpValue = !isNaN(value)
-            ? value + this.step
+            ? parseFloat((value + this.step).toFixed(decimalPlaces))
             : this.min > 0
             ? this.min
             : this.max < 0
@@ -287,8 +302,12 @@ export class FASTNumberField extends FormAssociatedNumberField {
      */
     public stepDown(): void {
         const value = parseFloat(this.value);
+        const decimalString = this.step.toString();
+        const decimalPlaces = decimalString.includes(".")
+            ? decimalString.split(".")[1].length
+            : 0;
         const stepDownValue = !isNaN(value)
-            ? value - this.step
+            ? parseFloat((value - this.step).toFixed(decimalPlaces))
             : this.min > 0
             ? this.min
             : this.max < 0
@@ -324,6 +343,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public select(): void {
+        console.log("select");
         this.control.select();
 
         /**
@@ -340,6 +360,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
+        console.log("handleTextInput");
         this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
         this.isUserInput = true;
         this.value = this.control.value;
