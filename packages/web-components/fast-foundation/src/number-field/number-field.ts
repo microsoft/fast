@@ -1,4 +1,4 @@
-fimport {
+import {
     attr,
     nullableNumberConverter,
     observable,
