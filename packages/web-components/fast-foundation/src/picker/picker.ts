@@ -119,7 +119,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * HTML Attribute: max-selected
      */
     @attr({ attribute: "max-selected", converter: nullableNumberConverter })
-    public maxSelected: number | undefined;
+    public maxSelected: number | null = null;
 
     /**
      * The text to present to assistive technolgies when no suggestions are available.
@@ -807,7 +807,7 @@ export class FASTPicker extends FormAssociatedPicker {
             return;
         }
         if (
-            this.maxSelected !== undefined &&
+            this.maxSelected !== null &&
             this.maxSelected !== 0 &&
             this.selectedItems.length >= this.maxSelected
         ) {
@@ -916,7 +916,7 @@ export class FASTPicker extends FormAssociatedPicker {
             );
             if (newFocusedItemIndex === selectedItemsAsElements.length) {
                 if (
-                    this.maxSelected !== undefined &&
+                    this.maxSelected !== null &&
                     this.selectedItems.length >= this.maxSelected
                 ) {
                     (
