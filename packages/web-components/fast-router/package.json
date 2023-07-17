@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-router",
   "description": "A web-components-based router.",
   "sideEffects": false,
-  "version": "1.0.0-alpha.23",
+  "version": "1.0.0-alpha.24",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -69,7 +69,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^5.0.0",
     "mocha": "^7.1.2",
-    "prettier": "2.0.2",
+    "prettier": "2.8.8",
     "source-map": "^0.7.3",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^7.0.2",
@@ -80,6 +80,6 @@
     "webpack-cli": "^4.9.2"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.23"
+    "@microsoft/fast-element": "^2.0.0-beta.24"
   }
 }

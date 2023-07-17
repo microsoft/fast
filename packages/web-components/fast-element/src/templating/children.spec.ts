@@ -6,6 +6,7 @@ import { Updates } from "../observation/update-queue.js";
 import { Fake } from "../testing/fakes.js";
 import { html } from "./template.js";
 import { ref } from "./ref.js";
+import { computedState } from "../state/state.js";
 
 describe("The children", () => {
     context("template function", () => {
@@ -185,6 +186,27 @@ describe("The children", () => {
 
             expect(model.nodes).members([]);
         });
+        it("re-watches when re-bound", async () => {
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
+            const behavior = new ChildrenDirective({
+                property: "nodes",
+            });
+            behavior.targetNodeId = nodeId;
+            const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            behavior.unbind(controller);
+            behavior.bind(controller);
+
+            const element = document.createElement("div");
+            host.appendChild(element);
+
+            await Updates.next();
+
+            expect(model.nodes.includes(element)).to.equal(true)
+        });
 
         it("should not throw if DOM stringified", () => {
             const template = html<Model>`
@@ -204,6 +226,47 @@ describe("The children", () => {
             }).to.not.throw();
 
             view.unbind();
+        });
+
+
+        it("supports multiple directives for the same element", async () => {
+            const { host, targets, nodeId } = createDOM("foo-bar");
+            class MultipleDirectivesModel {
+                @observable
+                elements: Element[] = [];
+                @observable
+                text: Text[] = [];
+            }
+            const elementsDirective = new ChildrenDirective({
+                property: "elements",
+                filter: elements(),
+            });
+
+            const textDirective = new ChildrenDirective({
+                property: "text",
+                filter: (value) => value.nodeType === Node.TEXT_NODE,
+            });
+            elementsDirective.targetNodeId = nodeId;
+            textDirective.targetNodeId = nodeId;
+            const model = new MultipleDirectivesModel();
+            const controller = Fake.viewController(targets, elementsDirective, textDirective);
+
+            controller.bind(model);
+
+            elementsDirective.bind(controller);
+            textDirective.bind(controller);
+            const element = document.createElement("div");
+            const text = document.createTextNode("text");
+
+            host.appendChild(element);
+            host.appendChild(text)
+
+            await Updates.next();
+
+            expect(model.elements.includes(element)).to.equal(true);
+            expect(model.elements.includes(text as any)).to.equal(false);
+            expect(model.text.includes(text)).to.equal(true);
+            expect(model.text.includes(element as any)).to.equal(false);
         });
     });
 });

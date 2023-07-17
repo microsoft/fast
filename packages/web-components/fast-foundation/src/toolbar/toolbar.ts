@@ -207,11 +207,10 @@ export class FASTToolbar extends FASTElement {
      * @internal
      */
     protected get allSlottedItems(): (HTMLElement | Node)[] {
-        return [
-            ...this.start.assignedElements(),
-            ...this.slottedItems,
-            ...this.end.assignedElements(),
-        ];
+        const start = this.start?.assignedElements() ?? [];
+        const end = this.end?.assignedElements() ?? [];
+
+        return [...start, ...this.slottedItems, ...end];
     }
 
     /**
@@ -229,9 +228,8 @@ export class FASTToolbar extends FASTElement {
 
         // If the previously active item is still focusable, adjust the active index to the
         // index of that item.
-        const adjustedActiveIndex = this.focusableElements.indexOf(
-            previousFocusedElement
-        );
+        const adjustedActiveIndex =
+            this.focusableElements.indexOf(previousFocusedElement);
         this.activeIndex = Math.max(0, adjustedActiveIndex);
 
         this.setFocusableElements();

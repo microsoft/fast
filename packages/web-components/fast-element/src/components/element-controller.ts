@@ -52,7 +52,8 @@ const enum Stages {
  */
 export class ElementController<TElement extends HTMLElement = HTMLElement>
     extends PropertyChangeNotifier
-    implements HostController<TElement> {
+    implements HostController<TElement>
+{
     private boundObservables: Record<string, any> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
@@ -355,7 +356,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    this.addBehavior(sourceBehaviors[i]);
+                    this.removeBehavior(sourceBehaviors[i]);
                 }
             }
         }
@@ -496,7 +497,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (template) {
             // If a new template was provided, render it.
             (this as Mutable<this>).view = template.render(element, host, element);
-            ((this.view as any) as Mutable<ViewController>).sourceLifetime =
+            (this.view as any as Mutable<ViewController>).sourceLifetime =
                 SourceLifetime.coupled;
         }
     }

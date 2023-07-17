@@ -50,7 +50,8 @@ const warningHost = new Proxy(document.createElement("div"), {
 });
 
 class CompilationContext<TSource = any, TParent = any>
-    implements TemplateCompilationResult<TSource, TParent> {
+    implements TemplateCompilationResult<TSource, TParent>
+{
     private proto: any = null;
     private nodeIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
@@ -164,7 +165,7 @@ function compileAttributes(
                 result = new HTMLBindingDirective(
                     oneTime(() => attrValue, context.policy)
                 );
-                HTMLDirective.assignAspect((result as any) as Aspected, attr.name);
+                HTMLDirective.assignAspect(result as any as Aspected, attr.name);
             }
         } else {
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
@@ -219,7 +220,7 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
-            HTMLDirective.assignAspect((currentPart as any) as Aspected);
+            HTMLDirective.assignAspect(currentPart as any as Aspected);
             context.addFactory(
                 currentPart as CompiledViewBehaviorFactory,
                 parentId,
@@ -357,8 +358,13 @@ export const Compiler = {
             template = html;
         }
 
+        if (!template.content.firstChild && !template.content.lastChild) {
+            template.content.appendChild(document.createComment(""));
+        }
+
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
         const fragment = document.adoptNode(template.content);
+
         const context = new CompilationContext<TSource, TParent>(
             fragment,
             factories,
@@ -420,11 +426,11 @@ export const Compiler = {
                 return (): string => x;
             }
 
-            sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
-            binding = ((x as any) as Aspected).dataBinding || binding;
-            isVolatile = isVolatile || ((x as any) as Aspected).dataBinding!.isVolatile;
-            bindingPolicy = bindingPolicy || ((x as any) as Aspected).dataBinding!.policy;
-            return ((x as any) as Aspected).dataBinding!.evaluate;
+            sourceAspect = (x as any as Aspected).sourceAspect || sourceAspect;
+            binding = (x as any as Aspected).dataBinding || binding;
+            isVolatile = isVolatile || (x as any as Aspected).dataBinding!.isVolatile;
+            bindingPolicy = bindingPolicy || (x as any as Aspected).dataBinding!.policy;
+            return (x as any as Aspected).dataBinding!.evaluate;
         });
 
         const expression = (scope: unknown, context: ExecutionContext): string => {

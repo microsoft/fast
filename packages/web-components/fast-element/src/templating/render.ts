@@ -146,7 +146,8 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RenderDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
+    implements HTMLDirective, ViewBehaviorFactory, BindingDirective
+{
     /**
      * The structural id of the DOM node to which the created behavior will apply.
      */ BindingDirective;

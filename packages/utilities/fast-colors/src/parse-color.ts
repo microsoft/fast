@@ -3,9 +3,11 @@ import { normalize } from "./math-utilities.js";
 import { NamedColors, namedColorsConfigs } from "./named-colors.js";
 
 // Matches rgb(R, G, B) where R, G, and B are integers [0 - 255]
-const webRGBRegex: RegExp = /^rgb\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){2}(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*)\)$/i;
+const webRGBRegex: RegExp =
+    /^rgb\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){2}(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*)\)$/i;
 // Matches rgb(R, G, B, A) where R, G, and B are integers [0 - 255] and A is [0-1] floating
-const webRGBARegex: RegExp = /^rgba\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){3}(?:0|1|0?\.\d*)\s*)\)$/i;
+const webRGBARegex: RegExp =
+    /^rgba\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){3}(?:0|1|0?\.\d*)\s*)\)$/i;
 // Matches #RGB and #RRGGBB, where R, G, and B are [0-9] or [A-F]
 const hexRGBRegex: RegExp = /^#((?:[0-9a-f]{6}|[0-9a-f]{3}))$/i;
 // Matches #RGB and #RRGGBBAA, where R, G, B, and A are [0-9] or [A-F]
@@ -257,7 +259,7 @@ export function parseColorNamed(
     raw: keyof typeof namedColorsConfigs
 ): ColorRGBA64 | null {
     // const rawLower: typeof raw =  raw.toLowerCase() : raw.toString();
-    const config: typeof namedColorsConfigs[keyof typeof namedColorsConfigs] | void =
+    const config: (typeof namedColorsConfigs)[keyof typeof namedColorsConfigs] | void =
         namedColorsConfigs[raw.toLowerCase()];
 
     return config

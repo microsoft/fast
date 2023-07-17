@@ -576,8 +576,8 @@ export class DesignTokenNode {
             const { value } = record;
 
             if (value && DesignTokenNode.isDerivedTokenValue(value)) {
-                const dependencies = DerivedValueEvaluator.getOrCreate(value)
-                    .dependencies;
+                const dependencies =
+                    DerivedValueEvaluator.getOrCreate(value).dependencies;
                 // If this is not the originator, check to see if this node
                 // has any dependencies of the token value. If so, we need to evaluate for this node
                 let evaluate = false;

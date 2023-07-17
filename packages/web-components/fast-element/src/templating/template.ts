@@ -141,7 +141,7 @@ function createHTML(
     if (definition.aspected) {
         const match = lastAttributeNameRegex.exec(prevString);
         if (match !== null) {
-            HTMLDirective.assignAspect((value as any) as Aspected, match[2]);
+            HTMLDirective.assignAspect(value as any as Aspected, match[2]);
         }
     }
 
@@ -155,7 +155,8 @@ function createHTML(
 export class ViewTemplate<TSource = any, TParent = any>
     implements
         ElementViewTemplate<TSource, TParent>,
-        SyntheticViewTemplate<TSource, TParent> {
+        SyntheticViewTemplate<TSource, TParent>
+{
     private result: HTMLTemplateCompilationResult<TSource, TParent> | null = null;
     /**
      * The html representing what this template will
@@ -343,7 +344,7 @@ export const html: HTMLTemplateTag = (<TSource = any, TParent = any>(
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent> => {
     if (Array.isArray(strings) && Array.isArray(strings.raw)) {
-        return ViewTemplate.create((strings as any) as string[], values);
+        return ViewTemplate.create(strings as any as string[], values);
     }
 
     throw FAST.error(Message.directCallToHTMLTagNotAllowed);
