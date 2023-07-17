@@ -93,6 +93,7 @@ const pickerListStyles = css`
         box-sizing: border-box;
         border: none;
         color: var(--neutral-foreground-rest);
+        background: var(--neutral-fill-input-hover);
         outline: none;
         user-select: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);

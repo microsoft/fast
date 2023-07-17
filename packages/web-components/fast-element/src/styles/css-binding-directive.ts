@@ -27,7 +27,8 @@ function handleChange(
  * @public
  */
 export class CSSBindingDirective
-    implements HostBehavior, Subscriber, CSSDirective, BindingDirective {
+    implements HostBehavior, Subscriber, CSSDirective, BindingDirective
+{
     /**
      * Creates an instance of CSSBindingDirective.
      * @param dataBinding - The binding to use in CSS.

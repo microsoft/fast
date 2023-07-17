@@ -216,7 +216,8 @@ export class HTMLBindingDirective
         ViewBehaviorFactory,
         ViewBehavior,
         Aspected,
-        BindingDirective {
+        BindingDirective
+{
     private data: string;
     private updateTarget: UpdateTarget | null = null;
 

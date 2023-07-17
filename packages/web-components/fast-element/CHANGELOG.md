@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Jun 2023 18:17:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.24
+
+Fri, 16 Jun 2023 18:17:12 GMT
+
+### Changes
+
+- fix: update compiler to ensure first and last child references are defined (chhol@microsoft.com)
+- Adds 'else' template option to the when directive (nicholasrice@users.noreply.github.com)
+- fixed a bug where re-binding a ChildrenDirective instance would throw a runtime exception from the mutation handler (nicholasrice@users.noreply.github.com)
+- Update adoptedStyleSheets strategy to use push/splice when available to fix Safari 16.4 bug (nicholasrice@users.noreply.github.com)
+- fixes a bug where ChildrenDirective could not be used multiple times for the same element (nicholasrice@users.noreply.github.com)
+- fixed bug causing behaviors attached to stylesheets not to be removed when the stylesheet was removed (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0-beta.23
 

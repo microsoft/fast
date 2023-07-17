@@ -1,7 +1,6 @@
 {
   "packages": [
-    "packages/**/*",
-    "sites/fast-color-explorer"
+    "packages/**/*"
   ],
   "version": "independent",
   "npmClient": "yarn",
