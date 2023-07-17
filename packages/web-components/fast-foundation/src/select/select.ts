@@ -12,8 +12,8 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
-import { FASTListboxOption } from "../listbox-option/listbox-option.js";
-import { DelegatesARIAListbox } from "../listbox/listbox.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { DelegatesARIAListbox, FASTListbox } from "../listbox/listbox.js";
 import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -74,7 +74,7 @@ export class FASTSelect extends FormAssociatedSelect {
      * @remarks
      * HTML Attribute: placeholder
      */
-    @attr({ attribute: "placeholder" })
+    @attr
     public placeholder: string;
 
     /**
@@ -141,6 +141,14 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     @observable
     public control: HTMLElement;
+
+    /**
+     * The ref to the internal `.control` element.
+     *
+     * @internal
+     */
+    @observable
+    public placeholderOption: HTMLOptionElement | null = null;
 
     /**
      * The value property.
@@ -282,19 +290,12 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     public get displayValue(): string {
         Observable.track(this, "displayValue");
-        if (
-            this.placeholder &&
-            (this.selectedOptions.length == 0 || this.selectedIndex == -1)
-        ) {
-            return this.placeholder;
-        }
         if (this.multiple) {
             const selectedOptionsText = this.selectedOptions.map(option => option.text);
             this.currentValue = this.firstSelectedOption?.text;
-            return selectedOptionsText.join(", ") || "";
+            return selectedOptionsText.join(", ") || this.placeholderOption?.text || "";
         }
-        this.currentValue = this.firstSelectedOption?.text;
-        return this.firstSelectedOption?.text ?? "";
+        return this.firstSelectedOption?.text ?? this.placeholderOption?.text ?? "";
     }
 
     /**
@@ -490,16 +491,18 @@ export class FASTSelect extends FormAssociatedSelect {
     protected setDefaultSelectedOption(): void {
         const options: FASTListboxOption[] =
             this.options ??
-            Array.from(this.children).filter(
-                (el): el is FASTListboxOption => el instanceof FASTListboxOption
-            );
-        const selectedOption = options.find(el => el.selected || el.value === this.value);
+            Array.from(this.children).filter(FASTListbox.slottedOptionFilter);
 
-        this.selectedIndex = selectedOption
-            ? options.indexOf(selectedOption)
-            : this.placeholder || this.multiple
-            ? -1
-            : 0;
+        const selectedIndex = options?.findIndex(
+            el => el.hasAttribute("selected") || el.selected || el.value === this.value
+        );
+
+        if (selectedIndex !== -1 || this.placeholder !== "") {
+            this.selectedIndex = selectedIndex;
+            return;
+        }
+
+        this.selectedIndex = 0;
     }
 
     /**
