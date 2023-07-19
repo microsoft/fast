@@ -611,7 +611,7 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
             if (changes === void 0) {
                 return emptyArray;
             }
-            return changes.length > 1 ? project(current, changes) : changes;
+            return project(current, changes);
         }
 
         return resetSplices;
