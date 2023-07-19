@@ -442,7 +442,6 @@ describe("The ArrayObserver", () => {
 
         observer.subscribe({
             handleChange(source, args) {
-                console.log(args[0])
                 splices = args
             }
         });
