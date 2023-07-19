@@ -433,6 +433,26 @@ describe("The ArrayObserver", () => {
 
         expect(wasCalled).to.be.false;
     })
+
+    it("should not deliver splices for .splice() when .splice() does not change the items in the array", async () => {
+        ArrayObserver.enable();
+        const array = [1,2,3,4,5];
+        const observer = Observable.getNotifier(array);
+        let splices;
+
+        observer.subscribe({
+            handleChange(source, args) {
+                console.log(args[0])
+                splices = args
+            }
+        });
+
+        array.splice(0, array.length, ...array);
+
+        await Updates.next();
+
+        expect(splices.length).to.equal(0);
+    })
 });
 
 describe("The array length observer", () => {
