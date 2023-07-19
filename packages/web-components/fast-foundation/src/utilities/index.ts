@@ -1,4 +1,3 @@
-export * from "./apply-mixins.js";
 export * from "./direction.js";
 export * from "./match-media-stylesheet-behavior.js";
 export * from "./property-stylesheet-behavior.js";
