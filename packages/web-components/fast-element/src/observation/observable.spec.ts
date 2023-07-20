@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
-import { ExecutionContext, Observable, observable, volatile } from "./observable.js";
+import { ExecutionContext, Expression, Observable, observable, volatile } from "./observable.js";
 import { Fake } from "../testing/fakes.js";
 
 describe("The Observable", () => {
@@ -629,13 +629,30 @@ describe("The Observable", () => {
     });
 
     context("isVolatileBinding", () => {
-        it.only("should detect JavaScript optional property chaining", () => {
-            const expression = (a) => a?.b;
+        it("should return true when expression uses ternary operator", () => {
+            const expression = (a) => a !== undefined ? a : undefined;
 
-            // isVolatileBinding() uses .toString(), and our TypeScript configuration
-            // compiles [JavaScript optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
-            // away into a ternary. Override toString() for testing purposes.
-            expression.toString = () => "(a) => a?.b";
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when expression uses 'if' condition", () => {
+            const expression = (a) => { if (a !== undefined) { return a }};
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when expression uses '&&' operator", () => {
+            const expression = (a) => { a && true};
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when expression uses '||' operator", () => {
+            const expression = (a) => { a || true};
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when when expression uses JavaScript optional chaining", () => {
+            // Avoid TS Compiling Optional property syntax away into ternary
+            // by using Function constructor
+            const expression = Function("(a) => a?.b") as Expression;
 
             expect(Observable.isVolatileBinding(expression)).to.equal(true)
         })
