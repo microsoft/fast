@@ -172,7 +172,7 @@ export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
  */
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const queueUpdate = Updates.enqueue;
-    const volatileRegex = /(:|&&|\|\||if)/;
+    const volatileRegex = /(:|&&|\|\||if|\?\.)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     let watcher: ExpressionNotifierImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {

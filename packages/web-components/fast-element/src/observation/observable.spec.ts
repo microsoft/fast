@@ -627,4 +627,17 @@ describe("The Observable", () => {
             expect(model.child2ChangedCalled).to.be.true;
         });
     });
+
+    context("isVolatileBinding", () => {
+        it.only("should detect JavaScript optional property chaining", () => {
+            const expression = (a) => a?.b;
+
+            // isVolatileBinding() uses .toString(), and our TypeScript configuration
+            // compiles [JavaScript optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+            // away into a ternary. Override toString() for testing purposes.
+            expression.toString = () => "(a) => a?.b";
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        })
+    })
 });
