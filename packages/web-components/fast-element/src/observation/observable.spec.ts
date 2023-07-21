@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
-import { ExecutionContext, Observable, observable, volatile } from "./observable.js";
+import { ExecutionContext, Expression, Observable, observable, volatile } from "./observable.js";
 import { Fake } from "../testing/fakes.js";
 
 describe("The Observable", () => {
@@ -627,4 +627,34 @@ describe("The Observable", () => {
             expect(model.child2ChangedCalled).to.be.true;
         });
     });
+
+    context("isVolatileBinding", () => {
+        it("should return true when expression uses ternary operator", () => {
+            const expression = (a) => a !== undefined ? a : undefined;
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when expression uses 'if' condition", () => {
+            const expression = (a) => { if (a !== undefined) { return a }};
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when expression uses '&&' operator", () => {
+            const expression = (a) => { a && true};
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when expression uses '||' operator", () => {
+            const expression = (a) => { a || true};
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        });
+        it("should return true when when expression uses JavaScript optional chaining", () => {
+            // Avoid TS Compiling Optional property syntax away into ternary
+            // by using Function constructor
+            const expression = Function("(a) => a?.b") as Expression;
+
+            expect(Observable.isVolatileBinding(expression)).to.equal(true)
+        })
+    })
 });
