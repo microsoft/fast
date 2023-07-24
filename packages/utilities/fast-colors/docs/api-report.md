@@ -53,7 +53,7 @@ export function blendScreen(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 export function blendScreenChannel(bottom: number, top: number): number;
 
 // @public
-export function calculateOverlayColor(rgbMatch: ColorRGBA64, rgbBackground: ColorRGBA64, rgbOverlay?: ColorRGBA64): ColorRGBA64;
+export function calculateOverlayColor(rgbMatch: ColorRGBA64, rgbBackground: ColorRGBA64, rgbOverlay?: ColorRGBA64 | null): ColorRGBA64;
 
 // @public
 export function centeredRescale(input: ColorRGBA64[], config?: CenteredRescaleConfig): ColorRGBA64[];
@@ -339,7 +339,7 @@ export class ComponentStateColorPalette {
     static readonly defaultPaletteConfig: ComponentStateColorPaletteConfig;
     // (undocumented)
     palette: ColorRGBA64[];
-    }
+}
 
 // @public
 export interface ComponentStateColorPaletteConfig {
@@ -701,7 +701,6 @@ export function xyzToLAB(xyz: ColorXYZ): ColorLAB;
 
 // @public
 export function xyzToRGB(xyz: ColorXYZ, alpha?: number): ColorRGBA64;
-
 
 // (No @packageDocumentation comment for this package)
 
