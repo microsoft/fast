@@ -70,4 +70,30 @@ test.describe("Divider", () => {
             DividerOrientation.horizontal
         );
     });
+
+    test("should NOT set the `aria-orientation` attribute equal to the `orientation` value if the `role` is presentational", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-divider orientation="vertical"></fast-divider>
+            `;
+        });
+
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.vertical
+        );
+
+        await element.evaluate((node: FASTDivider, DividerRole) => {
+            node.role = DividerRole.presentation;
+        }, DividerRole);
+
+        await expect(element).not.toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.horizontal
+        );
+        await expect(element).not.toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.vertical
+        );
+    });
 });
