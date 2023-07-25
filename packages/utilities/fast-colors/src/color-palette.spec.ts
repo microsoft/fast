@@ -50,7 +50,7 @@ describe("Palette generation", () => {
         const results1: {
             short: ColorRGBA64[];
             long: ColorRGBA64[];
-        } = generateScaledPalettes(parseColorHexRGB("#d9b6f3")!);
+        }= generateScaledPalettes(parseColorHexRGB("#d9b6f3"));
 
         expect(results1.short.length).to.equal(11);
         expect(results1.long.length).to.equal(63);
@@ -134,7 +134,7 @@ describe("Palette generation", () => {
         const results2: {
             short: ColorRGBA64[];
             long: ColorRGBA64[];
-        } = generateScaledPalettes(parseColorHexRGB("#006699")!, 11, {
+        } = generateScaledPalettes(parseColorHexRGB("#006699"), 11, {
             targetSize: 63,
             spacing: 5,
             scaleColorLight: ColorPalette.defaultPaletteConfig.scaleColorLight!,
@@ -223,7 +223,7 @@ describe("Palette generation", () => {
 
     test("rescale", () => {
         const testPalette1: ColorPalette = generateOffCenterPalette(
-            parseColorHexRGB("#320198")!,
+            parseColorHexRGB("#320198"),
             11
         );
 
