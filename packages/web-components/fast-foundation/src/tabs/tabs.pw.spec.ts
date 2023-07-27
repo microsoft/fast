@@ -387,7 +387,7 @@ test.describe("Tabs", () => {
         await expect(element).toHaveJSProperty("activeid", secondTabId);
     });
 
-    test("should not allow selecting hidden tab using keyboard", async () => {
+    test("should not allow selecting hidden tab using arrow keys", async () => {
         test.slow();
 
         await root.evaluate(node => {
@@ -418,5 +418,38 @@ test.describe("Tabs", () => {
         await firstTab.press("ArrowRight");
 
         await expect(element).toHaveJSProperty("activeid", thirdTabId);
+    });
+
+    test("should not allow selecting hidden tab by pressing End", async () => {
+        test.slow();
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-tabs>
+                    <fast-tab>Tab one</fast-tab>
+                    <fast-tab>Tab two</fast-tab>
+                    <fast-tab hidden>Tab three</fast-tab>
+                    <fast-tab-panel>Tab panel one</fast-tab-panel>
+                    <fast-tab-panel>Tab panel two</fast-tab-panel>
+                    <fast-tab-panel>Tab panel three</fast-tab-panel>
+                </fast-tabs>
+            `;
+        });
+
+        const firstTab = tabs.nth(0);
+
+        const secondTab = tabs.nth(1);
+
+        const firstTabId = (await firstTab.getAttribute("id")) ?? "";
+
+        const secondTabId = (await secondTab.getAttribute("id")) ?? "";
+
+        await element.evaluate((node: FASTTabs, firstTabId) => {
+            node.activeid = firstTabId;
+        }, firstTabId);
+
+        await firstTab.press("End");
+
+        await expect(element).toHaveJSProperty("activeid", secondTabId);
     });
 });
