@@ -130,8 +130,12 @@ export class FASTTabs extends FASTElement {
         return el.getAttribute("aria-disabled") === "true";
     };
 
+    private isHiddenElement = (el: Element): el is HTMLElement => {
+        return el.getAttribute("hidden") !== null;
+    };
+
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return !this.isDisabledElement(el);
+        return !this.isDisabledElement(el) && !this.isHiddenElement(el);
     };
 
     private getActiveIndex(): number {
