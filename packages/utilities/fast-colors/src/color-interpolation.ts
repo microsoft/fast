@@ -183,7 +183,7 @@ export function interpolateByColorSpace(
     }
     switch (space) {
         case ColorInterpolationSpace.HSL:
-            return hslToRGB(interpolateHSL(position, rgbToHSL(left), rgbToHSL(right)));
+            return hslToRGB(interpolateHSL(position, rgbToHSL(left)!, rgbToHSL(right)!));
         case ColorInterpolationSpace.HSV:
             return hsvToRGB(interpolateHSV(position, rgbToHSV(left), rgbToHSV(right)));
         case ColorInterpolationSpace.XYZ:

@@ -106,10 +106,11 @@ describe("Color converter functions", () => {
                 data.rgba.a
             );
 
-            const hsl: ColorHSL = rgbToHSL(rgb);
-            expect(hsl.h).to.be.closeTo(data.hsl.h, testPrecision);
-            expect(hsl.s).to.be.closeTo(data.hsl.s, testPrecision);
-            expect(hsl.l).to.be.closeTo(data.hsl.l, testPrecision);
+            const hsl: ColorHSL | null = rgbToHSL(rgb);
+            expect(hsl).not.to.be.null;
+            expect(hsl!.h).to.be.closeTo(data.hsl.h, testPrecision);
+            expect(hsl!.s).to.be.closeTo(data.hsl.s, testPrecision);
+            expect(hsl!.l).to.be.closeTo(data.hsl.l, testPrecision);
         }
         for (const data of testData.namedColors) {
             testColor(data);

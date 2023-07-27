@@ -140,7 +140,9 @@ export function extractPalette(
         config.populationWeight +
         config.volumeWeight;
     for (let i: number = 0; i < colors.length; i++) {
-        const hsl: ColorHSL = rgbToHSL(colors[i].color);
+        const hsl: ColorHSL | null = rgbToHSL(colors[i].color);
+        if (!hsl) return [];
+
         for (let j: number = 0; j < config.constraints.length; j++) {
             // Check for min and max saturation / luminosity
             if (

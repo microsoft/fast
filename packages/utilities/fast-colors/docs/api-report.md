@@ -14,7 +14,7 @@ export function blendBurn(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 export function blendBurnChannel(bottom: number, top: number): number;
 
 // @public
-export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
+export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 | null;
 
 // @public
 export function blendDarken(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
@@ -211,7 +211,7 @@ export class ColorPalette {
     // (undocumented)
     static readonly defaultPaletteConfig: ColorPaletteConfig;
     // (undocumented)
-    generatePaletteColorScale(): ColorScale;
+    generatePaletteColorScale(): ColorScale | void;
     // (undocumented)
     static readonly greyscalePaletteConfig: ColorPaletteConfig;
     // (undocumented)
@@ -378,13 +378,13 @@ export function desaturateViaLCH(input: ColorRGBA64, saturation: number, saturat
 export function extractPalette(colors: QuantizedColor[], config?: PaletteExtractionConfig): PaletteEntry[];
 
 // @public
-export function generateOffCenterPalette(input: ColorRGBA64, outputSteps: number, greyscaleConfig?: ColorPaletteConfig, colorConfig?: ColorPaletteConfig): ColorPalette;
+export function generateOffCenterPalette(input: ColorRGBA64 | null, outputSteps: number, greyscaleConfig?: ColorPaletteConfig, colorConfig?: ColorPaletteConfig): ColorPalette | null;
 
 // @public
-export function generateScaledPalettes(input: ColorRGBA64, shortPaletteLength?: number, config?: CenteredRescaleConfig): {
+export function generateScaledPalettes(input: ColorRGBA64 | null, shortPaletteLength?: number, config?: CenteredRescaleConfig): {
     short: ColorRGBA64[];
     long: ColorRGBA64[];
-};
+} | null;
 
 // @public
 export function getHexStringForByte(i: number): string;
@@ -512,7 +512,7 @@ export function lightenViaLAB(input: ColorRGBA64, amount: number, darkenConstant
 export function loadImageData(source: string): Promise<ImageData>;
 
 // @public
-export function matchLightnessIndex(input: ColorRGBA64, reference: ColorRGBA64[]): number;
+export function matchLightnessIndex(input: ColorRGBA64 | null, reference: ColorRGBA64[]): number | null;
 
 // @public
 export type NamedColors = "aliceblue" | "antiquewhite" | "aqua" | "aquamarine" | "azure" | "beige" | "bisque" | "black" | "blanchedalmond" | "blue" | "blueviolet" | "brown" | "burlywood" | "cadetblue" | "chartreuse" | "chocolate" | "coral" | "cornflowerblue" | "cornsilk" | "crimson" | "cyan" | "darkblue" | "darkcyan" | "darkgoldenrod" | "darkgray" | "darkgreen" | "darkgrey" | "darkkhaki" | "darkmagenta" | "darkolivegreen" | "darkorange" | "darkorchid" | "darkred" | "darksalmon" | "darkseagreen" | "darkslateblue" | "darkslategray" | "darkslategrey" | "darkturquoise" | "darkviolet" | "deeppink" | "deepskyblue" | "dimgray" | "dimgrey" | "dodgerblue" | "firebrick" | "floralwhite" | "forestgreen" | "fuchsia" | "gainsboro" | "ghostwhite" | "gold" | "goldenrod" | "gray" | "green" | "greenyellow" | "grey" | "honeydew" | "hotpink" | "indianred" | "indigo" | "ivory" | "khaki" | "lavender" | "lavenderblush" | "lawngreen" | "lemonchiffon" | "lightblue" | "lightcoral" | "lightcyan" | "lightgoldenrodyellow" | "lightgray" | "lightgreen" | "lightgrey" | "lightpink" | "lightsalmon" | "lightseagreen" | "lightskyblue" | "lightslategray" | "lightslategrey" | "lightsteelblue" | "lightyellow" | "lime" | "limegreen" | "linen" | "magenta" | "maroon" | "mediumaquamarine" | "mediumblue" | "mediumorchid" | "mediumpurple" | "mediumseagreen" | "mediumslateblue" | "mediumspringgreen" | "mediumturquoise" | "mediumvioletred" | "midnightblue" | "mintcream" | "mistyrose" | "moccasin" | "navajowhite" | "navy" | "oldlace" | "olive" | "olivedrab" | "orange" | "orangered" | "orchid" | "palegoldenrod" | "palegreen" | "paleturquoise" | "palevioletred" | "papayawhip" | "peachpuff" | "peru" | "pink" | "plum" | "powderblue" | "purple" | "red" | "rosybrown" | "royalblue" | "saddlebrown" | "salmon" | "sandybrown" | "seagreen" | "seashell" | "sienna" | "silver" | "skyblue" | "slateblue" | "slategray" | "slategrey" | "snow" | "springgreen" | "steelblue" | "tan" | "teal" | "thistle" | "tomato" | "transparent" | "turquoise" | "violet" | "wheat" | "white" | "whitesmoke" | "yellow" | "yellowgreen";
@@ -664,7 +664,7 @@ export function radiansToDegrees(i: number): number;
 export function rescale(input: ColorRGBA64[], targetSize: number, preserveInputColors: boolean): ColorRGBA64[];
 
 // @public
-export function rgbToHSL(rgb: ColorRGBA64): ColorHSL;
+export function rgbToHSL(rgb: ColorRGBA64 | null): ColorHSL | null;
 
 // @public
 export function rgbToHSV(rgb: ColorRGBA64): ColorHSV;

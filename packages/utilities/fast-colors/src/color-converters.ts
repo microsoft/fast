@@ -146,8 +146,8 @@ export function calculateOverlayColor(
  *
  * @public
  */
-export function rgbToHSL(rgb: ColorRGBA64 | null): ColorHSL | void {
-    if (rgb === null) return;
+export function rgbToHSL(rgb: ColorRGBA64 | null): ColorHSL | null {
+    if (rgb === null) return null;
 
     const max: number = Math.max(rgb.r, rgb.g, rgb.b);
     const min: number = Math.min(rgb.r, rgb.g, rgb.b);

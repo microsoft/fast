@@ -119,9 +119,13 @@ export function blendBurn(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
  *
  * @public
  */
-export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 {
-    const bottomHSL: ColorHSL = rgbToHSL(bottom);
-    const topHSL: ColorHSL = rgbToHSL(top);
+export function blendColor(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64 | null {
+    const bottomHSL: ColorHSL | null = rgbToHSL(bottom);
+    const topHSL: ColorHSL | null = rgbToHSL(top);
+
+    if (!topHSL || !bottomHSL) {
+        return null;
+    }
 
     if (topHSL.s === 0) {
         return new ColorRGBA64(bottomHSL.l, bottomHSL.l, bottomHSL.l, 1);
@@ -316,7 +320,7 @@ export function blend(
         case ColorBlendMode.Burn:
             return blendBurn(bottom, top);
         case ColorBlendMode.Color:
-            return blendColor(bottom, top);
+            return blendColor(bottom, top)!;
         case ColorBlendMode.Darken:
             return blendDarken(bottom, top);
         case ColorBlendMode.Dodge:

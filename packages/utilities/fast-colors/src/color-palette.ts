@@ -127,7 +127,7 @@ export class ColorPalette {
         // Even when config.baseScalePosition is specified, using 0.5 for the baseColor
         // in the baseScale gives better results. Otherwise very off-center palettes
         // tend to go completely grey at the end furthest from the specified base color.
-        const baseColorHSL: ColorHSL | void = rgbToHSL(this.config.baseColor!);
+        const baseColorHSL: ColorHSL | null = rgbToHSL(this.config.baseColor!);
         if (!baseColorHSL) return;
 
         const baseScale: ColorScale = new ColorScale([
@@ -237,16 +237,16 @@ export class ColorPalette {
 export function matchLightnessIndex(
     input: ColorRGBA64 | null,
     reference: ColorRGBA64[]
-): number | void {
-    const hsl: ColorHSL | void = rgbToHSL(input);
-    if (!hsl) return;
+): number | null {
+    const hsl: ColorHSL | null = rgbToHSL(input);
+    if (!hsl) return null;
 
     let bestFitValue: number = Number.MAX_VALUE;
     let bestFitIndex: number = 0;
 
     for (let i: number = 0; i < reference.length; i++) {
-        const ihsl: ColorHSL | void = rgbToHSL(reference[i]);
-        if (!ihsl) return;
+        const ihsl: ColorHSL | null = rgbToHSL(reference[i]);
+        if (!ihsl) return null;
 
         const fitValue: number = Math.abs(ihsl.l - hsl.l);
         if (fitValue < bestFitValue) {
@@ -266,16 +266,16 @@ export function generateOffCenterPalette(
     outputSteps: number,
     greyscaleConfig: ColorPaletteConfig = ColorPalette.greyscalePaletteConfig,
     colorConfig: ColorPaletteConfig = ColorPalette.defaultPaletteConfig
-): ColorPalette | void {
-    if (input === null) return;
+): ColorPalette | null {
+    if (input === null) return null;
 
     const greyscale: ColorPalette = new ColorPalette({
         ...greyscaleConfig,
         steps: outputSteps,
     });
 
-    const scaleIndex: number | void = matchLightnessIndex(input, greyscale.palette);
-    if (!scaleIndex) return;
+    const scaleIndex: number | null = matchLightnessIndex(input, greyscale.palette);
+    if (!scaleIndex) return null;
 
     return new ColorPalette({
         ...colorConfig,
@@ -434,14 +434,14 @@ export function generateScaledPalettes(
     input: ColorRGBA64 | null,
     shortPaletteLength: number = 11,
     config: CenteredRescaleConfig = defaultCenteredRescaleConfig
-): { short: ColorRGBA64[]; long: ColorRGBA64[] } | void {
-    if (input === null) return;
+): { short: ColorRGBA64[]; long: ColorRGBA64[] } | null {
+    if (input === null) return null;
 
-    const shortPalette: ColorPalette | void = generateOffCenterPalette(
+    const shortPalette: ColorPalette | null = generateOffCenterPalette(
         input,
         shortPaletteLength
     );
-    if (!shortPalette) return;
+    if (!shortPalette) return null;
 
     const longPalette: ColorRGBA64[] = centeredRescale(shortPalette.palette, config);
 
