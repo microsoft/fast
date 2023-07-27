@@ -131,7 +131,7 @@ export class FASTTabs extends FASTElement {
     };
 
     private isHiddenElement = (el: Element): el is HTMLElement => {
-        return el.getAttribute("hidden") !== null;
+        return el.hasAttribute("hidden");
     };
 
     private isFocusableElement = (el: Element): el is HTMLElement => {
