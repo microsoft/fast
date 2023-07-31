@@ -632,7 +632,7 @@ export class FASTSelect extends FormAssociatedSelect {
      * @internal
      */
     private updateDisplayValue(): void {
-        if (this.collapsible) {
+        if (this.$fastController.isConnected && this.collapsible) {
             Observable.notify(this, "displayValue");
         }
     }
