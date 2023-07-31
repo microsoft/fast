@@ -73,6 +73,13 @@ describe("The template compiler", () => {
                 childCount: 0,
             },
             {
+                type: "an empty template",
+                html: `<template></template>`,
+                directives: () => [],
+                fragment: ``,
+                childCount: 0,
+            },
+            {
                 type: "a single",
                 html: `${inline(0)}`,
                 directives: () => [binding()],
@@ -181,6 +188,13 @@ describe("The template compiler", () => {
         ];
 
         scenarios.forEach(x => {
+            it(`ensures that first and last child references are not null for ${x.type}`, () => {
+                const { fragment } = compile(x.html, x.directives());
+
+                expect(fragment.firstChild).not.to.be.null;
+                expect(fragment.lastChild).not.to.be.null;
+            })
+
             policies.forEach(y => {
                 it(`handles ${x.type} binding expression(s) with ${y.name} policy`, () => {
                     const directives = x.directives();

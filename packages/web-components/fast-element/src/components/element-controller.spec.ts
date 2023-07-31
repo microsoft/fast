@@ -548,6 +548,20 @@ describe("The ElementController", () => {
             controller.disconnect();
             expect(behavior.disconnectedCallback).to.have.been.called();
         });
+        it("should add behaviors added by a stylesheet when added and remove them the stylesheet is removed", () => {
+            const behavior: HostBehavior = {
+                addedCallback: chai.spy(),
+                removedCallback: chai.spy()
+            };
+            const styles = css``.withBehaviors(behavior)
+            const { controller } = createController();
+            controller.addStyles(styles)
+
+            expect(behavior.addedCallback).to.have.been.called();
+
+            controller.removeStyles(styles);
+            expect(behavior.removedCallback).to.have.been.called();
+        });
     });
 
     context("with pre-existing shadow dom on the host", () => {

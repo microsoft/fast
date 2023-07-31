@@ -120,24 +120,22 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
         styles: ComposableStyles[],
         private behaviors: HostBehavior<HTMLElement>[]
     ) {
-        const stylesheets: ReadonlyArray<Exclude<
-            ComposableStyles,
-            string
-        >> = styles.reduce(
-            (
-                accumulated: Exclude<ComposableStyles, string>[],
-                current: ComposableStyles
-            ) => {
-                if (isString(current)) {
-                    this.css += current;
-                } else {
-                    accumulated.push(current);
-                }
+        const stylesheets: ReadonlyArray<Exclude<ComposableStyles, string>> =
+            styles.reduce(
+                (
+                    accumulated: Exclude<ComposableStyles, string>[],
+                    current: ComposableStyles
+                ) => {
+                    if (isString(current)) {
+                        this.css += current;
+                    } else {
+                        accumulated.push(current);
+                    }
 
-                return accumulated;
-            },
-            []
-        );
+                    return accumulated;
+                },
+                []
+            );
 
         if (stylesheets.length) {
             this.styles = new ElementStyles(stylesheets);

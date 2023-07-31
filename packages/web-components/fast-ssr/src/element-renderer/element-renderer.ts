@@ -32,7 +32,8 @@ export const getElementRenderer = (
  * @beta
  */
 export abstract class DefaultElementRenderer
-    implements Omit<ElementRenderer, "renderShadow" | "renderAttributes"> {
+    implements Omit<ElementRenderer, "renderShadow" | "renderAttributes">
+{
     private parent: ElementRenderer | null = null;
     @observable
     abstract readonly element?: HTMLElement;

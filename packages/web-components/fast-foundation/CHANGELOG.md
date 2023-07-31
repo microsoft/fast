@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
+This log was last generated on Fri, 16 Jun 2023 18:17:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.28
+
+Fri, 16 Jun 2023 18:17:12 GMT
+
+### Changes
+
+- remove keyboard ability to change value for readonly state in fast-number-field (saicharan0124@gmail.com)
+- open picker menu on delete (stephcomeau@msn.com)
+- set activeid when setting active tab (chhol@microsoft.com)
+- Fix api-extractor doc warnings (47367562+bheston@users.noreply.github.com)
+- Updates when directive instances to use 'else' template option (nicholasrice@users.noreply.github.com)
+- picker show no options (stephcomeau@msn.com)
+- fix picker scroll into view (stephcomeau@msn.com)
+- picker filter ignores case (stephcomeau@msn.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.24
 
 ## 3.0.0-alpha.27
 

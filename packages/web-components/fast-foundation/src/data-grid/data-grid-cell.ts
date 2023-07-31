@@ -151,9 +151,8 @@ export class FASTDataGridCell extends FASTElement {
                         "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
-                        this
-                    );
+                    const focusTarget: HTMLElement =
+                        this.columnDefinition.headerCellFocusTargetCallback(this);
                     if (focusTarget !== null) {
                         focusTarget.focus();
                     }
@@ -167,9 +166,8 @@ export class FASTDataGridCell extends FASTElement {
                     typeof this.columnDefinition.cellFocusTargetCallback === "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
-                        this
-                    );
+                    const focusTarget: HTMLElement =
+                        this.columnDefinition.cellFocusTargetCallback(this);
                     if (focusTarget !== null) {
                         focusTarget.focus();
                     }
@@ -214,9 +212,8 @@ export class FASTDataGridCell extends FASTElement {
                             this.columnDefinition.headerCellFocusTargetCallback !==
                             undefined
                         ) {
-                            const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
-                                this
-                            );
+                            const focusTarget: HTMLElement =
+                                this.columnDefinition.headerCellFocusTargetCallback(this);
                             if (focusTarget !== null) {
                                 focusTarget.focus();
                             }
@@ -226,9 +223,8 @@ export class FASTDataGridCell extends FASTElement {
 
                     default:
                         if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
-                            const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
-                                this
-                            );
+                            const focusTarget: HTMLElement =
+                                this.columnDefinition.cellFocusTargetCallback(this);
                             if (focusTarget !== null) {
                                 focusTarget.focus();
                             }

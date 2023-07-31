@@ -39,9 +39,8 @@ export const ListboxOption: Story<FASTListboxOption> = renderComponent(
     storyTemplate
 ).bind({});
 
-export const ListboxOptionWithSlottedStartEnd: Story<FASTListboxOption> = ListboxOption.bind(
-    {}
-);
+export const ListboxOptionWithSlottedStartEnd: Story<FASTListboxOption> =
+    ListboxOption.bind({});
 ListboxOptionWithSlottedStartEnd.args = {
     storyContent: html`
         <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>

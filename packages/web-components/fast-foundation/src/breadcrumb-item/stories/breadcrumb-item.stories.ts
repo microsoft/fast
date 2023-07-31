@@ -88,9 +88,8 @@ BreadcrumbItemWithHref.args = {
     href: "https://www.fast.design/",
 };
 
-export const BreadcrumbItemWithSlottedStart: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
+export const BreadcrumbItemWithSlottedStart: Story<FASTBreadcrumbItem> =
+    BreadcrumbItem.bind({});
 BreadcrumbItemWithSlottedStart.args = {
     storyContent: html`
         <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
@@ -99,9 +98,8 @@ BreadcrumbItemWithSlottedStart.args = {
     href: "#",
 };
 
-export const BreadcrumbItemWithSlottedEnd: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
+export const BreadcrumbItemWithSlottedEnd: Story<FASTBreadcrumbItem> =
+    BreadcrumbItem.bind({});
 BreadcrumbItemWithSlottedEnd.args = {
     storyContent: html`
         Breadcrumb item with slotted end icon
@@ -110,9 +108,8 @@ BreadcrumbItemWithSlottedEnd.args = {
     href: "#",
 };
 
-export const BreadcrumbItemWithSlottedStartEnd: Story<FASTBreadcrumbItem> = BreadcrumbItem.bind(
-    {}
-);
+export const BreadcrumbItemWithSlottedStartEnd: Story<FASTBreadcrumbItem> =
+    BreadcrumbItem.bind({});
 BreadcrumbItemWithSlottedStartEnd.args = {
     storyContent: html`
         <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>

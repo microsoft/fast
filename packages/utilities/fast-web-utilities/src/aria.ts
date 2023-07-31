@@ -9,4 +9,4 @@ export const Orientation = {
 /**
  * The orientation type
  */
-export type Orientation = typeof Orientation[keyof typeof Orientation];
+export type Orientation = (typeof Orientation)[keyof typeof Orientation];

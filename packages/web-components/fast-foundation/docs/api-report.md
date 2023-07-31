@@ -2596,7 +2596,7 @@ export function reflectAttributes<TSource = any, TParent = any>(...attributes: s
 //
 // @internal (undocumented)
 export const roleForMenuItem: {
-    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
+    [value in keyof typeof MenuItemRole]: (typeof MenuItemRole)[value];
 };
 
 // @public

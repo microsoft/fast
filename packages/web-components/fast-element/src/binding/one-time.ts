@@ -9,7 +9,8 @@ import { Binding } from "./binding.js";
 
 class OneTimeBinding<TSource = any, TReturn = any, TParent = any>
     extends Binding<TSource, TReturn, TParent>
-    implements ExpressionObserver<TSource, TReturn, TParent> {
+    implements ExpressionObserver<TSource, TReturn, TParent>
+{
     createObserver(): ExpressionObserver<TSource, TReturn, TParent> {
         return this;
     }
