@@ -130,8 +130,12 @@ export class FASTTabs extends FASTElement {
         return el.getAttribute("aria-disabled") === "true";
     };
 
+    private isHiddenElement = (el: Element): el is HTMLElement => {
+        return el.hasAttribute("hidden");
+    };
+
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return !this.isDisabledElement(el);
+        return !this.isDisabledElement(el) && !this.isHiddenElement(el);
     };
 
     private getActiveIndex(): number {
@@ -272,7 +276,7 @@ export class FASTTabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        const focusableTabs = this.tabs.filter(t => !this.isDisabledElement(t));
+        const focusableTabs = this.tabs.filter(t => this.isFocusableElement(t));
         const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
 
         const nextTabIndex = limit(
