@@ -1,30 +1,26 @@
 import {
-    attr,
-    nullableNumberConverter,
+    observable,
     oneWay,
     RepeatDirective,
     RepeatOptions,
 } from "@microsoft/fast-element";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
-import { Container, DI, inject, Registration } from "@microsoft/fast-element/di";
-import { FASTDataList } from "../data-list/index.js";
-import { DefaultIdleLoadQueue, IdleLoadQueue } from "../utilities/idle-load-queue.js";
-import { Virtualizer } from "./virtualizer.js";
+import { inject } from "@microsoft/fast-element/di";
+import { FASTDataGrid } from "../data-grid/index.js";
+import { Virtualizer } from "../virtual-list/virtualizer.js";
 
 /**
- *  The Virtual List class
+ *  The Virtual Data Grid class
  *
  * @public
  */
-export class FASTVirtualList extends FASTDataList {
-    @Container container!: Container;
+export class FASTVirtualDataGrid extends FASTDataGrid {
     @inject(Virtualizer) virtualizer!: Virtualizer;
-    @inject(DefaultIdleLoadQueue) idleLoadQueue!: DefaultIdleLoadQueue;
 
     /**
-     * Item size to use if one is not specified
+     * row height to use if one is not specified
      */
-    public defaultItemSize = 100;
+    public defaultRowHeight = 30;
 
     /**
      * The size in pixels of each item along the virtualization axis.
@@ -35,8 +31,8 @@ export class FASTVirtualList extends FASTDataList {
      * @remarks
      * HTML Attribute: item-size
      */
-    @attr({ attribute: "item-size", converter: nullableNumberConverter })
-    public itemSize: number = this.defaultItemSize;
+    @observable
+    public rowHeight: number = this.defaultRowHeight;
 
     /**
      * The HTML ID of the viewport element.
@@ -82,11 +78,7 @@ export class FASTVirtualList extends FASTDataList {
         if (!this.viewportElement) {
             this.viewportElement = this.getViewport();
         }
-        DI.getOrCreateDOMContainer(this).register(
-            Registration.instance(IdleLoadQueue, this.idleLoadQueue)
-        );
-
-        this.virtualizer.itemSize = this.itemSize;
+        this.virtualizer.itemSize = this.rowHeight;
         this.virtualizer.connect(
             this.sourceItems,
             this.viewportElement,
@@ -101,7 +93,6 @@ export class FASTVirtualList extends FASTDataList {
     disconnectedCallback() {
         super.disconnectedCallback();
         this.virtualizer.disconnect();
-        this.idleLoadQueue.clearCallbackQueue();
     }
 
     /**
@@ -129,7 +120,7 @@ export class FASTVirtualList extends FASTDataList {
     }
 
     protected getRepeatOptions(): RepeatOptions {
-        //positioning is always true for virtual lists
+        //positioning is always true for virtual data grids
         const options = super.getRepeatOptions();
         options.positioning = true;
         return options;

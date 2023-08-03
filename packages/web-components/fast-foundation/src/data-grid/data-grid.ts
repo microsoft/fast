@@ -1,14 +1,10 @@
 import type { SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
-    FASTElement,
     nullableNumberConverter,
     observable,
-    oneWay,
-    RepeatDirective,
     Updates,
 } from "@microsoft/fast-element";
-import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     eventFocus,
     eventFocusOut,
@@ -20,6 +16,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { FASTDataList } from "../data-list/index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import {
@@ -31,9 +28,9 @@ import {
 } from "./data-grid.options.js";
 
 export {
-    DataGridRowTypes,
     DataGridSelectionBehavior,
     DataGridSelectionMode,
+    DataGridRowTypes,
     GenerateHeaderOptions,
 };
 
@@ -112,7 +109,7 @@ export interface ColumnDefinition {
  * @slot - The default slot for custom row elements
  * @public
  */
-export class FASTDataGrid extends FASTElement {
+export class FASTDataGrid extends FASTDataList {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -292,8 +289,17 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public rowsData: object[] = [];
+
     protected rowsDataChanged(): void {
-        if (this.columnDefinitions === null && this.rowsData.length > 0) {
+        this.sourceItems = this.rowsData;
+    }
+
+    protected sourceItemsChanged(): void {
+        if (
+            this.columnDefinitions === null &&
+            this.sourceItems &&
+            this.sourceItems.length > 0
+        ) {
             this.columnDefinitions = FASTDataGrid.generateColumns(this.rowsData[0]);
         }
         if (this.$fastController.isConnected) {
@@ -311,6 +317,7 @@ export class FASTDataGrid extends FASTElement {
     public columnDefinitions: ColumnDefinition[] | null = null;
     protected columnDefinitionsChanged(): void {
         if (!this.columnDefinitions) {
+            this.generatedGridTemplateColumns = "";
             return;
         }
         this.generatedGridTemplateColumns = FASTDataGrid.generateTemplateColumns(
@@ -329,6 +336,9 @@ export class FASTDataGrid extends FASTElement {
      */
     @observable
     public rowItemTemplate: ViewTemplate;
+    protected rowItemTemplateChanged(): void {
+        this.itemTemplate = this.rowItemTemplate;
+    }
 
     /**
      * The template used to render cells in generated rows.
@@ -443,9 +453,6 @@ export class FASTDataGrid extends FASTElement {
         this.queueRowIndexUpdate();
     }
 
-    private rowsPlaceholder: Node | null = null;
-    private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
-
     private generatedHeader: FASTDataGridRow | null = null;
 
     // flag to indicate whether the grid is actively updating focus
@@ -455,8 +462,8 @@ export class FASTDataGrid extends FASTElement {
 
     private observer: MutationObserver;
 
-    private rowindexUpdateQueued: boolean = false;
-    private columnDefinitionsStale: boolean = true;
+    protected rowindexUpdateQueued: boolean = false;
+    protected columnDefinitionsStale: boolean = true;
 
     private generatedGridTemplateColumns: string = "";
 
@@ -464,6 +471,10 @@ export class FASTDataGrid extends FASTElement {
     private preShiftRowSelection: number[] | null = null;
 
     private selectionUpdated: boolean = false;
+
+    constructor() {
+        super();
+    }
 
     /**
      * @internal
@@ -473,19 +484,6 @@ export class FASTDataGrid extends FASTElement {
 
         if (this.rowItemTemplate === undefined) {
             this.rowItemTemplate = this.defaultRowItemTemplate;
-        }
-
-        if (this.behaviorOrchestrator === null) {
-            this.behaviorOrchestrator = ViewBehaviorOrchestrator.create(this);
-            this.$fastController.addBehavior(this.behaviorOrchestrator);
-            this.behaviorOrchestrator.addBehaviorFactory(
-                new RepeatDirective<FASTDataGrid>(
-                    oneWay(x => x.rowsData),
-                    oneWay(x => x.rowItemTemplate),
-                    { positioning: true }
-                ),
-                this.appendChild((this.rowsPlaceholder = document.createComment("")))
-            );
         }
 
         this.toggleGeneratedHeader();
@@ -591,6 +589,9 @@ export class FASTDataGrid extends FASTElement {
         }
 
         let newFocusRowIndex: number;
+        const maxIndex = this.rowElements.length - 1;
+        const currentGridBottom: number = this.offsetHeight + this.scrollTop;
+        const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
 
         switch (e.key) {
             case keyArrowUp:
@@ -946,10 +947,10 @@ export class FASTDataGrid extends FASTElement {
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
                     : DataGridRowTypes.header;
-            if (this.firstChild !== null || this.rowsPlaceholder !== null) {
+            if (this.firstChild !== null || this.itemsPlaceholder !== null) {
                 this.insertBefore(
                     generatedHeaderElement,
-                    this.firstChild !== null ? this.firstChild : this.rowsPlaceholder
+                    this.firstChild !== null ? this.firstChild : this.itemsPlaceholder
                 );
             }
             return;
@@ -986,8 +987,8 @@ export class FASTDataGrid extends FASTElement {
         }
     };
 
-    private updateRowIndexes = (): void => {
-        let newGridTemplateColumns = this.gridTemplateColumns;
+    protected updateRowIndexes = (): void => {
+        let newGridTemplateColumns: string = this.getGridTemplateColumns();
 
         if (newGridTemplateColumns === undefined) {
             // try to generate columns based on manual rows
@@ -1030,4 +1031,36 @@ export class FASTDataGrid extends FASTElement {
             this.$emit("selectionchange");
         }
     };
+
+    protected getGridTemplateColumns(): string {
+        let newGridTemplateColumns = this.gridTemplateColumns;
+
+        if (newGridTemplateColumns === undefined) {
+            // try to generate columns based on manual rows
+            if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
+                const firstRow: FASTDataGridRow = this.rowElements[0] as FASTDataGridRow;
+                this.generatedGridTemplateColumns = new Array(
+                    firstRow.cellElements.length
+                )
+                    .fill("1fr")
+                    .join(" ");
+            }
+
+            newGridTemplateColumns = this.generatedGridTemplateColumns;
+        }
+
+        return newGridTemplateColumns;
+    }
+
+    /**
+     * initialize repeat behavior
+     */
+    protected initializeRepeatBehavior(): void {
+        super.initializeRepeatBehavior();
+        this.toggleGeneratedHeader();
+        this.updateRowIndexes();
+    }
+    protected updateItemTemplate(): void {
+        this.itemTemplate = this.rowItemTemplate;
+    }
 }
