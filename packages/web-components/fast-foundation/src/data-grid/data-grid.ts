@@ -568,7 +568,10 @@ export class FASTDataGrid extends FASTDataList {
      * @internal
      */
     public handleFocus(e: FocusEvent): void {
-        this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, "nearest");
+        // TODO: does this condition make sense?
+        if (e.relatedTarget === null || !this.contains(e.relatedTarget as Element)) {
+            this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, "nearest");
+        }
     }
 
     /**

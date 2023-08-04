@@ -897,9 +897,7 @@ export class Virtualizer {
         );
 
         this.updateVisibleItemSizes(newFirstRenderedIndex, newLastRenderedIndex);
-        console.log("update visible items");
-        //this.renderedItems.splice(0, this.renderedItems.length, ...newVisibleItems);
-        this.renderedItems = newVisibleItems;
+        this.renderedItems.splice(0, this.renderedItems.length, ...newVisibleItems);
     }
 
     /**

@@ -93,7 +93,6 @@ export class FASTVirtualListItem extends FASTElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        console.log("connected");
         if (this.itemContentsTemplate) {
             this.customView = this.itemContentsTemplate.render(this, this);
         }
@@ -110,7 +109,6 @@ export class FASTVirtualListItem extends FASTElement {
      */
     disconnectedCallback(): void {
         super.disconnectedCallback();
-        console.log("disconnected");
         if (this.customView) {
             this.customView.dispose();
             this.customView = null;
