@@ -99,6 +99,11 @@ import copy from 'rollup-plugin-copy';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 
+const parserOptions = {
+  sourceType: 'module',
+  plugins: ['typescript', ['decorators', { decoratorsBeforeExport: true }]],
+};
+
 export default {
   input: 'src/main.ts',
   output: {
@@ -109,23 +114,22 @@ export default {
   },
   plugins: [
     transformTaggedTemplate({
-      tagsToProcess: ['html','css'],
-      parserOptions: {
-        sourceType: "module",
-        plugins: [
-            "typescript",
-            [
-                "decorators",
-                { decoratorsBeforeExport: true }
-            ]
-        ]
+      tagsToProcess: ['css'],
+      transformer: (data) => {
+        if (/\/\*(?![\s\S]*\*\/)[\s\S]*/g.test(data)) {
+          throw new Error('Unterminated comment found in CSS tagged template literal');
+        }
+        return data.replace(/(?:\s*\/\*(?:[\s\S])+?\*\/\s*)|(?:;)\s+(?=\})|\s+(?=\{)|(?<=:)\s+|\s*([{};,])\s*/g, '$1');
       },
-      transformer(data) {
-          data = data.replace(/\s([{}()>~+=^$:!;])\s/gm, '$1');
-          data = data.replace(/([",[]])\s+/gm, '$1');
-          data = data.replace(/\s{2,}/gm, ' ');
-          return data.trim();
-      }
+      parserOptions,
+    }),
+    transformTaggedTemplate({
+      tagsToProcess: ['html'],
+      transformer: (data) => {
+        data = data.replace(/\s*([<>])\s*/g, '$1');
+        return data.replace(/\s{2,}/g, ' ');
+      },
+      parserOptions,
     }),
     typescript(),
     resolve(),
