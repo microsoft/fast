@@ -8,6 +8,12 @@ const styles = css`
         display: block;
         overflow-y: scroll;
     }
+    :host([orientation="horizontal"]) {
+        width: 100%;
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+
     .container {
         position: relative;
     }

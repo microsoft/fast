@@ -1,9 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
-import type { FASTVirtualList as FoundationVirtualList } from "../virtual-list.js";
-
-type VirtualListStoryArgs = Args & FoundationVirtualList;
-type VirtualListStoryMeta = Meta<VirtualListStoryArgs>;
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
+import type { FASTVirtualList } from "../virtual-list.js";
 
 // create a sample data set
 function newDataSet(rowCount: number, prefix: number): object[] {
@@ -60,7 +58,7 @@ const itemContentsTemplate = html`
     </fast-card>
 `;
 
-const storyTemplate = html<VirtualListStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTVirtualList>>`
     <fast-virtual-list
         :sourceItems="${newDataSet(5000, 1)}"
         :sizemap="${x => x.sizemap}"
@@ -116,10 +114,15 @@ export default {
             control: { type: "text" },
         },
     },
-} as VirtualListStoryMeta;
+} as Meta<FASTVirtualList>;
 
-export const VirtualList = (args: VirtualListStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const VirtualList: Story<FASTVirtualList> = renderComponent(storyTemplate).bind(
+    {}
+);
+
+export const VirtualListHorizontal: Story<FASTVirtualList> = renderComponent(
+    storyTemplate
+).bind({});
+VirtualListHorizontal.args = {
+    orientation: "horizontal",
 };

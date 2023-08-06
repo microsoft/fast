@@ -1,5 +1,4 @@
 import { FASTElement, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { convertStylePropertyPixelsToNumber } from "@microsoft/fast-web-utilities";
 import { IdleLoadQueue } from "../utilities/idle-load-queue.js";
 import type { SizeMap } from "./virtual-list.options.js";
 

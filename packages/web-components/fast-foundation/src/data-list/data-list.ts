@@ -43,9 +43,10 @@ export class FASTDataList extends FASTElement {
      * @remarks
      * HTML Attribute: orientation
      */
+    @attr({ attribute: "orientation" })
     public orientation: Orientation = Orientation.vertical;
     protected orientationChanged(): void {
-        if (this.$fastController.isConnected && this.behaviorOrchestrator) {
+        if (this.$fastController.isConnected) {
             this.updateItemTemplate();
         }
     }

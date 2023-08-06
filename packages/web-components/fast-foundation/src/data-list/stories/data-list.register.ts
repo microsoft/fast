@@ -4,9 +4,16 @@ import { dataListTemplate } from "../data-list.template.js";
 
 const styles = css`
     :host {
-        height: 100%;
-        display: block;
+        max-height: 100%;
+        display: flex;
         overflow-y: scroll;
+        flex-direction: column;
+    }
+
+    :host([orientation="horizontal"]) {
+        overflow-y: hidden;
+        overflow-x: scroll;
+        flex-direction: row;
     }
 `;
 

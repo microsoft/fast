@@ -1,9 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
-import type { FASTDataList as FoundationDataList } from "../data-list.js";
-
-type DataListStoryArgs = Args & FoundationDataList;
-type DataListStoryMeta = Meta<DataListStoryArgs>;
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
+import type { FASTDataList } from "../data-list.js";
 
 // create a sample data set
 function newDataSet(rowCount: number, prefix: number): object[] {
@@ -58,7 +56,7 @@ const itemContentsTemplate = html`
     </fast-card>
 `;
 
-const storyTemplate = html<DataListStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTDataList>>`
     <fast-data-list
         :sourceItems="${newDataSet(100, 1)}"
         orientation="${x => x.orientation}"
@@ -89,10 +87,13 @@ export default {
             control: { type: "text" },
         },
     },
-} as DataListStoryMeta;
+} as Meta<FASTDataList>;
 
-export const DataList = (args: DataListStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const DataList: Story<FASTDataList> = renderComponent(storyTemplate).bind({});
+
+export const DataListHorizontal: Story<FASTDataList> = renderComponent(
+    storyTemplate
+).bind({});
+DataListHorizontal.args = {
+    orientation: "horizontal",
 };

@@ -77,7 +77,7 @@ export function virtualListTemplate<T extends FASTVirtualList>(
                         ? "100%"
                         : `${x.virtualizer.totalListSize}px`};
                 height: ${x =>
-                    x.orientation !== Orientation.vertical
+                    x.orientation === Orientation.horizontal
                         ? "100%"
                         : `${x.virtualizer.totalListSize}px`};
             "

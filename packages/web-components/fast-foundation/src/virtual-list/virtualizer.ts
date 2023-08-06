@@ -40,11 +40,11 @@ export class Virtualizer {
      */
     @observable
     public orientation: Orientation = Orientation.vertical;
-    // protected orientationChanged(): void {
-    //     if (this.$fastController.isConnected && this.behaviorOrchestrator) {
-    //         this.updateItemTemplate();
-    //     }
-    // }
+    protected orientationChanged(): void {
+        if (this.connected) {
+            this.reset();
+        }
+    }
 
     /**
      *  Whether or not the display should virtualize
@@ -54,11 +54,11 @@ export class Virtualizer {
      * HTML Attribute: virtualization-disabled
      */
     public virtualizationDisabled: boolean = false;
-    // protected virtualizationEnabledChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.reset();
-    //     }
-    // }
+    protected virtualizationEnabledChanged(): void {
+        if (this.connected) {
+            this.reset();
+        }
+    }
 
     /**
      * T
@@ -66,12 +66,11 @@ export class Virtualizer {
      * @public
      */
     public sourceItems: object[] = [];
-    // protected sourceItemsChanged(): void {
-    //     super.sourceItemsChanged();
-    //     if (this.$fastController.isConnected) {
-    //         this.reset();
-    //     }
-    // }
+    protected sourceItemsChanged(): void {
+        if (this.connected) {
+            this.reset();
+        }
+    }
 
     /**
      * The items currently displayed
@@ -80,7 +79,6 @@ export class Virtualizer {
      */
     @observable
     public renderedItems: object[] = [];
-    // protected renderedItemsChanged(): void {}
 
     /**
      * The size in pixels of each item along the virtualization axis.
@@ -93,11 +91,11 @@ export class Virtualizer {
      */
     @observable
     public itemSize: number = this.defaultItemSize;
-    // private itemSizeChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.updateDimensions();
-    //     }
-    // }
+    private itemSizeChanged(): void {
+        if (this.connected) {
+            this.updateDimensions();
+        }
+    }
 
     /**
      * Defines an area in pixels on either end of the viewport where items outside the viewport
@@ -108,11 +106,11 @@ export class Virtualizer {
      * HTML Attribute: viewport-buffer
      */
     public viewportBuffer: number = this.defaultViewportBuffer;
-    // private viewportBufferChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.updateDimensions();
-    //     }
-    // }
+    private viewportBufferChanged(): void {
+        if (this.connected) {
+            this.updateDimensions();
+        }
+    }
 
     /**
      * Auto update mode defines what prompts the component to check the dimensions of elements
@@ -124,14 +122,14 @@ export class Virtualizer {
      */
     @observable
     public autoUpdateMode: VirtualListAutoUpdateMode = "viewport";
-    // private autoUpdateModeChanged(
-    //     prevMode: VirtualListAutoUpdateMode,
-    //     newMode: VirtualListAutoUpdateMode
-    // ): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.resetAutoUpdateMode(prevMode, newMode);
-    //     }
-    // }
+    private autoUpdateModeChanged(
+        prevMode: VirtualListAutoUpdateMode,
+        newMode: VirtualListAutoUpdateMode
+    ): void {
+        if (this.connected) {
+            this.resetAutoUpdateMode(prevMode, newMode);
+        }
+    }
 
     /**
      * The sizemap for the items
@@ -142,12 +140,12 @@ export class Virtualizer {
      */
     @observable
     public sizemap: SizeMap[];
-    // private sizemapChanged(previous: SizeMap[]): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.observeSizeMap();
-    //         this.updateDimensions();
-    //     }
-    // }
+    private sizemapChanged(previous: SizeMap[]): void {
+        if (this.connected) {
+            this.observeSizeMap();
+            this.updateDimensions();
+        }
+    }
 
     /**
      * When true the virtual list component will track the size of child virtual-list-items and automatically
@@ -159,10 +157,11 @@ export class Virtualizer {
      */
     @observable
     public autoResizeItems: boolean;
-    //  private autoResizeItemsChanged(prev: boolean): void {
-    //      if (this.$fastController.isConnected) {
-    //      }
-    //  }
+    private autoResizeItemsChanged(prev: boolean): void {
+        if (this.connected) {
+            this.reset();
+        }
+    }
 
     /**
      * The HTML element being used as the viewport
@@ -171,11 +170,11 @@ export class Virtualizer {
      */
     @observable
     private viewportElement: HTMLElement;
-    // private viewportElementChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.resetAutoUpdateMode(this.autoUpdateMode, this.autoUpdateMode);
-    //     }
-    // }
+    private viewportElementChanged(): void {
+        if (this.connected) {
+            this.reset();
+        }
+    }
 
     /**
      *
@@ -277,8 +276,10 @@ export class Virtualizer {
      */
     private finalUpdateNeeded: boolean = false;
 
+    private connected: boolean = false;
+
     /**
-     * @internal
+     * @public
      */
     connect(
         sourceItems: object[],
@@ -300,7 +301,7 @@ export class Virtualizer {
             "listitemdisconnected",
             this.handleListItemDisconnected
         );
-
+        this.connected = true;
         this.reset();
     }
 
@@ -326,6 +327,7 @@ export class Virtualizer {
             "listitemdisconnected",
             this.handleListItemDisconnected
         );
+        this.connected = false;
     }
 
     /**

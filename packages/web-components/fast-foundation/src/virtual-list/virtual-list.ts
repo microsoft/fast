@@ -51,9 +51,8 @@ export class FASTVirtualList extends FASTDataList {
     // protected viewportChanged(): void {
     //     if (this.$fastController.isConnected) {
     //         this.viewportElement = this.getViewport();
-    //         this.updateDimensions();
     //     }
-    //}
+    // }
 
     /**
      * The HTML element being used as the viewport
@@ -66,6 +65,13 @@ export class FASTVirtualList extends FASTDataList {
     //          this.resetAutoUpdateMode(this.autoUpdateMode, this.autoUpdateMode);
     //      }
     //  }
+
+    protected orientationChanged(): void {
+        super.orientationChanged();
+        if (this.$fastController.isConnected) {
+            this.virtualizer.orientation = this.orientation;
+        }
+    }
 
     /**
      *
@@ -87,6 +93,7 @@ export class FASTVirtualList extends FASTDataList {
         );
 
         this.virtualizer.itemSize = this.itemSize;
+        this.virtualizer.orientation = this.orientation;
         this.virtualizer.connect(
             this.sourceItems,
             this.viewportElement,
@@ -129,7 +136,7 @@ export class FASTVirtualList extends FASTDataList {
     }
 
     protected getRepeatOptions(): RepeatOptions {
-        //positioning is always true for virtual lists
+        // positioning is always true for virtual lists
         const options = super.getRepeatOptions();
         options.positioning = true;
         return options;

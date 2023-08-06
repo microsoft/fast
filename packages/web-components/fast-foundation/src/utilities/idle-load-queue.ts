@@ -24,10 +24,6 @@ export class DefaultIdleLoadQueue implements IdleLoadQueue {
     public currentCallbackElement: Element | undefined;
     public currentCallback: (() => void) | undefined;
 
-    constructor() {
-        console.log("cons");
-    }
-
     /**
      * Suspends idle loading
      *
@@ -42,7 +38,6 @@ export class DefaultIdleLoadQueue implements IdleLoadQueue {
      * @public
      */
     public requestIdleCallback(target: Element, callback: () => void): void {
-        console.log(`request ${this.callbackQueue.size}`);
         if (this.callbackQueue.has(target)) {
             return;
         }
@@ -58,21 +53,19 @@ export class DefaultIdleLoadQueue implements IdleLoadQueue {
      * @public
      */
     public cancelIdleCallback(target: Element): void {
-        console.log("cancel");
-
         if (this.callbackQueue.has(target)) {
             this.callbackQueue.delete(target);
             return;
         }
 
         if (this.currentCallbackElement === target && this.currentCallbackId) {
-            console.log("cancel current");
             (window as unknown as WindowWithIdleCallback).cancelIdleCallback(
                 this.currentCallbackId
             );
             this.currentCallbackId = undefined;
             this.currentCallbackElement = undefined;
             this.currentCallback = undefined;
+            this.nextCallback();
         }
     }
 
@@ -99,8 +92,6 @@ export class DefaultIdleLoadQueue implements IdleLoadQueue {
         ) {
             return;
         }
-
-        console.log(`next ${new Date().getUTCMilliseconds()}`);
 
         const [nextCallbackElement] = this.callbackQueue.keys();
         this.currentCallback = this.callbackQueue.get(nextCallbackElement);
