@@ -31,8 +31,7 @@ export type AccordionExpandMode = ValuesOf<typeof AccordionExpandMode>;
 
 // @public
 export type AccordionItemOptions = StartEndOptions<FASTAccordionItem> & {
-    expandedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
-    collapsedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
+    expandCollapseIcon?: StaticallyComposableHTML<FASTAccordionItem>;
 };
 
 // @public
