@@ -152,7 +152,10 @@ export const AxisScalingMode: {
 export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 
 // @public
-export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
+export type BadgeOptions = StartEndOptions;
+
+// @public
+export function badgeTemplate<T extends FASTBadge>(options?: BadgeOptions): ElementViewTemplate<T>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
@@ -163,7 +166,10 @@ export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
 export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(options?: BreadcrumbItemOptions): ElementViewTemplate<T>;
 
 // @public
-export function breadcrumbTemplate<T extends FASTBreadcrumb>(): ElementViewTemplate<T>;
+export type BreadcrumbOptions = StartEndOptions;
+
+// @public
+export function breadcrumbTemplate<T extends FASTBreadcrumb>(options?: BreadcrumbOptions): ElementViewTemplate<T>;
 
 // @public
 export type ButtonOptions = StartEndOptions<FASTButton>;
@@ -786,8 +792,15 @@ export class FASTAnchoredRegion extends FASTElement {
 export class FASTAvatar extends FASTElement {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTBadge" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTBadge extends FASTElement {
+}
+
+// @internal
+export interface FASTBadge extends StartEnd {
 }
 
 // @public
@@ -807,12 +820,19 @@ export class FASTBaseProgress extends FASTElement {
     protected valueChanged(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTBreadcrumb" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTBreadcrumb extends FASTElement {
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
     protected slottedBreadcrumbItemsChanged(): void;
+}
+
+// @internal
+export interface FASTBreadcrumb extends StartEnd {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
