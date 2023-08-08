@@ -21,7 +21,9 @@ const defaultConfig: SliderConfiguration = {
  * A label element intended to be used with the {@link @microsoft/fast-foundation#(FASTSlider:class)} component.
  *
  * @slot - The default slot for the label content
- * @csspart root - The element wrapping the label mark and text
+ * @csspart container - The element wrapping the label mark and text
+ * @csspart mark - The element wrapping the mark
+ * @csspart content - The element wrapping the label text
  *
  * @public
  */
@@ -35,7 +37,7 @@ export class FASTSliderLabel extends FASTElement {
     /**
      * @internal
      */
-    public root: HTMLDivElement;
+    public container: HTMLDivElement;
 
     /**
      * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.

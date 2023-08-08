@@ -1887,7 +1887,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     // @internal (undocumented)
     stepMultiplier: number;
     // @internal (undocumented)
-    thumb: HTMLDivElement;
+    thumbContainer: HTMLDivElement;
     // @internal (undocumented)
     track: HTMLDivElement;
     // @internal (undocumented)
@@ -1911,6 +1911,8 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
 export class FASTSliderLabel extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    container: HTMLDivElement;
     disabled: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
@@ -1926,8 +1928,6 @@ export class FASTSliderLabel extends FASTElement {
     protected positionChanged(): void;
     // @internal (undocumented)
     positionStyle: string;
-    // @internal (undocumented)
-    root: HTMLDivElement;
     // @internal (undocumented)
     sliderDirection: Direction;
     // @internal (undocumented)
