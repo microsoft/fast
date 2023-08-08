@@ -293,6 +293,7 @@ export const myDataGrid = DataGrid.compose({
 | `initial-row-selection` | initialRowSelection |                |
 | `recycle`               | recycle             | FASTDataList   |
 | `positioning`           | positioning         | FASTDataList   |
+| `orientation`           | orientation         | FASTDataList   |
 
 #### Slots
 

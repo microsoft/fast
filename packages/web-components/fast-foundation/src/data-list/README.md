@@ -90,6 +90,7 @@ export class FASTVirtualList extends VirtualList{}
 | ------------- | ----------- | -------------- |
 | `recycle`     | recycle     |                |
 | `positioning` | positioning |                |
+| `orientation` | orientation |                |
 
 <hr/>
 

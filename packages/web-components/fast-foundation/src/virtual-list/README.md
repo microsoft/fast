@@ -84,9 +84,9 @@ export class FASTVirtualList extends VirtualList{}
 
 | Name                          | Privacy   | Description                                                                                                                                         | Parameters | Return          | Inherited From |
 | ----------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------- | -------------- |
+| `orientationChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `initializeRepeatBehavior`    | protected | initialize repeat behavior                                                                                                                          |            | `void`          | FASTDataList   |
 | `getRepeatOptions`            | protected |                                                                                                                                                     |            | `RepeatOptions` | FASTDataList   |
-| `orientationChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `sourceItemsChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `itemContentsTemplateChanged` | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
 | `createPlaceholderElement`    | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
@@ -99,6 +99,7 @@ export class FASTVirtualList extends VirtualList{}
 | `item-size`   | itemSize    |                |
 | `recycle`     | recycle     | FASTDataList   |
 | `positioning` | positioning | FASTDataList   |
+| `orientation` | orientation | FASTDataList   |
 
 <hr/>
 
@@ -125,11 +126,15 @@ export class FASTVirtualList extends VirtualList{}
 
 #### Methods
 
-| Name                     | Privacy   | Description             | Parameters | Return | Inherited From |
-| ------------------------ | --------- | ----------------------- | ---------- | ------ | -------------- |
-| `update`                 | public    | Request a layout update |            | `void` |                |
-| `requestPositionUpdates` | protected | get position updates    |            | `void` |                |
-| `reset`                  | protected | request reset           |            | `void` |                |
+| Name                           | Privacy   | Description             | Parameters                                                                                                                      | Return | Inherited From |
+| ------------------------------ | --------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------- |
+| `orientationChanged`           | protected |                         |                                                                                                                                 | `void` |                |
+| `virtualizationEnabledChanged` | protected |                         |                                                                                                                                 | `void` |                |
+| `sourceItemsChanged`           | protected |                         |                                                                                                                                 | `void` |                |
+| `connect`                      | public    |                         | `sourceItems: object[], viewportElement: HTMLElement, containerElement: HTMLElement, autoUpdateMode: VirtualListAutoUpdateMode` |        |                |
+| `update`                       | public    | Request a layout update |                                                                                                                                 | `void` |                |
+| `requestPositionUpdates`       | protected | get position updates    |                                                                                                                                 | `void` |                |
+| `reset`                        | protected | request reset           |                                                                                                                                 | `void` |                |
 
 <hr/>
 

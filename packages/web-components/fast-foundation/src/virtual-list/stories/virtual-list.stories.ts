@@ -126,3 +126,73 @@ export const VirtualListHorizontal: Story<FASTVirtualList> = renderComponent(
 VirtualListHorizontal.args = {
     orientation: "horizontal",
 };
+
+// const gridItemTemplate = html`
+//     <div
+//         style="
+//             position: absolute;
+//             background: lightblue;
+//             contain: strict;
+//             height:  100%;
+//             width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+//             transform: ${(x, c) =>
+//             `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+//         "
+//     >
+//         <div style="position: absolute; margin: 5px 20px 0 20px;">
+//             ${x => x.title}
+//         </div>
+//         <image
+//             style="
+//                 position:absolute;
+//                 height:100%;
+//                 width:100%;
+//             "
+//             src="${x => x.url}"
+//         ></image>
+//     </div>
+// `;
+
+// const rowItemTemplate = html`
+//     <fast-virtual-list
+//         auto-update-mode="auto"
+//         orientation="horizontal"
+//         item-span="200"
+//         viewport-buffer="200"
+//         :viewportElement="${(x, c) => c.parent.viewportElement}"
+//         :itemTemplate="${gridItemTemplate}"
+//         :items="${x => x.items}"
+//         style="
+//             contain: size;
+//             position: absolute;
+//             width:  100%;
+//             height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+//             transform: ${(x, c) =>
+//             `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+//         "
+//     ></fast-virtual-list>
+// `;
+
+// const gridStoryTemplate = html<StoryArgs<FASTVirtualList>>`
+//     <fast-virtual-list
+//         :sourceItems="${newDataSet(5000, 1)}"
+//         :sizemap="${x => x.sizemap}"
+//         viewport="${x => x.viewport}"
+//         item-size="${x => x.itemSize}"
+//         viewport-buffer="${x => x.viewportBuffer}"
+//         orientation="${x => x.orientation}"
+//         auto-update-mode="${x => x.autoUpdateMode}"
+//         recycle="${x => x.recycle}"
+//         auto-resize-items="${x => x.autoResizeItems}"
+//         idle-load-mode="${x => x.idleLoadMode}"
+//         idle-callback-timeout="${x => x.idleCallbackTimeout}"
+//         list-item-load-mode="${x => x.listItemLoadMode}"
+//         :itemContentsTemplate="${itemContentsTemplate}"
+//     ></fast-virtual-list>
+// `;
+
+// export const VirtualListGrid: Story<FASTVirtualList> = renderComponent(
+//     gridStoryTemplate
+// ).bind({});
+// VirtualListHorizontal.args = {
+// };

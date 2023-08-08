@@ -48,34 +48,32 @@ export class FASTVirtualList extends FASTDataList {
      * HTML Attribute: anchor
      */
     public viewport: string = "";
-    // protected viewportChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.viewportElement = this.getViewport();
-    //     }
-    // }
+    protected viewportChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.viewportElement = this.getViewport();
+        }
+    }
 
     /**
      * The HTML element being used as the viewport
      *
-     * @public
      */
     private viewportElement: HTMLElement;
-    //  private viewportElementChanged(): void {
-    //      if (this.$fastController.isConnected) {
-    //          this.resetAutoUpdateMode(this.autoUpdateMode, this.autoUpdateMode);
-    //      }
-    //  }
 
+    /**
+     * Override for data-list's orientationChanged handler
+     *
+     * @protected
+     */
     protected orientationChanged(): void {
         super.orientationChanged();
         if (this.$fastController.isConnected) {
+            // keep the orientation of the virtualizer in sync
             this.virtualizer.orientation = this.orientation;
         }
     }
 
     /**
-     *
-     *
      * @internal
      */
     public containerElement: HTMLElement;
@@ -135,6 +133,9 @@ export class FASTVirtualList extends FASTDataList {
         super.initializeRepeatBehavior();
     }
 
+    /**
+     * Gets the repeat options
+     */
     protected getRepeatOptions(): RepeatOptions {
         // positioning is always true for virtual lists
         const options = super.getRepeatOptions();

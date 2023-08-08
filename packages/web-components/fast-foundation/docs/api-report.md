@@ -2341,6 +2341,8 @@ export class FASTVirtualList extends FASTDataList {
     idleLoadQueue: DefaultIdleLoadQueue;
     protected initializeRepeatBehavior(): void;
     itemSize: number;
+    // (undocumented)
+    protected orientationChanged(): void;
     viewport: string;
     // (undocumented)
     virtualizer: Virtualizer;

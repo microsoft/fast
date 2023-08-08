@@ -117,6 +117,7 @@ export class FASTVirtualList extends VirtualList{}
 | `initial-row-selection` | initialRowSelection | FASTDataGrid   |
 | `recycle`               | recycle             | FASTDataList   |
 | `positioning`           | positioning         | FASTDataList   |
+| `orientation`           | orientation         | FASTDataList   |
 
 <hr/>
 
