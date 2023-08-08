@@ -6,6 +6,6 @@ import type { FASTProgress } from "./progress.js";
  * @public
  */
 export type ProgressOptions = {
-    indeterminateIndicator1?: StaticallyComposableHTML<FASTProgress>;
-    indeterminateIndicator2?: StaticallyComposableHTML<FASTProgress>;
+    determinateIndicator?: StaticallyComposableHTML<FASTProgress>;
+    indeterminateIndicator?: StaticallyComposableHTML<FASTProgress>;
 };

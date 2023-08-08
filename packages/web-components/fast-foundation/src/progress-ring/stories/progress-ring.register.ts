@@ -1,7 +1,9 @@
-import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTProgressRing } from "../progress-ring.js";
-import { progressRingTemplate } from "../progress-ring.template.js";
+import {
+    progressRingIndicatorTemplate,
+    progressRingTemplate,
+} from "../progress-ring.template.js";
 
 const styles = css`
     :host {
@@ -24,9 +26,14 @@ const styles = css`
         stroke-width: 2px;
     }
 
-    .determinate {
+    .determinate .indicator {
+        --progress-segments: 44;
         stroke: var(--accent-foreground-rest);
         fill: none;
+        stroke-dasharray: calc(
+                ((var(--progress-segments) * var(--percent-complete)) / 100) * 1px
+            )
+            calc(var(--progress-segments) * 1px);
         stroke-width: 2px;
         stroke-linecap: round;
         transform-origin: 50% 50%;
@@ -34,7 +41,7 @@ const styles = css`
         transition: all 0.2s ease-in-out;
     }
 
-    .indeterminate-indicator-1 {
+    .indeterminate .indicator {
         stroke: var(--accent-foreground-rest);
         fill: none;
         stroke-width: 2px;
@@ -64,24 +71,8 @@ const styles = css`
 FASTProgressRing.define({
     name: "fast-progress-ring",
     template: progressRingTemplate({
-        indeterminateIndicator: /* html */ html`
-            <svg class="progress" part="progress" viewBox="0 0 16 16">
-                <circle
-                    class="background"
-                    part="background"
-                    cx="8px"
-                    cy="8px"
-                    r="7px"
-                ></circle>
-                <circle
-                    class="indeterminate-indicator-1"
-                    part="indeterminate-indicator-1"
-                    cx="8px"
-                    cy="8px"
-                    r="7px"
-                ></circle>
-            </svg>
-        `,
+        determinateIndicator: progressRingIndicatorTemplate,
+        indeterminateIndicator: progressRingIndicatorTemplate,
     }),
     styles,
 });

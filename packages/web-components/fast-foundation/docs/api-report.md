@@ -2550,14 +2550,21 @@ export type PickerOptions = {
 // @public
 export function pickerTemplate<T extends FASTPicker>(options: PickerOptions): ElementViewTemplate<T>;
 
+// @public (undocumented)
+export const progressIndicatorTemplate: ViewTemplate<any, any>;
+
 // @public
 export type ProgressOptions = {
-    indeterminateIndicator1?: StaticallyComposableHTML<FASTProgress>;
-    indeterminateIndicator2?: StaticallyComposableHTML<FASTProgress>;
+    determinateIndicator?: StaticallyComposableHTML<FASTProgress>;
+    indeterminateIndicator?: StaticallyComposableHTML<FASTProgress>;
 };
+
+// @public (undocumented)
+export const progressRingIndicatorTemplate: ViewTemplate<any, any>;
 
 // @public
 export type ProgressRingOptions = {
+    determinateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
     indeterminateIndicator?: StaticallyComposableHTML<FASTProgressRing>;
 };
 
