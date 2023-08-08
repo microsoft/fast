@@ -1547,7 +1547,7 @@ export class FASTPicker extends FormAssociatedPicker {
     // (undocumented)
     protected listItemTemplateChanged(): void;
     loadingText: string;
-    maxSelected: number | undefined;
+    maxSelected: number | null;
     // @internal
     menuConfig: AnchoredRegionConfig;
     // @internal
