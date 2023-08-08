@@ -2,6 +2,7 @@ import {
     attr,
     html,
     HTMLView,
+    nullableNumberConverter,
     observable,
     oneWay,
     ref,
@@ -117,8 +118,8 @@ export class FASTPicker extends FormAssociatedPicker {
      * @remarks
      * HTML Attribute: max-selected
      */
-    @attr({ attribute: "max-selected" })
-    public maxSelected: number | undefined;
+    @attr({ attribute: "max-selected", converter: nullableNumberConverter })
+    public maxSelected: number | null = null;
 
     /**
      * The text to present to assistive technolgies when no suggestions are available.
@@ -806,7 +807,8 @@ export class FASTPicker extends FormAssociatedPicker {
             return;
         }
         if (
-            this.maxSelected !== undefined &&
+            this.maxSelected !== null &&
+            this.maxSelected !== 0 &&
             this.selectedItems.length >= this.maxSelected
         ) {
             if (this.getRootActiveElement() === this.inputElement) {
@@ -867,20 +869,21 @@ export class FASTPicker extends FormAssociatedPicker {
             return false;
         }
 
-        if (e.target instanceof FASTPickerMenuOption) {
-            if (e.target.value !== undefined) {
+        if (e.target instanceof FASTPickerMenuOption && e.target.value !== undefined) {
+            if (this.maxSelected === 0) {
+                // if we don't allow selection just update the query
+                this.query = e.target.value;
+            } else {
+                this.query = "";
                 this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
                     e.target.value
                 }`;
             }
-            this.inputElement.value = "";
-            this.query = "";
-            this.inputElement.focus();
+
             this.toggleFlyout(false);
+            this.inputElement.focus();
             return false;
         }
-
-        // const value: string = (e.target as PickerMenuOption).value;
 
         return true;
     }
@@ -913,7 +916,7 @@ export class FASTPicker extends FormAssociatedPicker {
             );
             if (newFocusedItemIndex === selectedItemsAsElements.length) {
                 if (
-                    this.maxSelected !== undefined &&
+                    this.maxSelected !== null &&
                     this.selectedItems.length >= this.maxSelected
                 ) {
                     (
