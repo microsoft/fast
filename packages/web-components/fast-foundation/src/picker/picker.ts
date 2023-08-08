@@ -9,6 +9,7 @@ import {
     Updates,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { Context } from "@microsoft/fast-element/context";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
 import {
     keyArrowDown,
@@ -37,12 +38,14 @@ import { FASTPickerMenuOption } from "./picker-menu-option.js";
 import type { FASTPickerMenu } from "./picker-menu.js";
 import { FormAssociatedPicker } from "./picker.form-associated.js";
 import { MenuPlacement } from "./picker.options.js";
+import { DefaultPickerContext, PickerContext } from "./picker-context.js";
 
 const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
     <input
         slot="input-region"
         role="combobox"
         type="text"
+        ?disabled=${x => x.disabled}
         autocapitalize="off"
         autocomplete="off"
         haspopup="list"
@@ -146,6 +149,27 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @attr({ attribute: "loading-text" })
     public loadingText: string = "Loading suggestions";
+
+    /**
+     * Disables the picker.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
+    public disabledChanged(previous: boolean, next: boolean): void {
+        if (super.disabledChanged) {
+            super.disabledChanged(previous, next);
+        }
+        if (this.$fastController.isConnected) {
+            this.pickerContext.disabled = this.disabled;
+            if (this.disabled) {
+                this.toggleFlyout(false);
+            }
+        }
+    }
 
     /**
      * Applied to the aria-label attribute of the input element
@@ -433,7 +457,7 @@ export class FASTPicker extends FormAssociatedPicker {
     public region: FASTAnchoredRegion;
 
     /**
-     *
+     * Currently selected items
      *
      * @internal
      */
@@ -444,12 +468,14 @@ export class FASTPicker extends FormAssociatedPicker {
     private inputElementView: HTMLView | null = null;
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
+    private pickerContext: PickerContext = new DefaultPickerContext();
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
+        this.pickerContext.disabled = this.disabled;
+        Context.provide(this, PickerContext, this.pickerContext);
         if (!this.listElement) {
             this.listElement = document.createElement(
                 this.selectedListTag
@@ -543,7 +569,6 @@ export class FASTPicker extends FormAssociatedPicker {
             "optionsupdated",
             this.handleMenuOptionsUpdated
         );
-
         this.handleSelectionChange();
     }
 
@@ -551,7 +576,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * Toggles the menu flyout
      */
     private toggleFlyout(open: boolean): void {
-        if (this.flyoutOpen === open) {
+        if (this.flyoutOpen === open || (this.disabled && !this.flyoutOpen)) {
             return;
         }
 
@@ -583,6 +608,9 @@ export class FASTPicker extends FormAssociatedPicker {
      * Handle click event from input element
      */
     private handleInputClick = (e: MouseEvent): void => {
+        if (e.defaultPrevented || this.disabled) {
+            return;
+        }
         e.preventDefault();
         this.toggleFlyout(true);
     };
@@ -601,7 +629,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * Handle key down events.
      */
     public handleKeyDown(e: KeyboardEvent): boolean {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || this.disabled) {
             return false;
         }
         const activeElement = this.getRootActiveElement();
