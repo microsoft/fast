@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove local resize observer types",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
