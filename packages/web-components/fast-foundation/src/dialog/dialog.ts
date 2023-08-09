@@ -13,7 +13,6 @@ import { isTabbable } from "tabbable";
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#dialog | ARIA dialog }.
  *
  * @slot - The default slot for the dialog content
- * @csspart positioning-region - A wrapping element used to center the dialog and position the modal overlay
  * @csspart overlay - The modal dialog overlay
  * @csspart control - The dialog element
  * @fires cancel - Fires a custom 'cancel' event when the modal overlay is clicked

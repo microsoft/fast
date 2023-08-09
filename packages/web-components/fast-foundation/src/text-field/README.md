@@ -106,7 +106,7 @@ This component is built with the expectation that focus is delegated to the inpu
 
 | Name          | Privacy | Type            | Default | Description                                                                                                                                                                                                                 | Inherited From          |
 | ------------- | ------- | --------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| `readOnly`    | public  | `boolean`       |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.                                 |                         |
+| `readOnly`    | public  | `boolean`       |         | When true, the input will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information.                                   |                         |
 | `autofocus`   | public  | `boolean`       |         | Indicates that this element should get focus after the page finishes loading. See [autofocus HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus) for more information. |                         |
 | `placeholder` | public  | `string`        |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                                                    |                         |
 | `type`        | public  | `TextFieldType` |         | Allows setting a type or mode of text.                                                                                                                                                                                      |                         |
@@ -157,19 +157,19 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name      | Description                                                     |
-| --------- | --------------------------------------------------------------- |
-| `label`   | The label                                                       |
-| `root`    | The element wrapping the control, including start and end slots |
-| `control` | The text field element                                          |
+| Name      | Description                                                                              |
+| --------- | ---------------------------------------------------------------------------------------- |
+| `label`   | The label                                                                                |
+| `control` | The logical control, the element wrapping the input field, including start and end slots |
+| `field`   | The text field element                                                                   |
 
 #### Slots
 
-| Name    | Description                                                 |
-| ------- | ----------------------------------------------------------- |
-| `start` | Content which can be provided before the number field input |
-| `end`   | Content which can be provided after the number field input  |
-|         | The default slot for the label                              |
+| Name    | Description                                          |
+| ------- | ---------------------------------------------------- |
+| `start` | Content which can be provided before the input field |
+| `end`   | Content which can be provided after the input field  |
+|         | The default slot for the label                       |
 
 <hr/>
 

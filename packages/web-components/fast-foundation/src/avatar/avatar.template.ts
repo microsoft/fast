@@ -10,10 +10,10 @@ export function avatarTemplate<T extends FASTAvatar>(
     options: AvatarOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-        <div class="backplate" part="backplate">
-            <slot name="media">${staticallyCompose(options.media)}</slot>
+        <slot name="media">${staticallyCompose(options.media)}</slot>
+        <span class="content" part="content">
             <slot></slot>
-        </div>
+        </span>
         <slot name="badge"></slot>
     `;
 }

@@ -6,7 +6,7 @@ import type { FASTCard } from "./card.js";
  * @public
  */
 export function cardTemplate<T extends FASTCard>(): ElementViewTemplate<T> {
-    return html`
+    return html<T>`
         <slot></slot>
     `;
 }

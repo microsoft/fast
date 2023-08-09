@@ -161,24 +161,24 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name        | Description                                                     |
-| ----------- | --------------------------------------------------------------- |
-| `label`     | The label                                                       |
-| `root`      | The element wrapping the control, including start and end slots |
-| `control`   | The element representing the input                              |
-| `controls`  | The step up and step down controls                              |
-| `step-up`   | The step up control                                             |
-| `step-down` | The step down control                                           |
+| Name           | Description                                                                              |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| `label`        | The label                                                                                |
+| `control`      | The logical control, the element wrapping the input field, including start and end slots |
+| `field`        | The element representing the input field                                                 |
+| `step-buttons` | The step up and step down controls                                                       |
+| `step-up`      | The step up control                                                                      |
+| `step-down`    | The step down control                                                                    |
 
 #### Slots
 
-| Name              | Description                                                 |
-| ----------------- | ----------------------------------------------------------- |
-| `start`           | Content which can be provided before the number field input |
-| `end`             | Content which can be provided after the number field input  |
-|                   | The default slot for the label                              |
-| `step-up-glyph`   | The glyph for the step up control                           |
-| `step-down-glyph` | The glyph for the step down control                         |
+| Name             | Description                                                 |
+| ---------------- | ----------------------------------------------------------- |
+| `start`          | Content which can be provided before the number field input |
+| `end`            | Content which can be provided after the number field input  |
+|                  | The default slot for the label                              |
+| `step-up-icon`   | The icon for the step up control                            |
+| `step-down-icon` | The icon for the step down control                          |
 
 <hr/>
 

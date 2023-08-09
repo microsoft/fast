@@ -80,9 +80,7 @@ Anchor.args = {
     storyContent: "Anchor",
 };
 
-export const AnchorWithSlottedStartEnd: Story<FASTAnchor> = renderComponent(
-    storyTemplate
-).bind({});
+export const AnchorWithSlottedStartEnd: Story<FASTAnchor> = Anchor.bind({});
 AnchorWithSlottedStartEnd.args = {
     href: "https://www.fast.design/",
     storyContent: html`

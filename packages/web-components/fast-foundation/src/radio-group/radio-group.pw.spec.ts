@@ -50,31 +50,6 @@ test.describe("Radio Group", () => {
         );
     });
 
-    test("should set a matching class on the `positioning-region` when an orientation is provided", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-radio-group></fast-radio-group>
-            `;
-        });
-
-        const positioningRegion = element.locator(".positioning-region");
-
-        // Horizontal by default
-        await expect(positioningRegion).toHaveClass(/horizontal/);
-
-        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
-            node.orientation = RadioGroupOrientation.vertical;
-        }, RadioGroupOrientation);
-
-        await expect(positioningRegion).toHaveClass(/vertical/);
-
-        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
-            node.orientation = RadioGroupOrientation.horizontal;
-        }, RadioGroupOrientation);
-
-        await expect(positioningRegion).toHaveClass(/horizontal/);
-    });
-
     test("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

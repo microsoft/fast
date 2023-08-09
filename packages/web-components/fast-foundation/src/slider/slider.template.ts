@@ -21,10 +21,9 @@ export function sliderTemplate<T extends FASTSlider>(
             aria-disabled="${x => (x.disabled ? true : void 0)}"
             aria-readonly="${x => (x.readOnly ? true : void 0)}"
             aria-orientation="${x => x.orientation}"
-            class="${x => x.orientation}"
         >
             <div part="positioning-region" class="positioning-region">
-                <div ${ref("track")} part="track-container" class="track">
+                <div ${ref("track")} part="track" class="track">
                     <slot name="track"></slot>
                     <div
                         part="track-start"
@@ -36,12 +35,16 @@ export function sliderTemplate<T extends FASTSlider>(
                 </div>
                 <slot></slot>
                 <div
-                    ${ref("thumb")}
+                    ${ref("thumbContainer")}
                     part="thumb-container"
                     class="thumb-container"
                     style="${x => x.position}"
                 >
-                    <slot name="thumb">${staticallyCompose(options.thumb)}</slot>
+                    <slot name="thumb">
+                        ${staticallyCompose(
+                            options.thumb ?? `<div class="thumb" part="thumb"></div>`
+                        )}
+                    </slot>
                 </div>
             </div>
         </template>

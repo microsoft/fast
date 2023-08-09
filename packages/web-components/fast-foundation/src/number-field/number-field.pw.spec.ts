@@ -17,7 +17,7 @@ test.describe("NumberField", () => {
 
         root = page.locator("#root");
 
-        control = element.locator(".control");
+        control = element.locator(".field");
 
         await page.goto(fixtureURL("number-field--number-field"));
     });

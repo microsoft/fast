@@ -33,7 +33,7 @@ test.describe("Breadcrumb item", () => {
             `;
         });
 
-        await expect(element.locator("> div")).toHaveAttribute("role", "listitem");
+        await expect(element).toHaveAttribute("role", "listitem");
     });
 
     test("should render an internal anchor when the `href` attribute is not provided", async () => {

@@ -5,7 +5,8 @@ import { breadcrumbTemplate } from "../breadcrumb.template.js";
 const styles = css`
     :host {
         box-sizing: border-box;
-        display: inline-block;
+        display: inline-flex;
+        gap: 12px;
         font: var(--type-ramp-base-font-size) / var(--type-ramp-base-line-height)
             var(--body-font);
     }

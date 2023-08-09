@@ -21,6 +21,7 @@ const styles = css`
         position: relative;
         width: var(--size);
     }
+
     :host::before {
         background: var(--accent-fill-rest);
         border-radius: 50%;
@@ -37,9 +38,7 @@ const styles = css`
     .next,
     .previous {
         display: grid;
-        height: 16px;
         position: relative;
-        width: 16px;
     }
 
     :host([disabled]) {
@@ -49,29 +48,36 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         pointer-events: none;
     }
+
     :host([disabled])::before,
     :host([disabled]:hover)::before,
     :host([disabled]:active)::before {
         background: var(--neutral-fill-stealth-rest);
         border-color: var(--neutral-stroke-rest);
     }
+
     :host(:hover) {
         color: var(--foreground-on-accent-hover);
     }
+
     :host(:hover)::before {
         background: var(--accent-fill-hover);
         border-color: var(--accent-fill-hover);
     }
+
     :host(:active) {
         color: var(--foreground-on-accent-active);
     }
+
     :host(:active)::before {
         background: var(--accent-fill-active);
         border-color: var(--accent-fill-active);
     }
+
     :host(:focus-visible) {
         outline: none;
     }
+
     :host(:focus-visible)::before {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 calc((var(--focus-stroke-width) - var(--stroke-width)) * 1px)
@@ -79,6 +85,7 @@ const styles = css`
             0 0 0 calc((var(--focus-stroke-width) + var(--stroke-width)) * 1px)
                 var(--focus-stroke-inner) inset;
     }
+
     :host::-moz-focus-inner {
         border: 0;
     }

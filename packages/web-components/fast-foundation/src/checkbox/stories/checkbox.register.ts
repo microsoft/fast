@@ -1,5 +1,6 @@
-import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
+import checkmarkIcon from "../../../statics/svg/checkmark_16_regular.svg";
+import subtractIcon from "../../../statics/svg/subtract_16_regular.svg";
 import { FASTCheckbox } from "../checkbox.js";
 import { checkboxTemplate } from "../checkbox.template.js";
 
@@ -7,7 +8,6 @@ const styles = css`
     :host {
         align-items: center;
         display: inline-flex;
-        margin: calc(var(--design-unit) * 1px) 0;
         outline: none;
         user-select: none;
         vertical-align: middle;
@@ -22,15 +22,18 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
         background: var(--neutral-fill-input-rest);
+        color: var(--neutral-foreground-rest);
         outline: none;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .label {
         font-family: var(--body-font);
         color: var(--neutral-foreground-rest);
         padding-inline-start: calc(var(--design-unit) * 2px + 2px);
-        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
         cursor: pointer;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -41,33 +44,20 @@ const styles = css`
         visibility: hidden;
     }
 
-    .checked-indicator {
-        width: 100%;
-        height: 100%;
-        display: block;
-        fill: var(--foreground-on-accent-rest);
+    slot[name="checked-indicator"] *,
+    slot[name="indeterminate-indicator"] * {
+        position: absolute;
+        fill: currentcolor;
         opacity: 0;
         pointer-events: none;
     }
 
-    .indeterminate-indicator {
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        background: var(--foreground-on-accent-rest);
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 50%;
-        height: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-    }
-
-    :host(:not([disabled])) .control:hover {
+    :host(:not([disabled]):hover) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-stroke-hover);
     }
 
-    :host(:not([disabled])) .control:active {
+    :host(:not([disabled]):active) .control {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-stroke-active);
     }
@@ -79,34 +69,19 @@ const styles = css`
     :host([aria-checked="true"]) .control {
         background: var(--accent-fill-rest);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
+        color: var(--foreground-on-accent-rest);
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover {
+    :host([aria-checked="true"]:not([disabled]):hover) .control {
         background: var(--accent-fill-hover);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-hover);
+        color: var(--foreground-on-accent-hover);
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
-        fill: var(--foreground-on-accent-hover);
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .control:hover .indeterminate-indicator {
-        background: var(--foreground-on-accent-hover);
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .control:active {
+    :host([aria-checked="true"]:not([disabled]):active) .control {
         background: var(--accent-fill-active);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-active);
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
-        fill: var(--foreground-on-accent-active);
-    }
-
-    :host([aria-checked="true"]:not([disabled]))
-        .control:active
-        .indeterminate-indicator {
-        background: var(--foreground-on-accent-active);
+        color: var(--foreground-on-accent-active);
     }
 
     :host([aria-checked="true"]:focus-visible:not([disabled])) .control {
@@ -120,8 +95,8 @@ const styles = css`
         cursor: var(--disabled-cursor);
     }
 
-    :host([aria-checked="true"]) .checked-indicator,
-    :host([aria-checked="mixed"]) .indeterminate-indicator {
+    :host([aria-checked="true"]) slot[name="checked-indicator"] *,
+    :host([aria-checked="mixed"]) slot[name="indeterminate-indicator"] * {
         opacity: 1;
     }
 
@@ -133,23 +108,8 @@ const styles = css`
 FASTCheckbox.define({
     name: "fast-checkbox",
     template: checkboxTemplate({
-        checkedIndicator: /* html */ html`
-            <svg
-                part="checked-indicator"
-                class="checked-indicator"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"
-                />
-            </svg>
-        `,
-        indeterminateIndicator: /* html */ html`
-            <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
-        `,
+        checkedIndicator: checkmarkIcon,
+        indeterminateIndicator: subtractIcon,
     }),
     styles,
 });

@@ -13,7 +13,7 @@ export function textFieldTemplate<T extends FASTTextField>(
     return html<T>`
         <label
             part="label"
-            for="control"
+            for="field"
             class="${x =>
                 x.defaultSlottedNodes && x.defaultSlottedNodes.length
                     ? "label"
@@ -26,12 +26,12 @@ export function textFieldTemplate<T extends FASTTextField>(
                 })}
             ></slot>
         </label>
-        <div class="root" part="root">
+        <div class="control" part="control">
             ${startSlotTemplate(options)}
             <input
-                class="control"
-                part="control"
-                id="control"
+                class="field"
+                part="field"
+                id="field"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
                 ?autofocus="${x => x.autofocus}"
@@ -67,7 +67,7 @@ export function textFieldTemplate<T extends FASTTextField>(
                 aria-owns="${x => x.ariaOwns}"
                 aria-relevant="${x => x.ariaRelevant}"
                 aria-roledescription="${x => x.ariaRoledescription}"
-                ${ref("control")}
+                ${ref("field")}
             />
             ${endSlotTemplate(options)}
         </div>

@@ -107,10 +107,9 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### CSS Parts
 
-| Name        | Description                           |
-| ----------- | ------------------------------------- |
-| `backplate` | The wrapping container for the avatar |
-| `content`   | The default slot                      |
+| Name      | Description                                    |
+| --------- | ---------------------------------------------- |
+| `content` | The wrapping container for the default content |
 
 #### Slots
 

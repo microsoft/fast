@@ -147,11 +147,11 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | ------------- | ---------- | -------------- |
 | `expand-mode` | expandmode |                |
 
-#### CSS Parts
+#### Slots
 
-| Name   | Description                      |
-| ------ | -------------------------------- |
-| `item` | The slot for the accordion items |
+| Name | Description                      |
+| ---- | -------------------------------- |
+|      | The slot for the accordion items |
 
 <hr/>
 
@@ -191,24 +191,23 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### CSS Parts
 
-| Name              | Description                                              |
-| ----------------- | -------------------------------------------------------- |
-| `heading`         | Wraps the button                                         |
-| `button`          | The button which serves to invoke the item               |
-| `heading-content` | Wraps the slot for the heading content within the button |
-| `icon`            | The icon container                                       |
-| `region`          | The wrapper for the accordion item content               |
+| Name                   | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
+| `heading`              | Wraps the button                                         |
+| `button`               | The button which serves to invoke the item               |
+| `heading-content`      | Wraps the slot for the heading content within the button |
+| `expand-collapse-icon` | The icon container                                       |
+| `panel`                | The wrapper for the accordion item content               |
 
 #### Slots
 
-| Name             | Description                                                                      |
-| ---------------- | -------------------------------------------------------------------------------- |
-| `start`          | Content which can be provided between the heading and the icon                   |
-| `end`            | Content which can be provided between the start slot and icon                    |
-| `heading`        | Content which serves as the accordion item heading and text of the expand button |
-|                  | The default slot for accordion item content                                      |
-| `expanded-icon`  | The expanded icon                                                                |
-| `collapsed-icon` | The collapsed icon                                                               |
+| Name                   | Description                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| `start`                | Content which can be provided between the heading and the icon                   |
+| `end`                  | Content which can be provided between the start slot and icon                    |
+| `heading`              | Content which serves as the accordion item heading and text of the expand button |
+|                        | The default slot for accordion item content                                      |
+| `expand-collapse-icon` | The expanded / collapsed icon                                                    |
 
 <hr/>
 

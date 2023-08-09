@@ -21,6 +21,16 @@ const styles = css`
         outline: none;
     }
 
+    :host(:hover) {
+        background-color: var(--accent-fill-hover);
+        color: var(--foreground-on-accent-hover);
+    }
+
+    :host(:active) {
+        background-color: var(--accent-fill-active);
+        color: var(--foreground-on-accent-active);
+    }
+
     .control {
         all: inherit;
         background: transparent;
@@ -34,14 +44,6 @@ const styles = css`
         outline: none;
         text-decoration: none;
         border: calc(var(--stroke-width) * 1px) solid transparent;
-    }
-
-    :host(:hover) {
-        background-color: var(--neutral-fill-hover);
-    }
-
-    :host(:active) {
-        background-color: var(--neutral-fill-active);
     }
 
     .control:focus-visible {
@@ -71,16 +73,6 @@ const styles = css`
 
     ::slotted([slot="end"]) {
         margin-inline-start: 11px;
-    }
-
-    :host(:hover) {
-        background: var(--accent-fill-hover);
-        color: var(--foreground-on-accent-hover);
-    }
-
-    :host(:active) .control:active {
-        background: var(--accent-fill-active);
-        color: var(--foreground-on-accent-active);
     }
 `;
 

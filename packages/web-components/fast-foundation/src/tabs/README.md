@@ -154,9 +154,10 @@ export const myTabs = Tabs.compose({
 
 #### CSS Parts
 
-| Name      | Description                       |
-| --------- | --------------------------------- |
-| `tablist` | The element wrapping for the tabs |
+| Name       | Description                        |
+| ---------- | ---------------------------------- |
+| `tablist`  | The element wrapping the tabs      |
+| `tabpanel` | The element wrapping the tabpanels |
 
 #### Slots
 

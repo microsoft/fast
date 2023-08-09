@@ -20,7 +20,7 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * @public
  */
 export type TreeItemOptions = StartEndOptions<FASTTreeItem> & {
-    expandCollapseGlyph?: StaticallyComposableHTML<FASTTreeItem>;
+    expandCollapseIcon?: StaticallyComposableHTML<FASTTreeItem>;
 };
 
 /**
@@ -30,9 +30,9 @@ export type TreeItemOptions = StartEndOptions<FASTTreeItem> & {
  * @slot end - Content which can be provided after the tree item content
  * @slot - The default slot for tree item text content
  * @slot item - The slot for tree items (fast tree items manage this assignment themselves)
- * @slot expand-collapse-button - The expand/collapse button
- * @csspart positioning-region - The element used to position the tree item content with exception of any child nodes
- * @csspart content-region - The element containing the expand/collapse, start, and end slots
+ * @slot expand-collapse-icon - The expand/collapse button icon
+ * @csspart control - The element used to position the tree item content with exception of any child nodes
+ * @csspart content - The element containing the expand/collapse, start, and end slots
  * @csspart items - The element wrapping any child items
  * @csspart expand-collapse-button - The expand/collapse button
  * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes

@@ -1,7 +1,7 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { staticallyCompose } from "../utilities/template-helpers.js";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
 import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
 
@@ -9,8 +9,9 @@ import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
  * @public
  */
 export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
-    options: HorizontalScrollOptions = {}
+    options: HorizontalScrollOptions
 ): ElementViewTemplate<T> {
+    const flipperTag = html.partial(tagFor(options.flipper));
     return html<T>`
         <template @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}">
             ${startSlotTemplate(options)}
@@ -21,11 +22,7 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                     @scroll="${x => x.scrolled()}"
                     ${ref("scrollContainer")}
                 >
-                    <div
-                        class="content-container"
-                        part="content-container"
-                        ${ref("content")}
-                    >
+                    <div class="content" part="content" ${ref("content")}>
                         <slot
                             ${slotted({
                                 property: "scrollItems",
@@ -38,26 +35,43 @@ export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
                     x => x.view !== "mobile",
                     html<T>`
                         <div
-                            class="scroll scroll-prev"
-                            part="scroll-prev"
+                            class="scroll-previous"
+                            part="scroll-previous"
                             ${ref("previousFlipperContainer")}
                         >
-                            <div class="scroll-action" part="scroll-action-previous">
-                                <slot name="previous-flipper">
-                                    ${staticallyCompose(options.previousFlipper)}
-                                </slot>
-                            </div>
+                            <slot name="previous-flipper">
+                                ${staticallyCompose(
+                                    options.previousFlipper ??
+                                        html<T>`
+                                            <${flipperTag}
+                                                part="previous-flipper"
+                                                @click="${x => x.scrollToPrevious()}"
+                                                direction="previous"
+                                                aria-hidden="${x =>
+                                                    x.flippersHiddenFromAT}"
+                                            ></${flipperTag}>
+                                        `
+                                )}
+                            </slot>
                         </div>
                         <div
-                            class="scroll scroll-next"
+                            class="scroll-next"
                             part="scroll-next"
                             ${ref("nextFlipperContainer")}
                         >
-                            <div class="scroll-action" part="scroll-action-next">
-                                <slot name="next-flipper">
-                                    ${staticallyCompose(options.nextFlipper)}
-                                </slot>
-                            </div>
+                            <slot name="next-flipper">
+                                ${staticallyCompose(
+                                    options.nextFlipper ??
+                                        html<T>`
+                                            <${flipperTag}
+                                                part="next-flipper"
+                                                @click="${x => x.scrollToNext()}"
+                                                aria-hidden="${x =>
+                                                    x.flippersHiddenFromAT}"
+                                            ></${flipperTag}>
+                                        `
+                                )}
+                            </slot>
                         </div>
                     `
                 )}

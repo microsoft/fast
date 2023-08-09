@@ -14,8 +14,8 @@ import { AccordionExpandMode } from "./accordion.options.js";
  * An Accordion Custom HTML Element
  * Implements {@link https://www.w3.org/TR/wai-aria-practices-1.1/#accordion | ARIA Accordion}.
  *
+ * @slot - The slot for the accordion items
  * @fires change - Fires a custom 'change' event when the active item changes
- * @csspart item - The slot for the accordion items
  * @public
  *
  * @remarks

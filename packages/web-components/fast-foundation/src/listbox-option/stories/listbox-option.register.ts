@@ -69,8 +69,7 @@ const styles = css`
         background-color: inherit;
     }
 
-    .content {
-        grid-column-start: 2;
+    ::slotted(*) {
         justify-self: start;
         overflow: hidden;
         text-overflow: ellipsis;

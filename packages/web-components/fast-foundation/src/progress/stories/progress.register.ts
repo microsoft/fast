@@ -1,7 +1,6 @@
-import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTProgress } from "../progress.js";
-import { progressTemplate } from "../progress.template.js";
+import { progressIndicatorTemplate, progressTemplate } from "../progress.template.js";
 
 const styles = css`
     :host {
@@ -11,15 +10,8 @@ const styles = css`
         outline: none;
         height: calc(var(--design-unit) * 1px);
         margin: calc(var(--design-unit) * 1px) 0;
-    }
-
-    .progress {
         background-color: var(--neutral-fill-rest);
         border-radius: calc(var(--design-unit) * 1px);
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
         position: relative;
     }
 
@@ -29,6 +21,7 @@ const styles = css`
         height: 100%;
         transition: all 0.2s ease-in-out;
         display: flex;
+        width: calc(var(--percent-complete) * 1%);
     }
 
     .indeterminate {
@@ -40,8 +33,8 @@ const styles = css`
         width: 100%;
     }
 
-    .indeterminate-indicator-1 {
-        animation: indeterminate-1 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    .indeterminate .indicator {
+        animation: indeterminate 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         background-color: var(--accent-foreground-rest);
         border-radius: calc(var(--design-unit) * 1px);
         height: 100%;
@@ -50,17 +43,7 @@ const styles = css`
         width: 40%;
     }
 
-    .indeterminate-indicator-2 {
-        position: absolute;
-        opacity: 0;
-        height: 100%;
-        background-color: var(--accent-foreground-rest);
-        border-radius: calc(var(--design-unit) * 1px);
-        width: 60%;
-        animation: indeterminate-2 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    @keyframes indeterminate-1 {
+    @keyframes indeterminate {
         0% {
             opacity: 1;
             transform: translateX(-100%);
@@ -77,41 +60,13 @@ const styles = css`
             transform: translateX(300%);
         }
     }
-
-    @keyframes indeterminate-2 {
-        0% {
-            opacity: 0;
-            transform: translateX(-150%);
-        }
-        29.99% {
-            opacity: 0;
-        }
-        30% {
-            opacity: 1;
-            transform: translateX(-150%);
-        }
-        100% {
-            transform: translateX(166.66%);
-            opacity: 1;
-        }
-    }
 `;
 
 FASTProgress.define({
     name: "fast-progress",
     template: progressTemplate({
-        indeterminateIndicator1: /* html */ html`
-            <span
-                class="indeterminate-indicator-1"
-                part="indeterminate-indicator-1"
-            ></span>
-        `,
-        indeterminateIndicator2: /* html */ html`
-            <span
-                class="indeterminate-indicator-2"
-                part="indeterminate-indicator-2"
-            ></span>
-        `,
+        determinateIndicator: progressIndicatorTemplate,
+        indeterminateIndicator: progressIndicatorTemplate,
     }),
     styles,
 });

@@ -2,7 +2,6 @@ import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import { AccordionExpandMode } from "./accordion.options.js";
-import type { FASTAccordion } from "./accordion.js";
 
 test.describe("Accordion", () => {
     let page: Page;

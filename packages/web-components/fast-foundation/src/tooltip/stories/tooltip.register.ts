@@ -7,8 +7,8 @@ const styles = css`
         box-sizing: border-box;
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
         border-radius: calc(var(--control-corner-radius) * 1px);
-        border: calc(var(--stroke-width) * 1px) solid var(--focus-stroke-outer);
-        background: var(--fill-color);
+        border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-outer);
+        background: var(--neutral-fill-rest);
         color: var(--neutral-foreground-rest);
         padding: 4px 12px;
         height: fit-content;

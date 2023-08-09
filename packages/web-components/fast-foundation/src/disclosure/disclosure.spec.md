@@ -57,7 +57,7 @@ The disclosure component can easily be extended for customization, for example a
     <details>
         <summary>
             <slot name="start"></slot>
-            <slot name="title"></slot>
+            <slot name="summary"></slot>
             <slot name="end"></slot>
         </summary>
         <div>
@@ -69,7 +69,7 @@ The disclosure component can easily be extended for customization, for example a
 
 -   _Slot Names_
     -   start: add glyph for toggle state
-    -   title: invoker title (could look like as a button or hyperlink)
+    -   summary: invoker title (could look like as a button or hyperlink)
     -   end: add glyph for toggle state
     -   default: extra content to be placed
 
@@ -79,7 +79,7 @@ The disclosure component can easily be extended for customization, for example a
 
 ```html
 <fast-disclosure>
-    <span slot="title">More about Green Arrow</span>
+    <span slot="summary">More about Green Arrow</span>
     <div>
         Green Arrow is a fictional superhero who appears in comic books published by DC
         Comics. Created by Mort Weisinger and designed by George Papp, he first appeared

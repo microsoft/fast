@@ -3,6 +3,10 @@ import { FASTTextArea } from "../text-area.js";
 import { textAreaTemplate } from "../text-area.template.js";
 
 const styles = css`
+    :host([hidden]) {
+        display: none;
+    }
+
     :host {
         display: inline-block;
         font-family: var(--body-font);
@@ -13,11 +17,11 @@ const styles = css`
     .control {
         box-sizing: border-box;
         position: relative;
+        display: flex;
         color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
-        height: calc(var(--height-number) * 2px);
         font: inherit;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
@@ -36,10 +40,25 @@ const styles = css`
         border-color: var(--accent-fill-active);
     }
 
-    .control:hover,
-    .control:focus-visible,
-    .control:disabled,
-    .control:active {
+    .field {
+        -webkit-appearance: none;
+        font: inherit;
+        background: transparent;
+        border: 0;
+        color: inherit;
+        height: calc(100% - 4px);
+        margin-top: auto;
+        margin-bottom: auto;
+        border: none;
+        padding: 0 calc(var(--design-unit) * 2px + 1px);
+        font-size: var(--type-ramp-base-font-size);
+        line-height: var(--type-ramp-base-line-height);
+    }
+
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
 
@@ -56,15 +75,15 @@ const styles = css`
         background: var(--neutral-fill-hover);
     }
 
-    :host([resize="both"]) .control {
+    :host([resize="both"]) .field {
         resize: both;
     }
 
-    :host([resize="horizontal"]) .control {
+    :host([resize="horizontal"]) .field {
         resize: horizontal;
     }
 
-    :host([resize="vertical"]) .control {
+    :host([resize="vertical"]) .field {
         resize: vertical;
     }
 
@@ -99,7 +118,7 @@ const styles = css`
         width: initial;
     }
 
-    :host([rows]) .control {
+    :host([rows]) .field {
         height: initial;
     }
 `;

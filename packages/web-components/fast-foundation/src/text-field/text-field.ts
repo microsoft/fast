@@ -22,19 +22,19 @@ export type TextFieldOptions = StartEndOptions<FASTTextField>;
  * A Text Field Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text | <input type="text" /> element }.
  *
- * @slot start - Content which can be provided before the number field input
- * @slot end - Content which can be provided after the number field input
+ * @slot start - Content which can be provided before the input field
+ * @slot end - Content which can be provided after the input field
  * @slot - The default slot for the label
  * @csspart label - The label
- * @csspart root - The element wrapping the control, including start and end slots
- * @csspart control - The text field element
+ * @csspart control - The logical control, the element wrapping the input field, including start and end slots
+ * @csspart field - The text field element
  * @fires change - Fires a custom 'change' event when the value has changed
  *
  * @public
  */
 export class FASTTextField extends FormAssociatedTextField {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the input will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -188,10 +188,10 @@ export class FASTTextField extends FormAssociatedTextField {
     public defaultSlottedNodes: Node[];
 
     /**
-     * A reference to the internal input element
+     * A reference to the internal input field element
      * @internal
      */
-    public control: HTMLInputElement;
+    public field: HTMLInputElement;
 
     /**
      * @internal
@@ -215,32 +215,32 @@ export class FASTTextField extends FormAssociatedTextField {
      * @public
      */
     public select(): void {
-        this.control.select();
+        this.field.select();
 
         /**
          * The select event does not permeate the shadow DOM boundary.
          * This fn effectively proxies the select event,
          * emitting a `select` event whenever the internal
-         * control emits a `select` event
+         * input emits a `select` event
          */
         this.$emit("select");
     }
 
     /**
-     * Handles the internal control's `input` event
+     * Handles the internal input field's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.control.value;
+        this.value = this.field.value;
     }
 
     /**
-     * Change event handler for inner control.
+     * Change event handler for inner input.
      * @remarks
      * "Change" events are not `composable` so they will not
      * permeate the shadow DOM boundary. This fn effectively proxies
      * the change event, emitting a `change` event whenever the internal
-     * control emits a `change` event
+     * input emits a `change` event
      * @internal
      */
     public handleChange(): void {
@@ -249,7 +249,7 @@ export class FASTTextField extends FormAssociatedTextField {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.control);
+        super.validate(this.field);
     }
 }
 

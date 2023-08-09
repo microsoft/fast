@@ -19,7 +19,7 @@ export function flipperTemplate<T extends FASTFlipper>(
         let existing = templateCache[direction];
 
         if (!existing) {
-            templateCache[direction] = existing = html`
+            templateCache[direction] = existing = html<T>`
                 <span part="${direction}" class="${direction}">
                     <slot name="${direction}">
                         ${staticallyCompose(options[direction])}
@@ -31,7 +31,7 @@ export function flipperTemplate<T extends FASTFlipper>(
         return existing;
     }
 
-    return html`
+    return html<T>`
         <template
             role="button"
             aria-disabled="${x => (x.disabled ? true : void 0)}"

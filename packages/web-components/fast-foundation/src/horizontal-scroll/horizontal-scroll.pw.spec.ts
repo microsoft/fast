@@ -24,7 +24,7 @@ test.describe("HorizontalScroll", () => {
 
         scrollNext = element.locator(".scroll-next");
 
-        scrollPrevious = element.locator(".scroll-prev");
+        scrollPrevious = element.locator(".scroll-previous");
 
         scrollView = element.locator(".scroll-view");
 
@@ -59,7 +59,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollToNext();
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 375);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 379);
         });
 
         test("should not scroll past the beginning", async () => {
@@ -165,7 +165,7 @@ test.describe("HorizontalScroll", () => {
 
             await nextFlipper.click();
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 375);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 379);
 
             await previousFlipper.click();
 
@@ -175,7 +175,7 @@ test.describe("HorizontalScroll", () => {
 
             await nextFlipper.click();
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 250);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 254);
         });
 
         test("should scroll to previous when only 2 items wide", async ({ page }) => {
@@ -193,7 +193,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollToNext();
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 125);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 129);
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollToPrevious();
@@ -221,7 +221,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollInView(card as HTMLElement, 0);
             }, await lastCard.elementHandle());
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 1375);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 1383);
 
             await expect(lastCard).toHaveJSProperty("offsetLeft", 1875);
 
@@ -249,7 +249,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollInView(cardsCount - 1, 0);
             }, await cards.count());
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 1375);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 1383);
 
             await expect(lastCard).toHaveJSProperty("offsetLeft", 1875);
 
@@ -277,7 +277,7 @@ test.describe("HorizontalScroll", () => {
                 node.scrollInView(12, 0);
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 1125);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 1129);
 
             await expect(thirdLastCard).toHaveJSProperty("offsetLeft", 1500);
 
@@ -289,19 +289,19 @@ test.describe("HorizontalScroll", () => {
                 node.scrollInView(12, 80);
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 1125);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 1129);
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollInView(12, 0, 200);
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 1250);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 1254);
 
             await element.evaluate((node: FASTHorizontalScroll) => {
                 node.scrollInView(2, 20);
             });
 
-            await expect(scrollView).toHaveJSProperty("scrollLeft", 125);
+            await expect(scrollView).toHaveJSProperty("scrollLeft", 129);
         });
 
         test("Should not scroll with `scrollInView()` when the item is in view", async ({
