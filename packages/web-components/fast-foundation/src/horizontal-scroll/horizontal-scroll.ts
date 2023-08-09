@@ -6,7 +6,6 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { StartEnd } from "../patterns/start-end.js";
 import type { HorizontalScrollView } from "./horizontal-scroll.options.js";
@@ -143,7 +142,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * Detects if the component has been resized
      * @internal
      */
-    private resizeDetector: ResizeObserverClassDefinition | null = null;
+    private resizeDetector: ResizeObserver | null = null;
 
     /**
      * Width of the parent container
@@ -222,9 +221,7 @@ export class FASTHorizontalScroll extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new (
-            window as unknown as WindowWithResizeObserver
-        ).ResizeObserver(this.resized.bind(this));
+        this.resizeDetector = new window.ResizeObserver(this.resized.bind(this));
         this.resizeDetector.observe(this);
     }
 

@@ -3,10 +3,6 @@ import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utiliti
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
-    ResizeObserverClassDefinition,
-    ResizeObserverEntry,
-} from "../utilities/resize-observer.js";
-import type {
     AnchoredRegionPositionLabel,
     AutoUpdateMode,
     AxisPositioningMode,
@@ -315,7 +311,7 @@ export class FASTAnchoredRegion extends FASTElement {
     private regionWidth: string;
     private regionHeight: string;
 
-    private resizeDetector: ResizeObserverClassDefinition | null = null;
+    private resizeDetector: ResizeObserver | null = null;
 
     private viewportRect: ClientRect | DOMRect | undefined;
     private anchorRect: ClientRect | DOMRect | undefined;
@@ -396,9 +392,7 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new (
-            window as unknown as WindowWithResizeObserver
-        ).ResizeObserver(this.handleResize);
+        this.resizeDetector = new window.ResizeObserver(this.handleResize);
     }
 
     /**
