@@ -79,7 +79,7 @@ export function calendarCellTemplate(
                     `${x.month}-${x.day}-${x.year}`,
                     { month: "long", day: "numeric" }
                 )}"
-            aria-selected="${(x, c) => (x.selected ? "true" : "false")}"
+            aria-selected="${(x, c) => x.selected}"
         >
             <div
                 class="date"
