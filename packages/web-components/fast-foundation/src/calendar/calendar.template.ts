@@ -79,6 +79,7 @@ export function calendarCellTemplate(
                     `${x.month}-${x.day}-${x.year}`,
                     { month: "long", day: "numeric" }
                 )}"
+            aria-selected="${(x, c) => (x.selected ? "true" : "false")}"
         >
             <div
                 class="date"
@@ -135,7 +136,7 @@ export function interactiveCalendarGridTemplate<T extends FASTCalendar>(
     const rowTag = html.partial(tagFor(options.dataGridRow));
 
     return html<T>`
-    <${gridTag} class="days interact" part="days" generate-header="none">
+    <${gridTag} class="days interact" part="days" role="grid" generate-header="none">
         <${rowTag}
             class="week-days"
             part="week-days"
