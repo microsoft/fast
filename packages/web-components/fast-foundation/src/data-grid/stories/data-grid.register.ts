@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import { FASTDataGrid } from "../data-grid.js";
 import { dataGridTemplate } from "../data-grid.template.js";
+import { registerComplexCell } from "./examples/complex-cell.js";
 
 const styles = css`
     :host {
@@ -19,3 +20,5 @@ FASTDataGrid.define({
     }),
     styles,
 });
+
+registerComplexCell();
