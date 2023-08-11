@@ -22,7 +22,7 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
 
     - name: Add or Update packages
-      run: sudo yarn global add lerna
+      run: sudo yarn global add lerna@5.5.2
 
     - name: Set Git User
       run: |
