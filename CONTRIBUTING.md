@@ -19,7 +19,7 @@ npm install -g yarn
 The second tool you'll need is Lerna, which can be installed with this command:
 
 ```bash
-yarn global add lerna
+yarn global add lerna@5.5.2
 ```
 
 :::important

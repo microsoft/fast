@@ -17,7 +17,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install yarn
         sudo yarn global upgrade typescript
-        sudo yarn global add lerna
+        sudo yarn global add lerna@5.5.2
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
