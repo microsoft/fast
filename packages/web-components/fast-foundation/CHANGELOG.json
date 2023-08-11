@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 11 Aug 2023 00:10:28 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.1",
+      "version": "2.49.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b8b4b20b8cb5891ac90d5a4e997756ac36db132f",
+            "comment": "Prevent keyboard navigation to hidden or disabled tabs"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "8c80dfcf9361a5390806c3a55b67c43259a76fb8",
+            "comment": "set activeid when setting active tab"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 04 May 2023 17:35:08 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.0",
       "version": "2.49.0",

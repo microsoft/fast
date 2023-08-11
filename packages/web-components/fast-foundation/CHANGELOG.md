@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 04 May 2023 17:35:08 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Aug 2023 00:10:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.1
+
+Fri, 11 Aug 2023 00:10:28 GMT
+
+### Patches
+
+- Prevent keyboard navigation to hidden or disabled tabs (7282195+m-akinc@users.noreply.github.com)
+- set activeid when setting active tab (chhol@microsoft.com)
 
 ## 2.49.0
 
