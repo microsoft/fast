@@ -41,7 +41,7 @@ export {
     SpliceStrategy,
     SpliceStrategySupport,
 } from "./observation/arrays.js";
-export { UpdateQueue } from "./observation/update-queue.js";
+export { UpdateQueue, Updates } from "./observation/update-queue.js";
 
 // Binding
 export { Binding, BindingDirective } from "./binding/binding.js";
