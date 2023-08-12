@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "adds missing types as a dev dependency",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}

@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 16 Jun 2023 18:17:12 GMT and should not be manually modified.
+This log was last generated on Sat, 12 Aug 2023 00:26:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.29
+
+Sat, 12 Aug 2023 00:26:35 GMT
+
+### Changes
+
+- block cell nav events (stephcomeau@msn.com)
+- fix: add aria-orientation to divider only when role equals separator (chhol@microsoft.com)
+- Removed the 'applyMixins' function from exported features. (nicholasrice@noreply.github.com)
+- Prevent keyboard navigation to hidden tab (7282195+m-akinc@users.noreply.github.com)
+- picker zero items (stephcomeau@msn.com)
+- fix: toolbar should not throw if start or end is undefined (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.25
 
 ## 3.0.0-alpha.28
 

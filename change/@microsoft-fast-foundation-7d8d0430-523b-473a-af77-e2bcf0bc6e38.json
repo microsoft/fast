@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Prevent keyboard navigation to hidden tab",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "7282195+m-akinc@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

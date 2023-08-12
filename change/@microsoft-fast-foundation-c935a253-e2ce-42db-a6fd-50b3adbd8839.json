@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: add aria-orientation to divider only when role equals separator",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

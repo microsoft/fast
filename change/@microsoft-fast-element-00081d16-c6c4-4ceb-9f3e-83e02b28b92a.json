@@ -1,7 +1,0 @@
-{
-    "type": "prerelease",
-    "comment": "Adds volatile binding support for JavaScript optional chaining syntax",
-    "packageName": "@microsoft/fast-element",
-    "email": "nicholasrice@users.noreply.github.com",
-    "dependentChangeType": "prerelease"
-}

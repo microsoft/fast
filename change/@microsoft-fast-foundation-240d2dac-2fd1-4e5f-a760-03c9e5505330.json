@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: toolbar should not throw if start or end is undefined",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

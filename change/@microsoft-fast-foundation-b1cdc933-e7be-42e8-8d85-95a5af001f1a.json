@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Removed the 'applyMixins' function from exported features.",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

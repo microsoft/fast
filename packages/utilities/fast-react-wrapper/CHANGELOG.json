@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Sat, 12 Aug 2023 00:26:35 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.26",
+      "version": "1.0.0-alpha.26",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "fc98190c6bfb9fabe0988e89daca1c0f64f6e7c8",
+            "comment": "adds missing types as a dev dependency"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "0f8fc2505445be626e55e1e1b28956c2ff3a722e",
+            "comment": "add displayName to react wrapper"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.25",
+            "commit": "2297004e14386b5a689ba96361f8d8eebee69cd8"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Jun 2023 18:17:13 GMT",
       "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.25",
       "version": "1.0.0-alpha.25",
