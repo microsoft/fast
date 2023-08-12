@@ -1,2 +1,2 @@
-export * from "./text-field.template.js";
-export * from "./text-field.js";
+export { textFieldTemplate } from "./text-field.template.js";
+export { DelegatesARIATextbox, FASTTextField, TextFieldOptions } from "./text-field.js";

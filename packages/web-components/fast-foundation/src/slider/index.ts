@@ -1,3 +1,8 @@
-export * from "./slider.js";
-export * from "./slider.options.js";
-export * from "./slider.template.js";
+export { FASTSlider } from "./slider.js";
+export {
+    SliderConfiguration,
+    SliderMode,
+    SliderOptions,
+    SliderOrientation,
+} from "./slider.options.js";
+export { sliderTemplate } from "./slider.template.js";

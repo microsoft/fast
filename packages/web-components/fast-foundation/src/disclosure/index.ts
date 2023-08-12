@@ -1,2 +1,2 @@
-export * from "./disclosure.template.js";
-export * from "./disclosure.js";
+export { disclosureTemplate } from "./disclosure.template.js";
+export { DisclosureOptions, FASTDisclosure } from "./disclosure.js";

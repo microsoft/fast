@@ -1,3 +1,3 @@
-export * from "./disabled.js";
-export * from "./display.js";
-export * from "./focus.js";
+export { disabledCursor } from "./disabled.js";
+export { display, CSSDisplayPropertyValue, hidden } from "./display.js";
+export { focusVisible } from "./focus.js";

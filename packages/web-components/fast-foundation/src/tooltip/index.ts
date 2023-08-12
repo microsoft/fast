@@ -1,3 +1,3 @@
-export * from "./tooltip.js";
-export * from "./tooltip.options.js";
-export * from "./tooltip.template.js";
+export { FASTTooltip } from "./tooltip.js";
+export { TooltipPlacement } from "./tooltip.options.js";
+export { tooltipTemplate } from "./tooltip.template.js";
