@@ -68,12 +68,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ------------- | ----------------------- | ------- |
 | `FASTListbox` | /src/listbox/listbox.js |         |
 
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
-
 #### Fields
 
 | Name               | Privacy   | Type                  | Default | Description                                          | Inherited From |
@@ -112,12 +106,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name          | Module | Package                 |
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
-
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. |                |
 
 #### Fields
 
