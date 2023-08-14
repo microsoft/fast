@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Fri, 16 Jun 2023 18:17:13 GMT and should not be manually modified.
+This log was last generated on Sat, 12 Aug 2023 00:26:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.25
+
+Sat, 12 Aug 2023 00:26:36 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.25
 
 ## 1.0.0-alpha.24
 

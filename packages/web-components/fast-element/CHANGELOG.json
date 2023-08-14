@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sat, 12 Aug 2023 00:26:36 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.25",
+      "version": "2.0.0-beta.25",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ff0b93a7fb4ca416629f51cc233078494aaf5f60",
+            "comment": "Prevent notification of array splices when operation does not mutate array values"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "9f6451f7e7c121d76e2ead6f50f77c312a0157f7",
+            "comment": "Adds volatile binding support for JavaScript optional chaining syntax"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Jun 2023 18:17:12 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.24",
       "version": "2.0.0-beta.24",

@@ -264,12 +264,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 
 // @public
 export interface ColumnDefinition {
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
     cellInternalFocusQueue?: boolean;
     cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
     headerCellInternalFocusQueue?: boolean;
     headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
@@ -411,6 +411,9 @@ export const DayFormat: {
 
 // @public
 export type DayFormat = ValuesOf<typeof DayFormat>;
+
+// @public (undocumented)
+export const defaultCellFocusTargetCallback: (cell: FASTDataGridCell) => HTMLElement | null;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
