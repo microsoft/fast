@@ -1005,7 +1005,7 @@ export class FASTDataGrid extends FASTElement {
     disconnectedCallback(): void;
     focusColumnIndex: number;
     focusRowIndex: number;
-    static generateColumns: (row: object) => ColumnDefinition[];
+    static generateColumns(row: object): ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
     // (undocumented)
@@ -1257,7 +1257,7 @@ export abstract class FASTListbox extends FASTElement {
     protected setSelectedOptions(): void;
     // @internal
     protected shouldSkipFocus: boolean;
-    static slottedOptionFilter: (n: HTMLElement) => boolean;
+    static slottedOptionFilter(n: HTMLElement): boolean;
     // @internal
     slottedOptions: Element[];
     // @internal
