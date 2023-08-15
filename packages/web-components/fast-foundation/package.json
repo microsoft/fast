@@ -83,8 +83,8 @@
       "default": "./dist/esm/data-grid/index.js"
     },
     "./design-token.js": {
-      "types": "./dist/dts/design-token/index.d.ts",
-      "default": "./dist/esm/design-token/index.js"
+      "types": "./dist/dts/design-token/exports.d.ts",
+      "default": "./dist/esm/design-token/exports.js"
     },
     "./dialog.js": {
       "types": "./dist/dts/dialog/index.d.ts",
