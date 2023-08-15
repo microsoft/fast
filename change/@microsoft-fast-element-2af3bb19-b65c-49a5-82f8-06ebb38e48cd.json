@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update fast-element exports to be explicit",
+  "packageName": "@microsoft/fast-element",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}

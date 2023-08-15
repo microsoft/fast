@@ -116,14 +116,14 @@ export class FASTDataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
-    public static generateColumns = (row: object): ColumnDefinition[] => {
+    public static generateColumns(row: object): ColumnDefinition[] {
         return Object.getOwnPropertyNames(row).map((property: string, index: number) => {
             return {
                 columnDataKey: property,
                 gridColumn: `${index}`,
             };
         });
-    };
+    }
 
     /**
      *  generates a gridTemplateColumns based on columndefinitions
