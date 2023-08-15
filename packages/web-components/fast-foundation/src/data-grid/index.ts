@@ -13,4 +13,8 @@ export {
 } from "./data-grid-row.template.js";
 export { FASTDataGridRow } from "./data-grid-row.js";
 export { dataGridCellTemplate } from "./data-grid-cell.template.js";
-export { defaultCellFocusTargetCallback, FASTDataGridCell } from "./data-grid-cell.js";
+export {
+    DataGridCellTypes,
+    defaultCellFocusTargetCallback,
+    FASTDataGridCell,
+} from "./data-grid-cell.js";

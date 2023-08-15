@@ -1,7 +1,9 @@
 export {
     CheckableFormAssociated,
+    CheckableFormAssociatedElement,
     ConstructableFormAssociated,
     FormAssociated,
+    FormAssociatedElement,
     FormAssociatedProxy,
     ProxyElement,
     supportsElementInternals,

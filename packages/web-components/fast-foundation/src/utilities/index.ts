@@ -2,6 +2,7 @@ export { getDirection } from "./direction.js";
 export {
     darkModeStylesheetBehavior,
     lightModeStylesheetBehavior,
+    forcedColorsStylesheetBehavior,
     MatchMediaBehavior,
     MediaQueryListListener,
     MatchMediaStyleSheetBehavior,
@@ -11,6 +12,7 @@ export {
     CSSDisplayPropertyValue,
     disabledCursor,
     display,
+    hidden,
     focusVisible,
 } from "./style/index.js";
 export { ValuesOf } from "./typings.js";
