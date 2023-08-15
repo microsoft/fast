@@ -102,12 +102,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---------------- | --------------------------------------- | ------- |
 | `FormAssociated` | /src/form-associated/form-associated.js |         |
 
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
-
 #### Fields
 
 | Name               | Privacy   | Type                  | Default | Description                           | Inherited From |
@@ -154,12 +148,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name                     | Module                                    | Package |
 | ------------------------ | ----------------------------------------- | ------- |
 | `FormAssociatedCombobox` | /src/combobox/combobox.form-associated.js |         |
-
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
 
 #### Fields
 

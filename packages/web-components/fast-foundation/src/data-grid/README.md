@@ -230,12 +230,6 @@ export const myDataGrid = DataGrid.compose({
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
 
-#### Static Fields
-
-| Name              | Privacy | Type | Default | Description                                                      | Inherited From |
-| ----------------- | ------- | ---- | ------- | ---------------------------------------------------------------- | -------------- |
-| `generateColumns` | public  |      |         | generates a basic column definition by examining sample row data |                |
-
 #### Fields
 
 | Name                     | Privacy | Type                                                | Default | Description                                                                                                                                                                                                                                                                                     | Inherited From |
