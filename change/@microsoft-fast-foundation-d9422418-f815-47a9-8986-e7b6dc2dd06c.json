@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
-  "comment": "add explicit exports to fast-foundation",
+  "comment": "add export paths with extensions for each fast-foundation component and utilities",
   "packageName": "@microsoft/fast-foundation",
   "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
