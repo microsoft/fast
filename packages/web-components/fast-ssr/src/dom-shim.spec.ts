@@ -5,7 +5,7 @@ import * as Foundation from "@microsoft/fast-foundation";
 import { expect, test } from "@playwright/test";
 import { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 
 test.describe("createWindow", () => {
     test("should create a window with a document property that is an instance of the window's Document constructor", () => {

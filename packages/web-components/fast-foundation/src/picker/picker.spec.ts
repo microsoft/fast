@@ -11,7 +11,7 @@ import {
     pickerMenuTemplate,
     pickerTemplate,
 } from "./index.js";
-import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing.js";
 import { Updates } from "@microsoft/fast-element";
 import {
     keyArrowLeft,
