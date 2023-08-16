@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update fast-element export paths to include extensions",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
