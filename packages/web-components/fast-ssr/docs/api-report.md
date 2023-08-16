@@ -8,7 +8,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
-import { DOMContainer } from '@microsoft/fast-element/di';
+import { DOMContainer } from '@microsoft/fast-element/di.js';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
