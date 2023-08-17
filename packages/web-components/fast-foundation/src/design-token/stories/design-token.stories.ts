@@ -1,5 +1,5 @@
 import { css, FASTElement, html, Observable, Updates } from "@microsoft/fast-element";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 import type { Meta, Story } from "../../__test__/helpers.js";
 import { CSSDesignToken, DesignToken as FASTDesignToken } from "../fast-design-token.js";
 

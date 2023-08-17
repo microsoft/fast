@@ -26,59 +26,59 @@
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
     },
-    "./debug": {
+    "./debug.js": {
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
-    "./binding/two-way": {
+    "./binding/two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
       "default": "./dist/esm/binding/two-way.js"
     },
-    "./binding/signal": {
+    "./binding/signal.js": {
       "types": "./dist/dts/binding/signal.d.ts",
       "default": "./dist/esm/binding/signal.js"
     },
-    "./render": {
+    "./render.js": {
       "types": "./dist/dts/templating/render.d.ts",
       "default": "./dist/esm/templating/render.js"
     },
-    "./utilities": {
+    "./utilities.js": {
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
     },
-    "./state": {
+    "./state.js": {
       "types": "./dist/dts/state/exports.d.ts",
       "default": "./dist/esm/state/exports.js"
     },
-    "./context": {
+    "./context.js": {
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"
     },
-    "./metadata": {
+    "./metadata.js": {
       "types": "./dist/dts/metadata.d.ts",
       "default": "./dist/esm/metadata.js"
     },
-    "./testing": {
+    "./testing.js": {
       "types": "./dist/dts/testing/exports.d.ts",
       "default": "./dist/esm/testing/exports.js"
     },
-    "./di": {
+    "./di.js": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
-    "./element-hydration": {
+    "./element-hydration.js": {
       "types": "./dist/dts/components/hydration.d.ts",
       "default": "./dist/esm/components/hydration.js"
     },
-    "./install-element-hydration": {
+    "./install-element-hydration.js": {
       "types": "./dist/dts/components/install-hydration.d.ts",
       "default": "./dist/esm/components/install-hydration.js"
     },
-    "./pending-task": {
+    "./pending-task.js": {
       "types": "./dist/dts/pending-task.d.ts",
       "default": "./dist/esm/pending-task.js"
     },
-    "./dom-policy": {
+    "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
       "default": "./dist/esm/dom-policy.js"
     },

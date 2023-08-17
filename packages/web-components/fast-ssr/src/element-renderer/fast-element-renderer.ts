@@ -1,5 +1,5 @@
 import { DOM, DOMAspect, ExecutionContext, FASTElement } from "@microsoft/fast-element";
-import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task.js";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
