@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 16 Jun 2023 18:17:12 GMT and should not be manually modified.
+This log was last generated on Sat, 12 Aug 2023 00:26:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.25
+
+Sat, 12 Aug 2023 00:26:36 GMT
+
+### Changes
+
+- Prevent notification of array splices when operation does not mutate array values (nicholasrice@users.noreply.github.com)
+- Adds volatile binding support for JavaScript optional chaining syntax (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0-beta.24
 

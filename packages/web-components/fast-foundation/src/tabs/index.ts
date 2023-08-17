@@ -1,3 +1,3 @@
-export * from "./tabs.options.js";
-export * from "./tabs.template.js";
-export * from "./tabs.js";
+export { TabsOptions, TabsOrientation } from "./tabs.options.js";
+export { tabsTemplate } from "./tabs.template.js";
+export { FASTTabs } from "./tabs.js";

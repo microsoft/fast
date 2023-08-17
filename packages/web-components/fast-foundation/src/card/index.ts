@@ -1,2 +1,2 @@
-export * from "./card.template.js";
-export * from "./card.js";
+export { cardTemplate } from "./card.template.js";
+export { FASTCard } from "./card.js";

@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sat, 12 Aug 2023 00:26:35 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.29",
+      "version": "3.0.0-alpha.29",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a38e6b166765bb5290b0e6cf55feffdb16a8cbb4",
+            "comment": "block cell nav events"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b5f23eb6c537a2659da4666f3c993c360d523153",
+            "comment": "fix: add aria-orientation to divider only when role equals separator"
+          },
+          {
+            "author": "nicholasrice@noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "57f3c22c6341d8a21d48b1ffb7fcbfab1ffd02d8",
+            "comment": "Removed the 'applyMixins' function from exported features."
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "50dba9c58b1bc6ac0c8b948f68dd0cfb6485460b",
+            "comment": "Prevent keyboard navigation to hidden tab"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e0d4cb42ef8ff28452a744867bde7f095a263297",
+            "comment": "picker zero items"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "adaaeb653a37c0eec6ce5fbc57b73c24ca09f347",
+            "comment": "fix: toolbar should not throw if start or end is undefined"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.25",
+            "commit": "2297004e14386b5a689ba96361f8d8eebee69cd8"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Jun 2023 18:17:12 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.28",
       "version": "3.0.0-alpha.28",

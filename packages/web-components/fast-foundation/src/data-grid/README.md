@@ -144,6 +144,14 @@ export const myDataGrid = DataGrid.compose({
 
 <hr/>
 
+### Functions
+
+| Name                             | Description | Parameters               | Return                |
+| -------------------------------- | ----------- | ------------------------ | --------------------- |
+| `defaultCellFocusTargetCallback` |             | `cell: FASTDataGridCell` | `HTMLElement or null` |
+
+<hr/>
+
 
 
 ### class: `FASTDataGridRow`
@@ -222,12 +230,6 @@ export const myDataGrid = DataGrid.compose({
 | ------------- | ------ | ----------------------- |
 | `FASTElement` |        | @microsoft/fast-element |
 
-#### Static Fields
-
-| Name              | Privacy | Type | Default | Description                                                      | Inherited From |
-| ----------------- | ------- | ---- | ------- | ---------------------------------------------------------------- | -------------- |
-| `generateColumns` | public  |      |         | generates a basic column definition by examining sample row data |                |
-
 #### Fields
 
 | Name                     | Privacy | Type                                                | Default | Description                                                                                                                                                                                                                                                                                     | Inherited From |
@@ -277,6 +279,44 @@ export const myDataGrid = DataGrid.compose({
 | Name | Description                              |
 | ---- | ---------------------------------------- |
 |      | The default slot for custom row elements |
+
+<hr/>
+
+
+
+### class: `ComplexCell`
+
+#### Superclass
+
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Fields
+
+| Name            | Privacy | Type                | Default | Description | Inherited From |
+| --------------- | ------- | ------------------- | ------- | ----------- | -------------- |
+| `buttonA`       | public  | `HTMLButtonElement` |         |             |                |
+| `buttonB`       | public  | `HTMLButtonElement` |         |             |                |
+| `handleFocus`   | public  |                     |         |             |                |
+| `handleKeyDown` | public  |                     |         |             |                |
+
+<hr/>
+
+### Variables
+
+| Name                | Description | Type |
+| ------------------- | ----------- | ---- |
+| `complexCellStyles` |             |      |
+
+<hr/>
+
+### Functions
+
+| Name                  | Description | Parameters | Return                   |
+| --------------------- | ----------- | ---------- | ------------------------ |
+| `registerComplexCell` |             |            |                          |
+| `complexCellTemplate` |             |            | `ElementViewTemplate<T>` |
 
 <hr/>
 

@@ -78,7 +78,7 @@ export interface ColumnDefinition {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
 
     /**
      * cell template
@@ -98,7 +98,7 @@ export interface ColumnDefinition {
      * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
 
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
 
     /**
      * Whether this column is the row header
@@ -116,14 +116,14 @@ export class FASTDataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
-    public static generateColumns = (row: object): ColumnDefinition[] => {
+    public static generateColumns(row: object): ColumnDefinition[] {
         return Object.getOwnPropertyNames(row).map((property: string, index: number) => {
             return {
                 columnDataKey: property,
                 gridColumn: `${index}`,
             };
         });
-    };
+    }
 
     /**
      *  generates a gridTemplateColumns based on columndefinitions

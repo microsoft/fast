@@ -127,8 +127,9 @@ export abstract class FASTListbox extends FASTElement {
      * @param n - element to filter
      * @public
      */
-    public static slottedOptionFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.hidden;
+    public static slottedOptionFilter(n: HTMLElement) {
+        return isListboxOption(n) && !n.hidden;
+    }
 
     /**
      * The default slotted elements.

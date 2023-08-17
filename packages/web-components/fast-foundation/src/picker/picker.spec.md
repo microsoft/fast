@@ -42,7 +42,7 @@ Picker is the top level container which hosts both a `picker-list` component to 
 *Attributes:*
 - `selection`: List of currently selected items. Comma delineated string ie. "apples,oranges".
 - `options`: Currently available options. Comma delineated string ie. "apples,oranges".
-- `max-selected`: The maximum number of items that can be selected.  Unset by default (ie. no maximum).
+- `max-selected`: The maximum number of items that can be selected.  Unset by default (ie. no maximum).  If the value is "0" selecting an item updates the query instead.
 - `no-suggestions-text`: The text to present when no suggestions are available.
 - `suggestions-available-text`: The text to present when suggestions are available.
 - `loading-text`: The text to present when suggestions are loading. 

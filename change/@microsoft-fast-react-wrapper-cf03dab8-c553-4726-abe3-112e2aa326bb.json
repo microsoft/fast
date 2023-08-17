@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "add displayName to react wrapper",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

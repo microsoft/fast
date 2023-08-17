@@ -1,3 +1,3 @@
-export * from "./anchor.js";
-export * from "./anchor.options.js";
-export * from "./anchor.template.js";
+export { AnchorOptions, DelegatesARIALink, FASTAnchor } from "./anchor.js";
+export { AnchorTarget } from "./anchor.options.js";
+export { anchorTemplate } from "./anchor.template.js";

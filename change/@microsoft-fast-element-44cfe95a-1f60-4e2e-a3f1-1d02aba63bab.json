@@ -1,7 +1,0 @@
-{
-    "type": "prerelease",
-    "comment": "Prevent notification of array splices when operation does not mutate array values",
-    "packageName": "@microsoft/fast-element",
-    "email": "nicholasrice@users.noreply.github.com",
-    "dependentChangeType": "prerelease"
-}

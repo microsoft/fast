@@ -1,1 +1,10 @@
-export * from "./form-associated.js";
+export {
+    CheckableFormAssociated,
+    CheckableFormAssociatedElement,
+    ConstructableFormAssociated,
+    FormAssociated,
+    FormAssociatedElement,
+    FormAssociatedProxy,
+    ProxyElement,
+    supportsElementInternals,
+} from "./form-associated.js";
