@@ -1,7 +1,7 @@
 import "./test/fast-element-dom-shim.js";
 import type { Subscriber } from "@microsoft/fast-element";
 import { Observable } from "@microsoft/fast-element";
-import { reactive } from "@microsoft/fast-element/state";
+import { reactive } from "@microsoft/fast-element/state.js";
 import { test } from "@playwright/test";
 import { expect } from "expect";
 import jest from "jest-mock";

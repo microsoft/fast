@@ -3,7 +3,7 @@ import { html, RefDirective, ref } from "@microsoft/fast-element";
 import fastSSR from "./exports.js";
 import { ViewBehaviorFactoryRenderer } from "./template-renderer/directives.js";
 import { test, expect } from "@playwright/test";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 import { FASTElement, HTMLDirective, StatelessAttachedAttributeDirective, ViewBehaviorFactory, ViewController } from "@microsoft/fast-element";
 import { consolidate } from "./test-utilities/consolidate.js";
 

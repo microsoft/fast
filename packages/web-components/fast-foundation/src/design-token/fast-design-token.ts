@@ -12,7 +12,7 @@ import {
     Observable,
     SubscriberSet,
 } from "@microsoft/fast-element";
-import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
+import { composedContains, composedParent } from "@microsoft/fast-element/utilities.js";
 import type {
     DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
     DerivedDesignTokenValue,

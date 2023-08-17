@@ -1,6 +1,6 @@
 import { Observable, observable, volatile } from "@microsoft/fast-element";
-import { Context } from "@microsoft/fast-element/context";
-import { reactive } from "@microsoft/fast-element/state";
+import { Context } from "@microsoft/fast-element/context.js";
+import { reactive } from "@microsoft/fast-element/state.js";
 
 export type Todo = { description: string; done: boolean };
 export type TodoListFilter = "all" | "active" | "completed";

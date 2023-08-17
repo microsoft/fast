@@ -4,10 +4,10 @@ import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 import { DefaultTemplateRenderer } from "./template-renderer.js";
-import { render } from "@microsoft/fast-element/render";
+import { render } from "@microsoft/fast-element/render.js";
 import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
 import { RenderInfo } from "../render-info.js";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}

@@ -6,7 +6,7 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities.js";
 import {
     eventClick,
     eventFocusOut,
