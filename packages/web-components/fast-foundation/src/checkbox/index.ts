@@ -1,2 +1,2 @@
-export * from "./checkbox.template.js";
-export * from "./checkbox.js";
+export { checkboxTemplate } from "./checkbox.template.js";
+export { CheckboxOptions, FASTCheckbox } from "./checkbox.js";
