@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "update fast-element export paths to include extensions",
+  "comment": "BREAKING: update fast-element export paths to include extensions",
   "packageName": "@microsoft/fast-element",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "prerelease"
