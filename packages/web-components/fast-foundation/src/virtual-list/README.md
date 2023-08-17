@@ -1,0 +1,136 @@
+---
+id: virtual-list
+title: virtual-list
+sidebar_label: virtual-list
+custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/virtual-list/README.md
+---
+
+A component that uses a template to render an array of objects based on whether each element would be in or near the specified viewport. 
+
+## Usage
+
+```html live
+    <fast-virtual-list>
+    </fast-virtual-list>
+```
+
+## Applying custom styles
+
+```ts
+import { customElement } from "@microsoft/fast-element";
+import { VirtualList, VirtualListTemplate as template } from "@microsoft/fast-foundation";
+import { VirtualListStyles as styles } from "./virtual-list.styles";
+
+@customElement({
+    name: "fast-virtual-list",
+    template,
+    styles,
+})
+export class FASTVirtualList extends VirtualList{}
+```
+
+## API
+
+
+
+### class: `FASTVirtualListItem`
+
+#### Superclass
+
+| Name          | Module | Package                 |
+| ------------- | ------ | ----------------------- |
+| `FASTElement` |        | @microsoft/fast-element |
+
+#### Fields
+
+| Name                 | Privacy | Type            | Default | Description          | Inherited From |
+| -------------------- | ------- | --------------- | ------- | -------------------- | -------------- |
+| `idleLoadQueue`      |         | `IdleLoadQueue` |         |                      |                |
+| `handleIdleCallback` | public  |                 |         | Handle idle callback |                |
+
+<hr/>
+
+
+
+### class: `FASTVirtualList`
+
+#### Superclass
+
+| Name           | Module                  | Package |
+| -------------- | ----------------------- | ------- |
+| `FASTDataList` | /src/data-list/index.js |         |
+
+#### Fields
+
+| Name                   | Privacy   | Type                               | Default | Description                                                                                                                                                                                               | Inherited From |
+| ---------------------- | --------- | ---------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `container`            |           | `Container`                        |         |                                                                                                                                                                                                           |                |
+| `virtualizer`          |           | `Virtualizer`                      |         |                                                                                                                                                                                                           |                |
+| `idleLoadQueue`        |           | `DefaultIdleLoadQueue`             |         |                                                                                                                                                                                                           |                |
+| `defaultItemSize`      | public    | `number`                           | `100`   | Item size to use if one is not specified                                                                                                                                                                  |                |
+| `itemSize`             | public    | `number`                           |         | The size in pixels of each item along the virtualization axis. When auto-resizing this is the amount of space reserved for elements until they actually render and report size.  The default value is 50. |                |
+| `viewport`             | public    | `string`                           | `""`    | The HTML ID of the viewport element. If no viewport is set the default viewport is the element itself. Note that viewportElement can be set directly as well.                                             |                |
+| `viewportElement`      | public    | `HTMLElement`                      |         | The HTML element being used as the viewport                                                                                                                                                               |                |
+| `recycle`              | public    | `boolean`                          | `false` | Whether or not to recycle the html container used to display items. May help performance but containers may retain artifacts from previous use that developers will need to clear.                        | FASTDataList   |
+| `positioning`          | public    | `boolean`                          | `false` | Whether or not positioning (ie. indexing) is available for the items generated by the repeat directive                                                                                                    | FASTDataList   |
+| `orientation`          | public    | `Orientation`                      |         | Whether the list is oriented vertically or horizontally. Default is vertical.                                                                                                                             | FASTDataList   |
+| `sourceItems`          | public    | `object[]`                         | `[]`    | The source data array.                                                                                                                                                                                    | FASTDataList   |
+| `itemTemplate`         | public    | `ViewTemplate`                     |         | The ViewTemplate used in the items repeat loop                                                                                                                                                            | FASTDataList   |
+| `itemContentsTemplate` | public    | `ViewTemplate`                     |         | The ViewTemplate used to render list item contents                                                                                                                                                        | FASTDataList   |
+| `itemsPlaceholder`     | protected | `Node`                             |         |                                                                                                                                                                                                           | FASTDataList   |
+| `behaviorOrchestrator` | protected | `ViewBehaviorOrchestrator or null` | `null`  |                                                                                                                                                                                                           | FASTDataList   |
+
+#### Methods
+
+| Name                          | Privacy   | Description                                                                                                                                         | Parameters | Return          | Inherited From |
+| ----------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------- | -------------- |
+| `initializeRepeatBehavior`    | protected | initialize repeat behavior                                                                                                                          |            | `void`          | FASTDataList   |
+| `getRepeatOptions`            | protected |                                                                                                                                                     |            | `RepeatOptions` | FASTDataList   |
+| `orientationChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `sourceItemsChanged`          | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `itemContentsTemplateChanged` | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `createPlaceholderElement`    | protected |                                                                                                                                                     |            | `void`          | FASTDataList   |
+| `updateItemTemplate`          | protected | applies the correct item template. Once an author overrides the item template with a custom one the author must manage template changes themselves. |            | `void`          | FASTDataList   |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `item-size`   | itemSize    |                |
+| `recycle`     | recycle     | FASTDataList   |
+| `positioning` | positioning | FASTDataList   |
+
+<hr/>
+
+
+
+### class: `Virtualizer`
+
+#### Fields
+
+| Name                     | Privacy | Type                        | Default      | Description                                                                                                                                                                                               | Inherited From |
+| ------------------------ | ------- | --------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `defaultItemSize`        | public  | `number`                    | `50`         | Item size to use if one is not specified                                                                                                                                                                  |                |
+| `defaultViewportBuffer`  | public  | `number`                    | `100`        | Viewport buffer to use if one is not specified                                                                                                                                                            |                |
+| `orientation`            | public  | `Orientation`               |              | Whether the list is oriented vertically or horizontally. Default is vertical.                                                                                                                             |                |
+| `virtualizationDisabled` | public  | `boolean`                   | `false`      | Whether or not the display should virtualize                                                                                                                                                              |                |
+| `sourceItems`            | public  | `object[]`                  | `[]`         | T                                                                                                                                                                                                         |                |
+| `itemSize`               | public  | `number`                    |              | The size in pixels of each item along the virtualization axis. When auto-resizing this is the amount of space reserved for elements until they actually render and report size.  The default value is 50. |                |
+| `viewportBuffer`         | public  | `number`                    |              | Defines an area in pixels on either end of the viewport where items outside the viewport will still be rendered.  The default value is 100.                                                               |                |
+| `autoUpdateMode`         | public  | `VirtualListAutoUpdateMode` | `"viewport"` | Auto update mode defines what prompts the component to check the dimensions of elements in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.                  |                |
+| `sizemap`                | public  | `SizeMap[]`                 |              | The sizemap for the items Authors need to provide a sizemap for arrays of irregular size items, when the items have a uniform size use the 'item-size' attribute instead.                                 |                |
+| `autoResizeItems`        | public  | `boolean`                   |              | When true the virtual list component will track the size of child virtual-list-items and automatically update the size of the item in the size map.                                                       |                |
+| `viewportElement`        | public  | `HTMLElement`               |              | The HTML element being used as the viewport                                                                                                                                                               |                |
+| `getItemSizeMap`         | public  |                             |              | the position in the stack (in pixels) of the a particular item index in the base source data.  Note that this does not necessarily mean the item is currently being rendered.                             |                |
+
+#### Methods
+
+| Name                     | Privacy   | Description             | Parameters | Return | Inherited From |
+| ------------------------ | --------- | ----------------------- | ---------- | ------ | -------------- |
+| `update`                 | public    | Request a layout update |            | `void` |                |
+| `requestPositionUpdates` | protected | get position updates    |            | `void` |                |
+| `reset`                  | protected | request reset           |            | `void` |                |
+
+<hr/>
+
+

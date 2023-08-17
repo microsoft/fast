@@ -24,6 +24,12 @@ import "../src/text-area/stories/text-area.register.js";
 import "../src/text-field/stories/text-field.register.js";
 import "../src/tooltip/stories/tooltip.register.js";
 
+import "../src/data-list/stories/data-list-item.register.js";
+import "../src/data-list/stories/data-list.register.js";
+
+import "../src/virtual-list/stories/virtual-list-item.register.js";
+import "../src/virtual-list/stories/virtual-list.register.js";
+
 import "../src/data-grid/stories/data-grid-cell.register.js";
 import "../src/data-grid/stories/data-grid-row.register.js";
 import "../src/data-grid/stories/data-grid.register.js";
@@ -58,6 +64,8 @@ import "../src/menu/stories/menu.register.js";
 
 import "../src/tree-item/stories/tree-item.register.js";
 import "../src/tree-view/stories/tree-view.register.js";
+
+import "../src/virtual-data-grid/stories/virtual-data-grid.register";
 
 import { FAST, html } from "@microsoft/fast-element";
 
