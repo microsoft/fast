@@ -1,2 +1,2 @@
-export * from "./tab-panel.template.js";
-export * from "./tab-panel.js";
+export { tabPanelTemplate } from "./tab-panel.template.js";
+export { FASTTabPanel } from "./tab-panel.js";

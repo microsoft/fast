@@ -1,2 +1,2 @@
-export * from "./badge.template.js";
-export * from "./badge.js";
+export { badgeTemplate } from "./badge.template.js";
+export { FASTBadge } from "./badge.js";

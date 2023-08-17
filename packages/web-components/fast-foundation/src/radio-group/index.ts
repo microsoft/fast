@@ -1,3 +1,3 @@
-export * from "./radio-group.options.js";
-export * from "./radio-group.template.js";
-export * from "./radio-group.js";
+export { RadioGroupOrientation } from "./radio-group.options.js";
+export { radioGroupTemplate } from "./radio-group.template.js";
+export { FASTRadioGroup } from "./radio-group.js";

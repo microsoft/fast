@@ -1,2 +1,2 @@
-export * from "./dialog.template.js";
-export * from "./dialog.js";
+export { dialogTemplate } from "./dialog.template.js";
+export { FASTDialog } from "./dialog.js";

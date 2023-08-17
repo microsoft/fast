@@ -1,3 +1,3 @@
-export * from "./divider.options.js";
-export * from "./divider.template.js";
-export * from "./divider.js";
+export { DividerOrientation, DividerRole } from "./divider.options.js";
+export { dividerTemplate } from "./divider.template.js";
+export { FASTDivider } from "./divider.js";
