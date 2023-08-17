@@ -8,7 +8,7 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { RenderDirective } from "@microsoft/fast-element/render";
+import { RenderDirective } from "@microsoft/fast-element/render.js";
 import { RenderInfo } from "../render-info.js";
 import { DefaultTemplateRenderer } from "./template-renderer.js";
 

@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { composedParent } from "@microsoft/fast-element/utilities";
+import { composedParent } from "@microsoft/fast-element/utilities.js";
 import { RenderCommand } from "./commands.js";
 import { RouterConfiguration } from "./configuration.js";
 import { NavigationContributor } from "./contributors.js";
