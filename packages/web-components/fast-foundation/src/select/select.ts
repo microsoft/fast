@@ -532,6 +532,9 @@ export class FASTSelect extends FormAssociatedSelect {
      * @internal
      */
     public keydownHandler(e: KeyboardEvent): boolean | void {
+        if (e.defaultPrevented) {
+            return;
+        }
         super.keydownHandler(e);
 
         const key = e.key || e.key.charCodeAt(0);
@@ -587,16 +590,12 @@ export class FASTSelect extends FormAssociatedSelect {
             }
         }
 
-        if (preventDefault) {
-            e.preventDefault();
-        }
-
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
             this.indexWhenOpened = this.selectedIndex;
         }
 
-        return !(key === keyArrowDown || key === keyArrowUp);
+        return !preventDefault;
     }
 
     public connectedCallback() {
