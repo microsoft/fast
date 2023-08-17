@@ -1,2 +1,2 @@
-export * from "./radio.template.js";
-export * from "./radio.js";
+export { radioTemplate } from "./radio.template.js";
+export { FASTRadio, RadioControl, RadioOptions } from "./radio.js";

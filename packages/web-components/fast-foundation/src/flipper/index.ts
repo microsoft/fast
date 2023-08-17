@@ -1,2 +1,2 @@
-export * from "./flipper.template.js";
-export * from "./flipper.js";
+export { flipperTemplate } from "./flipper.template.js";
+export { FASTFlipper, FlipperDirection, FlipperOptions } from "./flipper.js";

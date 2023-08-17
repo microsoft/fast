@@ -1,2 +1,2 @@
-export * from "./breadcrumb.template.js";
-export * from "./breadcrumb.js";
+export { breadcrumbTemplate } from "./breadcrumb.template.js";
+export { FASTBreadcrumb } from "./breadcrumb.js";

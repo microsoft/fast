@@ -1,2 +1,2 @@
-export * from "./skeleton.template.js";
-export * from "./skeleton.js";
+export { skeletonTemplate } from "./skeleton.template.js";
+export { FASTSkeleton, SkeletonShape } from "./skeleton.js";

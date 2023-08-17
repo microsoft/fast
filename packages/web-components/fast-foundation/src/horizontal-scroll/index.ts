@@ -1,3 +1,7 @@
-export * from "./horizontal-scroll.js";
-export * from "./horizontal-scroll.options.js";
-export * from "./horizontal-scroll.template.js";
+export { FASTHorizontalScroll } from "./horizontal-scroll.js";
+export {
+    HorizontalScrollOptions,
+    HorizontalScrollView,
+    ScrollEasing,
+} from "./horizontal-scroll.options.js";
+export { horizontalScrollTemplate } from "./horizontal-scroll.template.js";
