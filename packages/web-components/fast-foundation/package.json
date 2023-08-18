@@ -210,6 +210,10 @@
       "types": "./dist/dts/utilities/index.d.ts",
       "default": "./dist/esm/utilities/index.js"
     },
+    "./patterns.js": {
+      "types": "./dist/dts/patterns/index.d.ts",
+      "default": "./dist/esm/patterns/index.js"
+    },
     "./custom-elements.json": "./dist/custom-elements.json",
     "./design-token-core.js": {
       "types": "./dist/dts/design-token/core/exports.d.ts",
