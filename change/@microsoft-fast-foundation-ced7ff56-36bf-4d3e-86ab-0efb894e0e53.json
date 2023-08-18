@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "export patterns from foundation as package export",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

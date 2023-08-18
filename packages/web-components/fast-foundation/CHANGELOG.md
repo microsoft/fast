@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 18 Aug 2023 00:04:39 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Aug 2023 22:48:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.31
+
+Fri, 18 Aug 2023 22:48:12 GMT
+
+### Changes
+
+- export patterns from foundation as package export (chhol@microsoft.com)
 
 ## 3.0.0-alpha.30
 

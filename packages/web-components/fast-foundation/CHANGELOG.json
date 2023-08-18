@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 18 Aug 2023 22:48:12 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.31",
+      "version": "3.0.0-alpha.31",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d4d8c961b3ad5262924120070057ad6554dfdcb9",
+            "comment": "export patterns from foundation as package export"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 18 Aug 2023 00:04:39 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.30",
       "version": "3.0.0-alpha.30",
