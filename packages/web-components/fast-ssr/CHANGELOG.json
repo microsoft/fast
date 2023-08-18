@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 18 Aug 2023 00:04:37 GMT",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.30",
+      "version": "1.0.0-beta.30",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46",
+            "comment": "Breaking: update fast-ssr export paths to include extensions"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.26",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.30",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 12 Aug 2023 00:26:36 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.29",
       "version": "1.0.0-beta.29",

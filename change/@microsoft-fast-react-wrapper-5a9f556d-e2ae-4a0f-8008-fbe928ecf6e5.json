@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix test to use fast-element package export with extension",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}

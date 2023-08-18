@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 18 Aug 2023 00:04:39 GMT",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.30",
+      "version": "3.0.0-alpha.30",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46",
+            "comment": "update fast-element export paths to include extensions"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "98a726cdb9d1b0dd5deaa7cb61ef2c23f4758585",
+            "comment": "add export paths with extensions for each fast-foundation component and utilities"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4f0377849de66bd69ac69c1cc7c0ff5bbe7ebbfd",
+            "comment": "fix: change public static methods for listbox and data grid to not be fat arrow fns"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.26",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 12 Aug 2023 00:26:35 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.29",
       "version": "3.0.0-alpha.29",
