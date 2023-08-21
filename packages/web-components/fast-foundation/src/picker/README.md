@@ -202,10 +202,12 @@ export class FASTTextField extends TextField {}
 | `label`                      | public  | `string`                    |                              | Applied to the aria-label attribute of the input element                                                                      |                      |
 | `labelledBy`                 | public  | `string`                    |                              | Applied to the aria-labelledby attribute of the input element                                                                 |                      |
 | `placeholder`                | public  | `string`                    |                              | Applied to the placeholder attribute of the input element                                                                     |                      |
+| `maxSuggestions`             | public  | `number or undefined`       |                              | Limits how many suggestions can be displayed                                                                                  |                      |
 | `menuPlacement`              | public  | `MenuPlacement`             |                              | Controls menu placement                                                                                                       |                      |
 | `showLoading`                | public  | `boolean`                   | `false`                      | Whether to display a loading state if the menu is opened.                                                                     |                      |
 | `listItemTemplate`           | public  | `ViewTemplate`              |                              | Template used to generate selected items. This is used in a repeat directive.                                                 |                      |
 | `defaultListItemTemplate`    | public  | `ViewTemplate or undefined` |                              | Default template to use for selected items (usually specified in the component template). This is used in a repeat directive. |                      |
+| `trimCount`                  | public  | `number`                    | `0`                          | How many suggestions are being trimmed off by max-suggestions                                                                 |                      |
 | `menuOptionTemplate`         | public  | `ViewTemplate`              |                              | Template to use for available options. This is used in a repeat directive.                                                    |                      |
 | `defaultMenuOptionTemplate`  | public  | `ViewTemplate or undefined` |                              | Default template to use for available options (usually specified in the template). This is used in a repeat directive.        |                      |
 | `listItemContentsTemplate`   | public  | `ViewTemplate`              |                              | Template to use for the contents of a selected list item                                                                      |                      |
@@ -254,6 +256,7 @@ export class FASTTextField extends TextField {}
 | `label`                      | label                    |                |
 | `labelledby`                 | labelledBy               |                |
 | `placeholder`                | placeholder              |                |
+| `max-suggestions`            | maxSuggestions           |                |
 | `menu-placement`             | menuPlacement            |                |
 
 <hr/>

@@ -28,10 +28,11 @@ const pickerStyles = css`
         opacity: 1;
         pointer-events: none;
     }
+    .trimmed-suggestions-display,
     .loading-display,
     .no-options-display {
         background: var(--neutral-layer-floating);
-        width: 100%;
+        width: 100% - calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
         min-height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
