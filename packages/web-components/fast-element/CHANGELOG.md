@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Sat, 12 Aug 2023 00:26:36 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Aug 2023 00:04:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.26
+
+Fri, 18 Aug 2023 00:04:40 GMT
+
+### Changes
+
+- BREAKING: update fast-element export paths to include extensions (chhol@microsoft.com)
+- update fast-element exports to be explicit (chhol@microsoft.com)
 
 ## 2.0.0-beta.25
 
