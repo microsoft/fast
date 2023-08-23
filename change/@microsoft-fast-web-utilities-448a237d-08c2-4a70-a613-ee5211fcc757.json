@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update typescript to latest",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

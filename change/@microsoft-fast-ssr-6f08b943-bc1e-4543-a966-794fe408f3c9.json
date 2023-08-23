@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "update typescript to latest",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "prerelease"
+}
