@@ -8,9 +8,9 @@
         "suppressImplicitAnyIndexErrors": true,
         "strictPropertyInitialization": false,
         "importsNotUsedAsValues": "error",
-        "target": "es2015",
+        "target": "ES2019",
         "module": "ESNext",
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "importHelpers": true,
         "lib": ["DOM", "ES2015", "ES2016.Array.Include", "ES2017.Object"]
     },

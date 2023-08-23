@@ -4,9 +4,9 @@
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
         "experimentalDecorators": true,
-        "target": "es2015",
+        "target": "ES2019",
         "module": "ESNext",
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "importHelpers": true,
         "jsx": "react",
         "types": [

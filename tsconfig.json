@@ -6,8 +6,9 @@
         "strictNullChecks": true,
         "noImplicitAny": true,
         "strictPropertyInitialization": true,
-        "module": "ES6",
+        "module": "esnext",
         "moduleResolution": "node",
-        "target": "ES6"
+        "target": "ES2019",
+        "ignoreDeprecations": "5.0"
     }
 }

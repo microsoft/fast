@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "pretty": true,
-    "target": "ES2015",
-    "module": "ES2015",
-    "moduleResolution": "Node16",
+    "target": "ES2019",
+    "module": "esnext",
+    "moduleResolution": "NodeNext",
     "importHelpers": true,
     "experimentalDecorators": true,
     "declaration": true,
