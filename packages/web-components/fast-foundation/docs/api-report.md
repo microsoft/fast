@@ -604,6 +604,7 @@ export class ContainerImpl implements Container {
     registerWithContext(context: any, ...params: any[]): Container;
     // (undocumented)
     get responsibleForOwnerRequests(): boolean;
+    toJSON: Function;
 }
 
 // @public

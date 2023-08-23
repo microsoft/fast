@@ -169,6 +169,11 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             super(binding, initialSubscriber);
         }
 
+        /**
+         * Opts out of JSON stringification.
+         */
+        public toJson = null;
+
         public observe(source: TSource, context: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
                 this.disconnect();

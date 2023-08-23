@@ -1,3 +1,4 @@
+import { noop } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { ExecutionContext } from "../observation/observable.js";
 
@@ -273,4 +274,10 @@ export class HTMLView implements ElementView, SyntheticView {
             }
         }
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 }

@@ -1,5 +1,5 @@
 import { DOM } from "../dom.js";
-import type { Mutable } from "../interfaces.js";
+import { Mutable, noop } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { defaultExecutionContext, Observable } from "../observation/observable.js";
@@ -420,6 +420,12 @@ export class Controller extends PropertyChangeNotifier {
 
         this.needsInitialization = false;
     }
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         const element = this.element;
