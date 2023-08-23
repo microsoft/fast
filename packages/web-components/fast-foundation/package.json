@@ -251,7 +251,7 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
-    "@microsoft/api-extractor": "7.24.2",
+    "@microsoft/api-extractor": "7.32.0",
     "@microsoft/tsdoc-config": "^0.13.4",
     "@playwright/test": "^1.25.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
@@ -279,7 +279,7 @@
     "ts-loader": "^7.0.2",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.7.0",
+    "typescript": "~4.8.0",
     "wait-on": "^6.0.1"
   },
   "dependencies": {
@@ -287,7 +287,7 @@
     "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.6.0"
   },
   "customElements": "dist/custom-elements.json"
 }

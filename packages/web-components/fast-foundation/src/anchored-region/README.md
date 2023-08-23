@@ -154,27 +154,6 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `loaded`         |      | Fires a custom 'loaded' event when the region is loaded and visible |                |
 | `positionchange` |      | Fires a custom 'positionchange' event when the position has changed |                |
 
-#### Attributes
-
-| Name                          | Field                     | Inherited From |
-| ----------------------------- | ------------------------- | -------------- |
-| `anchor`                      | anchor                    |                |
-| `viewport`                    | viewport                  |                |
-| `horizontal-positioning-mode` | horizontalPositioningMode |                |
-| `horizontal-default-position` | horizontalDefaultPosition |                |
-| `horizontal-viewport-lock`    | horizontalViewportLock    |                |
-| `horizontal-inset`            | horizontalInset           |                |
-| `horizontal-threshold`        | horizontalThreshold       |                |
-| `horizontal-scaling`          | horizontalScaling         |                |
-| `vertical-positioning-mode`   | verticalPositioningMode   |                |
-| `vertical-default-position`   | verticalDefaultPosition   |                |
-| `vertical-viewport-lock`      | verticalViewportLock      |                |
-| `vertical-inset`              | verticalInset             |                |
-| `vertical-threshold`          | verticalThreshold         |                |
-| `vertical-scaling`            | verticalScaling           |                |
-| `fixed-placement`             | fixedPlacement            |                |
-| `auto-update-mode`            | autoUpdateMode            |                |
-
 #### Slots
 
 | Name | Description                      |

@@ -65,12 +65,6 @@ export class FASTTextField extends TextField {}
 | `handleKeyDown`           | public    |             | `e: KeyboardEvent` | `boolean` |                |
 | `handleClick`             | public    |             | `e: MouseEvent`    | `boolean` |                |
 
-#### Attributes
-
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `value` | value |                |
-
 <hr/>
 
 
@@ -108,12 +102,6 @@ export class FASTTextField extends TextField {}
 | ------------------------- | --------- | ----------- | --------------- | --------- | -------------- |
 | `contentsTemplateChanged` | protected |             |                 | `void`    |                |
 | `handleClick`             | public    |             | `e: MouseEvent` | `boolean` |                |
-
-#### Attributes
-
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `value` | value |                |
 
 <hr/>
 
@@ -238,23 +226,6 @@ export class FASTTextField extends TextField {}
 | `handleRegionLoaded`               | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`         | `void`    |                |
 | `handleItemInvoke`                 | public    | A list item has been invoked.                                 | `e: Event`         | `boolean` |                |
 | `handleOptionInvoke`               | public    | A menu option has been invoked.                               | `e: Event`         | `boolean` |                |
-
-#### Attributes
-
-| Name                         | Field                    | Inherited From |
-| ---------------------------- | ------------------------ | -------------- |
-| `selection`                  | selection                |                |
-| `options`                    | options                  |                |
-| `filter-selected`            | filterSelected           |                |
-| `filter-query`               | filterQuery              |                |
-| `max-selected`               | maxSelected              |                |
-| `no-suggestions-text`        | noSuggestionsText        |                |
-| `suggestions-available-text` | suggestionsAvailableText |                |
-| `loading-text`               | loadingText              |                |
-| `label`                      | label                    |                |
-| `labelledby`                 | labelledBy               |                |
-| `placeholder`                | placeholder              |                |
-| `menu-placement`             | menuPlacement            |                |
 
 <hr/>
 

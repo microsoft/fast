@@ -31,8 +31,8 @@
     "fast-todo-app": "1.0.0",
     "resolve-typescript-plugin": "^1.2.0",
     "ts-loader": "^9.3.0",
-    "tslib": "^2.4.0",
-    "typescript": "^4.7.3",
+    "tslib": "^2.6.0",
+    "typescript": "~4.8.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.9.2",
     "webpack": "^5.73.0"

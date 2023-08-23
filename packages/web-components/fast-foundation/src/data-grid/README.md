@@ -129,13 +129,6 @@ export const myDataGrid = DataGrid.compose({
 | -------------- | ---- | ----------------------------------------------------------------------------- | -------------- |
 | `cell-focused` |      | Fires a custom 'cell-focused' event when focus is on the cell or its contents |                |
 
-#### Attributes
-
-| Name          | Field      | Inherited From |
-| ------------- | ---------- | -------------- |
-| `cell-type`   | cellType   |                |
-| `grid-column` | gridColumn |                |
-
 #### Slots
 
 | Name | Description                                                                     |
@@ -188,13 +181,6 @@ export const myDataGrid = DataGrid.compose({
 | Name          | Type | Description                                                                                                | Inherited From |
 | ------------- | ---- | ---------------------------------------------------------------------------------------------------------- | -------------- |
 | `row-focused` |      | Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row |                |
-
-#### Attributes
-
-| Name                    | Field               | Inherited From |
-| ----------------------- | ------------------- | -------------- |
-| `grid-template-columns` | gridTemplateColumns |                |
-| `row-type`              | rowType             |                |
 
 #### Slots
 
@@ -261,18 +247,6 @@ export const myDataGrid = DataGrid.compose({
 | `rowsDataChanged`            | protected |             |                  | `void` |                |
 | `columnDefinitionsChanged`   | protected |             |                  | `void` |                |
 | `handleRowSelectedChange`    | public    |             | `e: CustomEvent` | `void` |                |
-
-#### Attributes
-
-| Name                    | Field               | Inherited From |
-| ----------------------- | ------------------- | -------------- |
-| `no-tabbing`            | noTabbing           |                |
-| `generate-header`       | generateHeader      |                |
-| `grid-template-columns` | gridTemplateColumns |                |
-| `page-size`             | pageSize            |                |
-| `selection-mode`        | selectionMode       |                |
-| `selection-behavior`    | selectionBehavior   |                |
-| `initial-row-selection` | initialRowSelection |                |
 
 #### Slots
 

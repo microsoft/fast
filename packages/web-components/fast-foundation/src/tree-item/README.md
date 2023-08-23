@@ -71,15 +71,6 @@ export class FASTTreeItem extends TreeItem {}
 | `expanded-change` |      | Fires a custom 'expanded-change' event when the expanded state changes |                |
 | `selected-change` |      | Fires a custom 'selected-change' event when the selected state changes |                |
 
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | expanded |                |
-|      | selected |                |
-|      | disabled |                |
-|      | nested   |                |
-
 #### CSS Parts
 
 | Name                     | Description                                                                          |

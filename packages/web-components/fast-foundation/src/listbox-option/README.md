@@ -85,14 +85,6 @@ export const myOption = ListboxOption.compose({
 | `selectedChanged`          | protected |                                                                     |                                           | `void` |                |
 | `initialValueChanged`      | public    |                                                                     | `previous: string, next: string`          | `void` |                |
 
-#### Attributes
-
-| Name       | Field             | Inherited From |
-| ---------- | ----------------- | -------------- |
-|            | disabled          |                |
-| `selected` | selectedAttribute |                |
-| `value`    | initialValue      |                |
-
 #### CSS Parts
 
 | Name      | Description                      |

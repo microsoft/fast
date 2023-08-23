@@ -116,14 +116,6 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 | ------- | ---- | ------------------------------------------------------------------------------------------------------------------------------ | -------------- |
 | `click` |      | Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies. |                |
 
-#### Attributes
-
-| Name          | Field        | Inherited From |
-| ------------- | ------------ | -------------- |
-|               | disabled     |                |
-| `aria-hidden` | hiddenFromAT |                |
-| `direction`   | direction    |                |
-
 #### CSS Parts
 
 | Name       | Description                        |

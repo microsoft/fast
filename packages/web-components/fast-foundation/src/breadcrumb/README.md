@@ -152,19 +152,6 @@ This component is built with the expectation that focus is delegated to the anch
 | `type`           | public  | `string`            |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   | FASTAnchor     |
 | `control`        | public  | `HTMLAnchorElement` |         | References the root element                                                                                                                                               | FASTAnchor     |
 
-#### Attributes
-
-| Name             | Field          | Inherited From |
-| ---------------- | -------------- | -------------- |
-| `download`       | download       | FASTAnchor     |
-| `href`           | href           | FASTAnchor     |
-| `hreflang`       | hreflang       | FASTAnchor     |
-| `ping`           | ping           | FASTAnchor     |
-| `referrerpolicy` | referrerpolicy | FASTAnchor     |
-| `rel`            | rel            | FASTAnchor     |
-| `target`         | target         | FASTAnchor     |
-| `type`           | type           | FASTAnchor     |
-
 #### CSS Parts
 
 | Name        | Description                                                         |
