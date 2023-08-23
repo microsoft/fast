@@ -459,6 +459,13 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public selectedItems: string[] = [];
+    private selectedItemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.maxSelected && this.selectedItems.length > this.maxSelected) {
+                this.selectedItems.splice(this.maxSelected, this.selectedItems.length);
+            }
+        }
+    }
 
     private optionsPlaceholder: Node;
     private inputElementView: HTMLView | null = null;
