@@ -116,7 +116,7 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr
     public max: string;
-    public maxChanged(): void {
+    protected maxChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.max = this.max;
             this.validate();
@@ -131,7 +131,7 @@ export class FASTTextField extends FormAssociatedTextField {
      */
     @attr
     public min: string;
-    public minChanged(): void {
+    protected minChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.min = this.min;
             this.validate();
