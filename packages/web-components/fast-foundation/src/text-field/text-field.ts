@@ -109,6 +109,36 @@ export class FASTTextField extends FormAssociatedTextField {
     }
 
     /**
+     * The maximum the value can be (applies to date as yyyy-mm-dd)
+     * @public
+     * @remarks
+     * HTMLAttribute: max
+     */
+    @attr
+    public max: string;
+    public maxChanged(): void {
+        if (this.proxy instanceof HTMLInputElement) {
+            this.proxy.max = this.max;
+            this.validate();
+        }
+    }
+
+    /**
+     * The minimum the value can be (applies to date as yyyy-mm-dd)
+     * @public
+     * @remarks
+     * HTMLAttribute: min
+     */
+    @attr
+    public min: string;
+    public minChanged(): void {
+        if (this.proxy instanceof HTMLInputElement) {
+            this.proxy.min = this.min;
+            this.validate();
+        }
+    }
+
+    /**
      * The maximum number of characters a user can enter.
      * @public
      * @remarks

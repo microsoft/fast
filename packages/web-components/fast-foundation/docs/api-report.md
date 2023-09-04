@@ -2049,9 +2049,15 @@ export class FASTTextField extends FormAssociatedTextField {
     list: string;
     // (undocumented)
     protected listChanged(): void;
+    max: string;
+    // (undocumented)
+    maxChanged(): void;
     maxlength: number;
     // (undocumented)
     protected maxlengthChanged(): void;
+    min: string;
+    // (undocumented)
+    minChanged(): void;
     minlength: number;
     // (undocumented)
     protected minlengthChanged(): void;
@@ -2774,6 +2780,7 @@ export const TextFieldType: {
     readonly tel: "tel";
     readonly text: "text";
     readonly url: "url";
+    readonly date: "date";
 };
 
 // @public

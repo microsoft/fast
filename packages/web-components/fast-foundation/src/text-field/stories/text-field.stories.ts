@@ -11,6 +11,10 @@ const storyTemplate = html<StoryArgs<FASTTextField>>`
         ?required="${x => x.required}"
         ?spellcheck="${x => x.spellcheck}"
         list="${x => x.list}"
+        max="${x => x.max}"
+        ,
+        min="${x => x.min}"
+        ,
         maxlength="${x => x.maxlength}"
         minlength="${x => x.minlength}"
         name="${x => x.name}"
@@ -59,6 +63,8 @@ export default {
         autofocus: { control: "boolean" },
         disabled: { control: "boolean" },
         list: { control: "text" },
+        max: { control: "text" },
+        min: { control: "text" },
         maxlength: { control: "number" },
         minlength: { control: "number" },
         name: { control: "text" },
