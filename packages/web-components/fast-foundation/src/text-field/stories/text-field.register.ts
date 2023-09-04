@@ -44,6 +44,10 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(0.5);
+    }
+
     .control:hover,
     .control:focus-visible,
     .control:disabled,
