@@ -388,7 +388,10 @@ test.describe("Toolbar", () => {
                 <fast-toolbar>
                     <button slot="start">Start Slot Button</button>
                     <button>Button 1</button>
-                    <button>Button 2 <div>more button content</div></button>
+                    <button>
+                        Button 2
+                        <div>more button content</div>
+                    </button>
                     <button>Button 3</button>
                     <button slot="end">End Slot Button</button>
                 </fast-toolbar>
@@ -397,7 +400,7 @@ test.describe("Toolbar", () => {
 
         const button2 = element.locator("button", { hasText: "Button 2" });
 
-        const button2InnerContent = button2.locator("div", { hasText: "more button content" });
+        const button2InnerContent = button2.locator("div");
 
         const startSlotButton = element.locator("button", {
             hasText: "Start Slot Button",
