@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix bug with nested elements in toolbar click handler",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "20542556+mollykreis@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
