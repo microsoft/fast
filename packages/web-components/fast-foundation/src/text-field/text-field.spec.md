@@ -13,6 +13,8 @@ Used anywhere an author might otherwise use:
 - input[type="tel"]
 - input[type="url"]
 - input[type="date"]
+- input[type="week"]
+- input[type="month"]
 
 ### Features
 

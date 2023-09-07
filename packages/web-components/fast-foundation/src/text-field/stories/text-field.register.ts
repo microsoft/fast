@@ -44,7 +44,9 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
-    input[type="date"]::-webkit-calendar-picker-indicator {
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="week"]::-webkit-calendar-picker-indicator,
+    input[type="month"]::-webkit-calendar-picker-indicator {
         filter: invert(0.5);
     }
 
