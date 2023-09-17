@@ -11,6 +11,9 @@ export function dialogTemplate<T extends FASTDialog>(): ElementViewTemplate<T> {
             ${when(
                 x => x.modal,
                 html<T>`
+                    <div class="overlay" part="overlay" role="presentation"></div>
+                `,
+                html<T>`
                     <div
                         class="overlay"
                         part="overlay"
