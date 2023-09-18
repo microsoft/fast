@@ -89,6 +89,9 @@ export class FASTTextField extends FormAssociatedTextField {
     private typeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;
+            if (this.proxy.value !== this.value) {
+                this.value = this.proxy.value;
+            }
             this.validate();
         }
     }
