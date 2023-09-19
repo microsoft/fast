@@ -3,7 +3,7 @@ import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import { ToolbarOrientation } from "./toolbar.options.js";
 
-test.describe.only("Toolbar", () => {
+test.describe("Toolbar", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
