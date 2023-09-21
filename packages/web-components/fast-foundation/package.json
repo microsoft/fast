@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "3.0.0-alpha.29",
+  "version": "3.0.0-alpha.31",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -210,6 +210,10 @@
       "types": "./dist/dts/utilities/index.d.ts",
       "default": "./dist/esm/utilities/index.js"
     },
+    "./patterns.js": {
+      "types": "./dist/dts/patterns/index.d.ts",
+      "default": "./dist/esm/patterns/index.js"
+    },
     "./custom-elements.json": "./dist/custom-elements.json",
     "./design-token-core.js": {
       "types": "./dist/dts/design-token/core/exports.d.ts",
@@ -280,7 +284,7 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.0.3",
-    "@microsoft/fast-element": "2.0.0-beta.25",
+    "@microsoft/fast-element": "2.0.0-beta.26",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tabbable": "^5.2.0",
     "tslib": "^2.4.0"

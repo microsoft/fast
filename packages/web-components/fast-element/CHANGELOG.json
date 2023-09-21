@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 18 Aug 2023 00:04:40 GMT",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.26",
+      "version": "2.0.0-beta.26",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46",
+            "comment": "BREAKING: update fast-element export paths to include extensions"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8a23a94530ec7e6fb269c149bd70ca97e662dbf4",
+            "comment": "update fast-element exports to be explicit"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 12 Aug 2023 00:26:36 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.25",
       "version": "2.0.0-beta.25",

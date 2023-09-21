@@ -1,8 +1,27 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sat, 12 Aug 2023 00:26:35 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Aug 2023 22:48:12 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.31
+
+Fri, 18 Aug 2023 22:48:12 GMT
+
+### Changes
+
+- export patterns from foundation as package export (chhol@microsoft.com)
+
+## 3.0.0-alpha.30
+
+Fri, 18 Aug 2023 00:04:39 GMT
+
+### Changes
+
+- update fast-element export paths to include extensions (chhol@microsoft.com)
+- add export paths with extensions for each fast-foundation component and utilities (chhol@microsoft.com)
+- fix: change public static methods for listbox and data grid to not be fat arrow fns (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.26
 
 ## 3.0.0-alpha.29
 

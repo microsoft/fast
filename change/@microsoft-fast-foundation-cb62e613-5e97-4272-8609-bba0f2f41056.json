@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: change public static methods for listbox and data grid to not be fat arrow fns",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}

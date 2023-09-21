@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Breaking: update fast-ssr export paths to include extensions",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "prerelease"
-}
