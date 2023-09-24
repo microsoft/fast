@@ -41,6 +41,7 @@ const styles = css`
         color: inherit;
         font: inherit;
         height: calc(100% - 4px);
+        flex-grow: 1;
         margin-bottom: auto;
         margin-top: auto;
         padding: 0 calc(var(--design-unit) * 2px + 1px);

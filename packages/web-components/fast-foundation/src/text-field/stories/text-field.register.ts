@@ -36,6 +36,7 @@ const styles = css`
         border: 0;
         color: inherit;
         height: calc(100% - 4px);
+        flex-grow: 1;
         margin-top: auto;
         margin-bottom: auto;
         border: none;
