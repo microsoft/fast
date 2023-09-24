@@ -17,7 +17,6 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
             role="heading"
             aria-level="${x => x.headinglevel}"
         >
-            ${startSlotTemplate(options)}
             <button
                 class="button"
                 part="button"
@@ -32,6 +31,10 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                     <slot name="heading"></slot>
                 </span>
             </button>
+            ${
+                /* The start slot is after the button for an improved screen reader experience */ ""
+            }
+            ${startSlotTemplate(options)}
             ${endSlotTemplate(options)}
             <span class="expand-collapse-icon" part="expand-collapse-icon" aria-hidden="true">
                 <slot name="expand-collapse-icon">
