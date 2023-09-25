@@ -3,5 +3,5 @@
   "comment": "Fix bug in toolbar click handler when a slotted element has child elements",
   "packageName": "@microsoft/fast-foundation",
   "email": "20542556+mollykreis@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
