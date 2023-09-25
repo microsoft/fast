@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { Message } from "../interfaces.js";
 import { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";

@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { observable } from "../observation/observable.js";
 import { html, ViewTemplate } from "./template.js";

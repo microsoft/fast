@@ -1,6 +1,6 @@
 import { Observable } from "../observation/observable.js";
 import { reactive } from "./reactive.js";
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 
 export function createComplexObject() {
     return {

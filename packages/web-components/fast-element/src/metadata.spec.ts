@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { Metadata } from "./metadata.js";
 import { emptyArray } from "./platform.js";
 

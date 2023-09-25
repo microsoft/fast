@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier.js";
 
 describe(`A SubscriberSet`, () => {

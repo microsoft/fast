@@ -1,4 +1,4 @@
-import chai, { expect } from "chai";
+import { expect, use } from "@esm-bundle/chai";
 import { css, HostBehavior, Updates } from "../index.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/exports.js";
@@ -8,7 +8,7 @@ import { FASTElement } from "./fast-element.js";
 import { HydratableElementController } from "./hydration.js";
 import spies from "chai-spies";
 
-chai.use(spies)
+use(spies)
 
 describe("The HydratableElementController", () => {
     beforeEach(() => {

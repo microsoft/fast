@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { when } from "./when.js";
 import { html } from "./template.js";
 import type { Expression } from "../observation/observable.js";

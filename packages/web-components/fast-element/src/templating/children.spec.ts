@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { children, ChildrenDirective } from "./children.js";
 import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";

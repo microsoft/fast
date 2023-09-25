@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { computedState, ownedState, state } from "./state.js";
 import { Observable } from "../observation/observable.js";
 import { Updates } from "../observation/update-queue.js";

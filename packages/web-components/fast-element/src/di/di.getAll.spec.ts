@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { all, DI, Container, Registration } from "./di.js";
 
 describe("Container#.getAll", function () {

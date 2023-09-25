@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { ContainerConfiguration, DefaultResolver, DI, Container } from "./di.js";
 
 describe("ContainerConfiguration", function () {
