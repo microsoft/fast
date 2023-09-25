@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { Observable } from "./observable.js";
 import { ArrayObserver, lengthOf, Splice } from "./arrays.js";
 import { SubscriberSet } from "./notifier.js";

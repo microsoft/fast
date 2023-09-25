@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { customElement, FASTElement } from "../components/fast-element.js";
 import { Markup } from './markup.js';
 import { css } from "../styles/css.js";

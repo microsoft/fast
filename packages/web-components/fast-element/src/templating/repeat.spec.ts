@@ -1,6 +1,6 @@
 import { observable } from "../observation/observable.js";
 import { RepeatBehavior, RepeatDirective, repeat } from "./repeat.js";
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { html } from "./template.js";
 import { toHTML } from "../__test__/helpers.js";
 import { Updates } from "../observation/update-queue.js";

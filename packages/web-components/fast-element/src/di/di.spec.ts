@@ -10,7 +10,7 @@ import {
     singleton,
     transient,
 } from "./di.js";
-import chai, { expect } from "chai";
+import { expect, use } from "@esm-bundle/chai";
 import spies from "chai-spies";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Context } from "../context.js";
@@ -18,7 +18,7 @@ import { customElement, FASTElement } from "../components/fast-element.js";
 import { html } from "../templating/template.js";
 import { ref } from "../templating/ref.js";
 
-chai.use(spies);
+use(spies);
 
 function decorator(): ClassDecorator {
     return (target: any) => target;

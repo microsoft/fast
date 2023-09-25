@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { Updates } from "./update-queue.js";
 
 const waitMilliseconds = 100;

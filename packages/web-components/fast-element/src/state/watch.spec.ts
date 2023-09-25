@@ -2,7 +2,7 @@ import { watch } from "./watch.js";
 import { Updates } from "../observation/update-queue.js";
 import { Splice } from "../observation/arrays.js";
 import { reactive } from "./reactive.js";
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { createComplexObject } from "./reactive.spec.js";
 
 describe("The watch function", () => {

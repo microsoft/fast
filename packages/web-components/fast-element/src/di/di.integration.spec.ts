@@ -1,9 +1,9 @@
 import { DI, Container, inject, Registration, singleton } from "./di.js";
-import chai, { expect } from "chai";
+import { expect, use } from "@esm-bundle/chai";
 import spies from "chai-spies";
 import type { ContextDecorator } from "../context.js";
 
-chai.use(spies);
+use(spies);
 
 describe("DI.singleton", function () {
     describe("registerInRequester", function () {

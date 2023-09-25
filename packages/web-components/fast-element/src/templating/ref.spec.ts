@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { ref } from "./ref.js";
 import { html } from "./template.js";
 

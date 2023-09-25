@@ -1,4 +1,4 @@
-import chai, { expect } from "chai";
+import { expect, use } from "@esm-bundle/chai";
 import { ElementStyles } from "../index.debug.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { observable, Observable } from "../observation/observable.js";
@@ -11,7 +11,7 @@ import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-defi
 import { FASTElement } from "./fast-element.js";
 import spies from "chai-spies";
 
-chai.use(spies);
+use(spies);
 
 describe("The ElementController", () => {
     const templateA = html`a`;
