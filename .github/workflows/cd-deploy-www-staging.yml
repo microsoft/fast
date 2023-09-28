@@ -5,7 +5,6 @@ on:
       - master
     paths:
       - '.github/workflows/cd-deploy-www-staging.yml'
-      - 'packages/utilities/fast-animation/docs/api-report.md'
       - 'packages/utilities/fast-color/docs/api-report.md'
       - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
       - 'packages/web-components/**/docs/api-report.md'
@@ -17,7 +16,6 @@ on:
       - master
     paths:
       - '.github/workflows/cd-deploy-www-staging.yml'
-      - 'packages/utilities/fast-animation/docs/api-report.md'
       - 'packages/utilities/fast-color/docs/api-report.md'
       - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
       - 'packages/web-components/**/docs/api-report.md'

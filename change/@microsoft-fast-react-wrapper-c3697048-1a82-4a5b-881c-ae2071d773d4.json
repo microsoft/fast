@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "add missing explicit types for fast-react-wrapper",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}

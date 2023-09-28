@@ -38,13 +38,7 @@ function findFiles(startPath, filter, paths = []) {
     return paths;
 }
 
-const packages = [
-    "fast-animation",
-    "fast-colors",
-    "fast-element",
-    "fast-foundation",
-    "fast-components",
-];
+const packages = ["fast-colors", "fast-element", "fast-foundation", "fast-components"];
 
 function identifyPackage(path) {
     for (const pkg of packages) {
