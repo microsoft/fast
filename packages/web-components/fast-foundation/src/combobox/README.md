@@ -153,16 +153,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | -------- | ---- | ---------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the value updates |                |
 
-#### Attributes
-
-| Name           | Field             | Inherited From |
-| -------------- | ----------------- | -------------- |
-| `autocomplete` | autocomplete      |                |
-| `open`         | open              |                |
-| `placeholder`  | placeholder       |                |
-| `position`     | positionAttribute |                |
-|                | disabled          | Listbox        |
-
 #### CSS Parts
 
 | Name             | Description                                                            |

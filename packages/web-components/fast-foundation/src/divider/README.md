@@ -80,13 +80,6 @@ export const myDivider = Divider.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `role`        | role        |                |
-| `orientation` | orientation |                |
-
 <hr/>
 
 

@@ -69,6 +69,7 @@
   },
   "resolutions": {
     "@microsoft/fast-tooling": "^0.37.7",
+    "@types/node": "~20.7.0",
     "@types/react": "^16.14.0",
     "browserslist": "^4.16.5",
     "clean-css": "^4.2.3",
@@ -88,7 +89,7 @@
     "node-gyp": "^9.0.0",
     "trim-newlines": "^4.0.2",
     "trim": "^0.0.3",
-    "typescript": "^4.6.2",
+    "typescript": "~4.8.0",
     "ua-parser-js": "^0.7.28",
     "ws": "^7.4.6",
     "xmlhttprequest-ssl": "^1.6.2"
@@ -98,7 +99,7 @@
     "@babel/preset-env": "^7.12.13",
     "@octokit/rest": "^18.0.6",
     "@types/lodash-es": "^4.17.4",
-    "@types/node": "^15.0.1",
+    "@types/node": "~20.7.0",
     "beachball": "^2.24.0",
     "chalk": "^2.4.2",
     "copyfiles": "^2.4.1",
@@ -112,8 +113,8 @@
     "markdown-it": "^12.3.2",
     "prettier": "2.0.2",
     "rimraf": "^3.0.2",
-    "ts-node": "^8.8.2",
-    "typescript": "^4.6.2",
+    "ts-node": "~10.9.0",
+    "typescript": "~4.8.0",
     "yargs": "^16.2.0"
   },
   "dependencies": {

@@ -94,20 +94,6 @@ This component is built with the expectation that focus is delegated to the inpu
 | `templateChanged`  | protected |                                                   |            | `void` | FoundationElement |
 | `stylesChanged`    | protected |                                                   |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
-|               | autofocus   |                |
-| `placeholder` | placeholder |                |
-| `list`        | list        |                |
-|               | maxlength   |                |
-|               | minlength   |                |
-| `pattern`     | pattern     |                |
-|               | size        |                |
-|               | spellcheck  |                |
-
 #### CSS Parts
 
 | Name           | Description                                                     |

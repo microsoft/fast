@@ -216,15 +216,6 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `expanded-change` |      | Fires a custom 'expanded-change' event when the expanded state changes                                                                   |                |
 | `change`          |      | Fires a custom 'change' event when a non-submenu item with a role of \`menuitemcheckbox\`, \`menuitemradio\`, or \`menuitem\` is invoked |                |
 
-#### Attributes
-
-| Name   | Field    | Inherited From |
-| ------ | -------- | -------------- |
-|        | disabled |                |
-|        | expanded |                |
-| `role` | role     |                |
-|        | checked  |                |
-
 #### CSS Parts
 
 | Name                              | Description                                                    |

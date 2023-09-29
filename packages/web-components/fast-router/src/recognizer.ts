@@ -268,11 +268,11 @@ class Candidate<T> {
                 segmentB = stateB.segment!;
             }
 
-            if (segmentA.kind < segmentB.kind) {
+            if (segmentA!.kind < segmentB!.kind) {
                 return 1;
             }
 
-            if (segmentA.kind > segmentB.kind) {
+            if (segmentA!.kind > segmentB!.kind) {
                 return -1;
             }
 

@@ -150,15 +150,6 @@ This component is built with the expectation that focus is delegated to the anch
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `fill`  | fill  |                |
-| `color` | color |                |
-| `link`  | link  |                |
-| `shape` | shape |                |
-
 #### CSS Parts
 
 | Name        | Description                           |

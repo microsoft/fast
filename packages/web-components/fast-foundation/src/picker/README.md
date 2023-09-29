@@ -69,12 +69,6 @@ export class FASTTextField extends TextField {}
 | `templateChanged` | protected |             |                    | `void`    | FoundationElement |
 | `stylesChanged`   | protected |             |                    | `void`    | FoundationElement |
 
-#### Attributes
-
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `value` | value |                |
-
 <hr/>
 
 
@@ -131,12 +125,6 @@ export class FASTTextField extends TextField {}
 | `handleClick`     | public    |             | `e: MouseEvent` | `boolean` |                   |
 | `templateChanged` | protected |             |                 | `void`    | FoundationElement |
 | `stylesChanged`   | protected |             |                 | `void`    | FoundationElement |
-
-#### Attributes
-
-| Name    | Field | Inherited From |
-| ------- | ----- | -------------- |
-| `value` | value |                |
 
 <hr/>
 
@@ -226,23 +214,6 @@ export class FASTTextField extends TextField {}
 | `handleOptionInvoke`    | public    | A menu option has been invoked.                               | `e: Event`         | `boolean` |                   |
 | `templateChanged`       | protected |                                                               |                    | `void`    | FoundationElement |
 | `stylesChanged`         | protected |                                                               |                    | `void`    | FoundationElement |
-
-#### Attributes
-
-| Name                         | Field                    | Inherited From |
-| ---------------------------- | ------------------------ | -------------- |
-| `selection`                  | selection                |                |
-| `options`                    | options                  |                |
-| `filter-selected`            | filterSelected           |                |
-| `filter-query`               | filterQuery              |                |
-| `max-selected`               | maxSelected              |                |
-| `no-suggestions-text`        | noSuggestionsText        |                |
-| `suggestions-available-text` | suggestionsAvailableText |                |
-| `loading-text`               | loadingText              |                |
-| `label`                      | label                    |                |
-| `labelledby`                 | labelledBy               |                |
-| `placeholder`                | placeholder              |                |
-| `menu-placement`             | menuPlacement            |                |
 
 <hr/>
 

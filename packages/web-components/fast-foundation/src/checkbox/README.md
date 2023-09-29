@@ -108,12 +108,6 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 | -------- | ---- | ---------------------------------------------------------- | -------------- |
 | `change` |      | Emits a custom change event when the checked state changes |                |
 
-#### Attributes
-
-| Name       | Field    | Inherited From |
-| ---------- | -------- | -------------- |
-| `readonly` | readOnly |                |
-
 #### CSS Parts
 
 | Name      | Description                                          |

@@ -53,7 +53,7 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
-    "@microsoft/api-extractor": "7.23.1",
+    "@microsoft/api-extractor": "7.37.2",
     "@microsoft/tsdoc-config": "^0.13.4",
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
@@ -88,10 +88,10 @@
     "rollup-plugin-typescript2": "^0.27.0",
     "source-map": "^0.7.3",
     "source-map-loader": "^0.2.4",
-    "ts-loader": "^7.0.2",
-    "ts-node": "^8.9.1",
+    "ts-loader": "~9.4.0",
+    "ts-node": "~10.9.0",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.6.2",
+    "typescript": "~4.8.0",
     "webpack": "^4.44.0"
   },
   "dependencies": {

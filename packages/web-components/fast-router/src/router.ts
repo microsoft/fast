@@ -198,7 +198,9 @@ export class DefaultRouter implements Router {
                 return null;
             }
 
-            this.parentRouter = findParentRouterForElement(this.host);
+            this.parentRouter = (findParentRouterForElement(
+                this.host
+            ) as unknown) as Router<any>;
         }
 
         return this.parentRouter || null;

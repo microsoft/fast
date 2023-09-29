@@ -103,12 +103,6 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 | -------- | ---- | ---------------------------------------------------------- | -------------- |
 | `change` |      | Emits a custom change event when the checked state changes |                |
 
-#### Attributes
-
-| Name       | Field    | Inherited From |
-| ---------- | -------- | -------------- |
-| `readonly` | readOnly |                |
-
 #### CSS Parts
 
 | Name                | Description                                                    |

@@ -50,7 +50,7 @@ export class DefaultLinkHandler implements LinkHandler {
     connect(): void;
     // (undocumented)
     disconnect(): void;
-    }
+}
 
 // @alpha (undocumented)
 export class DefaultNavigationProcess<TSettings> {
@@ -74,7 +74,7 @@ export class DefaultNavigationQueue implements NavigationQueue, NavigationHandle
     handleEvent(event: PopStateEvent): void;
     // (undocumented)
     receive(): Promise<NavigationMessage>;
-    }
+}
 
 // @alpha (undocumented)
 export class DefaultRouter implements Router {
@@ -105,7 +105,7 @@ export class DefaultRouter implements Router {
     route: RecognizedRoute | null;
     // (undocumented)
     shouldRender(route: RecognizedRoute): boolean;
-    }
+}
 
 // @alpha (undocumented)
 export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSettings> {
@@ -115,7 +115,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
     generateFromPath(path: string, params: object): string | null;
     // (undocumented)
     recognize(path: string, converters?: Readonly<Record<string, RouteParameterConverter>>): Promise<RecognizedRoute<TSettings> | null>;
-    }
+}
 
 // @alpha (undocumented)
 export type DefinitionCallback = () => Promise<FallbackRouteDefinition> | FallbackRouteDefinition;
@@ -154,7 +154,7 @@ export class FASTElementLayout implements Layout {
     afterCommit(routerElement: HTMLElement): Promise<void>;
     // (undocumented)
     beforeCommit(routerElement: HTMLElement): Promise<void>;
-    }
+}
 
 // Warning: (ae-forgotten-export) The symbol "FASTRouter_base" needs to be exported by the entry point index.d.ts
 //
@@ -335,7 +335,7 @@ export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings>
 // @alpha (undocumented)
 export const QueryString: Readonly<{
     readonly current: string;
-    build(params: Object, traditional?: boolean | undefined): string;
+    build(params: Object, traditional?: boolean): string;
     separate(path: string): Readonly<{
         path: string;
         queryString: string;
@@ -369,7 +369,7 @@ export class Redirect implements NavigationCommand {
     createContributor(): Promise<{
         navigate(phase: NavigationPhase): Promise<void>;
     }>;
-    }
+}
 
 // @alpha (undocumented)
 export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & {
@@ -395,7 +395,7 @@ export class Render implements RenderCommand {
     // (undocumented)
     get transition(): Transition;
     set transition(value: Transition);
-    }
+}
 
 // @alpha (undocumented)
 export type RenderableRouteDefinition<TSettings = any> = ElementRouteDefinition<TSettings> | TemplateRouteDefinition<TSettings>;
@@ -460,7 +460,7 @@ export class RouteCollection<TSettings = any> {
     map(...routes: MappableRouteDefinition<TSettings>[]): void;
     // (undocumented)
     recognize(path: string): Promise<RouteMatch<TSettings> | null>;
-    }
+}
 
 // @alpha (undocumented)
 export type RouteMatch<TSettings = any> = {
@@ -620,7 +620,6 @@ export interface Transition {
 export const Transition: Readonly<{
     default: Readonly<Transition>;
 }>;
-
 
 // (No @packageDocumentation comment for this package)
 

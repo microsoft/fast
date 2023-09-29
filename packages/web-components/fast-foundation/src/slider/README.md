@@ -163,17 +163,6 @@ export const mySliderLabel = SliderLabel.compose({
 | -------- | ---- | ----------------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the slider value changes |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
-|               | min         |                |
-|               | max         |                |
-|               | step        |                |
-| `orientation` | orientation |                |
-| `mode`        | mode        |                |
-
 #### CSS Parts
 
 | Name                 | Description                                                     |
@@ -229,14 +218,6 @@ export const mySliderLabel = SliderLabel.compose({
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
-
-#### Attributes
-
-| Name        | Field    | Inherited From |
-| ----------- | -------- | -------------- |
-| `position`  | position |                |
-| `hide-mark` | hideMark |                |
-| `disabled`  | disabled |                |
 
 #### CSS Parts
 

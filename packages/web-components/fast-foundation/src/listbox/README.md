@@ -99,13 +99,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
 | `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | multiple | Listbox        |
-|      | multiple | Listbox        |
-
 <hr/>
 
 
@@ -146,12 +139,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        |                   |
 | `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
 | `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
-
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | disabled |                |
 
 #### Slots
 

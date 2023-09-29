@@ -94,19 +94,6 @@ This component is built with the expectation that focus is delegated to the butt
 | `templateChanged` | protected |                                                   |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |                                                   |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name          | Field          | Inherited From |
-| ------------- | -------------- | -------------- |
-|               | autofocus      |                |
-| `form`        | formId         |                |
-| `formaction`  | formaction     |                |
-| `formenctype` | formenctype    |                |
-| `formmethod`  | formmethod     |                |
-|               | formnovalidate |                |
-| `formtarget`  | formtarget     |                |
-| `type`        | type           |                |
-
 #### CSS Parts
 
 | Name      | Description                         |
@@ -132,13 +119,6 @@ This component is built with the expectation that focus is delegated to the butt
 | -------------- | ------- | ------------------------------------------------ | ------- | ---------------------------------------------------------------------- | -------------- |
 | `ariaExpanded` | public  | `"true" or "false" or string or null`            |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
 | `ariaPressed`  | public  | `"true" or "false" or "mixed" or string or null` |         | See https://www.w3.org/WAI/PF/aria/roles#button for more information |                |
-
-#### Attributes
-
-| Name            | Field        | Inherited From |
-| --------------- | ------------ | -------------- |
-| `aria-expanded` | ariaExpanded |                |
-| `aria-pressed`  | ariaPressed  |                |
 
 <hr/>
 

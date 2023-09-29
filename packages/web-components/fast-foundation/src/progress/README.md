@@ -133,15 +133,6 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name | Field  | Inherited From |
-| ---- | ------ | -------------- |
-|      | value  |                |
-|      | min    |                |
-|      | max    |                |
-|      | paused |                |
-
 #### CSS Parts
 
 | Name            | Description                     |

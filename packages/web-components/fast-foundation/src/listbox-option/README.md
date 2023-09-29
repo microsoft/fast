@@ -90,14 +90,6 @@ export const myOption = ListboxOption.compose({
 | `templateChanged`          | protected |                                                                     |                                           | `void` | FoundationElement |
 | `stylesChanged`            | protected |                                                                     |                                           | `void` | FoundationElement |
 
-#### Attributes
-
-| Name       | Field             | Inherited From |
-| ---------- | ----------------- | -------------- |
-|            | disabled          |                |
-| `selected` | selectedAttribute |                |
-| `value`    | initialValue      |                |
-
 #### CSS Parts
 
 | Name      | Description                      |

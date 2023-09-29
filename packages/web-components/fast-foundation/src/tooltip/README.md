@@ -95,18 +95,6 @@ export const myTooltip = Tooltip.compose({
 | --------- | ---- | ------------------------------------------------------------------------------------ | -------------- |
 | `dismiss` |      | Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed |                |
 
-#### Attributes
-
-| Name                       | Field                  | Inherited From |
-| -------------------------- | ---------------------- | -------------- |
-|                            | visible                |                |
-| `anchor`                   | anchor                 |                |
-| `delay`                    | delay                  |                |
-| `position`                 | position               |                |
-| `auto-update-mode`         | autoUpdateMode         |                |
-| `horizontal-viewport-lock` | horizontalViewportLock |                |
-| `vertical-viewport-lock`   | verticalViewportLock   |                |
-
 #### CSS Parts
 
 | Name      | Description         |

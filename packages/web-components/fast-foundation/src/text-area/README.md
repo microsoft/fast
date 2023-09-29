@@ -109,23 +109,6 @@ This component is built with the expectation that focus is delegated to the inpu
 | -------- | ---- | -------------------------------------------------------------------- | -------------- |
 | `change` |      | Emits a custom 'change' event when the textarea emits a change event |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-|               | readOnly    |                |
-| `resize`      | resize      |                |
-|               | autofocus   |                |
-| `form`        | formId      |                |
-| `list`        | list        |                |
-|               | maxlength   |                |
-|               | minlength   |                |
-| `name`        | name        |                |
-| `placeholder` | placeholder |                |
-|               | cols        |                |
-|               | rows        |                |
-|               | spellcheck  |                |
-
 #### CSS Parts
 
 | Name      | Description                      |

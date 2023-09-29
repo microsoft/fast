@@ -111,12 +111,6 @@ export const myToolbar = Toolbar.compose({
 | `templateChanged`     | protected |             |                                                 | `void` | FoundationElement |
 | `stylesChanged`       | protected |             |                                                 | `void` | FoundationElement |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `orientation` | orientation |                |
-
 #### CSS Parts
 
 | Name                 | Description                                           |
@@ -142,13 +136,6 @@ export const myToolbar = Toolbar.compose({
 | ---------------- | ------- | ---------------- | ------- | --------------------------------------------- | -------------- |
 | `ariaLabelledby` | public  | `string or null` |         | The id of the element labeling the toolbar.   |                |
 | `ariaLabel`      | public  | `string or null` |         | The label surfaced to assistive technologies. |                |
-
-#### Attributes
-
-| Name              | Field          | Inherited From |
-| ----------------- | -------------- | -------------- |
-| `aria-labelledby` | ariaLabelledby |                |
-| `aria-label`      | ariaLabel      |                |
 
 <hr/>
 

@@ -122,12 +122,6 @@ export const myTreeView = TreeView.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name                     | Field                | Inherited From |
-| ------------------------ | -------------------- | -------------- |
-| `render-collapsed-nodes` | renderCollapsedNodes |                |
-
 #### Slots
 
 | Name | Description                     |

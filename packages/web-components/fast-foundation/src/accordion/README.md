@@ -134,12 +134,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | -------- | ---- | ---------------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the active item changes |                |
 
-#### Attributes
-
-| Name          | Field      | Inherited From |
-| ------------- | ---------- | -------------- |
-| `expand-mode` | expandmode |                |
-
 #### CSS Parts
 
 | Name   | Description                      |
@@ -189,14 +183,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | Name     | Type | Description                                              | Inherited From |
 | -------- | ---- | -------------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the button is invoked |                |
-
-#### Attributes
-
-| Name            | Field        | Inherited From |
-| --------------- | ------------ | -------------- |
-| `heading-level` | headinglevel |                |
-|                 | expanded     |                |
-| `id`            | id           |                |
 
 #### CSS Parts
 

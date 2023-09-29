@@ -92,16 +92,6 @@ export const myRadioGroup = RadioGroup.compose({
 | -------- | ---- | ---------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the value changes |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
-| `disabled`    | disabled    |                |
-| `name`        | name        |                |
-| `value`       | value       |                |
-| `orientation` | orientation |                |
-
 #### CSS Parts
 
 | Name                 | Description                                      |

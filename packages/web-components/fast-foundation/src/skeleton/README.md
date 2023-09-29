@@ -166,15 +166,6 @@ export const mySkeleton = Skeleton.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name      | Field   | Inherited From |
-| --------- | ------- | -------------- |
-| `fill`    | fill    |                |
-| `shape`   | shape   |                |
-| `pattern` | pattern |                |
-|           | shimmer |                |
-
 #### Slots
 
 | Name | Description      |

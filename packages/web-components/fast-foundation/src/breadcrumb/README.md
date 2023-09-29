@@ -172,19 +172,6 @@ This component is built with the expectation that focus is delegated to the anch
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name             | Field          | Inherited From |
-| ---------------- | -------------- | -------------- |
-| `download`       | download       | Anchor         |
-| `href`           | href           | Anchor         |
-| `hreflang`       | hreflang       | Anchor         |
-| `ping`           | ping           | Anchor         |
-| `referrerpolicy` | referrerpolicy | Anchor         |
-| `rel`            | rel            | Anchor         |
-| `target`         | target         | Anchor         |
-| `type`           | type           | Anchor         |
-
 <hr/>
 
 

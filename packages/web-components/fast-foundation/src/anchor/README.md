@@ -91,19 +91,6 @@ This component is built with the expectation that focus is delegated to the anch
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name             | Field          | Inherited From |
-| ---------------- | -------------- | -------------- |
-| `download`       | download       |                |
-| `href`           | href           |                |
-| `hreflang`       | hreflang       |                |
-| `ping`           | ping           |                |
-| `referrerpolicy` | referrerpolicy |                |
-| `rel`            | rel            |                |
-| `target`         | target         |                |
-| `type`           | type           |                |
-
 #### CSS Parts
 
 | Name      | Description                         |
@@ -128,12 +115,6 @@ This component is built with the expectation that focus is delegated to the anch
 | Name           | Privacy | Type                                  | Default | Description                                                          | Inherited From |
 | -------------- | ------- | ------------------------------------- | ------- | -------------------------------------------------------------------- | -------------- |
 | `ariaExpanded` | public  | `"true" or "false" or string or null` |         | See https://www.w3.org/WAI/PF/aria/roles#link for more information |                |
-
-#### Attributes
-
-| Name            | Field        | Inherited From |
-| --------------- | ------------ | -------------- |
-| `aria-expanded` | ariaExpanded |                |
 
 <hr/>
 

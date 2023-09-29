@@ -124,22 +124,6 @@ This component is built with the expectation that focus is delegated to the inpu
 | `input`  |      | Fires a custom 'input' event when the value has changed  |                |
 | `change` |      | Fires a custom 'change' event when the value has changed |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
-|               | autofocus   |                |
-| `hide-step`   | hideStep    |                |
-| `placeholder` | placeholder |                |
-| `list`        | list        |                |
-|               | maxlength   |                |
-|               | minlength   |                |
-|               | size        |                |
-|               | step        |                |
-|               | max         |                |
-|               | min         |                |
-
 #### CSS Parts
 
 | Name        | Description                                                     |

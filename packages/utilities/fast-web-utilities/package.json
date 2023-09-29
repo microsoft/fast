@@ -65,8 +65,8 @@
     "karma-webpack": "^4.0.2",
     "mocha": "^7.1.2",
     "prettier": "2.0.2",
-    "ts-loader": "^4.0.1",
-    "typescript": "^4.6.2"
+    "ts-loader": "~9.4.0",
+    "typescript": "~4.8.0"
   },
   "dependencies": {
     "exenv-es6": "^1.1.1"

@@ -83,14 +83,6 @@ export const myBadge = Badge.compose({
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-#### Attributes
-
-| Name    | Field    | Inherited From |
-| ------- | -------- | -------------- |
-| `fill`  | fill     |                |
-| `color` | color    |                |
-|         | circular |                |
-
 #### CSS Parts
 
 | Name      | Description                                                      |

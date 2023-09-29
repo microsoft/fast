@@ -143,14 +143,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `input`  |      | Fires a custom 'input' event when the value updates  |                |
 | `change` |      | Fires a custom 'change' event when the value updates |                |
 
-#### Attributes
-
-| Name       | Field             | Inherited From |
-| ---------- | ----------------- | -------------- |
-| `open`     | open              |                |
-| `position` | positionAttribute |                |
-|            | multiple          | Listbox        |
-
 #### CSS Parts
 
 | Name             | Description                                          |

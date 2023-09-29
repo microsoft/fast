@@ -91,17 +91,6 @@ export const myDialog = Dialog.compose({
 | `cancel` |      | Fires a custom 'cancel' event when the modal overlay is clicked |                |
 | `close`  |      | Fires a custom 'close' event when the dialog is hidden          |                |
 
-#### Attributes
-
-| Name               | Field           | Inherited From |
-| ------------------ | --------------- | -------------- |
-|                    | modal           |                |
-|                    | hidden          |                |
-| `trap-focus`       | trapFocus       |                |
-| `aria-describedby` | ariaDescribedby |                |
-| `aria-labelledby`  | ariaLabelledby  |                |
-| `aria-label`       | ariaLabel       |                |
-
 #### CSS Parts
 
 | Name                 | Description                                                                 |

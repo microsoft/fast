@@ -77,6 +77,18 @@ export interface DesignToken<
     unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
 }
 
+type ValidDesignTokenType =
+    | string
+    | number
+    | boolean
+    | BigInteger
+    | null
+    | Array<any>
+    | symbol
+    | {
+          createCSS?(): string;
+      };
+
 /**
  * A {@link (DesignToken:interface)} that emits a CSS custom property.
  * @public
@@ -143,7 +155,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return [...this._appliedTo];
     }
 
-    public static from<T>(
+    public static from<T extends { createCSS?(): string }>(
         nameOrConfig: string | DesignTokenConfiguration
     ): DesignTokenImpl<T> {
         return new DesignTokenImpl<T>({
@@ -157,7 +169,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         });
     }
 
-    public static isCSSDesignToken<T>(
+    public static isCSSDesignToken<T extends ValidDesignTokenType>(
         token: DesignToken<T> | CSSDesignToken<T>
     ): token is CSSDesignToken<T> {
         return typeof (token as CSSDesignToken<T>).cssCustomProperty === "string";
@@ -349,7 +361,7 @@ class CustomPropertyReflector {
  * A light wrapper around BindingObserver to handle value caching and
  * token notification
  */
-class DesignTokenBindingObserver<T> {
+class DesignTokenBindingObserver<T extends { createCSS?(): string }> {
     public readonly dependencies = new Set<DesignTokenImpl<any>>();
     private observer: BindingObserver<HTMLElement, DerivedDesignTokenValue<T>>;
     constructor(
@@ -394,19 +406,24 @@ class DesignTokenBindingObserver<T> {
  */
 class Store {
     private values = new Map<DesignTokenImpl<any>, any>();
-    set<T>(token: DesignTokenImpl<T>, value: StaticDesignTokenValue<T>) {
+    set<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>,
+        value: StaticDesignTokenValue<T>
+    ) {
         if (this.values.get(token) !== value) {
             this.values.set(token, value);
             Observable.getNotifier(this).notify(token.id);
         }
     }
 
-    get<T>(token: DesignTokenImpl<T>): StaticDesignTokenValue<T> | undefined {
+    get<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>
+    ): StaticDesignTokenValue<T> | undefined {
         Observable.track(this, token.id);
         return this.values.get(token);
     }
 
-    delete<T>(token: DesignTokenImpl<T>) {
+    delete<T extends { createCSS?(): string }>(token: DesignTokenImpl<T>) {
         this.values.delete(token);
     }
 
@@ -471,7 +488,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param start - The node to start looking for value assignment
      * @returns
      */
-    public static findClosestAssignedNode<T>(
+    public static findClosestAssignedNode<T extends { createCSS?(): string }>(
         token: DesignTokenImpl<T>,
         start: DesignTokenNode
     ): DesignTokenNode | null {
@@ -581,7 +598,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      * Checks if a token has been assigned an explicit value the node.
      * @param token - the token to check.
      */
-    public has<T>(token: DesignTokenImpl<T>): boolean {
+    public has<T extends { createCSS?(): string }>(token: DesignTokenImpl<T>): boolean {
         return this.assignedValues.has(token);
     }
 
@@ -590,7 +607,9 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param token - The token to retrieve the value for
      * @returns
      */
-    public get<T>(token: DesignTokenImpl<T>): StaticDesignTokenValue<T> | undefined {
+    public get<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>
+    ): StaticDesignTokenValue<T> | undefined {
         const value = this.store.get(token);
 
         if (value !== undefined) {
@@ -610,7 +629,9 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param token - The token to retrieve a raw value for
      * @returns
      */
-    public getRaw<T>(token: DesignTokenImpl<T>): DesignTokenValue<T> | undefined {
+    public getRaw<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>
+    ): DesignTokenValue<T> | undefined {
         if (this.assignedValues.has(token)) {
             return this.assignedValues.get(token);
         }
@@ -623,7 +644,10 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param token - The token to set
      * @param value - The value to set the token to
      */
-    public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
+    public set<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>,
+        value: DesignTokenValue<T>
+    ): void {
         if (DesignTokenImpl.isDerivedDesignTokenValue(this.assignedValues.get(token))) {
             this.tearDownBindingObserver(token);
         }
@@ -641,7 +665,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      * Deletes a token value for the node.
      * @param token - The token to delete the value for
      */
-    public delete<T>(token: DesignTokenImpl<T>): void {
+    public delete<T extends { createCSS?(): string }>(token: DesignTokenImpl<T>): void {
         this.assignedValues.delete(token);
         this.tearDownBindingObserver(token);
         const upstream = this.getRaw(token);
@@ -783,7 +807,10 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param token - The token to hydrate
      * @param value - The value to hydrate
      */
-    public hydrate<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>) {
+    public hydrate<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>,
+        value: DesignTokenValue<T>
+    ) {
         if (!this.has(token)) {
             const observer = this.bindingObservers.get(token);
 
@@ -815,7 +842,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param token - The token to notify when the binding updates
      * @param source - The binding source
      */
-    private setupBindingObserver<T>(
+    private setupBindingObserver<T extends { createCSS?(): string }>(
         token: DesignTokenImpl<T>,
         source: DerivedDesignTokenValue<T>
     ): DesignTokenBindingObserver<T> {
@@ -828,7 +855,9 @@ class DesignTokenNode implements Behavior, Subscriber {
     /**
      * Tear down a binding observer for a token.
      */
-    private tearDownBindingObserver<T>(token: DesignTokenImpl<T>): boolean {
+    private tearDownBindingObserver<T extends { createCSS?(): string }>(
+        token: DesignTokenImpl<T>
+    ): boolean {
         if (this.bindingObservers.has(token)) {
             this.bindingObservers.get(token)!.disconnect();
             this.bindingObservers.delete(token);
@@ -845,16 +874,18 @@ function create<T extends Function>(
 function create<T extends undefined | void>(
     nameOrConfig: string | DesignTokenConfiguration
 ): never;
-function create<T>(nameOrConfig: string): CSSDesignToken<T>;
-function create<T>(
+function create<T extends ValidDesignTokenType>(nameOrConfig: string): CSSDesignToken<T>;
+function create<T extends ValidDesignTokenType>(
     nameOrConfig:
         | Omit<DesignTokenConfiguration, "cssCustomPropertyName">
         | (DesignTokenConfiguration & Record<"cssCustomPropertyName", string>)
 ): CSSDesignToken<T>;
-function create<T>(
+function create<T extends ValidDesignTokenType>(
     nameOrConfig: DesignTokenConfiguration & Record<"cssCustomPropertyName", null>
 ): DesignToken<T>;
-function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
+function create<T extends ValidDesignTokenType>(
+    nameOrConfig: string | DesignTokenConfiguration
+): any {
     return DesignTokenImpl.from(nameOrConfig);
 }
 /* eslint-enable @typescript-eslint/no-unused-vars */
