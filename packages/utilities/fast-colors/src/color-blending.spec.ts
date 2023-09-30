@@ -1,4 +1,4 @@
-import chai from "chai";
+import { expect } from "@esm-bundle/chai";
 import { test } from "mocha";
 import { testData } from "./__test__/testData.js";
 import {
@@ -16,7 +16,7 @@ import {
     lightenViaLAB,
     saturateViaLCH,
 } from "./index.js";
-const expect = chai.expect;
+
 const testPrecision: number = 4;
 
 describe("Color blending functions", () => {
