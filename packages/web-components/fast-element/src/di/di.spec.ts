@@ -10,15 +10,13 @@ import {
     singleton,
     transient,
 } from "./di.js";
-import { expect, use } from "@esm-bundle/chai";
-import spies from "chai-spies";
+import { expect } from "@esm-bundle/chai";
+import sinon, { SinonSpy } from "sinon";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Context } from "../context.js";
 import { customElement, FASTElement } from "../components/fast-element.js";
 import { html } from "../templating/template.js";
 import { ref } from "../templating/ref.js";
-
-use(spies);
 
 function decorator(): ClassDecorator {
     return (target: any) => target;
@@ -393,17 +391,18 @@ describe(`The singleton decorator`, function () {
 
 describe(`The Resolver class`, function () {
     let container: Container;
-
+    let resolverSpy: SinonSpy;
     beforeEach(function () {
         container = DI.createContainer();
-        chai.spy.on(container, "registerResolver");
+        resolverSpy = sinon.spy(container, "registerResolver");
     });
 
     describe(`register()`, function () {
         it(`registers the resolver to the container with its own key`, function () {
             const sut = new ResolverImpl("foo", 0, null);
             sut.register(container);
-            expect(container.registerResolver).called.with("foo", sut);
+
+            resolverSpy.calledWith("foo", sut);
         });
     });
 
@@ -437,10 +436,10 @@ describe(`The Resolver class`, function () {
         });
 
         it(`array - calls resolve() on the first item in the state array`, function () {
-            const resolver = { resolve: chai.spy() };
+            const resolver = { resolve: sinon.spy() };
             const sut = new ResolverImpl("foo", ResolverStrategy.array, [resolver]);
             sut.resolve(container, container);
-            expect(resolver.resolve).called.with(container, container);
+            resolver.resolve.calledWith(container, container);
         });
 
         it(`throws for unknown strategy`, function () {
@@ -563,7 +562,7 @@ describe(`The Factory class`, function () {
 describe(`The Container class`, function () {
     function createFixture() {
         const sut = DI.createContainer();
-        const register = chai.spy();
+        const register = sinon.spy();
         return { sut, register, context: {} };
     }
 
@@ -578,10 +577,11 @@ describe(`The Container class`, function () {
                     test: (...args: any[]) => {
                         sut.register(...args);
 
-                        expect(register).to.have.been.first.called.with(sut);
+                        register.firstCall.calledWith(sut);
 
                         if (args.length === 2) {
-                            expect(register).to.have.been.second.called.with(sut);
+                            register.secondCall.calledWith(sut);
+
                         }
                     }
                 };

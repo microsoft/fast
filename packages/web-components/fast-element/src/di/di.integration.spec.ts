@@ -1,9 +1,7 @@
 import { DI, Container, inject, Registration, singleton } from "./di.js";
-import { expect, use } from "@esm-bundle/chai";
-import spies from "chai-spies";
+import { expect } from "@esm-bundle/chai";
+import sinon, { SinonSpy } from "sinon";
 import type { ContextDecorator } from "../context.js";
-
-use(spies);
 
 describe("DI.singleton", function () {
     describe("registerInRequester", function () {
@@ -84,7 +82,8 @@ describe("DI.createContext() -> container.get()", function () {
         return new CachedCallback();
     }
 
-    let callback: any;
+    let callback: SinonSpy;
+    let containerSpy: SinonSpy;
 
     // eslint-disable-next-line mocha/no-hooks
     beforeEach(function () {
@@ -98,12 +97,12 @@ describe("DI.createContext() -> container.get()", function () {
         );
         instance = new Instance();
         IInstance = DI.createContext<IInstance>("IInstance", x => x.instance(instance));
-        callback = chai.spy(() => new Callback());
+        callback = sinon.spy(() => new Callback());
         ICallback = DI.createContext<ICallback>("ICallback", x => x.callback(callback));
         ICachedCallback = DI.createContext<ICachedCallback>("ICachedCallback", x =>
             x.cachedCallback(callbackToCache)
         );
-        chai.spy.on(container, "get");
+        containerSpy = sinon.spy(container, "get");
     });
 
     describe("leaf", function () {
@@ -117,8 +116,8 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).to.not.equal(actual2, `actual1`);
 
-            expect(container.get).to.have.been.first.called.with(ITransient);
-            expect(container.get).to.have.been.second.called.with(ITransient);
+            containerSpy.firstCall.calledWith(ITransient);
+            containerSpy.secondCall.calledWith(ITransient);
         });
 
         it(`singleton registration returns the same instance each time`, function () {
@@ -130,8 +129,8 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).to.equal(actual2, `actual1`);
 
-            expect(container.get).to.have.been.first.called.with(ISingleton);
-            expect(container.get).to.have.been.second.called.with(ISingleton);
+            containerSpy.firstCall.calledWith(ISingleton);
+            containerSpy.secondCall.calledWith(ISingleton);
         });
 
         it(`instance registration returns the same instance each time`, function () {
@@ -144,8 +143,8 @@ describe("DI.createContext() -> container.get()", function () {
             expect(actual1).equal(instance, `actual1`);
             expect(actual2).equal(instance, `actual2`);
 
-            expect(container.get).to.have.been.first.called.with(IInstance);
-            expect(container.get).to.have.been.second.called.with(IInstance);
+            containerSpy.firstCall.calledWith(IInstance);
+            containerSpy.secondCall.calledWith(IInstance);
         });
 
         it(`callback registration is invoked each time`, function () {
@@ -157,19 +156,19 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).not.equal(actual2, `actual1`);
 
-            expect(callback).to.have.been.first.called.with(
+            callback.firstCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
-            expect(callback).to.have.been.second.called.with(
+            callback.secondCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
 
-            expect(container.get).to.have.been.first.called.with(ICallback);
-            expect(container.get).to.have.been.second.called.with(ICallback);
+            containerSpy.firstCall.calledWith(ICallback);
+            containerSpy.secondCall.calledWith(ICallback);
         });
 
         it(`cachedCallback registration is invoked once`, function () {
@@ -270,10 +269,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).not.equal(actual2, `actual1`);
 
-            expect(container.get).to.have.been.first.called.with(IAlias);
-            expect(container.get).to.have.been.second.called.with(ITransient);
-            expect(container.get).to.have.been.third.called.with(IAlias);
-            expect(container.get).to.have.been.nth(4).called.with(ITransient);
+            containerSpy.firstCall.calledWith(IAlias);
+            containerSpy.secondCall.calledWith(ITransient);
+            containerSpy.thirdCall.calledWith(IAlias);
+            containerSpy.lastCall.calledWith(ITransient);
         });
 
         it(`ContextDecorator alias to singleton registration returns the same instance each time`, function () {
@@ -290,10 +289,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).equal(actual2, `actual1`);
 
-            expect(container.get).to.have.been.first.called.with(IAlias);
-            expect(container.get).to.have.been.second.called.with(ISingleton);
-            expect(container.get).to.have.been.third.called.with(IAlias);
-            expect(container.get).to.have.been.nth(4).called.with(ISingleton);
+            containerSpy.firstCall.calledWith(IAlias);
+            containerSpy.secondCall.calledWith(ISingleton);
+            containerSpy.thirdCall.calledWith(IAlias);
+            containerSpy.lastCall.calledWith(ISingleton);
         });
 
         it(`ContextDecorator alias to instance registration returns the same instance each time`, function () {
@@ -311,10 +310,10 @@ describe("DI.createContext() -> container.get()", function () {
             expect(actual1).equal(instance, `actual1`);
             expect(actual2).equal(instance, `actual2`);
 
-            expect(container.get).to.have.been.first.called.with(IAlias);
-            expect(container.get).to.have.been.second.called.with(IInstance);
-            expect(container.get).to.have.been.third.called.with(IAlias);
-            expect(container.get).to.have.been.nth(4).called.with(IInstance);
+            containerSpy.firstCall.calledWith(IAlias);
+            containerSpy.secondCall.calledWith(IInstance);
+            containerSpy.thirdCall.calledWith(IAlias);
+            containerSpy.lastCall.calledWith(IInstance);
         });
 
         it(`ContextDecorator alias to callback registration is invoked each time`, function () {
@@ -331,21 +330,21 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).not.equal(actual2, `actual1`);
 
-            expect(callback).to.have.been.first.called.with(
+            callback.firstCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
-            expect(callback).to.have.been.second.called.with(
+            callback.secondCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
 
-            expect(container.get).to.have.been.first.called.with(IAlias);
-            expect(container.get).to.have.been.second.called.with(ICallback);
-            expect(container.get).to.have.been.third.called.with(IAlias);
-            expect(container.get).to.have.been.nth(4).called.with(ICallback);
+            containerSpy.firstCall.calledWith(IAlias);
+            containerSpy.secondCall.calledWith(ICallback);
+            containerSpy.thirdCall.calledWith(IAlias);
+            containerSpy.lastCall.calledWith(ICallback);
         });
 
         it(`string alias to transient registration returns a new instance each time`, function () {
@@ -359,10 +358,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).not.equal(actual2, `actual1`);
 
-            expect(container.get).to.have.been.first.called.with("alias");
-            expect(container.get).to.have.been.second.called.with(ITransient);
-            expect(container.get).to.have.been.third.called.with("alias");
-            expect(container.get).to.have.been.nth(4).called.with(ITransient);
+            containerSpy.firstCall.calledWith("alias");
+            containerSpy.secondCall.calledWith(ITransient);
+            containerSpy.thirdCall.calledWith("alias");
+            containerSpy.lastCall.calledWith(ITransient);
         });
 
         it(`string alias to singleton registration returns the same instance each time`, function () {
@@ -376,10 +375,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).equal(actual2, `actual1`);
 
-            expect(container.get).to.have.been.first.called.with("alias");
-            expect(container.get).to.have.been.second.called.with(ISingleton);
-            expect(container.get).to.have.been.third.called.with("alias");
-            expect(container.get).to.have.been.nth(4).called.with(ISingleton);
+            containerSpy.firstCall.calledWith("alias");
+            containerSpy.secondCall.calledWith(ISingleton);
+            containerSpy.thirdCall.calledWith("alias");
+            containerSpy.lastCall.calledWith(ISingleton);
         });
 
         it(`string alias to instance registration returns the same instance each time`, function () {
@@ -394,10 +393,10 @@ describe("DI.createContext() -> container.get()", function () {
             expect(actual1).equal(instance, `actual1`);
             expect(actual2).equal(instance, `actual2`);
 
-            expect(container.get).to.have.been.first.called.with("alias");
-            expect(container.get).to.have.been.second.called.with(IInstance);
-            expect(container.get).to.have.been.third.called.with("alias");
-            expect(container.get).to.have.been.nth(4).called.with(IInstance);
+            containerSpy.firstCall.calledWith("alias");
+            containerSpy.secondCall.calledWith(IInstance);
+            containerSpy.thirdCall.calledWith("alias");
+            containerSpy.lastCall.calledWith(IInstance);
         });
 
         it(`string alias to callback registration is invoked each time`, function () {
@@ -411,21 +410,21 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1).not.equal(actual2, `actual1`);
 
-            expect(callback).to.have.been.first.called.with(
+            callback.firstCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
-            expect(callback).to.have.been.second.called.with(
+            callback.secondCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
 
-            expect(container.get).to.have.been.first.called.with("alias");
-            expect(container.get).to.have.been.second.called.with(ICallback);
-            expect(container.get).to.have.been.third.called.with("alias");
-            expect(container.get).to.have.been.nth(4).called.with(ICallback);
+            containerSpy.firstCall.calledWith("alias");
+            containerSpy.secondCall.calledWith(ICallback);
+            containerSpy.thirdCall.calledWith("alias");
+            containerSpy.lastCall.calledWith(ICallback);
         });
     });
 
@@ -461,10 +460,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1.dep).not.equal(actual2.dep, `actual1.dep`);
 
-            expect(container.get).to.have.been.first.called.with(ITransientParent);
-            expect(container.get).to.have.been.second.called.with(ITransient);
-            expect(container.get).to.have.been.third.called.with(ITransientParent);
-            expect(container.get).to.have.been.nth(4).called.with(ITransient);
+            containerSpy.firstCall.calledWith(ITransientParent);
+            containerSpy.secondCall.calledWith(ITransient);
+            containerSpy.thirdCall.calledWith(ITransientParent);
+            containerSpy.lastCall.calledWith(ITransient);
         });
 
         it(`singleton child registration returns the same instance each time`, function () {
@@ -486,10 +485,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(container.get).to.have.been.first.called.with(ITransientParent);
-            expect(container.get).to.have.been.second.called.with(ISingleton);
-            expect(container.get).to.have.been.third.called.with(ITransientParent);
-            expect(container.get).to.have.been.nth(4).called.with(ISingleton);
+            containerSpy.firstCall.calledWith(ITransientParent);
+            containerSpy.secondCall.calledWith(ISingleton);
+            containerSpy.thirdCall.calledWith(ITransientParent);
+            containerSpy.lastCall.calledWith(ISingleton);
         });
 
         it(`instance child registration returns the same instance each time`, function () {
@@ -511,10 +510,10 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(container.get).to.have.been.first.called.with(ITransientParent);
-            expect(container.get).to.have.been.second.called.with(IInstance);
-            expect(container.get).to.have.been.third.called.with(ITransientParent);
-            expect(container.get).to.have.been.nth(4).called.with(IInstance);
+            containerSpy.firstCall.calledWith(ITransientParent);
+            containerSpy.secondCall.calledWith(IInstance);
+            containerSpy.thirdCall.calledWith(ITransientParent);
+            containerSpy.lastCall.calledWith(IInstance);
         });
 
         it(`callback child registration is invoked each time`, function () {
@@ -535,21 +534,21 @@ describe("DI.createContext() -> container.get()", function () {
             expect(actual1).not.equal(actual2, `actual1`);
             expect(actual1.dep).not.equal(actual2.dep, `actual1.dep`);
 
-            expect(callback).to.have.been.first.called.with(
+            callback.firstCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
-            expect(callback).to.have.been.second.called.with(
+            callback.secondCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
 
-            expect(container.get).to.have.been.first.called.with(ITransientParent);
-            expect(container.get).to.have.been.second.called.with(ICallback);
-            expect(container.get).to.have.been.third.called.with(ITransientParent);
-            expect(container.get).to.have.been.nth(4).called.with(ICallback);
+            containerSpy.firstCall.calledWith(ITransientParent);
+            containerSpy.secondCall.calledWith(ICallback);
+            containerSpy.thirdCall.calledWith(ITransientParent);
+            containerSpy.lastCall.calledWith(ICallback);
         });
     });
 
@@ -585,9 +584,9 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(container.get).to.have.been.first.called.with(ISingletonParent);
-            expect(container.get).to.have.been.second.called.with(ITransient);
-            expect(container.get).to.have.been.third.called.with(ISingletonParent);
+            containerSpy.firstCall.calledWith(ISingletonParent);
+            containerSpy.secondCall.calledWith(ITransient);
+            containerSpy.thirdCall.calledWith(ISingletonParent);
         });
 
         it(`singleton registration is reused by the singleton parent`, function () {
@@ -609,9 +608,9 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(container.get).to.have.been.first.called.with(ISingletonParent);
-            expect(container.get).to.have.been.second.called.with(ISingleton);
-            expect(container.get).to.have.been.third.called.with(ISingletonParent);
+            containerSpy.firstCall.calledWith(ISingletonParent);
+            containerSpy.secondCall.calledWith(ISingleton);
+            containerSpy.thirdCall.calledWith(ISingletonParent);
         });
 
         it(`instance registration is reused by the singleton parent`, function () {
@@ -633,9 +632,9 @@ describe("DI.createContext() -> container.get()", function () {
 
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(container.get).to.have.been.first.called.with(ISingletonParent);
-            expect(container.get).to.have.been.second.called.with(IInstance);
-            expect(container.get).to.have.been.third.called.with(ISingletonParent);
+            containerSpy.firstCall.calledWith(ISingletonParent);
+            containerSpy.secondCall.calledWith(IInstance);
+            containerSpy.thirdCall.calledWith(ISingletonParent);
         });
 
         it(`callback registration is reused by the singleton parent`, function () {
@@ -656,15 +655,15 @@ describe("DI.createContext() -> container.get()", function () {
             expect(actual1).equal(actual2, `actual1`);
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(callback).to.have.been.first.called.with(
+            callback.firstCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)
             );
 
-            expect(container.get).to.have.been.first.called.with(ISingletonParent);
-            expect(container.get).to.have.been.second.called.with(ICallback);
-            expect(container.get).to.have.been.third.called.with(ISingletonParent);
+            containerSpy.firstCall.calledWith(ISingletonParent);
+            containerSpy.secondCall.calledWith(ICallback);
+            containerSpy.thirdCall.calledWith(ISingletonParent);
         });
     });
 
@@ -760,7 +759,7 @@ describe("DI.createContext() -> container.get()", function () {
             expect(actual1).equal(actual2, `actual1`);
             expect(actual1.dep).equal(actual2.dep, `actual1.dep`);
 
-            expect(callback).to.have.been.first.called.with(
+            callback.firstCall.calledWith(
                 container,
                 container,
                 container.getResolver(ICallback)

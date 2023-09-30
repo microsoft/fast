@@ -1,4 +1,4 @@
-import { expect, use } from "@esm-bundle/chai";
+import { expect } from "@esm-bundle/chai";
 import { ElementStyles } from "../index.debug.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import { observable, Observable } from "../observation/observable.js";
@@ -9,9 +9,7 @@ import { toHTML } from "../__test__/helpers.js";
 import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
-import spies from "chai-spies";
-
-use(spies);
+import sinon from "sinon";
 
 describe("The ElementController", () => {
     const templateA = html`a`;
@@ -450,7 +448,7 @@ describe("The ElementController", () => {
                 }
             }
 
-            const disconnected = chai.spy();
+            const disconnected = sinon.spy();
             class ChildBehavior implements HostBehavior {
                 disconnectedCallback = disconnected
             }
@@ -461,7 +459,7 @@ describe("The ElementController", () => {
             controller.connect();
             controller.disconnect();
 
-            expect(behavior.child.disconnectedCallback).to.have.been.called();
+            behavior.child.disconnectedCallback.called;
         });
 
         it("should unbind a behavior only when the behavior is removed the number of times it has been added", () => {
@@ -522,45 +520,55 @@ describe("The ElementController", () => {
 
         it("should connect behaviors added by stylesheets by .addStyles() during connection and disconnect them during disconnection", () => {
             const { controller } = createController();
+            const connected = sinon.spy();
+            const disconnected = sinon.spy();
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy(),
-                disconnectedCallback: chai.spy()
+                connectedCallback: connected,
+                disconnectedCallback: disconnected
             };
             controller.addStyles(css``.withBehaviors(behavior));
 
             controller.connect();
-            expect(behavior.connectedCallback).to.have.been.called;
+
+            connected.called;
 
             controller.disconnect();
-            expect(behavior.disconnectedCallback).to.have.been.called;
+
+            disconnected.called;
         });
 
         it("should connect behaviors added by the component's main stylesheet during connection and disconnect them during disconnection", () => {
+            const connected = sinon.spy();
+            const disconnected = sinon.spy();
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy(),
-                disconnectedCallback: chai.spy()
+                connectedCallback: connected,
+                disconnectedCallback: disconnected
             };
             const { controller } = createController({styles: css``.withBehaviors(behavior)});
             controller.connect();
 
-            expect(behavior.connectedCallback).to.have.been.called();
+            connected.called;
 
             controller.disconnect();
-            expect(behavior.disconnectedCallback).to.have.been.called();
+
+            disconnected.called;
         });
         it("should add behaviors added by a stylesheet when added and remove them the stylesheet is removed", () => {
+            const added = sinon.spy();
+            const removed = sinon.spy();
             const behavior: HostBehavior = {
-                addedCallback: chai.spy(),
-                removedCallback: chai.spy()
+                addedCallback: added,
+                removedCallback: removed
             };
             const styles = css``.withBehaviors(behavior)
             const { controller } = createController();
             controller.addStyles(styles)
 
-            expect(behavior.addedCallback).to.have.been.called();
+            added.called;
 
             controller.removeStyles(styles);
-            expect(behavior.removedCallback).to.have.been.called();
+
+            removed.called;
         });
     });
 
