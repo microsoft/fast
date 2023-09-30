@@ -1,4 +1,4 @@
-import { expect, use } from "@esm-bundle/chai";
+import { expect } from "@esm-bundle/chai";
 import { css, HostBehavior, Updates } from "../index.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/exports.js";
@@ -6,9 +6,7 @@ import { ElementController } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
 import { HydratableElementController } from "./hydration.js";
-import spies from "chai-spies";
-
-use(spies)
+import sinon from "sinon";
 
 describe("The HydratableElementController", () => {
     beforeEach(() => {
@@ -65,15 +63,18 @@ describe("The HydratableElementController", () => {
             document.body.removeChild(element)
         });
         it("should invoke a HostBehavior's connectedCallback", async () => {
+            const connected = sinon.spy(() => {});
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy(() => {})
+                connectedCallback: connected
             }
 
             const { element, controller } = createController()
             controller.addBehavior(behavior);
 
             document.body.appendChild(element);
-            expect(behavior.connectedCallback).to.have.been.called()
+
+            connected.called;
+
             document.body.removeChild(element)
         });
     })
@@ -97,8 +98,9 @@ describe("The HydratableElementController", () => {
             document.body.removeChild(element)
         });
         it("should not invoke a HostBehavior's connectedCallback", async () => {
+            const connected = sinon.spy(() => {});
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy(() => {})
+                connectedCallback: connected
             }
 
             const { element, controller } = createController()
@@ -106,7 +108,9 @@ describe("The HydratableElementController", () => {
             controller.addBehavior(behavior);
 
             document.body.appendChild(element);
-            expect(behavior.connectedCallback).not.to.have.been.called()
+
+            connected.called;
+
             document.body.removeChild(element)
         });
     })
@@ -136,8 +140,9 @@ describe("The HydratableElementController", () => {
             document.body.removeChild(element);
         });
         it("should invoke a HostBehavior's connectedCallback", async () => {
+            const connected = sinon.spy(() => {});
             const behavior: HostBehavior = {
-                connectedCallback: chai.spy(() => {})
+                connectedCallback: connected
             }
 
             const { element, controller } = createController()
@@ -145,10 +150,14 @@ describe("The HydratableElementController", () => {
             controller.addBehavior(behavior);
 
             document.body.appendChild(element);
-            expect(behavior.connectedCallback).not.to.have.been.called();
+
+            connected.notCalled;
+
             element.removeAttribute('defer-hydration');
             await Updates.next();
-            expect(behavior.connectedCallback).to.have.been.called();
+
+            connected.called;
+
             document.body.removeChild(element)
         });
     })

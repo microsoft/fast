@@ -12,7 +12,6 @@
         "module": "ESNext",
         "moduleResolution": "Node16",
         "types": [
-            "chai-spies",
             "mocha",
         ],
         "lib": [

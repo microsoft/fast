@@ -1,4 +1,5 @@
 import { expect } from "@esm-bundle/chai";
+import { Message } from "../interfaces.js";
 import { DI, optional } from "./di.js";
 
 describe("DI Exception", function () {
@@ -13,9 +14,9 @@ describe("DI Exception", function () {
             public constructor(@Foo public readonly foo: Foo) {}
         }
 
-        expect(() => container.get(Foo)).to.throw(/.*Foo*/, "throws once");
-        expect(() => container.get(Foo)).to.throw(/.*Foo*/, "throws twice"); // regression test
-        expect(() => container.get(Bar)).to.throw(/.*Foo.*/, "throws on inject into");
+        expect(() => container.get(Foo)).to.throw(`${Message.cannotJITRegisterInterface}`, "throws once");
+        expect(() => container.get(Foo)).to.throw(`${Message.cannotJITRegisterInterface}`, "throws twice"); // regression test
+        expect(() => container.get(Bar)).to.throw(`${Message.cannotJITRegisterInterface}`, "throws on inject into");
     });
 
     it("cyclic dependency", function () {
@@ -30,6 +31,6 @@ describe("DI Exception", function () {
             public constructor(@optional(Foo) public parent: Foo) {}
         }
 
-        expect(() => container.get(Foo)).to.throw(/.*Cycl*/, "test");
+        expect(() => container.get(Foo)).to.throw(`${Message.cyclicDependency}`, "test");
     });
 });
