@@ -63,14 +63,14 @@ export const myDialog = Dialog.compose({
 
 #### Fields
 
-| Name              | Privacy | Type      | Default | Description                                                                                                                                                                                                   | Inherited From |
-| ----------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `modal`           | public  | `boolean` | `false` | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                |
-| `hidden`          | public  | `boolean` | `false` | The hidden state of the element.                                                                                                                                                                              |                |
-| `noFocusTrap`     | public  | `boolean` | `false` | Indicates that the dialog should not trap focus.                                                                                                                                                              |                |
-| `ariaDescribedby` | public  | `string`  |         | The id of the element describing the dialog.                                                                                                                                                                  |                |
-| `ariaLabelledby`  | public  | `string`  |         | The id of the element labeling the dialog.                                                                                                                                                                    |                |
-| `ariaLabel`       | public  | `string`  |         | The label surfaced to assistive technologies.                                                                                                                                                                 |                |
+| Name              | Privacy | Type      | Default | Description                                                                                                                                                                                                  | Inherited From |
+| ----------------- | ------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `modal`           | public  | `boolean` | `false` | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay. Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                |
+| `hidden`          | public  | `boolean` | `false` | The hidden state of the element.                                                                                                                                                                             |                |
+| `noFocusTrap`     | public  | `boolean` | `false` | Indicates that the dialog should not trap focus.                                                                                                                                                             |                |
+| `ariaDescribedby` | public  | `string`  |         | The id of the element describing the dialog.                                                                                                                                                                 |                |
+| `ariaLabelledby`  | public  | `string`  |         | The id of the element labeling the dialog.                                                                                                                                                                   |                |
+| `ariaLabel`       | public  | `string`  |         | The label surfaced to assistive technologies.                                                                                                                                                                |                |
 
 #### Methods
 
