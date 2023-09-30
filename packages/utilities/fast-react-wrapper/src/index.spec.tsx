@@ -2,7 +2,7 @@ import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, o
 import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-element/testing.js';
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";;
 import { reactWrapper } from './index.js';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
