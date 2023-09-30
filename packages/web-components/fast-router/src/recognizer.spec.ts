@@ -4,7 +4,7 @@ import {
     Endpoint,
     RecognizedRoute,
 } from "./recognizer.js";
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";;
 
 describe(DefaultRouteRecognizer.name, function () {
     interface RecognizeSpec {
