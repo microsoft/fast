@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";;
 import { findLastIndex } from "./array.js";
 
 describe("findLastIndex", (): void => {

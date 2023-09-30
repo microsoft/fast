@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";;
 import { classNames } from "./class-names.js";
 
 describe("classNames", (): void => {

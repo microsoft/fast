@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";;
 import { RtlScrollConverter } from "./rtl-scroll-converter.js";
 import { Direction } from "./localization.js";
 
