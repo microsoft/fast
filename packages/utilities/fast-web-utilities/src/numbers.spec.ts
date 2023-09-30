@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";;
 import { inRange, limit, wrapInBounds } from "./numbers.js";
 
 describe("wrapInBounds", () => {
