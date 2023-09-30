@@ -1,4 +1,4 @@
-import chai from "chai";
+import { expect } from "@esm-bundle/chai";
 import { test } from "mocha";
 import { testData } from "./__test__/testData.js";
 import {
@@ -9,7 +9,6 @@ import {
 } from "./color-palette.js";
 import { ColorRGBA64 } from "./color-rgba-64.js";
 import { parseColorHexRGB } from "./parse-color.js";
-const expect = chai.expect;
 
 const testPrecision: number = 4;
 

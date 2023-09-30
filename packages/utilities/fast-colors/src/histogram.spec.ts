@@ -1,9 +1,8 @@
-import chai from "chai";
+import { expect } from "@esm-bundle/chai";
 import { test } from "mocha";
 import { test200ImageData } from "./__test__/test200.js";
 import { Histogram } from "./histogram.js";
 import { ArrayPixelBlob } from "./array-pixel-blob.js";
-const expect = chai.expect;
 
 describe("Generating a histogram from an image", (): void => {
     test("getHistogramIndex", () => {
