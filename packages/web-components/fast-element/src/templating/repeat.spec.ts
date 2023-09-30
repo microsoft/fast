@@ -253,7 +253,7 @@ describe("The repeat", () => {
 
                 behavior.bind(controller);
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
                 );
 
@@ -261,13 +261,13 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal("");
+                await expect(toHTML(parent)).to.equal("");
 
                 data.items = createArray(size);
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
                 );
             });
@@ -290,7 +290,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
             });
         });
 
@@ -313,7 +313,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}`
                 );
             });
@@ -337,7 +337,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(`${createOutput(size, x => x !== 0)}`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(size, x => x !== 0)}`);
             });
         });
 
@@ -360,7 +360,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}newitem1newitem2`
                 );
             });
@@ -386,7 +386,7 @@ describe("The repeat", () => {
                 await Updates.next();
 
                 expectViewPositionToBeCorrect(behavior);
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size, x => x !== index)}newitem1newitem2`
                 );
             });
@@ -409,7 +409,7 @@ describe("The repeat", () => {
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 1, { name: "newitem1" });
                 await Updates.next();
-                expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
             });
 
             it(`updates rendered HTML when a single item is spliced from the middle of an array of size ${size} with recycle property set to false`, async () => {
@@ -433,7 +433,7 @@ describe("The repeat", () => {
                 await Updates.next();
 
                 expectViewPositionToBeCorrect(behavior);
-                expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1${createOutput(vm.items.slice(mid +1).length , void 0, void 0, void 0, mid +1 ) }`);
             });
         });
 
@@ -454,7 +454,7 @@ describe("The repeat", () => {
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                 await Updates.next();
-                expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
             });
 
             it(`updates rendered HTML when 2 items are spliced from the middle of an array of size ${size} with recycle property set to false`, async () => {
@@ -475,7 +475,7 @@ describe("The repeat", () => {
                 const mid = Math.floor(vm.items.length/2)
                 vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                 await Updates.next();
-                expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(mid)}newitem1newitem2${createOutput(vm.items.slice(mid +2).length , void 0, void 0, void 0, mid +2 ) }`);
             });
             it(`updates rendered HTML when all items are spliced to replace entire array with an array of size ${size}`, async () => {
                 const { parent, targets, nodeId } = createLocation();
@@ -496,12 +496,12 @@ describe("The repeat", () => {
                 vm.items.splice(0, vm.items.length, ...vm.items);
                 await Updates.next();
                 expectViewPositionToBeCorrect(behavior);
-                expect(toHTML(parent)).to.equal(createOutput(size));
+                await expect(toHTML(parent)).to.equal(createOutput(size));
 
                 vm.items.splice(0, vm.items.length, ...vm.items);
                 await Updates.next();
                 expectViewPositionToBeCorrect(behavior);
-                expect(toHTML(parent)).to.equal(createOutput(size));
+                await expect(toHTML(parent)).to.equal(createOutput(size));
             });
         });
 
@@ -523,7 +523,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `newitem1newitem2${createOutput(size, x => x !== 0)}`
                 );
             });
@@ -549,7 +549,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(createOutput(size, () => true, "*"));
+                await expect(toHTML(parent)).to.equal(createOutput(size, () => true, "*"));
             });
         });
 
@@ -578,7 +578,7 @@ describe("The repeat", () => {
 
                 for (let i = 0; i < size; ++i) {
                     const str = `child-item${i + 1}root-root`;
-                    expect(text.indexOf(str)).to.not.equal(-1);
+                    await expect(text.indexOf(str)).to.not.equal(-1);
                 }
             });
         });
@@ -602,7 +602,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `shift${createOutput(size, index => index !== 0)}`
                 );
             });
@@ -627,7 +627,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `shiftshift${createOutput(size, index => index !== 0)}`
                 );
             });
@@ -653,7 +653,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `shift2${createOutput(size, index => index !== 0)}`
                 );
             });
@@ -678,7 +678,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size, index => index !== 0)}shift3`
                 );
             });
@@ -703,7 +703,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size, index => index !== 0)}shift3`
                 );
             });
@@ -728,7 +728,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size)}`
                 );
             });
@@ -753,7 +753,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `${createOutput(size-1)}shift3`
                 );
             });
@@ -779,7 +779,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `shift1shift2${createOutput(size-1)}shift3`
                 );
             });
@@ -805,7 +805,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `shift1shift2${createOutput(size)}`
                 );
             });
@@ -831,7 +831,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(
+                await expect(toHTML(parent)).to.equal(
                     `shift1shift2${createOutput(size -1, index => index !== 0, void 0, void 0, 1 ) }`
                 );
             });
@@ -865,7 +865,7 @@ describe("The repeat", () => {
 
                 await Updates.next();
 
-                expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
+                await expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
             });
         });
     });
