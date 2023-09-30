@@ -51,9 +51,7 @@ jobs:
       run: yarn prepare
 
     - name: Install playwright dependencies and browsers
-      run: |
-        yarn playwright install-deps
-        yarn playwright install
+      run: npx playwright install --with-deps
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
