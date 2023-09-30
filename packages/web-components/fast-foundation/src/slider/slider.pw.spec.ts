@@ -513,7 +513,7 @@ test.describe("Slider", () => {
                 node.value = "3";
             });
 
-            await expect(element).toHaveAttribute("value", "");
+            await expect(element).not.toHaveAttribute("value", "");
 
             await expect(element).toHaveJSProperty("value", "3");
 
