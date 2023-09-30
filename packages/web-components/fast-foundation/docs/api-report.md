@@ -441,6 +441,7 @@ export interface ColumnDefinition {
 // @public
 export class Combobox extends FormAssociatedCombobox {
     autocomplete: ComboboxAutocomplete | undefined;
+    caseSensitive: boolean;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
