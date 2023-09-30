@@ -1,7 +1,6 @@
 
 import { css, customElement, FASTElement, HostController, html, Observable, Updates } from "@microsoft/fast-element";
-import chai, { expect } from "chai";
-import spies from "chai-spies";
+import { expect } from "@esm-bundle/chai";
 import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 import {DesignTokenEventResolutionStrategy} from "./event-strategy.js"
 
