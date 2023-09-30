@@ -32,10 +32,12 @@
     "watch": "yarn build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
-    "@types/mocha": "^7.0.2",
-    "@types/sinon": "10.0.17",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@microsoft/eslint-config-fast-dna": "^2.1.0",
+    "@types/mocha": "^7.0.2",
+    "@types/sinon": "10.0.17",
+    "@web/test-runner": "0.17.0",
+    "@web/test-runner-playwright": "0.10.1",
     "eslint-config-prettier": "^8.8.0",
     "eslint-loader": "^4.0.0",
     "mocha": "^7.1.2",
