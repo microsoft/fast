@@ -1,4 +1,4 @@
-import { expect } from "@esm-bundle/chai";;
+import { expect } from "@esm-bundle/chai";
 import { convertStylePropertyPixelsToNumber, getClientRectWithMargin } from "./html.js";
 
 describe("getClientRectWithMargin", () => {

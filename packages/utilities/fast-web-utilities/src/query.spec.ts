@@ -1,4 +1,4 @@
-import { expect } from "@esm-bundle/chai";;
+import { expect } from "@esm-bundle/chai";
 import { parseQueryStringParams } from "./query.js";
 
 describe("parseQueryStringParams", (): void => {

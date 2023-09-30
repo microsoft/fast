@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update to use web test runner",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
