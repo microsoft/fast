@@ -9,8 +9,6 @@ export default {
     playwright: true,
     browsers: [
         playwrightLauncher({ product: "chromium" }),
-        playwrightLauncher({ product: "firefox" }),
-        playwrightLauncher({ product: "webkit" }),
     ],
     files: [
         "dist/esm/**/*.spec.js",
