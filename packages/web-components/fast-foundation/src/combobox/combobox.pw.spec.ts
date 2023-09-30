@@ -166,7 +166,7 @@ test.describe("Combobox", () => {
             node.open = true;
         });
 
-        await expect(element).toHaveAttribute("aria-activedescendant", "");
+        await expect(control).toHaveAttribute("aria-activedescendant", "");
 
         const optionsCount = await options.count();
 
@@ -188,7 +188,7 @@ test.describe("Combobox", () => {
 
         await expect(control).hasAttribute("aria-activedescendant");
 
-        await expect(element).toHaveAttribute("aria-activedescendant", "");
+        await expect(control).toHaveAttribute("aria-activedescendant", "");
     });
 
     test("should set its value to the first option with the `selected` attribute present", async () => {
@@ -267,117 +267,111 @@ test.describe("Combobox", () => {
         await expect(listbox).toBeVisible();
     });
 
-    test.describe(
-        "should NOT emit a 'change' event when the value changes by user input while open",
-        () => {
-            test("via arrow down key", async () => {
-                await root.evaluate(node => {
-                    node.innerHTML = /* html */ `
+    test.describe("should NOT emit a 'change' event when the value changes by user input while open", () => {
+        test("via arrow down key", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
                         <fast-combobox>
                             <fast-option>Option 1</fast-option>
                             <fast-option>Option 2</fast-option>
                             <fast-option>Option 3</fast-option>
                         </fast-combobox>
                     `;
-                });
-
-                await element.click();
-
-                await element.locator(".listbox").waitFor({ state: "visible" });
-
-                await expect(element).toHaveBooleanAttribute("open");
-
-                const [wasChanged] = await Promise.all([
-                    element.evaluate(node =>
-                        Promise.race<boolean>([
-                            new Promise(resolve => {
-                                node.addEventListener("change", () => resolve(true));
-                            }),
-                            new Promise(resolve => setTimeout(() => resolve(false), 100)),
-                        ])
-                    ),
-                    element.press("ArrowDown"),
-                ]);
-
-                expect(wasChanged).toBeFalsy();
             });
 
-            test("via arrow up key", async () => {
-                await root.evaluate(node => {
-                    node.innerHTML = /* html */ `
+            await element.click();
+
+            await element.locator(".listbox").waitFor({ state: "visible" });
+
+            await expect(element).toHaveBooleanAttribute("open");
+
+            const [wasChanged] = await Promise.all([
+                element.evaluate(node =>
+                    Promise.race<boolean>([
+                        new Promise(resolve => {
+                            node.addEventListener("change", () => resolve(true));
+                        }),
+                        new Promise(resolve => setTimeout(() => resolve(false), 100)),
+                    ])
+                ),
+                element.press("ArrowDown"),
+            ]);
+
+            expect(wasChanged).toBeFalsy();
+        });
+
+        test("via arrow up key", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
                         <fast-combobox>
                             <fast-option>Option 1</fast-option>
                             <fast-option>Option 2</fast-option>
                             <fast-option>Option 3</fast-option>
                         </fast-combobox>
                     `;
-                });
-
-                await element.evaluate((node: FASTCombobox) => {
-                    node.value = "two";
-                });
-
-                await element.click();
-
-                await element.locator(".listbox").waitFor({ state: "visible" });
-
-                expect(
-                    await element.evaluate(node => node.hasAttribute("open"))
-                ).toBeTruthy();
-
-                const [wasChanged] = await Promise.all([
-                    element.evaluate(node =>
-                        Promise.race<boolean>([
-                            new Promise(resolve => {
-                                node.addEventListener("change", () => resolve(true));
-                            }),
-                            new Promise(resolve => setTimeout(() => resolve(false), 100)),
-                        ])
-                    ),
-                    element.press("ArrowUp"),
-                ]);
-
-                expect(wasChanged).toBeFalsy();
             });
-        }
-    );
 
-    test.describe(
-        "should NOT emit a 'change' event when the value changes by programmatic interaction",
-        () => {
-            test("via end key", async () => {
-                await root.evaluate(node => {
-                    node.innerHTML = /* html */ `
+            await element.evaluate((node: FASTCombobox) => {
+                node.value = "two";
+            });
+
+            await element.click();
+
+            await element.locator(".listbox").waitFor({ state: "visible" });
+
+            expect(
+                await element.evaluate(node => node.hasAttribute("open"))
+            ).toBeTruthy();
+
+            const [wasChanged] = await Promise.all([
+                element.evaluate(node =>
+                    Promise.race<boolean>([
+                        new Promise(resolve => {
+                            node.addEventListener("change", () => resolve(true));
+                        }),
+                        new Promise(resolve => setTimeout(() => resolve(false), 100)),
+                    ])
+                ),
+                element.press("ArrowUp"),
+            ]);
+
+            expect(wasChanged).toBeFalsy();
+        });
+    });
+
+    test.describe("should NOT emit a 'change' event when the value changes by programmatic interaction", () => {
+        test("via end key", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
                         <fast-combobox>
                             <fast-option>Option 1</fast-option>
                             <fast-option>Option 2</fast-option>
                             <fast-option>Option 3</fast-option>
                         </fast-combobox>
                     `;
-                });
-
-                await element.evaluate((node: FASTCombobox) => {
-                    node.value = "two";
-                });
-
-                const [wasChanged] = await Promise.all([
-                    element.evaluate(node =>
-                        Promise.race<boolean>([
-                            new Promise(resolve => {
-                                node.addEventListener("change", () => resolve(true));
-                            }),
-                            new Promise(resolve => setTimeout(() => resolve(false), 50)),
-                        ])
-                    ),
-                    element.press("End"),
-                ]);
-
-                expect(wasChanged).toBeFalsy();
-
-                await expect(element).toHaveJSProperty("value", "two");
             });
-        }
-    );
+
+            await element.evaluate((node: FASTCombobox) => {
+                node.value = "two";
+            });
+
+            const [wasChanged] = await Promise.all([
+                element.evaluate(node =>
+                    Promise.race<boolean>([
+                        new Promise(resolve => {
+                            node.addEventListener("change", () => resolve(true));
+                        }),
+                        new Promise(resolve => setTimeout(() => resolve(false), 50)),
+                    ])
+                ),
+                element.press("End"),
+            ]);
+
+            expect(wasChanged).toBeFalsy();
+
+            await expect(element).toHaveJSProperty("value", "two");
+        });
+    });
 
     test.describe("when the owning form's reset() function is invoked", () => {
         test("should reset the value property to its initial value", async () => {
