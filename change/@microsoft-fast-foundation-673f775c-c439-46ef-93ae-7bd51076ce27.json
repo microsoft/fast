@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix typings for Typescript 4.8+",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "fcollonval@gmail.com",
+  "dependentChangeType": "patch"
+}
