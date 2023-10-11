@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Wed, 11 Oct 2023 22:20:26 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.3.20",
+      "version": "0.3.20",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "0dea28d8c84dd317f1b5d18a1a1dd8cea3cb434c",
+            "comment": "add missing explicit types for fast-react-wrapper"
+          }
+        ],
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-foundation to v2.49.2",
+            "commit": "16002f3318474ee5cca3dcf2d65dfb94897c9f45"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Aug 2023 00:10:29 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.3.19",
       "version": "0.3.19",

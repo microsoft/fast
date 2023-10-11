@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 11 Aug 2023 00:10:28 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Oct 2023 22:20:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.2
+
+Wed, 11 Oct 2023 22:20:26 GMT
+
+### Patches
+
+- Fix typings for Typescript 4.8+ (fcollonval@gmail.com)
 
 ## 2.49.1
 

@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 11 Oct 2023 22:20:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.2",
+      "version": "2.49.2",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "16002f3318474ee5cca3dcf2d65dfb94897c9f45",
+            "comment": "update api report"
+          }
+        ],
+        "patch": [
+          {
+            "author": "fcollonval@gmail.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "edf73f0806e70ff53469fc6b12b09b6ad7b5de69",
+            "comment": "Fix typings for Typescript 4.8+"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Aug 2023 00:10:28 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.1",
       "version": "2.49.1",
