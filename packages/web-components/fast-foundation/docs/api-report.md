@@ -2620,8 +2620,6 @@ export class Toolbar extends FoundationElement {
     childItems: Element[];
     // (undocumented)
     protected childItemsChanged(prev: undefined | Element[], next: Element[]): void;
-    // @internal
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2630,6 +2628,8 @@ export class Toolbar extends FoundationElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    mouseDownHandler(e: MouseEvent): boolean | void;
     orientation: Orientation;
     // @internal
     protected reduceFocusableElements(): void;

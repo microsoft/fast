@@ -131,7 +131,7 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    public clickHandler(e: MouseEvent): boolean | void {
+    public mouseDownHandler(e: MouseEvent): boolean | void {
         const activeIndex = this.focusableElements?.findIndex(x =>
             x.contains(e.target as HTMLElement)
         );
