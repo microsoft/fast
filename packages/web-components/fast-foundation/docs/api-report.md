@@ -2093,8 +2093,6 @@ export class FASTToolbar extends FASTElement {
     childItems: Element[];
     // (undocumented)
     protected childItemsChanged(prev: undefined | Element[], next: Element[]): void;
-    // @internal
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2103,6 +2101,8 @@ export class FASTToolbar extends FASTElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    mouseDownHandler(e: MouseEvent): boolean | void;
     orientation: ToolbarOrientation;
     // @internal
     protected reduceFocusableElements(): void;
