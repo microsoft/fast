@@ -24,7 +24,6 @@ export function textAreaTemplate<T extends FASTTextArea>(): ElementViewTemplate<
             ?autofocus="${x => x.autofocus}"
             cols="${x => x.cols}"
             ?disabled="${x => x.disabled}"
-            form="${x => x.form}"
             list="${x => x.list}"
             maxlength="${x => x.maxlength}"
             minlength="${x => x.minlength}"

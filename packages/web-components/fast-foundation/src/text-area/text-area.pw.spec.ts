@@ -256,4 +256,18 @@ test.describe("TextArea", () => {
             await expect(element).toHaveJSProperty("value", "new-attr-value");
         });
     });
+
+    test("control's form property should not be undefined.", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-text-area></fast-text-area>
+                </form>
+            `;
+        });
+
+        await expect(
+            await control.evaluate((node: HTMLTextAreaElement) => node.form)
+        ).not.toBe(undefined);
+    });
 });
