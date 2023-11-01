@@ -58,6 +58,23 @@ export class FASTSelect extends FormAssociatedSelect {
     public open: boolean = false;
 
     /**
+     * The placeholder attribute.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: placeholder
+     */
+    @attr
+    public placeholder: string;
+
+    /**
+     * The ref to the internal `.control` element.
+     *
+     * @internal
+     */
+    @observable
+    public placeholderOption: HTMLOptionElement | null = null;
+    /**
      * Sets focus and synchronizes ARIA attributes when the open property changes.
      *
      * @param prev - the previous open value
@@ -88,6 +105,10 @@ export class FASTSelect extends FormAssociatedSelect {
 
         this.ariaControls = "";
         this.ariaExpanded = "false";
+    }
+
+    public placeholderChanged(): void {
+        this.updateDisplayValue();
     }
 
     /**
@@ -262,7 +283,7 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     public get displayValue(): string {
         Observable.track(this, "displayValue");
-        return this.firstSelectedOption?.text ?? "";
+        return this.firstSelectedOption?.text ?? this.placeholderOption?.text ?? "";
     }
 
     /**
@@ -463,7 +484,7 @@ export class FASTSelect extends FormAssociatedSelect {
             el => el.hasAttribute("selected") || el.selected || el.value === this.value
         );
 
-        if (selectedIndex !== -1) {
+        if (selectedIndex !== -1 || this.placeholder) {
             this.selectedIndex = selectedIndex;
             return;
         }
@@ -581,7 +602,7 @@ export class FASTSelect extends FormAssociatedSelect {
      * @internal
      */
     private updateDisplayValue(): void {
-        if (this.collapsible) {
+        if (this.$fastController.isConnected && this.collapsible) {
             Observable.notify(this, "displayValue");
         }
     }

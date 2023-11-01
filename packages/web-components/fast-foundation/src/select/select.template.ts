@@ -61,6 +61,14 @@ export function selectTemplate<T extends FASTSelect>(
                 ?hidden="${x => (x.collapsible ? !x.open : false)}"
                 ${ref("listbox")}
             >
+                ${when(
+                    x => x.placeholder,
+                    html<T>`
+                        <option disabled hidden ${ref("placeholderOption")}>
+                            ${x => x.placeholder}
+                        </option>
+                    `
+                )}
                 <slot
                     ${slotted({
                         filter: FASTListbox.slottedOptionFilter,
