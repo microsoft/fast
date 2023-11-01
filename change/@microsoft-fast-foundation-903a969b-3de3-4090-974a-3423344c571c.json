@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix focus issues with toolbar",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "20542556+mollykreis@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

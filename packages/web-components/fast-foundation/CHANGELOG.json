@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 01 Nov 2023 20:34:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.3",
+      "version": "2.49.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "507d2fef836f75b072d0c05c9e37b7c59959ff51",
+            "comment": "Fix focus issues with toolbar"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Aug 2023 00:10:28 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.1",
       "version": "2.49.1",

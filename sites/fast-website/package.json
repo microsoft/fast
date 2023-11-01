@@ -12,7 +12,7 @@
     "@fluentui/svg-icons": "^1.1.139",
     "@microsoft/fast-components": "2.30.5",
     "@microsoft/fast-element": "^1.12.0",
-    "@microsoft/fast-foundation": "^2.49.2",
+    "@microsoft/fast-foundation": "^2.49.3",
     "@microsoft/fast-web-utilities": "^5.4.1",
     "@microsoft/site-utilities": "^0.9.0",
     "@rollup/plugin-alias": "^3.1.1",

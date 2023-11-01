@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 11 Aug 2023 00:10:28 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Nov 2023 20:34:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.3
+
+Wed, 01 Nov 2023 20:34:39 GMT
+
+### Patches
+
+- Fix focus issues with toolbar (20542556+mollykreis@users.noreply.github.com)
 
 ## 2.49.1
 
