@@ -108,15 +108,6 @@ export class FASTSelect extends FormAssociatedSelect {
     }
 
     /**
-     * Updates the display value when the placeholder changes.
-     *
-     * @public
-     */
-    public placeholderChanged(): void {
-        this.updateDisplayValue();
-    }
-
-    /**
      * The selectedIndex when the open property is true.
      *
      * @internal
