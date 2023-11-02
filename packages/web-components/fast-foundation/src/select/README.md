@@ -136,12 +136,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name               | Privacy   | Type                  | Default | Description                                          | Inherited From       |
 | ------------------ | --------- | --------------------- | ------- | ---------------------------------------------------- | -------------------- |
 | `open`             | public    | `boolean`             | `false` | The open attribute.                                  |                      |
+| `placeholder`      | public    | `string`              |         | The placeholder attribute.                           |                      |
 | `value`            | public    |                       |         | The value property.                                  |                      |
 | `cleanup`          | public    | `() => void`          |         | Cleanup function for the listbox positioner.         |                      |
 | `displayValue`     | public    | `string`              |         | The value displayed on the button.                   |                      |
 | `proxy`            |           |                       |         |                                                      | FormAssociatedSelect |
 | `multiple`         | public    | `boolean`             |         | Indicates if the listbox is in multi-selection mode. | FASTListboxElement   |
-| `placeholder`      | public    | `string`              |         | The placeholder text.                                |                      |
 | `size`             | public    | `number`              |         | The maximum number of options to display.            | FASTListboxElement   |
 | `length`           | public    | `number`              |         | The number of options.                               | FASTListbox          |
 | `options`          | public    | `FASTListboxOption[]` |         | The list of options.                                 | FASTListbox          |
@@ -168,10 +168,11 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name   | Field    | Inherited From |
-| ------ | -------- | -------------- |
-| `open` | open     |                |
-|        | multiple | FASTListbox    |
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `open`        | open        |                |
+| `placeholder` | placeholder |                |
+|               | multiple    | FASTListbox    |
 
 #### CSS Parts
 
