@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "select: adds placeholder feat",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "brian.christopher.brady@gmail.com",
+  "dependentChangeType": "patch"
+}
