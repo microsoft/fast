@@ -107,6 +107,11 @@ export class FASTSelect extends FormAssociatedSelect {
         this.ariaExpanded = "false";
     }
 
+    /**
+     * Updates the display value when the placeholder changes.
+     *
+     * @public
+     */
     public placeholderChanged(): void {
         this.updateDisplayValue();
     }
