@@ -23,7 +23,6 @@ export default {
         disabled: false,
         multiple: false,
         open: false,
-        placeholder: undefined,
         storyContent: html<StoryArgs<FASTSelect>>`
             ${repeat(x => x.storyItems, listboxOptionTemplate)}
         `,
