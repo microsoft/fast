@@ -1,35 +1,14 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTAccordionItem } from "./accordion-item.js";
 
 test.describe("Accordion item", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let heading: Locator;
-    let button: Locator;
+    test("should set a default heading level of 2 when `headinglevel` is not provided", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("debug--blank"));
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-accordion-item");
-
-        root = page.locator("#root");
-
-        heading = page.locator(`[role="heading"]`);
-
-        button = element.locator("button");
-
-        await page.goto(fixtureURL("accordion-item--accordion-item"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should set a default heading level of 2 when `headinglevel` is not provided", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion-item>
                     <span slot="heading">Heading 1</span>
@@ -37,14 +16,20 @@ test.describe("Accordion item", () => {
                 </fast-accordion-item>
             `;
         });
+
+        const element = page.locator("fast-accordion-item");
 
         await expect(element).not.hasAttribute("headinglevel");
 
         await expect(element).toHaveJSProperty("headinglevel", 2);
     });
 
-    test("should set the `aria-level` attribute on the internal heading element equal to the heading level", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-level` attribute on the internal heading element equal to the heading level", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("debug--blank"));
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion-item>
                     <span slot="heading">Heading 1</span>
@@ -53,51 +38,75 @@ test.describe("Accordion item", () => {
             `;
         });
 
-        await element.evaluate<void, FASTAccordionItem>(node => {
+        const element = page.locator("fast-accordion-item");
+        const heading = page.locator(`[role="heading"]`);
+
+        await element.evaluate((node: FASTAccordionItem) => {
             node.headinglevel = 3;
         });
 
         await expect(heading).toHaveAttribute("aria-level", "3");
     });
 
-    test("should set `aria-expanded` property on the internal control equal to the `expanded` property", async () => {
-        await root.evaluate(node => {
+    test("should set `aria-expanded` property on the internal control equal to the `expanded` property", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("debug--blank"));
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion-item expanded></fast-accordion-item>
             `;
         });
 
+        const element = page.locator("fast-accordion-item");
+        const button = element.locator("button");
+
         await expect(button).toHaveAttribute("aria-expanded", "true");
 
-        await element.evaluate<void, FASTAccordionItem>(node => {
+        await element.evaluate((node: FASTAccordionItem) => {
             node.expanded = false;
         });
 
         await expect(button).toHaveAttribute("aria-expanded", "false");
     });
 
-    test("should set `disabled` attribute on the internal control equal to the `disabled` property", async () => {
-        await root.evaluate(node => {
+    test("should set `disabled` attribute on the internal control equal to the `disabled` property", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("debug--blank"));
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion-item disabled></fast-accordion-item>
             `;
         });
 
+        const element = page.locator("fast-accordion-item");
+        const button = element.locator("button");
+
         await expect(button).toHaveBooleanAttribute("disabled");
 
-        await element.evaluate<void, FASTAccordionItem>(node => {
+        await element.evaluate((node: FASTAccordionItem) => {
             node.disabled = false;
         });
 
         await expect(button).not.toHaveBooleanAttribute("disabled");
     });
 
-    test("should set internal properties to match the id when provided", async () => {
-        await root.evaluate(node => {
+    test("should set internal properties to match the id when provided", async ({
+        page,
+    }) => {
+        await page.goto(fixtureURL("debug--blank"));
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion-item id="foo"></fast-accordion-item>
             `;
         });
+
+        const element = page.locator("fast-accordion-item");
+        const button = element.locator("button");
 
         await expect(element.locator(`[role="region"]`)).toHaveAttribute(
             "aria-labelledby",
