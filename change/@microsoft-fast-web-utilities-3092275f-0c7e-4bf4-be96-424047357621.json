@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "fix RtlScrollConverter test",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
