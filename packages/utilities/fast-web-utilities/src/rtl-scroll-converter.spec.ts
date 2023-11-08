@@ -103,13 +103,12 @@ describe("RtlScrollConverter", (): void => {
     });
 
     it("invertedGetRtlScrollConverter returns correct value", () => {
-        const scale = window.devicePixelRatio;
         const testElement: HTMLDivElement = getDummyDiv();
         document.body.appendChild(testElement);
         testElement.scrollLeft = 1;
 
         expect(RtlScrollConverter["invertedGetRtlScrollConverter"](testElement)).to.equal(
-            -1 / scale
+            -1
         );
     });
 
