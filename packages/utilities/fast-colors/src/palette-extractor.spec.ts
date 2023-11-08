@@ -1,11 +1,10 @@
-import chai from "chai";
+import { expect } from "@esm-bundle/chai";
 import { test } from "mocha";
 import { test200ImageData } from "./__test__/test200.js";
 import { testGrey200ImageData } from "./__test__/testGrey200.js";
 import { ArrayPixelBlob } from "./array-pixel-blob.js";
 import { quantize, QuantizedColor } from "./color-quantization.js";
 import { extractPalette, PaletteEntry } from "./palette-extractor.js";
-const expect = chai.expect;
 
 describe("Extracting a palette from a set of colors", (): void => {
     test("Extract palette with default settings", () => {

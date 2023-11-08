@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { attr, AttributeDefinition } from "./attributes.js";
 import { FASTElement } from "./fast-element.js";
 

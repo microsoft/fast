@@ -6,6 +6,6 @@
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "allowJs": true,
-        "types": ["mocha", "webpack-env", "node"]
+        "types": ["mocha", "sinon", "webpack-env", "node"]
     }
 }

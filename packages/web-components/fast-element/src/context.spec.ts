@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { Context } from "./context.js";
 import { uniqueElementName } from "./testing/fixture.js";
 

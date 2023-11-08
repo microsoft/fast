@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import type { FASTGlobal } from "./interfaces.js";
 import { createTypeRegistry, TypeDefinition } from "./platform.js";
 

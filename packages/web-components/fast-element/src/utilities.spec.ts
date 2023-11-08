@@ -1,5 +1,5 @@
 import { composedContains, composedParent } from "./utilities.js";
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { Updates } from "./observation/update-queue.js";
 import { customElement, FASTElement } from "./components/fast-element.js";
 import { observable } from "./observation/observable.js";

@@ -24,7 +24,7 @@ import { isTabbable } from "tabbable";
 export class FASTDialog extends FASTElement {
     /**
      * Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal
-     * overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event.
+     * overlay. Clicks on the overlay will cause the dialog to emit a "dismiss" event.
      * @public
      * @defaultValue - false
      * @remarks

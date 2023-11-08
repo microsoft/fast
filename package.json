@@ -18,9 +18,6 @@
       "examples/ssr"
     ],
     "nohoist": [
-      "**/@types/chai",
-      "**/@types/jest",
-      "**/@types/karma",
       "**/@types/mocha",
       "**/@types/node",
       "**/chai",

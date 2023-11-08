@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { DOMPolicy, DOMPolicyOptions } from "./dom-policy.js";
 import { DOM, DOMAspect, DOMSink } from "./dom.js";
 

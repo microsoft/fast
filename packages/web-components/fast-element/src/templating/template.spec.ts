@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { html, ViewTemplate } from "./template.js";
 import { Markup, nextId, Parser } from "./markup.js";
 import { HTMLBindingDirective } from "./html-binding-directive.js";

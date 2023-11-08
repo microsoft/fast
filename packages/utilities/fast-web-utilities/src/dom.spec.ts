@@ -1,5 +1,5 @@
-import chai, { expect } from "chai";
-import spies from "chai-spies";
+import { expect } from "@esm-bundle/chai";
+import sinon from "sinon";
 import {
     canUseCssGrid,
     canUseFocusVisible,
@@ -8,8 +8,6 @@ import {
     isHTMLElement,
     resetDocumentCache,
 } from "./dom.js";
-
-chai.use(spies);
 
 describe("isHTMLElement", () => {
     document.body.innerHTML = `
@@ -64,7 +62,7 @@ describe("canUseFocusVisible", () => {
 
         // Run the function and intercept its appendChild call
         const realAppendChild = document.head.appendChild;
-        const mockAppendChild = chai.spy(realAppendChild);
+        const mockAppendChild = sinon.spy(realAppendChild);
         Object.defineProperty(document.head, "appendChild", {
             value: mockAppendChild,
             configurable: true,
@@ -81,7 +79,7 @@ describe("canUseFocusVisible", () => {
         mutationObserver.observe(document.head, { childList: true, subtree: true });
         canUseFocusVisible();
 
-        expect(mockAppendChild).to.have.been.called.exactly(1);
+        mockAppendChild.calledOnce;
         Object.defineProperty(document.head, "appendChild", {
             value: realAppendChild,
             configurable: true,
@@ -89,17 +87,17 @@ describe("canUseFocusVisible", () => {
     });
     it("should cache the result for subsequent calls", () => {
         const realAppendChild = document.head.appendChild;
-        const mockAppendChild = chai.spy(realAppendChild);
+        const mockAppendChild = sinon.spy(realAppendChild);
         Object.defineProperty(document.head, "appendChild", {
             value: mockAppendChild,
             configurable: true,
         });
         canUseFocusVisible();
 
-        expect(mockAppendChild).to.have.been.called.exactly(1);
+        mockAppendChild.calledOnce;
 
         canUseFocusVisible();
-        expect(mockAppendChild).to.have.been.called.exactly(1);
+        mockAppendChild.calledOnce;
         Object.defineProperty(document.head, "appendChild", {
             value: realAppendChild,
             configurable: true,

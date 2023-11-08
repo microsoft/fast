@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { expect } from "@esm-bundle/chai";
 import { slotted, SlottedDirective } from "./slotted.js";
 import { ref } from "./ref.js";
 import { observable } from "../observation/observable.js";

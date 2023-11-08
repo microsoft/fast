@@ -13,7 +13,7 @@
         "moduleResolution": "Node16",
         "types": [
             "mocha",
-            "webpack-env"
+            "sinon"
         ],
         "lib": [
             "DOM",

@@ -37,9 +37,8 @@
     "watch": "yarn build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
+    "@esm-bundle/chai": "4.3.4-fix.0",
     "@types/mocha": "^8.2.0",
-    "chai": "^4.2.0",
     "mocha": "^8.2.1",
     "@microsoft/eslint-config-fast-dna": "^2.1.0",
     "eslint-config-prettier": "^8.8.0",
