@@ -16,6 +16,7 @@ const commonChromeFlags = [
     "--disable-extensions",
     "--disable-infobars",
     "--disable-translate",
+    "--force-device-scale-factor=1",
 ];
 
 module.exports = function (config: any) {
