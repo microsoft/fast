@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 09 Nov 2023 19:30:24 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.4",
+      "version": "2.49.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "71481316c92e3689a4a0c243831693d9938474f8",
+            "comment": "fix: call super.disconnectedCallback in form associated base class"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Nov 2023 20:34:39 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.3",
       "version": "2.49.3",

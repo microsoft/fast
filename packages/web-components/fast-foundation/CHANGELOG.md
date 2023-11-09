@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 01 Nov 2023 20:34:39 GMT and should not be manually modified.
+This log was last generated on Thu, 09 Nov 2023 19:30:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.4
+
+Thu, 09 Nov 2023 19:30:24 GMT
+
+### Patches
+
+- fix: call super.disconnectedCallback in form associated base class (chhol@microsoft.com)
 
 ## 2.49.3
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: call super.disconnectedCallback in form associated base class",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
