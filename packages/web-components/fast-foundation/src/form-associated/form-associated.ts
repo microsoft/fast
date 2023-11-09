@@ -524,6 +524,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @internal
          */
         public disconnectedCallback(): void {
+            super.disconnectedCallback();
+
             this.proxyEventsToBlock.forEach(name =>
                 this.proxy.removeEventListener(name, this.stopPropagation)
             );
