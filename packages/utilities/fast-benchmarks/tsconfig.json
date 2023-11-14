@@ -11,7 +11,7 @@
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitThis": true,
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "skipLibCheck": true

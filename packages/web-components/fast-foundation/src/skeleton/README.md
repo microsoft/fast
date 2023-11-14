@@ -156,15 +156,6 @@ export const mySkeleton = Skeleton.compose({
 | `pattern` | public  | `string`        |         | Indicates that the component can accept a pattern URL.       |                |
 | `shimmer` | public  | `boolean`       |         | Indicates that the component has an activated shimmer effect |                |
 
-#### Attributes
-
-| Name      | Field   | Inherited From |
-| --------- | ------- | -------------- |
-| `fill`    | fill    |                |
-| `shape`   | shape   |                |
-| `pattern` | pattern |                |
-|           | shimmer |                |
-
 #### Slots
 
 | Name | Description      |

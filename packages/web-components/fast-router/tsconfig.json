@@ -6,10 +6,10 @@
         "experimentalDecorators": true,
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
-        "target": "es2015",
+        "target": "ES2019",
         "module": "ESNext",
         "importHelpers": true,
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "types": [
             "mocha",
             "webpack-env"

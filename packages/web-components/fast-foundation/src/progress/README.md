@@ -130,14 +130,6 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 | `minChanged`   | protected |             |            | `void` |                |
 | `maxChanged`   | protected |             |            | `void` |                |
 
-#### Attributes
-
-| Name | Field | Inherited From |
-| ---- | ----- | -------------- |
-|      | value |                |
-|      | min   |                |
-|      | max   |                |
-
 <hr/>
 
 
@@ -165,12 +157,6 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 | `valueChanged` | protected |             |            | `void` | FASTBaseProgress |
 | `minChanged`   | protected |             |            | `void` | FASTBaseProgress |
 | `maxChanged`   | protected |             |            | `void` | FASTBaseProgress |
-
-#### Attributes
-
-| Name | Field | Inherited From   |
-| ---- | ----- | ---------------- |
-|      | value | FASTBaseProgress |
 
 #### CSS Parts
 

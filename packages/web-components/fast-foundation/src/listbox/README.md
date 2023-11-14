@@ -88,13 +88,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `setSelectedOptions` | public  | Sets an option as selected and gives it focus. |            |        | FASTListbox    |
 | `selectFirstOption`  | public  | Moves focus to the first selectable option.    |            | `void` | FASTListbox    |
 
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | multiple | FASTListbox    |
-|      | multiple | FASTListbox    |
-
 <hr/>
 
 
@@ -124,12 +117,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | -------------------- | ------- | ---------------------------------------------- | ---------- | ------ | -------------- |
 | `selectFirstOption`  | public  | Moves focus to the first selectable option.    |            | `void` |                |
 | `setSelectedOptions` | public  | Sets an option as selected and gives it focus. |            |        |                |
-
-#### Attributes
-
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | disabled |                |
 
 #### Slots
 

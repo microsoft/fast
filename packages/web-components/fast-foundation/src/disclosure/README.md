@@ -86,13 +86,6 @@ export const myDisclosure = Disclosure.compose({
 | -------- | ---- | ------------------------------------------------ | -------------- |
 | `toggle` |      | fires a toggle event when the summary is toggled |                |
 
-#### Attributes
-
-| Name      | Field    | Inherited From |
-| --------- | -------- | -------------- |
-|           | expanded |                |
-| `summary` | summary  |                |
-
 #### Slots
 
 | Name    | Description                                              |

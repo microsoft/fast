@@ -145,13 +145,6 @@ export const myTabs = Tabs.compose({
 | -------- | ---- | --------------------------------------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when a tab is clicked or during keyboard navigation |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `orientation` | orientation |                |
-| `activeid`    | activeid    |                |
-
 #### CSS Parts
 
 | Name      | Description                       |

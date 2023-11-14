@@ -140,21 +140,6 @@ This component is built with the expectation that focus is delegated to the inpu
 | -------- | ---- | -------------------------------------------------------- | -------------- |
 | `change` |      | Fires a custom 'change' event when the value has changed |                |
 
-#### Attributes
-
-| Name          | Field       | Inherited From |
-| ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
-|               | autofocus   |                |
-| `placeholder` | placeholder |                |
-| `type`        | type        |                |
-| `list`        | list        |                |
-|               | maxlength   |                |
-|               | minlength   |                |
-| `pattern`     | pattern     |                |
-|               | size        |                |
-|               | spellcheck  |                |
-
 #### CSS Parts
 
 | Name      | Description                                                     |

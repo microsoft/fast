@@ -494,7 +494,7 @@
             "package": "@microsoft/fast-react-wrapper"
           },
           {
-            "comment": "chore: various fixes for Node16 and package exports",
+            "comment": "chore: various fixes for NodeNext and package exports",
             "author": "roeisenb@microsoft.com",
             "commit": "4699e77715068f8610aae908ede6356a249574b6",
             "package": "@microsoft/fast-react-wrapper"
