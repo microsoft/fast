@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "parse5": "^6.0.1",
-    "tslib": "^2.4.0"
+    "tslib": "2.4.0"
   },
   "peerDependencies": {
     "@microsoft/fast-element": "^2.0.0-beta.26"
@@ -63,7 +63,7 @@
     "@microsoft/fast-element": "^2.0.0-beta.26",
     "@microsoft/fast-foundation": "^3.0.0-alpha.31",
     "@microsoft/api-extractor": "7.24.2",
-    "@playwright/test": "~1.37.1",
+    "@playwright/test": "^1.39.0",
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.17",
     "chokidar-cli": "^3.0.0",

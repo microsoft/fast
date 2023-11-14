@@ -254,7 +254,7 @@
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@microsoft/api-extractor": "7.24.2",
     "@microsoft/tsdoc-config": "^0.13.4",
-    "@playwright/test": "~1.37.1",
+    "@playwright/test": "^1.39.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@storybook/addon-docs": "6.5.10",
     "@storybook/addon-essentials": "6.5.10",
