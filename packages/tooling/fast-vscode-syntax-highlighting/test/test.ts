@@ -186,3 +186,94 @@ b = `something else`;
 `.class {}`;
 
 /* css */ 'asdf' + `.class {}`;
+
+
+// empty string
+cssPartial``;
+// blankspace-only string
+
+cssPartial``;
+
+// basic selectors
+cssPartial`
+    div #id .class[attribute] {
+    }
+`;
+
+// property interpolation
+cssPartial`
+    a {
+        color: ${someColor};
+    }
+`;
+cssPartial`
+    a {
+        ${interpolatedList}
+    }
+`;
+cssPartial`
+    a {
+        ${propertyName}: "value";
+    }
+`;
+
+// selector interpolation
+cssPartial`
+    ${someSelector} {
+    }
+`;
+cssPartial`
+    [${someAttr.name}="value"] {
+    }
+`;
+cssPartial`[${someAttr.full}] {}`;
+cssPartial`
+    #${someId} .${someClass} {
+    }
+`;
+
+cssPartial`[name="${someSelector}"] {}`;
+cssPartial`a:${someSelector} {}`;
+cssPartial`
+    a:not(${someSelector}) {
+    }
+`;
+
+cssPartial`
+/* ${invalid} */
+.asdf {
+    /* color: ${invalid}; */
+}
+`;
+
+cssPartial`
+    :root {
+        ${behavior.propertyName}: #000;
+        background-image: url("strings ${within.Strings?.work}");
+    }
+    :host(.my-element) {
+        color: ${behavior.var};
+        height: calc(${heightNumber} * 1px);
+    }
+`;
+
+cssPartial`
+    div {
+    }
+`.withBehaviors(
+    behavior,
+    forcedColorsStylesheetBehavior(
+        css`
+            #selector:${pseudoSelector}::before {
+                color: ${SystemColors.Highlight};
+                line-height: 2;
+            }
+        `
+    )
+);
+
+cssPartial`
+    ${context.tagFor(Component)} {
+        color: ${tokenValue};
+    }
+`;
