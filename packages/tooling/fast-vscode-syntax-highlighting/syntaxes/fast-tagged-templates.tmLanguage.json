@@ -15,7 +15,7 @@
     ],
     "repository": {
         "css-tagged-template": {
-            "begin": "(?i)(?<!\\.)((cssPartial|css)|((?:\\/\\*\\s*?)(cssPartial|css)(?:\\s*\\*\\/)))\\s*(`)",
+            "begin": "(?i)(?<!\\.)((css(\\.)?(partial)?)|((?:\\/\\*\\s*?)(css(\\.)?(partial)?)(?:\\s*\\*\\/)))\\s*(`)",
             "beginCaptures": {
                 "1": {
                     "name": "entity.name.function.tagged-template.ts"
