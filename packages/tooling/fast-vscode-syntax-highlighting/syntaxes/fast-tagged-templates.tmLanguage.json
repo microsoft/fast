@@ -44,7 +44,7 @@
             ]
         },
         "css-partial-tagged-template": {
-            "begin": "(?i)(?<!\\.)(css(\\.?)partial|((?:\\/\\*\\s*?)css(\\.?)partial(?:\\s*\\*\\/)))\\s*(`)",
+            "begin": "(?i)(?<!\\.)(\bcss(\\.?)partial|((?:\\/\\*\\s*?)\bcss(\\.?)partial(?:\\s*\\*\\/)))\\s*(`)",
             "beginCaptures": {
                 "1": {
                     "name": "entity.name.function.tagged-template.ts"
