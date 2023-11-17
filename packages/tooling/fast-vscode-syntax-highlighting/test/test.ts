@@ -187,6 +187,11 @@ b = `something else`;
 
 /* css */ 'asdf' + `.class {}`;
 
+// just property
+cssPartial`color: ${new myDirective}`;
+
+// just property with value
+cssPartial`color: red`;
 
 // empty string
 cssPartial``;
@@ -194,176 +199,14 @@ cssPartial``;
 
 cssPartial``;
 
-// basic selectors
-cssPartial`
-    div #id .class[attribute] {
-    }
-`;
+// just property
+css.partial`color: ${new myDirective}`;
 
-// property interpolation
-cssPartial`
-    a {
-        color: ${someColor};
-    }
-`;
-cssPartial`
-    a {
-        ${interpolatedList}
-    }
-`;
-cssPartial`
-    a {
-        ${propertyName}: "value";
-    }
-`;
-
-// selector interpolation
-cssPartial`
-    ${someSelector} {
-    }
-`;
-cssPartial`
-    [${someAttr.name}="value"] {
-    }
-`;
-cssPartial`[${someAttr.full}] {}`;
-cssPartial`
-    #${someId} .${someClass} {
-    }
-`;
-
-cssPartial`[name="${someSelector}"] {}`;
-cssPartial`a:${someSelector} {}`;
-cssPartial`
-    a:not(${someSelector}) {
-    }
-`;
-
-cssPartial`
-/* ${invalid} */
-.asdf {
-    /* color: ${invalid}; */
-}
-`;
-
-cssPartial`
-    :root {
-        ${behavior.propertyName}: #000;
-        background-image: url("strings ${within.Strings?.work}");
-    }
-    :host(.my-element) {
-        color: ${behavior.var};
-        height: calc(${heightNumber} * 1px);
-    }
-`;
-
-cssPartial`
-    div {
-    }
-`.withBehaviors(
-    behavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            #selector:${pseudoSelector}::before {
-                color: ${SystemColors.Highlight};
-                line-height: 2;
-            }
-        `
-    )
-);
-
-cssPartial`
-    ${context.tagFor(Component)} {
-        color: ${tokenValue};
-    }
-`;
+// just property with value
+css.partial`color: red`;
 
 // empty string
 css.partial``;
 // blankspace-only string
 
 css.partial``;
-
-// basic selectors
-css.partial`
-    div #id .class[attribute] {
-    }
-`;
-
-// property interpolation
-css.partial`
-    a {
-        color: ${someColor};
-    }
-`;
-css.partial`
-    a {
-        ${interpolatedList}
-    }
-`;
-css.partial`
-    a {
-        ${propertyName}: "value";
-    }
-`;
-
-// selector interpolation
-css.partial`
-    ${someSelector} {
-    }
-`;
-css.partial`
-    [${someAttr.name}="value"] {
-    }
-`;
-css.partial`[${someAttr.full}] {}`;
-css.partial`
-    #${someId} .${someClass} {
-    }
-`;
-
-css.partial`[name="${someSelector}"] {}`;
-css.partial`a:${someSelector} {}`;
-css.partial`
-    a:not(${someSelector}) {
-    }
-`;
-
-css.partial`
-/* ${invalid} */
-.asdf {
-    /* color: ${invalid}; */
-}
-`;
-
-css.partial`
-    :root {
-        ${behavior.propertyName}: #000;
-        background-image: url("strings ${within.Strings?.work}");
-    }
-    :host(.my-element) {
-        color: ${behavior.var};
-        height: calc(${heightNumber} * 1px);
-    }
-`;
-
-css.partial`
-    div {
-    }
-`.withBehaviors(
-    behavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            #selector:${pseudoSelector}::before {
-                color: ${SystemColors.Highlight};
-                line-height: 2;
-            }
-        `
-    )
-);
-
-css.partial`
-    ${context.tagFor(Component)} {
-        color: ${tokenValue};
-    }
-`;
