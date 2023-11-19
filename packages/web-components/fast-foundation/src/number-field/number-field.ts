@@ -340,7 +340,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
-        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.control.value = this.control.value.replace(/[^0-9\-+e.]|(?<=e.*)e/g, "");
         this.isUserInput = true;
         this.value = this.control.value;
     }
