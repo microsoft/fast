@@ -4,6 +4,7 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
+import Big from "big.js";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { StartEnd } from "../patterns/start-end.js";
@@ -20,6 +21,9 @@ export type NumberFieldOptions = StartEndOptions<FASTNumberField> & {
     stepDownGlyph?: StaticallyComposableHTML<FASTNumberField>;
     stepUpGlyph?: StaticallyComposableHTML<FASTNumberField>;
 };
+
+const floatMatch = /[+-]?[0-9]*(?:\.[0-9]+)?/;
+const signedIntegerMatch = /[+-]?[0-9]+/;
 
 /**
  * A Number Field Custom HTML Element.
@@ -249,15 +253,21 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     private getValidValue(value: string): string {
-        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
-        if (isNaN(validValue)) {
-            validValue = "";
-        } else {
-            validValue = Math.min(validValue, this.max ?? validValue);
-            validValue = Math.max(validValue, this.min ?? validValue).toString();
-        }
+        try {
+            let bigValue = Big(value);
 
-        return validValue;
+            if (bigValue.gte(this.max ?? bigValue)) {
+                bigValue = Big(this.max ?? bigValue);
+            }
+
+            if (bigValue.lte(this.min ?? bigValue)) {
+                bigValue = Big(this.min ?? bigValue);
+            }
+
+            return bigValue.toString();
+        } catch (e) {
+            return "";
+        }
     }
 
     /**
@@ -266,18 +276,43 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
-        const value = parseFloat(this.value);
-        const stepUpValue = !isNaN(value)
-            ? value + this.step
+        // const value = parseFloat(this.value);
+
+        const bigValue = Big(this.value);
+
+        const stepUpValue = !isNaN(bigValue.toNumber())
+            ? bigValue.add(this.step)
             : this.min > 0
-            ? this.min
+            ? Big(this.min)
             : this.max < 0
-            ? this.max
+            ? Big(this.max)
             : !this.min
-            ? this.step
-            : 0;
+            ? Big(this.step)
+            : Big(0);
 
         this.value = stepUpValue.toString();
+
+        // if (!isNaN(value)) {
+        //     this.value = `${value + this.step}`;
+        //     return;
+        // }
+
+        // if (this.min > 0) {
+        //     this.value = this.min.toString();
+        //     return;
+        // }
+
+        // if (this.max < 0) {
+        //     this.value = this.max.toString();
+        //     return;
+        // }
+
+        // if (!this.min) {
+        //     this.value = this.step.toString();
+        //     return;
+        // }
+
+        // this.value = "0";
     }
 
     /**
@@ -286,17 +321,18 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
-        const value = parseFloat(this.value);
-        const stepDownValue = !isNaN(value)
-            ? value - this.step
+        const value = Big(this.value);
+        const stepDownValue = !isNaN(value.toNumber())
+            ? value.sub(this.step)
             : this.min > 0
-            ? this.min
+            ? Big(this.min)
             : this.max < 0
-            ? this.max
+            ? Big(this.max)
             : !this.min
-            ? 0 - this.step
-            : 0;
+            ? Big(0).sub(this.step)
+            : Big(0);
 
+        // console.log(value, this.value, stepDownValue);
         this.value = stepDownValue.toString();
     }
 
@@ -339,9 +375,19 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * Handles the internal control's `input` event
      * @internal
      */
-    public handleTextInput(): void {
-        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+    public handleTextInput(): boolean | void {
+        this.control.value = this.control.value.replace(/[^0-9eE.+-]/g, "");
+
         this.isUserInput = true;
+
+        if (this.control.value.toLowerCase().includes("e")) {
+            const parts = this.control.value.split("e");
+            if (floatMatch.test(parts[0]) && signedIntegerMatch.test(parts[1])) {
+                this.control.value = Big(this.control.value).toString();
+            }
+            return true;
+        }
+
         this.value = this.control.value;
     }
 

@@ -1472,7 +1472,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
     // @internal
     handleKeyDown(e: KeyboardEvent): boolean;
     // @internal
-    handleTextInput(): void;
+    handleTextInput(): boolean | void;
     hideStep: boolean;
     list: string;
     max: number;
