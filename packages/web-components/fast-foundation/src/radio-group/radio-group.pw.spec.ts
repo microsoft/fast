@@ -118,7 +118,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
 
         await element.evaluate<void, FASTRadioGroup>(node => {
             node.disabled = true;
@@ -150,7 +150,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-readonly");
+        await expect(element).not.toHaveAttribute("aria-readonly");
 
         await element.evaluate<void, FASTRadioGroup>(node => {
             node.readOnly = true;
@@ -172,7 +172,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test("should NOT modify child radio elements disabled state when the `disabled` attribute is present", async () => {

@@ -46,7 +46,7 @@ test.describe("Listbox", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("tabindex");
+        await expect(element).not.toHaveAttribute("tabindex");
     });
 
     test("should select nothing when no options have the `selected` attribute", async () => {
@@ -60,13 +60,13 @@ test.describe("Listbox", () => {
             `;
         });
 
-        expect(
-            await options.evaluateAll(options =>
-                options.some(option => option.hasAttribute("selected"))
-            )
-        ).toBe(false);
+        const optionsCount = await options.count();
 
-        await expect(element).not.hasAttribute("value");
+        for (let i = 0; i < optionsCount; i++) {
+            await expect(options.nth(i)).not.toHaveAttribute("selected");
+        }
+
+        await expect(element).not.toHaveAttribute("value");
 
         await expect(element).toHaveJSProperty("selectedIndex", -1);
     });
@@ -117,62 +117,59 @@ test.describe("Listbox", () => {
         await expect(element).toHaveAttribute("size", "5");
     });
 
-    test.describe(
-        "should set the `size` property to 0 when a negative value is set",
-        () => {
-            test("via the `size` property", async () => {
-                await root.evaluate(node => {
-                    node.innerHTML = /* html */ `
+    test.describe("should set the `size` property to 0 when a negative value is set", () => {
+        test("via the `size` property", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
                         <fast-listbox>
                             <fast-option>Option 1</fast-option>
                             <fast-option>Option 2</fast-option>
                             <fast-option>Option 3</fast-option>
                         </fast-listbox>
                     `;
-                });
-
-                await element.evaluate((node: FASTListboxElement) => {
-                    node.size = 1;
-                });
-
-                await expect(element).toHaveJSProperty("size", 1);
-                await expect(element).toHaveAttribute("size", "1");
-
-                await element.evaluate((node: FASTListboxElement) => {
-                    node.size = -1;
-                });
-
-                await expect(element).toHaveJSProperty("size", 0);
-                await expect(element).toHaveAttribute("size", "0");
             });
 
-            test("via the `size` attribute", async () => {
-                await root.evaluate(node => {
-                    node.innerHTML = /* html */ `
+            await element.evaluate((node: FASTListboxElement) => {
+                node.size = 1;
+            });
+
+            await expect(element).toHaveJSProperty("size", 1);
+            await expect(element).toHaveAttribute("size", "1");
+
+            await element.evaluate((node: FASTListboxElement) => {
+                node.size = -1;
+            });
+
+            await expect(element).toHaveJSProperty("size", 0);
+            await expect(element).toHaveAttribute("size", "0");
+        });
+
+        test("via the `size` attribute", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
                         <fast-listbox>
                             <fast-option>Option 1</fast-option>
                             <fast-option>Option 2</fast-option>
                             <fast-option>Option 3</fast-option>
                         </fast-listbox>
                     `;
-                });
-
-                await element.evaluate((node: FASTListboxElement) =>
-                    node.setAttribute("size", "1")
-                );
-
-                await expect(element).toHaveJSProperty("size", 1);
-                await expect(element).toHaveAttribute("size", "1");
-
-                await element.evaluate((node: FASTListboxElement) =>
-                    node.setAttribute("size", "-1")
-                );
-
-                await expect(element).toHaveJSProperty("size", 0);
-                await expect(element).toHaveAttribute("size", "0");
             });
-        }
-    );
+
+            await element.evaluate((node: FASTListboxElement) =>
+                node.setAttribute("size", "1")
+            );
+
+            await expect(element).toHaveJSProperty("size", 1);
+            await expect(element).toHaveAttribute("size", "1");
+
+            await element.evaluate((node: FASTListboxElement) =>
+                node.setAttribute("size", "-1")
+            );
+
+            await expect(element).toHaveJSProperty("size", 0);
+            await expect(element).toHaveAttribute("size", "0");
+        });
+    });
 
     test("should set the `aria-setsize` and `aria-posinset` properties on slotted options", async () => {
         await root.evaluate(node => {
@@ -260,6 +257,6 @@ test.describe("Listbox", () => {
             node.multiple = false;
         });
 
-        await expect(element).not.hasAttribute("aria-multiselectable");
+        await expect(element).not.toHaveAttribute("aria-multiselectable");
     });
 });

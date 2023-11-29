@@ -30,7 +30,7 @@ test.describe("Slider label", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test("should set the `aria-disabled` attribute when the `disabled` property is true", async () => {
