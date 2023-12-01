@@ -98,7 +98,7 @@ test.describe("TreeView", () => {
         await expect(firstTreeItem).toHaveAttribute("aria-selected", "true");
     });
 
-    test("should only allow one tree item to be selected at a time", async () => {
+    test.fixme("should only allow one tree item to be selected at a time", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view>

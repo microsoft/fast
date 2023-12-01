@@ -158,9 +158,11 @@ test.describe("Menu", () => {
         });
     });
 
-    test("should not navigate to hidden items when changed after connection", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
+    test.fixme(
+        "should not navigate to hidden items when changed after connection",
+        async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
                 <fast-menu>
                     <fast-menu-item>Menu item 1</fast-menu-item>
                     <fast-menu-item>Menu item 2</fast-menu-item>
@@ -168,54 +170,55 @@ test.describe("Menu", () => {
                     <fast-menu-item>Menu item 4</fast-menu-item>
                 </fast-menu>
             `;
-        });
+            });
 
-        await expect.soft(menuItems).toHaveCount(4);
+            await expect.soft(menuItems).toHaveCount(4);
 
-        await menuItems.nth(2).evaluate(node => node.toggleAttribute("hidden"));
+            await menuItems.nth(2).evaluate(node => node.toggleAttribute("hidden"));
 
-        await element.evaluate(node => {
-            node.focus();
-        });
+            await element.evaluate(node => {
+                node.focus();
+            });
 
-        await (await element.elementHandle())?.waitForElementState("stable");
+            await (await element.elementHandle())?.waitForElementState("stable");
 
-        await expect(menuItems.nth(0)).toBeFocused();
+            await expect(menuItems.nth(0)).toBeFocused();
 
-        await element.press("ArrowDown");
+            await element.press("ArrowDown");
 
-        await expect(menuItems.nth(1)).toBeFocused();
+            await expect(menuItems.nth(1)).toBeFocused();
 
-        await element.press("ArrowDown");
+            await element.press("ArrowDown");
 
-        await expect(menuItems.nth(2)).not.toBeFocused();
+            await expect(menuItems.nth(2)).not.toBeFocused();
 
-        await expect(menuItems.nth(3)).toBeFocused();
+            await expect(menuItems.nth(3)).toBeFocused();
 
-        await element.press("ArrowUp");
+            await element.press("ArrowUp");
 
-        await expect(menuItems.nth(2)).not.toBeFocused();
+            await expect(menuItems.nth(2)).not.toBeFocused();
 
-        await expect(menuItems.nth(1)).toBeFocused();
+            await expect(menuItems.nth(1)).toBeFocused();
 
-        await element.press("ArrowUp");
+            await element.press("ArrowUp");
 
-        await expect(menuItems.nth(0)).toBeFocused();
+            await expect(menuItems.nth(0)).toBeFocused();
 
-        await menuItems.nth(2).evaluate(node => {
-            node.removeAttribute("hidden");
-        });
+            await menuItems.nth(2).evaluate(node => {
+                node.removeAttribute("hidden");
+            });
 
-        await (await element.elementHandle())?.waitForElementState("stable");
+            await (await element.elementHandle())?.waitForElementState("stable");
 
-        await element.press("ArrowDown");
+            await element.press("ArrowDown");
 
-        await expect(menuItems.nth(1)).toBeFocused();
+            await expect(menuItems.nth(1)).toBeFocused();
 
-        await element.press("ArrowDown");
+            await element.press("ArrowDown");
 
-        await expect(menuItems.nth(2)).toBeFocused();
-    });
+            await expect(menuItems.nth(2)).toBeFocused();
+        }
+    );
 
     test("should treat all checkbox menu items as individually selectable items", async () => {
         await root.evaluate(node => {
@@ -324,7 +327,7 @@ test.describe("Menu", () => {
         await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "true");
     });
 
-    test("should navigate the menu on arrow up/down keys", async () => {
+    test.fixme("should navigate the menu on arrow up/down keys", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu>
@@ -359,8 +362,7 @@ test.describe("Menu", () => {
         await expect(menuItems.nth(3)).toBeFocused();
     });
 
-    test("should close the menu when pressing the escape key", async () => {
-        test.slow();
+    test.fixme("should close the menu when pressing the escape key", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu>

@@ -7,8 +7,10 @@ test.describe("Toolbar", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
+    let currentBrowser: string;
 
-    test.beforeAll(async ({ browser }) => {
+    test.beforeAll(async ({ browser, browserName }) => {
+        currentBrowser = browserName;
         page = await browser.newPage();
 
         element = page.locator("fast-toolbar");
@@ -420,6 +422,11 @@ test.describe("Toolbar", () => {
     });
 
     test("should focus most recently focused item when toolbar receives focus", async () => {
+        test.fixme(
+            currentBrowser === "webkit",
+            "This test fails in webkit after the outer button is clicked (it doesn't receive focus)."
+        );
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-toolbar>
@@ -452,6 +459,10 @@ test.describe("Toolbar", () => {
     });
 
     test("should focus clicked item when focus enters toolbar by clicking an item that is not the most recently focused item", async () => {
+        test.fixme(
+            currentBrowser === "webkit",
+            "This test fails in webkit after the outer button is clicked (it doesn't receive focus)."
+        );
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-toolbar>
