@@ -1,11 +1,28 @@
 import type { Locator, PlaywrightTestConfig } from "@playwright/test";
-import { expect } from "@playwright/test";
+import { devices, expect } from "@playwright/test";
 
 const config: PlaywrightTestConfig = {
-    projects: [{ name: "chromium" }, { name: "firefox" }, { name: "webkit" }],
+    projects: [
+        {
+            name: "chromium",
+            use: {
+                ...devices["Desktop Chrome"],
+                deviceScaleFactor: 1,
+                launchOptions: { args: ["--force-device-scale-factor=1"] },
+            },
+        },
+        {
+            name: "firefox",
+            use: devices["Desktop Firefox"],
+        },
+        {
+            name: "webkit",
+            use: devices["Desktop Safari"],
+        },
+    ],
     reporter: "list",
     testMatch: /.*\.pw\.spec\.ts$/,
-    retries: 3,
+    retries: process.env.CI ? 3 : 0,
     fullyParallel: process.env.CI ? false : true,
     timeout: process.env.CI ? 10000 : 30000,
     use: {
