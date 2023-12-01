@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "allow calendar getYear() to accept additional options for DateTimeFormatOptions",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
