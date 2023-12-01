@@ -149,6 +149,15 @@ export class FASTToolbar extends FASTElement {
     }
 
     /**
+     * Sets the currently active element as focused.
+     *
+     * @internal
+     */
+    public focus(): void {
+        this.setFocusedElement();
+    }
+
+    /**
      * When the toolbar receives focus, set the currently active element as focused.
      *
      * @internal

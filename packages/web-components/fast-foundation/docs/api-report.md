@@ -2117,6 +2117,8 @@ export class FASTToolbar extends FASTElement {
     // @internal
     direction: Direction;
     // @internal
+    focus(): void;
+    // @internal
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;

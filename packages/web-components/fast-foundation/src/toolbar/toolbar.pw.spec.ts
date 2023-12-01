@@ -50,7 +50,7 @@ test.describe("Toolbar", () => {
 
         const firstButton = buttons.filter({ hasText: "Start Slot Button" });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(firstButton).toBeFocused();
     });
@@ -72,7 +72,7 @@ test.describe("Toolbar", () => {
 
         const buttons = element.locator("button");
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(buttons.filter({ hasText: "Start Slot Button" })).toBeFocused();
 
@@ -130,7 +130,7 @@ test.describe("Toolbar", () => {
 
         await buttons.nth(4).evaluate(node => node.setAttribute("disabled", ""));
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -176,7 +176,7 @@ test.describe("Toolbar", () => {
 
         await buttons.nth(4).evaluate(node => node.setAttribute("hidden", ""));
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -216,7 +216,7 @@ test.describe("Toolbar", () => {
             node.append(button);
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(button1).toBeFocused();
 
@@ -251,7 +251,7 @@ test.describe("Toolbar", () => {
             node.append(endSlotButton);
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(button1).toBeFocused();
 
@@ -283,7 +283,7 @@ test.describe("Toolbar", () => {
             hasText: "Start Slot Button",
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -325,7 +325,7 @@ test.describe("Toolbar", () => {
             hasText: "Start Slot Button",
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -341,7 +341,7 @@ test.describe("Toolbar", () => {
             node.disabled = true;
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -369,7 +369,7 @@ test.describe("Toolbar", () => {
             hasText: "Start Slot Button",
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -406,7 +406,7 @@ test.describe("Toolbar", () => {
             hasText: "Start Slot Button",
         });
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(startSlotButton).toBeFocused();
 
@@ -436,7 +436,9 @@ test.describe("Toolbar", () => {
         });
         const button2 = element.locator("button", { hasText: "Button 2" });
 
-        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
 
         await button2.click();
         await expect(button2).toBeFocused();
@@ -444,7 +446,7 @@ test.describe("Toolbar", () => {
         await buttonOutsideToolbar.click();
         await expect(buttonOutsideToolbar).toBeFocused();
 
-        await element.focus();
+        await element.evaluate(node => node.focus());
 
         await expect(button2).toBeFocused();
     });
@@ -468,7 +470,9 @@ test.describe("Toolbar", () => {
 
         const button3 = element.locator("button", { hasText: "Button 3" });
 
-        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
 
         await button2.click();
         await expect(button2).toBeFocused();
