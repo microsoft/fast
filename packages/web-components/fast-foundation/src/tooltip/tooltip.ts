@@ -90,6 +90,11 @@ export class FASTTooltip extends FASTElement {
     private controlledVisibility: boolean = false;
 
     /**
+     * @internal
+     */
+    private closeWatcher: CloseWatcher | null = null;
+
+    /**
      * Switches between controlled and uncontrolled visibility.
      *
      * @param prev - the previous forced visibility state
@@ -311,7 +316,9 @@ export class FASTTooltip extends FASTElement {
         this.addEventListener("mouseout", this.mouseoutAnchorHandler);
         this.addEventListener("mouseover", this.mouseoverAnchorHandler);
 
-        document.addEventListener("keydown", this.keydownDocumentHandler);
+        if (!("CloseWatcher" in window)) {
+            document.addEventListener("keydown", this.keydownDocumentHandler);
+        }
     }
 
     public connectedCallback(): void {
@@ -337,6 +344,7 @@ export class FASTTooltip extends FASTElement {
     public hideTooltip(): void {
         this._visible = false;
         this.cleanup?.();
+        this.closeWatcher?.destroy();
     }
 
     /**
@@ -446,5 +454,8 @@ export class FASTTooltip extends FASTElement {
     private showTooltip(): void {
         this._visible = true;
         Updates.enqueue(() => this.setPositioning());
+        this.closeWatcher?.destroy();
+        this.closeWatcher = new CloseWatcher();
+        this.closeWatcher.onclose = () => this.dismiss();
     }
 }

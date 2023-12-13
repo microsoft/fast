@@ -106,6 +106,11 @@ export class FASTDialog extends FASTElement {
     /**
      * @internal
      */
+    private closeWatcher: CloseWatcher | null = null;
+
+    /**
+     * @internal
+     */
     public dismiss(): void {
         this.$emit("dismiss");
         // implement `<dialog>` interface
@@ -119,6 +124,11 @@ export class FASTDialog extends FASTElement {
      */
     public show(): void {
         this.hidden = false;
+        if ("CloseWatcher" in window) {
+            this.closeWatcher?.destroy();
+            this.closeWatcher = new CloseWatcher();
+            this.closeWatcher.onclose = () => this.hide();
+        }
     }
 
     /**
@@ -128,6 +138,7 @@ export class FASTDialog extends FASTElement {
      */
     public hide(): void {
         this.hidden = true;
+        this.closeWatcher?.destroy();
         // implement `<dialog>` interface
         this.$emit("close");
     }
@@ -152,6 +163,7 @@ export class FASTDialog extends FASTElement {
 
         // remove keydown event listener
         document.removeEventListener("keydown", this.handleDocumentKeydown);
+        this.closeWatcher?.destroy();
 
         // if we are trapping focus remove the focusin listener
         this.updateTrapFocus(false);
@@ -176,8 +188,10 @@ export class FASTDialog extends FASTElement {
         if (!e.defaultPrevented && !this.hidden) {
             switch (e.key) {
                 case keyEscape:
-                    this.dismiss();
-                    e.preventDefault();
+                    if (!this.closeWatcher) {
+                        this.dismiss();
+                        e.preventDefault();
+                    }
                     break;
 
                 case keyTab:
