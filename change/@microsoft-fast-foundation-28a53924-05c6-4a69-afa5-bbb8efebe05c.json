@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "Foundation: Update Progress templates",
+  "comment": "Foundation: Update Progress templates (see https://github.com/microsoft/fast/pull/6799)",
   "packageName": "@microsoft/fast-foundation",
   "email": "47367562+bheston@users.noreply.github.com",
   "dependentChangeType": "prerelease"
