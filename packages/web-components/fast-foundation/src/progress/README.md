@@ -3,7 +3,7 @@ id: progress
 title: fast-progress
 sidebar_label: progress
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/progress/README.md
-description: fast-progress is a web component used to display the length of time a process will take or to visualize percentage value.
+description: fast-progress is used to display the length of time a process will take or to visualize percentage value or to represent an unspecified wait time.
 ---
 
 *Progress* and *progress ring* are used to display the length of time a process will take or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). *Progress* components are typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**. 
@@ -40,8 +40,7 @@ import {
 provideFASTDesignSystem()
     .register(
         fastProgress({
-            indeterminateIndicator1: `...your indeterminate indicator...`,
-            indeterminateIndicator2: `...your indeterminate indicator...`
+            indeterminateIndicator: `...your indeterminate indicator...`
         }),
         fastProgressRing({
             indeterminateIndicator: `...your indeterminate indicator...`
@@ -79,8 +78,7 @@ export const myProgress = Progress.compose<ProgressOptions>({
     baseName: "progress",
     template,
     styles,
-    indeterminateIndicator1: `...default indeterminate indicator...`,
-    indeterminateIndicator2: `...default indeterminate indicator...`,
+    indeterminateIndicator: `...default indeterminate indicator...`,
 });
 ```
 
