@@ -1081,7 +1081,6 @@ describe("A DesignToken", () => {
             await DOM.nextUpdate();
 
             expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
-            console.log('----------------------------------------------------');
             DesignToken.unregisterRoot();
 
             await DOM.nextUpdate();
