@@ -798,8 +798,8 @@ class DesignTokenNode implements Behavior, Subscriber {
             return;
         }
 
-        this.updateCSSTokenReflection(this.store, token);
         this.hydrate(token, this.getRaw(token));
+        this.updateCSSTokenReflection(this.store, token);
     }
 
     /**
