@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "tabs fn cleanup",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "quic_scomeau@qualcomm.com",
+  "dependentChangeType": "prerelease"
+}
