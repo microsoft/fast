@@ -63,7 +63,7 @@ export function selectTemplate<T extends FASTSelect>(
                 ${ref("listbox")}
             >
                 ${when(
-                    x => x.placeholder,
+                    x => x.placeholder && !x.multiple,
                     html<T>`
                         <option disabled hidden ${ref("placeholderOption")}>
                             ${x => x.placeholder}
