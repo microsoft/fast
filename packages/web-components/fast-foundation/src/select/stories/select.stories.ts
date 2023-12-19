@@ -9,6 +9,7 @@ const storyTemplate = html<StoryArgs<FASTSelect>>`
         ?open="${x => x.open}"
         ?disabled="${x => x.disabled}"
         ?multiple="${x => x.multiple}"
+        ?required="${x => x.required}"
         placeholder="${x => x.placeholder}"
         size="${x => x.size}"
         value="${x => x.value}"
@@ -22,6 +23,7 @@ export default {
     args: {
         disabled: false,
         multiple: false,
+        required: false,
         open: false,
         storyContent: html<StoryArgs<FASTSelect>>`
             ${repeat(x => x.storyItems, listboxOptionTemplate)}
@@ -76,6 +78,11 @@ SelectDisabled.args = {
 export const SelectPlaceholder: Story<FASTSelect> = Select.bind({});
 SelectPlaceholder.args = {
     placeholder: "Placeholder",
+};
+
+export const SelectRequired: Story<FASTSelect> = Select.bind({});
+SelectRequired.args = {
+    required: true,
 };
 
 export const SelectWithSlottedStartEnd: Story<FASTSelect> = Select.bind({});
