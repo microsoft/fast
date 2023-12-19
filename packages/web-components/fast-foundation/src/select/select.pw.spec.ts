@@ -88,6 +88,52 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-required", "true");
     });
 
+    test("should render placeholder option when select is collapsible", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select placeholder="my placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+
+        const option = await page.$(".placeholder");
+
+        expect(option).not.toBeNull();
+    });
+
+    test("should not render placeholder option when the multiple attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select multiple placeholder="placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+        const option = await page.$(".placeholder");
+
+        expect(option).toBeNull();
+    });
+
+    test("should not render placeholder option when the size attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select size="3" placeholder="placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+        const option = await page.$(".placeholder");
+
+        expect(option).toBeNull();
+    });
+
     test("should set its value to the first enabled option", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

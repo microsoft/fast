@@ -65,7 +65,13 @@ export function selectTemplate<T extends FASTSelect>(
                 ${when(
                     x => x.placeholder && x.collapsible,
                     html<T>`
-                        <option disabled hidden ${ref("placeholderOption")}>
+                        <option
+                            class="placeholder"
+                            part="placeholder"
+                            disabled
+                            hidden
+                            ${ref("placeholderOption")}
+                        >
                             ${x => x.placeholder}
                         </option>
                     `
