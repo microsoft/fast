@@ -4,18 +4,15 @@ import type { FASTListboxOption } from "../listbox-option/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSelect } from "./select.js";
 
-test.describe("Select", () => {
+test.describe.only("Select", () => {
     let page: Page;
     let element: Locator;
-    let options: Locator;
     let root: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-select");
-
-        options = page.locator("fast-option");
 
         root = page.locator("#root");
 
@@ -181,6 +178,8 @@ test.describe("Select", () => {
         await element.evaluate<void, FASTSelect>(node => {
             node.open = true;
         });
+
+        const options = element.locator("fast-option");
         const option = options.nth(0);
 
         expect(
