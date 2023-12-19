@@ -41,7 +41,6 @@ export class FASTTabs extends FASTElement {
     public orientationChanged(): void {
         if (this.$fastController.isConnected) {
             this.setTabs();
-            this.setTabPanels();
         }
     }
     /**
@@ -65,7 +64,6 @@ export class FASTTabs extends FASTElement {
                 (item: HTMLElement) => item.id === oldValue
             );
             this.setTabs();
-            this.setTabPanels();
         }
     }
 
@@ -86,7 +84,6 @@ export class FASTTabs extends FASTElement {
             this.tabpanelIds = this.getTabPanelIds();
 
             this.setTabs();
-            this.setTabPanels();
         }
     }
 
@@ -107,7 +104,6 @@ export class FASTTabs extends FASTElement {
             this.tabpanelIds = this.getTabPanelIds();
 
             this.setTabs();
-            this.setTabPanels();
         }
     }
 
@@ -149,7 +145,7 @@ export class FASTTabs extends FASTElement {
         }
     }
 
-    protected setTabs = (): void => {
+    protected setTabs(): void {
         const gridHorizontalProperty: string = "gridColumn";
         const gridVerticalProperty: string = "gridRow";
         const gridProperty: string = this.isHorizontal()
@@ -186,9 +182,10 @@ export class FASTTabs extends FASTElement {
                 ? tab.classList.add("vertical")
                 : tab.classList.remove("vertical");
         });
-    };
+        this.setTabPanels();
+    }
 
-    private setTabPanels = (): void => {
+    private setTabPanels(): void {
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
             const tabId: string = this.tabIds[index];
             const tabpanelId: string = this.tabpanelIds[index];
@@ -198,7 +195,7 @@ export class FASTTabs extends FASTElement {
                 ? tabpanel.setAttribute("hidden", "")
                 : tabpanel.removeAttribute("hidden");
         });
-    };
+    }
 
     private getTabIds(): Array<string> {
         return this.tabs.map((tab: HTMLElement) => {
@@ -293,7 +290,7 @@ export class FASTTabs extends FASTElement {
         }
     }
 
-    private adjustForward = (e: KeyboardEvent): void => {
+    private adjustForward(e: KeyboardEvent): void {
         const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
@@ -314,9 +311,9 @@ export class FASTTabs extends FASTElement {
                 index += 1;
             }
         }
-    };
+    }
 
-    private adjustBackward = (e: KeyboardEvent): void => {
+    private adjustBackward(e: KeyboardEvent): void {
         const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
@@ -333,16 +330,16 @@ export class FASTTabs extends FASTElement {
                 index -= 1;
             }
         }
-    };
+    }
 
-    private moveToTabByIndex = (group: HTMLElement[], index: number) => {
+    private moveToTabByIndex(group: HTMLElement[], index: number) {
         const tab: HTMLElement = group[index] as HTMLElement;
         this.activetab = tab;
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = index;
         tab.focus();
         this.setComponent();
-    };
+    }
 
     private focusTab(): void {
         this.tabs[this.activeTabIndex].focus();
