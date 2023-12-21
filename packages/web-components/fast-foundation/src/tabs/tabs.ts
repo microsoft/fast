@@ -145,6 +145,11 @@ export class FASTTabs extends FASTElement {
         }
     }
 
+    /**
+     * Function that is invoked whenever the selected tab or the tab collection changes.
+     *
+     * @protected
+     */
     protected setTabs(): void {
         const gridHorizontalProperty: string = "gridColumn";
         const gridVerticalProperty: string = "gridRow";

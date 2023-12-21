@@ -134,10 +134,10 @@ export const myTabs = Tabs.compose({
 
 #### Methods
 
-| Name      | Privacy   | Description                    | Parameters           | Return | Inherited From |
-| --------- | --------- | ------------------------------ | -------------------- | ------ | -------------- |
-| `setTabs` | protected |                                |                      | `void` |                |
-| `adjust`  | public    | The adjust method for FASTTabs | `adjustment: number` | `void` |                |
+| Name      | Privacy   | Description                                                                       | Parameters           | Return | Inherited From |
+| --------- | --------- | --------------------------------------------------------------------------------- | -------------------- | ------ | -------------- |
+| `setTabs` | protected | Function that is invoked whenever the selected tab or the tab collection changes. |                      | `void` |                |
+| `adjust`  | public    | The adjust method for FASTTabs                                                    | `adjustment: number` | `void` |                |
 
 #### Events
 
