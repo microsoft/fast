@@ -32,5 +32,6 @@ export function tagFor(dependency: TemplateElementDependency): string {
         }
     }
 
+    dependency.define();
     return dependency.name;
 }
