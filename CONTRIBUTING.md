@@ -81,7 +81,7 @@ Packages are located within the `packages` folder of the repository. Each packag
 If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
 
 :::note
-For additional details on branch management, read the [branch guide](../community/branch-guide.md) documentation.
+For additional details on branch management, read the [branch guide](./BRANCH_GUIDE.md) documentation.
 :::
 
 #### Change Files
