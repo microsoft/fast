@@ -103,9 +103,6 @@ export class FASTDialog extends FASTElement {
      */
     private notifier: Notifier;
 
-    /**
-     * @internal
-     */
     private closeWatcher: CloseWatcher | null = null;
 
     /**

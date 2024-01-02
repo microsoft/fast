@@ -89,9 +89,6 @@ export class FASTTooltip extends FASTElement {
     @observable
     private controlledVisibility: boolean = false;
 
-    /**
-     * @internal
-     */
     private closeWatcher: CloseWatcher | null = null;
 
     /**
