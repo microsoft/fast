@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-ssr",
-  "version": "1.0.0-beta.31",
+  "version": "1.0.0-beta.32",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@microsoft/fast-element": "^2.0.0-beta.26",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.31",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.32",
     "@microsoft/api-extractor": "7.24.2",
     "@playwright/test": "^1.25.2",
     "@types/express": "^4.17.13",
