@@ -9,7 +9,7 @@
 
 # All *code owners* who aren't on the "everything" list must be have ownership of
 # the change directory in order to approve PR's that include change files
-/change/ @bheston @scomea @radium-v @kingoftac
+/change/ @EisenbergEffect @chrisdholt @janechu @nicholasrice @bheston @scomea @radium-v @kingoftac
 
 # File type specific owners
 # Markdown specific files
