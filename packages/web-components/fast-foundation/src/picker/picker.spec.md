@@ -82,7 +82,7 @@ Picker is the top level container which hosts both a `picker-list` component to 
 
 **Picker-List**
 
-The `picker-list` sub-component encapulates the display of selected items as well as the text input box.  It is rendered to the light dom and has a role of "list".
+The `picker-list` sub-component encapulates the display of selected items as well as the text input box.  It is rendered to the light dom and has a role of "listbox".
 
 *Component name:*
 - `picker-list`
@@ -93,7 +93,7 @@ The `picker-list` sub-component encapulates the display of selected items as wel
 
 **Picker-Menu**
 
-The `picker-menu` sub-component is displayed in a flyout and shows the available choices (or alternate messages like "loading" or "no choices available") based on user input.  It is rendered to the light dom and has a role of "list".
+The `picker-menu` sub-component is displayed in a flyout and shows the available choices (or alternate messages like "loading" or "no choices available") based on user input.  It is rendered to the light dom and has a role of "listbox".
 
 *Component name:*
 - `picker-menu`
@@ -102,8 +102,8 @@ The `picker-menu` sub-component is displayed in a flyout and shows the available
 
 *Slots:*
 - default: Options generated from data are inserted here.
-- `header-region`: Authors can add a custom menu header here.  Elements with a role of 'listitem' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
-- `footer-region`: Authors can add a custom menu footer here.  Elements with a role of 'listitem' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
+- `header-region`: Authors can add a custom menu header here.  Elements with a role of 'option' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
+- `footer-region`: Authors can add a custom menu footer here.  Elements with a role of 'option' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
 
 *Events*
 - `optionsupdated`: Emitted when the available options change.

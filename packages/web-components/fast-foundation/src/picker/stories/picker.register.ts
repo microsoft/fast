@@ -181,7 +181,7 @@ const pickerMenuOptionStyles = css`
         user-select: none;
         white-space: nowrap;
     }
-    :host(:focus-visible[role="listitem"]) {
+    :host(:focus-visible[role="option"]) {
         border-color: var(--focus-stroke-outer);
         background: var(--neutral-fill-rest);
         color: var(--neutral-foreground-rest);

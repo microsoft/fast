@@ -10,7 +10,7 @@ export function pickerListItemTemplate<
 >(): ElementViewTemplate<T> {
     return html<T>`
         <template
-            role="listitem"
+            role="option"
             tabindex="0"
             @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
