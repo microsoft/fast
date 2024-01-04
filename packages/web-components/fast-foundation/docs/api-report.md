@@ -1965,8 +1965,7 @@ export class FASTTabs extends FASTElement {
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
-    // (undocumented)
-    protected setTabs: () => void;
+    protected setTabs(): void;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
