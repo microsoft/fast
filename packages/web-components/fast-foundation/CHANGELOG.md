@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 18 Aug 2023 22:48:12 GMT and should not be manually modified.
+This log was last generated on Wed, 20 Dec 2023 19:03:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.32
+
+Wed, 20 Dec 2023 19:03:48 GMT
+
+### Changes
+
+- Fix focus issue when clicking on an element in the toolbar (20542556+mollykreis@users.noreply.github.com)
+- Fix bug in toolbar click handler when a slotted element has child elements (20542556+mollykreis@users.noreply.github.com)
 
 ## 3.0.0-alpha.31
 

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Fri, 18 Aug 2023 22:48:12 GMT and should not be manually modified.
+This log was last generated on Wed, 20 Dec 2023 19:03:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.32
+
+Wed, 20 Dec 2023 19:03:48 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.32
 
 ## 1.0.0-beta.31
 
