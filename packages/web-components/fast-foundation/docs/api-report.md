@@ -1800,8 +1800,6 @@ export class FASTSelect extends FormAssociatedSelect {
     // @internal
     protected openChanged(prev: boolean | undefined, next: boolean): void;
     placeholder: string;
-    // (undocumented)
-    placeholderChanged(): void;
     // @internal
     placeholderOption: HTMLOptionElement | null;
     // @internal
