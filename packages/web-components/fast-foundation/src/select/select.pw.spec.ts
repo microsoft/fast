@@ -4,10 +4,11 @@ import type { FASTListboxOption } from "../listbox-option/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSelect } from "./select.js";
 
-test.describe.only("Select", () => {
+test.describe("Select", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
+    let placeholder: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
@@ -15,6 +16,8 @@ test.describe.only("Select", () => {
         element = page.locator("fast-select");
 
         root = page.locator("#root");
+
+        placeholder = element.locator(".placeholder");
 
         await page.goto(fixtureURL("select--select"), {
             waitUntil: "load",
@@ -96,9 +99,7 @@ test.describe.only("Select", () => {
             `;
         });
 
-        const option = await page.$(".placeholder");
-
-        expect(option).not.toBeNull();
+        await expect(placeholder).toContainText("my placeholder");
     });
 
     test("should not render placeholder option when the multiple attribute is present", async () => {
@@ -111,9 +112,8 @@ test.describe.only("Select", () => {
                 </fast-select>
             `;
         });
-        const option = await page.$(".placeholder");
 
-        expect(option).toBeNull();
+        await expect(placeholder).toHaveCount(0);
     });
 
     test("should not render placeholder option when the size attribute is present", async () => {
@@ -126,9 +126,8 @@ test.describe.only("Select", () => {
                 </fast-select>
             `;
         });
-        const option = await page.$(".placeholder");
 
-        expect(option).toBeNull();
+        await expect(placeholder).toHaveCount(0);
     });
 
     test("should set its value to the first enabled option", async () => {
@@ -158,9 +157,9 @@ test.describe.only("Select", () => {
             `;
         });
 
-        await expect(element).toHaveJSProperty("value", "");
+        await expect(element).not.hasAttribute("value");
         await expect(element).toHaveJSProperty("currentIndex", undefined);
-        await expect(element).toHaveAttribute("currentIndex", "");
+        await expect(element).not.hasAttribute("currentIndex");
         await expect(element).not.toHaveJSProperty("selectedIndex", 0);
     });
 
