@@ -355,7 +355,7 @@ export class FASTDataGridRow extends FASTElement {
                 : this.defaultHeaderCellItemTemplate;
     }
 
-    private updateRowStyle = (): void => {
+    protected updateRowStyle(): void {
         this.style.gridTemplateColumns = this.gridTemplateColumns;
-    };
+    }
 }
