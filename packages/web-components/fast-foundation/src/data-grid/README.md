@@ -182,7 +182,7 @@ export const myDataGrid = DataGrid.compose({
 | `rowDataChanged`             | protected |                                               |                                         | `void` |                |
 | `toggleSelected`             | public    | Attempts to set the selected state of the row | `detail: DataGridSelectionChangeDetail` | `void` |                |
 | `handleFocusout`             | public    |                                               | `e: FocusEvent`                         | `void` |                |
-| `updateRowStyle`             | protected |                                               |                                         | `void` |                |
+| `applyGridTemplateColumns`   | public    |                                               |                                         | `void` |                |
 
 #### Events
 

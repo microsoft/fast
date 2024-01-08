@@ -1066,6 +1066,8 @@ export class FASTDataGridCell extends FASTElement {
 export class FASTDataGridRow extends FASTElement {
     // @internal
     activeCellItemTemplate?: ViewTemplate;
+    // (undocumented)
+    protected applyGridTemplateColumns(): void;
     // @internal
     cellElements: HTMLElement[];
     cellItemTemplate?: ViewTemplate;
@@ -1107,8 +1109,6 @@ export class FASTDataGridRow extends FASTElement {
     slottedCellElements: HTMLElement[];
     // Warning: (ae-forgotten-export) The symbol "DataGridSelectionChangeDetail" needs to be exported by the entry point index.d.ts
     toggleSelected(detail: DataGridSelectionChangeDetail): void;
-    // (undocumented)
-    protected updateRowStyle(): void;
 }
 
 // @public
