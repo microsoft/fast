@@ -34,19 +34,6 @@ test.describe("DataGridRow", () => {
         await expect(element).toHaveAttribute("role", "row");
     });
 
-    test("should set `grid-template-columns` style to match attribute", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-data-grid-row grid-template-columns="1fr 2fr 3fr"></fast-data-grid-row>
-            `;
-        });
-
-        await expect(element).toHaveAttribute(
-            "style",
-            "grid-template-columns: 1fr 2fr 3fr;"
-        );
-    });
-
     test("should fire an event when a child cell is focused", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

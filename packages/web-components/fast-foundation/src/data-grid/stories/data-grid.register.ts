@@ -5,7 +5,12 @@ import { registerComplexCell } from "./examples/complex-cell.js";
 
 const styles = css`
     :host {
-        display: block;
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: repeat(
+            ${x => x.columnDefinitions?.length ?? 1},
+            minmax(0, 1fr)
+        );
     }
 
     :host([selection-mode="multi-row"]) {

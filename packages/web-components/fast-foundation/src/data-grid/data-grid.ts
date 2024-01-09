@@ -126,21 +126,6 @@ export class FASTDataGrid extends FASTElement {
     }
 
     /**
-     *  generates a gridTemplateColumns based on columndefinitions
-     */
-    private static generateTemplateColumns(
-        columnDefinitions: ColumnDefinition[]
-    ): string {
-        let templateColumns: string = "";
-        columnDefinitions.forEach((column: ColumnDefinition) => {
-            templateColumns = `${templateColumns}${
-                templateColumns === "" ? "" : " "
-            }${"1fr"}`;
-        });
-        return templateColumns;
-    }
-
-    /**
      * Default callback to determine if a row is selectable (also depends on selectionMode)
      * By default all rows except for header rows are selectable
      */
@@ -196,21 +181,6 @@ export class FASTDataGrid extends FASTElement {
     private generateHeaderChanged(): void {
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
-        }
-    }
-
-    /**
-     * String that gets applied to the the css gridTemplateColumns attribute of child rows
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: grid-template-columns
-     */
-    @attr({ attribute: "grid-template-columns" })
-    public gridTemplateColumns: string;
-    protected gridTemplateColumnsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateRowIndexes();
         }
     }
 
@@ -313,9 +283,7 @@ export class FASTDataGrid extends FASTElement {
         if (!this.columnDefinitions) {
             return;
         }
-        this.generatedGridTemplateColumns = FASTDataGrid.generateTemplateColumns(
-            this.columnDefinitions
-        );
+
         if (this.$fastController.isConnected) {
             this.columnDefinitionsStale = true;
             this.queueRowIndexUpdate();
@@ -457,8 +425,6 @@ export class FASTDataGrid extends FASTElement {
 
     private rowindexUpdateQueued: boolean = false;
     private columnDefinitionsStale: boolean = true;
-
-    private generatedGridTemplateColumns: string = "";
 
     private lastNotShiftSelectedRowIndex = -1;
     private preShiftRowSelection: number[] | null = null;
@@ -941,7 +907,6 @@ export class FASTDataGrid extends FASTElement {
             );
             this.generatedHeader = generatedHeaderElement as unknown as FASTDataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
-            this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
                 this.generateHeader === GenerateHeaderOptions.sticky
                     ? DataGridRowTypes.stickyHeader
@@ -987,26 +952,9 @@ export class FASTDataGrid extends FASTElement {
     };
 
     private updateRowIndexes = (): void => {
-        let newGridTemplateColumns = this.gridTemplateColumns;
-
-        if (newGridTemplateColumns === undefined) {
-            // try to generate columns based on manual rows
-            if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
-                const firstRow: FASTDataGridRow = this.rowElements[0] as FASTDataGridRow;
-                this.generatedGridTemplateColumns = new Array(
-                    firstRow.cellElements.length
-                )
-                    .fill("1fr")
-                    .join(" ");
-            }
-
-            newGridTemplateColumns = this.generatedGridTemplateColumns;
-        }
-
         this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as FASTDataGridRow;
             thisRow.rowIndex = index;
-            thisRow.gridTemplateColumns = newGridTemplateColumns;
             thisRow.selectionBehavior = this.selectionBehavior;
             if (
                 this.selectionMode === DataGridSelectionMode.singleRow ||

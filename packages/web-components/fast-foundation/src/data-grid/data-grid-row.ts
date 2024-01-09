@@ -33,21 +33,6 @@ import {
  */
 export class FASTDataGridRow extends FASTElement {
     /**
-     * String that gets applied to the the css gridTemplateColumns attribute for the row
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: grid-template-columns
-     */
-    @attr({ attribute: "grid-template-columns" })
-    public gridTemplateColumns: string;
-    protected gridTemplateColumnsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.applyGridTemplateColumns();
-        }
-    }
-
-    /**
      * The type of row
      *
      * @public
@@ -211,8 +196,6 @@ export class FASTDataGridRow extends FASTElement {
         this.addEventListener(eventKeyDown, this.handleKeydown);
         this.addEventListener(eventClick, this.handleClick);
 
-        this.applyGridTemplateColumns();
-
         if (this.refocusOnLoad) {
             // if focus was on the row when data changed try to refocus on same cell
             this.refocusOnLoad = false;
@@ -353,15 +336,5 @@ export class FASTDataGridRow extends FASTElement {
                 : this.headerCellItemTemplate !== undefined
                 ? this.headerCellItemTemplate
                 : this.defaultHeaderCellItemTemplate;
-    }
-
-    /**
-     * @public
-     *
-     * @remarks
-     * Applies the column definitions of the parent data-grid to the row's grid-template-columns CSS property.
-     */
-    protected applyGridTemplateColumns(): void {
-        this.style.gridTemplateColumns = this.gridTemplateColumns;
     }
 }
