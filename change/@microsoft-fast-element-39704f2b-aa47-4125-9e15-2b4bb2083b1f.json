@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: refactor handleEvent method on ChildrenDirective",
+  "packageName": "@microsoft/fast-element",
+  "email": "marco.zambrano@thomsonreuters.com",
+  "dependentChangeType": "patch"
+}

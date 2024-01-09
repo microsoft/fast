@@ -62,7 +62,13 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
         let observer = target[this.observerProperty];
 
         if (!observer) {
-            observer = new MutationObserver(this.handleEvent);
+            observer = new MutationObserver(
+                () =>
+                    void this.updateTarget(
+                        this.getSource(target),
+                        this.computeNodes(target)
+                    )
+            );
             observer.toJSON = noop;
             target[this.observerProperty] = observer;
         }
@@ -92,11 +98,6 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 
         return Array.from(target.childNodes);
     }
-
-    private handleEvent = (mutations: MutationRecord[], observer: any): void => {
-        const target = observer.target;
-        this.updateTarget(this.getSource(target), this.computeNodes(target));
-    };
 }
 
 HTMLDirective.define(ChildrenDirective);
