@@ -86,9 +86,9 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ### Variables
 
-| Name            | Description          | Type                                                                              |
-| --------------- | -------------------- | --------------------------------------------------------------------------------- |
-| `TextFieldType` | Text field sub-types | `{ email: "email", password: "password", tel: "tel", text: "text", url: "url", }` |
+| Name            | Description          | Type                                                                                            |
+| --------------- | -------------------- | ----------------------------------------------------------------------------------------------- |
+| `TextFieldType` | Text field sub-types | `{ email: "email", password: "password", tel: "tel", text: "text", url: "url", date: "date", }` |
 
 <hr/>
 
@@ -111,6 +111,8 @@ This component is built with the expectation that focus is delegated to the inpu
 | `placeholder` | public  | `string`        |         | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                                                    |                         |
 | `type`        | public  | `TextFieldType` |         | Allows setting a type or mode of text.                                                                                                                                                                                      |                         |
 | `list`        | public  | `string`        |         | Allows associating a [datalist](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist) to the element by https://developer.mozilla.org/en-US/docs/Web/API/Element/id.                                      |                         |
+| `max`         | public  | `string`        |         | The maximum the value can be (applies to date)                                                                                                                                                                              |                         |
+| `min`         | public  | `string`        |         | The minimum the value can be (applies to date)                                                                                                                                                                              |                         |
 | `maxlength`   | public  | `number`        |         | The maximum number of characters a user can enter.                                                                                                                                                                          |                         |
 | `minlength`   | public  | `number`        |         | The minimum number of characters a user can enter.                                                                                                                                                                          |                         |
 | `pattern`     | public  | `string`        |         | A regular expression that the value must match to pass validation.                                                                                                                                                          |                         |
@@ -126,6 +128,8 @@ This component is built with the expectation that focus is delegated to the inpu
 | `autofocusChanged`   | protected |                                                   |            | `void` |                |
 | `placeholderChanged` | protected |                                                   |            | `void` |                |
 | `listChanged`        | protected |                                                   |            | `void` |                |
+| `maxChanged`         | public    |                                                   |            | `void` |                |
+| `minChanged`         | public    |                                                   |            | `void` |                |
 | `maxlengthChanged`   | protected |                                                   |            | `void` |                |
 | `minlengthChanged`   | protected |                                                   |            | `void` |                |
 | `patternChanged`     | protected |                                                   |            | `void` |                |
@@ -149,6 +153,8 @@ This component is built with the expectation that focus is delegated to the inpu
 | `placeholder` | placeholder |                |
 | `type`        | type        |                |
 | `list`        | list        |                |
+|               | max         |                |
+| `min`         | min         |                |
 |               | maxlength   |                |
 |               | minlength   |                |
 | `pattern`     | pattern     |                |

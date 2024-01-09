@@ -29,6 +29,21 @@ export const TextFieldType = {
      * A URL TextField
      */
     url: "url",
+
+    /**
+     * A date TextField
+     */
+    date: "date",
+
+    /**
+     * A month TextField
+     */
+    month: "month",
+
+    /**
+     * A week TextField
+     */
+    week: "week",
 } as const;
 
 /**

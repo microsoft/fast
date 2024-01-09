@@ -40,6 +40,8 @@ export function textFieldTemplate<T extends FASTTextField>(
                 maxlength="${x => x.maxlength}"
                 name="${x => x.name}"
                 minlength="${x => x.minlength}"
+                min="${x => x.min}"
+                max="${x => x.max}"
                 pattern="${x => x.pattern}"
                 placeholder="${x => x.placeholder}"
                 ?readonly="${x => x.readOnly}"
