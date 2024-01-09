@@ -117,7 +117,6 @@ export const myDataGrid = DataGrid.compose({
 
 | Name                      | Privacy   | Description | Parameters                                                               | Return | Inherited From |
 | ------------------------- | --------- | ----------- | ------------------------------------------------------------------------ | ------ | -------------- |
-| `gridColumnChanged`       | protected |             |                                                                          | `void` |                |
 | `columnDefinitionChanged` | protected |             | `oldValue: ColumnDefinition or null, newValue: ColumnDefinition or null` | `void` |                |
 | `handleFocusin`           | public    |             | `e: FocusEvent`                                                          | `void` |                |
 | `handleFocusout`          | public    |             | `e: FocusEvent`                                                          | `void` |                |
@@ -166,7 +165,6 @@ export const myDataGrid = DataGrid.compose({
 
 | Name                     | Privacy | Type                         | Default | Description                                                                                         | Inherited From |
 | ------------------------ | ------- | ---------------------------- | ------- | --------------------------------------------------------------------------------------------------- | -------------- |
-| `gridTemplateColumns`    | public  | `string`                     |         | String that gets applied to the the css gridTemplateColumns attribute for the row                   |                |
 | `rowType`                | public  | `DataGridRowTypes`           |         | The type of row                                                                                     |                |
 | `rowData`                | public  | `object or null`             | `null`  | The base data for this row                                                                          |                |
 | `columnDefinitions`      | public  | `ColumnDefinition[] or null` | `null`  | The column definitions of the row                                                                   |                |
@@ -176,13 +174,11 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name                         | Privacy   | Description                                   | Parameters                              | Return | Inherited From |
-| ---------------------------- | --------- | --------------------------------------------- | --------------------------------------- | ------ | -------------- |
-| `gridTemplateColumnsChanged` | protected |                                               |                                         | `void` |                |
-| `rowDataChanged`             | protected |                                               |                                         | `void` |                |
-| `toggleSelected`             | public    | Attempts to set the selected state of the row | `detail: DataGridSelectionChangeDetail` | `void` |                |
-| `handleFocusout`             | public    |                                               | `e: FocusEvent`                         | `void` |                |
-| `applyGridTemplateColumns`   | public    |                                               |                                         | `void` |                |
+| Name             | Privacy   | Description                                   | Parameters                              | Return | Inherited From |
+| ---------------- | --------- | --------------------------------------------- | --------------------------------------- | ------ | -------------- |
+| `rowDataChanged` | protected |                                               |                                         | `void` |                |
+| `toggleSelected` | public    | Attempts to set the selected state of the row | `detail: DataGridSelectionChangeDetail` | `void` |                |
+| `handleFocusout` | public    |                                               | `e: FocusEvent`                         | `void` |                |
 
 #### Events
 
@@ -192,10 +188,9 @@ export const myDataGrid = DataGrid.compose({
 
 #### Attributes
 
-| Name                    | Field               | Inherited From |
-| ----------------------- | ------------------- | -------------- |
-| `grid-template-columns` | gridTemplateColumns |                |
-| `row-type`              | rowType             |                |
+| Name       | Field   | Inherited From |
+| ---------- | ------- | -------------- |
+| `row-type` | rowType |                |
 
 #### Slots
 
@@ -237,7 +232,6 @@ export const myDataGrid = DataGrid.compose({
 | ------------------------ | ------- | --------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
 | `noTabbing`              | public  | `boolean`                                           | `false` | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                                                                 |                |
 | `generateHeader`         | public  | `GenerateHeaderOptions`                             |         | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                                                        |                |
-| `gridTemplateColumns`    | public  | `string`                                            |         | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                                                             |                |
 | `pageSize`               | public  | `number or undefined`                               |         | The number of rows to move selection on page up/down keystrokes. When undefined the grid will use viewport height/the height of the first non-header row. If the grid itself is a scrolling container it will be considered the viewport for this purpose, otherwise the document will be used. |                |
 | `selectionMode`          | public  | `DataGridSelectionMode`                             |         | Defines how the grid handles row or cell selection.                                                                                                                                                                                                                                             |                |
 | `selectionBehavior`      | public  | `DataGridSelectionBehavior`                         |         | Controls selection behavior                                                                                                                                                                                                                                                                     |                |
@@ -255,13 +249,12 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name                         | Privacy   | Description | Parameters       | Return | Inherited From |
-| ---------------------------- | --------- | ----------- | ---------------- | ------ | -------------- |
-| `noTabbingChanged`           | protected |             |                  | `void` |                |
-| `gridTemplateColumnsChanged` | protected |             |                  | `void` |                |
-| `rowsDataChanged`            | protected |             |                  | `void` |                |
-| `columnDefinitionsChanged`   | protected |             |                  | `void` |                |
-| `handleRowSelectedChange`    | public    |             | `e: CustomEvent` | `void` |                |
+| Name                       | Privacy   | Description | Parameters       | Return | Inherited From |
+| -------------------------- | --------- | ----------- | ---------------- | ------ | -------------- |
+| `noTabbingChanged`         | protected |             |                  | `void` |                |
+| `rowsDataChanged`          | protected |             |                  | `void` |                |
+| `columnDefinitionsChanged` | protected |             |                  | `void` |                |
+| `handleRowSelectedChange`  | public    |             | `e: CustomEvent` | `void` |                |
 
 #### Attributes
 
@@ -269,7 +262,6 @@ export const myDataGrid = DataGrid.compose({
 | ----------------------- | ------------------- | -------------- |
 | `no-tabbing`            | noTabbing           |                |
 | `generate-header`       | generateHeader      |                |
-| `grid-template-columns` | gridTemplateColumns |                |
 | `page-size`             | pageSize            |                |
 | `selection-mode`        | selectionMode       |                |
 | `selection-behavior`    | selectionBehavior   |                |
