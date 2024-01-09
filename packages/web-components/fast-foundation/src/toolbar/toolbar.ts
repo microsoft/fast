@@ -126,7 +126,8 @@ export class FASTToolbar extends FASTElement {
             x.contains(e.target as HTMLElement)
         );
         if (activeIndex > -1 && this.activeIndex !== activeIndex) {
-            this.setFocusedElement(activeIndex);
+            // Don't focus on the active element if the event is default prevented.
+            this.setFocusedElement(activeIndex, !e.defaultPrevented);
         }
 
         return true;
@@ -241,12 +242,15 @@ export class FASTToolbar extends FASTElement {
      * Set the activeIndex and focus the corresponding control.
      *
      * @param activeIndex - The new index to set
+     * @param enforceFocus - Whether to enforce the focus on the active element or not
      * @internal
      */
-    private setFocusedElement(activeIndex: number = this.activeIndex): void {
+    private setFocusedElement(activeIndex: number = this.activeIndex, enforceFocus: boolean = true): void {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
-        this.focusableElements[this.activeIndex]?.focus();
+        if (enforceFocus) {
+           this.focusableElements[this.activeIndex]?.focus();
+        }
     }
 
     /**
