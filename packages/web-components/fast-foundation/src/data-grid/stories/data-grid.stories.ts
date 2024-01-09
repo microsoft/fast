@@ -95,11 +95,13 @@ DataGridFixedHeight.args = {
 };
 
 export const DataGridFixedWidth: Story<FASTDataGrid> = renderComponent(html`
-    <div style="width: 100%; overflow-x: auto;">${storyTemplate}</div>
+    <div style="height: 200px; overflow-y: auto; width: 400px; overflow-x: auto;">
+        ${storyTemplate}
+    </div>
 `).bind({});
 
 DataGridFixedWidth.args = {
-    style: "height: 200px; overflow-y: auto; width: max-content; grid-template-columns: repeat(7, max-content);",
+    style: "height: max-content; width: max-content; grid-template-columns: repeat(7, max-content);",
 };
 
 export const DataGridColumnDefinitions: Story<FASTDataGrid> = renderComponent(
