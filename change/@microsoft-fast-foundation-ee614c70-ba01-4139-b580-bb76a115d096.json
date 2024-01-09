@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "change DataGridRow.updateRowStyle to protected member from private property",
+  "comment": "Remove inline styling logic from DataGrid and sub components in favor of consumer CSS implementations.",
   "packageName": "@microsoft/fast-foundation",
   "email": "32497422+KingOfTac@users.noreply.github.com",
   "dependentChangeType": "prerelease"
