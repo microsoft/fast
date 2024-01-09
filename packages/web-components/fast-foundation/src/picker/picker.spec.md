@@ -82,7 +82,7 @@ Picker is the top level container which hosts both a `picker-list` component to 
 
 **Picker-List**
 
-The `picker-list` sub-component encapulates the display of selected items as well as the text input box.  It is rendered to the light dom and has a role of "listbox".
+The `picker-list` sub-component encapulates the display of selected items as well as the text input box.  It is rendered to the light dom and has a role of "list".
 
 *Component name:*
 - `picker-list`
