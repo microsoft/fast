@@ -556,26 +556,29 @@ class DesignTokenNode implements Behavior, Subscriber {
             if (token) {
                 // Notify any token subscribers
                 token.notify(this.target);
-
-                if (DesignTokenImpl.isCSSDesignToken(token)) {
-                    const parent = this.parent;
-                    const reflecting = this.isReflecting(token);
-
-                    if (parent) {
-                        const parentValue = parent.get(token);
-                        const sourceValue = source.get(token);
-                        if (parentValue !== sourceValue && !reflecting) {
-                            this.reflectToCSS(token);
-                        } else if (parentValue === sourceValue && reflecting) {
-                            this.stopReflectToCSS(token);
-                        }
-                    } else if (!reflecting) {
-                        this.reflectToCSS(token);
-                    }
-                }
+                this.updateCSSTokenReflection(source, token);
             }
         },
     };
+
+    private updateCSSTokenReflection(source: Store, token: DesignTokenImpl<any>): void {
+        if (DesignTokenImpl.isCSSDesignToken(token)) {
+            const parent = this.parent;
+            const reflecting = this.isReflecting(token);
+
+            if (parent) {
+                const parentValue = parent.get(token);
+                const sourceValue = source.get(token);
+                if (parentValue !== sourceValue && !reflecting) {
+                    this.reflectToCSS(token);
+                } else if (parentValue === sourceValue && reflecting) {
+                    this.stopReflectToCSS(token);
+                }
+            } else if (!reflecting) {
+                this.reflectToCSS(token);
+            }
+        }
+    }
 
     constructor(public readonly target: HTMLElement | (HTMLElement & FASTElement)) {
         nodeCache.set(target, this);
@@ -796,6 +799,7 @@ class DesignTokenNode implements Behavior, Subscriber {
         }
 
         this.hydrate(token, this.getRaw(token));
+        this.updateCSSTokenReflection(this.store, token);
     }
 
     /**
