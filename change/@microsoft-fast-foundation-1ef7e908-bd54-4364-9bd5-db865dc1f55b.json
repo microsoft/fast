@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "tab events",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "prerelease"
+}
