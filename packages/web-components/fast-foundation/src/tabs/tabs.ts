@@ -169,7 +169,7 @@ export class FASTTabs extends FASTElement {
                 tab.setAttribute("id", tabId);
                 tab.setAttribute("aria-selected", isActiveTab ? "true" : "false");
                 tab.setAttribute("aria-controls", tabpanelId);
-                tab.addEventListener("click", this.handleTabClick);
+                tab.addEventListener("mousedown", this.handleTabMouseDown);
                 tab.addEventListener("keydown", this.handleTabKeyDown);
                 tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
                 if (isActiveTab) {
@@ -222,7 +222,10 @@ export class FASTTabs extends FASTElement {
         }
     }
 
-    private handleTabClick = (event: MouseEvent): void => {
+    private handleTabMouseDown = (event: MouseEvent): void => {
+        if (event.defaultPrevented) {
+            return;
+        }
         const selectedTab = event.currentTarget as HTMLElement;
         if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
             this.prevActiveTabIndex = this.activeTabIndex;
@@ -236,6 +239,9 @@ export class FASTTabs extends FASTElement {
     }
 
     private handleTabKeyDown = (event: KeyboardEvent): void => {
+        if (event.defaultPrevented) {
+            return;
+        }
         if (this.isHorizontal()) {
             switch (event.key) {
                 case keyArrowLeft:
