@@ -178,7 +178,7 @@ export class Menu extends FoundationElement {
         }
 
         e.preventDefault();
-        const changedItem: MenuItem = (e.target as any) as MenuItem;
+        const changedItem: MenuItem = e.target as any as MenuItem;
 
         // closing an expanded item without opening another
         if (
@@ -249,7 +249,7 @@ export class Menu extends FoundationElement {
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
 
-            if (item instanceof MenuItem) {
+            if (item instanceof MenuItem || "startColumnCount" in item) {
                 item.startColumnCount = indent;
             }
         });
