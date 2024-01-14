@@ -147,10 +147,11 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 #### Fields
 
-| Name                | Privacy   | Type                     | Default | Description                      | Inherited From |
-| ------------------- | --------- | ------------------------ | ------- | -------------------------------- | -------------- |
-| `menuItems`         | protected | `Element[] or undefined` |         |                                  |                |
-| `isMenuItemElement` | protected |                          |         | check if the item is a menu item |                |
+| Name                       | Privacy   | Type                     | Default | Description                              | Inherited From |
+| -------------------------- | --------- | ------------------------ | ------- | ---------------------------------------- | -------------- |
+| `menuItems`                | protected | `Element[] or undefined` |         |                                          |                |
+| `isMenuItemElement`        | protected |                          |         | check if the item is a menu item         |                |
+| `isGroupedMenuItemElement` | protected |                          |         | check if the item is a grouped menu item |                |
 
 #### Methods
 

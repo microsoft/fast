@@ -39,13 +39,27 @@ const fancyMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
     </fancy-menu-item>
 `;
 
-const fancyStoryContentTemplate = html`
-    ${repeat(
-        x => x.storyItems,
-        html<StoryArgs<MyFancyMenuItem>>`
-            ${x => x.template ?? fancyMenuItemStoryTemplate}
-        `
-    )}
+const menuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
+    <fast-menu-item
+        ?expanded="${x => x.expanded}"
+        ?checked="${x => x.checked}"
+        ?disabled="${x => x.disabled}"
+        id="${x => x.id}"
+        role="${x => x.role}"
+    >
+        ${x => x.storyContent}
+    </fast-menu-item>
+`;
+
+const fancyGroupedMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
+    <div role="group">
+        ${repeat(
+            x => x.storyItems,
+            html<StoryArgs<FASTMenuItem>>`
+                ${x => x.template ?? menuItemStoryTemplate}
+            `
+        )}
+    </div>
 `;
 
 export default {
@@ -152,6 +166,111 @@ MenuWithNestedItems.args = {
                         { storyContent: "Menu Item 2.3" },
                     ],
                 },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 3 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 3.1" },
+                        { storyContent: "Menu Item 3.2" },
+                        { storyContent: "Menu Item 3.3" },
+                    ],
+                },
+            ],
+        },
+    ],
+};
+
+export const MenuWithGroupedNestedItems: Story<FASTMenu> = Menu.bind({});
+MenuWithGroupedNestedItems.args = {
+    storyItems: [
+        {
+            template: fancyGroupedMenuItemStoryTemplate,
+            storyItems: [
+                {
+                    storyContent: html`
+                        Menu Item 1 ${repeat(x => x.storyItems, storyTemplate)}
+                    `,
+                    storyItems: [
+                        {
+                            slot: "submenu",
+                            storyContent: storyContentTemplate,
+                            storyItems: [
+                                { storyContent: "Menu Item 2.1.1" },
+                                { storyContent: "Menu Item 2.1.2" },
+                                { storyContent: "Menu Item 2.1.3" },
+                            ],
+                        },
+                    ],
+                },
+                { storyContent: "Menu Item 2" },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 1 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        { storyContent: "Menu Item 1.1" },
+                        { storyContent: "Menu Item 1.2" },
+                        { storyContent: "Menu Item 1.3" },
+                    ],
+                },
+            ],
+        },
+        {
+            template: fancyGroupedMenuItemStoryTemplate,
+            storyItems: [
+                { storyContent: "Menu Item 1" },
+                { storyContent: "Menu Item 2" },
+            ],
+        },
+        {
+            storyContent: html`
+                Menu Item 2 ${repeat(x => x.storyItems, storyTemplate)}
+            `,
+            storyItems: [
+                {
+                    slot: "submenu",
+                    storyContent: storyContentTemplate,
+                    storyItems: [
+                        {
+                            storyContent: html`
+                                Menu Item 2.1 ${repeat(x => x.storyItems, storyTemplate)}
+                            `,
+                            storyItems: [
+                                {
+                                    slot: "submenu",
+                                    storyContent: storyContentTemplate,
+                                    storyItems: [
+                                        { storyContent: "Menu Item 2.1.1" },
+                                        { storyContent: "Menu Item 2.1.2" },
+                                        { storyContent: "Menu Item 2.1.3" },
+                                    ],
+                                },
+                            ],
+                        },
+                        { storyContent: "Menu Item 2.2" },
+                        { storyContent: "Menu Item 2.3" },
+                    ],
+                },
+            ],
+        },
+        {
+            template: fancyGroupedMenuItemStoryTemplate,
+            storyItems: [
+                { storyContent: "Menu Item 1" },
+                { storyContent: "Menu Item 2" },
             ],
         },
         {

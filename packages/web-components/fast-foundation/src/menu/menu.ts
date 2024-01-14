@@ -218,6 +218,14 @@ export class FASTMenu extends FASTElement {
 
         this.menuItems = newItems;
 
+        this.menuItems.filter(this.isGroupedMenuItemElement).forEach((child: Element) => {
+            const indexOfGrouped = this.menuItems?.indexOf(child);
+            const children: Element[] = Array.from(child.children);
+            if (indexOfGrouped !== undefined) {
+                this.menuItems?.splice(indexOfGrouped, 0, ...children);
+            }
+        });
+
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
@@ -289,6 +297,13 @@ export class FASTMenu extends FASTElement {
             (isHTMLElement(el) &&
                 (el.getAttribute("role") as string) in FASTMenu.focusableElementRoles)
         );
+    };
+
+    /**
+     * check if the item is a grouped menu item
+     */
+    protected isGroupedMenuItemElement = (el: Element): el is HTMLElement => {
+        return (el.getAttribute("role") as string) === "group";
     };
 
     /**
