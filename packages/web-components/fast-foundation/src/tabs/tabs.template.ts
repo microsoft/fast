@@ -1,4 +1,4 @@
-import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTTabs } from "./tabs.js";
 import type { TabsOptions } from "./tabs.options.js";
@@ -12,7 +12,7 @@ export function tabsTemplate<T extends FASTTabs>(
 ): ElementViewTemplate<T> {
     return html<T>`
         ${startSlotTemplate(options)}
-        <div class="tablist" part="tablist" role="tablist">
+        <div class="tablist" part="tablist" role="tablist" ${ref("tabList")}>
             <slot name="tab" ${slotted("tabs")}></slot>
         </div>
         ${endSlotTemplate(options)}

@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -27,6 +27,9 @@ import { TabsOrientation } from "./tabs.options.js";
  * @public
  */
 export class FASTTabs extends FASTElement {
+    private static gridHorizontalProperty: string = "gridColumn";
+    private static gridVerticalProperty: string = "gridRow";
+
     /**
      * The orientation
      * @public
@@ -40,7 +43,7 @@ export class FASTTabs extends FASTElement {
      */
     public orientationChanged(): void {
         if (this.$fastController.isConnected) {
-            this.setTabs();
+            this.queueTabUpdate();
         }
     }
     /**
@@ -51,19 +54,112 @@ export class FASTTabs extends FASTElement {
      * HTML Attribute: activeid
      */
     @attr
-    public activeid: string;
+    public activeid: string | undefined;
     /**
      * @internal
      */
-    public activeidChanged(oldValue: string, newValue: string): void {
+    public activeidChanged(): void {
+        if (this.$fastController.isConnected || !this.updatingActiveid) {
+            this.updateActiveid();
+        }
+    }
+
+    /**
+     * An array of id's that specifies the order of tabs.
+     * If an author does not specify this (or sets it to undefined)
+     * the component will create and manage the tabOrder
+     * based on the order of tab elements in the DOM.
+     * The component uses this to manage keyboard navigation.
+     *
+     * @public
+     */
+    @observable
+    public tabOrder: string[] | undefined = [];
+    /**
+     * @internal
+     */
+    public tabOrderChanged(prev: string[] | undefined, next: string[] | undefined): void {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+        if (!this.tabOrder) {
+            // setting the tabOrder to undefined prompts the component take over
+            this.manageTabOrder = true;
+            this.tabOrder = [];
+            this.queueTabUpdate();
+            return;
+        }
+
+        if (!prev && next === [] && this.manageTabOrder) {
+            // avoid self-triggering
+            return;
+        }
+
+        // this is now an author managed list
+        // Note: component code should not replace the array instance and
+        // modify the existing array instead
+        this.manageTabOrder = false;
+        this.queueTabUpdate();
+    }
+
+    /**
+     * Gets the active tab Element
+     * @public
+     */
+    public get activetab(): HTMLElement | undefined {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+        if (this.activeid) {
+            return this.tabs.find(tab => tab.id === this.activeid);
+        }
+        return undefined;
+    }
+    /**
+     * Sets the active tab Element
+     * @public
+     */
+    public set activetab(tabElement: HTMLElement | undefined) {
+        if (!this.$fastController.isConnected || !tabElement) {
+            return;
+        }
+        if (!this.tabs.includes(tabElement) || !this.isFocusableElement(tabElement)) {
+            // invalid tab element, ignore
+            return;
+        }
+        this.activeid = tabElement.id;
+    }
+
+    /**
+     * Gets the active tab index, -1 if no valid tabs
+     * @public
+     */
+    public get activeTabIndex(): number {
+        if (!this.$fastController.isConnected) {
+            return -1;
+        }
+        if (this.tabOrder && this.activeid) {
+            return this.tabOrder.findIndex(tabId => tabId === this.activeid);
+        }
+        return -1;
+    }
+    /**
+     * Sets the active tab index based on tabOrder.
+     * If the target tab is not focusable setting this will have no effect.
+     * @public
+     */
+    public set activeTabIndex(index: number) {
         if (
-            this.$fastController.isConnected &&
-            this.tabs.length <= this.tabpanels.length
+            !this.$fastController.isConnected ||
+            !this.tabOrder ||
+            index < 0 ||
+            index >= this.tabOrder.length
         ) {
-            this.prevActiveTabIndex = this.tabs.findIndex(
-                (item: HTMLElement) => item.id === oldValue
-            );
-            this.setTabs();
+            return;
+        }
+        const targetTab = this.tabs.find(tab => tab.id === this.activeid);
+        if (targetTab) {
+            this.activeid = targetTab.id;
         }
     }
 
@@ -76,14 +172,8 @@ export class FASTTabs extends FASTElement {
      * @internal
      */
     public tabsChanged(): void {
-        if (
-            this.$fastController.isConnected &&
-            this.tabs.length <= this.tabpanels.length
-        ) {
-            this.tabIds = this.getTabIds();
-            this.tabpanelIds = this.getTabPanelIds();
-
-            this.setTabs();
+        if (this.$fastController.isConnected) {
+            this.queueTabUpdate();
         }
     }
 
@@ -96,31 +186,21 @@ export class FASTTabs extends FASTElement {
      * @internal
      */
     public tabpanelsChanged(): void {
-        if (
-            this.$fastController.isConnected &&
-            this.tabpanels.length <= this.tabs.length
-        ) {
-            this.tabIds = this.getTabIds();
-            this.tabpanelIds = this.getTabPanelIds();
-
-            this.setTabs();
+        if (this.$fastController.isConnected) {
+            this.queueTabUpdate();
         }
     }
 
     /**
-     * A reference to the active tab
-     * @public
+     * Ref to the tablist element
+     * @internal
      */
-    public activetab: HTMLElement;
+    public tabList!: HTMLElement;
 
-    private prevActiveTabIndex: number = 0;
-    private activeTabIndex: number = 0;
-    private tabIds: Array<string>;
-    private tabpanelIds: Array<string>;
-
-    private change = (): void => {
-        this.$emit("change", this.activetab);
-    };
+    private manageTabOrder: boolean = true;
+    private mutationObserver: MutationObserver | undefined;
+    private tabUpdateQueued: boolean = false;
+    private updatingActiveid: boolean = false;
 
     private isDisabledElement = (el: Element): el is HTMLElement => {
         return el.getAttribute("aria-disabled") === "true";
@@ -134,108 +214,224 @@ export class FASTTabs extends FASTElement {
         return !this.isDisabledElement(el) && !this.isHiddenElement(el);
     };
 
-    private getActiveIndex(): number {
-        const id: string = this.activeid;
-        if (id !== undefined) {
-            return this.tabIds.indexOf(this.activeid) === -1
-                ? 0
-                : this.tabIds.indexOf(this.activeid);
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Function that is invoked whenever the selected tab or the tab collection changes.
-     *
-     * @public
-     */
-    protected setTabs(): void {
-        const gridHorizontalProperty: string = "gridColumn";
-        const gridVerticalProperty: string = "gridRow";
-        const gridProperty: string = this.isHorizontal()
-            ? gridHorizontalProperty
-            : gridVerticalProperty;
-
-        this.activeTabIndex = this.getActiveIndex();
-
-        this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (tab.slot === "tab") {
-                const isActiveTab =
-                    this.activeTabIndex === index && this.isFocusableElement(tab);
-
-                const tabId: string = this.tabIds[index];
-                const tabpanelId: string = this.tabpanelIds[index];
-                tab.setAttribute("id", tabId);
-                tab.setAttribute("aria-selected", isActiveTab ? "true" : "false");
-                tab.setAttribute("aria-controls", tabpanelId);
-                tab.addEventListener("click", this.handleTabClick);
-                tab.addEventListener("keydown", this.handleTabKeyDown);
-                tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
-                if (isActiveTab) {
-                    this.activetab = tab;
-                    this.activeid = tabId;
-                }
-            }
-
-            // If the original property isn't emptied out,
-            // the next set will morph into a grid-area style setting that is not what we want
-            tab.style[gridHorizontalProperty] = "";
-            tab.style[gridVerticalProperty] = "";
-            tab.style[gridProperty] = `${index + 1}`;
-            !this.isHorizontal()
-                ? tab.classList.add("vertical")
-                : tab.classList.remove("vertical");
-        });
-        this.setTabPanels();
-    }
-
-    private setTabPanels(): void {
-        this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
-            const tabId: string = this.tabIds[index];
-            const tabpanelId: string = this.tabpanelIds[index];
-            tabpanel.setAttribute("id", tabpanelId);
-            tabpanel.setAttribute("aria-labelledby", tabId);
-            this.activeTabIndex !== index
-                ? tabpanel.setAttribute("hidden", "")
-                : tabpanel.removeAttribute("hidden");
-        });
-    }
-
-    private getTabIds(): Array<string> {
-        return this.tabs.map((tab: HTMLElement) => {
-            return tab.getAttribute("id") ?? `tab-${uniqueId()}`;
-        });
-    }
-
-    private getTabPanelIds(): Array<string> {
-        return this.tabpanels.map((tabPanel: HTMLElement) => {
-            return tabPanel.getAttribute("id") ?? `panel-${uniqueId()}`;
-        });
-    }
-
-    private setComponent(): void {
-        if (this.activeTabIndex !== this.prevActiveTabIndex) {
-            this.activeid = this.tabIds[this.activeTabIndex] as string;
-            this.focusTab();
-            this.change();
-        }
-    }
-
-    private handleTabClick = (event: MouseEvent): void => {
-        const selectedTab = event.currentTarget as HTMLElement;
-        if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
-            this.prevActiveTabIndex = this.activeTabIndex;
-            this.activeTabIndex = this.tabs.indexOf(selectedTab);
-            this.setComponent();
-        }
-    };
-
     private isHorizontal(): boolean {
         return this.orientation === TabsOrientation.horizontal;
     }
 
-    private handleTabKeyDown = (event: KeyboardEvent): void => {
+    private isValidTabId(tabId: string): boolean {
+        if (this.tabOrder && this.tabOrder.includes(tabId)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.tabList.addEventListener("mousedown", this.handleTabMouseDown);
+        this.tabList.addEventListener("keydown", this.handleTabKeyDown);
+
+        this.mutationObserver = new MutationObserver(this.onChildListChange);
+        this.mutationObserver.observe(this, { childList: true });
+
+        this.queueTabUpdate();
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.tabList.removeEventListener("mousedown", this.handleTabMouseDown);
+        this.tabList.removeEventListener("keydown", this.handleTabKeyDown);
+        this.mutationObserver?.disconnect();
+        this.mutationObserver = undefined;
+    }
+
+    /**
+     * Mutation observer callback
+     */
+    private onChildListChange = (): void => {
+        this.queueTabUpdate();
+    };
+
+    /**
+     * Queues up an update after DOM changes.
+     *
+     */
+    private queueTabUpdate(): void {
+        if (this.tabUpdateQueued) {
+            return;
+        }
+        this.tabUpdateQueued = true;
+        Updates.enqueue(() => this.setTabs());
+    }
+
+    /**
+     * Function that is invoked whenever the tab collection changes.
+     *
+     * @public
+     */
+    protected setTabs(): void {
+        this.tabUpdateQueued = false;
+        this.updateIds();
+
+        this.tabs.forEach((tab: HTMLElement, index: number) => {
+            !this.isHorizontal()
+                ? tab.classList.add("vertical")
+                : tab.classList.remove("vertical");
+        });
+
+        this.updateActiveid();
+    }
+
+    /**
+     * Ensure all tabs and tabpanels have an id and default values
+     * for id based attributes are also set.
+     */
+    private updateIds(): void {
+        const newTabIds: string[] = [];
+        const newTabPanelIds: string[] = [];
+        this.tabpanels.forEach((tabPanel: HTMLElement, index: number) => {
+            if (!tabPanel.hasAttribute("id")) {
+                tabPanel.setAttribute("id", `panel-${uniqueId()}`);
+            }
+            newTabPanelIds.push(tabPanel.id);
+        });
+        this.tabs.forEach((tab: HTMLElement, index: number) => {
+            if (!tab.hasAttribute("id")) {
+                tab.setAttribute("id", `tab-${uniqueId()}`);
+            }
+            newTabIds.push(tab.id);
+        });
+
+        // Do a second pass to set other default id based attributes if they have not been set.
+        // This enables a default behavior where tabs and tabpanels are associated based on
+        // their index in the DOM (ie. first tab associated with first tab panel, etc...)
+        this.tabpanels.forEach((tabPanel: HTMLElement, index: number) => {
+            if (!tabPanel.hasAttribute("aria-labelledby") && newTabIds.length > index) {
+                // if a tab does not already have a controlled panel defined
+                // assign the id of the panel of the same index if it exists
+                tabPanel.setAttribute("aria-labelledby", newTabIds[index]);
+            }
+        });
+        this.tabs.forEach((tab: HTMLElement, index: number) => {
+            if (!tab.hasAttribute("aria-controls") && newTabPanelIds.length > index) {
+                // if a tab does not already have a controlled panel defined
+                // assign the id of the panel of the same index if it exists
+                tab.setAttribute("aria-controls", newTabPanelIds[index]);
+            }
+        });
+
+        if (this.manageTabOrder && this.tabOrder) {
+            this.tabOrder.splice(0, this.tabOrder.length, ...newTabIds);
+        }
+    }
+
+    /**
+     * Function that is invoked whenever the active tab changes.
+     */
+    protected updateActiveid(): void {
+        if (this.updatingActiveid) {
+            return;
+        }
+        // flag that prevents self-triggering
+        this.updatingActiveid = true;
+
+        if (!this.tabOrder || this.tabOrder.length === 0) {
+            this.activeid = undefined;
+        } else {
+            const validTabs: HTMLElement[] = [];
+            this.tabOrder.forEach((tabId: string, index: number) => {
+                const tabElement: HTMLElement | undefined = this.tabs.find(
+                    (tab: HTMLElement) => tab.id === tabId
+                );
+                if (tabElement && this.isFocusableElement(tabElement)) {
+                    validTabs.push(tabElement);
+                }
+            });
+
+            if (validTabs.length === 0) {
+                // no valid tabs
+                this.activeid === undefined;
+            }
+
+            // validate current active tab
+            if (this.activeid) {
+                const activeTab: HTMLElement | undefined = validTabs.find(
+                    tabElement => tabElement.id === this.activeid
+                );
+                if (!activeTab) {
+                    this.activeid === undefined;
+                }
+            }
+
+            if (!this.activeid) {
+                this.activeid = validTabs[0].id;
+            }
+        }
+
+        const gridProperty: string = this.isHorizontal()
+            ? FASTTabs.gridHorizontalProperty
+            : FASTTabs.gridVerticalProperty;
+
+        let tabElement: HTMLElement | undefined;
+        let activeTab: HTMLElement | undefined;
+        this.tabOrder?.forEach((tabId: string, index: number) => {
+            tabElement = this.tabs.find(tab => tab.id === tabId);
+            if (tabElement) {
+                if (tabId === this.activeid) {
+                    activeTab = tabElement;
+                }
+                // If the original property isn't emptied out,
+                // the next set will morph into a grid-area style setting that is not what we want
+                tabElement.style[FASTTabs.gridHorizontalProperty] = "";
+                tabElement.style[FASTTabs.gridVerticalProperty] = "";
+                tabElement.style[gridProperty] = `${index + 1}`;
+                tabElement.setAttribute(
+                    "aria-selected",
+                    tabElement === activeTab ? "true" : "false"
+                );
+                tabElement.setAttribute(
+                    "tabindex",
+                    tabElement === activeTab ? "0" : "-1"
+                );
+            }
+        });
+
+        this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
+            tabpanel.id !== activeTab?.getAttribute("aria-controls")
+                ? tabpanel.setAttribute("hidden", "")
+                : tabpanel.removeAttribute("hidden");
+        });
+
+        this.updatingActiveid = false;
+    }
+
+    /**
+     * Mousedown handler
+     * @internal
+     */
+    public handleTabMouseDown = (event: MouseEvent): void => {
+        if (event.defaultPrevented) {
+            return;
+        }
+        const selectedTab = event.target as HTMLElement;
+        if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
+            this.activeid = selectedTab.id;
+        }
+    };
+
+    /**
+     * Keydown handler
+     * @internal
+     */
+    public handleTabKeyDown = (event: KeyboardEvent): void => {
+        if (event.defaultPrevented) {
+            return;
+        }
         if (this.isHorizontal()) {
             switch (event.key) {
                 case keyArrowLeft:
@@ -278,8 +474,23 @@ export class FASTTabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        const focusableTabs = this.tabs.filter(t => this.isFocusableElement(t));
-        const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
+        if (!this.tabOrder || !this.activeid) {
+            return;
+        }
+        const focusableTabs: HTMLElement[] = [];
+        let tabElement: HTMLElement | undefined;
+        let currentActiveTabIndex: number = 0;
+        this.tabOrder.forEach(tabId => {
+            tabElement = this.tabs.find(tab => {
+                return this.isFocusableElement(tab);
+            });
+            if (tabElement) {
+                focusableTabs.push(tabElement);
+                if (tabElement.id === this.activeid) {
+                    currentActiveTabIndex = focusableTabs.length - 1;
+                }
+            }
+        });
 
         const nextTabIndex = limit(
             0,
@@ -291,26 +502,25 @@ export class FASTTabs extends FASTElement {
         const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
 
         if (nextIndex > -1) {
-            this.moveToTabByIndex(this.tabs, nextIndex);
+            this.moveToTabByIndex(nextIndex);
         }
     }
 
     private adjustForward(e: KeyboardEvent): void {
-        const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
-        index = this.activetab ? group.indexOf(this.activetab) + 1 : 1;
-        if (index === group.length) {
+        index = this.activetab ? this.tabs.indexOf(this.activetab) + 1 : 1;
+        if (index === this.tabs.length) {
             index = 0;
         }
 
-        while (index < group.length && group.length > 1) {
-            if (this.isFocusableElement(group[index])) {
-                this.moveToTabByIndex(group, index);
+        while (index < this.tabs.length && this.tabs.length > 1) {
+            if (this.isFocusableElement(this.tabs[index])) {
+                this.moveToTabByIndex(index);
                 break;
-            } else if (this.activetab && index === group.indexOf(this.activetab)) {
+            } else if (this.activetab && index === this.tabs.indexOf(this.activetab)) {
                 break;
-            } else if (index + 1 >= group.length) {
+            } else if (index + 1 >= this.tabs.length) {
                 index = 0;
             } else {
                 index += 1;
@@ -319,46 +529,41 @@ export class FASTTabs extends FASTElement {
     }
 
     private adjustBackward(e: KeyboardEvent): void {
-        const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
-        index = this.activetab ? group.indexOf(this.activetab) - 1 : 0;
-        index = index < 0 ? group.length - 1 : index;
+        index = this.activetab ? this.tabs.indexOf(this.activetab) - 1 : 0;
+        index = index < 0 ? this.tabs.length - 1 : index;
 
-        while (index >= 0 && group.length > 1) {
-            if (this.isFocusableElement(group[index])) {
-                this.moveToTabByIndex(group, index);
+        while (index >= 0 && this.tabs.length > 1) {
+            if (this.isFocusableElement(this.tabs[index])) {
+                this.moveToTabByIndex(index);
                 break;
             } else if (index - 1 < 0) {
-                index = group.length - 1;
+                index = this.tabs.length - 1;
             } else {
                 index -= 1;
             }
         }
     }
 
-    private moveToTabByIndex(group: HTMLElement[], index: number) {
-        const tab: HTMLElement = group[index] as HTMLElement;
-        this.activetab = tab;
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = index;
-        tab.focus();
-        this.setComponent();
+    private moveToTabByIndex(index: number) {
+        const tab: HTMLElement = this.tabs[index];
+        this.activeid = tab.id;
+        this.focusTab();
     }
 
     private focusTab(): void {
-        this.tabs[this.activeTabIndex].focus();
+        if (this.activetab) {
+            this.activetab.focus();
+        }
     }
 
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        this.tabIds = this.getTabIds();
-        this.tabpanelIds = this.getTabPanelIds();
-        this.activeTabIndex = this.getActiveIndex();
+    private getRootActiveElement(): Element | null {
+        const rootNode = this.getRootNode();
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.activeElement;
+        }
+        return document.activeElement;
     }
 }
 
