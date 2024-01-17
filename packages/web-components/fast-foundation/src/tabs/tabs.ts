@@ -157,9 +157,12 @@ export class FASTTabs extends FASTElement {
         ) {
             return;
         }
-        const targetTab = this.tabs.find(tab => tab.id === this.activeid);
-        if (targetTab) {
-            this.activeid = targetTab.id;
+        const targetTabId: string = this.tabOrder[index];
+        const tabElement: HTMLElement | undefined = this.tabs.find(
+            (tab: HTMLElement) => tab.id === targetTabId
+        );
+        if (tabElement && this.isFocusableElement(tabElement)) {
+            this.activeid = tabElement.id;
         }
     }
 
