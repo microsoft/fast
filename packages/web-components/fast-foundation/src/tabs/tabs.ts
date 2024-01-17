@@ -436,22 +436,22 @@ export class FASTTabs extends FASTElement {
             switch (event.key) {
                 case keyArrowLeft:
                     event.preventDefault();
-                    this.adjustBackward(event);
+                    this.adjust(-1);
                     break;
                 case keyArrowRight:
                     event.preventDefault();
-                    this.adjustForward(event);
+                    this.adjust(+1);
                     break;
             }
         } else {
             switch (event.key) {
                 case keyArrowUp:
                     event.preventDefault();
-                    this.adjustBackward(event);
+                    this.adjust(-1);
                     break;
                 case keyArrowDown:
                     event.preventDefault();
-                    this.adjustForward(event);
+                    this.adjust(+1);
                     break;
             }
         }
@@ -467,6 +467,22 @@ export class FASTTabs extends FASTElement {
         }
     };
 
+    private getFocusableTabs(): HTMLElement[] {
+        if (!this.tabOrder) {
+            return [];
+        }
+        const focusableTabs: HTMLElement[] = [];
+        this.tabOrder.forEach(tabId => {
+            const tabElement: HTMLElement | undefined = this.tabs.find(
+                tab => tab.id === tabId
+            );
+            if (tabElement && this.isFocusableElement(tabElement)) {
+                focusableTabs.push(tabElement);
+            }
+        });
+        return focusableTabs;
+    }
+
     /**
      * The adjust method for FASTTabs
      * @public
@@ -477,93 +493,30 @@ export class FASTTabs extends FASTElement {
         if (!this.tabOrder || !this.activeid) {
             return;
         }
-        const focusableTabs: HTMLElement[] = [];
-        let tabElement: HTMLElement | undefined;
-        let currentActiveTabIndex: number = 0;
-        this.tabOrder.forEach(tabId => {
-            tabElement = this.tabs.find(tab => {
-                return this.isFocusableElement(tab);
-            });
-            if (tabElement) {
-                focusableTabs.push(tabElement);
-                if (tabElement.id === this.activeid) {
-                    currentActiveTabIndex = focusableTabs.length - 1;
-                }
-            }
-        });
+        const focusableTabs: HTMLElement[] = this.getFocusableTabs();
+        const currentActiveTabIndex: number = focusableTabs.findIndex(
+            element => element.id === this.activeid
+        );
+        if (currentActiveTabIndex === -1) {
+            return;
+        }
 
-        const nextTabIndex = limit(
+        const nextIndex: number = limit(
             0,
             focusableTabs.length - 1,
             currentActiveTabIndex + adjustment
         );
 
-        // the index of the next focusable tab within the context of all available tabs
-        const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
-
         if (nextIndex > -1) {
-            this.moveToTabByIndex(nextIndex);
+            this.activeid = focusableTabs[nextIndex].id;
+            this.focusTab();
         }
-    }
-
-    private adjustForward(e: KeyboardEvent): void {
-        let index: number = 0;
-
-        index = this.activetab ? this.tabs.indexOf(this.activetab) + 1 : 1;
-        if (index === this.tabs.length) {
-            index = 0;
-        }
-
-        while (index < this.tabs.length && this.tabs.length > 1) {
-            if (this.isFocusableElement(this.tabs[index])) {
-                this.moveToTabByIndex(index);
-                break;
-            } else if (this.activetab && index === this.tabs.indexOf(this.activetab)) {
-                break;
-            } else if (index + 1 >= this.tabs.length) {
-                index = 0;
-            } else {
-                index += 1;
-            }
-        }
-    }
-
-    private adjustBackward(e: KeyboardEvent): void {
-        let index: number = 0;
-
-        index = this.activetab ? this.tabs.indexOf(this.activetab) - 1 : 0;
-        index = index < 0 ? this.tabs.length - 1 : index;
-
-        while (index >= 0 && this.tabs.length > 1) {
-            if (this.isFocusableElement(this.tabs[index])) {
-                this.moveToTabByIndex(index);
-                break;
-            } else if (index - 1 < 0) {
-                index = this.tabs.length - 1;
-            } else {
-                index -= 1;
-            }
-        }
-    }
-
-    private moveToTabByIndex(index: number) {
-        const tab: HTMLElement = this.tabs[index];
-        this.activeid = tab.id;
-        this.focusTab();
     }
 
     private focusTab(): void {
         if (this.activetab) {
             this.activetab.focus();
         }
-    }
-
-    private getRootActiveElement(): Element | null {
-        const rootNode = this.getRootNode();
-        if (rootNode instanceof ShadowRoot) {
-            return rootNode.activeElement;
-        }
-        return document.activeElement;
     }
 }
 
