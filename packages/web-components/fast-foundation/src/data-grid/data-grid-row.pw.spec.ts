@@ -1,31 +1,15 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 
 test.describe("DataGridRow", () => {
     const cellQueryString = "fast-data-grid-cell";
 
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test('should set the `role` attribute to "row" by default', async ({ page }) => {
+        await page.goto("http://localhost:6006");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        const element = page.locator("fast-data-grid-row");
 
-        element = page.locator("fast-data-grid-row");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("data-grid-data-grid-row--data-grid-row"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test('should set the `role` attribute to "row" by default', async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row></fast-data-grid-row>
             `;
@@ -34,8 +18,14 @@ test.describe("DataGridRow", () => {
         await expect(element).toHaveAttribute("role", "row");
     });
 
-    test("should set `grid-template-columns` style to match attribute", async () => {
-        await root.evaluate(node => {
+    test("should set `grid-template-columns` style to match attribute", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row grid-template-columns="1fr 2fr 3fr"></fast-data-grid-row>
             `;
@@ -47,8 +37,12 @@ test.describe("DataGridRow", () => {
         );
     });
 
-    test("should fire an event when a child cell is focused", async () => {
-        await root.evaluate(node => {
+    test("should fire an event when a child cell is focused", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row>
                     <fast-data-grid-cell></fast-data-grid-cell>
@@ -74,8 +68,12 @@ test.describe("DataGridRow", () => {
         expect(wasFocused).toBeTruthy();
     });
 
-    test("should move focus with left/right arrow key strokes", async () => {
-        await root.evaluate(node => {
+    test("should move focus with left/right arrow key strokes", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row>
                     <fast-data-grid-cell></fast-data-grid-cell>
@@ -98,8 +96,14 @@ test.describe("DataGridRow", () => {
         await expect(element).toHaveJSProperty("focusColumnIndex", 0);
     });
 
-    test("should move focus to the start/end of the row with home/end keystrokes", async () => {
-        await root.evaluate(node => {
+    test("should move focus to the start/end of the row with home/end keystrokes", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row>
                     <fast-data-grid-cell></fast-data-grid-cell>
@@ -122,10 +126,14 @@ test.describe("DataGridRow", () => {
         await expect(element).toHaveJSProperty("focusColumnIndex", 0);
     });
 
-    test("should render no cells if provided no column definitions", async () => {
+    test("should render no cells if provided no column definitions", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
         const cells = element.locator("fast-data-grid-cell");
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row></fast-data-grid-row>
             `;
@@ -141,10 +149,16 @@ test.describe("DataGridRow", () => {
         await expect(cells).toHaveCount(0);
     });
 
-    test("should render as many column header cells as specified in column definitions", async () => {
+    test("should render as many column header cells as specified in column definitions", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
         const cells = element.locator(cellQueryString);
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row></fast-data-grid-row>
             `;
@@ -176,14 +190,20 @@ test.describe("DataGridRow", () => {
         await expect(cells).toHaveCount(3);
     });
 
-    test("should emit a 'rowselectionchange' event when clicked with disableClickSelect disabled", async () => {
-        await root.evaluate((node: FASTDataGridRow) => {
+    test("should emit a 'rowselectionchange' event when clicked with disableClickSelect disabled", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate((node: FASTDataGridRow) => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row>
                     <fast-data-grid-cell ></fast-data-grid-cell>
                 </fast-data-grid-row>
             `;
-            node.disableClickSelect = false;
+            node["disableClickSelect"] = false;
         });
 
         const wasInvoked = await Promise.all([
@@ -196,14 +216,20 @@ test.describe("DataGridRow", () => {
         expect(wasInvoked).toBeTruthy;
     });
 
-    test("should not emit a 'rowselectionchange' event when clicked with disableClickSelect disabled", async () => {
-        await root.evaluate((node: FASTDataGridRow) => {
+    test("should not emit a 'rowselectionchange' event when clicked with disableClickSelect disabled", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate((node: FASTDataGridRow) => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row>
                     <fast-data-grid-cell ></fast-data-grid-cell>
                 </fast-data-grid-row>
             `;
-            node.disableClickSelect = true;
+            node["disableClickSelect"] = true;
         });
 
         const wasInvoked = await Promise.all([
@@ -216,14 +242,20 @@ test.describe("DataGridRow", () => {
         expect(wasInvoked).toBeFalsy;
     });
 
-    test("should emit a 'rowselectionchange' event when space key is pressed with disableClickSelect disabled", async () => {
-        await root.evaluate((node: FASTDataGridRow) => {
+    test("should emit a 'rowselectionchange' event when space key is pressed with disableClickSelect disabled", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid-row");
+
+        await page.locator("#root").evaluate((node: FASTDataGridRow) => {
             node.innerHTML = /* html */ `
                 <fast-data-grid-row>
                     <fast-data-grid-cell ></fast-data-grid-cell>
                 </fast-data-grid-row>
             `;
-            node.disableClickSelect = false;
+            node["disableClickSelect"] = false;
         });
 
         const wasInvoked = await Promise.all([

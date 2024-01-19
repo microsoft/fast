@@ -1,4 +1,10 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import {
+    elements,
+    ElementViewTemplate,
+    html,
+    ref,
+    slotted,
+} from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import { whitespaceFilter } from "../utilities/whitespace-filter.js";
 import type { FASTTextField, TextFieldOptions } from "./text-field.js";
@@ -11,6 +17,13 @@ export function textFieldTemplate<T extends FASTTextField>(
     options: TextFieldOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
+        <slot
+            name="datalist"
+            ${slotted({
+                property: "slottedDataList",
+                filter: elements("datalist"),
+            })}
+        ></slot>
         <label
             part="label"
             for="control"

@@ -1,5 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import chevronIcon from "../../../statics/svg/chevron_down_12_regular.svg";
+import indicator from "../../../statics/svg/chevron_down_12_regular.svg";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
 
@@ -12,6 +12,7 @@ const styles = css`
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         box-sizing: border-box;
         color: var(--neutral-foreground-rest);
+        fill: currentcolor;
         font-family: var(--body-font);
         height: calc(var(--height-number) * 1px);
         position: relative;
@@ -206,7 +207,7 @@ export class Select extends FASTSelect {
 Select.define({
     name: "fast-select",
     template: selectTemplate({
-        indicator: chevronIcon,
+        indicator,
     }),
     styles,
 });

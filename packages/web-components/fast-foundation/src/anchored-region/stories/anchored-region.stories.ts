@@ -13,7 +13,7 @@ import {
 
 const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
     <div style="min-height: 100px">
-        <fast-button class="anchor">Anchor</fast-button>
+        <div class="anchor">Anchor</div>
         <fast-anchored-region
             class="region"
             ?horizontal-inset="${x => x.horizontalInset}"
@@ -38,7 +38,7 @@ const storyTemplate = html<StoryArgs<FASTAnchoredRegion>>`
     </div>
 `;
 
-export default {
+const meta: Meta<typeof FASTAnchoredRegion> = {
     title: "Anchored Region",
     args: {
         storyContent: html`
@@ -57,33 +57,33 @@ export default {
         anchorId: { table: { disable: true } },
         autoUpdateMode: {
             control: "select",
-            options: Object.values(AutoUpdateMode),
+            options: AutoUpdateMode,
         },
         fixedPlacement: { control: "boolean" },
         horizontalDefaultPosition: {
             control: "select",
-            options: Object.values(HorizontalPosition),
+            options: HorizontalPosition,
         },
         horizontalInset: { control: "boolean" },
         horizontalPositioningMode: {
             control: "select",
-            options: Object.values(AxisPositioningMode),
+            options: AxisPositioningMode,
         },
         horizontalScaling: {
             control: "select",
-            options: Object.values(AxisScalingMode),
+            options: AxisScalingMode,
         },
         horizontalThreshold: { control: "number" },
         horizontalViewportLock: { control: "boolean" },
         storyContent: { table: { disable: true } },
         verticalDefaultPosition: {
             control: "select",
-            options: Object.values(VerticalPosition),
+            options: VerticalPosition,
         },
         verticalInset: { control: "boolean" },
         verticalPositioningMode: {
             control: "select",
-            options: Object.values(AxisPositioningMode),
+            options: AxisPositioningMode,
         },
         verticalScaling: {
             control: "select",
@@ -93,22 +93,25 @@ export default {
         verticalViewportLock: { control: "boolean" },
         viewport: { control: "text" },
     },
-    decorators: [
-        (Story, { args }) => {
-            // IDs are generated to ensure that they're unique for the docs page
-            const renderedStory = Story() as DocumentFragment;
-            const anchor = renderedStory.querySelector(".anchor") as HTMLElement;
-            const region = renderedStory.querySelector(".region") as HTMLElement;
+};
 
-            const anchorId = args.anchorId ?? uniqueId("anchor");
+meta.decorators = [
+    (Story, { args }) => {
+        // IDs are generated to ensure that they're unique for the docs page
+        const renderedStory = Story() as DocumentFragment;
+        const anchor = renderedStory.querySelector(".anchor") as FASTAnchoredRegion;
+        const region = renderedStory.querySelector(".region") as HTMLElement;
 
-            anchor.id = anchorId;
-            region.id = uniqueId("region");
-            region.setAttribute("anchor", anchorId);
-            return renderedStory;
-        },
-    ],
-} as Meta<FASTAnchoredRegion>;
+        const anchorId = args.anchorId ?? uniqueId("anchor");
+
+        anchor.id = anchorId;
+        region.id = uniqueId("region");
+        region.setAttribute("anchor", anchorId);
+        return renderedStory;
+    },
+];
+
+export default meta;
 
 export const AnchoredRegion: Story<FASTAnchoredRegion> = renderComponent(
     storyTemplate

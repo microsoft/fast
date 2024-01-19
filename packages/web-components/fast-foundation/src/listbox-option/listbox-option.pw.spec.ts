@@ -1,29 +1,13 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTListboxOption } from "./listbox-option.js";
 
 test.describe("ListboxOption", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should have a role of `option`", async ({ page }) => {
+        const element = page.locator("fast-option");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-option");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("listbox-option--listbox-option"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have a role of `option`", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option></fast-option>
             `;
@@ -32,8 +16,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("role", "option");
     });
 
-    test("should set the `aria-disabled` attribute when disabled", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-disabled` attribute when disabled", async ({ page }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option disabled></fast-option>
             `;
@@ -48,8 +36,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should set the `aria-selected` attribute when selected", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-selected` attribute when selected", async ({ page }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option selected></fast-option>
             `;
@@ -64,8 +56,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-selected", "false");
     });
 
-    test("should set the `aria-checked` attribute when checked", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-checked` attribute when checked", async ({ page }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option></fast-option>
             `;
@@ -86,8 +82,14 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should have an empty string `value` when the `value` attribute exists and is empty", async () => {
-        await root.evaluate(node => {
+    test("should have an empty string `value` when the `value` attribute exists and is empty", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option value=""></fast-option>
             `;
@@ -102,8 +104,14 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveAttribute("value", "");
     });
 
-    test("should return the text content when the `value` attribute does not exist", async () => {
-        await root.evaluate(node => {
+    test("should return the text content when the `value` attribute does not exist", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option>hello</fast-option>
             `;
@@ -114,8 +122,14 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveJSProperty("value", "hello");
     });
 
-    test("should return the trimmed text content with the `text` property", async () => {
-        await root.evaluate(node => {
+    test("should return the trimmed text content with the `text` property", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option>
                     hello
@@ -129,8 +143,12 @@ test.describe("ListboxOption", () => {
         await expect(element).toHaveText("hello world");
     });
 
-    test("should always return the `value` as a string", async () => {
-        await root.evaluate(node => {
+    test("should always return the `value` as a string", async ({ page }) => {
+        const element = page.locator("fast-option");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-option value="1"></fast-option>
             `;

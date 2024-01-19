@@ -4,6 +4,7 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
+import { uniqueId } from "@microsoft/fast-web-utilities";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -91,6 +92,30 @@ export class FASTTextField extends FormAssociatedTextField {
             this.proxy.type = this.type;
             this.validate();
         }
+    }
+
+    private dataList: HTMLDataListElement | undefined;
+
+    /**
+     * The slotted datalist elements.
+     * @public
+     */
+    @observable
+    public slottedDataList?: HTMLDataListElement[];
+    protected slottedDataListChanged(
+        prev: HTMLDataListElement[] | undefined,
+        next: HTMLDataListElement[] | undefined
+    ): void {
+        this.dataList = next?.[0];
+        if (!this.dataList) {
+            return;
+        }
+
+        if (!this.dataList.id) {
+            this.dataList.id = uniqueId("datalist-");
+        }
+
+        this.control.setAttribute("list", this.dataList.id);
     }
 
     /**

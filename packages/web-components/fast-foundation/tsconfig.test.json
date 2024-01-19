@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "declaration": false,
+        "declarationDir": null,
+        "outDir": "test/dist",
+        "module": "ESNext"
+    },
+    "include": ["src/**/*.register.ts", "src/__test__/**/*.ts", "test/**/*.ts"]
+}

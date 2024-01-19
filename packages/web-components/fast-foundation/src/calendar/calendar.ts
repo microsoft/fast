@@ -1,9 +1,10 @@
 import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { TemplateElementDependency } from "../patterns/tag-for.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
-import { StartEnd, TemplateElementDependency } from "../patterns/index.js";
-import type { StartEndOptions } from "../patterns/start-end.js";
 import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 

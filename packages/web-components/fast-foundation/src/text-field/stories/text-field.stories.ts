@@ -112,3 +112,15 @@ export const TextFieldInForm: Story<FASTTextField> = renderComponent(
         </form>
     `
 ).bind({});
+
+export const TextFieldWithDataList: Story<FASTTextField> = renderComponent(
+    html<StoryArgs<FASTTextField>>`
+        <fast-text-field>
+            <datalist id="test" slot="datalist">
+                <option value="test" />
+                <option value="test2" />
+                <option value="test3" />
+            </datalist>
+        </fast-text-field>
+    `
+).bind({});

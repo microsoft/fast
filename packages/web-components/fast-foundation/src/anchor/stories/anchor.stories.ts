@@ -39,8 +39,10 @@ const storyTemplate = html<StoryArgs<FASTAnchor>>`
     </fast-anchor>
 `;
 
-export default {
+const meta: Meta<FASTAnchor> = {
     title: "Anchor",
+    component: "fast-anchor",
+    render: renderComponent(storyTemplate).bind({}),
     argTypes: {
         download: { control: "text" },
         href: { control: "text" },
@@ -72,30 +74,32 @@ export default {
         ariaRoledescription: { control: "text" },
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTAnchor>;
+};
+export default meta;
 
-export const Anchor: Story<FASTAnchor> = renderComponent(storyTemplate).bind({});
-Anchor.args = {
-    href: "https://www.fast.design/",
-    storyContent: "Anchor",
+export const Anchor: Story<FASTAnchor> = {
+    args: {
+        href: "https://www.fast.design/",
+        storyContent: "Anchor",
+    },
 };
 
-export const AnchorWithSlottedStartEnd: Story<FASTAnchor> = renderComponent(
-    storyTemplate
-).bind({});
-AnchorWithSlottedStartEnd.args = {
-    href: "https://www.fast.design/",
-    storyContent: html`
-        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
-        Anchor
-        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
-    `,
+export const AnchorWithSlottedStartEnd: Story<FASTAnchor> = {
+    args: {
+        href: "https://www.fast.design/",
+        storyContent: html`
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Anchor
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+        `,
+    },
 };
 
-export const AnchorWithSlottedIconContent: Story<FASTAnchor> = Anchor.bind({});
-AnchorWithSlottedIconContent.args = {
-    href: "https://www.fast.design/",
-    storyContent: html`
-        <svg width="20" height="20"><use href="#test-icon" /></svg>
-    `,
+export const AnchorWithSlottedIconContent: Story = {
+    args: {
+        href: "https://www.fast.design/",
+        storyContent: html`
+            <svg width="20" height="20"><use href="#test-icon" /></svg>
+        `,
+    },
 };

@@ -12,7 +12,7 @@ export type AnchorOptions = StartEndOptions<FASTAnchor>;
 
 /**
  * An Anchor Custom HTML Element.
- * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element }.
+ * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | `<a>` element }.
  *
  * @slot start - Content which can be provided before the anchor content
  * @slot end - Content which can be provided after the anchor content
@@ -27,7 +27,7 @@ export class FASTAnchor extends FASTElement {
      * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
-     * HTML Attribute: download
+     * HTML Attribute: `download`
      */
     @attr
     public download: string;

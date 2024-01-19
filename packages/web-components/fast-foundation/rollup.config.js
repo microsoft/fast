@@ -1,28 +1,11 @@
-import filesize from "rollup-plugin-filesize";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import filesize from "rollup-plugin-filesize";
 import { terser } from "rollup-plugin-terser";
-import transformTaggedTemplate from "rollup-plugin-transform-tagged-template";
-import {
-    transformCSSFragment,
-    transformHTMLFragment,
-} from "../../../build/transform-fragments.js";
-
-const parserOptions = {
-    sourceType: "module",
-};
+import inlineSvg from "rollup-plugin-inline-svg";
+import typescript from "@rollup/plugin-typescript";
 
 const plugins = [
     nodeResolve(),
-    transformTaggedTemplate({
-        tagsToProcess: ["css"],
-        transformer: transformCSSFragment,
-        parserOptions,
-    }),
-    transformTaggedTemplate({
-        tagsToProcess: ["child", "html", "item"],
-        transformer: transformHTMLFragment,
-        parserOptions,
-    }),
     filesize({
         showMinifiedSize: false,
         showBrotliSize: true,
@@ -59,5 +42,20 @@ export default [
             },
         ],
         plugins,
+    },
+    {
+        input: "test/bundle.ts",
+        output: {
+            file: "test/public/dist/bundle.js",
+            format: "cjs",
+        },
+        context: "window",
+        plugins: [
+            nodeResolve(),
+            inlineSvg(),
+            typescript({
+                tsconfig: "./tsconfig.test.json",
+            }),
+        ],
     },
 ];

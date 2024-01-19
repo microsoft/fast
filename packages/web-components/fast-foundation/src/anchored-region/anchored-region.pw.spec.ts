@@ -1,29 +1,15 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTAnchoredRegion } from "./anchored-region.js";
 
 test.describe("Anchored Region", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should set positioning modes to 'uncontrolled' by default", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-anchored-region");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-anchored-region");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("anchored-region--anchored-region"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should set positioning modes to 'uncontrolled' by default", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-anchored-region></fast-anchored-region>
             `;
@@ -37,10 +23,13 @@ test.describe("Anchored Region", () => {
         );
     });
 
-    test("should assign anchor and viewport elements by id", async () => {
+    test("should assign anchor and viewport elements by id", async ({ page }) => {
+        const element = page.locator("fast-anchored-region");
         const anchorId = "anchor";
 
-        await root.evaluate(
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(
             (node, { anchorId }) => {
                 node.innerHTML = /* html */ `
                     <div id="${anchorId}"></div>
@@ -61,8 +50,13 @@ test.describe("Anchored Region", () => {
         expect(anchorElementId).toBe(anchorId);
     });
 
-    test("should be sized to match content by default", async () => {
-        await root.evaluate(node => {
+    test("should be sized to match content by default", async ({ page }) => {
+        const element = page.locator("fast-anchored-region");
+        const content = element.locator("#content");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-anchored-region>
                     <div id="content" style="width: 100px; height: 100px;"></div>
@@ -71,8 +65,6 @@ test.describe("Anchored Region", () => {
         });
 
         const elementClientHeight = await element.evaluate(node => node.clientHeight);
-
-        const content = element.locator("#content");
 
         const contentClientHeight = await content.evaluate(node => node.clientHeight);
 

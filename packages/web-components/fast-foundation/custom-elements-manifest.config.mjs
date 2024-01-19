@@ -12,7 +12,7 @@ export default {
         "src/**/*.md",
         "src/**/*.spec.ts",
         "src/**/index.ts",
-        "src/**/stories/*",
+        "src/**/stories/*"
     ],
     /** Directory to output CEM to */
     outdir: "dist",

@@ -1,6 +1,4 @@
-import { html } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element";
-import { css } from "@microsoft/fast-element";
+import { attr, css, html } from "@microsoft/fast-element";
 import { FASTMenuItem, MenuItemRole, menuItemTemplate } from "../../menu-item/index.js";
 import { FASTMenu } from "../menu.js";
 import { menuTemplate } from "../menu.template.js";
@@ -57,8 +55,8 @@ export class FancyMenu extends FASTMenu {
 
         this.menuItems
             ?.filter(this.isMenuItemElement)
-            .forEach((item: HTMLElement, index: number) => {
-                const indent: FancyMenuItemColumnCount = this.menuItems!.reduce(
+            .forEach((item: HTMLElement, index: number, menuItems) => {
+                const indent: FancyMenuItemColumnCount = menuItems.reduce(
                     (accum, current) => {
                         const elementValue = FancyMenu.elementIndent(
                             current as HTMLElement

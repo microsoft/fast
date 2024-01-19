@@ -1,12 +1,19 @@
-import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
+import {
+    autoUpdate,
+    computePosition,
+    ElementRects,
+    flip,
+    hide,
+    size,
+} from "@floating-ui/dom";
 import { attr, Observable, observable, Updates } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
-import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";
-import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
 import { ComboboxAutocomplete } from "./combobox.options.js";
 
@@ -596,7 +603,13 @@ export class FASTCombobox extends FormAssociatedCombobox {
                         middleware: [
                             flip(),
                             size({
-                                apply: ({ availableHeight, rects }) => {
+                                apply: ({
+                                    availableHeight,
+                                    rects,
+                                }: {
+                                    availableHeight: number;
+                                    rects: ElementRects;
+                                }) => {
                                     Object.assign(this.listbox.style, {
                                         maxHeight: `${availableHeight}px`,
                                         width: `${rects.reference.width}px`,

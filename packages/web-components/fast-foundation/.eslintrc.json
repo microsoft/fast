@@ -1,12 +1,20 @@
 {
-    "extends": ["@microsoft/eslint-config-fast-dna", "prettier"],
+    "extends": [
+        "@microsoft/eslint-config-fast-dna",
+        "prettier",
+        "plugin:storybook/recommended"
+    ],
     "rules": {
         "@typescript-eslint/class-name-casing": "off",
         "@typescript-eslint/naming-convention": [
             "error",
             {
                 "selector": "typeLike",
-                "format": ["UPPER_CASE", "camelCase", "PascalCase"],
+                "format": [
+                    "UPPER_CASE",
+                    "camelCase",
+                    "PascalCase"
+                ],
                 "leadingUnderscore": "allow"
             }
         ],
@@ -24,13 +32,22 @@
     },
     "overrides": [
         {
-            "files": ["**/*.ts"],
-            "excludedFiles": ["**/*.stories.ts"],
+            "files": [
+                "**/*.ts"
+            ],
+            "excludedFiles": [
+                "**/*.stories.ts",
+                "**/__test__/**",
+                "test/**"
+            ],
             "rules": {
                 "no-restricted-imports": [
                     "error",
                     {
-                        "patterns": ["**/stories/**", "**/*.pw.spec.ts"]
+                        "patterns": [
+                            "**/stories/**",
+                            "**/*.pw.spec.ts"
+                        ]
                     }
                 ]
             }

@@ -5,7 +5,8 @@ import {
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { TemplateElementDependency } from "../patterns/tag-for.js";
+import { tagFor } from "../patterns/tag-for.js";
 import type { FASTPicker } from "./picker.js";
 
 function defaultListItemTemplate(options: PickerOptions): ViewTemplate {

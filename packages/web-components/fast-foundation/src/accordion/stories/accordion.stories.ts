@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import { FASTAccordion } from "../accordion.js";
+import type { FASTAccordion } from "../accordion.js";
 import { AccordionExpandMode } from "../accordion.options.js";
 
 const storyTemplate = html<StoryArgs<FASTAccordion>>`
@@ -10,9 +10,9 @@ const storyTemplate = html<StoryArgs<FASTAccordion>>`
     </fast-accordion>
 `;
 
-export default {
+const meta: Meta<FASTAccordion> = {
     title: "Accordion",
-    component: FASTAccordion,
+    component: "anchor",
     args: {
         expandmode: AccordionExpandMode.multi,
     },
@@ -20,7 +20,9 @@ export default {
         expandmode: { control: "select", options: Object.values(AccordionExpandMode) },
         storyContent: { table: { disable: true } },
     },
-} as Meta<FASTAccordion>;
+};
+
+export default meta;
 
 export const Accordion: Story<FASTAccordion> = renderComponent(storyTemplate).bind({});
 Accordion.args = {

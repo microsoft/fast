@@ -1,38 +1,30 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTTooltip } from "./tooltip.js";
 
 test.describe("Tooltip", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let anchoredRegion: Locator;
+    test("should not render the tooltip by default", async ({ page }) => {
+        const element = page.locator("fast-tooltip");
+        const anchoredRegion = element.locator("fast-anchored-region");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-tooltip");
+        await page.locator("#root").evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-tooltip></fast-tooltip>
+            `;
+        });
 
-        root = page.locator("#root");
-
-        anchoredRegion = element.locator("fast-anchored-region");
-
-        await page.goto(fixtureURL("tooltip--tooltip", { delay: 0 }));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should not render the tooltip by default", async () => {
         await expect(element).toHaveJSProperty("visible", false);
 
         await expect(anchoredRegion).toBeHidden();
     });
 
-    test("should render the tooltip when the anchor is hovered", async () => {
-        await root.evaluate((node: HTMLElement) => {
+    test("should render the tooltip when the anchor is hovered", async ({ page }) => {
+        const element = page.locator("fast-tooltip");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-tooltip anchor="anchor-default">
                 Tooltip
@@ -52,8 +44,12 @@ test.describe("Tooltip", () => {
         await expect(element).toBeVisible();
     });
 
-    test("should render the tooltip when the anchor is focused", async () => {
-        await root.evaluate((node: HTMLElement) => {
+    test("should render the tooltip when the anchor is focused", async ({ page }) => {
+        const element = page.locator("fast-tooltip");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tooltip anchor="anchor-default">
                     Tooltip
@@ -77,8 +73,14 @@ test.describe("Tooltip", () => {
         await expect(element).toBeVisible();
     });
 
-    test('should render the tooltip when the `show` attribute is "true"', async () => {
-        await root.evaluate((node: HTMLElement) => {
+    test('should render the tooltip when the `show` attribute is "true"', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tooltip");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tooltip anchor="anchor-default" show="true">
                     Tooltip
@@ -94,8 +96,14 @@ test.describe("Tooltip", () => {
         await expect(element).toBeVisible();
     });
 
-    test('should not render the tooltip when the `show` attribute is "false"', async () => {
-        await root.evaluate((node: HTMLElement) => {
+    test('should not render the tooltip when the `show` attribute is "false"', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tooltip");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tooltip anchor="anchor-default" show="false">
                     Tooltip
@@ -115,8 +123,14 @@ test.describe("Tooltip", () => {
         await expect(element).toBeHidden();
     });
 
-    test('should not render the tooltip when the anchor is hovered and `show` is "false"', async () => {
-        await root.evaluate((node: HTMLElement) => {
+    test('should not render the tooltip when the anchor is hovered and `show` is "false"', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tooltip");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tooltip anchor="anchor-default">
                     Tooltip
@@ -144,10 +158,23 @@ test.describe("Tooltip", () => {
         await expect(element).toBeHidden();
     });
 
-    test("should change anchor element when the `anchor` attribute changes", async () => {
-        await page.goto(fixtureURL("tooltip--tooltip"));
+    test("should change anchor element when the `anchor` attribute changes", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tooltip");
 
-        await root.evaluate(node => {
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-tooltip anchor="anchor-default">
+                    Tooltip
+                </fast-tooltip>
+                <fast-button id="anchor-default">
+                    Hover or focus me
+                </fast-button>
+            `;
+
             const newAnchor = document.createElement("div");
             newAnchor.id = "new-anchor";
 
@@ -155,7 +182,9 @@ test.describe("Tooltip", () => {
         });
 
         expect(
-            await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
+            await element.evaluate<string | undefined, FASTTooltip>(
+                node => node.anchorElement?.id
+            )
         ).toBe("anchor-default");
 
         await element.evaluate(node => {
@@ -163,7 +192,9 @@ test.describe("Tooltip", () => {
         });
 
         expect(
-            await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
+            await element.evaluate<string | undefined, FASTTooltip>(
+                node => node.anchorElement?.id
+            )
         ).toBe("new-anchor");
     });
 });

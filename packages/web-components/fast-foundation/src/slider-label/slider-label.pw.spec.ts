@@ -1,30 +1,16 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSliderLabel } from "./slider-label.js";
 
 // TODO: Need to add tests for positioning and slider configuration
 test.describe("Slider label", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should NOT set the `aria-disabled` attribute when `disabled` is not defined", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-slider-label");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-slider-label");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("slider-label--slider-label"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should NOT set the `aria-disabled` attribute when `disabled` is not defined", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-slider-label></fast-slider-label>
             `;
@@ -33,8 +19,14 @@ test.describe("Slider label", () => {
         await expect(element).not.hasAttribute("aria-disabled");
     });
 
-    test("should set the `aria-disabled` attribute when the `disabled` property is true", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-disabled` attribute when the `disabled` property is true", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-slider-label");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-slider-label disabled></fast-slider-label>
             `;

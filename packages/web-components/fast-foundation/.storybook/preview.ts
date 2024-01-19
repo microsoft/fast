@@ -1,4 +1,10 @@
 import { useArgs } from "@storybook/client-api";
+import type { Preview } from "@storybook/html";
+
+import customElements from "../dist/custom-elements.json";
+global["__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__"] = customElements;
+
+import "@microsoft/fast-element";
 
 import "../src/anchor/stories/anchor.register.js";
 import "../src/anchored-region/stories/anchored-region.register.js";
@@ -61,11 +67,24 @@ import "../src/tree-view/stories/tree-view.register.js";
 
 import { FAST, html } from "@microsoft/fast-element";
 
-FAST.html = html;
+FAST["html"] = html;
 
-export const decorators = [
-    (Story, context) => {
-        const [_, updateArgs] = useArgs();
-        return Story({ ...context, updateArgs });
+const preview: Preview = {
+    parameters: {
+        actions: { argTypesRegex: "^.*Handler" },
+        controls: {
+            matchers: {
+                color: /(background|color)$/i,
+                date: /Date$/i,
+            },
+        },
     },
-];
+    decorators: [
+        (Story, context) => {
+            const [_, updateArgs] = useArgs();
+            return Story({ ...context, updateArgs });
+        },
+    ],
+};
+
+export default preview;

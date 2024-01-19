@@ -1,32 +1,13 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTCheckbox } from "./checkbox.js";
 
 test.describe("Checkbox", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let form: Locator;
+    test("should have a role of `checkbox`", async ({ page }) => {
+        await page.goto("http://localhost:6006");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        const element = page.locator("fast-checkbox");
 
-        element = page.locator("fast-checkbox");
-
-        root = page.locator("#root");
-
-        form = page.locator("form");
-
-        await page.goto(fixtureURL("checkbox--checkbox"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have a role of `checkbox`", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -34,8 +15,12 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("role", "checkbox");
     });
 
-    test("should set a tabindex of 0 on the element", async () => {
-        await root.evaluate(node => {
+    test("should set a tabindex of 0 on the element", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -46,8 +31,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should set a default `aria-checked` value when `checked` is not defined", async () => {
-        await root.evaluate(node => {
+    test("should set a default `aria-checked` value when `checked` is not defined", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -58,8 +49,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should set the `aria-checked` attribute equal to the `checked` property", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-checked` attribute equal to the `checked` property", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox checked></fast-checkbox>
             `;
@@ -74,8 +71,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should NOT set a default `aria-required` value when `required` is not defined", async () => {
-        await root.evaluate(node => {
+    test("should NOT set a default `aria-required` value when `required` is not defined", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -86,8 +89,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-required", "false");
     });
 
-    test("should set the `aria-required` attribute equal to the `required` property", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-required` attribute equal to the `required` property", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -106,8 +115,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-required", "false");
     });
 
-    test("should set a default `aria-disabled` value when `disabled` is not defined", async () => {
-        await root.evaluate(node => {
+    test("should set a default `aria-disabled` value when `disabled` is not defined", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -118,8 +133,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should set the `aria-disabled` attribute equal to the `disabled` property", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-disabled` attribute equal to the `disabled` property", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -138,8 +159,12 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should NOT set a tabindex when `disabled` is true", async () => {
-        await root.evaluate(node => {
+    test("should NOT set a tabindex when `disabled` is true", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox disabled></fast-checkbox>
             `;
@@ -150,8 +175,14 @@ test.describe("Checkbox", () => {
         await expect(element).not.toHaveAttribute("tabindex", "0");
     });
 
-    test("should set the aria-checked value to 'mixed' when indeterminate property is true", async () => {
-        await root.evaluate(node => {
+    test("should set the aria-checked value to 'mixed' when indeterminate property is true", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -170,8 +201,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
 
-    test("should set off `indeterminate` on `checked` change by user click", async () => {
-        await root.evaluate(node => {
+    test("should set off `indeterminate` on `checked` change by user click", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox>checkbox</fast-checkbox>
             `;
@@ -188,8 +225,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("indeterminate", false);
     });
 
-    test("should set off `indeterminate` on `checked` change by user keypress", async () => {
-        await root.evaluate(node => {
+    test("should set off `indeterminate` on `checked` change by user keypress", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -206,8 +249,14 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("indeterminate", false);
     });
 
-    test("should add a class of `label` to the internal label when default slotted content exists", async () => {
-        await root.evaluate(node => {
+    test("should add a class of `label` to the internal label when default slotted content exists", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox>
                     <span>Label</span>
@@ -220,8 +269,14 @@ test.describe("Checkbox", () => {
         await expect(label).toHaveClass(/label/);
     });
 
-    test("should add classes of `label` and `label__hidden` to the internal label when default slotted content exists", async () => {
-        await root.evaluate(node => {
+    test("should add classes of `label` and `label__hidden` to the internal label when default slotted content exists", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox>
                     <span>Label</span>
@@ -240,8 +295,14 @@ test.describe("Checkbox", () => {
         await expect(label).toHaveClass(/label label__hidden/);
     });
 
-    test("should initialize to the initial value if no value property is set", async () => {
-        await root.evaluate(node => {
+    test("should initialize to the initial value if no value property is set", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -255,28 +316,36 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("value", initialValue);
     });
 
-    test("should initialize to the provided `value` attribute when set pre-connection", async () => {
-        await root.evaluate(node => {
+    test("should initialize to the provided `value` attribute when set pre-connection", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox value="foo"></fast-checkbox>
             `;
         });
-
-        const element = page.locator("fast-checkbox");
 
         const value = await element.evaluate((node: FASTCheckbox) => node.value);
 
         expect(value).toBe("foo");
     });
 
-    test("should initialize to the provided `value` attribute when set post-connection", async () => {
-        await root.evaluate(node => {
+    test("should initialize to the provided `value` attribute when set post-connection", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
         });
-
-        const element = page.locator("fast-checkbox");
 
         const expectedValue = "foobar";
 
@@ -287,8 +356,12 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("value", expectedValue);
     });
 
-    test("should initialize to the provided `value` property when set pre-connection", async () => {
-        await root.evaluate(node => {
+    test("should initialize to the provided `value` property when set pre-connection", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-checkbox></fast-checkbox>
             `;
@@ -307,8 +380,12 @@ test.describe("Checkbox", () => {
         expect(value).toBe(expectedValue);
     });
 
-    test("should be invalid when unchecked", async () => {
-        await root.evaluate(node => {
+    test("should be invalid when unchecked", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
                     <fast-checkbox required></fast-checkbox>
@@ -321,8 +398,12 @@ test.describe("Checkbox", () => {
         ).toBe(true);
     });
 
-    test("should be valid when checked", async () => {
-        await root.evaluate(node => {
+    test("should be valid when checked", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
                     <fast-checkbox required>checkbox</fast-checkbox>
@@ -339,8 +420,16 @@ test.describe("Checkbox", () => {
         ).toBe(false);
     });
 
-    test("should set the `checked` property to false if the `checked` attribute is unset", async () => {
-        await root.evaluate(node => {
+    test("should set the `checked` property to false if the `checked` attribute is unset", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        const form = page.locator("form");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
                     <fast-checkbox></fast-checkbox>
@@ -363,8 +452,16 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("checked", false);
     });
 
-    test("should set its checked property to true if the checked attribute is set", async () => {
-        await root.evaluate(node => {
+    test("should set its checked property to true if the checked attribute is set", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        const form = page.locator("form");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
                     <fast-checkbox></fast-checkbox>
@@ -387,8 +484,16 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("checked", true);
     });
 
-    test("should put the control into a clean state, where checked attribute modifications change the checked property prior to user or programmatic interaction", async () => {
-        await root.evaluate(node => {
+    test("should put the control into a clean state, where checked attribute modifications change the checked property prior to user or programmatic interaction", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-checkbox");
+
+        const form = page.locator("form");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
                     <fast-checkbox required></fast-checkbox>

@@ -146,9 +146,9 @@ export const myDataGrid = DataGrid.compose({
 
 ### Functions
 
-| Name                             | Description | Parameters               | Return                |
-| -------------------------------- | ----------- | ------------------------ | --------------------- |
-| `defaultCellFocusTargetCallback` |             | `cell: FASTDataGridCell` | `HTMLElement or null` |
+| Name                             | Description                                                         | Parameters               | Return |
+| -------------------------------- | ------------------------------------------------------------------- | ------------------------ | ------ |
+| `defaultCellFocusTargetCallback` | Basic focusTargetCallback that returns the first child of the cell. | `cell: FASTDataGridCell` |        |
 
 <hr/>
 

@@ -1,24 +1,7 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 
 test.describe("Anchor", () => {
-    let page: Page;
-    let element: Locator;
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-anchor");
-
-        await page.goto(fixtureURL("anchor", attributes));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
     const attributes = {
         href: "href",
         ping: "ping",
@@ -52,7 +35,22 @@ test.describe("Anchor", () => {
     for (const [attribute, value] of Object.entries(attributes)) {
         const attributeSpinalCase = spinalCase(attribute);
 
-        test(`should set the \`${attributeSpinalCase}\` attribute to \`${value}\` on the internal control`, async () => {
+        test(`should set the \`${attributeSpinalCase}\` attribute to \`${value}\` on the internal control`, async ({
+            page,
+        }) => {
+            const element = page.locator("fast-anchor");
+
+            await page.goto("http://localhost:6006");
+
+            await page.locator("#root").evaluate(
+                (root, [attribute, value]) => {
+                    const anchor = document.createElement("fast-anchor");
+                    anchor[attribute] = value;
+                    root.append(anchor);
+                },
+                [attribute, value]
+            );
+
             await expect(element).toHaveAttribute(attributeSpinalCase, `${value}`);
         });
     }

@@ -1,4 +1,4 @@
-import type { Placement } from "@floating-ui/dom";
+import type { ElementRects, Placement } from "@floating-ui/dom";
 import { autoUpdate, computePosition, flip, shift, size } from "@floating-ui/dom";
 import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
@@ -8,10 +8,10 @@ import {
     keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
 export { MenuItemRole, roleForMenuItem };
@@ -337,7 +337,13 @@ export class FASTMenuItem extends FASTElement {
                     middleware: [
                         shift(),
                         size({
-                            apply: ({ availableWidth, rects }) => {
+                            apply: ({
+                                availableWidth,
+                                rects,
+                            }: {
+                                availableWidth: number;
+                                rects: ElementRects;
+                            }) => {
                                 if (availableWidth < rects.floating.width) {
                                     fallbackPlacements.push("bottom-end", "top-end");
                                 }

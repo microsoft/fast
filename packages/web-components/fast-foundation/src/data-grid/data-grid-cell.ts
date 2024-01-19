@@ -44,7 +44,14 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<FASTDataGridCell> = html`
     </template>
 `;
 
-// basic focusTargetCallback that returns the first child of the cell
+/**
+ * Basic focusTargetCallback that returns the first child of the cell.
+ *
+ * @param cell - the cell to return the focus target for
+ * @returns the first focusable element in the cell
+ *
+ * @public
+ */
 export const defaultCellFocusTargetCallback = (
     cell: FASTDataGridCell
 ): HTMLElement | null => {

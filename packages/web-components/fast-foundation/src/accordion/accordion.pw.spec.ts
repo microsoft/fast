@@ -1,30 +1,17 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import { AccordionExpandMode } from "./accordion.options.js";
-import type { FASTAccordion } from "./accordion.js";
 
 test.describe("Accordion", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    // test.beforeEach(async ({ page }) => {
+    //     // await page.goto();
+    // });
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+    test("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
 
-        element = page.locator("fast-accordion");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("accordion--accordion"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should set an expand mode of `multi` when passed to the `expand-mode` attribute", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="multi">
                     <fast-accordion-item>
@@ -42,8 +29,12 @@ test.describe("Accordion", () => {
         await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.multi);
     });
 
-    test("should set an expand mode of `single` when passed to the `expand-mode` attribute", async () => {
-        await root.evaluate(node => {
+    test("should set an expand mode of `single` when passed to the `expand-mode` attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -61,8 +52,12 @@ test.describe("Accordion", () => {
         await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.single);
     });
 
-    test("should set a default expand mode of `multi` when `expand-mode` attribute is not passed", async () => {
-        await root.evaluate(node => {
+    test("should set a default expand mode of `multi` when `expand-mode` attribute is not passed", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion>
                     <fast-accordion-item>
@@ -82,8 +77,10 @@ test.describe("Accordion", () => {
         await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.multi);
     });
 
-    test("should expand/collapse items when clicked in multi mode", async () => {
-        await root.evaluate(node => {
+    test("should expand/collapse items when clicked in multi mode", async ({ page }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="multi">
                     <fast-accordion-item>
@@ -109,8 +106,10 @@ test.describe("Accordion", () => {
         await expect(items.nth(1)).toHaveAttribute("expanded", "");
     });
 
-    test("should only have one expanded item in single mode", async () => {
-        await root.evaluate(node => {
+    test("should only have one expanded item in single mode", async ({ page }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -150,8 +149,12 @@ test.describe("Accordion", () => {
         await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
-    test("should set the expanded items' button to aria-disabled when in single expand mode", async () => {
-        await root.evaluate(node => {
+    test("should set the expanded items' button to aria-disabled when in single expand mode", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -202,8 +205,12 @@ test.describe("Accordion", () => {
         );
     });
 
-    test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async () => {
-        await root.evaluate(node => {
+    test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -238,8 +245,12 @@ test.describe("Accordion", () => {
         await expect(firstItem.locator("button")).not.hasAttribute("aria-disabled");
     });
 
-    test("should set the first item as expanded if no child is expanded by default in single mode", async () => {
-        await root.evaluate(node => {
+    test("should set the first item as expanded if no child is expanded by default in single mode", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -271,8 +282,12 @@ test.describe("Accordion", () => {
         await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
-    test("should set the first item with an expanded attribute to expanded in single mode", async () => {
-        await root.evaluate(node => {
+    test("should set the first item with an expanded attribute to expanded in single mode", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -306,9 +321,14 @@ test.describe("Accordion", () => {
         await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
     });
 
-    test("should allow disabled items to be expanded when in single mode", async () => {
+    test("should allow disabled items to be expanded when in single mode", async ({
+        page,
+    }) => {
         test.slow();
-        await root.evaluate(node => {
+
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>
@@ -352,8 +372,12 @@ test.describe("Accordion", () => {
         await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
     });
 
-    test("should ignore `change` events from components other than accordion items", async () => {
-        await root.evaluate(node => {
+    test("should ignore `change` events from components other than accordion items", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-accordion");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
                     <fast-accordion-item>

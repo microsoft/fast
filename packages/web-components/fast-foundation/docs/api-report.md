@@ -412,7 +412,7 @@ export const DayFormat: {
 // @public
 export type DayFormat = ValuesOf<typeof DayFormat>;
 
-// @public (undocumented)
+// @public
 export const defaultCellFocusTargetCallback: (cell: FASTDataGridCell) => HTMLElement | null;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2067,6 +2067,9 @@ export class FASTTextField extends FormAssociatedTextField {
     size: number;
     // (undocumented)
     protected sizeChanged(): void;
+    slottedDataList?: HTMLDataListElement[];
+    // (undocumented)
+    protected slottedDataListChanged(prev: HTMLDataListElement[] | undefined, next: HTMLDataListElement[] | undefined): void;
     spellcheck: boolean;
     // (undocumented)
     protected spellcheckChanged(): void;
@@ -2870,9 +2873,9 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:54:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

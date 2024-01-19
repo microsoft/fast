@@ -1,10 +1,5 @@
-export { tagFor, TemplateElementDependency } from "./tag-for.js";
+export { tagFor } from "../patterns/tag-for.js";
+export type { TemplateElementDependency } from "../patterns/tag-for.js";
 export { ARIAGlobalStatesAndProperties } from "./aria-global.js";
-export {
-    EndOptions,
-    endSlotTemplate,
-    StartEnd,
-    StartEndOptions,
-    StartOptions,
-    startSlotTemplate,
-} from "./start-end.js";
+export { endSlotTemplate, StartEnd, startSlotTemplate } from "./start-end.js";
+export type { EndOptions, StartEndOptions, StartOptions } from "./start-end.js";

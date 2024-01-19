@@ -1,29 +1,13 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 
 // TODO: Need to add tests for keyboard handling & focus management
 test.describe("TreeView", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should include a role of `tree`", async ({ page }) => {
+        const element = page.locator("fast-tree-view");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-tree-view");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("tree-view--tree-view"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should include a role of `tree`", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view></fast-tree-view>
             `;
@@ -32,8 +16,14 @@ test.describe("TreeView", () => {
         await expect(element).toHaveAttribute("role", "tree");
     });
 
-    test("should set tree item `nested` properties to true if *any* tree item has nested items", async () => {
-        await root.evaluate(node => {
+    test("should set tree item `nested` properties to true if *any* tree item has nested items", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-view");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view>
                     <fast-tree-item>
@@ -66,8 +56,14 @@ test.describe("TreeView", () => {
         ).toBe(true);
     });
 
-    test("should set the selected state on tree items when a tree item is clicked", async () => {
-        await root.evaluate(node => {
+    test("should set the selected state on tree items when a tree item is clicked", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-view");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view>
                     <fast-tree-item>
@@ -98,8 +94,12 @@ test.describe("TreeView", () => {
         await expect(firstTreeItem).toHaveAttribute("aria-selected", "true");
     });
 
-    test("should only allow one tree item to be selected at a time", async () => {
-        await root.evaluate(node => {
+    test("should only allow one tree item to be selected at a time", async ({ page }) => {
+        const element = page.locator("fast-tree-view");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view>
                     <fast-tree-item>
@@ -138,8 +138,14 @@ test.describe("TreeView", () => {
         }
     });
 
-    test("should toggle the expanded state when `expand-collapse-button` is clicked", async () => {
-        await root.evaluate(node => {
+    test("should toggle the expanded state when `expand-collapse-button` is clicked", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-view");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view>
                     <fast-tree-item>

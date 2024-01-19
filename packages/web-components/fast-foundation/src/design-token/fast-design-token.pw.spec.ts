@@ -5,9 +5,7 @@ import type {
     Observable as FASTObservable,
     Updates as FASTUpdates,
 } from "@microsoft/fast-element";
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { DesignTokenResolver } from "./core/design-token-node.js";
 import type {
     CSSDesignToken as CSSDesignTokenImpl,
@@ -48,26 +46,21 @@ function uniqueTokenName(): string {
 // Test utilities
 
 test.describe("A DesignToken", () => {
-    let page: Page;
-    let root: Locator;
+    test.beforeEach(async ({ page }) => {
+        await page.goto("http://localhost:6006");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("debug-designtoken--design-token"));
-        await page.evaluate(() => DesignToken.registerDefaultStyleTarget());
-    });
-    test.afterAll(async () => {
-        await page.evaluate(() => DesignToken.registerDefaultStyleTarget());
-        await page.close();
+        await page.evaluate(() => {
+            DesignToken.registerDefaultStyleTarget();
+        });
     });
 
-    test.afterEach(async () => {
-        await page.evaluate(() => cleanup());
+    test.afterEach(async ({ page }) => {
+        await page.evaluate(() => {
+            cleanup();
+        });
     });
 
-    test("should support declared types", async () => {
+    test("should support declared types", async ({ page }) => {
         await page.evaluate((name: string) => {
             const number = DesignToken.create<number>(name);
             const nil = DesignToken.create<null>(name);
@@ -81,7 +74,15 @@ test.describe("A DesignToken", () => {
     });
 
     test.describe("should have a create method", () => {
-        test("that creates a CSSDesignToken when invoked with a string value", async () => {
+        test("that creates a CSSDesignToken when invoked with a string value", async ({
+            page,
+        }) => {
+            await page.goto("http://localhost:6006");
+
+            await page.evaluate(() => {
+                DesignToken.registerDefaultStyleTarget();
+            });
+
             const result = await page.evaluate(
                 (name: string) => DesignToken.create(name) instanceof CSSDesignToken,
                 uniqueTokenName()
@@ -89,7 +90,16 @@ test.describe("A DesignToken", () => {
 
             expect(result).toBe(true);
         });
-        test("that creates a CSSDesignToken when invoked with a CSSDesignTokenConfiguration", async () => {
+
+        test("that creates a CSSDesignToken when invoked with a CSSDesignTokenConfiguration", async ({
+            page,
+        }) => {
+            await page.goto("http://localhost:6006");
+
+            await page.evaluate(() => {
+                DesignToken.registerDefaultStyleTarget();
+            });
+
             const result = await page.evaluate(
                 (name: string) =>
                     DesignToken.create({
@@ -100,25 +110,31 @@ test.describe("A DesignToken", () => {
             );
             expect(result).toBe(true);
         });
-        test("that creates a DesignToken when invoked with a DesignTokenConfiguration", async () => {
-            const result = await page.evaluate(
-                (name: string) => DesignToken.create({ name }) instanceof CSSDesignToken,
-                uniqueTokenName()
-            );
+
+        test("that creates a DesignToken when invoked with a DesignTokenConfiguration", async ({
+            page,
+        }) => {
+            await page.goto("http://localhost:6006");
+
+            const result = await page.evaluate((name: string) => {
+                DesignToken.registerDefaultStyleTarget();
+                const token = DesignToken.create({ name });
+                return token instanceof CSSDesignToken;
+            }, uniqueTokenName());
 
             expect(result).toBe(false);
         });
     });
 
     test.describe("that is not a CSSDesignToken", () => {
-        test("should not have a cssCustomProperty property", async () => {
+        test("should not have a cssCustomProperty property", async ({ page }) => {
             const result = await page.evaluate((name: string) => {
                 return "cssCustomProperty" in DesignToken.create<number>({ name });
             }, uniqueTokenName());
 
             expect(result).toEqual(false);
         });
-        test("should not have a cssVar property", async () => {
+        test("should not have a cssVar property", async ({ page }) => {
             const result = await page.evaluate((name: string) => {
                 return "cssVar" in DesignToken.create<number>({ name });
             }, uniqueTokenName());
@@ -126,7 +142,9 @@ test.describe("A DesignToken", () => {
         });
     });
     test.describe("getting and setting a simple value", () => {
-        test("should throw if the token value has never been set on the element or its ancestors", async () => {
+        test("should throw if the token value has never been set on the element or its ancestors", async ({
+            page,
+        }) => {
             const result = await page.evaluate((name: string) => {
                 const target = addElement();
                 const token = DesignToken.create<number>(name);
@@ -136,7 +154,9 @@ test.describe("A DesignToken", () => {
             expect(result).toBe(true);
         });
 
-        test("should return the value set for the element if one has been set", async () => {
+        test("should return the value set for the element if one has been set", async ({
+            page,
+        }) => {
             const result = await page.evaluate((name: string) => {
                 const target = addElement();
                 const token = DesignToken.create<number>(name);
@@ -147,7 +167,9 @@ test.describe("A DesignToken", () => {
             expect(result).toEqual(12);
         });
 
-        test("should return the value set for an ancestor if a value has not been set for the target", async () => {
+        test("should return the value set for an ancestor if a value has not been set for the target", async ({
+            page,
+        }) => {
             const result = await page.evaluate((name: string) => {
                 const ancestor = addElement();
                 const target = addElement(ancestor);
@@ -159,7 +181,9 @@ test.describe("A DesignToken", () => {
             expect(result).toEqual(12);
         });
 
-        test("sound return the nearest ancestor's value after an intermediary value is set where no value was set prior", async () => {
+        test("sound return the nearest ancestor's value after an intermediary value is set where no value was set prior", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -179,7 +203,9 @@ test.describe("A DesignToken", () => {
             ).toEqual([12, 14]);
         });
 
-        test("should return the new ancestor's value after being re-parented", async () => {
+        test("should return the new ancestor's value after being re-parented", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -202,7 +228,9 @@ test.describe("A DesignToken", () => {
             ).toEqual([12, 14]);
         });
 
-        test("should persist explicitly set value even if it matches the inherited value", async () => {
+        test("should persist explicitly set value even if it matches the inherited value", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -224,7 +252,7 @@ test.describe("A DesignToken", () => {
             ).toEqual([12, 12]);
         });
 
-        test("should support getting and setting falsey values", async () => {
+        test("should support getting and setting falsey values", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const target = addElement();
@@ -250,7 +278,9 @@ test.describe("A DesignToken", () => {
         });
 
         test.describe("that is a CSSDesignToken", () => {
-            test("should set the CSS custom property for the element", async () => {
+            test("should set the CSS custom property for the element", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const target = addElement();
@@ -263,7 +293,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toBe("12");
             });
-            test("should be a CSSDirective", async () => {
+            test("should be a CSSDirective", async ({ page }) => {
                 expect(
                     await page.evaluate(async () => {
                         const token = DesignToken.create<number>(
@@ -286,7 +316,7 @@ test.describe("A DesignToken", () => {
                 ).toBe("12");
             });
 
-            test("should inherit CSS custom property from ancestor", async () => {
+            test("should inherit CSS custom property from ancestor", async ({ page }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -312,7 +342,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual(["12", "14"]);
             });
 
-            test("should set CSS custom property for element if value stops matching inherited value", async () => {
+            test("should set CSS custom property for element if value stops matching inherited value", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -340,7 +372,9 @@ test.describe("A DesignToken", () => {
             });
         });
         test.describe("that is not a CSSDesignToken", () => {
-            test("should not set a CSS custom property for the element", async () => {
+            test("should not set a CSS custom property for the element", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(() => {
                         const name = uniqueTokenName();
@@ -357,7 +391,7 @@ test.describe("A DesignToken", () => {
     });
 
     test.describe("getting and setting derived values", () => {
-        test("should get the return value of a derived value", async () => {
+        test("should get the return value of a derived value", async ({ page }) => {
             const name = uniqueTokenName();
             expect(
                 await page.evaluate((name: string) => {
@@ -369,7 +403,9 @@ test.describe("A DesignToken", () => {
                 }, name)
             ).toBe(12);
         });
-        test("should get an updated value when observable properties used in a derived property are changed", async () => {
+        test("should get an updated value when observable properties used in a derived property are changed", async ({
+            page,
+        }) => {
             const name = uniqueTokenName();
             expect(
                 await page.evaluate(async (name: string) => {
@@ -392,7 +428,9 @@ test.describe("A DesignToken", () => {
             ).toEqual([12, 14]);
         });
 
-        test("should get an updated value when other design tokens used in a derived property are changed", async () => {
+        test("should get an updated value when other design tokens used in a derived property are changed", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const target = addElement();
@@ -412,7 +450,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([12, 14]);
         });
-        test("should use the closest value of a dependent token when getting a token for a target", async () => {
+        test("should use the closest value of a dependent token when getting a token for a target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const ancestor = addElement();
@@ -430,7 +470,9 @@ test.describe("A DesignToken", () => {
             ).toBe(12);
         });
 
-        test("should update value of a dependent token when getting a token for a target", async () => {
+        test("should update value of a dependent token when getting a token for a target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -455,7 +497,9 @@ test.describe("A DesignToken", () => {
             ).toEqual([12, 14]);
         });
 
-        test("should get an updated value when a used design token is set for a node closer to the target", async () => {
+        test("should get an updated value when a used design token is set for a node closer to the target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -479,7 +523,9 @@ test.describe("A DesignToken", () => {
         });
 
         test.describe("that is a CSSDesignToken", () => {
-            test("should set a CSS custom property equal to the resolved value of a derived token value", async () => {
+            test("should set a CSS custom property equal to the resolved value of a derived token value", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const target = addElement();
@@ -494,7 +540,9 @@ test.describe("A DesignToken", () => {
                     })
                 ).toBe("12");
             });
-            test("should set a CSS custom property equal to the resolved value of a derived token value with a dependent token", async () => {
+            test("should set a CSS custom property equal to the resolved value of a derived token value with a dependent token", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const target = addElement();
@@ -513,7 +561,9 @@ test.describe("A DesignToken", () => {
                 ).toBe("12");
             });
 
-            test("should update a CSS custom property to the resolved value of a derived token value with a dependent token when the dependent token changes", async () => {
+            test("should update a CSS custom property to the resolved value of a derived token value with a dependent token when the dependent token changes", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -544,7 +594,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual(["12", "14"]);
             });
 
-            test("should set a CSS custom property equal to the resolved value for an element of a derived token value with a dependent token", async () => {
+            test("should set a CSS custom property equal to the resolved value for an element of a derived token value with a dependent token", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -574,7 +626,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual(["12", "14"]);
             });
 
-            test("should set a CSS custom property equal to the resolved value for an element in a shadow DOM of a derived token value with a dependent token", async () => {
+            test("should set a CSS custom property equal to the resolved value for an element in a shadow DOM of a derived token value with a dependent token", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -606,7 +660,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual(["12", "14"]);
             });
 
-            test("should set a CSS custom property equal to the resolved value for both elements for which a dependent token is set when setting a derived token value", async () => {
+            test("should set a CSS custom property equal to the resolved value for both elements for which a dependent token is set when setting a derived token value", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -636,7 +692,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual(["12", "14"]);
             });
 
-            test("should revert a CSS custom property back to a previous value when the Design Token value is reverted", async () => {
+            test("should revert a CSS custom property back to a previous value when the Design Token value is reverted", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -674,7 +732,7 @@ test.describe("A DesignToken", () => {
         });
 
         test.describe("that is not a CSSDesignToken", () => {
-            test("should not emit a CSS custom property", async () => {
+            test("should not emit a CSS custom property", async ({ page }) => {
                 expect(
                     await page.evaluate(() => {
                         const target = addElement();
@@ -692,7 +750,7 @@ test.describe("A DesignToken", () => {
             });
         });
 
-        test("should support getting and setting falsey values", async () => {
+        test("should support getting and setting falsey values", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const target = addElement();
@@ -718,7 +776,7 @@ test.describe("A DesignToken", () => {
     });
 
     test.describe("getting and setting a token value", () => {
-        test("should retrieve the value of the token it was set to", async () => {
+        test("should retrieve the value of the token it was set to", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const tokenA = DesignToken.create<number>(uniqueTokenName());
@@ -733,7 +791,9 @@ test.describe("A DesignToken", () => {
             ).toBe(12);
         });
 
-        test("should update the value of the token it was set to when the token's value changes", async () => {
+        test("should update the value of the token it was set to when the token's value changes", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -753,7 +813,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([12, 14]);
         });
-        test("should update the derived value of the token when a dependency of the derived value changes", async () => {
+        test("should update the derived value of the token when a dependency of the derived value changes", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -778,7 +840,7 @@ test.describe("A DesignToken", () => {
         });
 
         test.describe("that is a CSSDesignToken", () => {
-            test("should emit a CSS custom property", async () => {
+            test("should emit a CSS custom property", async ({ page }) => {
                 expect(
                     await page.evaluate(async () => {
                         const tokenA = DesignToken.create<number>("token-a");
@@ -795,7 +857,9 @@ test.describe("A DesignToken", () => {
                     })
                 );
             });
-            test("should update the emitted CSS custom property when the token's value changes", async () => {
+            test("should update the emitted CSS custom property when the token's value changes", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -827,7 +891,9 @@ test.describe("A DesignToken", () => {
                     })
                 ).toEqual(["12", "14"]);
             });
-            test("should update the emitted CSS custom property of a token assigned a derived value when the token dependency changes", async () => {
+            test("should update the emitted CSS custom property of a token assigned a derived value when the token dependency changes", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -861,7 +927,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual(["12", "14"]);
             });
 
-            test("should support accessing the token being assigned from the derived value, resolving to a parent value", async () => {
+            test("should support accessing the token being assigned from the derived value, resolving to a parent value", async ({
+                page,
+            }) => {
                 expect(
                     await page.evaluate(async () => {
                         const results = [];
@@ -881,7 +949,9 @@ test.describe("A DesignToken", () => {
                 ).toEqual([12, 24]);
             });
         });
-        test("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
+        test("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -921,7 +991,9 @@ test.describe("A DesignToken", () => {
         });
     });
     test.describe("deleting simple values", () => {
-        test("should throw when deleted and no parent token value is set", async () => {
+        test("should throw when deleted and no parent token value is set", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const results = [];
@@ -939,7 +1011,7 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([12, true]);
         });
-        test("should allow getting a value that was set upstream", async () => {
+        test("should allow getting a value that was set upstream", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const results = [];
@@ -961,7 +1033,9 @@ test.describe("A DesignToken", () => {
         });
     });
     test.describe("deleting derived values", () => {
-        test("should throw when deleted and no parent token value is set", async () => {
+        test("should throw when deleted and no parent token value is set", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const results = [];
@@ -979,7 +1053,7 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([12, true]);
         });
-        test("should allow getting a value that was set upstream", async () => {
+        test("should allow getting a value that was set upstream", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const results = [];
@@ -1000,7 +1074,7 @@ test.describe("A DesignToken", () => {
             ).toEqual([14, 12]);
         });
 
-        test("should cause dependent tokens to re-evaluate", async () => {
+        test("should cause dependent tokens to re-evaluate", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const results = [];
@@ -1024,7 +1098,9 @@ test.describe("A DesignToken", () => {
         });
     });
     test.describe("when used as a CSSDirective", () => {
-        test("should set a CSS custom property for the element when the token is set for the element", async () => {
+        test("should set a CSS custom property for the element when the token is set for the element", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const target = addElement();
@@ -1042,7 +1118,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe("12px");
         });
-        test("should set a CSS custom property for the element when the token is set for an ancestor element", async () => {
+        test("should set a CSS custom property for the element when the token is set for an ancestor element", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const parent = addElement();
@@ -1064,7 +1142,9 @@ test.describe("A DesignToken", () => {
     });
 
     test.describe("with a default value set", () => {
-        test("should return the default value if no value is set for a target", async () => {
+        test("should return the default value if no value is set for a target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const target = addElement();
@@ -1074,7 +1154,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(2);
         });
-        test("should return the default value for a descendent if no value is set for a target", async () => {
+        test("should return the default value for a descendent if no value is set for a target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const parent = addElement();
@@ -1086,7 +1168,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(2);
         });
-        test("should return the value set and not the default if value is set", async () => {
+        test("should return the value set and not the default if value is set", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const target = addElement();
@@ -1098,7 +1182,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(2);
         });
-        test("should get a new default value if a new default is provided", async () => {
+        test("should get a new default value if a new default is provided", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const target = addElement();
@@ -1110,7 +1196,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(4);
         });
-        test("should return the default value if retrieved for an element that has not been connected", async () => {
+        test("should return the default value if retrieved for an element that has not been connected", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const token = DesignToken.create<number>(
@@ -1122,7 +1210,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(12);
         });
-        test("should set a derived value that uses a token's default value prior to connection", async () => {
+        test("should set a derived value that uses a token's default value prior to connection", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const dependency = DesignToken.create<number>(
@@ -1137,7 +1227,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(false);
         });
-        test("should delete a derived value that uses a token's default value prior to connection", async () => {
+        test("should delete a derived value that uses a token's default value prior to connection", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const dependency = DesignToken.create<number>(
@@ -1154,7 +1246,9 @@ test.describe("A DesignToken", () => {
     });
 
     test.describe("with subscribers", () => {
-        test("should notify an un-targeted subscriber when the value changes for any element", async () => {
+        test("should notify an un-targeted subscriber when the value changes for any element", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const results: any = [];
@@ -1200,7 +1294,9 @@ test.describe("A DesignToken", () => {
                 [true, true, true],
             ]);
         });
-        test("should notify a target-subscriber if the value is changed for the provided target", async () => {
+        test("should notify a target-subscriber if the value is changed for the provided target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     const results = [];
@@ -1225,7 +1321,7 @@ test.describe("A DesignToken", () => {
             ).toEqual([1, 2]);
         });
 
-        test("should not notify a subscriber after unsubscribing", async () => {
+        test("should not notify a subscriber after unsubscribing", async ({ page }) => {
             expect(
                 await page.evaluate(() => {
                     const target = addElement();
@@ -1245,7 +1341,9 @@ test.describe("A DesignToken", () => {
             ).toBe(0);
         });
 
-        test("should infer DesignToken and CSSDesignToken token types on subscription record", async () => {
+        test("should infer DesignToken and CSSDesignToken token types on subscription record", async ({
+            page,
+        }) => {
             await page.evaluate(() => {
                 type AssertCSSDesignToken<T> = T extends CSSDesignTokenImpl<any>
                     ? T
@@ -1267,7 +1365,9 @@ test.describe("A DesignToken", () => {
             });
         });
 
-        test("should notify a subscriber when a dependency of a subscribed token changes", async () => {
+        test("should notify a subscriber when a dependency of a subscribed token changes", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const tokenA = DesignToken.create<number>(uniqueTokenName());
@@ -1290,7 +1390,9 @@ test.describe("A DesignToken", () => {
             ).toBe(1);
         });
 
-        test("should notify a subscriber when a dependency of a dependency of a subscribed token changes", async () => {
+        test("should notify a subscriber when a dependency of a dependency of a subscribed token changes", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const tokenA = DesignToken.create<number>(uniqueTokenName());
@@ -1315,7 +1417,9 @@ test.describe("A DesignToken", () => {
             ).toBe(1);
         });
 
-        test("should notify a subscriber when a dependency changes for an element down the DOM tree", async () => {
+        test("should notify a subscriber when a dependency changes for an element down the DOM tree", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const tokenA = DesignToken.create<number>(uniqueTokenName());
@@ -1339,7 +1443,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(1);
         });
-        test("should notify a subscriber when a static-value dependency of subscribed token changes for a parent of the subscription target", async () => {
+        test("should notify a subscriber when a static-value dependency of subscribed token changes for a parent of the subscription target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -1368,7 +1474,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([1, 14]);
         });
-        test("should notify a subscriber when a derived-value dependency of subscribed token changes for a parent of the subscription target", async () => {
+        test("should notify a subscriber when a derived-value dependency of subscribed token changes for a parent of the subscription target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -1396,7 +1504,9 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([1, 14]);
         });
-        test("should notify a subscriber when a dependency of subscribed token changes for a parent of the subscription target", async () => {
+        test("should notify a subscriber when a dependency of subscribed token changes for a parent of the subscription target", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const tokenA = DesignToken.create<number>(uniqueTokenName());
@@ -1425,7 +1535,9 @@ test.describe("A DesignToken", () => {
     });
 
     test.describe("with root registration", () => {
-        test("should not emit CSS custom properties for the default value if a root is not registered", async () => {
+        test("should not emit CSS custom properties for the default value if a root is not registered", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(() => {
                     DesignToken.unregisterDefaultStyleTarget();
@@ -1439,7 +1551,9 @@ test.describe("A DesignToken", () => {
             );
         });
 
-        test("should emit CSS custom properties for the default value when a design token root is registered", async () => {
+        test("should emit CSS custom properties for the default value when a design token root is registered", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const token = DesignToken.create<number>(
@@ -1456,7 +1570,9 @@ test.describe("A DesignToken", () => {
             ).toBe("12");
         });
 
-        test("should remove emitted CSS custom properties for a root when the root is deregistered", async () => {
+        test("should remove emitted CSS custom properties for a root when the root is deregistered", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [];
@@ -1480,7 +1596,9 @@ test.describe("A DesignToken", () => {
             ).toEqual(["12", ""]);
         });
 
-        test("should emit CSS custom properties to an element when the element is provided as a root", async () => {
+        test("should emit CSS custom properties to an element when the element is provided as a root", async ({
+            page,
+        }) => {
             expect(
                 await page.evaluate(async () => {
                     const token = DesignToken.create<number>(
@@ -1497,7 +1615,7 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe("12");
         });
-        test("should emit CSS custom properties to multiple roots", async () => {
+        test("should emit CSS custom properties to multiple roots", async ({ page }) => {
             expect(
                 await page.evaluate(async () => {
                     const results = [] as any;
@@ -1545,7 +1663,9 @@ test.describe("A DesignToken", () => {
         });
 
         // Flakey and seems to be corrupted by other tests.
-        test.skip("should set properties for a PropertyTarget registered as the root", async () => {
+        test("should set properties for a PropertyTarget registered as the root", async ({
+            page,
+        }) => {
             const results = await page.evaluate(async () => {
                 const results = [];
                 const token = DesignToken.create<number>(uniqueTokenName()).withDefault(

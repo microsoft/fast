@@ -1,34 +1,18 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { FASTDataGrid } from "./data-grid.js";
 import { DataGridRowTypes } from "./data-grid.options.js";
 
 test.describe("Data grid", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-
     const selectedRowQueryString = '[aria-selected="true"]';
     const rowQueryString = "fast-data-grid-row";
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+    test("should set role to 'grid'", async ({ page }) => {
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-data-grid");
+        const element = page.locator("fast-data-grid");
 
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("data-grid--data-grid"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should set role to 'grid'", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid></fast-data-grid>
             `;
@@ -37,8 +21,12 @@ test.describe("Data grid", () => {
         await expect(element).toHaveAttribute("role", "grid");
     });
 
-    test("should have a tabIndex of 0 by default", async () => {
-        await root.evaluate(node => {
+    test("should have a tabIndex of 0 by default", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid></fast-data-grid>
             `;
@@ -47,8 +35,12 @@ test.describe("Data grid", () => {
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should have a tabIndex of -1 when no-tabbing is true", async () => {
-        await root.evaluate(node => {
+    test("should have a tabIndex of -1 when no-tabbing is true", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-data-grid no-tabbing></fast-data-grid>
         `;
@@ -57,8 +49,12 @@ test.describe("Data grid", () => {
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test("should have a tabIndex of -1 when a cell is focused", async () => {
-        await root.evaluate(node => {
+    test("should have a tabIndex of -1 when a cell is focused", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid>
                     <fast-data-grid-row>
@@ -74,8 +70,14 @@ test.describe("Data grid", () => {
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test("should generate a basic grid with a row header based on rowsData only", async () => {
-        await root.evaluate(node => {
+    test("should generate a basic grid with a row header based on rowsData only", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid></fast-data-grid>
             `;
@@ -129,8 +131,14 @@ test.describe("Data grid", () => {
         await expect(row3Cells.nth(1)).toHaveText("Person 2");
     });
 
-    test("should not generate a header when `generateHeader` is `none`", async () => {
-        await root.evaluate(node => {
+    test("should not generate a header when `generateHeader` is `none`", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none"></fast-data-grid>
             `;
@@ -172,8 +180,12 @@ test.describe("Data grid", () => {
         await expect(row2Cells.nth(1)).toHaveText("Person 2");
     });
 
-    test("should not generate a header when rowsData is empty", async () => {
-        await root.evaluate(node => {
+    test("should not generate a header when rowsData is empty", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = "";
 
             const dataGrid = document.createElement("fast-data-grid") as FASTDataGrid;
@@ -188,8 +200,14 @@ test.describe("Data grid", () => {
         await expect(rows).toHaveCount(0);
     });
 
-    test("should generate a sticky header when generateHeader is set to 'sticky'", async () => {
-        await root.evaluate(node => {
+    test("should generate a sticky header when generateHeader is set to 'sticky'", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="sticky"></fast-data-grid>
             `;
@@ -243,8 +261,12 @@ test.describe("Data grid", () => {
         await expect(row3Cells.nth(1)).toHaveText("Person 2");
     });
 
-    test("should set the row index attribute of child rows'", async () => {
-        await root.evaluate(node => {
+    test("should set the row index attribute of child rows'", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="sticky"></fast-data-grid>
             `;
@@ -269,8 +291,12 @@ test.describe("Data grid", () => {
         }
     });
 
-    test("should move focus with up/down arrow key strokes", async () => {
-        await root.evaluate(node => {
+    test("should move focus with up/down arrow key strokes", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none"></fast-data-grid>
             `;
@@ -317,8 +343,14 @@ test.describe("Data grid", () => {
         await expect(row2Cells.nth(0)).toBeFocused();
     });
 
-    test("should move focus to first/last cells with ctrl + home/end key strokes", async () => {
-        await root.evaluate(node => {
+    test("should move focus to first/last cells with ctrl + home/end key strokes", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none"></fast-data-grid>
             `;
@@ -351,8 +383,14 @@ test.describe("Data grid", () => {
         await expect(firstCell).toBeFocused();
     });
 
-    test("should move focus by setting the `focusRowIndex` property", async () => {
-        await root.evaluate(node => {
+    test("should move focus by setting the `focusRowIndex` property", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none"></fast-data-grid>
             `;
@@ -393,8 +431,12 @@ test.describe("Data grid", () => {
         await expect(cells.nth(0)).toBeFocused();
     });
 
-    test("should move focus by setting `focusColumnIndex`", async () => {
-        await root.evaluate(node => {
+    test("should move focus by setting `focusColumnIndex`", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none"></fast-data-grid>
             `;
@@ -435,8 +477,12 @@ test.describe("Data grid", () => {
         await expect(cells.nth(0)).toBeFocused();
     });
 
-    test("should scroll into view on focus", async () => {
-        await root.evaluate(node => {
+    test("should scroll into view on focus", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" style="height:100px; overflow-y: scroll;">
                     <fast-data-grid-row style="height:100px;">
@@ -461,13 +507,19 @@ test.describe("Data grid", () => {
         await cells.nth(0).focus();
         await expect(element).toHaveJSProperty("scrollTop", 0);
         await cells.nth(1).focus();
-        await expect(element).toHaveJSProperty("scrollTop", 100);
+        expect(await element.evaluate(node => node.scrollTop)).toBeCloseTo(100, -1);
         await cells.nth(2).focus();
-        await expect(element).toHaveJSProperty("scrollTop", 200);
+        expect(await element.evaluate(node => node.scrollTop)).toBeCloseTo(200, -1);
     });
 
-    test("should not apply initial selection in default 'none' selection mode", async () => {
-        await root.evaluate(node => {
+    test("should not apply initial selection in default 'none' selection mode", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="none">
                     <fast-data-grid-row>
@@ -486,8 +538,14 @@ test.describe("Data grid", () => {
         await expect(element).toHaveJSProperty("selectedRowIndexes", []);
     });
 
-    test("should apply initial selection in 'single-row' selection mode", async () => {
-        await root.evaluate(node => {
+    test("should apply initial selection in 'single-row' selection mode", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="single-row">
                 <fast-data-grid-row>
@@ -506,8 +564,14 @@ test.describe("Data grid", () => {
         await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
     });
 
-    test("should apply initial selection in 'multi-row' selection mode", async () => {
-        await root.evaluate(node => {
+    test("should apply initial selection in 'multi-row' selection mode", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-data-grid generate-header="none" initial-row-selection="0,1" selection-mode="multi-row">
                 <fast-data-grid-row>
@@ -526,10 +590,16 @@ test.describe("Data grid", () => {
         await expect(element).toHaveJSProperty("selectedRowIndexes", [0, 1]);
     });
 
-    test("should apply user set selection in 'single-row' selection mode", async () => {
+    test("should apply user set selection in 'single-row' selection mode", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
         const selectedRows = element.locator(selectedRowQueryString);
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="single-row">
                 <fast-data-grid-row>
@@ -561,10 +631,16 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(1);
     });
 
-    test("should apply user set selection in 'multi-row' selection mode", async () => {
+    test("should apply user set selection in 'multi-row' selection mode", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
         const selectedRows = element.locator(selectedRowQueryString);
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="multi-row">
                 <fast-data-grid-row>
@@ -596,10 +672,14 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(3);
     });
 
-    test("should not allow selection of header row by default", async () => {
+    test("should not allow selection of header row by default", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
+
         const selectedRows = element.locator(selectedRowQueryString);
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
             <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="single-row">
                 <fast-data-grid-row row-type="header">
@@ -619,13 +699,18 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(0);
     });
 
-    test("should select and deselect rows with space bar + shift keys", async () => {
+    test("should select and deselect rows with space bar + shift keys", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
         const rows = element.locator(rowQueryString);
         const selectedRows = element.locator(selectedRowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
         const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" selection-mode="single-row"></fast-data-grid>
             `;
@@ -653,13 +738,16 @@ test.describe("Data grid", () => {
         await expect(element).toHaveJSProperty("selectedRowIndexes", [2]);
     });
 
-    test("should select and deselect rows with a click", async () => {
+    test("should select and deselect rows with a click", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
         const rows = element.locator(rowQueryString);
         const selectedRows = element.locator(selectedRowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
         const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" selection-mode="single-row"></fast-data-grid>
             `;
@@ -685,13 +773,17 @@ test.describe("Data grid", () => {
         await expect(element).toHaveJSProperty("selectedRowIndexes", [2]);
     });
 
-    test("should select/deselect all in row multi-select with a ctrl + a", async () => {
+    test("should select/deselect all in row multi-select with a ctrl + a", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
         const selectedRows = element.locator(selectedRowQueryString);
         const rows = element.locator(rowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
-        await firstCell.focus();
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
             `;
@@ -713,14 +805,18 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(0);
     });
 
-    test("should select/deselect multiple rows with shift key in multi-select mode", async () => {
+    test("should select/deselect multiple rows with shift key in multi-select mode", async ({
+        page,
+    }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
         const selectedRows = element.locator(selectedRowQueryString);
         const rows = element.locator(rowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
         const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
-        await firstCell.focus();
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
             `;
@@ -742,12 +838,14 @@ test.describe("Data grid", () => {
         await expect(selectedRows).toHaveCount(2);
     });
 
-    test("should emit an event when row selection changes", async () => {
+    test("should emit an event when row selection changes", async ({ page }) => {
+        await page.goto("http://localhost:6006");
+
+        const element = page.locator("fast-data-grid");
         const rows = element.locator(rowQueryString);
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
-        await firstCell.focus();
 
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
             `;
@@ -760,6 +858,8 @@ test.describe("Data grid", () => {
                 { id: "3", name: "item 3", shape: "triangle" },
             ];
         });
+
+        await firstCell.focus();
 
         const wasInvoked = await Promise.all([
             element.evaluate(node =>

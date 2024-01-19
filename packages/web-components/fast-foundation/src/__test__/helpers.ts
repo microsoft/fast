@@ -4,42 +4,9 @@ import type {
     Args,
     ComponentAnnotations,
     StoryAnnotations,
-    StoryContext,
+    StoryContext
 } from "@storybook/csf";
-import qs from "qs";
-
-/**
- * Returns a formatted URL for a given Storybook fixture.
- *
- * @param id - the Storybook fixture ID
- * @param args - Story args
- * @returns - the local URL for the Storybook fixture iframe
- */
-export function fixtureURL(
-    id: string = "debug--blank",
-    args?: Record<string, any>
-): string {
-    const params: Record<string, any> = { id };
-    if (args) {
-        params.args = qs
-            .stringify(args, {
-                allowDots: true,
-                delimiter: ";",
-                format: "RFC1738",
-                encode: false,
-            })
-            .replace(/=/g, ":")
-            .replace(/\//g, "--");
-    }
-
-    const url = qs.stringify(params, {
-        addQueryPrefix: true,
-        format: "RFC1738",
-        encode: false,
-    });
-
-    return url;
-}
+import type { HtmlRenderer } from "@storybook/html";
 
 /**
  * A helper that returns a function to bind a Storybook story to a ViewTemplate.
@@ -63,23 +30,23 @@ export function renderComponent<TArgs = Args>(
 /**
  * A helper that returns a function to bind a Storybook story to a ViewTemplate.
  */
-export type FASTFramework = {
-    component: typeof FASTElement;
-    storyResult: FASTElement | Element | DocumentFragment;
+export type FASTFramework = HtmlRenderer & {
+    component: string;
+    storyResult: HtmlRenderer["storyResult"] | FASTElement;
 };
 
 /**
  * Metadata to configure the stories for a component.
  */
-export type Meta<TArgs = Args> = ComponentAnnotations<
+export type Meta<TArgs extends Args = Args> = ComponentAnnotations<
     FASTFramework,
-    Omit<TArgs, keyof FASTElement>
+    Omit<TArgs, keyof FASTElement> & Args
 >;
 
 /**
  * Story function that represents a CSFv3 component example.
  */
-export declare type StoryObj<TArgs = Args> = StoryAnnotations<FASTFramework, TArgs>;
+export declare type StoryObj<TArgs extends Args = Args> = StoryAnnotations<FASTFramework, TArgs>;
 
 /**
  * Story function that represents a CSFv2 component example.
@@ -91,7 +58,7 @@ export declare type StoryFn<TArgs = Args> = AnnotatedStoryFn<FASTFramework, TArg
  *
  * NOTE that in Storybook 7.0, this type will be renamed to `StoryFn` and replaced by the current `StoryObj` type.
  */
-export declare type Story<TArgs = Args> = StoryFn<StoryArgs<TArgs>>;
+export declare type Story<TArgs = Args> = StoryObj<StoryArgs<TArgs>>;
 
 /**
  * Combined Storybook story args.

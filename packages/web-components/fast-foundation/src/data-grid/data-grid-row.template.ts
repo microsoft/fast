@@ -1,3 +1,4 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import {
     children,
     elements,
@@ -5,8 +6,8 @@ import {
     html,
     slotted,
 } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/index.js";
+import type { TemplateElementDependency } from "../patterns/tag-for.js";
+import { tagFor } from "../patterns/tag-for.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { ColumnDefinition } from "./data-grid.js";
 

@@ -70,6 +70,14 @@ const styles = css`
         contain: layout;
         display: block;
         position: relative;
+        max-width: 620px;
+        margin: 20px;
+    }
+
+    ::slotted(fast-card) {
+        color: var(--neutral-foreground-rest);
+        height: 200px;
+        width: 120px;
     }
 
     .scroll-view {

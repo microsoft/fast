@@ -1,32 +1,14 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
 import type { FASTListboxOption } from "../listbox-option/index.js";
-import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSelect } from "./select.js";
 
 test.describe("Select", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should have a role of `combobox`", async ({ page }) => {
+        const element = page.locator("fast-select");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        await page.goto("http://localhost:6006");
 
-        element = page.locator("fast-select");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("select--select"), {
-            waitUntil: "load",
-        });
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have a role of `combobox`", async () => {
-        await root.evaluate(node => {
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select></fast-select>
             `;
@@ -35,8 +17,14 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("role", "combobox");
     });
 
-    test("should have a tabindex of 0 when `disabled` is not defined", async () => {
-        await root.evaluate(node => {
+    test("should have a tabindex of 0 when `disabled` is not defined", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -49,8 +37,14 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-disabled` attribute equal to the `disabled` value", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select disabled></fast-select>
             `;
@@ -65,8 +59,12 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should have the attribute aria-expanded set to false", async () => {
-        await root.evaluate(node => {
+    test("should have the attribute aria-expanded set to false", async ({ page }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select></fast-select>
             `;
@@ -75,8 +73,12 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-expanded", "false");
     });
 
-    test("should set its value to the first enabled option", async () => {
-        await root.evaluate(node => {
+    test("should set its value to the first enabled option", async ({ page }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -91,8 +93,12 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("selectedIndex", 0);
     });
 
-    test("should NOT have a tabindex when `disabled` is true", async () => {
-        await root.evaluate(node => {
+    test("should NOT have a tabindex when `disabled` is true", async ({ page }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select disabled></fast-select>
             `;
@@ -101,8 +107,14 @@ test.describe("Select", () => {
         await expect(element).not.hasAttribute("tabindex");
     });
 
-    test("should set its value to the first enabled option when disabled", async () => {
-        await root.evaluate(node => {
+    test("should set its value to the first enabled option when disabled", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select disabled>
                     <fast-option>Option 1</fast-option>
@@ -117,8 +129,14 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("selectedIndex", 0);
     });
 
-    test("should select the first option with a `selected` attribute", async () => {
-        await root.evaluate(node => {
+    test("should select the first option with a `selected` attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -133,8 +151,14 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("selectedIndex", 1);
     });
 
-    test("should select the first option with a `selected` attribute when disabled", async () => {
-        await root.evaluate(node => {
+    test("should select the first option with a `selected` attribute when disabled", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select disabled>
                     <fast-option>Option 1</fast-option>
@@ -149,8 +173,14 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("selectedIndex", 1);
     });
 
-    test("should return the same value when the `value` property is set before connect", async () => {
-        await root.evaluate(node => {
+    test("should return the same value when the `value` property is set before connect", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select value="Option 2">
                     <fast-option>Option 1</fast-option>
@@ -163,8 +193,14 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("value", "Option 2");
     });
 
-    test("should return the same value when the value property is set after connect", async () => {
-        await root.evaluate(node => {
+    test("should return the same value when the value property is set after connect", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -181,8 +217,14 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("value", "Option 3");
     });
 
-    test("should select the next selectable option when the value is set to match a disabled option", async () => {
-        await root.evaluate(node => {
+    test("should select the next selectable option when the value is set to match a disabled option", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -205,8 +247,14 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("selectedIndex", 2);
     });
 
-    test("should update the `value` property when the selected option's `value` property changes", async () => {
-        await root.evaluate(node => {
+    test("should update the `value` property when the selected option's `value` property changes", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -227,8 +275,12 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("value", "new value");
     });
 
-    test("should return the `value` property as a string", async () => {
-        await root.evaluate(node => {
+    test("should return the `value` property as a string", async ({ page }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option value="1">Option 1</fast-option>
@@ -245,8 +297,12 @@ test.describe("Select", () => {
         ).toBe("string");
     });
 
-    test("should update the aria-expanded attribute when opened", async () => {
-        await root.evaluate(node => {
+    test("should update the aria-expanded attribute when opened", async ({ page }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -265,8 +321,14 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-expanded", "true");
     });
 
-    test("should display the listbox when the `open` property is true before connecting", async () => {
-        await root.evaluate(node => {
+    test("should display the listbox when the `open` property is true before connecting", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select open>
                     <fast-option>Option 1</fast-option>
@@ -290,8 +352,14 @@ test.describe("Select", () => {
             { expectedValue: "Option 3", key: "End" },
             { expectedValue: "Option 1", key: "Home" },
         ].forEach(({ expectedValue, key }) => {
-            test(`should NOT emit \`${eventName}\` event while open when the value changes by user input via ${key} key`, async () => {
-                await root.evaluate(node => {
+            test(`should NOT emit \`${eventName}\` event while open when the value changes by user input via ${key} key`, async ({
+                page,
+            }) => {
+                const element = page.locator("fast-select");
+
+                await page.goto("http://localhost:6006");
+
+                await page.locator("#root").evaluate(node => {
                     node.innerHTML = /* html */ `
                         <fast-select open>
                             <fast-option>Option 1</fast-option>
@@ -329,8 +397,14 @@ test.describe("Select", () => {
                 await expect(element).toHaveJSProperty("value", expectedValue);
             });
 
-            test(`should emit \`${eventName}\` event while closed when the value changes by user input via ${key} key`, async () => {
-                await root.evaluate(node => {
+            test(`should emit \`${eventName}\` event while closed when the value changes by user input via ${key} key`, async ({
+                page,
+            }) => {
+                const element = page.locator("fast-select");
+
+                await page.goto("http://localhost:6006");
+
+                await page.locator("#root").evaluate(node => {
                     node.innerHTML = /* html */ `
                         <fast-select>
                             <fast-option>Option 1</fast-option>
@@ -361,8 +435,20 @@ test.describe("Select", () => {
 
     test.describe("when the value changes by programmatic interaction", () => {
         ["input", "change"].forEach(eventName => {
-            test(`should NOT emit \`${eventName}\` event`, async () => {
-                await page.goto(fixtureURL("select--select"));
+            test(`should NOT emit \`${eventName}\` event`, async ({ page }) => {
+                const element = page.locator("fast-select");
+
+                await page.goto("http://localhost:6006");
+
+                await page.locator("#root").evaluate(node => {
+                    node.innerHTML = /* html */ `
+                        <fast-select>
+                            <fast-option>Option 1</fast-option>
+                            <fast-option>Option 2</fast-option>
+                            <fast-option>Option 3</fast-option>
+                        </fast-select>
+                    `;
+                });
 
                 const [wasChanged] = await Promise.all([
                     element.evaluate(
@@ -383,7 +469,7 @@ test.describe("Select", () => {
                     ),
 
                     element.evaluate<void, FASTSelect>(node => {
-                        node.value = "Tom Baker";
+                        node.value = "Option 2";
                     }),
                 ]);
 
@@ -393,8 +479,14 @@ test.describe("Select", () => {
     });
 
     test.describe("when the owning form's reset() function is invoked", () => {
-        test("should reset the value property to the first available option", async () => {
-            await root.evaluate(node => {
+        test("should reset the value property to the first available option", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-select");
+
+            await page.goto("http://localhost:6006");
+
+            await page.locator("#root").evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
                         <fast-select>
@@ -424,8 +516,14 @@ test.describe("Select", () => {
         });
     });
 
-    test("should set the `aria-activedescendant` attribute to the ID of the currently selected option", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-activedescendant` attribute to the ID of the currently selected option", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option id="option-1">Option 1</fast-option>
@@ -450,8 +548,14 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-activedescendant", "option-3");
     });
 
-    test("should set the `aria-controls` attribute to the ID of the internal listbox element while open", async () => {
-        await root.evaluate(node => {
+    test("should set the `aria-controls` attribute to the ID of the internal listbox element while open", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>
@@ -480,8 +584,14 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-controls", "");
     });
 
-    test("should update the `displayValue` when the selected option's content changes", async () => {
-        await root.evaluate(node => {
+    test("should update the `displayValue` when the selected option's content changes", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-select");
+
+        await page.goto("http://localhost:6006");
+
+        await page.locator("#root").evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-select>
                     <fast-option>Option 1</fast-option>

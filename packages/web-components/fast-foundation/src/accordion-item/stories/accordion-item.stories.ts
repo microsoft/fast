@@ -1,5 +1,6 @@
 import { html } from "@microsoft/fast-element";
-import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import type { Meta } from "@storybook/html";
+import type { Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTAccordionItem } from "../accordion-item.js";
 
@@ -13,18 +14,20 @@ const storyTemplate = html<StoryArgs<FASTAccordionItem>>`
     </fast-accordion-item>
 `;
 
-export default {
+const meta: Meta = {
     title: "Accordion Item",
-    args: {
-        expanded: false,
-    },
+    component: "FASTAccordionItem",
+    parameters: { actions: { argTypesRegex: "^.*Handler" } },
     argTypes: {
         expanded: { control: "boolean" },
         headinglevel: { control: { type: "number", max: 6, min: 1 } },
         id: { control: "text" },
         storyContent: { table: { disable: true } },
+        clickHandler: { action: "click" },
     },
-} as Meta<FASTAccordionItem>;
+};
+
+export default meta;
 
 export const AccordionItem: Story<FASTAccordionItem> = renderComponent(
     storyTemplate
