@@ -44,7 +44,7 @@
     "change": "beachball change",
     "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
     "check": "beachball check ",
-    "publish": "beachball publish",
+    "publish": "beachball --no-publish --no-git-tags --prerelease-prefix beta",
     "publish-ci": "beachball publish -y --access public",
     "prepare": "lerna run prepare",
     "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
