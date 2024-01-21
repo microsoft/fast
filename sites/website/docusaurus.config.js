@@ -16,12 +16,6 @@ module.exports = {
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     staticDirectories: ["static"],
     themeConfig: {
-        algolia: {
-            appId: "PG0CVQLQ81",
-            apiKey: "396cf95de6551ef90bde2de3142e158a",
-            indexName: "FAST",
-            contextualSearch: true,
-        },
         colorMode: {
             defaultMode: "dark",
         },

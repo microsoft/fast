@@ -40,3 +40,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 # Web components
 /packages/web-components/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
 /packages/web-components/fast-foundation/ @EisenbergEffect @chrisdholt @bheston @scomea @radium-v @kingoftac
+
+# the change directory has no owners
+/change/
