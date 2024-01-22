@@ -66,41 +66,34 @@ export class FASTTabs extends FASTElement {
 
     /**
      * An array of id's that specifies the order of tabs.
-     * If an author does not specify this (or sets it to undefined)
-     * the component will create and manage the tabOrder
-     * based on the order of tab elements in the DOM.
-     * The component uses this to manage keyboard navigation.
+     * This overrides the component's default DOM order based tabOrder
      *
      * @public
      */
     @observable
-    public tabOrder: string[] | undefined = [];
+    public customTabOrder: string[] | undefined;
+    public customTabOrderChanged(): void {
+        if (this.customTabOrder) {
+            this.tabOrder = this.customTabOrder;
+        } else {
+            this.tabOrder = [];
+        }
+        if (this.$fastController.isConnected) {
+            this.queueTabUpdate();
+        }
+    }
+
     /**
+     * An array of id's that specifies the order of tabs.
+     * If an author does not specify this (or sets it to undefined)
+     * the component will create and manage the tabOrder
+     * based on the order of tab elements in the DOM unless authors set a customTabOrder.
+     * The component uses this to manage keyboard navigation.
+     *
      * @internal
      */
-    public tabOrderChanged(prev: string[] | undefined, next: string[] | undefined): void {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-        if (!this.tabOrder) {
-            // setting the tabOrder to undefined prompts the component take over
-            this.manageTabOrder = true;
-            this.tabOrder = [];
-            this.queueTabUpdate();
-            return;
-        }
-
-        if (!prev && next === [] && this.manageTabOrder) {
-            // avoid self-triggering
-            return;
-        }
-
-        // this is now an author managed list
-        // Note: component code should not replace the array instance and
-        // modify the existing array instead
-        this.manageTabOrder = false;
-        this.queueTabUpdate();
-    }
+    @observable
+    public tabOrder: string[] = [];
 
     /**
      * Gets the active tab Element
@@ -200,7 +193,6 @@ export class FASTTabs extends FASTElement {
      */
     public tabList!: HTMLElement;
 
-    private manageTabOrder: boolean = true;
     private mutationObserver: MutationObserver | undefined;
     private tabUpdateQueued: boolean = false;
     private updatingActiveid: boolean = false;
@@ -219,13 +211,6 @@ export class FASTTabs extends FASTElement {
 
     private isHorizontal(): boolean {
         return this.orientation === TabsOrientation.horizontal;
-    }
-
-    private isValidTabId(tabId: string): boolean {
-        if (this.tabOrder && this.tabOrder.includes(tabId)) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -328,7 +313,7 @@ export class FASTTabs extends FASTElement {
             }
         });
 
-        if (this.manageTabOrder && this.tabOrder) {
+        if (!this.customTabOrder) {
             this.tabOrder.splice(0, this.tabOrder.length, ...newTabIds);
         }
     }
@@ -517,9 +502,20 @@ export class FASTTabs extends FASTElement {
     }
 
     private focusTab(): void {
-        if (this.activetab) {
-            this.activetab.focus();
+        const activeTab: HTMLElement | undefined = this.activetab;
+        if (activeTab && this.getRootActiveElement() !== activeTab) {
+            activeTab.focus();
         }
+    }
+
+    private getRootActiveElement(): Element | null {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.activeElement;
+        }
+
+        return document.activeElement;
     }
 }
 

@@ -126,18 +126,22 @@ export const myTabs = Tabs.compose({
 
 #### Fields
 
-| Name          | Privacy | Type              | Default | Description                   | Inherited From |
-| ------------- | ------- | ----------------- | ------- | ----------------------------- | -------------- |
-| `orientation` | public  | `TabsOrientation` |         | The orientation               |                |
-| `activeid`    | public  | `string`          |         | The id of the active tab      |                |
-| `activetab`   | public  | `HTMLElement`     |         | A reference to the active tab |                |
+| Name             | Privacy | Type                       | Default | Description                                                                                                        | Inherited From |
+| ---------------- | ------- | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `orientation`    | public  | `TabsOrientation`          |         | The orientation                                                                                                    |                |
+| `activeid`       | public  | `string or undefined`      |         | The id of the active tab                                                                                           |                |
+| `customTabOrder` | public  | `string[] or undefined`    |         | An array of id's that specifies the order of tabs. This overrides the component's default DOM order based tabOrder |                |
+| `activetab`      | public  | `HTMLElement or undefined` |         | Sets the active tab Element                                                                                        |                |
+| `activeTabIndex` | public  | `number`                   |         | Sets the active tab index based on tabOrder. If the target tab is not focusable setting this will have no effect.  |                |
 
 #### Methods
 
-| Name      | Privacy | Description                                                                       | Parameters           | Return | Inherited From |
-| --------- | ------- | --------------------------------------------------------------------------------- | -------------------- | ------ | -------------- |
-| `setTabs` | public  | Function that is invoked whenever the selected tab or the tab collection changes. |                      | `void` |                |
-| `adjust`  | public  | The adjust method for FASTTabs                                                    | `adjustment: number` | `void` |                |
+| Name                    | Privacy   | Description                                                   | Parameters           | Return | Inherited From |
+| ----------------------- | --------- | ------------------------------------------------------------- | -------------------- | ------ | -------------- |
+| `customTabOrderChanged` | public    |                                                               |                      | `void` |                |
+| `setTabs`               | public    | Function that is invoked whenever the tab collection changes. |                      | `void` |                |
+| `updateActiveid`        | protected | Function that is invoked whenever the active tab changes.     |                      | `void` |                |
+| `adjust`                | public    | The adjust method for FASTTabs                                | `adjustment: number` | `void` |                |
 
 #### Events
 

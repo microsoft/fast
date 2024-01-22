@@ -1955,17 +1955,33 @@ export class FASTTabPanel extends FASTElement {
 //
 // @public
 export class FASTTabs extends FASTElement {
-    activeid: string;
+    activeid: string | undefined;
     // @internal (undocumented)
-    activeidChanged(oldValue: string, newValue: string): void;
-    activetab: HTMLElement;
+    activeidChanged(): void;
+    get activetab(): HTMLElement | undefined;
+    set activetab(tabElement: HTMLElement | undefined);
+    get activeTabIndex(): number;
+    set activeTabIndex(index: number);
     adjust(adjustment: number): void;
     // @internal (undocumented)
     connectedCallback(): void;
+    customTabOrder: string[] | undefined;
+    // (undocumented)
+    customTabOrderChanged(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    handleTabKeyDown: (event: KeyboardEvent) => void;
+    // @internal
+    handleTabMouseDown: (event: MouseEvent) => void;
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
     protected setTabs(): void;
+    // @internal
+    tabList: HTMLElement;
+    // @internal
+    tabOrder: string[];
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
@@ -1974,6 +1990,7 @@ export class FASTTabs extends FASTElement {
     tabs: HTMLElement[];
     // @internal (undocumented)
     tabsChanged(): void;
+    protected updateActiveid(): void;
 }
 
 // @internal
