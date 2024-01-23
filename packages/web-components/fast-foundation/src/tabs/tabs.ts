@@ -304,12 +304,14 @@ export class FASTTabs extends FASTElement {
         ) {
             this.tabpanels.forEach((tabPanel: HTMLElement, index: number) => {
                 // if a tab-panel does not already have a labbelledby defined
-                // assign the id of the tab of the same index
+                // assign the id of the tab of the same index.
+                // When using a custom tab order the labelledby attribute is only
+                // applied when a tab-panel is selected.
                 tabPanel.setAttribute("aria-labelledby", newTabIds[index]);
             });
             this.tabs.forEach((tab: HTMLElement, index: number) => {
                 // if a tab does not already have a controlled panel defined
-                // assign the id of the panel of the same index
+                // assign the id of the panel of the same index.
                 tab.setAttribute("aria-controls", newTabPanelIds[index]);
             });
         }
@@ -391,9 +393,18 @@ export class FASTTabs extends FASTElement {
         });
 
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
-            tabpanel.id !== activeTab?.getAttribute("aria-controls")
-                ? tabpanel.setAttribute("hidden", "")
-                : tabpanel.removeAttribute("hidden");
+            if (
+                this.activeid &&
+                this.activeid !== "" &&
+                tabpanel.id === activeTab?.getAttribute("aria-controls")
+            ) {
+                tabpanel.removeAttribute("hidden");
+                // update labelled-by as a single panel can be associated with multiple tab elements
+                // this ensures the currently active panel is labelled by the currently active tab.
+                tabpanel.setAttribute("aria-labelledby", this.activeid);
+            } else {
+                tabpanel.setAttribute("hidden", "");
+            }
         });
 
         this.updatingActiveid = false;

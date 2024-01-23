@@ -101,12 +101,26 @@ const tabOrderStoryTemplate = html<StoryArgs<FASTTabs>>`
         <fast-tab id="t1" aria-controls="tp1">Tab 1</fast-tab>
         <fast-tab id="t2" aria-controls="tp2">Tab 2</fast-tab>
         <fast-tab id="t3" aria-controls="tp3">Tab 3</fast-tab>
-        <fast-tab-panel id="tp1" aria-labelledby="t1">Tab 1</fast-tab-panel>
-        <fast-tab-panel id="tp2" aria-labelledby="t2">Tab 2</fast-tab-panel>
-        <fast-tab-panel id="tp3" aria-labelledby="t3">Tab 3</fast-tab-panel>
+        <fast-tab-panel id="tp1">Tab 1</fast-tab-panel>
+        <fast-tab-panel id="tp2">Tab 2</fast-tab-panel>
+        <fast-tab-panel id="tp3">Tab 3</fast-tab-panel>
     </fast-tabs>
 `;
 
-export const WithTabOrder: Story<FASTTabs> = renderComponent(tabOrderStoryTemplate).bind(
-    {}
-);
+export const TabsWithTabOrder: Story<FASTTabs> = renderComponent(
+    tabOrderStoryTemplate
+).bind({});
+
+const tabOrderSharedPanelStoryTemplate = html<StoryArgs<FASTTabs>>`
+    <fast-tabs :customTabOrder=${["t2", "t3", "t1"]}>
+        <fast-tab id="t1" aria-controls="tp1">Tab 1</fast-tab>
+        <fast-tab id="t2" aria-controls="tp2">Tab 2</fast-tab>
+        <fast-tab id="t3" aria-controls="tp2">Tab 3</fast-tab>
+        <fast-tab-panel id="tp1">Tab 1</fast-tab-panel>
+        <fast-tab-panel id="tp2">Tab 2 and 3 share this</fast-tab-panel>
+    </fast-tabs>
+`;
+
+export const TabsWithSharedPanel: Story<FASTTabs> = renderComponent(
+    tabOrderSharedPanelStoryTemplate
+).bind({});
