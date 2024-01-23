@@ -298,20 +298,21 @@ export class FASTTabs extends FASTElement {
         // Do a second pass to set other default id based attributes if they have not been set.
         // This enables a default behavior where tabs and tabpanels are associated based on
         // their index in the DOM (ie. first tab associated with first tab panel, etc...)
-        this.tabpanels.forEach((tabPanel: HTMLElement, index: number) => {
-            if (!tabPanel.hasAttribute("aria-labelledby") && newTabIds.length > index) {
+        if (
+            this.tabpanels.length === this.tabs.length &&
+            this.customTabOrder === undefined
+        ) {
+            this.tabpanels.forEach((tabPanel: HTMLElement, index: number) => {
                 // if a tab does not already have a controlled panel defined
-                // assign the id of the panel of the same index if it exists
+                // assign the id of the panel of the same index
                 tabPanel.setAttribute("aria-labelledby", newTabIds[index]);
-            }
-        });
-        this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (!tab.hasAttribute("aria-controls") && newTabPanelIds.length > index) {
+            });
+            this.tabs.forEach((tab: HTMLElement, index: number) => {
                 // if a tab does not already have a controlled panel defined
-                // assign the id of the panel of the same index if it exists
+                // assign the id of the panel of the same index
                 tab.setAttribute("aria-controls", newTabPanelIds[index]);
-            }
-        });
+            });
+        }
 
         if (!this.customTabOrder) {
             this.tabOrder.splice(0, this.tabOrder.length, ...newTabIds);
