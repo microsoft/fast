@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix typing issue for menu to fix build issue",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
