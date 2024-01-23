@@ -1,7 +1,0 @@
-{
-    "type": "patch",
-    "comment": "Allow non-MenuItem-derived types to be indented properly",
-    "packageName": "@microsoft/fast-foundation",
-    "email": "7282195+m-akinc@users.noreply.github.com",
-    "dependentChangeType": "patch"
-}

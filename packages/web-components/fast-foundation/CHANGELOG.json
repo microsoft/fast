@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 23 Jan 2024 19:35:35 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.5",
+      "version": "2.49.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "31be91ffc7f588094a4986d8fad956fe671b28ce",
+            "comment": "Fix design token inheritance bug"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "aed89cac2414d10223f158ed2d0a1185a2461fdd",
+            "comment": "fix typing issue for menu to fix build issue"
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ad6f1fbcb4d7e0dd8fabe5fc9bd9582c744edccb",
+            "comment": "Allow non-MenuItem-derived types to be indented properly"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Nov 2023 19:30:24 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.4",
       "version": "2.49.4",

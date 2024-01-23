@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 09 Nov 2023 19:30:24 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Jan 2024 19:35:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.5
+
+Tue, 23 Jan 2024 19:35:35 GMT
+
+### Patches
+
+- Fix design token inheritance bug (7282195+m-akinc@users.noreply.github.com)
+- fix typing issue for menu to fix build issue (chhol@microsoft.com)
+- Allow non-MenuItem-derived types to be indented properly (7282195+m-akinc@users.noreply.github.com)
 
 ## 2.49.4
 
