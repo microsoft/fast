@@ -303,8 +303,8 @@ export class FASTTabs extends FASTElement {
             this.customTabOrder === undefined
         ) {
             this.tabpanels.forEach((tabPanel: HTMLElement, index: number) => {
-                // if a tab does not already have a controlled panel defined
-                // assign the id of the panel of the same index
+                // if a tab-panel does not already have a labbelledby defined
+                // assign the id of the tab of the same index
                 tabPanel.setAttribute("aria-labelledby", newTabIds[index]);
             });
             this.tabs.forEach((tab: HTMLElement, index: number) => {
