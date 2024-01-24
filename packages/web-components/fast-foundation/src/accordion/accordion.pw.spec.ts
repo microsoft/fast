@@ -61,6 +61,25 @@ test.describe("Accordion", () => {
         await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.single);
     });
 
+    test("should set an expand mode of `eager` when passed to the `expand-mode` attribute", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="eager">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
+
+        await expect(element).toHaveAttribute("expand-mode", AccordionExpandMode.eager);
+    });
+
     test("should set a default expand mode of `multi` when `expand-mode` attribute is not passed", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -150,10 +169,10 @@ test.describe("Accordion", () => {
         await expect(secondItem).toHaveBooleanAttribute("expanded");
     });
 
-    test("should set the expanded items' button to aria-disabled when in single expand mode", async () => {
+    test("should set the expanded items' button to aria-disabled when in eager expand mode", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-accordion expand-mode="single">
+                <fast-accordion expand-mode="eager">
                     <fast-accordion-item>
                         <span slot="heading">Heading 1</span>
                         <div>Content 1</div>
@@ -202,10 +221,10 @@ test.describe("Accordion", () => {
         );
     });
 
-    test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async () => {
+    test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from eager to multi", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-accordion expand-mode="single">
+                <fast-accordion expand-mode="eager">
                     <fast-accordion-item>
                         <span slot="heading">Heading 1</span>
                         <div>Content 1</div>
@@ -238,10 +257,10 @@ test.describe("Accordion", () => {
         await expect(firstItem.locator("button")).not.hasAttribute("aria-disabled");
     });
 
-    test("should set the first item as expanded if no child is expanded by default in single mode", async () => {
+    test("should set the first item as expanded if no child is expanded by default in eager mode", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-accordion expand-mode="single">
+                <fast-accordion expand-mode="eager">
                     <fast-accordion-item>
                         <span slot="heading">Heading 1</span>
                         <div>Content 1</div>
@@ -311,6 +330,52 @@ test.describe("Accordion", () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-accordion expand-mode="single">
+                    <fast-accordion-item>
+                        <span slot="heading">Heading 1</span>
+                        <div>Content 1</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item expanded disabled>
+                        <span slot="heading">Heading 2</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                    <fast-accordion-item expanded>
+                        <span slot="heading">Heading 3</span>
+                        <div>Content 2</div>
+                    </fast-accordion-item>
+                </fast-accordion>
+            `;
+        });
+
+        const items = element.locator("fast-accordion-item");
+
+        const firstItem = items.nth(0);
+
+        const secondItem = items.nth(1);
+
+        const thirdItem = items.nth(2);
+
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
+
+        await expect(thirdItem).toHaveBooleanAttribute("expanded");
+
+        await secondItem.evaluate(node => {
+            node.removeAttribute("disabled");
+        });
+
+        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+
+        await expect(secondItem).toHaveBooleanAttribute("expanded");
+
+        await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
+    });
+
+    test("should allow disabled items to be expanded when in eager mode", async () => {
+        test.slow();
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-accordion expand-mode="eager">
                     <fast-accordion-item>
                         <span slot="heading">Heading 1</span>
                         <div>Content 1</div>

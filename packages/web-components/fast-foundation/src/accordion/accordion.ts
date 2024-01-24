@@ -81,7 +81,7 @@ export class FASTAccordion extends FASTElement {
         } else if (propertyName === "expanded") {
             // we only need to manage single expanded instances
             // such as scenarios where a child is programatically expanded
-            if (source.expanded && this.isSingleExpandMode()) {
+            if (source.expanded && this.isSingleExpandMode) {
                 this.setSingleExpandMode(source);
             }
         }
@@ -100,12 +100,12 @@ export class FASTAccordion extends FASTElement {
             return null;
         }
 
-        return (
-            this.accordionItems.find(
-                (item: Element | FASTAccordionItem) =>
-                    item instanceof FASTAccordionItem && item.expanded
-            ) ?? this.accordionItems[0]
-        );
+        return this.accordionItems.find(
+            (item: Element | FASTAccordionItem) =>
+                item instanceof FASTAccordionItem && item.expanded
+        ) ?? this.isEagerExpandMode
+            ? this.accordionItems[0]
+            : null;
     }
 
     private setItems = (): void => {
@@ -141,7 +141,7 @@ export class FASTAccordion extends FASTElement {
             item.addEventListener("focus", this.handleItemFocus);
         });
 
-        if (this.isSingleExpandMode()) {
+        if (this.isEagerExpandMode || this.isSingleExpandMode) {
             const expandedItem = this.findExpandedItem() as FASTAccordionItem;
             this.setSingleExpandMode(expandedItem);
         }
@@ -192,7 +192,7 @@ export class FASTAccordion extends FASTElement {
         if (item instanceof FASTAccordionItem) {
             this.activeid = item.getAttribute("id");
 
-            if (!this.isSingleExpandMode()) {
+            if (!this.isEagerExpandMode) {
                 item.expanded = !item.expanded;
                 // setSingleExpandMode sets activeItemIndex on its own
                 this.activeItemIndex = this.accordionItems.indexOf(item);
@@ -210,7 +210,11 @@ export class FASTAccordion extends FASTElement {
         });
     }
 
-    private isSingleExpandMode(): boolean {
+    private get isEagerExpandMode(): boolean {
+        return this.expandmode === AccordionExpandMode.eager;
+    }
+
+    private get isSingleExpandMode(): boolean {
         return this.expandmode === AccordionExpandMode.single;
     }
 

@@ -6,6 +6,11 @@ import type { ValuesOf } from "../utilities/index.js";
  */
 export const AccordionExpandMode = {
     /**
+     * The same as single, but the first {@link @microsoft/fast-foundation#(FASTAccordionItem:class) } is expanded by default.
+     */
+    eager: "eager",
+
+    /**
      * Designates only a single {@link @microsoft/fast-foundation#(FASTAccordionItem:class) } can be open a time.
      */
     single: "single",
