@@ -3,5 +3,5 @@
   "comment": "Rename Accordion's \"single\" expand mode to \"eager\" and add new \"single\" mode that does not expand the first item by default and allows the active item to be collapsed.",
   "packageName": "@microsoft/fast-foundation",
   "email": "32497422+KingOfTac@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
