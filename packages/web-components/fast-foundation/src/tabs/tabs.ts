@@ -369,6 +369,13 @@ export class FASTTabs extends FASTElement {
             if (tabElement) {
                 if (tabId === this.activeid) {
                     activeTab = tabElement;
+                    tabElement.setAttribute("role", "tab");
+                    tabElement.setAttribute("aria-posinset", `${index + 1}`);
+                    tabElement.setAttribute("aria-setsize", `${this.tabOrder.length}`);
+                } else {
+                    tabElement.removeAttribute("role");
+                    tabElement.removeAttribute("aria-posinset");
+                    tabElement.removeAttribute("aria-setsize");
                 }
                 // If the original property isn't emptied out,
                 // the next set will morph into a grid-area style setting that is not what we want
