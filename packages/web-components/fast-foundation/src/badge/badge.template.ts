@@ -1,14 +1,19 @@
 import { ElementViewTemplate, html } from "@microsoft/fast-element";
-import type { FASTBadge } from "./badge.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import type { BadgeOptions, FASTBadge } from "./badge.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#FASTBadge} component.
+ * The template for the {@link @microsoft/fast-foundation#(FASTBadge:class)} component.
  * @public
  */
-export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T> {
+export function badgeTemplate<T extends FASTBadge>(
+    options: BadgeOptions = {}
+): ElementViewTemplate<T> {
     return html<T>`
-        <div class="control" part="control">
+        ${startSlotTemplate(options)}
+        <span class="content" part="content">
             <slot></slot>
-        </div>
+        </span>
+        ${endSlotTemplate(options)}
     `;
 }

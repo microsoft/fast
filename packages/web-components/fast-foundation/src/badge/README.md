@@ -55,15 +55,17 @@ export const myBadge = Badge.compose({
 
 #### CSS Parts
 
-| Name      | Description                                                      |
-| --------- | ---------------------------------------------------------------- |
-| `control` | The element representing the badge, which wraps the default slot |
+| Name      | Description                           |
+| --------- | ------------------------------------- |
+| `content` | The element wrapping the default slot |
 
 #### Slots
 
-| Name | Description                    |
-| ---- | ------------------------------ |
-|      | The default slot for the badge |
+| Name    | Description                                           |
+| ------- | ----------------------------------------------------- |
+| `start` | Content which can be provided before the default slot |
+| `end`   | Content which can be provided after the default slot  |
+|         | The default slot for the badge                        |
 
 <hr/>
 
