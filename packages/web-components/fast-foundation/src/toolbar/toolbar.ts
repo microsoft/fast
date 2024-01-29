@@ -247,12 +247,12 @@ export class FASTToolbar extends FASTElement {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
         if (
-          this.focusableElements[this.activeIndex] &&
-          // Don't focus the toolbar element if some event handlers moved
-          // the focus on another element in the page.
-          this.contains(document.activeElement)
+            this.focusableElements[this.activeIndex] &&
+            // Don't focus the toolbar element if some event handlers moved
+            // the focus on another element in the page.
+            this.contains(document.activeElement)
         ) {
-           this.focusableElements[this.activeIndex].focus();
+            this.focusableElements[this.activeIndex].focus();
         }
     }
 
