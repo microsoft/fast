@@ -1,15 +1,24 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import { StartEnd, type StartEndOptions } from "../patterns/index.js";
 import { FormAssociatedTextArea } from "./text-area.form-associated.js";
 import { TextAreaResize } from "./text-area.options.js";
 
 export { TextAreaResize };
 
 /**
+ * Text area configuration options
+ * @public
+ */
+export type TextAreaOptions = StartEndOptions<FASTTextArea>;
+
+/**
  * A Text Area Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea | <textarea> element }.
  *
+ * @slot start - Content which can be provided before the text area
+ * @slot end - Content which can be provided after the text area
  * @slot - The default slot for the label
  * @csspart label - The label
  * @csspart root - The element wrapping the control
@@ -220,5 +229,5 @@ export class FASTTextArea extends FormAssociatedTextArea {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface FASTTextArea extends DelegatesARIATextbox {}
-applyMixins(FASTTextArea, DelegatesARIATextbox);
+export interface FASTTextArea extends StartEnd, DelegatesARIATextbox {}
+applyMixins(FASTTextArea, StartEnd, DelegatesARIATextbox);
