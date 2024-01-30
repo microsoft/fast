@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "align text-area component template to text-field component for feature consistency",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "github@david.vollmers.org",
+  "dependentChangeType": "patch"
+}
