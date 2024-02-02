@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "add missing tslib transient dependency",
+  "packageName": "@microsoft/fast-router",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
