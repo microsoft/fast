@@ -65,7 +65,7 @@ export interface ColumnDefinition {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement | null;
 
     /**
      * cell template
@@ -85,7 +85,7 @@ export interface ColumnDefinition {
      * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
 
-    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement | null;
 
     /**
      * Whether this column is the row header
@@ -592,7 +592,7 @@ export class DataGrid extends FoundationElement {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
-            this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
+            this.generatedHeader = generatedHeaderElement as unknown as DataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
@@ -621,7 +621,8 @@ export class DataGrid extends FoundationElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as DataGridRow).columnDefinitions = this.columnDefinitions;
+                        (newNode as DataGridRow).columnDefinitions =
+                            this.columnDefinitions;
                     }
                 });
             });

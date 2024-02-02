@@ -3,10 +3,19 @@ import {
     eventFocusIn,
     eventFocusOut,
     eventKeyDown,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
     keyEnter,
     keyEscape,
     keyFunction2,
+    keyHome,
+    keyPageDown,
+    keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { isFocusable } from "tabbable";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
@@ -34,6 +43,18 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
                 : x.columnDefinition.title}
     </template>
 `;
+
+// basic focusTargetCallback that returns the first child of the cell
+export const defaultCellFocusTargetCallback = (
+    cell: DataGridCell
+): HTMLElement | null => {
+    for (let i = 0; i < cell.children.length; i++) {
+        if (isFocusable(cell.children[i])) {
+            return cell.children[i] as HTMLElement;
+        }
+    }
+    return null;
+};
 
 /**
  * A Data Grid Cell Custom HTML Element.
@@ -151,9 +172,8 @@ export class DataGridCell extends FoundationElement {
                         "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
-                        this
-                    );
+                    const focusTarget: HTMLElement | null =
+                        this.columnDefinition.headerCellFocusTargetCallback(this);
                     if (focusTarget !== null) {
                         focusTarget.focus();
                     }
@@ -167,9 +187,8 @@ export class DataGridCell extends FoundationElement {
                     typeof this.columnDefinition.cellFocusTargetCallback === "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
-                        this
-                    );
+                    const focusTarget: HTMLElement | null =
+                        this.columnDefinition.cellFocusTargetCallback(this);
                     if (focusTarget !== null) {
                         focusTarget.focus();
                     }
@@ -186,25 +205,37 @@ export class DataGridCell extends FoundationElement {
         }
     }
 
+    private hasInternalFocusQueue(): boolean {
+        if (this.columnDefinition === null) {
+            return false;
+        }
+        if (
+            (this.cellType === DataGridCellTypes.default &&
+                this.columnDefinition.cellInternalFocusQueue) ||
+            (this.cellType === DataGridCellTypes.columnHeader &&
+                this.columnDefinition.headerCellInternalFocusQueue)
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     public handleKeydown(e: KeyboardEvent): void {
+        // if the cell does not have an internal focus queue we can ignore keystrokes
         if (
             e.defaultPrevented ||
             this.columnDefinition === null ||
-            (this.cellType === DataGridCellTypes.default &&
-                this.columnDefinition.cellInternalFocusQueue !== true) ||
-            (this.cellType === DataGridCellTypes.columnHeader &&
-                this.columnDefinition.headerCellInternalFocusQueue !== true)
+            !this.hasInternalFocusQueue()
         ) {
             return;
         }
 
+        const rootActiveElement: Element | null = this.getRootActiveElement();
+
         switch (e.key) {
             case keyEnter:
             case keyFunction2:
-                if (
-                    this.contains(document.activeElement) &&
-                    document.activeElement !== this
-                ) {
+                if (this.contains(rootActiveElement) && rootActiveElement !== this) {
                     return;
                 }
 
@@ -214,9 +245,8 @@ export class DataGridCell extends FoundationElement {
                             this.columnDefinition.headerCellFocusTargetCallback !==
                             undefined
                         ) {
-                            const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
-                                this
-                            );
+                            const focusTarget: HTMLElement | null =
+                                this.columnDefinition.headerCellFocusTargetCallback(this);
                             if (focusTarget !== null) {
                                 focusTarget.focus();
                             }
@@ -226,9 +256,8 @@ export class DataGridCell extends FoundationElement {
 
                     default:
                         if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
-                            const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
-                                this
-                            );
+                            const focusTarget: HTMLElement | null =
+                                this.columnDefinition.cellFocusTargetCallback(this);
                             if (focusTarget !== null) {
                                 focusTarget.focus();
                             }
@@ -239,15 +268,38 @@ export class DataGridCell extends FoundationElement {
                 break;
 
             case keyEscape:
-                if (
-                    this.contains(document.activeElement) &&
-                    document.activeElement !== this
-                ) {
+                if (this.contains(rootActiveElement) && rootActiveElement !== this) {
                     this.focus();
                     e.preventDefault();
                 }
                 break;
+
+            // stop any unhandled grid nav events that may bubble from the cell
+            // when internal navigation is active.
+            // note: preventDefault would also block arrow keys in input elements
+            case keyArrowDown:
+            case keyArrowLeft:
+            case keyArrowRight:
+            case keyArrowUp:
+            case keyEnd:
+            case keyHome:
+            case keyPageDown:
+            case keyPageUp:
+                if (this.contains(rootActiveElement) && rootActiveElement !== this) {
+                    e.stopPropagation();
+                }
+                break;
         }
+    }
+
+    private getRootActiveElement(): Element | null {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.activeElement;
+        }
+
+        return document.activeElement;
     }
 
     private updateCellView(): void {
