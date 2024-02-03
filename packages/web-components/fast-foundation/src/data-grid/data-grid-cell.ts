@@ -172,8 +172,9 @@ export class DataGridCell extends FoundationElement {
                         "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement | null =
-                        this.columnDefinition.headerCellFocusTargetCallback(this);
+                    const focusTarget: HTMLElement | null = this.columnDefinition.headerCellFocusTargetCallback(
+                        this
+                    );
                     if (focusTarget !== null) {
                         focusTarget.focus();
                     }
@@ -187,8 +188,9 @@ export class DataGridCell extends FoundationElement {
                     typeof this.columnDefinition.cellFocusTargetCallback === "function"
                 ) {
                     // move focus to the focus target
-                    const focusTarget: HTMLElement | null =
-                        this.columnDefinition.cellFocusTargetCallback(this);
+                    const focusTarget: HTMLElement | null = this.columnDefinition.cellFocusTargetCallback(
+                        this
+                    );
                     if (focusTarget !== null) {
                         focusTarget.focus();
                     }
@@ -245,8 +247,9 @@ export class DataGridCell extends FoundationElement {
                             this.columnDefinition.headerCellFocusTargetCallback !==
                             undefined
                         ) {
-                            const focusTarget: HTMLElement | null =
-                                this.columnDefinition.headerCellFocusTargetCallback(this);
+                            const focusTarget: HTMLElement | null = this.columnDefinition.headerCellFocusTargetCallback(
+                                this
+                            );
                             if (focusTarget !== null) {
                                 focusTarget.focus();
                             }
@@ -256,8 +259,9 @@ export class DataGridCell extends FoundationElement {
 
                     default:
                         if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
-                            const focusTarget: HTMLElement | null =
-                                this.columnDefinition.cellFocusTargetCallback(this);
+                            const focusTarget: HTMLElement | null = this.columnDefinition.cellFocusTargetCallback(
+                                this
+                            );
                             if (focusTarget !== null) {
                                 focusTarget.focus();
                             }

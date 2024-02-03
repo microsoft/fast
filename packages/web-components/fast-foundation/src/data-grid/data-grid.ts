@@ -592,7 +592,7 @@ export class DataGrid extends FoundationElement {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
-            this.generatedHeader = generatedHeaderElement as unknown as DataGridRow;
+            this.generatedHeader = (generatedHeaderElement as unknown) as DataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
@@ -621,8 +621,7 @@ export class DataGrid extends FoundationElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as DataGridRow).columnDefinitions =
-                            this.columnDefinitions;
+                        (newNode as DataGridRow).columnDefinitions = this.columnDefinitions;
                     }
                 });
             });
