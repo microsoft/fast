@@ -157,7 +157,12 @@ if (DOM.supportsAdoptedStyleSheets) {
         (document as any).adoptedStyleSheets.push();
         (document as any).adoptedStyleSheets.splice();
         addAdoptedStyleSheets = (target, sheets) => {
-            target.adoptedStyleSheets.push(...sheets);
+            // Workaround for Chromium bug: https://bugs.chromium.org/p/chromium/issues/detail?id=1522263
+            const prepend: CSSStyleSheet[] = [];
+            const append: CSSStyleSheet[] = [];
+            sheets.forEach(x => (x["prepend"] ? prepend : append).push(x));
+            target.adoptedStyleSheets.splice(0, 0, ...prepend);
+            target.adoptedStyleSheets.push(...append);
         };
         removeAdoptedStyleSheets = (target, sheets) => {
             for (const sheet of sheets) {

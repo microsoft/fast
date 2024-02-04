@@ -38,6 +38,8 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
         super();
 
         const sheet = new CSSStyleSheet();
+        // Workaround for Chromium bug: https://bugs.chromium.org/p/chromium/issues/detail?id=1522263
+        sheet["prepend"] = true;
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
         source.$fastController.addStyles(ElementStyles.create([sheet]));
     }
