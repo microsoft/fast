@@ -40,11 +40,9 @@ export function sliderTemplate<T extends FASTSlider>(
                     class="thumb-container"
                     style="${x => x.position}"
                 >
-                    <slot name="thumb">
-                        ${staticallyCompose(
-                            options.thumb ?? `<div class="thumb" part="thumb"></div>`
-                        )}
-                    </slot>
+                    <div class="thumb" part="thumb">
+                        <slot name="thumb">${staticallyCompose(options.thumb)}</slot>
+                    </div>
                 </div>
             </div>
         </template>
