@@ -29,11 +29,9 @@ export function switchTemplate<T extends FASTSwitch>(
                 <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
             <div part="control" class="control">
-                <slot name="thumb">
-                    ${staticallyCompose(
-                        options.thumb ?? `<div class="thumb" part="thumb"></div>`
-                    )}
-                </slot>
+                <div class="thumb" part="thumb">
+                    <slot name="thumb">${staticallyCompose(options.thumb)}</slot>
+                </div>
             </div>
         </template>
     `;

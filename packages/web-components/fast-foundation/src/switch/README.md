@@ -131,18 +131,18 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 
 #### CSS Parts
 
-| Name      | Description                                                    |
-| --------- | -------------------------------------------------------------- |
-| `label`   | The label                                                      |
-| `control` | The element representing the switch, which wraps the indicator |
-| `thumb`   | The default thumb element                                      |
+| Name      | Description                                                |
+| --------- | ---------------------------------------------------------- |
+| `label`   | The label                                                  |
+| `control` | The element representing the switch, which wraps the thumb |
+| `thumb`   | The thumb element                                          |
 
 #### Slots
 
-| Name    | Description                    |
-| ------- | ------------------------------ |
-|         | The default slot for the label |
-| `thumb` | The thumb inside the control   |
+| Name    | Description                     |
+| ------- | ------------------------------- |
+|         | The default slot for the label  |
+| `thumb` | For content inside of the thumb |
 
 <hr/>
 

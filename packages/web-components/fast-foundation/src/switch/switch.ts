@@ -16,10 +16,10 @@ export type SwitchOptions = {
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
  *
  * @slot - The default slot for the label
- * @slot thumb - The thumb inside the control
+ * @slot thumb - For content inside of the thumb
  * @csspart label - The label
- * @csspart control - The element representing the switch, which wraps the indicator
- * @csspart thumb - The default thumb element
+ * @csspart control - The element representing the switch, which wraps the thumb
+ * @csspart thumb - The thumb element
  * @fires change - Emits a custom change event when the checked state changes
  *
  * @public
