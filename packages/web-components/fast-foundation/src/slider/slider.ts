@@ -27,7 +27,7 @@ import { SliderConfiguration, SliderMode } from "./slider.options.js";
  * @csspart track - The region containing the track elements
  * @csspart track-start - The element wrapping the track start slot
  * @csspart thumb-container - The thumb container element which is programmatically positioned
- * @csspart thumb - The default thumb element
+ * @csspart thumb - The thumb element
  * @fires change - Fires a custom 'change' event when the slider value changes
  *
  * @public

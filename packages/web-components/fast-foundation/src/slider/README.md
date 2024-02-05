@@ -217,7 +217,7 @@ export const mySliderLabel = SliderLabel.compose({
 | `track`              | The region containing the track elements                         |
 | `track-start`        | The element wrapping the track start slot                        |
 | `thumb-container`    | The thumb container element which is programmatically positioned |
-| `thumb`              | The default thumb element                                        |
+| `thumb`              | The thumb element                                                |
 
 #### Slots
 
@@ -266,11 +266,11 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### CSS Parts
 
-| Name        | Description                                  |
-| ----------- | -------------------------------------------- |
-| `container` | The element wrapping the label mark and text |
-| `mark`      | The element wrapping the mark                |
-| `content`   | The element wrapping the label text          |
+| Name        | Description                                     |
+| ----------- | ----------------------------------------------- |
+| `container` | The element wrapping the label mark and content |
+| `mark`      | The element wrapping the label mark             |
+| `content`   | The element wrapping the label content          |
 
 #### Slots
 
