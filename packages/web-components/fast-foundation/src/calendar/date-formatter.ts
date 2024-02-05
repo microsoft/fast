@@ -150,15 +150,24 @@ export class DateFormatter {
      * @param year - The year to localize
      * @param format - The formatting for the year
      * @param locale - The locale data used for formatting
+     * @param options - Additional options to pass to Intl.DateTimeFormat
      * @returns - A localized string for the year
      * @public
      */
     public getYear(
         year: number = this.date.getFullYear(),
         format: YearFormat = this.yearFormat,
-        locale: string = this.locale
+        locale: string = this.locale,
+        options?: Intl.DateTimeFormatOptions
     ): string {
-        return this.getDate({ month: 2, day: 2, year }, { year: format }, locale);
+        return this.getDate(
+            { month: 2, day: 2, year },
+            {
+                year: format,
+                ...(options ?? {}),
+            },
+            locale
+        );
     }
 
     /**

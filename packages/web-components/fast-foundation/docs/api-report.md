@@ -402,7 +402,7 @@ export class DateFormatter {
     // (undocumented)
     getWeekdays(format?: WeekdayFormat, locale?: string): string[];
     // (undocumented)
-    getYear(year?: number, format?: YearFormat, locale?: string): string;
+    getYear(year?: number, format?: YearFormat, locale?: string, options?: Intl.DateTimeFormatOptions): string;
     locale: string;
     monthFormat: MonthFormat;
     weekdayFormat: WeekdayFormat;
