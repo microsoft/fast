@@ -2363,6 +2363,9 @@ export type GenerateHeaderOptions = ValuesOf<typeof GenerateHeaderOptions>;
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
+// @public (undocumented)
+export function getRootActiveElement(element: Element): Element | null;
+
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
