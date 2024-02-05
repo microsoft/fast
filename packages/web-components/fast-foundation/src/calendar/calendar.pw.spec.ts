@@ -487,11 +487,24 @@ test.describe("Calendar", () => {
                 `;
             });
 
-            expect(
-                await element.evaluate((node: FASTCalendar) =>
-                    node.dateFormatter.getYear(node.year)
-                )
-            ).toBe("พ.ศ. 2564");
+            let year = await element.evaluate((node: FASTCalendar) =>
+                node.dateFormatter.getYear(node.year)
+            );
+
+            expect(year).toContain("2564");
+
+            // Webkit on Windows only returns "2564" for the Buddhist calendar,
+            // so check again with `era` option.
+            // Possibly related: https://bugs.webkit.org/show_bug.cgi?id=265818
+            if (year === "2564") {
+                year = await element.evaluate((node: FASTCalendar) =>
+                    node.dateFormatter.getYear(node.year, node.yearFormat, node.locale, {
+                        era: "short",
+                    })
+                );
+            }
+
+            expect(year).toBe("พ.ศ. 2564");
         });
 
         test("should not be RTL for languages that are not Arabic or Hebrew", async () => {
