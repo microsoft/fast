@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix CSS custom property precedence issue",
+  "packageName": "@microsoft/fast-element",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
