@@ -1061,6 +1061,25 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe("12px");
         });
+        test("should allow stylesheet to override token's CSS custom property", async () => {
+            expect(
+                await page.evaluate(async () => {
+                    const target = addElement();
+                    const token = DesignToken.create<number>(uniqueTokenName());
+                    const styles = css`
+                        :host {
+                            ${token.cssCustomProperty}: 34;
+                            width: calc(${token} * 1px);
+                        }
+                    `;
+                    target.$fastController.addStyles(styles);
+                    token.setValueFor(target, 12);
+
+                    await Updates.next();
+                    return window.getComputedStyle(target).getPropertyValue("width");
+                })
+            ).toBe("34px");
+        });
     });
 
     test.describe("with a default value set", () => {

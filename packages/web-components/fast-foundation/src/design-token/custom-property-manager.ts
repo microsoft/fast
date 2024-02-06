@@ -1,7 +1,8 @@
-import type {
-    Constructable,
-    ElementController,
-    FASTElement,
+import {
+    type Constructable,
+    type ElementController,
+    type FASTElement,
+    prependToAdoptedStyleSheetsSymbol,
 } from "@microsoft/fast-element";
 import { ElementStyles, observable, Observable, Updates } from "@microsoft/fast-element";
 
@@ -33,6 +34,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
         super();
 
         const sheet = new CSSStyleSheet();
+        sheet[prependToAdoptedStyleSheetsSymbol] = true;
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
         source.$fastController.addStyles(new ElementStyles([sheet]));
     }

@@ -148,4 +148,5 @@ export {
 export {
     ElementController,
     ElementControllerStrategy,
+    prependToAdoptedStyleSheetsSymbol,
 } from "./components/element-controller.js";

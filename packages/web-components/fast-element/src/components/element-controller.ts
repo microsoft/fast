@@ -645,8 +645,27 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 }
 
+/**
+ * A Symbol that can be added to a CSSStyleSheet to cause it to be prepended (rather than appended) to adoptedStyleSheets.
+ * @public
+ */
+export const prependToAdoptedStyleSheetsSymbol = Symbol("prependToAdoptedStyleSheets");
+
+function separateSheetsToPrepend(sheets: CSSStyleSheet[]): {
+    prepend: CSSStyleSheet[];
+    append: CSSStyleSheet[];
+} {
+    const prepend: CSSStyleSheet[] = [];
+    const append: CSSStyleSheet[] = [];
+    sheets.forEach(x =>
+        (x[prependToAdoptedStyleSheetsSymbol] ? prepend : append).push(x)
+    );
+    return { prepend, append };
+}
+
 let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => {
-    target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
+    const { prepend, append } = separateSheetsToPrepend(sheets);
+    target.adoptedStyleSheets = [...prepend, ...target.adoptedStyleSheets!, ...append];
 };
 let removeAdoptedStyleSheets = (
     target: Required<StyleTarget>,
@@ -666,7 +685,9 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
         (document as any).adoptedStyleSheets.push();
         (document as any).adoptedStyleSheets.splice();
         addAdoptedStyleSheets = (target, sheets) => {
-            target.adoptedStyleSheets.push(...sheets);
+            const { prepend, append } = separateSheetsToPrepend(sheets);
+            target.adoptedStyleSheets.splice(0, 0, ...prepend);
+            target.adoptedStyleSheets.push(...append);
         };
         removeAdoptedStyleSheets = (target, sheets) => {
             for (const sheet of sheets) {
