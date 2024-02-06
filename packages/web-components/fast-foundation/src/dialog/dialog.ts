@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
+import { getRootActiveElement } from "../utilities/index.js";
 
 /**
  * A Switch Custom HTML Element.
@@ -274,7 +275,7 @@ export class FASTDialog extends FASTElement {
             // Add an event listener for focusin events if we are trapping focus
             document.addEventListener("focusin", this.handleDocumentFocus);
             Updates.enqueue(() => {
-                if (this.shouldForceFocus(document.activeElement)) {
+                if (this.shouldForceFocus(getRootActiveElement(this))) {
                     this.focusFirstElement();
                 }
             });
