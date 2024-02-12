@@ -2,7 +2,6 @@ import type { Locator, PlaywrightTestConfig } from "@playwright/test";
 import { expect } from "@playwright/test";
 
 const config: PlaywrightTestConfig = {
-    projects: [{ name: "chromium" }, { name: "firefox" }, { name: "webkit" }],
     reporter: "list",
     testMatch: /.*\.pw\.spec\.ts$/,
     retries: 3,
@@ -10,6 +9,8 @@ const config: PlaywrightTestConfig = {
     timeout: process.env.CI ? 10000 : 30000,
     use: {
         baseURL: "http://localhost:6006/iframe.html",
+        deviceScaleFactor: 1,
+        launchOptions: { args: ["--force-device-scale-factor=1"] },
         viewport: {
             height: 1280,
             width: 720,
