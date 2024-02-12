@@ -1,28 +1,15 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTFlipper } from "./flipper.js";
 
 test.describe("Flipper", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should include a role of button", async ({ page }) => {
+        const element = page.locator("fast-flipper");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-flipper");
-
-        root = page.locator("#root");
+        const root = page.locator("#root");
 
         await page.goto(fixtureURL("flipper--flipper"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should include a role of button", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper></fast-flipper>
@@ -32,7 +19,13 @@ test.describe("Flipper", () => {
         await expect(element).toHaveAttribute("role", "button");
     });
 
-    test('should set `aria-hidden` to "true" by default', async () => {
+    test('should set `aria-hidden` to "true" by default', async ({ page }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper></fast-flipper>
@@ -42,7 +35,15 @@ test.describe("Flipper", () => {
         await expect(element).toHaveAttribute("aria-hidden", "true");
     });
 
-    test("should set the `hiddenFromAT` property to true by default", async () => {
+    test("should set the `hiddenFromAT` property to true by default", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper></fast-flipper>
@@ -52,7 +53,13 @@ test.describe("Flipper", () => {
         await expect(element).toHaveJSProperty("hiddenFromAT", true);
     });
 
-    test('should set the `direction` property to "next" by default', async () => {
+    test('should set the `direction` property to "next" by default', async ({ page }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper></fast-flipper>
@@ -62,7 +69,15 @@ test.describe("Flipper", () => {
         await expect(element.locator("span")).toHaveClass(/next/);
     });
 
-    test("should toggle the `aria-disabled` attribute based on the value of the `disabled` property", async () => {
+    test("should toggle the `aria-disabled` attribute based on the value of the `disabled` property", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper disabled></fast-flipper>
@@ -80,7 +95,15 @@ test.describe("Flipper", () => {
         await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
-    test('should set the `tabindex` attribute to "-1" when `hiddenFromAT` is true', async () => {
+    test('should set the `tabindex` attribute to "-1" when `hiddenFromAT` is true', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper></fast-flipper>
@@ -104,7 +127,13 @@ test.describe("Flipper", () => {
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test("should set a `tabindex` of 0 when `aria-hidden` is false", async () => {
+    test("should set a `tabindex` of 0 when `aria-hidden` is false", async ({ page }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper aria-hidden="false"></fast-flipper>
@@ -120,7 +149,15 @@ test.describe("Flipper", () => {
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test('should render a span with a class of "next" when the `direction` attribute is "next"', async () => {
+    test('should render a span with a class of "next" when the `direction` attribute is "next"', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper direction="next"></fast-flipper>
@@ -134,7 +171,15 @@ test.describe("Flipper", () => {
         await expect(spans).toHaveClass(/next/);
     });
 
-    test('should render a span with a class of "previous" when the `direction` attribute is "previous"', async () => {
+    test('should render a span with a class of "previous" when the `direction` attribute is "previous"', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-flipper");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("flipper--flipper"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-flipper direction="previous"></fast-flipper>
