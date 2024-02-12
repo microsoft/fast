@@ -1,28 +1,17 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTAnchoredRegion } from "./anchored-region.js";
 
 test.describe("Anchored Region", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-anchored-region");
-
-        root = page.locator("#root");
-
+    test("should set positioning modes to 'uncontrolled' by default", async ({
+        page,
+    }) => {
         await page.goto(fixtureURL("anchored-region--anchored-region"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
+        const element = page.locator("fast-anchored-region");
 
-    test("should set positioning modes to 'uncontrolled' by default", async () => {
+        const root = page.locator("#root");
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-anchored-region></fast-anchored-region>
@@ -37,7 +26,13 @@ test.describe("Anchored Region", () => {
         );
     });
 
-    test("should assign anchor and viewport elements by id", async () => {
+    test("should assign anchor and viewport elements by id", async ({ page }) => {
+        await page.goto(fixtureURL("anchored-region--anchored-region"));
+
+        const element = page.locator("fast-anchored-region");
+
+        const root = page.locator("#root");
+
         const anchorId = "anchor";
 
         await root.evaluate(
@@ -61,7 +56,13 @@ test.describe("Anchored Region", () => {
         expect(anchorElementId).toBe(anchorId);
     });
 
-    test("should be sized to match content by default", async () => {
+    test("should be sized to match content by default", async ({ page }) => {
+        await page.goto(fixtureURL("anchored-region--anchored-region"));
+
+        const element = page.locator("fast-anchored-region");
+
+        const root = page.locator("#root");
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-anchored-region>

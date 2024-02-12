@@ -1,30 +1,13 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTCalendar } from "./calendar.js";
 import { DateFormatter } from "./date-formatter.js";
 
 test.describe("Calendar", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-calendar");
-
-        root = page.locator("#root");
-
-        await page.goto(fixtureURL("calendar--calendar"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
     test.describe("DateFormatter", () => {
-        test("should be able to set properties on construction", async () => {
+        test("should be able to set properties on construction", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const locale = "en-US";
             const dayFormat = "2-digit";
             const monthFormat = "narrow";
@@ -50,14 +33,20 @@ test.describe("Calendar", () => {
             expect(formatter.date.getFullYear()).toBe(2021);
         });
 
-        test("should return a date string for today by default", async () => {
+        test("should return a date string for today by default", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
             const today = new Date();
 
             expect(formatter.getDate()).toBe(formatter.getDate(today));
         });
 
-        test("should be able to get a date string for a specific date", async () => {
+        test("should be able to get a date string for a specific date", async ({
+            page,
+        }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
             const day = 2;
             const month = 1;
@@ -74,13 +63,19 @@ test.describe("Calendar", () => {
             ).toBe(dateString);
         });
 
-        test("should default formatting to [weekday='long'], [month='long'] [day='numeric'], [year='numeric'] string", async () => {
+        test("should default formatting to [weekday='long'], [month='long'] [day='numeric'], [year='numeric'] string", async ({
+            page,
+        }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter({ date: "1-1-2020" });
 
             expect(formatter.getDate()).toBe("Wednesday, January 1, 2020");
         });
 
-        test("should be able to change formats", async () => {
+        test("should be able to change formats", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter({
                 weekdayFormat: undefined,
                 monthFormat: "short",
@@ -101,21 +96,27 @@ test.describe("Calendar", () => {
             ).toBe("J 01, 20");
         });
 
-        test("should return todays day by default for getDay()", async () => {
+        test("should return todays day by default for getDay()", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
             const today = new Date();
 
             expect(formatter.getDay()).toBe(today.getDate().toString());
         });
 
-        test("should return formatted days with getDay()", async () => {
+        test("should return formatted days with getDay()", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
 
             expect(formatter.getDay(14)).toBe("14");
             expect(formatter.getDay(8, "2-digit")).toBe("08");
         });
 
-        test("should return this month by default for getMonth()", async () => {
+        test("should return this month by default for getMonth()", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
             const today = new Date();
             const months = [
@@ -136,7 +137,9 @@ test.describe("Calendar", () => {
             expect(formatter.getMonth()).toBe(months[today.getMonth()]);
         });
 
-        test("should return formatted month with getMonth()", async () => {
+        test("should return formatted month with getMonth()", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
 
             expect(formatter.getMonth(1)).toBe("January");
@@ -146,21 +149,29 @@ test.describe("Calendar", () => {
             expect(formatter.getMonth(5, "2-digit")).toBe("05");
         });
 
-        test("should return this year by default for getYear()", async () => {
+        test("should return this year by default for getYear()", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
             const today = new Date();
 
             expect(formatter.getYear()).toBe(today.getFullYear().toString());
         });
 
-        test("should return formatted year with getYear()", async () => {
+        test("should return formatted year with getYear()", async ({ page }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter({ yearFormat: "2-digit" });
 
             expect(formatter.getYear(2012)).toBe("12");
             expect(formatter.getYear(2015, "numeric")).toBe("2015");
         });
 
-        test("should return formatted weekday string with getWeekday()", async () => {
+        test("should return formatted weekday string with getWeekday()", async ({
+            page,
+        }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
 
             //defaults to sunday
@@ -170,7 +181,11 @@ test.describe("Calendar", () => {
             expect(formatter.getWeekday(4, "narrow")).toBe("T");
         });
 
-        test("should return a list of formatted weekday labels with getWeekdays()", async () => {
+        test("should return a list of formatted weekday labels with getWeekdays()", async ({
+            page,
+        }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter();
             const weekdays = [
                 "Sunday",
@@ -193,7 +208,11 @@ test.describe("Calendar", () => {
             );
         });
 
-        test("should return a localized string when setting the locale", async () => {
+        test("should return a localized string when setting the locale", async ({
+            page,
+        }) => {
+            await page.goto(fixtureURL("calendar--calendar"));
+
             const formatter = new DateFormatter({ locale: "fr-FR", date: "3-1-2015" });
 
             expect(formatter.getDate()).toBe("dimanche 1 mars 2015");
@@ -207,7 +226,13 @@ test.describe("Calendar", () => {
     });
 
     test.describe("Defaults", () => {
-        test("should default to the current month and year", async () => {
+        test("should default to the current month and year", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar></fast-calendar>
@@ -220,7 +245,13 @@ test.describe("Calendar", () => {
             await expect(element).toHaveJSProperty("year", today.getFullYear());
         });
 
-        test("should return 5 weeks of days for August 2021", async () => {
+        test("should return 5 weeks of days for August 2021", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="8" year="2021"></fast-calendar>
@@ -240,7 +271,15 @@ test.describe("Calendar", () => {
             await expect(day).toHaveCount(35);
         });
 
-        test("should return 6 weeks of days for August 2021 when min-weeks is set to 6", async () => {
+        test("should return 6 weeks of days for August 2021 when min-weeks is set to 6", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="8" year="2021" min-weeks="6"></fast-calendar>
@@ -260,7 +299,13 @@ test.describe("Calendar", () => {
             await expect(day).toHaveCount(42);
         });
 
-        test("should highlight the current date", async () => {
+        test("should highlight the current date", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar></fast-calendar>
@@ -276,7 +321,15 @@ test.describe("Calendar", () => {
     });
 
     test.describe("Month info", () => {
-        test("should display 31 days for the month of January in the year 2022", async () => {
+        test("should display 31 days for the month of January in the year 2022", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2022" readonly></fast-calendar>
@@ -292,7 +345,15 @@ test.describe("Calendar", () => {
             await expect(days).toHaveCount(31);
         });
 
-        test("should display 28 days for the month of February in the year 2022", async () => {
+        test("should display 28 days for the month of February in the year 2022", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="2" year="2022" readonly></fast-calendar>
@@ -308,7 +369,15 @@ test.describe("Calendar", () => {
             await expect(days).toHaveCount(28);
         });
 
-        test("should display 29 days for the month of February in the year 2020", async () => {
+        test("should display 29 days for the month of February in the year 2020", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="2" year="2020" readonly></fast-calendar>
@@ -324,7 +393,13 @@ test.describe("Calendar", () => {
             await expect(days).toHaveCount(29);
         });
 
-        test("should start on Friday for January 2021", async () => {
+        test("should start on Friday for January 2021", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" readonly></fast-calendar>
@@ -340,7 +415,13 @@ test.describe("Calendar", () => {
             await expect(days.nth(5)).toHaveText("1");
         });
 
-        test("should start on Monday for February 2021", async () => {
+        test("should start on Monday for February 2021", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="2" year="2021" readonly></fast-calendar>
@@ -357,8 +438,14 @@ test.describe("Calendar", () => {
         });
     });
 
-    test.describe("Labels", async () => {
-        test("should return January for month 1", async () => {
+    test.describe("Labels", () => {
+        test("should return January for month 1", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" readonly></fast-calendar>
@@ -372,7 +459,13 @@ test.describe("Calendar", () => {
             ).toBe("January");
         });
 
-        test("should return Jan for month 1 and short format", async () => {
+        test("should return Jan for month 1 and short format", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" month-format="short" readonly></fast-calendar>
@@ -386,7 +479,13 @@ test.describe("Calendar", () => {
             ).toBe("Jan");
         });
 
-        test("should return Mon for Monday by default", async () => {
+        test("should return Mon for Monday by default", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" readonly></fast-calendar>
@@ -400,7 +499,13 @@ test.describe("Calendar", () => {
             ).toBe("Mon");
         });
 
-        test("should return Monday weekday for long format", async () => {
+        test("should return Monday weekday for long format", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" weekday-format="long" readonly></fast-calendar>
@@ -414,7 +519,13 @@ test.describe("Calendar", () => {
             ).toBe("Monday");
         });
 
-        test("should return M for Monday for narrow format", async () => {
+        test("should return M for Monday for narrow format", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" weekday-format="narrow" readonly></fast-calendar>
@@ -429,8 +540,14 @@ test.describe("Calendar", () => {
         });
     });
 
-    test.describe("Localization", async () => {
-        test(`should be "mai" for the month May in French`, async () => {
+    test.describe("Localization", () => {
+        test(`should be "mai" for the month May in French`, async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="5" year="2021" locale="fr" readonly></fast-calendar>
@@ -444,7 +561,15 @@ test.describe("Calendar", () => {
             ).toBe("mai");
         });
 
-        test("should have French weekday labels for the fr-FR market", async () => {
+        test("should have French weekday labels for the fr-FR market", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" locale="fr-FR" readonly></fast-calendar>
@@ -466,7 +591,15 @@ test.describe("Calendar", () => {
             await expect(weekdayLabels).toHaveText(frenchWeekdays);
         });
 
-        test('should set the formatted `year` property to "1942" when the `year` attribute is "2021" for the Hindu calendar', async () => {
+        test('should set the formatted `year` property to "1942" when the `year` attribute is "2021" for the Hindu calendar', async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="6" year="2021" locale="hi-IN-u-ca-indian"></fast-calendar>
@@ -480,7 +613,15 @@ test.describe("Calendar", () => {
             ).toBe("1942 शक");
         });
 
-        test('should set the formatted `year` property to "2564" when the `year` attribute is "2021" for the Buddhist calendar', async () => {
+        test('should set the formatted `year` property to "2564" when the `year` attribute is "2021" for the Buddhist calendar', async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="6" year="2021" locale="th-TH-u-ca-buddhist"></fast-calendar>
@@ -494,7 +635,15 @@ test.describe("Calendar", () => {
             ).toBe("พ.ศ. 2564");
         });
 
-        test("should not be RTL for languages that are not Arabic or Hebrew", async () => {
+        test("should not be RTL for languages that are not Arabic or Hebrew", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="1" year="2021" locale="fr-FR" readonly></fast-calendar>
@@ -514,8 +663,13 @@ test.describe("Calendar", () => {
             }
         });
 
-        /* FIXME this test is an incorrect assertion */
-        test.skip("Should be RTL for Arabic language", async () => {
+        test("Should be RTL for Arabic language", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="8" year="2021" locale="ar-XE-u-ca-islamic-nu-arab" readonly></fast-calendar>
@@ -532,8 +686,14 @@ test.describe("Calendar", () => {
         });
     });
 
-    test.describe("Day states", async () => {
-        test("should not show date as disabled by default", async () => {
+    test.describe("Day states", () => {
+        test("should not show date as disabled by default", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="5" year="2021" readonly></fast-calendar>
@@ -559,7 +719,15 @@ test.describe("Calendar", () => {
             await expect(disabled).toHaveCount(0);
         });
 
-        test("should show date as disabled when added to disabled-dates attribute", async () => {
+        test("should show date as disabled when added to disabled-dates attribute", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="5" year="2021" disabled-dates="5-6-2021,5-7-2021,5-8-2021" readonly></fast-calendar>
@@ -588,7 +756,13 @@ test.describe("Calendar", () => {
             await expect(disabled).toHaveCount(3);
         });
 
-        test("should not show date as selected by default", async () => {
+        test("should not show date as selected by default", async ({ page }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="5" year="2021" readonly></fast-calendar>
@@ -597,25 +771,32 @@ test.describe("Calendar", () => {
 
             expect(
                 await element.evaluate((node: FASTCalendar) =>
-                    node.dateInString(`5-7-2021`, node.selectedDates)
+                    node.dateInString("5-7-2021", node.selectedDates)
                 )
             ).toBe(false);
 
             expect(
-                element.evaluate(
-                    (node: FASTCalendar) =>
-                        node
-                            .getDayClassNames({ month: 5, day: 7, year: 2021 })
-                            .indexOf("selected") === -1
+                await element.evaluate((node: FASTCalendar) =>
+                    node
+                        .getDayClassNames({ month: 5, day: 7, year: 2021 })
+                        .indexOf("selected")
                 )
-            ).toBeTruthy();
+            ).toBe(-1);
 
             const selected = element.locator(".selected");
 
             await expect(selected).toHaveCount(0);
         });
 
-        test("should show date as selected when added to selected-dates attribute", async () => {
+        test("should show date as selected when added to selected-dates attribute", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-calendar");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("calendar--calendar"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-calendar month="5" year="2021" selected-dates="5-6-2021,5-7-2021,5-8-2021" readonly></fast-calendar>
