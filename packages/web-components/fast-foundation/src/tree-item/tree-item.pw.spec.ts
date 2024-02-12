@@ -1,28 +1,15 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTTreeItem } from "./tree-item.js";
 
 test.describe("TreeItem", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should include a role of `treeitem`", async ({ page }) => {
+        const element = page.locator("fast-tree-item");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-tree-item");
-
-        root = page.locator("#root");
+        const root = page.locator("#root");
 
         await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should include a role of `treeitem`", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -32,7 +19,15 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("role", "treeitem");
     });
 
-    test("should set the `aria-expanded` attribute equal to the `expanded` value when the tree item has children", async () => {
+    test("should set the `aria-expanded` attribute equal to the `expanded` value when the tree item has children", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>
@@ -54,7 +49,15 @@ test.describe("TreeItem", () => {
         await expect(element.first()).toHaveAttribute("aria-expanded", "false");
     });
 
-    test("should set the `aria-expanded` attribute equal to TRUE when the `expanded` attribute is present", async () => {
+    test("should set the `aria-expanded` attribute equal to TRUE when the `expanded` attribute is present", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item expanded>
@@ -66,7 +69,15 @@ test.describe("TreeItem", () => {
         await expect(element.first()).toHaveAttribute("aria-expanded", "true");
     });
 
-    test("should NOT set the `aria-expanded` attribute when the tree item has no children", async () => {
+    test("should NOT set the `aria-expanded` attribute when the tree item has no children", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -76,7 +87,15 @@ test.describe("TreeItem", () => {
         await expect(element).not.toHaveAttribute("aria-expanded");
     });
 
-    test("should NOT set the `aria-expanded` attribute when the `expanded` state is true and the tree item has no children", async () => {
+    test("should NOT set the `aria-expanded` attribute when the `expanded` state is true and the tree item has no children", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item expanded></fast-tree-item>
@@ -92,7 +111,15 @@ test.describe("TreeItem", () => {
         await expect(element).not.toHaveAttribute("aria-expanded");
     });
 
-    test("should NOT set the `aria-selected` attribute if `selected` value is not provided", async () => {
+    test("should NOT set the `aria-selected` attribute if `selected` value is not provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -102,7 +129,15 @@ test.describe("TreeItem", () => {
         await expect(element).not.toHaveAttribute("aria-selected");
     });
 
-    test("should set the `aria-selected` attribute equal to the `selected` value", async () => {
+    test("should set the `aria-selected` attribute equal to the `selected` value", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -122,7 +157,15 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("aria-selected", "false");
     });
 
-    test("should set the `aria-selected` attribute equal to TRUE when the selected attribute is present", async () => {
+    test("should set the `aria-selected` attribute equal to TRUE when the selected attribute is present", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item selected>tree item</fast-tree-item>
@@ -138,7 +181,15 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should set the `aria-disabled` attribute equal to the `disabled` property", async () => {
+    test("should set the `aria-disabled` attribute equal to the `disabled` property", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -160,7 +211,15 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should set the `aria-disabled` attribute equal to TRUE when the disabled attribute is present", async () => {
+    test("should set the `aria-disabled` attribute equal to TRUE when the disabled attribute is present", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item disabled>tree item</fast-tree-item>
@@ -170,7 +229,15 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("aria-disabled", "true");
     });
 
-    test('should add a slot attribute of "item" to nested tree items', async () => {
+    test('should add a slot attribute of "item" to nested tree items', async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>
@@ -185,7 +252,13 @@ test.describe("TreeItem", () => {
         );
     });
 
-    test("should have a default `tabindex` attribute of -1", async () => {
+    test("should have a default `tabindex` attribute of -1", async ({ page }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -195,7 +268,13 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("tabindex", "-1");
     });
 
-    test("should have a tabindex of 0 when focused", async () => {
+    test("should have a tabindex of 0 when focused", async ({ page }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>tree item</fast-tree-item>
@@ -207,7 +286,15 @@ test.describe("TreeItem", () => {
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should render an element with a class of `expand-collapse-button` when nested tree items exist", async () => {
+    test("should render an element with a class of `expand-collapse-button` when nested tree items exist", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>
@@ -223,7 +310,15 @@ test.describe("TreeItem", () => {
         await expect(expandCollapseButton).toHaveAttribute("aria-hidden", "true");
     });
 
-    test("should render an element with a role of `group` when nested tree items exist and `expanded` is true", async () => {
+    test("should render an element with a role of `group` when nested tree items exist and `expanded` is true", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item expanded>
@@ -235,7 +330,15 @@ test.describe("TreeItem", () => {
         await expect(element.first().locator(".items")).toHaveAttribute("role", "group");
     });
 
-    test("should NOT render an element with a role of `group` when nested tree items exist and `expanded` is false", async () => {
+    test("should NOT render an element with a role of `group` when nested tree items exist and `expanded` is false", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tree-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-item>
@@ -248,7 +351,15 @@ test.describe("TreeItem", () => {
     });
 
     test.describe("events", () => {
-        test('should emit a "change" event when the `expanded` property changes', async () => {
+        test('should emit a "change" event when the `expanded` property changes', async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tree-item");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-tree-item>
@@ -280,7 +391,15 @@ test.describe("TreeItem", () => {
             expect(wasClicked).toBe(true);
         });
 
-        test("should fire a selected change event when the `selected` property changes", async () => {
+        test("should fire a selected change event when the `selected` property changes", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tree-item");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-tree-item>tree item</fast-tree-item>
@@ -303,7 +422,15 @@ test.describe("TreeItem", () => {
             expect(wasChanged).toBeTruthy();
         });
 
-        test("should NOT set `selected` state when a disabled element is clicked", async () => {
+        test("should NOT set `selected` state when a disabled element is clicked", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tree-item");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-tree-item disabled>tree item</fast-tree-item>
@@ -317,7 +444,15 @@ test.describe("TreeItem", () => {
             await expect(element).not.toHaveAttribute("aria-selected");
         });
 
-        test("should fire an event when expanded state changes via the `expanded` attribute", async () => {
+        test("should fire an event when expanded state changes via the `expanded` attribute", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tree-item");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-tree-item>tree item</fast-tree-item>
@@ -340,7 +475,15 @@ test.describe("TreeItem", () => {
             expect(wasChanged).toBeTruthy();
         });
 
-        test("should fire an event when selected state changes via the `selected` attribute", async () => {
+        test("should fire an event when selected state changes via the `selected` attribute", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tree-item");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <fast-tree-item>tree item</fast-tree-item>
