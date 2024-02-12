@@ -1,4 +1,3 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 
@@ -9,21 +8,13 @@ import type {
 } from "./stories/form-associated.register.js";
 
 test.describe("FormAssociated", () => {
-    let page: Page;
-    let root: Locator;
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-        root = page.locator("#root");
+    test("should have an empty string value prior to connectedCallback", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
 
         await page.goto(fixtureURL("debug--blank"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have an empty string value prior to connectedCallback", async () => {
         const [value, currentValue] = await root.evaluate(node => {
             node.innerHTML = "";
 
@@ -37,7 +28,13 @@ test.describe("FormAssociated", () => {
         expect(currentValue).toBe("");
     });
 
-    test("should initialize to the initial value if no value property is set", async () => {
+    test("should initialize to the initial value if no value property is set", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = "";
 
@@ -57,7 +54,13 @@ test.describe("FormAssociated", () => {
         await expect(element).toHaveJSProperty("initialValue", "foobar");
     });
 
-    test("should initialize to the provided value ATTRIBUTE if set pre-connection", async () => {
+    test("should initialize to the provided value ATTRIBUTE if set pre-connection", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = "";
 
@@ -75,7 +78,13 @@ test.describe("FormAssociated", () => {
         await expect(element).toHaveJSProperty("currentValue", "foobar");
     });
 
-    test("should initialize to the provided value ATTRIBUTE if set post-connection", async () => {
+    test("should initialize to the provided value ATTRIBUTE if set post-connection", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <test-element></test-element>
@@ -93,7 +102,13 @@ test.describe("FormAssociated", () => {
         await expect(element).toHaveJSProperty("currentValue", "foobar");
     });
 
-    test("should initialize to the provided value PROPERTY if set pre-connection", async () => {
+    test("should initialize to the provided value PROPERTY if set pre-connection", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = "";
 
@@ -111,7 +126,13 @@ test.describe("FormAssociated", () => {
         await expect(element).toHaveJSProperty("currentValue", "foobar");
     });
 
-    test("should initialize to the provided value PROPERTY if set post-connection", async () => {
+    test("should initialize to the provided value PROPERTY if set post-connection", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <test-element></test-element>
@@ -129,7 +150,13 @@ test.describe("FormAssociated", () => {
         await expect(element).toHaveJSProperty("currentValue", "foobar");
     });
 
-    test("should initialize to the initial value when initial value is assigned by extending class", async () => {
+    test("should initialize to the initial value when initial value is assigned by extending class", async ({
+        page,
+    }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <custom-initial-value></custom-initial-value>
@@ -143,7 +170,11 @@ test.describe("FormAssociated", () => {
         await expect(element).toHaveJSProperty("currentValue", "foobar");
     });
 
-    test("should communicate initial value to the parent form", async () => {
+    test("should communicate initial value to the parent form", async ({ page }) => {
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("debug--blank"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
@@ -164,7 +195,13 @@ test.describe("FormAssociated", () => {
     });
 
     test.describe("changes:", () => {
-        test("setting value ATTRIBUTE should set value if value PROPERTY has not been explicitly set", async () => {
+        test("setting value ATTRIBUTE should set value if value PROPERTY has not been explicitly set", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <test-element></test-element>
@@ -190,7 +227,13 @@ test.describe("FormAssociated", () => {
             await expect(element).toHaveJSProperty("currentValue", "bar");
         });
 
-        test("setting value ATTRIBUTE should not set value if value PROPERTY has been explicitly set", async () => {
+        test("setting value ATTRIBUTE should not set value if value PROPERTY has been explicitly set", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <test-element></test-element>
@@ -216,7 +259,13 @@ test.describe("FormAssociated", () => {
             await expect(element).toHaveJSProperty("currentValue", "foo");
         });
 
-        test("setting value ATTRIBUTE should set parent form value if value PROPERTY has not been explicitly set", async () => {
+        test("setting value ATTRIBUTE should set parent form value if value PROPERTY has not been explicitly set", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -254,7 +303,11 @@ test.describe("FormAssociated", () => {
             ).toBe("bar");
         });
 
-        test("setting value PROPERTY should set parent form value", async () => {
+        test("setting value PROPERTY should set parent form value", async ({ page }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -292,7 +345,13 @@ test.describe("FormAssociated", () => {
             ).toBe("bar");
         });
 
-        test("assigning the currentValue property should set the controls value property to the same value", async () => {
+        test("assigning the currentValue property should set the controls value property to the same value", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <test-element></test-element>
@@ -314,7 +373,13 @@ test.describe("FormAssociated", () => {
             await expect(element).toHaveJSProperty("currentValue", "foo");
         });
 
-        test("setting the current-value property should set the controls value property to the same value", async () => {
+        test("setting the current-value property should set the controls value property to the same value", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <test-element></test-element>
@@ -338,7 +403,13 @@ test.describe("FormAssociated", () => {
     });
 
     test.describe("when the owning form's reset() method is invoked", () => {
-        test("should reset it's value property to an empty string if no value attribute is set", async () => {
+        test("should reset it's value property to an empty string if no value attribute is set", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -372,7 +443,13 @@ test.describe("FormAssociated", () => {
             await expect(element).not.toHaveAttribute("value");
         });
 
-        test("should reset it's value property to the value of the value attribute if it is set", async () => {
+        test("should reset it's value property to the value of the value attribute if it is set", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -412,7 +489,13 @@ test.describe("FormAssociated", () => {
             await expect(element).toHaveAttribute("value", "attr-value");
         });
 
-        test("should put the control into a clean state, where modifcations to the `value` attribute update the `value` property prior to user or programmatic interaction", async () => {
+        test("should put the control into a clean state, where modifcations to the `value` attribute update the `value` property prior to user or programmatic interaction", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -464,7 +547,13 @@ test.describe("FormAssociated", () => {
     });
 
     test.describe("CheckableFormAssociated", () => {
-        test("should have a 'checked' property that is initialized to false", async () => {
+        test("should have a 'checked' property that is initialized to false", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <checkable-form-associated></checkable-form-associated>
@@ -480,7 +569,13 @@ test.describe("FormAssociated", () => {
             await expect(element).toHaveAttribute("current-checked", "false");
         });
 
-        test("should align the `currentChecked` property and `current-checked` attribute with `checked` property changes", async () => {
+        test("should align the `currentChecked` property and `current-checked` attribute with `checked` property changes", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <checkable-form-associated></checkable-form-associated>
@@ -516,7 +611,13 @@ test.describe("FormAssociated", () => {
             await expect(element).toHaveAttribute("current-checked", "false");
         });
 
-        test("should align the `checked` property and `current-checked` attribute with `currentChecked` property changes", async () => {
+        test("should align the `checked` property and `current-checked` attribute with `currentChecked` property changes", async ({
+            page,
+        }) => {
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("debug--blank"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <checkable-form-associated></checkable-form-associated>
