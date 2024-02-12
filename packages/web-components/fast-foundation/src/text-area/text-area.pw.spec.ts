@@ -1,31 +1,9 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTTextArea } from "./text-area.js";
 
 test.describe("TextArea", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let control: Locator;
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-text-area");
-
-        root = page.locator("#root");
-
-        control = element.locator(".control");
-
-        await page.goto(fixtureURL("text-area--text-area"));
-    });
-
-    test.afterAll(async () => {
-        await page.close();
-    });
-
     test.describe("should set the boolean attribute on the internal input", () => {
         const attributes = {
             autofocus: true,
@@ -36,7 +14,15 @@ test.describe("TextArea", () => {
         };
 
         for (const attribute of Object.keys(attributes)) {
-            test(attribute, async () => {
+            test(attribute, async ({ page }) => {
+                const element = page.locator("fast-text-area");
+
+                const root = page.locator("#root");
+
+                const control = element.locator(".control");
+
+                await page.goto(fixtureURL("text-area--text-area"));
+
                 await root.evaluate((node, attribute: string) => {
                     node.innerHTML = /* html */ `
                         <fast-text-area ${attribute}></fast-text-area>
@@ -81,7 +67,15 @@ test.describe("TextArea", () => {
         for (const [attribute, value] of Object.entries(attributes)) {
             const attributeSpinalCase = spinalCase(attribute);
 
-            test(attribute, async () => {
+            test(attribute, async ({ page }) => {
+                const element = page.locator("fast-text-area");
+
+                const root = page.locator("#root");
+
+                const control = element.locator(".control");
+
+                await page.goto(fixtureURL("text-area--text-area"));
+
                 await root.evaluate(
                     (node, { attributeSpinalCase, value }) => {
                         node.innerHTML = /* html */ `
@@ -96,7 +90,15 @@ test.describe("TextArea", () => {
         }
     });
 
-    test("should initialize to the initial value if no value property is set", async () => {
+    test("should initialize to the initial value if no value property is set", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-text-area");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("text-area--text-area"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-text-area></fast-text-area>
@@ -106,7 +108,15 @@ test.describe("TextArea", () => {
         await expect(element).toHaveJSProperty("value", "");
     });
 
-    test("should initialize to the provided value attribute if set pre-connection", async () => {
+    test("should initialize to the provided value attribute if set pre-connection", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-text-area");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("text-area--text-area"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-text-area value="foo"></fast-text-area>
@@ -116,7 +126,15 @@ test.describe("TextArea", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should initialize to the provided value property if set pre-connection", async () => {
+    test("should initialize to the provided value property if set pre-connection", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-text-area");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("text-area--text-area"));
+
         await root.evaluate(node => {
             node.innerHTML = "";
 
@@ -128,7 +146,15 @@ test.describe("TextArea", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should initialize to the provided value attribute if set post-connection", async () => {
+    test("should initialize to the provided value attribute if set post-connection", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-text-area");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("text-area--text-area"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-text-area></fast-text-area>
@@ -142,7 +168,17 @@ test.describe("TextArea", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should fire a `change` event when the internal control emits a `change` event", async () => {
+    test("should fire a `change` event when the internal control emits a `change` event", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-text-area");
+
+        const root = page.locator("#root");
+
+        const control = element.locator(".control");
+
+        await page.goto(fixtureURL("text-area--text-area"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-text-area></fast-text-area>
@@ -169,7 +205,15 @@ test.describe("TextArea", () => {
     });
 
     test.describe("when the owning form's reset() method is invoked", () => {
-        test("should reset the `value` property to an empty string when no `value` attribute is set", async () => {
+        test("should reset the `value` property to an empty string when no `value` attribute is set", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-text-area");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("text-area--text-area"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -197,7 +241,15 @@ test.describe("TextArea", () => {
             await expect(element).toHaveJSProperty("value", "");
         });
 
-        test("should reset the `value` property to match the `value` attribute", async () => {
+        test("should reset the `value` property to match the `value` attribute", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-text-area");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("text-area--text-area"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -225,7 +277,15 @@ test.describe("TextArea", () => {
             await expect(element).toHaveJSProperty("value", "foo");
         });
 
-        test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
+        test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-text-area");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("text-area--text-area"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
