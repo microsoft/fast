@@ -1,31 +1,17 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTListboxElement } from "./listbox.element.js";
 
 test.describe("Listbox", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let options: Locator;
+    test("should have a tabindex of 0 when `disabled` is not defined", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-listbox");
-
-        root = page.locator("#root");
-
-        options = element.locator("fast-option");
+        const root = page.locator("#root");
 
         await page.goto(fixtureURL("listbox--listbox"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have a tabindex of 0 when `disabled` is not defined", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -39,7 +25,13 @@ test.describe("Listbox", () => {
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should NOT have a tabindex when `disabled` is true", async () => {
+    test("should NOT have a tabindex when `disabled` is true", async ({ page }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox disabled></fast-listbox>
@@ -49,7 +41,17 @@ test.describe("Listbox", () => {
         await expect(element).not.toHaveAttribute("tabindex");
     });
 
-    test("should select nothing when no options have the `selected` attribute", async () => {
+    test("should select nothing when no options have the `selected` attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        const options = element.locator("fast-option");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -71,7 +73,15 @@ test.describe("Listbox", () => {
         await expect(element).toHaveJSProperty("selectedIndex", -1);
     });
 
-    test("should select the option with a `selected` attribute", async () => {
+    test("should select the option with a `selected` attribute", async ({ page }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        const options = element.locator("fast-option");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -89,7 +99,15 @@ test.describe("Listbox", () => {
         ]);
     });
 
-    test("should set the `size` property to match the `size` attribute", async () => {
+    test("should set the `size` property to match the `size` attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox size="5"></fast-listbox>
@@ -99,7 +117,15 @@ test.describe("Listbox", () => {
         await expect(element).toHaveJSProperty("size", 5);
     });
 
-    test("should set the `size` attribute to match the `size` property", async () => {
+    test("should set the `size` attribute to match the `size` property", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -118,7 +144,13 @@ test.describe("Listbox", () => {
     });
 
     test.describe("should set the `size` property to 0 when a negative value is set", () => {
-        test("via the `size` property", async () => {
+        test("via the `size` property", async ({ page }) => {
+            const element = page.locator("fast-listbox");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("listbox--listbox"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                         <fast-listbox>
@@ -144,7 +176,13 @@ test.describe("Listbox", () => {
             await expect(element).toHaveAttribute("size", "0");
         });
 
-        test("via the `size` attribute", async () => {
+        test("via the `size` attribute", async ({ page }) => {
+            const element = page.locator("fast-listbox");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("listbox--listbox"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                         <fast-listbox>
@@ -171,7 +209,17 @@ test.describe("Listbox", () => {
         });
     });
 
-    test("should set the `aria-setsize` and `aria-posinset` properties on slotted options", async () => {
+    test("should set the `aria-setsize` and `aria-posinset` properties on slotted options", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        const options = element.locator("fast-option");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -194,7 +242,17 @@ test.describe("Listbox", () => {
         }
     });
 
-    test("should set a unique ID for each slotted option without an ID", async () => {
+    test("should set a unique ID for each slotted option without an ID", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        const options = element.locator("fast-option");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -212,7 +270,17 @@ test.describe("Listbox", () => {
         await expect(options.nth(2)).toHaveAttribute("id", /option-\d+/);
     });
 
-    test("should set the `aria-activedescendant` property to the ID of the currently selected option", async () => {
+    test("should set the `aria-activedescendant` property to the ID of the currently selected option", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        const options = element.locator("fast-option");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
@@ -236,7 +304,15 @@ test.describe("Listbox", () => {
         }
     });
 
-    test("should set the `aria-multiselectable` attribute to match the `multiple` attribute", async () => {
+    test("should set the `aria-multiselectable` attribute to match the `multiple` attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-listbox");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("listbox--listbox"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-listbox>
