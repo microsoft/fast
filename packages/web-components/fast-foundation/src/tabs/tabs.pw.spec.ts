@@ -1,4 +1,3 @@
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import type { FASTTab } from "../tab/tab.js";
 import { fixtureURL } from "../__test__/helpers.js";
@@ -6,12 +5,6 @@ import type { FASTTabs } from "./tabs.js";
 
 // TODO: Need to add tests for keyboard handling, activeIndicator position, and focus management
 test.describe("Tabs", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let tablist: Locator;
-    let tabs: Locator;
-
     const template = /* html */ `
         <fast-tabs>
             <fast-tab>Tab one</fast-tab>
@@ -23,25 +16,15 @@ test.describe("Tabs", () => {
         </fast-tabs>
     `;
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+    test("should have an internal element with a role of `tablist`", async ({ page }) => {
+        const element = page.locator("fast-tabs");
 
-        element = page.locator("fast-tabs");
+        const root = page.locator("#root");
 
-        root = page.locator("#root");
-
-        tablist = element.locator(".tablist");
-
-        tabs = element.locator("fast-tab");
+        const tablist = element.locator(".tablist");
 
         await page.goto(fixtureURL("tabs--tabs"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have an internal element with a role of `tablist`", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tabs></fast-tabs>
@@ -51,7 +34,15 @@ test.describe("Tabs", () => {
         await expect(tablist).toHaveAttribute("role", "tablist");
     });
 
-    test("should set a default orientation value of `horizontal` when `orientation` is not provided", async () => {
+    test("should set a default orientation value of `horizontal` when `orientation` is not provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tabs></fast-tabs>
@@ -61,7 +52,17 @@ test.describe("Tabs", () => {
         await expect(element).toHaveJSProperty("orientation", "horizontal");
     });
 
-    test("should set an `id` attribute on the active tab when an `id` is provided", async () => {
+    test("should set an `id` attribute on the active tab when an `id` is provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tabs></fast-tabs>
@@ -81,7 +82,17 @@ test.describe("Tabs", () => {
         }
     });
 
-    test("should set an `id` attribute on tab items with a unique ID when an `id` is NOT provided", async () => {
+    test("should set an `id` attribute on tab items with a unique ID when an `id` is NOT provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         await root.evaluate(
             (node, { template }) => {
                 node.innerHTML = template;
@@ -105,7 +116,17 @@ test.describe("Tabs", () => {
         }
     });
 
-    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided", async () => {
+    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         await root.evaluate(
             (node, { template }) => {
                 node.innerHTML = template;
@@ -136,7 +157,17 @@ test.describe("Tabs", () => {
         }
     });
 
-    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided and additional tabs and panels are added", async () => {
+    test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided and additional tabs and panels are added", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         await root.evaluate(
             (node, { template }) => {
                 node.innerHTML = template;
@@ -202,7 +233,17 @@ test.describe("Tabs", () => {
     });
 
     test.describe("active tab", () => {
-        test("should set an `aria-selected` attribute on the active tab when `activeid` is provided", async () => {
+        test("should set an `aria-selected` attribute on the active tab when `activeid` is provided", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tabs");
+
+            const root = page.locator("#root");
+
+            const tabs = element.locator("fast-tab");
+
+            await page.goto(fixtureURL("tabs--tabs"));
+
             await root.evaluate(
                 (node, { template }) => {
                     node.innerHTML = template;
@@ -221,7 +262,17 @@ test.describe("Tabs", () => {
             await expect(secondTab).toHaveAttribute("aria-selected", "true");
         });
 
-        test("should default the first tab as the active index if `activeid` is NOT provided", async () => {
+        test("should default the first tab as the active index if `activeid` is NOT provided", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tabs");
+
+            const root = page.locator("#root");
+
+            const tabs = element.locator("fast-tab");
+
+            await page.goto(fixtureURL("tabs--tabs"));
+
             await root.evaluate(
                 (node, { template }) => {
                     node.innerHTML = template;
@@ -234,7 +285,17 @@ test.describe("Tabs", () => {
             await expect(element).toHaveJSProperty("activeTabIndex", 0);
         });
 
-        test("should update `aria-selected` attribute on the active tab when `activeId` is updated", async () => {
+        test("should update `aria-selected` attribute on the active tab when `activeId` is updated", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tabs");
+
+            const root = page.locator("#root");
+
+            const tabs = element.locator("fast-tab");
+
+            await page.goto(fixtureURL("tabs--tabs"));
+
             await root.evaluate(
                 (node, { template }) => {
                     node.innerHTML = template;
@@ -257,7 +318,17 @@ test.describe("Tabs", () => {
     });
 
     test.describe("active tabpanel", () => {
-        test("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeid` is provided", async () => {
+        test("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeid` is provided", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tabs");
+
+            const root = page.locator("#root");
+
+            const tabs = element.locator("fast-tab");
+
+            await page.goto(fixtureURL("tabs--tabs"));
+
             await root.evaluate(
                 (node, { template }) => {
                     node.innerHTML = template;
@@ -281,7 +352,15 @@ test.describe("Tabs", () => {
             );
         });
 
-        test("should set an attribute of hidden if the tabpanel is not active", async () => {
+        test("should set an attribute of hidden if the tabpanel is not active", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-tabs");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("tabs--tabs"));
+
             await root.evaluate(
                 (node, { template }) => {
                     node.innerHTML = template;
@@ -299,7 +378,17 @@ test.describe("Tabs", () => {
         });
     });
 
-    test("should not allow selecting a tab that has been disabled after it has been connected", async () => {
+    test("should not allow selecting a tab that has been disabled after it has been connected", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tabs>
@@ -342,7 +431,17 @@ test.describe("Tabs", () => {
         await expect(element).toHaveJSProperty("activeid", firstTabId);
     });
 
-    test("should allow selecting tab that has been enabled after it has been connected", async () => {
+    test("should allow selecting tab that has been enabled after it has been connected", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         test.slow();
 
         await root.evaluate(node => {
@@ -387,7 +486,15 @@ test.describe("Tabs", () => {
         await expect(element).toHaveJSProperty("activeid", secondTabId);
     });
 
-    test("should not allow selecting hidden tab using arrow keys", async () => {
+    test("should not allow selecting hidden tab using arrow keys", async ({ page }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         test.slow();
 
         await root.evaluate(node => {
@@ -420,7 +527,15 @@ test.describe("Tabs", () => {
         await expect(element).toHaveJSProperty("activeid", thirdTabId);
     });
 
-    test("should not allow selecting hidden tab by pressing End", async () => {
+    test("should not allow selecting hidden tab by pressing End", async ({ page }) => {
+        const element = page.locator("fast-tabs");
+
+        const root = page.locator("#root");
+
+        const tabs = element.locator("fast-tab");
+
+        await page.goto(fixtureURL("tabs--tabs"));
+
         test.slow();
 
         await root.evaluate(node => {
