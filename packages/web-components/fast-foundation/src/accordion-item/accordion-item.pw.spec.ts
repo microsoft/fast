@@ -83,13 +83,13 @@ test.describe("Accordion item", () => {
             `;
         });
 
-        await expect(button).toHaveBooleanAttribute("disabled");
+        await expect(button).toHaveAttribute("disabled");
 
         await element.evaluate<void, FASTAccordionItem>(node => {
             node.disabled = false;
         });
 
-        await expect(button).not.toHaveBooleanAttribute("disabled");
+        await expect(button).not.toHaveAttribute("disabled");
     });
 
     test("should set internal properties to match the id when provided", async () => {

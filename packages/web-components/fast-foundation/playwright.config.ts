@@ -1,5 +1,4 @@
-import type { Locator, PlaywrightTestConfig } from "@playwright/test";
-import { expect } from "@playwright/test";
+import type { PlaywrightTestConfig } from "@playwright/test";
 
 const config: PlaywrightTestConfig = {
     reporter: "list",
@@ -25,40 +24,3 @@ const config: PlaywrightTestConfig = {
 };
 
 export default config;
-
-expect.extend({
-    async toHaveBooleanAttribute(recieved: Locator, name: string) {
-        const options = {
-            comment: "Object.is equality",
-            isNot: this.isNot,
-            promise: this.promise,
-        };
-
-        name = name.trim();
-
-        await (await recieved.elementHandle())?.waitForElementState("stable");
-
-        const [hasAttribute, attributeValue] = await recieved.evaluate((node, name) => {
-            return [node.hasAttribute(name), node.getAttribute(name)];
-        }, name);
-
-        if (this.isNot) {
-            return {
-                pass: hasAttribute,
-                message: () => `expected ${name} to not be present`,
-            };
-        }
-
-        return {
-            pass: hasAttribute && (attributeValue === "" || attributeValue === name),
-            message: () => `${this.utils.matcherHint(
-                "toHaveBooleanAttribute",
-                undefined,
-                undefined,
-                options
-            )}
-
-expected ${recieved} to have boolean attribute \`${name}\``,
-        };
-    },
-});

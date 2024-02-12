@@ -186,7 +186,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("disabled");
+        await expect(element).not.toHaveAttribute("disabled");
 
         const firstRadio = radios.nth(0);
         const secondRadio = radios.nth(1);
@@ -222,7 +222,7 @@ test.describe("Radio Group", () => {
 
         element.evaluate<void, FASTRadioGroup>(node => node.setAttribute("disabled", ""));
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
 
         expect(
             await firstRadio.evaluate<boolean, FASTRadio>(radio =>
@@ -259,7 +259,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
 
         await first.focus();
 
@@ -306,7 +306,7 @@ test.describe("Radio Group", () => {
 
         await element.evaluate<boolean, FASTRadioGroup>(node => (node.disabled = true));
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
 
         for (let i = 0; i < radioItemsCount; i++) {
             const item = radios.nth(i);

@@ -46,7 +46,7 @@ test.describe("Search", () => {
                     { attribute }
                 );
 
-                await expect(element).toHaveBooleanAttribute(attribute);
+                await expect(element).toHaveAttribute(attribute);
             });
         }
     });

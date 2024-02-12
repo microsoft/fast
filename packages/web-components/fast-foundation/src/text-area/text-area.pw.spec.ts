@@ -43,7 +43,7 @@ test.describe("TextArea", () => {
                     `;
                 }, attribute);
 
-                await expect(control).toHaveBooleanAttribute(attribute);
+                await expect(control).toHaveAttribute(attribute);
             });
         }
     });

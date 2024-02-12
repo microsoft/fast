@@ -312,7 +312,7 @@ test.describe("TreeItem", () => {
 
             await element.click({ force: true });
 
-            await expect(element).not.toHaveBooleanAttribute("selected");
+            await expect(element).not.toHaveAttribute("selected");
 
             await expect(element).not.toHaveAttribute("aria-selected");
         });

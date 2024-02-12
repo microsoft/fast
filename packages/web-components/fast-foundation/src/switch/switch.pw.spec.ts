@@ -343,7 +343,7 @@ test.describe("Switch", () => {
 
             const form = page.locator("form");
 
-            await expect(element).not.toHaveBooleanAttribute("checked");
+            await expect(element).not.toHaveAttribute("checked");
 
             await element.evaluate((node: FASTSwitch) => {
                 node.checked = true;
@@ -369,7 +369,7 @@ test.describe("Switch", () => {
 
             const form = page.locator("form");
 
-            await expect(element).toHaveBooleanAttribute("checked");
+            await expect(element).toHaveAttribute("checked");
 
             await element.evaluate((node: FASTSwitch) => {
                 node.checked = false;

@@ -36,7 +36,7 @@ test.describe("TextField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("autofocus");
+        await expect(control).toHaveAttribute("autofocus");
     });
 
     test("should set the `disabled` attribute on the internal control", async () => {
@@ -46,7 +46,7 @@ test.describe("TextField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("disabled");
+        await expect(control).toHaveAttribute("disabled");
     });
 
     test("should set the `readonly` attribute on the internal control", async () => {
@@ -56,7 +56,7 @@ test.describe("TextField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("readonly");
+        await expect(control).toHaveAttribute("readonly");
     });
 
     test("should set the `required` attribute on the internal control", async () => {
@@ -66,7 +66,7 @@ test.describe("TextField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("required");
+        await expect(control).toHaveAttribute("required");
     });
 
     test("should set the `spellcheck` attribute on the internal control", async () => {
@@ -76,7 +76,7 @@ test.describe("TextField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("spellcheck");
+        await expect(control).toHaveAttribute("spellcheck");
     });
 
     test.describe("should set the attribute on the internal control", () => {

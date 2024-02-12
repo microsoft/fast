@@ -262,7 +262,7 @@ test.describe("Combobox", () => {
             node.open = true;
         });
 
-        await expect(element).toHaveBooleanAttribute("open");
+        await expect(element).toHaveAttribute("open");
 
         await expect(listbox).toBeVisible();
     });
@@ -283,7 +283,7 @@ test.describe("Combobox", () => {
 
             await element.locator(".listbox").waitFor({ state: "visible" });
 
-            await expect(element).toHaveBooleanAttribute("open");
+            await expect(element).toHaveAttribute("open");
 
             const [wasChanged] = await Promise.all([
                 element.evaluate(node =>

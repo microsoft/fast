@@ -278,7 +278,7 @@ test.describe("Select", () => {
 
         const listbox = element.locator(".listbox");
 
-        await expect(element).toHaveBooleanAttribute("open");
+        await expect(element).toHaveAttribute("open");
 
         await expect(listbox).toBeVisible();
     });

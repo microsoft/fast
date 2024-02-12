@@ -291,11 +291,11 @@ test.describe("Tabs", () => {
 
             const tabPanels = element.locator("fast-tab-panel");
 
-            await expect(tabPanels.nth(0)).not.toHaveBooleanAttribute("hidden");
+            await expect(tabPanels.nth(0)).not.toHaveAttribute("hidden");
 
-            await expect(tabPanels.nth(1)).toHaveBooleanAttribute("hidden");
+            await expect(tabPanels.nth(1)).toHaveAttribute("hidden");
 
-            await expect(tabPanels.nth(2)).toHaveBooleanAttribute("hidden");
+            await expect(tabPanels.nth(2)).toHaveAttribute("hidden");
         });
     });
 
