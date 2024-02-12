@@ -1,28 +1,15 @@
 import { expect, test } from "@playwright/test";
-import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTRadio } from "./radio.js";
 
 test.describe("Radio", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
+    test("should have a role of `radio`", async ({ page }) => {
+        const element = page.locator("fast-radio");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-radio");
-
-        root = page.locator("#root");
+        const root = page.locator("#root");
 
         await page.goto(fixtureURL("radio--radio"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should have a role of `radio`", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -32,7 +19,13 @@ test.describe("Radio", () => {
         await expect(element).toHaveAttribute("role", "radio");
     });
 
-    test("should set ARIA attributes to match the state", async () => {
+    test("should set ARIA attributes to match the state", async ({ page }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -73,7 +66,13 @@ test.describe("Radio", () => {
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
 
-    test("should set a tabindex of 0 on the element", async () => {
+    test("should set a tabindex of 0 on the element", async ({ page }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -83,7 +82,13 @@ test.describe("Radio", () => {
         await expect(element).toHaveAttribute("tabindex", "0");
     });
 
-    test("should NOT set a tabindex when disabled is `true`", async () => {
+    test("should NOT set a tabindex when disabled is `true`", async ({ page }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio disabled></fast-radio>
@@ -93,7 +98,15 @@ test.describe("Radio", () => {
         await expect(element).not.toHaveAttribute("tabindex");
     });
 
-    test("should initialize to the initial value if no value property is set", async () => {
+    test("should initialize to the initial value if no value property is set", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -105,7 +118,15 @@ test.describe("Radio", () => {
         await expect(element).toHaveJSProperty("initialValue", "on");
     });
 
-    test("should initialize to the provided value attribute if set pre-connection", async () => {
+    test("should initialize to the provided value attribute if set pre-connection", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -117,7 +138,15 @@ test.describe("Radio", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should initialize to the provided value attribute if set post-connection", async () => {
+    test("should initialize to the provided value attribute if set post-connection", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -129,7 +158,15 @@ test.describe("Radio", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should initialize to the provided value property if set pre-connection", async () => {
+    test("should initialize to the provided value property if set pre-connection", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio value="foo"></fast-radio>
@@ -139,7 +176,15 @@ test.describe("Radio", () => {
         await expect(element).toHaveJSProperty("value", "foo");
     });
 
-    test("should set the `label__hidden` class on the internal label when default slotted content does not exist", async () => {
+    test("should set the `label__hidden` class on the internal label when default slotted content does not exist", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>label</fast-radio>
@@ -157,7 +202,13 @@ test.describe("Radio", () => {
         await expect(label).toHaveClass(/label__hidden/);
     });
 
-    test("should fire an event when spacebar is pressed", async () => {
+    test("should fire an event when spacebar is pressed", async ({ page }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -182,7 +233,13 @@ test.describe("Radio", () => {
         expect(wasPressed).toBeTruthy();
     });
 
-    test("should NOT fire events when clicked", async () => {
+    test("should NOT fire events when clicked", async ({ page }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
@@ -206,7 +263,15 @@ test.describe("Radio", () => {
         expect(wasClicked).toBeFalsy();
     });
 
-    test("should handle validity when the `required` attribute is present", async () => {
+    test("should handle validity when the `required` attribute is present", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-radio");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("radio--radio"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio-group>
@@ -227,7 +292,15 @@ test.describe("Radio", () => {
     });
 
     test.describe("whose parent form has its reset() method invoked", () => {
-        test("should set its checked property to false if the checked attribute is unset", async () => {
+        test("should set its checked property to false if the checked attribute is unset", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-radio");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("radio--radio"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -249,7 +322,15 @@ test.describe("Radio", () => {
             await expect(element).not.toBeChecked();
         });
 
-        test("should set its checked property to true if the checked attribute is set", async () => {
+        test("should set its checked property to true if the checked attribute is set", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-radio");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("radio--radio"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
@@ -277,7 +358,15 @@ test.describe("Radio", () => {
             await expect(element).toBeChecked();
         });
 
-        test("should put the control into a clean state, where `checked` attribute modifications modify the `checked` property prior to user or programmatic interaction", async () => {
+        test("should put the control into a clean state, where `checked` attribute modifications modify the `checked` property prior to user or programmatic interaction", async ({
+            page,
+        }) => {
+            const element = page.locator("fast-radio");
+
+            const root = page.locator("#root");
+
+            await page.goto(fixtureURL("radio--radio"));
+
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <form>
