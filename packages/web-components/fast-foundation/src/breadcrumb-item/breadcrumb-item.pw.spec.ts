@@ -1,32 +1,16 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 test.describe("Breadcrumb item", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let control: Locator;
+    test("should include a `role` of `listitem`", async ({ page }) => {
+        const element = page.locator("fast-breadcrumb-item");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-
-        element = page.locator("fast-breadcrumb-item");
-
-        root = page.locator("#root");
-
-        control = element.locator(".control");
+        const root = page.locator("#root");
 
         await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should include a `role` of `listitem`", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-breadcrumb-item></fast-breadcrumb-item>
@@ -36,7 +20,15 @@ test.describe("Breadcrumb item", () => {
         await expect(element).toHaveAttribute("role", "listitem");
     });
 
-    test("should render an internal anchor when the `href` attribute is not provided", async () => {
+    test("should render an internal anchor when the `href` attribute is not provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-breadcrumb-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-breadcrumb-item></fast-breadcrumb-item>
@@ -54,7 +46,15 @@ test.describe("Breadcrumb item", () => {
         await expect(element.locator("a")).toHaveCount(1);
     });
 
-    test("should render an internal anchor when the `href` attribute is provided", async () => {
+    test("should render an internal anchor when the `href` attribute is provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-breadcrumb-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-breadcrumb-item href="https://fast.design"></fast-breadcrumb-item>
@@ -72,7 +72,15 @@ test.describe("Breadcrumb item", () => {
         });
     });
 
-    test("should add an element with a class of `separator` when the `separator` property is true", async () => {
+    test("should add an element with a class of `separator` when the `separator` property is true", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-breadcrumb-item");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-breadcrumb-item></fast-breadcrumb-item>
@@ -119,7 +127,17 @@ test.describe("Breadcrumb item", () => {
     for (const [attribute, value] of Object.entries(attributes)) {
         const attrToken = spinalCase(attribute);
 
-        test(`should set the \`${attrToken}\` attribute to \`${value}\` on the internal anchor`, async () => {
+        test(`should set the \`${attrToken}\` attribute to \`${value}\` on the internal anchor`, async ({
+            page,
+        }) => {
+            const element = page.locator("fast-breadcrumb-item");
+
+            const root = page.locator("#root");
+
+            const control = element.locator(".control");
+
+            await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
+
             await root.evaluate(
                 (node, { attrToken, value }) => {
                     node.innerHTML = /* html */ `
