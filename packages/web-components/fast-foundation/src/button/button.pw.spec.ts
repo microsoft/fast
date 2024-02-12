@@ -1,32 +1,20 @@
 import { spinalCase } from "@microsoft/fast-web-utilities";
-import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTButton } from "./button.js";
 
 test.describe("Button", () => {
-    let page: Page;
-    let element: Locator;
-    let root: Locator;
-    let control: Locator;
+    test("should set the `disabled` attribute on the internal control", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-button");
 
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
+        const root = page.locator("#root");
 
-        element = page.locator("fast-button");
-
-        root = page.locator("#root");
-
-        control = element.locator(".control");
+        const control = element.locator(".control");
 
         await page.goto(fixtureURL("button--button"));
-    });
 
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test("should set the `disabled` attribute on the internal control", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-button disabled></fast-button>
@@ -42,7 +30,17 @@ test.describe("Button", () => {
         await expect(control).not.toHaveAttribute("disabled");
     });
 
-    test("should set the `formnovalidate` attribute on the internal control", async () => {
+    test("should set the `formnovalidate` attribute on the internal control", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-button");
+
+        const root = page.locator("#root");
+
+        const control = element.locator(".control");
+
+        await page.goto(fixtureURL("button--button"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-button formnovalidate></fast-button>
@@ -94,7 +92,17 @@ test.describe("Button", () => {
         for (const [attribute, value] of Object.entries(attributes)) {
             const attrToken = spinalCase(attribute);
 
-            test(`should set the \`${attrToken}\` attribute to \`${value}\``, async () => {
+            test(`should set the \`${attrToken}\` attribute to \`${value}\``, async ({
+                page,
+            }) => {
+                const element = page.locator("fast-button");
+
+                const root = page.locator("#root");
+
+                const control = element.locator(".control");
+
+                await page.goto(fixtureURL("button--button"));
+
                 await root.evaluate(
                     (node, { attrToken, value }) => {
                         node.innerHTML = /* html */ `
@@ -109,7 +117,17 @@ test.describe("Button", () => {
         }
     });
 
-    test("should set the `form` attribute on the internal button when `formId` is provided", async () => {
+    test("should set the `form` attribute on the internal button when `formId` is provided", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-button");
+
+        const root = page.locator("#root");
+
+        const control = element.locator(".control");
+
+        await page.goto(fixtureURL("button--button"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-button></fast-button>
@@ -123,7 +141,17 @@ test.describe("Button", () => {
         await expect(control).toHaveAttribute("form", "foo");
     });
 
-    test("should set the `autofocus` attribute on the internal control", async () => {
+    test("should set the `autofocus` attribute on the internal control", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-button");
+
+        const root = page.locator("#root");
+
+        const control = element.locator(".control");
+
+        await page.goto(fixtureURL("button--button"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-button autofocus></fast-button>
@@ -139,7 +167,15 @@ test.describe("Button", () => {
         await expect(control).not.toHaveAttribute("autofocus");
     });
 
-    test("of type `submit` should submit the parent form when clicked", async () => {
+    test("of type `submit` should submit the parent form when clicked", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-button");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("button--button"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
@@ -167,7 +203,15 @@ test.describe("Button", () => {
         expect(wasSubmitted).toBeTruthy();
     });
 
-    test("of type `reset` should reset the parent form when clicked", async () => {
+    test("of type `reset` should reset the parent form when clicked", async ({
+        page,
+    }) => {
+        const element = page.locator("fast-button");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("button--button"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <form>
@@ -194,7 +238,13 @@ test.describe("Button", () => {
         expect(wasReset).toBeTruthy();
     });
 
-    test("should not propagate when clicked and `disabled` is true", async () => {
+    test("should not propagate when clicked and `disabled` is true", async ({ page }) => {
+        const element = page.locator("fast-button");
+
+        const root = page.locator("#root");
+
+        await page.goto(fixtureURL("button--button"));
+
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-button disabled>Disabled Button</fast-button>
