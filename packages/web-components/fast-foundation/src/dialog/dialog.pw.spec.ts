@@ -97,7 +97,7 @@ test.describe("Dialog", () => {
             node.modal = false;
         });
 
-        await expect(control).not.hasAttribute("aria-modal");
+        await expect(control).not.toHaveAttribute("aria-modal");
     });
 
     test('should add an overlay element with a `role` attribute of "presentation" when the `modal` property is true', async () => {
@@ -143,7 +143,7 @@ test.describe("Dialog", () => {
 
         await expect(element).toHaveJSProperty("hidden", false);
 
-        await expect(element).not.hasAttribute("hidden");
+        await expect(element).not.toHaveAttribute("hidden");
 
         await element.evaluate((node: FASTDialog) => {
             node.hide();

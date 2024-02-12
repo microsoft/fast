@@ -235,7 +235,7 @@ test.describe("Accordion", () => {
             node.setAttribute("expand-mode", "multi");
         });
 
-        await expect(firstItem.locator("button")).not.hasAttribute("aria-disabled");
+        await expect(firstItem.locator("button")).not.toHaveAttribute("aria-disabled");
     });
 
     test("should set the first item as expanded if no child is expanded by default in single mode", async () => {

@@ -61,20 +61,4 @@ expect.extend({
 expected ${recieved} to have boolean attribute \`${name}\``,
         };
     },
-
-    async hasAttribute(recieved: Locator, attribute: string) {
-        if (await recieved.isVisible()) {
-            await (await recieved.elementHandle())?.waitForElementState("stable");
-        }
-
-        const pass = await recieved.evaluate(
-            (node, attribute) => node.hasAttribute(attribute),
-            attribute
-        );
-
-        return {
-            message: () => `expected ${recieved} to have attribute \`${attribute}\``,
-            pass,
-        };
-    },
 });

@@ -38,7 +38,7 @@ test.describe("Accordion item", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("headinglevel");
+        await expect(element).not.toHaveAttribute("headinglevel");
 
         await expect(element).toHaveJSProperty("headinglevel", 2);
     });

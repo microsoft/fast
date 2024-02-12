@@ -69,7 +69,7 @@ test.describe("Switch", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-readonly");
+        await expect(element).not.toHaveAttribute("aria-readonly");
     });
 
     test("should set the `aria-checked` attribute equal to the `checked` property", async () => {
@@ -188,7 +188,7 @@ test.describe("Switch", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("tabindex");
+        await expect(element).not.toHaveAttribute("tabindex");
 
         await element.evaluate((node: FASTSwitch) => {
             node.disabled = false;
