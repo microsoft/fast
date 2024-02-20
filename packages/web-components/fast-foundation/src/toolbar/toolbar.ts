@@ -4,6 +4,7 @@ import { isFocusable } from "tabbable";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
+import { getRootActiveElement } from "../utilities/root-active-element.js";
 import { ToolbarOrientation } from "./toolbar.options.js";
 
 /**
@@ -250,7 +251,7 @@ export class FASTToolbar extends FASTElement {
             this.focusableElements[this.activeIndex] &&
             // Don't focus the toolbar element if some event handlers moved
             // the focus on another element in the page.
-            this.contains(document.activeElement)
+            this.contains(getRootActiveElement(this))
         ) {
             this.focusableElements[this.activeIndex].focus();
         }
