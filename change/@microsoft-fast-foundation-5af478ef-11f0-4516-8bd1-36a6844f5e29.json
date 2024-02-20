@@ -3,5 +3,5 @@
   "comment": "Fix CSS custom property precedence issue",
   "packageName": "@microsoft/fast-foundation",
   "email": "7282195+m-akinc@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }

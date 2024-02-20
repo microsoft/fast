@@ -1,10 +1,15 @@
-import {
-    type Constructable,
-    type ElementController,
-    type FASTElement,
-    prependToAdoptedStyleSheetsSymbol,
+import type {
+    Constructable,
+    ElementController,
+    FASTElement,
 } from "@microsoft/fast-element";
-import { ElementStyles, observable, Observable, Updates } from "@microsoft/fast-element";
+import {
+    ElementStyles,
+    observable,
+    Observable,
+    prependToAdoptedStyleSheetsSymbol,
+    Updates,
+} from "@microsoft/fast-element";
 
 /**
  * A target that can have key/value pairs set and removed.
