@@ -12,7 +12,7 @@ import {
     Observable,
     SubscriberSet,
 } from "@microsoft/fast-element";
-import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
+import { composedContains, composedParent } from "@microsoft/fast-element/utilities.js";
 import type {
     DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
     DerivedDesignTokenValue,
@@ -261,8 +261,10 @@ export class DesignToken<T> {
  */
 @cssDirective()
 @htmlDirective()
-export class CSSDesignToken<T> extends DesignToken<T>
-    implements CSSDirective, HTMLDirective {
+export class CSSDesignToken<T>
+    extends DesignToken<T>
+    implements CSSDirective, HTMLDirective
+{
     /**
      * The CSS Custom property name of the token.
      */

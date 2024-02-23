@@ -4,8 +4,8 @@ import { expect, test } from '@playwright/test';
 import { SyncFASTElementRenderer } from "./fast-element-renderer.js";
 import fastSSR from "../exports.js";
 import { consolidate, consolidateAsync } from "../test-utilities/consolidate.js";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
-import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task.js";
 
 @customElement({
     name: "bare-element",

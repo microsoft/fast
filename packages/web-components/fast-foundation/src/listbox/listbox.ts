@@ -11,6 +11,7 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
+import { getRootActiveElement } from "../utilities/index.js";
 import { FASTListboxOption, isListboxOption } from "../listbox-option/listbox-option.js";
 import { ARIAGlobalStatesAndProperties } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -127,8 +128,9 @@ export abstract class FASTListbox extends FASTElement {
      * @param n - element to filter
      * @public
      */
-    public static slottedOptionFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.hidden;
+    public static slottedOptionFilter(n: HTMLElement) {
+        return isListboxOption(n) && !n.hidden;
+    }
 
     /**
      * The default slotted elements.
@@ -197,7 +199,7 @@ export abstract class FASTListbox extends FASTElement {
         // function is typically called from the `openChanged` observer, `DOM.queueUpdate`
         // causes the calls to be grouped into the same frame. To prevent this,
         // `requestAnimationFrame` is used instead of `DOM.queueUpdate`.
-        if (this.contains(document.activeElement) && optionToFocus !== null) {
+        if (this.contains(getRootActiveElement(this)) && optionToFocus !== null) {
             optionToFocus.focus();
             requestAnimationFrame(() => {
                 optionToFocus.scrollIntoView({ block: "nearest" });
@@ -408,7 +410,7 @@ export abstract class FASTListbox extends FASTElement {
      * @internal
      */
     public mousedownHandler(e: MouseEvent): boolean | void {
-        this.shouldSkipFocus = !this.contains(document.activeElement);
+        this.shouldSkipFocus = !this.contains(getRootActiveElement(this));
         return true;
     }
 

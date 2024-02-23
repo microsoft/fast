@@ -135,10 +135,8 @@ export function quantizeHistogram(
         if (queue.length > 0) {
             const currentBox: PixelBox = queue.shift()!;
 
-            const cutBoxes: [
-                PixelBox | null,
-                PixelBox | null
-            ] = currentBox.modifiedMedianCut();
+            const cutBoxes: [PixelBox | null, PixelBox | null] =
+                currentBox.modifiedMedianCut();
 
             if (cutBoxes[0] !== null) {
                 insertIntoSortedList(queue, cutBoxes[0], popSort);
@@ -177,10 +175,8 @@ export function quantizeHistogram(
             if (queue.length > 0) {
                 const currentBox: PixelBox = queue.shift()!;
 
-                const cutBoxes: [
-                    PixelBox | null,
-                    PixelBox | null
-                ] = currentBox.modifiedMedianCut();
+                const cutBoxes: [PixelBox | null, PixelBox | null] =
+                    currentBox.modifiedMedianCut();
 
                 if (cutBoxes[0] !== null) {
                     insertIntoSortedList(queue, cutBoxes[0], popAndVolumeSort);

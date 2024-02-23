@@ -41,7 +41,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Install Lerna
-      run: yarn global add lerna
+      run: yarn global add lerna@5.5.2
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile

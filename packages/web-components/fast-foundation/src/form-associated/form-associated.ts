@@ -281,9 +281,9 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 const parentLabels = this.proxy.labels;
                 // Labels associated using the `for` attribute
                 const forLabels = Array.from(
-                    (this.proxy.getRootNode() as
-                        | HTMLDocument
-                        | ShadowRoot).querySelectorAll(`[for='${this.id}']`)
+                    (
+                        this.proxy.getRootNode() as HTMLDocument | ShadowRoot
+                    ).querySelectorAll(`[for='${this.id}']`)
                 );
 
                 const labels = parentLabels

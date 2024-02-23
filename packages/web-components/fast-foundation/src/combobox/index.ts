@@ -1,3 +1,3 @@
-export * from "./combobox.js";
-export * from "./combobox.options.js";
-export * from "./combobox.template.js";
+export { ComboboxOptions, DelegatesARIACombobox, FASTCombobox } from "./combobox.js";
+export { ComboboxAutocomplete } from "./combobox.options.js";
+export { comboboxTemplate } from "./combobox.template.js";

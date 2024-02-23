@@ -11,22 +11,22 @@ export function uniqueId(prefix: string = ""): string {
  * Builds a string from a format specifier and replacement parameters.
  */
 export function format(formatSpecifier: string, ...parameters: string[]): string {
-    return formatSpecifier.replace(/{(\d+)}/g, function (
-        match: string,
-        index: number
-    ): any {
-        if (index >= parameters.length) {
-            return match;
+    return formatSpecifier.replace(
+        /{(\d+)}/g,
+        function (match: string, index: number): any {
+            if (index >= parameters.length) {
+                return match;
+            }
+
+            const value: string = parameters[index];
+
+            if (typeof value !== "number" && !value) {
+                return "";
+            }
+
+            return value;
         }
-
-        const value: string = parameters[index];
-
-        if (typeof value !== "number" && !value) {
-            return "";
-        }
-
-        return value;
-    });
+    );
 }
 
 /**
@@ -99,10 +99,10 @@ export function spinalCase(value: string): string {
         .charAt(0)
         .toLowerCase()}${value.slice(1)}`;
 
-    return valueWithLowerCaseFirstLetter.replace(/([A-Z]|[0-9])/g, function (
-        match: string,
-        group1: string
-    ): string {
-        return `-${group1.toLowerCase()}`;
-    });
+    return valueWithLowerCaseFirstLetter.replace(
+        /([A-Z]|[0-9])/g,
+        function (match: string, group1: string): string {
+            return `-${group1.toLowerCase()}`;
+        }
+    );
 }

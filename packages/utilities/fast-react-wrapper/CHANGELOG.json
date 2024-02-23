@@ -2,6 +2,81 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Fri, 18 Aug 2023 00:04:39 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.27",
+      "version": "1.0.0-alpha.27",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46",
+            "comment": "fix test to use fast-element package export with extension"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.26",
+            "commit": "2dab94c0eda05bee7c4b497e68951d79d6fcbe46"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 12 Aug 2023 00:26:35 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.26",
+      "version": "1.0.0-alpha.26",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "fc98190c6bfb9fabe0988e89daca1c0f64f6e7c8",
+            "comment": "adds missing types as a dev dependency"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "0f8fc2505445be626e55e1e1b28956c2ff3a722e",
+            "comment": "add displayName to react wrapper"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.25",
+            "commit": "2297004e14386b5a689ba96361f8d8eebee69cd8"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 16 Jun 2023 18:17:13 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.25",
+      "version": "1.0.0-alpha.25",
+      "comments": {
+        "none": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-react-wrapper",
+            "commit": "ca0e62ee8d05f72d1d8c1ad66bd6eea8e3f0a4eb",
+            "comment": "update prettier and eslint-config-prettier versions"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v2.0.0-beta.24",
+            "commit": "8250aa8352940584ff443b550ee756d49f01c478"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 28 Mar 2023 22:14:10 GMT",
       "tag": "@microsoft/fast-react-wrapper_v1.0.0-alpha.24",
       "version": "1.0.0-alpha.24",

@@ -25,12 +25,8 @@ export function calendarTitleTemplate<T extends FASTCalendar>(): ViewTemplate<T>
                     year: "numeric",
                 })}"
         >
-            <span part="month">
-                ${(x: T) => x.dateFormatter.getMonth(x.month)}
-            </span>
-            <span part="year">
-                ${(x: T) => x.dateFormatter.getYear(x.year)}
-            </span>
+            <span part="month">${(x: T) => x.dateFormatter.getMonth(x.month)}</span>
+            <span part="year">${(x: T) => x.dateFormatter.getYear(x.year)}</span>
         </div>
     `;
 }
@@ -242,18 +238,13 @@ export function calendarTemplate<T extends FASTCalendar>(
         today.getMonth() + 1
     }-${today.getDate()}-${today.getFullYear()}`;
     return html<T>`
-        <template>
-            ${startSlotTemplate(options)} ${staticallyCompose(options.title)}
-            <slot></slot>
-            ${when(
-                x => x.readonly === false,
-                interactiveCalendarGridTemplate(options, todayString)
-            )}
-            ${when(
-                x => x.readonly === true,
-                noninteractiveCalendarTemplate(options, todayString)
-            )}
-            ${endSlotTemplate(options)}
-        </template>
+        ${startSlotTemplate(options)} ${staticallyCompose(options.title)}
+        <slot></slot>
+        ${when(
+            x => x.readonly,
+            noninteractiveCalendarTemplate(options, todayString),
+            interactiveCalendarGridTemplate(options, todayString)
+        )}
+        ${endSlotTemplate(options)}
     `;
 }

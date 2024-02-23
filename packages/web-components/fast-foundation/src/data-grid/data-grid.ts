@@ -8,7 +8,7 @@ import {
     RepeatDirective,
     Updates,
 } from "@microsoft/fast-element";
-import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
+import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities.js";
 import {
     eventFocus,
     eventFocusOut,
@@ -20,6 +20,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { getRootActiveElement } from "../utilities/index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import {
@@ -78,7 +79,7 @@ export interface ColumnDefinition {
      * focus directly to the checkbox.
      * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
 
     /**
      * cell template
@@ -98,7 +99,7 @@ export interface ColumnDefinition {
      * When cellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
 
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
 
     /**
      * Whether this column is the row header
@@ -116,14 +117,14 @@ export class FASTDataGrid extends FASTElement {
     /**
      *  generates a basic column definition by examining sample row data
      */
-    public static generateColumns = (row: object): ColumnDefinition[] => {
+    public static generateColumns(row: object): ColumnDefinition[] {
         return Object.getOwnPropertyNames(row).map((property: string, index: number) => {
             return {
                 columnDataKey: property,
                 gridColumn: `${index}`,
             };
         });
-    };
+    }
 
     /**
      *  generates a gridTemplateColumns based on columndefinitions
@@ -173,12 +174,10 @@ export class FASTDataGrid extends FASTElement {
             if (this.noTabbing) {
                 this.setAttribute("tabIndex", "-1");
             } else {
+                const activeElement: Element | null = getRootActiveElement(this);
                 this.setAttribute(
                     "tabIndex",
-                    this.contains(document.activeElement) ||
-                        this === document.activeElement
-                        ? "-1"
-                        : "0"
+                    this.contains(activeElement) || this === activeElement ? "-1" : "0"
                 );
             }
         }
@@ -908,9 +907,10 @@ export class FASTDataGrid extends FASTElement {
     };
 
     private queueFocusUpdate(): void {
+        const activeElement: Element | null = getRootActiveElement(this);
         if (
             this.isUpdatingFocus &&
-            (this.contains(document.activeElement) || this === document.activeElement)
+            (this.contains(activeElement) || this === activeElement)
         ) {
             return;
         }
@@ -939,7 +939,7 @@ export class FASTDataGrid extends FASTElement {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
-            this.generatedHeader = (generatedHeaderElement as unknown) as FASTDataGridRow;
+            this.generatedHeader = generatedHeaderElement as unknown as FASTDataGridRow;
             this.generatedHeader.columnDefinitions = this.columnDefinitions;
             this.generatedHeader.gridTemplateColumns = this.gridTemplateColumns;
             this.generatedHeader.rowType =
@@ -969,7 +969,8 @@ export class FASTDataGrid extends FASTElement {
                         newNode.nodeType === 1 &&
                         (newNode as Element).getAttribute("role") === "row"
                     ) {
-                        (newNode as FASTDataGridRow).columnDefinitions = this.columnDefinitions;
+                        (newNode as FASTDataGridRow).columnDefinitions =
+                            this.columnDefinitions;
                     }
                 });
             });

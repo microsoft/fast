@@ -1,6 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
+import { defaultCellFocusTargetCallback } from "../data-grid-cell.js";
 import {
     DataGridSelectionBehavior,
     DataGridSelectionMode,
@@ -106,5 +107,54 @@ DataGridColumnDefinitions.args = {
         { columnDataKey: "rowId" },
         { columnDataKey: "item1" },
         { columnDataKey: "item2" },
+    ],
+};
+
+const editCellTemplate = html`
+    <template>
+        <fast-text-field
+            tabIndex="-1"
+            value="${x => x.rowData[x.columnDefinition.columnDataKey]}"
+        ></fast-text-field>
+    </template>
+`;
+
+const checkboxCellTemplate = html`
+    <template>
+        <fast-checkbox>${x => x.rowData[x.columnDefinition.columnDataKey]}</fast-checkbox>
+    </template>
+`;
+
+const complexCellTemplate = html`
+  <template>
+    <complex-cell
+        tabIndex="-1"
+    ></complexCell>
+  </template>
+`;
+
+export const DataGridEditBoxes: Story<FASTDataGrid> = renderComponent(storyTemplate).bind(
+    {}
+);
+DataGridEditBoxes.args = {
+    columnDefinitions: [
+        { columnDataKey: "rowId" },
+        {
+            columnDataKey: "item1",
+            cellTemplate: checkboxCellTemplate,
+            cellFocusTargetCallback: defaultCellFocusTargetCallback,
+        },
+        {
+            columnDataKey: "item2",
+            cellInternalFocusQueue: true,
+            cellTemplate: editCellTemplate,
+            cellFocusTargetCallback: defaultCellFocusTargetCallback,
+        },
+        {
+            columnDataKey: "item3",
+            cellInternalFocusQueue: true,
+            cellTemplate: complexCellTemplate,
+            cellFocusTargetCallback: defaultCellFocusTargetCallback,
+        },
     ],
 };

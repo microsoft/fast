@@ -349,4 +349,134 @@ test.describe("Toolbar", () => {
 
         await expect(element).toHaveJSProperty("activeIndex", 0);
     });
+
+    test("should update activeIndex when an element within the toolbar is clicked", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
+
+        const button2 = element.locator("button", { hasText: "Button 2" });
+
+        const startSlotButton = element.locator("button", {
+            hasText: "Start Slot Button",
+        });
+
+        await element.focus();
+
+        await expect(startSlotButton).toBeFocused();
+
+        await expect(element).toHaveJSProperty("activeIndex", 0);
+
+        await button2.click();
+
+        await expect(button2).toBeFocused();
+
+        await expect(element).toHaveJSProperty("activeIndex", 2);
+    });
+
+    test("should update activeIndex when a nested element within the toolbar is clicked", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>
+                        Button 2
+                        <div>more button content</div>
+                    </button>
+                    <button>Button 3</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+            `;
+        });
+
+        const button2 = element.locator("button", { hasText: "Button 2" });
+
+        const button2InnerContent = button2.locator("div");
+
+        const startSlotButton = element.locator("button", {
+            hasText: "Start Slot Button",
+        });
+
+        await element.focus();
+
+        await expect(startSlotButton).toBeFocused();
+
+        await expect(element).toHaveJSProperty("activeIndex", 0);
+
+        await button2InnerContent.click();
+
+        await expect(button2).toBeFocused();
+
+        await expect(element).toHaveJSProperty("activeIndex", 2);
+    });
+
+    test("should focus most recently focused item when toolbar receives focus", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+                <button>Button Outside Toolbar</button>
+            `;
+        });
+        const button2 = element.locator("button", { hasText: "Button 2" });
+
+        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+
+        await button2.click();
+        await expect(button2).toBeFocused();
+
+        await buttonOutsideToolbar.click();
+        await expect(buttonOutsideToolbar).toBeFocused();
+
+        await element.focus();
+
+        await expect(button2).toBeFocused();
+    });
+
+    test("should focus clicked item when focus enters toolbar by clicking an item that is not the most recently focused item", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button>Button 1</button>
+                    <button>Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+                <button>Button Outside Toolbar</button>
+            `;
+        });
+        const button2 = element.locator("button", { hasText: "Button 2" });
+
+        const button3 = element.locator("button", { hasText: "Button 3" });
+
+        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+
+        await button2.click();
+        await expect(button2).toBeFocused();
+
+        await buttonOutsideToolbar.click();
+        await expect(buttonOutsideToolbar).toBeFocused();
+
+        await button3.click();
+        await expect(button3).toBeFocused();
+    });
 });

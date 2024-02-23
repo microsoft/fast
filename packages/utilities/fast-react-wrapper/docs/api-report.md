@@ -19,7 +19,10 @@ export type ReactEvents<T> = {
 };
 
 // @public
-export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>>;
+export interface ReactWrapper<TElement extends HTMLElement, TEvents> extends Constructable<ReactModule.Component<ReactWrapperProps<TElement, TEvents>>> {
+    // (undocumented)
+    displayName: string;
+}
 
 // @public (undocumented)
 export function reactWrapper(React: any, registry?: CustomElementRegistry): {

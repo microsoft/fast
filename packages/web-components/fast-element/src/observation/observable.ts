@@ -85,7 +85,7 @@ export const SourceLifetime = Object.freeze({
  * Describes how the source's lifetime relates to its controller's lifetime.
  * @public
  */
-export type SourceLifetime = typeof SourceLifetime[keyof typeof SourceLifetime];
+export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
 
 /**
  * Controls the lifecycle of an expression and provides relevant context.
@@ -172,7 +172,7 @@ export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
  */
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const queueUpdate = Updates.enqueue;
-    const volatileRegex = /(:|&&|\|\||if)/;
+    const volatileRegex = /(:|&&|\|\||if|\?\.)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     let watcher: ExpressionNotifierImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
@@ -233,7 +233,8 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
 
     class ExpressionNotifierImplementation<TSource = any, TReturn = any>
         extends SubscriberSet
-        implements ExpressionNotifier<TSource, TReturn> {
+        implements ExpressionNotifier<TSource, TReturn>
+    {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;

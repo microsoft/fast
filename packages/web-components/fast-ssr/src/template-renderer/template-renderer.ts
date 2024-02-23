@@ -57,10 +57,8 @@ export interface AsyncTemplateRenderer {
  * @internal
  */
 export class DefaultTemplateRenderer implements TemplateRenderer {
-    private viewBehaviorFactoryRenderers: Map<
-        any,
-        ViewBehaviorFactoryRenderer<any>
-    > = new Map();
+    private viewBehaviorFactoryRenderers: Map<any, ViewBehaviorFactoryRenderer<any>> =
+        new Map();
 
     private defaultElementRenderers: ConstructableElementRenderer[] = [];
 

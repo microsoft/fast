@@ -92,9 +92,6 @@ export type AnchorTarget = ValuesOf<typeof AnchorTarget>;
 export function anchorTemplate<T extends FASTAnchor>(options?: AnchorOptions): ViewTemplate<T>;
 
 // @public
-export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
-
-// @public
 export class ARIAGlobalStatesAndProperties {
     ariaAtomic: "true" | "false" | string | null;
     ariaBusy: "true" | "false" | string | null;
@@ -155,7 +152,10 @@ export const AxisScalingMode: {
 export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 
 // @public
-export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
+export type BadgeOptions = StartEndOptions;
+
+// @public
+export function badgeTemplate<T extends FASTBadge>(options?: BadgeOptions): ElementViewTemplate<T>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
@@ -166,7 +166,10 @@ export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
 export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(options?: BreadcrumbItemOptions): ElementViewTemplate<T>;
 
 // @public
-export function breadcrumbTemplate<T extends FASTBreadcrumb>(): ElementViewTemplate<T>;
+export type BreadcrumbOptions = StartEndOptions;
+
+// @public
+export function breadcrumbTemplate<T extends FASTBreadcrumb>(options?: BreadcrumbOptions): ElementViewTemplate<T>;
 
 // @public
 export type ButtonOptions = StartEndOptions<FASTButton>;
@@ -267,12 +270,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 
 // @public
 export interface ColumnDefinition {
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
     cellInternalFocusQueue?: boolean;
     cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
     headerCellInternalFocusQueue?: boolean;
     headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
@@ -414,6 +417,9 @@ export const DayFormat: {
 
 // @public
 export type DayFormat = ValuesOf<typeof DayFormat>;
+
+// @public (undocumented)
+export const defaultCellFocusTargetCallback: (cell: FASTDataGridCell) => HTMLElement | null;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
@@ -786,8 +792,15 @@ export class FASTAnchoredRegion extends FASTElement {
 export class FASTAvatar extends FASTElement {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTBadge" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTBadge extends FASTElement {
+}
+
+// @internal
+export interface FASTBadge extends StartEnd {
 }
 
 // @public
@@ -807,12 +820,19 @@ export class FASTBaseProgress extends FASTElement {
     protected valueChanged(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTBreadcrumb" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTBreadcrumb extends FASTElement {
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
     protected slottedBreadcrumbItemsChanged(): void;
+}
+
+// @internal
+export interface FASTBreadcrumb extends StartEnd {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1005,7 +1025,7 @@ export class FASTDataGrid extends FASTElement {
     disconnectedCallback(): void;
     focusColumnIndex: number;
     focusRowIndex: number;
-    static generateColumns: (row: object) => ColumnDefinition[];
+    static generateColumns(row: object): ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
     // (undocumented)
@@ -1257,7 +1277,7 @@ export abstract class FASTListbox extends FASTElement {
     protected setSelectedOptions(): void;
     // @internal
     protected shouldSkipFocus: boolean;
-    static slottedOptionFilter: (n: HTMLElement) => boolean;
+    static slottedOptionFilter(n: HTMLElement): boolean;
     // @internal
     slottedOptions: Element[];
     // @internal
@@ -1550,7 +1570,7 @@ export class FASTPicker extends FormAssociatedPicker {
     // (undocumented)
     protected listItemTemplateChanged(): void;
     loadingText: string;
-    maxSelected: number | undefined;
+    maxSelected: number | null;
     // @internal
     menuConfig: AnchoredRegionConfig;
     // @internal
@@ -1962,8 +1982,7 @@ export class FASTTabs extends FASTElement {
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
-    // (undocumented)
-    protected setTabs: () => void;
+    protected setTabs(): void;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
@@ -2090,8 +2109,6 @@ export class FASTToolbar extends FASTElement {
     childItems: Element[];
     // (undocumented)
     protected childItemsChanged(prev: undefined | Element[], next: Element[]): void;
-    // @internal
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2100,6 +2117,8 @@ export class FASTToolbar extends FASTElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    mouseDownHandler(e: MouseEvent): boolean | void;
     orientation: ToolbarOrientation;
     // @internal
     protected reduceFocusableElements(): void;
@@ -2340,6 +2359,9 @@ export type GenerateHeaderOptions = ValuesOf<typeof GenerateHeaderOptions>;
 
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
+
+// @public (undocumented)
+export function getRootActiveElement(element: Element): Element | null;
 
 // @public
 export const hidden = ":host([hidden]){display:none}";
@@ -2593,7 +2615,7 @@ export function reflectAttributes<TSource = any, TParent = any>(...attributes: s
 //
 // @internal (undocumented)
 export const roleForMenuItem: {
-    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
+    [value in keyof typeof MenuItemRole]: (typeof MenuItemRole)[value];
 };
 
 // @public

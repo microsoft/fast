@@ -121,8 +121,10 @@ export class FASTToolbar extends FASTElement {
      *
      * @internal
      */
-    public clickHandler(e: MouseEvent): boolean | void {
-        const activeIndex = this.focusableElements?.indexOf(e.target as HTMLElement);
+    public mouseDownHandler(e: MouseEvent): boolean | void {
+        const activeIndex = this.focusableElements?.findIndex(x =>
+            x.contains(e.target as HTMLElement)
+        );
         if (activeIndex > -1 && this.activeIndex !== activeIndex) {
             this.setFocusedElement(activeIndex);
         }
@@ -207,11 +209,10 @@ export class FASTToolbar extends FASTElement {
      * @internal
      */
     protected get allSlottedItems(): (HTMLElement | Node)[] {
-        return [
-            ...this.start.assignedElements(),
-            ...this.slottedItems,
-            ...this.end.assignedElements(),
-        ];
+        const start = this.start?.assignedElements() ?? [];
+        const end = this.end?.assignedElements() ?? [];
+
+        return [...start, ...this.slottedItems, ...end];
     }
 
     /**
@@ -229,9 +230,8 @@ export class FASTToolbar extends FASTElement {
 
         // If the previously active item is still focusable, adjust the active index to the
         // index of that item.
-        const adjustedActiveIndex = this.focusableElements.indexOf(
-            previousFocusedElement
-        );
+        const adjustedActiveIndex =
+            this.focusableElements.indexOf(previousFocusedElement);
         this.activeIndex = Math.max(0, adjustedActiveIndex);
 
         this.setFocusableElements();

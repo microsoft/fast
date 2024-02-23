@@ -262,7 +262,7 @@ export const DOMAspect: Readonly<{
 }>;
 
 // @public
-export type DOMAspect = typeof DOMAspect[Exclude<keyof typeof DOMAspect, "none">];
+export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
 
 // @public
 export interface DOMPolicy {
@@ -758,7 +758,7 @@ export const SourceLifetime: Readonly<{
 }>;
 
 // @public
-export type SourceLifetime = typeof SourceLifetime[keyof typeof SourceLifetime];
+export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
 
 // @public
 export class Splice {
@@ -800,7 +800,7 @@ export const SpliceStrategySupport: Readonly<{
 }>;
 
 // @public
-export type SpliceStrategySupport = typeof SpliceStrategySupport[keyof typeof SpliceStrategySupport];
+export type SpliceStrategySupport = (typeof SpliceStrategySupport)[keyof typeof SpliceStrategySupport];
 
 // @public
 export abstract class StatelessAttachedAttributeDirective<TOptions> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
@@ -935,7 +935,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
-export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
+export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
 
 // Warnings were encountered during analysis:
 //

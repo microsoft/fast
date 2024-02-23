@@ -24,7 +24,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 /specs/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
 
 # Sites
-/sites/fast-color-explorer/ @nicholasrice @janechu @bheston
 /sites/website/ @awentzel @chrisdholt @falkicon @EisenbergEffect
 
 # Package specific owners
@@ -40,4 +39,7 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Web components
 /packages/web-components/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
-/packages/web-components/fast-foundation/ @EisenbergEffect @chrisdholt @nicholasrice
+/packages/web-components/fast-foundation/ @EisenbergEffect @chrisdholt @bheston @scomea @radium-v @kingoftac
+
+# the change directory has no owners
+/change/

@@ -1,8 +1,39 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Aug 2023 00:04:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.26
+
+Fri, 18 Aug 2023 00:04:40 GMT
+
+### Changes
+
+- BREAKING: update fast-element export paths to include extensions (chhol@microsoft.com)
+- update fast-element exports to be explicit (chhol@microsoft.com)
+
+## 2.0.0-beta.25
+
+Sat, 12 Aug 2023 00:26:36 GMT
+
+### Changes
+
+- Prevent notification of array splices when operation does not mutate array values (nicholasrice@users.noreply.github.com)
+- Adds volatile binding support for JavaScript optional chaining syntax (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.24
+
+Fri, 16 Jun 2023 18:17:12 GMT
+
+### Changes
+
+- fix: update compiler to ensure first and last child references are defined (chhol@microsoft.com)
+- Adds 'else' template option to the when directive (nicholasrice@users.noreply.github.com)
+- fixed a bug where re-binding a ChildrenDirective instance would throw a runtime exception from the mutation handler (nicholasrice@users.noreply.github.com)
+- Update adoptedStyleSheets strategy to use push/splice when available to fix Safari 16.4 bug (nicholasrice@users.noreply.github.com)
+- fixes a bug where ChildrenDirective could not be used multiple times for the same element (nicholasrice@users.noreply.github.com)
+- fixed bug causing behaviors attached to stylesheets not to be removed when the stylesheet was removed (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0-beta.23
 

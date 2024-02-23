@@ -1,8 +1,52 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Tue, 28 Mar 2023 22:14:10 GMT and should not be manually modified.
+This log was last generated on Wed, 20 Dec 2023 19:03:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.32
+
+Wed, 20 Dec 2023 19:03:48 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.32
+
+## 1.0.0-beta.31
+
+Fri, 18 Aug 2023 22:48:12 GMT
+
+### Changes
+
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.31
+
+## 1.0.0-beta.30
+
+Fri, 18 Aug 2023 00:04:37 GMT
+
+### Changes
+
+- Breaking: update fast-ssr export paths to include extensions (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v2.0.0-beta.26
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.30
+
+## 1.0.0-beta.29
+
+Sat, 12 Aug 2023 00:26:36 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.25
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.29
+
+## 1.0.0-beta.28
+
+Fri, 16 Jun 2023 18:17:13 GMT
+
+### Changes
+
+- Bump @microsoft/fast-element to v2.0.0-beta.24
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.28
 
 ## 1.0.0-beta.27
 

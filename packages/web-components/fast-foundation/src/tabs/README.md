@@ -126,18 +126,18 @@ export const myTabs = Tabs.compose({
 
 #### Fields
 
-| Name          | Privacy   | Type              | Default | Description                   | Inherited From |
-| ------------- | --------- | ----------------- | ------- | ----------------------------- | -------------- |
-| `orientation` | public    | `TabsOrientation` |         | The orientation               |                |
-| `activeid`    | public    | `string`          |         | The id of the active tab      |                |
-| `activetab`   | public    | `HTMLElement`     |         | A reference to the active tab |                |
-| `setTabs`     | protected |                   |         |                               |                |
+| Name          | Privacy | Type              | Default | Description                   | Inherited From |
+| ------------- | ------- | ----------------- | ------- | ----------------------------- | -------------- |
+| `orientation` | public  | `TabsOrientation` |         | The orientation               |                |
+| `activeid`    | public  | `string`          |         | The id of the active tab      |                |
+| `activetab`   | public  | `HTMLElement`     |         | A reference to the active tab |                |
 
 #### Methods
 
-| Name     | Privacy | Description                    | Parameters           | Return | Inherited From |
-| -------- | ------- | ------------------------------ | -------------------- | ------ | -------------- |
-| `adjust` | public  | The adjust method for FASTTabs | `adjustment: number` | `void` |                |
+| Name      | Privacy | Description                                                                       | Parameters           | Return | Inherited From |
+| --------- | ------- | --------------------------------------------------------------------------------- | -------------------- | ------ | -------------- |
+| `setTabs` | public  | Function that is invoked whenever the selected tab or the tab collection changes. |                      | `void` |                |
+| `adjust`  | public  | The adjust method for FASTTabs                                                    | `adjustment: number` | `void` |                |
 
 #### Events
 
