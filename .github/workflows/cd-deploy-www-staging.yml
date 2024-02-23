@@ -13,7 +13,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - master
+      - archives/fast-element-1
     paths:
       - '.github/workflows/cd-deploy-www-staging.yml'
       - 'packages/utilities/fast-color/docs/api-report.md'
@@ -38,6 +38,10 @@ jobs:
     - name: Checkout Branch
       uses: actions/checkout@master
 
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.20.0
+
     - name: Install Lerna
       run: yarn global add lerna@5.5.2
 
@@ -59,8 +63,8 @@ jobs:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
-  deploy_to_staging:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  deploy_pr_to_staging:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     needs: build
 
@@ -71,6 +75,17 @@ jobs:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
+  deploy_active_region:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: 'Azure Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS_ACTIVE }}
+
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
@@ -78,6 +93,17 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+
+  deploy_passive_region:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: 'Azure Login'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS_PASSIVE }}
 
     - name: 'Deploy to Passive Azure Region'
       uses: azure/webapps-deploy@v2
@@ -87,35 +113,40 @@ jobs:
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
 
-  deploy_pr:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-latest
-    needs: build
+  # deploy_pr:
+  #   if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    steps:
-      - name: Deploy PR
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+  #   steps:
+  #     - name: Deploy PR
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: ${{ env.ARTIFACT_NAME }}
+  #         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
-      - name: Deploy Documentation
-        id: deploypr
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
-        continue-on-error: ${{ (github.event_name == 'pull_request' && github.event.action != 'closed') }}
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: 'upload'
-          app_location: ${{ env.AZURE_WEBAPP_DIST_PATH }}
-          output_location: ''
-          skip_app_build: true
+  #     - name: Deploy Documentation
+  #       id: deploypr
+  #       uses: Azure/static-web-apps-deploy@v0.0.1-preview
+  #       continue-on-error: ${{ (github.event_name == 'pull_request' && github.event.action != 'closed') }}
+  #       with:
+  #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
+  #         repo_token: ${{ secrets.GITHUB_TOKEN }}
+  #         action: 'upload'
+  #         app_location: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+  #         output_location: ''
+  #         skip_app_build: true
 
   destroy_pr:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
 
     steps:
+      - name: 'Azure Login'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_FAST_DESIGN }}
+
       - name: Destroy PR
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
