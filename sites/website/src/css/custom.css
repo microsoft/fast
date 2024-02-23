@@ -74,6 +74,10 @@ html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a mark {
   --ifm-menu-color-background-active: transparent;
 }
 
+.menu__list-item-collapsible--active {
+  background: transparent;
+}
+
 .docusaurus-highlight-code-line {
   background-color: #212121;
   display: block;

@@ -63,18 +63,6 @@ jobs:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
-  deploy_pr_to_staging:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-    - name: Deploy PR
-      uses: actions/download-artifact@v2
-      with:
-        name: ${{ env.ARTIFACT_NAME }}
-        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
-
   deploy_active_region:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
@@ -86,10 +74,15 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS_ACTIVE }}
 
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_ACTIVE }}
         app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
@@ -105,10 +98,15 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS_PASSIVE }}
 
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
     - name: 'Deploy to Passive Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_PASSIVE }}
         app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
@@ -156,7 +154,7 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    needs: deploy_to_staging
+    needs: [deploy_active_region, deploy_passive_region]
 
     steps:
     - name: Notify on Discord
