@@ -43,7 +43,7 @@ test.describe("TextArea", () => {
                     `;
                 }, attribute);
 
-                await expect(control).toHaveBooleanAttribute(attribute);
+                await expect(control).toHaveAttribute(attribute);
             });
         }
     });
@@ -184,7 +184,7 @@ test.describe("TextArea", () => {
                 node.value = "foo";
             });
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "foo");
 
@@ -192,7 +192,7 @@ test.describe("TextArea", () => {
                 node.reset();
             });
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "");
         });

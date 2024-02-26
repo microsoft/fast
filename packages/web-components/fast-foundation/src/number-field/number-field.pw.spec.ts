@@ -43,7 +43,7 @@ test.describe("NumberField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("autofocus");
+        await expect(control).toHaveAttribute("autofocus");
     });
 
     test("should set the `disabled` attribute on the internal control", async () => {
@@ -52,7 +52,7 @@ test.describe("NumberField", () => {
                 <fast-number-field disabled></fast-number-field>
             `;
         });
-        await expect(control).toHaveBooleanAttribute("disabled");
+        await expect(control).toHaveAttribute("disabled");
     });
 
     test("should set the `readonly` attribute on the internal control", async () => {
@@ -61,7 +61,7 @@ test.describe("NumberField", () => {
                 <fast-number-field readonly></fast-number-field>
             `;
         });
-        await expect(control).toHaveBooleanAttribute("readonly");
+        await expect(control).toHaveAttribute("readonly");
     });
 
     test("should set the `required` attribute on the internal control", async () => {
@@ -70,7 +70,7 @@ test.describe("NumberField", () => {
                 <fast-number-field required></fast-number-field>
             `;
         });
-        await expect(control).toHaveBooleanAttribute("required");
+        await expect(control).toHaveAttribute("required");
     });
 
     for (const [attribute, value] of Object.entries({

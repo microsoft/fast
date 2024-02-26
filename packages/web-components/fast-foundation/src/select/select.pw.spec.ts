@@ -98,7 +98,7 @@ test.describe("Select", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("tabindex");
+        await expect(element).not.toHaveAttribute("tabindex");
     });
 
     test("should set its value to the first enabled option when disabled", async () => {
@@ -278,7 +278,7 @@ test.describe("Select", () => {
 
         const listbox = element.locator(".listbox");
 
-        await expect(element).toHaveBooleanAttribute("open");
+        await expect(element).toHaveAttribute("open");
 
         await expect(listbox).toBeVisible();
     });
