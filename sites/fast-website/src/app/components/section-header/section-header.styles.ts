@@ -1,6 +1,7 @@
 import { bodyFont, neutralForegroundRest } from "@microsoft/fast-components";
-import { display } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { css } from "@microsoft/fast-element";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const SectionHeaderStyles = css`
     ${display("flex")} :host {
@@ -11,4 +12,10 @@ export const SectionHeaderStyles = css`
         box-sizing: border-box;
         text-align: center;
     }
-`;
+`.withBehaviors(
+    forcedColorsStylesheetBehavior(css`
+        :host {
+            color: ${SystemColors.CanvasText};
+        }
+    `)
+);
