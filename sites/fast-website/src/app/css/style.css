@@ -36,6 +36,13 @@
     padding: 0;
 }
 
+@media (forced-colors: active) {
+    .section,
+    .fast-frame-section {
+        color: CanvasText;
+    }
+}
+
 @media screen and (min-width: 900px) {
     .section,
     .fast-frame-section {
