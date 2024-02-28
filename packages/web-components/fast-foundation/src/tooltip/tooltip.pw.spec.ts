@@ -166,4 +166,18 @@ test.describe("Tooltip", () => {
             await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
         ).toBe("new-anchor");
     });
+
+    test('should update the attribute of the anchor element with the id of the tooltip', async () => {
+        await page.goto(fixtureURL("tooltip--tooltip"));
+
+        const anchor = page.locator("#anchor-default");
+
+        const tooltipId = await element.evaluate((node: FASTTooltip) => node.id)
+
+        await expect(anchor).toHaveAttribute("aria-describedby", tooltipId);
+
+        await element.evaluate((node: FASTTooltip) => node.remove())
+
+        await expect(anchor).not.toHaveAttribute("aria-describedby");
+    });
 });
