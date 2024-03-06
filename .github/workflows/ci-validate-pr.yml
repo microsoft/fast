@@ -3,11 +3,11 @@ name: Validate PRs
 on:
   push:
     branches:
-    - master
+    - archives/fast-element-1
     - releases/*
   pull_request:
     branches:
-    - master
+    - archives/fast-element-1
     - releases/*
     - features/*
 
@@ -19,6 +19,10 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.20.0
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -50,19 +54,6 @@ jobs:
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
-
-    - name: Collect and upload code coverage to Code Climate
-      uses: paambaati/codeclimate-action@v2.7.5
-      env:
-        CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        coverageCommand: yarn lerna run coverage
-        coverageLocations: |
-          ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/utilities/fast-eslint-rules/coverage/lcov.info:lcov
-        debug: false
 
     - name: Testing final validation
       run: yarn test:validation
