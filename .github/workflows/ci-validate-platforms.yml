@@ -3,11 +3,11 @@ name: Validate Platforms/Browsers
 on:
   push:
     branches:
-      - master
+      - archives/fast-element-1
 
   pull_request:
     branches:
-      - master
+      - archives/fast-element-1
 
   schedule:
     - cron: 0 7 * * 3
@@ -36,7 +36,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/master:refs/remotes/origin/master
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/archives/fast-element-1:refs/remotes/origin/archives/fast-element-1
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -65,18 +65,18 @@ jobs:
 
       - name: Run tests in changed packages
         if: ${{ github.event_name == 'pull_request' }}
-        run: yarn lerna run test --stream --since=origin/master
+        run: yarn lerna run test --stream --since=origin/archives/fast-element-1
 
       - name: Run tests in all Lerna Packages
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/archives/fast-element-1' }}
         run: yarn lerna run test --stream
 
       - name: Initialize CodeQL
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/archives/fast-element-1' }}
         uses: github/codeql-action/init@v1
         with:
           languages: javascript, typescript
 
       - name: Perform CodeQL Analysis
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/archives/fast-element-1' }}
         uses: github/codeql-action/analyze@v1

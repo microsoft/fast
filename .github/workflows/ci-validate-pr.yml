@@ -3,11 +3,11 @@ name: Validate PRs
 on:
   push:
     branches:
-    - master
+    - archives/fast-element-1
     - releases/*
   pull_request:
     branches:
-    - master
+    - archives/fast-element-1
     - releases/*
     - features/*
 
