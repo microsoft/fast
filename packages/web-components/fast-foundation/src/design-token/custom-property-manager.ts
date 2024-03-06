@@ -6,6 +6,7 @@ import {
     FASTElement,
     observable,
     Observable,
+    prependToAdoptedStyleSheetsSymbol,
 } from "@microsoft/fast-element";
 
 export const defaultElement = document.createElement("div");
@@ -38,6 +39,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
         super();
 
         const sheet = new CSSStyleSheet();
+        sheet[prependToAdoptedStyleSheetsSymbol] = true;
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
         source.$fastController.addStyles(ElementStyles.create([sheet]));
     }
