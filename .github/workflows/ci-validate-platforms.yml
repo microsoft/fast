@@ -34,6 +34,10 @@ jobs:
       - name: Checkout Branch
         uses: actions/checkout@v2
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.20.0
+
       - if: ${{ github.event_name == 'pull_request' }}
         run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/archives/fast-element-1:refs/remotes/origin/archives/fast-element-1
