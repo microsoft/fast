@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "backport data grid cell internal focus fix #6754",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}

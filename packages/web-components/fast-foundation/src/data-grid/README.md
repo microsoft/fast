@@ -147,6 +147,14 @@ export const myDataGrid = DataGrid.compose({
 
 <hr/>
 
+### Functions
+
+| Name                             | Description | Parameters           | Return                |
+| -------------------------------- | ----------- | -------------------- | --------------------- |
+| `defaultCellFocusTargetCallback` |             | `cell: DataGridCell` | `HTMLElement or null` |
+
+<hr/>
+
 
 
 ### class: `DataGridRow`
