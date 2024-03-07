@@ -46,7 +46,7 @@ test.describe("Search", () => {
                     { attribute }
                 );
 
-                await expect(element).toHaveBooleanAttribute(attribute);
+                await expect(element).toHaveAttribute(attribute);
             });
         }
     });
@@ -257,13 +257,13 @@ test.describe("Search", () => {
 
             await expect(element).toHaveJSProperty("value", "test value");
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await form.evaluate<void, HTMLFormElement>(node => {
                 node.reset();
             });
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "");
         });

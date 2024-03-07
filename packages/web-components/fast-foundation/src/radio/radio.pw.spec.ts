@@ -90,7 +90,7 @@ test.describe("Radio", () => {
             `;
         });
 
-        await expect(element).toHaveAttribute("tabindex", "");
+        await expect(element).not.toHaveAttribute("tabindex");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
