@@ -340,7 +340,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
-        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.control.value = this.control.value.replace(/[^0-9\-+e.]|(?<=e.*)e/g, "");
         this.isUserInput = true;
         this.value = this.control.value;
     }
@@ -355,6 +355,18 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleChange(): void {
+        this.value = this.value.toLowerCase();
+        this.value = this.value.replace(/(?<=e.*)e/g, "");
+        const parts = this.value.split("e");
+        if (parts.length > 1) {
+            let base = parts[0];
+            let exponent = parts[1];
+
+            base = base === "" && exponent !== "" ? "0" : base;
+            exponent = exponent.replace(/[^0-9\-+]/g, "");
+            this.value = base + (exponent !== "" ? "e" + exponent : "");
+            this.control.value = this.value;
+        }
         this.$emit("change");
     }
 

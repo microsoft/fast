@@ -333,6 +333,24 @@ test.describe("NumberField", () => {
         await expect(control).toHaveValue("");
     });
 
+    test("should allow only one e entry", async ({ page }) => {
+        const value = "11e111e1e1e1e1e1";
+
+        const expectedValue = "11e11111111";
+
+        await page.goto(fixtureURL("number-field--number-field"));
+
+        const element = page.locator("fast-number-field");
+
+        const control = element.locator(".control");
+
+        await element.type(value);
+
+        await expect(element).toHaveJSProperty("value", expectedValue);
+
+        await expect(control).toHaveValue(expectedValue);
+    });
+
     test('should set the `step` property to "1" by default', async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
