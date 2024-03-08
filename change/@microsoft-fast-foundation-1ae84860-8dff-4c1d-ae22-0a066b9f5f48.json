@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "select: removes prescriptive rendering of select as listbox",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "brianbrady@microsoft.com",
+  "dependentChangeType": "patch"
+}

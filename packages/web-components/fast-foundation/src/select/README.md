@@ -115,9 +115,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name | Field    | Inherited From |
-| ---- | -------- | -------------- |
-|      | multiple | FASTListbox    |
+| Name | Field        | Inherited From |
+| ---- | ------------ | -------------- |
+|      | multiple     | FASTListbox    |
 
 <hr/>
 
@@ -148,6 +148,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `disabled`         | public    | `boolean`             |         | The disabled state of the listbox.                   | FASTListbox          |
 | `selectedIndex`    | public    | `number`              | `-1`    | The index of the selected option.                    | FASTListbox          |
 | `selectedOptions`  | public    | `FASTListboxOption[]` | `[]`    | A collection of the selected options.                | FASTListbox          |
+| `listboxMode`      | public    | `boolean`             | `false` | Indicates if the select renders as a listbox only    | FASTSelect         |
 
 #### Methods
 
@@ -167,10 +168,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name   | Field    | Inherited From |
-| ------ | -------- | -------------- |
-| `open` | open     |                |
-|        | multiple | FASTListbox    |
+| Name           | Field       | Inherited From |
+| -------------- | ----------- | -------------- |
+| `open`         | open        |                |
+| `multiple`     | multiple    | FASTListbox    |
+| `listbox-mode` | listboxMode | FASTSelect     |
+
 
 #### CSS Parts
 
