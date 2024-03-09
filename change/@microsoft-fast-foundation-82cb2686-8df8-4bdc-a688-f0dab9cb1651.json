@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Use close watcher when supported in place of escape key handlers",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "luke@warlow.dev",
+  "dependentChangeType": "patch"
+}

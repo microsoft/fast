@@ -57,6 +57,8 @@ export class FASTSelect extends FormAssociatedSelect {
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
 
+    private closeWatcher: CloseWatcher | null = null;
+
     /**
      * Sets focus and synchronizes ARIA attributes when the open property changes.
      *
@@ -78,10 +80,16 @@ export class FASTSelect extends FormAssociatedSelect {
             this.focusAndScrollOptionIntoView();
             this.indexWhenOpened = this.selectedIndex;
 
+            this.closeWatcher?.destroy();
+            this.closeWatcher = new CloseWatcher();
+            this.closeWatcher.onclose = () => (this.open = false);
+
             // focus is directed to the element when `open` is changed programmatically
             Updates.enqueue(() => this.focus());
 
             return;
+        } else {
+            this.closeWatcher?.destroy();
         }
 
         this.cleanup?.();
@@ -523,7 +531,7 @@ export class FASTSelect extends FormAssociatedSelect {
             }
 
             case keyEscape: {
-                if (this.collapsible && this.open) {
+                if (this.collapsible && this.open && !this.closeWatcher) {
                     e.preventDefault();
                     this.open = false;
                 }

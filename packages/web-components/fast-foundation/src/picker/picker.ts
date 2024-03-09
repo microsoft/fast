@@ -446,6 +446,8 @@ export class FASTPicker extends FormAssociatedPicker {
     private inputElementView: HTMLView | null = null;
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
+    private closeWatcher: CloseWatcher | null = null;
+
     /**
      * @internal
      */
@@ -559,6 +561,9 @@ export class FASTPicker extends FormAssociatedPicker {
 
         if (open && getRootActiveElement(this) === this.inputElement) {
             this.flyoutOpen = open;
+            this.closeWatcher?.destroy();
+            this.closeWatcher = new CloseWatcher();
+            this.closeWatcher.onclose = () => this.toggleFlyout(false);
             Updates.enqueue(() => {
                 if (this.menuElement !== undefined) {
                     this.setFocusedOption(0);
@@ -571,6 +576,7 @@ export class FASTPicker extends FormAssociatedPicker {
 
         this.flyoutOpen = false;
         this.disableMenu();
+        this.closeWatcher?.destroy();
         return;
     }
 
@@ -661,6 +667,9 @@ export class FASTPicker extends FormAssociatedPicker {
             }
 
             case keyEscape: {
+                if (this.closeWatcher) {
+                    return true;
+                }
                 this.toggleFlyout(false);
                 return false;
             }
