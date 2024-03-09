@@ -17,7 +17,7 @@ test.describe("TextArea", () => {
 
         root = page.locator("#root");
 
-        control = element.locator(".control");
+        control = element.locator(".field");
 
         await page.goto(fixtureURL("text-area--text-area"));
     });
