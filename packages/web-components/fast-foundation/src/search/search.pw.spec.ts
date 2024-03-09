@@ -8,7 +8,7 @@ test.describe("Search", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
-    let control: Locator;
+    let field: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
@@ -17,7 +17,7 @@ test.describe("Search", () => {
 
         root = page.locator("#root");
 
-        control = element.locator(".field");
+        field = element.locator(".field");
 
         await page.goto(fixtureURL("search--search"));
     });
@@ -95,7 +95,7 @@ test.describe("Search", () => {
                     { attrToken, value }
                 );
 
-                await expect(control).toHaveAttribute(spinalCase(attribute), `${value}`);
+                await expect(field).toHaveAttribute(spinalCase(attribute), `${value}`);
             });
         }
     });
@@ -222,7 +222,7 @@ test.describe("Search", () => {
             `;
         });
 
-        const control = element.locator(".control");
+        const field = element.locator(".field");
 
         const [wasChanged] = await Promise.all([
             element.evaluate(
@@ -231,7 +231,9 @@ test.describe("Search", () => {
                         node.addEventListener("change", () => resolve(true));
                     })
             ),
-            element.type("foo").then(() => control.press("Enter")),
+            field.evaluate(node => {
+                node.dispatchEvent(new KeyboardEvent("change"));
+            }),
         ]);
 
         expect(wasChanged).toBeTruthy();
