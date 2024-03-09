@@ -5,7 +5,7 @@ import type { FASTProgress } from "./progress.js";
 import type { ProgressOptions } from "./progress.options.js";
 
 /**
- * The default template for the indicator element of the {@link @microsoft/fast-foundation#FASTProgressRing} component.
+ * The default template for the indicator element of the {@link @microsoft/fast-foundation#FASTProgress} component.
  * @public
  */
 export const progressIndicatorTemplate = html`
