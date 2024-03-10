@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "Foundation: Updated Horizontal Scroll template",
+  "comment": "Foundation: Updated Horizontal Scroll template (https://github.com/microsoft/fast/pull/6921)",
   "packageName": "@microsoft/fast-foundation",
   "email": "47367562+bheston@users.noreply.github.com",
   "dependentChangeType": "prerelease"
