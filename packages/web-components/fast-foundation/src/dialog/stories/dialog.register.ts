@@ -11,7 +11,14 @@ const styles = css`
         --elevation: 14;
         --dialog-height: 480px;
         --dialog-width: 640px;
-        display: block;
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: auto;
     }
 
     .overlay {
@@ -22,17 +29,6 @@ const styles = css`
         bottom: 0;
         background: rgba(0, 0, 0, 0.3);
         touch-action: none;
-    }
-
-    .positioning-region {
-        display: flex;
-        justify-content: center;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        overflow: auto;
     }
 
     .control {

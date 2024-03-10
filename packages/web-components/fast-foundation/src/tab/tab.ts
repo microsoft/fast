@@ -15,6 +15,7 @@ export type TabOptions = StartEndOptions<FASTTab>;
  * @slot start - Content which can be provided before the tab content
  * @slot end - Content which can be provided after the tab content
  * @slot - The default slot for the tab content
+ * @csspart content - The container for the default slot content
  *
  * @public
  */
