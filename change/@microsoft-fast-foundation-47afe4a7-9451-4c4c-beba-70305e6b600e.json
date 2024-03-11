@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix(combobox): close the combobox even if there's no selection",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "zoepeterson@microsoft.com",
+  "dependentChangeType": "patch"
+}
