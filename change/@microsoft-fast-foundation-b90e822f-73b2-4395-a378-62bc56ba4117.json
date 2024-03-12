@@ -1,0 +1,9 @@
+{
+  "type": "prerelease",
+  "comment": {
+    "title": ""
+  },
+  "packageName": "@microsoft/fast-foundation",
+  "email": "zoepeterson@microsoft.com",
+  "dependentChangeType": "patch"
+}
