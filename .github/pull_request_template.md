@@ -47,7 +47,7 @@ Please provide a summary of the tests affected by this work and any unique strat
 - [ ] I have added tests for my changes.
 - [ ] I have tested my changes.
 - [ ] I have updated the project documentation to reflect my changes.
-- [ ] I have read the [CONTRIBUTING](https://github.com/microsoft/fast/blob/master/CONTRIBUTING.md) documentation and followed the [standards](/docs/community/code-of-conduct/#our-standards) for this project.
+- [ ] I have read the [CONTRIBUTING](https://github.com/microsoft/fast/blob/master/CONTRIBUTING.md) documentation and followed the [standards](https://github.com/microsoft/fast/blob/master/CODE_OF_CONDUCT.md#our-standards) for this project.
 
 ### Component-specific
 
