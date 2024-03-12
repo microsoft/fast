@@ -1,9 +1,9 @@
 {
   "type": "prerelease",
   "comment": {
-    "title": ""
+    "title": "fix: select element should close with multi-select enabled"
   },
   "packageName": "@microsoft/fast-foundation",
   "email": "zoepeterson@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }

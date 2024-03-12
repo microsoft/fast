@@ -111,7 +111,7 @@ export class FASTSelect extends FormAssociatedSelect {
      */
     @volatile
     public get collapsible(): boolean {
-        return !(this.multiple || typeof this.size === "number");
+        return !(typeof this.size === "number");
     }
 
     /**
@@ -307,17 +307,23 @@ export class FASTSelect extends FormAssociatedSelect {
             return;
         }
 
-        if (this.open) {
-            const captured = (e.target as HTMLElement).closest(
-                `option,[role=option]`
-            ) as FASTListboxOption;
+        const captured = (e.target as HTMLElement).closest(
+            `option,[role=option]`
+        ) as FASTListboxOption;
 
-            if (captured && captured.disabled) {
-                return;
-            }
+        // do nothing if the selected option is disabled
+        if (this.open && captured?.disabled) {
+            return;
         }
 
         super.clickHandler(e);
+
+        if (this.multiple && captured) {
+            // if multi-selection mode is enabled
+            // return after super.clickHandler so the captured option is selected
+            // but return before the open property is toggled
+            return;
+        }
 
         this.open = this.collapsible && !this.open;
 
