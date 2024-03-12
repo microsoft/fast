@@ -1,7 +1,7 @@
 {
   "type": "prerelease",
   "comment": {
-    "title": "fix: select element should close with multi-select enabled"
+    "title": "fix(select): select dropdown should be collapsible with multi-select enabled"
   },
   "packageName": "@microsoft/fast-foundation",
   "email": "zoepeterson@microsoft.com",
