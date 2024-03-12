@@ -258,7 +258,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
             ) as FASTListboxOption | null;
 
             if (!captured || captured.disabled) {
-                this.open = !this.open;
+                this.open = false;
                 return;
             }
 
