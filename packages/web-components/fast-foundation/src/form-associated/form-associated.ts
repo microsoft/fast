@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
+import { FASTButton } from "../button/button.js";
 
 /**
  * This file enables typing support for ElementInternals APIs.
@@ -660,7 +661,10 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         private _keypressHandler(e: KeyboardEvent): void {
             switch (e.key) {
                 case keyEnter:
-                    if (this.form instanceof HTMLFormElement) {
+                    if (
+                        this.form instanceof HTMLFormElement &&
+                        !(this instanceof FASTButton)
+                    ) {
                         // Implicit submission
                         const defaultButton = this.form.querySelector(
                             "[type=submit]"
