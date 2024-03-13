@@ -56,6 +56,16 @@ export class Combobox extends FormAssociatedCombobox {
     autocomplete: ComboboxAutocomplete | undefined;
 
     /**
+     * Attribute which controls whether the component uses a case-sensitive search
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: case-sensitive
+     */
+    @attr({ attribute: "case-sensitive", mode: "boolean" })
+    public caseSensitive: boolean = false;
+
+    /**
      * Reference to the internal text input element.
      *
      * @internal
@@ -245,10 +255,11 @@ export class Combobox extends FormAssociatedCombobox {
         const prev = `${this._value}`;
 
         if (this.$fastController.isConnected && this.options) {
-            const selectedIndex = this.options.findIndex(
-                el => el.text.toLowerCase() === next.toLowerCase()
-            );
+            const predicate: (value: ListboxOption) => boolean = this.caseSensitive
+                ? el => el.text === next
+                : el => el.text.toLowerCase() === next.toLowerCase();
 
+            const selectedIndex = this.options.findIndex(predicate);
             const prevSelectedValue = this.options[this.selectedIndex]?.text;
             const nextSelectedValue = this.options[selectedIndex]?.text;
 
@@ -335,10 +346,12 @@ export class Combobox extends FormAssociatedCombobox {
             this.filter = "";
         }
 
-        const filter = this.filter.toLowerCase();
-
+        const filterTransform: (s: string) => string = this.caseSensitive
+            ? s => s
+            : s => s?.toLowerCase();
+        const filter = filterTransform(this.filter);
         this.filteredOptions = this._options.filter(o =>
-            o.text.toLowerCase().startsWith(this.filter.toLowerCase())
+            filterTransform(o.text)?.startsWith(filter)
         );
 
         if (this.isAutocompleteList) {

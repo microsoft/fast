@@ -561,4 +561,37 @@ describe("Combobox", () => {
 
         expect((element as Combobox).control.value).to.eq("three");
     });
+
+    it("should perform case-sensitive search when case-sensitive attribute is TRUE", async () => {
+        const { connect, element, option3 } = await setup();
+
+        await connect();
+
+        element.caseSensitive = true;
+        element.value = "THREE";
+
+        await DOM.nextUpdate();
+
+        expect(element.control).to.exist;
+
+        // make sure lowercase value was NOT selected
+        expect((element as Combobox).control.value).to.eq("THREE");
+        expect(option3.selected).to.be.false;
+    });
+
+    it("should perform case-insensitive search by default", async () => {
+        const { connect, element, option3 } = await setup();
+
+        await connect();
+
+        element.value = "THREE";
+
+        await DOM.nextUpdate();
+
+        expect(element.control).to.exist;
+
+        // make sure lowercase value was selected
+        expect((element as Combobox).control.value).to.eq("three");
+        expect(option3.selected).to.be.true;
+    });
 });

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add case-sensitive search to Combobox",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "aaronburro@gmail.com",
+  "dependentChangeType": "patch"
+}
