@@ -29,7 +29,7 @@ test.describe("Tab", () => {
         });
 
         test("should set the `aria-disabled` attribute when `disabled` is true", async () => {
-            await expect(element).not.hasAttribute("aria-disabled");
+            await expect(element).not.toHaveAttribute("aria-disabled");
 
             await element.evaluate<void, FASTTab>(node => {
                 node.disabled = true;

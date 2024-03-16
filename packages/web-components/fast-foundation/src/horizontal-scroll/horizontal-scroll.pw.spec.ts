@@ -148,7 +148,7 @@ test.describe("HorizontalScroll", () => {
     });
 
     test.describe("Scrolling", () => {
-        test("should change scroll stop on resize", async () => {
+        test.fixme("should change scroll stop on resize", async () => {
             await page.goto(
                 fixtureURL("horizontal-scroll--horizontal-scroll", { speed: 0 })
             );

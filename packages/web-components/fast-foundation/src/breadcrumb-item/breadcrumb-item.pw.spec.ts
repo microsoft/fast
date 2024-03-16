@@ -45,7 +45,7 @@ test.describe("Breadcrumb item", () => {
 
         const anchor = element.locator("a");
 
-        await expect(element).not.hasAttribute("href");
+        await expect(element).not.toHaveAttribute("href");
 
         await expect(element).toHaveJSProperty("href", undefined);
 

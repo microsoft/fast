@@ -33,27 +33,24 @@ test.describe("Menu item", () => {
         await expect(element).toHaveAttribute("role", MenuItemRole.menuitem);
     });
 
-    test.describe(
-        "should include a matching role when the `role` property is provided",
-        () => {
-            let role: MenuItemRole;
-            for (role in MenuItemRole) {
-                test(role, async () => {
-                    await root.evaluate(node => {
-                        node.innerHTML = /* html */ `
+    test.describe("should include a matching role when the `role` property is provided", () => {
+        let role: MenuItemRole;
+        for (role in MenuItemRole) {
+            test(role, async () => {
+                await root.evaluate(node => {
+                    node.innerHTML = /* html */ `
                             <fast-menu-item>Menu item</fast-menu-item>
                         `;
-                    });
-
-                    await element.evaluate(
-                        (node: FASTMenuItem, role) => (node.role = role),
-                        role
-                    );
-                    await expect(element).toHaveAttribute("role", role);
                 });
-            }
+
+                await element.evaluate(
+                    (node: FASTMenuItem, role) => (node.role = role),
+                    role
+                );
+                await expect(element).toHaveAttribute("role", role);
+            });
         }
-    );
+    });
 
     test("should set the `aria-disabled` attribute with the `disabled` value when provided", async () => {
         await root.evaluate(node => {
@@ -102,7 +99,7 @@ test.describe("Menu item", () => {
             `;
         });
 
-        await expect(element).hasAttribute("aria-checked", "false");
+        await expect(element).toHaveAttribute("aria-checked", "false");
 
         await element.click();
 
@@ -120,7 +117,7 @@ test.describe("Menu item", () => {
             `;
         });
 
-        await expect(element).hasAttribute("aria-checked", "false");
+        await expect(element).toHaveAttribute("aria-checked", "false");
 
         await element.click();
 
