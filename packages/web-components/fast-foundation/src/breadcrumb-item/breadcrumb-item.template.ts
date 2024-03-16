@@ -11,7 +11,7 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
     options: BreadcrumbItemOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-        <div role="listitem" class="listitem" part="listitem">
+        <template role="listitem">
             ${anchorTemplate(options).inline()}
             ${when(
                 x => x.separator,
@@ -23,6 +23,6 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
                     </span>
                 `
             )}
-        </div>
+        </template>
     `;
 }

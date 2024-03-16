@@ -17,6 +17,7 @@ import {
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
+import { getRootActiveElement } from "../utilities/index.js";
 import type { ColumnDefinition } from "./data-grid.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 
@@ -200,7 +201,8 @@ export class FASTDataGridCell extends FASTElement {
     }
 
     public handleFocusout(e: FocusEvent): void {
-        if (this !== document.activeElement && !this.contains(document.activeElement)) {
+        const activeElement: Element | null = getRootActiveElement(this);
+        if (this !== activeElement && !this.contains(activeElement)) {
             this.isActiveCell = false;
         }
     }
@@ -230,7 +232,7 @@ export class FASTDataGridCell extends FASTElement {
             return;
         }
 
-        const rootActiveElement: Element | null = this.getRootActiveElement();
+        const rootActiveElement: Element | null = getRootActiveElement(this);
 
         switch (e.key) {
             case keyEnter:
@@ -290,16 +292,6 @@ export class FASTDataGridCell extends FASTElement {
                 }
                 break;
         }
-    }
-
-    private getRootActiveElement(): Element | null {
-        const rootNode = this.getRootNode();
-
-        if (rootNode instanceof ShadowRoot) {
-            return rootNode.activeElement;
-        }
-
-        return document.activeElement;
     }
 
     private updateCellView(): void {
