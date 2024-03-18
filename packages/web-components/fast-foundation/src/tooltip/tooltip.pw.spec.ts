@@ -147,7 +147,7 @@ test.describe("Tooltip", () => {
     test("should change anchor element when the `anchor` attribute changes", async () => {
         await page.goto(fixtureURL("tooltip--tooltip"));
 
-        await root.evaluate(node => {
+        await root.evaluate((node: FASTTooltip) => {
             const newAnchor = document.createElement("div");
             newAnchor.id = "new-anchor";
 
@@ -158,12 +158,49 @@ test.describe("Tooltip", () => {
             await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
         ).toBe("anchor-default");
 
-        await element.evaluate(node => {
+        await element.evaluate((node: FASTTooltip) => {
             node.setAttribute("anchor", "new-anchor");
         });
 
         expect(
             await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
         ).toBe("new-anchor");
+    });
+
+    test("should change anchor element when the `anchorElement` property changes", async () => {
+        await root.evaluate((node: HTMLElement) => {
+            node.innerHTML = /* html */ `
+            <fast-tooltip anchor="anchor-default">
+                Tooltip
+            </fast-tooltip>
+            <fast-button id="anchor-default">
+                Hover or focus me
+            </fast-button>
+            <fast-button id="anchor-new">
+                Hover or focus me
+            </fast-button>
+        `;
+        });
+
+        expect(
+            await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
+        ).toBe("anchor-default");
+
+        await element.evaluate((node: FASTTooltip) => {
+            const newAnchor = document.getElementById("anchor-new");
+            node.anchorElement = newAnchor;
+        });
+
+        const anchor = page.locator("#anchor-new");
+
+        await expect(element).toHaveJSProperty("visible", false);
+
+        await expect(element).toBeHidden();
+
+        await anchor.focus();
+
+        await expect(element).toHaveJSProperty("visible", true);
+
+        await expect(element).toBeVisible();
     });
 });

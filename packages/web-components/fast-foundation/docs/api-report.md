@@ -2139,8 +2139,9 @@ export class FASTTooltip extends FASTElement {
     anchor: string;
     // @internal
     protected anchorChanged(prev: string | undefined, next: string): void;
-    // @internal
     anchorElement: Element | null;
+    // (undocumented)
+    protected anchorElementChanged(prev: Element | null, next: Element | null): void;
     cleanup: () => void;
     // (undocumented)
     connectedCallback(): void;

@@ -39,7 +39,7 @@ export class FASTTooltip extends FASTElement {
      * HTML Attribute: `anchor`
      */
     @attr({ attribute: "anchor" })
-    public anchor: string;
+    public anchor: string | undefined;
 
     /**
      * Removes listeners from the previous anchor element and updates the anchor element reference.
@@ -51,26 +51,30 @@ export class FASTTooltip extends FASTElement {
      */
     protected anchorChanged(prev: string | undefined, next: string): void {
         if (this.$fastController.isConnected) {
-            this.removeListeners();
-
-            this.removeAnchorAriaDescribedBy(this.id);
-
             this.anchorElement = this.getAnchorElement(next);
-
-            this.addAnchorAriaDescribedBy();
-
-            if (!this.controlledVisibility) {
-                this.addListeners();
-            }
         }
     }
 
     /**
-     * A reference to the anchor element.
+     * A reference to the anchor element. This can be assigned directly or by setting the `anchor` attribute.
+     * Setting either will override the previous anchor element.
      *
-     * @internal
+     * @public
      */
+    @observable
     public anchorElement: Element | null;
+    protected anchorElementChanged(prev: Element | null, next: Element | null): void {
+        if (prev) {
+            this.removeListeners(prev);
+            this.removeAnchorAriaDescribedBy(this.id, prev);
+        }
+        if (next) {
+            this.addAnchorAriaDescribedBy(next);
+            if (!this.controlledVisibility) {
+                this.addListeners(next);
+            }
+        }
+    }
 
     /**
      * Cleanup function for the tooltip positioner.
@@ -101,13 +105,15 @@ export class FASTTooltip extends FASTElement {
         prev: boolean | undefined,
         next: boolean
     ): void {
-        if (!next) {
-            this.addListeners();
-            this.hideTooltip();
-            return;
-        }
+        if (this.$fastController.isConnected && this.anchorElement) {
+            if (!next) {
+                this.addListeners(this.anchorElement);
+                this.hideTooltip();
+                return;
+            }
 
-        this.removeListeners();
+            this.removeListeners(this.anchorElement);
+        }
     }
 
     /**
@@ -142,10 +148,14 @@ export class FASTTooltip extends FASTElement {
     @attr
     id: string;
     public idChanged(prev: string, next: string): void {
-        this.removeAnchorAriaDescribedBy(prev);
-        Updates.enqueue(() => {
-            this.addAnchorAriaDescribedBy();
-        });
+        if (this.anchorElement) {
+            this.removeAnchorAriaDescribedBy(prev, this.anchorElement);
+            Updates.enqueue(() => {
+                if (this.anchorElement) {
+                    this.addAnchorAriaDescribedBy(this.anchorElement);
+                }
+            });
+        }
     }
 
     /**
@@ -274,23 +284,19 @@ export class FASTTooltip extends FASTElement {
      *
      * @internal
      */
-    private addAnchorAriaDescribedBy(): void {
+    private addAnchorAriaDescribedBy(anchorElement: Element): void {
         if (!this.id) {
             this.id = uniqueId("tooltip-");
             return;
         }
 
-        if (!this.anchorElement) {
-            return;
-        }
-
-        const anchorElementDescribedBy = this.anchorElement
+        const anchorElementDescribedBy = anchorElement
             .getAttribute("aria-describedby")
             ?.concat(" ", this.id)
             .trim();
 
         if (anchorElementDescribedBy) {
-            this.anchorElement.setAttribute("aria-describedby", anchorElementDescribedBy);
+            anchorElement.setAttribute("aria-describedby", anchorElementDescribedBy);
         }
     }
 
@@ -299,15 +305,11 @@ export class FASTTooltip extends FASTElement {
      *
      * @internal
      */
-    private addListeners(): void {
-        if (!this.anchorElement) {
-            return;
-        }
-
-        this.anchorElement.addEventListener("focusin", this.focusinAnchorHandler);
-        this.anchorElement.addEventListener("focusout", this.focusoutAnchorHandler);
-        this.anchorElement.addEventListener("mouseout", this.mouseoutAnchorHandler);
-        this.anchorElement.addEventListener("mouseover", this.mouseoverAnchorHandler);
+    private addListeners(anchorElement: Element): void {
+        anchorElement.addEventListener("focusin", this.focusinAnchorHandler);
+        anchorElement.addEventListener("focusout", this.focusoutAnchorHandler);
+        anchorElement.addEventListener("mouseout", this.mouseoutAnchorHandler);
+        anchorElement.addEventListener("mouseover", this.mouseoverAnchorHandler);
 
         this.addEventListener("mouseout", this.mouseoutAnchorHandler);
         this.addEventListener("mouseover", this.mouseoverAnchorHandler);
@@ -317,7 +319,9 @@ export class FASTTooltip extends FASTElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.anchorChanged(undefined, this.anchor);
+        if (this.anchor !== undefined) {
+            this.anchorElement = this.getAnchorElement(this.anchor);
+        }
     }
 
     /**
@@ -363,20 +367,18 @@ export class FASTTooltip extends FASTElement {
      *
      * @internal
      */
-    private removeAnchorAriaDescribedBy(id: string): void {
-        if (this.anchorElement) {
-            const anchorElementDescribedBy = this.anchorElement
-                .getAttribute("aria-describedby")
-                ?.split(" ");
+    private removeAnchorAriaDescribedBy(id: string, anchorElement: Element): void {
+        const anchorElementDescribedBy = anchorElement
+            .getAttribute("aria-describedby")
+            ?.split(" ");
 
-            this.anchorElement.setAttribute(
-                "aria-describedby",
-                (anchorElementDescribedBy ?? []).filter(i => i !== id).join(" ")
-            );
+        anchorElement.setAttribute(
+            "aria-describedby",
+            (anchorElementDescribedBy ?? []).filter(i => i !== id).join(" ")
+        );
 
-            if (this.anchorElement.getAttribute("aria-describedby") === "") {
-                this.anchorElement.removeAttribute("aria-describedby");
-            }
+        if (anchorElement.getAttribute("aria-describedby") === "") {
+            anchorElement.removeAttribute("aria-describedby");
         }
     }
 
@@ -385,15 +387,11 @@ export class FASTTooltip extends FASTElement {
      *
      * @internal
      */
-    private removeListeners(): void {
-        if (!this.anchorElement) {
-            return;
-        }
-
-        this.anchorElement.removeEventListener("focusin", this.focusinAnchorHandler);
-        this.anchorElement.removeEventListener("focusout", this.focusoutAnchorHandler);
-        this.anchorElement.removeEventListener("mouseout", this.mouseoutAnchorHandler);
-        this.anchorElement.removeEventListener("mouseover", this.mouseoverAnchorHandler);
+    private removeListeners(anchorElement: Element): void {
+        anchorElement.removeEventListener("focusin", this.focusinAnchorHandler);
+        anchorElement.removeEventListener("focusout", this.focusoutAnchorHandler);
+        anchorElement.removeEventListener("mouseout", this.mouseoutAnchorHandler);
+        anchorElement.removeEventListener("mouseover", this.mouseoverAnchorHandler);
 
         this.removeEventListener("mouseout", this.mouseoutAnchorHandler);
         this.removeEventListener("mouseover", this.mouseoverAnchorHandler);

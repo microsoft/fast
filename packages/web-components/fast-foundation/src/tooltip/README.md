@@ -68,22 +68,24 @@ export const myTooltip = Tooltip.compose({
 
 #### Fields
 
-| Name        | Privacy | Type                   | Default | Description                                                  | Inherited From |
-| ----------- | ------- | ---------------------- | ------- | ------------------------------------------------------------ | -------------- |
-| `anchor`    | public  | `string`               |         | The id of the element the tooltip is anchored to.            |                |
-| `cleanup`   | public  | `() => void`           |         | Cleanup function for the tooltip positioner.                 |                |
-| `id`        | public  | `string`               |         | The tooltip ID attribute.                                    |                |
-| `placement` | public  | `TooltipPlacement`     |         | The placement of the tooltip relative to the anchor element. |                |
-| `show`      | public  | `boolean or undefined` |         | The visibility state of the tooltip.                         |                |
-| `visible`   | public  | `boolean or undefined` |         | Returns the current visibility of the tooltip.               |                |
+| Name            | Privacy | Type                   | Default | Description                                                                                                                                                        | Inherited From |
+| --------------- | ------- | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
+| `anchor`        | public  | `string`               |         | The id of the element the tooltip is anchored to.                                                                                                                  |                |
+| `anchorElement` | public  | `Element or null`      |         | A reference to the anchor element. This can be assigned directly or by setting the \`anchor\` attribute. Setting either will override the previous anchor element. |                |
+| `cleanup`       | public  | `() => void`           |         | Cleanup function for the tooltip positioner.                                                                                                                       |                |
+| `id`            | public  | `string`               |         | The tooltip ID attribute.                                                                                                                                          |                |
+| `placement`     | public  | `TooltipPlacement`     |         | The placement of the tooltip relative to the anchor element.                                                                                                       |                |
+| `show`          | public  | `boolean or undefined` |         | The visibility state of the tooltip.                                                                                                                               |                |
+| `visible`       | public  | `boolean or undefined` |         | Returns the current visibility of the tooltip.                                                                                                                     |                |
 
 #### Methods
 
-| Name             | Privacy | Description                | Parameters                                               | Return | Inherited From |
-| ---------------- | ------- | -------------------------- | -------------------------------------------------------- | ------ | -------------- |
-| `idChanged`      | public  |                            | `prev: string, next: string`                             | `void` |                |
-| `showChanged`    | public  |                            | `prev: boolean or undefined, next: boolean or undefined` | `void` |                |
-| `setPositioning` | public  | Sets the tooltip position. |                                                          | `void` |                |
+| Name                   | Privacy   | Description                | Parameters                                               | Return | Inherited From |
+| ---------------------- | --------- | -------------------------- | -------------------------------------------------------- | ------ | -------------- |
+| `anchorElementChanged` | protected |                            | `prev: Element or null, next: Element or null`           | `void` |                |
+| `idChanged`            | public    |                            | `prev: string, next: string`                             | `void` |                |
+| `showChanged`          | public    |                            | `prev: boolean or undefined, next: boolean or undefined` | `void` |                |
+| `setPositioning`       | public    | Sets the tooltip position. |                                                          | `void` |                |
 
 #### Events
 
