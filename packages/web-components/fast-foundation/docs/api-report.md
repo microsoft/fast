@@ -2136,7 +2136,7 @@ export interface FASTToolbar extends StartEnd, DelegatesARIAToolbar {
 
 // @public
 export class FASTTooltip extends FASTElement {
-    anchor: string;
+    anchor: string | undefined;
     // @internal
     protected anchorChanged(prev: string | undefined, next: string): void;
     anchorElement: Element | null;

@@ -70,7 +70,7 @@ export const myTooltip = Tooltip.compose({
 
 | Name            | Privacy | Type                   | Default | Description                                                                                                                                                        | Inherited From |
 | --------------- | ------- | ---------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------- |
-| `anchor`        | public  | `string`               |         | The id of the element the tooltip is anchored to.                                                                                                                  |                |
+| `anchor`        | public  | `string or undefined`  |         | The id of the element the tooltip is anchored to.                                                                                                                  |                |
 | `anchorElement` | public  | `Element or null`      |         | A reference to the anchor element. This can be assigned directly or by setting the \`anchor\` attribute. Setting either will override the previous anchor element. |                |
 | `cleanup`       | public  | `() => void`           |         | Cleanup function for the tooltip positioner.                                                                                                                       |                |
 | `id`            | public  | `string`               |         | The tooltip ID attribute.                                                                                                                                          |                |
