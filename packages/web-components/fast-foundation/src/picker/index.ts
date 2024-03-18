@@ -8,4 +8,5 @@ export { FASTPickerMenu } from "./picker-menu.js";
 export { pickerMenuTemplate } from "./picker-menu.template.js";
 export { FASTPicker } from "./picker.js";
 export { MenuPlacement } from "./picker.options.js";
-export { PickerOptions, pickerTemplate } from "./picker.template.js";
+export { pickerTemplate } from "./picker.template.js";
+export type { PickerOptions } from "./picker.template.js";

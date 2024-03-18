@@ -1,6 +1,7 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
-import { staticallyCompose } from "../utilities/template-helpers.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor/anchor.template.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { BreadcrumbItemOptions, FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 /**

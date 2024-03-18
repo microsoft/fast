@@ -1,10 +1,5 @@
-import {
-    children,
-    elements,
-    ElementViewTemplate,
-    html,
-    slotted,
-} from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTToolbar } from "./toolbar.js";
 import type { ToolbarOptions } from "./toolbar.options.js";
