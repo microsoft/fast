@@ -3,5 +3,5 @@
   "comment": "add anchorElement api to tooltip",
   "packageName": "@microsoft/fast-foundation",
   "email": "stephcomeau@msn.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
