@@ -5,10 +5,7 @@ import { storyTemplate as menuItemStoryTemplate } from "../../menu-item/stories/
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTMenu } from "../menu.js";
-import type {
-    FancyMenu as MyFancyMenu,
-    FancyMenuItem as MyFancyMenuItem,
-} from "./menu.register.js";
+import type { FancyMenu as MyFancyMenu } from "./menu.register.js";
 
 const storyTemplate = html<StoryArgs<FASTMenu>>`
     <fast-menu slot="${x => x.slot}">${x => x.storyContent}</fast-menu>
