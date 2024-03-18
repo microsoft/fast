@@ -1,5 +1,3 @@
-import { useArgs } from "@storybook/client-api";
-
 import "../src/anchor/stories/anchor.register.js";
 import "../src/anchored-region/stories/anchored-region.register.js";
 import "../src/avatar/stories/avatar.register.js";
@@ -61,11 +59,4 @@ import "../src/tree-view/stories/tree-view.register.js";
 
 import { FAST, html } from "@microsoft/fast-element";
 
-FAST.html = html;
-
-export const decorators = [
-    (Story, context) => {
-        const [_, updateArgs] = useArgs();
-        return Story({ ...context, updateArgs });
-    },
-];
+(FAST as any).html = html;
