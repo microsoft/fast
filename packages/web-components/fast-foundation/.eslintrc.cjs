@@ -40,23 +40,26 @@ module.exports = {
         },
         {
             files: ["**/*.ts"],
-            excludedFiles: ["**/*.stories.ts", "playwright.config.ts"],
+            excludedFiles: ["playwright.config.ts"],
             parserOptions: {
                 parser: "@typescript-eslint/parser",
                 project: path.resolve(__dirname, "./tsconfig.json"),
             },
             rules: {
-                "no-restricted-imports": [
-                    "error",
-                    {
-                        patterns: ["**/stories/**", "**/*.pw.spec.ts"],
-
-                    },
-                ],
                 "@typescript-eslint/consistent-type-imports": "error",
                 "@typescript-eslint/consistent-type-exports": [
                     "error",
                     { fixMixedExportsWithInlineTypeSpecifier: false },
+                ],
+            },
+        },
+        {
+            files: ["**/*.ts"],
+            excludedFiles: ["**/*.stories.ts"],
+            rules: {
+                "no-restricted-imports": [
+                    "error",
+                    { patterns: ["**/stories/**", "**/*.pw.spec.ts"] },
                 ],
             },
         },
