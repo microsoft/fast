@@ -36,15 +36,6 @@ const fancyMenuItemStoryTemplate = html<StoryArgs<FASTMenuItem>>`
     </fancy-menu-item>
 `;
 
-const fancyStoryContentTemplate = html`
-    ${repeat(
-        x => x.storyItems,
-        html<StoryArgs<MyFancyMenuItem>>`
-            ${x => x.template ?? fancyMenuItemStoryTemplate}
-        `
-    )}
-`;
-
 export default {
     title: "Menu",
     args: {
