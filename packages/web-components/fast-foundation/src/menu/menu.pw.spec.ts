@@ -14,11 +14,13 @@ test.describe("Menu", () => {
 
         element = page.locator("fast-menu");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         menuItems = element.locator("fast-menu-item");
 
         await page.goto(fixtureURL("menu--menu"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

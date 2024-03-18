@@ -10,13 +10,21 @@ import type {
 
 test.describe("FormAssociated", () => {
     let page: Page;
+    let element: Locator;
     let root: Locator;
+
+    test.describe.configure({ mode: "serial" });
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
-        root = page.locator("#root");
+
+        root = page.locator("#storybook-root");
+
+        element = page.locator("test-element");
 
         await page.goto(fixtureURL("debug--blank"));
+
+        await root.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -48,8 +56,6 @@ test.describe("FormAssociated", () => {
             node.append(el);
         });
 
-        const element = page.locator("test-element");
-
         await expect(element).toHaveJSProperty("value", "foobar");
 
         await expect(element).toHaveJSProperty("currentValue", "foobar");
@@ -68,8 +74,6 @@ test.describe("FormAssociated", () => {
             node.append(el);
         });
 
-        const element = page.locator("test-element");
-
         await expect(element).toHaveJSProperty("value", "foobar");
 
         await expect(element).toHaveJSProperty("currentValue", "foobar");
@@ -81,8 +85,6 @@ test.describe("FormAssociated", () => {
                 <test-element></test-element>
             `;
         });
-
-        const element = page.locator("test-element");
 
         await element.evaluate((node: FormAssociatedElement) => {
             node.setAttribute("value", "foobar");
@@ -104,8 +106,6 @@ test.describe("FormAssociated", () => {
             node.append(el);
         });
 
-        const element = page.locator("test-element");
-
         await expect(element).toHaveJSProperty("value", "foobar");
 
         await expect(element).toHaveJSProperty("currentValue", "foobar");
@@ -117,8 +117,6 @@ test.describe("FormAssociated", () => {
                 <test-element></test-element>
             `;
         });
-
-        const element = page.locator("test-element");
 
         await element.evaluate((node: FormAssociatedElement) => {
             node.value = "foobar";
@@ -171,8 +169,6 @@ test.describe("FormAssociated", () => {
                 `;
             });
 
-            const element = page.locator("test-element");
-
             await element.evaluate((node: FormAssociatedElement) => {
                 node.setAttribute("value", "foo");
             });
@@ -196,8 +192,6 @@ test.describe("FormAssociated", () => {
                     <test-element></test-element>
                 `;
             });
-
-            const element = page.locator("test-element");
 
             await element.evaluate((node: FormAssociatedElement) => {
                 node.value = "foo";
@@ -226,8 +220,6 @@ test.describe("FormAssociated", () => {
             });
 
             const form = page.locator("form");
-
-            const element = page.locator("test-element");
 
             await element.evaluate((node: FormAssociatedElement) => {
                 node.setAttribute("value", "foo");
@@ -265,8 +257,6 @@ test.describe("FormAssociated", () => {
 
             const form = page.locator("form");
 
-            const element = page.locator("test-element");
-
             await element.evaluate((node: FormAssociatedElement) => {
                 node.value = "foo";
             });
@@ -295,11 +285,11 @@ test.describe("FormAssociated", () => {
         test("assigning the currentValue property should set the controls value property to the same value", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
-                    <test-element></test-element>
+                    <test-element>test element</test-element>
                 `;
             });
 
-            const element = page.locator("test-element");
+            await element.waitFor({ state: "attached" });
 
             await expect(element).toHaveJSProperty("value", "");
 
@@ -320,8 +310,6 @@ test.describe("FormAssociated", () => {
                     <test-element></test-element>
                 `;
             });
-
-            const element = page.locator("test-element");
 
             await expect(element).toHaveJSProperty("value", "");
 
@@ -348,8 +336,6 @@ test.describe("FormAssociated", () => {
             });
 
             const form = page.locator("form");
-
-            const element = page.locator("test-element");
 
             await element.evaluate((node: FormAssociatedElement) => {
                 node.value = "foo";
@@ -382,8 +368,6 @@ test.describe("FormAssociated", () => {
             });
 
             const form = page.locator("form");
-
-            const element = page.locator("test-element");
 
             await expect(element).toHaveJSProperty("value", "attr-value");
 
@@ -422,8 +406,6 @@ test.describe("FormAssociated", () => {
             });
 
             const form = page.locator("form");
-
-            const element = page.locator("test-element");
 
             await expect(element).toHaveJSProperty("value", "attr-value");
 
@@ -464,14 +446,16 @@ test.describe("FormAssociated", () => {
     });
 
     test.describe("CheckableFormAssociated", () => {
+        test.beforeEach(async () => {
+            element = page.locator("checkable-form-associated");
+        });
+
         test("should have a 'checked' property that is initialized to false", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `
                     <checkable-form-associated></checkable-form-associated>
                 `;
             });
-
-            const element = page.locator("checkable-form-associated");
 
             await expect(element).toHaveJSProperty("checked", false);
 
@@ -486,8 +470,6 @@ test.describe("FormAssociated", () => {
                     <checkable-form-associated></checkable-form-associated>
                 `;
             });
-
-            const element = page.locator("checkable-form-associated");
 
             await expect(element).toHaveJSProperty("checked", false);
 
@@ -522,8 +504,6 @@ test.describe("FormAssociated", () => {
                     <checkable-form-associated></checkable-form-associated>
                 `;
             });
-
-            const element = page.locator("checkable-form-associated");
 
             await expect(element).toHaveJSProperty("checked", false);
 

@@ -16,9 +16,11 @@ test.describe("Data grid cell", () => {
 
         element = page.locator("fast-data-grid-cell");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

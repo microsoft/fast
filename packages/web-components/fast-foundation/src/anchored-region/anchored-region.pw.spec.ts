@@ -13,9 +13,11 @@ test.describe("Anchored Region", () => {
 
         element = page.locator("fast-anchored-region");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("anchored-region--anchored-region"));
+
+        await element.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

@@ -13,9 +13,11 @@ test.describe("Breadcrumb", () => {
 
         element = page.locator("fast-breadcrumb");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("breadcrumb--breadcrumb"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
