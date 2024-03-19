@@ -31,20 +31,20 @@ export function accordionItemTemplate<T extends FASTAccordionItem>(
                     <slot name="heading"></slot>
                 </span>
             </button>
+            ${
+                /* The start slot is after the button for an improved screen reader experience */ ""
+            }
             ${startSlotTemplate(options)}
             ${endSlotTemplate(options)}
-            <span class="icon" part="icon" aria-hidden="true">
-                <slot name="expanded-icon">
-                    ${staticallyCompose(options.expandedIcon)}
-                </slot>
-                <slot name="collapsed-icon">
-                    ${staticallyCompose(options.collapsedIcon)}
+            <span class="expand-collapse-icon" part="expand-collapse-icon" aria-hidden="true">
+                <slot name="expand-collapse-icon">
+                    ${staticallyCompose(options.expandCollapseIcon)}
                 </slot>
             <span>
         </div>
         <div
-            class="region"
-            part="region"
+            class="panel"
+            part="panel"
             id="${x => x.id}-panel"
             role="region"
             aria-labelledby="${x => x.id}"

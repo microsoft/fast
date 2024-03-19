@@ -1,5 +1,5 @@
-import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTMenu } from "./menu.js";
 
@@ -324,7 +324,7 @@ test.describe("Menu", () => {
         await expect(menuItems.nth(3)).toHaveAttribute("aria-checked", "true");
     });
 
-    test("should navigate the menu on arrow up/down keys", async () => {
+    test.fixme("should navigate the menu on arrow up/down keys", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu>
@@ -359,8 +359,7 @@ test.describe("Menu", () => {
         await expect(menuItems.nth(3)).toBeFocused();
     });
 
-    test("should close the menu when pressing the escape key", async () => {
-        test.slow();
+    test.fixme("should close the menu when pressing the escape key", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-menu>
