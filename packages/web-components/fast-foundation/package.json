@@ -2,6 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "version": "3.0.0-alpha.32",
+  "sideEffects": false,
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"

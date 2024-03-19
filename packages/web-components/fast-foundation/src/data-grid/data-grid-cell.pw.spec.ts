@@ -1,10 +1,11 @@
+import type { html as FASTHtml } from "@microsoft/fast-element";
 import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
 
-declare const FAST: any;
+declare const html: typeof FASTHtml;
 
 test.describe("Data grid cell", () => {
     let page: Page;
@@ -128,7 +129,9 @@ test.describe("Data grid cell", () => {
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
                 columnDataKey: "item2",
-                cellTemplate: FAST.html`custom cell template`,
+                cellTemplate: html`
+                    custom cell template
+                `,
             };
         });
 
@@ -145,7 +148,9 @@ test.describe("Data grid cell", () => {
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
                 columnDataKey: "item2",
-                headerCellTemplate: FAST.html`custom header cell template`,
+                headerCellTemplate: html`
+                    custom header cell template
+                `,
             };
         });
 
@@ -183,7 +188,9 @@ test.describe("Data grid cell", () => {
                 columnDataKey: "item2",
                 cellFocusTargetCallback: cell =>
                     cell.querySelector("button") as HTMLButtonElement,
-                cellTemplate: FAST.html`<button>test button</button>`,
+                cellTemplate: html`
+                    <button>test button</button>
+                `,
             };
         });
 
@@ -205,7 +212,9 @@ test.describe("Data grid cell", () => {
             node.cellType = DataGridCellTypes.columnHeader;
             node.columnDefinition = {
                 columnDataKey: "item2",
-                headerCellTemplate: FAST.html`<button>test header button</button>`,
+                headerCellTemplate: html`
+                    <button>test header button</button>
+                `,
                 headerCellFocusTargetCallback: cell =>
                     cell.querySelector("button") as HTMLButtonElement,
             };
