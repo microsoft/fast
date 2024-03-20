@@ -136,6 +136,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name               | Privacy   | Type                  | Default | Description                                          | Inherited From       |
 | ------------------ | --------- | --------------------- | ------- | ---------------------------------------------------- | -------------------- |
 | `open`             | public    | `boolean`             | `false` | The open attribute.                                  |                      |
+| `placeholder`      | public    | `string`              |         | The placeholder attribute.                           |                      |
 | `value`            | public    |                       |         | The value property.                                  |                      |
 | `cleanup`          | public    | `() => void`          |         | Cleanup function for the listbox positioner.         |                      |
 | `displayValue`     | public    | `string`              |         | The value displayed on the button.                   |                      |
@@ -167,10 +168,11 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name   | Field    | Inherited From |
-| ------ | -------- | -------------- |
-| `open` | open     |                |
-|        | multiple | FASTListbox    |
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `open`        | open        |                |
+| `placeholder` | placeholder |                |
+|               | multiple    | FASTListbox    |
 
 #### CSS Parts
 

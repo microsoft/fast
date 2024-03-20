@@ -4,7 +4,7 @@ import type { FASTListboxOption } from "../listbox-option/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSelect } from "./select.js";
 
-test.describe("Select", () => {
+test.describe.only("Select", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
@@ -75,6 +75,62 @@ test.describe("Select", () => {
         await expect(element).toHaveAttribute("aria-expanded", "false");
     });
 
+    test("should set the attribute aria-required to true when required attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select required></fast-select>
+            `;
+        });
+
+        await expect(element).toHaveAttribute("aria-required", "true");
+    });
+
+    test("should render placeholder option when select is collapsible", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select placeholder="my placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+
+        const option = await page.$(".placeholder");
+
+        expect(option).not.toBeNull();
+    });
+
+    test("should not render placeholder option when the multiple attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select multiple placeholder="placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+        const option = await page.$(".placeholder");
+
+        expect(option).toBeNull();
+    });
+
+    test("should not render placeholder option when the size attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select size="3" placeholder="placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+        const option = await page.$(".placeholder");
+
+        expect(option).toBeNull();
+    });
+
     test("should set its value to the first enabled option", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -89,6 +145,52 @@ test.describe("Select", () => {
         await expect(element).toHaveJSProperty("value", "Option 1");
 
         await expect(element).toHaveJSProperty("selectedIndex", 0);
+    });
+
+    test("should not set default value when placeholder is set", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select placeholder="my placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("value", "");
+        await expect(element).toHaveJSProperty("currentIndex", undefined);
+        await expect(element).toHaveAttribute("currentIndex", "");
+        await expect(element).not.toHaveJSProperty("selectedIndex", 0);
+    });
+
+    test("should handle validity when the `required` attribute is present", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-select required placeholder="my placeholder">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-select>
+            `;
+        });
+
+        await element.evaluate<void, FASTSelect>(node => {
+            node.open = true;
+        });
+
+        const options = element.locator("fast-option");
+        const option = options.nth(0);
+
+        expect(
+            await element.evaluate((node: FASTSelect) => node.validity.valueMissing)
+        ).toBe(true);
+
+        await option.click();
+
+        expect(
+            await element.evaluate((node: FASTSelect) => node.validity.valueMissing)
+        ).toBe(false);
     });
 
     test("should NOT have a tabindex when `disabled` is true", async () => {

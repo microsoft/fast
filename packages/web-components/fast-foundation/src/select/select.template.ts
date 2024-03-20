@@ -19,6 +19,7 @@ export function selectTemplate<T extends FASTSelect>(
             aria-expanded="${x => x.ariaExpanded}"
             aria-haspopup="${x => (x.collapsible ? "listbox" : null)}"
             aria-multiselectable="${x => x.ariaMultiSelectable}"
+            aria-required="${x => (x.required ? "true" : null)}"
             ?open="${x => x.open}"
             role="combobox"
             tabindex="${x => (!x.disabled ? "0" : null)}"
@@ -61,6 +62,20 @@ export function selectTemplate<T extends FASTSelect>(
                 ?hidden="${x => (x.collapsible ? !x.open : false)}"
                 ${ref("listbox")}
             >
+                ${when(
+                    x => x.placeholder && x.collapsible,
+                    html<T>`
+                        <option
+                            class="placeholder"
+                            part="placeholder"
+                            disabled
+                            hidden
+                            ${ref("placeholderOption")}
+                        >
+                            ${x => x.placeholder}
+                        </option>
+                    `
+                )}
                 <slot
                     ${slotted({
                         filter: FASTListbox.slottedOptionFilter,
