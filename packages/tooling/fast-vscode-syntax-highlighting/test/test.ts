@@ -186,3 +186,27 @@ b = `something else`;
 `.class {}`;
 
 /* css */ 'asdf' + `.class {}`;
+
+// just property
+cssPartial`color: ${new myDirective}`;
+
+// just property with value
+cssPartial`color: red`;
+
+// empty string
+cssPartial``;
+// blankspace-only string
+
+cssPartial``;
+
+// just property
+css.partial`color: ${new myDirective}`;
+
+// just property with value
+css.partial`color: red`;
+
+// empty string
+css.partial``;
+// blankspace-only string
+
+css.partial``;
