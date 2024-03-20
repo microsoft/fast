@@ -8,7 +8,6 @@ const storyTemplate = html<StoryArgs<FASTDataGridRow>>`
     <fast-data-grid-row
         :columnDefinitions="${x => x.columnDefinitions}"
         :rowData="${x => x.rowData}"
-        grid-template-columns="${x => x.gridTemplateColumns}"
         row-type="${x => x.rowType}"
     >
         ${x => x.storyContent}
@@ -23,7 +22,6 @@ export default {
     },
     argTypes: {
         columnDefinitions: { control: "object" },
-        gridTemplateColumns: { control: "text" },
         rowType: { control: "select", options: Object.values(DataGridRowTypes) },
         storyContent: { table: { disable: true } },
     },

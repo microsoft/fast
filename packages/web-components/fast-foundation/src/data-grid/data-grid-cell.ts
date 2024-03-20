@@ -91,11 +91,6 @@ export class FASTDataGridCell extends FASTElement {
      */
     @attr({ attribute: "grid-column" })
     public gridColumn: string;
-    protected gridColumnChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateCellStyle();
-        }
-    }
 
     /**
      * The base data for the parent row
@@ -134,14 +129,7 @@ export class FASTDataGridCell extends FASTElement {
         this.addEventListener(eventFocusOut, this.handleFocusout);
         this.addEventListener(eventKeyDown, this.handleKeydown);
 
-        this.style.gridColumn = `${
-            this.columnDefinition?.gridColumn === undefined
-                ? 0
-                : this.columnDefinition.gridColumn
-        }`;
-
         this.updateCellView();
-        this.updateCellStyle();
     }
 
     /**
@@ -325,8 +313,4 @@ export class FASTDataGridCell extends FASTElement {
             this.customCellView = null;
         }
     }
-
-    private updateCellStyle = (): void => {
-        this.style.gridColumn = this.gridColumn;
-    };
 }

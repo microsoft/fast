@@ -16,7 +16,6 @@ const storyTemplate = html<StoryArgs<FASTDataGrid>>`
         :rowsData="${x => x.rowsData}"
         no-tabbing="${x => x.noTabbing}"
         generate-header="${x => x.generateHeader}"
-        grid-template-columns="${x => x.gridTemplateColumns}"
         page-size="${x => x.pageSize}"
         disable-click-select="${x => x.disableClickSelect}"
         selection-mode="${x => x.selectionMode}"
@@ -63,9 +62,6 @@ export default {
         pageSize: {
             control: "number",
         },
-        gridTemplateColumns: {
-            control: "text",
-        },
         columnDefinitions: {
             control: { type: "object" },
         },
@@ -96,6 +92,16 @@ export const DataGridFixedHeight: Story<FASTDataGrid> = renderComponent(
 ).bind({});
 DataGridFixedHeight.args = {
     style: "height: 200px; overflow-y: scroll;",
+};
+
+export const DataGridFixedWidth: Story<FASTDataGrid> = renderComponent(html`
+    <div style="height: 200px; overflow-y: auto; width: 400px; overflow-x: auto;">
+        ${storyTemplate}
+    </div>
+`).bind({});
+
+DataGridFixedWidth.args = {
+    style: "height: max-content; width: max-content; grid-template-columns: repeat(7, max-content);",
 };
 
 export const DataGridColumnDefinitions: Story<FASTDataGrid> = renderComponent(

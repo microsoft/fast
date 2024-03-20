@@ -5,6 +5,10 @@ import { dataGridRowTemplate } from "../data-grid-row.template.js";
 const styles = css`
     :host {
         display: grid;
+        grid-template-columns: subgrid;
+        grid-column-start: 1;
+        grid-column-end: span all;
+        grid-auto-flow: row;
         padding: 1px 0;
         box-sizing: border-box;
         width: 100%;

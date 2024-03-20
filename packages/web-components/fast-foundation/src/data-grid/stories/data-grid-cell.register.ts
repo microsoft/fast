@@ -4,6 +4,7 @@ import { dataGridCellTemplate } from "../data-grid-cell.template.js";
 
 const styles = css`
     :host {
+        grid-column: ${x => x.gridColumn ?? 0};
         color: var(--neutral-foreground-rest);
         box-sizing: border-box;
         padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 3px);

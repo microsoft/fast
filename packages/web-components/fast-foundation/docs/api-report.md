@@ -1026,9 +1026,6 @@ export class FASTDataGrid extends FASTElement {
     focusRowIndex: number;
     static generateColumns(row: object): ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
-    gridTemplateColumns: string;
-    // (undocumented)
-    protected gridTemplateColumnsChanged(): void;
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
     // @internal (undocumented)
@@ -1071,8 +1068,6 @@ export class FASTDataGridCell extends FASTElement {
     disconnectedCallback(): void;
     gridColumn: string;
     // (undocumented)
-    protected gridColumnChanged(): void;
-    // (undocumented)
     handleFocusin(e: FocusEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
@@ -1099,9 +1094,6 @@ export class FASTDataGridRow extends FASTElement {
     disconnectedCallback(): void;
     // @internal (undocumented)
     focusColumnIndex: number;
-    gridTemplateColumns: string;
-    // (undocumented)
-    protected gridTemplateColumnsChanged(): void;
     // @internal (undocumented)
     handleCellFocus(e: Event): void;
     // @internal (undocumented)
