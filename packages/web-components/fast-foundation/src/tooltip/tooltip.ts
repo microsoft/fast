@@ -284,14 +284,9 @@ export class FASTTooltip extends FASTElement {
             return;
         }
 
-        const anchorElementDescribedBy = this.anchorElement
-            .getAttribute("aria-describedby")
-            ?.concat(" ", this.id)
-            .trim();
-
-        if (anchorElementDescribedBy) {
-            this.anchorElement.setAttribute("aria-describedby", anchorElementDescribedBy);
-        }
+        let anchorElementDescribedBy = this.anchorElement.getAttribute("aria-describedby") || "";
+        anchorElementDescribedBy = anchorElementDescribedBy.concat(" ", this.id).trim();
+        this.anchorElement.setAttribute("aria-describedby", anchorElementDescribedBy);
     }
 
     /**
@@ -315,10 +310,23 @@ export class FASTTooltip extends FASTElement {
         document.addEventListener("keydown", this.keydownDocumentHandler);
     }
 
+    /**
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         this.anchorChanged(undefined, this.anchor);
     }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.removeListeners();
+        this.removeAnchorAriaDescribedBy(this.id);
+    }
+
 
     /**
      * Hides the tooltip and emits a custom `dismiss` event.

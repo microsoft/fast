@@ -10,6 +10,7 @@ export function buttonTemplate<T extends FASTButton>(
     options: ButtonOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
+    <template role="button" aria-describedby="${x => x.ariaDescribedby}">
         <button
             class="control"
             part="control"
@@ -28,7 +29,6 @@ export function buttonTemplate<T extends FASTButton>(
             aria-busy="${x => x.ariaBusy}"
             aria-controls="${x => x.ariaControls}"
             aria-current="${x => x.ariaCurrent}"
-            aria-describedby="${x => x.ariaDescribedby}"
             aria-details="${x => x.ariaDetails}"
             aria-disabled="${x => x.ariaDisabled}"
             aria-errormessage="${x => x.ariaErrormessage}"
@@ -53,5 +53,6 @@ export function buttonTemplate<T extends FASTButton>(
             </span>
             ${endSlotTemplate(options)}
         </button>
+</template>
     `;
 }

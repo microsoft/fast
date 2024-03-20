@@ -2142,10 +2142,12 @@ export class FASTTooltip extends FASTElement {
     // @internal
     anchorElement: Element | null;
     cleanup: () => void;
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
     // @internal
     protected controlledVisibilityChanged(prev: boolean | undefined, next: boolean): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     // @internal
     protected focusinAnchorHandler: () => void;
     // @internal

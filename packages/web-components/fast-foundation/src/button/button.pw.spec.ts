@@ -72,7 +72,6 @@ test.describe("Button", () => {
             ariaBusy: "false",
             ariaControls: "testId",
             ariaCurrent: "page",
-            ariaDescribedby: "testId",
             ariaDetails: "testId",
             ariaDisabled: "true",
             ariaErrormessage: "test",
