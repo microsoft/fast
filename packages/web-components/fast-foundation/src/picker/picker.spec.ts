@@ -412,7 +412,7 @@ describe("Picker", () => {
 
         await connect();
 
-        expect(element.getAttribute("role")).to.equal("list");
+        expect(element.getAttribute("role")).to.equal("listbox");
 
         await disconnect();
     });
@@ -420,12 +420,12 @@ describe("Picker", () => {
     /**
      *  Picker-menu-option tests
      */
-    it("picker menu-option should include a role of `listitem`", async () => {
+    it("picker menu-option should include a role of `option`", async () => {
         const { element, connect, disconnect } = await setupPickerMenuOption();
 
         await connect();
 
-        expect(element.getAttribute("role")).to.equal("listitem");
+        expect(element.getAttribute("role")).to.equal("option");
 
         await disconnect();
     });
