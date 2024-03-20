@@ -2383,10 +2383,11 @@ export type HorizontalPosition = ValuesOf<typeof HorizontalPosition>;
 export type HorizontalScrollOptions = StartEndOptions<FASTHorizontalScroll> & {
     nextFlipper?: StaticallyComposableHTML<FASTHorizontalScroll>;
     previousFlipper?: StaticallyComposableHTML<FASTHorizontalScroll>;
+    flipper: TemplateElementDependency;
 };
 
 // @public (undocumented)
-export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(options?: HorizontalScrollOptions): ElementViewTemplate<T>;
+export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(options: HorizontalScrollOptions): ElementViewTemplate<T>;
 
 // @public
 export const HorizontalScrollView: {
@@ -2900,6 +2901,7 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 // dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/horizontal-scroll/horizontal-scroll.options.d.ts:39:5 - (ae-incompatible-release-tags) The symbol "flipper" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:10:5 - (ae-incompatible-release-tags) The symbol "pickerMenu" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:11:5 - (ae-incompatible-release-tags) The symbol "pickerMenuOption" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

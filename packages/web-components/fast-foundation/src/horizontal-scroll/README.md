@@ -195,22 +195,25 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 
 #### CSS Parts
 
-| Name                     | Description                               |
-| ------------------------ | ----------------------------------------- |
-| `scroll-area`            | Wraps the entire scrollable region        |
-| `scroll-view`            | The visible scroll area                   |
-| `content-container`      | The container for the content             |
-| `scroll-prev`            | The previous flipper container            |
-| `scroll-action-previous` | The element wrapping the previous flipper |
-| `scroll-next`            | The next flipper container                |
-| `scroll-action-next`     | The element wrapping the next flipper     |
+| Name               | Description                        |
+| ------------------ | ---------------------------------- |
+| `scroll-area`      | Wraps the entire scrollable region |
+| `scroll-view`      | The visible scroll area            |
+| `content`          | The container for the content      |
+| `scroll-previous`  | The previous flipper container     |
+| `previous-flipper` | The previous flipper               |
+| `scroll-next`      | The next flipper container         |
+| `next-flipper`     | The next flipper                   |
 
 #### Slots
 
-| Name    | Description                                          |
-| ------- | ---------------------------------------------------- |
-| `start` | Content which can be provided before the scroll area |
-| `end`   | Content which can be provided after the scroll area  |
+| Name               | Description                                          |
+| ------------------ | ---------------------------------------------------- |
+| `start`            | Content which can be provided before the scroll area |
+| `end`              | Content which can be provided after the scroll area  |
+|                    | Content in the scroll area                           |
+| `previous-flipper` | The component for scrolling previous                 |
+| `next-flipper`     | The component for scrolling next                     |
 
 <hr/>
 

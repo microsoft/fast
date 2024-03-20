@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix tests for related foundation template changes",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}
