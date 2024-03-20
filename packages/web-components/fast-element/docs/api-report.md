@@ -679,6 +679,9 @@ export interface PartialHTMLDirectiveDefinition {
 }
 
 // @public
+export const prependToAdoptedStyleSheetsSymbol: unique symbol;
+
+// @public
 export class PropertyChangeNotifier implements Notifier {
     constructor(subject: any);
     notify(propertyName: string): void;

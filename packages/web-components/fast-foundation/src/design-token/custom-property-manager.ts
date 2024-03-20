@@ -3,7 +3,13 @@ import type {
     ElementController,
     FASTElement,
 } from "@microsoft/fast-element";
-import { ElementStyles, observable, Observable, Updates } from "@microsoft/fast-element";
+import {
+    ElementStyles,
+    observable,
+    Observable,
+    prependToAdoptedStyleSheetsSymbol,
+    Updates,
+} from "@microsoft/fast-element";
 
 /**
  * A target that can have key/value pairs set and removed.
@@ -33,6 +39,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
         super();
 
         const sheet = new CSSStyleSheet();
+        sheet[prependToAdoptedStyleSheetsSymbol] = true;
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
         source.$fastController.addStyles(new ElementStyles([sheet]));
     }
