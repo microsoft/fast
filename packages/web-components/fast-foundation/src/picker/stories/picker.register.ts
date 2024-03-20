@@ -35,6 +35,7 @@ const pickerStyles = css`
         min-height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;

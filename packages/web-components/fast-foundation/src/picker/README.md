@@ -193,8 +193,10 @@ export class FASTTextField extends TextField {}
 | ---------------------------- | ------- | --------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `selection`                  | public  | `string`                    | `""`                         | Currently selected items. Comma delineated string ie. "apples,oranges".                                                       |                      |
 | `options`                    | public  | `string`                    |                              | Currently available options. Comma delineated string ie. "apples,oranges".                                                    |                      |
-| `filterSelected`             | public  | `boolean`                   | `true`                       | Whether the component should remove an option from the list when it is in the selection                                       |                      |
-| `filterQuery`                | public  | `boolean`                   | `true`                       | Whether the component should remove options based on the current query                                                        |                      |
+| `filterSelected`             | public  | `boolean`                   | `false`                      | Deprecated. Whether the component should remove an option from the list when it is in the selection. Default is false.        |                      |
+| `disableSelectionFilter`     | public  | `boolean`                   | `false`                      | Whether the component should remove an option from the list when it is in the selection. Default is false.                    |                      |
+| `filterQuery`                | public  | `boolean`                   | `true`                       | Deprecated. Whether the component should remove options based on the current query. Default is false.                         |                      |
+| `disableQueryFilter`         | public  | `boolean`                   | `false`                      | Whether the component should remove options based on the current query. Default is false.                                     |                      |
 | `maxSelected`                | public  | `number or null`            | `null`                       | The maximum number of items that can be selected.                                                                             |                      |
 | `noSuggestionsText`          | public  | `string`                    | `"No suggestions available"` | The text to present to assistive technolgies when no suggestions are available.                                               |                      |
 | `suggestionsAvailableText`   | public  | `string`                    | `"Suggestions available"`    | The text to present to assistive technolgies when suggestions are available.                                                  |                      |
@@ -221,6 +223,10 @@ export class FASTTextField extends TextField {}
 | ---------------------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | -------------- |
 | `selectionChanged`                 | protected |                                                               |                    | `void`    |                |
 | `optionsChanged`                   | protected |                                                               |                    | `void`    |                |
+| `filterSelectedChanged`            | protected |                                                               |                    | `void`    |                |
+| `disableSelectionFilterChanged`    | protected |                                                               |                    | `void`    |                |
+| `filterQueryChanged`               | protected |                                                               |                    | `void`    |                |
+| `disableQueryFilterChanged`        | protected |                                                               |                    | `void`    |                |
 | `menuPlacementChanged`             | protected |                                                               |                    | `void`    |                |
 | `showLoadingChanged`               | protected |                                                               |                    | `void`    |                |
 | `listItemTemplateChanged`          | protected |                                                               |                    | `void`    |                |
@@ -228,7 +234,6 @@ export class FASTTextField extends TextField {}
 | `menuOptionTemplateChanged`        | protected |                                                               |                    | `void`    |                |
 | `defaultMenuOptionTemplateChanged` | protected |                                                               |                    | `void`    |                |
 | `queryChanged`                     | protected |                                                               |                    | `void`    |                |
-| `filteredOptionsListChanged`       | protected |                                                               |                    | `void`    |                |
 | `flyoutOpenChanged`                | protected |                                                               |                    | `void`    |                |
 | `focus`                            | public    | Move focus to the input element                               |                    |           |                |
 | `handleKeyDown`                    | public    | Handle key down events.                                       | `e: KeyboardEvent` | `boolean` |                |
@@ -245,8 +250,8 @@ export class FASTTextField extends TextField {}
 | ---------------------------- | ------------------------ | -------------- |
 | `selection`                  | selection                |                |
 | `options`                    | options                  |                |
-| `filter-selected`            | filterSelected           |                |
-| `filter-query`               | filterQuery              |                |
+| `disable-selection-filter`   | disableSelectionFilter   |                |
+| `disable-query-filter`       | disableQueryFilter       |                |
 | `max-selected`               | maxSelected              |                |
 | `no-suggestions-text`        | noSuggestionsText        |                |
 | `suggestions-available-text` | suggestionsAvailableText |                |
