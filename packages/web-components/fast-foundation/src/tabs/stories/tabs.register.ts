@@ -23,7 +23,7 @@ const styles = css`
         position: relative;
         width: max-content;
         align-self: end;
-        padding: calc(var(--design-unit) * 4px) calc(var(--design-unit) * 4px) 0;
+        padding: calc(var(--design-unit) * 4px) 0;
         box-sizing: border-box;
     }
     ::slotted([slot="start"]),

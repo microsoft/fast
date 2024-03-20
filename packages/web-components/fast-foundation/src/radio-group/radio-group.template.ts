@@ -1,6 +1,5 @@
 import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import type { FASTRadioGroup } from "./radio-group.js";
-import { RadioGroupOrientation } from "./radio-group.options.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#FASTRadioGroup} component.
@@ -20,13 +19,7 @@ export function radioGroupTemplate<T extends FASTRadioGroup>(): ElementViewTempl
             @focusout="${(x, c) => x.focusOutHandler(c.event as FocusEvent)}"
         >
             <slot name="label"></slot>
-            <div
-                class="positioning-region ${x =>
-                    x.orientation === RadioGroupOrientation.horizontal
-                        ? "horizontal"
-                        : "vertical"}"
-                part="positioning-region"
-            >
+            <div class="control" part="control">
                 <slot
                     ${slotted({
                         property: "slottedRadioButtons",

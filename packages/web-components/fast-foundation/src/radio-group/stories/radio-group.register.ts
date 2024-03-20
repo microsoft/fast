@@ -6,20 +6,24 @@ const styles = css`
     :host([hidden]) {
         display: none;
     }
+
     :host {
         align-items: flex-start;
         display: flex;
         flex-direction: column;
         margin: calc(var(--design-unit) * 1px) 0;
     }
-    .positioning-region {
+
+    .control {
         display: flex;
         flex-wrap: wrap;
     }
-    :host([orientation="vertical"]) .positioning-region {
+
+    :host([orientation="vertical"]) .control {
         flex-direction: column;
     }
-    :host([orientation="horizontal"]) .positioning-region {
+
+    :host([orientation="horizontal"]) .control {
         flex-direction: row;
     }
 
