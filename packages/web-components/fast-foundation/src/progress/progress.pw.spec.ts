@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTProgress } from "./progress.js";
 
-test.describe("Progress ring", () => {
+test.describe("Progress", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
@@ -56,28 +56,28 @@ test.describe("Progress ring", () => {
         await expect(element).toHaveAttribute("aria-valuemax", "50");
     });
 
-    test("should render an element with a `determinate` slot when a value is provided", async () => {
+    test("should render an element with a `determinate` class when a value is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-progress value="50"></fast-progress>
             `;
         });
 
-        const progress = element.locator(".progress");
+        const progress = element.locator(".determinate");
 
-        await expect(progress).toHaveAttribute("slot", "determinate");
+        await expect(progress).toHaveCount(1);
     });
 
-    test("should render an element with an `indeterminate` slot when no value is provided", async () => {
+    test("should render an element with an `indeterminate` class when no value is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-progress></fast-progress>
             `;
         });
 
-        const progress = element.locator(".progress");
+        const progress = element.locator(".indeterminate");
 
-        await expect(progress).toHaveAttribute("slot", "indeterminate");
+        await expect(progress).toHaveCount(1);
     });
 
     test("should return the `percentComplete` property as a value between 0 and 100 when `min` and `max` are unset", async () => {
