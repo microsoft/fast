@@ -248,24 +248,26 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        if (this.disabled) {
+        const captured = (e.target as HTMLElement).closest(
+            `option,[role=option]`
+        ) as FASTListboxOption | null;
+
+        if (this.disabled || captured?.disabled) {
             return;
         }
 
         if (this.open) {
-            const captured = (e.target as HTMLElement).closest(
-                `option,[role=option]`
-            ) as FASTListboxOption | null;
-
-            if (!captured || captured.disabled) {
-                this.open = false;
+            if (e.composedPath()[0] === this.control) {
+                this.open = true;
                 return;
             }
 
-            this.selectedOptions = [captured];
-            this.control.value = captured.text;
-            this.clearSelectionRange();
-            this.updateValue(true);
+            if (captured) {
+                this.selectedOptions = [captured];
+                this.control.value = captured.text;
+                this.clearSelectionRange();
+                this.updateValue(true);
+            }
         }
 
         this.open = !this.open;
