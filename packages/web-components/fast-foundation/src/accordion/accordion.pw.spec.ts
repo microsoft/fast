@@ -13,9 +13,11 @@ test.describe("Accordion", () => {
 
         element = page.locator("fast-accordion");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("accordion--accordion"));
+
+        await element.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

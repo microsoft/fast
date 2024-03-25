@@ -14,9 +14,11 @@ test.describe("Divider", () => {
 
         element = page.locator("fast-divider");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("divider--divider"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

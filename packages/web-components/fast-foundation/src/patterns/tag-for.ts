@@ -1,8 +1,5 @@
-import {
-    Constructable,
-    FASTElement,
-    FASTElementDefinition,
-} from "@microsoft/fast-element";
+import type { Constructable, FASTElement } from "@microsoft/fast-element";
+import { FASTElementDefinition } from "@microsoft/fast-element";
 
 /**
  * Used to designate a template's dependency on another custom element.

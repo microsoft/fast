@@ -15,13 +15,15 @@ test.describe("Dialog", () => {
 
         element = page.locator("fast-dialog");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(`[role="dialog"]`);
 
         overlay = element.locator(".overlay");
 
         await page.goto(fixtureURL("dialog--dialog"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

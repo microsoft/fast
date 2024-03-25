@@ -14,11 +14,11 @@ test.describe("Select", () => {
 
         element = page.locator("fast-select");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
-        await page.goto(fixtureURL("select--select"), {
-            waitUntil: "load",
-        });
+        await page.goto(fixtureURL("select--select"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

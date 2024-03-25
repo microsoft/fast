@@ -23,10 +23,10 @@ import {
 import { getRootActiveElement } from "../utilities/index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
+import type { DataGridSelectionChangeDetail } from "./data-grid.options.js";
 import {
     DataGridRowTypes,
     DataGridSelectionBehavior,
-    DataGridSelectionChangeDetail,
     DataGridSelectionMode,
     GenerateHeaderOptions,
 } from "./data-grid.options.js";

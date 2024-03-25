@@ -1,14 +1,13 @@
+import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     html,
-    HTMLView,
     nullableNumberConverter,
     observable,
     oneWay,
     ref,
     RepeatDirective,
     Updates,
-    ViewTemplate,
 } from "@microsoft/fast-element";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities.js";
 import {
@@ -22,9 +21,11 @@ import {
     keyEscape,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import {
+import type {
     AnchoredRegionConfig,
     FASTAnchoredRegion,
+} from "../anchored-region/index.js";
+import {
     FlyoutPosBottom,
     FlyoutPosBottomFill,
     FlyoutPosTallest,

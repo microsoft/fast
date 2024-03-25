@@ -1,5 +1,5 @@
-import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import { ToolbarOrientation } from "./toolbar.options.js";
 
@@ -13,9 +13,11 @@ test.describe("Toolbar", () => {
 
         element = page.locator("fast-toolbar");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("toolbar--toolbar"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test("should have a role of `toolbar`", async () => {
@@ -436,7 +438,9 @@ test.describe("Toolbar", () => {
         });
         const button2 = element.locator("button", { hasText: "Button 2" });
 
-        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
 
         await button2.click();
         await expect(button2).toBeFocused();
@@ -468,7 +472,9 @@ test.describe("Toolbar", () => {
 
         const button3 = element.locator("button", { hasText: "Button 3" });
 
-        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
 
         await button2.click();
         await expect(button2).toBeFocused();

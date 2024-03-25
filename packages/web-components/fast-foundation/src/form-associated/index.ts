@@ -1,10 +1,12 @@
 export {
     CheckableFormAssociated,
+    FormAssociated,
+    supportsElementInternals,
+} from "./form-associated.js";
+export type {
     CheckableFormAssociatedElement,
     ConstructableFormAssociated,
-    FormAssociated,
     FormAssociatedElement,
     FormAssociatedProxy,
     ProxyElement,
-    supportsElementInternals,
 } from "./form-associated.js";

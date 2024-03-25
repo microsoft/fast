@@ -1,6 +1,7 @@
-import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
-import { staticallyCompose } from "../utilities/template-helpers.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTNumberField, NumberFieldOptions } from "./number-field.js";
 
 /**

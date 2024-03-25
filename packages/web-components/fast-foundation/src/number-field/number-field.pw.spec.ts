@@ -15,11 +15,13 @@ test.describe("NumberField", () => {
 
         element = page.locator("fast-number-field");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(".field");
 
         await page.goto(fixtureURL("number-field--number-field"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

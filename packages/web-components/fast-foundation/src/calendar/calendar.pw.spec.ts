@@ -14,9 +14,11 @@ test.describe("Calendar", () => {
 
         element = page.locator("fast-calendar");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("calendar--calendar"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

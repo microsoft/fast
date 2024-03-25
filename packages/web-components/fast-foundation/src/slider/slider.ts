@@ -13,7 +13,8 @@ import {
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
-import { SliderConfiguration, SliderMode } from "./slider.options.js";
+import type { SliderConfiguration } from "./slider.options.js";
+import { SliderMode } from "./slider.options.js";
 
 /**
  * A Slider Custom HTML Element.

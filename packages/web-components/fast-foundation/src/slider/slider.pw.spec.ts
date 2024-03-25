@@ -15,11 +15,13 @@ test.describe("Slider", () => {
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
-        await page.goto(fixtureURL("slider--slider"));
-
         element = page.locator("fast-slider");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
+
+        await page.goto(fixtureURL("slider--slider"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

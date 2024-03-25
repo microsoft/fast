@@ -13,9 +13,11 @@ test.describe("Switch", () => {
 
         element = page.locator("fast-switch");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("switch--switch"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

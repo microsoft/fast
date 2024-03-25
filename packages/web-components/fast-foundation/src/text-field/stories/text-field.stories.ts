@@ -1,7 +1,8 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import { FASTTextField, TextFieldType } from "../text-field.js";
+import type { FASTTextField } from "../text-field.js";
+import { TextFieldType } from "../text-field.js";
 
 const storyTemplate = html<StoryArgs<FASTTextField>>`
     <fast-text-field

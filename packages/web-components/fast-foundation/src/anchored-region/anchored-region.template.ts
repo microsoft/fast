@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import type { FASTAnchoredRegion } from "./anchored-region.js";
 
 /**

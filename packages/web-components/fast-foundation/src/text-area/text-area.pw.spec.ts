@@ -15,11 +15,13 @@ test.describe("TextArea", () => {
 
         element = page.locator("fast-text-area");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(".field");
 
         await page.goto(fixtureURL("text-area--text-area"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

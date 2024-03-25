@@ -16,13 +16,15 @@ test.describe("TextField", () => {
 
         element = page.locator("fast-text-field");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(".field");
 
         label = element.locator(".label");
 
-        await page.goto(fixtureURL("debug--blank"));
+        await page.goto(fixtureURL("text-field--text-field"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

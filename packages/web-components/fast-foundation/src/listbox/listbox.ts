@@ -11,10 +11,11 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import { getRootActiveElement } from "../utilities/index.js";
-import { FASTListboxOption, isListboxOption } from "../listbox-option/listbox-option.js";
+import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
+import { isListboxOption } from "../listbox-option/listbox-option.js";
 import { ARIAGlobalStatesAndProperties } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
+import { getRootActiveElement } from "../utilities/index.js";
 
 /**
  * A Listbox Custom HTML Element.

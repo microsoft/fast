@@ -7,6 +7,7 @@ test.describe("Disclosure", () => {
     test.describe("States, Attributes, and Properties", () => {
         let page: Page;
         let element: Locator;
+        let root: Locator;
         let summary: Locator;
 
         test.beforeAll(async ({ browser }) => {
@@ -14,9 +15,13 @@ test.describe("Disclosure", () => {
 
             element = page.locator("fast-disclosure");
 
+            root = page.locator("#storybook-root");
+
             summary = element.locator("summary");
 
             await page.goto(fixtureURL("disclosure--disclosure"));
+
+            await root.waitFor({ state: "visible" });
         });
 
         test.afterAll(async () => {

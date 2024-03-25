@@ -1,2 +1,3 @@
+export { FASTTextArea, TextAreaResize } from "./text-area.js";
+export type { TextAreaOptions } from "./text-area.js";
 export { textAreaTemplate } from "./text-area.template.js";
-export { FASTTextArea, TextAreaOptions, TextAreaResize } from "./text-area.js";

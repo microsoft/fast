@@ -14,11 +14,13 @@ test.describe("Checkbox", () => {
 
         element = page.locator("fast-checkbox");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         form = page.locator("form");
 
         await page.goto(fixtureURL("checkbox--checkbox"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

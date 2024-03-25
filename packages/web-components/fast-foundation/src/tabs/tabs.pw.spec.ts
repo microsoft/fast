@@ -28,13 +28,15 @@ test.describe("Tabs", () => {
 
         element = page.locator("fast-tabs");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         tablist = element.locator(".tablist");
 
         tabs = element.locator("fast-tab");
 
         await page.goto(fixtureURL("tabs--tabs"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

@@ -64,6 +64,7 @@ export function renderComponent<TArgs = Args>(
  * A helper that returns a function to bind a Storybook story to a ViewTemplate.
  */
 export type FASTFramework = {
+    canvasElement: HTMLElement;
     component: typeof FASTElement;
     storyResult: FASTElement | Element | DocumentFragment;
 };

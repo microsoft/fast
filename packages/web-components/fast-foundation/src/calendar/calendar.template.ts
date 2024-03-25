@@ -1,5 +1,5 @@
-import { ElementViewTemplate, html, repeat, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { html, repeat, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate, tagFor } from "../patterns/index.js";
 import { staticallyCompose } from "../utilities/template-helpers.js";
 import type {

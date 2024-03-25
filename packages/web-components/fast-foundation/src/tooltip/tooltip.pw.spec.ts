@@ -14,11 +14,13 @@ test.describe("Tooltip", () => {
 
         element = page.locator("fast-tooltip");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         anchoredRegion = element.locator("fast-anchored-region");
 
         await page.goto(fixtureURL("tooltip--tooltip", { delay: 0 }));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -145,7 +147,7 @@ test.describe("Tooltip", () => {
     });
 
     test("should change anchor element when the `anchor` attribute changes", async () => {
-        await page.goto(fixtureURL("tooltip--tooltip"));
+        await element.waitFor({ state: "attached" });
 
         await root.evaluate(node => {
             const newAnchor = document.createElement("div");

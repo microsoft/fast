@@ -119,6 +119,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---- | -------- | -------------- |
 |      | multiple | FASTListbox    |
 
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the listbox options |
+
 <hr/>
 
 

@@ -1,6 +1,7 @@
-import { children, elements, ElementViewTemplate, html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTDataGrid } from "./data-grid.js";
 
 /**

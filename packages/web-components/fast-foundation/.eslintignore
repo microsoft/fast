@@ -3,3 +3,4 @@ dist
 node_modules
 *.spec.ts
 !*.pw.spec.ts
+.eslintrc.*

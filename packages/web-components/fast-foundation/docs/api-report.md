@@ -4,21 +4,21 @@
 
 ```ts
 
-import { CaptureType } from '@microsoft/fast-element';
-import { Constructable } from '@microsoft/fast-element';
-import { CSSDirective } from '@microsoft/fast-element';
+import type { CaptureType } from '@microsoft/fast-element';
+import type { Constructable } from '@microsoft/fast-element';
+import type { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
-import { ElementStyles } from '@microsoft/fast-element';
-import { ElementViewTemplate } from '@microsoft/fast-element';
+import type { ElementStyles } from '@microsoft/fast-element';
+import type { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
-import { HostBehavior } from '@microsoft/fast-element';
-import { HostController } from '@microsoft/fast-element';
-import { HTMLDirective } from '@microsoft/fast-element';
+import type { HostBehavior } from '@microsoft/fast-element';
+import type { HostController } from '@microsoft/fast-element';
+import type { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import type { SyntheticViewTemplate } from '@microsoft/fast-element';
-import { ViewTemplate } from '@microsoft/fast-element';
+import type { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export const AccordionExpandMode: {
@@ -2895,9 +2895,9 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:54:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

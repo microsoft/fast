@@ -1,10 +1,9 @@
 import { html, repeat } from "@microsoft/fast-element";
-import {} from "@microsoft/fast-web-utilities";
 import { storyTemplate as radioStoryTemplate } from "../../radio/stories/radio.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import { RadioGroupOrientation } from "../radio-group.options.js";
 import type { FASTRadioGroup } from "../radio-group.js";
+import { RadioGroupOrientation } from "../radio-group.options.js";
 
 const storyTemplate = html<StoryArgs<FASTRadioGroup>>`
     <fast-radio-group

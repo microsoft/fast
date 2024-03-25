@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
 import type { FASTSliderLabel } from "./slider-label.js";
 
 /**

@@ -14,11 +14,13 @@ test.describe("Combobox", () => {
 
         element = page.locator("fast-combobox");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(`input[role="combobox"]`);
 
         await page.goto(fixtureURL("combobox--combobox"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

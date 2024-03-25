@@ -1,12 +1,10 @@
+import type { CaptureType, Subscriber, ViewController } from "@microsoft/fast-element";
 import {
     DOM,
     HTMLDirective,
     StatelessAttachedAttributeDirective,
-    Subscriber,
     SubscriberSet,
-    ViewController,
 } from "@microsoft/fast-element";
-import type { CaptureType } from "@microsoft/fast-element";
 
 const observer = new MutationObserver((mutations: MutationRecord[]) => {
     for (const mutation of mutations) {

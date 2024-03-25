@@ -18,7 +18,7 @@ test.describe("HorizontalScroll", () => {
 
         element = page.locator("fast-horizontal-scroll");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         cards = element.locator("fast-card");
 
@@ -29,6 +29,8 @@ test.describe("HorizontalScroll", () => {
         scrollView = element.locator(".scroll-view");
 
         await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
+
+        await element.waitFor({ state: "attached" });
 
         await element.evaluate((node: FASTHorizontalScroll) => {
             node.speed = 0;
@@ -244,6 +246,8 @@ test.describe("HorizontalScroll", () => {
             const cards = element.locator("fast-card");
 
             const lastCard = cards.last();
+
+            await element.waitFor({ state: "attached" });
 
             await element.evaluate((node: FASTHorizontalScroll, cardsCount) => {
                 node.scrollInView(cardsCount - 1, 0);

@@ -13,9 +13,11 @@ test.describe("TreeView", () => {
 
         element = page.locator("fast-tree-view");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("tree-view--tree-view"));
+
+        await page.waitForSelector("fast-tree-view, fast-tree-item");
     });
 
     test.afterAll(async () => {
@@ -98,7 +100,7 @@ test.describe("TreeView", () => {
         await expect(firstTreeItem).toHaveAttribute("aria-selected", "true");
     });
 
-    test.fixme("should only allow one tree item to be selected at a time", async () => {
+    test("should only allow one tree item to be selected at a time", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-tree-view>

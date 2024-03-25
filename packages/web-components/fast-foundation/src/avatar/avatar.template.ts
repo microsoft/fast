@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { AvatarOptions, FASTAvatar } from "./avatar.js";
 

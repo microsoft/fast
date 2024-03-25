@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 import type {
     css as FASTcss,
     FASTElement,
@@ -56,8 +56,12 @@ test.describe("A DesignToken", () => {
         root = page.locator("#root");
 
         await page.goto(fixtureURL("debug-designtoken--design-token"));
+
+        await page.waitForSelector("fast-design-token-controller");
+
         await page.evaluate(() => DesignToken.registerDefaultStyleTarget());
     });
+
     test.afterAll(async () => {
         await page.evaluate(() => DesignToken.registerDefaultStyleTarget());
         await page.close();
@@ -581,7 +585,7 @@ test.describe("A DesignToken", () => {
                         const parent = addElement();
                         const child = addElement(parent);
                         const target = createElement();
-                        child.shadowRoot!.appendChild(target);
+                        child.shadowRoot?.appendChild(target);
                         const tokenA = DesignToken.create<number>(uniqueTokenName());
                         const tokenB = DesignToken.create<number>(uniqueTokenName());
 
@@ -1545,33 +1549,36 @@ test.describe("A DesignToken", () => {
         });
 
         // Flakey and seems to be corrupted by other tests.
-        test.skip("should set properties for a PropertyTarget registered as the root", async () => {
-            const results = await page.evaluate(async () => {
-                const results = [];
-                const token = DesignToken.create<number>(uniqueTokenName()).withDefault(
-                    12
-                );
-                const root = {
-                    setProperty: spy(() => {}),
-                    removeProperty: spy(() => {}),
-                };
+        test.fixme(
+            "should set properties for a PropertyTarget registered as the root",
+            async () => {
+                const results = await page.evaluate(async () => {
+                    const results = [];
+                    const token = DesignToken.create<number>(
+                        uniqueTokenName()
+                    ).withDefault(12);
+                    const root = {
+                        setProperty: spy(() => {}),
+                        removeProperty: spy(() => {}),
+                    };
 
-                DesignToken.registerDefaultStyleTarget(root);
+                    DesignToken.registerDefaultStyleTarget(root);
 
-                // expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 12)
-                results.push(root.setProperty.calledWith(1));
+                    // expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 12)
+                    results.push(root.setProperty.calledWith(1));
 
-                token.withDefault(14);
+                    token.withDefault(14);
 
-                // expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 14)
-                results.push(root.setProperty.calledWith(2));
-                DesignToken.unregisterDefaultStyleTarget(root);
+                    // expect(root.setProperty).to.have.been.called.with(token.cssCustomProperty, 14)
+                    results.push(root.setProperty.calledWith(2));
+                    DesignToken.unregisterDefaultStyleTarget(root);
 
-                return results;
-            });
+                    return results;
+                });
 
-            expect(results[0][1]).toEqual(12);
-            expect(results[1][1]).toEqual(14);
-        });
+                expect(results[0][1]).toEqual(12);
+                expect(results[1][1]).toEqual(14);
+            }
+        );
     });
 });

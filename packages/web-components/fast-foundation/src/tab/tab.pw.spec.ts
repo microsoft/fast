@@ -11,9 +11,11 @@ test.describe("Tab", () => {
         test.beforeAll(async ({ browser }) => {
             page = await browser.newPage();
 
+            element = page.locator("fast-tab");
+
             await page.goto(fixtureURL("tabs-tab--tab"));
 
-            element = page.locator("fast-tab");
+            await element.waitFor({ state: "attached" });
         });
 
         test.afterAll(async () => {

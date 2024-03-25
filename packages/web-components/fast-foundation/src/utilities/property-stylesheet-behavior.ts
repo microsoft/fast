@@ -1,10 +1,10 @@
-import {
+import type {
     ElementStyles,
     FASTElement,
     HostBehavior,
     HostController,
-    Observable,
 } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
 
 /**
  * A behavior to add or remove a stylesheet from an element based on a property. The behavior ensures that

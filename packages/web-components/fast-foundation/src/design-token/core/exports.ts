@@ -6,4 +6,4 @@ export type {
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./design-token-node.js";
-export { DesignToken } from "./design-token.js";
+export type { DesignToken } from "./design-token.js";

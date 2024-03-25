@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import { DataGridCellRole } from "./data-grid.options.js";
 

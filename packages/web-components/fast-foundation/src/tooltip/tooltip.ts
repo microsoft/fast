@@ -1,8 +1,8 @@
 import { autoUpdate, computePosition, flip, shift } from "@floating-ui/dom";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     attr,
     css,
-    ElementStyles,
     FASTElement,
     nullableBooleanConverter,
     observable,
