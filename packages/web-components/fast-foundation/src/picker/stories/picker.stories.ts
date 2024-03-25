@@ -11,6 +11,7 @@ const storyTemplate = html<StoryArgs<FASTPicker>>`
         ?filter-selected="${x => x.filterSelected}"
         ?filter-query="${x => x.filterQuery}"
         max-selected="${x => x.maxSelected}"
+        max-suggestions="${x => x.maxSuggestions}"
         no-suggestions-text="${x => x.noSuggestionsText}"
         suggestions-available-text="${x => x.suggestionsAvailableText}"
         loading-text="${x => x.loadingText}"
@@ -35,6 +36,7 @@ export default {
         labelledBy: { control: "text" },
         loadingText: { control: "text" },
         maxSelected: { control: "number" },
+        maxSuggestions: { control: "number" },
         menuPlacement: { control: "select", options: Object.values(MenuPlacement) },
         noSuggestionsText: { control: "text" },
         placeholder: { control: "text" },
@@ -51,4 +53,18 @@ Picker.args = {
     placeholder: "Choose fruit",
     selection: "apple",
     suggestionsAvailableText: "Found some fruit",
+};
+
+export const PickerLimitSuggestions: Story<FASTPicker> = renderComponent(
+    storyTemplate
+).bind({});
+PickerLimitSuggestions.args = {
+    label: "Fruit picker",
+    loadingText: "Loading",
+    noSuggestionsText: "No such fruit",
+    options: "apple, orange, banana, mango, strawberry, raspberry, blueberry",
+    placeholder: "Choose fruit",
+    selection: "apple",
+    suggestionsAvailableText: "Found some fruit",
+    maxSuggestions: 3,
 };

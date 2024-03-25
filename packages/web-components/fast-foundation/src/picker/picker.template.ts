@@ -125,6 +125,19 @@ export function pickerTemplate<T extends FASTPicker>(
                             </div>
                         `
                     )}
+                    ${when(
+                        x => x.trimCount > 0,
+                        html<T>`
+                            <div
+                                class="trimmed-suggestions-display"
+                                part="trimmed-suggestions-display"
+                            >
+                                <slot name="trimmed-suggestions-region">
+                                    ${x => x.trimmedSuggestionsText}
+                                </slot>
+                            </div>
+                        `
+                    )}
                 </${anchoredRegionTag}>
             `
             )}

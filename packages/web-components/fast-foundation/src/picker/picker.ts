@@ -150,6 +150,15 @@ export class FASTPicker extends FormAssociatedPicker {
     public loadingText: string = "Loading suggestions";
 
     /**
+     * The text displayed when there are additional trimmed suggestions.
+     *
+     * @remarks
+     * HTML Attribute: loading-text
+     */
+    @attr({ attribute: "trimmed-suggestions-text" })
+    public trimmedSuggestionsText: string = "Type to see more results";
+
+    /**
      * Applied to the aria-label attribute of the input element
      *
      * @remarks
@@ -175,6 +184,15 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @attr({ attribute: "placeholder" })
     public placeholder: string;
+
+    /**
+     * Limits how many suggestions can be displayed
+     *
+     * @remarks
+     * HTML Attribute: max-suggestions
+     */
+    @attr({ attribute: "max-suggestions" })
+    public maxSuggestions: number | undefined;
 
     /**
      * Controls menu placement
@@ -225,6 +243,13 @@ export class FASTPicker extends FormAssociatedPicker {
     protected defaultListItemTemplateChanged(): void {
         this.updateListItemTemplate();
     }
+
+    /**
+     * How many suggestions are being trimmed off by max-suggestions
+     *
+     */
+    @observable
+    public trimCount: number = 0;
 
     /**
      * The item template currently in use.
@@ -285,7 +310,9 @@ export class FASTPicker extends FormAssociatedPicker {
     @observable
     public optionsList: string[] = [];
     private optionsListChanged(): void {
-        this.updateFilteredOptions();
+        if (this.$fastController.isConnected) {
+            this.updateFilteredOptions();
+        }
     }
 
     /**
@@ -300,7 +327,7 @@ export class FASTPicker extends FormAssociatedPicker {
                 this.inputElement.value = this.query;
             }
             this.updateFilteredOptions();
-            this.$emit("querychange", { bubbles: false });
+            this.$emit("querychange");
         }
     }
 
@@ -311,15 +338,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public filteredOptionsList: string[] = [];
-    protected filteredOptionsListChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.showNoOptions =
-                    this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
-                this.setFocusedOption(this.showNoOptions ? -1 : 0);
-            });
-        }
-    }
 
     /**
      *  Indicates if the flyout menu is open or not
@@ -331,9 +349,10 @@ export class FASTPicker extends FormAssociatedPicker {
     protected flyoutOpenChanged(): void {
         if (this.flyoutOpen) {
             Updates.enqueue(this.setRegionProps);
-            this.$emit("menuopening", { bubbles: false });
+            this.updateFilteredOptions();
+            this.$emit("menuopening", {}, { bubbles: false });
         } else {
-            this.$emit("menuclosing", { bubbles: false });
+            this.$emit("menuclosing", {}, { bubbles: false });
         }
     }
 
@@ -441,6 +460,13 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public selectedItems: string[] = [];
+    private selectedItemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.maxSelected && this.selectedItems.length > this.maxSelected) {
+                this.selectedItems.splice(this.maxSelected, this.selectedItems.length);
+            }
+        }
+    }
 
     private optionsPlaceholder: Node;
     private inputElementView: HTMLView | null = null;
@@ -608,31 +634,6 @@ export class FASTPicker extends FormAssociatedPicker {
         }
         const activeElement = getRootActiveElement(this);
         switch (e.key) {
-            // TODO: what should "home" and "end" keys do, exactly?
-            //
-            // case keyHome: {
-            //     if (!this.flyoutOpen) {
-            //         this.toggleFlyout(true);
-            //     } else {
-            //         if (this.menuElement.optionElements.length > 0) {
-            //             this.setFocusedOption(0);
-            //         }
-            //     }
-            //     return false;
-            // }
-
-            // case keyEnd: {
-            //     if (!this.flyoutOpen) {
-            //         this.toggleFlyout(true);
-            //     } else {
-            //         if (this.menuElement.optionElements.length > 0) {
-            //             this.toggleFlyout(true);
-            //             this.setFocusedOption(this.menuElement.optionElements.length - 1);
-            //         }
-            //     }
-            //     return false;
-            // }
-
             case keyArrowDown: {
                 if (!this.flyoutOpen) {
                     this.toggleFlyout(true);
@@ -772,7 +773,7 @@ export class FASTPicker extends FormAssociatedPicker {
         Updates.enqueue(() => {
             this.checkMaxItems();
         });
-        this.$emit("selectionchange", { bubbles: false });
+        this.$emit("selectionchange");
     }
 
     /**
@@ -781,7 +782,7 @@ export class FASTPicker extends FormAssociatedPicker {
     public handleRegionLoaded(e: Event): void {
         Updates.enqueue(() => {
             this.setFocusedOption(0);
-            this.$emit("menuloaded", { bubbles: false });
+            this.$emit("menuloaded", {}, { bubbles: false });
         });
     }
 
@@ -993,19 +994,38 @@ export class FASTPicker extends FormAssociatedPicker {
      * Updates the filtered options array
      */
     private updateFilteredOptions(): void {
-        this.filteredOptionsList = this.optionsList.slice(0);
+        let newFilteredOptionsList: string[] = this.optionsList.slice(0);
+
         if (this.filterSelected) {
-            this.filteredOptionsList = this.filteredOptionsList.filter(
+            newFilteredOptionsList = newFilteredOptionsList.filter(
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
         if (this.filterQuery && this.query !== "" && this.query !== undefined) {
             // compare case-insensitive
             const filterQuery = this.query.toLowerCase();
-            this.filteredOptionsList = this.filteredOptionsList.filter(
+            newFilteredOptionsList = newFilteredOptionsList.filter(
                 el => el.toLowerCase().indexOf(filterQuery) !== -1
             );
         }
+        if (this.maxSuggestions && newFilteredOptionsList.length > this.maxSuggestions) {
+            this.trimCount = newFilteredOptionsList.length - this.maxSuggestions;
+            newFilteredOptionsList.splice(this.maxSuggestions);
+        } else {
+            this.trimCount = 0;
+        }
+
+        this.filteredOptionsList.splice(
+            0,
+            this.filteredOptionsList.length,
+            ...newFilteredOptionsList
+        );
+
+        Updates.enqueue(() => {
+            this.showNoOptions =
+                this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
+            this.setFocusedOption(this.showNoOptions ? -1 : 0);
+        });
     }
 
     /**
