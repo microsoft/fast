@@ -303,6 +303,20 @@ test.describe("NumberField", () => {
         await expect(control).toHaveValue("1");
     });
 
+    test("should allow writing more than 12 numbers", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-number-field></fast-number-field>
+        `;
+        });
+
+        await control.fill("111111111111111");
+
+        await expect(element).toHaveJSProperty("value", "111111111111111");
+
+        await expect(control).toHaveValue("111111111111111");
+    });
+
     test("should allow negative integer numbers", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -373,6 +387,22 @@ test.describe("NumberField", () => {
         await expect(control).toHaveValue("7");
     });
 
+    test("should increment the `value` property by the step amount when the `stepUp()` method is invoked with float values", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="0.01" value="1.11"></fast-number-field>
+        `;
+        });
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "1.12");
+
+        await expect(control).toHaveValue("1.12");
+    });
+
     test("should decrement the `value` property by the step amount when the `stepDown()` method is invoked", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -387,6 +417,22 @@ test.describe("NumberField", () => {
         await expect(element).toHaveJSProperty("value", "3");
 
         await expect(control).toHaveValue("3");
+    });
+
+    test("should decrement the `value` property by the step amount when the `stepUp()` method is invoked with float values", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-number-field step="0.01" value="1.1"></fast-number-field>
+        `;
+        });
+
+        await element.evaluate((node: FASTNumberField) => {
+            node.stepUp();
+        });
+
+        await expect(element).toHaveJSProperty("value", "1.09");
+
+        await expect(control).toHaveValue("1.09");
     });
 
     test("should offset an undefined `value` from zero when stepped down", async () => {

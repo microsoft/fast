@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Allow input of more than 12 numbers and enable entry of decimal values in fast-number-field",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "saicharan0124@gmail.com",
+  "dependentChangeType": "patch"
+}
