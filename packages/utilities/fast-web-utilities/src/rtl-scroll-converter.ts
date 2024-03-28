@@ -1,4 +1,3 @@
-import { canUseDOM } from "exenv-es6";
 import { Direction } from "./localization.js";
 
 /**
@@ -37,7 +36,7 @@ export class RtlScrollConverter {
      * The functions initially assigned triggers a browser check when called which sets
      * the correct converter based on browser and then invokes it
      */
-    private static getRtlScrollLeftConverter: (scrolledElement: Element) => number =
+    public static getRtlScrollLeftConverter: (scrolledElement: Element) => number =
         RtlScrollConverter.initialGetRtlScrollConverter;
 
     /**
@@ -45,7 +44,7 @@ export class RtlScrollConverter {
      * The functions initially assigned triggers a browser check when called which sets
      * the correct function based on browser and then invokes it
      */
-    private static setRtlScrollLeftConverter: (
+    public static setRtlScrollLeftConverter: (
         scrolledElement: Element,
         scrollValue: number
     ) => void = RtlScrollConverter.initialSetRtlScrollConverter;
@@ -54,7 +53,7 @@ export class RtlScrollConverter {
      * The initial rtl scroll converter getter function, it calls the browser test to set the correct converter
      * functions and then invokes the getter
      */
-    private static initialGetRtlScrollConverter(scrolledElement: Element): number {
+    public static initialGetRtlScrollConverter(scrolledElement: Element): number {
         RtlScrollConverter.initializeRtlScrollConverters();
         return RtlScrollConverter.getRtlScrollLeftConverter(scrolledElement);
     }
@@ -64,7 +63,7 @@ export class RtlScrollConverter {
      * values as the browser is already doing the right thing.  Content start = 0 and
      * scrolling left goes negative.
      */
-    private static directGetRtlScrollConverter(scrolledElement: Element): number {
+    public static directGetRtlScrollConverter(scrolledElement: Element): number {
         return scrolledElement.scrollLeft;
     }
 
@@ -73,7 +72,7 @@ export class RtlScrollConverter {
      * as a positive maximum scroll value at content start and then goes to zero as content
      * is scrolled left
      */
-    private static invertedGetRtlScrollConverter(scrolledElement: Element): number {
+    public static invertedGetRtlScrollConverter(scrolledElement: Element): number {
         return -Math.abs(scrolledElement.scrollLeft);
     }
 
@@ -81,7 +80,7 @@ export class RtlScrollConverter {
      * The "reverse" get scroll converter is used when the browser reports scroll left
      * as 0 at content start and then goes positive as content is scrolled left
      */
-    private static reverseGetRtlScrollConverter(scrolledElement: Element): number {
+    public static reverseGetRtlScrollConverter(scrolledElement: Element): number {
         return (
             scrolledElement.scrollLeft -
             (scrolledElement.scrollWidth - scrolledElement.clientWidth)
@@ -92,7 +91,7 @@ export class RtlScrollConverter {
      * The initial rtl scroll converter setter function, it calls the browser test to set the correct converter
      * functions and then invokes the setter
      */
-    private static initialSetRtlScrollConverter(
+    public static initialSetRtlScrollConverter(
         scrolledElement: Element,
         newScrollValue: number
     ): void {
@@ -105,7 +104,7 @@ export class RtlScrollConverter {
      * values as the browser is already doing the right thing.  Content start = 0 and
      * scrolling left goes negative.
      */
-    private static directSetRtlScrollConverter(
+    public static directSetRtlScrollConverter(
         scrolledElement: Element,
         newScrollValue: number
     ): void {
@@ -117,7 +116,7 @@ export class RtlScrollConverter {
      * as a positive maximum scroll value at content start and then goes to zero as content
      * is scrolled left
      */
-    private static invertedSetRtlScrollConverter(
+    public static invertedSetRtlScrollConverter(
         scrolledElement: Element,
         newScrollValue: number
     ): void {
@@ -128,7 +127,7 @@ export class RtlScrollConverter {
      * The "reverse" set scroll converter is used when the browser reports scroll left
      * as 0 at content start and then goes positive as content is scrolled left
      */
-    private static reverseSetRtlScrollConverter(
+    public static reverseSetRtlScrollConverter(
         scrolledElement: Element,
         newScrollValue: number
     ): void {
@@ -141,12 +140,12 @@ export class RtlScrollConverter {
      * detects the appropriate rtl scroll converter functions and assigns them
      * should only run once
      */
-    private static initializeRtlScrollConverters(): void {
-        if (!canUseDOM()) {
+    public static initializeRtlScrollConverters(): void {
+        if (!window?.document?.createElement) {
             RtlScrollConverter.applyDirectScrollConverters();
             return;
         }
-        const testElement: HTMLDivElement = RtlScrollConverter.getTestElement();
+        const testElement: HTMLElement = RtlScrollConverter.getTestElement();
         document.body.appendChild(testElement);
 
         RtlScrollConverter.checkForScrollType(testElement);
@@ -158,7 +157,7 @@ export class RtlScrollConverter {
      * checks the provided test element to determine scroll type
      * and apply appropriate converters
      */
-    private static checkForScrollType(testElement: HTMLDivElement): void {
+    public static checkForScrollType(testElement: HTMLElement): void {
         if (RtlScrollConverter.isReverse(testElement)) {
             RtlScrollConverter.applyReverseScrollConverters();
         } else {
@@ -173,14 +172,14 @@ export class RtlScrollConverter {
     /**
      * checks test element initial state for rtl "reverse" mode
      */
-    private static isReverse(testElement: HTMLDivElement): boolean {
+    public static isReverse(testElement: HTMLElement): boolean {
         return testElement.scrollLeft > 0;
     }
 
     /**
      * checks test element for rtl "direct" mode
      */
-    private static isDirect(testElement: HTMLDivElement): boolean {
+    public static isDirect(testElement: HTMLElement): boolean {
         testElement.scrollLeft = -1;
         return testElement.scrollLeft < 0;
     }
@@ -188,7 +187,7 @@ export class RtlScrollConverter {
     /**
      * apply direct scroll conververters
      */
-    private static applyDirectScrollConverters(): void {
+    public static applyDirectScrollConverters(): void {
         RtlScrollConverter.setRtlScrollLeftConverter =
             RtlScrollConverter.directSetRtlScrollConverter;
         RtlScrollConverter.getRtlScrollLeftConverter =
@@ -198,7 +197,7 @@ export class RtlScrollConverter {
     /**
      * apply inverted scroll conververters
      */
-    private static applyInvertedScrollConverters(): void {
+    public static applyInvertedScrollConverters(): void {
         RtlScrollConverter.setRtlScrollLeftConverter =
             RtlScrollConverter.invertedSetRtlScrollConverter;
         RtlScrollConverter.getRtlScrollLeftConverter =
@@ -208,7 +207,7 @@ export class RtlScrollConverter {
     /**
      * apply reverse scroll conververters
      */
-    private static applyReverseScrollConverters(): void {
+    public static applyReverseScrollConverters(): void {
         RtlScrollConverter.setRtlScrollLeftConverter =
             RtlScrollConverter.reverseSetRtlScrollConverter;
         RtlScrollConverter.getRtlScrollLeftConverter =
@@ -218,8 +217,8 @@ export class RtlScrollConverter {
     /**
      * generate a test element for rtl testing
      */
-    private static getTestElement(): HTMLDivElement {
-        const testElement: HTMLDivElement = document.createElement("div");
+    public static getTestElement(): HTMLElement {
+        const testElement: HTMLElement = document.createElement("div");
         testElement.appendChild(document.createTextNode("ABCD"));
         testElement.dir = "rtl";
         testElement.style.fontSize = "14px";

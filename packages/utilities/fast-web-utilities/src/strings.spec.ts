@@ -1,147 +1,351 @@
-import { expect } from "chai";
-import {
-    format,
-    isNullOrWhiteSpace,
-    pascalCase,
-    spinalCase,
-    startsWith,
+import { expect, test } from "@playwright/test";
+import type {
+    format as formatType,
+    isNullOrWhiteSpace as isNullOrWhiteSpaceType,
+    pascalCase as pascalCaseType,
+    spinalCase as spinalCaseType,
+    startsWith as startsWithType,
 } from "./strings.js";
 
-describe("format", (): void => {
-    it("should correctly manage undefined by returning an unformatted string", (): void => {
-        const formatterString: string = "Hello {0} world";
+declare const format: typeof formatType;
+test.describe("format", () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/");
 
-        expect(format(formatterString, undefined!)).to.equal("Hello  world");
+        await page.addScriptTag({
+            type: "module",
+            content: `
+                import { format } from "/dist/strings.js";
+                globalThis.format = format;
+            `,
+        });
+
+        await page.waitForFunction(() => "format" in globalThis);
     });
 
-    it("should correctly manage null by returning an unformatted string", (): void => {
-        const formatterString: string = "Hello {0} world";
-
-        expect(format(formatterString, null!)).to.equal("Hello  world");
+    test("should correctly manage `undefined` by returning an unformatted string", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, undefined);
+            }, "Hello {0} world")
+        ).toBe("Hello  world");
     });
 
-    it("should correctly manage having too many parameters", (): void => {
-        const formatterString: string = "View {0} {1}";
-
-        expect(format(formatterString, "page", "five", "now")).to.equal("View page five");
+    test("should correctly manage null by returning an unformatted string", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, null);
+            }, "Hello {0} world")
+        ).toBe("Hello  world");
     });
 
-    it("should correctly manage a formatter with not enough parameters", (): void => {
-        const formatterString: string = "View {0} {1}";
-
-        expect(format(formatterString, "page")).to.equal("View page {1}");
+    test("should correctly manage having too many parameters", async ({ page }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, "page", "five", "now");
+            }, "View {0} {1}")
+        ).toBe("View page five");
     });
 
-    it("should correctly manage empty strings by returning a formatted string with white space", (): void => {
-        const formatterString: string = "Hello {0} world";
-
-        expect(format(formatterString, "")).to.equal("Hello  world");
+    test("should correctly manage a formatter with not enough parameters", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, "page");
+            }, "View {0} {1}")
+        ).toBe("View page {1}");
     });
 
-    it("should correctly manage strings by returning a formatted string", (): void => {
-        const formatterString: string = "Hello {0} world";
-
-        expect(format(formatterString, "foo")).to.equal("Hello foo world");
+    test("should correctly manage empty strings by returning a formatted string with white space", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, "");
+            }, "Hello {0} world")
+        ).toBe("Hello  world");
     });
 
-    it("should correctly manage multiple strings parameters", (): void => {
-        const formatterString: string = "View {0} {1}";
-
-        expect(format(formatterString, "page", "five")).to.equal("View page five");
+    test("should correctly manage strings by returning a formatted string", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, "foo");
+            }, "Hello {0} world")
+        ).toBe("Hello foo world");
     });
 
-    it("should correctly manage non-formatted strings by returning the initial string", (): void => {
-        const formatterString: string = "Hello";
-
-        expect(format(formatterString, "world")).to.equal("Hello");
+    test("should correctly manage multiple strings parameters", async ({ page }) => {
+        expect(
+            await page.evaluate(f => format.call(null, f, "page", "five"), "View {0} {1}")
+        ).toBe("View page five");
     });
 
-    it("should correctly manage non-formatted strings by returning the initial string", (): void => {
-        const formatterString: string = "Hello";
-
-        expect(format(formatterString, "world")).to.equal("Hello");
+    test("should correctly manage non-formatted strings by returning the initial string", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(f => {
+                return format.call(null, f, "world");
+            }, "Hello")
+        ).toBe("Hello");
     });
 });
 
-describe("isNullOrWhiteSpace", (): void => {
-    it("should correctly manage undefined", () => {
-        expect(isNullOrWhiteSpace(undefined!)).to.equal(true);
+declare const isNullOrWhiteSpace: typeof isNullOrWhiteSpaceType;
+test.describe("isNullOrWhiteSpace", () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/");
+
+        await page.addScriptTag({
+            type: "module",
+            content: `
+                import { isNullOrWhiteSpace } from "/dist/strings.js";
+                globalThis.isNullOrWhiteSpace = isNullOrWhiteSpace;
+            `,
+        });
+
+        await page.waitForFunction(() => "isNullOrWhiteSpace" in globalThis);
     });
-    it("should correctly manage null", () => {
-        expect(isNullOrWhiteSpace(null!)).to.equal(true);
+
+    test("should correctly manage undefined", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return isNullOrWhiteSpace.call(null, undefined);
+            })
+        ).toBe(true);
     });
-    it("should correctly manage a value with only white space", () => {
-        expect(isNullOrWhiteSpace("\t\n ")).to.equal(true);
+
+    test("should correctly manage null", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return isNullOrWhiteSpace.call(null, null);
+            })
+        ).toBe(true);
     });
-    it("should correctly manage a value without white space", () => {
-        expect(isNullOrWhiteSpace("foobar")).to.equal(false);
+
+    test("should correctly manage a value with only white space", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return isNullOrWhiteSpace("\t\n ");
+            })
+        ).toBe(true);
+    });
+
+    test("should correctly manage a value without white space", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return isNullOrWhiteSpace("foobar");
+            })
+        ).toBe(false);
     });
 });
 
-describe("pascalCase", (): void => {
-    it("should correctly manage hyphenated strings", (): void => {
-        expect(pascalCase("string-extensions")).to.equal("StringExtensions");
+declare const pascalCase: typeof pascalCaseType;
+test.describe("pascalCase", () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/");
+
+        await page.addScriptTag({
+            type: "module",
+            content: `
+                import { pascalCase } from "/dist/strings.js";
+                globalThis.pascalCase = pascalCase;
+            `,
+        });
+
+        await page.waitForFunction(() => "pascalCase" in globalThis);
     });
 
-    it("should correctly manage strings with whitespace", (): void => {
-        expect(pascalCase(" foo bar ")).to.equal("FooBar");
+    test("should correctly manage hyphenated strings", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase("string-extensions");
+            })
+        ).toBe("StringExtensions");
     });
 
-    it("should correctly manage all caps strings", (): void => {
-        expect(pascalCase("STRING EXTENSIONS")).to.equal("StringExtensions");
+    test("should correctly manage strings with whitespace", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase(" foo bar ");
+            })
+        ).toBe("FooBar");
     });
 
-    it("should no-op on existing pascal case", (): void => {
-        expect(pascalCase("StringExtensions")).to.equal("StringExtensions");
+    test("should correctly manage all caps strings", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase("STRING EXTENSIONS");
+            })
+        ).toBe("StringExtensions");
     });
 
-    it("should correctly manage one capital case with no whitespace", (): void => {
-        expect(pascalCase("thinkIAm")).to.equal("ThinkIAm");
+    test("should no-op on existing pascal case", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase("StringExtensions");
+            })
+        ).toBe("StringExtensions");
     });
 
-    it("should correctly manage strings with dashes", (): void => {
-        expect(pascalCase("--foo bar--")).to.equal("FooBar");
+    test("should correctly manage one capital case with no whitespace", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase("thinkIAm");
+            })
+        ).toBe("ThinkIAm");
     });
 
-    it("should correctly manage strings with underscores", (): void => {
-        expect(pascalCase("__foo bar__")).to.equal("FooBar");
+    test("should correctly manage strings with dashes", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase("--foo bar--");
+            })
+        ).toBe("FooBar");
+    });
+
+    test("should correctly manage strings with underscores", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return pascalCase("__foo bar__");
+            })
+        ).toBe("FooBar");
     });
 });
 
-describe("spinalCase", () => {
-    it("should convert pascalCase strings", (): void => {
-        expect(spinalCase("stringExtensions")).to.equal("string-extensions");
+declare const spinalCase: typeof spinalCaseType;
+test.describe("spinalCase", () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/");
+
+        await page.addScriptTag({
+            type: "module",
+            content: `
+                import { spinalCase } from "/dist/strings.js";
+                globalThis.spinalCase = spinalCase;
+            `,
+        });
+
+        await page.waitForFunction(() => "spinalCase" in globalThis);
     });
-    it("should convert CamelCase strings", (): void => {
-        expect(spinalCase("StringExtensions")).to.equal("string-extensions");
+
+    test("should convert pascalCase strings", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return spinalCase("stringExtensions");
+            })
+        ).toBe("string-extensions");
     });
-    it("should convert CamelCase with numbers", (): void => {
-        expect(spinalCase("typeRampMinus1FontSize")).to.equal(
-            "type-ramp-minus-1-font-size"
-        );
+
+    test("should convert CamelCase strings", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return spinalCase("StringExtensions");
+            })
+        ).toBe("string-extensions");
+    });
+
+    test("should convert CamelCase with numbers", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return spinalCase("typeRampMinus1FontSize");
+            })
+        ).toBe("type-ramp-minus-1-font-size");
     });
 });
 
-describe("startsWith", (): void => {
-    it("should correctly manage undefined", () => {
-        expect(startsWith(undefined!, undefined!)).to.equal(false);
-        expect(startsWith("Hello", undefined!)).to.equal(false);
+declare const startsWith: typeof startsWithType;
+test.describe("startsWith", () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/");
+
+        await page.addScriptTag({
+            type: "module",
+            content: `
+                import { startsWith } from "/dist/strings.js";
+                globalThis.startsWith = startsWith;
+            `,
+        });
+
+        await page.waitForFunction(() => "startsWith" in globalThis);
     });
-    it("should correctly manage null", () => {
-        expect(startsWith(null!, null!)).to.equal(false);
-        expect(startsWith("Hello", null!)).to.equal(false);
+
+    test("should correctly manage undefined", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return startsWith.call(null, undefined, undefined);
+            })
+        ).toBe(false);
+        expect(
+            await page.evaluate(() => {
+                return startsWith.call(null, "Hello", undefined);
+            })
+        ).toBe(false);
     });
-    it("should correctly manage searching for an empty string", () => {
-        expect(startsWith("Helloworld", "")).to.equal(false);
+
+    test("should correctly manage null", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return startsWith.call(null, null, null);
+            })
+        ).toBe(false);
+        expect(
+            await page.evaluate(() => {
+                return startsWith.call(null, "Hello", null);
+            })
+        ).toBe(false);
     });
-    it("should correctly manage a string which includes a match but does not start with it", () => {
-        expect(startsWith("HelloWorld", "World")).to.equal(false);
+
+    test("should correctly manage searching for an empty string", async ({ page }) => {
+        expect(
+            await page.evaluate(() => {
+                return startsWith("Helloworld", "");
+            })
+        ).toBe(false);
     });
-    it("should correctly manage finding a valid string that starts with a match", () => {
-        expect(startsWith("start", "start")).to.equal(true);
-        expect(startsWith("start", "star")).to.equal(true);
+
+    test("should correctly manage a string which includes a match but does not start with it", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(() => {
+                return startsWith("HelloWorld", "World");
+            })
+        ).toBe(false);
     });
-    it("should correctly manage incorrect casing as an invalid match", () => {
-        expect(startsWith("start", "START")).to.equal(false);
+
+    test("should correctly manage finding a valid string that starts with a match", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(() => {
+                return startsWith("start", "start");
+            })
+        ).toBe(true);
+
+        expect(
+            await page.evaluate(() => {
+                return startsWith("start", "star");
+            })
+        ).toBe(true);
+    });
+
+    test("should correctly manage incorrect casing as an invalid match", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(() => {
+                return startsWith("start", "START");
+            })
+        ).toBe(false);
     });
 });

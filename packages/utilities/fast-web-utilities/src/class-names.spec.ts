@@ -1,72 +1,105 @@
-import { expect } from "chai";
-import { classNames } from "./class-names.js";
+import { expect, test } from "@playwright/test";
+import type { classNames as classNamesType } from "./class-names.js";
 
-describe("classNames", (): void => {
-    it("should return a string when invalid values are provided", (): void => {
-        expect(classNames()).to.equal("");
-        expect(classNames(undefined as any)).to.equal("");
-        expect(classNames(null as any)).to.equal("");
-        expect(classNames(NaN as any)).to.equal("");
-        expect(classNames(Infinity as any)).to.equal("");
-        expect(classNames(new Date() as any)).to.equal("");
-        expect(classNames(1 as any)).to.equal("");
-        expect(classNames([undefined as any, true])).to.equal("");
-        expect(classNames([null as any, true])).to.equal("");
-        expect(classNames([NaN as any, true])).to.equal("");
-        expect(classNames([Infinity as any, true])).to.equal("");
-        expect(classNames([new Date() as any, true])).to.equal("");
-        expect(classNames([1 as any, true])).to.equal("");
+declare const classNames: typeof classNamesType;
+test.describe("classNames", () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/");
+
+        await page.addScriptTag({
+            type: "module",
+            content: `
+                import { classNames } from "/dist/class-names.js";
+                globalThis.classNames = classNames;
+            `,
+        });
+
+        await page.waitForFunction(() => "classNames" in globalThis);
     });
 
-    it("should return a single string argument unmodified", (): void => {
-        expect(classNames("hello")).to.equal("hello");
+    test("should return a string when invalid values are provided", async ({ page }) => {
+        const values = [undefined, null, NaN, Infinity, new Date(), 1];
+
+        expect(await page.evaluate(() => classNames())).toBe("");
+
+        for (const value of values) {
+            expect(await page.evaluate(v => classNames.call(null, v), value)).toBe("");
+
+            expect(
+                await page.evaluate(v => classNames.call(null, [v, true]), value)
+            ).toBe("");
+        }
     });
 
-    it("should join multiple string arguments together", (): void => {
-        expect(classNames("hello", "world")).to.equal("hello world");
+    test("should return a single string argument unmodified", async ({ page }) => {
+        expect(await page.evaluate(() => classNames("hello"))).toBe("hello");
     });
 
-    it("should return the return value of a single function", (): void => {
-        expect(classNames(() => "hello")).to.equal("hello");
-    });
-
-    it("should join the return value of a multiple functions", (): void => {
-        expect(
-            classNames(
-                () => "hello",
-                () => "world"
-            )
-        ).to.equal("hello world");
-    });
-
-    it("should return a the first index of an array arg when the second index is truthy", (): void => {
-        expect(classNames(["foo", true])).to.equal("foo");
-    });
-
-    it("should return a single function return value of an array arg when the second index is truthy", (): void => {
-        expect(classNames([(): string => "foo", true])).to.equal("foo");
-    });
-
-    it("should join multiple array index when all second indexes are true", (): void => {
-        expect(classNames(["foo", true], ["bar", true])).to.equal("foo bar");
-    });
-
-    it("should omit first indexes of an array argument when the second index is falsey", (): void => {
-        expect(classNames(["foo", true], ["bar", false], ["bat", true])).to.equal(
-            "foo bat"
+    test("should join multiple string arguments together", async ({ page }) => {
+        expect(await page.evaluate(() => classNames("hello", "world"))).toBe(
+            "hello world"
         );
     });
 
-    it("should join string, function, and object arguments", (): void => {
+    test("should return the return value of a single function", async ({ page }) => {
+        expect(await page.evaluate(() => classNames(() => "hello"))).toBe("hello");
+    });
+
+    test("should join the return value of a multiple functions", async ({ page }) => {
         expect(
-            classNames(
-                "hello",
-                ["foo", true],
-                ["bar", false],
-                [(): string => "bat", true],
-                "world",
-                () => "earth"
+            await page.evaluate(() =>
+                classNames(
+                    () => "hello",
+                    () => "world"
+                )
             )
-        ).to.equal("hello foo bat world earth");
+        ).toBe("hello world");
+    });
+
+    test("should return a the first index of an array arg when the second index is truthy", async ({
+        page,
+    }) => {
+        expect(await page.evaluate(() => classNames(["foo", true]))).toBe("foo");
+    });
+
+    test("should return a single function return value of an array arg when the second index is truthy", async ({
+        page,
+    }) => {
+        expect(await page.evaluate(() => classNames([(): string => "foo", true]))).toBe(
+            "foo"
+        );
+    });
+
+    test("should join multiple array index when all second indexes are true", async ({
+        page,
+    }) => {
+        expect(await page.evaluate(() => classNames(["foo", true], ["bar", true]))).toBe(
+            "foo bar"
+        );
+    });
+
+    test("should omit first indexes of an array argument when the second index is falsey", async ({
+        page,
+    }) => {
+        expect(
+            await page.evaluate(() =>
+                classNames(["foo", true], ["bar", false], ["bat", true])
+            )
+        ).toBe("foo bat");
+    });
+
+    test("should join string, function, and object arguments", async ({ page }) => {
+        expect(
+            await page.evaluate(() =>
+                classNames(
+                    "hello",
+                    ["foo", true],
+                    ["bar", false],
+                    [(): string => "bat", true],
+                    "world",
+                    () => "earth"
+                )
+            )
+        ).toBe("hello foo bat world earth");
     });
 });
