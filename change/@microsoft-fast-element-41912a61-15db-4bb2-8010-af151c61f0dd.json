@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: cast contextEventType as constant to ensure output in .d.ts files",
+  "packageName": "@microsoft/fast-element",
+  "email": "=",
+  "dependentChangeType": "patch"
+}
