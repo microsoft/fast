@@ -1,5 +1,3 @@
-import { canUseDOM } from "exenv-es6";
-
 /**
  * A test that ensures that all arguments are HTML Elements
  */
@@ -48,7 +46,7 @@ export function canUseFocusVisible(): boolean {
         return _canUseFocusVisible;
     }
 
-    if (!canUseDOM()) {
+    if (!window?.document?.createElement) {
         _canUseFocusVisible = false;
 
         return _canUseFocusVisible;
@@ -94,9 +92,8 @@ export function canUseCssGrid(): boolean {
 
 export function canUseForcedColors(): boolean {
     return (
-        canUseDOM() &&
-        (window.matchMedia("(forced-colors: none)").matches ||
-            window.matchMedia("(forced-colors: active)").matches)
+        !!window?.document?.createElement &&
+        window.matchMedia("(forced-colors: active), (forced-colors: none)").matches
     );
 }
 

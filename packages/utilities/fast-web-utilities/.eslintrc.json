@@ -1,9 +1,14 @@
 {
     "extends": ["@microsoft/eslint-config-fast-dna", "prettier"],
     "rules": {
-        "import/extensions": [
-            "error",
-            "always"
-        ]
-    }
+        "import/extensions": ["error", "always"]
+    },
+    "overrides": [
+        {
+            "files": ["*.mjs"],
+            "env": {
+                "node": true
+            }
+        }
+    ]
 }
