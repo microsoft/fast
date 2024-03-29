@@ -50,7 +50,7 @@ export type FASTContextRequestStrategy = <T extends UnknownContext>(
 ) => void;
 
 const contextsByName = new Map<string, FASTContext<unknown>>();
-const contextEventType = "context-request";
+const contextEventType = "context-request" as const;
 let requestStrategy: FASTContextRequestStrategy;
 
 /**
