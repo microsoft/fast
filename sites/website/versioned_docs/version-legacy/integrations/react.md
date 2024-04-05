@@ -50,6 +50,20 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
 The above will not work on Windows. You can adjust the scripts to use [cross-env](https://www.npmjs.com/package/cross-env) to add Windows support.
 :::
 
+Here's how to use cross-env in project under Windows.
+```jsonc
+{
+  //...
+  "scripts": {
+    "start": "cross-env EXTEND_ESLINT=true react-scripts start",
+    "build": "cross-env EXTEND_ESLINT=true react-scripts build",
+    "test": "cross-env EXTEND_ESLINT=true react-scripts test",
+    "eject": "cross-env EXTEND_ESLINT=true react-scripts eject"
+  }
+  //...
+}
+```
+
 **Override the `eslintConfig` field to turn off the 'no-unused-expressions' rule**
 
 ```jsonc
