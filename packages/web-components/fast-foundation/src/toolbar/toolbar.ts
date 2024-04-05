@@ -9,6 +9,7 @@ import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
+import { getRootActiveElement } from "../utilities/root-active-element.js";
 
 /**
  * Toolbar configuration options
@@ -241,9 +242,8 @@ export class Toolbar extends FoundationElement {
 
         // If the previously active item is still focusable, adjust the active index to the
         // index of that item.
-        const adjustedActiveIndex = this.focusableElements.indexOf(
-            previousFocusedElement
-        );
+        const adjustedActiveIndex =
+            this.focusableElements.indexOf(previousFocusedElement);
         this.activeIndex = Math.max(0, adjustedActiveIndex);
 
         this.setFocusableElements();
@@ -258,7 +258,14 @@ export class Toolbar extends FoundationElement {
     private setFocusedElement(activeIndex: number = this.activeIndex): void {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
-        this.focusableElements[this.activeIndex]?.focus();
+        if (
+            this.focusableElements[this.activeIndex] &&
+            // Don't focus the toolbar element if some event handlers moved
+            // the focus on another element in the page.
+            this.contains(getRootActiveElement(this))
+        ) {
+            this.focusableElements[this.activeIndex].focus();
+        }
     }
 
     /**
