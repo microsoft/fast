@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Mon, 08 Apr 2024 15:48:24 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.3.24",
+      "version": "0.3.24",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-element to v1.13.0",
+            "commit": "7f8e2db596277e78fddd88a6c99444ca64f5e771"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-react-wrapper",
+            "comment": "Bump @microsoft/fast-foundation to v2.49.6",
+            "commit": "7f8e2db596277e78fddd88a6c99444ca64f5e771"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 23 Jan 2024 19:35:35 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.3.23",
       "version": "0.3.23",

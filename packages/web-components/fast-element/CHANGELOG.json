@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 08 Apr 2024 15:48:24 GMT",
+      "tag": "@microsoft/fast-element_v1.13.0",
+      "version": "1.13.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0c27d027ff6e8616ad4fddc17f4432aa7f6cbad0",
+            "comment": "Export Symbol to allow prepending specific stylesheets to adoptedStyleSheets"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 04 May 2023 17:35:08 GMT",
       "tag": "@microsoft/fast-element_v1.12.0",
       "version": "1.12.0",

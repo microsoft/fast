@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Mon, 08 Apr 2024 15:48:24 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.6",
+      "version": "2.49.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "=",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7f8e2db596277e78fddd88a6c99444ca64f5e771",
+            "comment": "fix: prevent toolbar from stealing focus when focus has already been moved in the document"
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0c27d027ff6e8616ad4fddc17f4432aa7f6cbad0",
+            "comment": "Fix CSS custom property precedence issue and work around Chromium bug"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.13.0",
+            "commit": "7f8e2db596277e78fddd88a6c99444ca64f5e771"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 23 Jan 2024 19:35:35 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.5",
       "version": "2.49.5",

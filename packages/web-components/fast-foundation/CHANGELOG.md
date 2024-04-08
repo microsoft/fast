@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 23 Jan 2024 19:35:35 GMT and should not be manually modified.
+This log was last generated on Mon, 08 Apr 2024 15:48:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.6
+
+Mon, 08 Apr 2024 15:48:24 GMT
+
+### Patches
+
+- fix: prevent toolbar from stealing focus when focus has already been moved in the document (=)
+- Fix CSS custom property precedence issue and work around Chromium bug (7282195+m-akinc@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.13.0
 
 ## 2.49.5
 

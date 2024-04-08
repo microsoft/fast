@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Thu, 04 May 2023 17:35:08 GMT and should not be manually modified.
+This log was last generated on Mon, 08 Apr 2024 15:48:24 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.13.0
+
+Mon, 08 Apr 2024 15:48:24 GMT
+
+### Minor changes
+
+- Export Symbol to allow prepending specific stylesheets to adoptedStyleSheets (7282195+m-akinc@users.noreply.github.com)
 
 ## 1.12.0
 

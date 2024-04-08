@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Mon, 08 Apr 2024 15:48:24 GMT",
+      "tag": "@microsoft/fast-router_v0.4.9",
+      "version": "0.4.9",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v1.13.0",
+            "commit": "7f8e2db596277e78fddd88a6c99444ca64f5e771"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 04 May 2023 17:35:08 GMT",
       "tag": "@microsoft/fast-router_v0.4.8",
       "version": "0.4.8",

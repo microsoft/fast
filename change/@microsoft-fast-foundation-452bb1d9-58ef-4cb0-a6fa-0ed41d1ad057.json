@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: prevent toolbar from stealing focus when focus has already been moved in the document",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "=",
-  "dependentChangeType": "patch"
-}
