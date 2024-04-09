@@ -484,7 +484,7 @@ export class FASTTooltip extends FASTElement {
         if (this._visible) {
             if (!this.controlledVisibility) {
                 document.removeEventListener("mousemove", this.documentMouseMoveHandler);
-                document.removeEventListener("focusin", this.documentFocusoutHandler);
+                document.removeEventListener("focusout", this.documentFocusoutHandler);
                 document.removeEventListener("keydown", this.keydownDocumentHandler);
             }
             this._visible = false;
