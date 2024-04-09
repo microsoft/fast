@@ -59,3 +59,14 @@ TooltipPlacements.args = {
     })),
 };
 TooltipPlacements.parameters = { controls: { include: [] } };
+
+export const TooltipMultiple: Story<FASTTooltip> = renderComponent(
+    html<StoryArgs<FASTTooltip>>`
+        <fast-button id="button1">Button 1</fast-button>
+        <fast-button id="button2">Button 2</fast-button>
+        <fast-tooltip anchor="button1">Tooltip 1</fast-tooltip>
+        <fast-tooltip anchor="button2">Tooltip 2</fast-tooltip>
+    `
+).bind({});
+TooltipMultiple.args = {};
+TooltipMultiple.parameters = { controls: { include: [] } };

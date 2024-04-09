@@ -166,4 +166,69 @@ test.describe("Tooltip", () => {
             await element.evaluate((node: FASTTooltip) => node.anchorElement?.id)
         ).toBe("new-anchor");
     });
+
+    test("should hide a focus driven tooltip when the mouse is moved", async () => {
+        await root.evaluate((node: HTMLElement) => {
+            node.innerHTML = /* html */ `
+                <fast-tooltip anchor="anchor-default">
+                    Tooltip
+                </fast-tooltip>
+                <fast-button id="anchor-default">
+                    Hover or focus me
+                </fast-button>
+            `;
+        });
+
+        const anchor = page.locator("#anchor-default");
+
+        await expect(element).toHaveJSProperty("visible", false);
+
+        await expect(element).toBeHidden();
+
+        await anchor.focus();
+
+        await expect(element).toHaveJSProperty("visible", true);
+
+        await expect(element).toBeVisible();
+
+        await page.mouse.move(10, 10);
+
+        await expect(element).toBeHidden();
+    });
+
+    test("should hide a hover driven tooltip when focus moves in the document", async () => {
+        await root.evaluate((node: HTMLElement) => {
+            node.innerHTML = /* html */ `
+                <fast-tooltip anchor="anchor-default">
+                    Tooltip
+                </fast-tooltip>
+                <fast-button id="anchor-default">
+                    Hover or focus me
+                </fast-button>
+                <fast-button id="button1">
+                    Hover or focus me
+                </fast-button>
+                <fast-button id="button2">
+                    Hover or focus me
+                </fast-button>
+            `;
+        });
+
+        const anchor = page.locator("#anchor-default");
+        const button1 = page.locator("#button1");
+        const button2 = page.locator("#button2");
+
+        await expect(element).toHaveJSProperty("visible", false);
+
+        await expect(element).toBeHidden();
+
+        await button1.focus();
+        await anchor.hover();
+
+        await expect(element).toHaveJSProperty("visible", true);
+        await expect(element).toBeVisible();
+
+        await button2.focus();
+        await expect(element).toBeHidden();
+    });
 });

@@ -111,12 +111,17 @@ export class FASTTooltip extends FASTElement {
     }
 
     /**
+     * If the tooltip is currently hovered
+     */
+    private isHovered: boolean = false;
+
+    /**
      * Hides the tooltip when the anchor element loses focus.
      *
      * @internal
      */
     protected focusoutAnchorHandler = (): void => {
-        if (!this.controlledVisibility && this._visible) {
+        if (!this.controlledVisibility && this._visible && !this.isHovered) {
             this.hideTooltip();
         }
     };
@@ -129,6 +134,32 @@ export class FASTTooltip extends FASTElement {
     protected focusinAnchorHandler = (): void => {
         if (!this.controlledVisibility && !this._visible) {
             this.showTooltip();
+        }
+    };
+
+    /**
+     * Watches for mousemovement
+     *
+     * @internal
+     */
+    protected documentMouseMoveHandler = (): void => {
+        // focus generated tooltips are hidden when mouse moves
+        console.debug("mouse");
+        if (!this.isHovered) {
+            this.hideTooltip();
+        }
+    };
+
+    /**
+     * Watches for focus changes
+     *
+     * @internal
+     */
+    protected documentFocusoutHandler = (): void => {
+        console.debug("focusout");
+        // hover generated tooltips are hidden when focus moves
+        if (getRootActiveElement(this) !== this.anchorElement) {
+            this.hideTooltip();
         }
     };
 
@@ -172,7 +203,8 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     private mouseoverAnchorHandler = (): void => {
-        if (!getRootActiveElement(this)?.isSameNode(this.anchorElement)) {
+        this.isHovered = true;
+        if (!this.controlledVisibility && !this._visible) {
             this.showTooltip();
         }
     };
@@ -183,10 +215,8 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     private mouseoutAnchorHandler = (e: MouseEvent): void => {
-        if (
-            !getRootActiveElement(this)?.isSameNode(this.anchorElement) &&
-            !this.isSameNode(e.relatedTarget as HTMLElement)
-        ) {
+        this.isHovered = false;
+        if (!this.controlledVisibility && this._visible) {
             this.hideTooltip();
         }
     };
@@ -311,13 +341,35 @@ export class FASTTooltip extends FASTElement {
 
         this.addEventListener("mouseout", this.mouseoutAnchorHandler);
         this.addEventListener("mouseover", this.mouseoverAnchorHandler);
-
-        document.addEventListener("keydown", this.keydownDocumentHandler);
     }
 
-    public connectedCallback(): void {
+    /**
+     * Removes event listeners from the anchor element, the tooltip element, and the document.
+     *
+     * @internal
+     */
+    private removeListeners(): void {
+        if (!this.anchorElement) {
+            return;
+        }
+
+        this.anchorElement.removeEventListener("focusin", this.focusinAnchorHandler);
+        this.anchorElement.removeEventListener("focusout", this.focusoutAnchorHandler);
+        this.anchorElement.removeEventListener("mouseout", this.mouseoutAnchorHandler);
+        this.anchorElement.removeEventListener("mouseover", this.mouseoverAnchorHandler);
+
+        this.removeEventListener("mouseout", this.mouseoutAnchorHandler);
+        this.removeEventListener("mouseover", this.mouseoverAnchorHandler);
+    }
+
+    override connectedCallback(): void {
         super.connectedCallback();
         this.anchorChanged(undefined, this.anchor);
+    }
+
+    override disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.removeListeners();
     }
 
     /**
@@ -328,16 +380,6 @@ export class FASTTooltip extends FASTElement {
     private dismiss(): void {
         this.hideTooltip();
         this.$emit("dismiss");
-    }
-
-    /**
-     * Hides the tooltip.
-     *
-     * @internal
-     */
-    public hideTooltip(): void {
-        this._visible = false;
-        this.cleanup?.();
     }
 
     /**
@@ -378,27 +420,6 @@ export class FASTTooltip extends FASTElement {
                 this.anchorElement.removeAttribute("aria-describedby");
             }
         }
-    }
-
-    /**
-     * Removes event listeners from the anchor element, the tooltip element, and the document.
-     *
-     * @internal
-     */
-    private removeListeners(): void {
-        if (!this.anchorElement) {
-            return;
-        }
-
-        this.anchorElement.removeEventListener("focusin", this.focusinAnchorHandler);
-        this.anchorElement.removeEventListener("focusout", this.focusoutAnchorHandler);
-        this.anchorElement.removeEventListener("mouseout", this.mouseoutAnchorHandler);
-        this.anchorElement.removeEventListener("mouseover", this.mouseoverAnchorHandler);
-
-        this.removeEventListener("mouseout", this.mouseoutAnchorHandler);
-        this.removeEventListener("mouseover", this.mouseoverAnchorHandler);
-
-        document.removeEventListener("keydown", this.keydownDocumentHandler);
     }
 
     /**
@@ -445,7 +466,27 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     private showTooltip(): void {
-        this._visible = true;
-        Updates.enqueue(() => this.setPositioning());
+        if (!this._visible) {
+            this._visible = true;
+            document.addEventListener("mousemove", this.documentMouseMoveHandler);
+            document.addEventListener("focusout", this.documentFocusoutHandler);
+            document.addEventListener("keydown", this.keydownDocumentHandler);
+            Updates.enqueue(() => this.setPositioning());
+        }
+    }
+
+    /**
+     * Hides the tooltip.
+     *
+     * @internal
+     */
+    public hideTooltip(): void {
+        if (this._visible) {
+            document.removeEventListener("mousemove", this.documentMouseMoveHandler);
+            document.removeEventListener("focusin", this.documentFocusoutHandler);
+            document.removeEventListener("keydown", this.keydownDocumentHandler);
+            this._visible = false;
+            this.cleanup?.();
+        }
     }
 }
