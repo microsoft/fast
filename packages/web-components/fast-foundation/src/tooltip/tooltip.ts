@@ -144,7 +144,6 @@ export class FASTTooltip extends FASTElement {
      */
     protected documentMouseMoveHandler = (): void => {
         // focus generated tooltips are hidden when mouse moves
-        console.debug("mouse");
         if (!this.isHovered) {
             this.hideTooltip();
         }
@@ -156,7 +155,6 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     protected documentFocusoutHandler = (): void => {
-        console.debug("focusout");
         // hover generated tooltips are hidden when focus moves
         if (getRootActiveElement(this) !== this.anchorElement) {
             this.hideTooltip();
@@ -468,9 +466,11 @@ export class FASTTooltip extends FASTElement {
     private showTooltip(): void {
         if (!this._visible) {
             this._visible = true;
-            document.addEventListener("mousemove", this.documentMouseMoveHandler);
-            document.addEventListener("focusout", this.documentFocusoutHandler);
-            document.addEventListener("keydown", this.keydownDocumentHandler);
+            if (!this.controlledVisibility) {
+                document.addEventListener("mousemove", this.documentMouseMoveHandler);
+                document.addEventListener("focusout", this.documentFocusoutHandler);
+                document.addEventListener("keydown", this.keydownDocumentHandler);
+            }
             Updates.enqueue(() => this.setPositioning());
         }
     }
@@ -482,9 +482,11 @@ export class FASTTooltip extends FASTElement {
      */
     public hideTooltip(): void {
         if (this._visible) {
-            document.removeEventListener("mousemove", this.documentMouseMoveHandler);
-            document.removeEventListener("focusin", this.documentFocusoutHandler);
-            document.removeEventListener("keydown", this.keydownDocumentHandler);
+            if (!this.controlledVisibility) {
+                document.removeEventListener("mousemove", this.documentMouseMoveHandler);
+                document.removeEventListener("focusin", this.documentFocusoutHandler);
+                document.removeEventListener("keydown", this.keydownDocumentHandler);
+            }
             this._visible = false;
             this.cleanup?.();
         }
