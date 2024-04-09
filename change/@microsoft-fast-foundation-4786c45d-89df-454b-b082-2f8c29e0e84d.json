@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "improve tooltip show/hide behavior",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomeau@qti.qualcomm.com",
+  "dependentChangeType": "prerelease"
+}
