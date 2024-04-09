@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "comparisons to document.activeElement consider shadowRoot",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "prerelease"
+}

@@ -8,7 +8,7 @@ test.describe("Search", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
-    let control: Locator;
+    let field: Locator;
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
@@ -17,7 +17,7 @@ test.describe("Search", () => {
 
         root = page.locator("#root");
 
-        control = element.locator(".control");
+        field = element.locator(".field");
 
         await page.goto(fixtureURL("search--search"));
     });
@@ -46,7 +46,7 @@ test.describe("Search", () => {
                     { attribute }
                 );
 
-                await expect(element).toHaveBooleanAttribute(attribute);
+                await expect(element).toHaveAttribute(attribute);
             });
         }
     });
@@ -95,7 +95,7 @@ test.describe("Search", () => {
                     { attrToken, value }
                 );
 
-                await expect(control).toHaveAttribute(spinalCase(attribute), `${value}`);
+                await expect(field).toHaveAttribute(spinalCase(attribute), `${value}`);
             });
         }
     });
@@ -222,7 +222,7 @@ test.describe("Search", () => {
             `;
         });
 
-        const control = element.locator(".control");
+        const field = element.locator(".field");
 
         const [wasChanged] = await Promise.all([
             element.evaluate(
@@ -231,7 +231,7 @@ test.describe("Search", () => {
                         node.addEventListener("change", () => resolve(true));
                     })
             ),
-            control.evaluate(node => {
+            field.evaluate(node => {
                 node.dispatchEvent(new KeyboardEvent("change"));
             }),
         ]);
@@ -257,13 +257,13 @@ test.describe("Search", () => {
 
             await expect(element).toHaveJSProperty("value", "test value");
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await form.evaluate<void, HTMLFormElement>(node => {
                 node.reset();
             });
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "");
         });

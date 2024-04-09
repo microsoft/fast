@@ -6,6 +6,7 @@ import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";
 import { StartEnd } from "../patterns/start-end.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { getRootActiveElement } from "../utilities/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
 import { ComboboxAutocomplete } from "./combobox.options.js";
@@ -337,7 +338,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * Overrides: `Listbox.focusAndScrollOptionIntoView`
      */
     protected focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement)) {
+        if (this.contains(getRootActiveElement(this))) {
             this.control.focus();
             if (this.firstSelectedOption) {
                 requestAnimationFrame(() => {

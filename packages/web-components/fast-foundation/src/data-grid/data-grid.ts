@@ -20,6 +20,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import { getRootActiveElement } from "../utilities/index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import {
@@ -158,12 +159,10 @@ export class FASTDataGrid extends FASTElement {
             if (this.noTabbing) {
                 this.setAttribute("tabIndex", "-1");
             } else {
+                const activeElement: Element | null = getRootActiveElement(this);
                 this.setAttribute(
                     "tabIndex",
-                    this.contains(document.activeElement) ||
-                        this === document.activeElement
-                        ? "-1"
-                        : "0"
+                    this.contains(activeElement) || this === activeElement ? "-1" : "0"
                 );
             }
         }
@@ -874,9 +873,10 @@ export class FASTDataGrid extends FASTElement {
     };
 
     private queueFocusUpdate(): void {
+        const activeElement: Element | null = getRootActiveElement(this);
         if (
             this.isUpdatingFocus &&
-            (this.contains(document.activeElement) || this === document.activeElement)
+            (this.contains(activeElement) || this === activeElement)
         ) {
             return;
         }
