@@ -167,68 +167,76 @@ test.describe("Tooltip", () => {
         ).toBe("new-anchor");
     });
 
-    test("should hide a focus driven tooltip when the mouse is moved", async () => {
+    test("should hide a focus driven tooltip when another tooltip is hovered", async () => {
         await root.evaluate((node: HTMLElement) => {
             node.innerHTML = /* html */ `
-                <fast-tooltip anchor="anchor-default">
+                <fast-tooltip anchor="anchor-default" id="tooltip-default">
+                    Tooltip
+                </fast-tooltip>
+                <fast-tooltip anchor="anchor-hover" id="tooltip-hover">
                     Tooltip
                 </fast-tooltip>
                 <fast-button id="anchor-default">
-                    Hover or focus me
+                    Focus me
+                </fast-button>
+                <fast-button id="anchor-hover">
+                    Hover me
                 </fast-button>
             `;
         });
 
-        const anchor = page.locator("#anchor-default");
+        const anchorDefault = page.locator("#anchor-default");
+        const anchorHover = page.locator("#anchor-hover");
+        const tooltipDefault = page.locator("#tooltip-default");
 
-        await expect(element).toHaveJSProperty("visible", false);
+        await expect(tooltipDefault).toHaveJSProperty("visible", false);
 
-        await expect(element).toBeHidden();
+        await expect(tooltipDefault).toBeHidden();
 
-        await anchor.focus();
+        await anchorDefault.focus();
 
-        await expect(element).toHaveJSProperty("visible", true);
+        await expect(tooltipDefault).toHaveJSProperty("visible", true);
 
-        await expect(element).toBeVisible();
+        await expect(tooltipDefault).toBeVisible();
 
-        await page.mouse.move(10, 10);
+        await anchorHover.hover();
 
-        await expect(element).toBeHidden();
+        await expect(tooltipDefault).toBeHidden();
     });
 
     test("should hide a hover driven tooltip when focus moves in the document", async () => {
         await root.evaluate((node: HTMLElement) => {
             node.innerHTML = /* html */ `
-                <fast-tooltip anchor="anchor-default">
+                <fast-tooltip anchor="anchor-default" id="tooltip-default">
+                    Tooltip
+                </fast-tooltip>
+                <fast-tooltip anchor="anchor-focus" id="tooltip-focus">
                     Tooltip
                 </fast-tooltip>
                 <fast-button id="anchor-default">
                     Hover or focus me
                 </fast-button>
-                <fast-button id="button1">
-                    Hover or focus me
-                </fast-button>
-                <fast-button id="button2">
+                <fast-button id="anchor-focus">
                     Hover or focus me
                 </fast-button>
             `;
         });
 
-        const anchor = page.locator("#anchor-default");
-        const button1 = page.locator("#button1");
-        const button2 = page.locator("#button2");
+        const anchorDefault = page.locator("#anchor-default");
+        const anchorFocus = page.locator("#anchor-focus");
+        const tooltipDefault = page.locator("#tooltip-default");
 
-        await expect(element).toHaveJSProperty("visible", false);
+        await expect(tooltipDefault).toHaveJSProperty("visible", false);
 
-        await expect(element).toBeHidden();
+        await expect(tooltipDefault).toBeHidden();
 
-        await button1.focus();
-        await anchor.hover();
+        await anchorDefault.hover();
 
-        await expect(element).toHaveJSProperty("visible", true);
-        await expect(element).toBeVisible();
+        await expect(tooltipDefault).toHaveJSProperty("visible", true);
+        await expect(tooltipDefault).toBeVisible();
 
-        await button2.focus();
-        await expect(element).toBeHidden();
+        await anchorFocus.focus();
+        await expect(tooltipDefault).toHaveJSProperty("visible", false);
+        await expect(tooltipDefault).toBeHidden();
     });
 });

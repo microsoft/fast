@@ -9,7 +9,6 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import { keyEscape, uniqueId } from "@microsoft/fast-web-utilities";
-import { getRootActiveElement } from "../utilities/index.js";
 import { TooltipPlacement } from "./tooltip.options.js";
 
 /**
@@ -22,6 +21,11 @@ import { TooltipPlacement } from "./tooltip.options.js";
  * @public
  */
 export class FASTTooltip extends FASTElement {
+    /**
+     * The currently active user focus driven tooltip instance
+     */
+    private static activeTooltip: FASTTooltip | undefined;
+
     /**
      * The visibility of the tooltip.
      *
@@ -134,30 +138,6 @@ export class FASTTooltip extends FASTElement {
     protected focusinAnchorHandler = (): void => {
         if (!this.controlledVisibility && !this._visible) {
             this.showTooltip();
-        }
-    };
-
-    /**
-     * Watches for mousemovement
-     *
-     * @internal
-     */
-    protected documentMouseMoveHandler = (): void => {
-        // focus generated tooltips are hidden when mouse moves
-        if (!this.isHovered) {
-            this.hideTooltip();
-        }
-    };
-
-    /**
-     * Watches for focus changes
-     *
-     * @internal
-     */
-    protected documentFocusoutHandler = (): void => {
-        // hover generated tooltips are hidden when focus moves
-        if (getRootActiveElement(this) !== this.anchorElement) {
-            this.hideTooltip();
         }
     };
 
@@ -467,9 +447,11 @@ export class FASTTooltip extends FASTElement {
         if (!this._visible) {
             this._visible = true;
             if (!this.controlledVisibility) {
-                document.addEventListener("mousemove", this.documentMouseMoveHandler);
-                document.addEventListener("focusout", this.documentFocusoutHandler);
                 document.addEventListener("keydown", this.keydownDocumentHandler);
+                if (FASTTooltip.activeTooltip) {
+                    FASTTooltip.activeTooltip.hideTooltip();
+                }
+                FASTTooltip.activeTooltip = this;
             }
             Updates.enqueue(() => this.setPositioning());
         }
@@ -483,8 +465,7 @@ export class FASTTooltip extends FASTElement {
     public hideTooltip(): void {
         if (this._visible) {
             if (!this.controlledVisibility) {
-                document.removeEventListener("mousemove", this.documentMouseMoveHandler);
-                document.removeEventListener("focusout", this.documentFocusoutHandler);
+                FASTTooltip.activeTooltip = undefined;
                 document.removeEventListener("keydown", this.keydownDocumentHandler);
             }
             this._visible = false;
