@@ -635,7 +635,10 @@ export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
 export const DividerOrientation: {
-    readonly horizontal: "horizontal";
+    readonly horizontal: "horizontal"; /**
+    * Divider roles
+    * @public
+    */
     readonly vertical: "vertical";
 };
 
@@ -2146,6 +2149,12 @@ export class FASTTooltip extends FASTElement {
     connectedCallback(): void;
     // @internal
     protected controlledVisibilityChanged(prev: boolean | undefined, next: boolean): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    protected documentFocusoutHandler: () => void;
+    // @internal
+    protected documentMouseMoveHandler: () => void;
     // @internal
     protected focusinAnchorHandler: () => void;
     // @internal
@@ -2590,7 +2599,10 @@ export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "focu
 
 // @public
 export const RadioGroupOrientation: {
-    readonly horizontal: "horizontal";
+    readonly horizontal: "horizontal"; /**
+    * Radio Group orientation
+    * @public
+    */
     readonly vertical: "vertical";
 };
 
