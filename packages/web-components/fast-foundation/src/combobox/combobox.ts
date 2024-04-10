@@ -258,7 +258,6 @@ export class FASTCombobox extends FormAssociatedCombobox {
 
         if (this.open) {
             if (e.composedPath()[0] === this.control) {
-                this.open = true;
                 return;
             }
 
