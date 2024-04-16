@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "pass new obj to createElement, includes newElementProps, so that all props are passed to React component",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "benjamin.ragsdale@thomsonreuters.com",
+  "dependentChangeType": "patch"
+}
