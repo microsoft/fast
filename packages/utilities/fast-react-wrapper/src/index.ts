@@ -309,7 +309,10 @@ export function reactWrapper(
                     }
                 }
 
-                return React.createElement(name, newReactProps);
+                return React.createElement(name, {
+                    ...newReactProps,
+                    ...newElementProps,
+                });
             }
         }
 
