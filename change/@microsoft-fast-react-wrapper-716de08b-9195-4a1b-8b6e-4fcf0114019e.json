@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "change object passed to React.createElement function to include newElementProps",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "benjamin.ragsdale@thomsonreuters.com",
+  "dependentChangeType": "patch"
+}
