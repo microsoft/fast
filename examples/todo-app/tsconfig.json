@@ -1,5 +1,19 @@
 {
   "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@genesiscommunitysuccess/custom-elements-lsp",
+        "srcRouteFromTSServer": "../../../examples/todo-app",
+        "parser": {
+          "fastEnable": true,
+          "timeout": 2000,
+          "dependencies": [ "!**/@custom-elements-manifest/**/*" ]
+        },
+        "plugins": [
+          "@genesiscommunitysuccess/cep-fast-plugin"
+        ]
+      }
+    ],
     "pretty": true,
     "target": "ES2015",
     "module": "ES2015",
