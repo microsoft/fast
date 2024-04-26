@@ -274,23 +274,25 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        if (this.disabled) {
+        const captured = (e.target as HTMLElement).closest(
+            `option,[role=option]`
+        ) as ListboxOption | null;
+
+        if (this.disabled || captured?.disabled) {
             return;
         }
 
         if (this.open) {
-            const captured = (e.target as HTMLElement).closest(
-                `option,[role=option]`
-            ) as ListboxOption | null;
-
-            if (!captured || captured.disabled) {
+            if (e.composedPath()[0] === this.control) {
                 return;
             }
 
-            this.selectedOptions = [captured];
-            this.control.value = captured.text;
-            this.clearSelectionRange();
-            this.updateValue(true);
+            if (captured) {
+                this.selectedOptions = [captured];
+                this.control.value = captured.text;
+                this.clearSelectionRange();
+                this.updateValue(true);
+            }
         }
 
         this.open = !this.open;
