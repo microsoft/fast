@@ -10,7 +10,6 @@
     "generate": "concurrently \"yarn:generate-*\"",
     "generate-badges": "yarn workspace @microsoft/site-utilities generate:badges",
     "generate-docs": "node src/generate-docs.js",
-    "generate-homepage": "yarn workspace @microsoft/fast-website build",
     "prebuild": "yarn clean && yarn generate && yarn copy-static",
     "build": "docusaurus build",
     "prestart": "yarn prebuild",
