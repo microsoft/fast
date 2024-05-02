@@ -60,11 +60,6 @@ module.exports = {
                     position: "right",
                 },
                 {
-                    href: "https://explore.fast.design/",
-                    label: "Components",
-                    position: "right",
-                },
-                {
                     href: "https://discord.com/invite/FcSNfg4",
                     label: "Community",
                     position: "right",

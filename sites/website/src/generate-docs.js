@@ -4,16 +4,7 @@ const { exec } = require("child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("../../../build/get-package-json");
 
-const fastFoundation = getPackageJsonDir("@microsoft/fast-foundation"); // path.dirname( require.resolve("@microsoft/fast-foundation/package.json"));
 const fastElement = getPackageJsonDir("@microsoft/fast-element"); // path.dirname(require.resolve("@microsoft/fast-element/package.json"));
-const fastComponents = getPackageJsonDir("@microsoft/fast-components", {
-    paths: [
-        path.resolve(
-            path.dirname(require.resolve("@microsoft/fast-website/package.json")),
-            "node_modules"
-        ),
-    ],
-});
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
@@ -42,14 +33,7 @@ function findFiles(startPath, filter, paths = []) {
     return paths;
 }
 
-const packages = [
-    "fast-animation",
-    "fast-colors",
-    "fast-element",
-    "fast-foundation",
-    "fast-components",
-    "fast-ssr",
-];
+const packages = ["fast-element"];
 
 function identifyPackage(path) {
     for (const pkg of packages) {
@@ -94,25 +78,7 @@ async function moveMarkdownFiles(src, docsFolderDest) {
 }
 
 async function copyArticleMarkdown() {
-    await moveMarkdownFiles(
-        path.resolve(fastFoundation, "docs/integrations"),
-        "integrations"
-    );
-    await moveMarkdownFiles(path.resolve(fastFoundation, "docs/tools"), "tools");
     await moveMarkdownFiles(path.resolve(fastElement, "docs/guide"), "fast-element");
-    await moveMarkdownFiles(path.resolve(fastComponents, "docs/design"), "design");
-
-    const componentDocs = findFiles(path.resolve(fastFoundation, "src"), "README.md");
-
-    for (const source of componentDocs) {
-        const folder = path.dirname(source);
-        const dest = path.join(
-            "./docs/components",
-            `fast-${folder.substr(folder.lastIndexOf(path.sep) + 1)}.mdx`
-        );
-
-        await safeCopy(source, dest);
-    }
 
     const mergeDocs = [
         {
