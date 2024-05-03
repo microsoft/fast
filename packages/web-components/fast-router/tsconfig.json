@@ -9,7 +9,7 @@
         "target": "es2015",
         "module": "ESNext",
         "importHelpers": true,
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "types": [
             "mocha",
             "webpack-env"

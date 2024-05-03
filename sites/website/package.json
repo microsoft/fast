@@ -30,7 +30,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
+  "dependencies": {
     "@docusaurus/core": "^3.2.1",
     "@docusaurus/module-type-aliases": "^3.2.1",
     "@docusaurus/preset-classic": "^3.2.1",

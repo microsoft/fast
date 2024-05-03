@@ -6,7 +6,7 @@
         "experimentalDecorators": true,
         "target": "es2015",
         "module": "ESNext",
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "importHelpers": true,
         "jsx": "react",
         "types": [
