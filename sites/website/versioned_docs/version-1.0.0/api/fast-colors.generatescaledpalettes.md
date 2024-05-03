@@ -30,4 +30,4 @@ export declare function generateScaledPalettes(input: ColorRGBA64, shortPaletteL
 
 <b>Returns:</b>
 
-{ short: [ColorRGBA64](./fast-colors.colorrgba64.md)<!-- -->\[\]; long: [ColorRGBA64](./fast-colors.colorrgba64.md)<!-- -->\[\]; }
+&#123; short: [ColorRGBA64](./fast-colors.colorrgba64.md)<!-- -->\[\]; long: [ColorRGBA64](./fast-colors.colorrgba64.md)<!-- -->\[\]; &#125;

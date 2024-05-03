@@ -25,7 +25,7 @@ static fromObject(data: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  data | { h: number; s: number; v: number; } |  |
+|  data | `{ h: number; s: number; v: number; }` |  |
 
 <b>Returns:</b>
 

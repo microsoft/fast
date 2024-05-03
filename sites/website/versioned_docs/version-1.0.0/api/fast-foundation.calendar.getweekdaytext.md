@@ -21,6 +21,6 @@ getWeekdayText(): {
 ```
 <b>Returns:</b>
 
-{ text: string; abbr?: string; }\[\]
+`{ text: string; abbr?: string; }[]`
 
 An array of weekday text and full text if abbreviated

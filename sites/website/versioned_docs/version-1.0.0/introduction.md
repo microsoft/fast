@@ -9,7 +9,6 @@ keywords:
 ---
 
 import logo from "../../../site-utilities/statics/assets/fast-logo.png";
-import { DocCardList, DocCardItem } from "@site/src/custom-components/CustomDocCard";
 
 <div
     style={{

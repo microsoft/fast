@@ -22,4 +22,4 @@ toObject(): {
 ```
 <b>Returns:</b>
 
-{ l: number; c: number; h: number; }
+`{ l: number; c: number; h: number; }`

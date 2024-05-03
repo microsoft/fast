@@ -25,7 +25,7 @@ getDateObject(date: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  date | { day: number; month: number; year: number; } \| string \| Date | The date as an object, string or Date insance |
+|  date | `{ day: number; month: number; year: number; } \| string \| Date` | The date as an object, string or Date insance |
 
 <b>Returns:</b>
 

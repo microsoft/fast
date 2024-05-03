@@ -25,7 +25,7 @@ static fromObject(data: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  data | { l: number; c: number; h: number; } | the config object |
+|  data | `{ l: number; c: number; h: number; }` | the config object |
 
 <b>Returns:</b>
 

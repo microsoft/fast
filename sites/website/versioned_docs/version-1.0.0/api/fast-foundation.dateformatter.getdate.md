@@ -23,7 +23,7 @@ getDate(date?: {
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  date | { day: number; month: number; year: number; } \| string \| Date | a valide date as either a Date, string, objec or a DateFormatter |
+|  date | `{ day: number; month: number; year: number; } \| string \| Date` | a valide date as either a Date, string, objec or a DateFormatter |
 |  format | Intl.DateTimeFormatOptions | The formatting for the string |
 |  locale | string | locale data used for formatting |
 
