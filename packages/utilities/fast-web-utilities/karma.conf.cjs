@@ -19,7 +19,7 @@ const commonChromeFlags = [
     "--force-device-scale-factor=1",
 ];
 
-module.exports = function (config: any) {
+module.exports = function (config) {
     let browsers;
     if (process.env.BROWSERS) {
         browsers = [process.env.BROWSERS];
@@ -133,9 +133,9 @@ module.exports = function (config: any) {
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,
-        } as any);
+        });
         options.reporters = ["coverage-istanbul", ...options.reporters];
-        (options as any).coverageIstanbulReporter = {
+        options.coverageIstanbulReporter = {
             reports: ["html", "text-summary", "json", "lcovonly", "cobertura"],
             dir: "coverage",
             verbose: true,
@@ -149,7 +149,7 @@ module.exports = function (config: any) {
                 },
             },
         };
-        (options as any).junitReporter = {
+        options.junitReporter = {
             outputDir: "coverage",
             outputFile: "test-results.xml",
             useBrowserName: false,
