@@ -7,7 +7,7 @@
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
         "target": "es2015",
-        "module": "ESNext",
+        "module": "NodeNext",
         "importHelpers": true,
         "moduleResolution": "NodeNext",
         "types": [
