@@ -28,9 +28,13 @@
       "**/chai",
       "**/html-minifier-terser",
       "**/react",
+      "**/react/**",
       "**/react-dom",
       "**/react-syntax-highlighter",
-      "**/typescript"
+      "**/typescript",
+      "**/webpack",
+      "**/@storybook/builder-webpack5",
+      "**/@storybook/builder-webpack5/**"
     ]
   },
   "engines": {
