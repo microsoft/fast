@@ -45,7 +45,7 @@ The `@microsoft/fast-element` library is a lightweight means to easily build per
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40fluentui%2Fweb-components.svg)](https://badge.fury.io/js/%40fluentui%2Fweb-components)
 
-`@fluentui/web-components` is a library of Web Components based on the Fluent design language.
+`@fluentui/web-components` is a library of Web Components based on the Fluent design language and `@microsoft/fast-element`.
 
 The source for `@fluentui/web-components` is hosted in [the Fluent UI monorepo](https://github.com/microsoft/fluentui/tree/master/packages/web-components).
 
