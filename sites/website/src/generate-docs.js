@@ -45,6 +45,12 @@ function identifyPackage(path) {
     return "";
 }
 
+function updateContentForMdx(content) {
+    content = content.replace("{", "&#123;");
+    content = content.replace("}", "&#125;");
+    return content;
+}
+
 async function safeCopy(source, dest) {
     if (!fs.existsSync(source)) {
         return;
@@ -326,6 +332,7 @@ async function buildAPIMarkdown() {
                 }
 
                 if (!skip) {
+                    line = updateContentForMdx(line);
                     output.push(line);
                 }
             });

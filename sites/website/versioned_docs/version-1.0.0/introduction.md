@@ -2,13 +2,56 @@
 id: introduction
 title: Introduction
 sidebar_label: Introduction
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/introduction.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/introduction.md
 keywords:
   - introduction
   - web components
 ---
 
-# Welcome to the <i>FAST</i> documentation!
+import logo from "../../../site-utilities/statics/assets/fast-logo.png";
+
+<div
+    style={{
+        margin: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    }}
+>
+    <img src={logo} alt="logo" style={{ width: "100px", height: "100px" }} />
+</div>
+<div
+    style={{
+        marginBottom: "80px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    }}
+>
+    <h2>
+        Welcome to the <i>FAST</i> documentation!
+    </h2>
+</div>
+
+## Where should I start?
+
+Pick the statement you most identify with, and follow the links where they lead. Come back and explore another topic at any time. Or, [click here](#what-is-fast) to learn more about FAST.
+
+
+* "I just want ready-made components!"
+  * [Jump to the component docs.](./components/getting-started.md)
+* "I want to build my own design system."
+  * [Jump to the design system docs.](./design-systems/overview.md)
+* "I want to build my own components."
+  * [Jump to the fast-element docs.](./fast-element/getting-started.md)
+* "I need to integrate FAST with another framework or build system."
+  * [Jump to the integration docs.](./integrations/introduction.md)
+* "I want to look at a quick reference."
+  * [Jump to the Cheat Sheet](./resources/cheat-sheet.md)
+* "I want to contribute to FAST."
+  * [Jump to the contributor guide.](./community/contributor-guide.md)
+
+<hr />
 
 ## What is FAST?
 
@@ -20,7 +63,7 @@ FAST is a collection of technologies built on Web Components and modern Web Stan
 
 ### How does FAST leverage Web Components?
 
-One of FAST's driving principles is "strive to adopt open, web standards-based approaches as much as possible." To that end, FAST is built directly on the W3C Web Component standards mentioned above, and does not create its own component model. This allows components built with FAST to function the same as built-in, native HTML elements. You do not need a framework to use FAST components, but you can use them in combination with any framework or library of your choice.
+One of FAST's driving principals is "strive to adopt open, web standards-based approaches as much as possible." To that end, FAST is built directly on the W3C Web Component standards mentioned above, and does not create its own component model. This allows components built with FAST to function the same as built-in, native HTML elements. You do not need a framework to use FAST components, but you can use them in combination with any framework or library of your choice.
 
 ### How can FAST help me?
 
@@ -96,3 +139,11 @@ flowchart
 </div>
 
 `@microsoft/fast-element` provides a thin layer of opinion on top of Web Components, lifting the level of abstraction just enough to make it easier and faster to build components. `@microsoft/fast-element` helps by providing attribute/property syncing, rich Model-View-ViewModel (MVVM), efficient template rendering/update, style composition, and much more. The entire `@microsoft/fast-element` library, *without* tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads as small as 4.5k.
+
+<hr />
+
+## Joining the community
+
+Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+
+We look forward to building an amazing open source community with you!

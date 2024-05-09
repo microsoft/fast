@@ -842,7 +842,7 @@ export class FASTDataGrid extends FASTElement {
             return;
         }
 
-        const unselectableRowIndexes = [];
+        const unselectableRowIndexes: Array<number> = [];
 
         for (
             let index: number = 0, maxIndex = this.rowElements.length;
