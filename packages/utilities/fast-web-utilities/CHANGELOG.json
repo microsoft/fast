@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Wed, 20 Dec 2023 19:03:47 GMT",
+      "tag": "@microsoft/fast-web-utilities_v6.0.0",
+      "version": "6.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-web-utilities",
+            "commit": "fd65254531ac3a593b32528d81b44ebf82c8e4ab",
+            "comment": "fix RtlScrollConverter test"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 16 Jun 2023 18:17:13 GMT",
       "tag": "@microsoft/fast-web-utilities_v6.0.0",
       "version": "6.0.0",

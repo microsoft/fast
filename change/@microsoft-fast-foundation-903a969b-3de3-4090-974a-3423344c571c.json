@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fix focus issue when clicking on an element in the toolbar",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "20542556+mollykreis@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

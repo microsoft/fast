@@ -359,7 +359,7 @@ test.describe("FormAssociated", () => {
 
             await expect(element).toHaveJSProperty("currentValue", "foo");
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await form.evaluate((node: HTMLFormElement) => {
                 node.reset();
@@ -369,7 +369,7 @@ test.describe("FormAssociated", () => {
 
             await expect(element).toHaveJSProperty("currentValue", "");
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
         });
 
         test("should reset it's value property to the value of the value attribute if it is set", async () => {

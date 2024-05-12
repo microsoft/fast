@@ -77,7 +77,7 @@ test.describe("Flipper", () => {
 
         await (await element.elementHandle())?.waitForElementState("stable");
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test('should set the `tabindex` attribute to "-1" when `hiddenFromAT` is true', async () => {

@@ -5,8 +5,8 @@
         "outDir": "dist/esm",
         "experimentalDecorators": true,
         "target": "es2015",
-        "module": "ESNext",
-        "moduleResolution": "Node16",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "importHelpers": true,
         "jsx": "react",
         "types": [

@@ -374,7 +374,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements HostBehavior {
         }
 
         if (parent !== this.parent) {
-            const reparent = [];
+            const reparent: Array<FASTDesignTokenNode> = [];
             for (const child of parent.children) {
                 if (
                     child instanceof FASTDesignTokenNode &&

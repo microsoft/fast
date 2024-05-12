@@ -211,7 +211,7 @@ Besides rendering content, attributes, and properties, you'll often want to add 
 In both examples above, after your event handler is executed, `preventDefault()` will be called on the event object by default. You can return `true` from your handler to opt-out of this behavior.
 :::
 
-The second example demonstrates an important characteristic of the templating engine: it only supports *unidirectional data flow* (model => view). It does not support *two-way data binding* (model <=> view). As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
+The second example demonstrates an important characteristic of the templating engine: it only supports *unidirectional data flow* `(model => view)`. It does not support *two-way data binding* `(model <=> view)`. As shown above, pushing data from the view back to the model should be handled with explicit events that call into your model's API.
 
 ## Templating and the element lifecycle
 

@@ -9,6 +9,7 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import { keyEscape, uniqueId } from "@microsoft/fast-web-utilities";
+import { getRootActiveElement } from "../utilities/index.js";
 import { TooltipPlacement } from "./tooltip.options.js";
 
 /**
@@ -171,7 +172,7 @@ export class FASTTooltip extends FASTElement {
      * @internal
      */
     private mouseoverAnchorHandler = (): void => {
-        if (!document.activeElement?.isSameNode(this.anchorElement)) {
+        if (!getRootActiveElement(this)?.isSameNode(this.anchorElement)) {
             this.showTooltip();
         }
     };
@@ -183,7 +184,7 @@ export class FASTTooltip extends FASTElement {
      */
     private mouseoutAnchorHandler = (e: MouseEvent): void => {
         if (
-            !document.activeElement?.isSameNode(this.anchorElement) &&
+            !getRootActiveElement(this)?.isSameNode(this.anchorElement) &&
             !this.isSameNode(e.relatedTarget as HTMLElement)
         ) {
             this.hideTooltip();

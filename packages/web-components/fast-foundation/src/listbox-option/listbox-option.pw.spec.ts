@@ -71,7 +71,7 @@ test.describe("ListboxOption", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-checked");
+        await expect(element).not.toHaveAttribute("aria-checked");
 
         await element.evaluate((node: FASTListboxOption) => {
             node.checked = true;

@@ -53,7 +53,7 @@ test.describe("Checkbox", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("checked");
+        await expect(element).not.toHaveAttribute("checked");
 
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
@@ -81,7 +81,7 @@ test.describe("Checkbox", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("required");
+        await expect(element).not.toHaveAttribute("required");
 
         await expect(element).toHaveAttribute("aria-required", "false");
     });
@@ -113,7 +113,7 @@ test.describe("Checkbox", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("disabled");
+        await expect(element).not.toHaveAttribute("disabled");
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });

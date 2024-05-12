@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import chevronRightIcon from "../../../statics/svg/chevron_right_12_regular.svg";
 import { FASTBreadcrumbItem } from "../breadcrumb-item.js";
 import { breadcrumbItemTemplate } from "../breadcrumb-item.template.js";
 
@@ -14,9 +15,6 @@ const styles = css`
         min-width: calc(var(--height-number) * 1px);
         outline: none;
         color: var(--neutral-foreground-rest);
-    }
-
-    .listitem {
         display: flex;
         align-items: center;
         width: max-content;
@@ -106,6 +104,8 @@ const styles = css`
 
 FASTBreadcrumbItem.define({
     name: "fast-breadcrumb-item",
-    template: breadcrumbItemTemplate(),
+    template: breadcrumbItemTemplate({
+        separator: chevronRightIcon,
+    }),
     styles,
 });
