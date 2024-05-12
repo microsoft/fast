@@ -126,7 +126,7 @@ test.describe("A DesignToken", () => {
         });
     });
     test.describe("getting and setting a simple value", () => {
-        test("should throw if the token value has never been set on the element or it's any ancestors", async () => {
+        test("should throw if the token value has never been set on the element or its ancestors", async () => {
             const result = await page.evaluate((name: string) => {
                 const target = addElement();
                 const token = DesignToken.create<number>(name);
@@ -202,6 +202,28 @@ test.describe("A DesignToken", () => {
             ).toEqual([12, 14]);
         });
 
+        test("should persist explicitly set value even if it matches the inherited value", async () => {
+            expect(
+                await page.evaluate(async () => {
+                    const results = [];
+                    const ancestor = addElement();
+                    const target = addElement(ancestor);
+                    const token = DesignToken.create<number>(uniqueTokenName());
+                    token.setValueFor(ancestor, 12);
+                    token.setValueFor(target, 12);
+
+                    results.push(token.getValueFor(target));
+
+                    token.setValueFor(ancestor, 14);
+
+                    await Updates.next();
+
+                    results.push(token.getValueFor(target));
+                    return results;
+                })
+            ).toEqual([12, 12]);
+        });
+
         test("should support getting and setting falsey values", async () => {
             expect(
                 await page.evaluate(() => {
@@ -262,6 +284,59 @@ test.describe("A DesignToken", () => {
                             .trim();
                     })
                 ).toBe("12");
+            });
+
+            test("should inherit CSS custom property from ancestor", async () => {
+                expect(
+                    await page.evaluate(async () => {
+                        const results = [];
+                        const ancestor = addElement();
+                        const target = addElement(ancestor);
+                        const token = DesignToken.create<number>(uniqueTokenName());
+                        token.setValueFor(ancestor, 12);
+                        await Updates.next();
+                        results.push(
+                            window
+                                .getComputedStyle(target)
+                                .getPropertyValue(token.cssCustomProperty)
+                        );
+                        token.setValueFor(ancestor, 14);
+                        await Updates.next();
+                        results.push(
+                            window
+                                .getComputedStyle(target)
+                                .getPropertyValue(token.cssCustomProperty)
+                        );
+                        return results;
+                    })
+                ).toEqual(["12", "14"]);
+            });
+
+            test("should set CSS custom property for element if value stops matching inherited value", async () => {
+                expect(
+                    await page.evaluate(async () => {
+                        const results = [];
+                        const ancestor = addElement();
+                        const target = addElement(ancestor);
+                        const token = DesignToken.create<number>(uniqueTokenName());
+                        token.setValueFor(ancestor, 12);
+                        token.setValueFor(target, 12);
+                        await Updates.next();
+                        results.push(
+                            window
+                                .getComputedStyle(target)
+                                .getPropertyValue(token.cssCustomProperty)
+                        );
+                        token.setValueFor(ancestor, 14);
+                        await Updates.next();
+                        results.push(
+                            window
+                                .getComputedStyle(target)
+                                .getPropertyValue(token.cssCustomProperty)
+                        );
+                        return results;
+                    })
+                ).toEqual(["12", "12"]);
             });
         });
         test.describe("that is not a CSSDesignToken", () => {
@@ -963,11 +1038,9 @@ test.describe("A DesignToken", () => {
                     target.$fastController.addStyles(styles);
 
                     await Updates.next();
-                    return window
-                        .getComputedStyle(target)
-                        .getPropertyValue(token.cssCustomProperty);
+                    return window.getComputedStyle(target).getPropertyValue("width");
                 })
-            ).toBe("12");
+            ).toBe("12px");
         });
         test("should set a CSS custom property for the element when the token is set for an ancestor element", async () => {
             expect(
@@ -984,11 +1057,9 @@ test.describe("A DesignToken", () => {
                     target.$fastController.addStyles(styles);
 
                     await Updates.next();
-                    return window
-                        .getComputedStyle(target)
-                        .getPropertyValue(token.cssCustomProperty);
+                    return window.getComputedStyle(target).getPropertyValue("width");
                 })
-            ).toBe("12");
+            ).toBe("12px");
         });
     });
 

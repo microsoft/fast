@@ -1,4 +1,4 @@
-import { ElementViewTemplate, html, ref, slotted, when } from "@microsoft/fast-element";
+import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTTabs } from "./tabs.js";
 import type { TabsOptions } from "./tabs.options.js";

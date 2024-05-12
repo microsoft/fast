@@ -12,20 +12,29 @@
     "packages": [
       "packages/utilities/*",
       "packages/web-components/*",
-      "sites/site-utilities",
-      "sites/website",
+      "sites/*",
       "examples/todo-app",
       "examples/ssr"
     ],
     "nohoist": [
+      "**/@microsoft/api-extractor",
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/karma",
       "**/@types/mocha",
       "**/@types/node",
+      "**/@types/react",
+      "**/@types/ws",
       "**/chai",
       "**/html-minifier-terser",
-      "**/react-syntax-highlighter"
+      "**/react",
+      "**/react/**",
+      "**/react-dom",
+      "**/react-syntax-highlighter",
+      "**/typescript",
+      "**/webpack",
+      "**/@storybook/builder-webpack5",
+      "**/@storybook/builder-webpack5/**"
     ]
   },
   "engines": {
@@ -88,7 +97,6 @@
     "node-gyp": "^9.0.0",
     "trim-newlines": "^4.0.2",
     "trim": "^0.0.3",
-    "typescript": "^4.7.0",
     "ua-parser-js": "^0.7.28",
     "xmlhttprequest-ssl": "^1.6.2"
   },
@@ -104,9 +112,9 @@
     "copyfiles": "^2.4.1",
     "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
-    "jest-mock": "29.5.0",
     "glob": "^7.1.2",
     "husky": "^4.2.5",
+    "jest-mock": "29.5.0",
     "lerna": "^5.5.2",
     "lint-staged": "^10.1.2",
     "markdown-it": "^12.3.2",

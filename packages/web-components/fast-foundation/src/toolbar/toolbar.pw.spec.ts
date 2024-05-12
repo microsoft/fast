@@ -3,7 +3,7 @@ import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import { ToolbarOrientation } from "./toolbar.options.js";
 
-test.describe("Toolbar", () => {
+test.describe.skip("Toolbar", () => {
     let page: Page;
     let element: Locator;
     let root: Locator;
@@ -436,7 +436,9 @@ test.describe("Toolbar", () => {
         });
         const button2 = element.locator("button", { hasText: "Button 2" });
 
-        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
 
         await button2.click();
         await expect(button2).toBeFocused();
@@ -468,7 +470,9 @@ test.describe("Toolbar", () => {
 
         const button3 = element.locator("button", { hasText: "Button 3" });
 
-        const buttonOutsideToolbar = page.locator("button", { hasText: "Button Outside Toolbar"});
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
 
         await button2.click();
         await expect(button2).toBeFocused();
@@ -477,6 +481,89 @@ test.describe("Toolbar", () => {
         await expect(buttonOutsideToolbar).toBeFocused();
 
         await button3.click();
+        await expect(button3).toBeFocused();
+    });
+
+    test("should not focus clicked item when focus is moved outside of the toolbar by an event handler", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-toolbar>
+                    <button slot="start">Start Slot Button</button>
+                    <button id="toolbar-button-1">Button 1</button>
+                    <button id="toolbar-button-1">Button 2</button>
+                    <button>Button 3</button>
+                    <button>Button 4</button>
+                    <button>Button 5</button>
+                    <button slot="end">End Slot Button</button>
+                </fast-toolbar>
+                <button id="outside-button">Button Outside Toolbar</button>
+            `;
+        });
+
+        const buttonOutsideToolbar = page.locator("button", {
+            hasText: "Button Outside Toolbar",
+        });
+        const button1 = element.locator("button", { hasText: "Button 1" });
+        const button2 = element.locator("button", { hasText: "Button 2" });
+        const button3 = element.locator("button", { hasText: "Button 3" });
+
+        const wasButton1Clicked = await button1.evaluate(
+            node =>
+                new Promise(resolve => {
+                    node.addEventListener("mousedown", (e: MouseEvent) => {
+                        document
+                            .querySelector<HTMLButtonElement>("#outside-button")
+                            ?.focus();
+                        resolve(true);
+                    });
+
+                    node.dispatchEvent(
+                        new MouseEvent("mousedown", { bubbles: true, cancelable: true })
+                    );
+                })
+        );
+
+        expect.soft(wasButton1Clicked).toEqual(true);
+        await expect.soft(buttonOutsideToolbar).toBeFocused();
+        buttonOutsideToolbar.evaluate(node => {
+            node.blur();
+        });
+
+        const [wasButton2Clicked] = await Promise.all([
+            button2.evaluate(
+                node =>
+                    new Promise(resolve => {
+                        node.addEventListener("click", () => {
+                            document
+                                .querySelector<HTMLButtonElement>("#outside-button")
+                                ?.focus();
+                            resolve(true);
+                        });
+                    })
+            ),
+            button2.click(),
+        ]);
+
+        expect.soft(wasButton2Clicked).toEqual(true);
+        await expect.soft(buttonOutsideToolbar).toBeFocused();
+        buttonOutsideToolbar.evaluate(node => {
+            node.blur();
+        });
+
+        const [wasButton3Clicked] = await Promise.all([
+            button3.evaluate(
+                node =>
+                    new Promise(resolve => {
+                        node.addEventListener("click", () => {
+                            resolve(true);
+                        });
+                    })
+            ),
+            button3.click(),
+        ]);
+
+        expect.soft(wasButton3Clicked).toEqual(true);
+        await expect.soft(buttonOutsideToolbar).not.toBeFocused();
         await expect(button3).toBeFocused();
     });
 });

@@ -18,3 +18,4 @@ export {
 export { ValuesOf } from "./typings.js";
 export { whitespaceFilter } from "./whitespace-filter.js";
 export { staticallyCompose, StaticallyComposableHTML } from "./template-helpers.js";
+export { getRootActiveElement } from "./root-active-element.js";

@@ -97,6 +97,6 @@ test.describe("Breadcrumb", () => {
 
         await expect(
             element.locator("fast-breadcrumb-item:nth-of-type(2) a")
-        ).not.hasAttribute("aria-current");
+        ).not.toHaveAttribute("aria-current");
     });
 });

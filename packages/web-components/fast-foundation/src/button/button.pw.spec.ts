@@ -33,13 +33,13 @@ test.describe("Button", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("disabled");
+        await expect(control).toHaveAttribute("disabled");
 
         await element.evaluate(node => {
             node.toggleAttribute("disabled");
         });
 
-        await expect(control).not.toHaveBooleanAttribute("disabled");
+        await expect(control).not.toHaveAttribute("disabled");
     });
 
     test("should set the `formnovalidate` attribute on the internal control", async () => {
@@ -49,13 +49,13 @@ test.describe("Button", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("formnovalidate");
+        await expect(control).toHaveAttribute("formnovalidate");
 
         await element.evaluate(node => {
             node.toggleAttribute("formnovalidate");
         });
 
-        await expect(control).not.toHaveBooleanAttribute("formnovalidate");
+        await expect(control).not.toHaveAttribute("formnovalidate");
     });
 
     test.describe("should set the attribute on the internal control", () => {
@@ -130,13 +130,13 @@ test.describe("Button", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("autofocus");
+        await expect(control).toHaveAttribute("autofocus");
 
         await element.evaluate(node => {
             node.toggleAttribute("autofocus");
         });
 
-        await expect(control).not.toHaveBooleanAttribute("autofocus");
+        await expect(control).not.toHaveAttribute("autofocus");
     });
 
     test("of type `submit` should submit the parent form when clicked", async () => {
