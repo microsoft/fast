@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix design token issues involving deleting values and CSS reflection",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
