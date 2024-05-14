@@ -386,14 +386,18 @@ class DesignTokenBindingObserver<T extends { createCSS?(): string }> {
      * @internal
      */
     public handleChange() {
-        this.node.store.set(
-            this.token,
+        try {
+            this.node.store.set(
+                this.token,
 
-            (this.observer.observe(
-                this.node.target,
-                defaultExecutionContext
-            ) as unknown) as StaticDesignTokenValue<T>
-        );
+                (this.observer.observe(
+                    this.node.target,
+                    defaultExecutionContext
+                ) as unknown) as StaticDesignTokenValue<T>
+            );
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 
@@ -749,10 +753,7 @@ class DesignTokenNode implements Behavior, Subscriber {
         const deleted = childToParent.delete(child);
 
         for (const [token] of this.store.all()) {
-            child.hydrate(
-                token,
-                child.getRaw(token)
-            );
+            child.hydrate(token, child.getRaw(token));
             // Need to start reflecting any assigned values that were previously inherited
             child.updateCSSTokenReflection(child.store, token);
         }

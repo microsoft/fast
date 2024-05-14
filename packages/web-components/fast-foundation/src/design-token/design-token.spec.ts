@@ -715,7 +715,7 @@ describe("A DesignToken", () => {
             await DOM.nextUpdate();
             expect(handleChange).to.have.been.called.once;
         });
-        it("should notify a subscriber for a derivative token after being appended to a parent with a different token value than the previous context", async () => {
+        it("should notify a subscriber for a derived token after being appended to a parent with a different token value than the previous context", async () => {
             const tokenA = DesignToken.create<number>("token-a");
             const tokenB = DesignToken.create<number>("token-b");
 
@@ -837,9 +837,9 @@ describe("A DesignToken", () => {
 
             expect(tokenB.getValueFor(target)).to.equal(14);
 
-            // If we disconnect target, it will no longer inherit a value for tokenA,
+            // When disconnecting target, it will no longer inherit a value for tokenA,
             // and updating the value for tokenB will throw an error. So remove the
-            // value for tokenB first.
+            // value for tokenB first to avoid the console error.
             tokenB.deleteValueFor(target);
             removeElement(parent)
         })
