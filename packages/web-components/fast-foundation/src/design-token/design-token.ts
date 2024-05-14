@@ -421,6 +421,7 @@ class Store {
 
     delete<T extends { createCSS?(): string }>(token: DesignTokenImpl<T>) {
         this.values.delete(token);
+        Observable.getNotifier(this).notify(token.id);
     }
 
     all() {
@@ -724,6 +725,8 @@ class DesignTokenNode implements Behavior, Subscriber {
                 token,
                 this.bindingObservers.has(token) ? this.getRaw(token) : value
             );
+            // Need to stop reflecting any tokens that can now be inherited
+            child.updateCSSTokenReflection(child.store, token);
         }
     }
 
@@ -739,7 +742,21 @@ class DesignTokenNode implements Behavior, Subscriber {
         }
 
         Observable.getNotifier(this.store).unsubscribe(child);
-        return child.parent === this ? childToParent.delete(child) : false;
+
+        if (child.parent !== this) {
+            return false;
+        }
+        const deleted = childToParent.delete(child);
+
+        for (const [token] of this.store.all()) {
+            child.hydrate(
+                token,
+                child.getRaw(token)
+            );
+            // Need to start reflecting any assigned values that were previously inherited
+            child.updateCSSTokenReflection(child.store, token);
+        }
+        return deleted;
     }
 
     /**
