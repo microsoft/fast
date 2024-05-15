@@ -6,28 +6,44 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Building Components",
+            label: "Getting Started",
             link: {
                 type: "generated-index",
             },
             items: [
-                "fast-element/getting-started",
-                "fast-element/defining-elements",
-                "fast-element/declaring-templates",
-                "fast-element/using-directives",
-                "fast-element/observables-and-state",
-                "fast-element/working-with-shadow-dom",
-                "fast-element/leveraging-css",
-                "fast-element/next-steps",
+                {
+                    type: "doc",
+                    id: "getting-started/quick-start",
+                },
+                {
+                    type: "doc",
+                    id: "getting-started/html-templates",
+                },
+                {
+                    type: "doc",
+                    id: "getting-started/html-directives",
+                },
+                {
+                    type: "doc",
+                    id: "getting-started/css-templates",
+                },
+                {
+                    type: "doc",
+                    id: "getting-started/fast-element",
+                },
             ],
         },
         {
             type: "category",
-            label: "Apps and Experiences",
+            label: "Advanced concepts",
             link: {
                 type: "generated-index",
             },
-            items: ["apps-and-experiences/dependency-injection"],
+            items: [
+                "advanced/working-with-custom-elements",
+                "advanced/component-libraries",
+                "advanced/dependency-injection",
+            ],
         },
         {
             type: "category",
@@ -46,6 +62,14 @@ module.exports = {
                     },
                 },
             ],
+        },
+        {
+            type: "doc",
+            id: "integrations",
+        },
+        {
+            type: "doc",
+            id: "migration-guide",
         },
         {
             type: "category",
@@ -86,7 +110,6 @@ module.exports = {
                 "resources/browser-support",
                 "resources/acknowledgements",
                 "resources/glossary",
-                "resources/cheat-sheet",
                 "resources/faq",
             ],
         },

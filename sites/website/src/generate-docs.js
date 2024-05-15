@@ -4,8 +4,6 @@ const { exec } = require("child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("../../../build/get-package-json");
 
-const fastElement = getPackageJsonDir("@microsoft/fast-element"); // path.dirname(require.resolve("@microsoft/fast-element/package.json"));
-
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
 const root = path.resolve(projectRoot, "../../");
@@ -73,19 +71,7 @@ async function safeWrite(dest, content) {
     }
 }
 
-async function moveMarkdownFiles(src, docsFolderDest) {
-    const files = findFiles(src, ".md");
-    for (const source of files) {
-        const filename = path.basename(source);
-        const dest = path.join(__dirname, "../docs", docsFolderDest, filename);
-
-        await safeCopy(source, dest);
-    }
-}
-
 async function copyArticleMarkdown() {
-    await moveMarkdownFiles(path.resolve(fastElement, "docs/guide"), "fast-element");
-
     const mergeDocs = [
         {
             src: path.resolve(root, "CODE_OF_CONDUCT.md"),
@@ -157,7 +143,7 @@ async function copyArticleMarkdown() {
             src: path.resolve(
                 getPackageJsonDir("@microsoft/fast-element"),
                 "./docs/ACKNOWLEDGEMENTS.md"
-            ), // require.resolve("@microsoft/fast-element/docs/ACKNOWLEDGEMENTS.md"),
+            ),
             dest: path.resolve(outputDir, "resources/acknowledgements.md"),
             metadata: {
                 id: "acknowledgements",
@@ -168,23 +154,6 @@ async function copyArticleMarkdown() {
                 description:
                     "There are many great open source projects that have inspired us and enabled us to build FAST.",
                 keywords: ["acknowlegements"],
-            },
-        },
-        {
-            src: path.resolve(
-                getPackageJsonDir("@microsoft/fast-element"),
-                "./README.md"
-            ),
-            dest: path.resolve(outputDir, "fast-element/getting-started.md"),
-            metadata: {
-                id: "getting-started",
-                title: "Getting Started with FAST Element",
-                sidebar_label: "Getting Started",
-                custom_edit_url:
-                    "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
-                description:
-                    "The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.",
-                keywords: ["fast-element", "web components"],
             },
         },
     ];
