@@ -1,11 +1,5 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    HTMLView,
-    observable,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
+import { attr, FASTElement, html, observable } from "@microsoft/fast-element";
 
 const defaultContentsTemplate: ViewTemplate<FASTPickerMenuOption> = html`
     <template>${x => x.value}</template>

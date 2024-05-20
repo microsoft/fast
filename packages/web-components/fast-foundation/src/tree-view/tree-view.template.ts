@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import type { FASTTreeView } from "./tree-view.js";
 
 /**
