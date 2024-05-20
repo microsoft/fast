@@ -1,10 +1,5 @@
-import {
-    css,
-    ElementViewTemplate,
-    FASTElement,
-    html,
-    ref,
-} from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { css, FASTElement, html, ref } from "@microsoft/fast-element";
 import { eventFocus, keyArrowLeft, keyArrowRight } from "@microsoft/fast-web-utilities";
 
 export function registerComplexCell() {

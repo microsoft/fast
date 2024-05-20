@@ -14,11 +14,13 @@ test.describe("Listbox", () => {
 
         element = page.locator("fast-listbox");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         options = element.locator("fast-option");
 
         await page.goto(fixtureURL("listbox--listbox"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

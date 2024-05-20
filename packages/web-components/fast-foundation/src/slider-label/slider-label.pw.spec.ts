@@ -14,9 +14,11 @@ test.describe("Slider label", () => {
 
         element = page.locator("fast-slider-label");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("slider-label--slider-label"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

@@ -1,5 +1,5 @@
-import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import { ToolbarOrientation } from "./toolbar.options.js";
 
@@ -13,9 +13,11 @@ test.describe.skip("Toolbar", () => {
 
         element = page.locator("fast-toolbar");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("toolbar--toolbar"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test("should have a role of `toolbar`", async () => {
