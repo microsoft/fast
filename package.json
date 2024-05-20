@@ -32,9 +32,7 @@
       "**/react-dom",
       "**/react-syntax-highlighter",
       "**/typescript",
-      "**/webpack",
-      "**/@storybook/builder-webpack5",
-      "**/@storybook/builder-webpack5/**"
+      "**/webpack"
     ]
   },
   "engines": {
