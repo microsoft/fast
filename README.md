@@ -22,7 +22,7 @@
 
 ## Introduction
 
-FAST is dedicated to providing support for native Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
+FAST is dedicated to providing support for native Web Components and modern Web Standards, and it's designed to help you efficiently tackle some of the most common challenges in website and application design and development.
 
 **TL;DR**
 
