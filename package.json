@@ -31,8 +31,7 @@
       "**/react/**",
       "**/react-dom",
       "**/react-syntax-highlighter",
-      "**/typescript",
-      "**/webpack"
+      "**/typescript"
     ]
   },
   "engines": {
