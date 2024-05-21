@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
     },
     webServer: {
         // double-quotes are required for Windows
-        command: `node -e "import('express').then(({ default: e }) => e().use(e.static('./storybook-static')).listen(6006))"`,
+        command: "yarn start",
         port: 6006,
         reuseExistingServer: process.env.CI ? false : true,
     },

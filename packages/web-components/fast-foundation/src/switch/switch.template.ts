@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTSwitch, SwitchOptions } from "./switch.js";
 

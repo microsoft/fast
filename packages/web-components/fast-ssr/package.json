@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "parse5": "^6.0.1",
-    "tslib": "^2.4.0"
+    "tslib": "2.4.0"
   },
   "peerDependencies": {
     "@microsoft/fast-element": "^2.0.0-beta.26"

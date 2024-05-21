@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTSlider } from "./slider.js";
 import type { SliderOptions } from "./slider.options.js";

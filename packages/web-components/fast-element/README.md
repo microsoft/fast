@@ -25,10 +25,6 @@ Within your JavaScript or TypeScript code, you can then import library APIs like
 import { FASTElement } from '@microsoft/fast-element';
 ```
 
-:::tip
-Looking for a setup that integrates with a particular front-end framework or bundler? Check out [our integration docs](../integrations/introduction.md).
-:::
-
 ### From CDN
 
 A pre-bundled script that contains all APIs needed to build web components with FAST Element is available on CDN. You can use this script by adding [`type="module"`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules) to the script element and then importing from the CDN.

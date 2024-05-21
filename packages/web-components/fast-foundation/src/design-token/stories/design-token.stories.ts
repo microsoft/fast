@@ -8,8 +8,8 @@ export default {
 } as Meta;
 
 export const DesignToken: Story = () => {
-    const controllerElementName = uniqueElementName();
-    const fixtureElementName = uniqueElementName();
+    const controllerElementName = "fast-design-token-controller";
+    const fixtureElementName = "fast-design-token-fixture";
 
     // Define element that can have token mutated for it
     (class extends FASTElement {}).define({

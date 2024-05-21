@@ -15,11 +15,13 @@ test.describe("Button", () => {
 
         element = page.locator("fast-button");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(".control");
 
         await page.goto(fixtureURL("button--button"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

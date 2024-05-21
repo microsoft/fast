@@ -16,11 +16,13 @@ test.describe("Radio Group", () => {
 
         element = page.locator("fast-radio-group");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         radios = element.locator("fast-radio");
 
         await page.goto(fixtureURL("radio-group--radio-group"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

@@ -1,4 +1,5 @@
-import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@microsoft/fast-element";
 import type { FASTAccordion } from "./accordion.js";
 
 /**

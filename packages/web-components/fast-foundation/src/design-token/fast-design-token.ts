@@ -1,14 +1,14 @@
-import {
+import type {
     CSSDirective,
+    HostBehavior,
     HostController,
-    htmlDirective,
     HTMLDirective,
     Subscriber,
 } from "@microsoft/fast-element";
 import {
     cssDirective,
     FASTElement,
-    HostBehavior,
+    htmlDirective,
     Observable,
     SubscriberSet,
 } from "@microsoft/fast-element";
@@ -20,8 +20,8 @@ import type {
     DesignTokenValue,
 } from "./core/design-token-node.js";
 import { DesignTokenMutationType, DesignTokenNode } from "./core/design-token-node.js";
+import type { PropertyTarget } from "./custom-property-manager.js";
 import {
-    PropertyTarget,
     PropertyTargetManager,
     RootStyleSheetTarget,
 } from "./custom-property-manager.js";
@@ -374,7 +374,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements HostBehavior {
         }
 
         if (parent !== this.parent) {
-            const reparent = [];
+            const reparent: Array<FASTDesignTokenNode> = [];
             for (const child of parent.children) {
                 if (
                     child instanceof FASTDesignTokenNode &&

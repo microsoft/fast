@@ -4,12 +4,8 @@
   },
   "[markdown]": {
     "editor.quickSuggestions": {
-      "comments": "off",
-      "strings": "off",
       "other": "off"
     },
-    "editor.wordWrap": "off",
-    "editor.wordWrapColumn": 90,
     "files.insertFinalNewline": false,
     "files.trimTrailingWhitespace": false
   },
@@ -19,7 +15,6 @@
   "editor.trimAutoWhitespace": true,
   "eslint.codeActionsOnSave.mode": "problems",
   "eslint.lintTask.enable": true,
-  "eslint.packageManager": "yarn",
   "eslint.validate": [
     "typescript"
   ],

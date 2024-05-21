@@ -1,10 +1,10 @@
+import type { ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     FASTElement,
     observable,
     oneWay,
     RepeatDirective,
-    ViewTemplate,
 } from "@microsoft/fast-element";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities.js";
 import {
@@ -18,11 +18,8 @@ import {
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { ColumnDefinition } from "./data-grid.js";
-import {
-    DataGridRowTypes,
-    DataGridSelectionBehavior,
-    DataGridSelectionChangeDetail,
-} from "./data-grid.options.js";
+import type { DataGridSelectionChangeDetail } from "./data-grid.options.js";
+import { DataGridRowTypes, DataGridSelectionBehavior } from "./data-grid.options.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
