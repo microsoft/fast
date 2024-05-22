@@ -223,6 +223,11 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
     readonly type: TType;
 }
 
+// Warning: (ae-forgotten-export) The symbol "InternalsElement" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export function cssState(target: InternalsElement, propertyName: string): void;
+
 // @public
 export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]) => ElementStyles) & {
     partial<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]): CSSDirective;
