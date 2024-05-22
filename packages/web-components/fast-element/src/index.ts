@@ -145,6 +145,7 @@ export {
     nullableNumberConverter,
     ValueConverter,
 } from "./components/attributes.js";
+export { cssState } from "./components/css-states.js";
 export {
     ElementController,
     ElementControllerStrategy,
