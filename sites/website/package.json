@@ -35,6 +35,7 @@
     "@docusaurus/module-type-aliases": "^3.2.1",
     "@docusaurus/preset-classic": "^3.2.1",
     "@docusaurus/theme-live-codeblock": "^3.2.1",
+    "@docusaurus/theme-mermaid": "^3.2.1",
     "@docusaurus/types": "^3.2.1",
     "@mdx-js/react": "^3.0.1",
     "@microsoft/api-documenter": "^7.24.2",

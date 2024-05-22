@@ -7,7 +7,13 @@ module.exports = {
     organizationName: "microsoft",
     projectName: "fast",
     onBrokenLinks: "log",
-    themes: [require.resolve("@docusaurus/theme-live-codeblock")],
+    markdown: {
+        mermaid: true,
+    },
+    themes: [
+        require.resolve("@docusaurus/theme-live-codeblock"),
+        "@docusaurus/theme-mermaid",
+    ],
     staticDirectories: ["static"],
     themeConfig: {
         colorMode: {
