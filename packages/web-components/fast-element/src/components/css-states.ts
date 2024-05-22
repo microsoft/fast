@@ -16,18 +16,18 @@ interface InternalsElement extends HTMLElement {
 export function cssState(target: InternalsElement, propertyName: string): void {
     const fieldName = `_${propertyName}`;
     if (!target.elementInternals) {
-        const connectedCallback = Reflect.get(target, 'connectecdCallback');
-        Reflect.defineProperty(target, 'connectedCallback', {
-            value: function() {
+        const connectedCallback = Reflect.get(target, "connectedCallback");
+        Reflect.defineProperty(target, "connectedCallback", {
+            value: function () {
                 this.elementInternals = this.attachInternals();
                 Reflect.apply(connectedCallback, this, []);
-            }
+            },
         });
     }
 
     Reflect.defineProperty(target, propertyName, {
         enumerable: true,
-        get: function() {
+        get: function () {
             Observable.track(this, propertyName);
             return this[fieldName];
         },
@@ -42,6 +42,6 @@ export function cssState(target: InternalsElement, propertyName: string): void {
             });
 
             Observable.notify(this, propertyName);
-        }
-    })
+        },
+    });
 }
