@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
     extends: [
-        "../../../.eslintrc",
+        "../../../.eslintrc.js",
         "plugin:storybook/recommended",
     ],
     rules: {

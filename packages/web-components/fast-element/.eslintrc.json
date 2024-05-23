@@ -1,5 +1,5 @@
 {
-    "extends": ["../../../.eslintrc"],
+    "extends": ["../../../.eslintrc.js"],
     "rules": {
         "max-classes-per-file": "off",
         "no-case-declarations": "off",
