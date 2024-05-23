@@ -3,5 +3,5 @@
   "comment": "fix: change 'shadowroot' to 'shadowrootmode' to match spec",
   "packageName": "@microsoft/fast-ssr",
   "email": "seanmonahan@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
