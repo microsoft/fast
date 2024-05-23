@@ -41,6 +41,7 @@ const debugMessages = {
     [1504 /* cannotAutoregisterDependency */]: "Unable to autoregister dependency.",
     [1505 /* cannotResolveKey */]: "Unable to resolve dependency injection key '${key}'.",
     [1506 /* cannotConstructNativeFunction */]:
+        /* eslint-disable-next-line max-len */
         "'${name}' is a native function and therefore cannot be safely constructed by DI. If this is intentional, please use a callback or cachedCallback resolver.",
     [1507 /* cannotJITRegisterNonConstructor */]:
         "Attempted to jitRegister something that is not a constructor '${value}'. Did you forget to register this dependency?",

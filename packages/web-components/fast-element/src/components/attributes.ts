@@ -91,7 +91,8 @@ export const booleanConverter: ValueConverter = {
 };
 
 /**
- * A {@link ValueConverter} that converts to and from `boolean` values. `null`, `undefined`, `""`, and `void` values are converted to `null`.
+ * A {@link ValueConverter} that converts to and from `boolean` values. `null`, `undefined`, `""`,
+ * and `void` values are converted to `null`.
  * @public
  */
 export const nullableBooleanConverter: ValueConverter = {
