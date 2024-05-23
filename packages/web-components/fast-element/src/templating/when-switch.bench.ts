@@ -30,7 +30,7 @@ const emotionalTemplates = {
 class TestWhen extends FASTElement {
     @attr({
         mode: "fromView",
-        converter: nullableNumberConverter
+        converter: nullableNumberConverter,
     })
     value: number = 0;
 }
@@ -43,7 +43,7 @@ TestWhen.define({
         ${when(x => x.value === 4 || x.value === 5, emotionalTemplates.indifferent)}
         ${when(x => x.value >= 6 && x.value < 9, emotionalTemplates.happy)}
         ${when(x => x.value === 9 || x.value === 10, emotionalTemplates.ecstatic)}
-    `
+    `,
 });
 
 const itemRenderer = (): HTMLElement => {

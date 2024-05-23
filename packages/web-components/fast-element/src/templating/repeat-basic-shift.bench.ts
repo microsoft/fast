@@ -3,7 +3,7 @@ import { attr, FASTElement, html, nullableNumberConverter, repeat } from "../ind
 class TestRepeat extends FASTElement {
     @attr({
         mode: "fromView",
-        converter: nullableNumberConverter
+        converter: nullableNumberConverter,
     })
     count: number = 0;
 
@@ -17,8 +17,13 @@ class TestRepeat extends FASTElement {
 TestRepeat.define({
     name: "test-repeat",
     template: html`
-        ${repeat(x => x.items, html`<span>${x => x}</span>`)}
-    `
+        ${repeat(
+            x => x.items,
+            html`
+                <span>${x => x}</span>
+            `
+        )}
+    `,
 });
 
 const itemRenderer = (): HTMLElement => {

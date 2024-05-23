@@ -1,17 +1,8 @@
-import {
-    attr,
-    css,
-    FASTElement,
-    html,
-    oneTime,
-    repeat,
-} from "../index.js";
+import { attr, css, FASTElement, html, oneTime, repeat } from "../index.js";
 import { data, RandomItem } from "../__test__/utilities.js";
 
 const xItemTemplate = html<XItem>`
-    <div @click="${x => x.onClick}" class="item">
-        ${x => x.value}
-    </div>
+    <div @click="${x => x.onClick}" class="item">${x => x.value}</div>
 `;
 
 const styles = css`
@@ -49,7 +40,7 @@ class XApp extends FASTElement {
 }
 XApp.define({
     name: "x-app",
-    template: xAppTemplate
+    template: xAppTemplate,
 });
 
 const itemRenderer = (): HTMLElement => {

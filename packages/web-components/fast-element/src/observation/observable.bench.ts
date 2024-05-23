@@ -58,7 +58,9 @@ TestObservable.define({
 });
 
 const itemRenderer = (): HTMLElement => {
-    const testObservable: TestObservable = document.createElement("test-observable") as TestObservable;
+    const testObservable: TestObservable = document.createElement(
+        "test-observable"
+    ) as TestObservable;
     testObservable.setAttribute("firstname", adjectives[_random(adjectives.length)]);
     testObservable.setAttribute("lastname", nouns[_random(nouns.length)]);
 

@@ -9,9 +9,19 @@ class TestWhen extends FASTElement {
 TestWhen.define({
     name: "test-when",
     template: html`
-        ${when(x => x.try, html`<span>Yes</span>`)}
-        ${when(x => !x.try, html`<span>No</span>`)}
-    `
+        ${when(
+            x => x.try,
+            html`
+                <span>Yes</span>
+            `
+        )}
+        ${when(
+            x => !x.try,
+            html`
+                <span>No</span>
+            `
+        )}
+    `,
 });
 
 const itemRenderer = (): HTMLElement => {
