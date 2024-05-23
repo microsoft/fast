@@ -91,6 +91,7 @@
     "./dist/esm/components/install-hydration.js"
   ],
   "scripts": {
+    "benchmark": "yarn clean:dist && yarn build && node ./scripts/run-benchmarks",
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
@@ -118,6 +119,9 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.24.2",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@tensile-perf/web-components": "^0.1.14",
     "@types/chai": "^4.2.11",
     "@types/chai-spies": "^1.0.3",
     "@types/karma": "^6.3.3",
@@ -146,7 +150,6 @@
     "rollup": "^2.71.1",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-terser": "^7.0.2",
-    "@rollup/plugin-typescript": "^8.3.2",
     "source-map": "^0.7.3",
     "source-map-loader": "^3.0.1",
     "ts-loader": "^7.0.2",

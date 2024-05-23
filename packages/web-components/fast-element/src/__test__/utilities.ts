@@ -2,7 +2,7 @@ export const _random = (max: number) => {
     return Math.round(Math.random() * 1000) % max;
 };
 
-export const itemCount = 1000;
+export const itemCount = 100;
 
 export const adjectives = [
     "pretty",
@@ -85,9 +85,9 @@ export class NestedRandomData {
     ) {}
 }
 
-export function generateData(count: number) {
+export function generateData(count: number): RandomItem[] {
     let id = 0;
-    const data = [];
+    const data: RandomItem[] = [];
 
     for (let i = 0; i < count; i++) {
         data.push(new RandomItem(++id));
@@ -96,11 +96,11 @@ export function generateData(count: number) {
     return data;
 }
 
-export function generateNestedData(count: number) {
+export function generateNestedData(count: number): NestedRandomData[] {
     let id = 0,
         id2 = 0;
 
-    const data = [];
+    const data: NestedRandomData[] = [];
     for (let i = 0; i < count; i++) {
         data.push(
             new NestedRandomData(
