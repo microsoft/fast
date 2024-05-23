@@ -1,5 +1,5 @@
 {
-    "extends": ["@microsoft/eslint-config-fast-dna", "prettier"],
+    "extends": ["../../../.eslintrc"],
     "rules": {
         "import/extensions": [
             "error",

@@ -46,7 +46,6 @@
     "@types/chai": "^4.2.11",
     "@types/karma": "^6.3.3",
     "@types/mocha": "^7.0.2",
-    "@microsoft/eslint-config-fast-dna": "^2.1.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "eslint-config-prettier": "^8.8.0",
