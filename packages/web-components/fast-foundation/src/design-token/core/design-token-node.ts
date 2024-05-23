@@ -66,6 +66,7 @@ class DerivedValueEvaluator<T> {
                 }
 
                 throw new Error(
+                    /* eslint-disable-next-line max-len */
                     "DesignTokenNode has encountered a circular token reference. Avoid this by setting the token value for an ancestor node."
                 );
             } else {

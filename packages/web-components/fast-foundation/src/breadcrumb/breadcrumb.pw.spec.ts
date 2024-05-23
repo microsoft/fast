@@ -78,6 +78,7 @@ test.describe("Breadcrumb", () => {
         ).toHaveAttribute("aria-current", "page");
     });
 
+    /* eslint-disable-next-line max-len */
     test("should remove `aria-current` from any prior breadcrumb item children with child anchors when a new node is appended", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
