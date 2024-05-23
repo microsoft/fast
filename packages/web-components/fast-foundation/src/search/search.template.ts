@@ -1,6 +1,7 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { staticallyCompose } from "../utilities/template-helpers.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import { whitespaceFilter } from "../utilities/whitespace-filter.js";
 import type { FASTSearch, SearchOptions } from "./search.js";
 

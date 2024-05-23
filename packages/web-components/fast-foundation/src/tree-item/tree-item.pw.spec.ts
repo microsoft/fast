@@ -13,9 +13,11 @@ test.describe("TreeItem", () => {
 
         element = page.locator("fast-tree-item");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

@@ -1,13 +1,7 @@
-import {
-    elements,
-    ElementViewTemplate,
-    html,
-    ref,
-    slotted,
-    when,
-} from "@microsoft/fast-element";
-import { staticallyCompose } from "../utilities/template-helpers.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 import { MenuItemRole } from "./menu-item.options.js";
 

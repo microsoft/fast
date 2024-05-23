@@ -3,7 +3,8 @@ import type { FASTCard } from "../../card/card.js";
 import { storyTemplate as cardStoryTemplate } from "../../card/stories/card.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import { FASTSkeleton, SkeletonShape } from "../skeleton.js";
+import type { FASTSkeleton } from "../skeleton.js";
+import { SkeletonShape } from "../skeleton.js";
 
 const storyTemplate = html<StoryArgs<FASTSkeleton>>`
     <fast-skeleton
