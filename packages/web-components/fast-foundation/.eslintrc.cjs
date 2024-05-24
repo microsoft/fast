@@ -2,8 +2,7 @@ const path = require("path");
 
 module.exports = {
     extends: [
-        "@microsoft/eslint-config-fast-dna",
-        "prettier",
+        "../../../.eslintrc.js",
         "plugin:storybook/recommended",
     ],
     rules: {

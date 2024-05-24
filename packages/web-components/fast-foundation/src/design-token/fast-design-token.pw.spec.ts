@@ -498,6 +498,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toBe("12");
             });
+            /* eslint-disable-next-line max-len */
             test("should set a CSS custom property equal to the resolved value of a derived token value with a dependent token", async () => {
                 expect(
                     await page.evaluate(async () => {
@@ -516,7 +517,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toBe("12");
             });
-
+            /* eslint-disable-next-line max-len */
             test("should update a CSS custom property to the resolved value of a derived token value with a dependent token when the dependent token changes", async () => {
                 expect(
                     await page.evaluate(async () => {
@@ -547,7 +548,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toEqual(["12", "14"]);
             });
-
+            /* eslint-disable-next-line max-len */
             test("should set a CSS custom property equal to the resolved value for an element of a derived token value with a dependent token", async () => {
                 expect(
                     await page.evaluate(async () => {
@@ -577,7 +578,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toEqual(["12", "14"]);
             });
-
+            /* eslint-disable-next-line max-len */
             test("should set a CSS custom property equal to the resolved value for an element in a shadow DOM of a derived token value with a dependent token", async () => {
                 expect(
                     await page.evaluate(async () => {
@@ -609,7 +610,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toEqual(["12", "14"]);
             });
-
+            /* eslint-disable-next-line max-len */
             test("should set a CSS custom property equal to the resolved value for both elements for which a dependent token is set when setting a derived token value", async () => {
                 expect(
                     await page.evaluate(async () => {
@@ -831,6 +832,7 @@ test.describe("A DesignToken", () => {
                     })
                 ).toEqual(["12", "14"]);
             });
+            /* eslint-disable-next-line max-len */
             test("should update the emitted CSS custom property of a token assigned a derived value when the token dependency changes", async () => {
                 expect(
                     await page.evaluate(async () => {
@@ -885,6 +887,7 @@ test.describe("A DesignToken", () => {
                 ).toEqual([12, 24]);
             });
         });
+        /* eslint-disable-next-line max-len */
         test("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
             expect(
                 await page.evaluate(async () => {
@@ -1343,6 +1346,7 @@ test.describe("A DesignToken", () => {
                 })
             ).toBe(1);
         });
+        /* eslint-disable-next-line max-len */
         test("should notify a subscriber when a static-value dependency of subscribed token changes for a parent of the subscription target", async () => {
             expect(
                 await page.evaluate(async () => {
@@ -1372,6 +1376,7 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([1, 14]);
         });
+        /* eslint-disable-next-line max-len */
         test("should notify a subscriber when a derived-value dependency of subscribed token changes for a parent of the subscription target", async () => {
             expect(
                 await page.evaluate(async () => {
@@ -1400,6 +1405,7 @@ test.describe("A DesignToken", () => {
                 })
             ).toEqual([1, 14]);
         });
+        /* eslint-disable-next-line max-len */
         test("should notify a subscriber when a dependency of subscribed token changes for a parent of the subscription target", async () => {
             expect(
                 await page.evaluate(async () => {

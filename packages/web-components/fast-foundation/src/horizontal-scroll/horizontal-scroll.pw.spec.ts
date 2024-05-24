@@ -100,6 +100,7 @@ test.describe("HorizontalScroll", () => {
             );
         });
 
+        /* eslint-disable-next-line max-len */
         test('should set the "disabled" class on the previous flipper when the scroll position is at the beginning of the content', async () => {
             await expect(scrollPrevious).toHaveClass(/disabled/);
 

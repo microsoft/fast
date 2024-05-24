@@ -554,7 +554,7 @@ test.describe("Slider", () => {
 
             await expect(element).toHaveJSProperty("value", "7");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where the value attribute changes the value property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

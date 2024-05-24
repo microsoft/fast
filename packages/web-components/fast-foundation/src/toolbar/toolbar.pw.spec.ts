@@ -194,7 +194,7 @@ test.describe.skip("Toolbar", () => {
 
         await expect(endSlotButton).toBeFocused();
     });
-
+    /* eslint-disable-next-line max-len */
     test("should move focus to next element when keyboard incrementer is pressed and start slot content is added after connect", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `<fast-toolbar></fast-toolbar>`;
