@@ -33,7 +33,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 
 # Utilities
 /packages/utilities/fast-animation/ @nicholasrice @chrisdholt
-/packages/utilities/fast-colors/ @nicholasrice @chrisdholt
 /packages/utilities/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
 /packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
 

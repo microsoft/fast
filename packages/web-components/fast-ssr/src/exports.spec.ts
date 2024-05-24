@@ -19,21 +19,21 @@ test.describe("fastSSR default export", () => {
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowrootmode="open"></template></${name}>`)
     });
     test("should render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be true", () => {
         const { templateRenderer } = fastSSR({deferHydration: true});
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowrootmode="open"></template></${name}>`)
     });
     test("should not render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be false", () => {
         const { templateRenderer } = fastSSR({deferHydration: false});
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowrootmode="open"></template></${name}>`)
     });
 
     test("should render a custom directive using a registered ViewBehaviorFactoryRenderer", () => {
