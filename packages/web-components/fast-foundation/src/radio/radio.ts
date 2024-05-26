@@ -35,7 +35,8 @@ export type RadioOptions = {
  */
 export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     /**
-     * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
+     * The name of the radio.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
      */
     @observable
     public name: string;

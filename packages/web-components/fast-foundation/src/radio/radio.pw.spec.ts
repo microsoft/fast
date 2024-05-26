@@ -278,7 +278,7 @@ test.describe("Radio", () => {
 
             await expect(element).toBeChecked();
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `checked` attribute modifications modify the `checked` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

@@ -24,7 +24,8 @@ export type AnchorOptions = StartEndOptions<FASTAnchor>;
  */
 export class FASTAnchor extends FASTElement {
     /**
-     * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
+     * Prompts the user to save the linked URL.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
      * HTML Attribute: download
@@ -33,7 +34,8 @@ export class FASTAnchor extends FASTElement {
     public download: string;
 
     /**
-     * The URL the hyperlink references. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
+     * The URL the hyperlink references.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
      * HTML Attribute: href
@@ -42,7 +44,8 @@ export class FASTAnchor extends FASTElement {
     public href: string;
 
     /**
-     * Hints at the language of the referenced resource. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
+     * Hints at the language of the referenced resource.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
      * HTML Attribute: hreflang

@@ -203,6 +203,7 @@ test.describe("Accordion", () => {
         );
     });
 
+    /* eslint-disable-next-line max-len */
     test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

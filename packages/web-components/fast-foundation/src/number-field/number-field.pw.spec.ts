@@ -487,6 +487,7 @@ test.describe("NumberField", () => {
         await expect(control).toHaveValue("10");
     });
 
+    /* eslint-disable-next-line max-len */
     test("should set the `value` to match `max` after stepping down when `value` is undefined and `min` and `max` are less than zero", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -502,7 +503,7 @@ test.describe("NumberField", () => {
 
         await expect(control).toHaveValue("-5");
     });
-
+    /* eslint-disable-next-line max-len */
     test("should set the `value` to match `max` after stepping up when `value` is undefined and `min` and `max` are less than zero", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -677,7 +678,7 @@ test.describe("NumberField", () => {
 
             await expect(element).toHaveJSProperty("value", "10");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
             const form = page.locator("form");
 

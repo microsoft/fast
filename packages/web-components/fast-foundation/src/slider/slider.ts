@@ -35,7 +35,8 @@ import { SliderMode } from "./slider.options.js";
  */
 export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      *
      * @public
      * @remarks
