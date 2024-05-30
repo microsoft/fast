@@ -13,9 +13,11 @@ test.describe("Switch", () => {
 
         element = page.locator("fast-switch");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("switch--switch"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -383,7 +385,7 @@ test.describe("Switch", () => {
 
             await expect(element).toHaveJSProperty("checked", true);
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `checked` attribute modifications update the `checked` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

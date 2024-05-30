@@ -14,9 +14,11 @@ test.describe("Calendar", () => {
 
         element = page.locator("fast-calendar");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("calendar--calendar"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -480,6 +482,7 @@ test.describe("Calendar", () => {
             ).toBe("1942 शक");
         });
 
+        /* eslint-disable-next-line max-len */
         test('should set the formatted `year` property to "2564" when the `year` attribute is "2021" for the Buddhist calendar', async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

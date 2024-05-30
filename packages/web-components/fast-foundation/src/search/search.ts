@@ -36,7 +36,8 @@ export type SearchOptions = StartEndOptions<FASTSearch> & {
  */
 export class FASTSearch extends FormAssociatedSearch {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -51,7 +52,9 @@ export class FASTSearch extends FormAssociatedSearch {
     }
 
     /**
-     * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
+     * Indicates that this element should get focus after the page finishes loading.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute}
+     * for more information.
      * @public
      * @remarks
      * HTML Attribute: autofocus
@@ -81,7 +84,8 @@ export class FASTSearch extends FormAssociatedSearch {
     }
 
     /**
-     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
+     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist}
+     * to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
      * @public
      * @remarks
      * HTML Attribute: list

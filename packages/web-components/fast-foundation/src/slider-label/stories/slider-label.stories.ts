@@ -1,6 +1,7 @@
 import { html } from "@microsoft/fast-element";
-import { Meta, renderComponent, Story, StoryArgs } from "../../__test__/helpers.js";
 import { SliderOrientation } from "../../slider/slider.options.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSliderLabel } from "../slider-label.js";
 
 export const storyTemplate = html<StoryArgs<FASTSliderLabel>>`

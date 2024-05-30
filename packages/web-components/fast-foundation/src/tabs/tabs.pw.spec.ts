@@ -28,13 +28,15 @@ test.describe("Tabs", () => {
 
         element = page.locator("fast-tabs");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         tablist = element.locator(".tablist");
 
         tabs = element.locator("fast-tab");
 
         await page.goto(fixtureURL("tabs--tabs"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -104,7 +106,7 @@ test.describe("Tabs", () => {
             await expect(tabPanel).toHaveCount(1);
         }
     });
-
+    /* eslint-disable-next-line max-len */
     test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided", async () => {
         await root.evaluate(
             (node, { template }) => {
@@ -135,7 +137,7 @@ test.describe("Tabs", () => {
             await expect(tab).toHaveAttribute("aria-controls", panelId);
         }
     });
-
+    /* eslint-disable-next-line max-len */
     test("should set `aria-labelledby` on the tab panel and `aria-controls` on the tab which corresponds to the matching ID when IDs are NOT provided and additional tabs and panels are added", async () => {
         await root.evaluate(
             (node, { template }) => {
@@ -257,6 +259,7 @@ test.describe("Tabs", () => {
     });
 
     test.describe("active tabpanel", () => {
+        /* eslint-disable-next-line max-len */
         test("should set an `aria-labelledby` attribute on the tabpanel with a value of the tab id when `activeid` is provided", async () => {
             await root.evaluate(
                 (node, { template }) => {
