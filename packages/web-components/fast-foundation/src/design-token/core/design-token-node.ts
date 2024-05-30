@@ -1,5 +1,5 @@
-import { Observable } from "@microsoft/fast-element";
 import type { Disposable, ExpressionNotifier, Subscriber } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element";
 import type { DesignToken } from "./design-token.js";
 
 /**
@@ -66,6 +66,7 @@ class DerivedValueEvaluator<T> {
                 }
 
                 throw new Error(
+                    /* eslint-disable-next-line max-len */
                     "DesignTokenNode has encountered a circular token reference. Avoid this by setting the token value for an ancestor node."
                 );
             } else {
@@ -195,7 +196,10 @@ export class DesignTokenNode {
                     !ignored.includes(token) &&
                     DesignTokenNode.isDerivedFor(current, token)
                 ) {
-                    collected.set(token, current!._derived.get(token)!);
+                    collected.set(
+                        token,
+                        current?._derived.get(token) as DerivedValue<any>
+                    );
                 }
             }
 
@@ -216,7 +220,7 @@ export class DesignTokenNode {
         return !DesignTokenNode.isAssigned(node, token)
             ? undefined
             : DesignTokenNode.isDerivedFor(node, token)
-            ? node._derived.get(token)!.value
+            ? node._derived.get(token)?.value
             : node._values.get(token);
     }
 
@@ -476,7 +480,7 @@ export class DesignTokenNode {
 
         while (node !== null) {
             if (DesignTokenNode.isDerivedFor(node, token)) {
-                value = node._derived.get(token)!.value;
+                value = node._derived.get(token)?.value;
                 break;
             }
 
@@ -662,7 +666,7 @@ export class DesignTokenNode {
 
     private tearDownDerivedTokenValue(token: DesignToken<any>) {
         if (DesignTokenNode.isDerivedFor(this, token)) {
-            const value = this._derived.get(token)!;
+            const value = this._derived.get(token) as DerivedValue<any>;
 
             value.dispose();
 

@@ -13,9 +13,11 @@ test.describe("Radio", () => {
 
         element = page.locator("fast-radio");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("radio--radio"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -90,7 +92,7 @@ test.describe("Radio", () => {
             `;
         });
 
-        await expect(element).toHaveAttribute("tabindex", "");
+        await expect(element).not.toHaveAttribute("tabindex");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
@@ -276,7 +278,7 @@ test.describe("Radio", () => {
 
             await expect(element).toBeChecked();
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `checked` attribute modifications modify the `checked` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

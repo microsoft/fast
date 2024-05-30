@@ -1,13 +1,9 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    Observable,
-    observable,
-} from "@microsoft/fast-element";
+import type { Notifier } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { SliderConfiguration, SliderOrientation } from "../slider/slider.options.js";
 import { convertPixelToPercent } from "../slider/slider-utilities.js";
+import type { SliderConfiguration } from "../slider/slider.options.js";
+import { SliderOrientation } from "../slider/slider.options.js";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
@@ -21,7 +17,9 @@ const defaultConfig: SliderConfiguration = {
  * A label element intended to be used with the {@link @microsoft/fast-foundation#(FASTSlider:class)} component.
  *
  * @slot - The default slot for the label content
- * @csspart root - The element wrapping the label mark and text
+ * @csspart container - The element wrapping the label mark and content
+ * @csspart mark - The element wrapping the label mark
+ * @csspart content - The element wrapping the label content
  *
  * @public
  */
@@ -35,7 +33,7 @@ export class FASTSliderLabel extends FASTElement {
     /**
      * @internal
      */
-    public root: HTMLDivElement;
+    public container: HTMLDivElement;
 
     /**
      * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.

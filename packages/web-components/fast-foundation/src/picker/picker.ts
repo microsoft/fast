@@ -1,14 +1,13 @@
+import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     html,
-    HTMLView,
     nullableNumberConverter,
     observable,
     oneWay,
     ref,
     RepeatDirective,
     Updates,
-    ViewTemplate,
 } from "@microsoft/fast-element";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities.js";
 import {
@@ -22,9 +21,11 @@ import {
     keyEscape,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import {
+import type {
     AnchoredRegionConfig,
     FASTAnchoredRegion,
+} from "../anchored-region/index.js";
+import {
     FlyoutPosBottom,
     FlyoutPosBottomFill,
     FlyoutPosTallest,
@@ -32,6 +33,7 @@ import {
     FlyoutPosTop,
     FlyoutPosTopFill,
 } from "../anchored-region/index.js";
+import { getRootActiveElement } from "../utilities/index.js";
 import { FASTPickerListItem } from "./picker-list-item.js";
 import type { FASTPickerList } from "./picker-list.js";
 import { FASTPickerMenuOption } from "./picker-menu-option.js";
@@ -556,7 +558,7 @@ export class FASTPicker extends FormAssociatedPicker {
             return;
         }
 
-        if (open && this.getRootActiveElement() === this.inputElement) {
+        if (open && getRootActiveElement(this) === this.inputElement) {
             this.flyoutOpen = open;
             Updates.enqueue(() => {
                 if (this.menuElement !== undefined) {
@@ -605,7 +607,7 @@ export class FASTPicker extends FormAssociatedPicker {
         if (e.defaultPrevented) {
             return false;
         }
-        const activeElement = this.getRootActiveElement();
+        const activeElement = getRootActiveElement(this);
         switch (e.key) {
             // TODO: what should "home" and "end" keys do, exactly?
             //
@@ -811,7 +813,7 @@ export class FASTPicker extends FormAssociatedPicker {
             this.maxSelected !== 0 &&
             this.selectedItems.length >= this.maxSelected
         ) {
-            if (this.getRootActiveElement() === this.inputElement) {
+            if (getRootActiveElement(this) === this.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
                     this.listElement.querySelectorAll("[role='listitem']")
                 );
@@ -823,16 +825,6 @@ export class FASTPicker extends FormAssociatedPicker {
         } else {
             this.inputElement.hidden = false;
         }
-    }
-
-    private getRootActiveElement(): Element | null {
-        const rootNode = this.getRootNode();
-
-        if (rootNode instanceof ShadowRoot) {
-            return rootNode.activeElement;
-        }
-
-        return document.activeElement;
     }
 
     /**
@@ -901,7 +893,7 @@ export class FASTPicker extends FormAssociatedPicker {
             this.listElement.querySelectorAll("[role='listitem']")
         );
 
-        const activeElement = this.getRootActiveElement();
+        const activeElement = getRootActiveElement(this);
         if (activeElement !== null) {
             let currentFocusedItemIndex: number =
                 selectedItemsAsElements.indexOf(activeElement);

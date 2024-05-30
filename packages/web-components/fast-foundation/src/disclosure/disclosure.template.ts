@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { DisclosureOptions, FASTDisclosure } from "./disclosure.js";
 

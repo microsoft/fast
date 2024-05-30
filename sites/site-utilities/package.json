@@ -19,7 +19,6 @@
   "author": "Microsoft",
   "license": "MIT",
   "devDependencies": {
-    "@microsoft/eslint-config-fast-dna": "^2.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@types/node": "^15.0.1",

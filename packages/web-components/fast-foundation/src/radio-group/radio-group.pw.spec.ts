@@ -16,11 +16,13 @@ test.describe("Radio Group", () => {
 
         element = page.locator("fast-radio-group");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         radios = element.locator("fast-radio");
 
         await page.goto(fixtureURL("radio-group--radio-group"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -118,7 +120,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
 
         await element.evaluate<void, FASTRadioGroup>(node => {
             node.disabled = true;
@@ -150,7 +152,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-readonly");
+        await expect(element).not.toHaveAttribute("aria-readonly");
 
         await element.evaluate<void, FASTRadioGroup>(node => {
             node.readOnly = true;
@@ -172,7 +174,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test("should NOT modify child radio elements disabled state when the `disabled` attribute is present", async () => {
@@ -186,7 +188,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("disabled");
+        await expect(element).not.toHaveAttribute("disabled");
 
         const firstRadio = radios.nth(0);
         const secondRadio = radios.nth(1);
@@ -222,7 +224,7 @@ test.describe("Radio Group", () => {
 
         element.evaluate<void, FASTRadioGroup>(node => node.setAttribute("disabled", ""));
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
 
         expect(
             await firstRadio.evaluate<boolean, FASTRadio>(radio =>
@@ -259,7 +261,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
 
         await first.focus();
 
@@ -306,7 +308,7 @@ test.describe("Radio Group", () => {
 
         await element.evaluate<boolean, FASTRadioGroup>(node => (node.disabled = true));
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
 
         for (let i = 0; i < radioItemsCount; i++) {
             const item = radios.nth(i);
@@ -436,9 +438,7 @@ test.describe("Radio Group", () => {
 
         // radio-group explicitly sets non-matching radio's checked to false if
         // a value match was found, but the attribute should still persist.
-        expect(
-            await radios.nth(1).evaluate(node => node.hasAttribute("checked"))
-        ).toBeTruthy();
+        await expect(radios.nth(1)).toHaveAttribute("checked");
 
         await expect(radios.nth(2)).not.toBeChecked();
     });

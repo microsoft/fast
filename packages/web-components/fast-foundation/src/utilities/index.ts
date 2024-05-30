@@ -1,20 +1,19 @@
 export { getDirection } from "./direction.js";
 export {
     darkModeStylesheetBehavior,
-    lightModeStylesheetBehavior,
     forcedColorsStylesheetBehavior,
+    lightModeStylesheetBehavior,
     MatchMediaBehavior,
-    MediaQueryListListener,
     MatchMediaStyleSheetBehavior,
 } from "./match-media-stylesheet-behavior.js";
+export type { MediaQueryListListener } from "./match-media-stylesheet-behavior.js";
 export { PropertyStyleSheetBehavior } from "./property-stylesheet-behavior.js";
-export {
-    CSSDisplayPropertyValue,
-    disabledCursor,
-    display,
-    hidden,
-    focusVisible,
-} from "./style/index.js";
-export { ValuesOf } from "./typings.js";
+export { getRootActiveElement } from "./root-active-element.js";
+export { hidden } from "./style/display.js";
+export type { CSSDisplayPropertyValue } from "./style/display.js";
+export { focusVisible } from "./style/focus.js";
+export { disabledCursor, display } from "./style/index.js";
+export { staticallyCompose } from "./template-helpers.js";
+export type { StaticallyComposableHTML } from "./template-helpers.js";
+export type { ValuesOf } from "./typings.js";
 export { whitespaceFilter } from "./whitespace-filter.js";
-export { staticallyCompose, StaticallyComposableHTML } from "./template-helpers.js";

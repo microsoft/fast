@@ -12,9 +12,11 @@ test.describe("Progress ring", () => {
 
         element = page.locator("fast-progress-ring");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("progress-progress-ring--progress-ring"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

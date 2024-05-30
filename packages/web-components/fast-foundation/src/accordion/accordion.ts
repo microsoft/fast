@@ -14,12 +14,13 @@ import { AccordionExpandMode } from "./accordion.options.js";
  * An Accordion Custom HTML Element
  * Implements {@link https://www.w3.org/TR/wai-aria-practices-1.1/#accordion | ARIA Accordion}.
  *
+ * @slot - The slot for the accordion items
  * @fires change - Fires a custom 'change' event when the active item changes
- * @csspart item - The slot for the accordion items
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(FASTAccordionItem:class)}.
+ * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate}
+ * and {@link @microsoft/fast-foundation#(FASTAccordionItem:class)}.
  */
 export class FASTAccordion extends FASTElement {
     /**
@@ -242,7 +243,8 @@ export class FASTAccordion extends FASTElement {
     };
 
     private handleItemFocus = (event: FocusEvent): void => {
-        // update the active item index if the focus moves to an accordion item via a different method other than the up and down arrow key actions
+        // update the active item index if the focus moves to an accordion item
+        // via a different method other than the up and down arrow key actions
         // only do so if the focus is actually on the accordion item and not on any of its children
         if (event.target === event.currentTarget) {
             const focusedItem = event.target as HTMLElement;

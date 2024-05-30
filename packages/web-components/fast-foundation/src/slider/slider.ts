@@ -13,7 +13,8 @@ import {
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
-import { SliderConfiguration, SliderMode } from "./slider.options.js";
+import type { SliderConfiguration } from "./slider.options.js";
+import { SliderMode } from "./slider.options.js";
 
 /**
  * A Slider Custom HTML Element.
@@ -24,16 +25,18 @@ import { SliderConfiguration, SliderMode } from "./slider.options.js";
  * @slot thumb - The slider thumb
  * @slot - The default slot for labels
  * @csspart positioning-region - The region used to position the elements of the slider
- * @csspart track-container - The region containing the track elements
+ * @csspart track - The region containing the track elements
  * @csspart track-start - The element wrapping the track start slot
- * @csspart thumb-container - The thumb container element which is programatically positioned
+ * @csspart thumb-container - The thumb container element which is programmatically positioned
+ * @csspart thumb - The thumb element
  * @fires change - Fires a custom 'change' event when the slider value changes
  *
  * @public
  */
 export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      *
      * @public
      * @remarks
@@ -55,7 +58,7 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     /**
      * @internal
      */
-    public thumb: HTMLDivElement;
+    public thumbContainer: HTMLDivElement;
 
     /**
      * @internal
@@ -381,10 +384,10 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
         const eventAction = `${remove ? "remove" : "add"}EventListener`;
         this[eventAction]("keydown", this.keypressHandler);
         this[eventAction]("mousedown", this.handleMouseDown);
-        this.thumb[eventAction]("mousedown", this.handleThumbMouseDown, {
+        this.thumbContainer[eventAction]("mousedown", this.handleThumbMouseDown, {
             passive: true,
         });
-        this.thumb[eventAction]("touchstart", this.handleThumbMouseDown, {
+        this.thumbContainer[eventAction]("touchstart", this.handleThumbMouseDown, {
             passive: true,
         });
         // removes handlers attached by mousedown handlers

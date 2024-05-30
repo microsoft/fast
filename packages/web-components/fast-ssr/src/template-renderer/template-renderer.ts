@@ -199,7 +199,7 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                             undefined;
 
                     if (!skipDSD) {
-                        yield '<template shadowroot="open">';
+                        yield '<template shadowrootmode="open">';
                     }
 
                     const content = currentRenderer.renderShadow(renderInfo);

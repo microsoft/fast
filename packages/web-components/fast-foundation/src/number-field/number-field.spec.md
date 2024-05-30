@@ -52,9 +52,10 @@ Extends FAST Element
 <!-- shadow root -->
 <label part="label"><slot></slot></label>
 <div part="root">
-  <slot name="before-content" part="before-content"></slot>
+  <slot name="start" part="start"></slot>
   <input part="control" />
-  <slot name="after-content" part="after-content"></slot>
+  <div part="step-buttons"></div>
+  <slot name="end" part="end"></slot>
 </div>
 <!-- end shadow root -->
 ```
@@ -67,8 +68,8 @@ Extends FAST Element
 
 *Slot Names*
 - default - the label content
-- before-content - often times a glyph, icon, or button precedes input
-- after-content - often times a glyph, icon, or button follows the input
+- start - often times a glyph, icon, or button precedes input
+- end - often times a glyph, icon, or button follows the input
 
 *Host Classes*
 - disabled
@@ -78,9 +79,10 @@ Extends FAST Element
 *CSS Parts*
 - label
 - root
-- before-content
-- after-content
+- start
+- end
 - control
+- step-buttons
 
 ---
 

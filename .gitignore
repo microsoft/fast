@@ -75,3 +75,6 @@ sites/website/i18n/
 # Ignore Build Artefacts
 bin/
 obj/
+
+# Tensile performance test results
+.tensile
