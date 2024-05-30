@@ -3,7 +3,8 @@ import { DividerOrientation, DividerRole } from "./divider.options.js";
 
 /**
  * A Divider Custom HTML Element.
- * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#separator | ARIA separator } or {@link https://www.w3.org/TR/wai-aria-1.1/#presentation | ARIA presentation}.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#separator | ARIA separator }
+ * or {@link https://www.w3.org/TR/wai-aria-1.1/#presentation | ARIA presentation}.
  *
  * @public
  */

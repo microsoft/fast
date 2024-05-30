@@ -13,7 +13,8 @@ import {
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
-import { SliderConfiguration, SliderMode } from "./slider.options.js";
+import type { SliderConfiguration } from "./slider.options.js";
+import { SliderMode } from "./slider.options.js";
 
 /**
  * A Slider Custom HTML Element.
@@ -34,7 +35,8 @@ import { SliderConfiguration, SliderMode } from "./slider.options.js";
  */
 export class FASTSlider extends FormAssociatedSlider implements SliderConfiguration {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      *
      * @public
      * @remarks

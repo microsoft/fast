@@ -19,7 +19,8 @@ import { AccordionExpandMode } from "./accordion.options.js";
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(FASTAccordionItem:class)}.
+ * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate}
+ * and {@link @microsoft/fast-foundation#(FASTAccordionItem:class)}.
  */
 export class FASTAccordion extends FASTElement {
     /**
@@ -242,7 +243,8 @@ export class FASTAccordion extends FASTElement {
     };
 
     private handleItemFocus = (event: FocusEvent): void => {
-        // update the active item index if the focus moves to an accordion item via a different method other than the up and down arrow key actions
+        // update the active item index if the focus moves to an accordion item
+        // via a different method other than the up and down arrow key actions
         // only do so if the focus is actually on the accordion item and not on any of its children
         if (event.target === event.currentTarget) {
             const focusedItem = event.target as HTMLElement;

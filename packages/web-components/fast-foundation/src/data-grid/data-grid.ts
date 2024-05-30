@@ -23,10 +23,10 @@ import {
 import { getRootActiveElement } from "../utilities/index.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
+import type { DataGridSelectionChangeDetail } from "./data-grid.options.js";
 import {
     DataGridRowTypes,
     DataGridSelectionBehavior,
-    DataGridSelectionChangeDetail,
     DataGridSelectionMode,
     GenerateHeaderOptions,
 } from "./data-grid.options.js";
@@ -842,7 +842,7 @@ export class FASTDataGrid extends FASTElement {
             return;
         }
 
-        const unselectableRowIndexes = [];
+        const unselectableRowIndexes: Array<number> = [];
 
         for (
             let index: number = 0, maxIndex = this.rowElements.length;

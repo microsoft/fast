@@ -15,9 +15,11 @@ test.describe("DataGridRow", () => {
 
         element = page.locator("fast-data-grid-row");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("data-grid-data-grid-row--data-grid-row"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {

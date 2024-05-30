@@ -1,10 +1,5 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    Observable,
-    Updates,
-} from "@microsoft/fast-element";
+import type { Notifier } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable, Updates } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
 import { getRootActiveElement } from "../utilities/index.js";

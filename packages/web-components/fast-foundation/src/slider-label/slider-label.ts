@@ -1,13 +1,9 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    Observable,
-    observable,
-} from "@microsoft/fast-element";
+import type { Notifier } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
 import { Direction } from "@microsoft/fast-web-utilities";
-import { SliderConfiguration, SliderOrientation } from "../slider/slider.options.js";
 import { convertPixelToPercent } from "../slider/slider-utilities.js";
+import type { SliderConfiguration } from "../slider/slider.options.js";
+import { SliderOrientation } from "../slider/slider.options.js";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,

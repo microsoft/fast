@@ -15,11 +15,13 @@ test.describe("Slider", () => {
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
-        await page.goto(fixtureURL("slider--slider"));
-
         element = page.locator("fast-slider");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
+
+        await page.goto(fixtureURL("slider--slider"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -552,7 +554,7 @@ test.describe("Slider", () => {
 
             await expect(element).toHaveJSProperty("value", "7");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where the value attribute changes the value property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

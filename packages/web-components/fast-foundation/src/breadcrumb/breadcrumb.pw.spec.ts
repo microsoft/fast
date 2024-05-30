@@ -13,9 +13,11 @@ test.describe("Breadcrumb", () => {
 
         element = page.locator("fast-breadcrumb");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("breadcrumb--breadcrumb"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -76,6 +78,7 @@ test.describe("Breadcrumb", () => {
         ).toHaveAttribute("aria-current", "page");
     });
 
+    /* eslint-disable-next-line max-len */
     test("should remove `aria-current` from any prior breadcrumb item children with child anchors when a new node is appended", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
