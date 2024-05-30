@@ -1,3 +1,5 @@
+import type { ValuesOf } from "../utilities/index.js";
+
 /**
  * Anchor target values.
  *
@@ -15,4 +17,4 @@ export const AnchorTarget = {
  *
  * @public
  */
-export type AnchorTarget = typeof AnchorTarget[keyof typeof AnchorTarget];
+export type AnchorTarget = ValuesOf<typeof AnchorTarget>;

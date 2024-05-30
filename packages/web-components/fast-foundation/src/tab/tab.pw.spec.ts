@@ -11,9 +11,11 @@ test.describe("Tab", () => {
         test.beforeAll(async ({ browser }) => {
             page = await browser.newPage();
 
+            element = page.locator("fast-tab");
+
             await page.goto(fixtureURL("tabs-tab--tab"));
 
-            element = page.locator("fast-tab");
+            await element.waitFor({ state: "attached" });
         });
 
         test.afterAll(async () => {
@@ -29,7 +31,7 @@ test.describe("Tab", () => {
         });
 
         test("should set the `aria-disabled` attribute when `disabled` is true", async () => {
-            await expect(element).not.hasAttribute("aria-disabled");
+            await expect(element).not.toHaveAttribute("aria-disabled");
 
             await element.evaluate<void, FASTTab>(node => {
                 node.disabled = true;

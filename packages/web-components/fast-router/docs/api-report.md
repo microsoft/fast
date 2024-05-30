@@ -43,11 +43,6 @@ export type ContributorOptions = {
 };
 
 // @beta (undocumented)
-export type ConverterObject = {
-    convert: RouteParameterConverter;
-};
-
-// @beta (undocumented)
 export class DefaultLinkHandler implements LinkHandler {
     // (undocumented)
     connect(): void;
@@ -246,7 +241,7 @@ export interface NavigationCommand {
 // @beta (undocumented)
 export interface NavigationCommitPhase<TSettings = any> extends Omit<NavigationPhase<TSettings>, "cancel" | "canceled" | "onCancel"> {
     // (undocumented)
-    setTitle(title: string): any;
+    setTitle(title: string): void;
 }
 
 // @beta (undocumented)
@@ -327,7 +322,7 @@ export interface NavigationQueue {
 }
 
 // @beta (undocumented)
-export type ParameterConverter = RouteParameterConverter | ConverterObject | Constructable<ConverterObject>;
+export type ParameterConverter = RouteParameterConverter | RouteParameterConverterObject | Constructable<RouteParameterConverterObject>;
 
 // @beta (undocumented)
 export type ParentRouteDefinition<TSettings = any> = PathedRouteDefinition<TSettings> & LayoutAndTransitionRouteDefinition & {
@@ -340,7 +335,7 @@ export type PathedRouteDefinition<TSettings = any> = SupportsSettings<TSettings>
 // @beta (undocumented)
 export const QueryString: Readonly<{
     readonly current: string;
-    build(params: Object, traditional?: boolean): string;
+    build(params: Record<string, string>, traditional?: boolean): string;
     separate(path: string): Readonly<{
         path: string;
         queryString: string;
@@ -474,7 +469,24 @@ export type RouteMatch<TSettings = any> = {
 };
 
 // @beta (undocumented)
-export type RouteParameterConverter = (value: string | undefined) => any | Promise<any>;
+export type RouteParameterConverter = (name: string, value: string | undefined, context: RouteParameterConverterContext) => any | Promise<any>;
+
+// @beta (undocumented)
+export interface RouteParameterConverterContext<TSettings = any> {
+    // (undocumented)
+    readonly endpoint: Endpoint<TSettings>;
+    // (undocumented)
+    readonly params: Readonly<Record<string, string | undefined>>;
+    // (undocumented)
+    readonly queryParams: Record<string, string>;
+    // (undocumented)
+    readonly typedParams: Record<string, any>;
+}
+
+// @beta (undocumented)
+export type RouteParameterConverterObject = {
+    convert: RouteParameterConverter;
+};
 
 // @beta (undocumented)
 export interface Router<TSettings = any> {
@@ -575,9 +587,9 @@ export interface RouterElement extends HTMLElement {
     // (undocumented)
     config: RouterConfiguration | null;
     // (undocumented)
-    connectedCallback(): any;
+    connectedCallback(): void;
     // (undocumented)
-    disconnectedCallback(): any;
+    disconnectedCallback(): void;
 }
 
 // @beta (undocumented)

@@ -34,7 +34,7 @@ describe("parseQueryStringParams", (): void => {
     it("undefined or empty input should return an empty Map", (): void => {
         const params1: Map<string, string> = parseQueryStringParams("");
         expect(params1.size).to.equal(0);
-        const params2: Map<string, string> = parseQueryStringParams(undefined);
+        const params2: Map<string, string> = parseQueryStringParams(undefined!);
         expect(params2.size).to.equal(0);
     });
 

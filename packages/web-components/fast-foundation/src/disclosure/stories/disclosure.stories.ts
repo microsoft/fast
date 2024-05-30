@@ -36,3 +36,13 @@ Disclosure.args = {
     `,
     summary: "More about Flash",
 };
+
+export const DisclosureWithSlottedStartEnd: Story<FASTDisclosure> = Disclosure.bind({});
+DisclosureWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        Disclosure content
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+    summary: "Summary",
+};

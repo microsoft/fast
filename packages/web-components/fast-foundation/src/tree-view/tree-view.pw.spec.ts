@@ -13,9 +13,11 @@ test.describe("TreeView", () => {
 
         element = page.locator("fast-tree-view");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("tree-view--tree-view"));
+
+        await page.waitForSelector("fast-tree-view, fast-tree-item");
     });
 
     test.afterAll(async () => {
@@ -167,7 +169,7 @@ test.describe("TreeView", () => {
 
         await expandCollapseButton.click();
 
-        await expect(firstTreeItem).toHaveBooleanAttribute("expanded");
+        await expect(firstTreeItem).toHaveAttribute("expanded");
 
         await expect(firstTreeItem).toHaveAttribute("aria-expanded", "true");
 

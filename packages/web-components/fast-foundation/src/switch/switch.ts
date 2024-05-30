@@ -1,10 +1,6 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 
 /**
@@ -12,28 +8,26 @@ import { FormAssociatedSwitch } from "./switch.form-associated.js";
  * @public
  */
 export type SwitchOptions = {
-    switch?: DangerousHTMLDirective | SyntheticViewTemplate;
+    thumb?: StaticallyComposableHTML<FASTSwitch>;
 };
 
 /**
  * A Switch Custom HTML Element.
  * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#switch | ARIA switch }.
  *
- * @slot - The deafult slot for the label
- * @slot checked-message - The message when in a checked state
- * @slot unchecked-message - The message when in an unchecked state
+ * @slot - The default slot for the label
+ * @slot thumb - For content inside of the thumb
  * @csspart label - The label
- * @csspart switch - The element representing the switch, which wraps the indicator
- * @csspart status-message - The wrapper for the status messages
- * @csspart checked-message - The checked message
- * @csspart unchecked-message - The unchecked message
+ * @csspart control - The element representing the switch, which wraps the thumb
+ * @csspart thumb - The thumb element
  * @fires change - Emits a custom change event when the checked state changes
  *
  * @public
  */
 export class FASTSwitch extends FormAssociatedSwitch {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -44,10 +38,6 @@ export class FASTSwitch extends FormAssociatedSwitch {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
         }
-
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
     }
 
     /**
@@ -94,15 +84,4 @@ export class FASTSwitch extends FormAssociatedSwitch {
             this.checked = !this.checked;
         }
     };
-
-    /**
-     * @internal
-     */
-    public checkedChanged(prev: boolean | undefined, next: boolean) {
-        super.checkedChanged(prev, next);
-        /**
-         * @deprecated - this behavior already exists in the template and should not exist in the class.
-         */
-        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
-    }
 }

@@ -1,7 +1,8 @@
-import { Readable } from "stream";
-import express, { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
+import { Readable } from "stream";
+
+import express, { Request, Response } from "express";
 
 const __dirname = path.resolve(path.dirname(""));
 const PORT = 8080;
@@ -73,5 +74,8 @@ app.get("/fast-command-buffer.js", (req: Request, res: Response) =>
         req,
         res
     )
+);
+app.get("/placeholder.png", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "./server/placeholder.png"))
 );
 app.listen(PORT);

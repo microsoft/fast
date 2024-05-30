@@ -60,16 +60,6 @@ const styles = css`
         animation: indeterminate-2 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
 
-    :host([paused]) .indeterminate-indicator-1,
-    :host([paused]) .indeterminate-indicator-2 {
-        animation-play-state: paused;
-        background-color: var(--neutral-fill-rest);
-    }
-
-    :host([paused]) .determinate {
-        background-color: var(--neutral-foreground-hint);
-    }
-
     @keyframes indeterminate-1 {
         0% {
             opacity: 1;

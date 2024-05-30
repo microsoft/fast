@@ -33,7 +33,7 @@ export function getClientRectWithMargin(
         return;
     }
 
-    const rect: ClientRect = element.getBoundingClientRect();
+    const rect: DOMRect = element.getBoundingClientRect();
     const style: CSSStyleDeclaration = window.getComputedStyle(element, null);
     const clone: ClientRectWithMargin = {
         width: rect.width,

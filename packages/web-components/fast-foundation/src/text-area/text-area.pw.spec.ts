@@ -15,11 +15,13 @@ test.describe("TextArea", () => {
 
         element = page.locator("fast-text-area");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
-        control = element.locator(".control");
+        control = element.locator(".field");
 
         await page.goto(fixtureURL("text-area--text-area"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -43,7 +45,7 @@ test.describe("TextArea", () => {
                     `;
                 }, attribute);
 
-                await expect(control).toHaveBooleanAttribute(attribute);
+                await expect(control).toHaveAttribute(attribute);
             });
         }
     });
@@ -184,7 +186,7 @@ test.describe("TextArea", () => {
                 node.value = "foo";
             });
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "foo");
 
@@ -192,7 +194,7 @@ test.describe("TextArea", () => {
                 node.reset();
             });
 
-            await expect(element).not.hasAttribute("value");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "");
         });
@@ -224,7 +226,7 @@ test.describe("TextArea", () => {
 
             await expect(element).toHaveJSProperty("value", "foo");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

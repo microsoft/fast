@@ -1,10 +1,10 @@
-import {
-    ExecutionContext,
+import { noop } from "../interfaces.js";
+import { ExecutionContext } from "../observation/observable.js";
+import type {
     ViewBehavior,
     ViewBehaviorTargets,
     ViewController,
-} from "../index.js";
-import { noop } from "../interfaces.js";
+} from "../templating/html-directive.js";
 
 export const Fake = Object.freeze({
     executionContext<TParent = any>(
@@ -103,11 +103,11 @@ export const Fake = Object.freeze({
 
         return {
             isBound: false,
-            context: (null as any) as ExecutionContext<TParent>,
+            context: null as any as ExecutionContext<TParent>,
             onUnbind(object) {
                 unbindables.add(object);
             },
-            source: (null as any) as TSource,
+            source: null as any as TSource,
             targets,
             toJSON: noop,
             bind(

@@ -1,23 +1,27 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
- * Tab option configuration options
+ * Tab configuration options
  * @public
  */
-export type TabOptionOptions = StartEndOptions;
+export type TabOptions = StartEndOptions<FASTTab>;
 
 /**
  * A Tab Component to be used with {@link @microsoft/fast-foundation#(FASTTabs:class)}
  *
+ * @slot start - Content which can be provided before the tab content
+ * @slot end - Content which can be provided after the tab content
  * @slot - The default slot for the tab content
  *
  * @public
  */
 export class FASTTab extends FASTElement {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: disabled

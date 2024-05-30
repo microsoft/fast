@@ -1,5 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, when } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTProgress } from "./progress.js";
 import type { ProgressOptions } from "./progress.options.js";
 
@@ -27,15 +28,12 @@ export function progressTemplate<T extends FASTProgress>(
                             style="width: ${x => x.percentComplete}%"
                         ></div>
                     </div>
-                `
-            )}
-            ${when(
-                x => typeof x.value !== "number",
+                `,
                 html<T>`
                     <div class="progress" part="progress" slot="indeterminate">
                         <slot name="indeterminate">
-                            ${options.indeterminateIndicator1 ?? ""}
-                            ${options.indeterminateIndicator2 ?? ""}
+                            ${staticallyCompose(options.indeterminateIndicator1)}
+                            ${staticallyCompose(options.indeterminateIndicator2)}
                         </slot>
                     </div>
                 `

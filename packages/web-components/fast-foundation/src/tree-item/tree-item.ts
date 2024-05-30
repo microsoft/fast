@@ -1,12 +1,8 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    FASTElement,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -23,8 +19,8 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: DangerousHTMLDirective | SyntheticViewTemplate;
+export type TreeItemOptions = StartEndOptions<FASTTreeItem> & {
+    expandCollapseGlyph?: StaticallyComposableHTML<FASTTreeItem>;
 };
 
 /**
@@ -74,7 +70,8 @@ export class FASTTreeItem extends FASTElement {
     }
 
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: disabled

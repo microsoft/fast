@@ -1,16 +1,11 @@
-import {
-    dangerousHTML,
-    ElementViewTemplate,
-    html,
-    ref,
-    ViewTemplate,
-    when,
-} from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTPicker } from "./picker.js";
 
 function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
-    const pickerListItemTag = dangerousHTML(tagFor(options.pickerListItem));
+    const pickerListItemTag = html.partial(tagFor(options.pickerListItem));
     return html`
     <${pickerListItemTag}
         value="${x => x}"
@@ -21,7 +16,7 @@ function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
 }
 
 function defaultMenuOptionTemplate(options: PickerOptions): ViewTemplate {
-    const pickerMenuOptionTag = dangerousHTML(tagFor(options.pickerMenuOption));
+    const pickerMenuOptionTag = html.partial(tagFor(options.pickerMenuOption));
     return html`
     <${pickerMenuOptionTag}
         value="${x => x}"
@@ -51,10 +46,10 @@ export type PickerOptions = {
 export function pickerTemplate<T extends FASTPicker>(
     options: PickerOptions
 ): ElementViewTemplate<T> {
-    const anchoredRegionTag = dangerousHTML(tagFor(options.anchoredRegion));
-    const pickerMenuTag = dangerousHTML(tagFor(options.pickerMenu));
-    const pickerListTag = dangerousHTML(tagFor(options.pickerList));
-    const progressRingTag = dangerousHTML(tagFor(options.progressRing));
+    const anchoredRegionTag = html.partial(tagFor(options.anchoredRegion));
+    const pickerMenuTag = tagFor(options.pickerMenu);
+    const pickerListTag = tagFor(options.pickerList);
+    const progressRingTag = html.partial(tagFor(options.progressRing));
 
     return html<T>`
         <template
@@ -118,7 +113,7 @@ export function pickerTemplate<T extends FASTPicker>(
                                 <slot name="loading-region">
                                     <${progressRingTag}
                                         part="loading-progress"
-                                        class="loading-progress
+                                        class="loading-progress"
                                         slot="loading-region"
                                     ></${progressRingTag}>
                                         ${x => x.loadingText}

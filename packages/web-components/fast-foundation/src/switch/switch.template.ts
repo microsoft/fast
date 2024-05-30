@@ -1,4 +1,6 @@
-import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTSwitch, SwitchOptions } from "./switch.js";
 
 /**
@@ -27,17 +29,11 @@ export function switchTemplate<T extends FASTSwitch>(
             >
                 <slot ${slotted("defaultSlottedNodes")}></slot>
             </label>
-            <div part="switch" class="switch">
-                <slot name="switch">${options.switch ?? ""}</slot>
+            <div part="control" class="control">
+                <div class="thumb" part="thumb">
+                    <slot name="thumb">${staticallyCompose(options.thumb)}</slot>
+                </div>
             </div>
-            <span class="status-message" part="status-message">
-                <span class="checked-message" part="checked-message">
-                    <slot name="checked-message"></slot>
-                </span>
-                <span class="unchecked-message" part="unchecked-message">
-                    <slot name="unchecked-message"></slot>
-                </span>
-            </span>
         </template>
     `;
 }

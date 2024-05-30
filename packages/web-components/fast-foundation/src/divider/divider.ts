@@ -1,12 +1,10 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
-import { DividerRole } from "./divider.options.js";
-
-export { DividerRole };
+import { DividerOrientation, DividerRole } from "./divider.options.js";
 
 /**
  * A Divider Custom HTML Element.
- * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#separator | ARIA separator } or {@link https://www.w3.org/TR/wai-aria-1.1/#presentation | ARIA presentation}.
+ * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#separator | ARIA separator }
+ * or {@link https://www.w3.org/TR/wai-aria-1.1/#presentation | ARIA presentation}.
  *
  * @public
  */
@@ -29,5 +27,5 @@ export class FASTDivider extends FASTElement {
      * HTML Attribute: orientation
      */
     @attr
-    public orientation: Orientation = Orientation.horizontal;
+    public orientation: DividerOrientation = DividerOrientation.horizontal;
 }

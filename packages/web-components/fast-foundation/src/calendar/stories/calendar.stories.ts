@@ -51,3 +51,11 @@ export default {
 } as Meta<FASTCalendar>;
 
 export const Calendar: Story<FASTCalendar> = renderComponent(storyTemplate).bind({});
+
+export const CalendarWithSlottedStartEnd: Story<FASTCalendar> = Calendar.bind({});
+CalendarWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
+};

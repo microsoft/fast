@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { composedParent } from "@microsoft/fast-element/utilities";
+import { composedParent } from "@microsoft/fast-element/utilities.js";
 import { RenderCommand } from "./commands.js";
 import { RouterConfiguration } from "./configuration.js";
 import { NavigationContributor } from "./contributors.js";
@@ -47,7 +47,7 @@ function findParentRouterForElement(element: HTMLElement) {
 
     while ((parent = composedParent(parent))) {
         if (routerProperty in parent) {
-            return parent[routerProperty];
+            return parent[routerProperty] as Router;
         }
     }
 
@@ -60,8 +60,8 @@ function findParentRouterForElement(element: HTMLElement) {
 export interface RouterElement extends HTMLElement {
     readonly [routerProperty]: Router;
     config: RouterConfiguration | null;
-    connectedCallback();
-    disconnectedCallback();
+    connectedCallback(): void;
+    disconnectedCallback(): void;
 }
 
 /**
@@ -69,17 +69,17 @@ export interface RouterElement extends HTMLElement {
  */
 export const Router = Object.freeze({
     getOrCreateFor(element: HTMLElement) {
-        const router: Router = element[routerProperty];
+        const router: Router = (element as any)[routerProperty];
 
         if (router !== void 0) {
             return router;
         }
 
-        return (element[routerProperty] = new DefaultRouter(element));
+        return ((element as any)[routerProperty] = new DefaultRouter(element));
     },
 
     find(element: HTMLElement): Router | null {
-        return element[routerProperty] || findParentRouterForElement(element);
+        return (element as any)[routerProperty] || findParentRouterForElement(element);
     },
 
     from<TBase extends typeof HTMLElement>(
@@ -87,18 +87,28 @@ export const Router = Object.freeze({
     ): { new (): InstanceType<TBase> & RouterElement } {
         class RouterBase extends (BaseType as any) {
             public readonly [routerProperty]!: Router;
-
-            public get config(): RouterConfiguration {
-                return this[routerProperty].config!;
-            }
-
-            public set config(value: RouterConfiguration) {
-                this[routerProperty].config = value;
-            }
+            declare config: RouterConfiguration | null;
 
             constructor() {
                 super();
-                Router.getOrCreateFor(this as any);
+
+                const router = Router.getOrCreateFor(this as any);
+                const config = this.config || null;
+
+                delete (this as any).config;
+
+                Reflect.defineProperty(this, "config", {
+                    get() {
+                        return router.config;
+                    },
+                    set(value) {
+                        router.config = value;
+                    },
+                });
+
+                if (config !== null) {
+                    router.config = config;
+                }
             }
         }
 
@@ -162,7 +172,7 @@ export class DefaultRouter implements Router {
     public route: RecognizedRoute | null = null;
 
     public constructor(public readonly host: HTMLElement) {
-        host[routerProperty] = this;
+        (host as any)[routerProperty] = this;
     }
 
     public get config(): RouterConfiguration | null {
@@ -183,7 +193,7 @@ export class DefaultRouter implements Router {
             this.parentRouter = findParentRouterForElement(this.host);
         }
 
-        return this.parentRouter || null;
+        return this.parentRouter;
     }
 
     public get level() {

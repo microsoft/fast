@@ -1,5 +1,5 @@
 import { html, ref, customElement, FASTElement, Updates } from "@microsoft/fast-element";
-import { fixture, uniqueElementName } from "@microsoft/fast-element/testing";
+import { fixture, uniqueElementName } from "@microsoft/fast-element/testing.js";
 import { reflectAttributes } from "./reflect-attributes.js";
 import { expect } from "chai";
 

@@ -1,4 +1,6 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { AvatarOptions, FASTAvatar } from "./avatar.js";
 
 /**
@@ -9,19 +11,10 @@ export function avatarTemplate<T extends FASTAvatar>(
     options: AvatarOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-    <div
-        class="backplate"
-        part="backplate"
-    >
-        <a
-            class="link"
-            part="link"
-            href="${x => (x.link ? x.link : void 0)}"
-        >
-            <slot name="media">${options.media ?? ""}</slot>
-            <slot><slot>
-        </a>
-    </div>
-    <slot name="badge"></slot>
+        <div class="backplate" part="backplate">
+            <slot name="media">${staticallyCompose(options.media)}</slot>
+            <slot></slot>
+        </div>
+        <slot name="badge"></slot>
     `;
 }

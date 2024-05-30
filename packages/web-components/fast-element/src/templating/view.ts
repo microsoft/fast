@@ -1,9 +1,11 @@
-import { Disposable, noop } from "../interfaces.js";
+import type { HostController } from "../index.js";
+import type { Disposable } from "../interfaces.js";
 import {
     ExecutionContext,
     Observable,
     SourceLifetime,
 } from "../observation/observable.js";
+import { makeSerializationNoop } from "../platform.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehavior,
@@ -27,6 +29,11 @@ export interface View<TSource = any, TParent = any> extends Disposable {
     readonly source: TSource | null;
 
     /**
+     * Indicates whether the controller is bound.
+     */
+    readonly isBound: boolean;
+
+    /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      */
@@ -44,6 +51,17 @@ export interface View<TSource = any, TParent = any> extends Disposable {
  */
 export interface ElementView<TSource = any, TParent = any>
     extends View<TSource, TParent> {
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    readonly sourceLifetime?: SourceLifetime;
+
+    /**
+     * Registers an unbind handler with the controller.
+     * @param behavior - An object to call when the controller unbinds.
+     */
+    onUnbind(behavior: { unbind(controller: ViewController<TSource, TParent>) }): void;
+
     /**
      * Appends the view's DOM nodes to the referenced node.
      * @param node - The parent node to append the view's DOM nodes to.
@@ -102,7 +120,8 @@ export class HTMLView<TSource = any, TParent = any>
     implements
         ElementView<TSource, TParent>,
         SyntheticView<TSource, TParent>,
-        ExecutionContext<TParent> {
+        ExecutionContext<TParent>
+{
     private behaviors: ViewBehavior[] | null = null;
     private unbindables: { unbind(controller: ViewController) }[] = [];
 
@@ -352,12 +371,6 @@ export class HTMLView<TSource = any, TParent = any>
         this.isBound = false;
     }
 
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
     private evaluateUnbindables() {
         const unbindables = this.unbindables;
 
@@ -385,5 +398,6 @@ export class HTMLView<TSource = any, TParent = any>
     }
 }
 
+makeSerializationNoop(HTMLView);
 Observable.defineProperty(HTMLView.prototype, "index");
 Observable.defineProperty(HTMLView.prototype, "length");

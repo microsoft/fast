@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "2.0.0-beta.19",
+  "version": "2.0.0-beta.26",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -26,59 +26,59 @@
       "development": "./dist/esm/index.debug.js",
       "default": "./dist/esm/index.js"
     },
-    "./debug": {
+    "./debug.js": {
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
-    "./binding/two-way": {
-      "types": "./dist/dts/templating/binding-two-way.d.ts",
-      "default": "./dist/esm/templating/binding-two-way.js"
+    "./binding/two-way.js": {
+      "types": "./dist/dts/binding/two-way.d.ts",
+      "default": "./dist/esm/binding/two-way.js"
     },
-    "./binding/signal": {
-      "types": "./dist/dts/templating/binding-signal.d.ts",
-      "default": "./dist/esm/templating/binding-signal.js"
+    "./binding/signal.js": {
+      "types": "./dist/dts/binding/signal.d.ts",
+      "default": "./dist/esm/binding/signal.js"
     },
-    "./render": {
+    "./render.js": {
       "types": "./dist/dts/templating/render.d.ts",
       "default": "./dist/esm/templating/render.js"
     },
-    "./utilities": {
+    "./utilities.js": {
       "types": "./dist/dts/utilities.d.ts",
       "default": "./dist/esm/utilities.js"
     },
-    "./state": {
+    "./state.js": {
       "types": "./dist/dts/state/exports.d.ts",
       "default": "./dist/esm/state/exports.js"
     },
-    "./context": {
+    "./context.js": {
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"
     },
-    "./metadata": {
+    "./metadata.js": {
       "types": "./dist/dts/metadata.d.ts",
       "default": "./dist/esm/metadata.js"
     },
-    "./testing": {
+    "./testing.js": {
       "types": "./dist/dts/testing/exports.d.ts",
       "default": "./dist/esm/testing/exports.js"
     },
-    "./di": {
+    "./di.js": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
-    "./element-hydration": {
+    "./element-hydration.js": {
       "types": "./dist/dts/components/hydration.d.ts",
       "default": "./dist/esm/components/hydration.js"
     },
-    "./install-element-hydration": {
+    "./install-element-hydration.js": {
       "types": "./dist/dts/components/install-hydration.d.ts",
       "default": "./dist/esm/components/install-hydration.js"
     },
-    "./pending-task": {
+    "./pending-task.js": {
       "types": "./dist/dts/pending-task.d.ts",
       "default": "./dist/esm/pending-task.js"
     },
-    "./dom-policy": {
+    "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
       "default": "./dist/esm/dom-policy.js"
     },
@@ -91,6 +91,7 @@
     "./dist/esm/components/install-hydration.js"
   ],
   "scripts": {
+    "benchmark": "yarn clean:dist && yarn build && node ./scripts/run-benchmarks",
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
@@ -118,6 +119,9 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.24.2",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "@tensile-perf/web-components": "^0.1.14",
     "@types/chai": "^4.2.11",
     "@types/chai-spies": "^1.0.3",
     "@types/karma": "^6.3.3",
@@ -142,19 +146,16 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^5.0.0",
     "mocha": "^7.1.2",
-    "prettier": "2.0.2",
+    "prettier": "2.8.8",
     "rollup": "^2.71.1",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-terser": "^7.0.2",
-    "@rollup/plugin-typescript": "^8.3.2",
     "source-map": "^0.7.3",
-    "source-map-loader": "^0.2.4",
+    "source-map-loader": "^3.0.1",
     "ts-loader": "^7.0.2",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^2.4.0",
-    "typescript": "^4.7.0",
-    "webpack": "^5.72.0",
-    "webpack-cli": "^4.9.2"
+    "typescript": "~4.7.0"
   }
 }

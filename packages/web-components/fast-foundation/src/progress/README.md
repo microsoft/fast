@@ -116,12 +116,11 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 #### Fields
 
-| Name     | Privacy | Type             | Default | Description                      | Inherited From |
-| -------- | ------- | ---------------- | ------- | -------------------------------- | -------------- |
-| `value`  | public  | `number or null` |         | The value of the progress        |                |
-| `min`    | public  | `number`         |         | The minimum value                |                |
-| `max`    | public  | `number`         |         | The maximum value                |                |
-| `paused` | public  | `boolean`        |         | Indicates the progress is paused |                |
+| Name    | Privacy | Type             | Default | Description               | Inherited From |
+| ------- | ------- | ---------------- | ------- | ------------------------- | -------------- |
+| `value` | public  | `number or null` |         | The value of the progress |                |
+| `min`   | public  | `number`         |         | The minimum value         |                |
+| `max`   | public  | `number`         |         | The maximum value         |                |
 
 #### Methods
 
@@ -133,12 +132,11 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 #### Attributes
 
-| Name | Field  | Inherited From |
-| ---- | ------ | -------------- |
-|      | value  |                |
-|      | min    |                |
-|      | max    |                |
-|      | paused |                |
+| Name | Field | Inherited From |
+| ---- | ----- | -------------- |
+|      | value |                |
+|      | min   |                |
+|      | max   |                |
 
 <hr/>
 
@@ -154,12 +152,11 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 #### Fields
 
-| Name     | Privacy | Type             | Default | Description                      | Inherited From   |
-| -------- | ------- | ---------------- | ------- | -------------------------------- | ---------------- |
-| `value`  | public  | `number or null` |         | The value of the progress        | FASTBaseProgress |
-| `min`    | public  | `number`         |         | The minimum value                | FASTBaseProgress |
-| `max`    | public  | `number`         |         | The maximum value                | FASTBaseProgress |
-| `paused` | public  | `boolean`        |         | Indicates the progress is paused | FASTBaseProgress |
+| Name    | Privacy | Type             | Default | Description               | Inherited From   |
+| ------- | ------- | ---------------- | ------- | ------------------------- | ---------------- |
+| `value` | public  | `number or null` |         | The value of the progress | FASTBaseProgress |
+| `min`   | public  | `number`         |         | The minimum value         | FASTBaseProgress |
+| `max`   | public  | `number`         |         | The maximum value         | FASTBaseProgress |
 
 #### Methods
 

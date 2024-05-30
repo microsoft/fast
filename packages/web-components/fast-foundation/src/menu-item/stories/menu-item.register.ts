@@ -77,20 +77,22 @@ export const styles = css`
         fill: var(--neutral-foreground-rest);
     }
 
-    .expand-collapse-glyph,
-    ::slotted(svg) {
+    .expand-collapse-glyph {
         width: 16px;
         height: 16px;
-    }
-
-    ::slotted(svg) {
-        fill: currentcolor;
     }
 
     ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
         display: flex;
-        justify-content: center;
+    }
+
+    ::slotted([slot="start"]) {
+        margin-inline-start: 10px;
+    }
+
+    ::slotted([slot="end"]) {
+        margin-inline-end: 10px;
     }
 
     :host(:hover) ::slotted([slot="start"]),

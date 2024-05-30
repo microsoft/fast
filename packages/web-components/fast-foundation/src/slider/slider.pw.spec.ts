@@ -1,8 +1,9 @@
-import { Direction, Orientation } from "@microsoft/fast-web-utilities";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTSlider } from "./slider.js";
+import { SliderOrientation } from "./slider.options.js";
 
 // TODO: Need to add tests for keyboard handling, position, and focus management
 test.describe("Slider", () => {
@@ -14,11 +15,13 @@ test.describe("Slider", () => {
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
-        await page.goto(fixtureURL("slider--slider"));
-
         element = page.locator("fast-slider");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
+
+        await page.goto(fixtureURL("slider--slider"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -71,7 +74,7 @@ test.describe("Slider", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test("should set a default `aria-orientation` value when `orientation` is not defined", async () => {
@@ -83,7 +86,7 @@ test.describe("Slider", () => {
 
         await expect(element).toHaveAttribute(
             "aria-orientation",
-            `${Orientation.horizontal}`
+            `${SliderOrientation.horizontal}`
         );
     });
 
@@ -94,7 +97,7 @@ test.describe("Slider", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-readonly");
+        await expect(element).not.toHaveAttribute("aria-readonly");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
@@ -160,17 +163,23 @@ test.describe("Slider", () => {
             `;
         });
 
-        await element.evaluate((node: FASTSlider, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTSlider, SliderOrientation) => {
+            node.orientation = SliderOrientation.horizontal;
+        }, SliderOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.horizontal);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            SliderOrientation.horizontal
+        );
 
-        await element.evaluate((node: FASTSlider, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
+        await element.evaluate((node: FASTSlider, SliderOrientation) => {
+            node.orientation = SliderOrientation.vertical;
+        }, SliderOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            SliderOrientation.vertical
+        );
     });
 
     test("should set direction equal to the `direction` value", async () => {
@@ -313,6 +322,100 @@ test.describe("Slider", () => {
 
             await expect(element).toHaveAttribute("aria-valuenow", "45");
         });
+
+        test("should increment the value when the `increment()` method is invoked and step is not provided", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-slider min="0" max="100" value="50"></fast-slider>
+                `;
+            });
+
+            await expect(element).toHaveAttribute("aria-valuenow", "50");
+
+            await element.evaluate((node: FASTSlider) => {
+                node.increment();
+            });
+
+            await expect(element).toHaveJSProperty("value", "51");
+
+            await expect(element).toHaveAttribute("aria-valuenow", "51");
+        });
+
+        test("should decrement the value when the `decrement()` method is invoked and step is not provided", async () => {
+            await root.evaluate(node => {
+                node.innerHTML = /* html */ `
+                    <fast-slider min="0" max="100" value="50"></fast-slider>
+                `;
+            });
+
+            await element.evaluate((node: FASTSlider) => {
+                node.decrement();
+            });
+
+            await expect(element).toHaveJSProperty("value", "49");
+
+            await expect(element).toHaveAttribute("aria-valuenow", "49");
+        });
+    });
+
+    test("should increase or decrease the slider value on arrow left/right keys", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-slider min="0" max="100"></fast-slider>
+                </form>
+            `;
+        });
+
+        await element.waitFor({ state: "attached" });
+
+        await element.evaluate(node => {
+            node.focus();
+        });
+
+        await element.evaluate((node: FASTSlider) => {
+            node.value = "7";
+        });
+
+        await expect(element).toHaveJSProperty("value", "7");
+
+        await element.press("ArrowLeft");
+
+        await expect(element).toHaveJSProperty("value", "6");
+
+        await element.press("ArrowRight");
+
+        await expect(element).toHaveJSProperty("value", "7");
+    });
+
+    test("should increase or decrease the slider value on arrow up/down keys", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <form>
+                    <fast-slider min="0" max="100"></fast-slider>
+                </form>
+            `;
+        });
+
+        await element.waitFor({ state: "attached" });
+
+        await element.evaluate(node => {
+            node.focus();
+        });
+
+        await element.evaluate((node: FASTSlider) => {
+            node.value = "7";
+        });
+
+        await expect(element).toHaveJSProperty("value", "7");
+
+        await element.press("ArrowDown");
+
+        await expect(element).toHaveJSProperty("value", "6");
+
+        await element.press("ArrowUp");
+
+        await expect(element).toHaveJSProperty("value", "7");
     });
 
     test("should constrain and normalize the value between `min` and `max` when the value is out of range", async () => {
@@ -412,7 +515,7 @@ test.describe("Slider", () => {
                 node.value = "3";
             });
 
-            await expect(element).toHaveAttribute("value", "");
+            await expect(element).not.toHaveAttribute("value");
 
             await expect(element).toHaveJSProperty("value", "3");
 
@@ -451,7 +554,7 @@ test.describe("Slider", () => {
 
             await expect(element).toHaveJSProperty("value", "7");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where the value attribute changes the value property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

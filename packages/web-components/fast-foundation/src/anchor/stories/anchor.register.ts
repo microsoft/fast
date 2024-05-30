@@ -28,7 +28,7 @@ const styles = css`
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
-        align-items: baseline;
+        align-items: center;
         padding: 0 10px;
         white-space: nowrap;
         outline: none;
@@ -53,14 +53,10 @@ const styles = css`
         border: 0;
     }
 
-    .start,
-    .content,
-    .end {
-        align-self: center;
-    }
-
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="content"]),
+    ::slotted([slot="end"]),
+    .content {
         display: flex;
     }
 
@@ -69,17 +65,11 @@ const styles = css`
         padding: 0;
     }
 
-    ::slotted(svg) {
-        height: 16px;
-        pointer-events: none;
-        width: 16px;
-    }
-
-    .start {
+    ::slotted([slot="start"]) {
         margin-inline-end: 11px;
     }
 
-    .end {
+    ::slotted([slot="end"]) {
         margin-inline-start: 11px;
     }
 

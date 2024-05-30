@@ -1,13 +1,15 @@
 import type { DOMPolicy } from "../dom.js";
-import { isFunction, Message, noop } from "../interfaces.js";
+import { isFunction, isString, Message } from "../interfaces.js";
+import { Binding } from "../binding/binding.js";
 import type { Expression } from "../observation/observable.js";
-import { FAST } from "../platform.js";
-import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
+import { oneWay } from "../binding/one-way.js";
+import { oneTime } from "../binding/one-time.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { Compiler } from "./compiler.js";
 import {
     AddViewBehaviorFactory,
     Aspected,
-    Binding,
     CompiledViewBehaviorFactory,
     HTMLDirective,
     HTMLDirectiveDefinition,
@@ -42,6 +44,14 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 }
 
 /**
+ * A marker interface used to capture types when interpolating Directive helpers
+ * into templates.
+ * @public
+ */
+/* eslint-disable-next-line */
+export interface CaptureType<TSource, TParent> {}
+
+/**
  * A template capable of rendering views not specifically connected to custom elements.
  * @public
  */
@@ -50,6 +60,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
      * Creates a SyntheticView instance based on this template definition.
      */
     create(): SyntheticView<TSource, TParent>;
+
+    /**
+     * Returns a directive that can inline the template.
+     */
+    inline(): CaptureType<TSource, TParent>;
 }
 
 /**
@@ -66,16 +81,8 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 
 // Much thanks to LitHTML for working this out!
 const lastAttributeNameRegex =
-    /* eslint-disable-next-line no-control-regex */
+    /* eslint-disable-next-line no-control-regex, max-len */
     /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
-
-/**
- * A marker interface used to capture types when interpolating Directive helpers
- * into templates.
- * @public
- */
-/* eslint-disable-next-line */
-export interface CaptureType<TSource, TParent> {}
 
 /**
  * Represents the types of values that can be interpolated into a template.
@@ -87,6 +94,44 @@ export type TemplateValue<TSource, TParent = any> =
     | HTMLDirective
     | CaptureType<TSource, TParent>;
 
+const noFactories = Object.create(null);
+
+/**
+ * Inlines a template into another template.
+ * @public
+ */
+export class InlineTemplateDirective implements HTMLDirective {
+    /**
+     * An empty template partial.
+     */
+    public static readonly empty = new InlineTemplateDirective("");
+
+    /**
+     * Creates an instance of InlineTemplateDirective.
+     * @param template - The template to inline.
+     */
+    public constructor(
+        private html: string,
+        private factories: Record<string, ViewBehaviorFactory> = noFactories
+    ) {}
+
+    /**
+     * Creates HTML to be used within a template.
+     * @param add - Can be used to add  behavior factories to a template.
+     */
+    public createHTML(add: AddViewBehaviorFactory): string {
+        const factories = this.factories;
+
+        for (const key in factories) {
+            add(factories[key]);
+        }
+
+        return this.html;
+    }
+}
+
+HTMLDirective.define(InlineTemplateDirective);
+
 function createHTML(
     value: HTMLDirective,
     prevString: string,
@@ -96,7 +141,7 @@ function createHTML(
     if (definition.aspected) {
         const match = lastAttributeNameRegex.exec(prevString);
         if (match !== null) {
-            HTMLDirective.assignAspect((value as any) as Aspected, match[2]);
+            HTMLDirective.assignAspect(value as any as Aspected, match[2]);
         }
     }
 
@@ -110,7 +155,8 @@ function createHTML(
 export class ViewTemplate<TSource = any, TParent = any>
     implements
         ElementViewTemplate<TSource, TParent>,
-        SyntheticViewTemplate<TSource, TParent> {
+        SyntheticViewTemplate<TSource, TParent>
+{
     private result: HTMLTemplateCompilationResult<TSource, TParent> | null = null;
     /**
      * The html representing what this template will
@@ -155,6 +201,16 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
+     * Returns a directive that can inline the template.
+     */
+    public inline(): CaptureType<TSource, TParent> {
+        return new InlineTemplateDirective(
+            isString(this.html) ? this.html : this.html.innerHTML,
+            this.factories
+        );
+    }
+
+    /**
      * Sets the DOMPolicy for this template.
      * @param policy - The policy to associated with this template.
      * @returns The modified template instance.
@@ -194,12 +250,6 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
-    /**
      * Creates a template based on a set of static strings and dynamic values.
      * @param strings - The static strings to create the template with.
      * @param values - The dynamic values to create the template with.
@@ -233,7 +283,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             html += currentString;
 
             if (isFunction(currentValue)) {
-                currentValue = new HTMLBindingDirective(bind(currentValue));
+                currentValue = new HTMLBindingDirective(oneWay(currentValue));
             } else if (currentValue instanceof Binding) {
                 currentValue = new HTMLBindingDirective(currentValue);
             } else if (!(definition = HTMLDirective.getForInstance(currentValue))) {
@@ -257,6 +307,8 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 }
 
+makeSerializationNoop(ViewTemplate);
+
 /**
  * Transforms a template literal string into a ViewTemplate.
  * @param strings - The string fragments that are interpolated with the values.
@@ -266,13 +318,38 @@ export class ViewTemplate<TSource = any, TParent = any>
  * other template instances, and Directive instances.
  * @public
  */
-export function html<TSource = any, TParent = any>(
+export type HTMLTemplateTag = (<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
-): ViewTemplate<TSource, TParent> {
+) => ViewTemplate<TSource, TParent>) & {
+    /**
+     * Transforms a template literal string into partial HTML.
+     * @param html - The HTML string fragment to interpolate.
+     * @public
+     */
+    partial(html: string): InlineTemplateDirective;
+};
+
+/**
+ * Transforms a template literal string into a ViewTemplate.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ * @public
+ */
+export const html: HTMLTemplateTag = (<TSource = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TSource, TParent>[]
+): ViewTemplate<TSource, TParent> => {
     if (Array.isArray(strings) && Array.isArray(strings.raw)) {
-        return ViewTemplate.create((strings as any) as string[], values);
+        return ViewTemplate.create(strings as any as string[], values);
     }
 
     throw FAST.error(Message.directCallToHTMLTagNotAllowed);
-}
+}) as any;
+
+html.partial = (html: string): InlineTemplateDirective => {
+    return new InlineTemplateDirective(html);
+};

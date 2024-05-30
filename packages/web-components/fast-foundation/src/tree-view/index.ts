@@ -1,2 +1,2 @@
-export * from "./tree-view.template.js";
-export * from "./tree-view.js";
+export { treeViewTemplate } from "./tree-view.template.js";
+export { FASTTreeView } from "./tree-view.js";

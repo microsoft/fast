@@ -1,10 +1,5 @@
-import {
-    attr,
-    booleanConverter,
-    DangerousHTMLDirective,
-    FASTElement,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, booleanConverter, FASTElement } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FlipperDirection } from "./flipper.options.js";
 
 export { FlipperDirection };
@@ -14,8 +9,8 @@ export { FlipperDirection };
  * @public
  */
 export type FlipperOptions = {
-    next?: DangerousHTMLDirective | SyntheticViewTemplate;
-    previous?: DangerousHTMLDirective | SyntheticViewTemplate;
+    next?: StaticallyComposableHTML<FASTFlipper>;
+    previous?: StaticallyComposableHTML<FASTFlipper>;
 };
 
 /**
@@ -26,7 +21,8 @@ export type FlipperOptions = {
  * @slot previous - The previous flipper content
  * @csspart next - Wraps the next flipper content
  * @csspart previous - Wraps the previous flipper content
- * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.
+ * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard
+ * and the flipper is exposed to assistive technologies.
  *
  * @public
  */
@@ -41,7 +37,8 @@ export class FASTFlipper extends FASTElement {
     public disabled: boolean;
 
     /**
-     * Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.
+     * Indicates the flipper should be hidden from assistive technology.
+     * Because flippers are often supplementary navigation, they are often hidden from assistive technology.
      *
      * @public
      * @defaultValue - true

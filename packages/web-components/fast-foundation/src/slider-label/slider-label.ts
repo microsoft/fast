@@ -1,19 +1,15 @@
-import {
-    attr,
-    FASTElement,
-    Notifier,
-    Observable,
-    observable,
-} from "@microsoft/fast-element";
-import { Direction, Orientation } from "@microsoft/fast-web-utilities";
-import type { SliderConfiguration } from "../slider/slider.options.js";
+import type { Notifier } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
+import { Direction } from "@microsoft/fast-web-utilities";
 import { convertPixelToPercent } from "../slider/slider-utilities.js";
+import type { SliderConfiguration } from "../slider/slider.options.js";
+import { SliderOrientation } from "../slider/slider.options.js";
 
 const defaultConfig: SliderConfiguration = {
     min: 0,
     max: 0,
     direction: Direction.ltr,
-    orientation: Orientation.horizontal,
+    orientation: SliderOrientation.horizontal,
     disabled: false,
 };
 
@@ -21,7 +17,9 @@ const defaultConfig: SliderConfiguration = {
  * A label element intended to be used with the {@link @microsoft/fast-foundation#(FASTSlider:class)} component.
  *
  * @slot - The default slot for the label content
- * @csspart root - The element wrapping the label mark and text
+ * @csspart container - The element wrapping the label mark and content
+ * @csspart mark - The element wrapping the label mark
+ * @csspart content - The element wrapping the label content
  *
  * @public
  */
@@ -35,7 +33,7 @@ export class FASTSliderLabel extends FASTElement {
     /**
      * @internal
      */
-    public root: HTMLDivElement;
+    public container: HTMLDivElement;
 
     /**
      * The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(FASTSlider:class)}.
@@ -79,7 +77,7 @@ export class FASTSliderLabel extends FASTElement {
      * HTML Attribute: orientation
      */
     @attr
-    public orientation: Orientation = "horizontal";
+    public orientation: SliderOrientation = SliderOrientation.horizontal;
 
     /**
      * @internal
@@ -163,7 +161,7 @@ export class FASTSliderLabel extends FASTElement {
     private getSliderConfiguration = (): void => {
         if (!this.isSliderConfig(this.parentNode)) {
             this.sliderDirection = defaultConfig.direction || Direction.ltr;
-            this.orientation = defaultConfig.orientation || Orientation.horizontal;
+            this.orientation = defaultConfig.orientation || SliderOrientation.horizontal;
             this.sliderMaxPosition = defaultConfig.max;
             this.sliderMinPosition = defaultConfig.min;
         } else {
@@ -174,7 +172,7 @@ export class FASTSliderLabel extends FASTElement {
                 this.disabled = disabled;
             }
             this.sliderDirection = direction || Direction.ltr;
-            this.orientation = orientation || Orientation.horizontal;
+            this.orientation = orientation || SliderOrientation.horizontal;
             this.sliderMaxPosition = max;
             this.sliderMinPosition = min;
         }
@@ -197,12 +195,12 @@ export class FASTSliderLabel extends FASTElement {
             leftNum = 50;
         }
 
-        if (this.orientation === Orientation.horizontal) {
+        if (this.orientation === SliderOrientation.horizontal) {
             return direction === Direction.rtl
                 ? `right: ${leftNum}%; left: ${rightNum}%;`
                 : `left: ${leftNum}%; right: ${rightNum}%;`;
         } else {
-            return `top: ${leftNum}%; bottom: ${rightNum}%;`;
+            return `top: ${rightNum}%; bottom: ${leftNum}%;`;
         }
     };
 }

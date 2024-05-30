@@ -4,9 +4,7 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTreeView } from "../tree-view.js";
 
 const storyTemplate = html<StoryArgs<FASTTreeView>>`
-    <fast-tree-view>
-        ${x => x.storyContent}
-    </fast-tree-view>
+    <fast-tree-view>${x => x.storyContent}</fast-tree-view>
 `;
 
 export default {
@@ -19,6 +17,7 @@ export default {
     },
 } as Meta<FASTTreeView>;
 
+// Includes slotted dividers to test tab functionality, they should display but not be part of tab order.
 export const TreeView: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
 TreeView.args = {
     storyContent: html`
@@ -53,8 +52,27 @@ TreeView.args = {
             <fast-tree-item>Nested item 2</fast-tree-item>
             <fast-tree-item>Nested item 3</fast-tree-item>
         </fast-tree-item>
+        <fast-tree-item>Root item 3</fast-tree-item>
+    `,
+};
+
+export const TreeViewFlat: Story<FASTTreeView> = renderComponent(storyTemplate).bind({});
+TreeViewFlat.args = {
+    storyContent: html`
         <fast-tree-item>
-            Root item 3
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Tree item 1
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+        </fast-tree-item>
+        <fast-tree-item>
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Tree item 2
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+        </fast-tree-item>
+        <fast-tree-item>
+            <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+            Tree item 3
+            <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
         </fast-tree-item>
     `,
 };

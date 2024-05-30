@@ -4,19 +4,19 @@ import { inRange, limit, wrapInBounds } from "./numbers.js";
 describe("wrapInBounds", () => {
     it("should not throw if any parameters are null", () => {
         expect(() => {
-            wrapInBounds(null, null, null);
+            wrapInBounds(null!, null!, null!);
         }).not.to.throw();
         expect(() => {
-            wrapInBounds(1, null, null);
+            wrapInBounds(1, null!, null!);
         }).not.to.throw();
         expect(() => {
             wrapInBounds(1, 2, 3);
         }).not.to.throw();
         expect(() => {
-            wrapInBounds(1, null, 3);
+            wrapInBounds(1, null!, 3);
         }).not.to.throw();
         expect(() => {
-            wrapInBounds(1, 2, null);
+            wrapInBounds(1, 2, null!);
         }).not.to.throw();
     });
 
@@ -43,16 +43,16 @@ describe("wrapInBounds", () => {
 describe("limit", () => {
     it("should not throw if any parameters are null", () => {
         expect(() => {
-            limit(null, null, null);
+            limit(null!, null!, null!);
         }).not.to.throw();
         expect(() => {
-            limit(0, null, null);
+            limit(0, null!, null!);
         }).not.to.throw();
         expect(() => {
-            limit(0, null, 1);
+            limit(0, null!, 1);
         }).not.to.throw();
         expect(() => {
-            limit(0, 10, null);
+            limit(0, 10, null!);
         }).not.to.throw();
     });
 
@@ -80,16 +80,16 @@ describe("limit", () => {
 describe("inRange", () => {
     it("should not throw if any parameters are null", () => {
         expect(() => {
-            inRange(null, null, null);
+            inRange(null!, null!, null!);
         }).not.to.throw();
         expect(() => {
-            inRange(0, null, null);
+            inRange(0, null!, null!);
         }).not.to.throw();
         expect(() => {
-            inRange(0, null, 1);
+            inRange(0, null!, 1);
         }).not.to.throw();
         expect(() => {
-            inRange(0, 10, null);
+            inRange(0, 10, null!);
         }).not.to.throw();
     });
 

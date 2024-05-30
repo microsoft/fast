@@ -3,7 +3,7 @@ import { html, RefDirective, ref } from "@microsoft/fast-element";
 import fastSSR from "./exports.js";
 import { ViewBehaviorFactoryRenderer } from "./template-renderer/directives.js";
 import { test, expect } from "@playwright/test";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 import { FASTElement, HTMLDirective, StatelessAttachedAttributeDirective, ViewBehaviorFactory, ViewController } from "@microsoft/fast-element";
 import { consolidate } from "./test-utilities/consolidate.js";
 
@@ -19,21 +19,21 @@ test.describe("fastSSR default export", () => {
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowrootmode="open"></template></${name}>`)
     });
     test("should render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be true", () => {
         const { templateRenderer } = fastSSR({deferHydration: true});
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name} defer-hydration><template shadowrootmode="open"></template></${name}>`)
     });
     test("should not render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be false", () => {
         const { templateRenderer } = fastSSR({deferHydration: false});
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`)
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowrootmode="open"></template></${name}>`)
     });
 
     test("should render a custom directive using a registered ViewBehaviorFactoryRenderer", () => {

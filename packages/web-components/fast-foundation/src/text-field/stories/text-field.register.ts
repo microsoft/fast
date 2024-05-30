@@ -14,7 +14,7 @@ const styles = css`
         user-select: none;
     }
 
-    .root {
+    .control {
         box-sizing: border-box;
         position: relative;
         display: flex;
@@ -26,17 +26,17 @@ const styles = css`
         height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
-        align-items: baseline;
+        align-items: center;
     }
 
-    .control {
+    .field {
         -webkit-appearance: none;
         font: inherit;
         background: transparent;
         border: 0;
         color: inherit;
         height: calc(100% - 4px);
-        width: 100%;
+        flex-grow: 1;
         margin-top: auto;
         margin-bottom: auto;
         border: none;
@@ -45,10 +45,10 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
     }
 
-    .control:hover,
-    .control:focus-visible,
-    .control:disabled,
-    .control:active {
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
 
@@ -66,53 +66,33 @@ const styles = css`
         visibility: hidden;
     }
 
-    .start,
-    .control,
-    .end {
-        align-self: center;
-    }
-
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
-        margin: auto;
-        fill: currentcolor;
+        margin-inline: 11px;
     }
 
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
-    }
-
-    .start {
-        margin-inline-start: 11px;
-    }
-
-    .end {
-        margin-inline-end: 11px;
-    }
-
-    :host(:hover:not([disabled])) .root {
+    :host(:hover:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
 
-    :host(:active:not([disabled])) .root {
+    :host(:active:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-active);
     }
 
-    :host(:focus-within:not([disabled])) .root {
+    :host(:focus-within:not([disabled])) .control {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 calc(var(--focus-stroke-width) * 1px) var(--focus-stroke-outer)
             inset;
     }
 
-    :host([appearance="filled"]) .root {
+    :host([appearance="filled"]) .control {
         background: var(--neutral-fill-rest);
     }
 
-    :host([appearance="filled"]:hover:not([disabled])) .root {
+    :host([appearance="filled"]:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
     }
 

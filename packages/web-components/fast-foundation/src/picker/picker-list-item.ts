@@ -1,17 +1,9 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    HTMLView,
-    observable,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
+import { attr, FASTElement, html, observable } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
 
 const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
-    <template>
-        ${x => x.value}
-    </template>
+    <template>${x => x.value}</template>
 `;
 
 /**

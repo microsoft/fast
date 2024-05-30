@@ -1,10 +1,6 @@
-import {
-    attr,
-    DangerousHTMLDirective,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
 
 /**
@@ -12,8 +8,8 @@ import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
  * @public
  */
 export type CheckboxOptions = {
-    checkedIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
-    indeterminateIndicator?: DangerousHTMLDirective | SyntheticViewTemplate;
+    checkedIndicator?: StaticallyComposableHTML<FASTCheckbox>;
+    indeterminateIndicator?: StaticallyComposableHTML<FASTCheckbox>;
 };
 
 /**
