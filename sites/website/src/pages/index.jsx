@@ -26,7 +26,7 @@ export default function () {
             </svg>
 
             <p class="section-paragraph">FAST is dedicated to providing support for native Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.</p>
-            <p class="section-paragraph">For an in-depth explanation of FAST <a href="https://www.fast.design/docs/introduction/">see our docs introduction</a></p>
+            <p class="section-paragraph">For an in-depth explanation of FAST, <a href="https://www.fast.design/docs/introduction/">see our docs introduction</a>.</p>
           </section>
 
           <div role="divider" class="section-decoration"></div>
