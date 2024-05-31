@@ -176,16 +176,18 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected="true"] a mark {
   --tree-item-expand-collapse-hover: #333333;
   --tree-item-expand-collapse-selected-hover: #383838;
   --base-layer-luminance: 0.09;
+  --wrapper-gutter: 20px;
+  --wrapper-max-width: 8px;
   background-color: var(--fill-color);
   color: var(--neutral-foreground-rest);
   font-family: var(--body-font);
   font-size: var(--type-ramp-base-font-size);
   line-height: var(--type-ramp-base-line-height);
   margin: 0;
-  padding: 20px 0;
+  padding: 20px;
   display: grid;
   grid-auto-rows: minmax(0, auto);
-  grid-template-columns: minmax(var(--wrapper-gutter), 1fr) minmax(0, var(--wrapper-max-width)) minmax(var(--wrapper-gutter), 1fr);
+  grid-template-columns: 1fr;
 }
 
 .section {
@@ -193,7 +195,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected="true"] a mark {
   color: var(--neutral-foreground-rest);
   grid-column: span 2;
   margin: var(--section-height-spacing-mobile);
-  padding: 40px 0;
+  padding: 20px 0;
   align-items: center;
   display: flex;
   flex-flow: row wrap;
@@ -271,6 +273,11 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected="true"] a mark {
   height: calc(var(--type-ramp-plus-5-font-size) + var(--design-unit)* 1px);
 }
 
+.theme-code-block {
+  overflow: auto;
+  width: inherit;
+}
+
 pre {
   text-align: left;
 }
@@ -293,17 +300,18 @@ li {
 }
 
 .section-showcase-item svg {
-  height: 40px;
-  width: 80px;
+  height: 20px;
+  width: 40px;
   fill: white;
   stroke: white;
-  margin: 15px 40px;
+  margin: 8px 20px;
 }
 
 @media screen and (min-width: 900px) {
   .frontpage {
     --wrapper-gutter: 5vw;
     --wrapper-max-width: 800px;
+    grid-template-columns: minmax(var(--wrapper-gutter), 1fr) minmax(0, var(--wrapper-max-width)) minmax(var(--wrapper-gutter), 1fr);
   }
 
   .section,
@@ -314,5 +322,16 @@ li {
   .section {
     margin: var(--section-height-spacing);
     padding: 40px 0;
+    max-width: 900px;
+  }
+
+  .section-showcase-item svg {
+    height: 40px;
+    width: 80px;
+    margin: 15px 40px;
+  }
+
+  .theme-code-block {
+    width: unset;
   }
 }
