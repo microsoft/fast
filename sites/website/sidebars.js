@@ -35,7 +35,7 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Advanced concepts",
+            label: "Advanced Concepts",
             link: {
                 type: "generated-index",
             },

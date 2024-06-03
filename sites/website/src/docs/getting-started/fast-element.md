@@ -35,7 +35,7 @@ An `@attr` can take a configuration with the following options:
 | Property | Description | Values | Default |
 |-|-|-|-|
 | attribute | The attribute name that is reflected in the DOM, this can be specified in cases where a different string is preferred. | `string` | The class property converted to lowercase |
-| mode | If the attribute is a boolean and the mode is set to "boolean" this allows `FASTElement` to add/remove the element from the DOM. The "fromView" behavior only updates the property value based on changes in the DOM, but does not reflect property changes back. | `"reflect" \| "boolean" \| "fromView"` | "reflect" |
+| mode | If the attribute is a boolean and the mode is set to "boolean" this allows `FASTElement` to add/remove the attribute from the element in the same way that [native boolean attributes on elements work](https://developer.mozilla.org/en-US/docs/Glossary/Boolean/HTML). The "fromView" behavior only updates the property value based on changes in the DOM, but does not reflect property changes back. | `"reflect" \| "boolean" \| "fromView"` | "reflect" |
 | converter | This allows the value of the attribute to be converted when moving to and from the HTML template. | [See ValueConverter Interface](#converters) | |
 
 Example with a custom attribute name and boolean mode:

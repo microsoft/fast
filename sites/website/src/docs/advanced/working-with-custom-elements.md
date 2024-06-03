@@ -24,7 +24,7 @@ Custom Elements that have not been upgraded and don't have styles attached can s
 
 ## Updating attributes on the host element
 
-Sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
+Sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself. If you do not need to affect the host element you do not need to use the `template` element.
 
 **Example: Host Directive Template**
 
