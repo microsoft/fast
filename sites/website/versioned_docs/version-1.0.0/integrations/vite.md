@@ -60,7 +60,7 @@ In the root of your project folder, you will see a `tsconfig.js` file.  Replace 
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": false
   },
-  "include": ["src/*/.ts"]
+  "include": ["src/**/*.ts"]
 }
 ```
 

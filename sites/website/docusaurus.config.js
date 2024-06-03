@@ -148,7 +148,7 @@ module.exports = {
                     // TODO: Uncomment to begin displaying the doc versions labels (lines 160-167)
                     versions: {
                         current: {
-                            label: "2.0.0",
+                            label: "2.x",
                         },
                         "1.0.0": {
                             label: "1.0.0",
