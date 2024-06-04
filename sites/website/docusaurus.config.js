@@ -150,9 +150,9 @@ module.exports = {
                         current: {
                             label: "2.x",
                         },
-                        "1.0.0": {
-                            label: "1.0.0",
-                            path: "1.0.0",
+                        "1.x": {
+                            label: "1.x",
+                            path: "1.x",
                         },
                     },
                 },
