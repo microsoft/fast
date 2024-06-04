@@ -551,9 +551,9 @@ So far, our bindings and directives have only affected elements within the Shado
 const template = html<MyProgress>`
   <template (Represents my-progress element)
       role="progressbar"
-      $aria-valuenow={x => x.value}
-      $aria-valuemin={x => x.min}
-      $aria-valuemax={x => x.max}>
+      aria-valuenow=${x => x.value}
+      aria-valuemin=${x => x.min}
+      aria-valuemax=${x => x.max}>
     (template targeted at Shadow DOM here)
   </template>
 `;
