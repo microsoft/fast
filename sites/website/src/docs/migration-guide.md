@@ -14,7 +14,7 @@ keywords:
 
 ### `cssPartial`
 
-The `cssPartial` export no longer exists, in it's place use `css.partial`.
+The `cssPartial` export no longer exists, in its place use `css.partial`.
 
 1.x Example:
 ```ts
