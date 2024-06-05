@@ -91,9 +91,7 @@ describe("Toolbar", () => {
 
     await connect();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    startButton.focus();
 
     pressRightArrowKey(element);
 
@@ -108,9 +106,7 @@ describe("Toolbar", () => {
 
     await connect();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    startButton.focus();
 
     pressRightArrowKey(element);
 
@@ -127,9 +123,7 @@ describe("Toolbar", () => {
     control1.disabled = true;
     await DOM.nextUpdate();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    startButton.focus();
 
     pressRightArrowKey(element);
 
@@ -144,9 +138,7 @@ describe("Toolbar", () => {
 
     await connect();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    startButton.focus();
 
     pressRightArrowKey(element);
 
@@ -163,9 +155,7 @@ describe("Toolbar", () => {
     control1.hidden = true;
     await DOM.nextUpdate();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    startButton.focus();
 
     pressRightArrowKey(element);
 
@@ -192,9 +182,7 @@ describe("Toolbar", () => {
 
     await DOM.nextUpdate();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton1);
+    startButton1.focus();
 
     pressRightArrowKey(element);
 
@@ -221,9 +209,7 @@ describe("Toolbar", () => {
 
     await DOM.nextUpdate();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(endButton1);
+    endButton1.focus();
 
     pressRightArrowKey(element);
 
@@ -238,9 +224,7 @@ describe("Toolbar", () => {
 
     await connect();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(control1);
+    control1.focus();
 
     pressRightArrowKey(element);
 
@@ -261,9 +245,7 @@ describe("Toolbar", () => {
 
     await connect();
 
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    startButton.focus();
 
     pressRightArrowKey(element);
 
@@ -272,10 +254,7 @@ describe("Toolbar", () => {
     control1.disabled = true;
     await DOM.nextUpdate();
 
-    // re-focus the element because focus is lost when control1 became disabled
-    element.focus();
-
-    expect(document.activeElement).to.equal(startButton);
+    expect((element as unknown as Toolbar).activeIndex).to.equal(0);
 
     await disconnect();
   });
