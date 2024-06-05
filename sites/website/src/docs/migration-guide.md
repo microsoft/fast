@@ -133,7 +133,7 @@ While some of the API's remain available, we suggest going forward that certain 
 
 ### `@customElement`
 
-We prefer using `FASTElement` and it's `.define()` method over the `@customElement` decorator (which is still used under the hood). We believe this more closely matches with how you define custom elements using the native `customElements.define()`.
+We prefer using `FASTElement` and its `.define()` method over the `@customElement` decorator (which is still used under the hood). We believe this more closely matches with how you define custom elements using the native `customElements.define()`.
 
 1.x Example:
 ```ts
