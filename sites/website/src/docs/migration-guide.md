@@ -129,7 +129,7 @@ export const myCssDirective = new MyCSSDirective();
 
 ## Suggested Changes
 
-While some of the API's remain available, we suggest going forward that certain patterns be updated.
+While some of the APIs remain available, we suggest going forward that certain patterns be updated.
 
 ### `@customElement`
 
