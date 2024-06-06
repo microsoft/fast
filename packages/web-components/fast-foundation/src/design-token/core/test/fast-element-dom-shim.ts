@@ -7,3 +7,4 @@
     },
 };
 (globalThis as any)["HTMLElement"] = class {};
+(globalThis as any)["MutationObserver"] = class {};
