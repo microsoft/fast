@@ -118,10 +118,7 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTTextArea, Foundation.textAreaTemplate()],
     [Foundation.FASTTextField, Foundation.textFieldTemplate()],
     [Foundation.FASTToolbar, Foundation.toolbarTemplate()],
-    [
-        Foundation.FASTTooltip,
-        Foundation.tooltipTemplate(),
-    ],
+    [Foundation.FASTTooltip,Foundation.tooltipTemplate()],
     [Foundation.FASTTreeItem, Foundation.treeItemTemplate()],
     [Foundation.FASTTreeView, Foundation.treeViewTemplate()],
 ];
