@@ -7,13 +7,15 @@
 /// <reference types="node" />
 
 import { AsyncLocalStorage } from 'async_hooks';
-import { Binding } from '@microsoft/fast-element';
-import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
+import { Disposable } from '@microsoft/fast-element';
 import { DOMContainer } from '@microsoft/fast-element/di.js';
+import { EventEmitter } from 'node:events';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
+import { HostController } from '@microsoft/fast-element';
+import { TemplateCacheController } from '../template-cache/controller.js';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -26,9 +28,11 @@ export interface AsyncElementRenderer extends Omit<ElementRenderer, "renderShado
 }
 
 // @beta (undocumented)
-export interface AsyncTemplateRenderer {
+export interface AsyncTemplateRenderer extends EventEmitter {
     // (undocumented)
     createRenderInfo(): RenderInfo;
+    // (undocumented)
+    readonly emitHydratableMarkup: boolean;
     // (undocumented)
     render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string | Promise<string>>;
     // (undocumented)
@@ -60,6 +64,8 @@ export interface ElementRenderer {
     attributeChangedCallback(name: string, prev: string | null, next: string | null): void;
     // (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
     // (undocumented)
     dispatchEvent(event: Event): boolean;
     // (undocumented)
@@ -103,11 +109,13 @@ export default fastSSR;
 export type Middleware = (req: any, res: any, next: () => any) => void;
 
 // @beta (undocumented)
-export type RenderInfo = {
-    elementRenderers: ConstructableElementRenderer[];
-    customElementInstanceStack: ElementRenderer[];
+export interface RenderInfo extends Disposable {
+    // @deprecated
     customElementHostStack: ElementRenderer[];
-};
+    customElementInstanceStack: ElementRenderer[];
+    elementRenderers: ConstructableElementRenderer[];
+    renderedCustomElementList: ElementRenderer[];
+}
 
 // @beta
 export const RequestStorage: Readonly<{
@@ -125,21 +133,24 @@ export const RequestStorageManager: Readonly<{
     installDOMShim(): void;
     uninstallDOMShim(): void;
     installDIContextRequestStrategy(): void;
-    createStorage(options?: StorageOptions): Map<any, any>;
+    createStorage(options?: StorageOptions, req?: any): Map<any, any>;
     run<T = unknown>(storage: Map<any, any>, callback: () => T): T;
     middleware(options?: StorageOptions): Middleware;
 }>;
 
 // @beta
 export interface SSRConfiguration {
-    deferHydration?: boolean;
+    deferHydration?: boolean | ((tagName: string) => boolean);
+    emitHydratableMarkup?: boolean;
     renderMode?: "sync" | "async";
+    styleRenderer?: StyleRenderer;
+    tryRecoverFromError?: boolean | ((e: unknown) => void);
     viewBehaviorFactoryRenderers?: ViewBehaviorFactoryRenderer<any>[];
 }
 
 // @beta
 export type StorageOptions = {
-    createWindow?: () => {
+    createWindow?: (req: any) => {
         [key: string]: unknown;
     };
     storage?: Map<any, any>;
@@ -147,18 +158,53 @@ export type StorageOptions = {
 
 // @beta
 export interface StyleRenderer {
-    render(styles: ComposableStyles): string;
+    render(styles: Set<string | CSSStyleSheet>): string;
 }
 
+// @public (undocumented)
+export const templateCacheController: TemplateCacheController;
+
 // @beta (undocumented)
-export interface TemplateRenderer {
+export interface TemplateRenderer extends EventEmitter {
     // (undocumented)
     createRenderInfo(): RenderInfo;
+    // (undocumented)
+    readonly emitHydratableMarkup: boolean;
     // (undocumented)
     render(template: ViewTemplate | string, renderInfo?: RenderInfo, source?: unknown, context?: ExecutionContext): IterableIterator<string>;
     // (undocumented)
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
 }
+
+// @public (undocumented)
+export interface TemplateRendererEvent {
+    // (undocumented)
+    readonly tagName: string;
+    // (undocumented)
+    readonly type: TemplateRendererEventTypes;
+}
+
+// @public (undocumented)
+export class TemplateRendererEvent {
+    constructor(type: TemplateRendererEventTypes, tagName: string);
+    // (undocumented)
+    readonly tagName: string;
+    // (undocumented)
+    readonly type: TemplateRendererEventTypes;
+}
+
+// @public (undocumented)
+export const TemplateRendererEventTypes: {
+    readonly customElementOpen: "custom-element-open";
+    readonly customElementClose: "custom-element-close";
+    readonly customElementConnecting: "custom-element-connecting";
+    readonly customElementConnected: "custom-element-connected";
+    readonly customElementShadowOpen: "custom-element-shadow-open";
+    readonly customElementShadowClose: "custom-element-shadow-close";
+};
+
+// @public (undocumented)
+export type TemplateRendererEventTypes = (typeof TemplateRendererEventTypes)[keyof typeof TemplateRendererEventTypes];
 
 // @beta
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
@@ -169,9 +215,17 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 
 // Warnings were encountered during analysis:
 //
+<<<<<<< HEAD:packages/web-components/fast-ssr/docs/api-report.api.md
 // dist/dts/exports.d.ts:41:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
 // dist/dts/exports.d.ts:56:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
 // dist/dts/request-storage.d.ts:33:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
+=======
+// dist/dts/exports.d.ts:60:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/exports.d.ts:63:5 - (ae-incompatible-release-tags) The symbol "templateRenderer" is marked as @public, but its signature references "TemplateRenderer" which is marked as @beta
+// dist/dts/exports.d.ts:64:5 - (ae-incompatible-release-tags) The symbol "ElementRenderer" is marked as @public, but its signature references "ConstructableFASTElementRenderer" which is marked as @beta
+// dist/dts/exports.d.ts:74:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
+>>>>>>> 9a90dab8e (Adds support for FASTElement hydration):packages/web-components/fast-ssr/docs/api-report.md
 
 // (No @packageDocumentation comment for this package)
 

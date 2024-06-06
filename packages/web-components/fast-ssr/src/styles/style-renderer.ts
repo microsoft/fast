@@ -1,5 +1,5 @@
-import { ComposableStyles } from "@microsoft/fast-element";
-import { fastStyleTagName } from "./fast-style.js";
+import { ComposableStyles, type FASTElement } from "@microsoft/fast-element";
+import { fastStyleTagName } from "./fast-style-config.js";
 function collectStyles(style: ComposableStyles): string {
     let content: string = "";
     if (typeof style === "string") {
@@ -28,7 +28,7 @@ export interface StyleRenderer {
      * Renders composable styles to a string.
      * @param styles - The styles to render.
      */
-    render(styles: ComposableStyles): string;
+    render(styles: Set<string | CSSStyleSheet>): string;
 }
 
 export class FASTStyleStyleRenderer implements StyleRenderer {
@@ -39,23 +39,36 @@ export class FASTStyleStyleRenderer implements StyleRenderer {
         return () => `${prefix}-${id++}`;
     })();
 
-    public render(styles: ComposableStyles): string {
-        let id = FASTStyleStyleRenderer.stylesheetCache.get(styles);
-        const content = id === undefined ? collectStyles(styles) : null;
-        let contentAttr = "";
+    public render(styles: Set<string | CSSStyleSheet>): string {
+        let markup = "";
 
-        if (content !== null) {
-            id = FASTStyleStyleRenderer.nextId();
-            FASTStyleStyleRenderer.stylesheetCache.set(styles, id);
-            contentAttr = `css="${content}"`;
-        }
+        styles.forEach(style => {
+            let id = FASTStyleStyleRenderer.stylesheetCache.get(style);
+            const content = id === undefined ? collectStyles(style) : null;
+            let contentAttr = "";
 
-        return `<${fastStyleTagName} style-id="${id}" ${contentAttr}></${fastStyleTagName}>`;
+            if (content !== null) {
+                id = FASTStyleStyleRenderer.nextId();
+                FASTStyleStyleRenderer.stylesheetCache.set(style, id);
+                contentAttr = `css="${content}"`;
+            }
+
+            markup += `<${fastStyleTagName} style-id="${id}" ${contentAttr}></${fastStyleTagName}>`;
+        });
+
+        return markup;
     }
 }
 
 export class StyleElementStyleRenderer implements StyleRenderer {
-    public render(styles: ComposableStyles): string {
-        return `<style>${collectStyles(styles)}</style>`;
+    public render(styles: Set<string | CSSStyleSheet>): string {
+        let styleTags = "";
+
+        styles.forEach(style => {
+            // for parity with PROD, return individual style elements
+            styleTags += `<style>${collectStyles(style)}</style>`;
+        });
+
+        return styleTags;
     }
 }

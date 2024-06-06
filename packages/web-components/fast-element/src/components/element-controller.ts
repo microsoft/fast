@@ -13,7 +13,9 @@ import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
+import { UnobservableMutationObserver } from "../utilities.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
+import { HydrationMarkup, isHydratable } from "./hydration.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -55,17 +57,22 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     implements HostController<TElement>
 {
     private boundObservables: Record<string, any> | null = null;
-    private needsInitialization: boolean = true;
+    protected needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
-    private stage: Stages = Stages.disconnected;
+    protected stage: Stages = Stages.disconnected;
     /**
      * A guard against connecting behaviors multiple times
      * during connect in scenarios where a behavior adds
      * another behavior during it's connectedCallback
      */
     private guardBehaviorConnection = false;
-    private behaviors: Map<HostBehavior<TElement>, number> | null = null;
+    protected behaviors: Map<HostBehavior<TElement>, number> | null = null;
+    /**
+     * Tracks whether behaviors are connected so that
+     * behaviors cant be connected multiple times
+     */
+    private behaviorsConnected: boolean = false;
     private _mainStyles: ElementStyles | null = null;
 
     /**
@@ -372,29 +379,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         this.stage = Stages.connecting;
 
-        // If we have any observables that were bound, re-apply their values.
-        if (this.boundObservables !== null) {
-            const element = this.source;
-            const boundObservables = this.boundObservables;
-            const propertyNames = Object.keys(boundObservables);
-
-            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
-                const propertyName = propertyNames[i];
-                (element as any)[propertyName] = boundObservables[propertyName];
-            }
-
-            this.boundObservables = null;
-        }
-
-        const behaviors = this.behaviors;
-        if (behaviors !== null) {
-            this.guardBehaviorConnection = true;
-            for (const key of behaviors.keys()) {
-                key.connectedCallback && key.connectedCallback(this);
-            }
-
-            this.guardBehaviorConnection = false;
-        }
+        this.bindObservables();
+        this.connectBehaviors();
 
         if (this.needsInitialization) {
             this.renderTemplate(this.template);
@@ -407,6 +393,51 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         this.stage = Stages.connected;
         Observable.notify(this, isConnectedPropertyName);
+    }
+
+    protected bindObservables() {
+        if (this.boundObservables !== null) {
+            const element = this.source;
+            const boundObservables = this.boundObservables;
+            const propertyNames = Object.keys(boundObservables);
+
+            for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+                const propertyName = propertyNames[i];
+                (element as any)[propertyName] = boundObservables[propertyName];
+            }
+
+            this.boundObservables = null;
+        }
+    }
+
+    protected connectBehaviors() {
+        if (this.behaviorsConnected === false) {
+            const behaviors = this.behaviors;
+            if (behaviors !== null) {
+                this.guardBehaviorConnection = true;
+                for (const key of behaviors.keys()) {
+                    key.connectedCallback && key.connectedCallback(this);
+                }
+
+                this.guardBehaviorConnection = false;
+            }
+
+            this.behaviorsConnected = true;
+        }
+    }
+
+    protected disconnectBehaviors() {
+        if (this.behaviorsConnected === true) {
+            const behaviors = this.behaviors;
+
+            if (behaviors !== null) {
+                for (const key of behaviors.keys()) {
+                    key.disconnectedCallback && key.disconnectedCallback(this);
+                }
+            }
+
+            this.behaviorsConnected = false;
+        }
     }
 
     /**
@@ -424,12 +455,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.unbind();
         }
 
-        const behaviors = this.behaviors;
-        if (behaviors !== null) {
-            for (const key of behaviors.keys()) {
-                key.disconnectedCallback && key.disconnectedCallback(this);
-            }
-        }
+        this.disconnectBehaviors();
 
         this.stage = Stages.disconnected;
     }
@@ -474,7 +500,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
-    private renderTemplate(template: ElementViewTemplate | null | undefined): void {
+    protected renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
         // we're doing a Light DOM render to the element's direct children.
@@ -684,4 +710,124 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
     ElementStyles.setDefaultStrategy(AdoptedStyleSheetsStrategy);
 } else {
     ElementStyles.setDefaultStrategy(StyleElementStrategy);
+}
+
+ElementStyles.setDefaultStrategy(
+    ElementStyles.supportsAdoptedStyleSheets
+        ? AdoptedStyleSheetsStrategy
+        : StyleElementStrategy
+);
+
+const deferHydrationAttribute = "defer-hydration";
+const needsHydrationAttribute = "needs-hydration";
+
+/**
+ * An ElementController capable of hydrating FAST elements from
+ * Declarative Shadow DOM.
+ *
+ * @beta
+ */
+export class HydratableElementController<
+    TElement extends HTMLElement = HTMLElement
+> extends ElementController<TElement> {
+    /**
+     * Controls whether the controller will hydrate during the connect() method.
+     * Initialized during the first connect() call to true when the `needs-hydration`
+     * attribute is present on the element.
+     */
+    protected needsHydration?: boolean;
+    private static hydrationObserver = new UnobservableMutationObserver(
+        HydratableElementController.hydrationObserverHandler
+    );
+
+    private static hydrationObserverHandler(records: MutationRecord[]) {
+        for (const record of records) {
+            HydratableElementController.hydrationObserver.unobserve(record.target);
+            (record.target as any).$fastController.connect();
+        }
+    }
+
+    public connect() {
+        // Initialize needsHydration on first connect
+        if (this.needsHydration === undefined) {
+            this.needsHydration =
+                this.source.getAttribute(needsHydrationAttribute) !== null;
+        }
+
+        // If the `defer-hydration` attribute exists on the source,
+        // wait for it to be removed before continuing connection behavior.
+        if (this.source.hasAttribute(deferHydrationAttribute)) {
+            HydratableElementController.hydrationObserver.observe(this.source, {
+                attributeFilter: [deferHydrationAttribute],
+            });
+
+            return;
+        }
+
+        // If the controller does not need to be hydrated, defer connection behavior
+        // to the base-class. This case handles element re-connection and initial connection
+        // of elements that did not get declarative shadow-dom emitted, as well as if an extending
+        // class
+        if (!this.needsHydration) {
+            super.connect();
+            return;
+        }
+
+        if (this.stage !== Stages.disconnected) {
+            return;
+        }
+
+        this.stage = Stages.connecting;
+
+        this.bindObservables();
+        this.connectBehaviors();
+
+        const element = this.source;
+        const host = getShadowRoot(element) ?? element;
+
+        if (this.template) {
+            if (isHydratable(this.template)) {
+                let firstChild = host.firstChild!;
+                let lastChild = host.lastChild!;
+
+                if (element.shadowRoot === null) {
+                    // handle element boundary markers when shadowRoot is not present
+                    if (HydrationMarkup.isElementBoundaryStartMarker(firstChild)) {
+                        (firstChild as Comment).data = "";
+                        firstChild = firstChild.nextSibling!;
+                    }
+
+                    if (HydrationMarkup.isElementBoundaryEndMarker(lastChild!)) {
+                        (lastChild as Comment).data = "";
+                        lastChild = lastChild.previousSibling!;
+                    }
+                }
+
+                (this as Mutable<this>).view = this.template.hydrate(
+                    firstChild,
+                    lastChild,
+                    element
+                );
+                this.view?.bind(this.source);
+            } else {
+                this.renderTemplate(this.template);
+            }
+        }
+
+        this.addStyles(this.mainStyles);
+
+        this.stage = Stages.connected;
+        this.source.removeAttribute(needsHydrationAttribute);
+        this.needsInitialization = this.needsHydration = false;
+        Observable.notify(this, isConnectedPropertyName);
+    }
+
+    public disconnect() {
+        super.disconnect();
+        HydratableElementController.hydrationObserver.unobserve(this.source);
+    }
+
+    public static install() {
+        ElementController.setStrategy(HydratableElementController);
+    }
 }

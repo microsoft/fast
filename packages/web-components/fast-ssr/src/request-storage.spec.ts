@@ -16,11 +16,26 @@ test.describe("RequestStorageManager", () => {
     test("can create backing storage with a custom window", () => {
         const w = createWindow();
         const storage = RequestStorageManager.createStorage({
-            createWindow: () => w
+            createWindow: () => w,
         });
 
         expect(storage).toBeInstanceOf(Map);
         expect(storage.get("window")).toBe(w);
+    });
+
+    test("should pass in request object to createWindow middleware", () => {
+        function createWindowShim(req: any) {
+            return {
+                id: req.headers["id"]
+            };
+        }
+        const request = { headers: { id: "test" } };
+        const storage = RequestStorageManager.createStorage({
+            createWindow: createWindowShim,
+        }, request);
+
+        expect(storage).toBeInstanceOf(Map);
+        expect(storage.get("window")).toStrictEqual({id: "test"});
     });
 
     test("can create backing storage with initial values", () => {
@@ -28,7 +43,7 @@ test.describe("RequestStorageManager", () => {
         initialValues.set("hello", "world");
 
         const storage = RequestStorageManager.createStorage({
-            storage: initialValues
+            storage: initialValues,
         });
 
         expect(storage).toBeInstanceOf(Map);
@@ -40,7 +55,7 @@ test.describe("RequestStorageManager", () => {
         initialValues.set("hello", "world");
 
         const storage = RequestStorageManager.createStorage({
-            storage: initialValues
+            storage: initialValues,
         });
 
         let captured;
@@ -61,7 +76,6 @@ test.describe("RequestStorageManager", () => {
     });
 
     test("can get different value from global in a storage scope", () => {
-
         // window is part of perRequestGlobals setup by installDOMShim
         (window as any)["hello"] = "world";
         RequestStorageManager.installDOMShim();

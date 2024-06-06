@@ -535,7 +535,7 @@ describe(`The html tag template helper`, () => {
         expect(target.querySelector('#embedded')).to.be.equal(null)
     });
 
-    it("Should properly interpolate HTML tags with opening / closing tags using dangerousHTML", () => {
+    it("Should properly interpolate HTML tags with opening / closing tags using html.partial", () => {
       const element = html.partial("button");
       const template = html`<${element}></${element}>`
       expect(template.html).to.equal('<button></button>')
