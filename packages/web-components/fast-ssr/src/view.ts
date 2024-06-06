@@ -1,4 +1,7 @@
-import { HTMLTemplateCompilationResult, ViewBehaviorFactory } from "@microsoft/fast-element";
+import {
+    HTMLTemplateCompilationResult,
+    ViewBehaviorFactory,
+} from "@microsoft/fast-element";
 import { OpCodes, OpType, TemplateElementOpenOp } from "./template-parser/op-codes.js";
 import { parseStringToOpCodes } from "./template-parser/template-parser.js";
 
