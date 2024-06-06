@@ -207,7 +207,7 @@ describe("Combobox", () => {
         });
     });
 
-    it.only("should close the listbox if the indicator is clicked without making a selection", async () => {
+    it("should close the listbox if the indicator is clicked without making a selection", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
