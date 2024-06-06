@@ -1,13 +1,20 @@
 import "../install-dom-shim.js";
-import { children, css, customElement, ExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
-import { expect, test } from "@playwright/test";
-import fastSSR from "../exports.js";
-import { consolidate } from "../test-utilities/consolidate.js";
-import { DefaultTemplateRenderer } from "./template-renderer.js";
-import { render } from "@microsoft/fast-element/render.js";
-import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
-import { RenderInfo } from "../render-info.js";
+import "../configure-fast-element.js";
+import { children, css, customElement, ExecutionContext, FASTElement, HostBehavior, html, ref, render, repeat, slotted, when } from "@microsoft/fast-element";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task.js";
 import { uniqueElementName } from "@microsoft/fast-element/testing.js";
+import { expect, test } from "@playwright/test";
+import { HydrationMarkup } from "@microsoft/fast-element/element-hydration.js";
+import { DefaultElementRenderer, FallbackRenderer } from "../element-renderer/element-renderer.js";
+import { escapeHtml } from "../escape-html.js";
+import fastSSR from "../exports.js";
+import { RenderInfo } from "../render-info.js";
+import { consolidate, consolidateAsync } from "../test-utilities/consolidate.js";
+import { SSRView } from "../view.js";
+import { validateRendererOutput } from "../test-utilities/validators.js";
+import { TemplateRendererEvent, TemplateRendererEventTypes } from "./events.js";
+import { hydrationMarker } from "./hydration-marker-emitter.js";
+import { DefaultTemplateRenderer } from "./template-renderer.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -31,6 +38,7 @@ test.describe("TemplateRenderer", () => {
                 element?: HTMLElement | undefined;
                 attributeChangedCallback(name: string, prev: string | null, next: string | null): void {}
                 connectedCallback(): void {}
+                disconnectedCallback(): void {}
                 public *renderAttributes(): IterableIterator<string> {}
                 public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {}
             }
@@ -85,6 +93,14 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe(`<template id="bar" name="foo"></template>`);
         });
+        test("should escape dynamic string attributes", () => {
+            const { templateRenderer } = fastSSR();
+            const attrValue = JSON.stringify({"dangerousScript": "<script>alert(1);</script>"})
+
+            const result = templateRenderer.render(html`<span name="${_ => attrValue}"></span>`)
+
+            expect(consolidate(result)).toBe(`<span name="${escapeHtml(attrValue)}"></span>`);
+        })
         test("should render a template with content", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<template name="bar"><p>Hello world</p></template>`)
@@ -104,26 +120,26 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<with-slot></with-slot>`)
 
-            expect(consolidate(result)).toBe("<with-slot><template shadowrootmode=\"open\"><slot></slot></template></with-slot>");
+            expect(consolidate(result)).toBe(`<with-slot><template shadowrootmode="open" shadowroot="open"><slot></slot></template></with-slot>`);
         });
-        test("should emit template element with shadowroot attribute for defined custom element", () => {
+        test("should emit template element with shadowroot and shadowrootmode attributes for defined custom element", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world></hello-world>`)
 
-            expect(consolidate(result)).toBe("<hello-world><template shadowrootmode=\"open\"></template></hello-world>");
+            expect(consolidate(result)).toBe(`<hello-world><template shadowrootmode="open" shadowroot="open"></template></hello-world>`);
         });
         test("should render a custom element with a static attribute", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`)
 
-            expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowrootmode=\"open\"></template></hello-world>`);
+            expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowrootmode="open" shadowroot="open"></template></hello-world>`);
         });
 
         test("should emit a custom element with attributes and properties reflected from an element's root <template> element", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`)
 
-            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowrootmode=\"open\">value<slot></slot></template></with-host-attributes>`);
+            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowrootmode="open" shadowroot="open">value<slot></slot></template></with-host-attributes>`);
         });
     });
     test.describe("rendering a FAST element configured with a null shadowOptions config", () => {
@@ -140,27 +156,47 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe(`<${name}></${name}>`);
         });
-        test("should render it's template to the light DOM", () => {
+
+        test("should not render element boundary markers when element is not defined", () => {
             const name = uniqueElementName();
+
+            const { templateRenderer } = fastSSR();
+            const result = templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`);
+
+            expect(consolidate(result)).toBe(`<${name}></${name}>`);
+        });
+
+        test("should render it's template inside element boundary markers to the light DOM", () => {
+            const name = uniqueElementName();
+            const template = "<p>Hello world</p>";
             @customElement({
                 name,
                 shadowOptions: null,
-                template: html`<p>Hello world</p>`
+                template: html`${template}`
             })
             class MyElement extends FASTElement {}
 
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`);
+            const validationResult = validateRendererOutput(result, [
+                `<${name}`,
+                ">",
+                 (x) => !!HydrationMarkup.parseElementBoundaryStartMarker(x),
+                 template,
+                 (x) => !!HydrationMarkup.parseElementBoundaryEndMarker(x),
+                 `</${name}>`
+            ]);
 
-            expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
+            expect(validationResult).toEqual(true);
         });
 
         test("should render styles as the first child elements in the element's light DOM", () => {
             const name = uniqueElementName();
+            const template = "<p>With styles</p>";
             @customElement({
                 name,
                 shadowOptions: null,
-                template: html`<p>With styles</p>`,
+                template: html`${template}`,
                 styles: css`:host {color: red;}`
             })
             class MyElement extends FASTElement {}
@@ -168,7 +204,17 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`);
 
-            expect(consolidate(result)).toBe(`<${name}><style>:host {color: red;}</style><p>With styles</p></${name}>`);
+            const validationResult = validateRendererOutput(result, [
+                `<${name}`,
+                ">",
+                 (x) => !!HydrationMarkup.parseElementBoundaryStartMarker(x),
+                 "<style>:host {color: red;}</style>",
+                 template,
+                 (x) => !!HydrationMarkup.parseElementBoundaryEndMarker(x),
+                 `</${name}>`
+            ]);
+
+            expect(validationResult).toEqual(true);
         });
         test("should render child elements into the element's light DOM", () => {
             const name = uniqueElementName();
@@ -180,6 +226,7 @@ test.describe("TemplateRenderer", () => {
 
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${html.partial(name)}><p>Hello world</p></${html.partial(name)}>`);
+            console.log(result);
 
             expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
@@ -207,11 +254,58 @@ test.describe("TemplateRenderer", () => {
 
         for (const key of [name, definition, MyElement]) {
             const  { ElementRenderer, templateRenderer } = fastSSR();
-            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowrootmode="open"><p>Hello world</p></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowrootmode="open" shadowroot="open"><p>Hello world</p></template></${name}>`);
             ElementRenderer.disable(key);
-            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowrootmode="open"></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}></${name}>`);
         }
     });
+
+    test.describe("with deferHydration enabled", () => {
+        test("should emit elements that have been disabled with defer-hydration attribute", () => {
+            const name = uniqueElementName();
+            @customElement({
+                name,
+                shadowOptions: null,
+                template: html`<p>Hello world</p>`
+            })
+            class MyElement extends FASTElement {}
+
+            const { templateRenderer, ElementRenderer } = fastSSR({ deferHydration: true });
+            ElementRenderer.disable(name);
+            const result = templateRenderer.render(html`<${html.partial(name)}><p>Hello world</p></${html.partial(name)}>`)
+
+            expect(consolidate(result)).toBe(`<${name} defer-hydration><p>Hello world</p></${name}>`);
+        });
+
+        test("should emit undefined custom elements with the defer-hydration attribute", () => {
+            const name = uniqueElementName();
+            const { templateRenderer } = fastSSR({ deferHydration: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(`<${name} defer-hydration></${name}>`);
+        });
+
+        test("should emit elements that have been disabled with defer-hydration attribute based on deferHydration function return value", () => {
+            const noDeferName = uniqueElementName();
+            const deferName = uniqueElementName();
+            class MyElement extends FASTElement {}
+            MyElement.compose({name: deferName, template: html``}).define()
+            MyElement.compose({name: noDeferName, template: html``}).define()
+            const { templateRenderer, ElementRenderer } = fastSSR({ deferHydration: (name) => name === deferName });
+            ElementRenderer.disable(deferName);
+            ElementRenderer.disable(noDeferName);
+            const result = consolidate(templateRenderer.render(`<${noDeferName}></${noDeferName}><${deferName}></${deferName}>`));
+            expect(result).toBe(`<${noDeferName}></${noDeferName}><${deferName} defer-hydration></${deferName}>`);
+        });
+
+        test("should emit undefined custom elements with defer-hydration attribute based on deferHydration function return value", () => {
+            const noDeferName = uniqueElementName();
+            const deferName = uniqueElementName();
+            const { templateRenderer } = fastSSR({ deferHydration: (name) => name === deferName });
+            const result = consolidate(templateRenderer.render(`<${noDeferName}></${noDeferName}><${deferName}></${deferName}>`));
+            expect(result).toBe(`<${noDeferName}></${noDeferName}><${deferName} defer-hydration></${deferName}>`);
+        });
+    })
 
     /**
      * Bindings
@@ -259,7 +353,7 @@ test.describe("TemplateRenderer", () => {
         const { templateRenderer } = fastSSR();
         const result = templateRenderer.render(html`<hello-world my-attr=${x => "foobar"}></hello-world>`)
 
-        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowrootmode=\"open\"></template></hello-world>`);
+        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowrootmode="open" shadowroot="open"></template></hello-world>`);
     });
     test("should emit an element with a boolean attribute when the attr binding returns true", () => {
         const { templateRenderer } = fastSSR();
@@ -267,12 +361,27 @@ test.describe("TemplateRenderer", () => {
 
         expect(result).toBe(`<input type="checkbox" checked />`);
     });
-    test("should not emit an attribute for a boolean attribute that returns false", () => {
-        const { templateRenderer } = fastSSR();
-        const result = consolidate(templateRenderer.render(html`<input type="checkbox" ?checked="${(x) => false}" />`));
+    test.describe("should not emit an attribute", () => {
+        test("for a boolean attribute binding that returns false", () => {
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`<input type="checkbox" ?checked="${(x) => false}" />`));
 
-        expect(result).toBe(`<input type="checkbox"  />`);
-    });
+            expect(result).toBe(`<input type="checkbox"  />`);
+        });
+
+        test("for an attribute binding that returns undefined", () => {
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`<div attr="${(x) => undefined}"></div>`));
+
+            expect(result).toBe(`<div ></div>`);
+        });
+        test("for an attribute binding that returns null", () => {
+            const { templateRenderer } = fastSSR();
+            const result = consolidate(templateRenderer.render(html`<div attr="${(x) => null}"></div>`));
+
+            expect(result).toBe(`<div ></div>`);
+        });
+    })
 
     test("should evaluate bindings for html element", () => {
         const { templateRenderer } = fastSSR();
@@ -312,9 +421,42 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<hello-world :classList=${x => "foo bar"}></hello-world>`))
-            expect(result).toBe(`<hello-world  class="foo bar"><template shadowrootmode="open"></template></hello-world>`);
+            expect(result).toBe(`<hello-world  class="foo bar"><template shadowrootmode="open" shadowroot="open"></template></hello-world>`);
         });
     });
+    test.describe("binding an event", () => {
+        test("should not evaluate the event binding for a defined custom element", () => {
+            const { templateRenderer } = fastSSR();
+            expect(() => {
+                consolidate(templateRenderer.render(html`<hello-world @click="${() => { throw new Error()}}"></hello-world>`))
+            }).not.toThrow()
+        });
+        test("should not evaluate the event binding for a native element", () => {
+            const { templateRenderer } = fastSSR();
+            expect(() => {
+                consolidate(templateRenderer.render(html`<p @click="${() => { throw new Error()}}"></p>`))
+            }).not.toThrow()
+        });
+    });
+
+    test("should render content bindings into style elements", () => {
+        /**
+         * This tests a case where client-side compilation patches up
+         * the aspect of the binding that was mis-assigned during
+         * pre-compilation.
+         */
+        const { templateRenderer } = fastSSR();
+        const name = uniqueElementName();
+        class MyElement extends FASTElement {
+            public id = 'foo'
+        }
+        MyElement.define({
+            name,
+            template: html`<style>div[id="${(x) => x.id}"]{display: none;}</style>`,
+        });
+
+        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(`<${name}><template shadowrootmode="open" shadowroot="open"><style>div[id="foo"]{display: none;}</style></template></${name}>`)
+    })
 
     /**
      * Directive tests
@@ -390,7 +532,7 @@ test.describe("TemplateRenderer", () => {
         });
     });
 
-    for (let directive of [children, ref, slotted ]) {
+    for (const directive of [children, ref, slotted ]) {
         test.describe(`with '${directive.name}' directive`, () => {
             test("should interpolate empty string", () => {
                 const { templateRenderer } = fastSSR();
@@ -401,4 +543,257 @@ test.describe("TemplateRenderer", () => {
             });
         });
     }
+
+    test.describe("with hydration binding emission enabled", () => {
+        test("should emit a comment with the binding index when the binding is interpolated into element content", () => {
+            const name = uniqueElementName();
+            const template = html`<p>${() => "hello world"}</p>`;
+            FASTElement.define({name, template});
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+            const codes = (template.create() as unknown as SSRView).codes;
+            expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p>${hydrationMarker.contentBindingStart(0, codes.id)}hello world${hydrationMarker.contentBindingEnd(0, codes.id)}</p></template></${name}>`)
+        });
+        test("should emit a marker attribute to an element with a attribute binding ", () => {
+            const name = uniqueElementName();
+            FASTElement.define({name, template: html`<p attr="${() => "value"}"></p>`});
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p attr="value" ${hydrationMarker.attribute([0])}></p></template></${name}>`)
+        });
+        test("should emit a marker attribute to an element with a boolean attribute binding ", () => {
+            const name = uniqueElementName();
+            FASTElement.define({name, template: html`<p ?attr="${() => true}"></p>`});
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p attr ${hydrationMarker.attribute([0])}></p></template></${name}>`)
+        });
+        test("should emit a marker attribute to an element with a property binding", () => {
+            const name = uniqueElementName();
+            FASTElement.define({name, template: html`<p :property="${() => "value"}"></p>`});
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p  ${hydrationMarker.attribute([0])}></p></template></${name}>`)
+        });
+        test("should emit a marker attribute to an element with an event binding", () => {
+            const name = uniqueElementName();
+            FASTElement.define({name, template: html`<p @click="${new Function()}"></p>`});
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p  ${hydrationMarker.attribute([0])}></p></template></${name}>`)
+        });
+        test("should emit a all binding ids to the marker attribute to an element with multiple attribute bindings", () => {
+            const name = uniqueElementName();
+            FASTElement.define({name, template: html`<p :property="${() => "value"}" ?attr=${() => false}></p>`});
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p   ${hydrationMarker.attribute([0, 1])}></p></template></${name}>`)
+        });
+        test("should only emit markers for custom element templates", () => {
+            const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
+            const result = consolidate(templateRenderer.render(html`<p>${x => "hello world"}</p>`));
+            expect(result).toBe("<p>hello world</p>");
+        })
+    })
+    test.describe("Emitting events", () => {
+        function isEvent(value: any): value is TemplateRendererEvent {
+            return value && value.type in TemplateRendererEventTypes;
+        }
+        Object.values(TemplateRendererEventTypes).forEach(name => {
+            test(`a '${name}' event to be emitted when rendering a custom element`, () => {
+               const { templateRenderer }  = fastSSR();
+               let event: TemplateRendererEvent | null = null;
+               templateRenderer.on(name, (e) => event = e);
+
+               consolidate(templateRenderer.render("<hello-world></hello-world>"));
+               expect(isEvent(event)).not.toBe(true);
+               const e: TemplateRendererEvent = event as unknown as TemplateRendererEvent;
+               expect(e.tagName).toBe("hello-world");
+               expect(e.type).toBe(name);
+            })
+        })
+    });
+
+    test.describe("Disconnecting elements", () => {
+        test("should disconnect an element if there are no other elements in the customElementInstanceStack", () => {
+            let disconnected = false;
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                disconnectedCallback(): void {
+                    disconnected = true;
+                }
+            }).define(name);
+
+            const  { templateRenderer } = fastSSR();
+            consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(disconnected).toBe(true);
+        });
+
+        test("should not disconnect an element if there are other elements in the customElementInstanceStack", () => {
+            let disconnected = false;
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                disconnectedCallback(): void {
+                    disconnected = true;
+                }
+            }).define(name);
+
+            const  { templateRenderer } = fastSSR();
+            const renderInfo = templateRenderer.createRenderInfo();
+            renderInfo.customElementInstanceStack.push(new FallbackRenderer("tag-name"));
+            consolidate(templateRenderer.render(`<${name}></${name}>`, renderInfo));
+
+            expect(disconnected).toBe(false);
+        });
+        test("should remove behaviors during disconnection", () => {
+            let removed = false;
+            const behavior: HostBehavior = {
+                removedCallback() {
+                    removed = true;
+                }
+            }
+
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    this.$fastController.addBehavior(behavior);
+                }
+            }).define(name);
+
+            const  { templateRenderer } = fastSSR();
+            const renderInfo = templateRenderer.createRenderInfo();
+            consolidate(templateRenderer.render(`<${name}></${name}>`, renderInfo));
+
+            expect(removed).toBe(true);
+        });
+    });
+
+    test.describe("with tryRecoverFromErrors", () => {
+        test("should not emit shadow-dom for a component that throws during connectedCallback", () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    throw new Error();
+                }
+            } ).define({name});
+            const { templateRenderer } = fastSSR({tryRecoverFromError: true});
+
+            let result: string = "";
+            const template = `<${name}></${name}>`;
+            expect(() => {
+                result = consolidate(templateRenderer.render(template));
+            }).not.toThrow();
+            expect(result).toBe(template)
+        });
+
+        test("should emit the defer-hydration attribute to the element when configured for a component that throws during connectedCallback", () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    throw new Error();
+                }
+            } ).define({name});
+            const { templateRenderer } = fastSSR({tryRecoverFromError: true, deferHydration: true});
+
+            let result: string = "";
+            const template = `<${name}></${name}>`;
+            expect(() => {
+                result = consolidate(templateRenderer.render(template));
+            }).not.toThrow();
+            expect(result).toBe(`<${name} defer-hydration></${name}>`);
+        });
+        test("should not emit the needs-hydration attribute to the element when configured for a component that throws during connectedCallback", () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    throw new Error();
+                }
+            } ).define({name});
+            const { templateRenderer } = fastSSR({tryRecoverFromError: true, emitHydratableMarkup: true});
+
+            let result: string = "";
+            const template = `<${name}></${name}>`;
+            expect(() => {
+                result = consolidate(templateRenderer.render(template));
+            }).not.toThrow();
+            expect(result).toBe(template);
+        });
+        test("should not emit shadow-dom for a component that throws during async process in connectedCallback", async () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    async function throwErr(): Promise<void> {
+                        throw new Error()
+                    }
+                    this.dispatchEvent(new PendingTaskEvent(throwErr()))
+                }
+            } ).define({name});
+            const { templateRenderer } = fastSSR({tryRecoverFromError: true, renderMode: "async"});
+
+            let result: string = "";
+            const template = `<${name}></${name}>`;
+            result = await consolidateAsync(templateRenderer.render(template));
+            expect(result).toBe(template);
+        });
+        test("should not emit host binding attributes after handling error", () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    throw new Error();
+                }
+            } ).define({name, template: html`<template my-static-attr="value" my-attr-binding="${() => "binding"}"><p>Hello world</p></template>`});
+            const { templateRenderer } = fastSSR({tryRecoverFromError: true});
+
+            const result = consolidate(templateRenderer.render(`<${name} contextual-attribute="value"></${name}>`))
+            expect(result).toBe(`<${name}  contextual-attribute="value"></${name}>`);
+        });
+        test("should invoke a provided handler with the thrown error when a recoverable error is caught in the connectedCallback", () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    super.connectedCallback();
+                    throw new Error();
+                }
+            } ).define(name);
+            let err: any;
+            const handler = (reason: unknown) => {
+                err = reason;
+            }
+            const { templateRenderer } = fastSSR({tryRecoverFromError: handler});
+
+            consolidate(templateRenderer.render(`<${name} contextual-attribute="value"></${name}>`))
+            expect(err instanceof Error).toBe(true);
+        });
+        test("should invoke a provided handler with the thrown error when a recoverable error is caught from a PendingTaskEvent", async () => {
+            const name = uniqueElementName();
+            (class extends FASTElement {
+                connectedCallback(): void {
+                    async function throwErr(): Promise<void> {
+                        throw new Error()
+                    }
+                    this.dispatchEvent(new PendingTaskEvent(throwErr()))
+                }
+            } ).define({name});
+            let err: any;
+            const handler = (reason: unknown) => {
+                err = reason;
+            }
+            const { templateRenderer } = fastSSR({tryRecoverFromError: handler, renderMode: "async"});
+
+            const template = `<${name}></${name}>`;
+            await consolidateAsync(templateRenderer.render(template));
+            expect(err instanceof Error).toBe(true);
+        });
+    });
 });

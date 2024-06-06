@@ -1,3 +1,5 @@
+import { isHydratable } from "../components/hydration.js";
+import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import { Message } from "../interfaces.js";
 import {
     ExecutionContext,
@@ -5,7 +7,6 @@ import {
     ExpressionObserver,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import {
     AddViewBehaviorFactory,
@@ -16,6 +17,7 @@ import {
     ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
+import { HydrationStage } from "./view.js";
 
 type UpdateTarget = (
     this: HTMLBindingDirective,
@@ -68,6 +70,13 @@ export interface ContentTemplate {
     create(): ContentView;
 }
 
+export interface HydratableContentTemplate extends ContentTemplate {
+    /**
+     * Hydrates a content view from first/last nodes.
+     */
+    hydrate(first: Node, last: Node): ContentView;
+}
+
 type ComposableView = ContentView & {
     isComposed?: boolean;
     needsBindOnly?: boolean;
@@ -78,7 +87,12 @@ type ContentTarget = Node & {
     $fastTemplate?: ContentTemplate;
 };
 
+function isContentTemplate(value: any): value is ContentTemplate {
+    return value.create !== undefined;
+}
+
 function updateContent(
+    this: HTMLBindingDirective,
     target: ContentTarget,
     aspect: string,
     value: any,
@@ -91,14 +105,24 @@ function updateContent(
     }
 
     // If the value has a "create" method, then it's a ContentTemplate.
-    if (value.create) {
+    if (isContentTemplate(value)) {
         target.textContent = "";
         let view = target.$fastView as ComposableView;
 
         // If there's no previous view that we might be able to
         // reuse then create a new view from the template.
         if (view === void 0) {
-            view = value.create();
+            if (
+                isHydratable(controller) &&
+                isHydratable(value) &&
+                controller.bindingViewBoundaries[this.targetNodeId] !== undefined &&
+                controller.hydrationStage !== HydrationStage.hydrated
+            ) {
+                const viewNodes = controller.bindingViewBoundaries[this.targetNodeId];
+                view = value.hydrate(viewNodes.first, viewNodes.last);
+            } else {
+                view = value.create();
+            }
         } else {
             // If there is a previous view, but it wasn't created
             // from the same template as the new value, then we
@@ -297,6 +321,10 @@ export class HTMLBindingDirective
     /** @internal */
     bind(controller: ViewController): void {
         const target = controller.targets[this.targetNodeId];
+        const isHydrating =
+            isHydratable(controller) &&
+            controller.hydrationStage &&
+            controller.hydrationStage !== HydrationStage.hydrated;
 
         switch (this.aspectType) {
             case DOMAspect.event:
@@ -317,6 +345,16 @@ export class HTMLBindingDirective
 
                 (observer as any).target = target;
                 (observer as any).controller = controller;
+
+                if (
+                    isHydrating &&
+                    (this.aspectType === DOMAspect.attribute ||
+                        this.aspectType === DOMAspect.booleanAttribute)
+                ) {
+                    observer.bind(controller);
+                    // Skip updating target during bind for attributes
+                    break;
+                }
 
                 this.updateTarget!(
                     target,

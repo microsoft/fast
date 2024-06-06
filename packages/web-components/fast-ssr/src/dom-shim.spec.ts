@@ -1,8 +1,7 @@
 import "./install-dom-shim.js";
-
-import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
-import * as Foundation from "@microsoft/fast-foundation";
 import { expect, test } from "@playwright/test";
+import * as Foundation from "@microsoft/fast-foundation";
+import { ElementViewTemplate, FASTElement } from "@microsoft/fast-element";
 import { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
 import { uniqueElementName } from "@microsoft/fast-element/testing.js";
@@ -20,13 +19,15 @@ test.describe("createWindow", () => {
     test("should create a window with a customElements property that is an instance of the window's CustomElementRegistry constructor", () => {
         const window = createWindow();
 
-        expect(window.customElements instanceof (window.CustomElementRegistry as any)).toBe(true);
+        expect(
+            window.customElements instanceof (window.CustomElementRegistry as any)
+        ).toBe(true);
 
         class MyRegistry {}
         const windowOverride = createWindow({ CustomElementRegistry: MyRegistry });
         expect(windowOverride.customElements instanceof MyRegistry).toBe(true);
     });
-})
+});
 
 function deriveName(ctor: typeof FASTElement) {
     const baseName = ctor.name.toLowerCase();
@@ -53,21 +54,30 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTBreadcrumb, Foundation.breadcrumbTemplate()],
     [Foundation.FASTBreadcrumbItem, Foundation.breadcrumbItemTemplate()],
     [Foundation.FASTButton, Foundation.buttonTemplate()],
-    [Foundation.FASTCalendar, Foundation.calendarTemplate({
-        dataGrid,
-        dataGridRow,
-        dataGridCell
-    })],
+    [
+        Foundation.FASTCalendar,
+        Foundation.calendarTemplate({
+            dataGrid,
+            dataGridRow,
+            dataGridCell,
+        }),
+    ],
     [Foundation.FASTCard, Foundation.cardTemplate()],
     [Foundation.FASTCheckbox, Foundation.checkboxTemplate()],
     [Foundation.FASTCombobox, Foundation.comboboxTemplate()],
-    [Foundation.FASTDataGrid, Foundation.dataGridTemplate({
-        dataGridRow
-    })],
+    [
+        Foundation.FASTDataGrid,
+        Foundation.dataGridTemplate({
+            dataGridRow,
+        }),
+    ],
     [Foundation.FASTDataGridCell, Foundation.dataGridCellTemplate()],
-    [Foundation.FASTDataGridRow, Foundation.dataGridRowTemplate({
-        dataGridCell
-    })],
+    [
+        Foundation.FASTDataGridRow,
+        Foundation.dataGridRowTemplate({
+            dataGridCell,
+        }),
+    ],
     [Foundation.FASTDialog, Foundation.dialogTemplate()],
     [Foundation.FASTDisclosure, Foundation.disclosureTemplate()],
     [Foundation.FASTDivider, Foundation.dividerTemplate()],
@@ -78,14 +88,17 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTMenu, Foundation.menuTemplate()],
     [Foundation.FASTMenuItem, Foundation.menuItemTemplate()],
     [Foundation.FASTNumberField, Foundation.numberFieldTemplate()],
-    [Foundation.FASTPicker, Foundation.pickerTemplate({
-        anchoredRegion,
-        pickerList,
-        pickerListItem,
-        pickerMenu,
-        pickerMenuOption,
-        progressRing
-    })],
+    [
+        Foundation.FASTPicker,
+        Foundation.pickerTemplate({
+            anchoredRegion,
+            pickerList,
+            pickerListItem,
+            pickerMenu,
+            pickerMenuOption,
+            progressRing,
+        }),
+    ],
     [Foundation.FASTPickerList, Foundation.pickerListTemplate()],
     [Foundation.FASTPickerListItem, Foundation.pickerListItemTemplate()],
     [Foundation.FASTPickerMenu, Foundation.pickerMenuTemplate()],
@@ -105,9 +118,12 @@ const componentsAndTemplates: [typeof FASTElement, ElementViewTemplate][] = [
     [Foundation.FASTTextArea, Foundation.textAreaTemplate()],
     [Foundation.FASTTextField, Foundation.textFieldTemplate()],
     [Foundation.FASTToolbar, Foundation.toolbarTemplate()],
-    [Foundation.FASTTooltip, Foundation.tooltipTemplate()],
+    [
+        Foundation.FASTTooltip,
+        Foundation.tooltipTemplate(),
+    ],
     [Foundation.FASTTreeItem, Foundation.treeItemTemplate()],
-    [Foundation.FASTTreeView, Foundation.treeViewTemplate()]
+    [Foundation.FASTTreeView, Foundation.treeViewTemplate()],
 ];
 
 test.describe("The DOM shim", () => {
@@ -151,24 +167,24 @@ test.describe("The DOM shim", () => {
                 rule.style.removeProperty("--test");
 
                 expect(rule.cssText).toBe(":host {  }");
-            })
-        })
+            });
+        });
     });
 
     test.describe("has a matchMedia method", () => {
         test("that can returns the MediaQueryList supplied to createWindow", () => {
-            class MyMediaQueryList {};
+            class MyMediaQueryList {}
 
-            const win: any = createWindow({MediaQueryList: MyMediaQueryList});
+            const win: any = createWindow({ MediaQueryList: MyMediaQueryList });
             const list = win.matchMedia();
 
             expect(list).toBeInstanceOf(MyMediaQueryList);
-        })
+        });
     });
 
     test.describe("DOMTokenList", () => {
         class TestElement extends FASTElement {}
-        TestElement.define({ name: uniqueElementName() })
+        TestElement.define({ name: uniqueElementName() });
 
         test("adds a token", () => {
             const element = new TestElement();
@@ -177,10 +193,9 @@ test.describe("The DOM shim", () => {
             cList.toggle("c1");
             expect(cList.contains("c1"), "adds a token that is not present").toBeTruthy();
 
-            expect(
-                cList.toggle("c2"),
-                "returns true when token is added"
-            ).toStrictEqual(true);
+            expect(cList.toggle("c2"), "returns true when token is added").toStrictEqual(
+                true
+            );
         });
 
         test("removes a token", () => {
@@ -260,8 +275,11 @@ test.describe("The DOM shim", () => {
 
             const cList = element.classList;
             cList.remove("ho");
-            expect(!cList.contains("ho"), "should remove all instances of 'ho'").toBeTruthy();
+            expect(
+                !cList.contains("ho"),
+                "should remove all instances of 'ho'"
+            ).toBeTruthy();
             expect(element.className).toStrictEqual("");
         });
     });
-})
+});

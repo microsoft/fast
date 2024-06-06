@@ -279,25 +279,41 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     constructor(element: TElement, definition: FASTElementDefinition);
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    // (undocumented)
+    protected behaviors: Map<HostBehavior<TElement>, number> | null;
+    // (undocumented)
+    protected bindObservables(): void;
     connect(): void;
+    // (undocumented)
+    protected connectBehaviors(): void;
     get context(): ExecutionContext;
     readonly definition: FASTElementDefinition;
     disconnect(): void;
+    // (undocumented)
+    protected disconnectBehaviors(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
     get isBound(): boolean;
     get isConnected(): boolean;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
+    // (undocumented)
+    protected needsInitialization: boolean;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TElement>): any;
     }): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    // (undocumented)
+    protected renderTemplate(template: ElementViewTemplate | null | undefined): void;
     static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
     get sourceLifetime(): SourceLifetime | undefined;
+    // Warning: (ae-forgotten-export) The symbol "Stages" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    protected stage: Stages;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;
@@ -523,6 +539,8 @@ export interface HTMLDirectiveDefinition<TType extends Constructable<HTMLDirecti
 // @public
 export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
     createView(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    // (undocumented)
+    readonly factories: CompiledViewBehaviorFactory[];
 }
 
 // @public
@@ -530,40 +548,67 @@ export type HTMLTemplateTag = (<TSource = any, TParent = any>(strings: TemplateS
     partial(html: string): InlineTemplateDirective;
 };
 
+// Warning: (ae-forgotten-export) The symbol "DefaultExecutionContext" needs to be exported by the entry point index.d.ts
+//
 // @public
-export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
+export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
     bind(source: TSource, context?: ExecutionContext<TParent>): void;
     context: ExecutionContext<TParent>;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
-    get event(): Event;
-    eventDetail<TDetail>(): TDetail;
-    eventTarget<TTarget extends EventTarget>(): TTarget;
     firstChild: Node;
-    index: number;
     insertBefore(node: Node): void;
     isBound: boolean;
-    get isEven(): boolean;
-    get isFirst(): boolean;
-    get isInMiddle(): boolean;
-    get isLast(): boolean;
-    get isOdd(): boolean;
     lastChild: Node;
-    length: number;
     // (undocumented)
     onUnbind(behavior: {
-        unbind(controller: ViewController<TSource, TParent>): any;
+        unbind(controller: ViewController<TSource, TParent>): void;
     }): void;
-    readonly parent: TParent;
-    readonly parentContext: ExecutionContext<TParent>;
     remove(): void;
     source: TSource | null;
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
     unbind(): void;
+}
+
+// @beta
+export class HydratableElementController<TElement extends HTMLElement = HTMLElement> extends ElementController<TElement> {
+    // (undocumented)
+    connect(): void;
+    // (undocumented)
+    disconnect(): void;
+    // (undocumented)
+    static install(): void;
+    protected needsHydration?: boolean;
+}
+
+// @public (undocumented)
+export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> {
+    // (undocumented)
+    [Hydratable]: symbol;
+    // Warning: (ae-forgotten-export) The symbol "ViewNodes" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly bindingViewBoundaries: Record<string, ViewNodes>;
+    // Warning: (ae-forgotten-export) The symbol "HydrationStage" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    readonly hydrationStage: keyof typeof HydrationStage;
+}
+
+// @public (undocumented)
+export class HydrationBindingError extends Error {
+    constructor(
+    message: string | undefined,
+    factory: ViewBehaviorFactory,
+    fragment: DocumentFragment,
+    templateString: string);
+    readonly factory: ViewBehaviorFactory;
+    readonly fragment: DocumentFragment;
+    readonly templateString: string;
 }
 
 // @public
@@ -694,6 +739,32 @@ export const ref: <TSource = any, TParent = any>(propertyName: keyof TSource & s
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(controller: ViewController): void;
     targetNodeId: string;
+}
+
+// @public
+export function render<TSource = any, TItem = any, TParent = any>(value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {}, template?: ContentTemplate | string | Expression<TSource, ContentTemplate | string | Node, TParent> | Binding<TSource, ContentTemplate | string | Node, TParent>): CaptureType<TSource, TParent>;
+
+// @public
+export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
+    constructor(directive: RenderDirective);
+    bind(controller: ViewController): void;
+    // @internal (undocumented)
+    handleChange(source: any, observer: ExpressionObserver): void;
+    unbind(controller: ViewController): void;
+}
+
+// @public
+export class RenderDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
+    constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, ContentTemplate>, templateBindingDependsOnData: boolean);
+    createBehavior(): RenderBehavior<TSource>;
+    createHTML(add: AddViewBehaviorFactory): string;
+    // (undocumented)
+    readonly dataBinding: Binding<TSource>;
+    targetNodeId: string;
+    // (undocumented)
+    readonly templateBinding: Binding<TSource, ContentTemplate>;
+    // (undocumented)
+    readonly templateBindingDependsOnData: boolean;
 }
 
 // @public
@@ -922,6 +993,8 @@ export interface ViewController<TSource = any, TParent = any> extends Expression
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
     constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
+    // @internal (undocumented)
+    compile(): HTMLTemplateCompilationResult<TSource, TParent>;
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;

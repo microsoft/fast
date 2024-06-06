@@ -1,4 +1,5 @@
-import { Binding, ViewBehaviorFactory } from "@microsoft/fast-element";
+import { Aspected, ViewBehaviorFactory, ViewTemplate } from "@microsoft/fast-element";
+import { IDManager } from "./id-generator.js";
 
 /**
  * Allows fast identification of operation types
@@ -9,6 +10,7 @@ export const enum OpType {
     customElementAttributes,
     customElementShadow,
     attributeBinding,
+    attributeBindingMarker,
     viewBehaviorFactory,
     templateElementOpen,
     templateElementClose,
@@ -21,6 +23,11 @@ export const enum OpType {
 export type TextOp = {
     type: OpType.text;
     value: string;
+};
+
+export type AttributeBindingMarkerOp = {
+    type: OpType.attributeBindingMarker;
+    indexes: number[];
 };
 
 /**
@@ -36,7 +43,7 @@ export type CustomElementOpenOp = {
     /**
      * The constructor of the custom element
      */
-    ctor: typeof HTMLElement;
+    ctor?: typeof HTMLElement;
 
     /**
      * Attributes of the custom element, non-inclusive of any attributes
@@ -57,11 +64,17 @@ export type CustomElementShadowOp = {
 };
 
 /**
- * Operation to emit static text
+ * Operation to emit a ViewBehaviorFactory
  */
 export type ViewBehaviorFactoryOp = {
     type: OpType.viewBehaviorFactory;
     factory: ViewBehaviorFactory;
+
+    /**
+     * The index of the factory in the collection of ViewBehaviorFactories
+     * in a template.
+     */
+    index: number;
 };
 
 /**
@@ -69,10 +82,13 @@ export type ViewBehaviorFactoryOp = {
  */
 export type AttributeBindingOp = {
     type: OpType.attributeBinding;
-    dataBinding: Binding;
-    target: string;
-    aspect: number;
+    factory: ViewBehaviorFactory & Aspected;
     useCustomElementInstance: boolean;
+
+    /**
+     * The indexes of the bindings in the collection of ViewBehaviorFactories.
+     */
+    index: number;
 };
 
 /**
@@ -102,6 +118,7 @@ export type CustomElementAttributes = {
 
 export type Op =
     | AttributeBindingOp
+    | AttributeBindingMarkerOp
     | CustomElementOpenOp
     | CustomElementCloseOp
     | ViewBehaviorFactoryOp
@@ -110,3 +127,20 @@ export type Op =
     | TemplateElementOpenOp
     | TemplateElementCloseOp
     | TextOp;
+
+export class OpCodes extends Array<Op> {
+    private static readonly cache: WeakMap<ViewTemplate, OpCodes> = new WeakMap();
+    public readonly id = IDManager.getFor(this);
+
+    static get(key: ViewTemplate) {
+        return OpCodes.cache.get(key);
+    }
+
+    static set(key: ViewTemplate, value: OpCodes) {
+        return OpCodes.cache.set(key, value);
+    }
+
+    static has(key: ViewTemplate) {
+        return OpCodes.cache.has(key);
+    }
+}

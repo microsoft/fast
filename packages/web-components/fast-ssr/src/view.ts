@@ -1,8 +1,5 @@
-import {
-    HTMLTemplateCompilationResult,
-    ViewBehaviorFactory,
-} from "@microsoft/fast-element";
-import { Op, OpType, TemplateElementOpenOp } from "./template-parser/op-codes.js";
+import { HTMLTemplateCompilationResult, ViewBehaviorFactory } from "@microsoft/fast-element";
+import { OpCodes, OpType, TemplateElementOpenOp } from "./template-parser/op-codes.js";
 import { parseStringToOpCodes } from "./template-parser/template-parser.js";
 
 /**
@@ -15,7 +12,7 @@ export class SSRView {
     public readonly html: string;
     public readonly factories: Record<string, ViewBehaviorFactory>;
     public result: HTMLTemplateCompilationResult | null = null;
-    public codes: Op[];
+    public codes: OpCodes;
     public hostStaticAttributes?: TemplateElementOpenOp["staticAttributes"];
     public hostDynamicAttributes?: TemplateElementOpenOp["dynamicAttributes"];
 

@@ -7,6 +7,7 @@ import { RenderInfo } from "../render-info.js";
 export interface ElementRenderer {
     readonly tagName: string;
     connectedCallback(): void;
+    disconnectedCallback(): void;
     attributeChangedCallback(
         name: string,
         prev: string | null,
