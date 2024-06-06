@@ -411,7 +411,8 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                             ) {
                                 throw new Error(
                                     `Error when hydrating inside "${
-                                        (this.location.getRootNode() as ShadowRoot).host.nodeName
+                                        (this.location.getRootNode() as ShadowRoot).host
+                                            .nodeName
                                     }": Mismatched start and end markers.`
                                 );
                             }
