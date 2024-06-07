@@ -117,6 +117,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name                | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From         |
 | ------------------- | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | `autocomplete`      | public    | `ComboboxAutocomplete or undefined`   |         | The autocomplete attribute.                                                                                                                                                         |                        |
+| `caseSensitive`     | public    | `boolean`                             | `false` | Attribute which controls whether the component uses a case-sensitive search                                                                                                         |                        |
 | `filteredOptions`   | public    | `ListboxOption[]`                     | `[]`    | The collection of currently filtered options.                                                                                                                                       |                        |
 | `open`              | public    | `boolean`                             | `false` | The open attribute.                                                                                                                                                                 |                        |
 | `options`           | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox                |
@@ -155,13 +156,14 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name           | Field             | Inherited From |
-| -------------- | ----------------- | -------------- |
-| `autocomplete` | autocomplete      |                |
-| `open`         | open              |                |
-| `placeholder`  | placeholder       |                |
-| `position`     | positionAttribute |                |
-|                | disabled          | Listbox        |
+| Name             | Field             | Inherited From |
+| ---------------- | ----------------- | -------------- |
+| `autocomplete`   | autocomplete      |                |
+| `case-sensitive` | caseSensitive     |                |
+| `open`           | open              |                |
+| `placeholder`    | placeholder       |                |
+| `position`       | positionAttribute |                |
+|                  | disabled          | Listbox        |
 
 #### CSS Parts
 
