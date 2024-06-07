@@ -712,12 +712,6 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
     ElementStyles.setDefaultStrategy(StyleElementStrategy);
 }
 
-ElementStyles.setDefaultStrategy(
-    ElementStyles.supportsAdoptedStyleSheets
-        ? AdoptedStyleSheetsStrategy
-        : StyleElementStrategy
-);
-
 const deferHydrationAttribute = "defer-hydration";
 const needsHydrationAttribute = "needs-hydration";
 
