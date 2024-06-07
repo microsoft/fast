@@ -31,13 +31,12 @@ First let's define an interface for the dependency which we'll call `MyServiceCo
 
 ```ts
 import { DI } from "@microsoft/fast-element/di.js";
-import type { ContextDecorator } from "@microsoft/fast-element/context.js";
 
 export interface MyServiceConfig {
     get: () => Promise<Response>;
 }
 
-export const MyServiceConfig: ContextDecorator<MyServiceConfig> = DI.createContext();
+export const MyServiceConfig = DI.createContext();
 ```
 
 Next let's define our implementation of the service:
