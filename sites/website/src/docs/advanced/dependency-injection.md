@@ -25,7 +25,7 @@ import { DI } from "@microsoft/fast-element/di.js";
 const container = DI.createContainer();
 ```
 
-Now that your container is created, let's create a few dependencies to inject into it.
+Now that your container is created, let's create a few dependencies to host from it.
 
 First let's define an interface for the dependency which we'll call `MyServiceConfig`, and create a `ContextDecorator` of the same name which will take the interface as it's generic type:
 
