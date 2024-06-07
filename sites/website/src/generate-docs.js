@@ -31,17 +31,15 @@ function findFiles(startPath, filter, paths = []) {
     return paths;
 }
 
-const packages = ["fast-element"];
-
-function identifyPackage(path) {
-    for (const pkg of packages) {
-        if (path.indexOf(pkg) !== -1) {
-            return pkg;
-        }
+const packages = [
+    {
+        main: "fast-element",
+        exports: [
+            "context",
+            "di"
+        ]
     }
-
-    return "";
-}
+];
 
 function updateContentForMdx(content) {
     content = content.replace("{", "&#123;");
@@ -222,40 +220,32 @@ async function copyArticleMarkdown() {
     }
 }
 
-// Copy the api.json files from the web-components packages.
+// Copy the api.json files from the packages.
 async function copyAPI() {
     for (const pkg of packages) {
         await safeCopy(
             path.resolve(
-                getPackageJsonDir(`@microsoft/${pkg}`),
-                `./dist/${pkg}.api.json`
+                getPackageJsonDir(`@microsoft/${pkg.main}`),
+                `./dist/${pkg.main}.api.json`
             ),
-            // require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
-            `./src/docs/api/${pkg}.api.json`
+            `./src/docs/api/${pkg.main}.api.json`
         );
+
+        if (Array.isArray(pkg.exports)) {
+            for (const pkgExport of pkg.exports) {
+                await safeCopy(
+                    path.resolve(
+                        getPackageJsonDir(`@microsoft/${pkg.main}`),
+                        `./dist/${pkgExport}/${pkgExport}.api.json`
+                    ),
+                    `./src/docs/api/${pkg.main}/${pkgExport}/${pkgExport}.api.json`
+                );
+            }
+        }
     }
 }
 
-async function buildAPIMarkdown() {
-    await copyAPI();
-
-    await new Promise((resolve, reject) =>
-        exec(
-            "api-documenter markdown -i src/docs/api -o docs/api",
-            (err, stdout, stderr) => {
-                console.log(stdout);
-                console.error(stderr);
-                if (err) {
-                    return reject(err);
-                }
-
-                return resolve();
-            }
-        )
-    );
-
-    const dir = "./docs/api";
-    const docFiles = await fs.readdir(dir);
+async function convertDocFiles(dir, docFiles, package, exportPath) {
     for (const docFile of docFiles) {
         try {
             const { name: id, ext } = path.parse(docFile);
@@ -263,8 +253,7 @@ async function buildAPIMarkdown() {
                 continue;
             }
 
-            const pkg = identifyPackage(docFile);
-            const isAPIHome = id === pkg;
+            const isAPIHome = !id.includes(".");
             const docPath = path.join(dir, docFile);
             const input = fs.createReadStream(docPath);
             const output = [];
@@ -290,6 +279,10 @@ async function buildAPIMarkdown() {
                     }
                 }
 
+                if (package && exportPath) {
+                    line = line.replace(package, `${package}/${exportPath}`);
+                }
+
                 const homeLink = line.match(/\[Home\]\(.\/index\.md\) &gt; (.*)/);
 
                 if (homeLink) {
@@ -313,13 +306,65 @@ async function buildAPIMarkdown() {
                 "---",
                 `id: ${id}`,
                 `title: ${title}`,
-                `hide_title: ${!isAPIHome}`,
+                `hide_title: ${isAPIHome}`,
                 "---",
             ];
 
             await safeWrite(docPath, header.concat(output).join("\n"));
         } catch (err) {
             console.error(`Could not process ${docFile}: ${err}`);
+        }
+    }
+}
+
+async function buildAPIMarkdown() {
+    await copyAPI();
+
+    await new Promise((resolve, reject) =>
+        exec(
+            "api-documenter markdown -i src/docs/api -o docs/api",
+            (err, stdout, stderr) => {
+                console.log(stdout);
+                console.error(stderr);
+                if (err) {
+                    return reject(err);
+                }
+
+                return resolve();
+            }
+        )
+    );
+
+    for (const pkg of packages) {
+        for (const pkgExport of pkg.exports) {
+            await new Promise((resolve, reject) =>
+                exec(
+                    `api-documenter markdown -i src/docs/api/${pkg.main}/${pkgExport} -o docs/api/${pkg.main}/${pkgExport}`,
+                    (err, stdout, stderr) => {
+                        console.log(stdout);
+                        console.error(stderr);
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        return resolve();
+                    }
+                )
+            );
+        }
+    }
+
+    const dir = "./docs/api";
+    const docFiles = await fs.readdir(dir);
+
+    convertDocFiles(dir, docFiles);
+
+    for (const pkg of packages) {
+        for (const pkgExport of pkg.exports) {
+            const exportDir = `./docs/api/${pkg.main}/${pkgExport}`;
+            const exportDocFiles = await fs.readdir(exportDir);
+
+            convertDocFiles(exportDir, exportDocFiles, `@microsoft/${pkg.main}`, `${pkgExport}.js`);
         }
     }
 }
