@@ -211,7 +211,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @beta
          */
-        public proxy: ProxyElement;
+        public proxy: ProxyElement | null;
 
         /**
          * Must evaluate to true to enable elementInternals.
@@ -228,10 +228,10 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @beta
          */
-        public get validity(): ValidityState {
+        public get validity(): ValidityState | null {
             return this.elementInternals
                 ? this.elementInternals.validity
-                : this.proxy.validity;
+                : this.proxy?.validity || null;
         }
 
         /**
@@ -241,7 +241,9 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @beta
          */
         public get form(): HTMLFormElement | null {
-            return this.elementInternals ? this.elementInternals.form : this.proxy.form;
+            return this.elementInternals
+                ? this.elementInternals.form
+                : this.proxy?.form || null;
         }
 
         /**
@@ -250,10 +252,10 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @beta
          */
-        public get validationMessage(): string {
+        public get validationMessage(): string | null {
             return this.elementInternals
                 ? this.elementInternals.validationMessage
-                : this.proxy.validationMessage;
+                : this.proxy?.validationMessage || null;
         }
 
         /**
@@ -263,7 +265,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public get willValidate(): boolean {
             return this.elementInternals
                 ? this.elementInternals.willValidate
-                : this.proxy.willValidate;
+                : this.proxy?.willValidate || false;
         }
 
         /**
@@ -525,7 +527,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          */
         public disconnectedCallback(): void {
             this.proxyEventsToBlock.forEach(name =>
-                this.proxy.removeEventListener(name, this.stopPropagation)
+                this.proxy?.removeEventListener(name, this.stopPropagation)
             );
 
             if (!this.elementInternals && this.form) {
@@ -539,7 +541,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public checkValidity(): boolean {
             return this.elementInternals
                 ? this.elementInternals.checkValidity()
-                : this.proxy.checkValidity();
+                : this.proxy?.checkValidity() || true;
         }
 
         /**
@@ -549,7 +551,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public reportValidity(): boolean {
             return this.elementInternals
                 ? this.elementInternals.reportValidity()
-                : this.proxy.reportValidity();
+                : this.proxy?.reportValidity() || true;
         }
 
         /**
@@ -569,7 +571,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             if (this.elementInternals) {
                 this.elementInternals.setValidity(flags, message, anchor);
             } else if (typeof message === "string") {
-                this.proxy.setCustomValidity(message);
+                this.proxy?.setCustomValidity(message);
             }
         }
 
@@ -593,11 +595,12 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Attach the proxy element to the DOM
          */
         public attachProxy(): void {
+            if (!this.proxy) return;
             if (!this.proxyInitialized) {
                 this.proxyInitialized = true;
                 this.proxy.style.display = "none";
                 this.proxyEventsToBlock.forEach(name =>
-                    this.proxy.addEventListener(name, this.stopPropagation)
+                    this.proxy!.addEventListener(name, this.stopPropagation)
                 );
 
                 // These are typically mapped to the proxy during
@@ -628,7 +631,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Detach the proxy element from the DOM
          */
         public detachProxy(): void {
-            this.removeChild(this.proxy);
+            this.removeChild(this.proxy!);
             this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
         }
 
