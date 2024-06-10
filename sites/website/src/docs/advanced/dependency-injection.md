@@ -51,7 +51,7 @@ export class MyService implements MyServiceConfig {
 }
 ```
 
-Now that we have our service defined, let's add it as a dependency to our application `App` class. Note the use of the `ContextDecorator` injected into the contructor as `@MyServiceConfig`. This will attach it to the instance with the same name.
+Now that we have our service defined, let's add it as a dependency to our application `App` class. Note the use of the `ContextDecorator` injected into the constructor as `@MyServiceConfig`. This will attach it to the instance with the same name.
 
 ```ts
 export class App implements AppConfig {
@@ -87,7 +87,7 @@ console.log("Server Status:", responseStatus);
 
 #### Register Dependencies Before Defining Web Components
 
-When using dependency injection with web components, ensure you define your container **before** you define your web components. Otherwise your web components may be intialized before the dependencies can be resolved.
+When using dependency injection with web components, ensure you define your container **before** you define your web components. Otherwise your web components may be initialized before the dependencies can be resolved.
 
 #### Use `getOrCreateDOMContainer()`
 
