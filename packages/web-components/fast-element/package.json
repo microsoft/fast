@@ -97,7 +97,7 @@
     "doc:ci": "api-extractor run",
     "doc:exports": "node ./scripts/run-api-extractor.js",
     "doc:exports:ci": "node ./scripts/run-api-extractor.js ci",
-    "build": "yarn build:tsc && yarn build:rollup && yarn doc",
+    "build": "yarn build:tsc && yarn build:rollup && yarn doc && yarn doc:exports",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
