@@ -1,15 +1,12 @@
 import { autoUpdate, computePosition, flip, hide, size } from "@floating-ui/dom";
-import {
-    attr,
-    Observable,
-    observable,
-    SyntheticViewTemplate,
-    Updates,
-} from "@microsoft/fast-element";
+import { attr, Observable, observable, Updates } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import type { FASTListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { getRootActiveElement } from "../utilities/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedCombobox } from "./combobox.form-associated.js";
 import { ComboboxAutocomplete } from "./combobox.options.js";
@@ -18,8 +15,8 @@ import { ComboboxAutocomplete } from "./combobox.options.js";
  * Combobox configuration options
  * @public
  */
-export type ComboboxOptions = StartEndOptions & {
-    indicator?: string | SyntheticViewTemplate;
+export type ComboboxOptions = StartEndOptions<FASTCombobox> & {
+    indicator?: StaticallyComposableHTML<FASTCombobox>;
 };
 
 /**
@@ -251,23 +248,25 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        if (this.disabled) {
+        const captured = (e.target as HTMLElement).closest(
+            `option,[role=option]`
+        ) as FASTListboxOption | null;
+
+        if (this.disabled || captured?.disabled) {
             return;
         }
 
         if (this.open) {
-            const captured = (e.target as HTMLElement).closest(
-                `option,[role=option]`
-            ) as FASTListboxOption | null;
-
-            if (!captured || captured.disabled) {
+            if (e.composedPath()[0] === this.control) {
                 return;
             }
 
-            this.selectedOptions = [captured];
-            this.control.value = captured.text;
-            this.clearSelectionRange();
-            this.updateValue(true);
+            if (captured) {
+                this.selectedOptions = [captured];
+                this.control.value = captured.text;
+                this.clearSelectionRange();
+                this.updateValue(true);
+            }
         }
 
         this.open = !this.open;
@@ -341,7 +340,7 @@ export class FASTCombobox extends FormAssociatedCombobox {
      * Overrides: `Listbox.focusAndScrollOptionIntoView`
      */
     protected focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement)) {
+        if (this.contains(getRootActiveElement(this))) {
             this.control.focus();
             if (this.firstSelectedOption) {
                 requestAnimationFrame(() => {

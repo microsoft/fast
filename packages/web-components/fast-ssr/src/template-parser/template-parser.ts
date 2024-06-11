@@ -3,23 +3,22 @@
  * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
 import {
-    Aspect,
     Aspected,
     Compiler,
+    DOMAspect,
     Parser,
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import {
+import { parse, parseFragment } from "parse5";
+import type {
     Attribute,
     DefaultTreeCommentNode,
     DefaultTreeElement,
     DefaultTreeNode,
     DefaultTreeParentNode,
     DefaultTreeTextNode,
-    parse,
-    parseFragment,
-} from "parse5";
+} from "parse5/index.js";
 import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 
 /**
@@ -32,7 +31,7 @@ interface Visitor {
     leave?: (node: DefaultTreeNode) => void;
 }
 
-declare module "parse5" {
+declare module "parse5/index.js" {
     interface DefaultTreeElement {
         isDefinedCustomElement?: boolean;
     }
@@ -199,7 +198,7 @@ export function parseStringToOpCodes(
                     const factory = Compiler.aggregate(parsed) as ViewBehaviorFactory &
                         Aspected;
                     // Guard against directives like children, ref, and slotted
-                    if (factory.dataBinding && factory.aspectType !== Aspect.content) {
+                    if (factory.dataBinding && factory.aspectType !== DOMAspect.content) {
                         prev.dynamic.set(current, {
                             type: OpType.attributeBinding,
                             dataBinding: factory.dataBinding,

@@ -1,4 +1,6 @@
 import { css } from "@microsoft/fast-element";
+import chevronLeftIcon from "../../../statics/svg/chevron_left_16_regular.svg";
+import chevronRightIcon from "../../../statics/svg/chevron_right_16_regular.svg";
 import { FASTFlipper } from "../flipper.js";
 import { flipperTemplate } from "../flipper.template.js";
 
@@ -85,20 +87,8 @@ const styles = css`
 FASTFlipper.define({
     name: "fast-flipper",
     template: flipperTemplate({
-        next: /* html */ `
-            <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M4.023 15.273L11.29 8 4.023.727l.704-.704L12.71 8l-7.984 7.977-.704-.704z"
-                />
-            </svg>
-        `,
-        previous: /* html */ `
-            <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M11.273 15.977L3.29 8 11.273.023l.704.704L4.71 8l7.266 7.273-.704.704z"
-                />
-            </svg>
-        `,
+        next: chevronRightIcon,
+        previous: chevronLeftIcon,
     }),
     styles,
 });

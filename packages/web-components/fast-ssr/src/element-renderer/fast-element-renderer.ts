@@ -1,5 +1,5 @@
-import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
-import { PendingTaskEvent } from "@microsoft/fast-element/pending-task";
+import { DOM, DOMAspect, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import { PendingTaskEvent } from "@microsoft/fast-element/pending-task.js";
 import { escapeHtml } from "../escape-html.js";
 import { RenderInfo } from "../render-info.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
@@ -67,13 +67,13 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
 
                     const { target } = attr;
                     switch (attr.aspect) {
-                        case Aspect.property:
+                        case DOMAspect.property:
                             (this.element as any)[target] = result;
                             break;
-                        case Aspect.attribute:
+                        case DOMAspect.attribute:
                             DOM.setAttribute(this.element, target, result);
                             break;
-                        case Aspect.booleanAttribute:
+                        case DOMAspect.booleanAttribute:
                             DOM.setBooleanAttribute(this.element, target, result);
                             break;
                     }
@@ -116,13 +116,17 @@ abstract class FASTElementRenderer extends DefaultElementRenderer {
     }
 }
 
-export abstract class SyncFASTElementRenderer extends FASTElementRenderer
-    implements ElementRenderer {
+export abstract class SyncFASTElementRenderer
+    extends FASTElementRenderer
+    implements ElementRenderer
+{
     renderAttributes = renderAttributesSync;
     renderShadow = renderShadow;
 }
-export abstract class AsyncFASTElementRenderer extends FASTElementRenderer
-    implements AsyncElementRenderer {
+export abstract class AsyncFASTElementRenderer
+    extends FASTElementRenderer
+    implements AsyncElementRenderer
+{
     constructor(tagName: string, renderInfo: RenderInfo) {
         super(tagName, renderInfo);
 
@@ -207,7 +211,7 @@ function* renderShadow(
 
     if (view !== null) {
         yield* this.templateRenderer.renderOpCodes(
-            ((view as unknown) as SSRView).codes,
+            (view as unknown as SSRView).codes,
             renderInfo,
             this.element,
             ExecutionContext.default

@@ -11,13 +11,13 @@ describe("format", (): void => {
     it("should correctly manage undefined by returning an unformatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
-        expect(format(formatterString, undefined)).to.equal("Hello  world");
+        expect(format(formatterString, undefined!)).to.equal("Hello  world");
     });
 
     it("should correctly manage null by returning an unformatted string", (): void => {
         const formatterString: string = "Hello {0} world";
 
-        expect(format(formatterString, null)).to.equal("Hello  world");
+        expect(format(formatterString, null!)).to.equal("Hello  world");
     });
 
     it("should correctly manage having too many parameters", (): void => {
@@ -65,10 +65,10 @@ describe("format", (): void => {
 
 describe("isNullOrWhiteSpace", (): void => {
     it("should correctly manage undefined", () => {
-        expect(isNullOrWhiteSpace(undefined)).to.equal(true);
+        expect(isNullOrWhiteSpace(undefined!)).to.equal(true);
     });
     it("should correctly manage null", () => {
-        expect(isNullOrWhiteSpace(null)).to.equal(true);
+        expect(isNullOrWhiteSpace(null!)).to.equal(true);
     });
     it("should correctly manage a value with only white space", () => {
         expect(isNullOrWhiteSpace("\t\n ")).to.equal(true);
@@ -124,12 +124,12 @@ describe("spinalCase", () => {
 
 describe("startsWith", (): void => {
     it("should correctly manage undefined", () => {
-        expect(startsWith(undefined, undefined)).to.equal(false);
-        expect(startsWith("Hello", undefined)).to.equal(false);
+        expect(startsWith(undefined!, undefined!)).to.equal(false);
+        expect(startsWith("Hello", undefined!)).to.equal(false);
     });
     it("should correctly manage null", () => {
-        expect(startsWith(null, null)).to.equal(false);
-        expect(startsWith("Hello", null)).to.equal(false);
+        expect(startsWith(null!, null!)).to.equal(false);
+        expect(startsWith("Hello", null!)).to.equal(false);
     });
     it("should correctly manage searching for an empty string", () => {
         expect(startsWith("Helloworld", "")).to.equal(false);

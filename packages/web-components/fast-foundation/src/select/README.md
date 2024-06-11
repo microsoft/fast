@@ -92,12 +92,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---------------- | --------------------------------------- | ------- |
 | `FormAssociated` | /src/form-associated/form-associated.js |         |
 
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
-
 #### Fields
 
 | Name               | Privacy   | Type                  | Default | Description                                          | Inherited From     |
@@ -125,6 +119,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---- | -------- | -------------- |
 |      | multiple | FASTListbox    |
 
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the listbox options |
+
 <hr/>
 
 
@@ -136,12 +136,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name                   | Module                                | Package |
 | ---------------------- | ------------------------------------- | ------- |
 | `FormAssociatedSelect` | /src/select/select.form-associated.js |         |
-
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
 
 #### Fields
 

@@ -1,9 +1,9 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { storyTemplate as radioStoryTemplate } from "../../radio/stories/radio.stories.js";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTRadioGroup } from "../radio-group.js";
+import { RadioGroupOrientation } from "../radio-group.options.js";
 
 const storyTemplate = html<StoryArgs<FASTRadioGroup>>`
     <fast-radio-group
@@ -42,7 +42,7 @@ export default {
     argTypes: {
         disabled: { control: "boolean" },
         name: { control: "text" },
-        orientation: { control: "radio", options: Object.values(Orientation) },
+        orientation: { control: "radio", options: Object.values(RadioGroupOrientation) },
         readOnly: { control: "boolean" },
         storyContent: { table: { disable: true } },
         storyItems: { control: "object" },
@@ -54,7 +54,7 @@ export const RadioGroup: Story<FASTRadioGroup> = renderComponent(storyTemplate).
 
 export const RadioGroupVertical: Story<FASTRadioGroup> = RadioGroup.bind({});
 RadioGroupVertical.args = {
-    orientation: Orientation.vertical,
+    orientation: RadioGroupOrientation.vertical,
 };
 
 export const RadioGroupInForm: Story<FASTRadioGroup> = renderComponent(

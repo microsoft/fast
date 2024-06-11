@@ -15,11 +15,13 @@ test.describe("Breadcrumb item", () => {
 
         element = page.locator("fast-breadcrumb-item");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(".control");
 
         await page.goto(fixtureURL("breadcrumb-item--breadcrumb-item"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -33,7 +35,7 @@ test.describe("Breadcrumb item", () => {
             `;
         });
 
-        await expect(element.locator("> div")).toHaveAttribute("role", "listitem");
+        await expect(element).toHaveAttribute("role", "listitem");
     });
 
     test("should render an internal anchor when the `href` attribute is not provided", async () => {
@@ -45,7 +47,7 @@ test.describe("Breadcrumb item", () => {
 
         const anchor = element.locator("a");
 
-        await expect(element).not.hasAttribute("href");
+        await expect(element).not.toHaveAttribute("href");
 
         await expect(element).toHaveJSProperty("href", undefined);
 

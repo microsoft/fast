@@ -1,4 +1,6 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTFlipper, FlipperOptions } from "./flipper.js";
 import type { FlipperDirection } from "./flipper.options.js";
 
@@ -21,7 +23,7 @@ export function flipperTemplate<T extends FASTFlipper>(
             templateCache[direction] = existing = html`
                 <span part="${direction}" class="${direction}">
                     <slot name="${direction}">
-                        ${options[direction] ?? ""}
+                        ${staticallyCompose(options[direction])}
                     </slot>
                 </span>
             `;

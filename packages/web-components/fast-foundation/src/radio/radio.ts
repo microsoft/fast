@@ -1,5 +1,7 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
+import type { FASTRadioGroup } from "../radio-group/index.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { FormAssociatedRadio } from "./radio.form-associated.js";
 
 /**
@@ -8,7 +10,7 @@ import { FormAssociatedRadio } from "./radio.form-associated.js";
  */
 export type RadioControl = Pick<
     HTMLInputElement,
-    "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute"
+    "checked" | "disabled" | "focus" | "setAttribute" | "getAttribute"
 >;
 
 /**
@@ -16,7 +18,7 @@ export type RadioControl = Pick<
  * @public
  */
 export type RadioOptions = {
-    checkedIndicator?: string | SyntheticViewTemplate;
+    checkedIndicator?: StaticallyComposableHTML<FASTRadio>;
 };
 
 /**
@@ -33,21 +35,8 @@ export type RadioOptions = {
  */
 export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
-     * @public
-     * @remarks
-     * HTML Attribute: readonly
-     */
-    @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean; // Map to proxy element
-    protected readOnlyChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.readOnly = this.readOnly;
-        }
-    }
-
-    /**
-     * The name of the radio. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
+     * The name of the radio.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname | name attribute} for more info.
      */
     @observable
     public name: string;
@@ -65,6 +54,12 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
      */
     @observable
     public defaultSlottedNodes: Node[];
+
+    private get radioGroup() {
+        return (this as HTMLElement).closest(
+            "[role=radiogroup]"
+        ) as FASTRadioGroup | null;
+    }
 
     /**
      * @internal
@@ -116,10 +111,7 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     }
 
     private isInsideRadioGroup(): boolean {
-        const parent: HTMLElement | null = (this as HTMLElement).closest(
-            "[role=radiogroup]"
-        );
-        return parent !== null;
+        return this.radioGroup !== null;
     }
 
     /**
@@ -129,22 +121,12 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     public keypressHandler(e: KeyboardEvent): boolean | void {
         switch (e.key) {
             case keySpace:
-                if (!this.checked && !this.readOnly) {
+                if (!this.checked && !this.radioGroup?.readOnly) {
                     this.checked = true;
                 }
                 return;
         }
 
         return true;
-    }
-
-    /**
-     * Handles clicks on the radio.
-     * @beta
-     */
-    public clickHandler(e: MouseEvent): boolean | void {
-        if (!this.disabled && !this.readOnly && !this.checked) {
-            this.checked = true;
-        }
     }
 }

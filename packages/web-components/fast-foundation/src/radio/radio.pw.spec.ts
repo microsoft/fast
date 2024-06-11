@@ -13,9 +13,11 @@ test.describe("Radio", () => {
 
         element = page.locator("fast-radio");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("radio--radio"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -71,17 +73,6 @@ test.describe("Radio", () => {
         await element.evaluate((node: FASTRadio) => (node.disabled = false));
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
-
-        // Readonly
-        await expect(element).not.hasAttribute("aria-readonly");
-
-        await element.evaluate((node: FASTRadio) => (node.readOnly = true));
-
-        await expect(element).toHaveAttribute("aria-readonly", "true");
-
-        await element.evaluate((node: FASTRadio) => (node.readOnly = false));
-
-        await expect(element).toHaveAttribute("aria-readonly", "false");
     });
 
     test("should set a tabindex of 0 on the element", async () => {
@@ -101,7 +92,7 @@ test.describe("Radio", () => {
             `;
         });
 
-        await expect(element).toHaveAttribute("tabindex", "");
+        await expect(element).not.toHaveAttribute("tabindex");
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
@@ -168,28 +159,12 @@ test.describe("Radio", () => {
         await expect(label).toHaveClass(/label__hidden/);
     });
 
-    test("should fire events when clicked and spacebar is pressed", async () => {
+    test("should fire an event when spacebar is pressed", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
                 <fast-radio>Radio</fast-radio>
             `;
         });
-
-        const [wasClicked] = await Promise.all([
-            element.evaluate(
-                (node: FASTRadio) =>
-                    new Promise(resolve =>
-                        node.addEventListener("click", () => resolve(true), {
-                            once: true,
-                        })
-                    )
-            ),
-            element.evaluate(node => {
-                node.dispatchEvent(new MouseEvent("click"));
-            }),
-        ]);
-
-        expect(wasClicked).toBeTruthy();
 
         const [wasPressed] = await Promise.all([
             element.evaluate(
@@ -209,10 +184,36 @@ test.describe("Radio", () => {
         expect(wasPressed).toBeTruthy();
     });
 
+    test("should NOT fire events when clicked", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio>Radio</fast-radio>
+            `;
+        });
+
+        const [wasClicked] = await Promise.all([
+            element.evaluate(
+                (node: FASTRadio) =>
+                    new Promise(resolve =>
+                        node.addEventListener("click", () => resolve(false), {
+                            once: true,
+                        })
+                    )
+            ),
+            element.evaluate(node => {
+                node.dispatchEvent(new MouseEvent("click"));
+            }),
+        ]);
+
+        expect(wasClicked).toBeFalsy();
+    });
+
     test("should handle validity when the `required` attribute is present", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-radio required name="name" value="test">Radio</fast-radio>
+                <fast-radio-group>
+                    <fast-radio required name="name" value="test">Radio</fast-radio>
+                <fast-radio-group>
             `;
         });
 
@@ -277,7 +278,7 @@ test.describe("Radio", () => {
 
             await expect(element).toBeChecked();
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `checked` attribute modifications modify the `checked` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

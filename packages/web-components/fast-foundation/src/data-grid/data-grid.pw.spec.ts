@@ -10,14 +10,21 @@ test.describe("Data grid", () => {
     let element: Locator;
     let root: Locator;
 
+    const selectedRowQueryString = '[aria-selected="true"]';
+    const rowQueryString = "fast-data-grid-row";
+
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();
 
         element = page.locator("fast-data-grid");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("data-grid--data-grid"));
+
+        await page.waitForSelector(
+            "#storybook-root, fast-data-grid, fast-data-grid-row, fast-data-grid-cell"
+        );
     });
 
     test.afterAll(async () => {
@@ -85,7 +92,7 @@ test.describe("Data grid", () => {
             ];
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         await expect(rows).toHaveCount(3);
 
@@ -140,7 +147,7 @@ test.describe("Data grid", () => {
             ];
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         await expect(rows).toHaveCount(2);
 
@@ -180,7 +187,7 @@ test.describe("Data grid", () => {
             node.append(dataGrid);
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         await expect(rows).toHaveCount(0);
     });
@@ -199,7 +206,7 @@ test.describe("Data grid", () => {
             ];
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         await expect(rows).toHaveCount(3);
 
@@ -254,7 +261,7 @@ test.describe("Data grid", () => {
             ];
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         await expect(rows).toHaveCount(3);
 
@@ -281,7 +288,7 @@ test.describe("Data grid", () => {
             ];
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         await expect(rows).toHaveCount(3);
 
@@ -329,7 +336,7 @@ test.describe("Data grid", () => {
             ];
         });
 
-        const rows = element.locator("fast-data-grid-row");
+        const rows = element.locator(rowQueryString);
 
         const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
 
@@ -432,21 +439,339 @@ test.describe("Data grid", () => {
         await expect(cells.nth(0)).toBeFocused();
     });
 
-    test("should auto generate grid-columns from a manual row", async () => {
+    test("should scroll into view on focus", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-data-grid generate-header="none">
-                    <fast-data-grid-row>
+                <fast-data-grid generate-header="none" style="height:100px; overflow-y: scroll;">
+                    <fast-data-grid-row style="height:100px;">
                         <fast-data-grid-cell>1</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row style="height:100px;">
                         <fast-data-grid-cell>2</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row style="height:100px;">
+                        <fast-data-grid-cell>3</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row style="height:100px;">
                         <fast-data-grid-cell>3</fast-data-grid-cell>
                     </fast-data-grid-row>
                 </fast-data-grid>
             `;
         });
 
-        const lastRow = element.locator("fast-data-grid-row");
+        const cells = element.locator("fast-data-grid-cell");
+        await expect(cells).toHaveCount(4);
+        await expect(element).toHaveJSProperty("scrollTop", 0);
+        await cells.nth(0).focus();
+        await expect(element).toHaveJSProperty("scrollTop", 0);
+        await cells.nth(1).focus();
+        await expect(element).toHaveJSProperty("scrollTop", 100);
+        await cells.nth(2).focus();
+        await expect(element).toHaveJSProperty("scrollTop", 200);
+    });
 
-        await expect(lastRow).toHaveJSProperty("gridTemplateColumns", "1fr 1fr 1fr");
+    test("should not apply initial selection in default 'none' selection mode", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="none">
+                    <fast-data-grid-row>
+                        <fast-data-grid-cell>1</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row>
+                        <fast-data-grid-cell>2</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                    <fast-data-grid-row>
+                        <fast-data-grid-cell>2</fast-data-grid-cell>
+                    </fast-data-grid-row>
+                </fast-data-grid>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("selectedRowIndexes", []);
+    });
+
+    test("should apply initial selection in 'single-row' selection mode", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="single-row">
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>1</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
+    });
+
+    test("should apply initial selection in 'multi-row' selection mode", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-data-grid generate-header="none" initial-row-selection="0,1" selection-mode="multi-row">
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>1</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [0, 1]);
+    });
+
+    test("should apply user set selection in 'single-row' selection mode", async () => {
+        const selectedRows = element.locator(selectedRowQueryString);
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="single-row">
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>1</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
+        await expect(selectedRows).toHaveCount(1);
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.selectedRowIndexes = [];
+        });
+
+        await expect(selectedRows).toHaveCount(0);
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.selectedRowIndexes = [2];
+        });
+
+        await expect(selectedRows).toHaveCount(1);
+    });
+
+    test("should apply user set selection in 'multi-row' selection mode", async () => {
+        const selectedRows = element.locator(selectedRowQueryString);
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="multi-row">
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>1</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
+        await expect(selectedRows).toHaveCount(1);
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.selectedRowIndexes = [];
+        });
+
+        await expect(selectedRows).toHaveCount(0);
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.selectedRowIndexes = [0, 1, 2];
+        });
+
+        await expect(selectedRows).toHaveCount(3);
+    });
+
+    test("should not allow selection of header row by default", async () => {
+        const selectedRows = element.locator(selectedRowQueryString);
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+            <fast-data-grid generate-header="none" initial-row-selection="0" selection-mode="single-row">
+                <fast-data-grid-row row-type="header">
+                    <fast-data-grid-cell>1</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell>2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+            `;
+        });
+
+        await expect(element).toHaveJSProperty("selectedRowIndexes", []);
+        await expect(selectedRows).toHaveCount(0);
+    });
+
+    test("should select and deselect rows with space bar + shift keys", async () => {
+        const rows = element.locator(rowQueryString);
+        const selectedRows = element.locator(selectedRowQueryString);
+        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
+        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none" selection-mode="single-row"></fast-data-grid>
+            `;
+        });
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
+
+        await firstCell.focus();
+        await expect(selectedRows).toHaveCount(0);
+        await page.keyboard.press("Shift+Space");
+        await expect(selectedRows).toHaveCount(1);
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
+        expect;
+        await page.keyboard.press("Shift+Space");
+        await expect(selectedRows).toHaveCount(0);
+        await lastCell.focus();
+        await page.keyboard.press("Shift+Space");
+        await expect(selectedRows).toHaveCount(1);
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [2]);
+    });
+
+    test("should select and deselect rows with a click", async () => {
+        const rows = element.locator(rowQueryString);
+        const selectedRows = element.locator(selectedRowQueryString);
+        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
+        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none" selection-mode="single-row"></fast-data-grid>
+            `;
+        });
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
+
+        await expect(selectedRows).toHaveCount(0);
+        await firstCell.click();
+        await expect(selectedRows).toHaveCount(1);
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [0]);
+        await firstCell.click();
+        await expect(selectedRows).toHaveCount(0);
+        await expect(element).toHaveJSProperty("selectedRowIndexes", []);
+        await lastCell.click();
+        await expect(selectedRows).toHaveCount(1);
+        await expect(element).toHaveJSProperty("selectedRowIndexes", [2]);
+    });
+
+    test("should select/deselect all in row multi-select with a ctrl + a", async () => {
+        const selectedRows = element.locator(selectedRowQueryString);
+        const rows = element.locator(rowQueryString);
+        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
+        await firstCell.focus();
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
+            `;
+        });
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
+
+        await firstCell.focus();
+        await expect(selectedRows).toHaveCount(0);
+        await page.keyboard.press("Control+a");
+        await expect(selectedRows).toHaveCount(3);
+        await page.keyboard.press("Control+a");
+        await expect(selectedRows).toHaveCount(0);
+    });
+
+    test("should select/deselect multiple rows with shift key in multi-select mode", async () => {
+        const selectedRows = element.locator(selectedRowQueryString);
+        const rows = element.locator(rowQueryString);
+        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
+        const lastCell = rows.nth(2).locator("fast-data-grid-cell").nth(2);
+        await firstCell.focus();
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
+            `;
+        });
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
+
+        await firstCell.focus();
+        await page.keyboard.press("Shift+Space");
+        await expect(selectedRows).toHaveCount(1);
+        await lastCell.focus();
+        await page.keyboard.press("Shift+Space");
+        await expect(selectedRows).toHaveCount(2);
+    });
+
+    test("should emit an event when row selection changes", async () => {
+        const rows = element.locator(rowQueryString);
+        const firstCell = rows.nth(0).locator("fast-data-grid-cell").nth(0);
+        await firstCell.focus();
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-data-grid generate-header="none" selection-mode="multi-row"></fast-data-grid>
+            `;
+        });
+
+        await element.evaluate((node: FASTDataGrid) => {
+            node.rowsData = [
+                { id: "1", name: "item 1", shape: "circle" },
+                { id: "2", name: "item 2", shape: "square" },
+                { id: "3", name: "item 3", shape: "triangle" },
+            ];
+        });
+
+        const wasInvoked = await Promise.all([
+            element.evaluate(node =>
+                node.addEventListener("selectionchange", () => true)
+            ),
+            firstCell.click(),
+        ]);
+
+        expect(wasInvoked).toBeTruthy;
     });
 });

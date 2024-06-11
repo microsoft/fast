@@ -2,11 +2,12 @@ import {
     attr,
     nullableNumberConverter,
     observable,
-    SyntheticViewTemplate,
     Updates,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { FormAssociatedNumberField } from "./number-field.form-associated.js";
@@ -15,9 +16,9 @@ import { FormAssociatedNumberField } from "./number-field.form-associated.js";
  * Number Field configuration options
  * @public
  */
-export type NumberFieldOptions = StartEndOptions & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
+export type NumberFieldOptions = StartEndOptions<FASTNumberField> & {
+    stepDownIcon?: StaticallyComposableHTML<FASTNumberField>;
+    stepUpIcon?: StaticallyComposableHTML<FASTNumberField>;
 };
 
 /**
@@ -27,12 +28,12 @@ export type NumberFieldOptions = StartEndOptions & {
  * @slot start - Content which can be provided before the number field input
  * @slot end - Content which can be provided after the number field input
  * @slot - The default slot for the label
- * @slot step-up-glyph - The glyph for the step up control
- * @slot step-down-glyph - The glyph for the step down control
+ * @slot step-up-icon - The icon for the step up control
+ * @slot step-down-icon - The icon for the step down control
  * @csspart label - The label
- * @csspart root - The element wrapping the control, including start and end slots
- * @csspart control - The element representing the input
- * @csspart controls - The step up and step down controls
+ * @csspart control - The logical control, the element wrapping the input field, including start and end slots
+ * @csspart field - The element representing the input field
+ * @csspart step-buttons - The step up and step down controls
  * @csspart step-up - The step up control
  * @csspart step-down - The step down control
  * @fires input - Fires a custom 'input' event when the value has changed
@@ -42,7 +43,8 @@ export type NumberFieldOptions = StartEndOptions & {
  */
 export class FASTNumberField extends FormAssociatedNumberField {
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -51,7 +53,9 @@ export class FASTNumberField extends FormAssociatedNumberField {
     public readOnly: boolean;
 
     /**
-     * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
+     * Indicates that this element should get focus after the page finishes loading.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute}
+     * for more information.
      * @public
      * @remarks
      * HTML Attribute: autofocus
@@ -79,7 +83,8 @@ export class FASTNumberField extends FormAssociatedNumberField {
     public placeholder: string;
 
     /**
-     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
+     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist}
+     * to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
      * @public
      * @remarks
      * HTML Attribute: list
@@ -183,10 +188,10 @@ export class FASTNumberField extends FormAssociatedNumberField {
     public defaultSlottedNodes: Node[];
 
     /**
-     * A reference to the internal input element
+     * A reference to the internal field element
      * @internal
      */
-    public control: HTMLInputElement;
+    public field: HTMLInputElement;
 
     /**
      * Flag to indicate that the value change is from the user input
@@ -211,7 +216,6 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * Validates that the value is a number between the min and max
      * @param previous - previous stored value
      * @param next - value being updated
-     * @param updateControl - should the text field be updated with value, defaults to true
      * @internal
      */
     public valueChanged(previous: string, next: string): void {
@@ -222,8 +226,8 @@ export class FASTNumberField extends FormAssociatedNumberField {
             return;
         }
 
-        if (this.$fastController.isConnected && this.control?.value !== value) {
-            this.control.value = this.value;
+        if (this.$fastController.isConnected && this.field?.value !== value) {
+            this.field.value = this.value;
         }
 
         super.valueChanged(previous, this.value);
@@ -238,7 +242,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
     /** {@inheritDoc (FormAssociated:interface).validate} */
     public validate(): void {
-        super.validate(this.control);
+        super.validate(this.field);
     }
 
     /**
@@ -308,7 +312,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
-        this.control.value = this.value;
+        this.field.value = this.value;
 
         if (this.autofocus) {
             Updates.enqueue(() => {
@@ -323,7 +327,7 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @public
      */
     public select(): void {
-        this.control.select();
+        this.field.select();
 
         /**
          * The select event does not permeate the shadow DOM boundary.
@@ -335,13 +339,13 @@ export class FASTNumberField extends FormAssociatedNumberField {
     }
 
     /**
-     * Handles the internal control's `input` event
+     * Handles the internal input field's `input` event
      * @internal
      */
     public handleTextInput(): void {
-        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.field.value = this.field.value.replace(/[^0-9\-+e.]/g, "");
         this.isUserInput = true;
-        this.value = this.control.value;
+        this.value = this.field.value;
     }
 
     /**
@@ -362,6 +366,9 @@ export class FASTNumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleKeyDown(e: KeyboardEvent): boolean {
+        if (this.disabled || this.readOnly) {
+            return true;
+        }
         const key = e.key;
 
         switch (key) {
@@ -379,11 +386,11 @@ export class FASTNumberField extends FormAssociatedNumberField {
 
     /**
      * Handles populating the input field with a validated value when
-     *  leaving the input field.
+     * leaving the input field.
      * @internal
      */
     public handleBlur(): void {
-        this.control.value = this.value;
+        this.field.value = this.value;
     }
 }
 

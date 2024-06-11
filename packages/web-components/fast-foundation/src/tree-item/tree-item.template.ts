@@ -1,6 +1,7 @@
-import { elements, ElementViewTemplate } from "@microsoft/fast-element";
-import { children, html, ref, slotted, when } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTTreeItem, TreeItemOptions } from "./tree-item.js";
 
 /**
@@ -42,7 +43,7 @@ export function treeItemTemplate<T extends FASTTreeItem>(
                                 ${ref("expandCollapseButton")}
                             >
                                 <slot name="expand-collapse-glyph">
-                                    ${options.expandCollapseGlyph ?? ""}
+                                    ${staticallyCompose(options.expandCollapseGlyph)}
                                 </slot>
                             </div>
                         `

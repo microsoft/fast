@@ -14,11 +14,13 @@ test.describe("Checkbox", () => {
 
         element = page.locator("fast-checkbox");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         form = page.locator("form");
 
         await page.goto(fixtureURL("checkbox--checkbox"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -53,7 +55,7 @@ test.describe("Checkbox", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("checked");
+        await expect(element).not.toHaveAttribute("checked");
 
         await expect(element).toHaveAttribute("aria-checked", "false");
     });
@@ -81,7 +83,7 @@ test.describe("Checkbox", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("required");
+        await expect(element).not.toHaveAttribute("required");
 
         await expect(element).toHaveAttribute("aria-required", "false");
     });
@@ -113,7 +115,7 @@ test.describe("Checkbox", () => {
             `;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("disabled");
+        await expect(element).not.toHaveAttribute("disabled");
 
         await expect(element).toHaveAttribute("aria-disabled", "false");
     });
@@ -148,38 +150,6 @@ test.describe("Checkbox", () => {
         await expect(element).not.toHaveJSProperty("tabIndex", 0);
 
         await expect(element).not.toHaveAttribute("tabindex", "0");
-    });
-
-    test("should NOT set a default `aria-readonly` value when `readonly` is not defined", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-checkbox></fast-checkbox>
-            `;
-        });
-
-        await expect(element).not.toHaveBooleanAttribute("readonly");
-
-        await expect(element).not.hasAttribute("aria-readonly");
-    });
-
-    test("should set the `aria-readonly` attribute equal to the `readonly` property", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-checkbox></fast-checkbox>
-            `;
-        });
-
-        await element.evaluate((node: FASTCheckbox) => {
-            node.readOnly = true;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "true");
-
-        await element.evaluate((node: FASTCheckbox) => {
-            node.readOnly = false;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "false");
     });
 
     test("should set the aria-checked value to 'mixed' when indeterminate property is true", async () => {
@@ -419,6 +389,7 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("checked", true);
     });
 
+    /* eslint-disable-next-line max-len */
     test("should put the control into a clean state, where checked attribute modifications change the checked property prior to user or programmatic interaction", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

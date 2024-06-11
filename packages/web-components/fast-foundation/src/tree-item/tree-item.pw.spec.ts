@@ -13,9 +13,11 @@ test.describe("TreeItem", () => {
 
         element = page.locator("fast-tree-item");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("tree-view-tree-item--tree-item"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -73,7 +75,7 @@ test.describe("TreeItem", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-expanded");
+        await expect(element).not.toHaveAttribute("aria-expanded");
     });
 
     test("should NOT set the `aria-expanded` attribute when the `expanded` state is true and the tree item has no children", async () => {
@@ -83,13 +85,13 @@ test.describe("TreeItem", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-expanded");
+        await expect(element).not.toHaveAttribute("aria-expanded");
 
         await element.evaluate<void, FASTTreeItem>(node => {
             node.expanded = true;
         });
 
-        await expect(element).not.hasAttribute("aria-expanded");
+        await expect(element).not.toHaveAttribute("aria-expanded");
     });
 
     test("should NOT set the `aria-selected` attribute if `selected` value is not provided", async () => {
@@ -99,7 +101,7 @@ test.describe("TreeItem", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-selected");
+        await expect(element).not.toHaveAttribute("aria-selected");
     });
 
     test("should set the `aria-selected` attribute equal to the `selected` value", async () => {
@@ -145,7 +147,7 @@ test.describe("TreeItem", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
 
         await element.evaluate<void, FASTTreeItem>(node => {
             node.disabled = true;
@@ -312,9 +314,9 @@ test.describe("TreeItem", () => {
 
             await element.click({ force: true });
 
-            await expect(element).not.toHaveBooleanAttribute("selected");
+            await expect(element).not.toHaveAttribute("selected");
 
-            await expect(element).not.hasAttribute("aria-selected");
+            await expect(element).not.toHaveAttribute("aria-selected");
         });
 
         test("should fire an event when expanded state changes via the `expanded` attribute", async () => {

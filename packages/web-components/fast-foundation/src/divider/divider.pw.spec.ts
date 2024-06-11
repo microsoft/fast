@@ -1,8 +1,7 @@
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
-import { DividerRole } from "./divider.options.js";
+import { DividerOrientation, DividerRole } from "./divider.options.js";
 import type { FASTDivider } from "./index.js";
 
 test.describe("Divider", () => {
@@ -15,9 +14,11 @@ test.describe("Divider", () => {
 
         element = page.locator("fast-divider");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("divider--divider"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -57,12 +58,44 @@ test.describe("Divider", () => {
             `;
         });
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.vertical);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.vertical
+        );
 
-        await element.evaluate((node: FASTDivider, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTDivider, DividerOrientation) => {
+            node.orientation = DividerOrientation.horizontal;
+        }, DividerOrientation);
 
-        await expect(element).toHaveAttribute("aria-orientation", Orientation.horizontal);
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.horizontal
+        );
+    });
+
+    test("should NOT set the `aria-orientation` attribute equal to the `orientation` value if the `role` is presentational", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-divider orientation="vertical"></fast-divider>
+            `;
+        });
+
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.vertical
+        );
+
+        await element.evaluate((node: FASTDivider, DividerRole) => {
+            node.role = DividerRole.presentation;
+        }, DividerRole);
+
+        await expect(element).not.toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.horizontal
+        );
+        await expect(element).not.toHaveAttribute(
+            "aria-orientation",
+            DividerOrientation.vertical
+        );
     });
 });

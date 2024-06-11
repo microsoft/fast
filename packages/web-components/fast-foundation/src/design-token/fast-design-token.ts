@@ -1,18 +1,18 @@
-import {
+import type {
     CSSDirective,
+    HostBehavior,
     HostController,
-    htmlDirective,
     HTMLDirective,
     Subscriber,
 } from "@microsoft/fast-element";
 import {
     cssDirective,
     FASTElement,
-    HostBehavior,
+    htmlDirective,
     Observable,
     SubscriberSet,
 } from "@microsoft/fast-element";
-import { composedContains, composedParent } from "@microsoft/fast-element/utilities";
+import { composedContains, composedParent } from "@microsoft/fast-element/utilities.js";
 import type {
     DesignTokenChangeRecord as CoreDesignTokenChangeRecord,
     DerivedDesignTokenValue,
@@ -20,8 +20,8 @@ import type {
     DesignTokenValue,
 } from "./core/design-token-node.js";
 import { DesignTokenMutationType, DesignTokenNode } from "./core/design-token-node.js";
+import type { PropertyTarget } from "./custom-property-manager.js";
 import {
-    PropertyTarget,
     PropertyTargetManager,
     RootStyleSheetTarget,
 } from "./custom-property-manager.js";
@@ -261,8 +261,10 @@ export class DesignToken<T> {
  */
 @cssDirective()
 @htmlDirective()
-export class CSSDesignToken<T> extends DesignToken<T>
-    implements CSSDirective, HTMLDirective {
+export class CSSDesignToken<T>
+    extends DesignToken<T>
+    implements CSSDirective, HTMLDirective
+{
     /**
      * The CSS Custom property name of the token.
      */
@@ -372,7 +374,7 @@ class FASTDesignTokenNode extends DesignTokenNode implements HostBehavior {
         }
 
         if (parent !== this.parent) {
-            const reparent = [];
+            const reparent: Array<FASTDesignTokenNode> = [];
             for (const child of parent.children) {
                 if (
                     child instanceof FASTDesignTokenNode &&

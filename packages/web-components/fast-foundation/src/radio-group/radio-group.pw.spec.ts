@@ -1,9 +1,9 @@
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect, test } from "@playwright/test";
 import type { Locator, Page } from "@playwright/test";
 import type { FASTRadio } from "../radio/index.js";
 import { fixtureURL } from "../__test__/helpers.js";
-import type { FASTRadioGroup } from "./index.js";
+import { RadioGroupOrientation } from "./radio-group.options.js";
+import type { FASTRadioGroup } from "./radio-group.js";
 
 test.describe("Radio Group", () => {
     let page: Page;
@@ -16,11 +16,13 @@ test.describe("Radio Group", () => {
 
         element = page.locator("fast-radio-group");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         radios = element.locator("fast-radio");
 
         await page.goto(fixtureURL("radio-group--radio-group"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -37,6 +39,19 @@ test.describe("Radio Group", () => {
         await expect(element).toHaveAttribute("role", "radiogroup");
     });
 
+    test("should set a default `aria-orientation` value when `orientation` is not defined", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
+
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            `${RadioGroupOrientation.horizontal}`
+        );
+    });
+
     test("should set a matching class on the `positioning-region` when an orientation is provided", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -49,17 +64,43 @@ test.describe("Radio Group", () => {
         // Horizontal by default
         await expect(positioningRegion).toHaveClass(/horizontal/);
 
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.vertical;
-        }, Orientation);
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.vertical;
+        }, RadioGroupOrientation);
 
         await expect(positioningRegion).toHaveClass(/vertical/);
 
-        await element.evaluate((node: FASTRadioGroup, Orientation) => {
-            node.orientation = Orientation.horizontal;
-        }, Orientation);
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.horizontal;
+        }, RadioGroupOrientation);
 
         await expect(positioningRegion).toHaveClass(/horizontal/);
+    });
+
+    test("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-radio-group></fast-radio-group>
+            `;
+        });
+
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.horizontal;
+        }, RadioGroupOrientation);
+
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            RadioGroupOrientation.horizontal
+        );
+
+        await element.evaluate((node: FASTRadioGroup, RadioGroupOrientation) => {
+            node.orientation = RadioGroupOrientation.vertical;
+        }, RadioGroupOrientation);
+
+        await expect(element).toHaveAttribute(
+            "aria-orientation",
+            RadioGroupOrientation.vertical
+        );
     });
 
     test("should set the `aria-disabled` attribute when disabled", async () => {
@@ -79,7 +120,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
 
         await element.evaluate<void, FASTRadioGroup>(node => {
             node.disabled = true;
@@ -111,7 +152,7 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-readonly");
+        await expect(element).not.toHaveAttribute("aria-readonly");
 
         await element.evaluate<void, FASTRadioGroup>(node => {
             node.readOnly = true;
@@ -133,39 +174,115 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
-    test("should set all child radio elements to disabled when the `disabled` attribute is present", async () => {
+    test("should NOT modify child radio elements disabled state when the `disabled` attribute is present", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
+                <fast-radio-group>
+                    <fast-radio></fast-radio>
+                    <fast-radio disabled></fast-radio>
+                    <fast-radio></fast-radio>
+                </fast-radio-group>
+            `;
+        });
+
+        await expect(element).not.toHaveAttribute("disabled");
+
+        const firstRadio = radios.nth(0);
+        const secondRadio = radios.nth(1);
+        const thirdRadio = radios.nth(2);
+
+        const expectedFirst = await firstRadio.evaluate<boolean, FASTRadio>(node =>
+            node.hasAttribute("disabled")
+        );
+        const expectedSecond = await secondRadio.evaluate<boolean, FASTRadio>(node =>
+            node.hasAttribute("disabled")
+        );
+        const expectedThird = await thirdRadio.evaluate<boolean, FASTRadio>(node =>
+            node.hasAttribute("disabled")
+        );
+
+        expect(
+            await firstRadio.evaluate<boolean, FASTRadio>(radio =>
+                radio.hasAttribute("disabled")
+            )
+        ).toEqual(expectedFirst);
+
+        expect(
+            await secondRadio.evaluate<boolean, FASTRadio>(radio =>
+                radio.hasAttribute("disabled")
+            )
+        ).toEqual(expectedSecond);
+
+        expect(
+            await thirdRadio.evaluate<boolean, FASTRadio>(radio =>
+                radio.hasAttribute("disabled")
+            )
+        ).toEqual(expectedThird);
+
+        element.evaluate<void, FASTRadioGroup>(node => node.setAttribute("disabled", ""));
+
+        await expect(element).toHaveAttribute("disabled");
+
+        expect(
+            await firstRadio.evaluate<boolean, FASTRadio>(radio =>
+                radio.hasAttribute("disabled")
+            )
+        ).toEqual(expectedFirst);
+
+        expect(
+            await secondRadio.evaluate<boolean, FASTRadio>(radio =>
+                radio.hasAttribute("disabled")
+            )
+        ).toEqual(expectedSecond);
+
+        expect(
+            await thirdRadio.evaluate<boolean, FASTRadio>(radio =>
+                radio.hasAttribute("disabled")
+            )
+        ).toEqual(expectedThird);
+    });
+
+    test("should NOT be focusable when disabled", async () => {
+        const first: Locator = page.locator("button", { hasText: "First" });
+        const second: Locator = page.locator("button", { hasText: "Second" });
+
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <button>First</button>
                 <fast-radio-group disabled>
                     <fast-radio></fast-radio>
                     <fast-radio></fast-radio>
                     <fast-radio></fast-radio>
                 </fast-radio-group>
+                <button>Second</button>
             `;
         });
 
-        await expect(element).toHaveBooleanAttribute("disabled");
+        await expect(element).toHaveAttribute("disabled");
+
+        await first.focus();
+
+        await expect(first).toBeFocused();
+
+        await first.press("Tab");
+
+        await expect(second).toBeFocused();
 
         expect(
-            await radios.evaluateAll<boolean, FASTRadio>(radios =>
-                radios.every(radio => radio.disabled)
-            )
-        ).toBeTruthy();
-
-        expect(
-            await radios.evaluateAll(radios =>
-                radios.every(radio => radio.getAttribute("aria-disabled") === "true")
+            await element.evaluate<boolean, FASTRadioGroup>(
+                node => node.getAttribute("tabindex") === "-1"
             )
         ).toBeTruthy();
     });
 
-    test("should set all child radio elements to readonly when the `readonly` property is true", async () => {
+    test("should NOT be focusable via click when disabled", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
-                <fast-radio-group readonly>
+                <button>Button</button>
+                <fast-radio-group>
                     <fast-radio></fast-radio>
                     <fast-radio></fast-radio>
                     <fast-radio></fast-radio>
@@ -173,19 +290,33 @@ test.describe("Radio Group", () => {
             `;
         });
 
-        await expect(element).toHaveBooleanAttribute("readonly");
+        const radioItemsCount = await radios.count();
 
-        expect(
-            await radios.evaluateAll(radios =>
-                radios.every(radio => radio.hasAttribute("readonly"))
-            )
-        ).toBeTruthy();
+        for (let i = 0; i < radioItemsCount; i++) {
+            const item = radios.nth(i);
 
-        expect(
-            await radios.evaluateAll(radios =>
-                radios.every(radio => radio.getAttribute("aria-readonly") === "true")
-            )
-        ).toBeTruthy();
+            await item.click();
+
+            await expect(item).toBeFocused();
+        }
+
+        const button = page.locator("button", { hasText: "Button" });
+
+        await button.focus();
+
+        await expect(button).toBeFocused();
+
+        await element.evaluate<boolean, FASTRadioGroup>(node => (node.disabled = true));
+
+        await expect(element).toHaveAttribute("disabled");
+
+        for (let i = 0; i < radioItemsCount; i++) {
+            const item = radios.nth(i);
+
+            await item.click();
+
+            await expect(item).not.toBeFocused();
+        }
     });
 
     test("should set tabindex of 0 to a child radio with a matching `value`", async () => {
@@ -307,9 +438,7 @@ test.describe("Radio Group", () => {
 
         // radio-group explicitly sets non-matching radio's checked to false if
         // a value match was found, but the attribute should still persist.
-        expect(
-            await radios.nth(1).evaluate(node => node.hasAttribute("checked"))
-        ).toBeTruthy();
+        await expect(radios.nth(1)).toHaveAttribute("checked");
 
         await expect(radios.nth(2)).not.toBeChecked();
     });

@@ -1,3 +1,3 @@
-export * from "./listbox.js";
-export * from "./listbox.element.js";
-export * from "./listbox.template.js";
+export { DelegatesARIAListbox, FASTListbox } from "./listbox.js";
+export { FASTListboxElement } from "./listbox.element.js";
+export { listboxTemplate } from "./listbox.template.js";

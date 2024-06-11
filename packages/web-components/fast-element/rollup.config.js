@@ -8,6 +8,7 @@ const plugins = [
             declaration: false,
             declarationDir: undefined,
         },
+        exclude: ["**/*.bench.*", "**/*.spec.*"]
     }),
     filesize({
         showMinifiedSize: false,

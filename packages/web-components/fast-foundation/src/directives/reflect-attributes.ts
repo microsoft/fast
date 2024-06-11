@@ -1,12 +1,10 @@
+import type { CaptureType, Subscriber, ViewController } from "@microsoft/fast-element";
 import {
     DOM,
     HTMLDirective,
     StatelessAttachedAttributeDirective,
-    Subscriber,
     SubscriberSet,
-    ViewController,
 } from "@microsoft/fast-element";
-import type { CaptureType } from "@microsoft/fast-element";
 
 const observer = new MutationObserver((mutations: MutationRecord[]) => {
     for (const mutation of mutations) {
@@ -17,10 +15,8 @@ const observer = new MutationObserver((mutations: MutationRecord[]) => {
 });
 
 class AttributeReflectionSubscriptionSet {
-    private static subscriberCache: WeakMap<
-        any,
-        AttributeReflectionSubscriptionSet
-    > = new WeakMap();
+    private static subscriberCache: WeakMap<any, AttributeReflectionSubscriptionSet> =
+        new WeakMap();
 
     private watchedAttributes: Set<Readonly<string[]>> = new Set();
     private subscribers = new SubscriberSet(this);
@@ -76,6 +72,17 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
      * The attributes the behavior is reflecting
      */
     public attributes: Readonly<string[]>;
+
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    targetNodeId: string;
+
     constructor(attributes: string[]) {
         super(attributes);
         this.attributes = Object.freeze(attributes);
@@ -84,7 +91,7 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
     public bind(controller: ViewController): void {
         const source = controller.source;
         const subscription = AttributeReflectionSubscriptionSet.getOrCreateFor(source);
-        subscription[this.id] = controller.targets[this.nodeId];
+        subscription[this.id] = controller.targets[this.targetNodeId];
         subscription.subscribe(this);
 
         // Reflect any existing attributes because MutationObserver will only

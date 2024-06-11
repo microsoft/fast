@@ -1,8 +1,11 @@
+import type { html as FASTHtml } from "@microsoft/fast-element";
 import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import { DataGridCellTypes } from "./data-grid.options.js";
+
+declare const html: typeof FASTHtml;
 
 test.describe("Data grid cell", () => {
     let page: Page;
@@ -14,9 +17,11 @@ test.describe("Data grid cell", () => {
 
         element = page.locator("fast-data-grid-cell");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("data-grid-data-grid-cell--data-grid-cell"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -124,7 +129,9 @@ test.describe("Data grid cell", () => {
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
                 columnDataKey: "item2",
-                cellTemplate: /* html */ `<template>custom cell template</template>`,
+                cellTemplate: html`
+                    custom cell template
+                `,
             };
         });
 
@@ -141,7 +148,9 @@ test.describe("Data grid cell", () => {
         await element.evaluate((node: FASTDataGridCell) => {
             node.columnDefinition = {
                 columnDataKey: "item2",
-                headerCellTemplate: /* html */ `<template>custom header cell template</template>`,
+                headerCellTemplate: html`
+                    custom header cell template
+                `,
             };
         });
 
@@ -179,7 +188,9 @@ test.describe("Data grid cell", () => {
                 columnDataKey: "item2",
                 cellFocusTargetCallback: cell =>
                     cell.querySelector("button") as HTMLButtonElement,
-                cellTemplate: /* html */ `<template><button>test button</button></template>`,
+                cellTemplate: html`
+                    <button>test button</button>
+                `,
             };
         });
 
@@ -201,7 +212,9 @@ test.describe("Data grid cell", () => {
             node.cellType = DataGridCellTypes.columnHeader;
             node.columnDefinition = {
                 columnDataKey: "item2",
-                headerCellTemplate: /* html */ `<template><button>test header button</button></template>`,
+                headerCellTemplate: html`
+                    <button>test header button</button>
+                `,
                 headerCellFocusTargetCallback: cell =>
                     cell.querySelector("button") as HTMLButtonElement,
             };

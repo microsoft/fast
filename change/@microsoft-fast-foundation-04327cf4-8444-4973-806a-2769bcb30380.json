@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update links for svelte and vite integration guides - current and legacy doc versions",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "steph@huynhicode.dev",
-  "dependentChangeType": "none"
-}

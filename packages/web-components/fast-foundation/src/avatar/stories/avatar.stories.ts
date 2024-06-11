@@ -4,15 +4,12 @@ import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTAvatar } from "../avatar.js";
 
 const storyTemplate = html<StoryArgs<FASTAvatar>>`
-    <fast-avatar link="${x => x.link}">
-        ${x => x.storyContent}
-    </fast-avatar>
+    <fast-avatar>${x => x.storyContent}</fast-avatar>
 `;
 
 export default {
     title: "Avatar",
     argTypes: {
-        link: { control: "text" },
         storyContent: { table: { disable: true } },
     },
     decorators: [

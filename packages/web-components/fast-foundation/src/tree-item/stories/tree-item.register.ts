@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTTreeItem } from "../tree-item.js";
 import { treeItemTemplate } from "../tree-item.template.js";
@@ -118,23 +119,17 @@ const styles = css`
         fill: currentcolor;
     }
 
-    .start,
-    .end {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
-        fill: currentcolor;
     }
 
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
     }
 
-    .start {
-        margin-inline-end: calc(var(--design-unit) * 2px + 2px);
-    }
-
-    .end {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
     }
 
     :host([aria-expanded="true"]) > .items {
@@ -204,7 +199,7 @@ FASTTreeItem.define({
     name: "fast-tree-item",
     styles,
     template: treeItemTemplate({
-        expandCollapseGlyph: /* html */ `
+        expandCollapseGlyph: /* html */ html`
             <svg
                 viewBox="0 0 16 16"
                 xmlns="http://www.w3.org/2000/svg"

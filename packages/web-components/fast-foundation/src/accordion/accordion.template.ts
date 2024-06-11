@@ -1,4 +1,5 @@
-import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@microsoft/fast-element";
 import type { FASTAccordion } from "./accordion.js";
 
 /**
@@ -7,8 +8,8 @@ import type { FASTAccordion } from "./accordion.js";
  */
 export function accordionTemplate<T extends FASTAccordion>(): ElementViewTemplate<T> {
     return html<T>`
-        <template>
-            <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
-        </template>
+        <slot
+            ${slotted({ property: "slottedAccordionItems", filter: elements() })}
+        ></slot>
     `;
 }

@@ -7,7 +7,6 @@ on:
       - '.github/workflows/cd-deploy-www-staging.yml'
       - 'packages/utilities/fast-animation/docs/api-report.md'
       - 'packages/utilities/fast-color/docs/api-report.md'
-      - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
       - 'packages/web-components/**/docs/api-report.md'
       - 'sites/fast-website/**'
       - 'sites/website/**'
@@ -19,7 +18,6 @@ on:
       - '.github/workflows/cd-deploy-www-staging.yml'
       - 'packages/utilities/fast-animation/docs/api-report.md'
       - 'packages/utilities/fast-color/docs/api-report.md'
-      - 'packages/utilities/fast-react-wrapper/docs/api-report.md'
       - 'packages/web-components/**/docs/api-report.md'
       - 'sites/fast-website/**'
       - 'sites/website/**'
@@ -41,7 +39,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Install Lerna
-      run: yarn global add lerna
+      run: yarn global add lerna@5.5.2
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile

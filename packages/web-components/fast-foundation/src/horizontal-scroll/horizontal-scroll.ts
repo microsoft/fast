@@ -7,6 +7,8 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { StartEnd } from "../patterns/start-end.js";
 import type { HorizontalScrollView } from "./horizontal-scroll.options.js";
 import { ScrollEasing } from "./horizontal-scroll.options.js";
 
@@ -220,9 +222,9 @@ export class FASTHorizontalScroll extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.resized.bind(this)
-        );
+        this.resizeDetector = new (
+            window as unknown as WindowWithResizeObserver
+        ).ResizeObserver(this.resized.bind(this));
         this.resizeDetector.observe(this);
     }
 
@@ -259,10 +261,8 @@ export class FASTHorizontalScroll extends FASTElement {
         this.updateScrollStops();
         const { scrollContainer: container } = this;
         const { scrollLeft } = container;
-        const {
-            width: containerWidth,
-            left: containerLeft,
-        } = container.getBoundingClientRect();
+        const { width: containerWidth, left: containerLeft } =
+            container.getBoundingClientRect();
         this.width = containerWidth;
         let lastStop: number = 0;
         let stops: number[] = this.scrollItems
@@ -534,10 +534,10 @@ export class FASTHorizontalScroll extends FASTElement {
             this.resizeTimeout = clearTimeout(this.resizeTimeout);
         }
 
-        this.resizeTimeout = (setTimeout(() => {
+        this.resizeTimeout = setTimeout(() => {
             this.width = this.scrollContainer.offsetWidth;
             this.setFlippers();
-        }, this.frameTime) as any) as number;
+        }, this.frameTime) as any as number;
     }
 
     /**
@@ -549,8 +549,17 @@ export class FASTHorizontalScroll extends FASTElement {
             this.scrollTimeout = clearTimeout(this.scrollTimeout);
         }
 
-        this.scrollTimeout = (setTimeout(() => {
+        this.scrollTimeout = setTimeout(() => {
             this.setFlippers();
-        }, this.frameTime) as any) as number;
+        }, this.frameTime) as any as number;
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTHorizontalScroll extends StartEnd {}
+applyMixins(FASTHorizontalScroll, StartEnd);

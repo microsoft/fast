@@ -1,12 +1,7 @@
-import {
-    elements,
-    ElementViewTemplate,
-    html,
-    ref,
-    slotted,
-    when,
-} from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTMenuItem, MenuItemOptions } from "./menu-item.js";
 import { MenuItemRole } from "./menu-item.options.js";
 
@@ -36,7 +31,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     <div part="input-container" class="input-container">
                         <span part="checkbox" class="checkbox">
                             <slot name="checkbox-indicator">
-                                ${options.checkboxIndicator ?? ""}
+                                ${staticallyCompose(options.checkboxIndicator)}
                             </slot>
                         </span>
                     </div>
@@ -48,7 +43,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                     <div part="input-container" class="input-container">
                         <span part="radio" class="radio">
                             <slot name="radio-indicator">
-                                ${options.radioIndicator ?? ""}
+                                ${staticallyCompose(options.radioIndicator)}
                             </slot>
                         </span>
                     </div>
@@ -69,7 +64,7 @@ export function menuItemTemplate<T extends FASTMenuItem>(
                 >
                     <span part="expand-collapse" class="expand-collapse">
                         <slot name="expand-collapse-indicator">
-                            ${options.expandCollapseGlyph ?? ""}
+                            ${staticallyCompose(options.expandCollapseGlyph)}
                         </slot>
                     </span>
                 </div>

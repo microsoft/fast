@@ -1,9 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import type { AnchorTarget } from "./anchor.options.js";
 
@@ -11,7 +8,7 @@ import type { AnchorTarget } from "./anchor.options.js";
  * Anchor configuration options
  * @public
  */
-export type AnchorOptions = StartEndOptions;
+export type AnchorOptions = StartEndOptions<FASTAnchor>;
 
 /**
  * An Anchor Custom HTML Element.
@@ -27,7 +24,8 @@ export type AnchorOptions = StartEndOptions;
  */
 export class FASTAnchor extends FASTElement {
     /**
-     * Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
+     * Prompts the user to save the linked URL.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
      * HTML Attribute: download
@@ -36,7 +34,8 @@ export class FASTAnchor extends FASTElement {
     public download: string;
 
     /**
-     * The URL the hyperlink references. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
+     * The URL the hyperlink references.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
      * HTML Attribute: href
@@ -45,7 +44,8 @@ export class FASTAnchor extends FASTElement {
     public href: string;
 
     /**
-     * Hints at the language of the referenced resource. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
+     * Hints at the language of the referenced resource.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
      * @public
      * @remarks
      * HTML Attribute: hreflang
@@ -111,33 +111,6 @@ export class FASTAnchor extends FASTElement {
      * References the root element
      */
     public control: HTMLAnchorElement;
-
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        this.handleUnsupportedDelegatesFocus();
-    }
-
-    /**
-     * Overrides the focus call for where delegatesFocus is unsupported.
-     * This check works for Chrome, Edge Chromium, FireFox, and Safari
-     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
-     */
-    private handleUnsupportedDelegatesFocus = () => {
-        // Check to see if delegatesFocus is supported
-        if (
-            window.ShadowRoot &&
-            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
-            this.$fastController.definition.shadowOptions?.delegatesFocus
-        ) {
-            this.focus = () => {
-                this.control.focus();
-            };
-        }
-    };
 }
 
 /**

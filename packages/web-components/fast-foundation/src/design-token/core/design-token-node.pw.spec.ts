@@ -1,7 +1,7 @@
 import "./test/fast-element-dom-shim.js";
 import type { Subscriber } from "@microsoft/fast-element";
 import { Observable } from "@microsoft/fast-element";
-import { reactive } from "@microsoft/fast-element/state";
+import { reactive } from "@microsoft/fast-element/state.js";
 import { test } from "@playwright/test";
 import { expect } from "expect";
 import jest from "jest-mock";
@@ -160,6 +160,23 @@ test.describe("DesignTokenNode", () => {
 
             expect(target.getTokenValue(token)).toEqual(14);
         });
+
+        test("should not throw when setting a token value from within a change handler", () => {
+            const node = new DesignTokenNode();
+            const tokenA = { $value: undefined };
+            const tokenB = { $value: undefined };
+
+            node.setTokenValue(tokenA, 12);
+            Observable.getNotifier(tokenA).subscribe({
+                handleChange(source, args) {
+                    node.setTokenValue(tokenB, 14);
+                },
+            });
+
+            expect(() => {
+                node.setTokenValue(tokenA, 13);
+            }).not.toThrow();
+        });
     });
     test.describe("setting a token to a derived value", () => {
         test("should support getting and setting falsey values", () => {
@@ -287,11 +304,29 @@ test.describe("DesignTokenNode", () => {
                 });
             }).toThrow();
         });
+
         test("should include the token name in the error message, if it exists, when a token is unable to be resolved", () => {
             const token = { $value: undefined, name: "error-token" };
             expect(() => new DesignTokenNode().getTokenValue(token)).toThrow(
                 "No value set for token 'error-token' in node tree."
             );
+        });
+
+        test("should not throw when setting a token derived value from within a change handler", () => {
+            const node = new DesignTokenNode();
+            const tokenA = { $value: undefined };
+            const tokenB = { $value: undefined };
+
+            node.setTokenValue(tokenA, 12);
+            Observable.getNotifier(tokenA).subscribe({
+                handleChange(source, args) {
+                    node.setTokenValue(tokenB, () => 12);
+                },
+            });
+
+            expect(() => {
+                node.setTokenValue(tokenA, 13);
+            }).not.toThrow();
         });
     });
 
@@ -316,6 +351,7 @@ test.describe("DesignTokenNode", () => {
 
             expect(node.getTokenValue(token)).toEqual(12);
         });
+        /* eslint-disable-next-line max-len */
         test("should resolve a static value from an ancestor node assigned a static value when the descendent node does not have the token assigned a value", () => {
             const token = new DesignToken<number>();
             const ancestor = createNode();
@@ -326,6 +362,7 @@ test.describe("DesignTokenNode", () => {
 
             expect(descendent.getTokenValue(token)).toEqual(12);
         });
+        /* eslint-disable-next-line max-len */
         test("should resolve a static value from an ancestor node assigned a derived value when the descendent node does not have the token assigned a value", () => {
             const token = new DesignToken<number>();
             const ancestor = createNode();
@@ -561,6 +598,7 @@ test.describe("DesignTokenNode", () => {
             );
             expect(() => node.getTokenValue(token)).toThrow();
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the node that has a token assigned a derived value and a dependency of the derived value changes for the node", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -590,6 +628,7 @@ test.describe("DesignTokenNode", () => {
             );
             expect(node.getTokenValue(token)).toEqual(14);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a token assigned a static value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -623,6 +662,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(12);
             expect(descendent.getTokenValue(token)).toEqual(14);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a token assigned a derived value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -656,6 +696,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(12);
             expect(descendent.getTokenValue(token)).toEqual(14);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a token reassigned a static value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -690,6 +731,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(12);
             expect(descendent.getTokenValue(token)).toEqual(16);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a token reassigned a derived value that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -724,6 +766,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(12);
             expect(descendent.getTokenValue(token)).toEqual(16);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with a descendent node when a ancestor and descendent both have a dependency assigned and the ancestor is reassigned a token to a derived value that resolves the dependency and results in a value change", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -767,6 +810,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(10);
             expect(descendent.getTokenValue(token)).toEqual(14);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a token assigned a static value deleted that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -799,6 +843,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(12);
             expect(descendent.getTokenValue(token)).toEqual(12);
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a token assigned a derived value deleted that is a dependency of a value assigned for an ancestor", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -831,6 +876,7 @@ test.describe("DesignTokenNode", () => {
             expect(parent.getTokenValue(token)).toEqual(12);
             expect(descendent.getTokenValue(token)).toEqual(12);
         });
+        /* eslint-disable-next-line max-len */
         test("should the token for ancestor, parent, and descendent nodes when parent and descendent are assigned a value that depends on the token and the ancestor's value is changed", () => {
             const token = new DesignToken<number>();
             const ancestor = createNode();
@@ -886,6 +932,7 @@ test.describe("DesignTokenNode", () => {
         /**
          * Appending nodes
          */
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a dependency assigned when the node is appended to an ancestor with a derived value assigned that depends on the dependency", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
@@ -919,6 +966,7 @@ test.describe("DesignTokenNode", () => {
         /**
          * Removing nodes
          */
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a dependency assigned when the node is appended to an ancestor with a derived value assigned that depends on the dependency and is then removed", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
@@ -952,6 +1000,7 @@ test.describe("DesignTokenNode", () => {
         /**
          * Moving node
          */
+        /* eslint-disable-next-line max-len */
         test("the token with the descendent node that has a dependency assigned when the node is re-parented to an ancestor with a different derived value assigned that depends on the dependency", () => {
             const ancestorA = createNode();
             const ancestorB = createNode();
@@ -973,27 +1022,36 @@ test.describe("DesignTokenNode", () => {
 
             parentB.appendChild(descendent);
 
-            expect(handleChange).toHaveBeenCalledTimes(2);
-            expect(handleChange).toHaveBeenNthCalledWith(
-                1,
+            expect(handleChange).toHaveBeenCalledTimes(1);
+            expect(handleChange).toHaveBeenCalledWith(
                 token,
                 new DesignTokenChangeRecord(
                     descendent,
-                    DesignTokenMutationType.delete,
-                    token
-                )
-            );
-            expect(handleChange).toHaveBeenNthCalledWith(
-                2,
-                token,
-                new DesignTokenChangeRecord(
-                    descendent,
-                    DesignTokenMutationType.add,
+                    DesignTokenMutationType.change,
                     token,
                     value
                 )
             );
             expect(descendent.getTokenValue(token)).toEqual(21);
+        });
+        /* eslint-disable-next-line max-len */
+        test("should support reparenting a node with a derived token assigned to a tree where the immediate parent doesn't not have the dependency assigned", () => {
+            const ancestor = new DesignTokenNode();
+            const parent = new DesignTokenNode();
+            const child = new DesignTokenNode();
+
+            const tokenA = new DesignToken<number>();
+            const tokenB = new DesignToken<number>();
+            ancestor.appendChild(child);
+
+            ancestor.setTokenValue(tokenA, 12);
+            ancestor.setTokenValue(tokenB, 12);
+
+            child.setTokenValue(tokenB, resolve => resolve(tokenA) * 2);
+            ancestor.appendChild(parent);
+            parent.appendChild(child);
+
+            expect(child.getTokenValue(tokenB)).toBe(24);
         });
 
         /**
@@ -1026,6 +1084,7 @@ test.describe("DesignTokenNode", () => {
                 )
             );
         });
+        /* eslint-disable-next-line max-len */
         test("the token with the ancestor and descendent node when the ancestor is assigned a derived value using an observable and a token, where both nodes contain a value set for the dependency", () => {
             const ancestor = createNode();
             const parent = createNode(ancestor);
@@ -1085,6 +1144,7 @@ test.describe("DesignTokenNode", () => {
 
             expect(handleChange).not.toHaveBeenCalled();
         });
+        /* eslint-disable-next-line max-len */
         test("the token when the derived value assigned to a node results in the same value as the previously assigned static value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
@@ -1096,6 +1156,7 @@ test.describe("DesignTokenNode", () => {
 
             expect(handleChange).not.toHaveBeenCalled();
         });
+        /* eslint-disable-next-line max-len */
         test("the token when the derived value assigned to a node results in the same value as the previously assigned derived value", () => {
             const token = new DesignToken<number>();
             const node = new DesignTokenNode();
@@ -1116,7 +1177,7 @@ test.describe("DesignTokenNode", () => {
             expect(a).not.toEqual(b);
             expect(handleChange).not.toHaveBeenCalled();
         });
-
+        /* eslint-disable-next-line max-len */
         test("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a static value", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();
@@ -1134,6 +1195,7 @@ test.describe("DesignTokenNode", () => {
             expect(handleChange).not.toHaveBeenCalled();
             expect(child.getTokenValue(token)).toEqual(25);
         });
+        /* eslint-disable-next-line max-len */
         test.skip("the token when a dependency of a derived token value is set for a descendent but there is an intermediary value set that is a derived value that does not depend on the dependent token", () => {
             const token = new DesignToken<number>();
             const dependency = new DesignToken<number>();

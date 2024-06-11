@@ -35,16 +35,6 @@ export default {
 
 export const Switch = renderComponent(storyTemplate).bind({});
 
-export const SwitchWithSlottedMessages: Story<FASTSwitch> = renderComponent(
-    storyTemplate
-).bind({});
-SwitchWithSlottedMessages.args = {
-    storyContent: html`
-        <span slot="checked-message">Checked</span>
-        <span slot="unchecked-message">Unchecked</span>
-    `,
-};
-
 export const SwitchInForm: Story<FASTSwitch> = renderComponent(
     html<StoryArgs<FASTSwitch>>`
         <form @submit="${() => false}">
@@ -58,7 +48,5 @@ SwitchInForm.args = {
     required: true,
     storyContent: html`
         Sign up for our newsletter?
-        <div slot="checked-message">Yes, I would like to receive your newsletter</div>
-        <div slot="unchecked-message">do not sign me up</div>
     `,
 };

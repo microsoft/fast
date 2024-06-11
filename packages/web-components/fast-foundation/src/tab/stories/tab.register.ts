@@ -31,6 +31,16 @@ const styles = css`
         color: var(--neutral-foreground-rest);
         fill: currentcolor;
     }
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
+        display: flex;
+    }
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
+    }
+    ::slotted([slot="end"]) {
+        margin-inline-start: 11px;
+    }
     :host([disabled]) {
         cursor: var(--disabled-cursor);
         opacity: var(--disabled-opacity);

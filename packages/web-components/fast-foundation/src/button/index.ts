@@ -1,3 +1,4 @@
-export * from "./button.js";
-export * from "./button.options.js";
-export * from "./button.template.js";
+export { DelegatesARIAButton, FASTButton } from "./button.js";
+export type { ButtonOptions } from "./button.js";
+export { ButtonType } from "./button.options.js";
+export { buttonTemplate } from "./button.template.js";

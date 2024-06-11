@@ -13,9 +13,11 @@ test.describe("Switch", () => {
 
         element = page.locator("fast-switch");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("switch--switch"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -69,7 +71,7 @@ test.describe("Switch", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-readonly");
+        await expect(element).not.toHaveAttribute("aria-readonly");
     });
 
     test("should set the `aria-checked` attribute equal to the `checked` property", async () => {
@@ -110,26 +112,6 @@ test.describe("Switch", () => {
         });
 
         await expect(element).toHaveAttribute("aria-readonly", "false");
-    });
-
-    test('should add a class of "checked" when the `checked` property is true', async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-switch></fast-switch>
-            `;
-        });
-
-        await element.evaluate((node: FASTSwitch) => {
-            node.checked = true;
-        });
-
-        await expect(element).toHaveClass(/checked/);
-
-        await element.evaluate((node: FASTSwitch) => {
-            node.checked = false;
-        });
-
-        await expect(element).not.toHaveClass(/checked/);
     });
 
     test("should initialize to the initial value if no value property is set", async () => {
@@ -208,7 +190,7 @@ test.describe("Switch", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("tabindex");
+        await expect(element).not.toHaveAttribute("tabindex");
 
         await element.evaluate((node: FASTSwitch) => {
             node.disabled = false;
@@ -363,7 +345,7 @@ test.describe("Switch", () => {
 
             const form = page.locator("form");
 
-            await expect(element).not.toHaveBooleanAttribute("checked");
+            await expect(element).not.toHaveAttribute("checked");
 
             await element.evaluate((node: FASTSwitch) => {
                 node.checked = true;
@@ -389,7 +371,7 @@ test.describe("Switch", () => {
 
             const form = page.locator("form");
 
-            await expect(element).toHaveBooleanAttribute("checked");
+            await expect(element).toHaveAttribute("checked");
 
             await element.evaluate((node: FASTSwitch) => {
                 node.checked = false;
@@ -403,7 +385,7 @@ test.describe("Switch", () => {
 
             await expect(element).toHaveJSProperty("checked", true);
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `checked` attribute modifications update the `checked` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

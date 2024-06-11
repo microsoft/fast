@@ -153,17 +153,19 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name      | Description                      |
-| --------- | -------------------------------- |
-| `label`   | The label                        |
-| `root`    | The element wrapping the control |
-| `control` | The textarea element             |
+| Name      | Description                                                                              |
+| --------- | ---------------------------------------------------------------------------------------- |
+| `label`   | The label                                                                                |
+| `control` | The logical control, the element wrapping the input field, including start and end slots |
+| `field`   | The textarea element                                                                     |
 
 #### Slots
 
-| Name | Description                    |
-| ---- | ------------------------------ |
-|      | The default slot for the label |
+| Name    | Description                                              |
+| ------- | -------------------------------------------------------- |
+| `start` | Content which can be provided before the text area input |
+| `end`   | Content which can be provided after the text area input  |
+|         | The default slot for the label                           |
 
 <hr/>
 

@@ -7,6 +7,7 @@ test.describe("Disclosure", () => {
     test.describe("States, Attributes, and Properties", () => {
         let page: Page;
         let element: Locator;
+        let root: Locator;
         let summary: Locator;
 
         test.beforeAll(async ({ browser }) => {
@@ -14,9 +15,13 @@ test.describe("Disclosure", () => {
 
             element = page.locator("fast-disclosure");
 
+            root = page.locator("#storybook-root");
+
             summary = element.locator("summary");
 
             await page.goto(fixtureURL("disclosure--disclosure"));
+
+            await root.waitFor({ state: "visible" });
         });
 
         test.afterAll(async () => {
@@ -28,19 +33,19 @@ test.describe("Disclosure", () => {
         });
 
         test("should toggle the `expanded` attribute based on the value of the `expanded` property", async () => {
-            await expect(element).not.toHaveBooleanAttribute("expanded");
+            await expect(element).not.toHaveAttribute("expanded");
 
             await element.evaluate((node: FASTDisclosure) => {
                 node.expanded = true;
             });
 
-            await expect(element).toHaveBooleanAttribute("expanded");
+            await expect(element).toHaveAttribute("expanded");
 
             await element.evaluate((node: FASTDisclosure) => {
                 node.expanded = false;
             });
 
-            await expect(element).not.toHaveBooleanAttribute("expanded");
+            await expect(element).not.toHaveAttribute("expanded");
         });
 
         test("should set summary slot content to the value of the summary attribute", async () => {

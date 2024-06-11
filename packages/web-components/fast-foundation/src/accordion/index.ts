@@ -1,3 +1,3 @@
-export * from "./accordion.js";
-export * from "./accordion.options.js";
-export * from "./accordion.template.js";
+export { FASTAccordion } from "./accordion.js";
+export { AccordionExpandMode } from "./accordion.options.js";
+export { accordionTemplate } from "./accordion.template.js";

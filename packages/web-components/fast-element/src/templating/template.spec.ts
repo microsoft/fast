@@ -1,10 +1,14 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "./template.js";
-import { Markup, Parser } from "./markup.js";
-import { bind, HTMLBindingDirective } from "./binding.js";
-import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive.js";
+import { Markup, nextId, Parser } from "./markup.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
+import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, CompiledViewBehaviorFactory } from "./html-directive.js";
 import { Constructable, isString } from "../interfaces.js";
 import { Fake } from "../testing/fakes.js";
+import { DOMAspect, DOMPolicy } from "../dom.js";
+import { createTrackableDOMPolicy } from "../__test__/helpers.js";
+import { Compiler } from "./compiler.js";
+import { oneWay } from "../binding/one-way.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -61,19 +65,19 @@ describe(`The html tag template helper`, () => {
             type: "string",
             location: "at the beginning",
             template: html`${stringValue} end`,
-            result: `${stringValue} end`,
+            result: `${FAKE.interpolation} end`,
         },
         {
             type: "string",
             location: "in the middle",
             template: html`beginning ${stringValue} end`,
-            result: `beginning ${stringValue} end`,
+            result: `beginning ${FAKE.interpolation} end`,
         },
         {
             type: "string",
             location: "at the end",
             template: html`beginning ${stringValue}`,
-            result: `beginning ${stringValue}`,
+            result: `beginning ${FAKE.interpolation}`,
         },
         // number interpolation
         {
@@ -165,21 +169,21 @@ describe(`The html tag template helper`, () => {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the beginning",
             template: html<Model>`${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `${stringValue}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
+            result: `${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `beginning ${stringValue}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
+            result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the end",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()}`,
-            result: `beginning ${stringValue}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
+            result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -187,7 +191,7 @@ describe(`The html tag template helper`, () => {
             location: "at the beginning",
             template: html<Model>`${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `${stringValue}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
+            result: `${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -195,7 +199,7 @@ describe(`The html tag template helper`, () => {
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `beginning ${stringValue}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
+            result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -203,7 +207,7 @@ describe(`The html tag template helper`, () => {
             location: "at the end",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()}`,
-            result: `beginning ${stringValue}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
+            result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
     ];
@@ -217,13 +221,13 @@ describe(`The html tag template helper`, () => {
                     let found = false;
 
                     for (const id in x.template.factories) {
-                        const behaviorFactory = x.template.factories[id];
+                        const behaviorFactory = x.template.factories[id] as CompiledViewBehaviorFactory;
 
                         if (behaviorFactory instanceof type) {
                             found = true;
 
                             if (behaviorFactory instanceof HTMLBindingDirective) {
-                                expect(behaviorFactory.aspectType).to.equal(Aspect.content);
+                                expect(behaviorFactory.aspectType).to.equal(DOMAspect.content);
                             }
                         }
 
@@ -278,12 +282,12 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
     });
 
     it(`captures an attribute with a binding`, () => {
-        const template = html<Model>`<my-element some-attribute=${bind(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element some-attribute=${oneWay(x => x.value)}></my-element>`;
 
         expectTemplateEquals(
             template,
@@ -295,7 +299,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
     });
 
@@ -312,7 +316,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -332,7 +336,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "some-attribute",
             "some-attribute",
-            Aspect.attribute
+            DOMAspect.attribute
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -352,12 +356,12 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "?some-attribute",
             "some-attribute",
-            Aspect.booleanAttribute
+            DOMAspect.booleanAttribute
         );
     });
 
     it(`captures a boolean attribute with a binding`, () => {
-        const template = html<Model>`<my-element ?some-attribute=${bind(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element ?some-attribute=${oneWay(x => x.value)}></my-element>`;
 
         expectTemplateEquals(
             template,
@@ -369,7 +373,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "?some-attribute",
             "some-attribute",
-            Aspect.booleanAttribute
+            DOMAspect.booleanAttribute
         );
     });
 
@@ -386,7 +390,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "?some-attribute",
             "some-attribute",
-            Aspect.booleanAttribute
+            DOMAspect.booleanAttribute
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -406,12 +410,12 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
     });
 
     it(`captures a case-sensitive property with a binding`, () => {
-        const template = html<Model>`<my-element :someAttribute=${bind(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element :someAttribute=${oneWay(x => x.value)}></my-element>`;
 
         expectTemplateEquals(
             template,
@@ -423,7 +427,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
     });
 
@@ -440,7 +444,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -460,7 +464,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
 
         const factory = getFactory(template, HTMLBindingDirective);
@@ -472,7 +476,7 @@ describe(`The html tag template helper`, () => {
         class TestDirective implements HTMLDirective, Aspected {
             sourceAspect: string;
             targetAspect: string;
-            aspectType = Aspect.property;
+            aspectType = DOMAspect.property;
             id: string;
             nodeId: string;
 
@@ -497,7 +501,7 @@ describe(`The html tag template helper`, () => {
             TestDirective,
             ":someAttribute",
             "someAttribute",
-            Aspect.property
+            DOMAspect.property
         );
     });
 
@@ -514,7 +518,7 @@ describe(`The html tag template helper`, () => {
             HTMLBindingDirective,
             "@someEvent",
             "someEvent",
-            Aspect.event
+            DOMAspect.event
         );
     });
 
@@ -531,9 +535,109 @@ describe(`The html tag template helper`, () => {
         expect(target.querySelector('#embedded')).to.be.equal(null)
     });
 
-    it("Should properly interpolate HTML tags with opening / closing tags", () => {
-      const element = "button"
+    it("Should properly interpolate HTML tags with opening / closing tags using dangerousHTML", () => {
+      const element = html.partial("button");
       const template = html`<${element}></${element}>`
       expect(template.html).to.equal('<button></button>')
     })
+});
+
+describe("The ViewTemplate", () => {
+    it("lazily compiles", () => {
+        let hasCompiled = false;
+        const compile = Compiler.compile;
+        Compiler.setDefaultStrategy((html, directives, policy) => {
+            hasCompiled = true;
+            return compile(html, directives, policy);
+        });
+
+        const template = html`This is a test.`;
+
+        expect(hasCompiled).to.be.false;
+
+        template.create();
+        Compiler.setDefaultStrategy(compile);
+
+        expect(hasCompiled).to.be.true;
+    });
+
+    it("passes its dom policy along to the compiler", () => {
+        const trackedPolicy = createTrackableDOMPolicy();
+        const template = html`This is a test.`.withPolicy(trackedPolicy);
+        let capturedPolicy: DOMPolicy;
+
+        const compile = Compiler.compile;
+        Compiler.setDefaultStrategy((html, directives, policy) => {
+            capturedPolicy = policy;
+            return compile(html, directives, policy);
+        });
+
+        template.create();
+        Compiler.setDefaultStrategy(compile);
+
+        expect(capturedPolicy!).to.equal(trackedPolicy);
+    });
+
+    it("prevents assigning a policy more than once", () => {
+        const trackedPolicy = createTrackableDOMPolicy();
+        const template = html`This is a test.`.withPolicy(trackedPolicy);
+
+        expect(() => {
+            const differentPolicy = createTrackableDOMPolicy();
+            template.withPolicy(differentPolicy);
+        }).to.throw();
+    });
+
+    it("can inline a basic template built by the tagged template helper", () => {
+        const nested = html`Nested`;
+
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal("BeforeNestedAfter");
+    });
+
+    it("can inline a basic template built from a template element", () => {
+        const template = document.createElement("template");
+        template.innerHTML = "Nested";
+        const nested = new ViewTemplate(template);
+
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal("BeforeNestedAfter");
+    });
+
+    function getFirstBehavior(template: ViewTemplate) {
+        for (const key in template.factories) {
+            return template.factories[key];
+        }
+    }
+
+    it("can inline a template with directives built by the tagged template helper", () => {
+        const nested = html`Nested${x => x.foo}`;
+
+        const root = html`Before${nested.inline()}After`;
+
+        const nestedBehavior = getFirstBehavior(nested);
+        const nestedBehaviorId = nestedBehavior?.id!;
+        const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
+
+        expect(root.html).to.equal(`BeforeNested${nestedBehaviorPlaceholder}After`);
+        expect(getFirstBehavior(root)).equals(nestedBehavior);
+    });
+
+    it("can inline a template with directives built from a template element", () => {
+        const nestedBehaviorId = nextId();
+        const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
+        const template = document.createElement("template");
+        template.innerHTML = `Nested${nestedBehaviorPlaceholder}`;
+        const nested = new ViewTemplate(template, {
+            nestedBehaviorId: new HTMLBindingDirective(oneWay(x => x.foo))
+        });
+
+        const nestedBehavior = getFirstBehavior(nested);
+        const root = html`Before${nested.inline()}After`;
+
+        expect(root.html).to.equal(`BeforeNested${nestedBehaviorPlaceholder}After`);
+        expect(getFirstBehavior(root)).equals(nestedBehavior);
+    });
 });

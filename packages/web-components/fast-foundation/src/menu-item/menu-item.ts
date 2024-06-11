@@ -1,12 +1,6 @@
 import type { Placement } from "@floating-ui/dom";
 import { autoUpdate, computePosition, flip, shift, size } from "@floating-ui/dom";
-import {
-    attr,
-    FASTElement,
-    observable,
-    SyntheticViewTemplate,
-    Updates,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import {
     keyArrowLeft,
     keyArrowRight,
@@ -14,6 +8,7 @@ import {
     keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
@@ -25,15 +20,17 @@ export { MenuItemRole, roleForMenuItem };
  * Menu Item configuration options
  * @public
  */
-export type MenuItemOptions = StartEndOptions & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
+export type MenuItemOptions = StartEndOptions<FASTMenuItem> & {
+    checkboxIndicator?: StaticallyComposableHTML<FASTMenuItem>;
+    expandCollapseGlyph?: StaticallyComposableHTML<FASTMenuItem>;
+    radioIndicator?: StaticallyComposableHTML<FASTMenuItem>;
 };
 
 /**
  * A Switch Custom HTML Element.
- * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem }, {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox}, or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
+ * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem },
+ * {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox},
+ * or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
  *
  * @slot checked-indicator - The checked indicator
  * @slot radio-indicator - The radio indicator
@@ -50,7 +47,8 @@ export type MenuItemOptions = StartEndOptions & {
  * @csspart expand-collapse - The expand/collapse element
  * @csspart submenu-region - The container for the submenu, used for positioning
  * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
- * @fires change - Fires a custom 'change' event when a non-submenu item with a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
+ * @fires change - Fires a custom 'change' event when a non-submenu item with
+ * a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
  *
  * @public
  */
@@ -109,7 +107,7 @@ export class FASTMenuItem extends FASTElement {
      * HTML Attribute: checked
      */
     @attr({ mode: "boolean" })
-    public checked: boolean;
+    public checked: boolean = false;
     protected checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
@@ -195,7 +193,9 @@ export class FASTMenuItem extends FASTElement {
 
             case keyArrowRight:
                 //open/focus on submenu
-                this.expandAndFocus();
+                this.expanded && this.submenu
+                    ? this.submenu.focus()
+                    : this.expandAndFocus();
                 return false;
 
             case keyEscape:
@@ -236,6 +236,7 @@ export class FASTMenuItem extends FASTElement {
         if (!this.focusSubmenuOnLoad) {
             return;
         }
+
         this.focusSubmenuOnLoad = false;
         if (this.submenu) {
             this.submenu.focus();
@@ -285,6 +286,7 @@ export class FASTMenuItem extends FASTElement {
         if (!this.hasSubmenu) {
             return;
         }
+
         this.focusSubmenuOnLoad = true;
         this.expanded = true;
     };

@@ -32,23 +32,8 @@ export const ArrayObserver: Readonly<{
 }>;
 
 // @public
-export const Aspect: Readonly<{
-    readonly none: 0;
-    readonly attribute: 1;
-    readonly booleanAttribute: 2;
-    readonly property: 3;
-    readonly content: 4;
-    readonly tokenList: 5;
-    readonly event: 6;
-    readonly assign: (directive: Aspected, value?: string) => void;
-}>;
-
-// @public
-export type Aspect = typeof Aspect[Exclude<keyof typeof Aspect, "assign" | "none">];
-
-// @public
 export interface Aspected {
-    aspectType: Aspect;
+    aspectType: DOMAspect;
     dataBinding?: Binding;
     sourceAspect: string;
     targetAspect: string;
@@ -96,17 +81,23 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
-export function bind<T = any>(expression: Expression<T>, isVolatile?: boolean): Binding<T>;
-
-// @public
 export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
-    constructor(evaluate: Expression<TSource, TReturn, TParent>, isVolatile?: boolean);
-    abstract createObserver(directive: HTMLDirective, subscriber: Subscriber): ExpressionObserver<TSource, TReturn, TParent>;
+    constructor(evaluate: Expression<TSource, TReturn, TParent>, policy?: DOMPolicy | undefined, isVolatile?: boolean);
+    abstract createObserver(subscriber: Subscriber, directive: BindingDirective): ExpressionObserver<TSource, TReturn, TParent>;
     // (undocumented)
     evaluate: Expression<TSource, TReturn, TParent>;
     // (undocumented)
     isVolatile: boolean;
     options?: any;
+    // (undocumented)
+    policy?: DOMPolicy | undefined;
+}
+
+// @public
+export interface BindingDirective {
+    readonly aspectType?: DOMAspect;
+    readonly dataBinding: Binding;
+    readonly targetAspect?: string;
 }
 
 // @public
@@ -140,16 +131,24 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
+export type Class<T, C = {}> = C & Constructable<T> & {
+    readonly prototype: T;
+};
+
+// @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
-factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
+factories: Record<string, ViewBehaviorFactory>,
+policy: DOMPolicy) => HTMLTemplateCompilationResult;
+
+// @public
+export type CompiledViewBehaviorFactory = Required<ViewBehaviorFactory>;
 
 // @public
 export const Compiler: {
-    setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent>;
+    compile<TSource = any, TParent = any>(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy): HTMLTemplateCompilationResult<TSource, TParent>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
-    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory;
+    aggregate(parts: (string | ViewBehaviorFactory)[], policy?: DOMPolicy): ViewBehaviorFactory;
 };
 
 // @public
@@ -180,18 +179,29 @@ export interface ContentView {
     unbind(): void;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "createMetadataLocator" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[];
-
-// Warning: (ae-internal-missing-underscore) The name "createTypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<TDefinition>;
-
 // @public
 export const css: CSSTemplateTag;
+
+// @public
+export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingDirective {
+    constructor(dataBinding: Binding, targetAspect: string);
+    addedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    connectedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    createCSS(add: AddBehavior): ComposableStyles;
+    // (undocumented)
+    readonly dataBinding: Binding;
+    // @internal
+    handleChange(_: any, observer: ExpressionObserver): void;
+    removedCallback(controller: HostController<HTMLElement & {
+        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
+    }>): void;
+    // (undocumented)
+    readonly targetAspect: string;
+}
 
 // @public
 export interface CSSDirective {
@@ -213,13 +223,13 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
     readonly type: TType;
 }
 
-// @public @deprecated (undocumented)
-export const cssPartial: (strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => CSSDirective;
+// @public
+export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]) => ElementStyles) & {
+    partial<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]): CSSDirective;
+};
 
 // @public
-export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
-    partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
-};
+export type CSSValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | ComposableStyles | CSSDirective;
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
@@ -234,12 +244,34 @@ export interface Disposable {
 
 // @public
 export const DOM: Readonly<{
-    queueUpdate: (callable: Callable) => void;
-    nextUpdate: () => Promise<void>;
-    processUpdates: () => void;
+    readonly policy: DOMPolicy;
+    setPolicy(value: DOMPolicy): void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
+
+// @public
+export const DOMAspect: Readonly<{
+    readonly none: 0;
+    readonly attribute: 1;
+    readonly booleanAttribute: 2;
+    readonly property: 3;
+    readonly content: 4;
+    readonly tokenList: 5;
+    readonly event: 6;
+}>;
+
+// @public
+export type DOMAspect = (typeof DOMAspect)[Exclude<keyof typeof DOMAspect, "none">];
+
+// @public
+export interface DOMPolicy {
+    createHTML(value: string): string;
+    protect(tagName: string | null, aspect: DOMAspect, aspectName: string, sink: DOMSink): DOMSink;
+}
+
+// @public
+export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
 
 // @public
 export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> {
@@ -248,22 +280,26 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     connect(): void;
+    get context(): ExecutionContext;
     readonly definition: FASTElementDefinition;
     disconnect(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): ElementController;
+    get isBound(): boolean;
     get isConnected(): boolean;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TElement>): any;
+    }): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     static setStrategy(strategy: ElementControllerStrategy): void;
     readonly source: TElement;
+    get sourceLifetime(): SourceLifetime | undefined;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
-    // @internal
-    toJSON: () => undefined;
     readonly view: ElementView<TElement> | null;
 }
 
@@ -302,6 +338,10 @@ export class ElementStyles {
 // @public
 export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
     appendTo(node: Node): void;
+    onUnbind(behavior: {
+        unbind(controller: ViewController<TSource, TParent>): any;
+    }): void;
+    readonly sourceLifetime?: SourceLifetime;
 }
 
 // @public
@@ -362,9 +402,7 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
     bind(controller: ExpressionController<TSource, TParent>): TReturn;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export const FAST: FASTGlobal;
 
 // @public
@@ -405,9 +443,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly type: TType;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "FASTGlobal" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export interface FASTGlobal {
     addMessages(messages: Record<number, string>): void;
     error(code: number, values?: Record<string, any>): Error;
@@ -427,23 +463,22 @@ export interface HostBehavior<TSource = any> {
 }
 
 // @public
-export interface HostController<TSource = any> {
+export interface HostController<TSource = any> extends ExpressionController<TSource> {
     addBehavior(behavior: HostBehavior<TSource>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly isConnected: boolean;
     mainStyles: ElementStyles | null;
     removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    readonly source: TSource;
 }
 
 // @public
-export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
+export const html: HTMLTemplateTag;
 
 // @public
-export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected {
+export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective {
     constructor(dataBinding: Binding);
-    aspectType: Aspect;
+    aspectType: DOMAspect;
     // @internal (undocumented)
     bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
@@ -455,9 +490,11 @@ export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory,
     // @internal (undocumented)
     handleEvent(event: Event): void;
     id: string;
-    nodeId: string;
+    policy: DOMPolicy;
     sourceAspect: string;
     targetAspect: string;
+    targetNodeId: string;
+    targetTagName: string | null;
     // @internal (undocumented)
     unbind(controller: ViewController): void;
 }
@@ -472,6 +509,7 @@ export const HTMLDirective: Readonly<{
     getForInstance: (object: any) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
     getByType: (key: Function) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
     define<TType extends Constructable<HTMLDirective>>(type: TType, options?: PartialHTMLDirectiveDefinition): TType;
+    assignAspect(directive: Aspected, value?: string): void;
 }>;
 
 // @public
@@ -488,8 +526,13 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
 }
 
 // @public
+export type HTMLTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]) => ViewTemplate<TSource, TParent>) & {
+    partial(html: string): InlineTemplateDirective;
+};
+
+// @public
 export class HTMLView<TSource = any, TParent = any> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> {
-    constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
+    constructor(fragment: DocumentFragment, factories: ReadonlyArray<CompiledViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
     bind(source: TSource, context?: ExecutionContext<TParent>): void;
     context: ExecutionContext<TParent>;
@@ -520,9 +563,14 @@ export class HTMLView<TSource = any, TParent = any> implements ElementView<TSour
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
-    // @internal
-    toJSON: () => undefined;
     unbind(): void;
+}
+
+// @public
+export class InlineTemplateDirective implements HTMLDirective {
+    constructor(html: string, factories?: Record<string, ViewBehaviorFactory>);
+    createHTML(add: AddViewBehaviorFactory): string;
+    static readonly empty: InlineTemplateDirective;
 }
 
 // @public
@@ -543,13 +591,6 @@ export const Markup: Readonly<{
     comment: (id: string) => string;
 }>;
 
-// Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export type Mutable<T> = {
-    -readonly [P in keyof T]: T[P];
-};
-
 // @public
 export interface NodeBehaviorOptions<T = any> {
     filter?: ElementsFilter;
@@ -563,7 +604,10 @@ export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> ex
     protected abstract disconnect(target: any): void;
     protected abstract getNodes(target: any): Node[];
     protected getSource(target: Node): any;
+    get id(): string;
+    set id(value: string);
     protected abstract observe(target: any): void;
+    targetNodeId: string;
     unbind(controller: ViewController): void;
     protected updateTarget(source: any, value: ReadonlyArray<any>): void;
 }
@@ -578,6 +622,9 @@ export interface Notifier {
     subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
 }
+
+// @public
+export const nullableBooleanConverter: ValueConverter;
 
 // @public
 export const nullableNumberConverter: ValueConverter;
@@ -605,7 +652,10 @@ export interface ObservationRecord {
 }
 
 // @public
-export function oneTime<T = any>(expression: Expression<T>): Binding<T>;
+export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy): Binding<T>;
+
+// @public
+export function oneWay<T = any>(expression: Expression<T>, policy?: DOMPolicy, isVolatile?: boolean): Binding<T>;
 
 // @public
 export const Parser: Readonly<{
@@ -643,6 +693,7 @@ export const ref: <TSource = any, TParent = any>(propertyName: keyof TSource & s
 // @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(controller: ViewController): void;
+    targetNodeId: string;
 }
 
 // @public
@@ -659,16 +710,15 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 }
 
 // @public
-export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
+export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(): RepeatBehavior<TSource>;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     readonly dataBinding: Binding<TSource>;
-    id: string;
-    nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
+    targetNodeId: string;
     // (undocumented)
     readonly templateBinding: Binding<TSource, SyntheticViewTemplate>;
 }
@@ -708,7 +758,7 @@ export const SourceLifetime: Readonly<{
 }>;
 
 // @public
-export type SourceLifetime = typeof SourceLifetime[keyof typeof SourceLifetime];
+export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
 
 // @public
 export class Splice {
@@ -750,7 +800,7 @@ export const SpliceStrategySupport: Readonly<{
 }>;
 
 // @public
-export type SpliceStrategySupport = typeof SpliceStrategySupport[keyof typeof SpliceStrategySupport];
+export type SpliceStrategySupport = (typeof SpliceStrategySupport)[keyof typeof SpliceStrategySupport];
 
 // @public
 export abstract class StatelessAttachedAttributeDirective<TOptions> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
@@ -758,12 +808,8 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     abstract bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
-    id: string;
-    nodeId: string;
     // (undocumented)
     protected options: TOptions;
-    // @internal
-    toJSON: () => undefined;
 }
 
 // @public
@@ -812,40 +858,16 @@ export interface SyntheticView<TSource = any, TParent = any> extends View<TSourc
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent>;
+    inline(): CaptureType<TSource, TParent>;
 }
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
 
 // @public
-export type TrustedTypes = {
-    createPolicy(name: string, rules: TrustedTypesPolicy): TrustedTypesPolicy;
-};
-
-// @public
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
-
-// Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface TypeDefinition {
-    // (undocumented)
-    type: Function;
-}
-
-// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export interface TypeRegistry<TDefinition extends TypeDefinition> {
-    // (undocumented)
-    getByType(key: Function): TDefinition | undefined;
-    // (undocumented)
-    getForInstance(object: any): TDefinition | undefined;
-    // (undocumented)
-    register(definition: TDefinition): boolean;
-}
 
 // @public
 export interface UpdateQueue {
@@ -868,6 +890,7 @@ export interface ValueConverter {
 export interface View<TSource = any, TParent = any> extends Disposable {
     bind(source: TSource, context?: ExecutionContext<TParent>): void;
     readonly context: ExecutionContext<TParent>;
+    readonly isBound: boolean;
     readonly source: TSource | null;
     unbind(): void;
 }
@@ -880,22 +903,11 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 // @public
 export interface ViewBehaviorFactory {
     createBehavior(): ViewBehavior;
-    id: string;
-    nodeId: string;
+    id?: string;
+    policy?: DOMPolicy;
+    targetNodeId?: string;
+    targetTagName?: string | null;
 }
-
-// @public
-export interface ViewBehaviorOrchestrator<TSource = any, TParent = any> extends ViewController<TSource, TParent>, HostBehavior<TSource> {
-    addBehavior(behavior: ViewBehavior): void;
-    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
-    // (undocumented)
-    addTarget(nodeId: string, target: Node): void;
-}
-
-// @public
-export const ViewBehaviorOrchestrator: Readonly<{
-    create<TSource = any, TParent = any>(source: TSource): ViewBehaviorOrchestrator<TSource, TParent>;
-}>;
 
 // @public
 export type ViewBehaviorTargets = {
@@ -909,26 +921,28 @@ export interface ViewController<TSource = any, TParent = any> extends Expression
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent> {
-    constructor(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>);
+    constructor(html: string | HTMLTemplateElement, factories?: Record<string, ViewBehaviorFactory>, policy?: DOMPolicy | undefined);
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
+    inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
-    // @internal
-    toJSON: () => undefined;
+    withPolicy(policy: DOMPolicy): this;
 }
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
-export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
+export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
 
 // Warnings were encountered during analysis:
 //
 // dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

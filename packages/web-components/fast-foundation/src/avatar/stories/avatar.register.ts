@@ -11,25 +11,18 @@ const styles = css`
         height: var(--avatar-size, var(--avatar-size-default));
         max-width: var(--avatar-size, var(--avatar-size-default));
         position: relative;
+        color: var(--foreground-on-accent-rest);
     }
 
     :host([hidden]) {
         display: none;
     }
 
-    .link {
-        align-items: center;
-        color: var(--foreground-on-accent-rest);
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        min-width: 100%;
-        text-decoration: none;
-    }
-
     .backplate {
         display: flex;
         position: relative;
+        align-items: center;
+        justify-content: center;
         border-radius: 100%;
         min-width: 100%;
         overflow: hidden;
