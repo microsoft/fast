@@ -3,13 +3,11 @@
     "compilerOptions": {
         "baseUrl": ".",
         "outDir": "./dist",
-        "strictNullChecks": false,
-        "strictPropertyInitialization": false,
+        "module": "Node16",
+        "moduleResolution": "Node16",
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
         "allowJs": true,
-        "types": [
-            "mocha",
-            "webpack-env",
-            "node"
-        ]
+        "types": ["mocha", "webpack-env", "node"]
     }
 }

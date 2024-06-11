@@ -120,7 +120,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `sizeChanged`        | protected |                                                   |            | `void` |                |
 | `spellcheckChanged`  | protected |                                                   |            | `void` |                |
 | `validate`           | public    | {@inheritDoc (FormAssociated:interface).validate} |            | `void` |                |
-| `handleClearInput`   | public    | Handles the control's clear value event           |            | `void` |                |
+| `handleClearInput`   | public    | Clears the value                                  |            | `void` |                |
 
 #### Attributes
 
@@ -138,12 +138,12 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### CSS Parts
 
-| Name           | Description                                                     |
-| -------------- | --------------------------------------------------------------- |
-| `label`        | The label                                                       |
-| `root`         | The element wrapping the control, including start and end slots |
-| `control`      | The element representing the input                              |
-| `clear-button` | The button to clear the input                                   |
+| Name           | Description                                                                              |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| `label`        | The label                                                                                |
+| `control`      | The logical control, the element wrapping the input field, including start and end slots |
+| `field`        | The element representing the input field                                                 |
+| `clear-button` | The button to clear the input                                                            |
 
 #### Slots
 
@@ -153,7 +153,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `end`          | Content which can be provided after the search clear button |
 |                | The default slot for the label                              |
 | `clear-button` | The clear button                                            |
-| `clear-glyph`  | The clear glyph                                             |
+| `clear-icon`   | The clear icon                                              |
 
 <hr/>
 

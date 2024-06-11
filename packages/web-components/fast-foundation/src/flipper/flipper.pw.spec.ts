@@ -13,9 +13,11 @@ test.describe("Flipper", () => {
 
         element = page.locator("fast-flipper");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("flipper--flipper"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -77,7 +79,7 @@ test.describe("Flipper", () => {
 
         await (await element.elementHandle())?.waitForElementState("stable");
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test('should set the `tabindex` attribute to "-1" when `hiddenFromAT` is true', async () => {

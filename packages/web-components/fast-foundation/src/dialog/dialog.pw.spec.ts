@@ -15,13 +15,15 @@ test.describe("Dialog", () => {
 
         element = page.locator("fast-dialog");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(`[role="dialog"]`);
 
         overlay = element.locator(".overlay");
 
         await page.goto(fixtureURL("dialog--dialog"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -41,13 +43,13 @@ test.describe("Dialog", () => {
             node.hidden = true;
         });
 
-        await expect(element).toHaveBooleanAttribute("hidden");
+        await expect(element).toHaveAttribute("hidden");
 
         await element.evaluate((node: FASTDialog) => {
             node.hidden = false;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("hidden");
+        await expect(element).not.toHaveAttribute("hidden");
     });
 
     test("should set the `aria-describedby` attribute on the control when provided", async () => {
@@ -97,7 +99,7 @@ test.describe("Dialog", () => {
             node.modal = false;
         });
 
-        await expect(control).not.hasAttribute("aria-modal");
+        await expect(control).not.toHaveAttribute("aria-modal");
     });
 
     test('should add an overlay element with a `role` attribute of "presentation" when the `modal` property is true', async () => {
@@ -127,13 +129,13 @@ test.describe("Dialog", () => {
             node.noFocusTrap = true;
         });
 
-        await expect(element).toHaveBooleanAttribute("no-focus-trap");
+        await expect(element).toHaveAttribute("no-focus-trap");
 
         await element.evaluate((node: FASTDialog) => {
             node.noFocusTrap = false;
         });
 
-        await expect(element).not.toHaveBooleanAttribute("no-focus-trap");
+        await expect(element).not.toHaveAttribute("no-focus-trap");
     });
 
     test("should add the `hidden` attribute when the `hide()` method is invoked", async () => {
@@ -143,7 +145,7 @@ test.describe("Dialog", () => {
 
         await expect(element).toHaveJSProperty("hidden", false);
 
-        await expect(element).not.hasAttribute("hidden");
+        await expect(element).not.toHaveAttribute("hidden");
 
         await element.evaluate((node: FASTDialog) => {
             node.hide();
@@ -159,7 +161,7 @@ test.describe("Dialog", () => {
 
         await expect(element).toHaveJSProperty("hidden", true);
 
-        await expect(element).toHaveBooleanAttribute("hidden");
+        await expect(element).toHaveAttribute("hidden");
 
         await element.evaluate((node: FASTDialog) => {
             node.show();
@@ -167,7 +169,7 @@ test.describe("Dialog", () => {
 
         await expect(element).toHaveJSProperty("hidden", false);
 
-        await expect(element).not.toHaveBooleanAttribute("hidden");
+        await expect(element).not.toHaveAttribute("hidden");
     });
 
     test("should fire a 'dismiss' event when its overlay is clicked", async () => {

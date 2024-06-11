@@ -1,16 +1,27 @@
 import { html } from "@microsoft/fast-element";
 import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
 import { renderComponent } from "../../__test__/helpers.js";
-import { FASTDataGrid, GenerateHeaderOptions } from "../data-grid.js";
+import { defaultCellFocusTargetCallback } from "../data-grid-cell.js";
+import type { FASTDataGrid } from "../data-grid.js";
+import {
+    DataGridSelectionBehavior,
+    DataGridSelectionMode,
+    GenerateHeaderOptions,
+} from "../data-grid.js";
 
 const storyTemplate = html<StoryArgs<FASTDataGrid>>`
     <fast-data-grid
         style="${x => x.style}"
+        :columnDefinitions="${x => (x.columnDefinitions ? x.columnDefinitions : null)}"
         :rowsData="${x => x.rowsData}"
         no-tabbing="${x => x.noTabbing}"
         generate-header="${x => x.generateHeader}"
         grid-template-columns="${x => x.gridTemplateColumns}"
         page-size="${x => x.pageSize}"
+        disable-click-select="${x => x.disableClickSelect}"
+        selection-mode="${x => x.selectionMode}"
+        initial-row-selection="${x => x.initialRowSelection}"
+        selection-behavior="${x => x.selectionBehavior}"
     >
         ${x => x.content}
     </fast-data-grid>
@@ -35,25 +46,45 @@ function newDataSet(rowCount: number): any[] {
 export default {
     title: "Data Grid",
     args: {
-        rowsData: newDataSet(100),
+        rowsData: newDataSet(20),
     },
     argTypes: {
         style: {
-            control: { type: "text" },
+            control: "text",
         },
         content: { table: { disable: true } },
         noTabbing: {
-            control: { type: "boolean" },
+            control: "boolean",
         },
         generateHeader: {
-            options: ["none", "default", "sticky"],
-            control: { type: "select" },
+            options: Object.values(GenerateHeaderOptions),
+            control: "select",
         },
         pageSize: {
-            control: { type: "number" },
+            control: "number",
         },
         gridTemplateColumns: {
-            control: { type: "text" },
+            control: "text",
+        },
+        columnDefinitions: {
+            control: { type: "object" },
+        },
+        storyContent: {
+            table: { disable: true },
+        },
+        selectionMode: {
+            options: Object.values(DataGridSelectionMode),
+            control: "select",
+        },
+        selectionBehavior: {
+            options: Object.values(DataGridSelectionBehavior),
+            control: "select",
+        },
+        disableClickSelect: {
+            control: "boolean",
+        },
+        initialRowSelection: {
+            control: "text",
         },
     },
 } as Meta<FASTDataGrid>;
@@ -65,4 +96,65 @@ export const DataGridFixedHeight: Story<FASTDataGrid> = renderComponent(
 ).bind({});
 DataGridFixedHeight.args = {
     style: "height: 200px; overflow-y: scroll;",
+};
+
+export const DataGridColumnDefinitions: Story<FASTDataGrid> = renderComponent(
+    storyTemplate
+).bind({});
+DataGridColumnDefinitions.args = {
+    style: "height: 200px; overflow-y: scroll;",
+    columnDefinitions: [
+        { columnDataKey: "rowId" },
+        { columnDataKey: "item1" },
+        { columnDataKey: "item2" },
+    ],
+};
+
+const editCellTemplate = html`
+    <template>
+        <fast-text-field
+            tabIndex="-1"
+            value="${x => x.rowData[x.columnDefinition.columnDataKey]}"
+        ></fast-text-field>
+    </template>
+`;
+
+const checkboxCellTemplate = html`
+    <template>
+        <fast-checkbox>${x => x.rowData[x.columnDefinition.columnDataKey]}</fast-checkbox>
+    </template>
+`;
+
+const complexCellTemplate = html`
+  <template>
+    <complex-cell
+        tabIndex="-1"
+    ></complexCell>
+  </template>
+`;
+
+export const DataGridEditBoxes: Story<FASTDataGrid> = renderComponent(storyTemplate).bind(
+    {}
+);
+DataGridEditBoxes.args = {
+    columnDefinitions: [
+        { columnDataKey: "rowId" },
+        {
+            columnDataKey: "item1",
+            cellTemplate: checkboxCellTemplate,
+            cellFocusTargetCallback: defaultCellFocusTargetCallback,
+        },
+        {
+            columnDataKey: "item2",
+            cellInternalFocusQueue: true,
+            cellTemplate: editCellTemplate,
+            cellFocusTargetCallback: defaultCellFocusTargetCallback,
+        },
+        {
+            columnDataKey: "item3",
+            cellInternalFocusQueue: true,
+            cellTemplate: complexCellTemplate,
+            cellFocusTargetCallback: defaultCellFocusTargetCallback,
+        },
+    ],
 };

@@ -140,10 +140,8 @@ export class DOMTokenList {
  * @beta
  */
 export abstract class HTMLElement extends Element {
-    private static elementAttributes: WeakMap<
-        HTMLElement,
-        Map<string, string>
-    > = new WeakMap();
+    private static elementAttributes: WeakMap<HTMLElement, Map<string, string>> =
+        new WeakMap();
     private static getOrCreateAttributesForElement(element: HTMLElement) {
         let attrs = HTMLElement.elementAttributes.get(element);
         if (!attrs) {

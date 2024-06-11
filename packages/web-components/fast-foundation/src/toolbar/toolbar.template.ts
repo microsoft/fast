@@ -1,10 +1,5 @@
-import {
-    children,
-    elements,
-    ElementViewTemplate,
-    html,
-    slotted,
-} from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTToolbar } from "./toolbar.js";
 import type { ToolbarOptions } from "./toolbar.options.js";
@@ -24,7 +19,7 @@ export function toolbarTemplate<T extends FASTToolbar>(
             aria-orientation="${x => x.orientation}"
             orientation="${x => x.orientation}"
             role="toolbar"
-            @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+            @mousedown="${(x, c) => x.mouseDownHandler(c.event as MouseEvent)}"
             @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
             ${children({

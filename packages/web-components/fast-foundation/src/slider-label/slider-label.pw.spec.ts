@@ -14,9 +14,11 @@ test.describe("Slider label", () => {
 
         element = page.locator("fast-slider-label");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("slider-label--slider-label"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -30,7 +32,7 @@ test.describe("Slider label", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-disabled");
+        await expect(element).not.toHaveAttribute("aria-disabled");
     });
 
     test("should set the `aria-disabled` attribute when the `disabled` property is true", async () => {

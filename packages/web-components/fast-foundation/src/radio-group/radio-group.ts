@@ -25,24 +25,14 @@ import { RadioGroupOrientation } from "./radio-group.options.js";
  */
 export class FASTRadioGroup extends FASTElement {
     /**
-     * When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the child radios will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly
      */
     @attr({ attribute: "readonly", mode: "boolean" })
     public readOnly: boolean;
-    protected readOnlyChanged(): void {
-        if (this.slottedRadioButtons !== undefined) {
-            this.slottedRadioButtons.forEach((radio: FASTRadio) => {
-                if (this.readOnly) {
-                    radio.readOnly = true;
-                } else {
-                    radio.readOnly = false;
-                }
-            });
-        }
-    }
 
     /**
      * Disables the radio group and child radios.
@@ -173,10 +163,6 @@ export class FASTRadioGroup extends FASTElement {
                 radio.setAttribute("name", this.name);
             }
 
-            if (this.readOnly) {
-                radio.readOnly = true;
-            }
-
             if (this.value && this.value === radio.value) {
                 this.selectedRadio = radio;
                 this.focusedRadio = radio;
@@ -239,16 +225,8 @@ export class FASTRadioGroup extends FASTElement {
         const radio: FASTRadio = group[index] as FASTRadio;
         if (!this.isInsideToolbar) {
             radio.setAttribute("tabindex", "0");
-            if (radio.readOnly) {
-                this.slottedRadioButtons.forEach((nextRadio: FASTRadio) => {
-                    if (nextRadio !== radio) {
-                        nextRadio.setAttribute("tabindex", "-1");
-                    }
-                });
-            } else {
-                radio.checked = true;
-                this.selectedRadio = radio;
-            }
+            radio.checked = true;
+            this.selectedRadio = radio;
         }
         this.focusedRadio = radio;
         radio.focus();
@@ -350,11 +328,7 @@ export class FASTRadioGroup extends FASTElement {
     };
 
     private checkFocusedRadio = (): void => {
-        if (
-            this.focusedRadio !== null &&
-            !this.focusedRadio.readOnly &&
-            !this.focusedRadio.checked
-        ) {
+        if (this.focusedRadio !== null && !this.focusedRadio.checked) {
             this.focusedRadio.checked = true;
             this.focusedRadio.setAttribute("tabindex", "0");
             this.focusedRadio.focus();

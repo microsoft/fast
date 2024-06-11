@@ -1,6 +1,7 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
-import { staticallyCompose } from "../utilities/template-helpers.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor/anchor.template.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { BreadcrumbItemOptions, FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 /**
@@ -11,7 +12,7 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
     options: BreadcrumbItemOptions = {}
 ): ElementViewTemplate<T> {
     return html<T>`
-        <div role="listitem" class="listitem" part="listitem">
+        <template role="listitem">
             ${anchorTemplate(options).inline()}
             ${when(
                 x => x.separator,
@@ -23,6 +24,6 @@ export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
                     </span>
                 `
             )}
-        </div>
+        </template>
     `;
 }

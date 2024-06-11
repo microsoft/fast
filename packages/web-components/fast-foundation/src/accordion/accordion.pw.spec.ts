@@ -2,7 +2,6 @@ import type { Locator, Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 import { fixtureURL } from "../__test__/helpers.js";
 import { AccordionExpandMode } from "./accordion.options.js";
-import type { FASTAccordion } from "./accordion.js";
 
 test.describe("Accordion", () => {
     let page: Page;
@@ -14,9 +13,11 @@ test.describe("Accordion", () => {
 
         element = page.locator("fast-accordion");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("accordion--accordion"));
+
+        await element.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -133,9 +134,9 @@ test.describe("Accordion", () => {
 
         await firstItem.click();
 
-        await expect(firstItem).toHaveBooleanAttribute("expanded");
+        await expect(firstItem).toHaveAttribute("expanded");
 
-        await expect(secondItem).not.toHaveBooleanAttribute("expanded");
+        await expect(secondItem).not.toHaveAttribute("expanded");
 
         const secondItemButton = secondItem.locator(`[part="button"]`);
 
@@ -145,9 +146,9 @@ test.describe("Accordion", () => {
             node.dispatchEvent(new MouseEvent("click", { bubbles: true }));
         });
 
-        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+        await expect(firstItem).not.toHaveAttribute("expanded");
 
-        await expect(secondItem).toHaveBooleanAttribute("expanded");
+        await expect(secondItem).toHaveAttribute("expanded");
     });
 
     test("should set the expanded items' button to aria-disabled when in single expand mode", async () => {
@@ -174,7 +175,7 @@ test.describe("Accordion", () => {
 
         await firstItem.click();
 
-        await expect(firstItem).toHaveBooleanAttribute("expanded");
+        await expect(firstItem).toHaveAttribute("expanded");
 
         await expect(firstItem.locator("button")).toHaveAttribute(
             "aria-disabled",
@@ -183,7 +184,7 @@ test.describe("Accordion", () => {
 
         await secondItem.click();
 
-        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+        await expect(firstItem).not.toHaveAttribute("expanded");
 
         await expect(firstItem.locator("button")).not.toHaveAttribute(
             "aria-disabled",
@@ -194,7 +195,7 @@ test.describe("Accordion", () => {
             "false"
         );
 
-        await expect(secondItem).toHaveBooleanAttribute("expanded");
+        await expect(secondItem).toHaveAttribute("expanded");
 
         await expect(secondItem.locator("button")).toHaveAttribute(
             "aria-disabled",
@@ -202,6 +203,7 @@ test.describe("Accordion", () => {
         );
     });
 
+    /* eslint-disable-next-line max-len */
     test("should remove an expanded items' expandbutton aria-disabled attribute when expand mode changes from single to multi", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -224,7 +226,7 @@ test.describe("Accordion", () => {
 
         await firstItem.click();
 
-        await expect(firstItem).toHaveBooleanAttribute("expanded");
+        await expect(firstItem).toHaveAttribute("expanded");
 
         await expect(firstItem.locator("button")).toHaveAttribute(
             "aria-disabled",
@@ -235,7 +237,7 @@ test.describe("Accordion", () => {
             node.setAttribute("expand-mode", "multi");
         });
 
-        await expect(firstItem.locator("button")).not.hasAttribute("aria-disabled");
+        await expect(firstItem.locator("button")).not.toHaveAttribute("aria-disabled");
     });
 
     test("should set the first item as expanded if no child is expanded by default in single mode", async () => {
@@ -260,15 +262,15 @@ test.describe("Accordion", () => {
 
         const secondItem = items.nth(1);
 
-        await expect(firstItem).toHaveBooleanAttribute("expanded");
+        await expect(firstItem).toHaveAttribute("expanded");
 
-        await expect(secondItem).not.toHaveBooleanAttribute("expanded");
+        await expect(secondItem).not.toHaveAttribute("expanded");
 
         await secondItem.evaluate<void>(node => node.setAttribute("expanded", ""));
 
-        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+        await expect(firstItem).not.toHaveAttribute("expanded");
 
-        await expect(secondItem).toHaveBooleanAttribute("expanded");
+        await expect(secondItem).toHaveAttribute("expanded");
     });
 
     test("should set the first item with an expanded attribute to expanded in single mode", async () => {
@@ -299,11 +301,11 @@ test.describe("Accordion", () => {
 
         const thirdItem = items.nth(2);
 
-        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+        await expect(firstItem).not.toHaveAttribute("expanded");
 
-        await expect(secondItem).toHaveBooleanAttribute("expanded");
+        await expect(secondItem).toHaveAttribute("expanded");
 
-        await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
+        await expect(thirdItem).not.toHaveAttribute("expanded");
     });
 
     test("should allow disabled items to be expanded when in single mode", async () => {
@@ -335,21 +337,21 @@ test.describe("Accordion", () => {
 
         const thirdItem = items.nth(2);
 
-        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+        await expect(firstItem).not.toHaveAttribute("expanded");
 
-        await expect(secondItem).toHaveBooleanAttribute("expanded");
+        await expect(secondItem).toHaveAttribute("expanded");
 
-        await expect(thirdItem).toHaveBooleanAttribute("expanded");
+        await expect(thirdItem).toHaveAttribute("expanded");
 
         await secondItem.evaluate(node => {
             node.removeAttribute("disabled");
         });
 
-        await expect(firstItem).not.toHaveBooleanAttribute("expanded");
+        await expect(firstItem).not.toHaveAttribute("expanded");
 
-        await expect(secondItem).toHaveBooleanAttribute("expanded");
+        await expect(secondItem).toHaveAttribute("expanded");
 
-        await expect(thirdItem).not.toHaveBooleanAttribute("expanded");
+        await expect(thirdItem).not.toHaveAttribute("expanded");
     });
 
     test("should ignore `change` events from components other than accordion items", async () => {

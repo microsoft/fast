@@ -29,7 +29,7 @@ npm install --save @microsoft/fast-ssr @microsoft/fast-element
 `@microsoft/fast-ssr` requires a minimal DOM implementation to function. Install the shim by importing it. Doing so will ensure availability of certain DOM globals like `HTMLElement`, `Document`, etc.
 
 ```js
-import "@microsoft/fast-ssr/install-dom-shim";
+import "@microsoft/fast-ssr/install-dom-shim.js";
 ```
 
 Alternatively, a full DOM implementation such as [`jsdom`](https://github.com/jsdom/jsdom) or [`happy-dom`](https://github.com/capricorn86/happy-dom) can be used.
@@ -57,7 +57,7 @@ const { templateRenderer } = fastSSR();
 ### Define Custom Elements
 Ensure that the custom elements used in the template you are rendering are defined in the `customElements` registry. This example defines a component directly, but you can also import any components being used:
 ```js
-import { customElement, html, FASTElement } from "@microsoft/fast-element":
+import { attr, customElement, html, FASTElement } from "@microsoft/fast-element";
 
 @customElement({name: "my-element", template: html`<h1>${x => x.message}</h1>`})
 class MyElement extends FASTElement {

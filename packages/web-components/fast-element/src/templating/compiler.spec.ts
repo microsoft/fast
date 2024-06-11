@@ -3,7 +3,7 @@ import { customElement, FASTElement } from "../components/fast-element.js";
 import { Markup } from './markup.js';
 import { css } from "../styles/css.js";
 import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
-import { bind, HTMLBindingDirective } from "./binding.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { Compiler } from "./compiler.js";
 import { CompiledViewBehaviorFactory, HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
 import { html } from "./template.js";
@@ -11,6 +11,7 @@ import { ElementStyles } from "../index.debug.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { Fake } from "../testing/fakes.js";
 import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import { oneWay } from "../binding/one-way.js";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
@@ -44,7 +45,7 @@ describe("The template compiler", () => {
     }
 
     function binding(result = "result") {
-        return new HTMLBindingDirective(bind(() => result));
+        return new HTMLBindingDirective(oneWay(() => result));
     }
 
     const scope = {};
@@ -67,6 +68,13 @@ describe("The template compiler", () => {
             {
                 type: "no",
                 html: ``,
+                directives: () => [],
+                fragment: ``,
+                childCount: 0,
+            },
+            {
+                type: "an empty template",
+                html: `<template></template>`,
                 directives: () => [],
                 fragment: ``,
                 childCount: 0,
@@ -180,6 +188,13 @@ describe("The template compiler", () => {
         ];
 
         scenarios.forEach(x => {
+            it(`ensures that first and last child references are not null for ${x.type}`, () => {
+                const { fragment } = compile(x.html, x.directives());
+
+                expect(fragment.firstChild).not.to.be.null;
+                expect(fragment.lastChild).not.to.be.null;
+            })
+
             policies.forEach(y => {
                 it(`handles ${x.type} binding expression(s) with ${y.name} policy`, () => {
                     const directives = x.directives();
@@ -230,7 +245,7 @@ describe("The template compiler", () => {
                 return id;
             };
 
-            const binding = new HTMLBindingDirective(bind(x => x));
+            const binding = new HTMLBindingDirective(oneWay(x => x));
             HTMLDirective.assignAspect(binding, "a"); // mimic the html function, which will think it's an attribute
             const html = `a=${binding.createHTML(add)}`;
 

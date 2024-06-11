@@ -718,7 +718,8 @@ export const DI = Object.freeze({
      * @returns An array of dependency keys.
      */
     getDependencies(Type: Constructable | Injectable): Key[] {
-        // Note: Every detail of this getDependencies method is pretty deliberate at the moment, and probably not yet 100% tested from every possible angle,
+        // Note: Every detail of this getDependencies method is pretty deliberate at the moment,
+        // and probably not yet 100% tested from every possible angle,
         // so be careful with making changes here as it can have a huge impact on complex end user apps.
         // Preferably, only make changes to the dependency resolution process via a RFC.
 
@@ -886,9 +887,8 @@ export const DI = Object.freeze({
         ): void {
             if (typeof descriptor === "number") {
                 // It's a parameter decorator.
-                const annotationParamtypes = Metadata.getOrCreateAnnotationParamTypes(
-                    target
-                );
+                const annotationParamtypes =
+                    Metadata.getOrCreateAnnotationParamTypes(target);
                 const dep = dependencies[0];
                 if (dep !== void 0) {
                     annotationParamtypes[descriptor] = dep;
@@ -996,13 +996,13 @@ export const Container = DI.createContext<Container>("Container");
  * The key that resolves a DOMContainer itself.
  * @public
  */
-export const DOMContainer = (Container as unknown) as ContextDecorator<DOMContainer>;
+export const DOMContainer = Container as unknown as ContextDecorator<DOMContainer>;
 
 /**
  * The key that resolves the ServiceLocator itself.
  * @public
  */
-export const ServiceLocator = (Container as unknown) as ContextDecorator<ServiceLocator>;
+export const ServiceLocator = Container as unknown as ContextDecorator<ServiceLocator>;
 
 function createResolver(
     getter: (key: any, handler: Container, requestor: Container) => any
@@ -1703,7 +1703,7 @@ export class ContainerImpl implements DOMContainer {
             // type Constructable. So the return type of that optional method has this additional constraint, which
             // seems to confuse the type checker.
             factory.registerTransformer(
-                (transformer as unknown) as Transformer<Constructable>
+                transformer as unknown as Transformer<Constructable>
             );
 
             return true;
@@ -1718,8 +1718,8 @@ export class ContainerImpl implements DOMContainer {
     ): Resolver<T> | null {
         validateKey(key);
 
-        if (((key as unknown) as Resolver).resolve !== void 0) {
-            return (key as unknown) as Resolver;
+        if ((key as unknown as Resolver).resolve !== void 0) {
+            return key as unknown as Resolver;
         }
 
         /* eslint-disable-next-line @typescript-eslint/no-this-alias */
@@ -1732,7 +1732,7 @@ export class ContainerImpl implements DOMContainer {
             if (resolver == null) {
                 if (current.parent == null) {
                     const handler = isRegisterInRequester(
-                        (key as unknown) as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>
                     )
                         ? this
                         : current;
@@ -1779,7 +1779,7 @@ export class ContainerImpl implements DOMContainer {
                     }
 
                     const handler = isRegisterInRequester(
-                        (key as unknown) as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>
                     )
                         ? this
                         : current;
@@ -1814,7 +1814,7 @@ export class ContainerImpl implements DOMContainer {
             if (resolver == null) {
                 if (current.parent == null) {
                     const handler = isRegisterInRequester(
-                        (key as unknown) as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>
                     )
                         ? this
                         : current;
@@ -2157,7 +2157,8 @@ const isNativeFunction = (function () {
                 i <= 100 &&
                 // This whole heuristic *could* be tricked by a comment. Do we need to care about that?
                 sourceText.charCodeAt(i - 1) === 0x7d && // }
-                // TODO: the spec is a little vague about the precise constraints, so we do need to test this across various browsers to make sure just one whitespace is a safe assumption.
+                // TODO: the spec is a little vague about the precise constraints,
+                // so we do need to test this across various browsers to make sure just one whitespace is a safe assumption.
                 sourceText.charCodeAt(i - 2) <= 0x20 && // whitespace
                 sourceText.charCodeAt(i - 3) === 0x5d && // ]
                 sourceText.charCodeAt(i - 4) === 0x65 && // e

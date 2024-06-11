@@ -4,21 +4,21 @@
 
 ```ts
 
-import { CaptureType } from '@microsoft/fast-element';
-import { Constructable } from '@microsoft/fast-element';
-import { CSSDirective } from '@microsoft/fast-element';
+import type { CaptureType } from '@microsoft/fast-element';
+import type { Constructable } from '@microsoft/fast-element';
+import type { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
-import { ElementStyles } from '@microsoft/fast-element';
-import { ElementViewTemplate } from '@microsoft/fast-element';
+import type { ElementStyles } from '@microsoft/fast-element';
+import type { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
-import { HostBehavior } from '@microsoft/fast-element';
-import { HostController } from '@microsoft/fast-element';
-import { HTMLDirective } from '@microsoft/fast-element';
+import type { HostBehavior } from '@microsoft/fast-element';
+import type { HostController } from '@microsoft/fast-element';
+import type { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import type { SyntheticViewTemplate } from '@microsoft/fast-element';
-import { ViewTemplate } from '@microsoft/fast-element';
+import type { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export const AccordionExpandMode: {
@@ -31,8 +31,7 @@ export type AccordionExpandMode = ValuesOf<typeof AccordionExpandMode>;
 
 // @public
 export type AccordionItemOptions = StartEndOptions<FASTAccordionItem> & {
-    expandedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
-    collapsedIcon?: StaticallyComposableHTML<FASTAccordionItem>;
+    expandCollapseIcon?: StaticallyComposableHTML<FASTAccordionItem>;
 };
 
 // @public
@@ -90,9 +89,6 @@ export type AnchorTarget = ValuesOf<typeof AnchorTarget>;
 
 // @public
 export function anchorTemplate<T extends FASTAnchor>(options?: AnchorOptions): ViewTemplate<T>;
-
-// @public
-export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
 
 // @public
 export class ARIAGlobalStatesAndProperties {
@@ -155,7 +151,10 @@ export const AxisScalingMode: {
 export type AxisScalingMode = ValuesOf<typeof AxisScalingMode>;
 
 // @public
-export function badgeTemplate<T extends FASTBadge>(): ElementViewTemplate<T>;
+export type BadgeOptions = StartEndOptions;
+
+// @public
+export function badgeTemplate<T extends FASTBadge>(options?: BadgeOptions): ElementViewTemplate<T>;
 
 // @public
 export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
@@ -166,7 +165,10 @@ export type BreadcrumbItemOptions = StartEndOptions<FASTBreadcrumbItem> & {
 export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(options?: BreadcrumbItemOptions): ElementViewTemplate<T>;
 
 // @public
-export function breadcrumbTemplate<T extends FASTBreadcrumb>(): ElementViewTemplate<T>;
+export type BreadcrumbOptions = StartEndOptions;
+
+// @public
+export function breadcrumbTemplate<T extends FASTBreadcrumb>(options?: BreadcrumbOptions): ElementViewTemplate<T>;
 
 // @public
 export type ButtonOptions = StartEndOptions<FASTButton>;
@@ -267,12 +269,12 @@ export function checkboxTemplate<T extends FASTCheckbox>(options?: CheckboxOptio
 
 // @public
 export interface ColumnDefinition {
-    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
     cellInternalFocusQueue?: boolean;
     cellTemplate?: ViewTemplate | SyntheticViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
-    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: FASTDataGridCell) => HTMLElement | null;
     headerCellInternalFocusQueue?: boolean;
     headerCellTemplate?: ViewTemplate | SyntheticViewTemplate;
     isRowHeader?: boolean;
@@ -352,6 +354,26 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
+export const DataGridSelectionBehavior: {
+    readonly programmatic: "programmatic";
+    readonly keyboardOnly: "keyboard-only";
+    readonly auto: "auto";
+};
+
+// @public
+export type DataGridSelectionBehavior = ValuesOf<typeof DataGridSelectionBehavior>;
+
+// @public
+export const DataGridSelectionMode: {
+    readonly none: "none";
+    readonly singleRow: "single-row";
+    readonly multiRow: "multi-row";
+};
+
+// @public
+export type DataGridSelectionMode = ValuesOf<typeof DataGridSelectionMode>;
+
+// @public
 export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
 
 // @public
@@ -394,6 +416,9 @@ export const DayFormat: {
 
 // @public
 export type DayFormat = ValuesOf<typeof DayFormat>;
+
+// @public (undocumented)
+export const defaultCellFocusTargetCallback: (cell: FASTDataGridCell) => HTMLElement | null;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAButton" because one of its declarations is marked as @internal
@@ -766,8 +791,15 @@ export class FASTAnchoredRegion extends FASTElement {
 export class FASTAvatar extends FASTElement {
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTBadge" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTBadge extends FASTElement {
+}
+
+// @internal
+export interface FASTBadge extends StartEnd {
 }
 
 // @public
@@ -787,12 +819,19 @@ export class FASTBaseProgress extends FASTElement {
     protected valueChanged(): void;
 }
 
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "FASTBreadcrumb" because one of its declarations is marked as @internal
+//
 // @public
 export class FASTBreadcrumb extends FASTElement {
     // @internal (undocumented)
     slottedBreadcrumbItems: HTMLElement[];
     // (undocumented)
     protected slottedBreadcrumbItemsChanged(): void;
+}
+
+// @internal
+export interface FASTBreadcrumb extends StartEnd {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -973,7 +1012,6 @@ export interface FASTCombobox extends StartEnd, DelegatesARIACombobox {
 
 // @public
 export class FASTDataGrid extends FASTElement {
-    constructor();
     cellItemTemplate?: ViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
@@ -986,7 +1024,7 @@ export class FASTDataGrid extends FASTElement {
     disconnectedCallback(): void;
     focusColumnIndex: number;
     focusRowIndex: number;
-    static generateColumns: (row: object) => ColumnDefinition[];
+    static generateColumns(row: object): ColumnDefinition[];
     generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
     // (undocumented)
@@ -999,7 +1037,10 @@ export class FASTDataGrid extends FASTElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
+    // (undocumented)
+    handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
+    initialRowSelection: string;
     noTabbing: boolean;
     // (undocumented)
     protected noTabbingChanged(): void;
@@ -1011,6 +1052,11 @@ export class FASTDataGrid extends FASTElement {
     rowsData: object[];
     // (undocumented)
     protected rowsDataChanged(): void;
+    rowSelectableCallback: (rowIndex: number, grid: FASTDataGrid) => boolean;
+    get selectedRowIndexes(): number[];
+    set selectedRowIndexes(next: number[]);
+    selectionBehavior: DataGridSelectionBehavior;
+    selectionMode: DataGridSelectionMode;
 }
 
 // @public
@@ -1056,11 +1102,13 @@ export class FASTDataGridRow extends FASTElement {
     gridTemplateColumns: string;
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleCellFocus(e: Event): void;
+    // @internal (undocumented)
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
-    // (undocumented)
+    // @internal (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     // @internal
@@ -1070,8 +1118,14 @@ export class FASTDataGridRow extends FASTElement {
     protected rowDataChanged(): void;
     rowIndex: number;
     rowType: DataGridRowTypes;
+    // @internal
+    selected: boolean;
+    // @internal
+    selectionBehavior: DataGridSelectionBehavior;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
+    // Warning: (ae-forgotten-export) The symbol "DataGridSelectionChangeDetail" needs to be exported by the entry point index.d.ts
+    toggleSelected(detail: DataGridSelectionChangeDetail): void;
 }
 
 // @public
@@ -1222,7 +1276,7 @@ export abstract class FASTListbox extends FASTElement {
     protected setSelectedOptions(): void;
     // @internal
     protected shouldSkipFocus: boolean;
-    static slottedOptionFilter: (n: HTMLElement) => boolean;
+    static slottedOptionFilter(n: HTMLElement): boolean;
     // @internal
     slottedOptions: Element[];
     // @internal
@@ -1427,9 +1481,9 @@ export class FASTNumberField extends FormAssociatedNumberField {
     // @internal
     connectedCallback(): void;
     // @internal
-    control: HTMLInputElement;
-    // @internal
     defaultSlottedNodes: Node[];
+    // @internal
+    field: HTMLInputElement;
     // @internal
     handleBlur(): void;
     // @internal
@@ -1515,7 +1569,7 @@ export class FASTPicker extends FormAssociatedPicker {
     // (undocumented)
     protected listItemTemplateChanged(): void;
     loadingText: string;
-    maxSelected: number | undefined;
+    maxSelected: number | null;
     // @internal
     menuConfig: AnchoredRegionConfig;
     // @internal
@@ -1638,9 +1692,6 @@ export class FASTRadio extends FormAssociatedRadio implements RadioControl {
     // @beta
     keypressHandler(e: KeyboardEvent): boolean | void;
     name: string;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
 }
 
 // @public
@@ -1667,8 +1718,6 @@ export class FASTRadioGroup extends FASTElement {
     protected nameChanged(): void;
     orientation: RadioGroupOrientation;
     readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
     // (undocumented)
@@ -1689,10 +1738,10 @@ export class FASTSearch extends FormAssociatedSearch {
     protected autofocusChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
-    // @internal
-    control: HTMLInputElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
+    field: HTMLInputElement;
     // @internal
     handleChange(): void;
     handleClearInput(): void;
@@ -1716,8 +1765,6 @@ export class FASTSearch extends FormAssociatedSearch {
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    // @internal
-    root: HTMLDivElement;
     size: number;
     // (undocumented)
     protected sizeChanged(): void;
@@ -1817,19 +1864,27 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     // (undocumented)
     protected keypressHandler: (e: KeyboardEvent) => void;
     max: number;
+    // (undocumented)
+    protected maxChanged(): void;
     min: number;
+    // (undocumented)
+    protected minChanged(): void;
     mode: SliderMode;
     orientation: Orientation;
+    // (undocumented)
+    protected orientationChanged(): void;
     // @internal (undocumented)
     position: string;
     readOnly: boolean;
     // (undocumented)
     protected readOnlyChanged(): void;
-    step: number;
+    step: number | undefined;
+    // (undocumented)
+    protected stepChanged(): void;
     // @internal (undocumented)
     stepMultiplier: number;
     // @internal (undocumented)
-    thumb: HTMLDivElement;
+    thumbContainer: HTMLDivElement;
     // @internal (undocumented)
     track: HTMLDivElement;
     // @internal (undocumented)
@@ -1853,6 +1908,8 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
 export class FASTSliderLabel extends FASTElement {
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    container: HTMLDivElement;
     disabled: boolean;
     // @internal (undocumented)
     disconnectedCallback(): void;
@@ -1869,8 +1926,6 @@ export class FASTSliderLabel extends FASTElement {
     // @internal (undocumented)
     positionStyle: string;
     // @internal (undocumented)
-    root: HTMLDivElement;
-    // @internal (undocumented)
     sliderDirection: Direction;
     // @internal (undocumented)
     sliderMaxPosition: number;
@@ -1883,8 +1938,6 @@ export class FASTSliderLabel extends FASTElement {
 // @public
 export class FASTSwitch extends FormAssociatedSwitch {
     constructor();
-    // @internal (undocumented)
-    checkedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
@@ -1922,18 +1975,14 @@ export class FASTTabs extends FASTElement {
     activeid: string;
     // @internal (undocumented)
     activeidChanged(oldValue: string, newValue: string): void;
-    // @internal (undocumented)
-    activeIndicatorRef: HTMLElement;
     activetab: HTMLElement;
     adjust(adjustment: number): void;
     // @internal (undocumented)
     connectedCallback(): void;
-    hideActiveIndicator: boolean;
     orientation: TabsOrientation;
     // @internal (undocumented)
     orientationChanged(): void;
-    // @internal (undocumented)
-    showActiveIndicator: boolean;
+    protected setTabs(): void;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
     // @internal (undocumented)
@@ -1958,10 +2007,10 @@ export class FASTTextArea extends FormAssociatedTextArea {
     // (undocumented)
     protected autofocusChanged(): void;
     cols: number;
-    // @internal
-    control: HTMLTextAreaElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
+    field: HTMLTextAreaElement;
     formId: string;
     // @internal
     handleChange(): void;
@@ -1991,7 +2040,7 @@ export class FASTTextArea extends FormAssociatedTextArea {
 }
 
 // @internal
-export interface FASTTextArea extends DelegatesARIATextbox {
+export interface FASTTextArea extends StartEnd, DelegatesARIATextbox {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2005,10 +2054,10 @@ export class FASTTextField extends FormAssociatedTextField {
     protected autofocusChanged(): void;
     // @internal (undocumented)
     connectedCallback(): void;
-    // @internal
-    control: HTMLInputElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
+    field: HTMLInputElement;
     // @internal
     handleChange(): void;
     // @internal
@@ -2060,8 +2109,6 @@ export class FASTToolbar extends FASTElement {
     childItems: Element[];
     // (undocumented)
     protected childItemsChanged(prev: undefined | Element[], next: Element[]): void;
-    // @internal
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2070,6 +2117,8 @@ export class FASTToolbar extends FASTElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    mouseDownHandler(e: MouseEvent): boolean | void;
     orientation: ToolbarOrientation;
     // @internal
     protected reduceFocusableElements(): void;
@@ -2311,6 +2360,9 @@ export type GenerateHeaderOptions = ValuesOf<typeof GenerateHeaderOptions>;
 // @public
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
+// @public (undocumented)
+export function getRootActiveElement(element: Element): Element | null;
+
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
@@ -2454,8 +2506,8 @@ export function noninteractiveCalendarTemplate<T extends FASTCalendar>(options: 
 
 // @public
 export type NumberFieldOptions = StartEndOptions<FASTNumberField> & {
-    stepDownGlyph?: StaticallyComposableHTML<FASTNumberField>;
-    stepUpGlyph?: StaticallyComposableHTML<FASTNumberField>;
+    stepDownIcon?: StaticallyComposableHTML<FASTNumberField>;
+    stepUpIcon?: StaticallyComposableHTML<FASTNumberField>;
 };
 
 // @public
@@ -2534,7 +2586,7 @@ export interface PropertyTarget {
 export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement;
 
 // @public
-export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "readOnly" | "focus" | "setAttribute" | "getAttribute">;
+export type RadioControl = Pick<HTMLInputElement, "checked" | "disabled" | "focus" | "setAttribute" | "getAttribute">;
 
 // @public
 export const RadioGroupOrientation: {
@@ -2563,7 +2615,7 @@ export function reflectAttributes<TSource = any, TParent = any>(...attributes: s
 //
 // @internal (undocumented)
 export const roleForMenuItem: {
-    [value in keyof typeof MenuItemRole]: typeof MenuItemRole[value];
+    [value in keyof typeof MenuItemRole]: (typeof MenuItemRole)[value];
 };
 
 // @public
@@ -2578,7 +2630,9 @@ export const ScrollEasing: {
 export type ScrollEasing = ValuesOf<typeof ScrollEasing>;
 
 // @public
-export type SearchOptions = StartEndOptions<FASTSearch>;
+export type SearchOptions = StartEndOptions<FASTSearch> & {
+    clearIcon?: StaticallyComposableHTML<FASTSearch>;
+};
 
 // @public
 export function searchTemplate<T extends FASTSearch>(options?: SearchOptions): ElementViewTemplate<T>;
@@ -2678,7 +2732,7 @@ export const supportsElementInternals: boolean;
 
 // @public
 export type SwitchOptions = {
-    switch?: StaticallyComposableHTML<FASTSwitch>;
+    thumb?: StaticallyComposableHTML<FASTSwitch>;
 };
 
 // @public
@@ -2715,6 +2769,9 @@ export function tagFor(dependency: TemplateElementDependency): string;
 export type TemplateElementDependency = string | FASTElementDefinition | Constructable<FASTElement>;
 
 // @public
+export type TextAreaOptions = StartEndOptions;
+
+// @public
 export const TextAreaResize: {
     readonly none: "none";
     readonly both: "both";
@@ -2726,7 +2783,7 @@ export const TextAreaResize: {
 export type TextAreaResize = ValuesOf<typeof TextAreaResize>;
 
 // @public
-export function textAreaTemplate<T extends FASTTextArea>(): ElementViewTemplate<T>;
+export function textAreaTemplate<T extends FASTTextArea>(options?: TextAreaOptions): ElementViewTemplate<T>;
 
 // @public
 export type TextFieldOptions = StartEndOptions<FASTTextField>;
@@ -2838,9 +2895,9 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:54:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

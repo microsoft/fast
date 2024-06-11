@@ -2,22 +2,19 @@ import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
+import { Binding, BindingDirective } from "../binding/binding.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
     Expression,
     ExpressionObserver,
 } from "../observation/observable.js";
-import {
-    bind,
-    ContentTemplate,
-    ContentView,
-    normalizeBinding,
-    oneTime,
-} from "./binding.js";
+import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
+import { normalizeBinding } from "../binding/normalize.js";
+import type { ContentTemplate, ContentView } from "./html-binding-directive.js";
 import {
     AddViewBehaviorFactory,
-    Binding,
     HTMLDirective,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -56,10 +53,10 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param directive - The render directive that created this behavior.
      */
     public constructor(private directive: RenderDirective) {
-        this.dataBindingObserver = directive.dataBinding.createObserver(directive, this);
+        this.dataBindingObserver = directive.dataBinding.createObserver(this, directive);
         this.templateBindingObserver = directive.templateBinding.createObserver(
-            directive,
-            this
+            this,
+            directive
         );
     }
 
@@ -149,10 +146,11 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
  * @public
  */
 export class RenderDirective<TSource = any>
-    implements HTMLDirective, ViewBehaviorFactory {
+    implements HTMLDirective, ViewBehaviorFactory, BindingDirective
+{
     /**
      * The structural id of the DOM node to which the created behavior will apply.
-     */
+     */ BindingDirective;
     public targetNodeId: string;
 
     /**
@@ -271,6 +269,23 @@ export type BaseElementRenderOptions<
 };
 
 /**
+ * Render options for directly creating an element with {@link RenderInstruction.createElementTemplate}
+ * @public
+ */
+export type ElementCreateOptions<TSource = any, TParent = any> = Omit<
+    BaseElementRenderOptions,
+    "type" | "name"
+> & {
+    /**
+     * Directives to use when creating the element template. These directives are applied directly to the specified tag.
+     *
+     * @remarks
+     * Directives supported by this API are: `ref`, `children`, `slotted`, or any custom `HTMLDirective` that can be used on a HTML tag.
+     */
+    directives?: TemplateValue<TSource, TParent>[];
+};
+
+/**
  * Render options used to specify an element.
  * @public
  */
@@ -329,16 +344,15 @@ function instructionToTemplate(def: RenderInstruction | undefined) {
 
 function createElementTemplate<TSource = any, TParent = any>(
     tagName: string,
-    attributes?: Record<string, string | TemplateValue<TSource, TParent>>,
-    content?: string | ContentTemplate,
-    policy?: DOMPolicy
+    options?: ElementCreateOptions
 ): ViewTemplate<TSource, TParent> {
     const markup: Array<string> = [];
     const values: Array<TemplateValue<TSource, TParent>> = [];
+    const { attributes, directives, content, policy } = options ?? {};
 
+    markup.push(`<${tagName}`);
     if (attributes) {
         const attrNames = Object.getOwnPropertyNames(attributes);
-        markup.push(`<${tagName}`);
 
         for (let i = 0, ii = attrNames.length; i < ii; ++i) {
             const name = attrNames[i];
@@ -352,10 +366,22 @@ function createElementTemplate<TSource = any, TParent = any>(
             values.push(attributes[name]);
         }
 
-        markup.push(`">`);
-    } else {
-        markup.push(`<${tagName}>`);
+        markup.push(`"`);
     }
+
+    if (directives) {
+        markup[markup.length - 1] += " ";
+
+        for (let i = 0, ii = directives.length; i < ii; ++i) {
+            const directive = directives[i];
+
+            markup.push(i > 0 ? "" : " ");
+
+            values.push(directive);
+        }
+    }
+
+    markup[markup.length - 1] += ">";
 
     if (content && isFunction((content as any).create)) {
         values.push(content);
@@ -390,12 +416,11 @@ function create(options: any): RenderInstruction {
             }
         }
 
-        template = createElementTemplate(
-            tagName,
-            options.attributes ?? defaultAttributes,
-            options.content,
-            options.policy
-        );
+        if (!options.attributes) {
+            options.attributes = defaultAttributes;
+        }
+
+        template = createElementTemplate(tagName, options);
     } else {
         template = options.template;
     }
@@ -639,7 +664,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
             return instructionToTemplate(getForInstance(data));
         });
     } else if (isFunction(template)) {
-        templateBinding = bind(
+        templateBinding = oneWay(
             (s: any, c: ExecutionContext) => {
                 let result = template(s, c);
 

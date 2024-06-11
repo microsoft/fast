@@ -173,7 +173,7 @@ export const mySliderLabel = SliderLabel.compose({
 | `valueTextFormatter` | public    | `(value: string) => string or null` |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                          |                      |
 | `min`                | public    | `number`                            | `0`     | The minimum allowed value.                                                                                                                                                                  |                      |
 | `max`                | public    | `number`                            | `10`    | The maximum allowed value.                                                                                                                                                                  |                      |
-| `step`               | public    | `number`                            | `1`     | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                        |                      |
+| `step`               | public    | `number or undefined`               |         | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                        |                      |
 | `orientation`        | public    | `Orientation`                       |         | The orientation of the slider.                                                                                                                                                              |                      |
 | `mode`               | public    | `SliderMode`                        |         | The selection mode.                                                                                                                                                                         |                      |
 | `keypressHandler`    | protected |                                     |         |                                                                                                                                                                                             |                      |
@@ -184,6 +184,10 @@ export const mySliderLabel = SliderLabel.compose({
 | Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From |
 | -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | -------------- |
 | `readOnlyChanged`                | protected |                                             |                        | `void` |                |
+| `minChanged`                     | protected |                                             |                        | `void` |                |
+| `maxChanged`                     | protected |                                             |                        | `void` |                |
+| `stepChanged`                    | protected |                                             |                        | `void` |                |
+| `orientationChanged`             | protected |                                             |                        | `void` |                |
 | `increment`                      | public    | Increment the value by the step             |                        | `void` |                |
 | `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                |
 | `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                |
@@ -207,12 +211,13 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### CSS Parts
 
-| Name                 | Description                                                     |
-| -------------------- | --------------------------------------------------------------- |
-| `positioning-region` | The region used to position the elements of the slider          |
-| `track-container`    | The region containing the track elements                        |
-| `track-start`        | The element wrapping the track start slot                       |
-| `thumb-container`    | The thumb container element which is programatically positioned |
+| Name                 | Description                                                      |
+| -------------------- | ---------------------------------------------------------------- |
+| `positioning-region` | The region used to position the elements of the slider           |
+| `track`              | The region containing the track elements                         |
+| `track-start`        | The element wrapping the track start slot                        |
+| `thumb-container`    | The thumb container element which is programmatically positioned |
+| `thumb`              | The thumb element                                                |
 
 #### Slots
 
@@ -261,9 +266,11 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### CSS Parts
 
-| Name   | Description                                  |
-| ------ | -------------------------------------------- |
-| `root` | The element wrapping the label mark and text |
+| Name        | Description                                     |
+| ----------- | ----------------------------------------------- |
+| `container` | The element wrapping the label mark and content |
+| `mark`      | The element wrapping the label mark             |
+| `content`   | The element wrapping the label content          |
 
 #### Slots
 

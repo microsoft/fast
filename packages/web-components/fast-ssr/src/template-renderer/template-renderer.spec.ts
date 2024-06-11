@@ -4,10 +4,10 @@ import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 import { DefaultTemplateRenderer } from "./template-renderer.js";
-import { render } from "@microsoft/fast-element/render";
+import { render } from "@microsoft/fast-element/render.js";
 import { DefaultElementRenderer } from "../element-renderer/element-renderer.js";
 import { RenderInfo } from "../render-info.js";
-import { uniqueElementName } from "@microsoft/fast-element/testing";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -104,26 +104,26 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<with-slot></with-slot>`)
 
-            expect(consolidate(result)).toBe("<with-slot><template shadowroot=\"open\"><slot></slot></template></with-slot>");
+            expect(consolidate(result)).toBe("<with-slot><template shadowrootmode=\"open\"><slot></slot></template></with-slot>");
         });
         test("should emit template element with shadowroot attribute for defined custom element", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world></hello-world>`)
 
-            expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
+            expect(consolidate(result)).toBe("<hello-world><template shadowrootmode=\"open\"></template></hello-world>");
         });
         test("should render a custom element with a static attribute", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`)
 
-            expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowroot=\"open\"></template></hello-world>`);
+            expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowrootmode=\"open\"></template></hello-world>`);
         });
 
         test("should emit a custom element with attributes and properties reflected from an element's root <template> element", () => {
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`)
 
-            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
+            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowrootmode=\"open\">value<slot></slot></template></with-host-attributes>`);
         });
     });
     test.describe("rendering a FAST element configured with a null shadowOptions config", () => {
@@ -207,9 +207,9 @@ test.describe("TemplateRenderer", () => {
 
         for (const key of [name, definition, MyElement]) {
             const  { ElementRenderer, templateRenderer } = fastSSR();
-            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowroot="open"><p>Hello world</p></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowrootmode="open"><p>Hello world</p></template></${name}>`);
             ElementRenderer.disable(key);
-            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowroot="open"></template></${name}>`);
+            expect(consolidate(templateRenderer.render(html`<${html.partial(name)}></${html.partial(name)}>`))).toBe(`<${name}><template shadowrootmode="open"></template></${name}>`);
         }
     });
 
@@ -259,7 +259,7 @@ test.describe("TemplateRenderer", () => {
         const { templateRenderer } = fastSSR();
         const result = templateRenderer.render(html`<hello-world my-attr=${x => "foobar"}></hello-world>`)
 
-        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
+        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowrootmode=\"open\"></template></hello-world>`);
     });
     test("should emit an element with a boolean attribute when the attr binding returns true", () => {
         const { templateRenderer } = fastSSR();
@@ -312,7 +312,7 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<hello-world :classList=${x => "foo bar"}></hello-world>`))
-            expect(result).toBe(`<hello-world  class="foo bar"><template shadowroot="open"></template></hello-world>`);
+            expect(result).toBe(`<hello-world  class="foo bar"><template shadowrootmode="open"></template></hello-world>`);
         });
     });
 

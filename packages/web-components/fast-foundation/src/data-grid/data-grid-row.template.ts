@@ -1,12 +1,7 @@
-import {
-    children,
-    elements,
-    ElementViewTemplate,
-    html,
-    slotted,
-} from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/index.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { ColumnDefinition } from "./data-grid.js";
 
@@ -59,6 +54,7 @@ export function dataGridRowTemplate<T extends FASTDataGridRow>(
             role="row"
             :defaultCellItemTemplate="${cellItemTemplate(options)}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
+            aria-selected="${x => (x.selected !== undefined ? x.selected : void 0)}"
             ${children({
                 property: "cellElements",
                 filter: elements(

@@ -1,7 +1,12 @@
-import { Message, Mutable, noop } from "../interfaces.js";
+import { Message, Mutable } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { Observable, SourceLifetime } from "../observation/observable.js";
-import { FAST } from "../platform.js";
+import {
+    ExecutionContext,
+    ExpressionController,
+    Observable,
+    SourceLifetime,
+} from "../observation/observable.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
@@ -47,7 +52,8 @@ const enum Stages {
  */
 export class ElementController<TElement extends HTMLElement = HTMLElement>
     extends PropertyChangeNotifier
-    implements HostController<TElement> {
+    implements HostController<TElement>
+{
     private boundObservables: Record<string, any> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
@@ -97,6 +103,27 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     public get isConnected(): boolean {
         Observable.track(this, isConnectedPropertyName);
         return this.stage === Stages.connected;
+    }
+
+    /**
+     * The context the expression is evaluated against.
+     */
+    public get context(): ExecutionContext {
+        return this.view?.context ?? ExecutionContext.default;
+    }
+
+    /**
+     * Indicates whether the controller is bound.
+     */
+    public get isBound(): boolean {
+        return this.view?.isBound ?? false;
+    }
+
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    public get sourceLifetime(): SourceLifetime | undefined {
+        return this.view?.sourceLifetime;
     }
 
     /**
@@ -220,6 +247,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     /**
+     * Registers an unbind handler with the controller.
+     * @param behavior - An object to call when the controller unbinds.
+     */
+    onUnbind(behavior: { unbind(controller: ExpressionController<TElement>) }): void {
+        this.view?.onUnbind(behavior);
+    }
+
+    /**
      * Adds the behavior to the component.
      * @param behavior - The behavior to add.
      */
@@ -321,7 +356,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
             if (sourceBehaviors !== null) {
                 for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    this.addBehavior(sourceBehaviors[i]);
+                    this.removeBehavior(sourceBehaviors[i]);
                 }
             }
         }
@@ -439,12 +474,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
-    /**
-     * Opts out of JSON stringification.
-     * @internal
-     */
-    toJSON = noop;
-
     private renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
@@ -468,7 +497,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (template) {
             // If a new template was provided, render it.
             (this as Mutable<this>).view = template.render(element, host, element);
-            ((this.view as any) as Mutable<ViewController>).sourceLifetime =
+            (this.view as any as Mutable<ViewController>).sourceLifetime =
                 SourceLifetime.coupled;
         }
     }
@@ -510,6 +539,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 }
 
+makeSerializationNoop(ElementController);
+
 // Set default strategy for ElementController
 ElementController.setStrategy(ElementController);
 
@@ -520,9 +551,9 @@ ElementController.setStrategy(ElementController);
  * @param target
  * @returns
  */
-function normalizeStyleTarget(target: StyleTarget): StyleTarget {
+function normalizeStyleTarget(target: StyleTarget): Required<StyleTarget> {
     if ("adoptedStyleSheets" in target) {
-        return target;
+        return target as Required<StyleTarget>;
     } else {
         return (
             (getShadowRoot(target as any) as null | StyleTarget) ??
@@ -565,16 +596,11 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
     }
 
     public addStylesTo(target: StyleTarget): void {
-        const t = normalizeStyleTarget(target);
-        t.adoptedStyleSheets = [...t.adoptedStyleSheets!, ...this.sheets];
+        addAdoptedStyleSheets(normalizeStyleTarget(target), this.sheets);
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        const t = normalizeStyleTarget(target);
-        const sheets = this.sheets;
-        t.adoptedStyleSheets = t.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
-        );
+        removeAdoptedStyleSheets(normalizeStyleTarget(target), this.sheets);
     }
 }
 
@@ -619,8 +645,43 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 }
 
-ElementStyles.setDefaultStrategy(
-    ElementStyles.supportsAdoptedStyleSheets
-        ? AdoptedStyleSheetsStrategy
-        : StyleElementStrategy
-);
+let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleSheet[]) => {
+    target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...sheets];
+};
+let removeAdoptedStyleSheets = (
+    target: Required<StyleTarget>,
+    sheets: CSSStyleSheet[]
+) => {
+    target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
+        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+    );
+};
+if (ElementStyles.supportsAdoptedStyleSheets) {
+    try {
+        // Test if browser implementation uses FrozenArray.
+        // If not, use push / splice to alter the stylesheets
+        // in place. This circumvents a bug in Safari 16.4 where
+        // periodically, assigning the array would previously
+        // cause sheets to be removed.
+        (document as any).adoptedStyleSheets.push();
+        (document as any).adoptedStyleSheets.splice();
+        addAdoptedStyleSheets = (target, sheets) => {
+            target.adoptedStyleSheets.push(...sheets);
+        };
+        removeAdoptedStyleSheets = (target, sheets) => {
+            for (const sheet of sheets) {
+                const index = target.adoptedStyleSheets.indexOf(sheet);
+                if (index !== -1) {
+                    target.adoptedStyleSheets.splice(index, 1);
+                }
+            }
+        };
+    } catch (e) {
+        // Do nothing if an error is thrown, the default
+        // case handles FrozenArray.
+    }
+
+    ElementStyles.setDefaultStrategy(AdoptedStyleSheetsStrategy);
+} else {
+    ElementStyles.setDefaultStrategy(StyleElementStrategy);
+}

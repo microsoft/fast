@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTSwitch } from "../switch.js";
 import { switchTemplate } from "../switch.template.js";
@@ -7,6 +6,7 @@ const styles = css`
     :host([hidden]) {
         display: none;
     }
+
     :host {
         display: inline-flex;
         align-items: center;
@@ -15,16 +15,19 @@ const styles = css`
         margin: calc(var(--design-unit) * 1px) 0;
         user-select: none;
     }
+
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
+
     :host([disabled]) .label,
     :host([readonly]) .label,
-    :host([readonly]) .switch,
-    :host([disabled]) .switch {
+    :host([readonly]) .control,
+    :host([disabled]) .control {
         cursor: var(--disabled-cursor);
     }
-    .switch {
+
+    .control {
         position: relative;
         outline: none;
         box-sizing: border-box;
@@ -34,25 +37,24 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--neutral-stroke-rest);
     }
-    .switch:hover {
-        background: var(--neutral-fill-input-hover);
-        border-color: var(--neutralStrokeHover);
-        cursor: pointer;
-    }
-    host([disabled]) .switch:hover,
-    host([readonly]) .switch:hover {
+
+    :host(:not([disabled]):hover) .control,
+    :host(:not([readonly]):hover) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--neutral-stroke-hover);
-        cursor: var(--disabled-cursor);
+        cursor: pointer;
     }
-    :host(:not([disabled])) .switch:active {
+
+    :host(:not([disabled]):active) .control {
         background: var(--neutral-fill-input-active);
         border-color: var(--neutral-stroke-active);
     }
-    :host(:focus-visible) .switch {
+
+    :host(:focus-visible) .control {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focusStrokeOuter);
     }
-    .checked-indicator {
+
+    .thumb {
         position: absolute;
         top: 5px;
         bottom: 5px;
@@ -60,6 +62,14 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         transition: all 0.2s ease-in-out;
     }
+
+    :host([disabled]) .control,
+    :host([readonly]) .control,
+    :host([disabled]) .status-message,
+    :host([readonly]) .status-message {
+        cursor: var(--disabled-cursor);
+    }
+
     .label {
         color: var(--neutral-foreground-rest);
         margin-inline-end: calc(var(--design-unit) * 2px + 2px);
@@ -67,39 +77,49 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
         cursor: pointer;
     }
+
     .label__hidden {
         display: none;
         visibility: hidden;
     }
-    :host([aria-checked="true"]) .checked-indicator {
+
+    :host([aria-checked="true"]) .thumb {
         background: var(--foreground-on-accent-rest);
     }
-    :host([aria-checked="true"]) .switch {
+
+    :host([aria-checked="true"]) .control {
         background: var(--accent-fill-rest);
         border-color: var(--accent-fill-rest);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:hover {
+
+    :host([aria-checked="true"]:not([disabled]):hover) .control {
         background: var(--accent-fill-hover);
         border-color: var(--accent-fill-hover);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:hover .checked-indicator {
+
+    :host([aria-checked="true"]:not([disabled]):hover) .control .thumb {
         background: var(--foreground-on-accent-hover);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:active {
+
+    :host([aria-checked="true"]:not([disabled]):active) .control {
         background: var(--accent-fill-active);
         border-color: var(--accentt-fill-active);
     }
-    :host([aria-checked="true"]:not([disabled])) .switch:active .checked-indicator {
+
+    :host([aria-checked="true"]:not([disabled]):active) .control .thumb {
         background: var(--foreground-on-accent-active);
     }
-    :host([aria-checked="true"]:focus-visible:not([disabled])) .switch {
+
+    :host([aria-checked="true"]:focus-visible:not([disabled])) .control {
         box-shadow: 0 0 0 2px var(--fill-color), 0 0 0 4px var(--focus-stroke-outer);
     }
-    .checked-indicator {
+
+    .thumb {
         left: 5px;
         right: calc(((var(--height-number) / 2) + 1) * 1px);
     }
-    :host([aria-checked="true"]) .checked-indicator {
+
+    :host([aria-checked="true"]) .thumb {
         left: calc(((var(--height-number) / 2) + 1) * 1px);
         right: 5px;
     }
@@ -107,10 +127,6 @@ const styles = css`
 
 FASTSwitch.define({
     name: "fast-switch",
-    template: switchTemplate({
-        switch: /* html */ html`
-            <span class="checked-indicator" part="checked-indicator"></span>
-        `,
-    }),
+    template: switchTemplate(),
     styles,
 });

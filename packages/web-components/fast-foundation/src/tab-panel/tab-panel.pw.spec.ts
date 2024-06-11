@@ -12,9 +12,11 @@ test.describe("TabPanel", () => {
 
         element = page.locator("fast-tab-panel");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("tabs-tab-panel--tab-panel"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {

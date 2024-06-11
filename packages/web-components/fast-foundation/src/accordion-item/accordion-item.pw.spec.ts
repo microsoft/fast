@@ -15,13 +15,15 @@ test.describe("Accordion item", () => {
 
         element = page.locator("fast-accordion-item");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         heading = page.locator(`[role="heading"]`);
 
         button = element.locator("button");
 
         await page.goto(fixtureURL("accordion-item--accordion-item"));
+
+        await element.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -38,7 +40,7 @@ test.describe("Accordion item", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("headinglevel");
+        await expect(element).not.toHaveAttribute("headinglevel");
 
         await expect(element).toHaveJSProperty("headinglevel", 2);
     });
@@ -83,13 +85,13 @@ test.describe("Accordion item", () => {
             `;
         });
 
-        await expect(button).toHaveBooleanAttribute("disabled");
+        await expect(button).toHaveAttribute("disabled");
 
         await element.evaluate<void, FASTAccordionItem>(node => {
             node.disabled = false;
         });
 
-        await expect(button).not.toHaveBooleanAttribute("disabled");
+        await expect(button).not.toHaveAttribute("disabled");
     });
 
     test("should set internal properties to match the id when provided", async () => {

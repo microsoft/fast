@@ -54,7 +54,8 @@ interface ElementInternals {
      */
     readonly willValidate: boolean;
     /**
-     * Returns true if internals target element has no validity problems; false otherwise. Fires an invalid event at the element in the latter case.
+     * Returns true if internals target element has no validity problems; false otherwise.
+     * Fires an invalid event at the element in the latter case.
      */
     checkValidity(): boolean;
     /**
@@ -65,7 +66,8 @@ interface ElementInternals {
     /**
      * Sets both the state and submission value of internals target element to value.
      *
-     * While "null" isn't enumerated as a argument type (here)[https://html.spec.whatwg.org/multipage/custom-elements.html#the-elementinternals-interface],
+     * While "null" isn't enumerated as
+     * a argument type (here)[https://html.spec.whatwg.org/multipage/custom-elements.html#the-elementinternals-interface],
      * In practice it appears to remove the value from the form data on submission. Adding it as a valid type here
      * becuase that capability is required for checkbox and radio types
      */
@@ -281,9 +283,9 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 const parentLabels = this.proxy.labels;
                 // Labels associated using the `for` attribute
                 const forLabels = Array.from(
-                    (this.proxy.getRootNode() as
-                        | HTMLDocument
-                        | ShadowRoot).querySelectorAll(`[for='${this.id}']`)
+                    (
+                        this.proxy.getRootNode() as HTMLDocument | ShadowRoot
+                    ).querySelectorAll(`[for='${this.id}']`)
                 );
 
                 const labels = parentLabels

@@ -1,4 +1,4 @@
-import type { FASTGlobal } from "./interfaces.js";
+import { FASTGlobal, noop } from "./interfaces.js";
 import "./polyfills.js";
 
 // ensure FAST global - duplicated debug.ts
@@ -79,9 +79,9 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
  * Do not change. Part of shared kernel contract.
  * @internal
  */
-export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<
-    TDefinition
-> {
+export function createTypeRegistry<
+    TDefinition extends TypeDefinition
+>(): TypeRegistry<TDefinition> {
     const typeToDefinition = new Map<Function, TDefinition>();
 
     return Object.freeze({
@@ -132,4 +132,13 @@ export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] 
 
         return metadata;
     };
+}
+
+/**
+ * Makes a type noop for JSON serialization.
+ * @param type - The type to make noop for JSON serialization.
+ * @internal
+ */
+export function makeSerializationNoop(type: { readonly prototype: any }) {
+    type.prototype.toJSON = noop;
 }

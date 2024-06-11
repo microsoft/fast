@@ -78,6 +78,23 @@ SliderVerticalOrientation.args = {
     orientation: SliderOrientation.vertical,
 };
 
+export const SliderVerticalOrientationWithLabels: Story<FASTSlider> = Slider.bind({});
+SliderVerticalOrientationWithLabels.args = {
+    orientation: SliderOrientation.vertical,
+    min: 0,
+    max: 100,
+    step: 10,
+    storyContent: html`
+        ${repeat(x => x.storyItems, sliderLabelStoryTemplate)}
+    `,
+    storyItems: [
+        { position: 0, storyContent: "0℃" },
+        { position: 10, storyContent: "10℃" },
+        { position: 90, storyContent: "90℃" },
+        { position: 100, storyContent: "100℃" },
+    ],
+};
+
 export const SliderInForm: Story<FASTSlider> = renderComponent(
     html<StoryArgs<FASTSlider>>`
         <form @submit="${() => false}">

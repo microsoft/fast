@@ -1,16 +1,18 @@
 import { expect } from "chai";
-import { bind, HTMLBindingDirective, oneTime, listener } from "./binding.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { observable } from "../observation/observable.js";
 import { html, ViewTemplate } from "./template.js";
 import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
 import { SyntheticView, HTMLView } from "./view.js";
 import { Updates } from "../observation/update-queue.js";
 import { DOM, DOMPolicy } from "../dom.js";
-import { Signal, signal } from "./binding-signal.js";
-import { twoWay, TwoWayBindingOptions } from "./binding-two-way.js";
+import { Signal, signal } from "../binding/signal.js";
+import { twoWay, TwoWayBindingOptions } from "../binding/two-way.js";
 import { Fake } from "../testing/fakes.js";
 import { HTMLDirective } from "./html-directive.js";
 import { nextId } from "./markup.js";
+import { oneWay, listener } from "../binding/one-way.js";
+import { oneTime } from "../binding/one-time.js";
 
 describe("The HTML binding directive", () => {
     class Model {
@@ -38,7 +40,7 @@ describe("The HTML binding directive", () => {
     }
 
     function contentBinding(propertyName: keyof Model = "value") {
-        const directive = new HTMLBindingDirective(bind(x => x[propertyName]));
+        const directive = new HTMLBindingDirective(oneWay(x => x[propertyName]));
         directive.id = nextId();
         directive.targetNodeId = 'r';
         directive.targetTagName = null;
@@ -80,7 +82,7 @@ describe("The HTML binding directive", () => {
     }
 
     function defaultBinding(sourceAspect?: string, policy?: DOMPolicy) {
-        const directive = new HTMLBindingDirective(bind<Model>(x => x.value, policy));
+        const directive = new HTMLBindingDirective(oneWay<Model>(x => x.value, policy));
         return compileDirective(directive, sourceAspect);
     }
 
@@ -846,7 +848,7 @@ describe("The HTML binding directive", () => {
         }
 
         function createClassBinding(element: HTMLElement) {
-            const directive = new HTMLBindingDirective(bind(() => ""));
+            const directive = new HTMLBindingDirective(oneWay(() => ""));
             return compileDirective(directive, ":classList", element);
         }
 
@@ -897,7 +899,7 @@ describe("The HTML binding directive", () => {
         });
 
         it("should not throw if DOM stringified", () => {
-            const directive = new HTMLBindingDirective(bind(() => ""));
+            const directive = new HTMLBindingDirective(oneWay(() => ""));
             const { behavior, node, targets } = compileDirective(directive, ":classList");
 
             HTMLDirective.assignAspect(directive, ":classList");

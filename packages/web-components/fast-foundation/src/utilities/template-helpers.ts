@@ -1,9 +1,9 @@
-import {
+import type {
     CaptureType,
     HTMLDirective,
-    InlineTemplateDirective,
+    SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { InlineTemplateDirective } from "@microsoft/fast-element";
 
 /**
  * A value that can be statically composed into a
@@ -11,6 +11,7 @@ import type { SyntheticViewTemplate } from "@microsoft/fast-element";
  * @remarks
  * When providing a string, take care to ensure that it is
  * safe and will not enable an XSS attack.
+ * @public
  */
 export type StaticallyComposableHTML<TSource = any, TParent = any> =
     | string

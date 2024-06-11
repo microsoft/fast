@@ -88,7 +88,6 @@ export const myRadioGroup = RadioGroup.compose({
 
 | Name                         | Privacy   | Description | Parameters                                   | Return | Inherited From |
 | ---------------------------- | --------- | ----------- | -------------------------------------------- | ------ | -------------- |
-| `readOnlyChanged`            | protected |             |                                              | `void` |                |
 | `disabledChanged`            | protected |             |                                              | `void` |                |
 | `nameChanged`                | protected |             |                                              | `void` |                |
 | `valueChanged`               | protected |             |                                              | `void` |                |

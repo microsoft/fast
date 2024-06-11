@@ -15,11 +15,13 @@ test.describe("NumberField", () => {
 
         element = page.locator("fast-number-field");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
-        control = element.locator(".control");
+        control = element.locator(".field");
 
         await page.goto(fixtureURL("number-field--number-field"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -43,7 +45,7 @@ test.describe("NumberField", () => {
             `;
         });
 
-        await expect(control).toHaveBooleanAttribute("autofocus");
+        await expect(control).toHaveAttribute("autofocus");
     });
 
     test("should set the `disabled` attribute on the internal control", async () => {
@@ -52,7 +54,7 @@ test.describe("NumberField", () => {
                 <fast-number-field disabled></fast-number-field>
             `;
         });
-        await expect(control).toHaveBooleanAttribute("disabled");
+        await expect(control).toHaveAttribute("disabled");
     });
 
     test("should set the `readonly` attribute on the internal control", async () => {
@@ -61,7 +63,7 @@ test.describe("NumberField", () => {
                 <fast-number-field readonly></fast-number-field>
             `;
         });
-        await expect(control).toHaveBooleanAttribute("readonly");
+        await expect(control).toHaveAttribute("readonly");
     });
 
     test("should set the `required` attribute on the internal control", async () => {
@@ -70,7 +72,7 @@ test.describe("NumberField", () => {
                 <fast-number-field required></fast-number-field>
             `;
         });
-        await expect(control).toHaveBooleanAttribute("required");
+        await expect(control).toHaveAttribute("required");
     });
 
     for (const [attribute, value] of Object.entries({
@@ -485,6 +487,7 @@ test.describe("NumberField", () => {
         await expect(control).toHaveValue("10");
     });
 
+    /* eslint-disable-next-line max-len */
     test("should set the `value` to match `max` after stepping down when `value` is undefined and `min` and `max` are less than zero", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -500,7 +503,7 @@ test.describe("NumberField", () => {
 
         await expect(control).toHaveValue("-5");
     });
-
+    /* eslint-disable-next-line max-len */
     test("should set the `value` to match `max` after stepping up when `value` is undefined and `min` and `max` are less than zero", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -675,7 +678,7 @@ test.describe("NumberField", () => {
 
             await expect(element).toHaveJSProperty("value", "10");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
             const form = page.locator("form");
 

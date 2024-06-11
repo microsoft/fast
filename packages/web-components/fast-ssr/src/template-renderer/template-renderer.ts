@@ -57,10 +57,8 @@ export interface AsyncTemplateRenderer {
  * @internal
  */
 export class DefaultTemplateRenderer implements TemplateRenderer {
-    private viewBehaviorFactoryRenderers: Map<
-        any,
-        ViewBehaviorFactoryRenderer<any>
-    > = new Map();
+    private viewBehaviorFactoryRenderers: Map<any, ViewBehaviorFactoryRenderer<any>> =
+        new Map();
 
     private defaultElementRenderers: ConstructableElementRenderer[] = [];
 
@@ -201,7 +199,7 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                             undefined;
 
                     if (!skipDSD) {
-                        yield '<template shadowroot="open">';
+                        yield '<template shadowrootmode="open">';
                     }
 
                     const content = currentRenderer.renderShadow(renderInfo);

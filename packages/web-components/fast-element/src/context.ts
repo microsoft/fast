@@ -1,4 +1,4 @@
-import { Constructable, Message } from "./interfaces.js";
+import { Constructable, Message, ParameterDecorator } from "./interfaces.js";
 import { Metadata } from "./metadata.js";
 import { FAST } from "./platform.js";
 
@@ -49,11 +49,13 @@ export type FASTContextRequestStrategy = <T extends UnknownContext>(
     multiple
 ) => void;
 
+const contextsByName = new Map<string, FASTContext<unknown>>();
 const contextEventType = "context-request";
 let requestStrategy: FASTContextRequestStrategy;
 
 /**
- * Enables using the {@link https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md | W3C Community Context protocol.}
+ * Enables using:
+ * {@link https://github.com/webcomponents-cg/community-protocols/blob/main/proposals/context.md | W3C Community Context protocol.}
  * @public
  */
 export const Context = Object.freeze({
@@ -61,6 +63,23 @@ export const Context = Object.freeze({
      * The event type used for W3C Context Protocol requests.
      */
     eventType: contextEventType,
+
+    /**
+     * Returns a FASTContext object from the global context registry matching the given name if found.
+     * Otherwise, returns a new FASTContext with this name.
+     * @param name - The name of the FASTContext to get or create.
+     * @returns A FASTContext object.
+     */
+    for<T = unknown>(name: string): FASTContext<T> {
+        let c = contextsByName.get(name) as FASTContext<T>;
+
+        if (c === void 0) {
+            c = Context.create<T>(name);
+            contextsByName.set(name, c);
+        }
+
+        return c;
+    },
 
     /**
      * Creates a W3C Community Protocol-based Context object to use in requesting/providing
@@ -177,12 +196,18 @@ export const Context = Object.freeze({
         target.dispatchEvent(new ContextEvent(context, callback, multiple));
     },
 
+    /**
+     * Enables an event target to provide a context value.
+     * @param target The target to provide the context value for.
+     * @param context The context to provide the value for.
+     * @param value The value to provide for the context.
+     */
     provide<T extends UnknownContext>(
         target: EventTarget,
         context: T,
         value: ContextType<T>
     ) {
-        this.handle(
+        Context.handle(
             target,
             (event: ContextEvent<T>) => {
                 event.stopImmediatePropagation();

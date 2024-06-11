@@ -13,9 +13,11 @@ test.describe("ListboxOption", () => {
 
         element = page.locator("fast-option");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         await page.goto(fixtureURL("listbox-option--listbox-option"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -71,7 +73,7 @@ test.describe("ListboxOption", () => {
             `;
         });
 
-        await expect(element).not.hasAttribute("aria-checked");
+        await expect(element).not.toHaveAttribute("aria-checked");
 
         await element.evaluate((node: FASTListboxOption) => {
             node.checked = true;

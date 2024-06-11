@@ -31,26 +31,6 @@ const styles = css`
         display: flex;
         align-self: center;
     }
-    ::slotted([slot="start"]) {
-        margin-inline-end: 11px;
-    }
-    ::slotted([slot="end"]) {
-        margin-inline-start: 11px;
-    }
-    .active-indicator {
-        grid-row: 2;
-        grid-column: 1;
-        width: 100%;
-        height: 5px;
-        justify-self: center;
-        background: var(--accent-fill-rest);
-        margin-top: 10px;
-        border-radius: calc(var(--control-corner-radius) * 1px)
-            calc(var(--control-corner-radius) * 1px) 0 0;
-    }
-    .activeIndicatorTransition {
-        transition: transform 0.2s ease-in-out;
-    }
     .tabpanel {
         grid-row: 2;
         grid-column-start: 1;
@@ -82,21 +62,6 @@ const styles = css`
     }
     :host([orientation="vertical"]) ::slotted([slot="end"]) {
         grid-row: 3;
-    }
-    :host([orientation="vertical"]) .activeIndicator {
-        grid-column: 1;
-        grid-row: 1;
-        width: 5px;
-        height: 100%;
-        margin-inline-end: 10px;
-        align-self: center;
-        background: var(--accent-fill-rest);
-        margin-top: 0;
-        border-radius: 0 calc(var(--control-corner-radius) * 1px)
-            calc(var(--control-corner-radius) * 1px) 0;
-    }
-    :host([orientation="vertical"]) .activeIndicatorTransition {
-        transition: transform 0.2s linear;
     }
 `;
 

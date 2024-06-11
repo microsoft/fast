@@ -1,12 +1,10 @@
+import type { CaptureType, Subscriber, ViewController } from "@microsoft/fast-element";
 import {
     DOM,
     HTMLDirective,
     StatelessAttachedAttributeDirective,
-    Subscriber,
     SubscriberSet,
-    ViewController,
 } from "@microsoft/fast-element";
-import type { CaptureType } from "@microsoft/fast-element";
 
 const observer = new MutationObserver((mutations: MutationRecord[]) => {
     for (const mutation of mutations) {
@@ -17,10 +15,8 @@ const observer = new MutationObserver((mutations: MutationRecord[]) => {
 });
 
 class AttributeReflectionSubscriptionSet {
-    private static subscriberCache: WeakMap<
-        any,
-        AttributeReflectionSubscriptionSet
-    > = new WeakMap();
+    private static subscriberCache: WeakMap<any, AttributeReflectionSubscriptionSet> =
+        new WeakMap();
 
     private watchedAttributes: Set<Readonly<string[]>> = new Set();
     private subscribers = new SubscriberSet(this);

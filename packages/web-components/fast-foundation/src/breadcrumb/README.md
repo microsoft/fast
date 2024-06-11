@@ -122,9 +122,11 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Slots
 
-| Name | Description                               |
-| ---- | ----------------------------------------- |
-|      | The default slot for the breadcrumb items |
+| Name    | Description                                          |
+| ------- | ---------------------------------------------------- |
+| `start` | Content which can be provided before the breadcrumbs |
+| `end`   | Content which can be provided after the breadcrumbs  |
+|         | The default slot for the breadcrumb items            |
 
 <hr/>
 
@@ -171,6 +173,8 @@ This component is built with the expectation that focus is delegated to the anch
 | ----------- | ------------------------------------------------------------------- |
 | `listitem`  | The wrapping container for the item, represents a semantic listitem |
 | `separator` | The wrapping element for the separator                              |
+| `control`   | The anchor element                                                  |
+| `content`   | The element wrapping anchor content                                 |
 
 #### Slots
 
