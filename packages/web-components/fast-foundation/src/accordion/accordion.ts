@@ -65,6 +65,10 @@ export class Accordion extends FoundationElement {
      */
     public accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
+            if (this.isSingleExpandMode()) {
+                const expandedItem = this.findExpandedItem();
+                this.activeItemIndex = expandedItem ? this.accordionItems.findIndex(x => x === expandedItem) : 0;
+            }
             this.removeItemListeners(oldValue);
             this.setItems();
         }
@@ -80,7 +84,7 @@ export class Accordion extends FoundationElement {
 
     private findExpandedItem(): AccordionItem | null {
         for (let item: number = 0; item < this.accordionItems.length; item++) {
-            if (this.accordionItems[item].getAttribute("expanded") === "true") {
+            if (this.accordionItems[item].hasAttribute("expanded") === true) {
                 return this.accordionItems[item] as AccordionItem;
             }
         }

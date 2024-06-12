@@ -67,4 +67,78 @@ describe("Accordion", () => {
 
         await disconnect();
     });
+
+    it("should keep expanded item after focus on a different item in single mode", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("expand-mode", "single");
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const [accordionItem1, accordionItem2] = element.accordionItems;
+        accordionItem2.shadowRoot?.querySelector("button")?.click();
+
+        await DOM.nextUpdate();
+        const accordionItem1ExpandedAfterItem2Click = accordionItem1.hasAttribute("expanded");
+        const accordionItem2ExpandedAfterItem2Click = accordionItem2.hasAttribute("expanded");
+
+        accordionItem1.dispatchEvent(new FocusEvent('focus'));
+
+        const newItem = document.createElement("fast-accordion-item");
+        element.appendChild(newItem);
+        await DOM.nextUpdate();
+
+        expect(accordionItem1ExpandedAfterItem2Click).to.equal(false);
+        expect(accordionItem2ExpandedAfterItem2Click).to.equal(true);
+        expect(accordionItem1.hasAttribute("expanded"), 'item 1 is expanded').to.equal(false);
+        expect(accordionItem2.hasAttribute("expanded"), 'item 2 is closed').to.equal(true);
+        await disconnect();
+    });
+
+    it("should respect starting expanded state of added items in single mode", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("expand-mode", "single");
+
+        await connect();
+        await DOM.nextUpdate();
+
+        element.innerHTML = `
+            <fast-accordion-item>Item 1</fast-accordion-item>
+            <fast-accordion-item expanded>Item 2</fast-accordion-item>
+            <fast-accordion-item>Item 3</fast-accordion-item>
+        `;
+
+        const [accordionItem1, accordionItem2] = element.accordionItems;
+
+        await DOM.nextUpdate();
+
+        expect(accordionItem1.hasAttribute("expanded"), 'item 1 is expanded').to.equal(false);
+        expect(accordionItem2.hasAttribute("expanded"), 'item 2 is closed').to.equal(true);
+        await disconnect();
+    });
+
+    it("should respect the first expanded item when items change in single mode", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.setAttribute("expand-mode", "single");
+
+        await connect();
+        await DOM.nextUpdate();
+
+        element.innerHTML = `
+            <fast-accordion-item>Item 1</fast-accordion-item>
+            <fast-accordion-item expanded>Item 2</fast-accordion-item>
+            <fast-accordion-item expanded>Item 3</fast-accordion-item>
+        `;
+        await DOM.nextUpdate();
+
+        const [accordionItem1, accordionItem2, accordionItem3] = element.accordionItems;
+
+        expect(accordionItem1.hasAttribute("expanded"), 'item 1 is expanded').to.equal(false);
+        expect(accordionItem2.hasAttribute("expanded"), 'item 2 is closed').to.equal(true);
+        expect(accordionItem3.hasAttribute("expanded"), 'item 3 is expanded').to.equal(false);
+        await disconnect();
+    });
 });
