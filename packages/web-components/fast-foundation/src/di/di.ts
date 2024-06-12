@@ -4,6 +4,8 @@
  */
 import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
 import type { Class } from "../interfaces.js";
+/* eslint-disable-next-line */
+const noop = new Function();
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
 const metadataByTarget = new Map<any, Map<any, any>>();
@@ -1495,6 +1497,12 @@ export class ContainerImpl implements Container {
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
     private context: any = null;
+
+    /**
+     * Opts out of JSON stringification.
+     * @internal
+     */
+    toJSON = noop;
 
     public get parent() {
         if (this._parent === void 0) {
