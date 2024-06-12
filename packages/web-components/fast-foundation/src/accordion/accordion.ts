@@ -248,9 +248,7 @@ export class FASTAccordion extends FASTElement {
         // only do so if the focus is actually on the accordion item and not on any of its children
         if (event.target === event.currentTarget) {
             const focusedItem = event.target as HTMLElement;
-            this.activeItemIndex = Array.from(
-                this.accordionItems
-            ).indexOf(focusedItem);
+            this.activeItemIndex = Array.from(this.accordionItems).indexOf(focusedItem);
         }
     };
 
