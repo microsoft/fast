@@ -422,12 +422,12 @@ export const checkboxTemplate: FoundationElementTemplate<ViewTemplate<Checkbox>,
 
 // @public
 export interface ColumnDefinition {
-    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement | null;
     cellInternalFocusQueue?: boolean;
     cellTemplate?: ViewTemplate;
     columnDataKey: string;
     gridColumn?: string;
-    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+    headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement | null;
     headerCellInternalFocusQueue?: boolean;
     headerCellTemplate?: ViewTemplate;
     isRowHeader?: boolean;
@@ -771,6 +771,9 @@ export class DateFormatter {
 
 // @public
 export type DayFormat = "2-digit" | "numeric";
+
+// @public (undocumented)
+export const defaultCellFocusTargetCallback: (cell: DataGridCell) => HTMLElement | null;
 
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {
