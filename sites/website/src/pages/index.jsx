@@ -80,21 +80,7 @@ HelloWorld.define({
           <section class="section">
             <span class="section-badge">FULLY INTEGRATED</span>
             <h2 class="section-heading">Works with existing frameworks</h2>
-            <p class="section-paragraph">Standards-based Web Components are the foundation of each FAST component, making them compatible with almost any modern web framework.</p>
-          </section>
-
-          <div role="divider" class="section-decoration"></div>
-
-          <section class="section">
-            <span class="section-badge">DIFFERENT STROKES FOR DIFFERENT FOLKS</span>
-            <h2 class="section-heading">Other ways to use FAST</h2>
-            <p class="section-paragraph">We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.</p>
-            <ul>
-              <li>"I just want ready-made components!" - <a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/">Check out the FluentUI Web Components.</a></li>
-              <li>"I want to build my own components." - <a href="https://fast.design/docs/fast-element/getting-started">Jump to the fast-element docs.</a></li>
-              <li>"I need to integrate FAST with another framework or build system." - <a href="https://fast.design/docs/integrations/introduction">Jump to the integration docs.</a></li>
-              <li>"I want to look at a quick reference." - <a href="https://fast.design/docs/resources/cheat-sheet">Jump to the Cheat Sheet</a></li>
-            </ul>
+            <p class="section-paragraph">Standards-based Web Components are compatible with almost any modern web framework.</p>
           </section>
 
           <div role="divider" class="section-decoration"></div>
