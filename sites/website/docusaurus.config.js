@@ -18,6 +18,13 @@ module.exports = {
     ],
     staticDirectories: ["static"],
     themeConfig: {
+        announcementBar: {
+            id: 'version',
+            content:
+              '<code>@microsoft/fast-element</code> v2 is out! 🎉️',
+            backgroundColor: 'var(--ifm-color-primary-darkest)',
+            textColor: 'var(--neutral-foreground-rest)',
+        },
         colorMode: {
             defaultMode: "dark",
         },
