@@ -1,3 +1,3 @@
-export * from "./select.js";
-export * from "./select.options.js";
-export * from "./select.template.js";
+export { DelegatesARIASelect, FASTSelect } from "./select.js";
+export type { SelectOptions } from "./select.js";
+export { selectTemplate } from "./select.template.js";

@@ -1,29 +1,21 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTTabPanel } from "../tab-panel.js";
 
-type TabPanelStoryArgs = Args & FASTTabPanel;
-type TabPanelStoryMeta = Meta<TabPanelStoryArgs>;
-
-const componentTemplate = html<TabPanelStoryArgs>`
-    <fast-tab-panel>
-        ${x => x.content}
-    </fast-tab-panel>
+export const storyTemplate = html<StoryArgs<FASTTabPanel>>`
+    <fast-tab-panel>${x => x.storyContent}</fast-tab-panel>
 `;
 
 export default {
     title: "Tabs/Tab Panel",
-    argTypes: {
-        disabled: { control: { type: "boolean" } },
+    excludeStories: ["storyTemplate"],
+    args: {
+        storyContent: "Tab panel",
     },
-} as TabPanelStoryMeta;
+    argTypes: {
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTTabPanel>;
 
-export const TabPanel = (args: TabPanelStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
-TabPanel.args = {
-    content: "Tab Panel",
-};
+export const TabPanel: Story<FASTTabPanel> = renderComponent(storyTemplate).bind({});

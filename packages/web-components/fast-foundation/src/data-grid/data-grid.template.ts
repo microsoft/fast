@@ -1,6 +1,7 @@
-import { children, elements, ElementViewTemplate, html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTDataGrid } from "./data-grid.js";
 
 /**
@@ -11,9 +12,11 @@ export type DataGridOptions = {
     dataGridRow: TemplateElementDependency;
 };
 
-function rowItemTemplate(options: DataGridOptions): ViewTemplate<any, FASTDataGrid> {
-    const rowTag = tagFor(options.dataGridRow);
-    return html<any, FASTDataGrid>`
+function rowItemTemplate<T extends FASTDataGrid>(
+    options: DataGridOptions
+): ViewTemplate<any, T> {
+    const rowTag = html.partial(tagFor(options.dataGridRow));
+    return html<any, T>`
     <${rowTag}
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
@@ -28,15 +31,15 @@ function rowItemTemplate(options: DataGridOptions): ViewTemplate<any, FASTDataGr
  *
  * @public
  */
-export function dataGridTemplate(
+export function dataGridTemplate<T extends FASTDataGrid>(
     options: DataGridOptions
-): ElementViewTemplate<FASTDataGrid> {
+): ElementViewTemplate<T> {
     const rowTag = tagFor(options.dataGridRow);
-    return html<FASTDataGrid>`
+    return html<T>`
         <template
             role="grid"
             tabindex="0"
-            :rowElementTag="${() => rowTag}"
+            :rowElementTag="${rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate(options)}"
             ${children({
                 property: "rowElements",

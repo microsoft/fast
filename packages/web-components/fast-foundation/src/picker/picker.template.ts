@@ -1,15 +1,11 @@
-import {
-    ElementViewTemplate,
-    html,
-    ref,
-    ViewTemplate,
-    when,
-} from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTPicker } from "./picker.js";
 
 function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
-    const pickerListItemTag: string = tagFor(options.pickerListItem);
+    const pickerListItemTag = html.partial(tagFor(options.pickerListItem));
     return html`
     <${pickerListItemTag}
         value="${x => x}"
@@ -20,7 +16,7 @@ function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
 }
 
 function defaultMenuOptionTemplate(options: PickerOptions): ViewTemplate {
-    const pickerMenuOptionTag: string = tagFor(options.pickerMenuOption);
+    const pickerMenuOptionTag = html.partial(tagFor(options.pickerMenuOption));
     return html`
     <${pickerMenuOptionTag}
         value="${x => x}"
@@ -47,13 +43,15 @@ export type PickerOptions = {
  * The template for the List Picker component.
  * @public
  */
-export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FASTPicker> {
-    const anchoredRegionTag: string = tagFor(options.anchoredRegion);
-    const pickerMenuTag: string = tagFor(options.pickerMenu);
-    const pickerListTag: string = tagFor(options.pickerList);
-    const progressRingTag: string = tagFor(options.progressRing);
+export function pickerTemplate<T extends FASTPicker>(
+    options: PickerOptions
+): ElementViewTemplate<T> {
+    const anchoredRegionTag = html.partial(tagFor(options.anchoredRegion));
+    const pickerMenuTag = tagFor(options.pickerMenu);
+    const pickerListTag = tagFor(options.pickerList);
+    const progressRingTag = html.partial(tagFor(options.progressRing));
 
-    return html<FASTPicker>`
+    return html<T>`
         <template
             :selectedListTag="${() => pickerListTag}"
             :menuTag="${() => pickerMenuTag}"
@@ -69,7 +67,7 @@ export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FAST
 
             ${when(
                 x => x.flyoutOpen,
-                html<FASTPicker>`
+                html<T>`
                 <${anchoredRegionTag}
                     class="region"
                     part="region"
@@ -94,13 +92,13 @@ export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FAST
                 >
                     ${when(
                         x => !x.showNoOptions && !x.showLoading,
-                        html<FASTPicker>`
+                        html<T>`
                             <slot name="menu-region"></slot>
                         `
                     )}
                     ${when(
                         x => x.showNoOptions && !x.showLoading,
-                        html<FASTPicker>`
+                        html<T>`
                             <div class="no-options-display" part="no-options-display">
                                 <slot name="no-options-region">
                                     ${x => x.noSuggestionsText}
@@ -110,12 +108,12 @@ export function pickerTemplate(options: PickerOptions): ElementViewTemplate<FAST
                     )}
                     ${when(
                         x => x.showLoading,
-                        html<FASTPicker>`
+                        html<T>`
                             <div class="loading-display" part="loading-display">
                                 <slot name="loading-region">
                                     <${progressRingTag}
                                         part="loading-progress"
-                                        class="loading-progress
+                                        class="loading-progress"
                                         slot="loading-region"
                                     ></${progressRingTag}>
                                         ${x => x.loadingText}

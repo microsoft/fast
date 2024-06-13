@@ -1,13 +1,10 @@
+import type { CaptureType, Subscriber, ViewController } from "@microsoft/fast-element";
 import {
     DOM,
-    ExecutionContext,
     HTMLDirective,
     StatelessAttachedAttributeDirective,
-    Subscriber,
     SubscriberSet,
-    ViewBehaviorTargets,
 } from "@microsoft/fast-element";
-import type { CaptureType } from "@microsoft/fast-element";
 
 const observer = new MutationObserver((mutations: MutationRecord[]) => {
     for (const mutation of mutations) {
@@ -18,10 +15,8 @@ const observer = new MutationObserver((mutations: MutationRecord[]) => {
 });
 
 class AttributeReflectionSubscriptionSet {
-    private static subscriberCache: WeakMap<
-        any,
-        AttributeReflectionSubscriptionSet
-    > = new WeakMap();
+    private static subscriberCache: WeakMap<any, AttributeReflectionSubscriptionSet> =
+        new WeakMap();
 
     private watchedAttributes: Set<Readonly<string[]>> = new Set();
     private subscribers = new SubscriberSet(this);
@@ -77,18 +72,26 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
      * The attributes the behavior is reflecting
      */
     public attributes: Readonly<string[]>;
+
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    targetNodeId: string;
+
     constructor(attributes: string[]) {
         super(attributes);
         this.attributes = Object.freeze(attributes);
     }
 
-    public bind(
-        source: HTMLElement,
-        context: ExecutionContext,
-        targets: ViewBehaviorTargets
-    ): void {
+    public bind(controller: ViewController): void {
+        const source = controller.source;
         const subscription = AttributeReflectionSubscriptionSet.getOrCreateFor(source);
-        subscription[this.id] = targets[this.nodeId];
+        subscription[this.id] = controller.targets[this.targetNodeId];
         subscription.subscribe(this);
 
         // Reflect any existing attributes because MutationObserver will only
@@ -100,8 +103,10 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
         }
     }
 
-    public unbind(source: any): void {
-        AttributeReflectionSubscriptionSet.getOrCreateFor(source).unsubscribe(this);
+    public unbind(controller: ViewController): void {
+        AttributeReflectionSubscriptionSet.getOrCreateFor(controller.source).unsubscribe(
+            this
+        );
     }
 
     public handleChange(source: AttributeReflectionSubscriptionSet, arg: string): void {
@@ -110,7 +115,7 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
         // attributes an instances doesn't need to reflect. This guards against reflecting attrs
         // that shouldn't be reflected.
         if (this.attributes.includes(arg)) {
-            const element = source.element as HTMLElement;
+            const element = source.element;
             const target = source[this.id] as HTMLElement;
             DOM.setAttribute(target, arg, element.getAttribute(arg));
         }
@@ -135,6 +140,8 @@ HTMLDirective.define(ReflectAttributesDirective);
  * `
  * ```
  */
-export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T> {
+export function reflectAttributes<TSource = any, TParent = any>(
+    ...attributes: string[]
+): CaptureType<TSource, TParent> {
     return new ReflectAttributesDirective(attributes);
 }

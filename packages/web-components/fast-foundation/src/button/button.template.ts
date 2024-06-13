@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { ButtonOptions, FASTButton } from "./button.js";
 
@@ -6,10 +7,10 @@ import type { ButtonOptions, FASTButton } from "./button.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTButton:class)} component.
  * @public
  */
-export function buttonTemplate(
+export function buttonTemplate<T extends FASTButton>(
     options: ButtonOptions = {}
-): ElementViewTemplate<FASTButton> {
-    return html<FASTButton>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <button
             class="control"
             part="control"
@@ -19,7 +20,7 @@ export function buttonTemplate(
             formaction="${x => x.formaction}"
             formenctype="${x => x.formenctype}"
             formmethod="${x => x.formmethod}"
-            formnovalidate="${x => x.formnovalidate}"
+            ?formnovalidate="${x => x.formnovalidate}"
             formtarget="${x => x.formtarget}"
             name="${x => x.name}"
             type="${x => x.type}"

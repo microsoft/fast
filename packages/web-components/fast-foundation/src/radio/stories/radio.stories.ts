@@ -1,37 +1,46 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTRadio } from "../radio.js";
 
-type RadioStoryArgs = Args & FASTRadio;
-type RadioStoryMeta = Meta<RadioStoryArgs>;
-
-const storyTemplate = html<RadioStoryArgs>`
+export const storyTemplate = html<StoryArgs<FASTRadio>>`
     <fast-radio
         ?checked="${x => x.checked}"
         ?disabled="${x => x.disabled}"
         ?required="${x => x.required}"
+        name="${x => x.name}"
+        value="${x => x.value}"
     >
-        ${x => x.label}
+        ${x => x.storyContent}
     </fast-radio>
 `;
 
 export default {
     title: "Radio",
+    excludeStories: ["storyTemplate"],
     args: {
-        label: "Label",
         checked: false,
         disabled: false,
         required: false,
+        storyContent: "Label",
     },
     argTypes: {
-        checked: { control: { type: "boolean" } },
-        disabled: { control: { type: "boolean" } },
-        required: { control: { type: "boolean" } },
+        checked: { control: "boolean" },
+        disabled: { control: "boolean" },
+        name: { control: "text" },
+        required: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        value: { control: "text" },
     },
-} as RadioStoryMeta;
+} as Meta<FASTRadio>;
 
-export const Radio = (args: RadioStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Radio: Story<FASTRadio> = renderComponent(storyTemplate).bind({});
+
+export const RadioInForm: Story<FASTRadio> = renderComponent(
+    html<StoryArgs<FASTRadio>>`
+        <form @submit="${() => false}">
+            ${storyTemplate}
+            <fast-button type="submit">Submit</fast-button>
+        </form>
+    `
+).bind({});

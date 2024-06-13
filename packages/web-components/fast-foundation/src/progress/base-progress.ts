@@ -19,9 +19,7 @@ export class FASTBaseProgress extends FASTElement {
     @attr({ converter: nullableNumberConverter })
     public value: number | null;
     protected valueChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updatePercentComplete();
-        }
+        this.updatePercentComplete();
     }
 
     /**
@@ -51,15 +49,6 @@ export class FASTBaseProgress extends FASTElement {
             this.updatePercentComplete();
         }
     }
-
-    /**
-     * Indicates the progress is paused
-     * @public
-     * @remarks
-     * HTML Attribute: paused
-     */
-    @attr({ mode: "boolean" })
-    public paused: boolean;
 
     /**
      * Indicates progress in %

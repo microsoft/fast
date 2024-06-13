@@ -1,19 +1,16 @@
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
+import { uniqueId } from "@microsoft/fast-web-utilities";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Accordion Item configuration options
  * @public
  */
-export type AccordionItemOptions = StartEndOptions & {
-    expandedIcon?: string | SyntheticViewTemplate;
-    collapsedIcon?: string | SyntheticViewTemplate;
+export type AccordionItemOptions = StartEndOptions<FASTAccordionItem> & {
+    expandCollapseIcon?: StaticallyComposableHTML<FASTAccordionItem>;
 };
 
 /**
@@ -23,14 +20,13 @@ export type AccordionItemOptions = StartEndOptions & {
  * @slot end - Content which can be provided between the start slot and icon
  * @slot heading - Content which serves as the accordion item heading and text of the expand button
  * @slot - The default slot for accordion item content
- * @slot expanded-icon - The expanded icon
- * @slot collapsed-icon - The collapsed icon
+ * @slot expand-collapse-icon - The expanded / collapsed icon
  * @fires change - Fires a custom 'change' event when the button is invoked
  * @csspart heading - Wraps the button
  * @csspart button - The button which serves to invoke the item
  * @csspart heading-content - Wraps the slot for the heading content within the button
- * @csspart icon - The icon container
- * @csspart region - The wrapper for the accordion item content
+ * @csspart expand-collapse-icon - The icon container
+ * @csspart panel - The wrapper for the accordion item content
  *
  * @public
  */
@@ -62,6 +58,16 @@ export class FASTAccordionItem extends FASTElement {
     public expanded: boolean = false;
 
     /**
+     * Disables an accordion item
+     *
+     * @public
+     * @remarks
+     * HTML attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean = false;
+
+    /**
      * The item ID
      *
      * @public
@@ -69,7 +75,7 @@ export class FASTAccordionItem extends FASTElement {
      * HTML Attribute: id
      */
     @attr
-    public id: string;
+    public id: string = uniqueId("accordion-");
 
     /**
      * @internal
@@ -80,12 +86,11 @@ export class FASTAccordionItem extends FASTElement {
      * @internal
      */
     public clickHandler = (e: MouseEvent) => {
-        this.expanded = !this.expanded;
-        this.change();
-    };
+        if (this.disabled) {
+            return;
+        }
 
-    private change = (): void => {
-        this.$emit("change");
+        this.$emit("click", e);
     };
 }
 

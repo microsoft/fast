@@ -1,12 +1,7 @@
-import {
-    children,
-    elements,
-    ElementViewTemplate,
-    html,
-    slotted,
-} from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/index.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import type { ColumnDefinition } from "./data-grid.js";
 
@@ -18,11 +13,11 @@ export type CellItemTemplateOptions = {
     dataGridCell: TemplateElementDependency;
 };
 
-function cellItemTemplate(
+function cellItemTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
-): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
-    const cellTag = tagFor(options.dataGridCell);
-    return html<ColumnDefinition, FASTDataGridRow>`
+): ViewTemplate<ColumnDefinition, T> {
+    const cellTag = html.partial(tagFor(options.dataGridCell));
+    return html<ColumnDefinition, T>`
     <${cellTag}
         cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
@@ -32,11 +27,11 @@ function cellItemTemplate(
 `;
 }
 
-function headerCellItemTemplate(
+function headerCellItemTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
-): ViewTemplate<ColumnDefinition, FASTDataGridRow> {
-    const cellTag = tagFor(options.dataGridCell);
-    return html<ColumnDefinition, FASTDataGridRow>`
+): ViewTemplate<ColumnDefinition, T> {
+    const cellTag = html.partial(tagFor(options.dataGridCell));
+    return html<ColumnDefinition, T>`
     <${cellTag}
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -51,15 +46,15 @@ function headerCellItemTemplate(
  *
  * @public
  */
-export function dataGridRowTemplate(
+export function dataGridRowTemplate<T extends FASTDataGridRow>(
     options: CellItemTemplateOptions
-): ElementViewTemplate<FASTDataGridRow> {
-    return html<FASTDataGridRow>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="row"
-            :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
             :defaultCellItemTemplate="${cellItemTemplate(options)}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate(options)}"
+            aria-selected="${x => (x.selected !== undefined ? x.selected : void 0)}"
             ${children({
                 property: "cellElements",
                 filter: elements(

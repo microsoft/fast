@@ -1,9 +1,13 @@
+import { AttributeConfiguration } from "@microsoft/fast-element";
+
 /**
  * Apply mixins to a constructor.
  * Sourced from {@link https://www.typescriptlang.org/docs/handbook/mixins.html | TypeScript Documentation }.
- * @public
+ * @internal
  */
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
+    const derivedAttributes = AttributeConfiguration.locate(derivedCtor);
+
     baseCtors.forEach(baseCtor => {
         Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
             if (name !== "constructor") {
@@ -16,9 +20,7 @@ export function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
             }
         });
 
-        if (baseCtor.attributes) {
-            const existing = derivedCtor.attributes || [];
-            derivedCtor.attributes = existing.concat(baseCtor.attributes);
-        }
+        const baseAttributes = AttributeConfiguration.locate(baseCtor);
+        baseAttributes.forEach(x => derivedAttributes.push(x));
     });
 }

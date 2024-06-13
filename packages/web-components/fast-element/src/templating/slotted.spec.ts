@@ -1,8 +1,12 @@
 import { expect } from "chai";
 import { slotted, SlottedDirective } from "./slotted.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { ref } from "./ref.js";
+import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
+import type { ViewBehaviorTargets, ViewController } from "./html-directive.js";
+import { Fake } from "../testing/fakes.js";
+import { html } from "./template.js";
 
 describe("The slotted", () => {
     context("template function", () => {
@@ -16,10 +20,8 @@ describe("The slotted", () => {
         it("creates a behavior by returning itself", () => {
             const nodeId = 'r';
             const directive = slotted("test") as SlottedDirective;
-            directive.nodeId = nodeId;
-            const target = document.createElement("slot");
-            const targets = { [nodeId]: target }
-            const behavior = directive.createBehavior(targets);
+            directive.targetNodeId = nodeId;
+            const behavior = directive.createBehavior();
 
             expect(behavior).to.equal(directive);
         });
@@ -28,6 +30,7 @@ describe("The slotted", () => {
     context("behavior", () => {
         class Model {
             @observable nodes;
+            reference: HTMLElement;
         }
 
         function createAndAppendChildren(host: HTMLElement, elementName = "div") {
@@ -55,13 +58,26 @@ describe("The slotted", () => {
             return { host, slot, children, targets, nodeId };
         }
 
+        function createController(source: any, targets: ViewBehaviorTargets): ViewController {
+            return {
+                source,
+                targets,
+                context: Fake.executionContext(),
+                isBound: false,
+                onUnbind() {
+
+                }
+            };
+        }
+
         it("gathers nodes from a slot", () => {
             const { children, targets, nodeId } = createDOM();
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
         });
@@ -72,10 +88,11 @@ describe("The slotted", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
@@ -83,10 +100,11 @@ describe("The slotted", () => {
         it("updates when slotted nodes change", async () => {
             const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
@@ -103,10 +121,11 @@ describe("The slotted", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
@@ -120,14 +139,15 @@ describe("The slotted", () => {
         it("clears and unwatches when unbound", async () => {
             const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = createController(model, targets);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            behavior.bind(controller);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind(model, ExecutionContext.default, targets);
+            behavior.unbind(controller);
 
             expect(model.nodes).members([]);
 
@@ -136,6 +156,26 @@ describe("The slotted", () => {
             await Updates.next();
 
             expect(model.nodes).members([]);
+        });
+
+        it("should not throw if DOM stringified", () => {
+            const template = html<Model>`
+                <slot id="test"
+                     ${slotted("nodes")}
+                     ${ref("reference")}>
+                </div>
+            `;
+
+            const view = template.create();
+            const model = new Model();
+
+            view.bind(model);
+
+            expect(() => {
+                JSON.stringify(model.reference);
+            }).to.not.throw();
+
+            view.unbind();
         });
     });
 });

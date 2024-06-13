@@ -169,6 +169,16 @@ export class FASTTextField extends TextField {}
 
 
 
+### Variables
+
+| Name            | Description                                        | Type                                                                                                                                 |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `MenuPlacement` | vertical positioning values for an anchored region | `{ bottom: "bottom", bottomFill: "bottom-fill", tallest: "tallest", tallestFill: "tallest-fill", top: "top", topFill: "top-fill", }` |
+
+<hr/>
+
+
+
 ### class: `FASTPicker`
 
 #### Superclass
@@ -185,14 +195,14 @@ export class FASTTextField extends TextField {}
 | `options`                    | public  | `string`                    |                              | Currently available options. Comma delineated string ie. "apples,oranges".                                                    |                      |
 | `filterSelected`             | public  | `boolean`                   | `true`                       | Whether the component should remove an option from the list when it is in the selection                                       |                      |
 | `filterQuery`                | public  | `boolean`                   | `true`                       | Whether the component should remove options based on the current query                                                        |                      |
-| `maxSelected`                | public  | `number or undefined`       |                              | The maximum number of items that can be selected.                                                                             |                      |
+| `maxSelected`                | public  | `number or null`            | `null`                       | The maximum number of items that can be selected.                                                                             |                      |
 | `noSuggestionsText`          | public  | `string`                    | `"No suggestions available"` | The text to present to assistive technolgies when no suggestions are available.                                               |                      |
 | `suggestionsAvailableText`   | public  | `string`                    | `"Suggestions available"`    | The text to present to assistive technolgies when suggestions are available.                                                  |                      |
 | `loadingText`                | public  | `string`                    | `"Loading suggestions"`      | The text to present to assistive technologies when suggestions are loading.                                                   |                      |
 | `label`                      | public  | `string`                    |                              | Applied to the aria-label attribute of the input element                                                                      |                      |
 | `labelledBy`                 | public  | `string`                    |                              | Applied to the aria-labelledby attribute of the input element                                                                 |                      |
 | `placeholder`                | public  | `string`                    |                              | Applied to the placeholder attribute of the input element                                                                     |                      |
-| `menuPlacement`              | public  | `menuConfigs`               | `"bottom-fill"`              | Controls menu placement                                                                                                       |                      |
+| `menuPlacement`              | public  | `MenuPlacement`             |                              | Controls menu placement                                                                                                       |                      |
 | `showLoading`                | public  | `boolean`                   | `false`                      | Whether to display a loading state if the menu is opened.                                                                     |                      |
 | `listItemTemplate`           | public  | `ViewTemplate`              |                              | Template used to generate selected items. This is used in a repeat directive.                                                 |                      |
 | `defaultListItemTemplate`    | public  | `ViewTemplate or undefined` |                              | Default template to use for selected items (usually specified in the component template). This is used in a repeat directive. |                      |

@@ -1,9 +1,10 @@
 import {
     AddViewBehaviorFactory,
-    Behavior,
     HTMLDirective,
     Markup,
-    ViewBehaviorTargets,
+    ViewBehavior,
+    ViewBehaviorFactory,
+    ViewController,
 } from "@microsoft/fast-element";
 import {
     NavigationCommitPhaseHook,
@@ -45,43 +46,47 @@ const defaultOptions: ContributorOptions = {
     parameters: true,
 };
 
-class NavigationContributorDirective implements HTMLDirective {
-    id: string;
-    nodeId: string;
+class NavigationContributorDirective implements ViewBehaviorFactory {
+    targetNodeId!: string;
 
-    constructor(private options: Required<ContributorOptions>) {}
+    constructor(public readonly options: Required<ContributorOptions>) {}
 
     createHTML(add: AddViewBehaviorFactory) {
         return Markup.attribute(add(this));
     }
 
-    createBehavior(targets: ViewBehaviorTargets) {
-        return new NavigationContributorBehavior(
-            targets[this.nodeId] as HTMLElement & NavigationContributor,
-            this.options
-        );
+    createBehavior() {
+        return new NavigationContributorBehavior(this);
     }
 }
 
 HTMLDirective.define(NavigationContributorDirective);
 
-class NavigationContributorBehavior implements Behavior {
+class NavigationContributorBehavior implements ViewBehavior {
     private router: Router | null = null;
+    private contributor!: HTMLElement & NavigationContributor;
 
-    constructor(
-        private contributor: HTMLElement & NavigationContributor,
-        private options: Required<ContributorOptions>
-    ) {}
+    constructor(private directive: NavigationContributorDirective) {}
 
-    bind(source: unknown, context: RouterExecutionContext): void {
-        if (this.options.lifecycle) {
-            this.router = context.router || Router.find(this.contributor);
-            this.router.addContributor(this.contributor);
+    bind(controller: ViewController): void {
+        const context = controller.context as RouterExecutionContext;
+        const options = this.directive.options;
+        this.contributor = controller.targets[
+            this.directive.targetNodeId
+        ] as HTMLElement & NavigationContributor;
+
+        if (options.lifecycle) {
+            this.router = context.router ?? Router.find(this.contributor);
+
+            if (this.router) {
+                this.router.addContributor(this.contributor);
+                controller.onUnbind(this);
+            }
         }
 
-        if (this.options.parameters) {
+        if (options.parameters) {
             const contributor = this.contributor as any;
-            const routeParams = source as any;
+            const routeParams = controller.source;
 
             for (const key in routeParams) {
                 contributor[key] = routeParams[key];
@@ -90,9 +95,7 @@ class NavigationContributorBehavior implements Behavior {
     }
 
     unbind(source: unknown): void {
-        if (this.router !== null) {
-            this.router.removeContributor(this.contributor);
-        }
+        this.router!.removeContributor(this.contributor);
     }
 }
 

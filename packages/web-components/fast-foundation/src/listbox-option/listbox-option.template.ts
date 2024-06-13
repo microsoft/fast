@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { FASTListboxOption, ListboxOptionOptions } from "./listbox-option.js";
 
@@ -6,24 +7,16 @@ import type { FASTListboxOption, ListboxOptionOptions } from "./listbox-option.j
  * The template for the {@link @microsoft/fast-foundation#(FASTListboxOption:class)} component.
  * @public
  */
-export function listboxOptionTemplate(
+export function listboxOptionTemplate<T extends FASTListboxOption>(
     options: ListboxOptionOptions = {}
-): ElementViewTemplate<FASTListboxOption> {
-    return html<FASTListboxOption>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             aria-checked="${x => x.ariaChecked}"
             aria-disabled="${x => x.ariaDisabled}"
             aria-posinset="${x => x.ariaPosInSet}"
             aria-selected="${x => x.ariaSelected}"
             aria-setsize="${x => x.ariaSetSize}"
-            class="${x =>
-                [
-                    x.checked && "checked",
-                    x.selected && "selected",
-                    x.disabled && "disabled",
-                ]
-                    .filter(Boolean)
-                    .join(" ")}"
             role="option"
         >
             ${startSlotTemplate(options)}

@@ -1,87 +1,52 @@
-import { html, repeat } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { html } from "@microsoft/fast-element";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSwitch } from "../switch.js";
 
-type SwitchStoryArgs = Args & FASTSwitch;
-type SwitchStoryMeta = Meta<SwitchStoryArgs>;
-
-const storyTemplate = html<SwitchStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTSwitch>>`
     <fast-switch
-        ?readOnly="${x => x.readOnly}"
+        ?readonly="${x => x.readOnly}"
         ?checked="${x => x.checked}"
         ?disabled="${x => x.disabled}"
         ?required="${x => x.required}"
+        value="${x => x.value}"
     >
-        ${x => x.label}
-        <span slot="checked-message">Dark</span>
-        <span slot="unchecked-message">Light</span>
+        ${x => x.storyContent}
     </fast-switch>
 `;
 
 export default {
     title: "Switch",
     args: {
-        label: "Theme",
-        checked: true,
-        readOnly: false,
+        checked: false,
         disabled: false,
+        readOnly: false,
         required: false,
     },
     argTypes: {
-        checked: { control: { type: "boolean" } },
-        readOnly: { control: { type: "boolean" } },
-        disabled: { control: { type: "boolean" } },
-        required: { control: { type: "boolean" } },
+        checked: { control: "boolean" },
+        disabled: { control: "boolean" },
+        readOnly: { control: "boolean" },
+        required: { control: "boolean" },
+        storyContent: { table: { disable: true } },
+        value: { control: "text" },
     },
-} as SwitchStoryMeta;
+} as Meta<FASTSwitch>;
 
-export const Switch = (args: SwitchStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
+export const Switch = renderComponent(storyTemplate).bind({});
 
-export const DisabledSwitch: SwitchStoryMeta = (args: SwitchStoryArgs) => {
-    const disabledStoryTemplate = html<SwitchStoryArgs>`
-        ${repeat(x => x.items, storyTemplate)}
-    `;
-
-    const storyFragment = new DocumentFragment();
-    disabledStoryTemplate.render(args, storyFragment);
-    return storyFragment;
-};
-DisabledSwitch.args = {
-    items: [
-        { label: "Disabled (unchecked)", checked: false, disabled: true },
-        { label: "Disabled (checked)", checked: true, disabled: true },
-    ],
-};
-DisabledSwitch.decorators = [
-    Story => {
-        const renderedStory = Story() as DocumentFragment;
-        const styles = document.createElement("style");
-        styles.innerHTML = /* css */ `
-            fast-switch {
-                display: flex;
-            }
-        `;
-        renderedStory.append(styles);
-        return renderedStory;
-    },
-];
-
-export const Required: SwitchStoryMeta = (args: SwitchStoryArgs) => {
-    const requiredStoryTemplate = html<SwitchStoryArgs>`
+export const SwitchInForm: Story<FASTSwitch> = renderComponent(
+    html<StoryArgs<FASTSwitch>>`
         <form @submit="${() => false}">
             ${storyTemplate}
+            <br />
             <fast-button type="submit">Submit</fast-button>
         </form>
-    `;
-
-    const storyFragment = new DocumentFragment();
-    requiredStoryTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-Required.args = {
+    `
+).bind({});
+SwitchInForm.args = {
     required: true,
+    storyContent: html`
+        Sign up for our newsletter?
+    `,
 };

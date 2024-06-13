@@ -1,17 +1,14 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Listbox option configuration options
  * @public
  */
-export type ListboxOptionOptions = StartEndOptions;
+export type ListboxOptionOptions = StartEndOptions<FASTListboxOption>;
 
 /**
  * Determines if the element is a {@link (FASTListboxOption:class)}
@@ -282,7 +279,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-posinset`
      */
     @observable
-    ariaPosInSet: string | null;
+    public ariaPosInSet: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -291,7 +288,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-selected`
      */
     @observable
-    ariaSelected: "true" | "false" | string | null;
+    public ariaSelected: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -300,7 +297,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-setsize`
      */
     @observable
-    ariaSetSize: string | null;
+    public ariaSetSize: string | null;
 }
 
 /**

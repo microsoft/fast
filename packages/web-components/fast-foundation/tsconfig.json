@@ -10,10 +10,10 @@
         "importsNotUsedAsValues": "error",
         "target": "es2015",
         "module": "ESNext",
-        "moduleResolution": "Node16",
+        "moduleResolution": "NodeNext",
         "importHelpers": true,
-        "types": ["mocha", "webpack-env"],
-        "lib": ["DOM", "ES2015", "ES2016.Array.Include"]
+        "noImplicitAny": false,
+        "lib": ["DOM", "ES2015", "ES2016.Array.Include", "ES2017.Object"]
     },
     "include": ["src"]
 }

@@ -11,13 +11,15 @@ import { FASTPicker } from "../picker.js";
 import { pickerTemplate } from "../picker.template.js";
 
 const pickerStyles = css`
+    :host([hidden]) {
+        display: none;
+    }
     :host {
+        display: inline-flex;
         box-sizing: border-box;
     }
-
     fast-anchored-region {
         z-index: 1000;
-        overflow: auto;
         display: flex;
         font-family: var(--body-font);
         font-size: var(--type-ramp-base-font-size);
@@ -62,30 +64,39 @@ const pickerListStyles = css`
         row-gap: calc(var(--design-unit) * 1px);
         flex-wrap: wrap;
         box-sizing: border-box;
-    }
-
-    ::slotted([role="combobox"]) {
-        min-width: 260px;
-        width: auto;
-        box-sizing: border-box;
-        color: var(--neutral-foreground-rest);
         background: var(--neutral-fill-input-rest);
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         font-family: var(--body-font);
-        outline: none;
-        user-select: none;
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
-        padding: 0 calc(var(--design-unit) * 2px + 1px);
+        padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 2px);
     }
-    ::slotted([role="combobox"]:active) {
+    :host(:not([disabled]):hover) {
         background: var(--neutral-fill-input-hover);
+        border-color: var(--accent-fill-hover);
+    }
+    :host(:not([disabled]):active) {
+        background: var(--neutral-fill-input-active);
         border-color: var(--accent-fill-active);
     }
-    ::slotted([role="combobox"]:focus-within) {
+    :host(:not([disabled]):focus-within) {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 1px var(--focus-stroke-outer) inset;
+    }
+    ::slotted([role="combobox"]) {
+        height: calc(
+            (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
+        );
+        min-width: 250px;
+        width: auto;
+        box-sizing: border-box;
+        border: none;
+        color: var(--neutral-foreground-rest);
+        background: var(--neutral-fill-input-hover);
+        outline: none;
+        user-select: none;
+        padding: 0 calc(var(--design-unit) * 2px + 1px);
     }
 `;
 
@@ -115,7 +126,7 @@ const pickerListItemStyles = css`
     :host(:focus-visible),
     :host(:hover) {
         background: var(--accent-fill-rest);
-        color: var(--neutral-foreground-rest);
+        color: var(--foreground-on-accent-rest);
     }
     :host(:focus-visible) {
         border-color: var(--focus-stroke-outer);
@@ -126,7 +137,6 @@ const pickerMenuStyles = css`
     :host {
         margin: calc(var(--design-unit) * 1px) 0;
         background: var(--neutral-layer-floating);
-        --elevation: 11;
         z-index: 1000;
         display: flex;
         width: 100%;
@@ -138,6 +148,7 @@ const pickerMenuStyles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         padding: calc(var(--design-unit) * 1px) 0;
         border: calc(var(--stroke-width) * 1px) solid transparent;
+        box-shadow: var(--elevation-shadow);
     }
     .suggestions-available-alert {
         height: 0;
@@ -181,7 +192,7 @@ const pickerMenuOptionStyles = css`
     }
     :host([aria-selected="true"]) {
         background: var(--accent-fill-rest);
-        color: var(--neutral-foreground-rest);
+        color: var(--foreground-on-accent-rest);
     }
 `;
 

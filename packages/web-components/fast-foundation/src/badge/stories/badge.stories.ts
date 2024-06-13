@@ -1,23 +1,29 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTBadge } from "../badge.js";
 
-type BadgeStoryArgs = Args & FASTBadge;
-type BadgeStoryMeta = Meta<BadgeStoryArgs>;
-
-const storyTemplate = html<BadgeStoryArgs>`
-    <fast-badge>${x => x.content}</fast-badge>
+const storyTemplate = html<StoryArgs<FASTBadge>>`
+    <fast-badge>${x => x.storyContent}</fast-badge>
 `;
 
 export default {
     title: "Badge",
     args: {
-        content: "Badge",
+        storyContent: "Badge",
     },
-} as BadgeStoryMeta;
+    argTypes: {
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTBadge>;
 
-export const Badge = (args: BadgeStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    storyTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Badge: Story<FASTBadge> = renderComponent(storyTemplate).bind({});
+
+export const BadgeWithSlottedStartEnd: Story<FASTBadge> = Badge.bind({});
+BadgeWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="12" height="12"><use href="#chevron-left-icon" /></svg>
+        Badge
+        <svg slot="end" width="12" height="12"><use href="#chevron-right-icon" /></svg>
+    `,
 };

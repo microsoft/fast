@@ -4,6 +4,7 @@ import {
     Endpoint,
     RecognizedRoute,
     RouteParameterConverter,
+    RouteParameterConverterContext,
     RouteRecognizer,
 } from "./recognizer.js";
 import { Ignore, NavigationCommand, Redirect, Render } from "./commands.js";
@@ -46,11 +47,10 @@ export type LayoutAndTransitionRouteDefinition = {
 /**
  * @beta
  */
-export type RedirectRouteDefinition<TSettings = any> = PathedRouteDefinition<
-    TSettings
-> & {
-    redirect: string;
-};
+export type RedirectRouteDefinition<TSettings = any> =
+    PathedRouteDefinition<TSettings> & {
+        redirect: string;
+    };
 
 /**
  * @beta
@@ -87,20 +87,17 @@ export type HasElement = {
 /**
  * @beta
  */
-export type ElementFallbackRouteDefinition<
-    TSettings = any
-> = LayoutAndTransitionRouteDefinition &
-    HasElement &
-    SupportsSettings<TSettings> &
-    HasTitle;
+export type ElementFallbackRouteDefinition<TSettings = any> =
+    LayoutAndTransitionRouteDefinition &
+        HasElement &
+        SupportsSettings<TSettings> &
+        HasTitle;
 
 /**
  * @beta
  */
-export type ElementRouteDefinition<TSettings = any> = NavigableRouteDefinition<
-    TSettings
-> &
-    HasElement;
+export type ElementRouteDefinition<TSettings = any> =
+    NavigableRouteDefinition<TSettings> & HasElement;
 
 /**
  * @beta
@@ -112,20 +109,17 @@ export type HasTemplate = {
 /**
  * @beta
  */
-export type TemplateFallbackRouteDefinition<
-    TSettings = any
-> = LayoutAndTransitionRouteDefinition &
-    HasTemplate &
-    SupportsSettings<TSettings> &
-    HasTitle;
+export type TemplateFallbackRouteDefinition<TSettings = any> =
+    LayoutAndTransitionRouteDefinition &
+        HasTemplate &
+        SupportsSettings<TSettings> &
+        HasTitle;
 
 /**
  * @beta
  */
-export type TemplateRouteDefinition<TSettings = any> = NavigableRouteDefinition<
-    TSettings
-> &
-    HasTemplate;
+export type TemplateRouteDefinition<TSettings = any> =
+    NavigableRouteDefinition<TSettings> & HasTemplate;
 
 /**
  * @beta
@@ -212,7 +206,7 @@ function getFallbackCommand(
 /**
  * @beta
  */
-export type ConverterObject = {
+export type RouteParameterConverterObject = {
     convert: RouteParameterConverter;
 };
 
@@ -221,10 +215,10 @@ export type ConverterObject = {
  */
 export type ParameterConverter =
     | RouteParameterConverter
-    | ConverterObject
-    | Constructable<ConverterObject>;
+    | RouteParameterConverterObject
+    | Constructable<RouteParameterConverterObject>;
 
-const booleanConverter = value => {
+const booleanConverter = (name: string, value: any) => {
     if (value === void 0 || value === null) {
         return false;
     }
@@ -240,11 +234,12 @@ const booleanConverter = value => {
 };
 
 const defaultConverters = {
-    number: value => (value === void 0 ? NaN : parseFloat(value)),
-    float: value => (value === void 0 ? NaN : parseFloat(value)),
-    int: value => (value === void 0 ? NaN : parseInt(value)),
-    integer: value => (value === void 0 ? NaN : parseInt(value)),
-    Date: value => (value === void 0 ? new Date(Date.now()) : new Date(value)),
+    number: (name: string, value: any) => (value === void 0 ? NaN : parseFloat(value)),
+    float: (name: string, value: any) => (value === void 0 ? NaN : parseFloat(value)),
+    int: (name: string, value: any) => (value === void 0 ? NaN : parseInt(value)),
+    integer: (name: string, value: any) => (value === void 0 ? NaN : parseInt(value)),
+    Date: (name: string, value: any) =>
+        value === void 0 ? new Date(Date.now()) : new Date(value),
     boolean: booleanConverter,
     bool: booleanConverter,
 };
@@ -363,11 +358,16 @@ export class RouteCollection<TSettings = any> {
         if ("convert" in converter) {
             normalizedConverter = converter.convert.bind(converter);
         } else if (converter.prototype && "convert" in converter.prototype) {
-            normalizedConverter = (value: string | undefined) => {
+            normalizedConverter = (
+                name: string,
+                value: string | undefined,
+                context: RouteParameterConverterContext
+            ) => {
                 const obj = this.owner.construct(
-                    converter as Constructable<ConverterObject>
+                    converter as Constructable<RouteParameterConverterObject>
                 );
-                return obj.convert(value);
+
+                return obj.convert(name, value, context);
             };
         } else {
             normalizedConverter = converter as RouteParameterConverter;
@@ -433,7 +433,7 @@ export class RouteCollection<TSettings = any> {
         return this.recognizer.generateFromPath(path, params);
     }
 
-    private aggregateConverters() {
+    private aggregateConverters(): Record<string, RouteParameterConverter> {
         if (this.owner.parent === null) {
             return {
                 ...defaultConverters,

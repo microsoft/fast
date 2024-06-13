@@ -1,6 +1,6 @@
 import { Observable, observable, volatile } from "@microsoft/fast-element";
-import { Context } from "@microsoft/fast-element/context";
-import { makeObservable } from "@microsoft/fast-element/utilities";
+import { Context } from "@microsoft/fast-element/context.js";
+import { reactive } from "@microsoft/fast-element/state.js";
 
 export type Todo = { description: string; done: boolean };
 export type TodoListFilter = "all" | "active" | "completed";
@@ -41,12 +41,12 @@ export class DefaultTodoList {
 
     constructor(todos?: Todo[]) {
         if (todos) {
-            this._todos = todos.map(x => makeObservable(x));
+            this._todos = todos.map(x => reactive(x));
         }
     }
 
     public add(description: string) {
-        this.splice(this._todos.length, 0, makeObservable({ description, done: false }));
+        this.splice(this._todos.length, 0, reactive({ description, done: false }));
     }
 
     public remove(todo: Todo) {

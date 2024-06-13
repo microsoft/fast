@@ -1,5 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, when } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTProgress } from "./progress.js";
 import type { ProgressOptions } from "./progress.options.js";
 
@@ -7,20 +8,19 @@ import type { ProgressOptions } from "./progress.options.js";
  * The template for the {@link @microsoft/fast-foundation#FASTProgress} component.
  * @public
  */
-export function progressTemplate(
+export function progressTemplate<T extends FASTProgress>(
     options: ProgressOptions = {}
-): ElementViewTemplate<FASTProgress> {
+): ElementViewTemplate<T> {
     return html`
         <template
             role="progressbar"
             aria-valuenow="${x => x.value}"
             aria-valuemin="${x => x.min}"
             aria-valuemax="${x => x.max}"
-            class="${x => (x.paused ? "paused" : "")}"
         >
             ${when(
                 x => typeof x.value === "number",
-                html<FASTProgress>`
+                html<T>`
                     <div class="progress" part="progress" slot="determinate">
                         <div
                             class="determinate"
@@ -28,15 +28,12 @@ export function progressTemplate(
                             style="width: ${x => x.percentComplete}%"
                         ></div>
                     </div>
-                `
-            )}
-            ${when(
-                x => typeof x.value !== "number",
-                html<FASTProgress>`
+                `,
+                html<T>`
                     <div class="progress" part="progress" slot="indeterminate">
                         <slot name="indeterminate">
-                            ${options.indeterminateIndicator1 || ""}
-                            ${options.indeterminateIndicator2 || ""}
+                            ${staticallyCompose(options.indeterminateIndicator1)}
+                            ${staticallyCompose(options.indeterminateIndicator2)}
                         </slot>
                     </div>
                 `

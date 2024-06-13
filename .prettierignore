@@ -1,4 +1,5 @@
 *.spec.ts
+!*.pw.spec.ts
 *.spec.tsx
 **/__tests__
 **/__test__
@@ -8,4 +9,3 @@
 **/dist
 **/temp
 default-palette.ts
-packages/tooling/fast-vscode-syntax-highlighting/test

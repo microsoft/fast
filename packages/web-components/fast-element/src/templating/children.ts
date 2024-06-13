@@ -1,4 +1,4 @@
-import { isString } from "../interfaces.js";
+import { isString, noop } from "../interfaces.js";
 import { HTMLDirective } from "./html-directive.js";
 import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
 import type { CaptureType } from "./template.js";
@@ -42,10 +42,8 @@ export type ChildrenDirectiveOptions<T = any> =
  * The runtime behavior for child node observation.
  * @public
  */
-export class ChildrenDirective extends NodeObservationDirective<
-    ChildrenDirectiveOptions
-> {
-    private observerProperty = `${this.id}-o`;
+export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
+    private observerProperty = Symbol();
 
     /**
      * Creates an instance of ChildrenDirective.
@@ -61,9 +59,14 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to observe.
      */
     observe(target: any): void {
-        const observer =
-            target[this.observerProperty] ??
-            (target[this.observerProperty] = new MutationObserver(this.handleEvent));
+        let observer = target[this.observerProperty];
+
+        if (!observer) {
+            observer = new MutationObserver(this.handleEvent);
+            observer.toJSON = noop;
+            target[this.observerProperty] = observer;
+        }
+
         observer.target = target;
         observer.observe(target, this.options);
     }
@@ -104,9 +107,11 @@ HTMLDirective.define(ChildrenDirective);
  * @param propertyOrOptions - The options used to configure child node observation.
  * @public
  */
-export function children<T = any>(
-    propertyOrOptions: (keyof T & string) | ChildrenDirectiveOptions<keyof T & string>
-): CaptureType<T> {
+export function children<TSource = any, TParent = any>(
+    propertyOrOptions:
+        | (keyof TSource & string)
+        | ChildrenDirectiveOptions<keyof TSource & string>
+): CaptureType<TSource, TParent> {
     if (isString(propertyOrOptions)) {
         propertyOrOptions = {
             property: propertyOrOptions,

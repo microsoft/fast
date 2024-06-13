@@ -1,135 +1,14 @@
-import { ArrayObserver } from "./index.debug.js";
-import { Disposable, isFunction } from "./interfaces.js";
-import type { Notifier, Subscriber } from "./observation/notifier.js";
-import { Observable } from "./observation/observable.js";
-
-interface ObjectVisitor<TVisitorData> {
-    visitObject(object: any, data: TVisitorData): void;
-    visitArray(array: any[], data: TVisitorData): void;
-    visitProperty(object: any, key: PropertyKey, value: any, data: TVisitorData): void;
-}
-
-function shouldTraverse(value: any, traversed: WeakSet<any> | Set<any>) {
-    return (
-        value !== null &&
-        value !== void 0 &&
-        typeof value === "object" &&
-        !traversed.has(value)
-    );
-}
-
-function traverseObject<TVisitorData>(
-    object: any,
-    deep: boolean,
-    visitor: ObjectVisitor<TVisitorData>,
-    data: TVisitorData,
-    traversed: WeakSet<any> | Set<any>
-): void {
-    if (!shouldTraverse(object, traversed)) {
-        return;
-    }
-
-    traversed.add(object);
-
-    if (Array.isArray(object)) {
-        visitor.visitArray(object, data);
-
-        for (const item of object) {
-            traverseObject(item, deep, visitor, data, traversed);
-        }
-    } else {
-        visitor.visitObject(object, data);
-
-        for (const key in object) {
-            const value = object[key];
-            visitor.visitProperty(object, key, value, data);
-
-            if (deep) {
-                traverseObject(value, deep, visitor, data, traversed);
-            }
-        }
-    }
-}
-
-const noop = () => void 0;
-const observed = new WeakSet<any>();
-
-const makeObserverVisitor: ObjectVisitor<undefined> = {
-    visitObject: noop,
-    visitArray: noop,
-    visitProperty(object: any, propertyName: string, value: any): void {
-        Reflect.defineProperty(object, propertyName, {
-            enumerable: true,
-            get() {
-                Observable.track(object, propertyName);
-                return value;
-            },
-            set(newValue: any) {
-                if (value !== newValue) {
-                    value = newValue;
-                    Observable.notify(object, propertyName);
-                }
-            },
-        });
-    },
-};
-
-interface WatchData {
-    notifiers: Notifier[];
-    subscriber: Subscriber;
-}
-
-function watchObject(object: any, data: WatchData) {
-    const notifier = Observable.getNotifier(object);
-    notifier.subscribe(data.subscriber);
-    data.notifiers.push(notifier);
-}
-
-const watchVisitor: ObjectVisitor<WatchData> = {
-    visitProperty: noop,
-    visitObject: watchObject,
-    visitArray: watchObject,
-};
-
-/**
- * Converts a plain object to an observable object.
- * @param object - The object to make observable.
- * @param deep - Indicates whether or not to deeply convert the oject.
- * @returns The converted object.
- * @beta
- */
-export function makeObservable<T>(object: T, deep = false): T {
-    traverseObject(object, deep, makeObserverVisitor, void 0, observed);
-    return object;
-}
-
-/**
- * Deeply subscribes to changes in existing observable objects.
- * @param object - The observable object to watch.
- * @param subscriber - The handler to call when changes are made to the object.
- * @returns A disposable that can be used to unsubscribe from change updates.
- * @beta
- */
-export function watch(
-    object: any,
-    subscriber: Subscriber | ((subject: any, args: any) => void)
-): Disposable {
-    const data: WatchData = {
-        notifiers: [],
-        subscriber: isFunction(subscriber) ? { handleChange: subscriber } : subscriber,
-    };
-
-    ArrayObserver.enable();
-    traverseObject(object, true, watchVisitor, data, new Set());
-
-    return {
-        dispose() {
-            for (const n of data.notifiers) {
-                n.unsubscribe(data.subscriber);
-            }
-        },
-    };
-}
+import { DOM } from "./dom.js";
+import { ExecutionContext } from "./observation/observable.js";
+import type { HostBehavior, HostController } from "./styles/host.js";
+import type {
+    CompiledViewBehaviorFactory,
+    ViewBehavior,
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+    ViewController,
+} from "./templating/html-directive.js";
+import { nextId } from "./templating/markup.js";
 
 /**
  * Retrieves the "composed parent" element of a node, ignoring DOM tree boundaries.
@@ -161,7 +40,7 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
  * Determines if the reference element contains the test element in a "composed" DOM tree that
  * ignores shadow DOM boundaries.
  *
- * Returns true of the test element is a descendent of the reference, or exist in
+ * Returns true of the test element is a descendent of the reference, or exists in
  * a shadow DOM that is a logical descendent of the reference. Otherwise returns false.
  * @param reference - The element to test for containment against.
  * @param test - The element being tested for containment.
@@ -181,3 +60,141 @@ export function composedContains(reference: HTMLElement, test: HTMLElement): boo
 
     return false;
 }
+
+/**
+ * An extension of MutationObserver that supports unobserving nodes.
+ * @internal
+ */
+export class UnobservableMutationObserver extends MutationObserver {
+    private observedNodes: Set<Node> = new Set();
+
+    /**
+     * Creates an instance of UnobservableMutationObserver.
+     * @param callback - The callback to invoke when observed nodes are changed.
+     */
+    constructor(private readonly callback: MutationCallback) {
+        function handler(mutations: MutationRecord[]) {
+            this.callback.call(
+                null,
+                mutations.filter(record => this.observedNodes.has(record.target))
+            );
+        }
+
+        super(handler);
+    }
+
+    public observe(target: Node, options?: MutationObserverInit | undefined): void {
+        this.observedNodes.add(target);
+        super.observe(target, options);
+    }
+
+    public unobserve(target: Node): void {
+        this.observedNodes.delete(target);
+
+        if (this.observedNodes.size < 1) {
+            this.disconnect();
+        }
+    }
+}
+
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
+export interface ViewBehaviorOrchestrator<TSource = any, TParent = any>
+    extends ViewController<TSource, TParent>,
+        HostBehavior<TSource> {
+    /**
+     *
+     * @param nodeId - The structural id of the DOM node to which a behavior will apply.
+     * @param target - The DOM node associated with the id.
+     */
+    addTarget(nodeId: string, target: Node): void;
+
+    /**
+     * Adds a behavior.
+     * @param behavior - The behavior to add.
+     */
+    addBehavior(behavior: ViewBehavior): void;
+
+    /**
+     * Adds a behavior factory.
+     * @param factory - The behavior factory to add.
+     * @param target - The target the factory will create behaviors for.
+     */
+    addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void;
+}
+
+/**
+ * Bridges between ViewBehaviors and HostBehaviors, enabling a host to
+ * control ViewBehaviors.
+ * @public
+ */
+export const ViewBehaviorOrchestrator = Object.freeze({
+    /**
+     * Creates a ViewBehaviorOrchestrator.
+     * @param source - The source to to associate behaviors with.
+     * @returns A ViewBehaviorOrchestrator.
+     */
+    create<TSource = any, TParent = any>(
+        source: TSource
+    ): ViewBehaviorOrchestrator<TSource, TParent> {
+        const behaviors: ViewBehavior[] = [];
+        const targets: ViewBehaviorTargets = {};
+        let unbindables: { unbind(controller: ViewController<TSource>) }[] | null = null;
+        let isConnected = false;
+
+        return {
+            source,
+            context: ExecutionContext.default,
+            targets,
+            get isBound() {
+                return isConnected;
+            },
+            addBehaviorFactory(factory: ViewBehaviorFactory, target: Node): void {
+                const compiled = factory as CompiledViewBehaviorFactory;
+
+                compiled.id = compiled.id ?? nextId();
+                compiled.targetNodeId = compiled.targetNodeId ?? nextId();
+                compiled.targetTagName = (target as HTMLElement).tagName ?? null;
+                compiled.policy = compiled.policy ?? DOM.policy;
+
+                this.addTarget(compiled.targetNodeId, target);
+                this.addBehavior(compiled.createBehavior());
+            },
+            addTarget(nodeId: string, target: Node) {
+                targets[nodeId] = target;
+            },
+            addBehavior(behavior: ViewBehavior): void {
+                behaviors.push(behavior);
+
+                if (isConnected) {
+                    behavior.bind(this);
+                }
+            },
+            onUnbind(unbindable: { unbind(controller: ViewController<TSource>) }) {
+                if (unbindables === null) {
+                    unbindables = [];
+                }
+
+                unbindables.push(unbindable);
+            },
+            connectedCallback(controller: HostController<TSource>) {
+                if (!isConnected) {
+                    isConnected = true;
+                    behaviors.forEach(x => x.bind(this));
+                }
+            },
+            disconnectedCallback(controller: HostController<TSource>) {
+                if (isConnected) {
+                    isConnected = false;
+
+                    if (unbindables !== null) {
+                        unbindables.forEach(x => x.unbind(this));
+                    }
+                }
+            },
+        };
+    },
+});

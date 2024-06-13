@@ -1,60 +1,28 @@
-import { html, repeat } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { html } from "@microsoft/fast-element";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTFlipper } from "../flipper.js";
 import { FlipperDirection } from "../flipper.options.js";
 
-type FlipperStoryArgs = Args & FASTFlipper;
-type FlipperStoryMeta = Meta<FlipperStoryArgs>;
-
-const componentTemplate = html<FlipperStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTFlipper>>`
     <fast-flipper
-        direction="${x => x.direction}"
         ?disabled="${x => x.disabled}"
+        :hiddenFromAT="${x => x.hiddenFromAT}"
+        direction="${x => x.direction}"
     ></fast-flipper>
 `;
 
 export default {
     title: "Flipper",
-    argTypes: {
-        direction: {
-            options: Object.values(FlipperDirection),
-            control: { type: "select" },
-        },
-        disabled: {
-            control: { type: "boolean" },
-        },
+    args: {
+        disabled: false,
+        hiddenFromAT: true,
     },
-} as FlipperStoryMeta;
+    argTypes: {
+        direction: { control: "radio", options: Object.values(FlipperDirection) },
+        disabled: { control: "boolean" },
+        hiddenFromAT: { control: "boolean" },
+    },
+} as Meta<FASTFlipper>;
 
-export const Flipper = (args: FlipperStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-
-export const FlipperPrevious = Flipper.bind({});
-FlipperPrevious.storyName = "Previous Flipper";
-FlipperPrevious.args = {
-    direction: FlipperDirection.previous,
-};
-
-export const FlipperDisabled = (args: FlipperStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-
-    html<FlipperStoryArgs>`
-        ${repeat(x => x.items, componentTemplate)}
-    `.render(args, storyFragment);
-
-    return storyFragment;
-};
-FlipperDisabled.storyName = "Disabled Flippers";
-FlipperDisabled.args = {
-    items: [
-        { direction: FlipperDirection.previous, disabled: true },
-        { direction: FlipperDirection.next, disabled: true },
-    ],
-    direction: FlipperDirection.previous,
-};
-FlipperDisabled.argTypes = {
-    items: { table: { disable: true } },
-};
+export const Flipper: Story<FASTFlipper> = renderComponent(storyTemplate).bind({});

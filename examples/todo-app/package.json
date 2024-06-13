@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode=production && tsc -p tsconfig.json",
-    "dev": "webpack serve",
+    "start": "webpack serve",
     "prepare": "yarn build",
     "test": "yarn build"
   },
@@ -23,10 +23,12 @@
     "directory": "examples/todo-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.3",
-    "tslib": "^2.4.0"
+    "@microsoft/fast-element": "^2.0.0-beta.4",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.9",
+    "tslib": "2.4.0"
   },
   "devDependencies": {
+    "@types/node": "^20.12.8",
     "clean-webpack-plugin": "^4.0.0",
     "resolve-typescript-plugin": "^1.2.0",
     "ts-loader": "^9.3.0",

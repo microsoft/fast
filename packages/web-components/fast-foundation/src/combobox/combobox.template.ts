@@ -1,21 +1,21 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { FASTListbox } from "../listbox/listbox.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { ComboboxOptions, FASTCombobox } from "./combobox.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTCombobox:class)} component.
  * @public
  */
-export function comboboxTemplate(
+export function comboboxTemplate<T extends FASTCombobox>(
     options: ComboboxOptions = {}
-): ElementViewTemplate<FASTCombobox> {
-    return html`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             aria-disabled="${x => x.ariaDisabled}"
             autocomplete="${x => x.autocomplete}"
-            class="${x => (x.open ? "open" : "")} ${x =>
-                x.disabled ? "disabled" : ""} ${x => x.position}"
             ?open="${x => x.open}"
             tabindex="${x => (!x.disabled ? "0" : null)}"
             @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
@@ -46,7 +46,7 @@ export function comboboxTemplate(
                     />
                     <div class="indicator" part="indicator" aria-hidden="true">
                         <slot name="indicator">
-                            ${options.indicator || ""}
+                            ${staticallyCompose(options.indicator)}
                         </slot>
                     </div>
                 </slot>

@@ -7,21 +7,15 @@ module.exports = {
     organizationName: "microsoft",
     projectName: "fast",
     onBrokenLinks: "log",
-    scripts: [
-        {
-            src: "/fast-components.iife.min.js",
-            async: true,
-        },
+    markdown: {
+        mermaid: true,
+    },
+    themes: [
+        require.resolve("@docusaurus/theme-live-codeblock"),
+        "@docusaurus/theme-mermaid",
     ],
-    themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     staticDirectories: ["static"],
     themeConfig: {
-        algolia: {
-            appId: "PG0CVQLQ81",
-            apiKey: "396cf95de6551ef90bde2de3142e158a",
-            indexName: "FAST",
-            contextualSearch: true,
-        },
         colorMode: {
             defaultMode: "dark",
         },
@@ -51,19 +45,14 @@ module.exports = {
                     label: "Docs",
                     position: "left",
                 },
-                // TODO: uncomment when ready to display dropdown for doc versions (lines 55-58)
-                // {
-                //     type: "docsVersionDropdown",
-                //     position: "left",
-                // },
+                {
+                    type: "docsVersionDropdown",
+                    position: "left",
+                    dropdownActiveClassDisabled: true,
+                },
                 {
                     href: "https://www.fast.design",
                     label: "Home",
-                    position: "right",
-                },
-                {
-                    href: "https://explore.fast.design/",
-                    label: "Components",
                     position: "right",
                 },
                 {
@@ -146,25 +135,26 @@ module.exports = {
             "@docusaurus/preset-classic",
             {
                 docs: {
-                    sidebarPath: require.resolve("./sidebars.js"),
+                    sidebarPath: "./sidebars.js",
                     // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
                     showLastUpdateTime: false,
-                    remarkPlugins: [require("mdx-mermaid")],
+                    // remarkPlugins: [require("mdx-mermaid")],
                     // The "includeCurrentVersion" plugin includes the ./docs folder of the docs - setting to false as current docs are in progress
                     // TODO: remove when ready to display both the current and legacy versions (line 155)
                     includeCurrentVersion: false,
                     // The "lastVersion" plugin sets which version the /docs route refers to
                     // TODO: update lastVersion to "current" when ready for /docs route to be set to the current version (line 158)
-                    lastVersion: "legacy",
+                    lastVersion: "current",
                     // TODO: Uncomment to begin displaying the doc versions labels (lines 160-167)
-                    // versions: {
-                    //     current: {
-                    //         label: "current version",
-                    //     },
-                    //     legacy: {
-                    //         label: "legacy version",
-                    //     },
-                    // },
+                    versions: {
+                        current: {
+                            label: "2.x",
+                        },
+                        "1.x": {
+                            label: "1.x",
+                            path: "1.x",
+                        },
+                    },
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),

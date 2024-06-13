@@ -1,12 +1,15 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { FASTPickerListItem } from "./picker-list-item.js";
 
 /**
  *
  * @public
  */
-export function pickerListItemTemplate(): ElementViewTemplate<FASTPickerListItem> {
-    return html<FASTPickerListItem>`
+export function pickerListItemTemplate<
+    T extends FASTPickerListItem
+>(): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="listitem"
             tabindex="0"

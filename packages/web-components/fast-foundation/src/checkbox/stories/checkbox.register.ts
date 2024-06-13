@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTCheckbox } from "../checkbox.js";
 import { checkboxTemplate } from "../checkbox.template.js";
@@ -119,8 +120,8 @@ const styles = css`
         cursor: var(--disabled-cursor);
     }
 
-    :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
-    :host(.indeterminate) .indeterminate-indicator {
+    :host([aria-checked="true"]) .checked-indicator,
+    :host([aria-checked="mixed"]) .indeterminate-indicator {
         opacity: 1;
     }
 
@@ -132,7 +133,7 @@ const styles = css`
 FASTCheckbox.define({
     name: "fast-checkbox",
     template: checkboxTemplate({
-        checkedIndicator: /* html */ `
+        checkedIndicator: /* html */ html`
             <svg
                 part="checked-indicator"
                 class="checked-indicator"
@@ -146,7 +147,7 @@ FASTCheckbox.define({
                 />
             </svg>
         `,
-        indeterminateIndicator: /* html */ `
+        indeterminateIndicator: /* html */ html`
             <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
         `,
     }),

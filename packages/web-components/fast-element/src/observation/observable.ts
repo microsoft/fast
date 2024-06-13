@@ -5,7 +5,7 @@ import {
     KernelServiceId,
     Message,
 } from "../interfaces.js";
-import { FAST } from "../platform.js";
+import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
 import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
@@ -36,10 +36,10 @@ export interface Accessor {
 
 /**
  * The signature of an arrow function capable of being evaluated
- * as part of a template binding update.
+ * against source data and within an execution context.
  * @public
  */
-export type Binding<TSource = any, TReturn = any, TParent = any> = (
+export type Expression<TSource = any, TReturn = any, TParent = any> = (
     source: TSource,
     context: ExecutionContext<TParent>
 ) => TReturn;
@@ -66,22 +66,91 @@ interface SubscriptionRecord extends ObservationRecord {
 }
 
 /**
+ * Describes how the source's lifetime relates to its controller's lifetime.
+ * @public
+ */
+export const SourceLifetime = Object.freeze({
+    /**
+     * The source to controller lifetime relationship is unknown.
+     */
+    unknown: void 0,
+    /**
+     * The source and controller lifetimes are coupled to one another.
+     * They can/will be GC'd together.
+     */
+    coupled: 1,
+} as const);
+
+/**
+ * Describes how the source's lifetime relates to its controller's lifetime.
+ * @public
+ */
+export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
+
+/**
+ * Controls the lifecycle of an expression and provides relevant context.
+ * @public
+ */
+export interface ExpressionController<TSource = any, TParent = any> {
+    /**
+     * The source the expression is evaluated against.
+     */
+    readonly source: TSource;
+
+    /**
+     * Indicates how the source's lifetime relates to the controller's lifetime.
+     */
+    readonly sourceLifetime?: SourceLifetime;
+
+    /**
+     * The context the expression is evaluated against.
+     */
+    readonly context: ExecutionContext<TParent>;
+
+    /**
+     * Indicates whether the controller is bound.
+     */
+    readonly isBound: boolean;
+
+    /**
+     * Registers an unbind handler with the controller.
+     * @param behavior - An object to call when the controller unbinds.
+     */
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TSource, TParent>);
+    }): void;
+}
+
+/**
+ * Observes an expression for changes.
+ * @public
+ */
+export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any> {
+    /**
+     * Binds the expression to the source.
+     * @param controller - The controller that manages the lifecycle and related
+     * context for the expression.
+     */
+    bind(controller: ExpressionController<TSource, TParent>): TReturn;
+}
+
+/**
  * Enables evaluation of and subscription to a binding.
  * @public
  */
-export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
+export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
     extends Notifier,
+        ExpressionObserver<TSource, TReturn, TParent>,
         Disposable {
     /**
-     * Begins observing the binding for the source and returns the current value.
-     * @param source - The source that the binding is based on.
-     * @param context - The execution context to execute the binding within.
-     * @returns The value of the binding.
+     * Observes the expression.
+     * @param source - The source for the expression.
+     * @param context - The context for the expression.
      */
-    observe(source: TSource, context?: ExecutionContext<TParent>): TReturn;
+    observe(source: TSource, context?: ExecutionContext): TReturn;
 
     /**
-     * Gets {@link ObservationRecord|ObservationRecords} that the {@link BindingObserver}
+     * Gets {@link ObservationRecord|ObservationRecords} that the {@link ExpressionNotifier}
      * is observing.
      */
     records(): IterableIterator<ObservationRecord>;
@@ -103,10 +172,9 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
  */
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const queueUpdate = Updates.enqueue;
-    const volatileRegex = /(:|&&|\|\||if)/;
+    const volatileRegex = /(:|&&|\|\||if|\?\.)/;
     const notifierLookup = new WeakMap<any, Notifier>();
-    const accessorLookup = new WeakMap<any, Accessor[]>();
-    let watcher: BindingObserverImplementation | undefined = void 0;
+    let watcher: ExpressionNotifierImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
         throw FAST.error(Message.needsArrayObservation);
     };
@@ -126,24 +194,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         return found;
     }
 
-    function getAccessors(target: {}): Accessor[] {
-        let accessors = accessorLookup.get(target);
-
-        if (accessors === void 0) {
-            let currentTarget = Reflect.getPrototypeOf(target);
-
-            while (accessors === void 0 && currentTarget !== null) {
-                accessors = accessorLookup.get(currentTarget);
-                currentTarget = Reflect.getPrototypeOf(currentTarget);
-            }
-
-            accessors = accessors === void 0 ? [] : accessors.slice(0);
-
-            accessorLookup.set(target, accessors);
-        }
-
-        return accessors;
-    }
+    const getAccessors = createMetadataLocator<Accessor>();
 
     class DefaultObservableAccessor implements Accessor {
         private field: string;
@@ -180,9 +231,10 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
     }
 
-    class BindingObserverImplementation<TSource = any, TReturn = any>
+    class ExpressionNotifierImplementation<TSource = any, TReturn = any>
         extends SubscriberSet
-        implements BindingObserver<TSource, TReturn> {
+        implements ExpressionNotifier<TSource, TReturn>
+    {
         public needsRefresh: boolean = true;
         private needsQueue: boolean = true;
         private isAsync = true;
@@ -193,20 +245,45 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         private propertyName: string | undefined = void 0;
         private notifier: Notifier | undefined = void 0;
         private next: SubscriptionRecord | undefined = void 0;
+        private controller: ExpressionController;
 
         constructor(
-            private binding: Binding<TSource, TReturn>,
+            private expression: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
             private isVolatileBinding: boolean = false
         ) {
-            super(binding, initialSubscriber);
+            super(expression, initialSubscriber);
         }
 
         public setMode(isAsync: boolean): void {
             this.isAsync = this.needsQueue = isAsync;
         }
 
-        public observe(source: TSource, context?: ExecutionContext): TReturn {
+        public bind(controller: ExpressionController) {
+            this.controller = controller;
+
+            const value = this.observe(controller.source, controller.context);
+
+            if (!controller.isBound && this.requiresUnbind(controller)) {
+                controller.onUnbind(this);
+            }
+
+            return value;
+        }
+
+        private requiresUnbind(controller: ExpressionController) {
+            return (
+                controller.sourceLifetime !== SourceLifetime.coupled ||
+                this.first !== this.last ||
+                this.first.propertySource !== controller.source
+            );
+        }
+
+        public unbind(controller: ExpressionController) {
+            this.dispose();
+        }
+
+        public observe(source: TSource, context: ExecutionContext): TReturn {
             if (this.needsRefresh && this.last !== null) {
                 this.dispose();
             }
@@ -214,10 +291,19 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             const previousWatcher = watcher;
             watcher = this.needsRefresh ? this : void 0;
             this.needsRefresh = this.isVolatileBinding;
-            const result = this.binding(source, context ?? ExecutionContext.default);
-            watcher = previousWatcher;
+            let result;
+            try {
+                result = this.expression(source, context);
+            } finally {
+                watcher = previousWatcher;
+            }
 
             return result;
+        }
+
+        // backwards compat with v1 kernel
+        public disconnect() {
+            this.dispose();
         }
 
         public dispose(): void {
@@ -294,6 +380,8 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         }
     }
 
+    makeSerializationNoop(ExpressionNotifierImplementation);
+
     return Object.freeze({
         /**
          * @internal
@@ -368,19 +456,19 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         getAccessors,
 
         /**
-         * Creates a {@link BindingObserver} that can watch the
-         * provided {@link Binding} for changes.
-         * @param binding - The binding to observe.
+         * Creates a {@link ExpressionNotifier} that can watch the
+         * provided {@link Expression} for changes.
+         * @param expression - The binding to observe.
          * @param initialSubscriber - An initial subscriber to changes in the binding value.
          * @param isVolatileBinding - Indicates whether the binding's dependency list must be re-evaluated on every value evaluation.
          */
         binding<TSource = any, TReturn = any>(
-            binding: Binding<TSource, TReturn>,
+            expression: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
-            isVolatileBinding: boolean = this.isVolatileBinding(binding)
-        ): BindingObserver<TSource, TReturn> {
-            return new BindingObserverImplementation(
-                binding,
+            isVolatileBinding: boolean = this.isVolatileBinding(expression)
+        ): ExpressionNotifier<TSource, TReturn> {
+            return new ExpressionNotifierImplementation(
+                expression,
                 initialSubscriber,
                 isVolatileBinding
             );
@@ -389,12 +477,12 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         /**
          * Determines whether a binding expression is volatile and needs to have its dependency list re-evaluated
          * on every evaluation of the value.
-         * @param binding - The binding to inspect.
+         * @param expression - The binding to inspect.
          */
         isVolatileBinding<TSource = any, TReturn = any>(
-            binding: Binding<TSource, TReturn>
+            expression: Expression<TSource, TReturn>
         ): boolean {
-            return volatileRegex.test(binding.toString());
+            return volatileRegex.test(expression.toString());
         },
     });
 });
@@ -429,6 +517,77 @@ export function volatile(
     });
 }
 
+/**
+ * Provides additional contextual information available to behaviors and expressions.
+ * @public
+ */
+export interface ExecutionContext<TParent = any> {
+    /**
+     * The index of the current item within a repeat context.
+     */
+    index: number;
+
+    /**
+     * The length of the current collection within a repeat context.
+     */
+    length: number;
+
+    /**
+     * The parent data source within a nested context.
+     */
+    parent: TParent;
+
+    /**
+     * The parent execution context when in nested context scenarios.
+     */
+    parentContext: ExecutionContext<TParent>;
+
+    /**
+     * The current event within an event handler.
+     */
+    readonly event: Event;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an even index.
+     */
+    readonly isEven: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * has an odd index.
+     */
+    readonly isOdd: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the first item in the collection.
+     */
+    readonly isFirst: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is somewhere in the middle of the collection.
+     */
+    readonly isInMiddle: boolean;
+
+    /**
+     * Indicates whether the current item within a repeat context
+     * is the last item in the collection.
+     */
+    readonly isLast: boolean;
+
+    /**
+     * Returns the typed event detail of a custom event.
+     */
+    eventDetail<TDetail>(): TDetail;
+
+    /**
+     * Returns the typed event target of the event.
+     */
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+}
+
 const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
     let current: Event | null = null;
 
@@ -446,155 +605,37 @@ const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
  * Provides additional contextual information available to behaviors and expressions.
  * @public
  */
-export class ExecutionContext<TParentSource = any> {
+export const ExecutionContext = Object.freeze({
     /**
-     * The default execution context.
+     * A default execution context.
      */
-    public static readonly default = new ExecutionContext();
+    default: {
+        index: 0,
+        length: 0,
+        get event(): Event {
+            return ExecutionContext.getEvent()!;
+        },
+        eventDetail<TDetail>(): TDetail {
+            return (this.event as CustomEvent<TDetail>).detail;
+        },
+        eventTarget<TTarget extends EventTarget>(): TTarget {
+            return this.event.target! as TTarget;
+        },
+    } as ExecutionContext,
 
     /**
-     * The index of the current item within a repeat context.
+     * Gets the current event.
+     * @returns An event object.
      */
-    public index: number = 0;
+    getEvent(): Event | null {
+        return contextEvent.get();
+    },
 
     /**
-     * The length of the current collection within a repeat context.
+     * Sets the current event.
+     * @param event - An event object.
      */
-    public length: number = 0;
-
-    /**
-     * The parent data source within a nested context.
-     */
-    public readonly parent: TParentSource;
-
-    /**
-     * The parent execution context when in nested context scenarios.
-     */
-    public readonly parentContext: ExecutionContext<TParentSource>;
-
-    private constructor(
-        parentSource: any = null,
-        parentContext: ExecutionContext | null = null
-    ) {
-        this.parent = parentSource;
-        this.parentContext = parentContext as any;
-    }
-
-    /**
-     * The current event within an event handler.
-     */
-    public get event(): Event {
-        return contextEvent.get()!;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * has an even index.
-     */
-    public get isEven(): boolean {
-        return this.index % 2 === 0;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * has an odd index.
-     */
-    public get isOdd(): boolean {
-        return this.index % 2 !== 0;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * is the first item in the collection.
-     */
-    public get isFirst(): boolean {
-        return this.index === 0;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * is somewhere in the middle of the collection.
-     */
-    public get isInMiddle(): boolean {
-        return !this.isFirst && !this.isLast;
-    }
-
-    /**
-     * Indicates whether the current item within a repeat context
-     * is the last item in the collection.
-     */
-    public get isLast(): boolean {
-        return this.index === this.length - 1;
-    }
-
-    /**
-     * Returns the typed event detail of a custom event.
-     */
-    public eventDetail<TDetail>(): TDetail {
-        return (this.event as CustomEvent<TDetail>).detail;
-    }
-
-    /**
-     * Returns the typed event target of the event.
-     */
-    public eventTarget<TTarget extends EventTarget>(): TTarget {
-        return this.event.target! as TTarget;
-    }
-
-    /**
-     * Updates the position/size on a context associated with a list item.
-     * @param index - The new index of the item.
-     * @param length - The new length of the list.
-     */
-    public updatePosition(index: number, length: number): void {
-        this.index = index;
-        this.length = length;
-    }
-
-    /**
-     * Creates a new execution context descendent from the current context.
-     * @param source - The source for the context if different than the parent.
-     * @returns A child execution context.
-     */
-    public createChildContext<TParentSource>(
-        parentSource: TParentSource
-    ): ExecutionContext<TParentSource> {
-        return new ExecutionContext(parentSource, this);
-    }
-
-    /**
-     * Creates a new execution context descent suitable for use in list rendering.
-     * @param item - The list item to serve as the source.
-     * @param index - The index of the item in the list.
-     * @param length - The length of the list.
-     */
-    public createItemContext(
-        index: number,
-        length: number
-    ): ExecutionContext<TParentSource> {
-        const childContext = Object.create(this);
-        childContext.index = index;
-        childContext.length = length;
-        return childContext;
-    }
-
-    /**
-     * Sets the event for the current execution context.
-     * @param event - The event to set.
-     * @internal
-     */
-    public static setEvent(event: Event | null): void {
+    setEvent(event: Event | null): void {
         contextEvent.set(event);
-    }
-
-    /**
-     * Creates a new root execution context.
-     * @returns A new execution context.
-     */
-    public static create(): ExecutionContext {
-        return new ExecutionContext();
-    }
-}
-
-Observable.defineProperty(ExecutionContext.prototype, "index");
-Observable.defineProperty(ExecutionContext.prototype, "length");
+    },
+});

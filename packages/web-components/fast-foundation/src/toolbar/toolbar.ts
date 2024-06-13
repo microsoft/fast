@@ -1,19 +1,11 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
-import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
+import { ArrowKeys, Direction, limit } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
-
-/**
- * Toolbar configuration options
- * @public
- */
-export type ToolbarOptions = StartEndOptions;
+import { getRootActiveElement } from "../utilities/root-active-element.js";
+import { ToolbarOrientation } from "./toolbar.options.js";
 
 /**
  * A map for directionality derived from keyboard input strings,
@@ -23,19 +15,19 @@ export type ToolbarOptions = StartEndOptions;
  */
 const ToolbarArrowKeyMap = Object.freeze({
     [ArrowKeys.ArrowUp]: {
-        [Orientation.vertical]: -1,
+        [ToolbarOrientation.vertical]: -1,
     },
     [ArrowKeys.ArrowDown]: {
-        [Orientation.vertical]: 1,
+        [ToolbarOrientation.vertical]: 1,
     },
     [ArrowKeys.ArrowLeft]: {
-        [Orientation.horizontal]: {
+        [ToolbarOrientation.horizontal]: {
             [Direction.ltr]: -1,
             [Direction.rtl]: 1,
         },
     },
     [ArrowKeys.ArrowRight]: {
-        [Orientation.horizontal]: {
+        [ToolbarOrientation.horizontal]: {
             [Direction.ltr]: 1,
             [Direction.rtl]: -1,
         },
@@ -102,7 +94,7 @@ export class FASTToolbar extends FASTElement {
      * HTML Attribute: `orientation`
      */
     @attr
-    public orientation: Orientation = Orientation.horizontal;
+    public orientation: ToolbarOrientation = ToolbarOrientation.horizontal;
 
     /**
      * The elements in the default slot.
@@ -130,8 +122,10 @@ export class FASTToolbar extends FASTElement {
      *
      * @internal
      */
-    public clickHandler(e: MouseEvent): boolean | void {
-        const activeIndex = this.focusableElements?.indexOf(e.target as HTMLElement);
+    public mouseDownHandler(e: MouseEvent): boolean | void {
+        const activeIndex = this.focusableElements?.findIndex(x =>
+            x.contains(e.target as HTMLElement)
+        );
         if (activeIndex > -1 && this.activeIndex !== activeIndex) {
             this.setFocusedElement(activeIndex);
         }
@@ -216,11 +210,10 @@ export class FASTToolbar extends FASTElement {
      * @internal
      */
     protected get allSlottedItems(): (HTMLElement | Node)[] {
-        return [
-            ...this.start.assignedElements(),
-            ...this.slottedItems,
-            ...this.end.assignedElements(),
-        ];
+        const start = this.start?.assignedElements() ?? [];
+        const end = this.end?.assignedElements() ?? [];
+
+        return [...start, ...this.slottedItems, ...end];
     }
 
     /**
@@ -238,9 +231,8 @@ export class FASTToolbar extends FASTElement {
 
         // If the previously active item is still focusable, adjust the active index to the
         // index of that item.
-        const adjustedActiveIndex = this.focusableElements.indexOf(
-            previousFocusedElement
-        );
+        const adjustedActiveIndex =
+            this.focusableElements.indexOf(previousFocusedElement);
         this.activeIndex = Math.max(0, adjustedActiveIndex);
 
         this.setFocusableElements();
@@ -255,7 +247,14 @@ export class FASTToolbar extends FASTElement {
     private setFocusedElement(activeIndex: number = this.activeIndex): void {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
-        this.focusableElements[this.activeIndex]?.focus();
+        if (
+            this.focusableElements[this.activeIndex] &&
+            // Don't focus the toolbar element if some event handlers moved
+            // the focus on another element in the page.
+            this.contains(getRootActiveElement(this))
+        ) {
+            this.focusableElements[this.activeIndex].focus();
+        }
     }
 
     /**

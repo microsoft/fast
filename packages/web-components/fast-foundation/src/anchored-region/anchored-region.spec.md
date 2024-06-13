@@ -182,7 +182,7 @@ NOTE: this component api will not be exposed outside of the fast-components pack
 - `fast-anchored-region`
 
 *Attributes:*
-- anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active.
+- anchor - The html id of the HTMLElement used as the anchor around which the positioning region is placed.  This must be set for the component's positioning logic to be active. The component will first check for the element id in the local shadow DOM followed by the document light DOM.
 
 - viewport - The ID of the HTMLElement to be used as the viewport used to determine available layout space around the anchor element.  If unset the parent element of the anchored region is used.
 

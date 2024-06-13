@@ -1,9 +1,17 @@
-import { isString, Message, TrustedTypesPolicy } from "../interfaces.js";
+import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { Parser } from "./markup.js";
-import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
-import { Aspect, Aspected, ViewBehaviorFactory } from "./html-directive.js";
+import { DOM, DOMPolicy } from "../dom.js";
+import type { Binding } from "../binding/binding.js";
+import { oneTime } from "../binding/one-time.js";
+import { nextId, Parser } from "./markup.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
+import {
+    Aspected,
+    CompiledViewBehaviorFactory,
+    HTMLDirective,
+    ViewBehaviorFactory,
+} from "./html-directive.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -22,30 +30,56 @@ const next: NextNode = {
     node: null as ChildNode | null,
 };
 
+function tryWarn(name: string) {
+    if (!name.startsWith("fast-")) {
+        FAST.warn(Message.hostBindingWithoutHost, { name });
+    }
+}
+
+const warningHost = new Proxy(document.createElement("div"), {
+    get(target, property: string) {
+        tryWarn(property);
+        const value = Reflect.get(target, property);
+        return isFunction(value) ? value.bind(target) : value;
+    },
+
+    set(target, property: string, value) {
+        tryWarn(property);
+        return Reflect.set(target, property, value);
+    },
+});
+
 class CompilationContext<TSource = any, TParent = any>
-    implements TemplateCompilationResult<TSource, TParent> {
+    implements TemplateCompilationResult<TSource, TParent>
+{
     private proto: any = null;
     private nodeIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
-    public readonly factories: ViewBehaviorFactory[] = [];
+    public readonly factories: CompiledViewBehaviorFactory[] = [];
 
     constructor(
         public readonly fragment: DocumentFragment,
-        public readonly directives: Record<string, ViewBehaviorFactory>
+        public readonly directives: Record<string, ViewBehaviorFactory>,
+        public readonly policy: DOMPolicy
     ) {}
 
     public addFactory(
-        factory: ViewBehaviorFactory,
+        factory: CompiledViewBehaviorFactory,
         parentId: string,
         nodeId: string,
-        targetIndex: number
+        targetIndex: number,
+        tagName: string | null
     ): void {
         if (!this.nodeIds.has(nodeId)) {
             this.nodeIds.add(nodeId);
             this.addTargetDescriptor(parentId, nodeId, targetIndex);
         }
 
-        factory.nodeId = nodeId;
+        factory.id = factory.id ?? nextId();
+        factory.targetNodeId = nodeId;
+        factory.targetTagName = tagName;
+        factory.policy = factory.policy ?? this.policy;
+
         this.factories.push(factory);
     }
 
@@ -99,7 +133,7 @@ class CompilationContext<TSource = any, TParent = any>
         const targets = Object.create(this.proto);
 
         targets.r = fragment;
-        targets.h = hostBindingTarget ?? fragment;
+        targets.h = hostBindingTarget ?? warningHost;
 
         for (const id of this.nodeIds) {
             targets[id]; // trigger locator
@@ -128,19 +162,27 @@ function compileAttributes(
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = bind(() => attrValue, oneTime) as ViewBehaviorFactory;
-                Aspect.assign((result as any) as Aspected, attr.name);
+                result = new HTMLBindingDirective(
+                    oneTime(() => attrValue, context.policy)
+                );
+                HTMLDirective.assignAspect(result as any as Aspected, attr.name);
             }
         } else {
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-            result = Compiler.aggregate(parseResult);
+            result = Compiler.aggregate(parseResult, context.policy);
         }
 
         if (result !== null) {
             node.removeAttributeNode(attr);
             i--;
             ii--;
-            context.addFactory(result, parentId, nodeId, nodeIndex);
+            context.addFactory(
+                result as CompiledViewBehaviorFactory,
+                parentId,
+                nodeId,
+                nodeIndex,
+                node.tagName
+            );
         }
     }
 }
@@ -178,8 +220,14 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
-            Aspect.assign((currentPart as any) as Aspected);
-            context.addFactory(currentPart, parentId, nodeId, nodeIndex);
+            HTMLDirective.assignAspect(currentPart as any as Aspected);
+            context.addFactory(
+                currentPart as CompiledViewBehaviorFactory,
+                parentId,
+                nodeId,
+                nodeIndex,
+                null
+            );
         }
 
         lastNode = currentNode;
@@ -226,10 +274,11 @@ function compileNode(
             if (parts !== null) {
                 context.addFactory(
                     /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
-                    Compiler.aggregate(parts),
+                    Compiler.aggregate(parts) as CompiledViewBehaviorFactory,
                     parentId,
                     nodeId,
-                    nodeIndex
+                    nodeIndex,
+                    null
                 );
             }
             break;
@@ -258,18 +307,19 @@ export type CompilationStrategy = (
      * The preprocessed HTML string or template to compile.
      */
     html: string | HTMLTemplateElement,
+
     /**
      * The behavior factories used within the html that is being compiled.
      */
-    factories: Record<string, ViewBehaviorFactory>
+    factories: Record<string, ViewBehaviorFactory>,
+
+    /**
+     * The security policy to compile the html with.
+     */
+    policy: DOMPolicy
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
-const policyOptions: TrustedTypesPolicy = { createHTML: html => html };
-let htmlPolicy: TrustedTypesPolicy = globalThis.trustedTypes
-    ? globalThis.trustedTypes.createPolicy("fast-html", policyOptions)
-    : policyOptions;
-const fastHTMLPolicy = htmlPolicy;
 
 /**
  * Common APIs related to compilation.
@@ -277,24 +327,11 @@ const fastHTMLPolicy = htmlPolicy;
  */
 export const Compiler = {
     /**
-     * Sets the HTML trusted types policy used by the compiler.
-     * @param policy - The policy to set for HTML.
-     * @remarks
-     * This API can only be called once, for security reasons. It should be
-     * called by the application developer at the start of their program.
-     */
-    setHTMLPolicy(policy: TrustedTypesPolicy) {
-        if (htmlPolicy !== fastHTMLPolicy) {
-            throw FAST.error(Message.onlySetHTMLPolicyOnce);
-        }
-
-        htmlPolicy = policy;
-    },
-    /**
      * Compiles a template and associated directives into a compilation
      * result which can be used to create views.
      * @param html - The html string or template element to compile.
-     * @param directives - The directives referenced by the template.
+     * @param factories - The behavior factories referenced by the template.
+     * @param policy - The security policy to compile the html with.
      * @remarks
      * The template that is provided for compilation is altered in-place
      * and cannot be compiled again. If the original template must be preserved,
@@ -303,13 +340,14 @@ export const Compiler = {
      */
     compile<TSource = any, TParent = any>(
         html: string | HTMLTemplateElement,
-        directives: Record<string, ViewBehaviorFactory>
+        factories: Record<string, ViewBehaviorFactory>,
+        policy: DOMPolicy = DOM.policy
     ): TemplateCompilationResult<TSource, TParent> {
         let template: HTMLTemplateElement;
 
         if (isString(html)) {
             template = document.createElement(templateTag) as HTMLTemplateElement;
-            template.innerHTML = htmlPolicy.createHTML(html);
+            template.innerHTML = policy.createHTML(html);
 
             const fec = template.content.firstElementChild;
 
@@ -320,9 +358,18 @@ export const Compiler = {
             template = html;
         }
 
+        if (!template.content.firstChild && !template.content.lastChild) {
+            template.content.appendChild(document.createComment(""));
+        }
+
         // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
         const fragment = document.adoptNode(template.content);
-        const context = new CompilationContext<TSource, TParent>(fragment, directives);
+
+        const context = new CompilationContext<TSource, TParent>(
+            fragment,
+            factories,
+            policy
+        );
         compileAttributes(context, "", template, /* host */ "h", 0, true);
 
         if (
@@ -330,11 +377,11 @@ export const Compiler = {
             // because something like a when, repeat, etc. could add nodes before the marker.
             // To mitigate this, we insert a stable first node. However, if we insert a node,
             // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-            isMarker(fragment.firstChild!, directives) ||
+            isMarker(fragment.firstChild!, factories) ||
             // Or if there is only one node and a directive, it means the template's content
             // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
             // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-            (fragment.childNodes.length === 1 && Object.keys(directives).length > 0)
+            (fragment.childNodes.length === 1 && Object.keys(factories).length > 0)
         ) {
             fragment.insertBefore(document.createComment(""), fragment.firstChild);
         }
@@ -357,25 +404,36 @@ export const Compiler = {
      * Aggregates an array of strings and directives into a single directive.
      * @param parts - A heterogeneous array of static strings interspersed with
      * directives.
+     * @param policy - The security policy to use with the aggregated bindings.
      * @returns A single inline directive that aggregates the behavior of all the parts.
      */
-    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory {
+    aggregate(
+        parts: (string | ViewBehaviorFactory)[],
+        policy: DOMPolicy = DOM.policy
+    ): ViewBehaviorFactory {
         if (parts.length === 1) {
             return parts[0] as ViewBehaviorFactory;
         }
 
-        let sourceAspect: string | undefined;
+        let sourceAspect!: string;
+        let binding!: Binding;
+        let isVolatile: boolean | undefined = false;
+        let bindingPolicy: DOMPolicy | undefined = void 0;
         const partCount = parts.length;
+
         const finalParts = parts.map((x: string | ViewBehaviorFactory) => {
             if (isString(x)) {
                 return (): string => x;
             }
 
-            sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
-            return ((x as any) as Aspected).binding!;
+            sourceAspect = (x as any as Aspected).sourceAspect || sourceAspect;
+            binding = (x as any as Aspected).dataBinding || binding;
+            isVolatile = isVolatile || (x as any as Aspected).dataBinding!.isVolatile;
+            bindingPolicy = bindingPolicy || (x as any as Aspected).dataBinding!.policy;
+            return (x as any as Aspected).dataBinding!.evaluate;
         });
 
-        const binding = (scope: unknown, context: ExecutionContext): string => {
+        const expression = (scope: unknown, context: ExecutionContext): string => {
             let output = "";
 
             for (let i = 0; i < partCount; ++i) {
@@ -385,8 +443,11 @@ export const Compiler = {
             return output;
         };
 
-        const directive = bind(binding) as HTMLBindingDirective;
-        Aspect.assign(directive, sourceAspect!);
+        binding.evaluate = expression;
+        binding.isVolatile = isVolatile;
+        binding.policy = bindingPolicy ?? policy;
+        const directive = new HTMLBindingDirective(binding);
+        HTMLDirective.assignAspect(directive, sourceAspect!);
         return directive;
     },
 };

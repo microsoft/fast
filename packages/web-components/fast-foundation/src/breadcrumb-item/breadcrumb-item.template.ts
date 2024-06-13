@@ -1,25 +1,29 @@
-import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor/anchor.template.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { BreadcrumbItemOptions, FASTBreadcrumbItem } from "./breadcrumb-item.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTBreadcrumbItem:class)} component.
  * @public
  */
-export function breadcrumbItemTemplate(
+export function breadcrumbItemTemplate<T extends FASTBreadcrumbItem>(
     options: BreadcrumbItemOptions = {}
-): ElementViewTemplate<FASTBreadcrumbItem> {
-    return html<FASTBreadcrumbItem>`
-        <div role="listitem" class="listitem" part="listitem">
-            ${anchorTemplate(options)}
+): ElementViewTemplate<T> {
+    return html<T>`
+        <template role="listitem">
+            ${anchorTemplate(options).inline()}
             ${when(
                 x => x.separator,
-                html<FASTBreadcrumbItem>`
+                html<T>`
                     <span class="separator" part="separator" aria-hidden="true">
-                        <slot name="separator">${options.separator || ""}</slot>
+                        <slot name="separator">
+                            ${staticallyCompose(options.separator)}
+                        </slot>
                     </span>
                 `
             )}
-        </div>
+        </template>
     `;
 }

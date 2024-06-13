@@ -1,17 +1,15 @@
 import { attr, observable } from "@microsoft/fast-element";
-import {
-    ARIAGlobalStatesAndProperties,
-    StartEnd,
-    StartEndOptions,
-} from "../patterns/index.js";
+import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedButton } from "./button.form-associated.js";
+import { ButtonType } from "./button.options.js";
 
 /**
  * Button configuration options
  * @public
  */
-export type ButtonOptions = StartEndOptions;
+export type ButtonOptions = StartEndOptions<FASTButton>;
 
 /**
  * A Button Custom HTML Element.
@@ -129,19 +127,19 @@ export class FASTButton extends FormAssociatedButton {
      * HTML Attribute: type
      */
     @attr
-    public type: "submit" | "reset" | "button";
-    protected typeChanged(
-        previous: "submit" | "reset" | "button" | void,
-        next: "submit" | "reset" | "button"
-    ): void {
+    public type: ButtonType;
+    protected typeChanged(previous: ButtonType | undefined, next: ButtonType): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;
         }
 
-        next === "submit" && this.addEventListener("click", this.handleSubmission);
-        previous === "submit" && this.removeEventListener("click", this.handleSubmission);
-        next === "reset" && this.addEventListener("click", this.handleFormReset);
-        previous === "reset" && this.removeEventListener("click", this.handleFormReset);
+        next === ButtonType.submit &&
+            this.addEventListener("click", this.handleSubmission);
+        previous === ButtonType.submit &&
+            this.removeEventListener("click", this.handleSubmission);
+        next === ButtonType.reset && this.addEventListener("click", this.handleFormReset);
+        previous === ButtonType.reset &&
+            this.removeEventListener("click", this.handleFormReset);
     }
 
     /**
@@ -154,6 +152,11 @@ export class FASTButton extends FormAssociatedButton {
     @observable
     public defaultSlottedContent: HTMLElement[];
 
+    /** {@inheritDoc (FormAssociated:interface).validate} */
+    public validate(): void {
+        super.validate(this.control);
+    }
+
     /**
      * @internal
      */
@@ -161,39 +164,7 @@ export class FASTButton extends FormAssociatedButton {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
-        this.handleUnsupportedDelegatesFocus();
-
-        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
-        if (elements) {
-            elements.forEach((span: HTMLSpanElement) => {
-                span.addEventListener("click", this.handleClick);
-            });
-        }
     }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-
-        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
-        if (elements) {
-            elements.forEach((span: HTMLSpanElement) => {
-                span.removeEventListener("click", this.handleClick);
-            });
-        }
-    }
-
-    /**
-     * Prevent events to propagate if disabled and has no slotted content wrapped in HTML elements
-     * @internal
-     */
-    private handleClick = (e: Event) => {
-        if (this.disabled && this.defaultSlottedContent?.length <= 1) {
-            e.stopPropagation();
-        }
-    };
 
     /**
      * Submits the parent form
@@ -228,24 +199,6 @@ export class FASTButton extends FormAssociatedButton {
     };
 
     public control: HTMLButtonElement;
-
-    /**
-     * Overrides the focus call for where delegatesFocus is unsupported.
-     * This check works for Chrome, Edge Chromium, FireFox, and Safari
-     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
-     */
-    private handleUnsupportedDelegatesFocus = () => {
-        // Check to see if delegatesFocus is supported
-        if (
-            window.ShadowRoot &&
-            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
-            this.$fastController.definition.shadowOptions?.delegatesFocus
-        ) {
-            this.focus = () => {
-                this.control.focus();
-            };
-        }
-    };
 }
 
 /**

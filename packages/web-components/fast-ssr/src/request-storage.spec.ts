@@ -51,6 +51,77 @@ test.describe("RequestStorageManager", () => {
         expect(captured).toBe("world");
         expect(() => RequestStorage.get("hello")).toThrow(noStorageError);
     });
+
+    test("can get value from global without being in a storage scope", () => {
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+
+        expect((window as any)["hello"]).toBe("world");
+    });
+
+    test("can get different value from global in a storage scope", () => {
+
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+
+        let captured;
+        const storage = RequestStorageManager.createStorage();
+        RequestStorageManager.run(storage, () => {
+            captured = (window as any)["hello"];
+        });
+
+        expect(captured).not.toBe("world");
+    });
+
+    test("uninstalling the DOM shim should make previously assigned globals available within callback ", () => {
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+        RequestStorageManager.uninstallDOMShim();
+
+        let captured;
+        const storage = RequestStorageManager.createStorage();
+        RequestStorageManager.run(storage, () => {
+            captured = (window as any)["hello"];
+        });
+
+        expect(captured).toBe("world");
+    });
+    test("invoking installDOMShim multiple times should not impact the ability to uninstall the shim with a single invocation of uninstall", () => {
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+        RequestStorageManager.installDOMShim();
+        RequestStorageManager.installDOMShim();
+        RequestStorageManager.uninstallDOMShim();
+
+        let captured;
+        const storage = RequestStorageManager.createStorage();
+        RequestStorageManager.run(storage, () => {
+            captured = (window as any)["hello"];
+        });
+
+        expect(captured).toBe("world");
+    });
+    test("invoking uninstall multiple times should not impact the ability to reinstall the shim with a single invocation of install", () => {
+        // window is part of perRequestGlobals setup by installDOMShim
+        (window as any)["hello"] = "world";
+        RequestStorageManager.installDOMShim();
+        RequestStorageManager.uninstallDOMShim();
+        RequestStorageManager.uninstallDOMShim();
+        RequestStorageManager.uninstallDOMShim();
+        RequestStorageManager.installDOMShim();
+
+        let captured;
+        const storage = RequestStorageManager.createStorage();
+        RequestStorageManager.run(storage, () => {
+            captured = (window as any)["hello"];
+        });
+
+        expect(captured).not.toBe("world");
+    });
 });
 
 test.describe("RequestStorage", () => {

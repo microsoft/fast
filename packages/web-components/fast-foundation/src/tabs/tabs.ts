@@ -6,32 +6,12 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
+    limit,
     uniqueId,
-    wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
-
-/**
- * Tabs option configuration options
- * @public
- */
-export type TabsOptions = StartEndOptions;
-
-/**
- * The orientation of the {@link @microsoft/fast-foundation#(FASTTabs:class)} component
- * @public
- */
-export const TabsOrientation = {
-    vertical: "vertical",
-    horizontal: "horizontal",
-} as const;
-
-/**
- * The types for the Tabs component
- * @public
- */
-export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientation];
+import { TabsOrientation } from "./tabs.options.js";
 
 /**
  * A Tabs Custom HTML Element.
@@ -42,7 +22,6 @@ export type TabsOrientation = typeof TabsOrientation[keyof typeof TabsOrientatio
  * @slot tab - The slot for tabs
  * @slot tabpanel - The slot for tabpanels
  * @csspart tablist - The element wrapping for the tabs
- * @csspart activeIndicator - The visual indicator
  * @fires change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation
  *
  * @public
@@ -62,8 +41,6 @@ export class FASTTabs extends FASTElement {
     public orientationChanged(): void {
         if (this.$fastController.isConnected) {
             this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
     /**
@@ -87,8 +64,6 @@ export class FASTTabs extends FASTElement {
                 (item: HTMLElement) => item.id === oldValue
             );
             this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
 
@@ -109,8 +84,6 @@ export class FASTTabs extends FASTElement {
             this.tabpanelIds = this.getTabPanelIds();
 
             this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
 
@@ -131,31 +104,8 @@ export class FASTTabs extends FASTElement {
             this.tabpanelIds = this.getTabPanelIds();
 
             this.setTabs();
-            this.setTabPanels();
-            this.handleActiveIndicatorPosition();
         }
     }
-
-    /**
-     * Whether or not to show the active indicator
-     * @public
-     * @remarks
-     * HTML Attribute: activeindicator
-     */
-    @attr({ attribute: "hide-active-indicator", mode: "boolean" })
-    public hideActiveIndicator = false;
-
-    /**
-     * @internal
-     */
-    @observable
-    public activeIndicatorRef: HTMLElement;
-
-    /**
-     * @internal
-     */
-    @observable
-    public showActiveIndicator: boolean = true;
 
     /**
      * A reference to the active tab
@@ -165,7 +115,6 @@ export class FASTTabs extends FASTElement {
 
     private prevActiveTabIndex: number = 0;
     private activeTabIndex: number = 0;
-    private ticking: boolean = false;
     private tabIds: Array<string>;
     private tabpanelIds: Array<string>;
 
@@ -177,8 +126,12 @@ export class FASTTabs extends FASTElement {
         return el.getAttribute("aria-disabled") === "true";
     };
 
+    private isHiddenElement = (el: Element): el is HTMLElement => {
+        return el.hasAttribute("hidden");
+    };
+
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return !this.isDisabledElement(el);
+        return !this.isDisabledElement(el) && !this.isHiddenElement(el);
     };
 
     private getActiveIndex(): number {
@@ -192,7 +145,12 @@ export class FASTTabs extends FASTElement {
         }
     }
 
-    private setTabs = (): void => {
+    /**
+     * Function that is invoked whenever the selected tab or the tab collection changes.
+     *
+     * @public
+     */
+    protected setTabs(): void {
         const gridHorizontalProperty: string = "gridColumn";
         const gridVerticalProperty: string = "gridRow";
         const gridProperty: string = this.isHorizontal()
@@ -200,14 +158,12 @@ export class FASTTabs extends FASTElement {
             : gridVerticalProperty;
 
         this.activeTabIndex = this.getActiveIndex();
-        this.showActiveIndicator = false;
+
         this.tabs.forEach((tab: HTMLElement, index: number) => {
             if (tab.slot === "tab") {
                 const isActiveTab =
                     this.activeTabIndex === index && this.isFocusableElement(tab);
-                if (!this.hideActiveIndicator && this.isFocusableElement(tab)) {
-                    this.showActiveIndicator = true;
-                }
+
                 const tabId: string = this.tabIds[index];
                 const tabpanelId: string = this.tabpanelIds[index];
                 tab.setAttribute("id", tabId);
@@ -218,6 +174,7 @@ export class FASTTabs extends FASTElement {
                 tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
                 if (isActiveTab) {
                     this.activetab = tab;
+                    this.activeid = tabId;
                 }
             }
 
@@ -230,9 +187,10 @@ export class FASTTabs extends FASTElement {
                 ? tab.classList.add("vertical")
                 : tab.classList.remove("vertical");
         });
-    };
+        this.setTabPanels();
+    }
 
-    private setTabPanels = (): void => {
+    private setTabPanels(): void {
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
             const tabId: string = this.tabIds[index];
             const tabpanelId: string = this.tabpanelIds[index];
@@ -242,7 +200,7 @@ export class FASTTabs extends FASTElement {
                 ? tabpanel.setAttribute("hidden", "")
                 : tabpanel.removeAttribute("hidden");
         });
-    };
+    }
 
     private getTabIds(): Array<string> {
         return this.tabs.map((tab: HTMLElement) => {
@@ -313,44 +271,6 @@ export class FASTTabs extends FASTElement {
         }
     };
 
-    private handleActiveIndicatorPosition() {
-        // Ignore if we click twice on the same tab
-        if (
-            this.showActiveIndicator &&
-            !this.hideActiveIndicator &&
-            this.activeTabIndex !== this.prevActiveTabIndex
-        ) {
-            if (this.ticking) {
-                this.ticking = false;
-            } else {
-                this.ticking = true;
-                this.animateActiveIndicator();
-            }
-        }
-    }
-
-    private animateActiveIndicator(): void {
-        this.ticking = true;
-        const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
-        const translateProperty: string = this.isHorizontal()
-            ? "translateX"
-            : "translateY";
-        const offsetProperty: string = this.isHorizontal() ? "offsetLeft" : "offsetTop";
-        const prev: number = this.activeIndicatorRef[offsetProperty];
-        this.activeIndicatorRef.style[gridProperty] = `${this.activeTabIndex + 1}`;
-        const next: number = this.activeIndicatorRef[offsetProperty];
-        this.activeIndicatorRef.style[gridProperty] = `${this.prevActiveTabIndex + 1}`;
-        const dif: number = next - prev;
-        this.activeIndicatorRef.style.transform = `${translateProperty}(${dif}px)`;
-        this.activeIndicatorRef.classList.add("activeIndicatorTransition");
-        this.activeIndicatorRef.addEventListener("transitionend", () => {
-            this.ticking = false;
-            this.activeIndicatorRef.style[gridProperty] = `${this.activeTabIndex + 1}`;
-            this.activeIndicatorRef.style.transform = `${translateProperty}(0px)`;
-            this.activeIndicatorRef.classList.remove("activeIndicatorTransition");
-        });
-    }
-
     /**
      * The adjust method for FASTTabs
      * @public
@@ -358,16 +278,24 @@ export class FASTTabs extends FASTElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = wrapInBounds(
+        const focusableTabs = this.tabs.filter(t => this.isFocusableElement(t));
+        const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
+
+        const nextTabIndex = limit(
             0,
-            this.tabs.length - 1,
-            this.activeTabIndex + adjustment
+            focusableTabs.length - 1,
+            currentActiveTabIndex + adjustment
         );
-        this.setComponent();
+
+        // the index of the next focusable tab within the context of all available tabs
+        const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
+
+        if (nextIndex > -1) {
+            this.moveToTabByIndex(this.tabs, nextIndex);
+        }
     }
 
-    private adjustForward = (e: KeyboardEvent): void => {
+    private adjustForward(e: KeyboardEvent): void {
         const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
@@ -388,9 +316,9 @@ export class FASTTabs extends FASTElement {
                 index += 1;
             }
         }
-    };
+    }
 
-    private adjustBackward = (e: KeyboardEvent): void => {
+    private adjustBackward(e: KeyboardEvent): void {
         const group: HTMLElement[] = this.tabs;
         let index: number = 0;
 
@@ -407,16 +335,16 @@ export class FASTTabs extends FASTElement {
                 index -= 1;
             }
         }
-    };
+    }
 
-    private moveToTabByIndex = (group: HTMLElement[], index: number) => {
+    private moveToTabByIndex(group: HTMLElement[], index: number) {
         const tab: HTMLElement = group[index] as HTMLElement;
         this.activetab = tab;
         this.prevActiveTabIndex = this.activeTabIndex;
         this.activeTabIndex = index;
         tab.focus();
         this.setComponent();
-    };
+    }
 
     private focusTab(): void {
         this.tabs[this.activeTabIndex].focus();

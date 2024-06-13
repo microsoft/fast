@@ -1,4 +1,5 @@
 import { css } from "@microsoft/fast-element";
+import dismissIcon from "../../../statics/svg/dismiss_12_regular.svg";
 import { FASTSearch } from "../search.js";
 import { searchTemplate } from "../search.template.js";
 
@@ -6,16 +7,15 @@ const styles = css`
     :host([hidden]) {
         display: none;
     }
-    :host {
-        display: inline-block;
-    }
 
     :host {
+        display: inline-block;
         font-family: var(--body-font);
         outline: none;
         user-select: none;
     }
-    .root {
+
+    .control {
         box-sizing: border-box;
         position: relative;
         display: flex;
@@ -25,16 +25,17 @@ const styles = css`
         border-radius: calc(var(--control-corner-radius) * 1px);
         border: calc(var(--stroke-width) * 1px) solid var(--accent-fill-rest);
         height: calc(var(--height-number) * 1px);
-        align-items: baseline;
+        align-items: center;
     }
-    .control {
+
+    .field {
         -webkit-appearance: none;
         font: inherit;
         background: transparent;
         border: 0;
         color: inherit;
         height: calc(100% - 4px);
-        width: 100%;
+        flex-grow: 1;
         margin-top: auto;
         margin-bottom: auto;
         border: none;
@@ -42,15 +43,18 @@ const styles = css`
         font-size: var(--type-ramp-base-font-size);
         line-height: var(--type-ramp-base-line-height);
     }
-    .control::-webkit-search-cancel-button {
+
+    .field::-webkit-search-cancel-button {
         -webkit-appearance: none;
     }
-    .control:hover,
-    .control:focus-visible,
-    .control:disabled,
-    .control:active {
+
+    .field:hover,
+    .field:focus-visible,
+    .field:disabled,
+    .field:active {
         outline: none;
     }
+
     .clear-button {
         height: calc(100% - 2px);
         opacity: 0;
@@ -67,23 +71,21 @@ const styles = css`
         font-family: var(--body-font);
         padding: 0 calc((10 + (var(--design-unit) * 2 * var(--density))) * 1px);
     }
+
     .clear-button:hover {
         background: var(--neutral-fill-stealth-hover);
     }
+
     .clear-button:active {
         background: var(--neutral-fill-stealth-active);
     }
+
     :host([appearance="filled"]) .clear-button:hover {
         background: var(--clear-button-hover);
     }
+
     :host([appearance="filled"]) .clear-button:active {
         background: var(--clear-button-active);
-    }
-    .input-wrapper {
-        display: flex;
-        position: relative;
-        width: 100%;
-        height: 100%;
     }
     .label {
         display: block;
@@ -93,84 +95,84 @@ const styles = css`
         line-height: var(--type-ramp-base-line-height);
         margin-bottom: 4px;
     }
+
     .label__hidden {
         display: none;
         visibility: hidden;
     }
-    .input-wrapper,
-    .start,
-    .end {
+
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]),
+    .field {
         align-self: center;
     }
-    .start,
-    .end {
-        display: flex;
-        margin: 1px;
-        fill: currentcolor;
-    }
+
+    ::slotted([slot="start"]),
     ::slotted([slot="end"]) {
-        height: 100%;
+        display: flex;
+        margin-inline: 11px;
     }
-    .end {
-        margin-inline-end: 1px;
-        height: calc(100% - 2px);
-    }
-    ::slotted(svg) {
-        width: 16px;
-        height: 16px;
-        margin-inline-end: 11px;
-        margin-inline-start: 11px;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-    :host(:hover:not([disabled])) .root {
+
+    :host(:hover:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-hover);
     }
-    :host(:active:not([disabled])) .root {
+
+    :host(:active:not([disabled])) .control {
         background: var(--neutral-fill-input-hover);
         border-color: var(--accent-fill-active);
     }
-    :host(:focus-within:not([disabled])) .root {
+
+    :host(:focus-within:not([disabled])) .control {
         border-color: var(--focus-stroke-outer);
         box-shadow: 0 0 0 1px var(--focus-stroke-outer) inset;
     }
+
     .clear-button__hidden {
         opacity: 0;
     }
+
     :host(:hover:not([disabled], [readonly])) .clear-button,
     :host(:active:not([disabled], [readonly])) .clear-button,
     :host(:focus-within:not([disabled], [readonly])) .clear-button {
         opacity: 1;
     }
+
     :host(:hover:not([disabled], [readonly])) .clear-button__hidden,
     :host(:active:not([disabled], [readonly])) .clear-button__hidden,
     :host(:focus-within:not([disabled], [readonly])) .clear-button__hidden {
         opacity: 0;
     }
-    :host([appearance="filled"]) .root {
+
+    :host([appearance="filled"]) .control {
         background: var(--fill-color);
     }
-    :host([appearance="filled"]:hover:not([disabled])) .root {
+
+    :host([appearance="filled"]:hover:not([disabled])) .control {
         background: var(--neutral-fill-hover);
     }
+
     :host([disabled]) .label,
     :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
+    :host([readonly]) .field,
+    :host([disabled]) .field {
         cursor: var(--disabled-cursor);
     }
+
     :host([disabled]) {
         opacity: var(--disabled-opacity);
     }
-    :host([disabled]) .control {
+
+    :host([disabled]) .field {
         border-color: var(--neutral-stroke-rest);
     }
 `;
 
 FASTSearch.define({
     name: "fast-search",
-    template: searchTemplate(),
+    template: searchTemplate({
+        clearIcon: dismissIcon,
+    }),
     shadowOptions: {
         delegatesFocus: true,
     },

@@ -11,37 +11,22 @@ const styles = css`
         height: var(--avatar-size, var(--avatar-size-default));
         max-width: var(--avatar-size, var(--avatar-size-default));
         position: relative;
+        color: var(--foreground-on-accent-rest);
     }
 
     :host([hidden]) {
         display: none;
     }
 
-    .link {
-        align-items: center;
-        color: var(--neutral-foreground-rest);
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        min-width: 100%;
-        text-decoration: none;
-    }
-
-    .square {
-        border-radius: calc(var(--control-corner-radius) * 1px);
-        min-width: 100%;
-        overflow: hidden;
-    }
-
-    .circle {
-        border-radius: 100%;
-        min-width: 100%;
-        overflow: hidden;
-    }
-
     .backplate {
         display: flex;
         position: relative;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        min-width: 100%;
+        overflow: hidden;
+        background-color: var(--accent-fill-rest);
     }
 
     .media,

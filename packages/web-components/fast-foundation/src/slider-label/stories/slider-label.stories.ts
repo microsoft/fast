@@ -1,34 +1,40 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import { SliderOrientation } from "../../slider/slider.options.js";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTSliderLabel } from "../slider-label.js";
 
-type SliderLabelStoryArgs = Args & FASTSliderLabel;
-type SliderLabelStoryMeta = Meta<SliderLabelStoryArgs>;
-
-const componentTemplate = html<SliderLabelStoryArgs>`
+export const storyTemplate = html<StoryArgs<FASTSliderLabel>>`
     <fast-slider-label
-        ?hide-mark="${x => x.hideMark}"
-        position="${x => x.position}"
         ?disabled="${x => x.disabled}"
+        ?hide-mark="${x => x.hideMark}"
+        :sliderOrientation="${x => x.sliderOrientation}"
+        position="${x => x.position}"
     >
-        ${x => x.label}
+        ${x => x.storyContent}
     </fast-slider-label>
 `;
 
 export default {
-    title: "Slider/Slider Label",
-    argTypes: {
-        hideMark: { control: { type: "boolean" } },
-        content: { control: { type: "text" } },
-        position: { control: { type: "number" } },
+    title: "Slider Label",
+    excludeStories: ["storyTemplate"],
+    args: {
+        disabled: false,
+        hideMark: false,
+        storyContent: "Slider label",
     },
-} as SliderLabelStoryMeta;
+    argTypes: {
+        disabled: { control: "boolean" },
+        hideMark: { control: "boolean" },
+        position: { control: "number" },
+        sliderOrientation: {
+            control: "radio",
+            options: Object.values(SliderOrientation),
+        },
+        storyContent: { table: { disable: true } },
+    },
+} as Meta<FASTSliderLabel>;
 
-export const SliderLabel = (args: SliderLabelStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
-};
-SliderLabel.args = {
-    label: "Slider label",
-};
+export const SliderLabel: Story<FASTSliderLabel> = renderComponent(storyTemplate).bind(
+    {}
+);

@@ -1,26 +1,33 @@
-import { html, ref, SyntheticViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import type { CaptureType } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 
 /**
  * Start configuration options
  * @public
  */
-export type StartOptions = {
-    start?: string | SyntheticViewTemplate;
+export type StartOptions<TSource = any, TParent = any> = {
+    start?: StaticallyComposableHTML<TSource, TParent>;
 };
 
 /**
  * End configuration options
  * @public
  */
-export type EndOptions = {
-    end?: string | SyntheticViewTemplate;
+export type EndOptions<TSource = any, TParent = any> = {
+    end?: StaticallyComposableHTML<TSource, TParent>;
 };
 
 /**
  * Start/End configuration options
  * @public
  */
-export type StartEndOptions = StartOptions & EndOptions;
+export type StartEndOptions<TSource = any, TParent = any> = StartOptions<
+    TSource,
+    TParent
+> &
+    EndOptions<TSource, TParent>;
 
 /**
  * A mixin class implementing start and end slots.
@@ -29,7 +36,6 @@ export type StartEndOptions = StartOptions & EndOptions;
  */
 export class StartEnd {
     public start: HTMLSlotElement;
-
     public end: HTMLSlotElement;
 }
 
@@ -39,10 +45,12 @@ export class StartEnd {
  *
  * @public
  */
-export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
+export function endSlotTemplate<TSource extends StartEnd = StartEnd, TParent = any>(
+    options: EndOptions<TSource, TParent>
+): CaptureType<TSource, TParent> {
     return html`
-        <slot name="end" ${ref("end")}>${options.end || ""}</slot>
-    `;
+        <slot name="end" ${ref("end")}>${staticallyCompose(options.end)}</slot>
+    `.inline();
 }
 
 /**
@@ -51,8 +59,10 @@ export function endSlotTemplate(options: EndOptions): ViewTemplate<StartEnd> {
  *
  * @public
  */
-export function startSlotTemplate(options: StartOptions): ViewTemplate<StartEnd> {
+export function startSlotTemplate<TSource extends StartEnd = StartEnd, TParent = any>(
+    options: StartOptions<TSource, TParent>
+): CaptureType<TSource, TParent> {
     return html`
-        <slot name="start" ${ref("start")}>${options.start || ""}</slot>
-    `;
+        <slot name="start" ${ref("start")}>${staticallyCompose(options.start)}</slot>
+    `.inline();
 }

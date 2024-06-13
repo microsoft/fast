@@ -1,8 +1,239 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 22 Jun 2022 20:17:50 GMT and should not be manually modified.
+This log was last generated on Fri, 18 Aug 2023 00:04:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.0-beta.26
+
+Fri, 18 Aug 2023 00:04:40 GMT
+
+### Changes
+
+- BREAKING: update fast-element export paths to include extensions (chhol@microsoft.com)
+- update fast-element exports to be explicit (chhol@microsoft.com)
+
+## 2.0.0-beta.25
+
+Sat, 12 Aug 2023 00:26:36 GMT
+
+### Changes
+
+- Prevent notification of array splices when operation does not mutate array values (nicholasrice@users.noreply.github.com)
+- Adds volatile binding support for JavaScript optional chaining syntax (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.24
+
+Fri, 16 Jun 2023 18:17:12 GMT
+
+### Changes
+
+- fix: update compiler to ensure first and last child references are defined (chhol@microsoft.com)
+- Adds 'else' template option to the when directive (nicholasrice@users.noreply.github.com)
+- fixed a bug where re-binding a ChildrenDirective instance would throw a runtime exception from the mutation handler (nicholasrice@users.noreply.github.com)
+- Update adoptedStyleSheets strategy to use push/splice when available to fix Safari 16.4 bug (nicholasrice@users.noreply.github.com)
+- fixes a bug where ChildrenDirective could not be used multiple times for the same element (nicholasrice@users.noreply.github.com)
+- fixed bug causing behaviors attached to stylesheets not to be removed when the stylesheet was removed (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.23
+
+Tue, 28 Mar 2023 22:14:10 GMT
+
+### Changes
+
+- docs: add missing API docs (rob@bluespire.com)
+- fix: correct types for a break in TypeScript 5 legacy decorators (rob@bluespire.com)
+
+## 2.0.0-beta.22
+
+Sat, 11 Mar 2023 00:09:48 GMT
+
+### Changes
+
+- feat: add Context.for (rob@bluespire.com)
+- feat: enable data binding in CSS (rob@bluespire.com)
+- add directives support for createElementTemplate (32497422+KingOfTac@users.noreply.github.com)
+- fix: clean up toJSON noop on core fast-element types (rob@bluespire.com)
+
+## 2.0.0-beta.21
+
+Tue, 14 Feb 2023 04:02:35 GMT
+
+### Changes
+
+- fix: cleanup types, docs, etc. in root source files of fast-element in preparation for release (rob@bluespire.com)
+- Remove un-necessary expression from StyleElementStrategy (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.20
+
+Wed, 11 Jan 2023 22:07:47 GMT
+
+### Changes
+
+- add nullableBooleanConverter for attributes (863023+radium-v@users.noreply.github.com)
+- update return type for dangerousHTML to DangerousHTMLDirective (chhol@microsoft.com)
+- chore: remove deprecated APIs from fast-element (rob@bluespire.com)
+- chore: cleanup fast-element interfaces (roeisenb@microsoft.com)
+- refactor(fast-element): replace dangerousHTML with html.partial (roeisenb@microsoft.com)
+- feat: add ability to inline templates (roeisenb@microsoft.com)
+
+## 2.0.0-beta.19
+
+Fri, 02 Dec 2022 01:18:22 GMT
+
+### Changes
+
+- feat: add kernel mode with isolation by default (roeisenb@microsoft.com)
+
+## 2.0.0-beta.18
+
+Tue, 15 Nov 2022 02:40:34 GMT
+
+### Changes
+
+- chore: move ViewBehaviorOrchestrator to utilities (roeisenb@microsoft.com)
+- feat: add new DOM Policy protection throughout (roeisenb@microsoft.com)
+
+## 2.0.0-beta.17
+
+Tue, 01 Nov 2022 23:26:26 GMT
+
+### Changes
+
+- fix: prevent circular reference errors when stringifying DOM nodes controlled by FAST's rendering engine (roeisenb@microsoft.com)
+
+## 2.0.0-beta.16
+
+Fri, 28 Oct 2022 20:44:44 GMT
+
+### Changes
+
+- Fixed bug preventing main component stylesheet behaviors from being connected during connectedCallback (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.15
+
+Tue, 25 Oct 2022 20:24:32 GMT
+
+### Changes
+
+- Updated the ElementController to connect behaviors prior to rendering element templates (nicholasrice@users.noreply.github.com)
+- Added support to fast-element to support element hydration and the `defer-hydration` attribute (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.14
+
+Fri, 14 Oct 2022 18:26:11 GMT
+
+### Changes
+
+- fix: tokenList bindings track adds and removes from multiple sources (roeisenb@microsoft.com)
+- refactor: remove duplication and re-organize binding behavior logic (roeisenb@microsoft.com)
+
+## 2.0.0-beta.13
+
+Mon, 10 Oct 2022 20:28:02 GMT
+
+### Changes
+
+- fix: prevent event callbacks when controller is not bound (roeisenb@microsoft.com)
+
+## 2.0.0-beta.12
+
+Thu, 06 Oct 2022 23:21:20 GMT
+
+### Changes
+
+- fix: repeat update view context positioning (roeisenb@microsoft.com)
+
+## 2.0.0-beta.11
+
+Wed, 05 Oct 2022 23:26:01 GMT
+
+### Changes
+
+- fix: removed a shadowRoot leak from ElementController (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.10
+
+Mon, 03 Oct 2022 23:44:38 GMT
+
+### Changes
+
+- fix: observation kernel missing binding observer disconnect method (roeisenb@microsoft.com)
+- feat: less surprising class bindings w/ more flexibility for developers (roeisenb@microsoft.com)
+- fix: don't allow registering FASTElement itself as a web component (roeisenb@microsoft.com)
+
+## 2.0.0-beta.9
+
+Wed, 28 Sep 2022 20:45:51 GMT
+
+### Changes
+
+- fix: ensure composed templates receive the existing execution context (roeisenb@microsoft.com)
+
+## 2.0.0-beta.8
+
+Tue, 27 Sep 2022 22:31:52 GMT
+
+### Changes
+
+- fix: correct view state when processing unbindables during rebind (roeisenb@microsoft.com)
+- fix: do not crash when null/undefined is provided literally in templates (roeisenb@microsoft.com)
+
+## 2.0.0-beta.7
+
+Fri, 23 Sep 2022 22:53:27 GMT
+
+### Changes
+
+- feat: improve parent typing and fix repeat context type bug (roeisenb@microsoft.com)
+- feat: prepare fast-element for scoped element registries (roeisenb@microsoft.com)
+- persist totalAvailableViews to compare against removeIndex (wendywendy@microsoft.com)
+- make ElementsFilter type arguments optional (863023+radium-v@users.noreply.github.com)
+- fix(fast-element): attributes properly located in inheritance hierarchy (roeisenb@microsoft.com)
+- Adds PendingTask community protocol (nicholasrice@users.noreply.github.com)
+- feat: new behavior and context API design (roeisenb@microsoft.com)
+- feat: implement getAsync code path for dependency injection (roeisenb@microsoft.com)
+
+## 2.0.0-beta.6
+
+Thu, 01 Sep 2022 21:53:34 GMT
+
+### Changes
+
+- feat: add new state, ownedState, and computedState APIs (roeisenb@microsoft.com)
+
+## 2.0.0-beta.5
+
+Thu, 18 Aug 2022 20:46:10 GMT
+
+### Changes
+
+- Fix ExpressionObserer bug where watcher was not reset if the binding threw (nicholasrice@users.noreply.github.com)
+- make insertbefore noop in view (prudepixie@users.noreply.github.com)
+- make sure default options for recycle gets set in different scenarios (prudepixie@users.noreply.github.com)
+- refactor: remove dependency of DI on FASTElement (roeisenb@microsoft.com)
+- add subpath export for package.json to packages (32497422+KingOfTac@users.noreply.github.com)
+- change default array strategy to merge strategy, update repeat directive (prudepixie@users.noreply.github.com)
+- assert FASTElement's type so that instanceof behavior is consistent with other class implementations (nicholasrice@users.noreply.github.com)
+
+## 2.0.0-beta.4
+
+Mon, 18 Jul 2022 21:10:01 GMT
+
+### Changes
+
+- feat: extract all error messages from context and DI (roeisenb@microsoft.com)
+- feat: introduce new binding API (roeisenb@microsoft.com)
+- Enabled DOM Container fallback functions when a container cannot be located. (roeisenb@microsoft.com)
+- feat: add render directive, renderWith decorator, and RenderInstruction (roeisenb@microsoft.com)
+- only store removed views if it can't be reused right away (prudepixie@users.noreply.github.com)
+- fix: enable createElementTemplate to have undefined attributes (32497422+KingOfTac@users.noreply.github.com)
+- use index to track reusable views (prudepixie@users.noreply.github.com)
+- feat: enable render, repeat, and when template helpers to handle static data in addition to the already supported dynamic bindings (roeisenb@microsoft.com)
+- fix: FASTElementDefinition#isDefined should be true only after define (roeisenb@microsoft.com)
+- feat: move testing and dependency injection to fast-element (roeisenb@microsoft.com)
+- fix: warn when host bindings are accidentally applied on non CE views (roeisenb@microsoft.com)
+- feat: perf and safety improvements to fast element definition (roeisenb@microsoft.com)
 
 ## 2.0.0-beta.3
 

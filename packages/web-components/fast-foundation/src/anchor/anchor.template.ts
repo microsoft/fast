@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
 import type { AnchorOptions, FASTAnchor } from "./anchor.js";
 
@@ -6,10 +7,10 @@ import type { AnchorOptions, FASTAnchor } from "./anchor.js";
  * The template for the {@link @microsoft/fast-foundation#(FASTAnchor:class)} component.
  * @public
  */
-export function anchorTemplate(
+export function anchorTemplate<T extends FASTAnchor>(
     options: AnchorOptions = {}
-): ElementViewTemplate<FASTAnchor> {
-    return html<FASTAnchor>`
+): ViewTemplate<T> {
+    return html<T>`
         <a
             class="control"
             part="control"

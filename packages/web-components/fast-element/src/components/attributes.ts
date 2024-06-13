@@ -2,7 +2,8 @@ import { Accessor, Observable } from "../observation/observable.js";
 import type { Notifier } from "../observation/notifier.js";
 import { isString } from "../interfaces.js";
 import { Updates } from "../observation/update-queue.js";
-import { DOM } from "../templating/dom.js";
+import { DOM } from "../dom.js";
+import { createMetadataLocator } from "../platform.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -51,6 +52,17 @@ export type AttributeConfiguration = {
 };
 
 /**
+ * Metadata used to configure a custom attribute's behavior.
+ * @public
+ */
+export const AttributeConfiguration = Object.freeze({
+    /**
+     * Locates all attribute configurations associated with a type.
+     */
+    locate: createMetadataLocator<AttributeConfiguration>(),
+});
+
+/**
  * Metadata used to configure a custom attribute's behavior through a decorator.
  * @public
  */
@@ -75,6 +87,23 @@ export const booleanConverter: ValueConverter = {
             value === 0
             ? false
             : true;
+    },
+};
+
+/**
+ * A {@link ValueConverter} that converts to and from `boolean` values. `null`, `undefined`, `""`,
+ * and `void` values are converted to `null`.
+ * @public
+ */
+export const nullableBooleanConverter: ValueConverter = {
+    toView(value: any): string {
+        return typeof value === "boolean" ? value.toString() : "";
+    },
+
+    fromView(value: any): any {
+        return [null, undefined, void 0].includes(value)
+            ? null
+            : booleanConverter.fromView(value);
     },
 };
 
@@ -259,7 +288,7 @@ export class AttributeDefinition implements Accessor {
     ): ReadonlyArray<AttributeDefinition> {
         const attributes: AttributeDefinition[] = [];
 
-        attributeLists.push((Owner as any).attributes);
+        attributeLists.push(AttributeConfiguration.locate(Owner));
 
         for (let i = 0, ii = attributeLists.length; i < ii; ++i) {
             const list = attributeLists[i];
@@ -323,11 +352,7 @@ export function attr(
             config.property = $prop;
         }
 
-        const attributes: AttributeConfiguration[] =
-            ($target.constructor as any).attributes ||
-            (($target.constructor as any).attributes = []);
-
-        attributes.push(config);
+        AttributeConfiguration.locate($target.constructor).push(config);
     }
 
     if (arguments.length > 1) {

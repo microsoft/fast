@@ -1,4 +1,8 @@
-import type { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import type {
+    ElementStyles,
+    HostBehavior,
+    HostController,
+} from "@microsoft/fast-element";
 
 /**
  * An event listener fired by a {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList | MediaQueryList }.
@@ -15,7 +19,14 @@ export type MediaQueryListListener = (
  *
  * @public
  */
-export abstract class MatchMediaBehavior implements Behavior {
+export abstract class MatchMediaBehavior implements HostBehavior {
+    /**
+     * The behavior needs to operate on element instances but elements might share a behavior instance.
+     * To ensure proper attachment / detachment per instance, we construct a listener for
+     * each bind invocation and cache the listeners by element reference.
+     */
+    private listenerCache = new WeakMap<HostController, MediaQueryListListener>();
+
     /**
      * The media query that the behavior operates on.
      */
@@ -31,45 +42,40 @@ export abstract class MatchMediaBehavior implements Behavior {
 
     /**
      * Constructs a function that will be invoked with the MediaQueryList context
-     * @param source - the element the behavior is acting on.
+     * @param controller - The host controller orchestrating this behavior.
      */
     protected abstract constructListener(
-        source: typeof FASTElement
+        controller: HostController
     ): MediaQueryListListener;
 
     /**
      * Binds the behavior to the element.
-     * @param source - The element for which the behavior is bound.
+     * @param controller - The host controller orchestrating this behavior.
      */
-    bind(source: typeof FASTElement & HTMLElement) {
+    connectedCallback(controller: HostController) {
         const { query } = this;
-        const listener = this.constructListener(source);
+        let listener = this.listenerCache.get(controller);
+
+        if (!listener) {
+            listener = this.constructListener(controller);
+            this.listenerCache.set(controller, listener);
+        }
 
         // Invoke immediately to add if the query currently matches
         listener.bind(query)();
-        query.addListener(listener);
-        this.listenerCache.set(source, listener);
+        query.addEventListener("change", listener);
     }
 
     /**
      * Unbinds the behavior from the element.
-     * @param source - The element for which the behavior is unbinding.
+     * @param controller - The host controller orchestrating this behavior.
      */
-    unbind(source: typeof FASTElement & HTMLElement) {
-        const listener = this.listenerCache.get(source);
-
+    disconnectedCallback(controller: HostController) {
+        const listener = this.listenerCache.get(controller);
         if (listener) {
-            this.query.removeListener(listener);
-            this.listenerCache.delete(source);
+            this.query.removeEventListener("change", listener);
         }
     }
-
-    /**
-     * The behavior needs to operate on element instances but elements might share a behavior instance.
-     * To ensure proper attachment / detachment per instance, we construct a listener for
-     * each bind invocation and cache the listeners by element reference.
-     */
-    private listenerCache = new WeakMap();
 }
 
 /**
@@ -97,7 +103,6 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      */
     constructor(query: MediaQueryList, styles: ElementStyles) {
         super(query);
-
         this.styles = styles;
     }
 
@@ -116,6 +121,7 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      * const landscapeBehavior = MatchMediaStyleSheetBehavior.with(
      *   window.matchMedia("(orientation: landscape)")
      * );
+     *
      * const styles = css`
      *   :host {
      *     width: 200px;
@@ -140,17 +146,18 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      * Constructs a match-media listener for a provided element.
      * @param source - the element for which to attach or detach styles.
      */
-    protected constructListener(source: typeof FASTElement): MediaQueryListListener {
+    protected constructListener(controller: HostController): MediaQueryListListener {
         let attached = false;
         const styles = this.styles;
 
         return function listener(this: { matches: boolean }) {
             const { matches } = this;
+
             if (matches && !attached) {
-                (source as any).$fastController.addStyles(styles);
+                controller.addStyles(styles);
                 attached = matches;
             } else if (!matches && attached) {
-                (source as any).$fastController.removeStyles(styles);
+                controller.removeStyles(styles);
                 attached = matches;
             }
         };
@@ -158,13 +165,11 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
 
     /**
      * Unbinds the behavior from the element.
-     * @param source - The element for which the behavior is unbinding.
+     * @param controller - The host controller orchestrating this behavior.
      * @internal
      */
-    public unbind(source: typeof FASTElement & HTMLElement) {
-        super.unbind(source);
-
-        (source as any).$fastController.removeStyles(this.styles);
+    public removedCallback(controller: HostController<any>): void {
+        controller.removeStyles(this.styles);
     }
 }
 

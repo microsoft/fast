@@ -6,30 +6,11 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { StartEndOptions } from "../patterns/index.js";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
-
-/**
- * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
- * @public
- */
-export type HorizontalScrollView = "default" | "mobile";
-
-/**
- * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(FASTHorizontalScroll:class)}
- * @public
- */
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
-
-/**
- * Horizontal scroll configuration options
- * @public
- */
-export type HorizontalScrollOptions = StartEndOptions & {
-    nextFlipper?: SyntheticViewTemplate | string;
-    previousFlipper?: SyntheticViewTemplate | string;
-};
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { HorizontalScrollView } from "./horizontal-scroll.options.js";
+import { ScrollEasing } from "./horizontal-scroll.options.js";
 
 /**
  * A HorizontalScroll Custom HTML Element
@@ -131,7 +112,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     @attr
-    public easing: ScrollEasing = "ease-in-out";
+    public easing: ScrollEasing | string = ScrollEasing.easeInOut;
 
     /**
      * Attribute to hide flippers from assistive technology
@@ -241,9 +222,9 @@ export class FASTHorizontalScroll extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.resized.bind(this)
-        );
+        this.resizeDetector = new (
+            window as unknown as WindowWithResizeObserver
+        ).ResizeObserver(this.resized.bind(this));
         this.resizeDetector.observe(this);
     }
 
@@ -278,11 +259,17 @@ export class FASTHorizontalScroll extends FASTElement {
      */
     private setStops(): void {
         this.updateScrollStops();
-        this.width = this.offsetWidth;
+        const { scrollContainer: container } = this;
+        const { scrollLeft } = container;
+        const { width: containerWidth, left: containerLeft } =
+            container.getBoundingClientRect();
+        this.width = containerWidth;
         let lastStop: number = 0;
         let stops: number[] = this.scrollItems
-            .map(({ offsetLeft: left, offsetWidth: width }, index: number): number => {
-                const right: number = left + width;
+            .map((item, index: number): number => {
+                const { left, width } = item.getBoundingClientRect();
+                const leftPosition = Math.round(left + scrollLeft - containerLeft);
+                const right: number = Math.round(leftPosition + width);
 
                 if (this.isRtl) {
                     return -right;
@@ -290,7 +277,7 @@ export class FASTHorizontalScroll extends FASTElement {
 
                 lastStop = right;
 
-                return index === 0 ? 0 : left;
+                return index === 0 ? 0 : leftPosition;
             })
             .concat(lastStop);
 
@@ -302,6 +289,23 @@ export class FASTHorizontalScroll extends FASTElement {
 
         this.scrollStops = stops;
         this.setFlippers();
+    }
+
+    /**
+     * Checks to see if the stops are returning values
+     *  otherwise it will try to reinitialize them
+     *
+     * @returns boolean indicating that current scrollStops are valid non-zero values
+     * @internal
+     */
+    private validateStops(reinit: boolean = true): boolean {
+        const hasStops: () => boolean = (): boolean =>
+            !!this.scrollStops.find((stop: number) => stop > 0);
+        if (!hasStops() && reinit) {
+            this.setStops();
+        }
+
+        return hasStops();
     }
 
     /**
@@ -332,7 +336,7 @@ export class FASTHorizontalScroll extends FASTElement {
 
             this.nextFlipperContainer?.classList.toggle(
                 "disabled",
-                Math.abs(position) + this.width >= lastStop
+                this.validateStops(false) && Math.abs(position) + this.width >= lastStop
             );
         }
     }
@@ -358,22 +362,22 @@ export class FASTHorizontalScroll extends FASTElement {
         }
         if (item !== undefined) {
             rightPadding = rightPadding ?? padding;
-            const { scrollLeft, offsetWidth } = this.scrollContainer;
-            const itemStart = this.scrollStops[item];
-            const { offsetWidth: width } = this.scrollItems[item];
+            const { scrollContainer: container, scrollStops, scrollItems: items } = this;
+            const { scrollLeft } = this.scrollContainer;
+            const { width: containerWidth } = container.getBoundingClientRect();
+            const itemStart = scrollStops[item];
+            const { width } = items[item].getBoundingClientRect();
             const itemEnd = itemStart + width;
 
             const isBefore = scrollLeft + padding > itemStart;
 
-            if (isBefore || scrollLeft + offsetWidth - rightPadding < itemEnd) {
-                const stops = [...this.scrollStops].sort((a, b) =>
-                    isBefore ? b - a : a - b
-                );
+            if (isBefore || scrollLeft + containerWidth - rightPadding < itemEnd) {
+                const stops = [...scrollStops].sort((a, b) => (isBefore ? b - a : a - b));
                 const scrollTo =
                     stops.find(position =>
                         isBefore
                             ? position + padding < itemStart
-                            : position + offsetWidth - (rightPadding ?? 0) > itemEnd
+                            : position + containerWidth - (rightPadding ?? 0) > itemEnd
                     ) ?? 0;
                 this.scrollToPosition(scrollTo);
             }
@@ -403,6 +407,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToPrevious(): void {
+        this.validateStops();
         const scrollPosition = this.scrollContainer.scrollLeft;
 
         const current = this.scrollStops.findIndex(
@@ -431,6 +436,7 @@ export class FASTHorizontalScroll extends FASTElement {
      * @public
      */
     public scrollToNext(): void {
+        this.validateStops();
         const scrollPosition = this.scrollContainer.scrollLeft;
 
         const current = this.scrollStops.findIndex(
@@ -528,10 +534,10 @@ export class FASTHorizontalScroll extends FASTElement {
             this.resizeTimeout = clearTimeout(this.resizeTimeout);
         }
 
-        this.resizeTimeout = (setTimeout(() => {
-            this.width = this.offsetWidth;
+        this.resizeTimeout = setTimeout(() => {
+            this.width = this.scrollContainer.offsetWidth;
             this.setFlippers();
-        }, this.frameTime) as any) as number;
+        }, this.frameTime) as any as number;
     }
 
     /**
@@ -543,8 +549,17 @@ export class FASTHorizontalScroll extends FASTElement {
             this.scrollTimeout = clearTimeout(this.scrollTimeout);
         }
 
-        this.scrollTimeout = (setTimeout(() => {
+        this.scrollTimeout = setTimeout(() => {
             this.setFlippers();
-        }, this.frameTime) as any) as number;
+        }, this.frameTime) as any as number;
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTHorizontalScroll extends StartEnd {}
+applyMixins(FASTHorizontalScroll, StartEnd);

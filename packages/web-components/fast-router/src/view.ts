@@ -11,30 +11,15 @@ import { isFASTElementHost, Router } from "./router.js";
  * @beta
  */
 export type RouterExecutionContext = ExecutionContext & {
-    router: Router;
+    router?: Router;
 };
 
 /**
  * @beta
  */
-export const RouterExecutionContext = Object.freeze({
-    create(router: Router) {
-        return Object.create(ExecutionContext.default, {
-            router: {
-                value: router,
-            },
-        });
-    },
-});
-
-/**
- * @beta
- */
 export interface RouteView {
-    bind(
-        allTypedParams: Readonly<Record<string, any>>,
-        context: RouterExecutionContext
-    ): void;
+    context: RouterExecutionContext;
+    bind(allTypedParams: Readonly<Record<string, any>>): void;
     appendTo(host: HTMLElement): void;
     dispose(): void;
 }
@@ -87,17 +72,10 @@ export class FASTElementLayout implements Layout {
 
     constructor(
         private readonly template: ViewTemplate | null = null,
-        styles: ComposableStyles | ComposableStyles[] | null = null,
+        styles: ComposableStyles | ComposableStyles[] | undefined = undefined,
         private runBeforeCommit = true
     ) {
-        this.styles =
-            styles === void 0 || styles === null
-                ? null
-                : Array.isArray(styles)
-                ? new ElementStyles(styles)
-                : styles instanceof ElementStyles
-                ? styles
-                : new ElementStyles([styles]);
+        this.styles = ElementStyles.normalize(styles) ?? null;
     }
 
     async beforeCommit(routerElement: HTMLElement) {
@@ -118,8 +96,8 @@ export class FASTElementLayout implements Layout {
                 routerElement.$fastController.template = this.template!;
             }
 
-            if (routerElement.$fastController.styles !== this.styles) {
-                routerElement.$fastController.styles = this.styles!;
+            if (routerElement.$fastController.mainStyles !== this.styles) {
+                routerElement.$fastController.mainStyles = this.styles!;
             }
         }
     }

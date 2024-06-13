@@ -1,6 +1,7 @@
-import type { FASTGlobal } from "./interfaces.js";
+import { FASTGlobal, noop } from "./interfaces.js";
+import "./polyfills.js";
 
-// ensure FAST global - duplicated in polyfills.ts and debug.ts
+// ensure FAST global - duplicated debug.ts
 const propConfig = {
     configurable: false,
     enumerable: false,
@@ -16,7 +17,7 @@ if (globalThis.FAST === void 0) {
 
 /**
  * The FAST global.
- * @internal
+ * @public
  */
 export const FAST: FASTGlobal = globalThis.FAST;
 
@@ -41,7 +42,7 @@ if (FAST.error === void 0) {
     Object.assign(FAST, {
         warn() {},
         error(code: number) {
-            return new Error(`Code ${code}`);
+            return new Error(`Error ${code}`);
         },
         addMessages() {},
     });
@@ -78,9 +79,9 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
  * Do not change. Part of shared kernel contract.
  * @internal
  */
-export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<
-    TDefinition
-> {
+export function createTypeRegistry<
+    TDefinition extends TypeDefinition
+>(): TypeRegistry<TDefinition> {
     const typeToDefinition = new Map<Function, TDefinition>();
 
     return Object.freeze({
@@ -96,7 +97,48 @@ export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRe
             return typeToDefinition.get(key);
         },
         getForInstance(object: any): TDefinition | undefined {
+            if (object === null || object === void 0) {
+                return void 0;
+            }
+
             return typeToDefinition.get(object.constructor);
         },
     });
+}
+
+/**
+ * Creates a function capable of locating metadata associated with a type.
+ * @returns A metadata locator function.
+ * @internal
+ */
+export function createMetadataLocator<TMetadata>(): (target: {}) => TMetadata[] {
+    const metadataLookup = new WeakMap<any, TMetadata[]>();
+
+    return function (target: {}): TMetadata[] {
+        let metadata = metadataLookup.get(target);
+
+        if (metadata === void 0) {
+            let currentTarget = Reflect.getPrototypeOf(target);
+
+            while (metadata === void 0 && currentTarget !== null) {
+                metadata = metadataLookup.get(currentTarget);
+                currentTarget = Reflect.getPrototypeOf(currentTarget);
+            }
+
+            metadata = metadata === void 0 ? [] : metadata.slice(0);
+
+            metadataLookup.set(target, metadata);
+        }
+
+        return metadata;
+    };
+}
+
+/**
+ * Makes a type noop for JSON serialization.
+ * @param type - The type to make noop for JSON serialization.
+ * @internal
+ */
+export function makeSerializationNoop(type: { readonly prototype: any }) {
+    type.prototype.toJSON = noop;
 }

@@ -7,11 +7,25 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
+const fastElementBaseTypes = new Set<Function>();
 
 const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
     () => createTypeRegistry<FASTElementDefinition>()
 );
+
+/**
+ * Shadow root initialization options.
+ * @public
+ */
+export interface ShadowRootOptions extends ShadowRootInit {
+    /**
+     * A registry that provides the custom elements visible
+     * from within this shadow root.
+     * @beta
+     */
+    registry?: CustomElementRegistry;
+}
 
 /**
  * Represents metadata configuration for a custom element.
@@ -40,13 +54,23 @@ export interface PartialFASTElementDefinition {
 
     /**
      * Options controlling the creation of the custom element's shadow DOM.
+     * @remarks
+     * If not provided, defaults to an open shadow root. Provide null
+     * to render to the associated template to the light DOM instead.
      */
-    readonly shadowOptions?: Partial<ShadowRootInit> | null;
+    readonly shadowOptions?: Partial<ShadowRootOptions> | null;
 
     /**
      * Options controlling how the custom element is defined with the platform.
      */
     readonly elementOptions?: ElementDefinitionOptions;
+
+    /**
+     * The registry to register this component in by default.
+     * @remarks
+     * If not provided, defaults to the global registry.
+     */
+    readonly registry?: CustomElementRegistry;
 }
 
 /**
@@ -56,6 +80,8 @@ export interface PartialFASTElementDefinition {
 export class FASTElementDefinition<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 > {
+    private platformDefined = false;
+
     /**
      * The type this element definition describes.
      */
@@ -65,7 +91,7 @@ export class FASTElementDefinition<
      * Indicates if this element has been defined in at least one registry.
      */
     public get isDefined(): boolean {
-        return !!fastElementRegistry.getByType(this.type);
+        return this.platformDefined;
     }
 
     /**
@@ -101,12 +127,17 @@ export class FASTElementDefinition<
     /**
      * Options controlling the creation of the custom element's shadow DOM.
      */
-    public readonly shadowOptions?: ShadowRootInit;
+    public readonly shadowOptions?: ShadowRootOptions;
 
     /**
      * Options controlling how the custom element is defined with the platform.
      */
-    public readonly elementOptions?: ElementDefinitionOptions;
+    public readonly elementOptions: ElementDefinitionOptions;
+
+    /**
+     * The registry to register this component in by default.
+     */
+    readonly registry: CustomElementRegistry;
 
     private constructor(
         type: TType,
@@ -119,6 +150,7 @@ export class FASTElementDefinition<
         this.type = type;
         this.name = nameOrConfig.name;
         this.template = nameOrConfig.template;
+        this.registry = nameOrConfig.registry ?? customElements;
 
         const proto = type.prototype;
         const attributes = AttributeDefinition.collect(type, nameOrConfig.attributes);
@@ -155,14 +187,7 @@ export class FASTElementDefinition<
                 ? defaultElementOptions
                 : { ...defaultElementOptions, ...nameOrConfig.elementOptions };
 
-        this.styles =
-            nameOrConfig.styles === void 0
-                ? void 0
-                : Array.isArray(nameOrConfig.styles)
-                ? new ElementStyles(nameOrConfig.styles)
-                : nameOrConfig.styles instanceof ElementStyles
-                ? nameOrConfig.styles
-                : new ElementStyles([nameOrConfig.styles]);
+        this.styles = ElementStyles.normalize(nameOrConfig.styles);
 
         fastElementRegistry.register(this);
     }
@@ -173,10 +198,11 @@ export class FASTElementDefinition<
      * @remarks
      * This operation is idempotent per registry.
      */
-    public define(registry: CustomElementRegistry = customElements): this {
+    public define(registry: CustomElementRegistry = this.registry): this {
         const type = this.type;
 
         if (!registry.get(this.name)) {
+            this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
         }
 
@@ -195,13 +221,20 @@ export class FASTElementDefinition<
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition
     ): FASTElementDefinition<TType> {
-        const found = fastElementRegistry.getByType(type);
-
-        if (found) {
+        if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
             return new FASTElementDefinition<TType>(class extends type {}, nameOrDef);
         }
 
         return new FASTElementDefinition<TType>(type, nameOrDef);
+    }
+
+    /**
+     * Registers a FASTElement base type.
+     * @param type - The type to register as a base type.
+     * @internal
+     */
+    public static registerBaseType(type: Function) {
+        fastElementBaseTypes.add(type);
     }
 
     /**

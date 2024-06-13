@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { FASTRadio } from "../radio.js";
 import { radioTemplate } from "../radio.template.js";
@@ -19,7 +20,6 @@ const styles = css`
             the radio is clicked. Maybe there is a better solution here? */
         outline: none;
         position: relative;
-        transition: all 0.2s ease-in-out;
         user-select: none;
     }
 
@@ -119,8 +119,6 @@ const styles = css`
     }
 
     :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
     :host([disabled]) .control {
         cursor: not-allowed;
     }
@@ -137,7 +135,7 @@ const styles = css`
 FASTRadio.define({
     name: "fast-radio",
     template: radioTemplate({
-        checkedIndicator: /* html */ `
+        checkedIndicator: /* html */ html`
             <div part="checked-indicator" class="checked-indicator"></div>
         `,
     }),

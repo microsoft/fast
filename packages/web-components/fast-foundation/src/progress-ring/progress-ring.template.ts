@@ -1,5 +1,6 @@
 import type { ElementViewTemplate } from "@microsoft/fast-element";
 import { html, when } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTProgressRing } from "./progress-ring.js";
 import type { ProgressRingOptions } from "./progress-ring.options.js";
 
@@ -9,20 +10,19 @@ const progressSegments: number = 44;
  * The template for the {@link @microsoft/fast-foundation#FASTProgressRing} component.
  * @public
  */
-export function progressRingTemplate(
+export function progressRingTemplate<T extends FASTProgressRing>(
     options: ProgressRingOptions = {}
-): ElementViewTemplate<FASTProgressRing> {
-    return html<FASTProgressRing>`
+): ElementViewTemplate<T> {
+    return html<T>`
         <template
             role="progressbar"
             aria-valuenow="${x => x.value}"
             aria-valuemin="${x => x.min}"
             aria-valuemax="${x => x.max}"
-            class="${x => (x.paused ? "paused" : "")}"
         >
             ${when(
                 x => typeof x.value === "number",
-                html<FASTProgressRing>`
+                html<T>`
                     <svg
                         class="progress"
                         part="progress"
@@ -47,13 +47,10 @@ export function progressRingTemplate(
                             r="7px"
                         ></circle>
                     </svg>
-                `
-            )}
-            ${when(
-                x => typeof x.value !== "number",
-                html<FASTProgressRing>`
+                `,
+                html<T>`
                     <slot name="indeterminate">
-                        ${options.indeterminateIndicator || ""}
+                        ${staticallyCompose(options.indeterminateIndicator)}
                     </slot>
                 `
             )}

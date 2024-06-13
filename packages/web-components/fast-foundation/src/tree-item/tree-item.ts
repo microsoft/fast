@@ -1,11 +1,8 @@
-import {
-    attr,
-    FASTElement,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
@@ -15,18 +12,15 @@ import { applyMixins } from "../utilities/apply-mixins.js";
  * determines if element is an HTMLElement and if it has the role treeitem
  */
 export function isTreeItemElement(el: Element): el is HTMLElement {
-    return (
-        isHTMLElement(el) &&
-        (el.getAttribute("role") === "treeitem" || el.tagName.includes("TREE-ITEM"))
-    );
+    return isHTMLElement(el) && (el as any).isTreeItem;
 }
 
 /**
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = StartEndOptions & {
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
+export type TreeItemOptions = StartEndOptions<FASTTreeItem> & {
+    expandCollapseGlyph?: StaticallyComposableHTML<FASTTreeItem>;
 };
 
 /**
@@ -55,7 +49,7 @@ export class FASTTreeItem extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
-    protected expandedChanged(): void {
+    protected expandedChanged(prev: boolean | undefined, next: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("expanded-change", this);
         }
@@ -69,14 +63,15 @@ export class FASTTreeItem extends FASTElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
-    protected selectedChanged(): void {
+    protected selectedChanged(prev: boolean | undefined, next: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("selected-change", this);
         }
     }
 
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: disabled
@@ -90,6 +85,13 @@ export class FASTTreeItem extends FASTElement {
      * @internal
      */
     public expandCollapseButton: HTMLDivElement;
+
+    /**
+     *  Readonly property identifying the element as a tree item
+     *
+     * @internal
+     */
+    public readonly isTreeItem: boolean = true;
 
     /**
      * Whether the item is focusable
@@ -128,18 +130,12 @@ export class FASTTreeItem extends FASTElement {
     /**
      * Indicates if the tree item is nested
      *
-     * @internal
+     * @public
+     * @deprecated - will be removed in coming ALPHA version
+     * HTML Attribute: nested
      */
-    @observable
-    public nested: boolean;
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public renderCollapsedChildren: boolean;
+    @attr({ mode: "boolean" })
+    public nested: boolean = false;
 
     /**
      * Places document focus on a tree item
@@ -195,13 +191,12 @@ export class FASTTreeItem extends FASTElement {
      *
      * @internal
      */
-    public childItemLength(): number {
-        const treeChildren: HTMLElement[] = this.childItems.filter(
-            (item: HTMLElement) => {
-                return isTreeItemElement(item);
-            }
-        );
-        return treeChildren ? treeChildren.length : 0;
+    public get childItemLength(): number {
+        if (this.$fastController.isConnected) {
+            return this.childItems?.filter(item => isTreeItemElement(item)).length;
+        }
+
+        return 0;
     }
 }
 

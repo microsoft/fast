@@ -102,12 +102,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---------------- | --------------------------------------- | ------- |
 | `FormAssociated` | /src/form-associated/form-associated.js |         |
 
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
-
 #### Fields
 
 | Name               | Privacy   | Type                  | Default | Description                           | Inherited From |
@@ -133,6 +127,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ---- | -------- | -------------- |
 |      | disabled | FASTListbox    |
 
+#### Slots
+
+| Name | Description                              |
+| ---- | ---------------------------------------- |
+|      | The default slot for the listbox options |
+
 <hr/>
 
 
@@ -155,40 +155,33 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | ------------------------ | ----------------------------------------- | ------- |
 | `FormAssociatedCombobox` | /src/combobox/combobox.form-associated.js |         |
 
-#### Static Fields
-
-| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
-| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
-| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | FASTListbox    |
-
 #### Fields
 
-| Name                | Privacy   | Type                                | Default | Description                                                                              | Inherited From         |
-| ------------------- | --------- | ----------------------------------- | ------- | ---------------------------------------------------------------------------------------- | ---------------------- |
-| `autocomplete`      | public    | `ComboboxAutocomplete or undefined` |         | The autocomplete attribute.                                                              |                        |
-| `filteredOptions`   | public    | `FASTListboxOption[]`               | `[]`    | The collection of currently filtered options.                                            |                        |
-| `open`              | public    | `boolean`                           | `false` | The open attribute.                                                                      |                        |
-| `options`           | public    | `FASTListboxOption[]`               |         | The list of options.                                                                     | FASTListbox            |
-| `placeholder`       | public    | `string`                            |         | Sets the placeholder value of the element, generally used to provide a hint to the user. |                        |
-| `positionAttribute` | public    | `SelectPosition or undefined`       |         | The placement for the listbox when the combobox is open.                                 |                        |
-| `position`          | public    | `SelectPosition or undefined`       |         | The current state of the calculated position of the listbox.                             |                        |
-| `value`             | public    |                                     |         | The value property.                                                                      |                        |
-| `proxy`             |           |                                     |         |                                                                                          | FormAssociatedCombobox |
-| `length`            | public    | `number`                            |         | The number of options.                                                                   | FASTListbox            |
-| `typeAheadExpired`  | protected |                                     |         |                                                                                          | FASTListbox            |
-| `disabled`          | public    | `boolean`                           |         | The disabled state of the listbox.                                                       | FASTListbox            |
-| `selectedIndex`     | public    | `number`                            | `-1`    | The index of the selected option.                                                        | FASTListbox            |
-| `selectedOptions`   | public    | `FASTListboxOption[]`               | `[]`    | A collection of the selected options.                                                    | FASTListbox            |
+| Name               | Privacy   | Type                                | Default | Description                                                                              | Inherited From         |
+| ------------------ | --------- | ----------------------------------- | ------- | ---------------------------------------------------------------------------------------- | ---------------------- |
+| `autocomplete`     | public    | `ComboboxAutocomplete or undefined` |         | The autocomplete attribute.                                                              |                        |
+| `filteredOptions`  | public    | `FASTListboxOption[]`               | `[]`    | The collection of currently filtered options.                                            |                        |
+| `open`             | public    | `boolean`                           | `false` | The open attribute.                                                                      |                        |
+| `options`          | public    | `FASTListboxOption[]`               |         | The list of options.                                                                     | FASTListbox            |
+| `placeholder`      | public    | `string`                            |         | Sets the placeholder value of the element, generally used to provide a hint to the user. |                        |
+| `value`            | public    |                                     |         | The value property.                                                                      |                        |
+| `cleanup`          | public    | `() => void`                        |         | Cleanup function for the listbox positioner.                                             |                        |
+| `proxy`            |           |                                     |         |                                                                                          | FormAssociatedCombobox |
+| `length`           | public    | `number`                            |         | The number of options.                                                                   | FASTListbox            |
+| `typeAheadExpired` | protected |                                     |         |                                                                                          | FASTListbox            |
+| `disabled`         | public    | `boolean`                           |         | The disabled state of the listbox.                                                       | FASTListbox            |
+| `selectedIndex`    | public    | `number`                            | `-1`    | The index of the selected option.                                                        | FASTListbox            |
+| `selectedOptions`  | public    | `FASTListboxOption[]`               | `[]`    | A collection of the selected options.                                                    | FASTListbox            |
 
 #### Methods
 
-| Name                 | Privacy   | Description                                                                | Parameters                                                             | Return | Inherited From |
-| -------------------- | --------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------- | ------ | -------------- |
-| `positionChanged`    | protected |                                                                            | `prev: SelectPosition or undefined, next: SelectPosition or undefined` | `void` |                |
-| `filterOptions`      | public    | Filter available options by text value.                                    |                                                                        | `void` |                |
-| `setPositioning`     | public    | Calculate and apply listbox positioning based on available viewport space. | `force`                                                                | `void` |                |
-| `selectFirstOption`  | public    | Moves focus to the first selectable option.                                |                                                                        | `void` | FASTListbox    |
-| `setSelectedOptions` | public    | Sets an option as selected and gives it focus.                             |                                                                        |        | FASTListbox    |
+| Name                 | Privacy | Description                                                                | Parameters | Return | Inherited From |
+| -------------------- | ------- | -------------------------------------------------------------------------- | ---------- | ------ | -------------- |
+| `validate`           | public  | {@inheritDoc (FormAssociated:interface).validate}                          |            | `void` |                |
+| `filterOptions`      | public  | Filter available options by text value.                                    |            | `void` |                |
+| `setPositioning`     | public  | Calculate and apply listbox positioning based on available viewport space. |            | `void` |                |
+| `selectFirstOption`  | public  | Moves focus to the first selectable option.                                |            | `void` | FASTListbox    |
+| `setSelectedOptions` | public  | Sets an option as selected and gives it focus.                             |            |        | FASTListbox    |
 
 #### Events
 
@@ -198,13 +191,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name           | Field             | Inherited From |
-| -------------- | ----------------- | -------------- |
-| `autocomplete` | autocomplete      |                |
-| `open`         | open              |                |
-| `placeholder`  | placeholder       |                |
-| `position`     | positionAttribute |                |
-|                | disabled          | FASTListbox    |
+| Name           | Field        | Inherited From |
+| -------------- | ------------ | -------------- |
+| `autocomplete` | autocomplete |                |
+| `open`         | open         |                |
+| `placeholder`  | placeholder  |                |
+|                | disabled     | FASTListbox    |
 
 #### CSS Parts
 

@@ -3,9 +3,9 @@
     "files.insertFinalNewline": false
   },
   "[markdown]": {
-    "editor.quickSuggestions": false,
-    "editor.wordWrap": "off",
-    "editor.wordWrapColumn": 90,
+    "editor.quickSuggestions": {
+      "other": "off"
+    },
     "files.insertFinalNewline": false,
     "files.trimTrailingWhitespace": false
   },
@@ -15,7 +15,6 @@
   "editor.trimAutoWhitespace": true,
   "eslint.codeActionsOnSave.mode": "problems",
   "eslint.lintTask.enable": true,
-  "eslint.packageManager": "yarn",
   "eslint.validate": [
     "typescript"
   ],

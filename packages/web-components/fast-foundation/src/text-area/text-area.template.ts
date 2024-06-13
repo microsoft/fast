@@ -1,32 +1,32 @@
-import { ElementViewTemplate, html, ref, slotted } from "@microsoft/fast-element";
-import { TextAreaResize } from "./text-area.js";
-import type { FASTTextArea } from "./text-area.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
+import type { FASTTextArea, TextAreaOptions } from "./text-area.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(FASTTextArea:class)} component.
  * @public
  */
-export function textAreaTemplate(): ElementViewTemplate<FASTTextArea> {
-    return html<FASTTextArea>`
-        <template
-            class="
-            ${x => (x.readOnly ? "readonly" : "")}
-            ${x => (x.resize !== TextAreaResize.none ? `resize-${x.resize}` : "")}"
+export function textAreaTemplate<T extends FASTTextArea>(
+    options: TextAreaOptions = {}
+): ElementViewTemplate<T> {
+    return html<T>`
+        <label
+            part="label"
+            for="field"
+            class="${x =>
+                x.defaultSlottedNodes && x.defaultSlottedNodes.length
+                    ? "label"
+                    : "label label__hidden"}"
         >
-            <label
-                part="label"
-                for="control"
-                class="${x =>
-                    x.defaultSlottedNodes && x.defaultSlottedNodes.length
-                        ? "label"
-                        : "label label__hidden"}"
-            >
-                <slot ${slotted("defaultSlottedNodes")}></slot>
-            </label>
+            <slot ${slotted("defaultSlottedNodes")}></slot>
+        </label>
+        <div class="control" part="control">
+            ${startSlotTemplate(options)}
             <textarea
-                part="control"
-                class="control"
-                id="control"
+                part="field"
+                class="field"
+                id="field"
                 ?autofocus="${x => x.autofocus}"
                 cols="${x => x.cols}"
                 ?disabled="${x => x.disabled}"
@@ -62,8 +62,9 @@ export function textAreaTemplate(): ElementViewTemplate<FASTTextArea> {
                 aria-roledescription="${x => x.ariaRoledescription}"
                 @input="${(x, c) => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
-                ${ref("control")}
+                ${ref("field")}
             ></textarea>
-        </template>
+            ${endSlotTemplate(options)}
+        </div>
     `;
 }

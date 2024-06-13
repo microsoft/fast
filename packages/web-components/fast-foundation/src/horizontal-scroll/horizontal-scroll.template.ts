@@ -1,28 +1,18 @@
-import {
-    elements,
-    ElementViewTemplate,
-    html,
-    ref,
-    slotted,
-    when,
-} from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/index.js";
-import type {
-    FASTHorizontalScroll,
-    HorizontalScrollOptions,
-} from "./horizontal-scroll.js";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
+import { staticallyCompose } from "../utilities/template-helpers.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FASTHorizontalScroll } from "./horizontal-scroll.js";
+import type { HorizontalScrollOptions } from "./horizontal-scroll.options.js";
 
 /**
  * @public
  */
-export function horizontalScrollTemplate(
+export function horizontalScrollTemplate<T extends FASTHorizontalScroll>(
     options: HorizontalScrollOptions = {}
-): ElementViewTemplate<FASTHorizontalScroll> {
-    return html`
-        <template
-            class="horizontal-scroll"
-            @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
-        >
+): ElementViewTemplate<T> {
+    return html<T>`
+        <template @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}">
             ${startSlotTemplate(options)}
             <div class="scroll-area" part="scroll-area">
                 <div
@@ -46,7 +36,7 @@ export function horizontalScrollTemplate(
                 </div>
                 ${when(
                     x => x.view !== "mobile",
-                    html<FASTHorizontalScroll>`
+                    html<T>`
                         <div
                             class="scroll scroll-prev"
                             part="scroll-prev"
@@ -54,7 +44,7 @@ export function horizontalScrollTemplate(
                         >
                             <div class="scroll-action" part="scroll-action-previous">
                                 <slot name="previous-flipper">
-                                    ${options.previousFlipper ?? ""}
+                                    ${staticallyCompose(options.previousFlipper)}
                                 </slot>
                             </div>
                         </div>
@@ -65,7 +55,7 @@ export function horizontalScrollTemplate(
                         >
                             <div class="scroll-action" part="scroll-action-next">
                                 <slot name="next-flipper">
-                                    ${options.nextFlipper ?? ""}
+                                    ${staticallyCompose(options.nextFlipper)}
                                 </slot>
                             </div>
                         </div>

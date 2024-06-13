@@ -1,2 +1,3 @@
-export * from "./switch.template.js";
-export * from "./switch.js";
+export { FASTSwitch } from "./switch.js";
+export type { SwitchOptions } from "./switch.js";
+export { switchTemplate } from "./switch.template.js";

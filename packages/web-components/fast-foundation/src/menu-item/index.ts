@@ -1,2 +1,3 @@
-export * from "./menu-item.template.js";
-export * from "./menu-item.js";
+export { FASTMenuItem, MenuItemRole, roleForMenuItem } from "./menu-item.js";
+export type { MenuItemOptions } from "./menu-item.js";
+export { menuItemTemplate } from "./menu-item.template.js";

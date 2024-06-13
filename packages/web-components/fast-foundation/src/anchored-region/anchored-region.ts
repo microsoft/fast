@@ -6,77 +6,15 @@ import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
 } from "../utilities/resize-observer.js";
-
-/**
- * Defines the base behavior of an anchored region on a particular axis
- *
- * @public
- */
-export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
-
-/**
- * Defines the scaling behavior of an anchored region on a particular axis
- *
- * @public
- */
-export type AxisScalingMode = "anchor" | "fill" | "content";
-
-/**
- * Defines the horizontal positioning options for an anchored region
- *
- * @public
- */
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
-
-/**
- * Defines the vertical positioning options for an anchored region
- *
- * @public
- */
-export type VerticalPosition = "top" | "bottom" | "center" | "unset";
-
-/**
- * Defines if the component updates its position automatically. Calling update() always provokes an update.
- * anchor - the component only updates its position when the anchor resizes (default)
- * auto - the component updates its position when:
- * - update() is called
- * - the anchor resizes
- * - the window resizes
- * - the viewport resizes
- * - any scroll event in the document
- *
- * @public
- */
-export const AutoUpdateMode = {
-    anchor: "anchor",
-    auto: "auto",
-} as const;
-
-/**
- * @public
- */
-export type AutoUpdateMode = typeof AutoUpdateMode[keyof typeof AutoUpdateMode];
-
-/**
- * Describes the possible positions of the region relative
- * to its anchor. Depending on the axis start = left/top, end = right/bottom
- *
- * @public
- */
-export type AnchoredRegionPositionLabel =
-    | "start"
-    | "insetStart"
-    | "insetEnd"
-    | "end"
-    | "center";
-
-/**
- * @internal
- */
-interface Dimension {
-    height: number;
-    width: number;
-}
+import type {
+    AnchoredRegionPositionLabel,
+    AutoUpdateMode,
+    AxisPositioningMode,
+    AxisScalingMode,
+    Dimension,
+    HorizontalPosition,
+    VerticalPosition,
+} from "./anchored-region.options.js";
 
 /**
  * An anchored region Custom HTML Element.
@@ -458,9 +396,9 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize
-        );
+        this.resizeDetector = new (
+            window as unknown as WindowWithResizeObserver
+        ).ResizeObserver(this.handleResize);
     }
 
     /**
@@ -603,6 +541,12 @@ export class FASTAnchoredRegion extends FASTElement {
             return document.documentElement;
         }
 
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.viewport);
+        }
+
         return document.getElementById(this.viewport);
     };
 
@@ -610,6 +554,12 @@ export class FASTAnchoredRegion extends FASTElement {
      *  Gets the anchor element by id
      */
     private getAnchor = (): HTMLElement | null => {
+        const rootNode = this.getRootNode();
+
+        if (rootNode instanceof ShadowRoot) {
+            return rootNode.getElementById(this.anchor);
+        }
+
         return document.getElementById(this.anchor);
     };
 
@@ -758,20 +708,18 @@ export class FASTAnchoredRegion extends FASTElement {
      */
     private updateLayout = (): void => {
         let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
-        let desiredHorizontalPosition:
-            | AnchoredRegionPositionLabel
-            | undefined = undefined;
+        let desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined =
+            undefined;
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
-            const horizontalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
-                this.horizontalInset
-            );
+            const horizontalOptions: AnchoredRegionPositionLabel[] =
+                this.getPositioningOptions(this.horizontalInset);
 
             if (this.horizontalDefaultPosition === "center") {
                 desiredHorizontalPosition = "center";
             } else if (this.horizontalDefaultPosition !== "unset") {
-                let dirCorrectedHorizontalDefaultPosition: string = this
-                    .horizontalDefaultPosition;
+                let dirCorrectedHorizontalDefaultPosition: string =
+                    this.horizontalDefaultPosition;
 
                 if (
                     dirCorrectedHorizontalDefaultPosition === "start" ||
@@ -866,9 +814,8 @@ export class FASTAnchoredRegion extends FASTElement {
         }
 
         if (this.verticalPositioningMode !== "uncontrolled") {
-            const verticalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
-                this.verticalInset
-            );
+            const verticalOptions: AnchoredRegionPositionLabel[] =
+                this.getPositioningOptions(this.verticalInset);
             if (this.verticalDefaultPosition === "center") {
                 desiredVerticalPosition = "center";
             } else if (this.verticalDefaultPosition !== "unset") {

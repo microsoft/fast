@@ -1,8 +1,12 @@
 import { expect } from "chai";
 import { children, ChildrenDirective } from "./children.js";
-import { ExecutionContext, observable } from "../observation/observable.js";
+import { observable } from "../observation/observable.js";
 import { elements } from "./node-observation.js";
 import { Updates } from "../observation/update-queue.js";
+import { Fake } from "../testing/fakes.js";
+import { html } from "./template.js";
+import { ref } from "./ref.js";
+import { computedState } from "../state/state.js";
 
 describe("The children", () => {
     context("template function", () => {
@@ -14,11 +18,8 @@ describe("The children", () => {
 
     context("directive", () => {
         it("creates a behavior by returning itself", () => {
-            const targetId = 'r';
             const directive = children("test") as ChildrenDirective;
-            const target = document.createElement("div");
-            const targets = { [targetId]: target };
-            const behavior = directive.createBehavior(targets);
+            const behavior = directive.createBehavior();
             expect(behavior).to.equal(behavior);
         });
     });
@@ -26,6 +27,7 @@ describe("The children", () => {
     context("behavior", () => {
         class Model {
             @observable nodes;
+            reference: HTMLElement;
         }
 
         function createAndAppendChildren(host: HTMLElement, elementName = "div") {
@@ -54,10 +56,11 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            controller.bind(model);
 
             expect(model.nodes).members(children);
         });
@@ -68,10 +71,11 @@ describe("The children", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            controller.bind(model);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
@@ -81,10 +85,11 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            controller.bind(model);
 
             expect(model.nodes).members(children);
 
@@ -101,10 +106,11 @@ describe("The children", () => {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            controller.bind(model);
 
             expect(model.nodes).members(children);
 
@@ -133,11 +139,12 @@ describe("The children", () => {
                 subtree: true,
                 selector: subtreeElement,
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
 
             const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            controller.bind(model);
 
             expect(model.nodes).members(subtreeChildren);
 
@@ -161,14 +168,15 @@ describe("The children", () => {
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.nodeId = nodeId;
+            behavior.targetNodeId = nodeId;
             const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
 
-            behavior.bind(model, ExecutionContext.default, targets);
+            controller.bind(model);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind(model, ExecutionContext.default, targets);
+            behavior.unbind(controller);
 
             expect(model.nodes).members([]);
 
@@ -177,6 +185,88 @@ describe("The children", () => {
             await Updates.next();
 
             expect(model.nodes).members([]);
+        });
+        it("re-watches when re-bound", async () => {
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
+            const behavior = new ChildrenDirective({
+                property: "nodes",
+            });
+            behavior.targetNodeId = nodeId;
+            const model = new Model();
+            const controller = Fake.viewController(targets, behavior);
+
+            controller.bind(model);
+
+            behavior.unbind(controller);
+            behavior.bind(controller);
+
+            const element = document.createElement("div");
+            host.appendChild(element);
+
+            await Updates.next();
+
+            expect(model.nodes.includes(element)).to.equal(true)
+        });
+
+        it("should not throw if DOM stringified", () => {
+            const template = html<Model>`
+                <div id="test"
+                     ${children("nodes")}
+                     ${ref("reference")}>
+                </div>
+            `;
+
+            const view = template.create();
+            const model = new Model();
+
+            view.bind(model);
+
+            expect(() => {
+                JSON.stringify(model.reference);
+            }).to.not.throw();
+
+            view.unbind();
+        });
+
+
+        it("supports multiple directives for the same element", async () => {
+            const { host, targets, nodeId } = createDOM("foo-bar");
+            class MultipleDirectivesModel {
+                @observable
+                elements: Element[] = [];
+                @observable
+                text: Text[] = [];
+            }
+            const elementsDirective = new ChildrenDirective({
+                property: "elements",
+                filter: elements(),
+            });
+
+            const textDirective = new ChildrenDirective({
+                property: "text",
+                filter: (value) => value.nodeType === Node.TEXT_NODE,
+            });
+            elementsDirective.targetNodeId = nodeId;
+            textDirective.targetNodeId = nodeId;
+            const model = new MultipleDirectivesModel();
+            const controller = Fake.viewController(targets, elementsDirective, textDirective);
+
+            controller.bind(model);
+
+            elementsDirective.bind(controller);
+            textDirective.bind(controller);
+            const element = document.createElement("div");
+            const text = document.createTextNode("text");
+
+            host.appendChild(element);
+            host.appendChild(text)
+
+            await Updates.next();
+
+            expect(model.elements.includes(element)).to.equal(true);
+            expect(model.elements.includes(text as any)).to.equal(false);
+            expect(model.text.includes(text)).to.equal(true);
+            expect(model.text.includes(element as any)).to.equal(false);
         });
     });
 });

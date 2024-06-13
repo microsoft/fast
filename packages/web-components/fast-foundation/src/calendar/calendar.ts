@@ -1,11 +1,10 @@
-import {
-    attr,
-    FASTElement,
-    nullableNumberConverter,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import type { StartEndOptions, TemplateElementDependency } from "../patterns/index.js";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { StartEnd } from "../patterns/index.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { StaticallyComposableHTML } from "../utilities/template-helpers.js";
 import { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 import { DateFormatter } from "./date-formatter.js";
 
@@ -53,16 +52,18 @@ export type WeekdayText = { text: string; abbr?: string };
  * Calendar configuration options
  * @public
  */
-export type CalendarOptions = StartEndOptions & {
+export type CalendarOptions = StartEndOptions<FASTCalendar> & {
     dataGridCell: TemplateElementDependency;
     dataGridRow: TemplateElementDependency;
     dataGrid: TemplateElementDependency;
-    title?: SyntheticViewTemplate | string;
+    title?: StaticallyComposableHTML<FASTCalendar>;
 };
 
 /**
  * Calendar component
  *
+ * @slot start - Content which can be provided before the calendar content
+ * @slot end - Content which can be provided after the calendar content
  * @slot - The default slot for calendar content
  * @fires dateselected - Fires a custom 'dateselected' event when Enter is invoked via keyboard on a date
  *
@@ -91,6 +92,13 @@ export class FASTCalendar extends FASTElement {
     protected localeChanged(): void {
         this.dateFormatter.locale = this.locale;
     }
+
+    /**
+     * Weekday that the calendar should start on, defaults to Sunday
+     * @public
+     */
+    @attr({ attribute: "first-day", converter: nullableNumberConverter })
+    public firstDay: number = 0;
 
     /**
      * Month to display
@@ -228,7 +236,9 @@ export class FASTCalendar extends FASTElement {
         minWeeks: number = this.minWeeks
     ): CalendarDateInfo[][] {
         minWeeks = minWeeks > 10 ? 10 : minWeeks;
-        const { start, length, previous, next } = info;
+        const { length, previous, next } = info;
+        let start = info.start - Math.min(Math.max(0, this.firstDay), 6);
+        start = start < 0 ? 7 + start : start;
         const days: CalendarDateInfo[][] = [];
         let dayCount = 1 - start;
 
@@ -323,8 +333,9 @@ export class FASTCalendar extends FASTElement {
                 weekday.abbr = longText[index];
             });
         }
+        const firstDay = Math.min(Math.max(0, this.firstDay), 6);
 
-        return weekdayText;
+        return [...weekdayText.slice(firstDay), ...weekdayText.slice(0, firstDay)];
     }
 
     /**
@@ -350,3 +361,12 @@ export class FASTCalendar extends FASTElement {
         return true;
     }
 }
+
+/**
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ * @internal
+ */
+export interface FASTCalendar extends StartEnd {}
+applyMixins(FASTCalendar, StartEnd);

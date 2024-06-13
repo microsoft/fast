@@ -31,10 +31,11 @@ describe("The fixture helper", () => {
     });
 
     it("can create a fixture for an element by template", async () => {
+        const tag = html.partial(name);
         const { element } = await fixture(html`
-      <${name}>
+      <${tag}>
         Some content here.
-      </${name}>
+      </${tag}>
     `);
 
         expect(element).to.be.instanceOf(MyElement);
@@ -68,10 +69,11 @@ describe("The fixture helper", () => {
     });
 
     it("can bind an element to data", async () => {
+        const tag = html.partial(name);
         const source = new MyModel();
         const { element, disconnect } = await fixture<MyElement>(
             html<MyModel>`
-      <${name} value=${x => x.value}></${name}>
+      <${tag} value=${x => x.value}></${tag}>
     `,
             { source }
         );

@@ -145,6 +145,17 @@ export const mySliderLabel = SliderLabel.compose({
 
 
 
+### Variables
+
+| Name                | Description                                                             | Type                               |
+| ------------------- | ----------------------------------------------------------------------- | ---------------------------------- |
+| `SliderOrientation` | The orientation of a @microsoft/fast-foundation#(FASTSlider:class).     |                                    |
+| `SliderMode`        | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
+
+<hr/>
+
+
+
 ### class: `FASTSlider`
 
 #### Superclass
@@ -155,24 +166,26 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Fields
 
-| Name                 | Privacy   | Type                                | Default | Description                                                                                                                                                                                 | Inherited From       |
-| -------------------- | --------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `readOnly`           | public    | `boolean`                           |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                      |
-| `valueAsNumber`      | public    | `number`                            |         | The value property, typed as a number.                                                                                                                                                      |                      |
-| `valueTextFormatter` | public    | `(value: string) => string or null` |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                          |                      |
-| `min`                | public    | `number`                            | `0`     | The minimum allowed value.                                                                                                                                                                  |                      |
-| `max`                | public    | `number`                            | `10`    | The maximum allowed value.                                                                                                                                                                  |                      |
-| `step`               | public    | `number`                            | `1`     | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                        |                      |
-| `orientation`        | public    | `Orientation`                       |         | The orientation of the slider.                                                                                                                                                              |                      |
-| `mode`               | public    | `SliderMode`                        |         | The selection mode.                                                                                                                                                                         |                      |
-| `keypressHandler`    | protected |                                     |         |                                                                                                                                                                                             |                      |
-| `proxy`              |           |                                     |         |                                                                                                                                                                                             | FormAssociatedSlider |
+| Name                 | Privacy   | Type                                | Default | Description                                                                                                        | Inherited From       |
+| -------------------- | --------- | ----------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| `valueAsNumber`      | public    | `number`                            |         | The value property, typed as a number.                                                                             |                      |
+| `valueTextFormatter` | public    | `(value: string) => string or null` |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value. |                      |
+| `min`                | public    | `number`                            | `0`     | The minimum allowed value.                                                                                         |                      |
+| `max`                | public    | `number`                            | `10`    | The maximum allowed value.                                                                                         |                      |
+| `step`               | public    | `number or undefined`               |         | Value to increment or decrement via arrow keys, mouse click or drag.                                               |                      |
+| `orientation`        | public    | `Orientation`                       |         | The orientation of the slider.                                                                                     |                      |
+| `mode`               | public    | `SliderMode`                        |         | The selection mode.                                                                                                |                      |
+| `keypressHandler`    | protected |                                     |         |                                                                                                                    |                      |
+| `proxy`              |           |                                     |         |                                                                                                                    | FormAssociatedSlider |
 
 #### Methods
 
 | Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From |
 | -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | -------------- |
-| `readOnlyChanged`                | protected |                                             |                        | `void` |                |
+| `minChanged`                     | protected |                                             |                        | `void` |                |
+| `maxChanged`                     | protected |                                             |                        | `void` |                |
+| `stepChanged`                    | protected |                                             |                        | `void` |                |
+| `orientationChanged`             | protected |                                             |                        | `void` |                |
 | `increment`                      | public    | Increment the value by the step             |                        | `void` |                |
 | `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                |
 | `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                |
@@ -187,7 +200,6 @@ export const mySliderLabel = SliderLabel.compose({
 
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
-| `readonly`    | readOnly    |                |
 |               | min         |                |
 |               | max         |                |
 |               | step        |                |
@@ -196,12 +208,13 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### CSS Parts
 
-| Name                 | Description                                                     |
-| -------------------- | --------------------------------------------------------------- |
-| `positioning-region` | The region used to position the elements of the slider          |
-| `track-container`    | The region containing the track elements                        |
-| `track-start`        | The element wrapping the track start slot                       |
-| `thumb-container`    | The thumb container element which is programatically positioned |
+| Name                 | Description                                                      |
+| -------------------- | ---------------------------------------------------------------- |
+| `positioning-region` | The region used to position the elements of the slider           |
+| `track`              | The region containing the track elements                         |
+| `track-start`        | The element wrapping the track start slot                        |
+| `thumb-container`    | The thumb container element which is programmatically positioned |
+| `thumb`              | The thumb element                                                |
 
 #### Slots
 
@@ -211,14 +224,6 @@ export const mySliderLabel = SliderLabel.compose({
 | `track-start` | The track-start visual indicator |
 | `thumb`       | The slider thumb                 |
 |               | The default slot for labels      |
-
-<hr/>
-
-### Variables
-
-| Name         | Description                                                             | Type                               |
-| ------------ | ----------------------------------------------------------------------- | ---------------------------------- |
-| `SliderMode` | The selection modes of a @microsoft/fast-foundation#(FASTSlider:class). | `{ singleValue: "single-value", }` |
 
 <hr/>
 
@@ -234,11 +239,12 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Fields
 
-| Name       | Privacy | Type      | Default | Description                                                                                                                | Inherited From |
-| ---------- | ------- | --------- | ------- | -------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `position` | public  | `string`  |         | The position of the label relative to the min and max value of the parent @microsoft/fast-foundation#(FASTSlider:class).   |                |
-| `hideMark` | public  | `boolean` | `false` | Hides the tick mark.                                                                                                       |                |
-| `disabled` | public  | `boolean` |         | The disabled state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class). |                |
+| Name          | Privacy | Type                | Default | Description                                                                                                                   | Inherited From |
+| ------------- | ------- | ------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| `position`    | public  | `string`            |         | The position of the label relative to the min and max value of the parent @microsoft/fast-foundation#(FASTSlider:class).      |                |
+| `hideMark`    | public  | `boolean`           | `false` | Hides the tick mark.                                                                                                          |                |
+| `disabled`    | public  | `boolean`           |         | The disabled state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class).    |                |
+| `orientation` | public  | `SliderOrientation` |         | The orientation state of the label. This is generally controlled by the parent @microsoft/fast-foundation#(FASTSlider:class). |                |
 
 #### Methods
 
@@ -248,17 +254,20 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Attributes
 
-| Name        | Field    | Inherited From |
-| ----------- | -------- | -------------- |
-| `position`  | position |                |
-| `hide-mark` | hideMark |                |
-| `disabled`  | disabled |                |
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `position`    | position    |                |
+| `hide-mark`   | hideMark    |                |
+| `disabled`    | disabled    |                |
+| `orientation` | orientation |                |
 
 #### CSS Parts
 
-| Name   | Description                                  |
-| ------ | -------------------------------------------- |
-| `root` | The element wrapping the label mark and text |
+| Name        | Description                                     |
+| ----------- | ----------------------------------------------- |
+| `container` | The element wrapping the label mark and content |
+| `mark`      | The element wrapping the label mark             |
+| `content`   | The element wrapping the label content          |
 
 #### Slots
 

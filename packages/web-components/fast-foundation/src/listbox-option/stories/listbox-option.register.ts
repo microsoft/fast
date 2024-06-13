@@ -27,6 +27,10 @@ const styles = css`
         white-space: nowrap;
     }
 
+    :host([hidden]) {
+        display: none;
+    }
+
     :host(:focus-visible) {
         background: var(--accent-fill-focus);
         border-color: var(--focus-stroke-outer);
@@ -72,23 +76,17 @@ const styles = css`
         text-overflow: ellipsis;
     }
 
-    .start,
-    .end,
-    ::slotted(svg) {
+    ::slotted([slot="start"]),
+    ::slotted([slot="end"]) {
         display: flex;
     }
 
-    ::slotted(svg) {
-        height: calc(var(--design-unit) * 4px);
-        width: calc(var(--design-unit) * 4px);
+    ::slotted([slot="start"]) {
+        margin-inline-end: 11px;
     }
 
     ::slotted([slot="end"]) {
-        margin-inline-start: 1ch;
-    }
-
-    ::slotted([slot="start"]) {
-        margin-inline-end: 1ch;
+        margin-inline-start: 11px;
     }
 
     :host([aria-checked="true"][aria-selected="false"]) {

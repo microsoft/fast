@@ -1,5 +1,6 @@
 import { html } from "@microsoft/fast-element";
-import type { Args, Meta } from "@storybook/html";
+import type { Meta, Story, StoryArgs } from "../../__test__/helpers.js";
+import { renderComponent } from "../../__test__/helpers.js";
 import type { FASTCalendar } from "../calendar.js";
 import {
     DayFormat,
@@ -8,10 +9,7 @@ import {
     YearFormat,
 } from "../calendar.options.js";
 
-type CalendarStoryArgs = Args & FASTCalendar;
-type CalendarStoryMeta = Meta<CalendarStoryArgs>;
-
-const componentTemplate = html<CalendarStoryArgs>`
+const storyTemplate = html<StoryArgs<FASTCalendar>>`
     <fast-calendar
         ?readonly="${x => x.readonly}"
         day-format="${x => x.dayFormat}"
@@ -24,34 +22,40 @@ const componentTemplate = html<CalendarStoryArgs>`
         selected-dates="${x => x.selectedDates}"
         weekday-format="${x => x.weekdayFormat}"
         year-format="${x => x.yearFormat}"
-    ></fast-calendar>
+        first-day="${x => x.firstDay}"
+    >
+        ${x => x.storyContent}
+    </fast-calendar>
 `;
 
 export default {
     title: "Calendar",
     args: {
-        locale: "en-US",
+        readonly: false,
     },
     argTypes: {
-        dayFormat: { options: Object.values(DayFormat), control: { type: "select" } },
-        disabledDates: { control: { type: "text" } },
-        locale: { control: { type: "text" } },
-        minWeeks: { control: { type: "text" } },
-        month: { control: { type: "number", min: 1, max: 12 } },
-        monthFormat: { options: Object.values(MonthFormat), control: { type: "select" } },
-        readonly: { control: { type: "boolean" } },
-        selectedDates: { control: { type: "text" } },
-        weekdayFormat: {
-            options: Object.values(WeekdayFormat),
-            control: { type: "select" },
-        },
-        year: { control: { type: "number" } },
-        yearFormat: { options: Object.values(YearFormat), control: { type: "select" } },
+        dayFormat: { control: "select", options: Object.values(DayFormat) },
+        disabledDates: { control: "text" },
+        firstDay: { control: "number", min: 0, max: 6 },
+        locale: { control: "text" },
+        minWeeks: { control: "number", min: 0 },
+        month: { control: "number", min: 1, max: 12 },
+        monthFormat: { control: "select", options: Object.values(MonthFormat) },
+        readonly: { control: "boolean" },
+        selectedDates: { control: "text" },
+        storyContent: { table: { disable: true } },
+        weekdayFormat: { control: "select", options: Object.values(WeekdayFormat) },
+        year: { control: "number" },
+        yearFormat: { control: "select", options: Object.values(YearFormat) },
     },
-} as CalendarStoryMeta;
+} as Meta<FASTCalendar>;
 
-export const Calendar = (args: CalendarStoryArgs) => {
-    const storyFragment = new DocumentFragment();
-    componentTemplate.render(args, storyFragment);
-    return storyFragment.firstElementChild;
+export const Calendar: Story<FASTCalendar> = renderComponent(storyTemplate).bind({});
+
+export const CalendarWithSlottedStartEnd: Story<FASTCalendar> = Calendar.bind({});
+CalendarWithSlottedStartEnd.args = {
+    storyContent: html`
+        <svg slot="start" width="20" height="20"><use href="#test-icon" /></svg>
+        <svg slot="end" width="20" height="20"><use href="#test-icon-2" /></svg>
+    `,
 };
