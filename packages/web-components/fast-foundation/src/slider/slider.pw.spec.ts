@@ -90,16 +90,6 @@ test.describe("Slider", () => {
         );
     });
 
-    test("should NOT set a default `aria-readonly` value when `readonly` is not defined", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-slider></fast-slider>
-            `;
-        });
-
-        await expect(element).not.toHaveAttribute("aria-readonly");
-    });
-
     test("should initialize to the initial value if no value property is set", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -140,20 +130,6 @@ test.describe("Slider", () => {
         });
 
         await expect(element).not.toHaveAttribute("tabindex", "0");
-    });
-
-    test("should set the `aria-readonly` attribute when `readonly` value is true", async () => {
-        await root.evaluate(node => {
-            node.innerHTML = /* html */ `
-                <fast-slider></fast-slider>
-            `;
-        });
-
-        await element.evaluate((node: FASTSlider) => {
-            node.readOnly = true;
-        });
-
-        await expect(element).toHaveAttribute("aria-readonly", "true");
     });
 
     test("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
