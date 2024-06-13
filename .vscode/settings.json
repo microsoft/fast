@@ -3,11 +3,7 @@
     "files.insertFinalNewline": false
   },
   "[markdown]": {
-    "editor.quickSuggestions": {
-      "comments": "off",
-      "strings": "off",
-      "other": "off"
-    },
+    "editor.quickSuggestions": false,
     "editor.wordWrap": "off",
     "editor.wordWrapColumn": 90,
     "files.insertFinalNewline": false,
