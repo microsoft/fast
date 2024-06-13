@@ -191,7 +191,7 @@ export class FASTTextField extends FormAssociatedTextField {
      * @remarks
      * HTMLAttribute: enterkeyhint
      */
-    @attr({ attr: "enterkeyhint" })
+    @attr({ attribute: "enterkeyhint" })
     public enterKeyHint:
         | "enter"
         | "done"
