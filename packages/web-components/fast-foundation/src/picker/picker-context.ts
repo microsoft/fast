@@ -1,5 +1,5 @@
 import { observable } from "@microsoft/fast-element";
-import { Context } from "@microsoft/fast-element/context";
+import { Context } from "@microsoft/fast-element/context.js";
 
 export interface PickerContext {
     disabled: boolean;
