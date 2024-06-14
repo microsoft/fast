@@ -70,7 +70,7 @@ export class FASTPickerMenu extends FASTElement {
             return;
         }
         slotChildren.forEach((child: HTMLElement): void => {
-            if (child.nodeType === 1 && child.getAttribute("role") === "listitem") {
+            if (child.nodeType === 1 && child.getAttribute("role") === "option") {
                 child.id = child.id || uniqueId("option-");
                 this.optionElements.push(child);
             }

@@ -316,7 +316,7 @@ export class FASTPicker extends FormAssociatedPicker {
         if (this.$fastController.isConnected) {
             Updates.enqueue(() => {
                 this.showNoOptions =
-                    this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
+                    this.menuElement.querySelectorAll('[role="option"]').length === 0;
                 this.setFocusedOption(this.showNoOptions ? -1 : 0);
             });
         }
@@ -815,7 +815,7 @@ export class FASTPicker extends FormAssociatedPicker {
         ) {
             if (getRootActiveElement(this) === this.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
-                    this.listElement.querySelectorAll("[role='listitem']")
+                    this.listElement.querySelectorAll("[role='option']")
                 );
                 (
                     selectedItemInstances[selectedItemInstances.length - 1] as HTMLElement
@@ -836,7 +836,7 @@ export class FASTPicker extends FormAssociatedPicker {
         }
         if (e.target instanceof FASTPickerListItem) {
             const listItems: Element[] = Array.from(
-                this.listElement.querySelectorAll("[role='listitem']")
+                this.listElement.querySelectorAll("[role='option']")
             );
             const itemIndex: number = listItems.indexOf(e.target as Element);
             if (itemIndex !== -1) {
@@ -890,7 +890,7 @@ export class FASTPicker extends FormAssociatedPicker {
         }
 
         const selectedItemsAsElements: Element[] = Array.from(
-            this.listElement.querySelectorAll("[role='listitem']")
+            this.listElement.querySelectorAll("[role='option']")
         );
 
         const activeElement = getRootActiveElement(this);
