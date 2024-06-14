@@ -13,6 +13,7 @@ export function pickerListItemTemplate<
         <template
             role="listitem"
             tabindex="0"
+            disabled="${(x, c) => (x.pickerContext.disabled === true ? true : void 0)}"
             @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         >

@@ -11,6 +11,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import type { ElementStyles } from '@microsoft/fast-element';
 import type { ElementViewTemplate } from '@microsoft/fast-element';
+import { FASTContext } from '@microsoft/fast-element/context.js';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import type { HostBehavior } from '@microsoft/fast-element';
@@ -1536,6 +1537,10 @@ export class FASTPicker extends FormAssociatedPicker {
     defaultMenuOptionTemplate?: ViewTemplate;
     // (undocumented)
     protected defaultMenuOptionTemplateChanged(): void;
+    // @public
+    disabled: boolean;
+    // (undocumented)
+    disabledChanged(previous: boolean, next: boolean): void;
     // (undocumented)
     disconnectedCallback(): void;
     // @internal
@@ -1600,7 +1605,7 @@ export class FASTPicker extends FormAssociatedPicker {
     protected queryChanged(): void;
     // @internal
     region: FASTAnchoredRegion;
-    // @internal (undocumented)
+    // @internal
     selectedItems: string[];
     // @internal
     selectedListTag: string;
@@ -1629,9 +1634,11 @@ export class FASTPickerListItem extends FASTElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    handleClick(e: MouseEvent): boolean;
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleKeyDown(e: KeyboardEvent): boolean;
+    // Warning: (ae-forgotten-export) The symbol "PickerContext" needs to be exported by the entry point index.d.ts
+    pickerContext: PickerContext;
     value: string;
 }
 
