@@ -129,7 +129,7 @@ export class FASTPicker extends FormAssociatedPicker {
     }
 
     /**
-     * Deprecated. Whether the component should remove options based on the current query. Default is false.
+     * Indicates whether the component should remove options based on the current query.
      *
      * @deprecated - use `Picker.disableQueryFilter`.
      */
