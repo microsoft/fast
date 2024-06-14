@@ -32,7 +32,7 @@ export class DefaultLinkHandler implements LinkHandler {
     }
 
     public disconnect(): void {
-        window.removeEventListener("click", this.handler);
+        window.removeEventListener("click", this.handler, true);
     }
 
     private getEventInfo(event: MouseEvent): AnchorEventInfo {

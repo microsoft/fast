@@ -70,12 +70,12 @@ test.describe("FASTElementRenderer", () => {
         test(`should render stylesheets as 'style' elements by default`, () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`));
-            expect(result).toBe("<styled-element><template shadowroot=\"open\"><style>:host { display: block; }</style><style>:host { color: red; }</style></template></styled-element>");
+            expect(result).toBe("<styled-element><template shadowrootmode=\"open\"><style>:host { display: block; }</style><style>:host { color: red; }</style></template></styled-element>");
         });
         test.skip(`should render stylesheets as 'fast-style' elements when configured`, () => {
             const { templateRenderer } = fastSSR(/* Replace w/ configuration when fast-style work is complete{useFASTStyle: true}*/);
             const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`));
-            expect(result).toBe(`<styled-element><template shadowroot=\"open\"><fast-style style-id="fast-style-0" css=":host { display: block; }\"></fast-style><fast-style style-id=\"fast-style-1\" css=\":host { color: red; }"></fast-style></template></styled-element>`);
+            expect(result).toBe(`<styled-element><template shadowrootmode=\"open\"><fast-style style-id="fast-style-0" css=":host { display: block; }\"></fast-style><fast-style style-id=\"fast-style-1\" css=\":host { color: red; }"></fast-style></template></styled-element>`);
         });
     });
 
@@ -85,7 +85,7 @@ test.describe("FASTElementRenderer", () => {
             <host-binding-element></host-binding-element>
         `));
         expect(result).toBe(`
-            <host-binding-element attr="attr" bool-attr><template shadowroot=\"open\"></template></host-binding-element>
+            <host-binding-element attr="attr" bool-attr><template shadowrootmode=\"open\"></template></host-binding-element>
         `);
     });
 
@@ -96,7 +96,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element attr="${x => null}"></bare-element>
             `));
             expect(result).toBe(`
-                <bare-element ><template shadowroot=\"open\"></template></bare-element>
+                <bare-element ><template shadowrootmode=\"open\"></template></bare-element>
             `);
         });
         test("should not render the attribute when the binding evaluates undefined", () => {
@@ -105,7 +105,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element attr="${x => undefined}"></bare-element>
             `));
             expect(result).toBe(`
-                <bare-element ><template shadowroot=\"open\"></template></bare-element>
+                <bare-element ><template shadowrootmode=\"open\"></template></bare-element>
             `);
         });
 
@@ -116,8 +116,8 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element ?attr="${x => false}"></bare-element>
             `));
             expect(result).toBe(`
-                <bare-element  attr><template shadowroot=\"open\"></template></bare-element>
-                <bare-element ><template shadowroot=\"open\"></template></bare-element>
+                <bare-element  attr><template shadowrootmode=\"open\"></template></bare-element>
+                <bare-element ><template shadowrootmode=\"open\"></template></bare-element>
             `);
         });
 
@@ -128,8 +128,8 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element aria-expanded="${x => false}"></bare-element>
             `));
             expect(result).toBe(`
-                <bare-element  aria-expanded="true"><template shadowroot=\"open\"></template></bare-element>
-                <bare-element  aria-expanded="false"><template shadowroot=\"open\"></template></bare-element>
+                <bare-element  aria-expanded="true"><template shadowrootmode=\"open\"></template></bare-element>
+                <bare-element  aria-expanded="false"><template shadowrootmode=\"open\"></template></bare-element>
             `);
         });
 
@@ -139,7 +139,7 @@ test.describe("FASTElementRenderer", () => {
                 <bare-element attr="${x => 'my-str-value'}"></bare-element>
             `));
             expect(result).toBe(`
-                <bare-element  attr="my-str-value"><template shadowroot=\"open\"></template></bare-element>
+                <bare-element  attr="my-str-value"><template shadowrootmode=\"open\"></template></bare-element>
             `);
         });
 
@@ -217,13 +217,13 @@ test.describe("FASTElementRenderer", () => {
         test("An element dispatching an event should get it's own handler fired", () => {
             const { templateRenderer } = fastSSR();
             const result = consolidate(templateRenderer.render(html`<test-event-dispatch listen-self></test-event-dispatch>` ));
-            expect(result).toBe(`<test-event-dispatch  event-detail=\"listen-self-success\" listen-self><template shadowroot="open"></template></test-event-dispatch>`)
+            expect(result).toBe(`<test-event-dispatch  event-detail=\"listen-self-success\" listen-self><template shadowrootmode="open"></template></test-event-dispatch>`)
         });
         test("An ancestor with a handler should get it's handler invoked if the event bubbles", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-listener data="bubble-success"><test-event-dispatch></test-event-dispatch></test-event-listener>`));
-            expect(result).toBe("<test-event-listener  data=\"bubble-success\"><template shadowroot=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>")
+            expect(result).toBe("<test-event-listener  data=\"bubble-success\"><template shadowrootmode=\"open\"></template><test-event-dispatch event-detail=\"bubble-success\"><template shadowrootmode=\"open\"></template></test-event-dispatch></test-event-listener>")
         });
         test("Should bubble events to the document", () => {
             document.addEventListener("test-event", (e) => {
@@ -233,7 +233,7 @@ test.describe("FASTElementRenderer", () => {
 
             const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`));
 
-            expect(result).toBe(`<test-event-dispatch event-detail=\"document-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
+            expect(result).toBe(`<test-event-dispatch event-detail=\"document-success\"><template shadowrootmode=\"open\"></template></test-event-dispatch>`);
         });
         test("Should bubble events to the window", () => {
             window.addEventListener("test-event", (e) => {
@@ -242,19 +242,19 @@ test.describe("FASTElementRenderer", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-dispatch></test-event-dispatch>`));
-            expect(result).toBe(`<test-event-dispatch event-detail=\"window-success\"><template shadowroot=\"open\"></template></test-event-dispatch>`);
+            expect(result).toBe(`<test-event-dispatch event-detail=\"window-success\"><template shadowrootmode=\"open\"></template></test-event-dispatch>`);
         });
         test("Should not bubble an event that invokes event.stopImmediatePropagation()", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-immediate-propagation-failure"><test-event-dispatch stop-immediate-prop></test-event-dispatch></test-event-listener>`));
-            expect(result).toBe(`<test-event-listener  data=\"stop-immediate-propagation-failure\"><template shadowroot=\"open\"></template><test-event-dispatch  event-detail=\"stop-immediate-prop-success\" stop-immediate-prop><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
+            expect(result).toBe(`<test-event-listener  data=\"stop-immediate-propagation-failure\"><template shadowrootmode=\"open\"></template><test-event-dispatch  event-detail=\"stop-immediate-prop-success\" stop-immediate-prop><template shadowrootmode=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
         test("Should not bubble an event that invokes event.stopPropagation()", () => {
             const { templateRenderer } = fastSSR();
 
             const result = consolidate(templateRenderer.render(html`<test-event-listener data="stop-propagation-failure"><test-event-dispatch stop-prop></test-event-dispatch></test-event-listener>`));
-            expect(result).toBe(`<test-event-listener  data=\"stop-propagation-failure\"><template shadowroot=\"open\"></template><test-event-dispatch  event-detail=\"stop-prop-success\" stop-prop><template shadowroot=\"open\"></template></test-event-dispatch></test-event-listener>`)
+            expect(result).toBe(`<test-event-listener  data=\"stop-propagation-failure\"><template shadowrootmode=\"open\"></template><test-event-dispatch  event-detail=\"stop-prop-success\" stop-prop><template shadowrootmode=\"open\"></template></test-event-dispatch></test-event-listener>`)
         });
     });
 
@@ -279,7 +279,7 @@ test.describe("FASTElementRenderer", () => {
             const template = html`<${html.partial(name)}></${html.partial(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
-            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowroot="open"></template></${name}>`)
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowrootmode="open"></template></${name}>`)
         });
 
 
@@ -303,7 +303,7 @@ test.describe("FASTElementRenderer", () => {
             const template = html`<${html.partial(name)}></${html.partial(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
-            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-reject><template shadowroot="open"></template></${name}>`)
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-reject><template shadowrootmode="open"></template></${name}>`)
         });
         test("should await multiple PendingTaskEvents", async () => {
             const name = uniqueElementName();
@@ -331,7 +331,7 @@ test.describe("FASTElementRenderer", () => {
             const template = html`<${html.partial(name)}></${html.partial(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
-            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved-one async-resolved-two><template shadowroot="open"></template></${name}>`)
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved-one async-resolved-two><template shadowrootmode="open"></template></${name}>`)
         });
         test("should render template content only displayed after PendingTaskEvent is resolved", async () => {
             const name = uniqueElementName();
@@ -356,7 +356,7 @@ test.describe("FASTElementRenderer", () => {
             const template = html`<${html.partial(name)}></${html.partial(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
-            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name}><template shadowroot="open"><h1>Async content success</h1></template></${name}>`)
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name}><template shadowrootmode="open"><h1>Async content success</h1></template></${name}>`)
         });
         test("should support nested async rendering scenarios", async () => {
             const name = uniqueElementName();
@@ -381,7 +381,7 @@ test.describe("FASTElementRenderer", () => {
             const template = html`<${html.partial(name)}><${html.partial(name)}></${html.partial(name)}></${html.partial(name)}>`;
             const { templateRenderer } = fastSSR({renderMode: "async"});
 
-            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowroot="open"><slot></slot></template><${name} async-resolved><template shadowroot="open"><slot></slot></template></${name}></${name}>`)
+            expect(await consolidateAsync(templateRenderer.render(template))).toBe(`<${name} async-resolved><template shadowrootmode="open"><slot></slot></template><${name} async-resolved><template shadowrootmode="open"><slot></slot></template></${name}></${name}>`)
         });
     })
 });

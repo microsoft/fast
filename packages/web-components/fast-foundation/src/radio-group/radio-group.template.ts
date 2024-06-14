@@ -1,4 +1,5 @@
-import { elements, ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@microsoft/fast-element";
 import type { FASTRadioGroup } from "./radio-group.js";
 import { RadioGroupOrientation } from "./radio-group.options.js";
 

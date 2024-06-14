@@ -25,7 +25,8 @@ import { RadioGroupOrientation } from "./radio-group.options.js";
  */
 export class FASTRadioGroup extends FASTElement {
     /**
-     * When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the child radios will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly

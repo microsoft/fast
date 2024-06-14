@@ -18,7 +18,7 @@ test.describe("HorizontalScroll", () => {
 
         element = page.locator("fast-horizontal-scroll");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         cards = element.locator("fast-card");
 
@@ -29,6 +29,8 @@ test.describe("HorizontalScroll", () => {
         scrollView = element.locator(".scroll-view");
 
         await page.goto(fixtureURL("horizontal-scroll--horizontal-scroll"));
+
+        await element.waitFor({ state: "attached" });
 
         await element.evaluate((node: FASTHorizontalScroll) => {
             node.speed = 0;
@@ -98,6 +100,7 @@ test.describe("HorizontalScroll", () => {
             );
         });
 
+        /* eslint-disable-next-line max-len */
         test('should set the "disabled" class on the previous flipper when the scroll position is at the beginning of the content', async () => {
             await expect(scrollPrevious).toHaveClass(/disabled/);
 
@@ -244,6 +247,8 @@ test.describe("HorizontalScroll", () => {
             const cards = element.locator("fast-card");
 
             const lastCard = cards.last();
+
+            await element.waitFor({ state: "attached" });
 
             await element.evaluate((node: FASTHorizontalScroll, cardsCount) => {
                 node.scrollInView(cardsCount - 1, 0);

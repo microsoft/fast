@@ -21,7 +21,8 @@ export type FlipperOptions = {
  * @slot previous - The previous flipper content
  * @csspart next - Wraps the next flipper content
  * @csspart previous - Wraps the previous flipper content
- * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.
+ * @fires click - Fires a custom 'click' event when Enter or Space is invoked via keyboard
+ * and the flipper is exposed to assistive technologies.
  *
  * @public
  */
@@ -36,7 +37,8 @@ export class FASTFlipper extends FASTElement {
     public disabled: boolean;
 
     /**
-     * Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.
+     * Indicates the flipper should be hidden from assistive technology.
+     * Because flippers are often supplementary navigation, they are often hidden from assistive technology.
      *
      * @public
      * @defaultValue - true

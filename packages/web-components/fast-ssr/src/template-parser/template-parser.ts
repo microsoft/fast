@@ -10,16 +10,15 @@ import {
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import {
+import { parse, parseFragment } from "parse5";
+import type {
     Attribute,
     DefaultTreeCommentNode,
     DefaultTreeElement,
     DefaultTreeNode,
     DefaultTreeParentNode,
     DefaultTreeTextNode,
-    parse,
-    parseFragment,
-} from "parse5";
+} from "parse5/index.js";
 import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 
 /**
@@ -32,7 +31,7 @@ interface Visitor {
     leave?: (node: DefaultTreeNode) => void;
 }
 
-declare module "parse5" {
+declare module "parse5/index.js" {
     interface DefaultTreeElement {
         isDefinedCustomElement?: boolean;
     }

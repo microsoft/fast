@@ -15,11 +15,13 @@ test.describe("Search", () => {
 
         element = page.locator("fast-search");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         field = element.locator(".field");
 
         await page.goto(fixtureURL("search--search"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -291,7 +293,7 @@ test.describe("Search", () => {
 
             await expect(element).toHaveJSProperty("value", "test value");
         });
-
+        /* eslint-disable-next-line max-len */
         test("should put the control into a clean state, where `value` attribute modifications change the `value` property prior to user or programmatic interaction", async () => {
             await root.evaluate(node => {
                 node.innerHTML = /* html */ `

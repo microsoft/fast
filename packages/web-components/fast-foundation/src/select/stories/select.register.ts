@@ -1,4 +1,5 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 import chevronIcon from "../../../statics/svg/chevron_down_12_regular.svg";
 import { FASTSelect } from "../select.js";
 import { selectTemplate } from "../select.template.js";
