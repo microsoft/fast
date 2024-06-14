@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { FASTTooltip } from "./tooltip.js";
 
 /**

@@ -718,7 +718,8 @@ export const DI = Object.freeze({
      * @returns An array of dependency keys.
      */
     getDependencies(Type: Constructable | Injectable): Key[] {
-        // Note: Every detail of this getDependencies method is pretty deliberate at the moment, and probably not yet 100% tested from every possible angle,
+        // Note: Every detail of this getDependencies method is pretty deliberate at the moment,
+        // and probably not yet 100% tested from every possible angle,
         // so be careful with making changes here as it can have a huge impact on complex end user apps.
         // Preferably, only make changes to the dependency resolution process via a RFC.
 
@@ -2156,7 +2157,8 @@ const isNativeFunction = (function () {
                 i <= 100 &&
                 // This whole heuristic *could* be tricked by a comment. Do we need to care about that?
                 sourceText.charCodeAt(i - 1) === 0x7d && // }
-                // TODO: the spec is a little vague about the precise constraints, so we do need to test this across various browsers to make sure just one whitespace is a safe assumption.
+                // TODO: the spec is a little vague about the precise constraints,
+                // so we do need to test this across various browsers to make sure just one whitespace is a safe assumption.
                 sourceText.charCodeAt(i - 2) <= 0x20 && // whitespace
                 sourceText.charCodeAt(i - 3) === 0x5d && // ]
                 sourceText.charCodeAt(i - 4) === 0x65 && // e

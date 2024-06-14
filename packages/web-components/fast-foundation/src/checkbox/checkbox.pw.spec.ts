@@ -14,11 +14,13 @@ test.describe("Checkbox", () => {
 
         element = page.locator("fast-checkbox");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         form = page.locator("form");
 
         await page.goto(fixtureURL("checkbox--checkbox"));
+
+        await root.waitFor({ state: "visible" });
     });
 
     test.afterAll(async () => {
@@ -387,6 +389,7 @@ test.describe("Checkbox", () => {
         await expect(element).toHaveJSProperty("checked", true);
     });
 
+    /* eslint-disable-next-line max-len */
     test("should put the control into a clean state, where checked attribute modifications change the checked property prior to user or programmatic interaction", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `

@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { FASTPickerMenuOption } from "./picker-menu-option.js";
 
 /**
@@ -10,7 +11,7 @@ export function pickerMenuOptionTemplate<
 >(): ElementViewTemplate<T> {
     return html<T>`
         <template
-            role="listitem"
+            role="option"
             tabindex="-1"
             @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         >

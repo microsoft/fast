@@ -70,7 +70,8 @@ export class FASTTreeItem extends FASTElement {
     }
 
     /**
-     * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
+     * When true, the control will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: disabled

@@ -1,17 +1,14 @@
-import {
-    ElementViewTemplate,
-    html,
-    ref,
-    ViewTemplate,
-    when,
-} from "@microsoft/fast-element";
-import { tagFor, TemplateElementDependency } from "../patterns/tag-for.js";
+import type { ElementViewTemplate, ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
+import type { TemplateElementDependency } from "../patterns/index.js";
+import { tagFor } from "../patterns/index.js";
 import type { FASTPicker } from "./picker.js";
 
 function defaultListItemTemplate(options: PickerOptions): ViewTemplate {
     const pickerListItemTag = html.partial(tagFor(options.pickerListItem));
     return html`
     <${pickerListItemTag}
+        ?disabled = "${(x, c) => c.parent.disabled}"
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
     >

@@ -34,7 +34,8 @@ export type TextFieldOptions = StartEndOptions<FASTTextField>;
  */
 export class FASTTextField extends FormAssociatedTextField {
     /**
-     * When true, the input will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
+     * When true, the input will be immutable by user interaction.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
      * @remarks
      * HTML Attribute: readonly
@@ -49,7 +50,9 @@ export class FASTTextField extends FormAssociatedTextField {
     }
 
     /**
-     * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
+     * Indicates that this element should get focus after the page finishes loading.
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute}
+     * for more information.
      * @public
      * @remarks
      * HTML Attribute: autofocus
@@ -97,7 +100,8 @@ export class FASTTextField extends FormAssociatedTextField {
     }
 
     /**
-     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
+     * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist}
+     * to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
      * @public
      * @remarks
      * HTML Attribute: list

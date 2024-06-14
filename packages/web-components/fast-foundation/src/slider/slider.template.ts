@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, ref } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import { staticallyCompose } from "../utilities/template-helpers.js";
 import type { FASTSlider } from "./slider.js";
 import type { SliderOptions } from "./slider.options.js";
@@ -19,7 +20,6 @@ export function sliderTemplate<T extends FASTSlider>(
             aria-valuemin="${x => x.min}"
             aria-valuemax="${x => x.max}"
             aria-disabled="${x => (x.disabled ? true : void 0)}"
-            aria-readonly="${x => (x.readOnly ? true : void 0)}"
             aria-orientation="${x => x.orientation}"
         >
             <div part="positioning-region" class="positioning-region">

@@ -4,21 +4,22 @@
 
 ```ts
 
-import { CaptureType } from '@microsoft/fast-element';
-import { Constructable } from '@microsoft/fast-element';
-import { CSSDirective } from '@microsoft/fast-element';
+import type { CaptureType } from '@microsoft/fast-element';
+import type { Constructable } from '@microsoft/fast-element';
+import type { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
-import { ElementStyles } from '@microsoft/fast-element';
-import { ElementViewTemplate } from '@microsoft/fast-element';
+import type { ElementStyles } from '@microsoft/fast-element';
+import type { ElementViewTemplate } from '@microsoft/fast-element';
+import { FASTContext } from '@microsoft/fast-element/context.js';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
-import { HostBehavior } from '@microsoft/fast-element';
-import { HostController } from '@microsoft/fast-element';
-import { HTMLDirective } from '@microsoft/fast-element';
+import type { HostBehavior } from '@microsoft/fast-element';
+import type { HostController } from '@microsoft/fast-element';
+import type { HTMLDirective } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import type { SyntheticViewTemplate } from '@microsoft/fast-element';
-import { ViewTemplate } from '@microsoft/fast-element';
+import type { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export const AccordionExpandMode: {
@@ -1536,14 +1537,28 @@ export class FASTPicker extends FormAssociatedPicker {
     defaultMenuOptionTemplate?: ViewTemplate;
     // (undocumented)
     protected defaultMenuOptionTemplateChanged(): void;
+    // @public
+    disabled: boolean;
+    // (undocumented)
+    disabledChanged(previous: boolean, next: boolean): void;
+    disableQueryFilter: boolean;
+    // (undocumented)
+    protected disableQueryFilterChanged(): void;
+    disableSelectionFilter: boolean;
+    // (undocumented)
+    protected disableSelectionFilterChanged(): void;
     // (undocumented)
     disconnectedCallback(): void;
     // @internal
     filteredOptionsList: string[];
-    // (undocumented)
-    protected filteredOptionsListChanged(): void;
+    // @deprecated
     filterQuery: boolean;
+    // (undocumented)
+    protected filterQueryChanged(): void;
+    // @deprecated
     filterSelected: boolean;
+    // (undocumented)
+    protected filterSelectedChanged(): void;
     // @internal
     flyoutOpen: boolean;
     // (undocumented)
@@ -1600,7 +1615,7 @@ export class FASTPicker extends FormAssociatedPicker {
     protected queryChanged(): void;
     // @internal
     region: FASTAnchoredRegion;
-    // @internal (undocumented)
+    // @internal
     selectedItems: string[];
     // @internal
     selectedListTag: string;
@@ -1629,9 +1644,11 @@ export class FASTPickerListItem extends FASTElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    handleClick(e: MouseEvent): boolean;
+    handleClick(e: MouseEvent): void;
     // (undocumented)
     handleKeyDown(e: KeyboardEvent): boolean;
+    // Warning: (ae-forgotten-export) The symbol "PickerContext" needs to be exported by the entry point index.d.ts
+    pickerContext: PickerContext;
     value: string;
 }
 
@@ -1875,9 +1892,6 @@ export class FASTSlider extends FormAssociatedSlider implements SliderConfigurat
     protected orientationChanged(): void;
     // @internal (undocumented)
     position: string;
-    readOnly: boolean;
-    // (undocumented)
-    protected readOnlyChanged(): void;
     step: number | undefined;
     // (undocumented)
     protected stepChanged(): void;
@@ -2895,9 +2909,9 @@ export type YearFormat = ValuesOf<typeof YearFormat>;
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/calendar/calendar.d.ts:51:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
-// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:52:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:53:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
+// dist/dts/calendar/calendar.d.ts:54:5 - (ae-incompatible-release-tags) The symbol "dataGrid" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid-row.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridCell" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/data-grid/data-grid.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "dataGridRow" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta
 // dist/dts/picker/picker.template.d.ts:9:5 - (ae-incompatible-release-tags) The symbol "anchoredRegion" is marked as @public, but its signature references "TemplateElementDependency" which is marked as @beta

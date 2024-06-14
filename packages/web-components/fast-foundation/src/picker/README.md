@@ -42,6 +42,20 @@ export class FASTTextField extends TextField {}
 
 
 
+### class: `DefaultPickerContext`
+
+<hr/>
+
+### Variables
+
+| Name            | Description | Type |
+| --------------- | ----------- | ---- |
+| `PickerContext` |             |      |
+
+<hr/>
+
+
+
 ### class: `FASTPickerListItem`
 
 #### Superclass
@@ -52,10 +66,11 @@ export class FASTTextField extends TextField {}
 
 #### Fields
 
-| Name               | Privacy | Type           | Default | Description                                               | Inherited From |
-| ------------------ | ------- | -------------- | ------- | --------------------------------------------------------- | -------------- |
-| `value`            | public  | `string`       |         | The underlying string value of the item                   |                |
-| `contentsTemplate` | public  | `ViewTemplate` |         | The template used to render the contents of the list item |                |
+| Name               | Privacy | Type            | Default | Description                                               | Inherited From |
+| ------------------ | ------- | --------------- | ------- | --------------------------------------------------------- | -------------- |
+| `pickerContext`    |         | `PickerContext` |         | Context object for the parent picker                      |                |
+| `value`            | public  | `string`        |         | The underlying string value of the item                   |                |
+| `contentsTemplate` | public  | `ViewTemplate`  |         | The template used to render the contents of the list item |                |
 
 #### Methods
 
@@ -63,7 +78,7 @@ export class FASTTextField extends TextField {}
 | ------------------------- | --------- | ----------- | ------------------ | --------- | -------------- |
 | `contentsTemplateChanged` | protected |             |                    | `void`    |                |
 | `handleKeyDown`           | public    |             | `e: KeyboardEvent` | `boolean` |                |
-| `handleClick`             | public    |             | `e: MouseEvent`    | `boolean` |                |
+| `handleClick`             | public    |             | `e: MouseEvent`    | `void`    |                |
 
 #### Attributes
 
@@ -193,12 +208,15 @@ export class FASTTextField extends TextField {}
 | ---------------------------- | ------- | --------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `selection`                  | public  | `string`                    | `""`                         | Currently selected items. Comma delineated string ie. "apples,oranges".                                                       |                      |
 | `options`                    | public  | `string`                    |                              | Currently available options. Comma delineated string ie. "apples,oranges".                                                    |                      |
-| `filterSelected`             | public  | `boolean`                   | `true`                       | Whether the component should remove an option from the list when it is in the selection                                       |                      |
-| `filterQuery`                | public  | `boolean`                   | `true`                       | Whether the component should remove options based on the current query                                                        |                      |
+| `filterSelected`             | public  | `boolean`                   | `false`                      | Indicates whether the component should remove an option from the list when it is in the selection.                            |                      |
+| `disableSelectionFilter`     | public  | `boolean`                   | `false`                      | Indicates whether the component should remove an option from the list when it is in the selection.                            |                      |
+| `filterQuery`                | public  | `boolean`                   | `true`                       | Indicates whether the component should remove options based on the current query.                                             |                      |
+| `disableQueryFilter`         | public  | `boolean`                   | `false`                      | Indicates whether the component should remove options based on the current query.                                             |                      |
 | `maxSelected`                | public  | `number or null`            | `null`                       | The maximum number of items that can be selected.                                                                             |                      |
 | `noSuggestionsText`          | public  | `string`                    | `"No suggestions available"` | The text to present to assistive technolgies when no suggestions are available.                                               |                      |
 | `suggestionsAvailableText`   | public  | `string`                    | `"Suggestions available"`    | The text to present to assistive technolgies when suggestions are available.                                                  |                      |
 | `loadingText`                | public  | `string`                    | `"Loading suggestions"`      | The text to present to assistive technologies when suggestions are loading.                                                   |                      |
+| `disabled`                   | public  | `boolean`                   |                              | Disables the picker.                                                                                                          |                      |
 | `label`                      | public  | `string`                    |                              | Applied to the aria-label attribute of the input element                                                                      |                      |
 | `labelledBy`                 | public  | `string`                    |                              | Applied to the aria-labelledby attribute of the input element                                                                 |                      |
 | `placeholder`                | public  | `string`                    |                              | Applied to the placeholder attribute of the input element                                                                     |                      |
@@ -217,27 +235,31 @@ export class FASTTextField extends TextField {}
 
 #### Methods
 
-| Name                               | Privacy   | Description                                                   | Parameters         | Return    | Inherited From |
-| ---------------------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | -------------- |
-| `selectionChanged`                 | protected |                                                               |                    | `void`    |                |
-| `optionsChanged`                   | protected |                                                               |                    | `void`    |                |
-| `menuPlacementChanged`             | protected |                                                               |                    | `void`    |                |
-| `showLoadingChanged`               | protected |                                                               |                    | `void`    |                |
-| `listItemTemplateChanged`          | protected |                                                               |                    | `void`    |                |
-| `defaultListItemTemplateChanged`   | protected |                                                               |                    | `void`    |                |
-| `menuOptionTemplateChanged`        | protected |                                                               |                    | `void`    |                |
-| `defaultMenuOptionTemplateChanged` | protected |                                                               |                    | `void`    |                |
-| `queryChanged`                     | protected |                                                               |                    | `void`    |                |
-| `filteredOptionsListChanged`       | protected |                                                               |                    | `void`    |                |
-| `flyoutOpenChanged`                | protected |                                                               |                    | `void`    |                |
-| `focus`                            | public    | Move focus to the input element                               |                    |           |                |
-| `handleKeyDown`                    | public    | Handle key down events.                                       | `e: KeyboardEvent` | `boolean` |                |
-| `handleFocusIn`                    | public    | Handle focus in events.                                       | `e: FocusEvent`    | `boolean` |                |
-| `handleFocusOut`                   | public    | Handle focus out events.                                      | `e: FocusEvent`    | `boolean` |                |
-| `handleSelectionChange`            | public    | The list of selected items has changed                        |                    | `void`    |                |
-| `handleRegionLoaded`               | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`         | `void`    |                |
-| `handleItemInvoke`                 | public    | A list item has been invoked.                                 | `e: Event`         | `boolean` |                |
-| `handleOptionInvoke`               | public    | A menu option has been invoked.                               | `e: Event`         | `boolean` |                |
+| Name                               | Privacy   | Description                                                   | Parameters                         | Return    | Inherited From |
+| ---------------------------------- | --------- | ------------------------------------------------------------- | ---------------------------------- | --------- | -------------- |
+| `selectionChanged`                 | protected |                                                               |                                    | `void`    |                |
+| `optionsChanged`                   | protected |                                                               |                                    | `void`    |                |
+| `filterSelectedChanged`            | protected |                                                               |                                    | `void`    |                |
+| `disableSelectionFilterChanged`    | protected |                                                               |                                    | `void`    |                |
+| `filterQueryChanged`               | protected |                                                               |                                    | `void`    |                |
+| `disableQueryFilterChanged`        | protected |                                                               |                                    | `void`    |                |
+| `disabledChanged`                  | public    |                                                               | `previous: boolean, next: boolean` | `void`    |                |
+| `menuPlacementChanged`             | protected |                                                               |                                    | `void`    |                |
+| `showLoadingChanged`               | protected |                                                               |                                    | `void`    |                |
+| `listItemTemplateChanged`          | protected |                                                               |                                    | `void`    |                |
+| `defaultListItemTemplateChanged`   | protected |                                                               |                                    | `void`    |                |
+| `menuOptionTemplateChanged`        | protected |                                                               |                                    | `void`    |                |
+| `defaultMenuOptionTemplateChanged` | protected |                                                               |                                    | `void`    |                |
+| `queryChanged`                     | protected |                                                               |                                    | `void`    |                |
+| `flyoutOpenChanged`                | protected |                                                               |                                    | `void`    |                |
+| `focus`                            | public    | Move focus to the input element                               |                                    |           |                |
+| `handleKeyDown`                    | public    | Handle key down events.                                       | `e: KeyboardEvent`                 | `boolean` |                |
+| `handleFocusIn`                    | public    | Handle focus in events.                                       | `e: FocusEvent`                    | `boolean` |                |
+| `handleFocusOut`                   | public    | Handle focus out events.                                      | `e: FocusEvent`                    | `boolean` |                |
+| `handleSelectionChange`            | public    | The list of selected items has changed                        |                                    | `void`    |                |
+| `handleRegionLoaded`               | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`                         | `void`    |                |
+| `handleItemInvoke`                 | public    | A list item has been invoked.                                 | `e: Event`                         | `boolean` |                |
+| `handleOptionInvoke`               | public    | A menu option has been invoked.                               | `e: Event`                         | `boolean` |                |
 
 #### Attributes
 
@@ -245,12 +267,13 @@ export class FASTTextField extends TextField {}
 | ---------------------------- | ------------------------ | -------------- |
 | `selection`                  | selection                |                |
 | `options`                    | options                  |                |
-| `filter-selected`            | filterSelected           |                |
-| `filter-query`               | filterQuery              |                |
+| `disable-selection-filter`   | disableSelectionFilter   |                |
+| `disable-query-filter`       | disableQueryFilter       |                |
 | `max-selected`               | maxSelected              |                |
 | `no-suggestions-text`        | noSuggestionsText        |                |
 | `suggestions-available-text` | suggestionsAvailableText |                |
 | `loading-text`               | loadingText              |                |
+|                              | disabled                 |                |
 | `label`                      | label                    |                |
 | `labelledby`                 | labelledBy               |                |
 | `placeholder`                | placeholder              |                |

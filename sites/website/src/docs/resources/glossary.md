@@ -7,14 +7,6 @@ description: A glossary of terms.
 keywords:
   - glossary of terms
 ---
-#### Design System
-
-A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
-
-#### Design Token
-
-A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [the Design Tokens Community Group](https://github.com/design-tokens/community-group#design-tokens) for more information on Design Tokens themselves.
-
 #### ES2015
 
 The official name of the JavaScript specification released in 2015. The committee governing EcmaScript, tc39, releases a spec each year. The designation ES2015+ refers to any version of the language from 2015 onward. 

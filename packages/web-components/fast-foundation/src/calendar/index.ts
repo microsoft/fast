@@ -1,12 +1,12 @@
-export {
+export { FASTCalendar } from "./calendar.js";
+export type {
     CalendarDateInfo,
     CalendarInfo,
     CalendarOptions,
-    FASTCalendar,
     MonthInfo,
     WeekdayText,
 } from "./calendar.js";
-export { DayFormat, WeekdayFormat, MonthFormat, YearFormat } from "./calendar.options.js";
+export { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./calendar.options.js";
 export {
     calendarCellTemplate,
     calendarRowTemplate,

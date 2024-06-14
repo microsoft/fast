@@ -14,11 +14,13 @@ test.describe("Combobox", () => {
 
         element = page.locator("fast-combobox");
 
-        root = page.locator("#root");
+        root = page.locator("#storybook-root");
 
         control = element.locator(`input[role="combobox"]`);
 
         await page.goto(fixtureURL("combobox--combobox"));
+
+        await element.waitFor({ state: "attached" });
     });
 
     test.afterAll(async () => {
@@ -465,5 +467,59 @@ test.describe("Combobox", () => {
         await label.click();
 
         await expect(element).toBeFocused();
+    });
+
+    test("should close the listbox when the indicator is clicked", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-combobox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-combobox>
+            `;
+        });
+
+        const indicator = element.locator(".indicator");
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.open = true;
+        });
+
+        await expect(element).toHaveAttribute("open");
+
+        await indicator.click();
+
+        await expect(element).not.toHaveAttribute("open");
+    });
+
+    test("should not close the listbox when a disabled option is clicked", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-combobox>
+                    <fast-option>Option 1</fast-option>
+                    <fast-option disabled>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-combobox>
+            `;
+        });
+
+        const options = element.locator("fast-option");
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.open = true;
+        });
+
+        await expect(element).toHaveAttribute("open");
+
+        await options.nth(1).click({
+            force: true,
+        });
+
+        await expect(element).toHaveAttribute("open");
+
+        await options.nth(2).click();
+
+        await expect(element).not.toHaveAttribute("open");
     });
 });

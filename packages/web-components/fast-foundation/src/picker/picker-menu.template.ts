@@ -1,4 +1,5 @@
-import { ElementViewTemplate, html, slotted } from "@microsoft/fast-element";
+import type { ElementViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@microsoft/fast-element";
 import type { FASTPickerMenu } from "./picker-menu.js";
 
 /**
@@ -7,7 +8,7 @@ import type { FASTPickerMenu } from "./picker-menu.js";
  */
 export function pickerMenuTemplate<T extends FASTPickerMenu>(): ElementViewTemplate<T> {
     return html<T>`
-        <template role="list" slot="menu-region">
+        <template role="listbox" slot="menu-region">
             <div class="options-display" part="options-display">
                 <div class="header-region" part="header-region">
                     <slot name="header-region" ${slotted("headerElements")}></slot>

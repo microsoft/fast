@@ -35,6 +35,7 @@ const pickerStyles = css`
         min-height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -88,7 +89,6 @@ const pickerListStyles = css`
         height: calc(
             (var(--base-height-multiplier) + var(--density)) * var(--design-unit) * 1px
         );
-        min-width: 250px;
         width: auto;
         box-sizing: border-box;
         border: none;
@@ -97,6 +97,9 @@ const pickerListStyles = css`
         outline: none;
         user-select: none;
         padding: 0 calc(var(--design-unit) * 2px + 1px);
+    }
+    ::slotted([role="combobox"][disabled]) {
+        cursor: not-allowed;
     }
 `;
 
@@ -123,12 +126,15 @@ const pickerListItemStyles = css`
         user-select: none;
         white-space: nowrap;
     }
-    :host(:focus-visible),
-    :host(:hover) {
+    :host([disabled]) {
+        cursor: not-allowed;
+    }
+    :host(:focus-visible:not([disabled])),
+    :host(:hover:not([disabled])) {
         background: var(--accent-fill-rest);
         color: var(--foreground-on-accent-rest);
     }
-    :host(:focus-visible) {
+    :host(:focus-visible:not([disabled])) {
         border-color: var(--focus-stroke-outer);
     }
 `;
@@ -181,7 +187,7 @@ const pickerMenuOptionStyles = css`
         user-select: none;
         white-space: nowrap;
     }
-    :host(:focus-visible[role="listitem"]) {
+    :host(:focus-visible[role="option"]) {
         border-color: var(--focus-stroke-outer);
         background: var(--neutral-fill-rest);
         color: var(--neutral-foreground-rest);

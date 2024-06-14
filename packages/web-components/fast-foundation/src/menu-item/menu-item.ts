@@ -28,7 +28,9 @@ export type MenuItemOptions = StartEndOptions<FASTMenuItem> & {
 
 /**
  * A Switch Custom HTML Element.
- * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem }, {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox}, or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
+ * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem },
+ * {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox},
+ * or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
  *
  * @slot checked-indicator - The checked indicator
  * @slot radio-indicator - The radio indicator
@@ -45,7 +47,8 @@ export type MenuItemOptions = StartEndOptions<FASTMenuItem> & {
  * @csspart expand-collapse - The expand/collapse element
  * @csspart submenu-region - The container for the submenu, used for positioning
  * @fires expanded-change - Fires a custom 'expanded-change' event when the expanded state changes
- * @fires change - Fires a custom 'change' event when a non-submenu item with a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
+ * @fires change - Fires a custom 'change' event when a non-submenu item with
+ * a role of `menuitemcheckbox`, `menuitemradio`, or `menuitem` is invoked
  *
  * @public
  */

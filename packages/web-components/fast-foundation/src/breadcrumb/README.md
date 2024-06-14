@@ -173,6 +173,8 @@ This component is built with the expectation that focus is delegated to the anch
 | ----------- | ------------------------------------------------------------------- |
 | `listitem`  | The wrapping container for the item, represents a semantic listitem |
 | `separator` | The wrapping element for the separator                              |
+| `control`   | The anchor element                                                  |
+| `content`   | The element wrapping anchor content                                 |
 
 #### Slots
 
