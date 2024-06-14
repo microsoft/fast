@@ -37,6 +37,7 @@ export function textFieldTemplate<T extends FASTTextField>(
                 @change="${x => x.handleChange()}"
                 ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
+                enterkeyhint="${x => x.enterKeyHint}"
                 list="${x => x.list}"
                 maxlength="${x => x.maxlength}"
                 name="${x => x.name}"
