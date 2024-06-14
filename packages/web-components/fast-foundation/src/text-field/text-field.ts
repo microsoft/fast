@@ -92,6 +92,9 @@ export class FASTTextField extends FormAssociatedTextField {
     private typeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;
+            if (this.proxy.value !== this.value) {
+                this.value = this.proxy.value;
+            }
             this.validate();
         }
     }
@@ -182,6 +185,27 @@ export class FASTTextField extends FormAssociatedTextField {
     protected spellcheckChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.spellcheck = this.spellcheck;
+        }
+    }
+
+    /**
+     * defines what action label (or icon) to present for the enter key on virtual keyboards.
+     * @public
+     * @remarks
+     * HTMLAttribute: enterkeyhint
+     */
+    @attr({ attribute: "enterkeyhint" })
+    public enterKeyHint:
+        | "enter"
+        | "done"
+        | "go"
+        | "next"
+        | "previous"
+        | "search"
+        | "send";
+    protected enterKeyHintChanged(): void {
+        if (this.proxy instanceof HTMLInputElement) {
+            this.proxy.enterKeyHint = this.enterKeyHint;
         }
     }
 

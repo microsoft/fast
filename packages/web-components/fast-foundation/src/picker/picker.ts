@@ -9,6 +9,7 @@ import {
     RepeatDirective,
     Updates,
 } from "@microsoft/fast-element";
+import { Context } from "@microsoft/fast-element/context.js";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities.js";
 import {
     keyArrowDown,
@@ -40,12 +41,14 @@ import { FASTPickerMenuOption } from "./picker-menu-option.js";
 import type { FASTPickerMenu } from "./picker-menu.js";
 import { FormAssociatedPicker } from "./picker.form-associated.js";
 import { MenuPlacement } from "./picker.options.js";
+import { DefaultPickerContext, PickerContext } from "./picker-context.js";
 
 const pickerInputTemplate: ViewTemplate = html<FASTPicker>`
     <input
         slot="input-region"
         role="combobox"
         type="text"
+        ?disabled=${x => x.disabled}
         autocapitalize="off"
         autocomplete="off"
         haspopup="list"
@@ -97,22 +100,62 @@ export class FASTPicker extends FormAssociatedPicker {
     }
 
     /**
-     * Whether the component should remove an option from the list when it is in the selection
+     * Indicates whether the component should remove an option from the list when it is in the selection.
      *
-     * @remarks
-     * HTML Attribute: filter-selected
+     * @deprecated - use `Picker.disableSelectionFilter`.
      */
-    @attr({ attribute: "filter-selected", mode: "boolean" })
-    public filterSelected: boolean = true;
+    @observable
+    public filterSelected: boolean = false;
+    protected filterSelectedChanged(): void {
+        // keep the main prop in sync
+        if (this.disableSelectionFilter === this.filterSelected) {
+            this.disableSelectionFilter = !this.filterSelected;
+        }
+    }
 
     /**
-     * Whether the component should remove options based on the current query
+     * Indicates whether the component should remove an option from the list when it is in the selection.
      *
      * @remarks
-     * HTML Attribute: filter-query
+     * HTML Attribute: disable-selection-filter
      */
-    @attr({ attribute: "filter-query", mode: "boolean" })
+    @attr({ attribute: "disable-selection-filter", mode: "boolean" })
+    public disableSelectionFilter: boolean = false;
+    protected disableSelectionFilterChanged(): void {
+        // keep depracated prop in sync
+        if (this.disableSelectionFilter === this.filterQuery) {
+            this.filterSelected = !this.disableSelectionFilter;
+        }
+    }
+
+    /**
+     * Indicates whether the component should remove options based on the current query.
+     *
+     * @deprecated - use `Picker.disableQueryFilter`.
+     */
+    @observable
     public filterQuery: boolean = true;
+    protected filterQueryChanged(): void {
+        // keep the main prop in sync
+        if (this.disableQueryFilter === this.filterQuery) {
+            this.disableQueryFilter = !this.filterQuery;
+        }
+    }
+
+    /**
+     * Indicates whether the component should remove options based on the current query.
+     *
+     * @remarks
+     * HTML Attribute: disable-query-filter
+     */
+    @attr({ attribute: "disable-query-filter", mode: "boolean" })
+    public disableQueryFilter: boolean = false;
+    protected disableQueryFilterChanged(): void {
+        // keep depracated prop in sync
+        if (this.disableQueryFilter === this.filterQuery) {
+            this.filterQuery = !this.disableQueryFilter;
+        }
+    }
 
     /**
      * The maximum number of items that can be selected.
@@ -149,6 +192,27 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @attr({ attribute: "loading-text" })
     public loadingText: string = "Loading suggestions";
+
+    /**
+     * Disables the picker.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
+    public disabledChanged(previous: boolean, next: boolean): void {
+        if (super.disabledChanged) {
+            super.disabledChanged(previous, next);
+        }
+        if (this.$fastController.isConnected) {
+            this.pickerContext.disabled = this.disabled;
+            if (this.disabled) {
+                this.toggleFlyout(false);
+            }
+        }
+    }
 
     /**
      * Applied to the aria-label attribute of the input element
@@ -312,15 +376,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public filteredOptionsList: string[] = [];
-    protected filteredOptionsListChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.showNoOptions =
-                    this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
-                this.setFocusedOption(this.showNoOptions ? -1 : 0);
-            });
-        }
-    }
 
     /**
      *  Indicates if the flyout menu is open or not
@@ -384,14 +439,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public showNoOptions: boolean = false;
-    private showNoOptionsChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.setFocusedOption(0);
-            });
-        }
-    }
+    public showNoOptions: boolean = true;
 
     /**
      *  The anchored region config to apply.
@@ -436,7 +484,7 @@ export class FASTPicker extends FormAssociatedPicker {
     public region: FASTAnchoredRegion;
 
     /**
-     *
+     * Currently selected items
      *
      * @internal
      */
@@ -447,12 +495,14 @@ export class FASTPicker extends FormAssociatedPicker {
     private inputElementView: HTMLView | null = null;
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
 
+    private pickerContext: PickerContext = new DefaultPickerContext();
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
+        this.pickerContext.disabled = this.disabled;
+        Context.provide(this, PickerContext, this.pickerContext);
         if (!this.listElement) {
             this.listElement = document.createElement(
                 this.selectedListTag
@@ -546,7 +596,6 @@ export class FASTPicker extends FormAssociatedPicker {
             "optionsupdated",
             this.handleMenuOptionsUpdated
         );
-
         this.handleSelectionChange();
     }
 
@@ -554,19 +603,12 @@ export class FASTPicker extends FormAssociatedPicker {
      * Toggles the menu flyout
      */
     private toggleFlyout(open: boolean): void {
-        if (this.flyoutOpen === open) {
+        if (this.flyoutOpen === open || (this.disabled && !this.flyoutOpen)) {
             return;
         }
 
         if (open && getRootActiveElement(this) === this.inputElement) {
             this.flyoutOpen = open;
-            Updates.enqueue(() => {
-                if (this.menuElement !== undefined) {
-                    this.setFocusedOption(0);
-                } else {
-                    this.disableMenu();
-                }
-            });
             return;
         }
 
@@ -586,6 +628,9 @@ export class FASTPicker extends FormAssociatedPicker {
      * Handle click event from input element
      */
     private handleInputClick = (e: MouseEvent): void => {
+        if (e.defaultPrevented || this.disabled) {
+            return;
+        }
         e.preventDefault();
         this.toggleFlyout(true);
     };
@@ -593,18 +638,18 @@ export class FASTPicker extends FormAssociatedPicker {
     /**
      * Handle the menu options updated event from the child menu
      */
-    private handleMenuOptionsUpdated(e: Event): void {
+    private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
-        if (this.flyoutOpen) {
+        Updates.enqueue(() => {
             this.setFocusedOption(0);
-        }
-    }
+        });
+    };
 
     /**
      * Handle key down events.
      */
     public handleKeyDown(e: KeyboardEvent): boolean {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || this.disabled) {
             return false;
         }
         const activeElement = getRootActiveElement(this);
@@ -781,7 +826,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     public handleRegionLoaded(e: Event): void {
         Updates.enqueue(() => {
-            this.setFocusedOption(0);
             this.$emit("menuloaded", { bubbles: false });
         });
     }
@@ -815,7 +859,7 @@ export class FASTPicker extends FormAssociatedPicker {
         ) {
             if (getRootActiveElement(this) === this.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
-                    this.listElement.querySelectorAll("[role='listitem']")
+                    this.listElement.querySelectorAll("[role='option']")
                 );
                 (
                     selectedItemInstances[selectedItemInstances.length - 1] as HTMLElement
@@ -836,7 +880,7 @@ export class FASTPicker extends FormAssociatedPicker {
         }
         if (e.target instanceof FASTPickerListItem) {
             const listItems: Element[] = Array.from(
-                this.listElement.querySelectorAll("[role='listitem']")
+                this.listElement.querySelectorAll("[role='option']")
             );
             const itemIndex: number = listItems.indexOf(e.target as Element);
             if (itemIndex !== -1) {
@@ -890,7 +934,7 @@ export class FASTPicker extends FormAssociatedPicker {
         }
 
         const selectedItemsAsElements: Element[] = Array.from(
-            this.listElement.querySelectorAll("[role='listitem']")
+            this.listElement.querySelectorAll("[role='option']")
         );
 
         const activeElement = getRootActiveElement(this);
@@ -938,6 +982,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * Sets the currently focused menu option by index
      */
     private setFocusedOption(optionIndex: number): void {
+        this.updateNoOptions();
         if (
             !this.flyoutOpen ||
             optionIndex === -1 ||
@@ -995,12 +1040,12 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     private updateFilteredOptions(): void {
         this.filteredOptionsList = this.optionsList.slice(0);
-        if (this.filterSelected) {
+        if (!this.disableSelectionFilter) {
             this.filteredOptionsList = this.filteredOptionsList.filter(
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
-        if (this.filterQuery && this.query !== "" && this.query !== undefined) {
+        if (!this.disableQueryFilter && this.query !== "" && this.query !== undefined) {
             // compare case-insensitive
             const filterQuery = this.query.toLowerCase();
             this.filteredOptionsList = this.filteredOptionsList.filter(
@@ -1039,4 +1084,8 @@ export class FASTPicker extends FormAssociatedPicker {
         "bottom-fill": FlyoutPosBottomFill,
         "tallest-fill": FlyoutPosTallestFill,
     };
+
+    private updateNoOptions(): void {
+        this.showNoOptions = this.menuElement.optionElements.length === 0;
+    }
 }

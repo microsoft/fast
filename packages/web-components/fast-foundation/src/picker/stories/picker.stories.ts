@@ -8,8 +8,10 @@ const storyTemplate = html<StoryArgs<FASTPicker>>`
     <fast-picker
         selection="${x => x.selection}"
         options="${x => x.options}"
-        ?filter-selected="${x => x.filterSelected}"
-        ?filter-query="${x => x.filterQuery}"
+        disable-selection-filter="${x => x.disableSelectionFilter}"
+        disable-query-filter="${x => x.disableQueryFilter}"
+        :showLoading="${x => x.showLoading}"
+        ?disabled="${x => x.disabled}"
         max-selected="${x => x.maxSelected}"
         no-suggestions-text="${x => x.noSuggestionsText}"
         suggestions-available-text="${x => x.suggestionsAvailableText}"
@@ -23,14 +25,13 @@ const storyTemplate = html<StoryArgs<FASTPicker>>`
 
 export default {
     title: "Picker",
-    args: {
-        // TODO: These are always true https://github.com/microsoft/fast/issues/6311
-        filterQuery: true,
-        filterSelected: true,
-    },
+    args: {},
     argTypes: {
-        filterQuery: { control: "boolean" },
-        filterSelected: { control: "boolean" },
+        queryFilterDisabled: { control: "boolean" },
+        disabled: { control: "boolean" },
+        disableQueryFilter: { control: "boolean" },
+        disableSelectionFilter: { control: "boolean" },
+        showLoading: { control: "boolean" },
         label: { control: "text" },
         labelledBy: { control: "text" },
         loadingText: { control: "text" },
@@ -46,9 +47,21 @@ export const Picker: Story<FASTPicker> = renderComponent(storyTemplate).bind({})
 Picker.args = {
     label: "Fruit picker",
     loadingText: "Loading",
-    noSuggestionsText: "No such fruit",
+    noSuggestionsText: "No suggestions available",
     options: "apple, orange, banana, mango, strawberry, raspberry, blueberry",
     placeholder: "Choose fruit",
     selection: "apple",
+    suggestionsAvailableText: "Found some fruit",
+    disabled: false,
+};
+
+export const PickerEmpty: Story<FASTPicker> = renderComponent(storyTemplate).bind({});
+PickerEmpty.args = {
+    label: "Fruit picker",
+    loadingText: "Loading",
+    noSuggestionsText: "No suggestions available",
+    options: "",
+    placeholder: "Choose fruit",
+    selection: "",
     suggestionsAvailableText: "Found some fruit",
 };
