@@ -235,30 +235,31 @@ export class FASTTextField extends TextField {}
 
 #### Methods
 
-| Name                               | Privacy   | Description                                                   | Parameters         | Return    | Inherited From |
-| ---------------------------------- | --------- | ------------------------------------------------------------- | ------------------ | --------- | -------------- |
-| `selectionChanged`                 | protected |                                                               |                    | `void`    |                |
-| `optionsChanged`                   | protected |                                                               |                    | `void`    |                |
-| `filterSelectedChanged`            | protected |                                                               |                    | `void`    |                |
-| `disableSelectionFilterChanged`    | protected |                                                               |                    | `void`    |                |
-| `filterQueryChanged`               | protected |                                                               |                    | `void`    |                |
-| `disableQueryFilterChanged`        | protected |                                                               |                    | `void`    |                |
-| `menuPlacementChanged`             | protected |                                                               |                    | `void`    |                |
-| `showLoadingChanged`               | protected |                                                               |                    | `void`    |                |
-| `listItemTemplateChanged`          | protected |                                                               |                    | `void`    |                |
-| `defaultListItemTemplateChanged`   | protected |                                                               |                    | `void`    |                |
-| `menuOptionTemplateChanged`        | protected |                                                               |                    | `void`    |                |
-| `defaultMenuOptionTemplateChanged` | protected |                                                               |                    | `void`    |                |
-| `queryChanged`                     | protected |                                                               |                    | `void`    |                |
-| `flyoutOpenChanged`                | protected |                                                               |                    | `void`    |                |
-| `focus`                            | public    | Move focus to the input element                               |                    |           |                |
-| `handleKeyDown`                    | public    | Handle key down events.                                       | `e: KeyboardEvent` | `boolean` |                |
-| `handleFocusIn`                    | public    | Handle focus in events.                                       | `e: FocusEvent`    | `boolean` |                |
-| `handleFocusOut`                   | public    | Handle focus out events.                                      | `e: FocusEvent`    | `boolean` |                |
-| `handleSelectionChange`            | public    | The list of selected items has changed                        |                    | `void`    |                |
-| `handleRegionLoaded`               | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`         | `void`    |                |
-| `handleItemInvoke`                 | public    | A list item has been invoked.                                 | `e: Event`         | `boolean` |                |
-| `handleOptionInvoke`               | public    | A menu option has been invoked.                               | `e: Event`         | `boolean` |                |
+| Name                               | Privacy   | Description                                                   | Parameters                         | Return    | Inherited From |
+| ---------------------------------- | --------- | ------------------------------------------------------------- | ---------------------------------- | --------- | -------------- |
+| `selectionChanged`                 | protected |                                                               |                                    | `void`    |                |
+| `optionsChanged`                   | protected |                                                               |                                    | `void`    |                |
+| `filterSelectedChanged`            | protected |                                                               |                                    | `void`    |                |
+| `disableSelectionFilterChanged`    | protected |                                                               |                                    | `void`    |                |
+| `filterQueryChanged`               | protected |                                                               |                                    | `void`    |                |
+| `disableQueryFilterChanged`        | protected |                                                               |                                    | `void`    |                |
+| `disabledChanged`                  | public    |                                                               | `previous: boolean, next: boolean` | `void`    |                |
+| `menuPlacementChanged`             | protected |                                                               |                                    | `void`    |                |
+| `showLoadingChanged`               | protected |                                                               |                                    | `void`    |                |
+| `listItemTemplateChanged`          | protected |                                                               |                                    | `void`    |                |
+| `defaultListItemTemplateChanged`   | protected |                                                               |                                    | `void`    |                |
+| `menuOptionTemplateChanged`        | protected |                                                               |                                    | `void`    |                |
+| `defaultMenuOptionTemplateChanged` | protected |                                                               |                                    | `void`    |                |
+| `queryChanged`                     | protected |                                                               |                                    | `void`    |                |
+| `flyoutOpenChanged`                | protected |                                                               |                                    | `void`    |                |
+| `focus`                            | public    | Move focus to the input element                               |                                    |           |                |
+| `handleKeyDown`                    | public    | Handle key down events.                                       | `e: KeyboardEvent`                 | `boolean` |                |
+| `handleFocusIn`                    | public    | Handle focus in events.                                       | `e: FocusEvent`                    | `boolean` |                |
+| `handleFocusOut`                   | public    | Handle focus out events.                                      | `e: FocusEvent`                    | `boolean` |                |
+| `handleSelectionChange`            | public    | The list of selected items has changed                        |                                    | `void`    |                |
+| `handleRegionLoaded`               | public    | Anchored region is loaded, menu and options exist in the DOM. | `e: Event`                         | `void`    |                |
+| `handleItemInvoke`                 | public    | A list item has been invoked.                                 | `e: Event`                         | `boolean` |                |
+| `handleOptionInvoke`               | public    | A menu option has been invoked.                               | `e: Event`                         | `boolean` |                |
 
 #### Attributes
 
