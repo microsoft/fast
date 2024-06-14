@@ -25,31 +25,30 @@ export function menuItemTemplate<T extends FASTMenuItem>(
         @mouseover="${(x, c) => x.handleMouseOver(c.event as MouseEvent)}"
         @mouseout="${(x, c) => x.handleMouseOut(c.event as MouseEvent)}"
     >
-            ${when(
-                x => x.role === MenuItemRole.menuitemcheckbox,
-                html<FASTMenuItem>`
-                    <div part="input-container" class="input-container">
-                        <span part="checkbox" class="checkbox">
-                            <slot name="checkbox-indicator">
-                                ${staticallyCompose(options.checkboxIndicator)}
-                            </slot>
-                        </span>
-                    </div>
-                `
-            )}
-            ${when(
-                x => x.role === MenuItemRole.menuitemradio,
-                html<FASTMenuItem>`
-                    <div part="input-container" class="input-container">
-                        <span part="radio" class="radio">
-                            <slot name="radio-indicator">
-                                ${staticallyCompose(options.radioIndicator)}
-                            </slot>
-                        </span>
-                    </div>
-                `
-            )}
-        </div>
+        ${when(
+            x => x.role === MenuItemRole.menuitemcheckbox,
+            html<FASTMenuItem>`
+                <div part="input-container" class="input-container">
+                    <span part="checkbox" class="checkbox">
+                        <slot name="checkbox-indicator">
+                            ${staticallyCompose(options.checkboxIndicator)}
+                        </slot>
+                    </span>
+                </div>
+            `
+        )}
+        ${when(
+            x => x.role === MenuItemRole.menuitemradio,
+            html<FASTMenuItem>`
+                <div part="input-container" class="input-container">
+                    <span part="radio" class="radio">
+                        <slot name="radio-indicator">
+                            ${staticallyCompose(options.radioIndicator)}
+                        </slot>
+                    </span>
+                </div>
+            `
+        )}
         ${startSlotTemplate(options)}
         <span class="content" part="content">
             <slot></slot>
