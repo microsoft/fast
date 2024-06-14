@@ -114,7 +114,7 @@ export class FASTPicker extends FormAssociatedPicker {
     }
 
     /**
-     * Whether the component should remove an option from the list when it is in the selection. Default is false.
+     * Indicates whether the component should remove an option from the list when it is in the selection.
      *
      * @remarks
      * HTML Attribute: disable-selection-filter
