@@ -100,22 +100,62 @@ export class FASTPicker extends FormAssociatedPicker {
     }
 
     /**
-     * Whether the component should remove an option from the list when it is in the selection
+     * Indicates whether the component should remove an option from the list when it is in the selection.
      *
-     * @remarks
-     * HTML Attribute: filter-selected
+     * @deprecated - use `Picker.disableSelectionFilter`.
      */
-    @attr({ attribute: "filter-selected", mode: "boolean" })
-    public filterSelected: boolean = true;
+    @observable
+    public filterSelected: boolean = false;
+    protected filterSelectedChanged(): void {
+        // keep the main prop in sync
+        if (this.disableSelectionFilter === this.filterSelected) {
+            this.disableSelectionFilter = !this.filterSelected;
+        }
+    }
 
     /**
-     * Whether the component should remove options based on the current query
+     * Indicates whether the component should remove an option from the list when it is in the selection.
      *
      * @remarks
-     * HTML Attribute: filter-query
+     * HTML Attribute: disable-selection-filter
      */
-    @attr({ attribute: "filter-query", mode: "boolean" })
+    @attr({ attribute: "disable-selection-filter", mode: "boolean" })
+    public disableSelectionFilter: boolean = false;
+    protected disableSelectionFilterChanged(): void {
+        // keep depracated prop in sync
+        if (this.disableSelectionFilter === this.filterQuery) {
+            this.filterSelected = !this.disableSelectionFilter;
+        }
+    }
+
+    /**
+     * Indicates whether the component should remove options based on the current query.
+     *
+     * @deprecated - use `Picker.disableQueryFilter`.
+     */
+    @observable
     public filterQuery: boolean = true;
+    protected filterQueryChanged(): void {
+        // keep the main prop in sync
+        if (this.disableQueryFilter === this.filterQuery) {
+            this.disableQueryFilter = !this.filterQuery;
+        }
+    }
+
+    /**
+     * Indicates whether the component should remove options based on the current query.
+     *
+     * @remarks
+     * HTML Attribute: disable-query-filter
+     */
+    @attr({ attribute: "disable-query-filter", mode: "boolean" })
+    public disableQueryFilter: boolean = false;
+    protected disableQueryFilterChanged(): void {
+        // keep depracated prop in sync
+        if (this.disableQueryFilter === this.filterQuery) {
+            this.filterQuery = !this.disableQueryFilter;
+        }
+    }
 
     /**
      * The maximum number of items that can be selected.
@@ -336,15 +376,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     @observable
     public filteredOptionsList: string[] = [];
-    protected filteredOptionsListChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.showNoOptions =
-                    this.menuElement.querySelectorAll('[role="option"]').length === 0;
-                this.setFocusedOption(this.showNoOptions ? -1 : 0);
-            });
-        }
-    }
 
     /**
      *  Indicates if the flyout menu is open or not
@@ -408,14 +439,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public showNoOptions: boolean = false;
-    private showNoOptionsChanged(): void {
-        if (this.$fastController.isConnected) {
-            Updates.enqueue(() => {
-                this.setFocusedOption(0);
-            });
-        }
-    }
+    public showNoOptions: boolean = true;
 
     /**
      *  The anchored region config to apply.
@@ -585,13 +609,6 @@ export class FASTPicker extends FormAssociatedPicker {
 
         if (open && getRootActiveElement(this) === this.inputElement) {
             this.flyoutOpen = open;
-            Updates.enqueue(() => {
-                if (this.menuElement !== undefined) {
-                    this.setFocusedOption(0);
-                } else {
-                    this.disableMenu();
-                }
-            });
             return;
         }
 
@@ -621,12 +638,12 @@ export class FASTPicker extends FormAssociatedPicker {
     /**
      * Handle the menu options updated event from the child menu
      */
-    private handleMenuOptionsUpdated(e: Event): void {
+    private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
-        if (this.flyoutOpen) {
+        Updates.enqueue(() => {
             this.setFocusedOption(0);
-        }
-    }
+        });
+    };
 
     /**
      * Handle key down events.
@@ -809,7 +826,6 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     public handleRegionLoaded(e: Event): void {
         Updates.enqueue(() => {
-            this.setFocusedOption(0);
             this.$emit("menuloaded", { bubbles: false });
         });
     }
@@ -966,6 +982,7 @@ export class FASTPicker extends FormAssociatedPicker {
      * Sets the currently focused menu option by index
      */
     private setFocusedOption(optionIndex: number): void {
+        this.updateNoOptions();
         if (
             !this.flyoutOpen ||
             optionIndex === -1 ||
@@ -1023,12 +1040,12 @@ export class FASTPicker extends FormAssociatedPicker {
      */
     private updateFilteredOptions(): void {
         this.filteredOptionsList = this.optionsList.slice(0);
-        if (this.filterSelected) {
+        if (!this.disableSelectionFilter) {
             this.filteredOptionsList = this.filteredOptionsList.filter(
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
-        if (this.filterQuery && this.query !== "" && this.query !== undefined) {
+        if (!this.disableQueryFilter && this.query !== "" && this.query !== undefined) {
             // compare case-insensitive
             const filterQuery = this.query.toLowerCase();
             this.filteredOptionsList = this.filteredOptionsList.filter(
@@ -1067,4 +1084,8 @@ export class FASTPicker extends FormAssociatedPicker {
         "bottom-fill": FlyoutPosBottomFill,
         "tallest-fill": FlyoutPosTallestFill,
     };
+
+    private updateNoOptions(): void {
+        this.showNoOptions = this.menuElement.optionElements.length === 0;
+    }
 }
