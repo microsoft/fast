@@ -2070,6 +2070,9 @@ export class FASTTextField extends FormAssociatedTextField {
     connectedCallback(): void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    enterKeyHint: "enter" | "done" | "go" | "next" | "previous" | "search" | "send";
+    // (undocumented)
+    protected enterKeyHintChanged(): void;
     // @internal
     field: HTMLInputElement;
     // @internal

@@ -186,6 +186,27 @@ export class FASTTextField extends FormAssociatedTextField {
     }
 
     /**
+     * defines what action label (or icon) to present for the enter key on virtual keyboards.
+     * @public
+     * @remarks
+     * HTMLAttribute: enterkeyhint
+     */
+    @attr({ attribute: "enterkeyhint" })
+    public enterKeyHint:
+        | "enter"
+        | "done"
+        | "go"
+        | "next"
+        | "previous"
+        | "search"
+        | "send";
+    protected enterKeyHintChanged(): void {
+        if (this.proxy instanceof HTMLInputElement) {
+            this.proxy.enterKeyHint = this.enterKeyHint;
+        }
+    }
+
+    /**
      * @internal
      */
     @observable
