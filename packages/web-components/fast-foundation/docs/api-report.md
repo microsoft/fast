@@ -11,7 +11,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import type { ElementsFilter } from '@microsoft/fast-element';
 import type { ElementStyles } from '@microsoft/fast-element';
 import type { ElementViewTemplate } from '@microsoft/fast-element';
-import { FASTContext } from '@microsoft/fast-element/context';
+import { FASTContext } from '@microsoft/fast-element/context.js';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import type { HostBehavior } from '@microsoft/fast-element';
