@@ -3,5 +3,5 @@
   "comment": "fix: typos in SSR README",
   "packageName": "@microsoft/fast-ssr",
   "email": "seanmonahan@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
