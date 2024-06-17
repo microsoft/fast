@@ -38,7 +38,7 @@ jobs:
       run: yarn prepare
 
     - name: Build GitHub Pages
-      run: yarn build
+      run: yarn build:gh-pages
 
     - name: Deploy GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
