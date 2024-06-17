@@ -50,6 +50,7 @@
     "change": "beachball change",
     "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
     "check": "beachball check ",
+    "build:gh-pages": "yarn workspace fast-site build",
     "publish": "beachball publish",
     "publish-ci": "beachball publish -y --access public",
     "prepare": "lerna run prepare",

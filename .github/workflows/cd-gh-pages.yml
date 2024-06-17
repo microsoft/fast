@@ -1,0 +1,48 @@
+name: Deploy GitHub Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v3
+      id: yarn-cache
+      with:
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
+        key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn_cache-
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Build GitHub Pages
+      run: yarn build:gh-pages
+
+    - name: Deploy GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: sites/website/build # The folder the action should deploy.
+        target-folder: docs # The folder on the branch to deploy to.
