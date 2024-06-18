@@ -3,6 +3,10 @@ name: Deploy GitHub Pages
 on:
   workflow_dispatch:
 
+env:
+  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,6 +18,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
+
+    - name: Set Git User
+      run: |
+        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
+        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
