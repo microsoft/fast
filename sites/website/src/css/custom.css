@@ -70,13 +70,6 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected="true"] a mark {
     color: var(--ifm-color-primary) !important;
 }
 
-.docusaurus-highlight-code-line {
-    background-color: #212121;
-    display: block;
-    margin: 0 calc(-1 * var(--ifm-pre-padding));
-    padding: 0 var(--ifm-pre-padding);
-}
-
 .example-dialog::part(control) {
     --dialog-width: 400px;
     --dialog-height: auto;
@@ -305,6 +298,11 @@ li {
   fill: white;
   stroke: white;
   margin: 8px 20px;
+}
+
+[role="banner"] code {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 0.1rem solid rgba(255, 255, 255, 0.1)
 }
 
 @media screen and (min-width: 900px) {
