@@ -176,36 +176,6 @@ export interface TemplateRenderer extends EventEmitter {
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
 }
 
-// @public (undocumented)
-export interface TemplateRendererEvent {
-    // (undocumented)
-    readonly tagName: string;
-    // (undocumented)
-    readonly type: TemplateRendererEventTypes;
-}
-
-// @public (undocumented)
-export class TemplateRendererEvent {
-    constructor(type: TemplateRendererEventTypes, tagName: string);
-    // (undocumented)
-    readonly tagName: string;
-    // (undocumented)
-    readonly type: TemplateRendererEventTypes;
-}
-
-// @public (undocumented)
-export const TemplateRendererEventTypes: {
-    readonly customElementOpen: "custom-element-open";
-    readonly customElementClose: "custom-element-close";
-    readonly customElementConnecting: "custom-element-connecting";
-    readonly customElementConnected: "custom-element-connected";
-    readonly customElementShadowOpen: "custom-element-shadow-open";
-    readonly customElementShadowClose: "custom-element-shadow-close";
-};
-
-// @public (undocumented)
-export type TemplateRendererEventTypes = (typeof TemplateRendererEventTypes)[keyof typeof TemplateRendererEventTypes];
-
 // @beta
 export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     matcher: Constructable<T>;

@@ -205,6 +205,3 @@ export type {
     ConstructableElementRenderer,
     ConstructableFASTElementRenderer,
 };
-
-export { TemplateRendererEventTypes } from "./template-renderer/events.js";
-export type { TemplateRendererEvent } from "./template-renderer/events.js";

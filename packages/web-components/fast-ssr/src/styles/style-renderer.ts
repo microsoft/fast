@@ -65,7 +65,6 @@ export class StyleElementStyleRenderer implements StyleRenderer {
         let styleTags = "";
 
         styles.forEach(style => {
-            // for parity with PROD, return individual style elements
             styleTags += `<style>${collectStyles(style)}</style>`;
         });
 

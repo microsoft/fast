@@ -12,7 +12,6 @@ import { RenderInfo } from "../render-info.js";
 import { consolidate, consolidateAsync } from "../test-utilities/consolidate.js";
 import { SSRView } from "../view.js";
 import { validateRendererOutput } from "../test-utilities/validators.js";
-import { TemplateRendererEvent, TemplateRendererEventTypes } from "./events.js";
 import { hydrationMarker } from "./hydration-marker-emitter.js";
 import { DefaultTemplateRenderer } from "./template-renderer.js";
 
@@ -598,24 +597,6 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
             const result = consolidate(templateRenderer.render(html`<p>${x => "hello world"}</p>`));
             expect(result).toBe("<p>hello world</p>");
-        })
-    })
-    test.describe("Emitting events", () => {
-        function isEvent(value: any): value is TemplateRendererEvent {
-            return value && value.type in TemplateRendererEventTypes;
-        }
-        Object.values(TemplateRendererEventTypes).forEach(name => {
-            test(`a '${name}' event to be emitted when rendering a custom element`, () => {
-               const { templateRenderer }  = fastSSR();
-               let event: TemplateRendererEvent | null = null;
-               templateRenderer.on(name, (e) => event = e);
-
-               consolidate(templateRenderer.render("<hello-world></hello-world>"));
-               expect(isEvent(event)).not.toBe(true);
-               const e: TemplateRendererEvent = event as unknown as TemplateRendererEvent;
-               expect(e.tagName).toBe("hello-world");
-               expect(e.type).toBe(name);
-            })
         })
     });
 
