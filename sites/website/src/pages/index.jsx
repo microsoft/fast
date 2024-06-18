@@ -29,7 +29,7 @@ export default function () {
             <p className="section-paragraph">For an in-depth explanation of FAST, <a href="https://www.fast.design/docs/introduction/">see our docs introduction</a>.</p>
           </section>
 
-          <div role="divider" className="section-decoration"></div>
+          <div role="separator" className="section-decoration"></div>
 
           <section className="section">
             <span className="section-badge">HOW TO</span>
@@ -75,7 +75,7 @@ HelloWorld.define({
             </CodeBlock>
           </section>
 
-          <div role="divider" className="section-decoration"></div>
+          <div role="separator" className="section-decoration"></div>
 
           <section className="section">
             <span className="section-badge">FULLY INTEGRATED</span>
@@ -83,7 +83,7 @@ HelloWorld.define({
             <p className="section-paragraph">Standards-based Web Components are compatible with almost any modern web framework.</p>
           </section>
 
-          <div role="divider" className="section-decoration"></div>
+          <div role="separator" className="section-decoration"></div>
 
           <section className="section">
             <span className="section-badge">BUILT ON FAST</span>
@@ -174,7 +174,7 @@ HelloWorld.define({
             </div>
           </section>
 
-          <div role="divider" className="section-decoration"></div>
+          <div role="separator" className="section-decoration"></div>
 
           <section className="section">
             <span className="section-badge">LEARN, MODIFY, AND FOLLOW</span>
