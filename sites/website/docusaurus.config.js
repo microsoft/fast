@@ -23,7 +23,7 @@ module.exports = {
             content:
               '<code>@microsoft/fast-element</code> v2 is out! 🎉️',
             backgroundColor: 'var(--ifm-color-primary-darkest)',
-            textColor: 'var(--neutral-foreground-rest)',
+            textColor: 'var(--fill-color)',
         },
         colorMode: {
             defaultMode: "dark",
