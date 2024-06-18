@@ -65,7 +65,7 @@ HelloWorld.define({
     span {
       color: red;
     }
-  \`;,
+  \`,
 });`}
             </CodeBlock>
 
