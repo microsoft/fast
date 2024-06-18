@@ -1,27 +1,29 @@
-name: Validate PRs
+name: Deploy GitHub Pages
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-    - master
-    - releases/*
-  pull_request:
-    branches:
-    - master
-    - releases/*
-    - features/*
+
+env:
+  GITHUB_SERVICE_USER: "Microsoft FAST Builds"
+  GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
 
 jobs:
-  build_linux:
+  build:
     runs-on: ubuntu-latest
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: 0
+    strategy:
+      matrix:
+        node: [16.x]
 
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+        token: ${{ secrets.GH_TOKEN }}
+
+    - name: Set Git User
+      run: |
+        git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
+        git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -42,22 +44,15 @@ jobs:
     - name: Install package dependencies
       run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
 
-    - name: Check for the presence of changed files inside ./change
-      run: yarn checkchange
-
-    - name: Testing Prettier format
-      run: yarn format:check
-
     - name: Prepare workspaces
       run: yarn prepare
 
-    - name: Install playwright dependencies and browsers
-      run: |
-        yarn playwright install-deps
-        yarn playwright install
+    - name: Build GitHub Pages
+      run: yarn build:gh-pages
 
-    - name: Testing unit tests
-      run: yarn lerna run test --stream
-
-    - name: Testing final validation
-      run: yarn test:validation
+    - name: Deploy GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: sites/website/build # The folder the action should deploy.
+        target-folder: docs # The folder on the branch to deploy to.

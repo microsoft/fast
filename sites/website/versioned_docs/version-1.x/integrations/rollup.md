@@ -99,6 +99,38 @@ import copy from 'rollup-plugin-copy';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 
+/**
+ * Reduces extra spaces in HTML tagged templates.
+ *
+ * @param {string} data - the fragment value
+ * @returns string
+ */
+export function transformHTMLFragment(data) {
+  data = data.replace(/\s*([<>])\s*/g, '$1'); // remove spaces before and after angle brackets
+  return data.replace(/\s{2,}/g, ' '); // Collapse all sequences to 1 space
+}
+
+/**
+ * Reduces extra spaces in CSS tagged templates.
+ *
+ * Breakdown of this regex:
+ *   (?:\s*\/\*(?:.|\s)+?\*\/\s*)  Remove comments (non-capturing)
+ *   (?:;)\s+(?=\})  Remove semicolons and spaces followed by property list end (non-capturing)
+ *   \s+(?=\{)  Remove spaces before property list start (non-capturing)
+ *   (?<=:)\s+  Remove spaces after property declarations (non-capturing)
+ *   \s*([{};,])\s*  Remove extra spaces before and after braces, semicolons, and commas (captures)
+ *
+ * @param {string} data - the fragment value
+ * @returns string
+ */
+export function transformCSSFragment(data) {
+  return data.replace(/(?:\s*\/\*(?:.|\s)+?\*\/\s*)|(?:;)\s+(?=\})|\s+(?=\{)|(?<=:)\s+|\s*([{};,])\s*/g, '$1');
+}
+
+const parserOptions = {
+  sourceType: 'module',
+};
+
 export default {
   input: 'src/main.ts',
   output: {
@@ -109,23 +141,14 @@ export default {
   },
   plugins: [
     transformTaggedTemplate({
-      tagsToProcess: ['html','css'],
-      parserOptions: {
-        sourceType: "module",
-        plugins: [
-            "typescript",
-            [
-                "decorators",
-                { decoratorsBeforeExport: true }
-            ]
-        ]
-      },
-      transformer(data) {
-          data = data.replace(/\s([{}()>~+=^$:!;])\s/gm, '$1');
-          data = data.replace(/([",[]])\s+/gm, '$1');
-          data = data.replace(/\s{2,}/gm, ' ');
-          return data.trim();
-      }
+      tagsToProcess: ['css'],
+      transformer: transformCSSFragment,
+      parserOptions,
+    }),
+    transformTaggedTemplate({
+      tagsToProcess: ['html'],
+      transformer: transformHTMLFragment,
+      parserOptions,
     }),
     typescript(),
     resolve(),

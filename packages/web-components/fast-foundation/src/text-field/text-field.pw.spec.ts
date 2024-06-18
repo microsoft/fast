@@ -263,6 +263,31 @@ test.describe("TextField", () => {
         expect(wasChanged).toBeTruthy();
     });
 
+    test("should reset value from control when `type` changes", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-text-field type="text"></fast-text-field>
+            `;
+        });
+
+        await control.evaluate<void, HTMLInputElement>(node => {
+            node.value = "a";
+            node.dispatchEvent(
+                new Event("change", {
+                    key: "a",
+                } as EventInit)
+            );
+        });
+
+        await expect(control).toHaveJSProperty("value", "a");
+
+        await element.evaluate<void, FASTTextField>(node => {
+          node.type = "number";
+        });
+
+        await expect(control).toHaveJSProperty("value", "");
+    });
+
     test.describe("with a type of `password`", () => {
         test("should report invalid validity when the `value` property is an empty string and `required` is true", async () => {
             await root.evaluate(node => {
