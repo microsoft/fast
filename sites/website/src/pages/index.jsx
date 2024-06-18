@@ -5,13 +5,13 @@ import CodeBlock from '@theme-init/CodeBlock';
 export default function () {
   return (
     <Layout title="web components" description="FAST web components">
-      <div class="frontpage">
+      <div className="frontpage">
 
-          <section class="section">
-            <span class="section-badge">FLEXIBLE, PERFORMANT, & INTUITIVE</span>
+          <section className="section">
+            <span className="section-badge">FLEXIBLE, PERFORMANT, & INTUITIVE</span>
             <svg role="heading" aria-level="2" width="346" height="120" viewBox="0 0 346 120" fill="none" xmlns="http://www.w3.org/2000/svg">
               <title>FAST</title>
-              <g clip-path="url(#clip0)">
+              <g clipPath="url(#clip0)">
                 <path d="M161 98H164.5C166.9 98 168.4 96.9 168.8 94.4L173.5 68.1H185.4C187.8 68.1 189.3 67 189.7 64.5L190.1 62.2C190.6 59.4 189.2 57.9 186.5 57.9H175.3L178.7 38.2H193.7C196.1 38.2 197.6 37.1 198 34.6L198.4 32.3C198.9 29.5 197.5 28 194.8 28H172.6C170.2 28 168.7 29.1 168.3 31.6L157.4 93.7C156.9 96.5 158.3 98 161 98ZM235.603 32C235.603 29.5 234.003 28 231.503 28H224.303C222.003 28 220.503 29.1 219.703 31.2L197.303 93.4C196.303 96.1 197.603 98 200.503 98H203.703C206.003 98 207.503 96.9 208.203 94.7L212.303 82.4H225.203L225.003 94C225.003 96.7 226.303 98 228.903 98H232.403C235.003 98 236.403 96.7 236.403 94L235.603 32ZM215.503 72.8L225.903 41.7L225.403 72.8H215.503ZM292.812 49.4L294.212 41.6C296.112 31.2 288.212 27.2 279.612 27.2H279.412C268.812 27.2 261.512 31.2 259.612 41.6L258.012 50.8C256.912 57 260.812 61.4 266.212 64.8L273.512 69.4C276.612 71.3 277.512 73.3 276.812 77.1L275.812 82.6C275.112 86.9 272.212 88.8 268.712 88.8C265.212 88.8 263.112 86.9 263.812 82.6L264.912 76.3C265.412 73.5 264.012 72 261.312 72H258.012C255.612 72 254.012 73.2 253.612 75.6L252.112 84.2C250.212 95.1 257.312 98.8 266.912 98.8H267.112C278.712 98.8 285.012 95 286.912 84.2L288.712 74.1C290.012 67 286.612 64 280.412 60.1L273.012 55.5C270.012 53.6 269.312 51.6 269.912 48L270.812 43.2C271.512 38.8 274.312 37.2 277.712 37.2C281.112 37.2 283.312 38.8 282.612 43.2L281.612 48.7C281.112 51.5 282.512 53 285.212 53H288.512C290.912 53 292.412 51.9 292.812 49.4ZM341.418 28H314.518C312.118 28 310.618 29.1 310.218 31.6L309.818 33.9C309.318 36.7 310.718 38.2 313.418 38.2H320.718L311.018 93.7C310.518 96.5 311.918 98 314.618 98H318.118C320.518 98 322.018 96.9 322.418 94.4L332.318 38.2H340.318C342.718 38.2 344.218 37.1 344.618 34.6L345.018 32.3C345.518 29.5 344.118 28 341.418 28Z" fill="#F9F9F9" />
                 <path d="M57.3155 69.2971L66.3983 66.7923C68.2775 66.1661 69.2171 64.6006 68.9039 62.722C68.5907 60.8434 66.7115 59.9041 64.8323 60.2172L55.7495 62.722C53.8703 63.3482 52.9307 64.9137 53.2439 66.7923C53.5571 68.6709 55.4363 69.9233 57.3155 69.2971Z" fill="#E1477E" />
                 <path d="M47.606 68.6709C47.2928 66.7923 45.4136 65.853 43.5345 66.1661L2.50537 77.4377C0.626179 78.0639 -0.313418 79.6294 -0.000218954 81.508C0.31298 83.3866 2.19217 84.3259 4.07137 84.0128L45.1004 72.7412C46.9796 72.115 47.9192 70.2364 47.606 68.6709Z" fill="#E1477E" />
@@ -25,15 +25,15 @@ export default function () {
               </defs>
             </svg>
 
-            <p class="section-paragraph">FAST is dedicated to providing support for native Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.</p>
-            <p class="section-paragraph">For an in-depth explanation of FAST, <a href="https://www.fast.design/docs/introduction/">see our docs introduction</a>.</p>
+            <p className="section-paragraph">FAST is dedicated to providing support for native Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.</p>
+            <p className="section-paragraph">For an in-depth explanation of FAST, <a href="https://www.fast.design/docs/introduction/">see our docs introduction</a>.</p>
           </section>
 
-          <div role="divider" class="section-decoration"></div>
+          <div role="divider" className="section-decoration"></div>
 
-          <section class="section">
-            <span class="section-badge">HOW TO</span>
-            <h2 class="section-heading">Getting Started</h2>
+          <section className="section">
+            <span className="section-badge">HOW TO</span>
+            <h2 className="section-heading">Getting Started</h2>
             <h3>Install the package</h3>
             <CodeBlock>
               npm install @microsoft/fast-element
@@ -49,7 +49,7 @@ import { attr, css, FASTElement, html } from "@microsoft/fast-element";
 /*
  * Define your component logic
  */
-class HelloWorld extends FASTElement {
+className HelloWorld extends FASTElement {
   @attr
   name: string;
 }
@@ -75,30 +75,30 @@ HelloWorld.define({
             </CodeBlock>
           </section>
 
-          <div role="divider" class="section-decoration"></div>
+          <div role="divider" className="section-decoration"></div>
 
-          <section class="section">
-            <span class="section-badge">FULLY INTEGRATED</span>
-            <h2 class="section-heading">Works with existing frameworks</h2>
-            <p class="section-paragraph">Standards-based Web Components are compatible with almost any modern web framework.</p>
+          <section className="section">
+            <span className="section-badge">FULLY INTEGRATED</span>
+            <h2 className="section-heading">Works with existing frameworks</h2>
+            <p className="section-paragraph">Standards-based Web Components are compatible with almost any modern web framework.</p>
           </section>
 
-          <div role="divider" class="section-decoration"></div>
+          <div role="divider" className="section-decoration"></div>
 
-          <section class="section">
-            <span class="section-badge">BUILT ON FAST</span>
-            <h2 class="section-heading">Showcase</h2>
-            <div class="section-showcase">
-              <a class="section-showcase-item-link" rel="noopener noreferrer" href="https://docs.microsoft.com/en-us/fluent-ui/web-components/">
-                <span class="section-showcase-item">
+          <section className="section">
+            <span className="section-badge">BUILT ON FAST</span>
+            <h2 className="section-heading">Showcase</h2>
+            <div className="section-showcase">
+              <a className="section-showcase-item-link" rel="noopener noreferrer" href="https://docs.microsoft.com/en-us/fluent-ui/web-components/">
+                <span className="section-showcase-item">
                   <svg width="47" height="82" viewBox="0 0 47 82" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.1562 1.06277L1.84846 12.7679C0.704757 13.4271 0 14.6468 0 15.9669V67.0331C0 68.3532 0.704757 69.5729 1.84846 70.2321L21.2319 81.4045C22.4627 82.1139 24 81.2256 24 79.805V55.3333L45.225 43.0995C46.4573 42.3892 46.4573 40.6108 45.225 39.9005L24 27.6667L45.225 15.4328C46.4573 14.7225 46.4573 12.9441 45.225 12.2339L25.8438 1.06277C24.7026 0.40498 23.2974 0.404979 22.1562 1.06277Z" fill="white"></path>
                   </svg>
                 </span>
                 <p>Fluent UI</p>
               </a>
-              <a class="section-showcase-item-link" rel="noopener noreferrer" href="https://backlight.dev/blog/introducing-furious-a-section-showcase-item/">
-                <span class="section-showcase-item">
+              <a className="section-showcase-item-link" rel="noopener noreferrer" href="https://backlight.dev/blog/introducing-furious-a-section-showcase-item/">
+                <span className="section-showcase-item">
                   <svg viewBox="0 0 503.75934 190.7" width="503.75934" height="190.7" xmlns="http://www.w3.org/2000/svg">
                     <g transform="translate(-4.240654,-169.6)" fill="currentColor">
                       <path d="m 256.1,169.6 c 1.4,0.3 2.8,0.6 4.2,0.7 3,0.2 6,0.1 9,0.3 7.7,0.6 15.3,1.9 22.5,4.6 -0.9,2.5 -0.9,2.7 1,3.9 2.6,1.7 5.4,3.1 8.2,4.7 -0.3,0.2 -0.4,0.4 -0.5,0.3 -1.1,-0.4 -2.2,-0.8 -3.2,-1.3 -15,-7.8 -31.1,-9.5 -47.7,-8.4 -14.2,0.9 -27.8,4.4 -41.4,8.3 -5,1.5 -9.9,3.5 -13.9,6.9 -3.6,3 -4.1,7.1 -1.2,10.7 1.7,2.3 4,3.8 6.8,4.4 2.4,0.5 4.9,0.8 7.4,0.9 13.5,0.5 26.9,1 40.4,1.4 17.8,0.6 35.6,1.2 53.3,1.5 18.8,0.3 37.7,1 56.5,-0.5 4.2,-0.3 8.3,-0.6 12.2,-2.5 0.8,-0.4 2,-0.3 3,-0.2 7.2,0.6 14.3,1.2 21.5,1.8 16.7,1.3 33.3,3.3 49.6,7.2 9.5,2.3 18.9,5 28.4,8.8 -2,2.4 -0.6,4.2 0.7,6 1.2,1.7 2.5,3.4 3.7,5.1 0.9,1.2 1.7,2.4 2.8,3.9 -1.1,0.1 -1.6,0.2 -2.1,0.2 -1.6,0 -3.1,0 -4.7,0.1 -2.2,0.2 -4,-0.6 -5.7,-1.9 -13.2,-10.4 -28.1,-16.4 -45,-17 -11.9,-0.4 -23.8,-1.2 -35.7,-1.4 -23.3,-0.5 -46.6,-0.5 -69.8,-1 -22.7,-0.5 -45.5,-1.5 -68.2,-2.3 -18.3,-0.6 -36.6,-1.2 -54.9,-1.8 -7.6,-0.3 -15.2,-0.7 -22.7,-0.8 -11.2,-0.2 -22.5,-0.5 -33.7,-0.2 -11.8,0.3 -23.5,1 -35.3,-0.4 -3.5,-0.4 -7,-0.5 -9.5,-4 -0.9,2.5 -1.6,4.5 -2.4,6.5 l 0.1,0.1 c -0.2,-2.1 1.6,-4.5 -0.9,-6.3 1.1,-2.7 2.2,-5.3 3.4,-8.1 0.8,4.1 1.6,4.8 5.5,5.1 0.5,0 1,0.1 1.6,0.1 8.5,-0.6 16.9,-1.1 25.4,-1.7 1.2,-0.1 2.3,-0.4 3.4,-0.9 1.6,-0.8 1.6,-2 0.1,-3.2 -0.4,-0.3 -0.8,-0.5 -1.7,-1.1 1.5,0 2.4,-0.1 3.2,0 9.1,1 17.6,-1.2 26.1,-4.1 12.6,-4.3 25.2,-8.6 37.8,-12.8 3.3,-1.1 6.8,-2 9.6,-4.3 0.8,-0.6 1.9,-0.8 2.9,-1 14.5,-3.1 29,-5.3 43.8,-5.6 1.5,0 3.1,-0.5 4.6,-0.7 0.4,0 1,0 1.5,0 z M 127,207.7 c 14.5,0 29,-0.3 43.5,0 10.8,0.2 21.7,1 32.5,1.5 1.4,0.1 2.8,0 4.2,0 0.1,-0.3 0.2,-0.5 0.2,-0.8 -0.7,-0.4 -1.3,-1 -2,-1.1 -10.5,-1.8 -21.1,-3.9 -31.8,-4.1 -6.8,-0.2 -13.6,-0.9 -20.3,-0.5 -9.4,0.6 -18.7,1.9 -28,3 -0.9,0.1 -1.8,0.7 -2.7,1 0,0.3 0,0.6 0.1,0.9 1.4,0 2.8,0.1 4.3,0.1 z m 335.6,13.8 c -12.7,-4.2 -25.7,-6.9 -39,-8.1 -19.2,-1.7 -38.5,-2.9 -57.8,-4.4 -0.8,-0.1 -1.6,0 -2.3,0.1 -0.3,0 -0.6,0.4 -1.3,0.8 1.5,1.3 3.2,1.3 4.8,1.4 14.7,1.1 29.4,2.1 44.1,3.4 16.9,1.4 33.7,3.5 50.2,8.1 1,0.3 2,0.5 3,0.7 0.2,0 0.4,-0.2 1.1,-0.5 -1.1,-0.7 -1.9,-1.2 -2.8,-1.5 z"></path>
@@ -125,11 +125,11 @@ HelloWorld.define({
                 </span>
                 <p>Furious</p>
               </a>
-              <a class="section-showcase-item-link" rel="noopener noreferrer" href="https://github.com/microsoft/vscode-webview-ui-toolkit">
-                <span class="section-showcase-item">
+              <a className="section-showcase-item-link" rel="noopener noreferrer" href="https://github.com/microsoft/vscode-webview-ui-toolkit">
+                <span className="section-showcase-item">
                   <svg viewBox="0 0 100 100" fill="white" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
-                      <path fill-rule="evenodd" clip-rule="evenodd" d="M70.9119 99.3171C72.4869 99.9307 74.2828 99.8914 75.8725 99.1264L96.4608 89.2197C98.6242 88.1787 100 85.9892 100 83.5872V16.4133C100 14.0113 98.6243 11.8218 96.4609 10.7808L75.8725 0.873756C73.7862 -0.130129 71.3446 0.11576 69.5135 1.44695C69.252 1.63711 69.0028 1.84943 68.769 2.08341L29.3551 38.0415L12.1872 25.0096C10.589 23.7965 8.35363 23.8959 6.86933 25.2461L1.36303 30.2549C-0.452552 31.9064 -0.454633 34.7627 1.35853 36.417L16.2471 50.0001L1.35853 63.5832C-0.454633 65.2374 -0.452552 68.0938 1.36303 69.7453L6.86933 74.7541C8.35363 76.1043 10.589 76.2037 12.1872 74.9905L29.3551 61.9587L68.769 97.9167C69.3925 98.5406 70.1246 99.0104 70.9119 99.3171ZM75.0152 27.2989L45.1091 50.0001L75.0152 72.7012V27.2989Z" fill="white"></path>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M70.9119 99.3171C72.4869 99.9307 74.2828 99.8914 75.8725 99.1264L96.4608 89.2197C98.6242 88.1787 100 85.9892 100 83.5872V16.4133C100 14.0113 98.6243 11.8218 96.4609 10.7808L75.8725 0.873756C73.7862 -0.130129 71.3446 0.11576 69.5135 1.44695C69.252 1.63711 69.0028 1.84943 68.769 2.08341L29.3551 38.0415L12.1872 25.0096C10.589 23.7965 8.35363 23.8959 6.86933 25.2461L1.36303 30.2549C-0.452552 31.9064 -0.454633 34.7627 1.35853 36.417L16.2471 50.0001L1.35853 63.5832C-0.454633 65.2374 -0.452552 68.0938 1.36303 69.7453L6.86933 74.7541C8.35363 76.1043 10.589 76.2037 12.1872 74.9905L29.3551 61.9587L68.769 97.9167C69.3925 98.5406 70.1246 99.0104 70.9119 99.3171ZM75.0152 27.2989L45.1091 50.0001L75.0152 72.7012V27.2989Z" fill="white"></path>
                     </mask>
                     <g mask="url(#mask0)">
                       <path d="M96.4614 10.7962L75.8569 0.875542C73.4719 -0.272773 70.6217 0.211611 68.75 2.08333L1.29858 63.5832C-0.515693 65.2373 -0.513607 68.0937 1.30308 69.7452L6.81272 74.754C8.29793 76.1042 10.5347 76.2036 12.1338 74.9905L93.3609 13.3699C96.086 11.3026 100 13.2462 100 16.6667V16.4275C100 14.0265 98.6246 11.8378 96.4614 10.7962Z" fill="#DDDDDD"></path>
@@ -140,12 +140,12 @@ HelloWorld.define({
                         <path d="M75.8578 99.1263C73.4721 100.274 70.6219 99.7885 68.75 97.9166C71.0564 100.223 75 98.5895 75 95.3278V4.67213C75 1.41039 71.0564 -0.223106 68.75 2.08329C70.6219 0.211402 73.4721 -0.273666 75.8578 0.873633L96.4587 10.7807C98.6234 11.8217 100 14.0112 100 16.4132V83.5871C100 85.9891 98.6234 88.1786 96.4586 89.2196L75.8578 99.1263Z" fill="#FFFFFF"></path>
                       </g>
                       <g style={{ mixBlendMode: "overlay" }} opacity="0.25">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M70.8511 99.3171C72.4261 99.9306 74.2221 99.8913 75.8117 99.1264L96.4 89.2197C98.5634 88.1787 99.9392 85.9892 99.9392 83.5871V16.4133C99.9392 14.0112 98.5635 11.8217 96.4001 10.7807L75.8117 0.873695C73.7255 -0.13019 71.2838 0.115699 69.4527 1.44688C69.1912 1.63705 68.942 1.84937 68.7082 2.08335L29.2943 38.0414L12.1264 25.0096C10.5283 23.7964 8.29285 23.8959 6.80855 25.246L1.30225 30.2548C-0.513334 31.9064 -0.515415 34.7627 1.29775 36.4169L16.1863 50L1.29775 63.5832C-0.515415 65.2374 -0.513334 68.0937 1.30225 69.7452L6.80855 74.754C8.29285 76.1042 10.5283 76.2036 12.1264 74.9905L29.2943 61.9586L68.7082 97.9167C69.3317 98.5405 70.0638 99.0104 70.8511 99.3171ZM74.9544 27.2989L45.0483 50L74.9544 72.7012V27.2989Z" fill="url(#paint0_linear)"></path>
+                        <path fillRule="evenodd" clipRule="evenodd" d="M70.8511 99.3171C72.4261 99.9306 74.2221 99.8913 75.8117 99.1264L96.4 89.2197C98.5634 88.1787 99.9392 85.9892 99.9392 83.5871V16.4133C99.9392 14.0112 98.5635 11.8217 96.4001 10.7807L75.8117 0.873695C73.7255 -0.13019 71.2838 0.115699 69.4527 1.44688C69.1912 1.63705 68.942 1.84937 68.7082 2.08335L29.2943 38.0414L12.1264 25.0096C10.5283 23.7964 8.29285 23.8959 6.80855 25.246L1.30225 30.2548C-0.513334 31.9064 -0.515415 34.7627 1.29775 36.4169L16.1863 50L1.29775 63.5832C-0.515415 65.2374 -0.513334 68.0937 1.30225 69.7452L6.80855 74.754C8.29285 76.1042 10.5283 76.2036 12.1264 74.9905L29.2943 61.9586L68.7082 97.9167C69.3317 98.5405 70.0638 99.0104 70.8511 99.3171ZM74.9544 27.2989L45.0483 50L74.9544 72.7012V27.2989Z" fill="url(#paint0_linear)"></path>
                       </g>
                     </g>
                     <defs>
-                      <filter id="filter0_d" x="-8.39411" y="15.8291" width="116.727" height="92.2456" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                      <filter id="filter0_d" x="-8.39411" y="15.8291" width="116.727" height="92.2456" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                        <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"></feColorMatrix>
                         <feOffset></feOffset>
                         <feGaussianBlur stdDeviation="4.16667"></feGaussianBlur>
@@ -153,8 +153,8 @@ HelloWorld.define({
                         <feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow"></feBlend>
                         <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"></feBlend>
                       </filter>
-                      <filter id="filter1_d" x="60.4167" y="-8.07558" width="47.9167" height="116.151" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                      <filter id="filter1_d" x="60.4167" y="-8.07558" width="47.9167" height="116.151" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                        <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
                         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"></feColorMatrix>
                         <feOffset></feOffset>
                         <feGaussianBlur stdDeviation="4.16667"></feGaussianBlur>
@@ -163,8 +163,8 @@ HelloWorld.define({
                         <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"></feBlend>
                       </filter>
                       <linearGradient id="paint0_linear" x1="49.9392" y1="0.257812" x2="49.9392" y2="99.7423" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="white"></stop>
-                        <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+                        <stop stopColor="white"></stop>
+                        <stop offset="1" stopColor="white" stopOpacity="0"></stop>
                       </linearGradient>
                     </defs>
                   </svg>
@@ -174,14 +174,14 @@ HelloWorld.define({
             </div>
           </section>
 
-          <div role="divider" class="section-decoration"></div>
+          <div role="divider" className="section-decoration"></div>
 
-          <section class="section">
-            <span class="section-badge">LEARN, MODIFY, AND FOLLOW</span>
-            <h2 class="section-heading">Joining the Community</h2>
-            <p class="section-paragraph">Looking to get answers to questions or engage with us in realtime? Our community is most active <a href="https://discord.gg/FcSNfg4">on Discord</a>. Submit requests and issues on <a href="https://github.com/Microsoft/fast/issues/new/choose">GitHub</a>, or join us by contributing on <a href="https://github.com/Microsoft/fast/labels/community:good-first-issue">some good first issues via GitHub</a>.</p>
-            <p class="section-paragraph">Get started here with the <a href="https://www.fast.design/docs/community/contributor-guide">Contributor Guide</a>.</p>
-            <p class="section-paragraph">We look forward to building an amazing open source community with you!</p>
+          <section className="section">
+            <span className="section-badge">LEARN, MODIFY, AND FOLLOW</span>
+            <h2 className="section-heading">Joining the Community</h2>
+            <p className="section-paragraph">Looking to get answers to questions or engage with us in realtime? Our community is most active <a href="https://discord.gg/FcSNfg4">on Discord</a>. Submit requests and issues on <a href="https://github.com/Microsoft/fast/issues/new/choose">GitHub</a>, or join us by contributing on <a href="https://github.com/Microsoft/fast/labels/community:good-first-issue">some good first issues via GitHub</a>.</p>
+            <p className="section-paragraph">Get started here with the <a href="https://www.fast.design/docs/community/contributor-guide">Contributor Guide</a>.</p>
+            <p className="section-paragraph">We look forward to building an amazing open source community with you!</p>
             <h2>Contact</h2>
             <ul>
               <li>Join the community and chat with us in real-time on <a href="https://discord.gg/FcSNfg4">Discord</a>.</li>
