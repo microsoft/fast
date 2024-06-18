@@ -176,6 +176,16 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker 'combobox' should reflect disabled prop on picker", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        element.disabled = true;
+        await connect();
+
+        expect(element.inputElement?.getAttribute("disabled")).to.equal(true);
+
+        await disconnect();
+    });
+
     it("picker should create a menu element when instanciated", async () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
@@ -386,7 +396,7 @@ describe("Picker", () => {
         await disconnect();
     });
 
-    it("picker menu-option emits 'pickeriteminvoked' event on 'Enter'", async () => {
+    it("picker list-item emits 'pickeriteminvoked' event on 'Enter'", async () => {
         const { element, connect, disconnect } = await setupPickerListItem();
 
         let wasInvoked: boolean = false;
@@ -404,6 +414,44 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker list-item does not emit 'pickeriteminvoked' event when disabled and clicked", async () => {
+        const { element, connect, disconnect } = await setupPickerListItem();
+
+        let wasInvoked: boolean = false;
+        element.disabled = true;
+
+        element.addEventListener("pickeriteminvoked", e => {
+            wasInvoked = true;
+        });
+
+        await connect();
+
+        element.click();
+
+        expect(wasInvoked).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("picker list-item does not emit 'pickeriteminvoked' event on 'Enter' when disabled", async () => {
+        const { element, connect, disconnect } = await setupPickerListItem();
+
+        let wasInvoked: boolean = false;
+
+        element.disabled = true;
+        element.addEventListener("pickeriteminvoked", e => {
+            wasInvoked = true;
+        });
+
+        await connect();
+
+        element.dispatchEvent(enterEvent);
+
+        expect(wasInvoked).to.equal(false);
+
+        await disconnect();
+    });
+
     /**
      *  Picker-menu tests
      */
@@ -412,7 +460,7 @@ describe("Picker", () => {
 
         await connect();
 
-        expect(element.getAttribute("role")).to.equal("list");
+        expect(element.getAttribute("role")).to.equal("listbox");
 
         await disconnect();
     });
@@ -420,12 +468,12 @@ describe("Picker", () => {
     /**
      *  Picker-menu-option tests
      */
-    it("picker menu-option should include a role of `listitem`", async () => {
+    it("picker menu-option should include a role of `option`", async () => {
         const { element, connect, disconnect } = await setupPickerMenuOption();
 
         await connect();
 
-        expect(element.getAttribute("role")).to.equal("listitem");
+        expect(element.getAttribute("role")).to.equal("option");
 
         await disconnect();
     });

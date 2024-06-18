@@ -49,8 +49,8 @@ Picker is the top level container which hosts both a `picker-list` component to 
 - `label`: The text applied to the `aria-label` attribute of the internal input element.
 - `labelledby`: The text applied to the `aria-labelledby` attribute of the internal input element.  
 - `placeholder`: The text used as the `placeholder` value for the internal input element.
-- `filter-selected`:  Whether to remove selected elements from the option list (default=true)
-- `filter-query`:  Whether to remove elements that don't match the query string (default=true)
+- `filter-selected`:  Whether to remove selected elements from the option list (default=false)
+- `disable-query-filter`:  Whether to remove elements that don't match the query string (default=false)
 - `menu-placement`: Controls the placement of the menu relative to the input element.
 (default="bottom-fill")
 
@@ -93,7 +93,7 @@ The `picker-list` sub-component encapulates the display of selected items as wel
 
 **Picker-Menu**
 
-The `picker-menu` sub-component is displayed in a flyout and shows the available choices (or alternate messages like "loading" or "no choices available") based on user input.  It is rendered to the light dom and has a role of "list".
+The `picker-menu` sub-component is displayed in a flyout and shows the available choices (or alternate messages like "loading" or "no choices available") based on user input.  It is rendered to the light dom and has a role of "listbox".
 
 *Component name:*
 - `picker-menu`
@@ -102,8 +102,8 @@ The `picker-menu` sub-component is displayed in a flyout and shows the available
 
 *Slots:*
 - default: Options generated from data are inserted here.
-- `header-region`: Authors can add a custom menu header here.  Elements with a role of 'listitem' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
-- `footer-region`: Authors can add a custom menu footer here.  Elements with a role of 'listitem' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
+- `header-region`: Authors can add a custom menu header here.  Elements with a role of 'option' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
+- `footer-region`: Authors can add a custom menu footer here.  Elements with a role of 'option' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
 
 *Events*
 - `optionsupdated`: Emitted when the available options change.

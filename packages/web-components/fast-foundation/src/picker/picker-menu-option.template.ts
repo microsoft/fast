@@ -11,7 +11,7 @@ export function pickerMenuOptionTemplate<
 >(): ElementViewTemplate<T> {
     return html<T>`
         <template
-            role="listitem"
+            role="option"
             tabindex="-1"
             @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         >

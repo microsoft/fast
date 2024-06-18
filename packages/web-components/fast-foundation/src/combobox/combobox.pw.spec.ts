@@ -149,6 +149,79 @@ test.describe("Combobox", () => {
         await expect(control).toHaveAttribute("aria-controls", "");
     });
 
+    ["none", "list"].forEach(mode => {
+        test(`when autocomplete is ${mode}, typing should select exact match`, async () => {
+            await root.evaluate((node, mode) => {
+                node.innerHTML = /* html */ `
+                    <fast-combobox autocomplete="${mode}">
+                        <fast-option value="one">one</fast-option>
+                        <fast-option value="two">two</fast-option>
+                        <fast-option value="three">three</fast-option>
+                    </fast-combobox>
+                `;
+            }, mode);
+
+            await expect(await element.getAttribute("autocomplete")).toBe(mode);
+
+            const option2 = await page.locator("fast-option:nth-of-type(2)");
+            const option3 = await page.locator("fast-option:nth-of-type(3)")
+
+            await expect(option2).toHaveAttribute("aria-selected", "false");
+
+            await control.fill("t");
+
+            await expect(option2).toHaveAttribute("aria-selected", "false");
+            await expect(option3).toHaveAttribute("aria-selected", "false");
+
+            await control.fill("two");
+
+            await expect(option2).toHaveAttribute("aria-selected", "true");
+
+            await control.fill("twos");
+
+            await expect(option2).toHaveAttribute("aria-selected", "false");
+
+            await control.fill("two");
+
+            await expect(option2).toHaveAttribute("aria-selected", "true");
+        });
+    });
+
+    test("should reset control's value when user selects current value after typing", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-combobox autocomplete="list" value="three">
+                    <fast-option value="one">one</fast-option>
+                    <fast-option value="two">two</fast-option>
+                    <fast-option value="three">three</fast-option>
+                </fast-combobox>
+            `;
+        });
+
+        await element.evaluate((node: FASTCombobox) => {
+            node.open = false;
+        });
+
+        await element.dispatchEvent("keydown", {
+            key: "ArrowDown",
+        } as KeyboardEventInit); // open dropdown
+
+        await expect(element).toHaveAttribute("open");
+
+        await element.dispatchEvent("keydown", {
+            key: "ArrowDown",
+        } as KeyboardEventInit); // select "two"
+        await element.dispatchEvent("keydown", {
+            key: "ArrowDown",
+        } as KeyboardEventInit); // select "three"
+
+        await element.dispatchEvent("keydown", {
+            key: "Enter",
+        } as KeyboardEventInit); // commit value
+
+        await expect(element).toHaveJSProperty("value", "three");
+    });
+
     test("should set the control's `aria-activedescendant` property to the ID of the currently selected option while open", async () => {
         await root.evaluate(node => {
             node.innerHTML = /* html */ `
@@ -267,6 +340,89 @@ test.describe("Combobox", () => {
         await expect(element).toHaveAttribute("open");
 
         await expect(listbox).toBeVisible();
+    });
+
+    test("should NOT emit a 'change' event when the user presses Enter without changing value", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-combobox id="combobox">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-combobox>
+            `;
+        });
+
+        const wasChanged = await page.evaluate(async () => {
+            const combobox = document.getElementById("combobox");
+            let changed = false;
+
+            const event = new KeyboardEvent("keydown", {
+                key: "Enter",
+            } as KeyboardEventInit);
+
+            await (combobox as HTMLElement).addEventListener("change", () => { changed = true });
+            await (combobox as HTMLElement).dispatchEvent(event);
+
+            return changed;
+        });
+
+        expect(wasChanged).toBe(false);
+    });
+
+    ["none", "list", "inline", "both"].forEach(mode => {
+        test(`should update value to entered non-option value after selecting an option value for autocomplete mode: ${mode}`, async () => {
+            await root.evaluate((node, mode) => {
+                node.innerHTML = /* html */ `
+                    <fast-combobox value="two" autocomplete="${mode}">
+                        <fast-option>Option 1</fast-option>
+                        <fast-option>Option 2</fast-option>
+                        <fast-option>Option 3</fast-option>
+                    </fast-combobox>
+                `;
+            }, mode);
+
+            await control.fill("a");
+
+            await element.dispatchEvent("keydown", {
+                key: "Enter",
+            } as KeyboardEventInit); // commit value
+
+            await expect(element).toHaveJSProperty("value", "a");
+        });
+    });
+
+    test("should emit a 'change' event when the user clicks away after selecting option in dropdown", async () => {
+        await root.evaluate(node => {
+            node.innerHTML = /* html */ `
+                <fast-combobox id="combobox">
+                    <fast-option>Option 1</fast-option>
+                    <fast-option>Option 2</fast-option>
+                    <fast-option>Option 3</fast-option>
+                </fast-combobox>
+            `;
+        });
+
+        await element.click(); // open dropdown
+
+        const wasChanged = await page.evaluate(async () => {
+            const combobox = document.getElementById("combobox");
+            const keyDownEvent = new KeyboardEvent("keydown", {
+                key: "ArrowDown",
+            } as KeyboardEventInit);
+            (combobox as FASTCombobox).dispatchEvent(keyDownEvent);
+
+            const focusEvent = new FocusEvent('focusout', { relatedTarget: combobox } as any);
+
+            return await new Promise(resolve => {
+                (combobox as FASTCombobox).addEventListener("change", () => { resolve(true); });
+
+                // fake focusout handling
+                (combobox as FASTCombobox).dispatchEvent(focusEvent);
+            });
+        });
+
+        expect(wasChanged).toBe(true);
     });
 
     test.describe("should NOT emit a 'change' event when the value changes by user input while open", () => {

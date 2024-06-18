@@ -1,8 +1,10 @@
 module.exports = {
     title: "FAST",
     tagline: "The adaptive interface system for modern web experiences",
-    url: "https://www.fast.design",
-    baseUrl: "/",
+    url: "https://microsoft.github.io",
+    baseUrl: "/fast/",
+    deploymentBranch: "gh-pages",
+    trailingSlash: false,
     favicon: "/favicon.ico",
     organizationName: "microsoft",
     projectName: "fast",

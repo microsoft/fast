@@ -1,6 +1,7 @@
 import type { HTMLView, ViewTemplate } from "@microsoft/fast-element";
 import { attr, FASTElement, html, observable } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
+import { PickerContext } from "./picker-context.js";
 
 const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
     <template>${x => x.value}</template>
@@ -12,6 +13,13 @@ const defaultContentsTemplate: ViewTemplate<FASTPickerListItem> = html`
  * @beta
  */
 export class FASTPickerListItem extends FASTElement {
+    /**
+     * Context object for the parent picker
+     *
+     */
+    @PickerContext
+    pickerContext: PickerContext;
+
     /**
      * The underlying string value of the item
      *
@@ -52,8 +60,8 @@ export class FASTPickerListItem extends FASTElement {
     }
 
     public handleKeyDown(e: KeyboardEvent): boolean {
-        if (e.defaultPrevented) {
-            return false;
+        if (e.defaultPrevented || this.pickerContext.disabled) {
+            return true;
         }
 
         if (e.key === keyEnter) {
@@ -64,11 +72,11 @@ export class FASTPickerListItem extends FASTElement {
         return true;
     }
 
-    public handleClick(e: MouseEvent): boolean {
-        if (!e.defaultPrevented) {
-            this.handleInvoke();
+    public handleClick(e: MouseEvent): void {
+        if (e.defaultPrevented || this.pickerContext.disabled) {
+            return;
         }
-        return false;
+        this.handleInvoke();
     }
 
     private handleInvoke(): void {
