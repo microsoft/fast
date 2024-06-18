@@ -3,7 +3,6 @@ import {
     Aspected,
     DOMAspect,
     ExecutionContext,
-    FASTElementDefinition,
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -25,7 +24,6 @@ import {
     ViewBehaviorFactoryRenderer,
 } from "./directives.js";
 import { hydrationMarker } from "./hydration-marker-emitter.js";
-import { TemplateRendererEvent, TemplateRendererEventTypes } from "./events.js";
 
 function getLast<T>(arr: T[]): T | undefined {
     return arr[arr.length - 1];
@@ -163,13 +161,6 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
                         }
 
                         renderInfo.customElementInstanceStack.push(renderer);
-
-                        const notification = new TemplateRendererEvent(
-                            TemplateRendererEventTypes.customElementOpen,
-                            renderer!.tagName
-                        );
-
-                        this.emit(notification.type, notification);
                     }
 
                     break;
@@ -179,11 +170,6 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
                     const renderer = renderInfo.customElementInstanceStack.pop()!;
                     if (renderer) {
                         renderInfo.renderedCustomElementList.push(renderer);
-                        const notification = new TemplateRendererEvent(
-                            TemplateRendererEventTypes.customElementClose,
-                            renderer.tagName
-                        );
-                        this.emit(notification.type, notification);
                     }
                     break;
                 }
@@ -195,21 +181,10 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
 
                     if (currentRenderer) {
                         // simulate DOM connection
-
-                        const connectingNotification = new TemplateRendererEvent(
-                            TemplateRendererEventTypes.customElementConnecting,
-                            currentRenderer!.tagName
-                        );
-                        this.emit(connectingNotification.type, connectingNotification);
                         currentRenderer.connectedCallback();
 
                         // Allow the renderer to hoist any attribute values it needs to
                         yield* currentRenderer.renderAttributes();
-                        const connectedNotification = new TemplateRendererEvent(
-                            TemplateRendererEventTypes.customElementConnected,
-                            currentRenderer!.tagName
-                        );
-                        this.emit(connectedNotification.type, connectedNotification);
                     }
 
                     break;
@@ -226,20 +201,7 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
                     const content = currentRenderer.renderShadow(renderInfo);
 
                     if (content) {
-                        const openNotification = new TemplateRendererEvent(
-                            TemplateRendererEventTypes.customElementShadowOpen,
-                            currentRenderer!.tagName
-                        );
-
-                        this.emit(openNotification.type, openNotification);
                         yield* content;
-
-                        const closeNotification = new TemplateRendererEvent(
-                            TemplateRendererEventTypes.customElementShadowClose,
-                            currentRenderer!.tagName
-                        );
-
-                        this.emit(closeNotification.type, closeNotification);
                     }
 
                     break;
