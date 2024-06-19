@@ -7,6 +7,9 @@ env:
   GITHUB_SERVICE_USER: "Microsoft FAST Builds"
   GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,7 +21,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN }}
 
     - name: Set Git User
       run: |
@@ -53,6 +55,9 @@ jobs:
     - name: Deploy GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
+        token: ${{ secrets.GH_TOKEN }}
         branch: gh-pages # The branch the action should deploy to.
         folder: sites/website/build # The folder the action should deploy.
         target-folder: docs # The folder on the branch to deploy to.
+        clean: true # Remove old files to clean up unique hash files.
+        single-commit: true # Only use a single commit to keep the branch free from git history.
