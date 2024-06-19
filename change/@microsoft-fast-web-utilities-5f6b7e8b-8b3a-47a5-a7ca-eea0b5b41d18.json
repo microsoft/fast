@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Convert karma configuration to cjs",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

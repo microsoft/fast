@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square70x70logo src="https://static.fast.design/assets/manifest/mstile-70x70.png"/>
+            <square150x150logo src="https://static.fast.design/assets/manifest/mstile-150x150.png"/>
+            <wide310x150logo src="https://static.fast.design/assets/manifest/mstile-310x150.png"/>
+            <square310x310logo src="https://static.fast.design/assets/manifest/mstile-310x310.png"/>
+            <TileColor>#181818</TileColor>
+
+        </tile>
+
+    </msapplication>
+
+</browserconfig>

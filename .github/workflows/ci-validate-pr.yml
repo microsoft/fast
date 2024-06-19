@@ -1,0 +1,63 @@
+name: Validate PRs
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+    - releases/*
+  pull_request:
+    branches:
+    - master
+    - releases/*
+    - features/*
+
+jobs:
+  build_linux:
+    runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo '::set-output name=dir::$(yarn cache dir)'
+
+    - name: Set up node_modules cache
+      uses: actions/cache@v3
+      id: yarn-cache
+      with:
+        path: |
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          node_modules
+          */*/node_modules
+        key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn_cache-
+
+    - name: Install package dependencies
+      run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+
+    - name: Check for the presence of changed files inside ./change
+      run: yarn checkchange
+
+    - name: Testing Prettier format
+      run: yarn format:check
+
+    - name: Prepare workspaces
+      run: yarn prepare
+
+    - name: Install playwright dependencies and browsers
+      run: |
+        yarn playwright install-deps
+        yarn playwright install
+
+    - name: Testing unit tests
+      run: yarn lerna run test --stream
+
+    - name: Testing final validation
+      run: yarn test:validation

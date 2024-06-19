@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-button",
+  "id": "fast-button",
+  "title": "Button",
+  "description": "The FAST button element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-button",
+  "properties": {
+    "appearance": {
+      "enum": [
+        "accent",
+        "lightweight",
+        "neutral",
+        "outline",
+        "stealth"
+      ],
+      "default": "neutral",
+      "title": "Appearance",
+      "description": "The button's visual treatment",
+      "mapsToAttribute": "appearance",
+      "type": "string"
+    },
+    "autofocus": {
+      "title": "Autofocus",
+      "description": "Determines if the element should receive document focus on page load",
+      "mapsToAttribute": "autofocus",
+      "type": "boolean"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the button",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "form": {
+      "title": "Form ID",
+      "description": "The ID of a form to associate the element to",
+      "mapsToAttribute": "form",
+      "type": "string"
+    },
+    "formaction": {
+      "title": "Form processing url",
+      "description": "The HTML formaction attribute of the button",
+      "mapsToAttribute": "formaction",
+      "type": "string"
+    },
+    "formenctype": {
+      "title": "Form encoding",
+      "description": "The HTML formenctype attribute of the button",
+      "mapsToAttribute": "formenctype",
+      "type": "string"
+    },
+    "formmethod": {
+      "enum": [
+        "post",
+        "get"
+      ],
+      "title": "Form submit method",
+      "description": "The HTML formmethod attribute of the button",
+      "mapsToAttribute": "formmethod",
+      "type": "string"
+    },
+    "formnovalidate": {
+      "title": "No form validation",
+      "description": "The HTML formnovalidate attribute of the button",
+      "mapsToAttribute": "formnovalidate",
+      "type": "boolean"
+    },
+    "formtarget": {
+      "enum": [
+        "_self",
+        "_blank",
+        "_parent",
+        "_top"
+      ],
+      "title": "Form Target",
+      "description": "The HTML formtarget attribute of the button",
+      "mapsToAttribute": "formtarget",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "description": "The HTML name attribute of the button",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "submit",
+        "reset",
+        "button"
+      ],
+      "title": "Type",
+      "description": "The HTML type attribute of the button",
+      "mapsToAttribute": "type",
+      "type": "string"
+    },
+    "value": {
+      "title": "Value",
+      "description": "The HTML value attribute of the button",
+      "mapsToAttribute": "value",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the anchor",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotStart": {
+      "title": "Start slot",
+      "description": "Contents of the start slot are positioned before the button content",
+      "mapsToSlot": "start",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotEnd": {
+      "title": "End slot",
+      "description": "Contents of the end slot are positioned after the button content",
+      "mapsToSlot": "end",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
