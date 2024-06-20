@@ -1,8 +1,33 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 20 Dec 2023 19:03:48 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Jun 2024 17:00:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 3.0.0-alpha.33
+
+Thu, 20 Jun 2024 17:00:56 GMT
+
+### Changes
+
+- update picker component roles (145117767+JiginJayaprakash@users.noreply.github.com)
+- add picker disabled state (stephcomeau@msn.com)
+- no options missing (stephcomeau@msn.com)
+- Various Combobox fixes with tests. (26874831+atmgrifter00@users.noreply.github.com)
+- Remove unmatched closing div (7559015+janechu@users.noreply.github.com)
+- removing readonly for Slider (olaf-k@users.noreply.github.com)
+- Adds token name to token resolution error when the name exists for a token (nicholasrice@users.noreply.github.com)
+- fix(foundation): textfield proxy enterkeyhint (7559015+janechu@users.noreply.github.com)
+- feat(text-field): reset value on type change (43081j@users.noreply.github.com)
+- fix(combobox): close the combobox even if there's no selection (zoepeterson@microsoft.com)
+- upgrade to Storybook 8 (863023+radium-v@users.noreply.github.com)
+- Foundation: Update Slider templates (https://github.com/microsoft/fast/pull/6800) (47367562+bheston@users.noreply.github.com)
+- Fix toolbar stealing focus (fcollonval@users.noreply.github.com)
+- Foundation: Update Number field, Search, Switch, Text area, and Text field templates (https://github.com/microsoft/fast/pull/6798) (47367562+bheston@users.noreply.github.com)
+- Update Badge and Breadcrumb templates (https://github.com/microsoft/fast/pull/6797) (47367562+bheston@users.noreply.github.com)
+- fix: allow tabs `setTabs` method to be extended (quic_scomeau@qualcomm.com)
+- comparisons to document.activeElement consider shadowRoot (stephcomeau@msn.com)
+- Foundation: Update Accordion template element naming (https://github.com/microsoft/fast/pull/6796) (47367562+bheston@users.noreply.github.com)
 
 ## 3.0.0-alpha.32
 

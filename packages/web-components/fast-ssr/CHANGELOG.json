@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Thu, 20 Jun 2024 17:00:56 GMT",
+      "version": "1.0.0-beta.33",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.33",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "seanmonahan@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "9a78d697ac6f9f799e420e48cf32ffec19800b9c",
+            "comment": "fix: typos in SSR README"
+          },
+          {
+            "author": "seanmonahan@microsoft.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "4a282aee05fadafb9f053e31cb9272517c272744",
+            "comment": "fix: change 'shadowroot' to 'shadowrootmode' to match spec"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-foundation to v3.0.0-alpha.33",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "4b23b5caa76c172d3ea6c6559699d632a278442c",
+            "comment": "tslib updated to fixed version"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "5dac26f674ca755476b5a38bda5506947b42de93",
+            "comment": "fix parse5 type imports"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "00bccd7812ca072fc2efdf39af7762bbfdc90846",
+            "comment": "Remove eslint config package"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "97ef4d7a3880212bbb4f895459a047429a113472",
+            "comment": "upgrade playwright to 1.41"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Dec 2023 19:03:48 GMT",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.32",
       "version": "1.0.0-beta.32",

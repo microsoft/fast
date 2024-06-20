@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Fri, 18 Aug 2023 00:04:39 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Jun 2024 17:00:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.27
+
+Thu, 20 Jun 2024 17:00:56 GMT
+
+### Changes
+
+- fix: remove link handler in disconnect (1222863+xuwaters@users.noreply.github.com)
 
 ## 1.0.0-alpha.26
 

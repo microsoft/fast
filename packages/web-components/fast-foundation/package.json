@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
-  "version": "3.0.0-alpha.32",
+  "version": "3.0.0-alpha.33",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",

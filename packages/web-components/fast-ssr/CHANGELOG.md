@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Wed, 20 Dec 2023 19:03:48 GMT and should not be manually modified.
+This log was last generated on Thu, 20 Jun 2024 17:00:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-beta.33
+
+Thu, 20 Jun 2024 17:00:56 GMT
+
+### Changes
+
+- fix: typos in SSR README (seanmonahan@microsoft.com)
+- fix: change 'shadowroot' to 'shadowrootmode' to match spec (seanmonahan@microsoft.com)
+- Bump @microsoft/fast-foundation to v3.0.0-alpha.33
 
 ## 1.0.0-beta.32
 

@@ -2,6 +2,45 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 20 Jun 2024 17:00:56 GMT",
+      "version": "2.0.0-beta.26",
+      "tag": "@microsoft/fast-element_v2.0.0-beta.26",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "5eb926a3f3ec49782bf6ba5c2d58cb8b8c35e7f1",
+            "comment": "Update documentation site with 2.0.0 content"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c5f4234c6b86e464c66bb9ec24e4ed5a15e64e65",
+            "comment": "Update benchmarking to be included in the package instead of being separate"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "862d860db267f645b0f0791cba27e6386f7382b8",
+            "comment": "Update source-map-loader as it was out of sync"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "00bccd7812ca072fc2efdf39af7762bbfdc90846",
+            "comment": "Remove eslint config package"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4b23b5caa76c172d3ea6c6559699d632a278442c",
+            "comment": "Remove redundant docs and upgrade Docusaurus to v3, enable versioned docs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 18 Aug 2023 00:04:40 GMT",
       "tag": "@microsoft/fast-element_v2.0.0-beta.26",
       "version": "2.0.0-beta.26",

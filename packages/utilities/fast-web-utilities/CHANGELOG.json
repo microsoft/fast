@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Thu, 20 Jun 2024 17:00:57 GMT",
+      "version": "6.0.0",
+      "tag": "@microsoft/fast-web-utilities_v6.0.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-web-utilities",
+            "commit": "4b23b5caa76c172d3ea6c6559699d632a278442c",
+            "comment": "Convert karma configuration to cjs"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-web-utilities",
+            "commit": "00bccd7812ca072fc2efdf39af7762bbfdc90846",
+            "comment": "Remove eslint config package"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Dec 2023 19:03:47 GMT",
       "tag": "@microsoft/fast-web-utilities_v6.0.0",
       "version": "6.0.0",
