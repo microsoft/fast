@@ -28,12 +28,8 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel
 
 # Package specific owners
 
-# Utilities
-/packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
-
 # Web components
 /packages/web-components/fast-element/ @chrisdholt @janechu @nicholasrice
-/packages/web-components/fast-foundation/ @chrisdholt @bheston @scomea @radium-v @kingoftac
 
 # the change directory has no owners
 /change/

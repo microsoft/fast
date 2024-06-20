@@ -96,8 +96,8 @@ When working across feature branches, you'll need to target the branch using the
 ```json
 {
   "type": "minor",
-  "comment": "add fancy new feature for foundation",
-  "packageName": "@microsoft/fast-foundation",
+  "comment": "add fancy new feature to FASTElement",
+  "packageName": "@microsoft/fast-element",
   "email": "name@example.com",
   "dependentChangeType": "minor",
   "date": "2021-03-01T19:10:06.323Z"
@@ -122,7 +122,7 @@ If you are merging a pull request, be sure to use the pull request title as the 
 
 ### Documenting breaking changes
 
-Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes, eg. `packages/web-components/fast-foundation/MIGRATION.md`.
+Make sure to document the migration strategy in a `MIGRATION.md` file in the package(s) that has breaking changes, eg. `packages/web-components/fast-element/MIGRATION.md`.
 
 Example of how to format `MIGRATION.md`:
 

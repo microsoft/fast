@@ -10,7 +10,6 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/utilities/*",
       "packages/web-components/*",
       "sites/*",
       "examples/todo-app",
