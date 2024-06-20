@@ -10,6 +10,6 @@ module.exports = {
         "src/tests/",
         "src/fixtures/**",
         // This one is especially important (otherwise dependabot would be blocked by change file requirements)
-        "yarn.lock",
+        "package-lock.json",
     ],
 };

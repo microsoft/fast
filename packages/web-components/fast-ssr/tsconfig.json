@@ -4,7 +4,6 @@
     "target": "ES2015",
     "module": "ES2015",
     "moduleResolution": "NodeNext",
-    "importHelpers": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noEmitOnError": true,

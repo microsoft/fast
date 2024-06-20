@@ -3,7 +3,7 @@
  * Usage: node build/clean.js %path%
  */
 const path = require("path");
-const rimraf = require("rimraf");
+const { rimraf } = require("rimraf");
 const argv = require("yargs").argv;
 
 /**
@@ -20,7 +20,7 @@ function cleanPath(cleanPath) {
         process.exit(1);
     }
     const removePath = path.resolve(process.cwd(), cleanPath);
-    rimraf(removePath, () => {
+    rimraf(removePath).then(() => {
         console.log(removePath, "cleaned");
     });
 }

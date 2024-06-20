@@ -64,7 +64,7 @@ For all APIs described in this section, the configuration overrides apply to all
 
 #### `DesignSystem.withPrefix()`
 
-As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), FAST Components are [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) subject to the [naming conventions defined by HTML](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name). This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. [The example above](./fast-frame.md/#add-element-to-html) illustrates this, where the FastButton is defined with the ‘fast’ prefix.
+As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), FAST Components are [Custom Elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) subject to the [naming conventions defined by HTML](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name). This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. [The example above](#add-element-to-html) illustrates this, where the FastButton is defined with the ‘fast’ prefix.
 
 This prefix can be changed for all components registered by the DesignSystem using the `DesignSystem.withPrefix()` API:
 
@@ -203,11 +203,11 @@ For more information on shadow options, see [Element.attachShadow()](https://dev
 
 ## Configuring Styles
 
-FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](./design-tokens.md) and an [adaptive color system](./fast-frame.md#adaptive-color-system).
+FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of [Design Tokens](./design-tokens.md) and an [adaptive color system](#adaptive-color-system).
 
 ### FAST Frame Design Tokens
 
-FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](./fast-frame.md#adaptive-color-system)
+FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the [adaptive color system section](#adaptive-color-system)
 
 #### Typography
 

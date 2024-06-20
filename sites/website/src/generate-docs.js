@@ -75,7 +75,7 @@ async function copyArticleMarkdown() {
     const mergeDocs = [
         {
             src: path.resolve(root, "CODE_OF_CONDUCT.md"),
-            dest: path.resolve(outputDir, "community/code-of-conduct.md"),
+            dest: path.resolve(outputDir, "community/CODE_OF_CONDUCT.md"),
             metadata: {
                 id: "code-of-conduct",
                 title: "Code of Conduct",
@@ -89,7 +89,7 @@ async function copyArticleMarkdown() {
         },
         {
             src: path.resolve(root, "CONTRIBUTING.md"),
-            dest: path.resolve(outputDir, "community/contributor-guide.md"),
+            dest: path.resolve(outputDir, "community/CONTRIBUTING.md"),
             metadata: {
                 id: "contributor-guide",
                 title: "Contributor Guide",
@@ -102,7 +102,7 @@ async function copyArticleMarkdown() {
         },
         {
             src: path.resolve(root, "BRANCH_GUIDE.md"),
-            dest: path.resolve(outputDir, "community/branch-guide.md"),
+            dest: path.resolve(outputDir, "community/BRANCH_GUIDE.md"),
             metadata: {
                 id: "branch-guide",
                 title: "Branch Guide",
@@ -115,7 +115,7 @@ async function copyArticleMarkdown() {
         },
         {
             src: path.resolve(root, "LICENSE"),
-            dest: path.resolve(outputDir, "resources/license.md"),
+            dest: path.resolve(outputDir, "resources/LICENSE.md"),
             metadata: {
                 id: "license",
                 title: "License",
@@ -127,7 +127,7 @@ async function copyArticleMarkdown() {
         },
         {
             src: path.resolve(root, "SECURITY.md"),
-            dest: path.resolve(outputDir, "resources/security.md"),
+            dest: path.resolve(outputDir, "resources/SECURITY.md"),
             metadata: {
                 id: "security",
                 title: "Security",
@@ -144,7 +144,7 @@ async function copyArticleMarkdown() {
                 getPackageJsonDir("@microsoft/fast-element"),
                 "./docs/ACKNOWLEDGEMENTS.md"
             ),
-            dest: path.resolve(outputDir, "resources/acknowledgements.md"),
+            dest: path.resolve(outputDir, "resources/ACKNOWLEDGEMENTS.md"),
             metadata: {
                 id: "acknowledgements",
                 title: "Acknowledgements",
@@ -241,7 +241,7 @@ async function buildAPIMarkdown() {
 
     await new Promise((resolve, reject) =>
         exec(
-            "yarn api-documenter markdown -i src/docs/api -o docs/api",
+            "api-documenter markdown -i src/docs/api -o docs/api",
             (err, stdout, stderr) => {
                 console.log(stdout);
                 console.error(stderr);

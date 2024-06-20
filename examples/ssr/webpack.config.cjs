@@ -1,5 +1,3 @@
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const ResolveTypeScriptPlugin = require("resolve-typescript-plugin");
 const path = require('path');
 
 module.exports = function(env, { mode }) {
@@ -8,16 +6,14 @@ module.exports = function(env, { mode }) {
     mode: production ? 'production' : 'development',
     devtool: production ? 'source-map' : 'inline-source-map',
     entry: {
-      app: ['./src/main.ts']
+      app: './src/main.ts'
     },
     output: {
       filename: 'bundle.js',
       publicPath:'/',
       path: path.resolve(process.cwd(), 'www'),
+      clean: true
     },
-    plugins: [
-      new CleanWebpackPlugin()
-    ],
     module: {
       rules: [
         {
@@ -33,8 +29,10 @@ module.exports = function(env, { mode }) {
     },
     resolve: {
       extensions: ['.ts', '.js'],
-      modules: ['src', 'node_modules'],
-      plugins: [new ResolveTypeScriptPlugin()]
+      extensionAlias: {
+        ".js": [".ts", ".js"],
+        ".mjs": [".mts", ".mjs"]
+      }
     }
   }
 }

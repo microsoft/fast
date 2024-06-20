@@ -4,7 +4,7 @@
  */
 const path = require("path");
 const fs = require("fs");
-const glob = require("glob");
+const { globSync } = require("glob");
 
 const rootDir = path.resolve(process.cwd());
 const srcSchemaPaths = "src/**/*.schema.ts";
@@ -18,7 +18,7 @@ let exit = 0;
 function copySchemaFiles() {
     const resolvedSrcSchemaPaths = path.resolve(rootDir, srcSchemaPaths);
 
-    glob.sync(resolvedSrcSchemaPaths, void 0).forEach(function(filePath) {
+    globSync(resolvedSrcSchemaPaths, void 0).forEach(function(filePath) {
         let destSchemaPath = filePath.replace(/(\bsrc\b)(?!.*\1)/, destDir);
         destSchemaPath =
             destSchemaPath.substr(0, destSchemaPath.lastIndexOf(".ts")) + ".json";

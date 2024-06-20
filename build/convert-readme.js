@@ -4,7 +4,7 @@
  */
 const path = require("path");
 const fs = require("fs");
-const glob = require("glob");
+const { globSync } = require("glob");
 const argv = require("yargs").argv;
 const MarkdownIt = require("markdown-it");
 
@@ -45,29 +45,27 @@ const paths = argv._;
 function exportReadme(readmePath) {
     const readmePaths = path.resolve(process.cwd(), srcDir);
 
-    glob(readmePaths, void 0, function (error, files) {
-        files.forEach(filePath => {
-            let documentation = startFile;
-            const markdown = fs.readFileSync(filePath, "utf8");
-            const exportPath = filePath.replace(/README\.md/, readmePath);
+    globSync(readmePaths, void 0).forEach(filePath => {
+        let documentation = startFile;
+        const markdown = fs.readFileSync(filePath, "utf8");
+        const exportPath = filePath.replace(/README\.md/, readmePath);
 
-            if (markdown.length !== 0) {
-                documentation += md.render(markdown);
-            } else {
-                documentation += emptyFile;
-            }
+        if (markdown.length !== 0) {
+            documentation += md.render(markdown);
+        } else {
+            documentation += emptyFile;
+        }
 
-            documentation += endFile;
+        documentation += endFile;
 
-            if (!fs.existsSync(exportPath)) {
-                fs.mkdirSync(exportPath);
-            }
+        if (!fs.existsSync(exportPath)) {
+            fs.mkdirSync(exportPath);
+        }
 
-            fs.writeFileSync(
-                path.resolve(exportPath, "documentation.tsx"),
-                documentation
-            );
-        });
+        fs.writeFileSync(
+            path.resolve(exportPath, "documentation.tsx"),
+            documentation
+        );
     });
 }
 

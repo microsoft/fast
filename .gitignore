@@ -2,8 +2,6 @@
 logs
 *.log
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # Coverage directory used by tools like istanbul
 coverage
@@ -20,9 +18,6 @@ typings/
 
 # Optional eslint cache
 .eslintcache
-
-# Yarn Integrity file
-.yarn-integrity
 
 # dotenv environment variables file
 .env
@@ -58,14 +53,10 @@ storybook-static
 .tmp/
 temp/
 
-# npm package-locks
-package-lock.json
-
 # Docusaurus files to ignore
 sites/website/build/
 sites/website/docs/
 sites/website/src/docs/api/
-sites/website/yarn.lock
 sites/website/node_modules
 sites/website/i18n/
 
@@ -78,3 +69,6 @@ obj/
 
 # Tensile performance test results
 .tensile
+
+# Test results
+test-results/
