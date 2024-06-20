@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Thu, 20 Jun 2024 17:00:56 GMT",
+      "version": "1.0.0-alpha.27",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.27",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "1222863+xuwaters@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "a789e140aa58098c10a35c86056a7f79a660b456",
+            "comment": "fix: remove link handler in disconnect"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "00bccd7812ca072fc2efdf39af7762bbfdc90846",
+            "comment": "Remove eslint config package"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "4b23b5caa76c172d3ea6c6559699d632a278442c",
+            "comment": "DevDependency update"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 18 Aug 2023 00:04:39 GMT",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.26",
       "version": "1.0.0-alpha.26",
