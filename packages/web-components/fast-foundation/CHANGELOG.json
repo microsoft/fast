@@ -2,6 +2,149 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 20 Jun 2024 17:00:56 GMT",
+      "version": "3.0.0-alpha.33",
+      "tag": "@microsoft/fast-foundation_v3.0.0-alpha.33",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "145117767+JiginJayaprakash@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e70cdb0fa0ad2c79e6d26ee8670a60761165999a",
+            "comment": "update picker component roles"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "33164280e20c93d9ff6395a77994348260d72ce0",
+            "comment": "add picker disabled state"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "e499c035e15dbe1337867a27b9d221279202886b",
+            "comment": "no options missing"
+          },
+          {
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "f8071fb913310eb35dc19da017b554c2608b7f12",
+            "comment": "Various Combobox fixes with tests."
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "6a0c57ae410e0c64cb3be2311ba081de894aa2a2",
+            "comment": "Remove unmatched closing div"
+          },
+          {
+            "author": "olaf-k@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "731fcb18123a005a9d94abb2fe96af0c4fdc5d7d",
+            "comment": "removing readonly for Slider"
+          },
+          {
+            "author": "nicholasrice@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "94b51bc0e52673ec80e39ba4eecf9ccb31bf8831",
+            "comment": "Adds token name to token resolution error when the name exists for a token"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "c4e4422f28bab5a5da74f1e8cf9337922a1b20c9",
+            "comment": "fix(foundation): textfield proxy enterkeyhint"
+          },
+          {
+            "author": "43081j@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "d1685dea3029c7aa3d3cc5b29d62510dc41a7cd8",
+            "comment": "feat(text-field): reset value on type change"
+          },
+          {
+            "author": "zoepeterson@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "543a69ce71ea79322a86dcbb5adbfe1f451a880a",
+            "comment": "fix(combobox): close the combobox even if there's no selection"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5dac26f674ca755476b5a38bda5506947b42de93",
+            "comment": "upgrade to Storybook 8"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "2ba8729473156176840521f1332e98032b3114b0",
+            "comment": "Foundation: Update Slider templates (https://github.com/microsoft/fast/pull/6800)"
+          },
+          {
+            "author": "fcollonval@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "5b2b801208a86c1d342feff49961f5c490ad247e",
+            "comment": "Fix toolbar stealing focus"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0d592e266e81acec6188961d7d17326a4ad9ad72",
+            "comment": "Foundation: Update Number field, Search, Switch, Text area, and Text field templates (https://github.com/microsoft/fast/pull/6798)"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "daff330978c2bbc961e729ee7f285ab426bf0beb",
+            "comment": "Update Badge and Breadcrumb templates (https://github.com/microsoft/fast/pull/6797)"
+          },
+          {
+            "author": "quic_scomeau@qualcomm.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "8023f7ee8458ac147dee4dadb9b72ce45a142a1f",
+            "comment": "fix: allow tabs `setTabs` method to be extended"
+          },
+          {
+            "author": "stephcomeau@msn.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "df2ca503b1e2e060b3ddc32af0765505c65bb7f5",
+            "comment": "comparisons to document.activeElement consider shadowRoot"
+          },
+          {
+            "author": "47367562+bheston@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "9d7b36d38ed1e3b3c847df718f5aea97c811e946",
+            "comment": "Foundation: Update Accordion template element naming (https://github.com/microsoft/fast/pull/6796)"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "4b23b5caa76c172d3ea6c6559699d632a278442c",
+            "comment": "Added missing types"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "00bccd7812ca072fc2efdf39af7762bbfdc90846",
+            "comment": "Remove eslint config package"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "97ef4d7a3880212bbb4f895459a047429a113472",
+            "comment": "upgrade playwright to 1.41"
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "9af1b251df57244d61524bf5af757839373249a0",
+            "comment": "Additional design token test cases"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Dec 2023 19:03:48 GMT",
       "tag": "@microsoft/fast-foundation_v3.0.0-alpha.32",
       "version": "3.0.0-alpha.32",
