@@ -7,7 +7,6 @@ export type {
     FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
-
 export { FAST, emptyArray } from "./platform.js";
 
 // DOM
@@ -119,13 +118,21 @@ export {
     ChildListDirectiveOptions,
     SubtreeDirectiveOptions,
 } from "./templating/children.js";
-export { ElementView, HTMLView, SyntheticView, View } from "./templating/view.js";
+export {
+    ElementView,
+    HTMLView,
+    SyntheticView,
+    View,
+    HydratableView,
+    HydrationBindingError,
+} from "./templating/view.js";
 export {
     elements,
     ElementsFilter,
     NodeBehaviorOptions,
     NodeObservationDirective,
 } from "./templating/node-observation.js";
+export { render, RenderBehavior, RenderDirective } from "./templating/render.js";
 
 // Components
 export { customElement, FASTElement } from "./components/fast-element.js";
@@ -148,4 +155,5 @@ export {
 export {
     ElementController,
     ElementControllerStrategy,
+    HydratableElementController,
 } from "./components/element-controller.js";

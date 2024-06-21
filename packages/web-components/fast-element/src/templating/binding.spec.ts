@@ -293,7 +293,7 @@ describe("The HTML binding directive", () => {
             expect(toHTML(parentNode)).to.equal(`This is a template. testing...`);
         });
 
-        it("allows interpolated HTML tags in templates using dangerousHTML", async () => {
+        it("allows interpolated HTML tags in templates using html.partial", async () => {
             const { behavior, parentNode, targets } = contentBinding();
             const template = html`${x => html`<${html.partial(x.knownValue)}>Hi there!</${html.partial(x.knownValue)}>`}`;
             const model = new Model(template);

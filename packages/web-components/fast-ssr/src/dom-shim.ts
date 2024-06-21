@@ -368,6 +368,9 @@ export class MediaQueryList {
     /** No-op */
     addEventListener() {}
 
+    /** No-op */
+    removeEventListener() {}
+
     /** Always false */
     matches = false;
 }

@@ -101,7 +101,7 @@ export type StorageOptions = {
     /**
      * A custom window creation function.
      */
-    createWindow?: () => { [key: string]: unknown };
+    createWindow?: (req: any) => { [key: string]: unknown };
 
     /**
      * Initial values to setup in the backing store.
@@ -121,6 +121,7 @@ const perRequestGlobals = [
     "removeEventListener",
     "window",
     "document",
+    "location",
 ];
 
 const perRequestGetters = perRequestGlobals.reduce((accum, key) => {
@@ -250,9 +251,12 @@ export const RequestStorageManager = Object.freeze({
      * @param options - The options used when creating the backing store for RequestStorage.
      * @returns A Map suitable as a backing store for RequestStorage.
      */
-    createStorage(options: StorageOptions = defaultOptions): Map<any, any> {
+    createStorage(
+        options: StorageOptions = defaultOptions,
+        req: any = null
+    ): Map<any, any> {
         const storage = new Map();
-        const window = options.createWindow ? options.createWindow() : createWindow();
+        const window = options.createWindow ? options.createWindow(req) : createWindow();
 
         storage.set("window", window);
 
@@ -289,7 +293,7 @@ export const RequestStorageManager = Object.freeze({
         RequestStorageManager.installDOMShim();
 
         return (req: any, res: any, next: () => any): void => {
-            const storage = RequestStorageManager.createStorage(options);
+            const storage = RequestStorageManager.createStorage(options, req);
             RequestStorageManager.run(storage, next);
         };
     },
