@@ -19,6 +19,7 @@
   "author": "Microsoft",
   "license": "MIT",
   "devDependencies": {
+    "@microsoft/fast-element": "^2.0.0-beta.26",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@types/node": "^15.0.1",
