@@ -1,3 +1,5 @@
+import {themes as prismThemes} from 'prism-react-renderer';
+
 module.exports = {
     title: "FAST",
     tagline: "The adaptive interface system for modern web experiences",
@@ -13,11 +15,21 @@ module.exports = {
         mermaid: true,
     },
     themes: [
-        require.resolve("@docusaurus/theme-live-codeblock"),
+        "@docusaurus/theme-live-codeblock",
         "@docusaurus/theme-mermaid",
     ],
     staticDirectories: ["static"],
     themeConfig: {
+        prism: {
+            theme: prismThemes.vsDark,
+        },
+        announcementBar: {
+            id: 'version',
+            content:
+              '<code>@microsoft/fast-element</code> v2 is out! 🎉️',
+            backgroundColor: 'var(--ifm-color-success-darkest)',
+            textColor: 'var(--ifm-color-white)',
+        },
         colorMode: {
             defaultMode: "dark",
         },
@@ -140,14 +152,7 @@ module.exports = {
                     sidebarPath: "./sidebars.js",
                     // Refer to https://github.com/microsoft/fast/issues/5865 effects of using true
                     showLastUpdateTime: false,
-                    // remarkPlugins: [require("mdx-mermaid")],
-                    // The "includeCurrentVersion" plugin includes the ./docs folder of the docs - setting to false as current docs are in progress
-                    // TODO: remove when ready to display both the current and legacy versions (line 155)
-                    includeCurrentVersion: false,
-                    // The "lastVersion" plugin sets which version the /docs route refers to
-                    // TODO: update lastVersion to "current" when ready for /docs route to be set to the current version (line 158)
                     lastVersion: "current",
-                    // TODO: Uncomment to begin displaying the doc versions labels (lines 160-167)
                     versions: {
                         current: {
                             label: "2.x",
