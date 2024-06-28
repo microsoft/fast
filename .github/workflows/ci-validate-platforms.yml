@@ -61,8 +61,7 @@ jobs:
 
       - name: Install playwright dependencies and browsers
         run: |
-          npm run playwright install-deps
-          npm run playwright install
+          npx playwright install
 
       - name: Run tests in all Packages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
