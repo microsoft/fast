@@ -42,8 +42,8 @@
     "test:validation": "npm run test:diff",
     "test": "npm run test --workspaces --if-present",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
-    "format:check": "npm run prettier:diff",
-    "format": "npm run prettier"
+    "format:check": "npx prettier . --check",
+    "format": "npx prettier . --write"
   },
   "husky": {
     "hooks": {
