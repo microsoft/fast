@@ -4,6 +4,8 @@
 
 ```ts
 
+/// <reference types="node" />
+
 import { AsyncLocalStorage } from 'async_hooks';
 import { Binding } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
@@ -169,7 +171,7 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 //
 // dist/dts/exports.d.ts:41:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
 // dist/dts/exports.d.ts:56:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
+// dist/dts/request-storage.d.ts:33:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
 
