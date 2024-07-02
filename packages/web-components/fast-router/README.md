@@ -6,14 +6,10 @@ The `@microsoft/fast-router` package contains a history-based navigation and rou
 
 ### From NPM
 
-To install the `fast-router` library, use either `npm` or `yarn` as follows:
+To install the `fast-router` library using `npm`:
 
 ```shell
 npm install --save @microsoft/fast-router
-```
-
-```shell
-yarn add @microsoft/fast-router
 ```
 
 Within your JavaScript or TypeScript code, you can then import library APIs like this:

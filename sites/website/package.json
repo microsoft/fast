@@ -3,16 +3,14 @@
   "version": "0.6.2",
   "private": true,
   "scripts": {
-    "clean": "concurrently \"yarn:clean-*\"",
+    "clean": "concurrently \"npm run clean-docs\" \"npm run clean-static\"",
     "clean-docs": "node ../../build/clean.js docs",
     "clean-static": "node ../../build/clean.js static",
     "copy-static": "node src/copy-static.js",
-    "generate": "concurrently \"yarn:generate-*\"",
-    "generate-badges": "yarn workspace @microsoft/site-utilities generate:badges",
     "generate-docs": "node src/generate-docs.js",
-    "prebuild": "yarn clean && yarn generate && yarn copy-static",
+    "prebuild": "npm run clean && npm run generate-docs && npm run copy-static",
     "build": "docusaurus build",
-    "prestart": "yarn prebuild",
+    "prestart": "npm run prebuild",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
@@ -40,10 +38,10 @@
     "@mdx-js/react": "^3.0.1",
     "@microsoft/api-documenter": "^7.24.2",
     "@types/react": "^18.3.1",
-    "concurrently": "^6.2.0",
+    "concurrently": "^8.0.0",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "typescript": "~5.2.2"
+    "typescript": "~4.7.0"
   }
 }

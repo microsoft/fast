@@ -38,43 +38,34 @@ jobs:
         run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/master:refs/remotes/origin/master
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo '::set-output name=dir::$(yarn cache dir)'
-
-      - name: Set up node_modules cache
-        uses: actions/cache@v3
-        id: yarn-cache
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
         with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn_cache-
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
       - name: Install package dependencies
-        run: yarn install --frozen-lockfile --ignore-scripts --network-timeout=360000 --prefer-offline
+        run: npm ci
 
       - name: Test Prettier format
-        run: yarn format:check
+        run: npm run format:check
 
-      - name: Prepare workspaces
-        run: yarn prepare
+      - name: Build workspaces
+        run: npm run build
 
       - name: Install playwright dependencies and browsers
         run: |
-          yarn playwright install-deps
-          yarn playwright install
+          npx playwright install
 
-      - name: Run tests in changed packages
-        if: ${{ github.event_name == 'pull_request' }}
-        run: yarn lerna run test --stream --since=origin/master
-
-      - name: Run tests in all Lerna Packages
+      - name: Run tests in all Packages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-        run: yarn lerna run test --stream
+        run: npm run test
 
       - name: Initialize CodeQL
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}

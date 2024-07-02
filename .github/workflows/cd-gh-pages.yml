@@ -15,11 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [16.x]
+        node: [20.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
       with:
+        node-version: ${{ matrix.node-version }}
         fetch-depth: 0
 
     - name: Set Git User
@@ -27,30 +30,26 @@ jobs:
         git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
         git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo '::set-output name=dir::$(yarn cache dir)'
-
-    - name: Set up node_modules cache
-      uses: actions/cache@v3
-      id: yarn-cache
+    - name: Cache multiple paths
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
       with:
-        path: |
-          ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-yarn_cache-
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
 
     - name: Install package dependencies
-      run: yarn install --frozen-lockfile --ignore-scripts --prefer-offline
+      run: npm ci
 
-    - name: Prepare workspaces
-      run: yarn prepare
+    - name: Build workspaces
+      run: npm run build
 
     - name: Build GitHub Pages
-      run: yarn build:gh-pages
+      run: npm run build:gh-pages
 
     - name: Deploy GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
