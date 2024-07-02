@@ -34,7 +34,7 @@ npm ci
 After the initial install, you can re-build all workspaces in the future with:
 
 ```bash
-npm prepare
+npm run build
 ```
 
 ### Testing
