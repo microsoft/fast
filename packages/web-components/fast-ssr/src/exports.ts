@@ -64,6 +64,7 @@ function fastSSR(): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;
 };
+/** @beta */
 function fastSSR(config: Omit<SSRConfiguration, "renderMode">): {
     templateRenderer: TemplateRenderer;
     ElementRenderer: ConstructableFASTElementRenderer<SyncFASTElementRenderer>;

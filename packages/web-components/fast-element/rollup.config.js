@@ -1,5 +1,5 @@
 import filesize from "rollup-plugin-filesize";
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 
 const plugins = [
@@ -8,7 +8,7 @@ const plugins = [
             declaration: false,
             declarationDir: undefined,
         },
-        exclude: ["**/*.bench.*", "**/*.spec.*"]
+        exclude: ["**/*.bench.*", "**/*.spec.*"],
     }),
     filesize({
         showMinifiedSize: false,

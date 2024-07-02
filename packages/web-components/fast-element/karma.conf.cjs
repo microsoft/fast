@@ -121,7 +121,7 @@ module.exports = function (config) {
         options.webpack.module.rules.push({
             enforce: "post",
             exclude: /(__tests__|testing|node_modules|\.spec\.[tj]s$)/,
-            loader: "istanbul-instrumenter-loader",
+            loader: '@jsdevtools/coverage-istanbul-loader',
             options: { esModules: true },
             test: /\.[tj]s$/,
         });
@@ -129,6 +129,7 @@ module.exports = function (config) {
         options.coverageIstanbulReporter = {
             reports: ["html", "text-summary", "json", "lcovonly", "cobertura"],
             dir: "coverage",
+            fixWebpackSourcePaths: true,
         };
         options.junitReporter = {
             outputDir: "coverage",

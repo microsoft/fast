@@ -77,7 +77,7 @@ module.exports = {
                     items: [
                         {
                             label: "FAST Element",
-                            to: "docs/fast-element/getting-started",
+                            to: "docs/getting-started/quick-start",
                         },
                     ],
                 },

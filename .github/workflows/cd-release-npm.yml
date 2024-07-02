@@ -13,38 +13,50 @@ env:
 jobs:
   build_linux:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20.x]
     if: contains('chrisdholt,janechu,nicholasrice,awentzel,eisenbergeffect', github.actor)
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
         token: ${{ secrets.GH_TOKEN }}
-
-    - name: Add or Update packages
-      run: sudo yarn global add lerna@5.5.2
 
     - name: Set Git User
       run: |
         git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
         git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
 
+    - name: Cache multiple paths
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
     - name: Install package dependencies / prepare workspaces
-      run: yarn install --frozen-lockfile
+      run: npm ci
 
     - name: Check for the presence of changed files inside ./change
-      run: yarn checkchange
+      run: npm run checkchange
 
     - name: Testing Prettier format
-      run: lerna run prettier:diff
+      run: npm run prettier:diff
 
     - name: Testing unit tests
-      run: lerna run test --stream
+      run: npm run test --stream
 
     - name: Publish NPM packages
       env:
         NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: yarn publish-ci -n $NPM_SECRET_TOKEN
+      run: npm run publish-ci -n $NPM_SECRET_TOKEN
 
   notify:
     runs-on: ubuntu-latest

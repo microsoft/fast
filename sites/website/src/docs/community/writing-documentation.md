@@ -81,7 +81,7 @@ export class Statistics {
 
 ## Building and testing the docs
 
-To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide.md). Next, open a terminal and navigate to `sites/website` and run the documentation site with `yarn start`. This will allow you to preview the site at `localhost:3000` and validate that your changes are rendering.
+To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide.md). Next, open a terminal and navigate to `sites/website` and run the documentation site with `npm start`. This will allow you to preview the site at `localhost:3000` and validate that your changes are rendering.
 
 ## Style guide
 

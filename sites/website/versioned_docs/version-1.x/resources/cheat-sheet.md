@@ -36,7 +36,7 @@ import { FASTElement } from "@microsoft/fast-element";
 
 ---
 
-### [@microsoft/fast-foundation](../introduction.md/#how-can-fast-help-me)
+### [@microsoft/fast-foundation](../introduction.md#how-can-fast-help-me)
 
 **This package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems.**
 
@@ -671,7 +671,7 @@ specialColor.getValueFor(descendent); // "#FFF"
 
 #### Configuring a FAST design token
 
-FAST exposes non-color related [Design Tokens](../design-systems/fast-frame.md#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](../design-systems/fast-frame.md/#adaptive-color-system).
+FAST exposes non-color related [Design Tokens](../design-systems/fast-frame.md#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](../design-systems/fast-frame.md#adaptive-color-system).
 
 **Example: Changing the value for the `typeRampBaseFontSize` design token**
 
@@ -698,12 +698,12 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 - Here are [good first issues](https://github.com/microsoft/fast/labels/community:good-first-issue).
 
 ---
-### [Contributor guide](../community/contributor-guide.md/)
+### [Contributor guide](../community/contributor-guide.md)
 - [Machine setup](../community/contributor-guide.md#machine-setup)
 - [Cloning the repository](../community/contributor-guide.md#cloning-the-repository)
 - [Installing & building](../community/contributor-guide.md#installing-and-building)
-- [Testing](../community/contributor-guide.md/#testing)
-- [Submitting a pull request](../community/contributor-guide.md/#submitting-a-pull-request)
+- [Testing](../community/contributor-guide.md#testing)
+- [Submitting a pull request](../community/contributor-guide.md#submitting-a-pull-request)
 - [Merging a pull request](../community/contributor-guide.md#merging-a-pull-request)
 
 ---
@@ -715,7 +715,7 @@ When contributing to the FAST repository, please follow the standards defined in
 
 ---
 
-### [Contributing to `fast-components`](../community/contributor-guide.md/#developing-in-fast-components)
+### [Contributing to `fast-components`](../community/contributor-guide.md#developing-in-fast-components)
 
 ```shell
 cd packages/web-components/fast-components

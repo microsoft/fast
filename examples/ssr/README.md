@@ -4,4 +4,4 @@ An SSR implementation of the Todo App Tutorial. All components are defined by th
 
 ## Running the experience
 
-To build the app and start the web server, run `yarn start`. 
+To build the app and start the web server, run `npm start`. 

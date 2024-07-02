@@ -25,7 +25,7 @@
   "javascript.format.enable": false,
   "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "js/ts.implicitProjectConfig.experimentalDecorators": true,
-  "npm.packageManager": "yarn",
+  "npm.packageManager": "npm",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.format.enable": false,
   "typescript.preferences.quoteStyle": "double",

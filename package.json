@@ -8,34 +8,18 @@
   },
   "license": "MIT",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/web-components/*",
-      "sites/*",
-      "examples/todo-app",
-      "examples/ssr"
-    ],
-    "nohoist": [
-      "**/@microsoft/api-extractor",
-      "**/@types/chai",
-      "**/@types/jest",
-      "**/@types/karma",
-      "**/@types/mocha",
-      "**/@types/node",
-      "**/@types/react",
-      "**/@types/ws",
-      "**/chai",
-      "**/html-minifier-terser",
-      "**/react",
-      "**/react/**",
-      "**/react-dom",
-      "**/react-syntax-highlighter",
-      "**/typescript"
-    ]
-  },
+  "workspaces": [
+    "packages/web-components/fast-element",
+    "packages/web-components/fast-router",
+    "packages/web-components/fast-ssr",
+    "sites/site-utilities",
+    "sites/website",
+    "examples/todo-app",
+    "examples/ssr"
+  ],
   "engines": {
-    "yarn": ">=1.13 <2",
-    "node": ">15.0.0"
+    "npm": ">=10.0.0",
+    "node": ">=20.0.0"
   },
   "repository": {
     "type": "git",
@@ -46,20 +30,20 @@
   },
   "scripts": {
     "bump": "beachball bump",
+    "build": "npm run build --workspaces --if-present",
     "change": "beachball change",
-    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'npm run change' to generate a change file\"",
     "check": "beachball check ",
-    "build:gh-pages": "yarn workspace fast-site build",
+    "build:gh-pages": "npm run build -w fast-site",
     "publish": "beachball publish",
     "publish-ci": "beachball publish -y --access public",
-    "prepare": "lerna run prepare",
-    "test:diff:error": "echo \"Untracked files exist, try running yarn prepare to identify the culprit.\" && exit 1",
-    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || yarn test:diff:error",
-    "test:validation": "yarn test:diff",
-    "test": "yarn eslint \"/**/*.{ts}\" ",
+    "test:diff:error": "echo \"Untracked files exist, try running npm prepare to identify the culprit.\" && exit 1",
+    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
+    "test:validation": "npm run test:diff",
+    "test": "npm run test --workspaces --if-present",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
-    "format:check": "lerna run prettier:diff",
-    "format": "lerna run prettier"
+    "format:check": "npx prettier . --check",
+    "format": "npx prettier . --write"
   },
   "husky": {
     "hooks": {
@@ -71,37 +55,10 @@
       "prettier --write"
     ]
   },
-  "resolutions": {
-    "@microsoft/fast-tooling": "^0.37.7",
-    "@types/karma": "^6.3.3",
-    "@types/react": "^16.14.0",
-    "browserslist": "^4.16.5",
-    "clean-css": "^4.2.3",
-    "css-select": "^4.2.1",
-    "dns-packet": "^1.3.4",
-    "d3-color": "^3.1.0",
-    "favicons/colors": "1.4.0",
-    "glob-parent": "^5.1.2",
-    "immer": "^9.0.6",
-    "is-svg": "^4.2.2",
-    "jimp": "^0.16.1",
-    "jpeg-js": "^0.4.4",
-    "js-yaml": "^3.13.1",
-    "karma/colors": "1.4.0",
-    "lodash": "^4.17.21",
-    "nanoid": "^3.1.31",
-    "node-notifier": "^9.0.0",
-    "node-gyp": "^9.0.0",
-    "trim-newlines": "^4.0.2",
-    "trim": "^0.0.3",
-    "ua-parser-js": "^0.7.28",
-    "xmlhttprequest-ssl": "^1.6.2"
-  },
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@octokit/rest": "^18.0.6",
-    "@types/jest": "^25.2.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -109,20 +66,18 @@
     "beachball": "^2.31.2",
     "chalk": "^2.4.2",
     "copyfiles": "^2.4.1",
-    "docusaurus-init": "^1.11.0",
     "dotenv": "^6.0.0",
     "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.25.0",
-    "glob": "^7.1.2",
+    "glob": "^10.0.0",
     "husky": "^4.2.5",
-    "jest-mock": "29.5.0",
-    "lerna": "^5.5.2",
     "lint-staged": "^10.1.2",
     "markdown-it": "^12.3.2",
     "prettier": "2.8.8",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5.0.0",
     "ts-node": "^8.8.2",
-    "typescript": "^4.7.0",
+    "typescript": "~4.7.0",
     "yargs": "^16.2.0"
   }
 }

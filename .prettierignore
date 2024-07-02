@@ -9,3 +9,11 @@
 **/dist
 **/temp
 default-palette.ts
+*.md
+*.mdx
+*.js
+*.cjs
+*.json
+*.html
+*.webapp
+*.yml

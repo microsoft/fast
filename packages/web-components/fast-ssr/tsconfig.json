@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "target": "ES2015",
-    "module": "ES2015",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "importHelpers": true,
     "experimentalDecorators": true,

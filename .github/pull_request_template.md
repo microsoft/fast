@@ -43,7 +43,7 @@ Please provide a summary of the tests affected by this work and any unique strat
 
 <!--- Review the list and put an x in the boxes that apply. -->
 
-- [ ] I have included a change request file using `$ yarn change`
+- [ ] I have included a change request file using `$ npm run change`
 - [ ] I have added tests for my changes.
 - [ ] I have tested my changes.
 - [ ] I have updated the project documentation to reflect my changes.

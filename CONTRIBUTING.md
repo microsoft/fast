@@ -4,27 +4,11 @@
 
 ### Machine setup
 
-To work with the FAST [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
+To work with the FAST [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, and Npm setup on your machine.
 
 FAST uses Git as its source control system. If you haven't already installed it, you can download it [here](https://git-scm.com/downloads) or if you prefer a GUI-based approach, try [GitHub Desktop](https://desktop.github.com/).
 
 Once Git is installed, you'll also need Node.js, which FAST uses as its JavaScript runtime, enabling its build and test scripts. Node.js instructions and downloads for your preferred OS can be found [here](https://nodejs.org/en/).
-
-Because the FAST repository is structured as a monorepo, we'll need a couple of tools to manage that. The first is Yarn, which can be installed by executing the following command at the terminal:
-
-```shell
-npm install -g yarn
-```
-
-The second tool you'll need is Lerna, which can be installed with this command:
-
-```bash
-yarn global add lerna@5.5.2
-```
-
-:::important
-The above steps are a one-time set up for your machine and do not need to be repeated after the initial configuration.
-:::
 
 ### Cloning the repository
 
@@ -44,30 +28,21 @@ git clone git@github.com:microsoft/fast.git
 From within the `fast` folder where you've cloned the repo, install all package dependencies and build all workspaces (local dependencies) with this command:
 
 ```bash
-yarn
+npm ci
 ```
 
 After the initial install, you can re-build all workspaces in the future with:
 
 ```bash
-lerna run prepare
+npm run build
 ```
-
-### Developing in `fast-components`
-If you're interested in contributing changes to the `fast-component` design system, start by navigating to the `fast-components` directory and starting the Storybook local server there.
-
-```bash
-cd packages/web-components/fast-components
-yarn start
-```
-Storybook will automatically open in a browser window at `localhost:6006`.
 
 ### Testing
 
 To run all tests for all packages, use the following command:
 
 ```bash
-lerna run test
+npm run test
 ```
 
 This command can also be run from within individual package folders to execute only tests from that package.
@@ -86,10 +61,10 @@ For additional details on branch management, read the [branch guide](./BRANCH_GU
 
 #### Change Files
 
-Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `yarn change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
+Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `npm run change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
 
 :::note
-When working across feature branches, you'll need to target the branch using the following command: `yarn change --branch origin/{branch-name}`.
+When working across feature branches, you'll need to target the branch using the following command: `npm run change --branch origin/{branch-name}`.
 :::
 
 **Example: Generated change file:**
@@ -104,7 +79,7 @@ When working across feature branches, you'll need to target the branch using the
 }
 ```
 
-Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes that do not affect the published package(s), please use "none" when selecting the change type*.
+Running `npm run change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes that do not affect the published package(s), please use "none" when selecting the change type*.
 
 More information on the change process and change types can be found on the [Beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
 

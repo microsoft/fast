@@ -1,3 +1,3 @@
 # Description
 
-A set of utilities shared between the Creator and Component Explorer sites.
+A set of utilities for the documentation site.
