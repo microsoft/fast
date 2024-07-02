@@ -327,10 +327,9 @@ li {
         --type-ramp-plus-6-line-height: 72px;
         --wrapper-gutter: 5vw;
         --wrapper-max-width: 800px;
-        grid-template-columns: minmax(var(--wrapper-gutter), 1fr) minmax(
-                0,
-                var(--wrapper-max-width)
-            ) minmax(var(--wrapper-gutter), 1fr);
+        grid-template-columns:
+            minmax(var(--wrapper-gutter), 1fr) minmax(0, var(--wrapper-max-width))
+            minmax(var(--wrapper-gutter), 1fr);
     }
 
     .section,
