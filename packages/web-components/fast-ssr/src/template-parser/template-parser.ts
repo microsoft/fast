@@ -5,13 +5,13 @@
 import {
     Aspected,
     Compiler,
-    DOMAspect,
+    HTMLDirective,
     Parser,
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { parse, parseFragment } from "parse5";
-import type {
+import {
     Attribute,
     DefaultTreeCommentNode,
     DefaultTreeElement,
@@ -19,12 +19,8 @@ import type {
     DefaultTreeParentNode,
     DefaultTreeTextNode,
 } from "parse5/index.js";
-import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
-
-/**
- * Cache the results of template parsing.
- */
-const opCache: Map<ViewTemplate, Op[]> = new Map();
+import { TemplateCacheControllerImpl } from "../template-cache/controller.js";
+import { AttributeBindingOp, OpCodes, OpType } from "./op-codes.js";
 
 interface Visitor {
     visit?: (node: DefaultTreeNode) => void;
@@ -33,7 +29,7 @@ interface Visitor {
 
 declare module "parse5/index.js" {
     interface DefaultTreeElement {
-        isDefinedCustomElement?: boolean;
+        isCustomElement?: boolean;
     }
 }
 
@@ -47,7 +43,7 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
     // html, body tags whether the template contains them or not. Skip over visiting and
     // leaving these elements if there is no source-code location, because that indicates
     // they are not in the template string.
-    const shouldVisit = (node as DefaultTreeElement).sourceCodeLocation !== null;
+    const shouldVisit = !!(node as DefaultTreeElement).sourceCodeLocation;
     if (visitor.visit && shouldVisit) {
         visitor.visit(node);
     }
@@ -103,14 +99,31 @@ function firstElementChild(node: DefaultTreeParentNode): DefaultTreeElement | nu
             | undefined) || null
     );
 }
+/**
+ * https://html.spec.whatwg.org/dev/custom-elements.html#custom-elements-core-concepts
+ * @internal
+ */
+export const customElementNameExcludeList = [
+    "annotation-xml",
+    "color-profile",
+    "font-face",
+    "font-face-src",
+    "font-face-uri",
+    "font-face-format",
+    "font-face-name",
+    "missing-glyph",
+];
+
+export const templateCacheController = TemplateCacheControllerImpl.create(OpCodes);
 
 /**
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
  */
-export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
-    const cached: Op[] | undefined = opCache.get(template);
-    if (cached !== undefined) {
+export function parseTemplateToOpCodes(template: ViewTemplate): OpCodes {
+    const cached = !templateCacheController.disabled && OpCodes.get(template);
+
+    if (!!cached) {
         return cached;
     }
 
@@ -129,8 +142,8 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
     const templateString = html;
 
     const codes = parseStringToOpCodes(templateString, template.factories);
-    opCache.set(template, codes);
-    return codes;
+    !templateCacheController.disabled && OpCodes.set(template, codes);
+    return codes as OpCodes;
 }
 
 export function parseStringToOpCodes(
@@ -145,10 +158,12 @@ export function parseStringToOpCodes(
      * as a custom element's template
      */
     forCustomElement = false
-): Op[] {
+): OpCodes {
     const nodeTree = (forCustomElement ? parseFragment : parse)(templateString, {
         sourceCodeLocationInfo: true,
     });
+
+    let factoryIndex = 0;
 
     if (!isDefaultTreeParentNode(nodeTree)) {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
@@ -170,7 +185,9 @@ export function parseStringToOpCodes(
     /**
      * Collection of op codes
      */
-    const opCodes: Op[] = [];
+    const opCodes = new OpCodes();
+
+    let hostBindingTarget: null | DefaultTreeElement = null;
 
     /**
      * Parses an Element node, pushing all op codes for the element into
@@ -183,8 +200,10 @@ export function parseStringToOpCodes(
         // as well as any element with attribute bindings
         let augmentOpeningTag = false;
         const { tagName } = node;
-        const ctor: typeof HTMLElement | undefined = customElements.get(node.tagName);
-        node.isDefinedCustomElement = !!ctor;
+        const ctor: typeof HTMLElement | undefined = customElements.get(tagName);
+        const isCustomElement =
+            tagName.includes("-") && !customElementNameExcludeList.includes(tagName);
+        node.isCustomElement = isCustomElement;
 
         // Sort attributes by whether they're related to a binding or if they have
         // static value
@@ -197,20 +216,21 @@ export function parseStringToOpCodes(
                 if (parsed) {
                     const factory = Compiler.aggregate(parsed) as ViewBehaviorFactory &
                         Aspected;
-                    // Guard against directives like children, ref, and slotted
-                    if (factory.dataBinding && factory.aspectType !== DOMAspect.content) {
-                        prev.dynamic.set(current, {
-                            type: OpType.attributeBinding,
-                            dataBinding: factory.dataBinding,
-                            aspect: factory.aspectType,
-                            target: factory.targetAspect,
-                            useCustomElementInstance: Boolean(
-                                node.isDefinedCustomElement
-                            ),
-                        });
-                    }
+                    prev.dynamic.set(current, {
+                        type: OpType.attributeBinding,
+                        factory: factory,
+                        useCustomElementInstance: isCustomElement,
+                        index: factoryIndex++,
+                    });
                 } else {
                     prev.static.set(current.name, current.value);
+
+                    // FAST's client-side compile step adds factories for all
+                    // host attributes, even if there is no data-binding. Increment
+                    // the factoryIndex to account for that behavior
+                    if (hostBindingTarget === node) {
+                        factoryIndex++;
+                    }
                 }
 
                 return prev;
@@ -222,7 +242,7 @@ export function parseStringToOpCodes(
         );
 
         // Emit a CustomElementOpenOp when the custom element is defined
-        if (ctor !== undefined) {
+        if (isCustomElement) {
             augmentOpeningTag = true;
             opCodes.push({
                 type: OpType.customElementOpen,
@@ -248,6 +268,7 @@ export function parseStringToOpCodes(
         // All dynamic attributes will be rendered from an AttributeBindingOp. Additionally, When the
         // node is a custom element, all static attributes will be rendered via the CustomElementOpenOp,
         // so this code skips over static attributes in that case.
+
         for (const attr of node.attrs) {
             if (attributes.dynamic.has(attr)) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
@@ -256,17 +277,7 @@ export function parseStringToOpCodes(
                 augmentOpeningTag = true;
                 opCodes.push(code);
                 skipTo(location.endOffset);
-            } else if (!attributes.static.has(attr.name)) {
-                // Handle interpolated directives like children, ref, and slotted
-                const parsed = Parser.parse(attr.value, factories);
-                if (parsed) {
-                    const location = node.sourceCodeLocation!.attrs[attr.name];
-                    const factory = Compiler.aggregate(parsed);
-                    flushTo(location.startOffset);
-                    opCodes.push({ type: OpType.viewBehaviorFactory, factory });
-                    skipTo(location.endOffset);
-                }
-            } else if (node.isDefinedCustomElement) {
+            } else if (isCustomElement) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
                 flushTo(location.startOffset);
                 skipTo(location.endOffset);
@@ -274,8 +285,17 @@ export function parseStringToOpCodes(
         }
 
         if (augmentOpeningTag && node.tagName !== "template") {
-            if (ctor) {
-                flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
+            flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
+            if (attributes.dynamic.size > 0) {
+                opCodes.push({
+                    type: OpType.attributeBindingMarker,
+                    indexes: Array.from(attributes.dynamic.values()).map(
+                        attr => attr.index
+                    ),
+                });
+            }
+
+            if (isCustomElement) {
                 opCodes.push({ type: OpType.customElementAttributes });
                 flush(">");
                 skipTo(node.sourceCodeLocation!.startTag.endOffset);
@@ -284,7 +304,7 @@ export function parseStringToOpCodes(
             }
         }
 
-        if (ctor !== undefined) {
+        if (isCustomElement) {
             opCodes.push({ type: OpType.customElementShadow });
         }
     }
@@ -346,6 +366,7 @@ export function parseStringToOpCodes(
 
         if (fec !== null && fec.tagName === "template") {
             tree = fec as DefaultTreeParentNode;
+            hostBindingTarget = fec;
             const location = fec.sourceCodeLocation!;
             finalOffset = location.endTag.endOffset;
             lastOffset = location.startTag.startOffset;
@@ -367,9 +388,21 @@ export function parseStringToOpCodes(
                         if (typeof part === "string") {
                             flush(part);
                         } else {
+                            // There are cases where aspects are mis-assigned during template pre-compilation
+                            // that are patched-up during by the complier prior to rendering client-side. Sometimes,
+                            // that mis-assignment causes content bindings to be aspected as attribute bindings.
+                            // If a text node has bindings, the aspect should always be content, so ensure the
+                            // aspect is assigned accordingly
+                            if (isTextNode(node)) {
+                                HTMLDirective.assignAspect(
+                                    part as ViewBehaviorFactory & Aspected
+                                );
+                            }
+
                             opCodes.push({
                                 type: OpType.viewBehaviorFactory,
                                 factory: part,
+                                index: factoryIndex++,
                             });
                         }
                     }
@@ -382,7 +415,7 @@ export function parseStringToOpCodes(
 
         leave(node: DefaultTreeNode): void {
             if (isElementNode(node)) {
-                if (node.isDefinedCustomElement) {
+                if (node.isCustomElement) {
                     opCodes.push({ type: OpType.customElementClose });
                 } else if (node.tagName === "template") {
                     flushTo(node.sourceCodeLocation?.endTag.startOffset);

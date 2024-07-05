@@ -1,9 +1,11 @@
 import {
     Compiler,
+    ElementController,
     ElementStyles,
     Updates,
     ViewBehaviorFactory,
 } from "@microsoft/fast-element";
+import { SSRElementController } from "./element-controller.js";
 import { FASTSSRStyleStrategy } from "./styles/style-strategy.js";
 import { SSRView } from "./view.js";
 
@@ -28,3 +30,5 @@ ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
 // This is required due to the synchronous nature of rendering templates
 // to a string.
 Updates.setMode(false);
+
+ElementController.setStrategy(SSRElementController);

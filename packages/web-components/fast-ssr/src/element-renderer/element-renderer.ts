@@ -2,31 +2,12 @@
  * This file was ported from {@link https://github.com/lit/lit/tree/main/packages/labs/ssr}.
  * Please see {@link ../ACKNOWLEDGEMENTS.md}
  */
-import { observable } from "@microsoft/fast-element";
+import { DOM, observable } from "@microsoft/fast-element";
 import { RenderInfo } from "../render-info.js";
 import { escapeHtml } from "../escape-html.js";
 import { HTMLElement as ShimHTMLElement } from "../dom-shim.js";
 import { shouldBubble } from "../event-utilities.js";
 import { AttributesMap, ElementRenderer } from "./interfaces.js";
-
-export const getElementRenderer = (
-    renderInfo: RenderInfo,
-    tagName: string,
-    ceClass: typeof HTMLElement | undefined = customElements.get(tagName),
-    attributes: AttributesMap = new Map()
-): ElementRenderer => {
-    if (ceClass === undefined) {
-        console.warn(`Custom element ${tagName} was not registered.`);
-    } else {
-        for (const renderer of renderInfo.elementRenderers) {
-            if (renderer.matchesClass(ceClass, tagName, attributes)) {
-                return new renderer(tagName, renderInfo);
-            }
-        }
-    }
-
-    return new FallbackRenderer(tagName, renderInfo);
-};
 
 /**
  * @beta
@@ -35,19 +16,22 @@ export abstract class DefaultElementRenderer
     implements Omit<ElementRenderer, "renderShadow" | "renderAttributes">
 {
     private parent: ElementRenderer | null = null;
+    private restoreElementDispatchEvent: (() => void) | null = null;
     @observable
-    abstract readonly element?: HTMLElement;
+    abstract element?: HTMLElement;
     elementChanged() {
+        this.restoreElementDispatchEvent?.();
         if (this.element) {
-            const dispatch = this.element.dispatchEvent;
-            Reflect.defineProperty(this.element, "dispatchEvent", {
+            const element = this.element;
+            const dispatch = element.dispatchEvent;
+            Reflect.defineProperty(element, "dispatchEvent", {
                 value: (event: Event) => {
-                    let canceled = dispatch.call(this.element, event);
+                    let canceled = dispatch.call(element, event);
 
                     if (shouldBubble(event)) {
                         if (this.parent) {
                             canceled = this.parent.dispatchEvent(event);
-                        } else if (this.element instanceof ShimHTMLElement) {
+                        } else if (element instanceof ShimHTMLElement) {
                             // Only emit on document if the the element is the DOM shim's element.
                             // Otherwise, the installed DOM should implement it's own behavior for bubbling
                             // an event from an element to the document and window.
@@ -58,6 +42,12 @@ export abstract class DefaultElementRenderer
                     return canceled;
                 },
             });
+            this.restoreElementDispatchEvent = () => {
+                Reflect.defineProperty(element, "dispatchEvent", {
+                    value: dispatch,
+                });
+                this.restoreElementDispatchEvent = null;
+            };
         }
     }
 
@@ -76,14 +66,16 @@ export abstract class DefaultElementRenderer
         return false;
     }
 
-    constructor(
-        public readonly tagName: string,
-        private readonly renderInfo?: RenderInfo
-    ) {
+    constructor(public readonly tagName: string, renderInfo?: RenderInfo) {
         this.parent = renderInfo?.customElementInstanceStack.at(-1) || null;
     }
 
-    abstract connectedCallback(): void;
+    connectedCallback() {}
+    disconnectedCallback() {
+        this.restoreElementDispatchEvent?.();
+        this.parent = null;
+        delete this.element;
+    }
     abstract attributeChangedCallback(
         name: string,
         prev: string | null,
@@ -109,9 +101,23 @@ export abstract class DefaultElementRenderer
     public setAttribute(name: string, value: string) {
         if (this.element) {
             const prev = this.element.getAttribute(name);
-            this.element.setAttribute(name, value);
-            this.attributeChangedCallback(name, prev, value);
+            if (value !== prev) {
+                DOM.setAttribute(this.element, name, value);
+                this.attributeChangedCallback(name, prev, value);
+            }
         }
+    }
+}
+
+export function renderAttribute(name: string, value: unknown, tagName?: string) {
+    if (value === "" || value === undefined || value === null) {
+        return ` ${name}`;
+    } else if (typeof value === "string") {
+        return ` ${name}="${escapeHtml(value)}"`;
+    } else if (typeof value === "boolean" || typeof value === "number") {
+        return ` ${name}="${value}"`;
+    } else {
+        throw new Error(`Cannot assign attribute '${name}' for element ${tagName}.`);
     }
 }
 
@@ -119,25 +125,38 @@ export abstract class DefaultElementRenderer
  * An ElementRenderer used as a fallback in the case where a custom element is
  * either unregistered or has no other matching renderer.
  */
-class FallbackRenderer extends DefaultElementRenderer implements ElementRenderer {
+export class FallbackRenderer extends DefaultElementRenderer implements ElementRenderer {
     public element?: HTMLElement | undefined;
+
+    /**
+     * When true, instructs the ElementRenderer to yield the `defer-hydration` attribute for
+     * rendered elements.
+     */
+    public deferHydration = false;
+
     private readonly _attributes: { [name: string]: string } = {};
 
     public setAttribute(name: string, value: string) {
-        this._attributes[name] = value;
-    }
-
-    public *renderAttributes(): IterableIterator<string> {
-        for (const [name, value] of Object.entries(this._attributes)) {
-            if (value === "" || value === undefined || value === null) {
-                yield ` ${name}`;
-            } else {
-                yield ` ${name}="${escapeHtml(value)}"`;
-            }
+        if (value === undefined || value === null) {
+            this.removeAttribute(name);
+        } else {
+            this._attributes[name] = value;
         }
     }
 
-    connectedCallback() {}
+    public removeAttribute(name: string) {
+        delete this._attributes[name];
+    }
+
+    public *renderAttributes(): IterableIterator<string> {
+        if (this.deferHydration) {
+            yield " defer-hydration";
+        }
+        for (const [name, value] of Object.entries(this._attributes)) {
+            yield renderAttribute(name, value, this.element?.tagName);
+        }
+    }
+
     attributeChangedCallback() {}
     /* eslint-disable-next-line */
     *renderShadow() {}
