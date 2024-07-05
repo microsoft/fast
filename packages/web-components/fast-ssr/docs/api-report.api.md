@@ -6,9 +6,10 @@
 
 /// <reference types="node" />
 
+import { Aspected } from '@microsoft/fast-element';
 import { AsyncLocalStorage } from 'async_hooks';
 import { Constructable } from '@microsoft/fast-element';
-import { Disposable } from '@microsoft/fast-element';
+import { Disposable as Disposable_2 } from '@microsoft/fast-element';
 import { DOMContainer } from '@microsoft/fast-element/di.js';
 import { EventEmitter } from 'node:events';
 import { ExecutionContext } from '@microsoft/fast-element';
@@ -109,7 +110,7 @@ export default fastSSR;
 export type Middleware = (req: any, res: any, next: () => any) => void;
 
 // @beta (undocumented)
-export interface RenderInfo extends Disposable {
+export interface RenderInfo extends Disposable_2 {
     // @deprecated
     customElementHostStack: ElementRenderer[];
     customElementInstanceStack: ElementRenderer[];
@@ -185,17 +186,9 @@ export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
 
 // Warnings were encountered during analysis:
 //
-<<<<<<< HEAD:packages/web-components/fast-ssr/docs/api-report.api.md
-// dist/dts/exports.d.ts:41:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/exports.d.ts:56:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/request-storage.d.ts:33:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
-=======
 // dist/dts/exports.d.ts:60:5 - (ae-forgotten-export) The symbol "SyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/exports.d.ts:63:5 - (ae-incompatible-release-tags) The symbol "templateRenderer" is marked as @public, but its signature references "TemplateRenderer" which is marked as @beta
-// dist/dts/exports.d.ts:64:5 - (ae-incompatible-release-tags) The symbol "ElementRenderer" is marked as @public, but its signature references "ConstructableFASTElementRenderer" which is marked as @beta
-// dist/dts/exports.d.ts:74:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
-// dist/dts/request-storage.d.ts:32:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
->>>>>>> 9a90dab8e (Adds support for FASTElement hydration):packages/web-components/fast-ssr/docs/api-report.md
+// dist/dts/exports.d.ts:75:5 - (ae-forgotten-export) The symbol "AsyncFASTElementRenderer" needs to be exported by the entry point exports.d.ts
+// dist/dts/request-storage.d.ts:33:5 - (ae-forgotten-export) The symbol "getItem" needs to be exported by the entry point exports.d.ts
 
 // (No @packageDocumentation comment for this package)
 
