@@ -16,9 +16,9 @@ import { children } from "./children.js";
 import { elements } from "./node-observation.js";
 
 describe("The render", () => {
-    const childTemplate = html`Child Template`;
-    const childEditTemplate = html`Child Edit Template`;
-    const parentTemplate = html`Parent Template`;
+    const childTemplate = html`<p>Child Template</p>`;
+    const childEditTemplate = html`<p>Child Edit Template</p>`;
+    const parentTemplate = html`<p>Parent Template</p>`;
 
     context("template function", () => {
         class TestChild {

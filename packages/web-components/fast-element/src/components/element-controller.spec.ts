@@ -21,7 +21,7 @@ describe("The ElementController", () => {
     const cssB = "class-b { color: blue; }";
     const stylesB = css`${cssB}`;
 
-    function createController(
+    function createController<T extends ElementController = ElementController>(
         config: Omit<PartialFASTElementDefinition, "name"> = {},
         BaseClass = FASTElement
     ) {
@@ -33,7 +33,7 @@ describe("The ElementController", () => {
         ).define();
 
         const element = document.createElement(name);
-        const controller = ElementController.forCustomElement(element);
+        const controller = ElementController.forCustomElement(element) as T;
 
         return {
             name,
@@ -548,6 +548,41 @@ describe("The ElementController", () => {
             controller.disconnect();
             expect(behavior.disconnectedCallback).to.have.been.called();
         });
+
+        it("should not connect behaviors more than once without first disconnecting the behavior", () => {
+            class TestController extends ElementController {
+                public connectBehaviors() {
+                    super.connectBehaviors();
+                }
+
+                public disconnectBehaviors() {
+                    super.disconnectBehaviors();
+                }
+            }
+
+            ElementController.setStrategy(TestController);
+            const behavior: HostBehavior = {
+                connectedCallback: chai.spy(),
+                disconnectedCallback: chai.spy()
+            };
+            const { controller } = createController<TestController>({styles: css``.withBehaviors(behavior)});
+            controller.connect();
+            controller.connectBehaviors();
+
+            expect(behavior.connectedCallback).to.have.been.called.once;
+
+            controller.disconnect();
+            controller.disconnectBehaviors();
+            expect(behavior.disconnectedCallback).to.have.been.called.once;
+
+            controller.connect();
+            controller.connectBehaviors();
+
+            expect(behavior.connectedCallback).to.have.been.called.twice;
+
+            ElementController.setStrategy(ElementController);
+        });
+
         it("should add behaviors added by a stylesheet when added and remove them the stylesheet is removed", () => {
             const behavior: HostBehavior = {
                 addedCallback: chai.spy(),

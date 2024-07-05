@@ -2,8 +2,8 @@ import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { DOM, DOMPolicy } from "../dom.js";
-import type { Binding } from "../binding/binding.js";
 import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
 import { nextId, Parser } from "./markup.js";
 import { HTMLBindingDirective } from "./html-binding-directive.js";
 import {
@@ -416,7 +416,6 @@ export const Compiler = {
         }
 
         let sourceAspect!: string;
-        let binding!: Binding;
         let isVolatile: boolean | undefined = false;
         let bindingPolicy: DOMPolicy | undefined = void 0;
         const partCount = parts.length;
@@ -427,7 +426,6 @@ export const Compiler = {
             }
 
             sourceAspect = (x as any as Aspected).sourceAspect || sourceAspect;
-            binding = (x as any as Aspected).dataBinding || binding;
             isVolatile = isVolatile || (x as any as Aspected).dataBinding!.isVolatile;
             bindingPolicy = bindingPolicy || (x as any as Aspected).dataBinding!.policy;
             return (x as any as Aspected).dataBinding!.evaluate;
@@ -443,10 +441,10 @@ export const Compiler = {
             return output;
         };
 
-        binding.evaluate = expression;
-        binding.isVolatile = isVolatile;
-        binding.policy = bindingPolicy ?? policy;
-        const directive = new HTMLBindingDirective(binding);
+        const directive = new HTMLBindingDirective(
+            oneWay(expression, bindingPolicy ?? policy, isVolatile)
+        );
+
         HTMLDirective.assignAspect(directive, sourceAspect!);
         return directive;
     },

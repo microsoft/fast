@@ -1,30 +1,36 @@
+import { EventEmitter } from "node:events";
 import {
     Aspected,
     DOMAspect,
     ExecutionContext,
-    FASTElementDefinition,
     ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DefaultRenderInfo, RenderInfo } from "../render-info.js";
-import { getElementRenderer } from "../element-renderer/element-renderer.js";
 import {
     AsyncElementRenderer,
+    AttributesMap,
     ConstructableElementRenderer,
+    ElementRenderer,
 } from "../element-renderer/interfaces.js";
-import { AttributeBindingOp, Op, OpType } from "../template-parser/op-codes.js";
+import { FallbackRenderer } from "../element-renderer/element-renderer.js";
+import { OpCodes, OpType } from "../template-parser/op-codes.js";
 import {
     parseStringToOpCodes,
     parseTemplateToOpCodes,
 } from "../template-parser/template-parser.js";
-import { ViewBehaviorFactoryRenderer } from "./directives.js";
+import {
+    HTMLBindingDirectiveRenderer,
+    ViewBehaviorFactoryRenderer,
+} from "./directives.js";
+import { hydrationMarker } from "./hydration-marker-emitter.js";
 
 function getLast<T>(arr: T[]): T | undefined {
     return arr[arr.length - 1];
 }
 
 /** @beta */
-export interface TemplateRenderer {
+export interface TemplateRenderer extends EventEmitter {
     render(
         template: ViewTemplate | string,
         renderInfo?: RenderInfo,
@@ -33,10 +39,11 @@ export interface TemplateRenderer {
     ): IterableIterator<string>;
     createRenderInfo(): RenderInfo;
     withDefaultElementRenderers(...renderers: ConstructableElementRenderer[]): void;
+    readonly emitHydratableMarkup: boolean;
 }
 
 /** @beta */
-export interface AsyncTemplateRenderer {
+export interface AsyncTemplateRenderer extends EventEmitter {
     render(
         template: ViewTemplate | string,
         renderInfo?: RenderInfo,
@@ -47,6 +54,7 @@ export interface AsyncTemplateRenderer {
     withDefaultElementRenderers(
         ...renderers: ConstructableElementRenderer<AsyncElementRenderer>[]
     ): void;
+    readonly emitHydratableMarkup: boolean;
 }
 
 /**
@@ -56,11 +64,14 @@ export interface AsyncTemplateRenderer {
  *
  * @internal
  */
-export class DefaultTemplateRenderer implements TemplateRenderer {
+export class DefaultTemplateRenderer extends EventEmitter implements TemplateRenderer {
     private viewBehaviorFactoryRenderers: Map<any, ViewBehaviorFactoryRenderer<any>> =
         new Map();
 
     private defaultElementRenderers: ConstructableElementRenderer[] = [];
+    public emitHydratableMarkup: boolean = false;
+    public deferHydration: (tagName: string) => boolean = () => false;
+    public tryRecoverFromErrors: boolean | ((e: unknown) => void) = false;
 
     /**
      * Renders a {@link @microsoft/fast-element#ViewTemplate} or HTML string.
@@ -79,8 +90,13 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
             template instanceof ViewTemplate
                 ? parseTemplateToOpCodes(template)
                 : parseStringToOpCodes(template, {});
-
         yield* this.renderOpCodes(codes, renderInfo, source, context);
+
+        // If there are no open custom elements, clean up all rendered
+        // custom elements
+        if (renderInfo.customElementInstanceStack.length === 0) {
+            renderInfo.dispose();
+        }
     }
 
     /**
@@ -92,7 +108,7 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
      * @internal
      */
     public *renderOpCodes(
-        codes: Op[],
+        codes: OpCodes,
         renderInfo: RenderInfo,
         source: unknown,
         context: ExecutionContext
@@ -104,8 +120,12 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                     break;
                 case OpType.viewBehaviorFactory: {
                     const factory = code.factory as ViewBehaviorFactory & Aspected;
-                    const ctor = factory.constructor;
-                    const renderer = this.viewBehaviorFactoryRenderers.get(ctor);
+                    const renderer = this.getFactoryRenderer(factory);
+
+                    if (this.shouldEmitHydrationMarkup(renderInfo)) {
+                        yield hydrationMarker.contentBindingStart(code.index, codes.id);
+                    }
+
                     if (renderer) {
                         yield* renderer.render(
                             factory,
@@ -114,23 +134,6 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                             this,
                             context
                         );
-                    } else if (factory.aspectType && factory.dataBinding) {
-                        const result = factory.dataBinding.evaluate(source, context);
-
-                        // If the result is a template, render the template
-                        if (result instanceof ViewTemplate) {
-                            yield* this.render(result, renderInfo, source, context);
-                        } else if (result === null || result === undefined) {
-                            // Don't yield anything if result is null
-                            break;
-                        } else if (factory.aspectType === DOMAspect.content) {
-                            yield result;
-                        } else {
-                            // debugging error - we should handle all result cases
-                            throw new Error(
-                                `Unknown AspectedHTMLDirective result found: ${result}`
-                            );
-                        }
                     } else {
                         // Throw if a SSR directive implementation cannot be found.
                         throw new Error(
@@ -138,10 +141,14 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                         );
                     }
 
+                    if (this.shouldEmitHydrationMarkup(renderInfo)) {
+                        yield hydrationMarker.contentBindingEnd(code.index, codes.id);
+                    }
+
                     break;
                 }
                 case OpType.customElementOpen: {
-                    const renderer = getElementRenderer(
+                    const renderer = this.getElementRenderer(
                         renderInfo,
                         code.tagName,
                         code.ctor,
@@ -160,7 +167,10 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                 }
 
                 case OpType.customElementClose: {
-                    renderInfo.customElementInstanceStack.pop();
+                    const renderer = renderInfo.customElementInstanceStack.pop()!;
+                    if (renderer) {
+                        renderInfo.renderedCustomElementList.push(renderer);
+                    }
                     break;
                 }
 
@@ -188,49 +198,68 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                         break;
                     }
 
-                    // FAST components with a shadowOptions assigned `undefined`
-                    // render to light DOM client-side. If SSR encounters this,
-                    // simply skip rendering declarative shadow DOM so the
-                    // element template renders into the current root.
-                    const ctor = customElements.get(currentRenderer.tagName);
-                    const skipDSD =
-                        ctor &&
-                        FASTElementDefinition.getByType(ctor)?.shadowOptions ===
-                            undefined;
-
-                    if (!skipDSD) {
-                        yield '<template shadowrootmode="open">';
-                    }
-
                     const content = currentRenderer.renderShadow(renderInfo);
 
                     if (content) {
                         yield* content;
                     }
 
-                    if (!skipDSD) {
-                        yield "</template>";
-                    }
-
                     break;
                 }
 
                 case OpType.attributeBinding: {
-                    const { aspect, dataBinding: binding } = code;
-                    // Don't emit anything for events or directives without bindings
-                    if (aspect === DOMAspect.event) {
-                        break;
-                    }
+                    const { factory } = code;
+                    const factoryRenderer = this.getFactoryRenderer(factory);
 
-                    const result = binding.evaluate(source, context);
-                    const renderer = this.getAttributeBindingRenderer(code);
+                    if (
+                        code.useCustomElementInstance &&
+                        factoryRenderer === HTMLBindingDirectiveRenderer
+                    ) {
+                        if (factory.aspectType === DOMAspect.event) {
+                            // No-op for event bindings
+                            break;
+                        }
+                        // The attribute needs to be set for the element in this case
+                        // because the instance will yield out it's own attributes.
+                        const result = factory.dataBinding!.evaluate(source, context);
+                        const instance = getLast(renderInfo.customElementInstanceStack);
+                        const target = factory.targetAspect;
 
-                    if (renderer) {
-                        yield* renderer(code, result, renderInfo);
+                        switch (factory.aspectType) {
+                            case DOMAspect.attribute:
+                                instance?.setAttribute(target, result);
+                                break;
+                            case DOMAspect.booleanAttribute:
+                                if (result) {
+                                    instance?.setAttribute(target, "");
+                                }
+                                break;
+                            case DOMAspect.property:
+                                instance?.setProperty(target, result);
+                                break;
+                            case DOMAspect.tokenList:
+                                instance?.setAttribute("class", result);
+                                break;
+                        }
+                    } else if (factoryRenderer) {
+                        yield* factoryRenderer.render(
+                            factory,
+                            renderInfo,
+                            source,
+                            this,
+                            context
+                        );
                     }
 
                     break;
                 }
+
+                case OpType.attributeBindingMarker:
+                    if (this.shouldEmitHydrationMarkup(renderInfo)) {
+                        yield ` ${hydrationMarker.attribute(code.indexes)}`;
+                    }
+
+                    break;
 
                 case OpType.templateElementOpen:
                     yield "<template";
@@ -239,12 +268,17 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
                     }
 
                     for (const attr of code.dynamicAttributes) {
-                        const renderer = this.getAttributeBindingRenderer(attr);
+                        const renderer = this.getFactoryRenderer(attr.factory);
 
                         if (renderer) {
-                            const result = attr.dataBinding.evaluate(source, context);
                             yield " ";
-                            yield* renderer(attr, result, renderInfo);
+                            yield* renderer.render(
+                                attr.factory,
+                                renderInfo,
+                                source,
+                                this,
+                                context
+                            );
                         }
                     }
                     yield ">";
@@ -270,6 +304,25 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
         return new DefaultRenderInfo(renderers.concat());
     }
 
+    public getElementRenderer(
+        renderInfo: RenderInfo,
+        tagName: string,
+        ceClass: typeof HTMLElement | undefined = customElements.get(tagName),
+        attributes: AttributesMap = new Map()
+    ): ElementRenderer {
+        if (ceClass) {
+            for (const renderer of renderInfo.elementRenderers) {
+                if (renderer.matchesClass(ceClass, tagName, attributes)) {
+                    return new renderer(tagName, renderInfo);
+                }
+            }
+        }
+
+        const fallbackRenderer = new FallbackRenderer(tagName, renderInfo);
+        fallbackRenderer.deferHydration = this.deferHydration(tagName);
+        return fallbackRenderer;
+    }
+
     /**
      * Configures the ElementRenderers used during RenderInfo construction by {@link DefaultTemplateRenderer.createRenderInfo}
      * and the default RenderInfo argument used by {@link DefaultTemplateRenderer.render}.
@@ -293,16 +346,10 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
         }
     }
 
-    private getAttributeBindingRenderer(code: AttributeBindingOp) {
-        switch (code.aspect) {
-            case DOMAspect.booleanAttribute:
-                return DefaultTemplateRenderer.renderBooleanAttribute;
-            case DOMAspect.property:
-            case DOMAspect.tokenList:
-                return DefaultTemplateRenderer.renderProperty;
-            case DOMAspect.attribute:
-                return DefaultTemplateRenderer.renderAttribute;
-        }
+    private getFactoryRenderer<T extends ViewBehaviorFactory>(
+        factory: T
+    ): ViewBehaviorFactoryRenderer<T> | null {
+        return this.viewBehaviorFactoryRenderers.get(factory.constructor) || null;
     }
 
     /**
@@ -314,76 +361,9 @@ export class DefaultTemplateRenderer implements TemplateRenderer {
         return value === "" ? name : `${name}="${value}"`;
     }
 
-    /**
-     * Renders an attribute binding
-     */
-    private static *renderAttribute(
-        code: AttributeBindingOp,
-        value: any,
-        renderInfo: RenderInfo
-    ) {
-        if (value !== null && value !== undefined) {
-            const { target } = code;
-            if (code.useCustomElementInstance) {
-                const instance = getLast(renderInfo.customElementInstanceStack);
-
-                if (instance) {
-                    instance.setAttribute(target, value);
-                }
-            } else {
-                yield DefaultTemplateRenderer.formatAttribute(target, value);
-            }
-        }
-    }
-
-    /**
-     * Renders a property or tokenList binding
-     */
-    private static *renderProperty(
-        code: AttributeBindingOp,
-        value: any,
-        renderInfo: RenderInfo
-    ) {
-        const { target } = code;
-        if (code.useCustomElementInstance) {
-            const instance = getLast(renderInfo.customElementInstanceStack);
-
-            if (instance) {
-                switch (code.aspect) {
-                    case DOMAspect.property:
-                        instance.setProperty(target, value);
-                        break;
-                    case DOMAspect.tokenList:
-                        instance.setAttribute("class", value);
-                        break;
-                }
-            }
-        } else if (target === "classList" || target === "className") {
-            yield DefaultTemplateRenderer.formatAttribute("class", value);
-        }
-    }
-
-    /**
-     * Renders a boolean attribute binding
-     */
-    private static *renderBooleanAttribute(
-        code: AttributeBindingOp,
-        value: unknown,
-        renderInfo: RenderInfo
-    ) {
-        if (value) {
-            const value = "";
-            const { target } = code;
-
-            if (code.useCustomElementInstance) {
-                const instance = getLast(renderInfo.customElementInstanceStack);
-
-                if (instance) {
-                    instance.setAttribute(target, value);
-                }
-            } else {
-                yield DefaultTemplateRenderer.formatAttribute(target, value);
-            }
-        }
+    public shouldEmitHydrationMarkup(renderInfo: RenderInfo) {
+        return (
+            this.emitHydratableMarkup && !!renderInfo.customElementInstanceStack.length
+        );
     }
 }

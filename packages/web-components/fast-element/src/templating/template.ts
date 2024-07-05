@@ -43,6 +43,15 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     ): ElementView<TSource, TParent>;
 }
 
+export interface HydratableElementViewTemplate<TSource = any, TParent = any>
+    extends ElementViewTemplate<TSource, TParent> {
+    hydrate(
+        firstChild: Node,
+        lastChild: Node,
+        hostBindingTarget?: Element
+    ): ElementView<TSource, TParent>;
+}
+
 /**
  * A marker interface used to capture types when interpolating Directive helpers
  * into templates.
@@ -67,6 +76,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     inline(): CaptureType<TSource, TParent>;
 }
 
+export interface HydratableSyntheticViewTemplate<TSource = any, TParent = any>
+    extends SyntheticViewTemplate {
+    hydrate(firstChild: Node, lastChild: Node): SyntheticView<TSource, TParent>;
+}
+
 /**
  * The result of a template compilation operation.
  * @public
@@ -77,6 +91,8 @@ export interface HTMLTemplateCompilationResult<TSource = any, TParent = any> {
      * @param hostBindingTarget - The host binding target for the view.
      */
     createView(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+
+    readonly factories: CompiledViewBehaviorFactory[];
 }
 
 // Much thanks to LitHTML for working this out!
@@ -185,10 +201,9 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
-     * Creates an HTMLView instance based on this template definition.
-     * @param hostBindingTarget - The element that host behaviors will be bound to.
+     * @internal
      */
-    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
+    public compile() {
         if (this.result === null) {
             this.result = Compiler.compile<TSource, TParent>(
                 this.html,
@@ -197,7 +212,15 @@ export class ViewTemplate<TSource = any, TParent = any>
             );
         }
 
-        return this.result.createView(hostBindingTarget);
+        return this.result;
+    }
+
+    /**
+     * Creates an HTMLView instance based on this template definition.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
+     */
+    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
+        return this.compile().createView(hostBindingTarget);
     }
 
     /**
