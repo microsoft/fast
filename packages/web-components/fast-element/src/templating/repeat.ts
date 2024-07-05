@@ -1,10 +1,10 @@
+import { HydrationMarkup, isHydratable } from "../components/hydration.js";
+import { ArrayObserver, Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
-import { ArrayObserver, Splice } from "../observation/arrays.js";
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
-import { Markup } from "./markup.js";
 import {
     AddViewBehaviorFactory,
     HTMLDirective,
@@ -12,8 +12,14 @@ import {
     ViewBehaviorFactory,
     ViewController,
 } from "./html-directive.js";
-import type { CaptureType, SyntheticViewTemplate, ViewTemplate } from "./template.js";
-import { HTMLView, SyntheticView } from "./view.js";
+import { Markup } from "./markup.js";
+import type {
+    CaptureType,
+    HydratableSyntheticViewTemplate,
+    SyntheticViewTemplate,
+    ViewTemplate,
+} from "./template.js";
+import { HTMLView, HydrationStage, HydrationView, SyntheticView } from "./view.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -42,8 +48,8 @@ function bindWithoutPositioning(
     index: number,
     controller: ViewController
 ): void {
-    view.context.parent = controller!.source;
-    view.context.parentContext = controller!.context;
+    view.context.parent = controller.source;
+    view.context.parentContext = controller.context;
     view.bind(items[index]);
 }
 
@@ -53,13 +59,35 @@ function bindWithPositioning(
     index: number,
     controller: ViewController
 ): void {
-    view.context.parent = controller!.source;
-    view.context.parentContext = controller!.context;
+    view.context.parent = controller.source;
+    view.context.parentContext = controller.context;
     view.context.length = items.length;
     view.context.index = index;
     view.bind(items[index]);
 }
 
+function isCommentNode(node: Node): node is Comment {
+    return node.nodeType === Node.COMMENT_NODE;
+}
+
+export class HydrationRepeatError extends Error {
+    constructor(
+        /**
+         * The error message
+         */
+        message: string | undefined,
+        public readonly propertyBag: {
+            index: number;
+            hydrationStage: string;
+            itemsLength?: number;
+            viewsState: string[];
+            viewTemplateString?: string;
+            rootNodeContent: string;
+        }
+    ) {
+        super(message);
+    }
+}
 /**
  * A behavior that renders a template for each item in an array.
  * @public
@@ -109,7 +137,17 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         this.items = this.itemsBindingObserver.bind(controller);
         this.template = this.templateBindingObserver.bind(controller);
         this.observeItems(true);
-        this.refreshAllViews();
+
+        if (
+            isHydratable(this.template) &&
+            isHydratable(controller) &&
+            controller.hydrationStage !== HydrationStage.hydrated
+        ) {
+            this.hydrateViews(this.template);
+        } else {
+            this.refreshAllViews();
+        }
+
         controller.onUnbind(this);
     }
 
@@ -262,6 +300,27 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             for (; i < itemsLength; ++i) {
                 if (i < viewsLength) {
                     const view = views[i];
+                    if (!view) {
+                        const serializer = new XMLSerializer();
+                        throw new HydrationRepeatError(
+                            `View is null or undefined inside "${
+                                (this.location.getRootNode() as ShadowRoot).host.nodeName
+                            }".`,
+                            {
+                                index: i,
+                                hydrationStage: (this.controller as HydrationView)
+                                    .hydrationStage,
+                                itemsLength,
+                                viewsState: views.map(v => (v ? "hydrated" : "empty")),
+                                viewTemplateString: serializer.serializeToString(
+                                    (template.create() as any).fragment
+                                ),
+                                rootNodeContent: serializer.serializeToString(
+                                    this.location.getRootNode() as any
+                                ),
+                            }
+                        );
+                    }
                     bindView(view, items, i, controller);
                 } else {
                     const view = template.create();
@@ -283,7 +342,100 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         const views = this.views;
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            views[i].unbind();
+            const view = views[i];
+            if (!view) {
+                const serializer = new XMLSerializer();
+                throw new HydrationRepeatError(
+                    `View is null or undefined inside "${
+                        (this.location.getRootNode() as ShadowRoot).host.nodeName
+                    }".`,
+                    {
+                        index: i,
+                        hydrationStage: (this.controller as HydrationView).hydrationStage,
+                        viewsState: views.map(v => (v ? "hydrated" : "empty")),
+                        rootNodeContent: serializer.serializeToString(
+                            this.location.getRootNode() as any
+                        ),
+                    }
+                );
+            }
+            view.unbind();
+        }
+    }
+
+    private hydrateViews(template: HydratableSyntheticViewTemplate) {
+        if (!this.items) {
+            return;
+        }
+
+        this.views = new Array(this.items.length);
+        let current = this.location.previousSibling;
+
+        while (current !== null) {
+            if (!isCommentNode(current)) {
+                current = current.previousSibling;
+                continue;
+            }
+            const index = HydrationMarkup.parseRepeatEndMarker(current.data);
+            if (index === null) {
+                current = current.previousSibling;
+                continue;
+            }
+            current.data = "";
+            // end of repeat is the previousSibling of end comment
+            const end = current.previousSibling;
+
+            if (!end) {
+                throw new Error(
+                    `Error when hydrating inside "${
+                        (this.location.getRootNode() as ShadowRoot).host.nodeName
+                    }": end should never be null.`
+                );
+            }
+
+            // find start marker
+            let start: Node | null = end;
+            // How many unmatched end markers we've encountered
+            let unmatchedEndMarkers = 0;
+            while (start !== null) {
+                if (isCommentNode(start)) {
+                    if (HydrationMarkup.isRepeatViewEndMarker(start.data)) {
+                        unmatchedEndMarkers++;
+                    } else if (HydrationMarkup.isRepeatViewStartMarker(start.data)) {
+                        if (unmatchedEndMarkers) {
+                            unmatchedEndMarkers--;
+                        } else {
+                            if (
+                                HydrationMarkup.parseRepeatStartMarker(start.data) !==
+                                index
+                            ) {
+                                throw new Error(
+                                    `Error when hydrating inside "${
+                                        (this.location.getRootNode() as ShadowRoot).host
+                                            .nodeName
+                                    }": Mismatched start and end markers.`
+                                );
+                            }
+                            start.data = "";
+                            current = start.previousSibling;
+                            // start of repeat content is the nextSibling of start comment
+                            start = start.nextSibling!;
+                            const view = template.hydrate(start, end);
+                            this.views[index] = view;
+                            this.bindView(view, this.items, index, this.controller);
+                            break;
+                        }
+                    }
+                }
+                start = start.previousSibling;
+            }
+            if (!start) {
+                throw new Error(
+                    `Error when hydrating inside "${
+                        (this.location.getRootNode() as ShadowRoot).host.nodeName
+                    }": start should never be null.`
+                );
+            }
         }
     }
 }

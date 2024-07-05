@@ -1,3 +1,5 @@
+import { fastStyleTagName } from "./fast-style-config.js";
+
 interface StyleCache {
     [key: string]: CSSStyleSheet | string;
 }
@@ -76,5 +78,4 @@ export default class FASTStyle extends HTMLElement {
     }
 }
 
-export const fastStyleTagName = "fast-style";
 customElements.define(fastStyleTagName, FASTStyle);

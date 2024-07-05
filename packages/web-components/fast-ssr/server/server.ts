@@ -59,6 +59,14 @@ app.get("/fast-style.js", (req: Request, res: Response) =>
         res
     )
 );
+app.get("/fast-style-config.js", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./dist/esm/styles/fast-style-config.js",
+        "application/javascript",
+        req,
+        res
+    )
+);
 app.get("/fast-command-buffer", (req: Request, res: Response) =>
     handlePathRequest(
         "./src/fast-command-buffer/index.fixture.html",

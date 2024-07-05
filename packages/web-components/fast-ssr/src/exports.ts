@@ -41,6 +41,7 @@ export interface SSRConfiguration {
 
     /**
      * Configures the renderer to yield the `defer-hydration` attribute during element rendering.
+     * Can be a boolean or a function that receives tagName and returns a boolean.
      * The `defer-hydration` attribute can be used to prevent immediate hydration of the element
      * by fast-element by importing hydration support in the client bundle.
      *
@@ -51,12 +52,33 @@ export interface SSRConfiguration {
      * import "@microsoft/fast-element/install-element-hydration";
      * ```
      */
-    deferHydration?: boolean;
+    deferHydration?: boolean | ((tagName: string) => boolean);
+
+    /**
+     * Configures the renderer to emit markup that allows fast-element to hydrate elements.
+     *
+     * Defaults to `false`
+     */
+    emitHydratableMarkup?: boolean;
 
     /**
      * Renderers for author-defined ViewBehaviorFactories.
      */
     viewBehaviorFactoryRenderers?: ViewBehaviorFactoryRenderer<any>[];
+
+    /**
+     * When true or when a error handler is provided, the renderer will
+     * attempt to recover from errors that occur at specific points,
+     * during rendering, including:
+     *
+     * connectedCallback(): No declarative shadow-dom will be emitted for the element
+     */
+    tryRecoverFromError?: boolean | ((e: unknown) => void);
+
+    /**
+     * Optional custom style renderer instance, used to override StyleElementStyleRenderer
+     */
+    styleRenderer?: StyleRenderer;
 }
 
 /** @beta */
@@ -95,14 +117,23 @@ function fastSSR(config: SSRConfiguration & Record<"renderMode", "async">): {
  * @beta
  */
 function fastSSR(config?: SSRConfiguration): any {
-    config = {
+    const rConfig: Required<SSRConfiguration> = {
         renderMode: "sync",
         deferHydration: false,
+        emitHydratableMarkup: false,
+        tryRecoverFromError: false,
         ...config,
     } as Required<SSRConfiguration>;
     const templateRenderer = new DefaultTemplateRenderer();
+    const deferHydration =
+        typeof rConfig.deferHydration === "function"
+            ? rConfig.deferHydration
+            : () => !!rConfig?.deferHydration;
+    templateRenderer.deferHydration = deferHydration;
+    templateRenderer.emitHydratableMarkup = !!rConfig.emitHydratableMarkup;
+    templateRenderer.tryRecoverFromErrors = rConfig.tryRecoverFromError;
 
-    const elementRenderer = class extends (config.renderMode !== "async"
+    const elementRenderer = class extends (rConfig.renderMode !== "async"
         ? SyncFASTElementRenderer
         : AsyncFASTElementRenderer) {
         static #disabledConstructors = new Set<typeof HTMLElement | string>();
@@ -112,9 +143,7 @@ function fastSSR(config?: SSRConfiguration): any {
             tagName: string,
             attributes: AttributesMap
         ): boolean {
-            const canRender = ctor.prototype instanceof FASTElement;
-
-            if (!canRender) {
+            if (FASTElementDefinition.getByType(ctor) === undefined) {
                 return false;
             }
 
@@ -133,8 +162,9 @@ function fastSSR(config?: SSRConfiguration): any {
             }
         }
         protected templateRenderer: DefaultTemplateRenderer = templateRenderer;
-        protected styleRenderer = new StyleElementStyleRenderer();
-        protected deferHydration = config?.deferHydration;
+        protected styleRenderer =
+            rConfig.styleRenderer || new StyleElementStyleRenderer();
+        protected deferHydration = deferHydration;
     };
 
     templateRenderer.withDefaultElementRenderers(
@@ -148,9 +178,9 @@ function fastSSR(config?: SSRConfiguration): any {
 
     // Add any author-defined ViewBehaviorFactories. This order allows overriding
     // out-of-box renderers.
-    if (Array.isArray(config.viewBehaviorFactoryRenderers)) {
+    if (Array.isArray(rConfig.viewBehaviorFactoryRenderers)) {
         templateRenderer.withViewBehaviorFactoryRenderers(
-            ...config.viewBehaviorFactoryRenderers
+            ...rConfig.viewBehaviorFactoryRenderers
         );
     }
 
@@ -163,6 +193,7 @@ function fastSSR(config?: SSRConfiguration): any {
 export default fastSSR;
 export * from "./declarative-shadow-dom-polyfill.js";
 export * from "./request-storage.js";
+export { templateCacheController } from "./template-parser/template-parser.js";
 export type {
     ElementRenderer,
     AsyncElementRenderer,

@@ -1,5 +1,6 @@
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
+import { isHydratable } from "../components/hydration.js";
 import type { DOMPolicy } from "../dom.js";
 import { Constructable, isFunction, isString } from "../interfaces.js";
 import { Binding, BindingDirective } from "../binding/binding.js";
@@ -28,6 +29,7 @@ import {
     TemplateValue,
     ViewTemplate,
 } from "./template.js";
+import { HydrationStage } from "./view.js";
 
 type ComposableView = ContentView & {
     isComposed?: boolean;
@@ -70,7 +72,23 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
         this.data = this.dataBindingObserver.bind(controller);
         this.template = this.templateBindingObserver.bind(controller);
         controller.onUnbind(this);
-        this.refreshView();
+
+        if (
+            isHydratable(this.template) &&
+            isHydratable(controller) &&
+            controller.hydrationStage !== HydrationStage.hydrated &&
+            !this.view
+        ) {
+            const viewNodes =
+                controller.bindingViewBoundaries[this.directive.targetNodeId];
+
+            if (viewNodes) {
+                this.view = this.template.hydrate(viewNodes.first, viewNodes.last);
+                this.bindView(this.view);
+            }
+        } else {
+            this.refreshView();
+        }
     }
 
     /**
@@ -102,6 +120,20 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
         this.refreshView();
     }
 
+    private bindView(view: ComposableView) {
+        // It's possible that the value is the same as the previous template
+        // and that there's actually no need to compose it.
+        if (!view.isComposed) {
+            view.isComposed = true;
+            view.bind(this.data);
+            view.insertBefore(this.location!);
+            view.$fastTemplate = this.template;
+        } else if (view.needsBindOnly) {
+            view.needsBindOnly = false;
+            view.bind(this.data);
+        }
+    }
+
     private refreshView() {
         let view = this.view;
         const template = this.template;
@@ -127,17 +159,7 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
             }
         }
 
-        // It's possible that the value is the same as the previous template
-        // and that there's actually no need to compose it.
-        if (!view.isComposed) {
-            view.isComposed = true;
-            view.bind(this.data);
-            view.insertBefore(this.location!);
-            view.$fastTemplate = template;
-        } else if (view.needsBindOnly) {
-            view.needsBindOnly = false;
-            view.bind(this.data);
-        }
+        this.bindView(view);
     }
 }
 
@@ -150,7 +172,7 @@ export class RenderDirective<TSource = any>
 {
     /**
      * The structural id of the DOM node to which the created behavior will apply.
-     */ BindingDirective;
+     */
     public targetNodeId: string;
 
     /**
@@ -327,7 +349,7 @@ const typeToInstructionLookup = new Map<
 >();
 
 /* eslint @typescript-eslint/naming-convention: "off"*/
-const defaultAttributes = { ":model": x => x };
+const defaultAttributes = { ":model": (x: any) => x };
 const brand = Symbol("RenderInstruction");
 const defaultViewName = "default-view";
 const nullTemplate = html`
@@ -613,6 +635,10 @@ export class NodeTemplate implements ContentTemplate, ContentView {
     }
 
     create(): ContentView {
+        return this;
+    }
+
+    hydrate(first: Node, last: Node): ContentView {
         return this;
     }
 }

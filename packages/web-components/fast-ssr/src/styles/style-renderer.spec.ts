@@ -1,8 +1,8 @@
 import "../install-dom-shim.js";
-import { test, expect } from "@playwright/test";
-import { FASTStyleStyleRenderer } from "./style-renderer.js";
+import "./fast-style.js";
 import { css } from "@microsoft/fast-element";
-
+import { expect, test } from "@playwright/test";
+import { FASTStyleStyleRenderer } from "./style-renderer.js";
 
 const cssSheetRegex = /css="?(.+)"/m;
 function getSheet(element: string): string | null {
@@ -14,39 +14,49 @@ function getSheet(element: string): string | null {
         return result[1];
     }
 }
+
 test.describe("FASTStyleStyleRenderer", () => {
+    const styleCache = new Set<any>();
+
+    test.afterEach(() => {
+        styleCache.clear();
+    });
+
     test("should return a '<fast-style'> element", () => {
         const style = css``;
+        styleCache.add(style);
         const renderer = new FASTStyleStyleRenderer();
-        const tester = /<fast-style .+><\/fast-style>/
-        expect(tester.test(renderer.render(style))).not.toBeNull()
+        const tester = /<fast-style .+><\/fast-style>/;
+        expect(tester.test(renderer.render(styleCache))).not.toBeNull();
     });
     test("should return a '<fast-style'> element without a 'css' attribute when the sheet has already been rendered", () => {
         const renderer = new FASTStyleStyleRenderer();
         const style = css``;
-        const firstResult = renderer.render(style);
+        styleCache.add(style);
+        const firstResult = renderer.render(styleCache);
         expect(cssSheetRegex.test(firstResult)).toBe(true);
 
-        const secondResult = renderer.render(style);
+        const secondResult = renderer.render(styleCache);
 
         expect(firstResult).not.toBe(secondResult);
-        expect(cssSheetRegex.test(secondResult)).toBe(false)
+        expect(cssSheetRegex.test(secondResult)).toBe(false);
     });
 
     test("should emit the sheet content into the 'css' attribute the first time a sheet instance is rendered", () => {
         const renderer = new FASTStyleStyleRenderer();
         const style = css`:host{ color: red; }`;
+        styleCache.add(style);
 
-        const result = renderer.render(style);
+        const result = renderer.render(styleCache);
 
-        expect(getSheet(result)).toBe(':host{ color: red; }');
+        expect(getSheet(result)).toBe(`:host{ color: red; }`);
     });
 
     test("should emit the sheet content for embedded ElementStyle instances", () => {
         const renderer = new FASTStyleStyleRenderer();
         const style = css`:host{ color: red; } ${css`:host { background: blue; }`}`;
-
-        const result = renderer.render(style);
+        styleCache.add(style);
+        const result = renderer.render(styleCache);
 
         expect(getSheet(result)).toBe(':host{ color: red; } :host { background: blue; }');
     });
@@ -55,9 +65,9 @@ test.describe("FASTStyleStyleRenderer", () => {
     test("should emit the sheet content for embedded strings", () => {
         const renderer = new FASTStyleStyleRenderer();
         const style = css`:host{ color: red; } ${`:host { background: blue; }`}`;
+        styleCache.add(style);
+        const result = renderer.render(styleCache);
 
-        const result = renderer.render(style);
-
-        expect(getSheet(result)).toBe(':host{ color: red; } :host { background: blue; }');
+        expect(getSheet(result)).toBe(`:host{ color: red; } :host { background: blue; }`);
     });
 });
