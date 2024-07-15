@@ -82,7 +82,7 @@ import { attr, css, FASTElement, html } from "@microsoft/fast-element";
 /*
  * Define your component logic
  */
-className HelloWorld extends FASTElement {
+class HelloWorld extends FASTElement {
   @attr
   name: string;
 }
