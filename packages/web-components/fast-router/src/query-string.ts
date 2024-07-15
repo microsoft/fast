@@ -1,5 +1,5 @@
 const encode = encodeURIComponent;
-const encodeKey = (key: string) => encode(key).replace("%24", "$");
+const encodeKey = (key: string) => encode(key).replace(/%24/g, "$");
 
 function buildParam(key: string, value: any, traditional?: boolean): Array<string> {
     let result: string[] = [];
