@@ -3,5 +3,5 @@
   "comment": "Fix CodeQL issues",
   "packageName": "@microsoft/fast-element",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "prerelease"
 }
