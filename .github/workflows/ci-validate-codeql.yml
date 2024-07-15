@@ -13,6 +13,9 @@ on:
   schedule:
     - cron: 0 7 * * 3
 
+permissions:
+  security-events: write
+
 jobs:
   cross-platform_cross-browser:
     runs-on: ${{ matrix.os }}
