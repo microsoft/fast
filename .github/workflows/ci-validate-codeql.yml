@@ -51,18 +51,12 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install package dependencies
-        run: npm ci
-
-      - name: Build workspaces
-        run: npm run build
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: typescript
+          languages: javascript-typescript
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:typescript"
+          category: "/language:javascript-typescript"
