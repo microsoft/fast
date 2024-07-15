@@ -1,4 +1,4 @@
-name: Validate Platforms/Browsers
+name: Validate CodeQL
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-11]
+        os: [ubuntu-latest]
 
     env:
       PLAYWRIGHT_BROWSERS_PATH: 0
@@ -54,15 +54,13 @@ jobs:
       - name: Install package dependencies
         run: npm ci
 
-      - name: Test Prettier format
-        run: npm run format:check
-
       - name: Build workspaces
         run: npm run build
 
-      - name: Install playwright dependencies and browsers
-        run: |
-          npx playwright install
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: typescript
 
-      - name: Run tests in all Packages
-        run: npm run test
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
