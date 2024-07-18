@@ -1,5 +1,5 @@
 const encode = encodeURIComponent;
-const encodeKey = (key: string) => encode(key).replace("%24", "$");
+const encodeKey = (key: string) => encode(key).replace(/%24/g, "$");
 
 function buildParam(key: string, value: any, traditional?: boolean): Array<string> {
     let result: string[] = [];
@@ -51,8 +51,12 @@ function processScalarParam(existedParam: any, value: string): any {
     return value;
 }
 
-function parseComplexParam(queryParams: Object, keys: string[], value: any): void {
-    let currentParams: any = queryParams;
+function parseComplexParam(
+    queryParams: Record<string, any>,
+    keys: string[],
+    value: any
+): void {
+    let currentParams: Record<string, any> = queryParams;
     const keysLastIndex = keys.length - 1;
 
     for (let j = 0; j <= keysLastIndex; j++) {
@@ -61,13 +65,14 @@ function parseComplexParam(queryParams: Object, keys: string[], value: any): voi
             // The value has to be an array or a false value
             // It can happen that the value is no array if the key was repeated with traditional style like `list=1&list[]=2`
             const prevValue =
-                !currentParams[key] || typeof currentParams[key] === "object"
-                    ? currentParams[key]
-                    : [currentParams[key]];
-            currentParams = currentParams[key] =
-                prevValue || (isNaN(keys[j + 1] as any) ? {} : []);
+                !currentParams.get(key) || typeof currentParams.get(key) === "object"
+                    ? currentParams.get(key)
+                    : [currentParams.get(key)];
+            currentParams.set(key, prevValue || (isNaN(keys[j + 1] as any) ? {} : []));
+            currentParams = currentParams.get(key);
         } else {
-            currentParams = currentParams[key] = value;
+            currentParams.set(key, value);
+            currentParams = currentParams.get(key);
         }
     }
 }
