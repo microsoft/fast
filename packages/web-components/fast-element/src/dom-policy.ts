@@ -77,7 +77,7 @@ function safeURL(
 ): DOMSink {
     return (target: Node, name: string, value: string, ...rest: any[]) => {
         if (isString(value)) {
-            value = value.replace("javascript:", "");
+            value = value.replace(/(javascript:|vbscript:|data:)/, "");
         }
 
         sink(target, name, value, ...rest);
