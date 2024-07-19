@@ -15,8 +15,8 @@ const bindingStartMarker = /fe-b\$\$start\$\$(\d+)\$\$(.+)\$\$fe-b/;
 const bindingEndMarker = /fe-b\$\$end\$\$(\d+)\$\$(.+)\$\$fe-b/;
 const repeatViewStartMarker = /fe-repeat\$\$start\$\$(\d+)\$\$fe-repeat/;
 const repeatViewEndMarker = /fe-repeat\$\$end\$\$(\d+)\$\$fe-repeat/;
-const elementBoundaryStartMarker = /fe-eb\$\$start\$\$(.+)\$\$fe-eb/;
-const elementBoundaryEndMarker = /fe-eb\$\$end\$\$(.+)\$\$fe-eb/;
+const elementBoundaryStartMarker = /^(?:.{0,1000})fe-eb\$\$start\$\$(.+?)\$\$fe-eb/;
+const elementBoundaryEndMarker = /fe-eb\$\$end\$\$(.{0,1000})\$\$fe-eb(?:.{0,1000})$/;
 
 function isComment(node: Node): node is Comment {
     return node && node.nodeType === Node.COMMENT_NODE;
@@ -54,7 +54,7 @@ export const HydrationMarkup = Object.freeze({
         return repeatViewEndMarker.test(content);
     },
     isElementBoundaryStartMarker(node: Node) {
-        return isComment(node) && elementBoundaryStartMarker.test(node.data);
+        return isComment(node) && elementBoundaryStartMarker.test(node.data.trim());
     },
     isElementBoundaryEndMarker(node: Node) {
         return isComment(node) && elementBoundaryEndMarker.test(node.data);
@@ -93,7 +93,7 @@ export const HydrationMarkup = Object.freeze({
      * Parses element Id from element boundary markers
      */
     parseElementBoundaryStartMarker(content: string): null | string {
-        return parseStringMarker(elementBoundaryStartMarker, content);
+        return parseStringMarker(elementBoundaryStartMarker, content.trim());
     },
     parseElementBoundaryEndMarker(content: string): null | string {
         return parseStringMarker(elementBoundaryEndMarker, content);
