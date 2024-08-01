@@ -54,6 +54,7 @@ module.exports = {
             items: [
                 {
                     type: "doc",
+                    label: "@microsoft/fast-element",
                     id: "api/fast-element",
                     customProps: {
                         description:
@@ -61,6 +62,22 @@ module.exports = {
                         keywords: ["fast-element"],
                     },
                 },
+                {
+                    type: "doc",
+                    label: "@microsoft/fast-element/context.js",
+                    id: "api/fast-element/context/fast-element",
+                    customProps: {
+                        keywords: ["context"],
+                    },
+                },
+                {
+                    type: "doc",
+                    label: "@microsoft/fast-element/di.js",
+                    id: "api/fast-element/di/fast-element",
+                    customProps: {
+                        keywords: ["dependency injection"],
+                    },
+                }
             ],
         },
         {
