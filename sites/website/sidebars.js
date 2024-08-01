@@ -41,6 +41,7 @@ module.exports = {
             },
             items: [
                 "advanced/working-with-custom-elements",
+                "advanced/working-without-decorators",
                 "advanced/dependency-injection",
             ],
         },
