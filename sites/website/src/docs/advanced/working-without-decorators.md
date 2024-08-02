@@ -6,9 +6,9 @@ keywords:
   - decorators
 ---
 
-Most of our documented examples include the use of TypeScript decorators, however as decorators are an unimplemented feature in JavaScript, see [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/decorators.html) for details on our implementation, using them may not be right for your project.
+Most of our documented examples include the use of TypeScript decorators. However, as decorators are an unimplemented feature in JavaScript, using them may not be right for your project. See [TypeScript documentation](https://www.typescriptlang.org/docs/handbook/decorators.html) for details on our implementation.
 
-Without decorators you can make use of the static `definition` property on `FASTElement` to add your name, template, styles, and an attributes array.
+The static `definition` accepts the same configuration options as the `@attr` decorator. For example, to bind a property name that is different from an attribute name:
 
 ```javascript
 import { FASTElement, html, css } from '@microsoft/fast-element';
