@@ -5,7 +5,7 @@
     "apiReport": {
         "enabled": true,
         "reportFolder": "<projectFolder>/docs/di",
-        "reportFileName": "api-report.md"
+        "reportFileName": "api-report"
     },
     "docModel": {
         "enabled": true,

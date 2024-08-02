@@ -243,7 +243,7 @@ Here's an example starter `taconfig.json` that you can use:
     "target": "ES2015",
     "module": "ES2015",
     "moduleResolution": "node",
-    "importHelpers": true,
+    "importHelpers": true, // when using decorators this allows for the smallest footprint using tslib
     "experimentalDecorators": true,
     "declaration": true,
     "declarationMap": true,

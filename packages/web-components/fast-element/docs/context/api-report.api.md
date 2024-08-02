@@ -27,7 +27,7 @@ export const Context: Readonly<{
 // @public
 export type ContextCallback<ValueType> = (value: ValueType, dispose?: () => void) => void;
 
-// Warning: (ae-forgotten-export) The symbol "ParameterDecorator" needs to be exported by the entry point context.d.ts
+// Warning: (ae-forgotten-export) The symbol "ParameterDecorator_2" needs to be exported by the entry point context.d.ts
 //
 // @public
 export type ContextDecorator<T = any> = Readonly<Context<T>> & PropertyDecorator & ParameterDecorator_2;
