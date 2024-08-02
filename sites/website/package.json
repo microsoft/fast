@@ -1,0 +1,49 @@
+{
+  "name": "fast-site",
+  "version": "0.6.2",
+  "private": true,
+  "scripts": {
+    "clean": "concurrently \"yarn:clean-*\"",
+    "clean-docs": "node ../../build/clean.js docs",
+    "clean-static": "node ../../build/clean.js static",
+    "copy-static": "node src/copy-static.js",
+    "generate": "concurrently \"yarn:generate-*\"",
+    "generate-badges": "yarn workspace @microsoft/site-utilities generate:badges",
+    "generate-docs": "node src/generate-docs.js",
+    "prebuild": "yarn clean && yarn generate && yarn copy-static",
+    "build": "docusaurus build",
+    "prestart": "yarn prebuild",
+    "serve": "docusaurus serve",
+    "start": "docusaurus start",
+    "swizzle": "docusaurus swizzle",
+    "test": "npx docusaurus-mdx-checker"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.2.1",
+    "@docusaurus/module-type-aliases": "^3.2.1",
+    "@docusaurus/preset-classic": "^3.2.1",
+    "@docusaurus/theme-live-codeblock": "^3.2.1",
+    "@docusaurus/theme-mermaid": "^3.2.1",
+    "@docusaurus/types": "^3.2.1",
+    "@mdx-js/react": "^3.0.1",
+    "@microsoft/api-documenter": "^7.24.2",
+    "@types/react": "^18.3.1",
+    "concurrently": "^6.2.0",
+    "prism-react-renderer": "^2.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "~5.2.2"
+  }
+}

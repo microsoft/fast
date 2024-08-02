@@ -1,0 +1,29 @@
+name: CI - FAST Local Testing
+
+on:
+  push:
+    branches:
+      - users/*
+
+jobs:
+  build_local_linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add/Update packages
+      run: |
+        sudo apt-get update
+        sudo apt-get install yarn
+        sudo yarn global upgrade typescript
+        sudo yarn global add lerna@5.5.2
+
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Testing Prettier format
+      run: lerna run prettier:diff
+
+    - name: Testing units
+      run: lerna run test --stream
