@@ -3,8 +3,8 @@ import {themes as prismThemes} from 'prism-react-renderer';
 module.exports = {
     title: "FAST",
     tagline: "The adaptive interface system for modern web experiences",
-    url: "https://microsoft.github.io",
-    baseUrl: "/fast/",
+    url: "https://www.fast.design",
+    baseUrl: "/",
     deploymentBranch: "gh-pages",
     trailingSlash: false,
     favicon: "/favicon.ico",
