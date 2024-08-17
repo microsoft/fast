@@ -29,7 +29,7 @@ FAST is dedicated to providing support for native Web Components and modern Web 
 * Create reusable UI components with `@microsoft/fast-element`, all based on W3C Web Component standards.
 * Integrate FAST Web Components with any library, framework, or build system. You can adopt incrementally without re-writing your existing systems.
 
-For an in-depth explanation of FAST [see our docs introduction](https://www.fast.design/docs/introduction/).
+For an in-depth explanation of FAST [see our docs introduction](https://fast.design/docs/introduction/).
 
 ## Packages
 
