@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Adds support for FASTElement hydration",
-  "packageName": "@microsoft/fast-element",
-  "email": "171390049+prabhujayapal@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

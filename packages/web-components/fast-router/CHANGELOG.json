@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Mon, 19 Aug 2024 22:04:19 GMT",
+      "version": "1.0.0-alpha.28",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.28",
+      "comments": {
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "630a5e25a953201afa016e54aa77cf68d9d7663a",
+            "comment": "update beachball and move disallowedChangeTypes to package.json"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "78910b1158a6a24b717b3d94616fa93ab6786ab4",
+            "comment": "Remove yarn and lerna in favor of npm"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "035aefc8a25f4f75f3eb2e8cfb4dd0c60e0d2f67",
+            "comment": "Fix CodeQL issues"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.0.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Jun 2024 17:00:56 GMT",
       "version": "1.0.0-alpha.27",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.27",

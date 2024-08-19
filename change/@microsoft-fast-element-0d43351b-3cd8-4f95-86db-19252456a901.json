@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "Update @microsoft/fast-element to major version",
-  "packageName": "@microsoft/fast-element",
-  "email": "13071055+chrisdholt@users.noreply.github.com",
-  "dependentChangeType": "prerelease"
-}

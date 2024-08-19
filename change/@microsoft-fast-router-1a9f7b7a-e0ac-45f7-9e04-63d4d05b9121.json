@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update beachball and move disallowedChangeTypes to package.json",
-  "packageName": "@microsoft/fast-router",
-  "email": "13071055+chrisdholt@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
