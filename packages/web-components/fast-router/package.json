@@ -82,5 +82,13 @@
   },
   "dependencies": {
     "@microsoft/fast-element": "^2.0.0-beta.26"
+  },
+  "beachball": {
+    "disallowedChangeTypes": [
+      "major",
+      "minor",
+      "patch"
+    ],
+    "tag": "alpha"
   }
 }

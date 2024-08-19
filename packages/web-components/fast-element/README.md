@@ -9,7 +9,7 @@ The `fast-element` library is a lightweight means to easily build performant, me
 
 ### From NPM
 
-To install the `fast-element` library using `npm`:
+To install the latest `fast-element` library using `npm`:
 
 ```shell
 npm install --save @microsoft/fast-element
