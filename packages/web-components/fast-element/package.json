@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "version": "2.0.0-beta.26",
+  "version": "2.0.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -95,7 +95,9 @@
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
-    "build": "npm run build:tsc && npm run build:rollup && npm run doc",
+    "doc:exports": "node ./scripts/run-api-extractor.js",
+    "doc:exports:ci": "node ./scripts/run-api-extractor.js ci",
+    "build": "npm run build:tsc && npm run build:rollup && npm run doc && npm run doc:exports",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
@@ -105,7 +107,7 @@
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "test": "npm run eslint && npm run test-chrome:verbose && npm run doc:ci",
+    "test": "npm run eslint && npm run test-chrome:verbose && npm run doc:ci && npm run doc:exports:ci",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-chrome": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --single-run --coverage",

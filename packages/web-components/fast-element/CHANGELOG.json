@@ -2,6 +2,61 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 19 Aug 2024 22:04:19 GMT",
+      "version": "2.0.0",
+      "tag": "@microsoft/fast-element_v2.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "630a5e25a953201afa016e54aa77cf68d9d7663a",
+            "comment": "Update @microsoft/fast-element to major version"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "78910b1158a6a24b717b3d94616fa93ab6786ab4",
+            "comment": "Remove yarn and lerna in favor of npm"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "97bf7097a3d85df153df3528a450d7d65dd9b1cc",
+            "comment": "Add api-extractor generated docs for di and context export paths"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4f166dc4fb83cca168b1f284da21fc6979fd1420",
+            "comment": "Update tensile-perf dependency"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "92e82f74b9ec0e5eb28895a6aba6426224ee434d",
+            "comment": "Add working with decorators doc and updated api-report markdown"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "035aefc8a25f4f75f3eb2e8cfb4dd0c60e0d2f67",
+            "comment": "Fix CodeQL issues"
+          },
+          {
+            "author": "171390049+prabhujayapal@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "882eded0b9dbc7d129ae4e634878024a0d7ffc08",
+            "comment": "Adds support for FASTElement hydration"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Jun 2024 17:00:56 GMT",
       "version": "2.0.0-beta.26",
       "tag": "@microsoft/fast-element_v2.0.0-beta.26",

@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Thu, 20 Jun 2024 17:00:56 GMT and should not be manually modified.
+This log was last generated on Mon, 19 Aug 2024 22:04:19 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.28
+
+Mon, 19 Aug 2024 22:04:19 GMT
+
+### Changes
+
+- Fix CodeQL issues (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.0
 
 ## 1.0.0-alpha.27
 

@@ -6,7 +6,6 @@
     "singleQuote": false,
     "trailingComma": "es5",
     "bracketSpacing": true,
-    "jsxBracketSameLine": false,
     "arrowParens": "avoid",
     "htmlWhitespaceSensitivity": "ignore",
     "endOfLine": "auto"

@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Mon, 19 Aug 2024 22:04:19 GMT",
+      "version": "1.0.0-beta.35",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.35",
+      "comments": {
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "630a5e25a953201afa016e54aa77cf68d9d7663a",
+            "comment": "update beachball and move disallowedChangeTypes to package.json"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "02762acdca5412565acb89fb5b985fb5453347e1",
+            "comment": "Fix a dependency issue with express open redirect vulnerability"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "78910b1158a6a24b717b3d94616fa93ab6786ab4",
+            "comment": "Remove yarn and lerna in favor of npm"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "171390049+prabhujayapal@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "882eded0b9dbc7d129ae4e634878024a0d7ffc08",
+            "comment": "Adds support for FASTElement hydration"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Jun 2024 17:00:56 GMT",
       "version": "1.0.0-beta.33",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.33",
