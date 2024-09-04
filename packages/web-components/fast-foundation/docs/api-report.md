@@ -2621,8 +2621,6 @@ export class Toolbar extends FoundationElement {
     childItems: Element[];
     // (undocumented)
     protected childItemsChanged(prev: undefined | Element[], next: Element[]): void;
-    // @internal
-    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2631,6 +2629,8 @@ export class Toolbar extends FoundationElement {
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    mouseDownHandler(e: MouseEvent): boolean | void;
     orientation: Orientation;
     // @internal
     protected reduceFocusableElements(): void;
@@ -2820,7 +2820,7 @@ export type YearFormat = "2-digit" | "numeric";
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:95:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

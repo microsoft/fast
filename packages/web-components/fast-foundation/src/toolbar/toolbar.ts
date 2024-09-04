@@ -9,6 +9,7 @@ import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { getDirection } from "../utilities/direction.js";
+import { getRootActiveElement } from "../utilities/root-active-element.js";
 
 /**
  * Toolbar configuration options
@@ -131,8 +132,10 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    public clickHandler(e: MouseEvent): boolean | void {
-        const activeIndex = this.focusableElements?.indexOf(e.target as HTMLElement);
+    public mouseDownHandler(e: MouseEvent): boolean | void {
+        const activeIndex = this.focusableElements?.findIndex(x =>
+            x.contains(e.target as HTMLElement)
+        );
         if (activeIndex > -1 && this.activeIndex !== activeIndex) {
             this.setFocusedElement(activeIndex);
         }
@@ -256,7 +259,14 @@ export class Toolbar extends FoundationElement {
     private setFocusedElement(activeIndex: number = this.activeIndex): void {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
-        this.focusableElements[this.activeIndex]?.focus();
+        if (
+            this.focusableElements[this.activeIndex] &&
+            // Don't focus the toolbar element if some event handlers moved
+            // the focus on another element in the page.
+            this.contains(getRootActiveElement(this))
+        ) {
+            this.focusableElements[this.activeIndex].focus();
+        }
     }
 
     /**

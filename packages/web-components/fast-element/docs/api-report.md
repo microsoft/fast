@@ -468,6 +468,9 @@ export interface PartialFASTElementDefinition {
 }
 
 // @public
+export const prependToAdoptedStyleSheetsSymbol: unique symbol;
+
+// @public
 export class PropertyChangeNotifier implements Notifier {
     constructor(source: any);
     notify(propertyName: string): void;

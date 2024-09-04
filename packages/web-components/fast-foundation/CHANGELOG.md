@@ -1,8 +1,34 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 11 Aug 2023 00:10:28 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Jan 2024 19:35:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.5
+
+Tue, 23 Jan 2024 19:35:35 GMT
+
+### Patches
+
+- Fix design token inheritance bug (7282195+m-akinc@users.noreply.github.com)
+- fix typing issue for menu to fix build issue (chhol@microsoft.com)
+- Allow non-MenuItem-derived types to be indented properly (7282195+m-akinc@users.noreply.github.com)
+
+## 2.49.4
+
+Thu, 09 Nov 2023 19:30:24 GMT
+
+### Patches
+
+- fix: call super.disconnectedCallback in form associated base class (chhol@microsoft.com)
+
+## 2.49.3
+
+Wed, 01 Nov 2023 20:34:39 GMT
+
+### Patches
+
+- Fix focus issues with toolbar (20542556+mollykreis@users.noreply.github.com)
 
 ## 2.49.1
 
