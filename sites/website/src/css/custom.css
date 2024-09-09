@@ -171,6 +171,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected="true"] a mark {
     --base-layer-luminance: 0.09;
     --wrapper-gutter: 20px;
     --wrapper-max-width: 8px;
+    --ifm-link-color: #fb2360;
     background-color: var(--fill-color);
     color: var(--neutral-foreground-rest);
     font-family: var(--body-font);
@@ -303,6 +304,31 @@ li {
 [role="banner"] code {
     background-color: rgba(0, 0, 0, 0.1);
     border: 0.1rem solid rgba(255, 255, 255, 0.1);
+}
+
+/**
+ * Color contrast overrides
+ */
+
+article {
+    --ifm-link-decoration: underline;
+}
+
+.navbar__link--active {
+    --ifm-link-color: #ff4ca3;
+}
+
+.menu__link--active,
+.breadcrumbs__link[itemprop="name"] {
+    --ifm-link-color: #ff4088;
+}
+
+a code {
+    --ifm-link-color: #ff5ac4;
+}
+
+html[data-theme="dark"] {
+    --ifm-table-stripe-background: #202021;
 }
 
 @media screen and (min-width: 900px) {
