@@ -29,11 +29,7 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Package specific owners
 
-# Tooling
-/packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu @EisenbergEffect
-
 # Utilities
-/packages/utilities/fast-animation/ @nicholasrice @chrisdholt
 /packages/utilities/fast-colors/ @nicholasrice @chrisdholt
 /packages/utilities/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
 /packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice

@@ -14,6 +14,13 @@ export type Constructable<T = {}> = {
 };
 
 /**
+ * Determines whether or not an object is a function.
+ * @public
+ */
+export const isFunction = (object: any): object is Function =>
+    typeof object === "function";
+
+/**
  * Reverses all readonly members, making them mutable.
  * @internal
  */

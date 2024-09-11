@@ -1,6 +1,6 @@
 import { fillColor } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 
 export const BackgroundDesignStyles = css`
     ${display("block")} :host {
@@ -47,4 +47,10 @@ export const BackgroundDesignStyles = css`
         object-position: 50% 50%;
         width: 100%;
     }
-`;
+`.withBehaviors(
+    forcedColorsStylesheetBehavior(css`
+        :host {
+            display: none;
+        }
+    `)
+);

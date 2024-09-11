@@ -14,6 +14,7 @@ export {
     ElementStyleFactory,
     ComposableStyles,
     StyleTarget,
+    prependToAdoptedStyleSheetsSymbol,
 } from "./styles/element-styles.js";
 export { css, cssPartial } from "./styles/css.js";
 export { CSSDirective } from "./styles/css-directive.js";

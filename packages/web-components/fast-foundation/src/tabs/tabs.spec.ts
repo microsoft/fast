@@ -42,7 +42,7 @@ async function setup() {
     const [tabPanel1, tabPanel2, tabPanel3] = Array.from(
         element.querySelectorAll("fast-tab-panel")
     );
-    const [tab1, tab2, tab3] = Array.from(element.querySelectorAll("fast-tab"));
+    const [tab1, tab2, tab3] = Array.from<HTMLElement>(element.querySelectorAll("fast-tab"));
 
     return {
         element,

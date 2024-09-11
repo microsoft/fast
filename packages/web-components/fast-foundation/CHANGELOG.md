@@ -1,8 +1,74 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 28 Nov 2022 18:28:05 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Jan 2024 19:35:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.49.5
+
+Tue, 23 Jan 2024 19:35:35 GMT
+
+### Patches
+
+- Fix design token inheritance bug (7282195+m-akinc@users.noreply.github.com)
+- fix typing issue for menu to fix build issue (chhol@microsoft.com)
+- Allow non-MenuItem-derived types to be indented properly (7282195+m-akinc@users.noreply.github.com)
+
+## 2.49.4
+
+Thu, 09 Nov 2023 19:30:24 GMT
+
+### Patches
+
+- fix: call super.disconnectedCallback in form associated base class (chhol@microsoft.com)
+
+## 2.49.3
+
+Wed, 01 Nov 2023 20:34:39 GMT
+
+### Patches
+
+- Fix focus issues with toolbar (20542556+mollykreis@users.noreply.github.com)
+
+## 2.49.1
+
+Fri, 11 Aug 2023 00:10:28 GMT
+
+### Patches
+
+- Prevent keyboard navigation to hidden or disabled tabs (7282195+m-akinc@users.noreply.github.com)
+- set activeid when setting active tab (chhol@microsoft.com)
+
+## 2.49.0
+
+Thu, 04 May 2023 17:35:08 GMT
+
+### Minor changes
+
+- add else case to when directive (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.12.0
+
+## 2.48.1
+
+Fri, 14 Apr 2023 19:08:49 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.11.1
+
+## 2.48.0
+
+Mon, 10 Apr 2023 18:32:45 GMT
+
+### Minor changes
+
+- fix(Calendar): add fix for the timezones from #5539 (Mathieu.Salois@goto.com)
+
+### Patches
+
+- add missing part to tabpanel in tabs component (chhol@microsoft.com)
+- update anchor reference type to support undefined and suppress breadcrumb linting issue (chhol@microsoft.com)
+- revert: token typings that broke build (jes@microsoft.com)
 
 ## 2.47.1-0
 

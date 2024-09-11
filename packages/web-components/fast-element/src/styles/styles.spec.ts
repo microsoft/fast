@@ -21,10 +21,10 @@ if (DOM.supportsAdoptedStyleSheets) {
                     adoptedStyleSheets: [],
                 };
 
-                sheet.addStylesTo(target as StyleTarget);
+                sheet.addStylesTo(target as Required<StyleTarget>);
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
 
-                sheet.removeStylesFrom(target as StyleTarget);
+                sheet.removeStylesFrom(target as Required<StyleTarget>);
                 expect(target.adoptedStyleSheets!.length).to.equal(0);
             });
 
@@ -35,12 +35,12 @@ if (DOM.supportsAdoptedStyleSheets) {
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [style],
                 };
-                sheet.addStylesTo(target as StyleTarget);
+                sheet.addStylesTo(target as Required<StyleTarget>);
 
                 expect(target.adoptedStyleSheets!.length).to.equal(2);
                 expect(target.adoptedStyleSheets).to.contain(cache.get("test"));
 
-                sheet.removeStylesFrom(target as StyleTarget);
+                sheet.removeStylesFrom(target as Required<StyleTarget>);
 
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
                 expect(target.adoptedStyleSheets).not.to.contain(cache.get("test"));
@@ -52,7 +52,7 @@ if (DOM.supportsAdoptedStyleSheets) {
                 const elementStyles = new AdoptedStyleSheetsStyles([styles], cache);
                 const target = {
                     adoptedStyleSheets: [],
-                } as unknown as StyleTarget;
+                } as unknown as Required<StyleTarget>;
 
                 expect(elementStyles.isAttachedTo(target as StyleTarget)).to.equal(false)
 
@@ -71,8 +71,8 @@ if (DOM.supportsAdoptedStyleSheets) {
                     adoptedStyleSheets: [],
                 };
 
-                red.addStylesTo(target as StyleTarget);
-                green.addStylesTo(target as StyleTarget);
+                red.addStylesTo(target as Required<StyleTarget>);
+                green.addStylesTo(target as Required<StyleTarget>);
 
                 expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
                 expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
@@ -84,7 +84,7 @@ if (DOM.supportsAdoptedStyleSheets) {
                     adoptedStyleSheets: [],
                 };
 
-                red.addStylesTo(target as StyleTarget);
+                red.addStylesTo(target as Required<StyleTarget>);
 
                 expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
                 expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));

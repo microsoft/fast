@@ -86,8 +86,9 @@ export const FastFrameStyles = css`
         text-transform: uppercase;
     }
 
+    .content .content-badge::part(control),
     .content .content-badge .content-badge-highlight {
-        color: ${neutralForegroundHint};
+        color: ${neutralForegroundRest};
     }
 
     .content .heading {

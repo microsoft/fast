@@ -245,10 +245,10 @@ export const calendarTemplate: FoundationElementTemplate<
                 : definition.title ?? ""}
             <slot></slot>
             ${when(
-                x => x.readonly === false,
+                x => x.readonly,
+                noninteractiveCalendarTemplate(todayString),
                 interactiveCalendarGridTemplate(context, todayString)
             )}
-            ${when(x => x.readonly === true, noninteractiveCalendarTemplate(todayString))}
             ${endTemplate}
         </template>
     `;

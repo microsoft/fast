@@ -13,7 +13,7 @@ export const SideNavigationTemplate = html<SideNavigation>`
                             <fast-anchor
                                 href=${x => x.url}
                                 appearance="lightweight"
-                                aria-label=${x => x.actionText}
+                                aria-label=${x => x.anchorText}
                             >
                                 <span slot="start" :innerHTML=${x => x.icon}></span>
                             </fast-anchor>
