@@ -2,6 +2,155 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 23 Jan 2024 19:35:35 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.5",
+      "version": "2.49.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "31be91ffc7f588094a4986d8fad956fe671b28ce",
+            "comment": "Fix design token inheritance bug"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "aed89cac2414d10223f158ed2d0a1185a2461fdd",
+            "comment": "fix typing issue for menu to fix build issue"
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "ad6f1fbcb4d7e0dd8fabe5fc9bd9582c744edccb",
+            "comment": "Allow non-MenuItem-derived types to be indented properly"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Nov 2023 19:30:24 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.4",
+      "version": "2.49.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "71481316c92e3689a4a0c243831693d9938474f8",
+            "comment": "fix: call super.disconnectedCallback in form associated base class"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Nov 2023 20:34:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.3",
+      "version": "2.49.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "507d2fef836f75b072d0c05c9e37b7c59959ff51",
+            "comment": "Fix focus issues with toolbar"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 11 Aug 2023 00:10:28 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.1",
+      "version": "2.49.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "b8b4b20b8cb5891ac90d5a4e997756ac36db132f",
+            "comment": "Prevent keyboard navigation to hidden or disabled tabs"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "8c80dfcf9361a5390806c3a55b67c43259a76fb8",
+            "comment": "set activeid when setting active tab"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 04 May 2023 17:35:08 GMT",
+      "tag": "@microsoft/fast-foundation_v2.49.0",
+      "version": "2.49.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a29696c6c5e90d0e5e6121146628c188d95736d0",
+            "comment": "add else case to when directive"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.12.0",
+            "commit": "a29696c6c5e90d0e5e6121146628c188d95736d0"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 14 Apr 2023 19:08:49 GMT",
+      "tag": "@microsoft/fast-foundation_v2.48.1",
+      "version": "2.48.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.11.1",
+            "commit": "bed585ca0b36e31aed53b0669a7f8363d917f514"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 10 Apr 2023 18:32:45 GMT",
+      "tag": "@microsoft/fast-foundation_v2.48.0",
+      "version": "2.48.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "195a1b4e2e9e4c81a7ee6e7d8e5605d982d8f8f6",
+            "comment": "add missing part to tabpanel in tabs component"
+          },
+          {
+            "author": "chhol@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "a53309ea027b232d5bf1b65bcc2d2594dd8611b7",
+            "comment": "update anchor reference type to support undefined and suppress breadcrumb linting issue"
+          },
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "64805bea23260b23f1db51e545963875e573a8a7",
+            "comment": "revert: token typings that broke build"
+          }
+        ],
+        "minor": [
+          {
+            "author": "Mathieu.Salois@goto.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "363319d3503bbbc99c29c30971ac823afebaf49b",
+            "comment": "fix(Calendar): add fix for the timezones from #5539"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 28 Nov 2022 18:28:05 GMT",
       "tag": "@microsoft/fast-foundation_v2.47.1-0",
       "version": "2.47.1-0",

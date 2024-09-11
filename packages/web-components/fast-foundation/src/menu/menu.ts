@@ -249,8 +249,8 @@ export class Menu extends FoundationElement {
             item.addEventListener("expanded-change", this.handleExpandedChanged);
             item.addEventListener("focus", this.handleItemFocus);
 
-            if (item instanceof MenuItem) {
-                item.startColumnCount = indent;
+            if (item instanceof MenuItem || "startColumnCount" in item) {
+                ((item as unknown) as MenuItem).startColumnCount = indent;
             }
         });
     };

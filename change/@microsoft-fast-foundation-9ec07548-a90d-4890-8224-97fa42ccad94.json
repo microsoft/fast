@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "update anchor reference type to support undefined and suppress breadcrumb linting issue",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

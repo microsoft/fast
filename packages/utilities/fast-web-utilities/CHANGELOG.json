@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Mon, 10 Apr 2023 18:32:46 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.4.1",
+      "version": "5.4.1",
+      "comments": {
+        "none": [
+          {
+            "author": "jes@microsoft.com",
+            "package": "@microsoft/fast-web-utilities",
+            "commit": "d44e04b55e1bea923ebf4cb985a4ede1a1649101",
+            "comment": "fix: removed flaky test"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 May 2022 07:14:00 GMT",
       "tag": "@microsoft/fast-web-utilities_v5.4.1",
       "version": "5.4.1",

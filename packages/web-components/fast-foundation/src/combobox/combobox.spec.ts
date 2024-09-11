@@ -207,6 +207,22 @@ describe("Combobox", () => {
         });
     });
 
+    it("should close the listbox if the indicator is clicked without making a selection", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.click(); // open dropdown
+
+        expect(element.open).to.be.true;
+
+        element.click();
+
+        expect(element.open).to.be.false;
+
+        await disconnect();
+    });
+
     it("should emit a 'change' event when the user clicks away after selecting option in dropdown", async () => {
         const { element, connect, disconnect } = await setup();
 

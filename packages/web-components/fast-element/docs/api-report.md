@@ -464,6 +464,9 @@ export interface PartialFASTElementDefinition {
 }
 
 // @public
+export const prependToAdoptedStyleSheetsSymbol: unique symbol;
+
+// @public
 export class PropertyChangeNotifier implements Notifier {
     constructor(source: any);
     notify(propertyName: string): void;
@@ -627,7 +630,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
-export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
 
 // (No @packageDocumentation comment for this package)
 

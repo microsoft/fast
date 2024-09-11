@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-react-wrapper",
   "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
-  "version": "0.3.16-0",
+  "version": "0.3.24",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -48,6 +48,7 @@
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
+    "@types/react-dom": "^16.9.0",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
@@ -86,8 +87,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^1.11.0",
-    "@microsoft/fast-foundation": "^2.47.1-0"
+    "@microsoft/fast-element": "^1.13.0",
+    "@microsoft/fast-foundation": "^2.49.6"
   },
   "peerDependencies": {
     "react": ">=16.9.0"

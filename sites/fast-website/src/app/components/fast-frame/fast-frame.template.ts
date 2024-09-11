@@ -22,7 +22,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 >
                     <div class="content">
                         <fast-badge class="content-badge">
-                            Fast Frame
+                            Fast Frame |
                             <span class="content-badge-highlight">Dark Mode</span>
                         </fast-badge>
                         <h3 class="heading">Pre-built for both light and dark modes</h3>
@@ -50,7 +50,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 >
                     <div class="content">
                         <fast-badge class="content-badge">
-                            Fast Frame
+                            Fast Frame |
                             <span class="content-badge-highlight">Colors</span>
                         </fast-badge>
                         <h3 class="heading">Pre-existing color you can customize</h3>
@@ -177,7 +177,7 @@ export const FastFrameTemplate = html<FastFrame>`
                 >
                     <div class="content">
                         <fast-badge class="content-badge">
-                            Fast Frame
+                            Fast Frame |
                             <span class="content-badge-highlight">Styles</span>
                         </fast-badge>
                         <h3 class="heading">Adjust style settings on the fly</h3>

@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 25 Oct 2022 03:07:31 GMT and should not be manually modified.
+This log was last generated on Thu, 04 May 2023 17:35:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.12.0
+
+Thu, 04 May 2023 17:35:08 GMT
+
+### Minor changes
+
+- add else case to when directive (chhol@microsoft.com)
+
+## 1.11.1
+
+Fri, 14 Apr 2023 19:08:49 GMT
+
+### Patches
+
+- Use push and splice for adoptedStyleSheet mutation when available to avoid Safari 16.4 bug (nicholasrice@users.noreply.github.com)
 
 ## 1.11.0
 

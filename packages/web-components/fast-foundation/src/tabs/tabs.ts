@@ -6,6 +6,7 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
+    limit,
     uniqueId,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
@@ -183,8 +184,12 @@ export class Tabs extends FoundationElement {
         return el.getAttribute("aria-disabled") === "true";
     };
 
+    private isHiddenElement = (el: Element): el is HTMLElement => {
+        return el.hasAttribute("hidden");
+    };
+
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return !this.isDisabledElement(el);
+        return !this.isDisabledElement(el) && !this.isHiddenElement(el);
     };
 
     private getActiveIndex(): number {
@@ -224,6 +229,7 @@ export class Tabs extends FoundationElement {
                 tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
                 if (isActiveTab) {
                     this.activetab = tab;
+                    this.activeid = tabId;
                 }
             }
 
@@ -364,13 +370,21 @@ export class Tabs extends FoundationElement {
      * This method allows the active index to be adjusted by numerical increments
      */
     public adjust(adjustment: number): void {
-        this.prevActiveTabIndex = this.activeTabIndex;
-        this.activeTabIndex = wrapInBounds(
+        const focusableTabs = this.tabs.filter(t => this.isFocusableElement(t));
+        const currentActiveTabIndex = focusableTabs.indexOf(this.activetab);
+
+        const nextTabIndex = limit(
             0,
-            this.tabs.length - 1,
-            this.activeTabIndex + adjustment
+            focusableTabs.length - 1,
+            currentActiveTabIndex + adjustment
         );
-        this.setComponent();
+
+        // the index of the next focusable tab within the context of all available tabs
+        const nextIndex = this.tabs.indexOf(focusableTabs[nextTabIndex]);
+
+        if (nextIndex > -1) {
+            this.moveToTabByIndex(this.tabs, nextIndex);
+        }
     }
 
     private adjustForward = (e: KeyboardEvent): void => {

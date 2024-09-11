@@ -70,6 +70,10 @@ html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a mark {
   color: var(--ifm-color-primary) !important;
 }
 
+.menu__link--active:not(.menu__link--sublist) {
+  --ifm-menu-color-background-active: transparent;
+}
+
 .docusaurus-highlight-code-line {
   background-color: #212121;
   display: block;

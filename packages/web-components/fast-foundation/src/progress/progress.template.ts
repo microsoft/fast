@@ -28,10 +28,7 @@ export const progressTemplate: FoundationElementTemplate<
                         style="width: ${x => x.percentComplete}%"
                     ></div>
                 </div>
-            `
-        )}
-        ${when(
-            x => typeof x.value !== "number",
+            `,
             html<BaseProgress>`
                 <div class="progress" part="progress" slot="indeterminate">
                     <slot class="indeterminate" name="indeterminate">
