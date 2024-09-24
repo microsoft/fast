@@ -704,6 +704,9 @@ class DesignTokenNode implements Behavior, Subscriber {
             const parent = childToParent.get(this)!;
             parent.removeChild(this);
         }
+        for (const token of this.bindingObservers.keys()) {
+            this.tearDownBindingObserver(token);
+        }
     }
 
     /**
