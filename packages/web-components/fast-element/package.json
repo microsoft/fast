@@ -150,7 +150,7 @@
     "karma-webpack": "^5.0.1",
     "mocha": "^10.5.2",
     "prettier": "2.8.8",
-    "rollup": "^2.71.1",
+    "rollup": "^2.79.2",
     "rollup-plugin-filesize": "^10.0.0",
     "source-map": "^0.7.3",
     "source-map-loader": "^5.0.0",
