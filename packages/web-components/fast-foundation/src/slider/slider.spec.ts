@@ -16,7 +16,7 @@ async function setup() {
 }
 
 // TODO: Need to add tests for keyboard handling, position, and focus management
-describe.only("Slider", () => {
+describe("Slider", () => {
     it("should have a role of `slider`", async () => {
         const { element, connect, disconnect } = await setup();
 
