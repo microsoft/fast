@@ -511,4 +511,11 @@ describe("The Controller", () => {
             expect(behavior.bound).to.equal(false);
         });
     })
+    it("should not throw if DOM stringified", () => {
+        const controller = createController();
+
+        expect(() => {
+            JSON.stringify(controller.element);
+        }).to.not.throw();
+    });
 });

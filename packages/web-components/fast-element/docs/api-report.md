@@ -186,6 +186,8 @@ export class Controller extends PropertyChangeNotifier {
     set styles(value: ElementStyles | null);
     get template(): ElementViewTemplate | null;
     set template(value: ElementViewTemplate | null);
+    // @internal
+    toJSON: Function;
     readonly view: ElementView | null;
 }
 
@@ -384,6 +386,8 @@ export class HTMLView implements ElementView, SyntheticView {
     lastChild: Node;
     remove(): void;
     source: any | null;
+    // @internal
+    toJSON: Function;
     unbind(): void;
 }
 
