@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix accordion to correctly set the expanded item in single mode",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "me@yonatankra.com",
+  "dependentChangeType": "none"
+}
