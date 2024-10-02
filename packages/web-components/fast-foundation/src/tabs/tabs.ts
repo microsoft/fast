@@ -351,7 +351,8 @@ export class Tabs extends FoundationElement {
         const prev: number = this.activeIndicatorRef[offsetProperty];
         this.activeIndicatorRef.style[gridProperty] = `${this.activeTabIndex + 1}`;
         const next: number = this.activeIndicatorRef[offsetProperty];
-        this.activeIndicatorRef.style[gridProperty] = `${this.prevActiveTabIndex + 1}`;
+        const gridPropertyValue = this.prevActiveTabIndex === -1 ? 0 : this.prevActiveTabIndex;
+        this.activeIndicatorRef.style[gridProperty] = `${gridPropertyValue + 1}`;
         const dif: number = next - prev;
         this.activeIndicatorRef.style.transform = `${translateProperty}(${dif}px)`;
         this.activeIndicatorRef.classList.add("activeIndicatorTransition");
