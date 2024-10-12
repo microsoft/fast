@@ -35,6 +35,8 @@
     "@docusaurus/theme-live-codeblock": "^3.2.1",
     "@docusaurus/theme-mermaid": "^3.2.1",
     "@docusaurus/types": "^3.2.1",
+    "@getcanary/docusaurus-theme-search-pagefind": "^1.0.2",
+    "@getcanary/web": "^1.0.8",
     "@mdx-js/react": "^3.0.1",
     "@microsoft/api-documenter": "^7.24.2",
     "@types/react": "^18.3.1",
