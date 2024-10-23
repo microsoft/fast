@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 23 Jan 2024 19:35:35 GMT and should not be manually modified.
+This log was last generated on Wed, 23 Oct 2024 23:54:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.50.0
+
+Wed, 23 Oct 2024 23:54:59 GMT
+
+### Minor changes
+
+- feat: close combobox if indicator is clicked and no selection is made (=)
+- Bump @microsoft/fast-element to v1.14.0
+
+### Patches
+
+- Fix design token issues involving deleting values and CSS reflection (7282195+m-akinc@users.noreply.github.com)
+- fix: prevent toolbar from stealing focus when focus has already been moved in the document (=)
+- Fix CSS custom property precedence issue and work around Chromium bug (7282195+m-akinc@users.noreply.github.com)
+- Fix memory leak due to binding observers (7282195+m-akinc@users.noreply.github.com)
 
 ## 2.49.5
 

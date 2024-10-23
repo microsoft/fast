@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat: close combobox if indicator is clicked and no selection is made",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "=",
-  "dependentChangeType": "patch"
-}

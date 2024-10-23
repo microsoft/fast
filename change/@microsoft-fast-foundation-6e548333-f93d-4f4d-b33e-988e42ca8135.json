@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix CSS custom property precedence issue and work around Chromium bug",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "7282195+m-akinc@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
