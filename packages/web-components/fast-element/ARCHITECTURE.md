@@ -1,6 +1,6 @@
 # Architecture
 
-This document explains varous logical flows for how a `FASTElement` is composed, defined, rendered, and updated.
+This document explains various logical flows for how a `FASTElement` is composed, defined, rendered, and updated.
 
 ## What is FASTElement?
 
@@ -16,8 +16,8 @@ A basic developer flow for defining a custom element looks like this:
 
 ```mermaid
 flowchart TD
-    A[Create a FASTElement web component by extending the FASTElement Class] --> F
-    F[Compose with FASTElement.compose to include template and styles] --> G[Define the component in the browser with FASTElement.define]
+    A[Create a <code>FASTElement</code> web component by extending the <code>FASTElement</code> class] --> F
+    F[Compose with <code>FASTElement.compose</code> to include template and styles] --> G[Define the component in the browser with <code>FASTElement.define</code>]
 ```
 
 Let's take a close look at the compose and define steps to see what the FAST architecture is doing.
@@ -58,16 +58,16 @@ The `HTMLBindingDirective` applies bindings to items identified as various `Temp
 
 ```mermaid
 flowchart TD
-    A[A new HTMLBindingDirective is created with a data binding which has a policy, options, createObserver, and an evaluate method assigned to the passed arrow function such as x => x.foo]
-    B[oneTime binding passes the corresponding tag template argument, an arrow function]
-    C[oneWay binding passes a copy of the corresponding tag template argument, an arrow function]
-    D[An already specified binding such as a repeat or when directive]
+    A[A <code>new HTMLBindingDirective</code> is created with a data binding which has a policy, options, <code>createObserver</code>, and an evaluate method assigned to the passed arrow function such as <pre>x => x.foo</pre>]
+    B[<code>oneTime</code> binding passes the corresponding tag template argument, an arrow function]
+    C[<code>oneWay</code> binding passes a copy of the corresponding tag template argument, an arrow function]
+    D[An already specified binding such as a repeat or when directive is passed]
     A --> B
     A --> C
     A --> D
-    E[When a createObserver is called, an Observable.binding is created passing the arrow function to be evaluated and the subscriber to be notified]
+    E[When a <code>createObserver</code> is called, an <code>Observable.binding</code> is created passing the arrow function to be evaluated and the subscriber to be notified]
     C --> E
-    F[When a createObserver is called, the instance of the one time binding is returned which includes a bind method returning the arrow function executed against the controller source and context]
+    F[When a <code>createObserver</code> is called, the instance of the one time binding is returned which includes a bind method returning the arrow function executed against the controller source and context]
     B --> F
 ```
 
@@ -79,30 +79,30 @@ Because the `FASTElement` is an extension of the `HTMLElement`, it makes use of 
 
 ```mermaid
 flowchart TD
-    A[A FASTElement web component is added to the DOM] --> B
-    B[FASTElement initializes the ElementController.forCustomElement passing the Custom Element instance] --> C
-    B --> F[Observables applied to the FASTElement are updated on the FAST global without values]
-    C{Is an ElementController available?}
+    A[A <code>FASTElement</code> web component is added to the <code>DOM</code>] --> B
+    B[<code>FASTElement</code> initializes the <code>ElementController.forCustomElement</code> passing the Custom Element instance] --> C
+    B --> F[Observables applied to the <code>FASTElement</code> are updated on the FAST global without values]
+    C{Is an <code>ElementController</code> available?}
     C --> |yes|E
     C --> |no|D
-    D[Initialize a new ElementController referred to as setting an element controller strategy]
+    D[Initialize a new <code>ElementController</code> referred to as setting an element controller strategy]
     D --> F
-    E[ElementController captures the Custom Element instance and the definition and attaches them to the $fastController which is then attached to the instance]
+    E[<code>ElementController</code> captures the Custom Element instance and the definition and attaches them to the <code>$fastController</code> which is then attached to the instance]
 ```
 
 ### 🔄 **Lifecycle**: Component is connected
 
 ```mermaid
 flowchart TD
-    A[browser HTMLElement's connectedCallback is called] --> B
-    B[this.$fastController.connect in FASTElement is called] --> C
+    A[browser <code>HTMLElement</code>'s <code>connectedCallback</code> is called] --> B
+    B[<code>this.$fastController.connect</code> in FASTElement is called] --> C
     B --> D
     B --> E
     B --> F
     C[bind observables by capturing the Custom Elements properties and setting the values from the bound observables on the Custom Element]
-    D[connect behaviors by call the connectedCallback on all behaviors]
-    E[render template, execute an ElementViewTemplate's render method]
-    F[add styles either as an appended StyleElement node or an adoptedStylesheet which may include and attach behaviors]
+    D[connect behaviors by call the <code>connectedCallback</code> on all behaviors]
+    E[render template, execute an <code>ElementViewTemplate</code>'s render method]
+    F[add styles either as an appended <code>StyleElement</code> node or an <code>adoptedStylesheet</code> which may include and attach behaviors]
 ```
 
 #### Render Template
@@ -121,10 +121,10 @@ Attributes have an `AttributeDefinition` which allows for converters, attachment
 
 ```mermaid
 flowchart TD
-    A[browser HTMLElement's attributeChangedCallback is called] --> B
-    B[this.$fastController.onAttributeChangedCallback in FASTElement is called] --> C
-    C[calls the attribute definitions onAttributeChangedCallback method with the updated value] --> D
-    D[An Updates.enqueue is called which places the update in the task queue which is then executed, these are performed async unless otherwise specified]
+    A[The browser <code>HTMLElement</code>'s <code>attributeChangedCallback</code> is called] --> B
+    B[<code>this.$fastController.onAttributeChangedCallback</code> in <code>FASTElement</code> is called] --> C
+    C[calls the attribute definitions <code>onAttributeChangedCallback</code> method with the updated value] --> D
+    D[An <code>Updates.enqueue</code> is called which places the update in the task queue which is then executed, these are performed async unless otherwise specified]
 ```
 
 These changes are observed and similar to the way `Observables` work, they utilize an `Accessor` pattern which has a `getValue` and `setValue` in which DOM updates are applied.
