@@ -20,7 +20,7 @@ flowchart TD
     F[Compose with <code>FASTElement.compose</code> to include template and styles] --> G[Define the component in the browser with <code>FASTElement.define</code>]
 ```
 
-Let's take a close look at the compose and define steps to see what the FAST architecture is doing.
+Let's take a look at the compose step to see what the FAST architecture is doing at this stage.
 
 ### Composing a Custom Element
 
