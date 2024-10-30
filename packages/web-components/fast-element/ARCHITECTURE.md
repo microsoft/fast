@@ -46,11 +46,13 @@ flowchart TD
 
 The `html` tagged template function creates a `ViewTemplate` object via the `ViewTemplate.create()` method. This is then used during the `compose` step, before `FASTElement` is instantiated.
 
-During the `ViewTemplate.create` step, the following happens for each string:
+During the `Compiler.compile()` method triggered by `ViewTemplate.create()` method, the following happens for each string:
 - Factories with unique IDs are created for each tag template literal argument (or `TemplateValue`) which matches with the corresponding string
 - A binding is created from the `TemplateValue`
 
-A resulting string using `createHTML` function is created using the `HTMLDirective`, the previous string from the `html` tag template which determines the aspect if one exists, these aspects are the `@`, `:`, or other binding aspect attached to attributes. The `createHTML` returns a `Markup` attribute using the factory that has a unique ID. This is all concatenated as a string and passed to a new `ViewTemplate` with all the factories (empty until one is assigned) that act as a dictionary with the unique IDs as the key to look up each factory once it has been created.
+A resulting string using a `createHTML()` function is produced using the `HTMLDirective`s executed for each factory. The behavior is augmented by the previous string from the `html` tag template which determines the aspect if one exists, these aspects are the `@`, `:`, or other binding aspect attached to attributes.
+
+The `createHTML()` function utilizes a `Markup` attribute which is assigned to a factory's unique ID. The strings are concatenated and passed to a new `ViewTemplate` with all the factories (empty until one is assigned) that act as a dictionary with the unique IDs as the key to look up each factory once it has been created. The string this creates is injected into a `<template>` as `innerHTML`, which allows the browser to create the nodes and placeholder factory IDs, with the only `DOM` node that is explicitly created being the wrapping `<template>` element.
 
 #### HTML Binding Directives
 
@@ -61,7 +63,7 @@ flowchart TD
     A[A <code>new HTMLBindingDirective</code> is created with a data binding which has a policy, options, <code>createObserver</code>, and an evaluate method assigned to the passed arrow function such as <pre>x => x.foo</pre>]
     B[<code>oneTime</code> binding passes the corresponding tag template argument, an arrow function]
     C[<code>oneWay</code> binding passes a copy of the corresponding tag template argument, an arrow function]
-    D[An already specified binding such as a repeat or when directive is passed]
+    D[An already specified binding such as a <code>repeat</code> or <code>when</code> directive is passed]
     A --> B
     A --> C
     A --> D
@@ -109,7 +111,7 @@ flowchart TD
 
 The rendering of the template on the `ElementController` is by the `renderTemplate` method which is called during the `ElementController.connect` method which is triggered by `HTMLElement`s `connectedCallback` lifecycle.
 
-The `renderTemplate` identifies the Custom Element, and the shadow root associated with the Custom Element. This then places a rendering of the template (an `ElementView`) onto the internal `view` of the controller. When creating the `ElementView`/`HTMLView` using the `ViewTemplate.render`, the `Compile.compile` identifies a `DocumentFragment` either by using an existing `<template>` tag, or creating one to wrap the contents of the shadow root. A new `CompilationContext` is created and the `compileAttributes` function is called, this results in the replacement of the placeholder attributes initally set-up during the pre-render step with their values if a value has been assigned. The factories with the associated nodes identified are then passed to the context. The view then binds all behaviors to the source element. The `CompilationContext.createView` is executed with the `DocumentFragment` as the root, and returns an `HTMLView`. This `HTMLView` includes an `appendTo` method to attach the fragment to the host element, which it then does. It should be noted that the compiled HTML is a `string`, which when set on the `DocumentFragment` as `innerHTML`, this allows the browser to dictate the creation of HTML nodes.
+The `renderTemplate` identifies the Custom Element, and the shadow root associated with the Custom Element. This then places a rendering of the template (an `ElementView`) onto the internal `view` of the controller. When creating the `ElementView`/`HTMLView` using the `ViewTemplate.render`, the `Compile.compile()` method identifies a `DocumentFragment` either by using an existing `<template>` tag, or creating one to wrap the contents of the shadow root. A new `CompilationContext` is created and the `compileAttributes` function is called, this results in the replacement of the placeholder attributes initally set-up during the pre-render step with their values if a value has been assigned. The factories with the associated nodes identified are then passed to the context. The view then binds all behaviors to the source element. The `CompilationContext.createView` is executed with the `DocumentFragment` as the root, and returns an `HTMLView`. This `HTMLView` includes an `appendTo` method to attach the fragment to the host element, which it then does. It should be noted that the compiled HTML is a `string`, which when set on the `DocumentFragment` as `innerHTML`, this allows the browser to dictate the creation of HTML nodes.
 
 ### 🔄 **Lifecycle**: Component is disconnected
 
