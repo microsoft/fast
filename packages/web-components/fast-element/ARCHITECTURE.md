@@ -54,7 +54,7 @@ A resulting string using `createHTML` function is created using the `HTMLDirecti
 
 #### HTML Binding Directives
 
-The `HTMLBindingDirective` applies bindings to items identified as various `TemplateValue` within the `html` tag template. The `createHTML` step uses the factory associated with the binding to create strings in the markup using the factory's ID.
+The `HTMLBindingDirective` applies bindings to items identified as various `TemplateValue`s within the `html` tagged template. The `createHTML` step uses the factory associated with the binding to create strings in the markup using the factory's ID.
 
 ```mermaid
 flowchart TD
