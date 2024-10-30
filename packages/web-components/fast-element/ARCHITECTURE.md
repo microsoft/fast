@@ -7,7 +7,7 @@ This document explains various logical flows for how a `FASTElement` is composed
 `FASTElement` is an extension of `HTMLElement` which makes use of Custom Element APIs native to the browser. It also supplies the following methods:
 
 - The `compose` method combines the Custom Element name, template, style, and other options to create the definition for the Custom Element.
-- The `define` method makes use of the native Custom Element `define` to register the Custom Element with a Custom Element Registry.
+- The `define` method makes use of the native Custom Element [`define()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define) to register the Custom Element with a Custom Element Registry.
 - The `from` method allows the use of Custom Built-Ins so that a user does not need to define a template but can specify a native `HTMLElement` such as `HTMLButtonElement`.
 
 ## Creating a Custom Element from FASTElement
