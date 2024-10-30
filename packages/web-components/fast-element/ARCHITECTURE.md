@@ -24,7 +24,7 @@ Let's take a close look at the compose and define steps to see what the FAST arc
 
 ## Composing a Custom Element
 
-Using `FASTElement.compose` this creates a new `FASTElementDefinition` which includes all metadata needed for the element such as templates, attributes, styles, etc. this then registers the element with the global FAST for re-use and returns the `FASTElementDefinition` which can be referenced by `ElementController.definition`.
+The `FASTElement.compose()` function creates a new `FASTElementDefinition`, which includes all metadata needed for the element (such as templates, attributes, and styles). The element definition is registered with the global `FAST` for re-use, and the `FASTElementDefinition` is returned. The resulting object can be retrieved via `ElementController.definition`.
 
 ## A Custom Element in JavaScript sent to the Browser
 
