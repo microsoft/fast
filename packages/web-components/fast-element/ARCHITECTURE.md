@@ -44,7 +44,7 @@ flowchart TD
 
 ### Pre-render Template
 
-The `html` tag template is typically used to create a `ViewTemplate` using the `ViewTemplate.create` method. This is executed and passed during the `compose` step and before `FASTElement` is instantiated.
+The `html` tagged template function creates a `ViewTemplate` object via the `ViewTemplate.create()` method. This is then used during the `compose` step, before `FASTElement` is instantiated.
 
 During the `ViewTemplate.create` step, the following happens for each string:
 - Factories with unique IDs are created for each tag template literal argument (or `TemplateValue`) which matches with the corresponding string
