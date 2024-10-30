@@ -4,7 +4,7 @@ This document explains various logical flows for how a `FASTElement` is composed
 
 ## What is FASTElement?
 
-`FASTElement` is an extension of `HTMLElement` which makes use of Custom Element APIs native to the browser. It also supplies the following methods `compose`, `define`, and `from`.
+`FASTElement` is an extension of `HTMLElement` which makes use of Custom Element APIs native to the browser. It also supplies the following methods:
 
 - The `compose` method combines the Custom Element name, template, style, and other options to create the definition for the Custom Element.
 - The `define` method makes use of the native Custom Element `define` to register the Custom Element with a Custom Element Registry.
