@@ -57,11 +57,11 @@ class HelloWorld extends FASTElement {
  * containing this logic is imported, the element "hello-world" will be
  * defined in the DOM with it's html, styles, logic, and tag name.
  */
-HelloWorld.define({
+HelloWorld.compose({
   name: "hello-world",
   template,
   styles,
-});
+}).define(customElements);
 ```
 
 ## Add it to your project

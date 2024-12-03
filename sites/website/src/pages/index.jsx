@@ -91,7 +91,7 @@ class HelloWorld extends FASTElement {
  * Define your component for the browser and
  * include your CSS styles and HTML template
  */
-HelloWorld.define({
+HelloWorld.compose({
   name: "hello-world",
   template: html\`<span>Hello \${x => x.name}!</span>\`,
   styles: css\`
@@ -99,7 +99,7 @@ HelloWorld.define({
       color: red;
     }
   \`,
-});`}
+}).define(customElements);`}
                     </CodeBlock>
 
                     <h3>Add it to your project</h3>

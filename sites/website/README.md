@@ -4,8 +4,11 @@ This website is built using [Docusaurus](https://docusaurus.io/), a modern stati
 
 ## Installation
 
+Run the following commands in the **root directory**:
+
 ```sh
 npm ci
+npm run build
 ```
 
 ## Local Development
