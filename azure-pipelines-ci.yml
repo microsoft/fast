@@ -27,7 +27,7 @@ extends:
         os: windows  # OS of the image. Allowed values: windows, linux, macOS
     containers:
       playwright_container:
-        image: mcr.microsoft.com/playwright:v1.47.2-noble
+        image: mcr.microsoft.com/playwright:v1.49.0-noble
     stages:
     - stage: Stage
       jobs:
