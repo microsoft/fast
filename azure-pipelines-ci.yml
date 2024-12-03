@@ -1,4 +1,4 @@
-trigger:
+pr:
   - master
 
 # The `resources` specify the location and version of the 1ES PT.
