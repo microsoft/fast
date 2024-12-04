@@ -62,6 +62,10 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 * "I want to look at a quick reference."
   * [Jump to the Cheat Sheet](https://fast.design/docs/resources/cheat-sheet)
 
+## Roadmap
+
+Major features for the FAST project can be found in the [roadmap](https://github.com/orgs/microsoft/projects/240/views/1).
+
 ## Joining the Community
 
 Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
