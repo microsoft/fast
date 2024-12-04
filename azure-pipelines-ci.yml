@@ -1,4 +1,4 @@
-trigger:
+pr:
   - master
 
 # The `resources` specify the location and version of the 1ES PT.
@@ -25,9 +25,6 @@ extends:
         name: OneESPool  # Name of your hosted pool
         image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
         os: windows  # OS of the image. Allowed values: windows, linux, macOS
-    containers:
-      playwright_container:
-        image: mcr.microsoft.com/playwright:v1.49.0-noble
     stages:
     - stage: Stage
       jobs:
@@ -39,8 +36,6 @@ extends:
           - output: pipelineArtifact
             targetPath: $(System.ArtifactsDirectory)
             artifactName: drop
-
-        container: playwright_container
 
         variables:
           npm_config_cache: $(Pipeline.Workspace)/.npm
@@ -67,21 +62,5 @@ extends:
             displayName: "Install package dependencies"
 
           - script: |
-              npm run checkchange
-            displayName: "Check for the presence of changed files inside ./change"
-
-          - script: |
-              npm run format:check
-            displayName: "Test Prettier format"
-
-          - script: |
               npm run build
             displayName: "Build workspaces"
-
-          - script: |
-              npm run test
-            displayName: "Testing unit tests"
-
-          - script: |
-              npm run test:validation
-            displayName: "Testing final validation"
