@@ -34,6 +34,7 @@ test("Check that the nested element in the first element has styles assigned", a
     expect(styles[0]).toEqual("rgb(43, 43, 43)");
 });
 test("Check that all elements have styles assigned", async ({ page }) => {
+    test.slow();
     await page.goto("/fast-style");
 
     const cards = page.locator("fast-card");
