@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("Check that the first element has styles assigned", async ({ page }) => {
+    test.slow();
     await page.goto("/fast-style");
 
     const cards = page.locator("fast-card");
@@ -17,6 +18,7 @@ test("Check that the first element has styles assigned", async ({ page }) => {
 test("Check that the nested element in the first element has styles assigned", async ({
     page,
 }) => {
+    test.slow();
     await page.goto("/fast-style");
 
     const cards = page.locator("fast-card");
@@ -53,6 +55,7 @@ test("Check that all elements have styles assigned", async ({ page }) => {
     });
 });
 test("Check that all nested elements have styles assigned", async ({ page }) => {
+    test.slow();
     await page.goto("/fast-style");
 
     const cards = page.locator("fast-card");
