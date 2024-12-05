@@ -234,7 +234,7 @@ Let's go over a few of the plugins we would suggest using:
 
 ## TypeScript
 
-Here's an example starter `taconfig.json` that you can use:
+Here's an example starter `tsconfig.json` that you can use:
 
 ```json
 {
