@@ -58,9 +58,13 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 * "I want to build my own components."
   * [Jump to the fast-element docs.](https://fast.design/docs/fast-element/getting-started)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](https://fast.design/docs/integrations/introduction)
+  * [Jump to the integration docs.](https://fast.design/docs/integrations)
 * "I want to look at a quick reference."
   * [Jump to the Cheat Sheet](https://fast.design/docs/resources/cheat-sheet)
+
+## Roadmap
+
+Major features for the FAST project can be found in the [roadmap](https://github.com/orgs/microsoft/projects/240/views/1).
 
 ## Joining the Community
 
