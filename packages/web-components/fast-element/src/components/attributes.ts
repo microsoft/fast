@@ -80,13 +80,13 @@ export const booleanConverter: ValueConverter = {
     },
 
     fromView(value: any): any {
-        return value === null ||
+        return !(
+            value === null ||
             value === void 0 ||
             value === "false" ||
             value === false ||
             value === 0
-            ? false
-            : true;
+        );
     },
 };
 
