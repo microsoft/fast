@@ -17,6 +17,33 @@ module.exports = {
     themes: [
         "@docusaurus/theme-live-codeblock",
         "@docusaurus/theme-mermaid",
+        [
+            require.resolve("@getcanary/docusaurus-theme-search-pagefind"),
+            {
+                maxPages: 300,
+                pagefind: {
+                    ranking: {
+                        pageLength: 1,
+                    },
+                },
+                styles: {
+                    "--canary-color-primary-c": 0.18,
+                    "--canary-color-primary-h": 3,
+                },
+                tags: [
+                    {
+                        name: "V2",
+                        pattern: "**/*",
+                        options: { ignore: ["**/docs/1.x/**"] },
+                    },
+                    { name: "V1", pattern: "**/docs/1.x/**" },
+                ],
+                tabs: [
+                    { name: "Docs", pattern: "**/*", options: { ignore: ["**/api/**"] } },
+                    { name: "API", pattern: "**/api/**" },
+                ],
+            },
+        ],
     ],
     staticDirectories: ["static"],
     themeConfig: {
