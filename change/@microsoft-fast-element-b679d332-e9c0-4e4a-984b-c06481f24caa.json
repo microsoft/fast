@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fast-element: Simplify conditional checks in element-controller",
+  "packageName": "@microsoft/fast-element",
+  "email": "abaris@null.net",
+  "dependentChangeType": "patch"
+}
