@@ -411,7 +411,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     protected connectBehaviors() {
-        if (!this.behaviorsConnected) {
+        if (this.behaviorsConnected === false) {
             const behaviors = this.behaviors;
             if (behaviors !== null) {
                 this.guardBehaviorConnection = true;
@@ -427,7 +427,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     protected disconnectBehaviors() {
-        if (this.behaviorsConnected) {
+        if (this.behaviorsConnected === true) {
             const behaviors = this.behaviors;
 
             if (behaviors !== null) {
