@@ -202,7 +202,7 @@ export class AttributeDefinition implements Accessor {
     /**
      * Sets the value of the attribute/property on the source element.
      * @param source - The source element to access.
-     * @param newValue
+     * @param newValue - The value to set the attribute/property to.
      */
     public setValue(source: HTMLElement, newValue: any): void {
         const oldValue = source[this.fieldName];
