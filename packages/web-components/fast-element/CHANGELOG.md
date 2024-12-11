@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Mon, 19 Aug 2024 22:04:19 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Dec 2024 19:53:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.0.1
+
+Wed, 11 Dec 2024 19:53:31 GMT
+
+### Patches
+
+- Patch bumping to apply latest tag to the package (7559015+janechu@users.noreply.github.com)
+- fast-element: Simplify conditional checks in element-controller (abaris@null.net)
 
 ## 2.0.0
 
