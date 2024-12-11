@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Mon, 19 Aug 2024 22:04:19 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Dec 2024 19:53:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0-alpha.29
+
+Wed, 11 Dec 2024 19:53:31 GMT
+
+### Changes
+
+- Change the router to use peerDependency for fast-element (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.0.1
 
 ## 1.0.0-alpha.28
 

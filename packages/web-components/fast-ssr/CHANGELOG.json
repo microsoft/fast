@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Wed, 11 Dec 2024 19:53:32 GMT",
+      "version": "1.0.0-beta.35",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.35",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "26c5078fff7b7d4990d4143913a71def113f2874",
+            "comment": "Update playwright image and dependency to latest"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "a3c98e184642949bbb5b4318b5e233b49ad0b902",
+            "comment": "Attempt to address flaky test by increasing timeout"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.0.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Aug 2024 22:04:19 GMT",
       "version": "1.0.0-beta.35",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.35",
