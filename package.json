@@ -31,7 +31,7 @@
   "scripts": {
     "bump": "beachball bump",
     "build": "npm run build --workspaces --if-present",
-    "change": "beachball change",
+    "change": "beachball change --dependent-change-type none",
     "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'npm run change' to generate a change file\"",
     "check": "beachball check ",
     "build:gh-pages": "npm run build -w fast-site",
