@@ -75,10 +75,10 @@ class CompilationContext<TSource = any, TParent = any>
             this.addTargetDescriptor(parentId, nodeId, targetIndex);
         }
 
-        factory.id = factory.id ?? nextId();
+        factory.id ??= nextId();
         factory.targetNodeId = nodeId;
         factory.targetTagName = tagName;
-        factory.policy = factory.policy ?? this.policy;
+        factory.policy ??= this.policy;
 
         this.factories.push(factory);
     }
