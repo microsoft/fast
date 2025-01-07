@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { DividerRole } from "./divider.options";
 import { Divider, dividerTemplate as template } from "./index";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { Orientation } from "@ni/fast-web-utilities";
 
 const FASTDivider = Divider.compose({
     baseName: "divider",

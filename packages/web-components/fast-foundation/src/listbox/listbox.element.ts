@@ -1,4 +1,4 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { attr, DOM, nullableNumberConverter, observable } from "@ni/fast-element";
 import {
     inRange,
     keyArrowDown,
@@ -8,7 +8,7 @@ import {
     keyHome,
     keySpace,
     keyTab,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
 import { Listbox } from "./listbox.js";
 

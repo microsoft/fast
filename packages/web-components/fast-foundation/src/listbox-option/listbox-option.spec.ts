@@ -1,4 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { expect } from "chai";
 import { listboxOptionTemplate } from "../listbox-option/listbox-option.template.js";
 import { fixture } from "../test-utilities/fixture.js";

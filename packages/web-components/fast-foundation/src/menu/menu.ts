@@ -1,11 +1,11 @@
-import { DOM, observable } from "@microsoft/fast-element";
+import { DOM, observable } from "@ni/fast-element";
 import {
     isHTMLElement,
     keyArrowDown,
     keyArrowUp,
     keyEnd,
     keyHome,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import {
     MenuItem,
     MenuItemColumnCount,

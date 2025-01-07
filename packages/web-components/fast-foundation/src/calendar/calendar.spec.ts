@@ -1,4 +1,4 @@
-import { customElement, DOM, html } from "@microsoft/fast-element";
+import { customElement, DOM, html } from "@ni/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { Calendar, calendarTemplate } from "./index";

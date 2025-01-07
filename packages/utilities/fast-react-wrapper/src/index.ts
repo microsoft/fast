@@ -3,14 +3,14 @@ import {
     Constructable,
     FASTElementDefinition,
     Observable,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import {
     Container,
     DesignSystem,
     FoundationElementDefinition,
     FoundationElementRegistry,
     Registry,
-} from "@microsoft/fast-foundation";
+} from "@ni/fast-foundation";
 
 const reservedReactProperties = new Set([
     "children",

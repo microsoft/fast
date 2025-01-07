@@ -1,11 +1,11 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@ni/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
     keyEnd,
     keyHome,
     wrapInBounds,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { AccordionItem } from "../accordion-item/accordion-item.js";
 
@@ -15,12 +15,12 @@ import { AccordionItem } from "../accordion-item/accordion-item.js";
  */
 export const AccordionExpandMode = {
     /**
-     * Designates only a single {@link @microsoft/fast-foundation#(AccordionItem:class) } can be open a time.
+     * Designates only a single {@link @ni/fast-foundation#(AccordionItem:class) } can be open a time.
      */
     single: "single",
 
     /**
-     * Designates multiple {@link @microsoft/fast-foundation#(AccordionItem:class) | AccordionItems} can be open simultaneously.
+     * Designates multiple {@link @ni/fast-foundation#(AccordionItem:class) | AccordionItems} can be open simultaneously.
      */
     multi: "multi",
 } as const;
@@ -40,7 +40,7 @@ export type AccordionExpandMode = typeof AccordionExpandMode[keyof typeof Accord
  * @public
  *
  * @remarks
- * Designed to be used with {@link @microsoft/fast-foundation#accordionTemplate} and {@link @microsoft/fast-foundation#(AccordionItem:class)}.
+ * Designed to be used with {@link @ni/fast-foundation#accordionTemplate} and {@link @ni/fast-foundation#(AccordionItem:class)}.
  */
 export class Accordion extends FoundationElement {
     /**

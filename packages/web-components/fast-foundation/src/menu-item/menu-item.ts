@@ -1,11 +1,11 @@
-import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, observable, SyntheticViewTemplate } from "@ni/fast-element";
 import {
     Direction,
     keyArrowLeft,
     keyArrowRight,
     keyEnter,
     keySpace,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import type { AnchoredRegion } from "../anchored-region/anchored-region.js";
 import {
     FoundationElement,

@@ -4,8 +4,8 @@ import {
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
-} from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+} from "@ni/fast-element";
+import { keyArrowDown, keyArrowUp } from "@ni/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";

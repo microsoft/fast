@@ -1,5 +1,5 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
+import { attr, DOM, FASTElement, observable } from "@ni/fast-element";
+import { Direction, keyEscape } from "@ni/fast-web-utilities";
 import type {
     AnchoredRegion,
     AutoUpdateMode,

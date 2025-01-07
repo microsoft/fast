@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { Menu, menuTemplate as template } from "./index";
 import { MenuItem, menuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, html } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { DOM, html } from "@ni/fast-element";
+import { keyArrowDown, keyArrowUp } from "@ni/fast-web-utilities";
 
 const FASTMenu = Menu.compose({
     baseName: "menu",

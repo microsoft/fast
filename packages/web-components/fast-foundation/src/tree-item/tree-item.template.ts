@@ -1,11 +1,11 @@
-import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, ref, slotted, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { TreeItem, TreeItemOptions } from "./tree-item.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.
+ * The template for the {@link @ni/fast-foundation#(TreeItem:class)} component.
  * @public
  */
 export const treeItemTemplate: FoundationElementTemplate<

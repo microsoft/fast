@@ -1,5 +1,5 @@
 import { FoundationElement } from "../foundation-element";
-import { html, ref, customElement, DOM } from "@microsoft/fast-element";
+import { html, ref, customElement, DOM } from "@ni/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { reflectAttributes } from "./reflect-attributes";
 import { expect } from "chai";

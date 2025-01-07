@@ -1,10 +1,10 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Avatar, AvatarOptions } from "./avatar.js";
 
 /**
- * The template for {@link @microsoft/fast-foundation#Avatar} component.
+ * The template for {@link @ni/fast-foundation#Avatar} component.
  * @public
  */
 export const avatarTemplate: FoundationElementTemplate<

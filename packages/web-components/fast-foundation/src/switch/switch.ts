@@ -1,5 +1,5 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import { attr, observable, SyntheticViewTemplate } from "@ni/fast-element";
+import { keyEnter, keySpace } from "@ni/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedSwitch } from "./switch.form-associated.js";
 

@@ -5,7 +5,7 @@ class _Checkbox extends FoundationElement {}
 interface _Checkbox extends CheckableFormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Checkbox:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(Checkbox:class)} component.
  *
  * @internal
  */

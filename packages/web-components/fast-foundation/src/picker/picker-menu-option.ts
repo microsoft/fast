@@ -1,4 +1,4 @@
-import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import { attr, html, HTMLView, observable, ViewTemplate } from "@ni/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 const defaultContentsTemplate: ViewTemplate<PickerMenuOption> = html`

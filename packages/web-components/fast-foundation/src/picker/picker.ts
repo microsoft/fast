@@ -8,7 +8,7 @@ import {
     RepeatBehavior,
     RepeatDirective,
     ViewTemplate,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -19,7 +19,7 @@ import {
     keyEnter,
     keyEscape,
     uniqueId,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import {
     AnchoredRegion,
     AnchoredRegionConfig,

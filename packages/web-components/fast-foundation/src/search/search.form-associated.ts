@@ -5,7 +5,7 @@ class _Search extends FoundationElement {}
 interface _Search extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Search:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(Search:class)} component.
  *
  * @internal
  */

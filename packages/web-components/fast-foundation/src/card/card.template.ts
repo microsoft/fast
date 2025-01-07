@@ -1,10 +1,10 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Card } from "./card.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Card} component.
+ * The template for the {@link @ni/fast-foundation#Card} component.
  * @public
  */
 export const cardTemplate: FoundationElementTemplate<ViewTemplate<Card>> = (

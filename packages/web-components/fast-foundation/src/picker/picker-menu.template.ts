@@ -1,4 +1,4 @@
-import { html, slotted, ViewTemplate } from "@microsoft/fast-element";
+import { html, slotted, ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { PickerMenu } from "./picker-menu.js";
 

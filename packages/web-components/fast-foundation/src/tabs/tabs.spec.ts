@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { css, DOM, customElement, html } from "@microsoft/fast-element";
+import { css, DOM, customElement, html } from "@ni/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { Tab, tabTemplate } from "../tab";
 import { TabPanel, tabPanelTemplate } from "../tab-panel";

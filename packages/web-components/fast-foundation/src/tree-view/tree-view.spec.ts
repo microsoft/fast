@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { TreeView, treeViewTemplate as template } from "./index";
 import { TreeItem, treeItemTemplate as itemTemplate } from "../tree-item";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM, customElement } from "@ni/fast-element";
 
 const FASTTreeView = TreeView.compose({
     baseName: "tree-view",

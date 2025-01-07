@@ -1,10 +1,10 @@
-import { html, ref } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Disclosure } from "./disclosure.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Disclosure} component.
+ * The template for the {@link @ni/fast-foundation#Disclosure} component.
  * @public
  */
 export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosure>> = (

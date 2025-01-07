@@ -1,7 +1,7 @@
 import { FormAssociated, CheckableFormAssociated } from "./form-associated";
 import { assert, expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { customElement, FASTElement, html, elements, DOM } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, elements, DOM } from "@ni/fast-element";
 
 const template = html`
     <slot></slot>

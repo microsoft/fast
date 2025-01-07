@@ -1,6 +1,6 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
-import { limit, uniqueId } from "@microsoft/fast-web-utilities";
+import type { SyntheticViewTemplate } from "@ni/fast-element";
+import { attr, DOM, Observable, observable } from "@ni/fast-element";
+import { limit, uniqueId } from "@ni/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox } from "../listbox/listbox.js";

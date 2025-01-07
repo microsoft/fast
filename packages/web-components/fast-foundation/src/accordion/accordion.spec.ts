@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { Accordion, accordionTemplate as template } from "./index";
 import { AccordionItem, accordionItemTemplate as itemTemplate } from "../accordion-item";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { AccordionExpandMode } from "./accordion";
 
 const FASTAccordion = Accordion.compose({

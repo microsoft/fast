@@ -1,12 +1,12 @@
-import { html, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 
 const progressSegments: number = 44;
 
 /**
- * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
+ * The template for the {@link @ni/fast-foundation#BaseProgress} component.
  * @public
  */
 export const progressRingTemplate: FoundationElementTemplate<

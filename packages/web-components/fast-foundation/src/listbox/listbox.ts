@@ -1,4 +1,4 @@
-import { attr, observable, Observable } from "@microsoft/fast-element";
+import { attr, observable, Observable } from "@ni/fast-element";
 import {
     findLastIndex,
     keyArrowDown,
@@ -10,7 +10,7 @@ import {
     keySpace,
     keyTab,
     uniqueId,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option.js";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { tooltipTemplate as template, Tooltip } from "./index";
 import { TooltipPosition } from "./tooltip";

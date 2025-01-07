@@ -1,11 +1,11 @@
-import { html, ref } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { html, ref } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
+import { Orientation } from "@ni/fast-web-utilities";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Slider, SliderOptions } from "./slider.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
+ * The template for the {@link @ni/fast-foundation#(Slider:class)} component.
  * @public
  */
 export const sliderTemplate: FoundationElementTemplate<

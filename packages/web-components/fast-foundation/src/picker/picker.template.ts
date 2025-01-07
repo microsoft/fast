@@ -1,4 +1,4 @@
-import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
+import { html, ref, ViewTemplate, when } from "@ni/fast-element";
 import { AnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";

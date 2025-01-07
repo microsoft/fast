@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@ni/fast-element";
 import {
     ArrowKeys,
     Direction,
@@ -8,7 +8,7 @@ import {
     keyArrowUp,
     keyEnter,
     Orientation,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import { getDirection } from "../utilities/direction.js";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 

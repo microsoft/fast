@@ -7,7 +7,7 @@ import {
     observable,
     Observable,
     prependToAdoptedStyleSheetsSymbol,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 
 export const defaultElement = document.createElement("div");
 

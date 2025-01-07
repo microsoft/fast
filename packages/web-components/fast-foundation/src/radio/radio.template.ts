@@ -1,10 +1,10 @@
-import { html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, slotted } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Radio, RadioOptions } from "./radio.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Radio:class)} component.
+ * The template for the {@link @ni/fast-foundation#(Radio:class)} component.
  * @public
  */
 export const radioTemplate: FoundationElementTemplate<

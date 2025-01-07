@@ -1,10 +1,10 @@
-import { html, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { AnchoredRegion } from "./anchored-region.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(AnchoredRegion:class)} component.
+ * The template for the {@link @ni/fast-foundation#(AnchoredRegion:class)} component.
  * @public
  */
 export const anchoredRegionTemplate: FoundationElementTemplate<ViewTemplate<

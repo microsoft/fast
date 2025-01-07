@@ -5,7 +5,7 @@ class _Select extends ListboxElement {}
 interface _Select extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Select:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(Select:class)} component.
  *
  * @internal
  */

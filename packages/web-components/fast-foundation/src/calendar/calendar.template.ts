@@ -1,5 +1,5 @@
-import { html, repeat, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, repeat, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end.js";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid/index.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
@@ -222,7 +222,7 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
 };
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(Calendar:class)} component.
+ * The template for the {@link @ni/fast-foundation#(Calendar:class)} component.
  *
  * @param context - Element definition context for getting the cell tag for calendar-cell
  * @param definition - Foundation element definition

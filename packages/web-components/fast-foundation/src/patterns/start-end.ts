@@ -1,5 +1,5 @@
-import { html, ref, SyntheticViewTemplate } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, SyntheticViewTemplate } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 
 /**

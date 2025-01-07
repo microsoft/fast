@@ -1,11 +1,11 @@
-import { html, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Flipper, FlipperOptions } from "./flipper.js";
 import { FlipperDirection } from "./flipper.options.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Flipper} component.
+ * The template for the {@link @ni/fast-foundation#Flipper} component.
  * @public
  */
 export const flipperTemplate: FoundationElementTemplate<

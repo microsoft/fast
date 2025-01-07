@@ -5,7 +5,7 @@ class _Switch extends FoundationElement {}
 interface _Switch extends CheckableFormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Switch:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(Switch:class)} component.
  *
  * @internal
  */

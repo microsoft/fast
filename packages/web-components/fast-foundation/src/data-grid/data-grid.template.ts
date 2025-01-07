@@ -1,5 +1,5 @@
-import { children, elements, html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 import type { DataGrid } from "./data-grid.js";
@@ -17,7 +17,7 @@ function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate 
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#DataGrid} component using
+ * Generates a template for the {@link @ni/fast-foundation#DataGrid} component using
  * the provided prefix.
  *
  * @public

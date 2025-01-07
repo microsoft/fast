@@ -3,7 +3,7 @@ import {
     ElementStyles,
     ElementViewTemplate,
     FASTElement,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import { Container, DI, Registration } from "../di/di.js";
 
 /**

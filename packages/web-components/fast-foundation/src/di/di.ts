@@ -2,7 +2,7 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { Constructable, emptyArray, FASTElement } from "@microsoft/fast-element";
+import { Constructable, emptyArray, FASTElement } from "@ni/fast-element";
 import type { Class } from "../interfaces.js";
 
 // Tiny polyfill for TypeScript's Reflect metadata API.
@@ -504,7 +504,7 @@ export interface InterfaceConfiguration {
 
     /**
      * When true, the dependency will be re-resolved when FASTElement connection changes.
-     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable | notification }
+     * If the resolved value changes due to connection change, a {@link @ni/fast-element#Observable | notification }
      * will be emitted for the property, with the previous and next values provided to any subscriber.
      */
     respectConnection?: boolean;

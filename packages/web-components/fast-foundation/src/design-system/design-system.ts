@@ -1,4 +1,4 @@
-import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
+import { Constructable, FASTElementDefinition } from "@ni/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { Container, DI, Registration } from "../di/di.js";
 import { DesignToken } from "../design-token/design-token.js";

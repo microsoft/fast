@@ -5,7 +5,7 @@ class _Button extends FoundationElement {}
 interface _Button extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Button:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(Button:class)} component.
  *
  * @internal
  */

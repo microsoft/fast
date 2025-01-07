@@ -1,4 +1,4 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable } from "@ni/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
@@ -9,7 +9,7 @@ import {
     keyEnd,
     keyEnter,
     keyHome,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item/tree-item.js";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 

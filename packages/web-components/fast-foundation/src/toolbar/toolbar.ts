@@ -1,5 +1,5 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
-import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
+import { attr, FASTElement, observable, Observable } from "@ni/fast-element";
+import { ArrowKeys, Direction, limit, Orientation } from "@ni/fast-web-utilities";
 import { isFocusable } from "tabbable";
 import {
     FoundationElement,

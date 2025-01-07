@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { SliderLabel, sliderLabelTemplate as template } from "../index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { DOM } from "@ni/fast-element";
+import { Orientation } from "@ni/fast-web-utilities";
 
 const FASTSliderLabel = SliderLabel.compose({
     baseName: "slider-label",

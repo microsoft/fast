@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
 import { Checkbox, checkboxTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
-import { keySpace } from "@microsoft/fast-web-utilities";
+import { DOM, customElement } from "@ni/fast-element";
+import { keySpace } from "@ni/fast-web-utilities";
 
 const FASTCheckbox = Checkbox.compose({
     baseName: "checkbox",

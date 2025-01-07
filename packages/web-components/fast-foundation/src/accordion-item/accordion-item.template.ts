@@ -1,11 +1,11 @@
-import { html, ref } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { AccordionItem, AccordionItemOptions } from "./accordion-item.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
+ * The template for the {@link @ni/fast-foundation#(AccordionItem:class)} component.
  * @public
  */
 export const accordionItemTemplate: FoundationElementTemplate<

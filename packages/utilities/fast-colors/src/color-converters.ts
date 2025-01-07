@@ -138,7 +138,7 @@ export function calculateOverlayColor(
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorHSL}
+ * Converts a {@link @ni/fast-colors#ColorRGBA64} to a {@link @ni/fast-colors#ColorHSL}
  * @param rgb - the rgb color to convert
  *
  * @remarks
@@ -176,7 +176,7 @@ export function rgbToHSL(rgb: ColorRGBA64): ColorHSL {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorHSL} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * Converts a {@link @ni/fast-colors#ColorHSL} to a {@link @ni/fast-colors#ColorRGBA64}
  * @param hsl - the hsl color to convert
  * @param alpha - the alpha value
  *
@@ -221,7 +221,7 @@ export function hslToRGB(hsl: ColorHSL, alpha: number = 1): ColorRGBA64 {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorHSV}
+ * Converts a {@link @ni/fast-colors#ColorRGBA64} to a {@link @ni/fast-colors#ColorHSV}
  * @param rgb - the rgb color to convert
  *
  * @remarks
@@ -257,7 +257,7 @@ export function rgbToHSV(rgb: ColorRGBA64): ColorHSV {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorHSV} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * Converts a {@link @ni/fast-colors#ColorHSV} to a {@link @ni/fast-colors#ColorRGBA64}
  * @param hsv - the hsv color to convert
  * @param alpha - the alpha value
  *
@@ -301,7 +301,7 @@ export function hsvToRGB(hsv: ColorHSV, alpha: number = 1): ColorRGBA64 {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorLCH} to a {@link @microsoft/fast-colors#ColorLAB}
+ * Converts a {@link @ni/fast-colors#ColorLCH} to a {@link @ni/fast-colors#ColorLAB}
  * @param lch - the lch color to convert
  *
  * @public
@@ -318,7 +318,7 @@ export function lchToLAB(lch: ColorLCH): ColorLAB {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorLAB} to a {@link @microsoft/fast-colors#ColorLCH}
+ * Converts a {@link @ni/fast-colors#ColorLAB} to a {@link @ni/fast-colors#ColorLCH}
  * @param lab - the lab color to convert
  *
  * @remarks
@@ -345,7 +345,7 @@ export function labToLCH(lab: ColorLAB): ColorLCH {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorLAB} to a {@link @microsoft/fast-colors#ColorXYZ}
+ * Converts a {@link @ni/fast-colors#ColorLAB} to a {@link @ni/fast-colors#ColorXYZ}
  * @param lab - the lab color to convert
  *
  * @public
@@ -388,7 +388,7 @@ export function labToXYZ(lab: ColorLAB): ColorXYZ {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorXYZ} to a {@link @microsoft/fast-colors#ColorLAB}
+ * Converts a {@link @ni/fast-colors#ColorXYZ} to a {@link @ni/fast-colors#ColorLAB}
  * @param xyz - the xyz color to convert
  *
  * @public
@@ -413,7 +413,7 @@ export function xyzToLAB(xyz: ColorXYZ): ColorLAB {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorXYZ}
+ * Converts a {@link @ni/fast-colors#ColorRGBA64} to a {@link @ni/fast-colors#ColorXYZ}
  * @param rgb - the rgb color to convert
  *
  * @remarks
@@ -440,7 +440,7 @@ export function rgbToXYZ(rgb: ColorRGBA64): ColorXYZ {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorXYZ} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * Converts a {@link @ni/fast-colors#ColorXYZ} to a {@link @ni/fast-colors#ColorRGBA64}
  * @param xyz - the xyz color to convert
  * @param alpha - the alpha value
  *
@@ -470,7 +470,7 @@ export function xyzToRGB(xyz: ColorXYZ, alpha: number = 1): ColorRGBA64 {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorLAB}
+ * Converts a {@link @ni/fast-colors#ColorRGBA64} to a {@link @ni/fast-colors#ColorLAB}
  * @param rgb - the rgb color to convert
  *
  * @remarks
@@ -483,7 +483,7 @@ export function rgbToLAB(rgb: ColorRGBA64): ColorLAB {
 }
 
 /**
- * Converts a {@link @microsoft/fast-colors#ColorLAB} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * Converts a {@link @ni/fast-colors#ColorLAB} to a {@link @ni/fast-colors#ColorRGBA64}
  * @param lab - the LAB color to convert
  * @param alpha - the alpha value
  *
@@ -497,7 +497,7 @@ export function labToRGB(lab: ColorLAB, alpha: number = 1): ColorRGBA64 {
 }
 
 /**
- * Convert a {@link @microsoft/fast-colors#ColorRGBA64} to a {@link @microsoft/fast-colors#ColorLCH}
+ * Convert a {@link @ni/fast-colors#ColorRGBA64} to a {@link @ni/fast-colors#ColorLCH}
  *
  * @param rgb - the rgb color to convert
  *
@@ -511,7 +511,7 @@ export function rgbToLCH(rgb: ColorRGBA64): ColorLCH {
 }
 
 /**
- * Convert a {@link @microsoft/fast-colors#ColorLCH} to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * Convert a {@link @ni/fast-colors#ColorLCH} to a {@link @ni/fast-colors#ColorRGBA64}
  * @param lch - the LCH color to convert
  * @param alpha - the alpha value
  *
@@ -522,7 +522,7 @@ export function lchToRGB(lch: ColorLCH, alpha: number = 1): ColorRGBA64 {
 }
 
 /**
- * Converts a color temperature to a {@link @microsoft/fast-colors#ColorRGBA64}
+ * Converts a color temperature to a {@link @ni/fast-colors#ColorRGBA64}
  * @param tempKelvin - the temperature to convert
  * @param alpha - the alpha value
  *

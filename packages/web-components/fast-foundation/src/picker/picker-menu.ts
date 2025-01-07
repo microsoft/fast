@@ -1,5 +1,5 @@
-import { uniqueId } from "@microsoft/fast-web-utilities";
-import { observable } from "@microsoft/fast-element";
+import { uniqueId } from "@ni/fast-web-utilities";
+import { observable } from "@ni/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**

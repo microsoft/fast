@@ -2,8 +2,8 @@ import {
     attr,
     nullableNumberConverter,
     SyntheticViewTemplate,
-} from "@microsoft/fast-element";
-import { keyEnter } from "@microsoft/fast-web-utilities";
+} from "@ni/fast-element";
+import { keyEnter } from "@ni/fast-web-utilities";
 import type { StartEndOptions } from "../patterns/start-end.js";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type {

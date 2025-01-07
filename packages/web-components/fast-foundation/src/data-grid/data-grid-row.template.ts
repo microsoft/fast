@@ -1,5 +1,5 @@
-import { children, elements, html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { children, elements, html, slotted } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 import type { DataGridRow } from "./data-grid-row.js";
@@ -29,7 +29,7 @@ function createHeaderCellItemTemplate(context: ElementDefinitionContext): ViewTe
 }
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#DataGridRow} component using
+ * Generates a template for the {@link @ni/fast-foundation#DataGridRow} component using
  * the provided prefix.
  *
  * @public

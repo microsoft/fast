@@ -5,7 +5,7 @@ class _TextField extends FoundationElement {}
 interface _TextField extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(TextField:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(TextField:class)} component.
  *
  * @internal
  */

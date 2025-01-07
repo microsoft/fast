@@ -1,4 +1,4 @@
-import { $global } from "@microsoft/fast-element";
+import { $global } from "@ni/fast-element";
 
 /**
  *  A service to batch intersection event callbacks so multiple elements can share a single observer

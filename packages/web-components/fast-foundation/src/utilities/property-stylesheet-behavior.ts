@@ -3,7 +3,7 @@ import {
     ElementStyles,
     FASTElement,
     Observable,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 
 /**
  * A behavior to add or remove a stylesheet from an element based on a property. The behavior ensures that

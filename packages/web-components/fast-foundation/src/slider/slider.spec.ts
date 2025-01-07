@@ -1,8 +1,8 @@
 import { expect, assert } from "chai";
 import { Slider, sliderTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
-import { Orientation, Direction } from "@microsoft/fast-web-utilities";
+import { DOM } from "@ni/fast-element";
+import { Orientation, Direction } from "@ni/fast-web-utilities";
 
 const FASTSlider = Slider.compose({
     baseName: "slider",

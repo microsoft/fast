@@ -5,7 +5,7 @@ class _NumberField extends FoundationElement {}
 interface _NumberField extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(NumberField:class)} component.
  *
  * @internal
  */

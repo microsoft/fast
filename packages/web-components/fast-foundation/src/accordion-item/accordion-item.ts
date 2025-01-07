@@ -2,7 +2,7 @@ import {
     attr,
     nullableNumberConverter,
     SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import {
     FoundationElement,
     FoundationElementDefinition,
@@ -21,7 +21,7 @@ export type AccordionItemOptions = FoundationElementDefinition &
     };
 
 /**
- * An individual item in an {@link @microsoft/fast-foundation#(Accordion:class) }.
+ * An individual item in an {@link @ni/fast-foundation#(Accordion:class) }.
  *
  * @slot start - Content which can be provided between the heading and the icon
  * @slot end - Content which can be provided between the start slot and icon

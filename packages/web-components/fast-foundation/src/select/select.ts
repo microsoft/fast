@@ -1,5 +1,5 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
+import type { SyntheticViewTemplate } from "@ni/fast-element";
+import { attr, DOM, Observable, observable, volatile } from "@ni/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -10,7 +10,7 @@ import {
     keySpace,
     keyTab,
     uniqueId,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
 import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";

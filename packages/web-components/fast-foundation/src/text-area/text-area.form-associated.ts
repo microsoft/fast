@@ -5,7 +5,7 @@ class _TextArea extends FoundationElement {}
 interface _TextArea extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(TextArea:class)} component.
  *
  * @internal
  */

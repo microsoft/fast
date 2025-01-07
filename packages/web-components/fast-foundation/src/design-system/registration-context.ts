@@ -1,7 +1,7 @@
 import type {
     Constructable,
     PartialFASTElementDefinition,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import type { Container } from "../di/di.js";
 import type { ComponentPresentation } from "./component-presentation.js";
 

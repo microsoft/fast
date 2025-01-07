@@ -1,11 +1,11 @@
-import { html, ref, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import { TextAreaResize } from "./text-area.js";
 import type { TextArea } from "./text-area.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
+ * The template for the {@link @ni/fast-foundation#(TextArea:class)} component.
  * @public
  */
 export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>> = (

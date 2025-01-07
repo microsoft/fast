@@ -1,4 +1,4 @@
-import { attr, booleanConverter, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, booleanConverter, SyntheticViewTemplate } from "@ni/fast-element";
 import {
     FoundationElement,
     FoundationElementDefinition,

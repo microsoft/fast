@@ -1,4 +1,4 @@
-import type { Behavior, ElementStyles, FASTElement } from "@microsoft/fast-element";
+import type { Behavior, ElementStyles, FASTElement } from "@ni/fast-element";
 
 /**
  * An event listener fired by a {@link https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList | MediaQueryList }.
@@ -110,8 +110,8 @@ export class MatchMediaStyleSheetBehavior extends MatchMediaBehavior {
      * @example
      *
      * ```ts
-     * import { css } from "@microsoft/fast-element";
-     * import { MatchMediaStyleSheetBehavior } from "@microsoft/fast-foundation";
+     * import { css } from "@ni/fast-element";
+     * import { MatchMediaStyleSheetBehavior } from "@ni/fast-foundation";
      *
      * const landscapeBehavior = MatchMediaStyleSheetBehavior.with(
      *   window.matchMedia("(orientation: landscape)")

@@ -4,8 +4,8 @@ import {
     DOM,
     Subscriber,
     SubscriberSet,
-} from "@microsoft/fast-element";
-import type { CaptureType } from "@microsoft/fast-element";
+} from "@ni/fast-element";
+import type { CaptureType } from "@ni/fast-element";
 
 const observer = new MutationObserver((mutations: MutationRecord[]) => {
     for (const mutation of mutations) {

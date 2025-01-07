@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@ni/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,

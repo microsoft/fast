@@ -1,8 +1,8 @@
-import { attr } from "@microsoft/fast-element";
+import { attr } from "@ni/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
- * A Tab Component to be used with {@link @microsoft/fast-foundation#(Tabs:class)}
+ * A Tab Component to be used with {@link @ni/fast-foundation#(Tabs:class)}
  *
  * @slot - The default slot for the tab content
  *

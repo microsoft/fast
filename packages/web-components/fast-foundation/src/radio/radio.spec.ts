@@ -1,8 +1,8 @@
 import { expect, assert } from "chai";
 import { Radio, radioTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
-import { keySpace } from "@microsoft/fast-web-utilities";
+import { DOM } from "@ni/fast-element";
+import { keySpace } from "@ni/fast-web-utilities";
 
 const FASTRadio = Radio.compose({
     baseName: "radio",

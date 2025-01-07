@@ -1,5 +1,5 @@
-import { attr } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { attr } from "@ni/fast-element";
+import { Orientation } from "@ni/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { DividerRole } from "./divider.options.js";
 

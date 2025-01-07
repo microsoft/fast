@@ -8,7 +8,7 @@ import {
     observable,
     Observable,
     Subscriber,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import { composedParent } from "../utilities/composed-parent.js";
 import { composedContains } from "../utilities/composed-contains.js";
 import {

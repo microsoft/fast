@@ -5,7 +5,7 @@ import {
     slotted,
     ViewTemplate,
     when,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll.js";

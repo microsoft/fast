@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr } from "@ni/fast-element";
 
 /**
  * Some states and properties are applicable to all host language elements regardless of whether a role is applied.

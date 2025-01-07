@@ -12,7 +12,7 @@ import {
 } from "./di";
 import chai, { expect } from "chai";
 import spies from "chai-spies";
-import { customElement, FASTElement, html, ref } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, ref } from "@ni/fast-element";
 
 chai.use(spies);
 

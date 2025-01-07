@@ -1,4 +1,4 @@
-import { attr } from "@microsoft/fast-element";
+import { attr } from "@ni/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**

@@ -1,4 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { expect } from "chai";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";

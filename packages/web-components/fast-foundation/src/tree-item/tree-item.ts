@@ -1,5 +1,5 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { attr, observable, SyntheticViewTemplate } from "@ni/fast-element";
+import { isHTMLElement } from "@ni/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import {

@@ -1,6 +1,6 @@
 import { composedContains } from "./composed-contains";
 import { expect } from "chai";
-import { html, customElement, ref, FASTElement, observable, DOM } from "@microsoft/fast-element";
+import { html, customElement, ref, FASTElement, observable, DOM } from "@ni/fast-element";
 
 @customElement({
     name: "composed-contains-element",

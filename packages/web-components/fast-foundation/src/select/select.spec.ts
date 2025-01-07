@@ -1,5 +1,5 @@
-import { DOM } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
+import { DOM } from "@ni/fast-element";
+import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@ni/fast-web-utilities";
 import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option/index.js";
 import { fixture } from "../test-utilities/fixture.js";

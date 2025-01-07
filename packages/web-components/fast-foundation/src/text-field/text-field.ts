@@ -1,4 +1,4 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { attr, DOM, nullableNumberConverter, observable } from "@ni/fast-element";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,

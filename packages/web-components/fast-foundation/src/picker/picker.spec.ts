@@ -12,7 +12,7 @@ import {
     pickerTemplate,
 } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -24,7 +24,7 @@ import {
     keyEnter,
     keyEscape,
     keyHome,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 
 const FASTPickerList = PickerList.compose({
     baseName: "picker-list",

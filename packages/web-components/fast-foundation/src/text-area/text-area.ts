@@ -1,4 +1,4 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@ni/fast-element";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedTextArea } from "./text-area.form-associated.js";

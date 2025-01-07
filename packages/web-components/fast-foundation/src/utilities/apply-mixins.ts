@@ -1,4 +1,4 @@
-import { AttributeConfiguration } from "@microsoft/fast-element";
+import { AttributeConfiguration } from "@ni/fast-element";
 
 /**
  * Apply mixins to a constructor.

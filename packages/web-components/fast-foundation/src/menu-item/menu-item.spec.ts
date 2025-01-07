@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { MenuItem, menuItemTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { MenuItemRole } from "./menu-item";
-import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
+import { keyEnter, keySpace } from "@ni/fast-web-utilities";
 import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region";
 
 const FASTMenuItem = MenuItem.compose({

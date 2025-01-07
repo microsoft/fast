@@ -10,8 +10,8 @@ import {
 } from "./index";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
-import { DOM } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
+import { DOM } from "@ni/fast-element";
+import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@ni/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",

@@ -1,4 +1,4 @@
-import { canUseFocusVisible } from "@microsoft/fast-web-utilities";
+import { canUseFocusVisible } from "@ni/fast-web-utilities";
 
 /**
  * The string representing the focus selector to be used. Value

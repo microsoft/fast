@@ -5,7 +5,7 @@ class _Picker extends FoundationElement {}
 interface _Picker extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-foundation#(Picker:class)} component.
+ * A form-associated base class for the {@link @ni/fast-foundation#(Picker:class)} component.
  *
  * @internal
  */

@@ -1,4 +1,4 @@
-import { Direction } from "@microsoft/fast-web-utilities";
+import { Direction } from "@ni/fast-web-utilities";
 
 /**
  * a method to determine the current localization direction of the view

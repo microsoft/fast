@@ -4,9 +4,9 @@ import {
     DOM,
     emptyArray,
     observable,
-} from "@microsoft/fast-element";
-import type { Constructable, FASTElement } from "@microsoft/fast-element";
-import { keyEnter } from "@microsoft/fast-web-utilities";
+} from "@ni/fast-element";
+import type { Constructable, FASTElement } from "@ni/fast-element";
+import { keyEnter } from "@ni/fast-web-utilities";
 
 /**
  * This file enables typing support for ElementInternals APIs.

@@ -4,7 +4,7 @@ import {
     ExecutionContext,
     HTMLView,
     ViewTemplate,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import { DesignSystem, DesignSystemRegistrationContext } from "../design-system/index.js";
 import type { Container } from "../di/di.js";
 import type {
@@ -36,7 +36,7 @@ export interface FixtureOptions {
 
     /**
      * The execution context to use during binding.
-     * @defaultValue {@link @microsoft/fast-element#defaultExecutionContext}
+     * @defaultValue {@link @ni/fast-element#defaultExecutionContext}
      */
     context?: ExecutionContext;
 

@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { Button, buttonTemplate as template } from "./index";
-import { eventClick } from "@microsoft/fast-web-utilities";
+import { eventClick } from "@ni/fast-web-utilities";
 
 const FASTButton = Button.compose({
     baseName: "button",
@@ -609,7 +609,7 @@ describe("Button", () => {
                spans.forEach((span: HTMLSpanElement) => {
                    span.click()
                    expect(wasClicked).to.equal(false);
-               }) 
+               })
             }
 
             await disconnect();

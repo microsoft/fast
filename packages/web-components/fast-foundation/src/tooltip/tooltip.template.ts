@@ -1,11 +1,11 @@
-import { html, ref, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import { AnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Tooltip } from "./tooltip.js";
 
 /**
- * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
+ * Creates a template for the {@link @ni/fast-foundation#(Tooltip:class)} component using the provided prefix.
  * @public
  */
 export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> = (

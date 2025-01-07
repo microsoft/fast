@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@ni/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -9,7 +9,7 @@ import {
     limit,
     uniqueId,
     wrapInBounds,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import {
@@ -24,7 +24,7 @@ import {
 export type TabsOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
- * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
+ * The orientation of the {@link @ni/fast-foundation#(Tabs:class)} component
  * @public
  */
 export const TabsOrientation = {

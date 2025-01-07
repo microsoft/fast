@@ -1,4 +1,4 @@
-import { css, DOM } from "@microsoft/fast-element";
+import { css, DOM } from "@ni/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { HorizontalScroll, horizontalScrollTemplate as template } from "./index";

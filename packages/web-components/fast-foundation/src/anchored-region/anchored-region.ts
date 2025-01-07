@@ -1,5 +1,5 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
-import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
+import { attr, DOM, observable } from "@ni/fast-element";
+import { Direction, eventResize, eventScroll } from "@ni/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { getDirection } from "../utilities/direction.js";
 import { IntersectionService } from "../utilities/intersection-service.js";

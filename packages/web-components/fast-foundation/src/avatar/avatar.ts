@@ -1,4 +1,4 @@
-import { attr, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, SyntheticViewTemplate } from "@ni/fast-element";
 import {
     FoundationElement,
     FoundationElementDefinition,

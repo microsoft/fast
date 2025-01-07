@@ -1,4 +1,4 @@
-import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element";
+import { css, DOM, FASTElement, html, Observable } from "@ni/fast-element";
 import chia, { expect } from "chai";
 import { DesignSystem } from "../design-system";
 import { uniqueElementName } from "../test-utilities/fixture";

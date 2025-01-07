@@ -5,7 +5,7 @@ import {
     RepeatBehavior,
     RepeatDirective,
     ViewTemplate,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import {
     eventFocus,
     eventFocusOut,
@@ -16,7 +16,7 @@ import {
     keyHome,
     keyPageDown,
     keyPageUp,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type { DataGridCell } from "./data-grid-cell.js";
 import type { DataGridRow } from "./data-grid-row.js";

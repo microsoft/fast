@@ -1,5 +1,5 @@
-import { DOM } from "@microsoft/fast-element";
-import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
+import { DOM } from "@ni/fast-element";
+import { keyArrowRight, Orientation } from "@ni/fast-web-utilities";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { Toolbar, toolbarTemplate as template } from "./index";

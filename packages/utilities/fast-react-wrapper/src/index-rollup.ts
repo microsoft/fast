@@ -1,3 +1,3 @@
 export * from "./index.js";
-export * from "@microsoft/fast-element";
-export * from "@microsoft/fast-foundation";
+export * from "@ni/fast-element";
+export * from "@ni/fast-foundation";

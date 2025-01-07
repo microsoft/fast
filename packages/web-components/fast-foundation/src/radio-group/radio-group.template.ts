@@ -1,11 +1,11 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { elements, html, slotted } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
+import { Orientation } from "@ni/fast-web-utilities";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { RadioGroup } from "./radio-group.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#RadioGroup} component.
+ * The template for the {@link @ni/fast-foundation#RadioGroup} component.
  * @public
  */
 export const radioGroupTemplate: FoundationElementTemplate<ViewTemplate<RadioGroup>> = (

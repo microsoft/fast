@@ -1,5 +1,5 @@
-import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { keySpace } from "@microsoft/fast-web-utilities";
+import { attr, observable, SyntheticViewTemplate } from "@ni/fast-element";
+import { keySpace } from "@ni/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
 

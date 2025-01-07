@@ -1,5 +1,5 @@
-import { attr, observable, Observable } from "@microsoft/fast-element";
-import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { attr, observable, Observable } from "@ni/fast-element";
+import { isHTMLElement } from "@ni/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";

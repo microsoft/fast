@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
-import { keyArrowLeft, keyArrowRight, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
+import { keyArrowLeft, keyArrowRight, keyEnd, keyHome } from "@ni/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",

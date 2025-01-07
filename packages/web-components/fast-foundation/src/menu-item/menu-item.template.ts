@@ -1,5 +1,5 @@
-import { html, ref, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, when } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import { AnchoredRegion } from "../anchored-region/anchored-region.js";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
@@ -7,7 +7,7 @@ import { MenuItemRole } from "./menu-item.js";
 import type { MenuItem, MenuItemOptions } from "./menu-item.js";
 
 /**
- * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using
+ * Generates a template for the {@link @ni/fast-foundation#(MenuItem:class)} component using
  * the provided prefix.
  *
  * @public

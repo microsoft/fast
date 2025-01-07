@@ -3,7 +3,7 @@ import {
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import {
     Direction,
     keyArrowDown,
@@ -13,14 +13,14 @@ import {
     keyEnd,
     keyHome,
     Orientation,
-} from "@microsoft/fast-web-utilities";
+} from "@ni/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { getDirection } from "../utilities/direction.js";
 import { convertPixelToPercent } from "./slider-utilities.js";
 import { FormAssociatedSlider } from "./slider.form-associated.js";
 
 /**
- * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
+ * The selection modes of a {@link @ni/fast-foundation#(Slider:class)}.
  * @public
  */
 export const SliderMode = {
@@ -34,7 +34,7 @@ export const SliderMode = {
 export type SliderMode = typeof SliderMode[keyof typeof SliderMode];
 
 /**
- * The configuration structure of {@link @microsoft/fast-foundation#(Slider:class)}.
+ * The configuration structure of {@link @ni/fast-foundation#(Slider:class)}.
  * @public
  */
 export interface SliderConfiguration {

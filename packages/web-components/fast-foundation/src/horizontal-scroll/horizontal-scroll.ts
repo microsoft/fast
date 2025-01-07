@@ -4,8 +4,8 @@ import {
     DOM,
     nullableNumberConverter,
     observable,
-} from "@microsoft/fast-element";
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+} from "@ni/fast-element";
+import type { SyntheticViewTemplate } from "@ni/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type {
     FoundationElementDefinition,
@@ -15,13 +15,13 @@ import type { StartEndOptions } from "../patterns/start-end.js";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 
 /**
- * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The views types for a horizontal-scroll {@link @ni/fast-foundation#(HorizontalScroll:class)}
  * @public
  */
 export type HorizontalScrollView = "default" | "mobile";
 
 /**
- * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
+ * The easing types available for the horizontal-scroll {@link @ni/fast-foundation#(HorizontalScroll:class)}
  * @public
  */
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;

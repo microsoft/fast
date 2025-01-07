@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 import { Disclosure, disclosureTemplate as template } from "./index";
 
 const FastDisclosure = Disclosure.compose({

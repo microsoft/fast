@@ -6,7 +6,7 @@ import {
     html,
     DOM,
     observable,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import { uniqueElementName, fixture } from "./fixture";
 
 describe("The fixture helper", () => {

@@ -3,8 +3,8 @@ import type {
     ComposableStyles,
     Constructable,
     ElementViewTemplate,
-} from "@microsoft/fast-element";
-import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element";
+} from "@ni/fast-element";
+import { ElementStyles, FASTElement, observable } from "@ni/fast-element";
 import {
     ComponentPresentation,
     DefaultComponentPresentation,

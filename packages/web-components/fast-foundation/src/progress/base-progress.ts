@@ -3,7 +3,7 @@ import {
     nullableNumberConverter,
     observable,
     SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+} from "@ni/fast-element";
 import {
     FoundationElement,
     FoundationElementDefinition,

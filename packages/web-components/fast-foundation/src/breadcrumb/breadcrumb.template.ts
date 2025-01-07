@@ -1,10 +1,10 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@ni/fast-element";
+import type { ViewTemplate } from "@ni/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { Breadcrumb } from "./breadcrumb.js";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#Breadcrumb} component.
+ * The template for the {@link @ni/fast-foundation#Breadcrumb} component.
  * @public
  */
 export const breadcrumbTemplate: FoundationElementTemplate<ViewTemplate<Breadcrumb>> = (

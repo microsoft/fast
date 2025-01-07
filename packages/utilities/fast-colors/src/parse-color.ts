@@ -53,7 +53,7 @@ export function isColorStringWebRGBA(raw: string): boolean {
 }
 
 /**
- * Tests whether a color is in {@link @microsoft/fast-colors#NamedColors}.
+ * Tests whether a color is in {@link @ni/fast-colors#NamedColors}.
  * @param raw - the color name to test
  * @public
  */
@@ -62,7 +62,7 @@ export function isColorNamed(raw: string | NamedColors): raw is NamedColors {
 }
 
 /**
- * Converts a hexadecimal color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * Converts a hexadecimal color string to a {@link @ni/fast-colors#ColorRGBA64}.
  * @param raw - a color string in the form of "#RRGGBB" or "#RGB"
  * @example
  * ```ts
@@ -104,7 +104,7 @@ export function parseColorHexRGB(raw: string): ColorRGBA64 | null {
 }
 
 /**
- * Converts a hexadecimal color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * Converts a hexadecimal color string to a {@link @ni/fast-colors#ColorRGBA64}.
  * @param raw - a color string in the form of "#AARRGGBB" or "#ARGB"
  * @example
  * ```ts
@@ -147,7 +147,7 @@ export function parseColorHexARGB(raw: string): ColorRGBA64 | null {
 }
 
 /**
- * Converts a hexadecimal color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * Converts a hexadecimal color string to a {@link @ni/fast-colors#ColorRGBA64}.
  * @param raw - a color string in the form of "#RRGGBBAA" or "#RGBA"
  * @example
  * ```ts
@@ -190,7 +190,7 @@ export function parseColorHexRGBA(raw: string): ColorRGBA64 | null {
 }
 
 /**
- * Converts a rgb color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * Converts a rgb color string to a {@link @ni/fast-colors#ColorRGBA64}.
  * @param raw - a color string format "rgba(RR,GG,BB)" where RR,GG,BB are [0,255]
  * @example
  * ```ts
@@ -216,7 +216,7 @@ export function parseColorWebRGB(raw: string): ColorRGBA64 | null {
 }
 
 /**
- * Converts a rgba color string to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * Converts a rgba color string to a {@link @ni/fast-colors#ColorRGBA64}.
  * @param raw - a color string format "rgba(RR,GG,BB,a)" where RR,GG,BB are [0,255] and a is [0,1]
  * @example
  * ```ts
@@ -245,7 +245,7 @@ export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
 }
 
 /**
- * Converts a named color to a {@link @microsoft/fast-colors#ColorRGBA64}.
+ * Converts a named color to a {@link @ni/fast-colors#ColorRGBA64}.
  * @param raw - a {@link https://www.w3schools.com/colors/colors_names.asp | CSS color name}.
  * @example
  * ```ts

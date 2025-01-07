@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { TreeItem, treeItemTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM } from "@microsoft/fast-element";
+import { DOM } from "@ni/fast-element";
 
 const FASTTreeItem = TreeItem.compose({
     baseName: "tree-item",
