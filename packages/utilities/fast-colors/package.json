@@ -18,19 +18,17 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json && yarn doc",
-    "build:tests": "tsc -p ./tsconfig.test.json",
+    "build": "npm run clean:dist && tsc -p ./tsconfig.build.json",
+    "build:tests": "npm run clean:dist && tsc -p ./tsconfig.test.json",
     "clean:dist": "node ../../../build/clean.js dist",
-    "doc": "api-extractor run --local",
-    "doc:ci": "api-extractor run",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
-    "test": "yarn build:tests && yarn eslint && yarn unit-tests && yarn doc",
+    "test": "npm run build:tests && npm run eslint && npm run unit-tests && npm run doc",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "unit-tests": "mocha",
     "unit-tests:watch": "mocha --watch",
-    "watch": "yarn build -- -w --preserveWatchOutput"
+    "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
