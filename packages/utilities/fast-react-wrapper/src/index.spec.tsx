@@ -1,9 +1,9 @@
-import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@microsoft/fast-element';
+import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@ni/fast-element';
 import React from "react";
 import ReactDOM from "react-dom";
-import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
+import { uniqueElementName } from '@ni/fast-foundation/dist/esm/test-utilities/fixture';
 import { expect } from "chai";
-import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
+import { DesignSystem, FoundationElement } from "@ni/fast-foundation";
 import { provideReactWrapper } from './index';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */

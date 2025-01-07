@@ -18,12 +18,13 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "npm run clean:dist && tsc -p ./tsconfig.build.json",
-    "build:tests": "npm run clean:dist && tsc -p ./tsconfig.test.json",
+    "build": "npm run clean:dist && tsc -p ./tsconfig.build.json && npm run doc",
+    "build:tests": "npm run clean:dist && tsc -p ./tsconfig.test.json && npm run doc",
     "clean:dist": "node ../../../build/clean.js dist",
+    "doc": "api-extractor run --local",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
-    "test": "npm run build:tests && npm run eslint && npm run unit-tests && npm run doc",
+    "test": "npm run build:tests && npm run eslint && npm run unit-tests",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "unit-tests": "mocha",
@@ -31,6 +32,7 @@
     "watch": "npm run build -- -w --preserveWatchOutput"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "7.23.1",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^8.2.0",
     "chai": "^4.2.0",

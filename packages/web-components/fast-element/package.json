@@ -20,7 +20,8 @@
   "unpkg": "dist/fast-element.min.js",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
-    "build": "npm run clean:dist && npm run build:tsc && npm run build:rollup",
+    "doc": "api-extractor run --local",
+    "build": "npm run clean:dist && npm run build:tsc && npm run build:rollup && npm run doc",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
@@ -42,6 +43,7 @@
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "7.23.1",
     "@types/chai": "^4.2.11",
     "@types/chai-spies": "^1.0.3",
     "@types/karma": "^5.0.0",
