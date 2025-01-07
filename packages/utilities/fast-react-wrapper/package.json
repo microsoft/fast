@@ -1,19 +1,18 @@
 {
-  "name": "@microsoft/fast-react-wrapper",
+  "name": "@ni/fast-react-wrapper",
   "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
   "version": "0.3.25",
   "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
+    "name": "National Instruments"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/ni/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    "url": "https://github.com/ni/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
   "type": "module",
@@ -26,7 +25,6 @@
     "build": "tsc -p ./tsconfig.json && yarn rollup -c && yarn doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "yarn dev & yarn test-chrome:watch",
-    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
@@ -87,8 +85,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^1.14.0",
-    "@microsoft/fast-foundation": "^2.50.0"
+    "@ni/fast-element": "^1.14.0",
+    "@ni/fast-foundation": "^2.50.0"
   },
   "peerDependencies": {
     "react": ">=16.9.0"

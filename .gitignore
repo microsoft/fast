@@ -58,9 +58,6 @@ storybook-static
 .tmp/
 temp/
 
-# npm package-locks
-package-lock.json
-
 # Docusaurus files to ignore
 sites/website/build/
 sites/website/docs/

@@ -1,11 +1,11 @@
 {
-  "name": "@microsoft/eslint-config-fast-dna",
+  "name": "@ni/eslint-config-fast-dna",
   "description": "eslint rules for FAST projects",
   "sideEffects": false,
   "version": "2.1.0",
+  "private":"true",
   "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
+    "name": "National Instruments"
   },
   "keywords": [
     "eslint",
@@ -14,10 +14,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microsoft/fast.git"
+    "url": "git+https://github.com/ni/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/microsoft/fast/issues"
+    "url": "https://github.com/ni/fast/issues"
   },
   "main": ".eslintrc.js",
   "homepage": "https://github.com/Microsoft/fast-eslint-rules#readme",

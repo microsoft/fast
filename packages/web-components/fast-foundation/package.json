@@ -1,19 +1,18 @@
 {
-  "name": "@microsoft/fast-foundation",
+  "name": "@ni/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
   "version": "2.50.0",
   "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
+    "name": "National Instruments"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/ni/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    "url": "https://github.com/ni/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
   "types": "dist/fast-foundation.d.ts",
@@ -32,7 +31,6 @@
     "cem-markdown": "node CEMToMarkdown.mjs",
     "tdd": "yarn dev & yarn test-chrome:watch",
     "tdd:firefox": "yarn dev & yarn test-firefox:watch",
-    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
@@ -54,7 +52,6 @@
     "@custom-elements-manifest/analyzer": "^0.5.7",
     "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@microsoft/api-extractor": "7.23.1",
-    "@microsoft/tsdoc-config": "^0.13.4",
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
@@ -95,8 +92,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^1.14.0",
-    "@microsoft/fast-web-utilities": "^5.4.1",
+    "@ni/fast-element": "^1.14.0",
+    "@ni/fast-web-utilities": "^5.4.1",
     "tabbable": "^5.2.0",
     "tslib": "^1.13.0"
   },

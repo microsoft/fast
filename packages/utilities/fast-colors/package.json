@@ -1,19 +1,18 @@
 {
-  "name": "@microsoft/fast-colors",
+  "name": "@ni/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
   "sideEffects": false,
   "version": "5.3.0",
   "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
+    "name": "National Instruments"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
+    "url": "git+https://github.com/ni/fast.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    "url": "https://github.com/ni/fast/issues/new/choose"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -24,7 +23,6 @@
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
-    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "test": "yarn build:tests && yarn eslint && yarn unit-tests && yarn doc",
@@ -39,7 +37,7 @@
     "@types/mocha": "^8.2.0",
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
-    "@microsoft/eslint-config-fast-dna": "^2.1.0",
+    "@ni/eslint-config-fast-dna": "^2.1.0",
     "eslint-config-prettier": "^6.10.1",
     "prettier": "2.0.2",
     "typescript": "^4.6.2"

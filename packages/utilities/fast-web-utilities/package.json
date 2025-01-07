@@ -1,11 +1,10 @@
 {
-  "name": "@microsoft/fast-web-utilities",
+  "name": "@ni/fast-web-utilities",
   "description": "FAST web utilities",
   "version": "5.4.1",
   "sideEffects": false,
   "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
+    "name": "National Instruments"
   },
   "license": "MIT",
   "repository": {
@@ -21,7 +20,6 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "clean:dist": "node ../../../build/clean.js dist",
-    "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
     "test": "yarn eslint && yarn build && yarn test-chrome:verbose",
@@ -44,7 +42,7 @@
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
-    "@microsoft/eslint-config-fast-dna": "^2.1.0",
+    "@ni/eslint-config-fast-dna": "^2.1.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "eslint-config-prettier": "^6.10.1",
