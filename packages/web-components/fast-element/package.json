@@ -22,6 +22,7 @@
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "build": "npm run clean:dist && npm run build:tsc && npm run build:rollup && npm run doc",
+    "pack": "npm pack",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",

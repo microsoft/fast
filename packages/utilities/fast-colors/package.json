@@ -19,6 +19,7 @@
   "type": "module",
   "scripts": {
     "build": "npm run clean:dist && tsc -p ./tsconfig.build.json && npm run doc",
+    "pack": "npm pack",
     "build:tests": "npm run clean:dist && tsc -p ./tsconfig.test.json && npm run doc",
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",

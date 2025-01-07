@@ -72,3 +72,6 @@ sites/website/i18n/
 # Ignore Build Artefacts
 bin/
 obj/
+
+# Ignore pack files
+*.tgz

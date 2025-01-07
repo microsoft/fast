@@ -22,6 +22,7 @@
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "build": "npm run clean:dist && tsc -p ./tsconfig.json && rollup -c && npm run doc",
+    "pack": "npm pack",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "npm run dev & npm run test-chrome:watch",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",

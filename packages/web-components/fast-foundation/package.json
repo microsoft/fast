@@ -24,6 +24,7 @@
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "npm run clean:dist && npm run build:tsc && npm run build:rollup && npm run doc",
+    "pack": "npm pack",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "npm run dev & npm run test-chrome:watch",
     "tdd:firefox": "npm run dev & npm run test-firefox:watch",

@@ -24,6 +24,9 @@
   "beachball": {
     "disallowedChangeTypes": []
   },
+  "scripts": {
+    "pack": "npm pack"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

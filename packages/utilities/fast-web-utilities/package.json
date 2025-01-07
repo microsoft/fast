@@ -19,6 +19,7 @@
   "type": "module",
   "scripts": {
     "build": "npm run clean:dist && tsc -p ./tsconfig.build.json",
+    "pack": "npm pack",
     "clean:dist": "node ../../../build/clean.js dist",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
