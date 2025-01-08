@@ -1,0 +1,95 @@
+name: 'main'
+
+on:
+  pull_request:
+  push:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_SERVICE_USER: "rajsite"
+  GITHUB_SERVICE_EMAIL: "rajsite@users.noreply.github.com"
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
+  LANGUAGE: "en_US.UTF-8"
+  TZ: "America/Chicago"
+  HAS_GITHUBPAGESDEPLOYTOKEN: ${{secrets.GITHUBPAGESDEPLOYTOKEN != ''}}
+  HAS_NPM_TOKEN: ${{secrets.NPM_TOKEN != ''}}
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true'
+        with:
+          # Required for chromatic change detection
+          fetch-depth: 0
+          # Must checkout with a token that can push to protected branches for beachball
+          # Cannot rely on GITHUB_TOKEN with workflow contents permission
+          # See: https://github.com/orgs/community/discussions/40971
+          token: ${{ secrets.GITHUBPAGESDEPLOYTOKEN }}
+      - uses: actions/checkout@v4
+        if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'false'
+        with:
+          # Required for chromatic change detection
+          fetch-depth: 0
+
+      # Install dependencies
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+      - run: npm ci
+
+      # print a log of outdated npm dependencies
+      # only informational so swallow error codes
+      - run: npm outdated || exit 0
+
+      # Build
+      - run: npm run build
+
+      # Pack
+      - run: npm run pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: |
+            packages/**/*.tgz
+          if-no-files-found: error
+
+      # Validate (Lint and Test)
+      - run: npm run lint
+      - run: npm run test
+
+      # Check Changelog
+      - if: github.repository_owner == 'ni'
+        run: npm run check
+
+      - name: Validate no changes to tracked files
+        run: |
+          echo print files with changes:
+          git diff-index --ignore-space-at-eol --stat HEAD
+          echo print diff or blank if no changes:
+          git diff
+          echo exit with error if there are changes.
+          git diff-index --quiet --ignore-space-at-eol --stat HEAD
+
+      # Release
+      - name: Set Git User
+        if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true' && startsWith(github.ref, 'refs/heads/archives/fast-element-1')
+        run: |
+          git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
+          git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
+
+      # Update package versions, tag, and publish to npm
+      - name: Beachball publish
+        if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true' && env.HAS_NPM_TOKEN == 'true' && startsWith(github.ref, 'refs/heads/archives/fast-element-1')
+        env:
+          NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run invoke-publish
