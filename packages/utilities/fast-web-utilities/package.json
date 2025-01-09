@@ -1,7 +1,7 @@
 {
   "name": "@ni/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "sideEffects": false,
   "author": {
     "name": "National Instruments"

@@ -2,7 +2,7 @@
   "name": "@ni/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "National Instruments"
   },
@@ -92,8 +92,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@ni/fast-element": "^0.0.1",
-    "@ni/fast-web-utilities": "^0.0.1",
+    "@ni/fast-element": "^0.0.2",
+    "@ni/fast-web-utilities": "^0.0.2",
     "tabbable": "^5.2.0",
     "tslib": "^1.13.0"
   },
