@@ -1,6 +1,21 @@
 {
-  "name": "@microsoft/fast-web-utilities",
+  "name": "@ni/fast-web-utilities",
   "entries": [
+    {
+      "date": "Thu, 09 Jan 2025 23:49:05 GMT",
+      "version": "0.0.3",
+      "tag": "@ni/fast-web-utilities_v0.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-web-utilities",
+            "commit": "b0959717783342ded372f514d38d5856a5e7ac14",
+            "comment": "Setup beachball publishing"
+          }
+        ]
+      }
+    },
     {
       "date": "Mon, 10 Apr 2023 18:32:46 GMT",
       "tag": "@microsoft/fast-web-utilities_v5.4.1",

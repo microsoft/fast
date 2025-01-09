@@ -1,6 +1,33 @@
 {
-  "name": "@microsoft/fast-foundation",
+  "name": "@ni/fast-foundation",
   "entries": [
+    {
+      "date": "Thu, 09 Jan 2025 23:49:05 GMT",
+      "version": "0.0.3",
+      "tag": "@ni/fast-foundation_v0.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-foundation",
+            "commit": "b0959717783342ded372f514d38d5856a5e7ac14",
+            "comment": "Setup beachball publishing"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-element to v0.0.3",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-web-utilities to v0.0.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
     {
       "date": "Wed, 23 Oct 2024 23:54:59 GMT",
       "tag": "@microsoft/fast-foundation_v2.50.0",

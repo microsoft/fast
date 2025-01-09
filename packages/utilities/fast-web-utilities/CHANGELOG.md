@@ -1,8 +1,16 @@
-# Change Log - @microsoft/fast-web-utilities
+# Change Log - @ni/fast-web-utilities
 
-This log was last generated on Wed, 04 May 2022 07:14:00 GMT and should not be manually modified.
+<!-- This log was last generated on Thu, 09 Jan 2025 23:49:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.3
+
+Thu, 09 Jan 2025 23:49:05 GMT
+
+### Patches
+
+- Setup beachball publishing ([ni/fast@b095971](https://github.com/ni/fast/commit/b0959717783342ded372f514d38d5856a5e7ac14))
 
 ## 5.4.1
 

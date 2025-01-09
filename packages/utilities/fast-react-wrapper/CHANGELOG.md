@@ -1,8 +1,18 @@
-# Change Log - @microsoft/fast-react-wrapper
+# Change Log - @ni/fast-react-wrapper
 
-This log was last generated on Wed, 23 Oct 2024 23:54:59 GMT and should not be manually modified.
+<!-- This log was last generated on Thu, 09 Jan 2025 23:49:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.3
+
+Thu, 09 Jan 2025 23:49:05 GMT
+
+### Patches
+
+- Setup beachball publishing ([ni/fast@b095971](https://github.com/ni/fast/commit/b0959717783342ded372f514d38d5856a5e7ac14))
+- Bump @ni/fast-element to v0.0.3
+- Bump @ni/fast-foundation to v0.0.3
 
 ## 0.3.25
 

@@ -1,6 +1,21 @@
 {
-  "name": "@microsoft/fast-colors",
+  "name": "@ni/fast-colors",
   "entries": [
+    {
+      "date": "Thu, 09 Jan 2025 23:49:05 GMT",
+      "version": "0.0.3",
+      "tag": "@ni/fast-colors_v0.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-colors",
+            "commit": "b0959717783342ded372f514d38d5856a5e7ac14",
+            "comment": "Setup beachball publishing"
+          }
+        ]
+      }
+    },
     {
       "date": "Wed, 27 Apr 2022 07:21:09 GMT",
       "tag": "@microsoft/fast-colors_v5.3.0",

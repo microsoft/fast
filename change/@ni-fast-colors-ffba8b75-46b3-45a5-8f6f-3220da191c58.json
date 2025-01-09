@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Setup beachball publishing",
-  "packageName": "@ni/fast-colors",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
