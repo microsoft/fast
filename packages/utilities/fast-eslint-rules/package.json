@@ -2,7 +2,7 @@
   "name": "@ni/eslint-config-fast-dna",
   "description": "eslint rules for FAST projects",
   "sideEffects": false,
-  "version": "2.1.0",
+  "version": "1.0.0",
   "private":"true",
   "author": {
     "name": "National Instruments"

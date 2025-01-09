@@ -1,7 +1,7 @@
 {
   "name": "@ni/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "5.4.1",
+  "version": "0.0.1",
   "sideEffects": false,
   "author": {
     "name": "National Instruments"
@@ -43,7 +43,7 @@
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
-    "@ni/eslint-config-fast-dna": "^2.1.0",
+    "@ni/eslint-config-fast-dna": "^1.0.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "eslint-config-prettier": "^6.10.1",
