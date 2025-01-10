@@ -333,7 +333,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             const removed = views.splice(i, viewsLength - i);
 
             for (i = 0, itemsLength = removed.length; i < itemsLength; ++i) {
-                removed[i].dispose();
+                removed[i]?.dispose();
             }
         }
     }
