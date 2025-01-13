@@ -1,5 +1,5 @@
 {
-    "extends": ["@microsoft/eslint-config-fast-dna", "prettier"],
+    "extends": ["@ni/eslint-config-fast-dna", "prettier"],
     "rules": {
         "@typescript-eslint/class-name-casing": "off",
         "@typescript-eslint/naming-convention": [

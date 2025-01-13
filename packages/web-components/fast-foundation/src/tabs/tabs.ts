@@ -8,7 +8,6 @@ import {
     keyHome,
     limit,
     uniqueId,
-    wrapInBounds,
 } from "@ni/fast-web-utilities";
 import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";

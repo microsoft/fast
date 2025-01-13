@@ -64,7 +64,7 @@ jobs:
           if-no-files-found: error
 
       # Validate (Lint and Test)
-      # - run: npm run lint
+      - run: npm run lint
       # - run: npm run test
 
       # Check Changelog

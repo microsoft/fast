@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Minor lint change to remove unused import",
+  "packageName": "@ni/fast-foundation",
+  "email": "rajsite@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

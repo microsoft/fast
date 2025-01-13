@@ -1,3 +1,3 @@
 module.exports = {
-    extends: ["@microsoft/eslint-config-fast-dna", "prettier"],
+    extends: ["@ni/eslint-config-fast-dna", "prettier"],
 };
