@@ -2,7 +2,7 @@
   "name": "@ni/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": {
     "name": "National Instruments"
   },

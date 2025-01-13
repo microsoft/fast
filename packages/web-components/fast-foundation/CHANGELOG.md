@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Thu, 09 Jan 2025 23:49:05 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 13 Jan 2025 22:09:06 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.4
+
+Mon, 13 Jan 2025 22:09:06 GMT
+
+### Patches
+
+- Minor lint change to remove unused import ([ni/fast@cde139a](https://github.com/ni/fast/commit/cde139a12db36332eff0e4f67f46275f73dc582d))
 
 ## 0.0.3
 

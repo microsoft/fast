@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Dev only changes from lint",
-  "packageName": "@ni/fast-web-utilities",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
