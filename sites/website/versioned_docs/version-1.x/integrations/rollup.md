@@ -2,7 +2,7 @@
 id: rollup
 title: Rollup
 sidebar_label: Rollup
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/rollup.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/rollup.md
 description: FAST works great with Rollup and TypeScript, using a standard setup. Let's take a look at how you can set up a FAST+Rollup+TypeScript project, starting from scratch.
 keywords:
   - rollup

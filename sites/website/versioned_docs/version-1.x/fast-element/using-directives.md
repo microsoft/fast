@@ -2,7 +2,7 @@
 id: using-directives
 title: Using Directives
 sidebar_label: Using Directives
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/using-directives.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/fast-element/using-directives.md
 description: In addition to declaring dynamic parts of templates with expressions, you also have access to several powerful directives, which aid in common scenarios.
 keywords:
   - using directives

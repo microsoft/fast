@@ -2,7 +2,7 @@
 id: leveraging-css
 title: Leveraging CSS
 sidebar_label: Leveraging CSS
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/leveraging-css.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/fast-element/leveraging-css.md
 description: Similar to HTML, FASTElement provides a css tagged template helper to allow creating and re-using CSS.
 keywords:
   - leveraging CSS

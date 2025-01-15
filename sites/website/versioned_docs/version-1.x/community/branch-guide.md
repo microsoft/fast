@@ -2,7 +2,7 @@
 id: branch-guide
 title: Branch Guide
 sidebar_label: Branch Guide
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/branch-guide.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/community/branch-guide.md
 description: This is the branch guide for the FAST repository. When contributing to this project please follow the standards defined in this guide.
 keywords:
   - branch guide
@@ -12,7 +12,7 @@ This is the branch guide for the FAST repository. When contributing to this proj
 
 ## Default
 
-The `master` branch is the default branch. It is used for all releases pinned to the current major version. Most pull requests should be merged directly into this branch so that they can be automatically checked for publishing.
+The `main` branch is the default branch. It is used for all releases pinned to the current major version. Most pull requests should be merged directly into this branch so that they can be automatically checked for publishing.
 
 ## Features
 

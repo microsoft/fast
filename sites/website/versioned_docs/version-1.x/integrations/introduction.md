@@ -2,7 +2,7 @@
 id: introduction
 title: Introduction
 sidebar_label: Introduction
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/introduction.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/introduction.md
 description: The integrations section of our documentation is dedicated to helping you get FAST Element working with your existing or preferred stack.
 keywords:
   - introduction

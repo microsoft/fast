@@ -124,7 +124,7 @@ module.exports = {
                     items: [
                         {
                             label: "License",
-                            href: "https://github.com/microsoft/fast/blob/master/LICENSE",
+                            href: "https://github.com/microsoft/fast/blob/main/LICENSE",
                         },
                         {
                             label: "Privacy & cookies",

@@ -2,7 +2,7 @@
 id: blazor
 title: Blazor
 sidebar_label: Blazor
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/blazor.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/blazor.md
 description: FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.
 keywords:
   - blazor

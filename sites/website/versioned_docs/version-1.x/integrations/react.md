@@ -2,7 +2,7 @@
 id: react
 title: React
 sidebar_label: React
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/react.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/react.md
 description: FAST can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.
 keywords:
   - react

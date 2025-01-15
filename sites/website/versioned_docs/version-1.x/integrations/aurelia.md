@@ -2,7 +2,7 @@
 id: aurelia
 title: Aurelia
 sidebar_label: Aurelia
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/aurelia.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/aurelia.md
 description: FAST works flawlessly with both Aurelia 1 and Aurelia 2, with full integration into the binding engine and component model. Let's take a look at how you can set up an Aurelia project, starting from scratch.
 keywords:
   - aurelia

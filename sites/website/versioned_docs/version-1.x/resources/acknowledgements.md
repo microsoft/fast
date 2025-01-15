@@ -2,7 +2,7 @@
 id: acknowledgements
 title: Acknowledgements
 sidebar_label: Acknowledgements
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/acknowledgements.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/resources/acknowledgements.md
 description: There are many great open source projects that have inspired us and enabled us to build FAST.
 keywords:
   - acknowledgements
