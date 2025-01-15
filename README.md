@@ -51,11 +51,11 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 * "I just want ready-made components!"
   * [Check out the FluentUI Web Components.](https://docs.microsoft.com/en-us/fluent-ui/web-components/)
 * "I want to build my own components."
-  * [Jump to the fast-element docs.](https://fast.design/docs/fast-element/getting-started)
+  * [Jump to the fast-element docs.](https://fast.design/docs/getting-started/quick-start)
 * "I need to integrate FAST with another framework or build system."
   * [Jump to the integration docs.](https://fast.design/docs/integrations)
 * "I want to look at a quick reference."
-  * [Jump to the Cheat Sheet](https://fast.design/docs/resources/cheat-sheet)
+  * [Jump to the Cheat Sheet](https://fast.design/docs/1.x/resources/cheat-sheet)
 
 ## Roadmap
 
