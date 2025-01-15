@@ -7,13 +7,8 @@
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-f8bc45.svg)](https://github.com/prettier/prettier)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast/test_coverage)
 [![Validate PRs](https://github.com/microsoft/fast/actions/workflows/ci-validate-pr.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/ci-validate-pr.yml)
 [![Validate Platforms/Browsers](https://github.com/microsoft/fast/actions/workflows/ci-validate-platforms.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/ci-validate-platforms.yml)
-
-[![Deploy Documentation](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml)
-[![Deploy CDN](https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml)
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
 [![Twitter](https://img.shields.io/twitter/follow/fast_ui.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_ui)
@@ -58,9 +53,13 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 * "I want to build my own components."
   * [Jump to the fast-element docs.](https://fast.design/docs/fast-element/getting-started)
 * "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](https://fast.design/docs/integrations/introduction)
+  * [Jump to the integration docs.](https://fast.design/docs/integrations)
 * "I want to look at a quick reference."
   * [Jump to the Cheat Sheet](https://fast.design/docs/resources/cheat-sheet)
+
+## Roadmap
+
+Major features for the FAST project can be found in the [roadmap](https://github.com/orgs/microsoft/projects/240/views/1).
 
 ## Joining the Community
 

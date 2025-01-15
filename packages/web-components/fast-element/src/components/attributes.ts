@@ -80,13 +80,13 @@ export const booleanConverter: ValueConverter = {
     },
 
     fromView(value: any): any {
-        return value === null ||
+        return !(
+            value === null ||
             value === void 0 ||
             value === "false" ||
             value === false ||
             value === 0
-            ? false
-            : true;
+        );
     },
 };
 
@@ -202,7 +202,7 @@ export class AttributeDefinition implements Accessor {
     /**
      * Sets the value of the attribute/property on the source element.
      * @param source - The source element to access.
-     * @param value - The value to set the attribute/property to.
+     * @param newValue - The value to set the attribute/property to.
      */
     public setValue(source: HTMLElement, newValue: any): void {
         const oldValue = source[this.fieldName];

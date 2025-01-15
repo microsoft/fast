@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         node: [20.x]
-    if: contains('chrisdholt,janechu,nicholasrice,awentzel,eisenbergeffect', github.actor)
+    if: contains('chrisdholt,janechu', github.actor)
 
     steps:
     - uses: actions/checkout@v4
@@ -48,15 +48,25 @@ jobs:
       run: npm run checkchange
 
     - name: Testing Prettier format
-      run: npm run prettier:diff
+      run: npm run format:check
+
+    - name: Build workspaces
+      run: npm run build
+
+    - name: Install playwright dependencies and browsers
+      run: |
+        npx playwright install
 
     - name: Testing unit tests
-      run: npm run test --stream
+      run: npm run test
+
+    - name: Testing final validation
+      run: npm run test:validation
 
     - name: Publish NPM packages
       env:
         NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm run publish-ci -n $NPM_SECRET_TOKEN
+      run: npm run publish-ci -- --token "$NPM_SECRET_TOKEN"
 
   notify:
     runs-on: ubuntu-latest
