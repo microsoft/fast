@@ -2,7 +2,7 @@
 id: release-planning
 title: Release Planning
 sidebar_label: Release Planning
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/release-planning.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/community/release-planning.md
 description: In order to both provide features and fixes to our community, FAST has adopted the following release planning process and policies.
 keywords:
   - release planning
@@ -54,7 +54,7 @@ Our quarterly planning enables us to tackle larger projects and strategic work w
 
 ### Minor and patch releases
 
-The majority of the work coming from the quarterly planning process and the weekly planning process results in minor features and bug fixes. Once a PR for a `minor` or `patch` change is merged to master it will be automatically published in the nightly release. Releases are published Sunday through Thursday evenings (Pacific). Unless there is an emergency need, we avoid releasing on Fridays or the weekend (manual intervention required by us).
+The majority of the work coming from the quarterly planning process and the weekly planning process results in minor features and bug fixes. Once a PR for a `minor` or `patch` change is merged to main it will be automatically published in the nightly release. Releases are published Sunday through Thursday evenings (Pacific). Unless there is an emergency need, we avoid releasing on Fridays or the weekend (manual intervention required by us).
 
 ### Major releases
 

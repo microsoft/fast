@@ -2,7 +2,7 @@
 id: license
 title: License
 sidebar_label: License
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/license.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/resources/license.md
 description: MIT License
 keywords:
     - MIT license

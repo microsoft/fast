@@ -1,5 +1,5 @@
 pr:
-  - master
+  - main
 
 # The `resources` specify the location and version of the 1ES PT.
 resources:
