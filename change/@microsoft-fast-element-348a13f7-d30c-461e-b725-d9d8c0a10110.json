@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Export Symbol to allow prepending specific stylesheets to adoptedStyleSheets",
-  "packageName": "@microsoft/fast-element",
-  "email": "7282195+m-akinc@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

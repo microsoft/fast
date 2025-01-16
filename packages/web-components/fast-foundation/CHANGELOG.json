@@ -2,6 +2,61 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 23 Oct 2024 23:54:59 GMT",
+      "tag": "@microsoft/fast-foundation_v2.50.0",
+      "version": "2.50.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "913c27e7e8503de1f7cd50bdbc9388134f52ef5d",
+            "comment": "Fix design token issues involving deleting values and CSS reflection"
+          },
+          {
+            "author": "=",
+            "package": "@microsoft/fast-foundation",
+            "commit": "7f8e2db596277e78fddd88a6c99444ca64f5e771",
+            "comment": "fix: prevent toolbar from stealing focus when focus has already been moved in the document"
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "0c27d027ff6e8616ad4fddc17f4432aa7f6cbad0",
+            "comment": "Fix CSS custom property precedence issue and work around Chromium bug"
+          },
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "fca56adbb60e805ae2cd99c984f8886f1332d26d",
+            "comment": "Fix memory leak due to binding observers"
+          }
+        ],
+        "none": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@microsoft/fast-foundation",
+            "commit": "1f9c97df9acae24be44f239bd66b5b2157c7f3e5",
+            "comment": "Fix toolbar tests"
+          }
+        ],
+        "minor": [
+          {
+            "author": "=",
+            "package": "@microsoft/fast-foundation",
+            "commit": "9c6dbb66615e6d229fc0ebf8065a67f109139f26",
+            "comment": "feat: close combobox if indicator is clicked and no selection is made"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-foundation",
+            "comment": "Bump @microsoft/fast-element to v1.14.0",
+            "commit": "fca56adbb60e805ae2cd99c984f8886f1332d26d"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 23 Jan 2024 19:35:35 GMT",
       "tag": "@microsoft/fast-foundation_v2.49.5",
       "version": "2.49.5",

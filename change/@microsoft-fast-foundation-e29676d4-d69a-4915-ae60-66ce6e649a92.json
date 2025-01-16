@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix memory leak due to binding observers",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "7282195+m-akinc@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
