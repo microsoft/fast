@@ -2,7 +2,7 @@
 id: issue-management
 title: Issue Management
 sidebar_label: Issue Management
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/issue-management.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/community/issue-management.md
 description: Managing a popular GitHub repo with a small team requires a good balance between creating new features, handling investigations, and fixing bugs.
 keywords:
   - issue management
@@ -77,7 +77,7 @@ For some feature requests and bug reports, depending on the user involvement, we
 
 ## Releases
 
-Once a PR for a `minor` or `patch` change is merged to master it will be published in the next release. Releases are published Sunday through Thursday evenings (Pacific). To learn more about our release process and planning, please see [Release Planning](./release-planning.md).
+Once a PR for a `minor` or `patch` change is merged to main it will be published in the next release. Releases are published Sunday through Thursday evenings (Pacific). To learn more about our release process and planning, please see [Release Planning](./release-planning.md).
 
 ## Cleanup
 

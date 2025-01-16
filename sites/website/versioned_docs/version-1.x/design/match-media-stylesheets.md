@@ -1,7 +1,7 @@
 ---
 id: match-media-stylesheets
 title: MatchMedia Stylesheets
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/design/match-media-stylesheets.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/design/match-media-stylesheets.md
 description: FAST exposes a mechanism to attach stylesheets conditionally based on a MatchMedia query.
 keywords:
     - MatchMedia stylesheets

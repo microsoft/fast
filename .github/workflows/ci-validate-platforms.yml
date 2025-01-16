@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
   pull_request:
     branches:
-      - master
+      - main
 
   schedule:
     - cron: 0 7 * * 3
@@ -37,7 +37,7 @@ jobs:
 
       - if: ${{ github.event_name == 'pull_request' }}
         run: |
-          git fetch --no-tags --prune --depth=1 origin +refs/heads/master:refs/remotes/origin/master
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
       - name: Cache multiple paths
         uses: actions/cache@v2

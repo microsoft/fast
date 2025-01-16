@@ -2,7 +2,7 @@
 id: vue
 title: Vue
 sidebar_label: Vue
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/vue.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/vue.md
 description: FAST works great with Vue. Let's take a look at how you can set up a Vue project, starting from scratch.
 keywords:
   - vue

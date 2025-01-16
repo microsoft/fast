@@ -2,7 +2,7 @@
 id: svelte
 title: Svelte
 sidebar_label: Svelte
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/svelte.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/svelte.md
 description: FAST works great with Svelte, Vite, and TypeScript, using a standard setup. Let's take a look at how you can set up a FAST+Svelte+Vite+TypeScript project, starting from scratch.
 keywords:
   - svelte
@@ -130,4 +130,4 @@ With all the basic pieces in place, let's run our app in dev mode with `npm run 
 
 Congratulations! You're now set up to use FAST, Svelte, Vite, and TypeScript. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.
 
-See a FAST+Svelte+Vite+TypeScript starter project [here](https://github.com/microsoft/fast/tree/master/examples/svelte-starters/svelte-fast-typescript-starter).
+See a FAST+Svelte+Vite+TypeScript starter project [here](https://github.com/microsoft/fast/tree/archives/fast-foundation-3/examples/svelte-starters/svelte-fast-typescript-starter).

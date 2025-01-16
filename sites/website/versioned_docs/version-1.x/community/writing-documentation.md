@@ -2,7 +2,7 @@
 id: writing-documentation
 title: Writing documentation
 sidebar_label: Writing documentation
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/writing-documentation.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/community/writing-documentation.md
 description: Thank you for your interest in contributing to our documentation. We put together this guide to help you get started.
 keywords:
   - contributing
@@ -24,7 +24,7 @@ Each article begins with a YAML metadata block followed by a body written with [
 id: writing-documentation
 title: Writing Documentation
 sidebar_label: Writing Documentation
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/writing-documentation.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/src/docs/community/writing-documentation.md
 ---
 ```
 
