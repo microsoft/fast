@@ -10,6 +10,7 @@ describe("DI Exception", function () {
         const Foo = DI.createInterface<Foo>("Foo");
 
         class Bar {
+            // @ts-expect-error
             public constructor(@Foo public readonly foo: Foo) {}
         }
 

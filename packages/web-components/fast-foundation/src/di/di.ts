@@ -2029,7 +2029,7 @@ interface DOMParentLocatorEventDetail {
     container: Container | void;
 }
 
-function isObject<T extends object = Object | Function>(value: unknown): value is T {
+function isObject<T extends object = object | Function>(value: unknown): value is T {
     return (typeof value === "object" && value !== null) || typeof value === "function";
 }
 

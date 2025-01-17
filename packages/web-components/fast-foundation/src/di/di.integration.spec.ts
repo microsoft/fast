@@ -1,8 +1,8 @@
 import { DI, Container, inject, InterfaceSymbol, Registration, singleton } from "./di";
-import chai, { expect } from "chai";
+import { expect, use } from "chai";
 import spies from "chai-spies";
 
-chai.use(spies);
+const chai = use(spies);
 
 describe("DI.singleton", function () {
     describe("registerInRequester", function () {

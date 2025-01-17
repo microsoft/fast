@@ -34,22 +34,15 @@
     "invoke-publish": "cross-env-shell beachball publish --yes --access public --message \\\"applying package updates [skip ci]\\\" -n $NPM_SECRET_TOKEN"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.13",
-    "@octokit/rest": "^18.0.6",
-    "@types/lodash-es": "^4.17.4",
     "@types/node": "^22",
     "beachball": "^2.24.0",
-    "chalk": "^2.4.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "dotenv": "^6.0.0",
-    "glob": "^7.1.2",
-    "markdown-it": "^12.3.2",
-    "prettier": "2.0.2",
-    "rimraf": "^3.0.2",
-    "ts-node": "^8.8.2",
-    "typescript": "^4.6.2",
-    "yargs": "^16.2.0"
+    "glob": "^11.0.1",
+    "markdown-it": "^14.1.0",
+    "prettier": "3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.4.5",
+    "yargs": "^17.7.2"
   }
 }

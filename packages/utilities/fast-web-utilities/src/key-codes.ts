@@ -55,8 +55,10 @@ export enum KeyCodes {
     numPad9 = 105,
     numPadDivide = 111,
     numPadDot = 110,
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     numPadMinus = 109,
     numPadMultiply = 106,
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     numPadPlus = 107,
     openBracket = 219,
     pageDown = 34,
@@ -70,6 +72,7 @@ export enum KeyCodes {
     tab = 9,
     tilde = 192,
     windowsLeft = 91,
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     windowsOpera = 219, // Opera
     windowsRight = 92,
 }

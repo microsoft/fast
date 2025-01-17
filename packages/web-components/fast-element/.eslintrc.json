@@ -3,17 +3,9 @@
     "rules": {
         "max-classes-per-file": "off",
         "no-case-declarations": "off",
-        "@typescript-eslint/ban-types": [
-            "error",
-            {
-                "types": {
-                    "{}": false,
-                    "Function": false,
-                    "Object": false
-                },
-                "extendDefaults": true
-            }
-        ],
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "error",
         "@typescript-eslint/no-use-before-define": ["error", { "typedefs": false }],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/explicit-function-return-type": [
@@ -25,6 +17,7 @@
         "import/extensions": [
             "error",
             "always"
-        ]
+        ],
+        "@typescript-eslint/no-unused-expressions": "warn"
     }
 }

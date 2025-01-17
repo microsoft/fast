@@ -80,5 +80,11 @@ module.exports = {
                 "@typescript-eslint/no-var-requires": "off",
             },
         },
+        {
+            files: ["**/*.spec.*"],
+            rules: {
+                "@typescript-eslint/no-unused-expressions": "off"
+            }
+        }
     ],
 };

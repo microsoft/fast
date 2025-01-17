@@ -27,11 +27,10 @@
   "scripts": {
     "pack": "npm pack"
   },
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
-    "eslint": "^8.0.0",
-    "eslint-plugin-import": "^2.25.0",
-    "typescript": "~3.9.0 || ~4.3.5 || ^4.6.2"
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "eslint": "^8",
+    "eslint-plugin-import": "^2.25.0"
   }
 }

@@ -10,11 +10,11 @@ import {
     singleton,
     transient,
 } from "./di";
-import chai, { expect } from "chai";
+import { expect, use } from "chai";
 import spies from "chai-spies";
 import { customElement, FASTElement, html, ref } from "@ni/fast-element";
 
-chai.use(spies);
+const chai = use(spies);
 
 function decorator(): ClassDecorator {
     return (target: any) => target;
@@ -352,7 +352,7 @@ describe(`The Resolver class`, function () {
         });
 
         it(`throws for unknown strategy`, function () {
-            const sut = new ResolverImpl("foo", -1, null);
+            const sut = new ResolverImpl("foo", -1 as ResolverStrategy, null);
             expect(() => sut.resolve(container, container)).throws();
         });
     });

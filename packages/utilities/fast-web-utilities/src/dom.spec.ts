@@ -1,4 +1,4 @@
-import chai, { expect } from "chai";
+import { expect, use } from "chai";
 import spies from "chai-spies";
 import {
     canUseCssGrid,
@@ -11,7 +11,7 @@ import {
 } from "./dom";
 import { KeyCodes } from "./key-codes";
 
-chai.use(spies);
+const chai = use(spies);
 
 describe("isHTMLElement", () => {
     document.body.innerHTML = `

@@ -10,17 +10,9 @@
                 "leadingUnderscore": "allow"
             }
         ],
-        "@typescript-eslint/ban-types": [
-            "error",
-            {
-                "types": {
-                    "{}": false,
-                    "Function": false,
-                    "Object": false
-                },
-                "extendDefaults": true
-            }
-        ],
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-unsafe-function-type": "off",
+        "@typescript-eslint/no-wrapper-object-types": "error",
         "import/extensions": [
             "error",
             "always",
@@ -30,6 +22,8 @@
                 "options": "never",
                 "element": "never"
             }
-        ]
+        ],
+        "@typescript-eslint/no-unsafe-declaration-merging": "off",
+        "@typescript-eslint/no-unused-expressions": "warn"
     }
 }
