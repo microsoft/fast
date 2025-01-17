@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "rootDir": ".",
+    "outDir": "../dist/esm",
+    "declarationDir": "../dist/dts",
+    "target": "ES2015",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+  },
+}
