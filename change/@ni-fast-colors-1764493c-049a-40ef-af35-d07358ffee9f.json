@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Dependencies updated",
-  "packageName": "@ni/fast-colors",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,18 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Mon, 13 Jan 2025 22:09:06 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 17 Jan 2025 00:23:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.5
+
+Fri, 17 Jan 2025 00:23:51 GMT
+
+### Patches
+
+- Dependencies updated ([ni/fast@7162e95](https://github.com/ni/fast/commit/7162e95ca944d4a0bdea23cd848161812b0e47ab))
+- Bump @ni/fast-element to v0.0.4
+- Bump @ni/fast-web-utilities to v0.0.4
 
 ## 0.0.4
 

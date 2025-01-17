@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Dependencies updated",
-  "packageName": "@ni/fast-foundation",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

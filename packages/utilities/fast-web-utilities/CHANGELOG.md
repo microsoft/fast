@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-web-utilities
 
-<!-- This log was last generated on Thu, 09 Jan 2025 23:49:05 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 17 Jan 2025 00:23:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.4
+
+Fri, 17 Jan 2025 00:23:51 GMT
+
+### Patches
+
+- Dependencies updated ([ni/fast@7162e95](https://github.com/ni/fast/commit/7162e95ca944d4a0bdea23cd848161812b0e47ab))
 
 ## 0.0.3
 

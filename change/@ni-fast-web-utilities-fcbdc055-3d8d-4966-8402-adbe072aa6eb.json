@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Dependencies updated",
-  "packageName": "@ni/fast-web-utilities",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
