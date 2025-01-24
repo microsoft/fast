@@ -700,8 +700,10 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
     ): any[] {
         const map = new Map();
 
-        for (let i = 0, ii = (array || []).length; i < ii; ++i) {
-            map.set(array[i], i);
+        for (let i = 0, ii = array.length; i < ii; ++i) {
+            const mapValue = map.get(array[i]) || [];
+
+            map.set(array[i], [...mapValue, i]);
         }
 
         const result = sort.apply(array, args);
@@ -709,9 +711,12 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         (array as any).sorted++;
 
         const sortedItems: number[] = [];
-        for (let i = 0, ii = (array || []).length; i < ii; ++i) {
-            const newIndex = map.get(array[i]);
-            sortedItems.push(newIndex);
+
+        for (let i = 0, ii = array.length; i < ii; ++i) {
+            const indexs = map.get(array[i]);
+            sortedItems.push(indexs[0]);
+
+            map.set(array[i], indexs.splice(1));
         }
 
         observer.addSort(new Sort(sortedItems));

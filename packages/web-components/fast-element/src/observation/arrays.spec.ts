@@ -140,10 +140,10 @@ describe("The ArrayObserver", () => {
         const array = [1, 2, 3, 4];
         array.reverse();
 
-        expect(array).members([4, 3, 2, 1]);
+        expect(array).ordered.members([4, 3, 2, 1]);
 
         Array.prototype.reverse.call(array);
-        expect(array).members([1, 2, 3, 4]);
+        expect(array).ordered.members([1, 2, 3, 4]);
 
         const observer = Observable.getNotifier<ArrayObserver>(array);
         let changeArgs: Sort[] | null = null;
@@ -155,7 +155,7 @@ describe("The ArrayObserver", () => {
         });
 
         array.reverse();
-        expect(array).members([4, 3, 2, 1]);
+        expect(array).ordered.members([4, 3, 2, 1]);
 
         await Updates.next();
 
@@ -170,7 +170,7 @@ describe("The ArrayObserver", () => {
         );
         changeArgs = null;
         array.reverse();
-        expect(array).members([1, 2, 3, 4]);
+        expect(array).ordered.members([1, 2, 3, 4]);
 
         await Updates.next();
 
@@ -227,15 +227,15 @@ describe("The ArrayObserver", () => {
 
     it("observes sorts", async () => {
         ArrayObserver.enable();
-        let array = [1, 3, 2, 4];
+        let array = [1, 3, 2, 4, 3];
 
         array.sort((a, b) => b - a);
-        expect(array).members([4, 3, 2, 1]);
+        expect(array).ordered.members([4, 3, 3, 2, 1]);
 
         Array.prototype.sort.call(array, (a, b) => a - b);
-        expect(array).members([1, 2, 3, 4]);
+        expect(array).ordered.members([1, 2, 3, 3, 4]);
 
-        array = [1, 3, 2, 4];
+        array = [1, 3, 2, 4, 3];
         const observer = Observable.getNotifier<ArrayObserver>(array);
         let changeArgs: Sort[] | null = null;
 
@@ -246,7 +246,7 @@ describe("The ArrayObserver", () => {
         });
 
         array.sort((a, b) => b - a);
-        expect(array).members([4, 3, 2, 1]);
+        expect(array).ordered.members([4, 3, 3, 2, 1]);
 
         await Updates.next();
 
@@ -255,6 +255,7 @@ describe("The ArrayObserver", () => {
             [
                 3,
                 1,
+                4,
                 2,
                 0
             ]
