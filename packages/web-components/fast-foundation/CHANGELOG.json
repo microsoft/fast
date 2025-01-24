@@ -2,6 +2,33 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 24 Jan 2025 18:10:34 GMT",
+      "version": "0.0.6",
+      "tag": "@ni/fast-foundation_v0.0.6",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-foundation",
+            "commit": "a8a20cb233ee029c1532df25885a4e9c66418b3a",
+            "comment": "Remove type module config in packages"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-element to v0.0.5",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-web-utilities to v0.0.5",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Jan 2025 00:23:51 GMT",
       "version": "0.0.5",
       "tag": "@ni/fast-foundation_v0.0.5",

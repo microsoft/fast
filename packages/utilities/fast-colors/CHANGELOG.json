@@ -2,6 +2,21 @@
   "name": "@ni/fast-colors",
   "entries": [
     {
+      "date": "Fri, 24 Jan 2025 18:10:34 GMT",
+      "version": "0.0.5",
+      "tag": "@ni/fast-colors_v0.0.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-colors",
+            "commit": "a8a20cb233ee029c1532df25885a4e9c66418b3a",
+            "comment": "Remove type module config in packages"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Jan 2025 00:23:51 GMT",
       "version": "0.0.4",
       "tag": "@ni/fast-colors_v0.0.4",

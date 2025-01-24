@@ -1,8 +1,18 @@
 # Change Log - @ni/fast-react-wrapper
 
-<!-- This log was last generated on Fri, 17 Jan 2025 00:23:51 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 24 Jan 2025 18:10:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.6
+
+Fri, 24 Jan 2025 18:10:35 GMT
+
+### Patches
+
+- Remove type module config in packages ([ni/fast@a8a20cb](https://github.com/ni/fast/commit/a8a20cb233ee029c1532df25885a4e9c66418b3a))
+- Bump @ni/fast-element to v0.0.5
+- Bump @ni/fast-foundation to v0.0.6
 
 ## 0.0.5
 

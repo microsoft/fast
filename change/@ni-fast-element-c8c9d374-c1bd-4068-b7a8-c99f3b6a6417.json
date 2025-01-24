@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Remove type module config in packages",
-  "packageName": "@ni/fast-element",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

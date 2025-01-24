@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-colors
 
-<!-- This log was last generated on Fri, 17 Jan 2025 00:23:51 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 24 Jan 2025 18:10:34 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.0.5
+
+Fri, 24 Jan 2025 18:10:34 GMT
+
+### Patches
+
+- Remove type module config in packages ([ni/fast@a8a20cb](https://github.com/ni/fast/commit/a8a20cb233ee029c1532df25885a4e9c66418b3a))
 
 ## 0.0.4
 
