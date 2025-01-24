@@ -54,6 +54,18 @@ export class Splice {
 }
 
 /**
+ * A sort array indicates new index positions of array items.
+ * @public
+ */
+export class Sort {
+    /**
+     * Creates a sort update.
+     * @param sorted - The updated index of sorted items.
+     */
+    public constructor(public sorted?: number[]) {}
+}
+
+/**
  * Indicates what level of feature support the splice
  * strategy provides.
  * @public
@@ -598,8 +610,7 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
  * splices needed to represent the change from the old array to the new array.
  * @public
  */
-
-let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
+let defaultMutationStrategy: SpliceStrategy = Object.freeze({
     support: SpliceStrategySupport.optimized,
 
     normalize(
@@ -653,7 +664,15 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
         args: any[]
     ): any {
         const result = reverse.apply(array, args);
-        observer.reset(array);
+        (array as any).sorted++;
+
+        const sortedItems: number[] = [];
+        for (let i = array.length - 1; i >= 0; i--) {
+            sortedItems.push(i);
+        }
+
+        observer.addSort(new Sort(sortedItems));
+
         return result;
     },
 
@@ -679,8 +698,29 @@ let defaultSpliceStrategy: SpliceStrategy = Object.freeze({
         sort: typeof Array.prototype.sort,
         args: any[]
     ): any[] {
+        const map = new Map();
+
+        for (let i = 0, ii = array.length; i < ii; ++i) {
+            const mapValue = map.get(array[i]) || [];
+
+            map.set(array[i], [...mapValue, i]);
+        }
+
         const result = sort.apply(array, args);
-        observer.reset(array);
+
+        (array as any).sorted++;
+
+        const sortedItems: number[] = [];
+
+        for (let i = 0, ii = array.length; i < ii; ++i) {
+            const indexs = map.get(array[i]);
+            sortedItems.push(indexs[0]);
+
+            map.set(array[i], indexs.splice(1));
+        }
+
+        observer.addSort(new Sort(sortedItems));
+
         return result;
     },
 
@@ -726,14 +766,20 @@ export const SpliceStrategy = Object.freeze({
      * @param strategy - The splice strategy to use.
      */
     setDefaultStrategy(strategy: SpliceStrategy) {
-        defaultSpliceStrategy = strategy;
+        defaultMutationStrategy = strategy;
     },
 } as const);
 
-function setNonEnumerable(target: any, property: string, value: any): void {
+function setNonEnumerable(
+    target: any,
+    property: string,
+    value: any,
+    writable: boolean = true
+): void {
     Reflect.defineProperty(target, property, {
         value,
         enumerable: false,
+        writable,
     });
 }
 
@@ -746,6 +792,18 @@ export interface LengthObserver extends Subscriber {
      * The length of the observed array.
      */
     length: number;
+}
+
+/**
+ * Observes array sort.
+ * @public
+ */
+export interface SortObserver extends Subscriber {
+    /**
+     * The sorted times on the observed array, this should be incremented every time
+     * an item in the array changes location.
+     */
+    sorted: number;
 }
 
 /**
@@ -764,10 +822,21 @@ export interface ArrayObserver extends SubscriberSet {
     readonly lengthObserver: LengthObserver;
 
     /**
+     * The sort observer for the array.
+     */
+    readonly sortObserver: SortObserver;
+
+    /**
      * Adds a splice to the list of changes.
      * @param splice - The splice to add.
      */
     addSplice(splice: Splice): void;
+
+    /**
+     * Adds a sort to the list of changes.
+     * @param sort - The sort to add.
+     */
+    addSort(sort: Sort): void;
 
     /**
      * Indicates that a reset change has occurred.
@@ -784,9 +853,11 @@ export interface ArrayObserver extends SubscriberSet {
 class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
     private oldCollection: any[] | undefined = void 0;
     private splices: Splice[] | undefined = void 0;
+    private sorts: Sort[] | undefined = void 0;
     private needsQueue: boolean = true;
     private _strategy: SpliceStrategy | null = null;
     private _lengthObserver: LengthObserver | undefined = void 0;
+    private _sortObserver: SortObserver | undefined = void 0;
 
     public get strategy(): SpliceStrategy | null {
         return this._strategy;
@@ -807,6 +878,27 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
                     if (this.length !== array.length) {
                         this.length = array.length;
                         Observable.notify(observer, "length");
+                    }
+                },
+            };
+
+            this.subscribe(observer);
+        }
+
+        return observer;
+    }
+
+    public get sortObserver(): SortObserver {
+        let observer = this._sortObserver;
+
+        if (observer === void 0) {
+            const array = this.subject;
+            this._sortObserver = observer = {
+                sorted: array.sorted,
+                handleChange() {
+                    if (this.sorted !== array.sorted) {
+                        this.sorted = array.sorted;
+                        Observable.notify(observer, "sorted");
                     }
                 },
             };
@@ -839,6 +931,16 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
         this.enqueue();
     }
 
+    public addSort(sort: Sort) {
+        if (this.sorts === void 0) {
+            this.sorts = [sort];
+        } else {
+            this.sorts.push(sort);
+        }
+
+        this.enqueue();
+    }
+
     public reset(oldCollection: any[] | undefined): void {
         this.oldCollection = oldCollection;
         this.enqueue();
@@ -846,23 +948,27 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
 
     public flush(): void {
         const splices = this.splices;
+        const sorts = this.sorts;
         const oldCollection = this.oldCollection;
 
-        if (splices === void 0 && oldCollection === void 0) {
+        if (splices === void 0 && oldCollection === void 0 && sorts === void 0) {
             return;
         }
 
         this.needsQueue = true;
         this.splices = void 0;
+        this.sorts = void 0;
         this.oldCollection = void 0;
 
-        this.notify(
-            (this._strategy ?? defaultSpliceStrategy).normalize(
-                oldCollection,
-                this.subject,
-                splices
-            )
-        );
+        sorts !== void 0
+            ? this.notify(sorts)
+            : this.notify(
+                  (this._strategy ?? defaultMutationStrategy).normalize(
+                      oldCollection,
+                      this.subject,
+                      splices
+                  )
+              );
     }
 
     private enqueue(): void {
@@ -880,6 +986,7 @@ let enabled = false;
  * @public
  */
 export const ArrayObserver = Object.freeze({
+    sorted: 0,
     /**
      * Enables the array observation mechanism.
      * @remarks
@@ -902,6 +1009,7 @@ export const ArrayObserver = Object.freeze({
 
         if (!(proto as any).$fastPatch) {
             setNonEnumerable(proto, "$fastPatch", 1);
+            setNonEnumerable(proto, "sorted", 0);
 
             [
                 proto.pop,
@@ -916,7 +1024,7 @@ export const ArrayObserver = Object.freeze({
                     const o = this.$fastController as ArrayObserver;
                     return o === void 0
                         ? method.apply(this, args)
-                        : (o.strategy ?? defaultSpliceStrategy)[method.name](
+                        : (o.strategy ?? defaultMutationStrategy)[method.name](
                               this,
                               o,
                               method,
@@ -947,4 +1055,25 @@ export function lengthOf<T>(array: readonly T[]): number {
 
     Observable.track(arrayObserver.lengthObserver, "length");
     return array.length;
+}
+
+/**
+ * Enables observing the sorted property of an array.
+ * @param array - The array to observe the sorted property of.
+ * @returns The sorted property.
+ * @public
+ */
+export function sortedCount<T>(array: readonly T[]): number {
+    if (!array) {
+        return 0;
+    }
+
+    let arrayObserver = (array as any).$fastController as ArrayObserver;
+    if (arrayObserver === void 0) {
+        ArrayObserver.enable();
+        arrayObserver = Observable.getNotifier<ArrayObserver>(array);
+    }
+
+    Observable.track(arrayObserver.sortObserver, "sorted");
+    return (array as any).sorted;
 }

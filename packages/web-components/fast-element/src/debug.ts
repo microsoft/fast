@@ -13,7 +13,7 @@ const FAST: FASTGlobal = globalThis.FAST;
 
 const debugMessages = {
     [1101 /* needsArrayObservation */]:
-        "Must call enableArrayObservation before observing arrays.",
+        "Must call ArrayObserver.enable() before observing arrays.",
     [1201 /* onlySetDOMPolicyOnce */]: "The DOM Policy can only be set once.",
     [1202 /* bindingInnerHTMLRequiresTrustedTypes */]:
         "To bind innerHTML, you must use a TrustedTypesPolicy.",

@@ -19,15 +19,18 @@ export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
 // @public
 export interface ArrayObserver extends SubscriberSet {
+    addSort(sort: Sort): void;
     addSplice(splice: Splice): void;
     flush(): void;
     readonly lengthObserver: LengthObserver;
     reset(oldCollection: any[] | undefined): void;
+    readonly sortObserver: SortObserver;
     strategy: SpliceStrategy | null;
 }
 
 // @public
 export const ArrayObserver: Readonly<{
+    readonly sorted: 0;
     readonly enable: () => void;
 }>;
 
@@ -774,7 +777,7 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     constructor(directive: RepeatDirective);
     bind(controller: ViewController): void;
-    handleChange(source: any, args: Splice[] | ExpressionObserver): void;
+    handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void;
     unbind(): void;
     // @internal (undocumented)
     views: SyntheticView[];
@@ -820,6 +823,21 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
 
 // @public
 export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions {
+}
+
+// @public
+export class Sort {
+    constructor(sorted?: number[] | undefined);
+    // (undocumented)
+    sorted?: number[] | undefined;
+}
+
+// @public
+export function sortedCount<T>(array: readonly T[]): number;
+
+// @public
+export interface SortObserver extends Subscriber {
+    sorted: number;
 }
 
 // @public
