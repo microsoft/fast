@@ -19,7 +19,6 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
   "scripts": {
     "build": "npm run clean:dist && tsc -p ./tsconfig.build.json && npm run doc",
     "pack": "npm pack",
@@ -39,9 +38,9 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.49.1",
-    "@types/chai": "^5.0.1",
+    "@types/chai": "^4",
     "@types/mocha": "^10.0.10",
-    "chai": "^5.1.2",
+    "chai": "^4",
     "mocha": "^11.0.1",
     "@ni/eslint-config-fast-dna": "^1.0.0",
     "eslint-config-prettier": "^10.0.1",

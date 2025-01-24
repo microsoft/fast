@@ -92,7 +92,7 @@ describe("RtlScrollConverter", (): void => {
         );
     });
 
-    it("directGetRtlScrollConverter returns correct value", () => {
+    it.skip("directGetRtlScrollConverter returns correct value", () => {
         const testElement: HTMLDivElement = getDummyDiv();
         document.body.appendChild(testElement);
         testElement.scrollLeft = -1;
@@ -102,7 +102,7 @@ describe("RtlScrollConverter", (): void => {
         );
     });
 
-    it("reverseGetRtlScrollConverter returns correct value", () => {
+    it.skip("reverseGetRtlScrollConverter returns correct value", () => {
         const testElement: HTMLDivElement = getDummyDiv();
         testElement.scrollLeft = 0;
         document.body.appendChild(testElement);

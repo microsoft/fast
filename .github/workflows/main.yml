@@ -65,7 +65,7 @@ jobs:
 
       # Validate (Lint and Test)
       - run: npm run lint
-      # - run: npm run test
+      - run: npm run test
 
       # Check Changelog
       - if: github.repository_owner == 'ni'

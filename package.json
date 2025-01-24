@@ -23,6 +23,7 @@
     "url": "https://github.com/ni/fast/issues/new/choose"
   },
   "scripts": {
+    "postinstall": "playwright install --with-deps",
     "build": "npm run build --workspaces --if-present",
     "pack": "npm run pack --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
@@ -40,6 +41,7 @@
     "cross-env": "^7.0.3",
     "glob": "^11.0.1",
     "markdown-it": "^14.1.0",
+    "playwright": "1.44.0",
     "prettier": "3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "~5.4.5",

@@ -1,12 +1,12 @@
 import { css, DOM, FASTElement, html, Observable } from "@ni/fast-element";
-import { expect, use } from "chai";
-import spies from "chai-spies";
+import chia, { expect } from "chai";
 import { DesignSystem } from "../design-system";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
+import spies from "chai-spies";
 
-const chia = use(spies);
+chia.use(spies);
 const elementName = uniqueElementName();
 
 DesignSystem.getOrCreate()
