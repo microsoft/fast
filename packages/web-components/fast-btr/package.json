@@ -19,6 +19,7 @@
     },
     "scripts": {
         "clean": "tsc -b --clean src",
+        "clean:dist": "node ../../../build/clean.js dist",
         "build": "tsc -b src && npm run doc",
         "doc": "api-extractor run --local",
         "doc:ci": "api-extractor run",
