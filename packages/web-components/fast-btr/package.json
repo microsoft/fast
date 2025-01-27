@@ -4,61 +4,62 @@
     "private": true,
     "type": "module",
     "author": {
-      "name": "Microsoft",
-      "url": "https://discord.gg/FcSNfg4"
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
     },
     "homepage": "https://www.fast.design/",
     "license": "MIT",
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/Microsoft/fast.git",
-      "directory": "packages/web-components/fast-btr"
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git",
+        "directory": "packages/web-components/fast-btr"
     },
     "bugs": {
-      "url": "https://github.com/Microsoft/fast/issues/new/choose"
+        "url": "https://github.com/Microsoft/fast/issues/new/choose"
     },
     "scripts": {
-      "clean": "tsc -b --clean src",
-      "build": "tsc -b src && npm run doc",
-      "doc": "api-extractor run --local",
-      "doc:ci": "api-extractor run",
-      "prepublishOnly": "npm run clean && npm run build",
-      "build-server": "tsc -b server",
-      "eslint": "eslint . --ext .ts",
-      "eslint:fix": "eslint . --ext .ts --fix",
-      "pretest": "npm run build-server && npm run build",
-      "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
-      "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
-      "test": "playwright test --config=playwright.config.cjs",
-      "test-server": "node server/dist/server.js",
-      "install-playwright-browsers": "npm run playwright install"
+        "clean": "tsc -b --clean src",
+        "clean:dist": "node ../../../build/clean.js dist",
+        "build": "tsc -b src && npm run doc",
+        "doc": "api-extractor run --local",
+        "doc:ci": "api-extractor run",
+        "prepublishOnly": "npm run clean && npm run build",
+        "build-server": "tsc -b server",
+        "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
+        "pretest": "npm run build-server && npm run build",
+        "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
+        "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
+        "test": "playwright test --config=playwright.config.cjs",
+        "test-server": "node server/dist/server.js",
+        "install-playwright-browsers": "npm run playwright install"
     },
     "description": "A package for facilitating rendering FAST Web Components in a non-browser environment.",
     "exports": {
-      ".": {
-        "types": "./dist/dts/index.d.ts",
-        "default": "./dist/esm/index.js"
-      },
-      "./package.json": "./package.json"
+        ".": {
+            "types": "./dist/dts/index.d.ts",
+            "default": "./dist/esm/index.js"
+        },
+        "./package.json": "./package.json"
     },
     "peerDependencies": {
-      "@microsoft/fast-element": "^2.0.1"
+        "@microsoft/fast-element": "^2.0.1"
     },
     "devDependencies": {
-      "@microsoft/api-extractor": "^7.47.0",
-      "@microsoft/fast-element": "^2.0.1",
-      "@playwright/test": "^1.49.0",
-      "@types/express": "^4.17.21",
-      "@types/node": "^17.0.17",
-      "express": "^4.19.2",
-      "typescript": "~5.3.0"
+        "@microsoft/api-extractor": "^7.47.0",
+        "@microsoft/fast-element": "^2.0.1",
+        "@playwright/test": "^1.49.0",
+        "@types/express": "^4.17.21",
+        "@types/node": "^17.0.17",
+        "express": "^4.19.2",
+        "typescript": "~5.3.0"
     },
     "beachball": {
-      "disallowedChangeTypes": [
-        "major",
-        "minor",
-        "patch"
-      ],
-      "tag": "alpha"
+        "disallowedChangeTypes": [
+            "major",
+            "minor",
+            "patch"
+        ],
+        "tag": "alpha"
     }
-  }
+}
