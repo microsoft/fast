@@ -134,6 +134,7 @@ describe("The repeat", () => {
         const itemTemplate = html<Item>`${x => x.name}`;
         const altItemTemplate = html<Item>`*${x => x.name}`;
         const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const randomizedOneThroughTen = [5, 4, 6, 1, 7, 3, 2, 10, 9, 8];
         const zeroThroughTen = [0].concat(oneThroughTen);
         const wrappedItemTemplate = html<Item>`<div>${x => x.name}</div>`;
 
@@ -152,6 +153,16 @@ describe("The repeat", () => {
             return items;
         }
 
+        function createRandomizedArray(size: number, randomizedOneThroughTen: number[]) {
+            const items: { name: string, index: number }[] = [];
+
+            for (let i = 0; i < size; ++i) {
+                items.push({ name: `item${randomizedOneThroughTen[i]}`, index: randomizedOneThroughTen[i] });
+            }
+
+            return items;
+        }
+
         class ViewModel {
             name = "root";
             @observable items: Item[];
@@ -163,6 +174,16 @@ describe("The repeat", () => {
                 if (nested) {
                     this.items.forEach(x => (x.items = createArray(size)));
                 }
+            }
+        }
+
+        class RandomizedViewModel {
+            name = "root";
+            @observable items: Item[];
+            @observable template = itemTemplate;
+
+            constructor(size: number) {
+                this.items = createRandomizedArray(size, randomizedOneThroughTen);
             }
         }
 
@@ -291,6 +312,62 @@ describe("The repeat", () => {
                 await Updates.next();
 
                 expect(toHTML(parent)).to.equal(`${createOutput(size)}newitem`);
+            });
+        });
+
+        oneThroughTen.forEach(size => {
+            it(`updates rendered HTML when items are reversed in an array of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.targetNodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new ViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+                vm.items.reverse();
+
+                await Updates.next();
+
+                const htmlString: string = new Array(size).fill(undefined).map((item, index) => {
+                    return `item${index + 1}`;
+                }).reverse().join("");
+
+                expect(toHTML(parent)).to.equal(htmlString);
+            });
+        });
+
+        randomizedOneThroughTen.forEach(size => {
+            it(`updates rendered HTML when items are sorted in an array of size ${size}`, async () => {
+                const { parent, targets, nodeId } = createLocation();
+                const directive = repeat<ViewModel>(
+                    x => x.items,
+                    itemTemplate
+                ) as RepeatDirective;
+                directive.targetNodeId = nodeId;
+                const behavior = directive.createBehavior();
+                const vm = new RandomizedViewModel(size);
+                const controller = createController(vm, targets);
+
+                behavior.bind(controller);
+                const sortAlgo = (a, b) =>  b.index - a.index;
+                vm.items.sort(sortAlgo);
+
+                await Updates.next();
+
+                const htmlString: string = new Array(size).fill(undefined).map((item, index) => {
+                    return {
+                        name: `item${randomizedOneThroughTen[index]}`,
+                        index: randomizedOneThroughTen[index]
+                    };
+                }).sort(sortAlgo).map((item) => {
+                    return item.name;
+                }).join("");
+
+                expect(toHTML(parent)).to.equal(htmlString);
             });
         });
 
