@@ -1,6 +1,3 @@
-
-![fast_banner_github_914.png](https://static.fast.design/assets/fast_banner_github_914.png)
-
 # FAST
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
