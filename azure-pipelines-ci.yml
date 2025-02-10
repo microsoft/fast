@@ -1,0 +1,66 @@
+pr:
+  - main
+
+# The `resources` specify the location and version of the 1ES PT.
+resources:
+  repositories:
+  - repository: 1esPipelines
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+
+extends:
+  # The pipeline extends the 1ES PT which will inject different SDL and compliance tasks.
+  # For non-production pipelines, use "Unofficial" as defined below.
+  # For productions pipelines, use "Official".
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    # Update the pool with your team's 1ES hosted pool.
+    pool:
+      name: OneESPool  # Name of your hosted pool
+      image: HostedPoolLinuxImage  # Name of the image in your pool. If not specified, first image of the pool is used
+      os: linux  # OS of the image. This value cannot be a variable. Allowed values: windows, linux, macOS
+    sdl:
+      sourceAnalysisPool:
+        name: OneESPool  # Name of your hosted pool
+        image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
+        os: windows  # OS of the image. Allowed values: windows, linux, macOS
+    stages:
+    - stage: Stage
+      jobs:
+      - job: HostJob
+        # If the pipeline publishes artifacts, use `templateContext` to define the artifacts.
+        # This will enable 1ES PT to run SDL analysis tools on the artifacts and then upload them.
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            targetPath: $(System.ArtifactsDirectory)
+            artifactName: drop
+
+        variables:
+          npm_config_cache: $(Pipeline.Workspace)/.npm
+
+        steps:
+          - checkout: self
+            persistCredentials: "true"
+
+          - task: UseNode@1
+            inputs:
+              version: "20.x"
+            displayName: "Install Node.js"
+
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+              path: $(npm_config_cache)
+            displayName: "Cache npm"
+
+          - script: |
+              npm ci
+            displayName: "Install package dependencies"
+
+          - script: |
+              npm run build
+            displayName: "Build workspaces"

@@ -2,7 +2,7 @@
 id: ember
 title: Ember
 sidebar_label: Ember
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/integrations/ember.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/integrations/ember.md
 description: FAST and Ember work great together. Let's take a look at how you can set up an Ember project, starting from scratch.
 keywords:
   - ember

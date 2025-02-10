@@ -39,6 +39,9 @@ export {
     Splice,
     SpliceStrategy,
     SpliceStrategySupport,
+    Sort,
+    SortObserver,
+    sortedCount,
 } from "./observation/arrays.js";
 export { UpdateQueue, Updates } from "./observation/update-queue.js";
 

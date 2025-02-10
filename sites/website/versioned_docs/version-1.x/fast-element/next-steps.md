@@ -2,7 +2,7 @@
 id: next-steps
 title: Next Steps
 sidebar_label: Next Steps
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/next-steps.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/fast-element/next-steps.md
 description: Now that you're familiar with the robust and powerful features of FASTElement, you're ready to build your own components and apps.
 keywords:
   - next steps

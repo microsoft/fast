@@ -2,7 +2,7 @@
 id: browser-support
 title: Browser Support
 sidebar_label: Browser Support
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/resources/browser-support.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/resources/browser-support.md
 description: View the list of browsers that have native support for the Web Components features used by fast-element and our components.
 keywords:
   - browser support

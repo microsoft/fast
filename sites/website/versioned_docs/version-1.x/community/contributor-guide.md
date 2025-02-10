@@ -2,7 +2,7 @@
 id: contributor-guide
 title: Contributor Guide
 sidebar_label: Contributor Guide
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/community/contributor-guide.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/community/contributor-guide.md
 description: Guide for contributing to FAST.
 keywords:
   - contributor guide
@@ -86,7 +86,7 @@ Packages are located within the `packages` folder of the repository. Each packag
 
 ### Submitting a pull request
 
-If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from main) or use the *merge* button provided by GitHub.
 
 :::note
 For additional details on branch management, read the [branch guide](./branch-guide.md) documentation.
@@ -179,7 +179,7 @@ The development, release, and work management processes must reflect this princi
 
 ### Code owners
 
-As subject matter experts, *code owners* approve pull requests on the packages they own. There is a required minimum of one code owner for each package. *Code owners* are listed in [CODEOWNERS](https://github.com/microsoft/fast/blob/master/.github/CODEOWNERS).
+As subject matter experts, *code owners* approve pull requests on the packages they own. There is a required minimum of one code owner for each package. *Code owners* are listed in [CODEOWNERS](https://github.com/microsoft/fast/blob/main/.github/CODEOWNERS).
 
 ### Contributors
 
@@ -187,7 +187,7 @@ As subject matter experts, *code owners* approve pull requests on the packages t
 
 ### Nominations & appointments
 
-* To become a *contributor*, a community member must have a pull request approved and merged into the FAST project master branch.
+* To become a *contributor*, a community member must have a pull request approved and merged into the FAST project main branch.
 * To become a *collaborator*, a *contributor* will petition the *steering committee*, who will approve or deny the request.
 * To become a *code owner*, a *collaborator* will be (a) nominated by a *steering committee* member or (b) petition the *steering committee*, who will approve or deny the request.
 * To join the *steering committee*, a *collaborator* will be nominated by a *steering committee* member and the *steering committee*, who will approve or deny the request.
@@ -231,6 +231,6 @@ By making a contribution to this project, I certify that:
 Several open source projects have influenced our contribution policy:
 
 * [Project Governance @Node](https://nodejs.org/en/about/governance/)
-* [Contributions @Node](https://github.com/nodejs/node/blob/master/CONTRIBUTING.md)
+* [Contributions @Node](https://github.com/nodejs/node/blob/main/CONTRIBUTING.md)
 * [Open Source @GitHub](https://github.com/blog/2039-adopting-the-open-code-of-conduct)
 * [Open Source examples @todogroup](https://github.com/todogroup/policies)

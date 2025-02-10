@@ -22,16 +22,18 @@
     "directory": "examples/todo-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0",
+    "@microsoft/fast-element": "^2.0.1",
     "@microsoft/fast-foundation": "^3.0.0-alpha.33",
     "tslib": "^2.6.3"
   },
   "devDependencies": {
+    "@genesiscommunitysuccess/cep-fast-plugin": "^5.0.3",
+    "@genesiscommunitysuccess/custom-elements-lsp": "^5.0.3",
     "@types/node": "^20.12.8",
     "ts-loader": "^9.3.0",
     "typescript": "~4.7.0",
+    "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4",
-    "webpack": "^5.92.1"
+    "webpack-dev-server": "^5.0.4"
   }
 }

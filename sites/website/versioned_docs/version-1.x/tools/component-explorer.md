@@ -2,7 +2,7 @@
 id: component-explorer
 title: Component Explorer
 sidebar_label: Component Explorer
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/tools/component-explorer.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/tools/component-explorer.md
 description: Launch our Component Explorer to experience our FAST Components and development tools.
 keywords:
   - component explorer

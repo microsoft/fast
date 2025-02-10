@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 11 Dec 2024 19:53:31 GMT",
+      "version": "2.0.1",
+      "tag": "@microsoft/fast-element_v2.0.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "33111eeff26ab4ae2bbe1c90145170ed175d2217",
+            "comment": "Patch bumping to apply latest tag to the package"
+          },
+          {
+            "author": "abaris@null.net",
+            "package": "@microsoft/fast-element",
+            "commit": "51a79eb3294897fb1e71b5dcdcce0bea62521e80",
+            "comment": "fast-element: Simplify conditional checks in element-controller"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 19 Aug 2024 22:04:19 GMT",
       "version": "2.0.0",
       "tag": "@microsoft/fast-element_v2.0.0",

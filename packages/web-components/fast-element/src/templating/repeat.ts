@@ -1,5 +1,5 @@
 import { HydrationMarkup, isHydratable } from "../components/hydration.js";
-import { ArrayObserver, Splice } from "../observation/arrays.js";
+import { ArrayObserver, Sort, Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
@@ -167,7 +167,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @param source - The source of the change.
      * @param args - The details about what was changed.
      */
-    public handleChange(source: any, args: Splice[] | ExpressionObserver): void {
+    public handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void {
         if (args === this.itemsBindingObserver) {
             this.items = this.itemsBindingObserver.bind(this.controller);
             this.observeItems();
@@ -180,8 +180,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             return;
         } else if (args[0].reset) {
             this.refreshAllViews();
+        } else if (args[0].sorted) {
+            this.updateSortedViews(args as Sort[]);
         } else {
-            this.updateViews(args as Splice[]);
+            this.updateSplicedViews(args as Splice[]);
         }
     }
 
@@ -204,7 +206,34 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
     }
 
-    private updateViews(splices: Splice[]): void {
+    private updateSortedViews(sorts: Sort[]): void {
+        const views = this.views;
+
+        for (let i = 0, ii = sorts.length; i < ii; ++i) {
+            const sortedItems = sorts[i].sorted!.slice();
+            const unsortedItems = sortedItems.slice().sort();
+
+            for (let j = 0, jj = sortedItems.length; j < jj; ++j) {
+                const sortedIndex: number = sortedItems.find(
+                    value => sortedItems[j] === unsortedItems[value]
+                ) as number;
+
+                if (sortedIndex !== j) {
+                    const removedItems = unsortedItems.splice(sortedIndex, 1);
+                    unsortedItems.splice(j, 0, ...removedItems);
+                    const neighbor = views[j];
+                    const location = neighbor ? neighbor.firstChild : this.location;
+
+                    views[sortedIndex].remove();
+                    views[sortedIndex].insertBefore(location);
+                    const removedViews = views.splice(sortedIndex, 1);
+                    views.splice(j, 0, ...removedViews);
+                }
+            }
+        }
+    }
+
+    private updateSplicedViews(splices: Splice[]): void {
         const views = this.views;
         const bindView = this.bindView;
         const items = this.items!;

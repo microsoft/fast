@@ -2,7 +2,7 @@
 id: working-with-shadow-dom
 title: Working with Shadow DOM
 sidebar_label: Working with Shadow DOM
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/fast-element/working-with-shadow-dom.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/fast-element/working-with-shadow-dom.md
 description: See how our custom elements can be composed together with standard HTML or other custom elements.
 keywords:
    - working with shadow DOM

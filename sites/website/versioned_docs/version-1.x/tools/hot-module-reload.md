@@ -2,7 +2,7 @@
 id: hot-module-reload
 title: Hot Module Reload
 sidebar_label: Hot Module Reload
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/tools/hot-module-reload.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/tools/hot-module-reload.md
 description: Hot Module Replacement (HMR) allows your web components to be updated as you develop, without needing a full refresh of the browser.
 keywords:
   - hot module reload

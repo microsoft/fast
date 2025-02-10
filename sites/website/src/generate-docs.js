@@ -79,7 +79,7 @@ async function copyArticleMarkdown() {
                 title: "Code of Conduct",
                 sidebar_label: "Code of Conduct",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast/edit/master/CODE_OF_CONDUCT.md",
+                    "https://github.com/microsoft/fast/edit/main/CODE_OF_CONDUCT.md",
                 description:
                     "In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone.",
                 keywords: ["code of conduct"],
@@ -93,7 +93,7 @@ async function copyArticleMarkdown() {
                 title: "Contributor Guide",
                 sidebar_label: "Contributor Guide",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast/edit/master/CONTRIBUTING.md",
+                    "https://github.com/microsoft/fast/edit/main/CONTRIBUTING.md",
                 description: "Guide for contributing to FAST.",
                 keywords: ["contributing"],
             },
@@ -106,7 +106,7 @@ async function copyArticleMarkdown() {
                 title: "Branch Guide",
                 sidebar_label: "Branch Guide",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast/blob/master/BRANCH_GUIDE.md",
+                    "https://github.com/microsoft/fast/blob/main/BRANCH_GUIDE.md",
                 desciption: "A branch guide for the FAST repository.",
                 keywords: ["branch guide"],
             },
@@ -118,7 +118,7 @@ async function copyArticleMarkdown() {
                 id: "license",
                 title: "License",
                 sidebar_label: "License",
-                custom_edit_url: "https://github.com/microsoft/fast/edit/master/LICENSE",
+                custom_edit_url: "https://github.com/microsoft/fast/edit/main/LICENSE",
                 description: "MIT License",
                 keywords: ["mit license"],
             },
@@ -131,7 +131,7 @@ async function copyArticleMarkdown() {
                 title: "Security",
                 sidebar_label: "Security",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast/edit/master/SECURITY.md",
+                    "https://github.com/microsoft/fast/edit/main/SECURITY.md",
                 description:
                     "Microsoft takes the security of our software products and services seriously, which includes all source code repositories managed through our GitHub organizations.",
                 keywords: ["security"],
@@ -148,7 +148,7 @@ async function copyArticleMarkdown() {
                 title: "Acknowledgements",
                 sidebar_label: "Acknowledgements",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
+                    "https://github.com/microsoft/fast/edit/main/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
                 description:
                     "There are many great open source projects that have inspired us and enabled us to build FAST.",
                 keywords: ["acknowlegements"],

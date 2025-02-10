@@ -2,7 +2,7 @@
 id: high-contrast
 title: High Contrast in FAST
 sidebar_label: High Contrast
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/design-systems/high-contrast.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/design-systems/high-contrast.md
 description: High contrast mode uses the CSS media feature, forced-colors. When forced-colors is set to active, the user agent will apply a limited color palette to the component.
 keywords:
     - forced-colors
@@ -24,7 +24,7 @@ High contrast mode uses the CSS media feature, [`forced-colors`](https://develop
 }
 ```
 
-FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in a stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
+FAST has a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/tree/archives/fast-foundation-3/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) utility function that is used to construct `forced-colors` in a stylesheet. This function is passed to the `withBehavior` function from the `css` tagged template object.
 
 :::note
 The reason for this behavior is to avoid the runtime cost of applying `forced-color` style rules when the UA does not match the `forced-colors` @media query. FAST exposes a behavior that conditionally adds and removes stylesheets based on this media query, so forced-colors' stylesheets can then be conditionally applied where necessary.
@@ -50,7 +50,7 @@ export const ComponentStyles = css`
 
 In `forced-colors` mode, the colors on the component are reduced to a limited color palette chosen by the user. The [System Color keywords](https://developer.mozilla.org/en-US/docs/web/css/color_value#System_Colors) defined by the CSS Color Module Level 4 specification expose these user-chosen colors.
 
-FAST provides a [`SystemColors`](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keywords in a `forced-colors` stylesheet.
+FAST provides a [`SystemColors`](https://github.com/microsoft/fast/tree/archives/fast-foundation-3/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keywords in a `forced-colors` stylesheet.
 
 **Example**
 ```ts
@@ -118,7 +118,7 @@ When high contrast is enabled, the system will try to apply the correct color. I
 
 ![Accent button no forced colors](https://static.fast.design/assets/high-contrast/accent-no-forced-colors.png)
 
-To fix this, we will pass a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) object to `withBehaviors`, using similar selectors, and setting property values with the `SystemColors` keyword.
+To fix this, we will pass a [forcedColorsStylesheetBehavior](https://github.com/microsoft/fast/tree/archives/fast-foundation-3/packages/web-components/fast-foundation/src/utilities/match-media-stylesheet-behavior.ts) object to `withBehaviors`, using similar selectors, and setting property values with the `SystemColors` keyword.
 
 ```ts
 export const AccentButtonStyles = css`

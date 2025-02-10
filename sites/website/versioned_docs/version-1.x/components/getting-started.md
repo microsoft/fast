@@ -1,7 +1,7 @@
 ---
 title: Components QuickStart
 sidebar_label: QuickStart
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/versioned_docs/version-legacy/components/getting-started.md
+custom_edit_url: https://github.com/microsoft/fast/edit/main/sites/website/versioned_docs/version-legacy/components/getting-started.md
 description: The @microsoft/fast-components library contains Web Components built on top of our standard component and design system foundation.
 keywords:
     - getting started
