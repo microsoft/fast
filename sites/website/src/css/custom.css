@@ -316,7 +316,7 @@ article {
 
 .navbar__link--active {
     --ifm-link-color: #ff4ca3;
-    --ifm-link-hover-color: #FC4579;
+    --ifm-link-hover-color: #fc4579;
 }
 
 .menu__link--active,
