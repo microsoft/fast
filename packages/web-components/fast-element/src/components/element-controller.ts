@@ -531,15 +531,19 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     /**
      * Locates or creates a controller for the specified element.
      * @param element - The element to return the controller for.
+     * @param override - Reset the controller even if one has been defined.
      * @remarks
      * The specified element must have a {@link FASTElementDefinition}
      * registered either through the use of the {@link customElement}
      * decorator or a call to `FASTElement.define`.
      */
-    public static forCustomElement(element: HTMLElement): ElementController {
+    public static forCustomElement(
+        element: HTMLElement,
+        override: boolean = false
+    ): ElementController {
         const controller: ElementController = (element as any).$fastController;
 
-        if (controller !== void 0) {
+        if (controller !== void 0 && !override) {
             return controller;
         }
 

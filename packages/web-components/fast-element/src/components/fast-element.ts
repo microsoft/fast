@@ -31,6 +31,14 @@ export interface FASTElement extends HTMLElement {
     ): boolean | void;
 
     /**
+     * Updates the FASTElement controller and definition.
+     * @remarks
+     * This method should only be triggered when core pieces of the elements
+     * definition require the element to update the controller and reconnect.
+     */
+    $update(): void;
+
+    /**
      * The connected callback for this FASTElement.
      * @remarks
      * This method is invoked by the platform whenever this FASTElement
@@ -81,6 +89,11 @@ function createFASTElement<T extends typeof HTMLElement>(
             options?: Omit<CustomEventInit, "detail">
         ): boolean | void {
             return this.$fastController.emit(type, detail, options);
+        }
+
+        public $update(): void {
+            ElementController.forCustomElement(this as any, true);
+            this.$fastController.connect();
         }
 
         public connectedCallback(): void {
