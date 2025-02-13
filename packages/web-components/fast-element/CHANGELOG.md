@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 11 Dec 2024 19:53:31 GMT and should not be manually modified.
+<!-- This log was last generated on Thu, 13 Feb 2025 17:34:08 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.1.0
+
+Thu, 13 Feb 2025 17:34:08 GMT
+
+### Minor changes
+
+- Update the ArrayObserver to better account for sort and reverse (7559015+janechu@users.noreply.github.com)
 
 ## 2.0.1
 

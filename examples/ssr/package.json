@@ -23,7 +23,7 @@
     "directory": "examples/ssr"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.1",
+    "@microsoft/fast-element": "^2.1.0",
     "@microsoft/fast-foundation": "^3.0.0-alpha.33",
     "@microsoft/fast-ssr": "^1.0.0-beta.35",
     "express": "^4.19.2",
