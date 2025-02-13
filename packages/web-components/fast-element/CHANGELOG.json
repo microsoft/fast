@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 13 Feb 2025 17:34:08 GMT",
+      "version": "2.1.0",
+      "tag": "@microsoft/fast-element_v2.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c4836e507f848b4838eb2c106c17dd18c28240b1",
+            "comment": "Update the ArrayObserver to better account for sort and reverse"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "c6b9e8a436b7b52e5df02182b663167bb34cad8a",
+            "comment": "Add documentation explaining some architectural concepts"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Dec 2024 19:53:31 GMT",
       "version": "2.0.1",
       "tag": "@microsoft/fast-element_v2.0.1",
