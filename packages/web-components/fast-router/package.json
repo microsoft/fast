@@ -90,6 +90,7 @@
       "minor",
       "patch"
     ],
-    "tag": "alpha"
+    "tag": "alpha",
+    "prereleasePrefix": "alpha"
   }
 }
