@@ -464,9 +464,9 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     updateTemplate: (template: ElementViewTemplate) => void;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "fastElementRegistry" is marked as @public, but its signature references "TypeRegistry" which is marked as @internal
+// Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
 //
-// @public (undocumented)
+// @internal
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
 
 // @public

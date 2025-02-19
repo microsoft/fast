@@ -10,6 +10,10 @@ const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 const fastElementBaseTypes = new Set<Function>();
 
+/**
+ * The FAST custom element registry
+ * @internal
+ */
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
     () => createTypeRegistry<FASTElementDefinition>()
