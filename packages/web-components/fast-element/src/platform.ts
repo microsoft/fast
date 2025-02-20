@@ -70,7 +70,6 @@ export interface TypeDefinition {
  * @internal
  */
 export interface TypeRegistry<TDefinition extends TypeDefinition> {
-    reregister(definition: TDefinition): boolean;
     register(definition: TDefinition): boolean;
     getByType(key: Function): TDefinition | undefined;
     getForInstance(object: any): TDefinition | undefined;
@@ -86,14 +85,6 @@ export function createTypeRegistry<
     const typeToDefinition = new Map<Function, TDefinition>();
 
     return Object.freeze({
-        reregister(definition: TDefinition): boolean {
-            if (!typeToDefinition.has(definition.type)) {
-                return false;
-            }
-
-            typeToDefinition.set(definition.type, definition);
-            return true;
-        },
         register(definition: TDefinition): boolean {
             if (typeToDefinition.has(definition.type)) {
                 return false;

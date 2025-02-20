@@ -4,8 +4,6 @@ import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
-import { ElementController } from "./element-controller.js";
-import type { FASTElement } from "./fast-element.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -199,29 +197,6 @@ export class FASTElementDefinition<
         this.styles = ElementStyles.normalize(nameOrConfig.styles);
 
         fastElementRegistry.register(this);
-
-        Observable.getNotifier(this).subscribe(
-            {
-                handleChange: () => {
-                    fastElementRegistry.reregister(this);
-
-                    const allElements = document.getElementsByTagName(this.name);
-
-                    for (
-                        let i = 0, allElementsLength = allElements.length;
-                        i < allElementsLength;
-                        i++
-                    ) {
-                        ElementController.forCustomElement(
-                            allElements[i] as FASTElement,
-                            true
-                        );
-                        (allElements[i] as FASTElement).$fastController.connect();
-                    }
-                },
-            },
-            "template"
-        );
     }
 
     /**

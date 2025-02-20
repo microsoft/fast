@@ -15,6 +15,7 @@ import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import { UnobservableMutationObserver } from "../utilities.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
+import type { FASTElement } from "./fast-element.js";
 import { HydrationMarkup, isHydratable } from "./hydration.js";
 
 const defaultEventOptions: CustomEventInit = {
@@ -552,6 +553,16 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (definition === void 0) {
             throw FAST.error(Message.missingElementDefinition);
         }
+
+        Observable.getNotifier(definition).subscribe(
+            {
+                handleChange: () => {
+                    ElementController.forCustomElement(element as FASTElement, true);
+                    (element as FASTElement).$fastController.connect();
+                },
+            },
+            "template"
+        );
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
