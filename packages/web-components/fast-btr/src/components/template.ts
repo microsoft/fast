@@ -61,8 +61,10 @@ class TemplateElement extends FASTElement {
 
                         if (registeredFastElement) {
                             // all new elements will get the updated template
-                            registeredFastElement.updateTemplate(
-                                ViewTemplate.create(strings, values, DOMPolicy.create())
+                            registeredFastElement.template = ViewTemplate.create(
+                                strings,
+                                values,
+                                DOMPolicy.create()
                             );
                         }
                     } else {

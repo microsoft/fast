@@ -1,9 +1,10 @@
 import { Constructable, isString, KernelServiceId } from "../interfaces.js";
-import { Observable } from "../observation/observable.js";
+import { observable, Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
+import { ElementController } from "./element-controller.js";
 import type { FASTElement } from "./fast-element.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
@@ -124,26 +125,8 @@ export class FASTElementDefinition<
     /**
      * The template to render for the custom element.
      */
+    @observable
     public template?: ElementViewTemplate;
-
-    /**
-     * Set the template for the custom element.
-     */
-    public updateTemplate = (template: ElementViewTemplate) => {
-        this.template = template;
-
-        fastElementRegistry.reregister(this);
-
-        const allElements = document.getElementsByTagName(this.name);
-
-        for (
-            let i = 0, allElementsLength = allElements.length;
-            i < allElementsLength;
-            i++
-        ) {
-            (allElements[i] as FASTElement).$update();
-        }
-    };
 
     /**
      * The styles to associate with the custom element.
@@ -216,6 +199,29 @@ export class FASTElementDefinition<
         this.styles = ElementStyles.normalize(nameOrConfig.styles);
 
         fastElementRegistry.register(this);
+
+        Observable.getNotifier(this).subscribe(
+            {
+                handleChange: () => {
+                    fastElementRegistry.reregister(this);
+
+                    const allElements = document.getElementsByTagName(this.name);
+
+                    for (
+                        let i = 0, allElementsLength = allElements.length;
+                        i < allElementsLength;
+                        i++
+                    ) {
+                        ElementController.forCustomElement(
+                            allElements[i] as FASTElement,
+                            true
+                        );
+                        (allElements[i] as FASTElement).$fastController.connect();
+                    }
+                },
+            },
+            "template"
+        );
     }
 
     /**

@@ -428,7 +428,6 @@ export const FAST: FASTGlobal;
 export interface FASTElement extends HTMLElement {
     $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): boolean | void;
     readonly $fastController: ElementController;
-    $update(): void;
     attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
@@ -461,7 +460,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate;
     readonly type: TType;
-    updateTemplate: (template: ElementViewTemplate) => void;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1052,9 +1050,9 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/components/fast-element.d.ts:67:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:68:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:69:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
