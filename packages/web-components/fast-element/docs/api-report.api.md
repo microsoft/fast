@@ -295,7 +295,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     // (undocumented)
     protected disconnectBehaviors(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
-    static forCustomElement(element: HTMLElement): ElementController;
+    static forCustomElement(element: HTMLElement, override?: boolean): ElementController;
     get isBound(): boolean;
     get isConnected(): boolean;
     get mainStyles(): ElementStyles | null;
@@ -458,9 +458,14 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly registry: CustomElementRegistry;
     readonly shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
-    readonly template?: ElementViewTemplate;
+    template?: ElementViewTemplate;
     readonly type: TType;
 }
+
+// Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
 
 // @public
 export interface FASTGlobal {
@@ -957,6 +962,19 @@ export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TPa
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
+
+// Warning: (ae-forgotten-export) The symbol "TypeDefinition" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export interface TypeRegistry<TDefinition extends TypeDefinition> {
+    // (undocumented)
+    getByType(key: Function): TDefinition | undefined;
+    // (undocumented)
+    getForInstance(object: any): TDefinition | undefined;
+    // (undocumented)
+    register(definition: TDefinition): boolean;
+}
 
 // @public
 export interface UpdateQueue {

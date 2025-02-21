@@ -1,5 +1,5 @@
 import { Constructable, isString, KernelServiceId } from "../interfaces.js";
-import { Observable } from "../observation/observable.js";
+import { observable, Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
@@ -9,10 +9,16 @@ const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 const fastElementBaseTypes = new Set<Function>();
 
-const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
+/**
+ * The FAST custom element registry
+ * @internal
+ */
+export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
     () => createTypeRegistry<FASTElementDefinition>()
 );
+
+export { TypeRegistry };
 
 /**
  * Shadow root initialization options.
@@ -117,7 +123,8 @@ export class FASTElementDefinition<
     /**
      * The template to render for the custom element.
      */
-    public readonly template?: ElementViewTemplate;
+    @observable
+    public template?: ElementViewTemplate;
 
     /**
      * The styles to associate with the custom element.
