@@ -5,5 +5,5 @@
 		"rootDir": ".",
 		"outDir": "dist"
 	},
-	"references": [{ "path": "../src"}]
+	"include": ["./server.ts"]
 }

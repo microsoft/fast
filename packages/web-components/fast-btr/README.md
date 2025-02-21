@@ -23,6 +23,14 @@ This approach should focus on flexibility for webapp/website developers and give
 
 ## Usage
 
+In your JS bundle you will need to include the `@microsoft/fast-btr` package:
+
+```typescript
+import "@microsoft/fast-btr";
+```
+
+This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML template into a `ViewTemplate`.
+
 ### Initial Rendering
 
 The rendering using the Rust script could look as follows:
@@ -50,21 +58,21 @@ At some point before the prehydration script and the definition of the custom el
 ```html
 <f-template name="my-custom-element">
     <template>
-        <button @click="x.handleClick()" ?disabled="x.disabled">
-            ${x.greeting}
+        <button @click="{{ handleClick() }}" ?disabled="{{ disabled }}">
+            {{ greeting }}
         </button>
         <input
-            :value="x.value"
+            :value="{{ value }}"
         >
-        <f-when condition="x.hasFriends()">
+        <f-when condition="{{ hasFriends }}">
             <ul>
-                <f-repeat items="x.friends">
-                    <li>${x.friend}</li>
+                <f-repeat items="{{ friend in friends }}">
+                    <li>{{ friend }}</li>
                 </f-repeat>
             </ul>
         </f-when>
         <slot>
-            <f-slotted :items="x.items"></f-slotted>
+            <f-slotted :items="{{ items }}"></f-slotted>
         </slot>
     </template>
 </f-template>

@@ -4,6 +4,15 @@
 
 ```ts
 
+import { FASTElement } from '@microsoft/fast-element';
+
+// @public
+export class TemplateElement extends FASTElement {
+    // (undocumented)
+    connectedCallback(): void;
+    name?: string;
+}
+
 // (No @packageDocumentation comment for this package)
 
 ```
