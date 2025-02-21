@@ -974,8 +974,6 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
     getForInstance(object: any): TDefinition | undefined;
     // (undocumented)
     register(definition: TDefinition): boolean;
-    // (undocumented)
-    reregister(definition: TDefinition): boolean;
 }
 
 // @public
