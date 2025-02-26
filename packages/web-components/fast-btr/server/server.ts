@@ -32,9 +32,14 @@ function handlePathRequest(
 
 const app = express();
 app.get("/binding", (req: Request, res: Response) =>
-    handlePathRequest("./src/fixtures/binding.fixture.html", "text/html", req, res)
+    handlePathRequest(
+        "./src/fixtures/binding/binding.fixture.html",
+        "text/html",
+        req,
+        res
+    )
 );
-app.get("/main.js", (req: Request, res: Response) =>
-    handlePathRequest("./server/dist/main.js", "text/javascript", req, res)
+app.get("/binding/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/binding/main.js", "text/javascript", req, res)
 );
 app.listen(PORT);
