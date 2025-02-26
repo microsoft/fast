@@ -1,12 +1,12 @@
 import { TemplateElement } from "@microsoft/fast-btr";
 import { attr, FASTElement } from "@microsoft/fast-element";
 
-class CustomElement extends FASTElement {
+class TestElement extends FASTElement {
     @attr
     text: string = "Hello";
 }
-CustomElement.define({
-    name: "custom-element",
+TestElement.define({
+    name: "test-element",
 });
 
 TemplateElement.define({
