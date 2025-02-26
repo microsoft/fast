@@ -21,7 +21,8 @@
         "clean": "tsc -b --clean src",
         "clean:dist": "node ../../../build/clean.js dist",
         "build": "tsc -b src && npm run doc",
-        "build-app": "webpack",
+        "build:binding": "webpack --config ./src/fixtures/binding/webpack.config.js",
+        "build-app": "npm run build:binding",
         "build-server": "tsc -b server",
         "doc": "api-extractor run --local",
         "doc:ci": "api-extractor run",
@@ -59,7 +60,8 @@
         "express": "^4.19.2",
         "typescript": "~5.3.0",
         "webpack": "^5.97.1",
-        "webpack-cli": "^6.0.1"
+        "webpack-cli": "^6.0.1",
+        "webpack-merge": "^6.0.1"
     },
     "beachball": {
         "disallowedChangeTypes": [
