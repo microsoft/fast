@@ -2,7 +2,6 @@
 
 Each fixture contains the following contents:
 
-fixture-name
 ```
 └── <fixture-name>/
     ├── <fixture-name>.fixture.html - the expected result from the server
