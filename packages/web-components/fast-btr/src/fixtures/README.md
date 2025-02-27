@@ -24,3 +24,17 @@ The `main.ts` is for the client bundle, which is created by the `webpack.config.
 - Addition of this webpack config to the packages `package.json` as `build:<fixture-name>`
 - Inclusion into the `build-app` script of the new `build:<fixture-name>`
 - Addition of the routes for this new fixture in the `./server/server.ts`
+
+## Fixtures
+
+- [x] Binding - a data binding
+- [x] Attribute - an attribute binding
+- [ ] Boolean Attribute - a boolean attribute binding (`?`)
+- [ ] Property - a property binding (`:`)
+- [ ] Event - an event binding (`@`)
+- [ ] When - the when directive
+- [ ] Repeat - the repeat directive
+- [ ] Ref - the ref directive
+- [ ] Slotted - the slotted directive
+- [ ] Children - the children directive
+- [ ] Template - template references

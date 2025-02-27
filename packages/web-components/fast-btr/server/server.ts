@@ -31,6 +31,17 @@ function handlePathRequest(
 }
 
 const app = express();
+app.get("/attribute", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./src/fixtures/attribute/attribute.fixture.html",
+        "text/html",
+        req,
+        res
+    )
+);
+app.get("/attribute/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/attribute/main.js", "text/javascript", req, res)
+);
 app.get("/binding", (req: Request, res: Response) =>
     handlePathRequest(
         "./src/fixtures/binding/binding.fixture.html",
