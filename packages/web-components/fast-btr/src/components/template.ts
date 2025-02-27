@@ -91,6 +91,20 @@ class TemplateElement extends FASTElement {
     }
 
     /**
+     * Resolves the last string in the array and appends a new string to it
+     * @param newString The new string for the template.
+     * @param strings The strings array.
+     * @param values The interpreted values.
+     */
+    private resolveLastStringItem(
+        newString: string,
+        strings: Array<string>,
+        stringsLength: number
+    ): void {
+        strings[stringsLength - 1] = `${strings[stringsLength - 1]}${newString}`;
+    }
+
+    /**
      * Resolves a string to either the previous string value or as a new string in the array
      * @param newString The new string for the template.
      * @param strings The strings array.
@@ -101,8 +115,10 @@ class TemplateElement extends FASTElement {
         strings: Array<string>,
         values: Array<any>
     ): void {
-        if (strings.length > values.length) {
-            strings[strings.length - 1] = `${strings[strings.length - 1]}${newString}`;
+        const stringsLength = strings.length;
+
+        if (stringsLength > values.length) {
+            this.resolveLastStringItem(newString, strings, stringsLength);
         } else {
             strings.push(newString);
         }
@@ -128,12 +144,14 @@ class TemplateElement extends FASTElement {
         for (let i = 0, attributeLength = attributes.length; i < attributeLength; i++) {
             const bindingAttr = attributes.item(i)?.value.match(this.bindingRegex);
 
-            strings[strings.length - 1] = `${strings[strings.length - 1]} `;
+            this.resolveLastStringItem(" ", strings, strings.length);
 
             if (bindingAttr) {
-                strings[strings.length - 1] = `${strings[strings.length - 1]}${
-                    attributes.item(i)?.name
-                }="`;
+                this.resolveLastStringItem(
+                    `${attributes.item(i)?.name}="`,
+                    strings,
+                    strings.length
+                );
                 // create a binding
                 const sansBindingStrings = bindingAttr[0]
                     .replace(this.openBinding, "")
@@ -155,8 +173,7 @@ class TemplateElement extends FASTElement {
 
         if (childNode.hasChildNodes()) {
             this.resolveChildNodes(childNode.childNodes, strings, values);
-
-            strings[strings.length - 1] = `${strings[strings.length - 1]}</${tagName}>`;
+            this.resolveLastStringItem(`</${tagName}>`, strings, strings.length);
         }
     }
 
