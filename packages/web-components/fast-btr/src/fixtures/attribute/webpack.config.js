@@ -10,6 +10,6 @@ export default merge(config, {
     entry: path.resolve(__dirname, "./main.ts"),
     output: {
         filename: "main.js",
-        path: path.resolve(__dirname, "../../../server/dist/binding"),
+        path: path.resolve(__dirname, "../../../server/dist/attribute"),
     }
 });
