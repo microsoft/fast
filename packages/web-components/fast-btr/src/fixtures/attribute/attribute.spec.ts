@@ -11,7 +11,7 @@ test.describe("f-template", async () => {
     test("create an attribute binding", async ({ page }) => {
         await page.goto("/attribute");
 
-        const customElement = await page.locator("test-element");
+        const customElement = page.locator("test-element");
 
         await expect(await customElement.getAttribute("type")).toEqual("checkbox");
         await expect(await (await customElement.locator("input[type='checkbox']")).count()).toEqual(1);
