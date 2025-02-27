@@ -19,6 +19,9 @@ class TemplateElement extends FASTElement {
     @attr
     public name?: string;
 
+    /**
+     * The binding regex used to identify declarative HTML bindings.
+     */
     private bindingRegex: RegExp = /{{(?:.*?)}}/g;
 
     private openBinding: string = "{{";
@@ -41,19 +44,7 @@ class TemplateElement extends FASTElement {
                         const strings: any[] = [];
                         const values: any[] = []; // these can be bindings, directives, etc.
 
-                        childNodes.forEach(childNode => {
-                            switch (childNode.nodeType) {
-                                case 1: // HTMLElement
-                                    break;
-                                case 3: // text
-                                    this.resolveTextBindings(childNode, strings, values);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        });
-
-                        strings.push("");
+                        this.resolveChildNodes(childNodes, strings, values);
 
                         (strings as any).raw = strings.map(value =>
                             String.raw({ raw: value })
@@ -75,6 +66,101 @@ class TemplateElement extends FASTElement {
     }
 
     /**
+     * Resolves child nodes
+     * @param childNode The child node to interpret.
+     * @param strings The strings array.
+     * @param values The interpreted values.
+     */
+    private resolveChildNodes(
+        childNodes: NodeListOf<ChildNode>,
+        strings: Array<string>,
+        values: Array<any>
+    ): void {
+        childNodes.forEach(childNode => {
+            switch (childNode.nodeType) {
+                case 1: // HTMLElement
+                    this.resolveHTMLElement(childNode, strings, values);
+                    break;
+                case 3: // text
+                    this.resolveTextBindings(childNode, strings, values);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Resolves a string to either the previous string value or as a new string in the array
+     * @param newString The new string for the template.
+     * @param strings The strings array.
+     * @param values The interpreted values.
+     */
+    private resolveString(
+        newString: string,
+        strings: Array<string>,
+        values: Array<any>
+    ): void {
+        if (strings.length > values.length) {
+            strings[strings.length - 1] = `${strings[strings.length - 1]}${newString}`;
+        } else {
+            strings.push(newString);
+        }
+    }
+
+    /**
+     * Resolves an HTMLElement
+     * @param childNode The child node to interpret.
+     * @param strings The strings array.
+     * @param values The interpreted values.
+     */
+    private resolveHTMLElement(
+        childNode: ChildNode,
+        strings: Array<string>,
+        values: Array<any>
+    ): void {
+        const tagName = childNode.nodeName.toLowerCase();
+
+        strings.push(`<${tagName}`);
+
+        const attributes = (childNode as HTMLElement).attributes;
+
+        for (let i = 0, attributeLength = attributes.length; i < attributeLength; i++) {
+            const bindingAttr = attributes.item(i)?.value.match(this.bindingRegex);
+
+            strings[strings.length - 1] = `${strings[strings.length - 1]} `;
+
+            if (bindingAttr) {
+                strings[strings.length - 1] = `${strings[strings.length - 1]}${
+                    attributes.item(i)?.name
+                }="`;
+                // create a binding
+                const sansBindingStrings = bindingAttr[0]
+                    .replace(this.openBinding, "")
+                    .replace(this.closeBinding, "")
+                    .trim();
+                const bindingItem = (x: any) => x[sansBindingStrings];
+                values.push(bindingItem);
+                strings.push('"');
+            } else {
+                this.resolveString(
+                    ` ${attributes.item(i)?.name}="${attributes.item(i)?.value}"`,
+                    strings,
+                    values
+                );
+            }
+        }
+
+        this.resolveString(`>`, strings, values);
+
+        if (childNode.hasChildNodes()) {
+            this.resolveChildNodes(childNode.childNodes, strings, values);
+
+            strings[strings.length - 1] = `${strings[strings.length - 1]}</${tagName}>`;
+        }
+    }
+
+    /**
      * Resolve a text binding
      * @param childNode The child node to interpret.
      * @param strings The strings array.
@@ -84,7 +170,7 @@ class TemplateElement extends FASTElement {
         childNode: ChildNode,
         strings: Array<string>,
         values: Array<any>
-    ) {
+    ): void {
         const textContent = childNode.textContent || "";
         const bindingArray = textContent.match(this.bindingRegex);
         const stringArray = textContent.split(this.bindingRegex);
@@ -103,6 +189,8 @@ class TemplateElement extends FASTElement {
         } else {
             strings.push(textContent);
         }
+
+        strings.push("");
     }
 }
 
