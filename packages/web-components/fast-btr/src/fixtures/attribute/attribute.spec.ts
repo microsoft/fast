@@ -14,7 +14,7 @@ test.describe("f-template", async () => {
         const customElement = page.locator("test-element");
 
         await expect(customElement).toHaveAttribute("type", "checkbox");
-        await expect(await (await customElement.locator("input[type='checkbox']")).count()).toEqual(1);
+        await expect(customElement.locator("input[type='checkbox']")).toHaveCount(1);
 
         await page.evaluate(() => {
             const customElement = document.getElementsByTagName("test-element");
