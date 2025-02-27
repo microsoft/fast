@@ -6,7 +6,7 @@ test.describe("f-template", async () => {
 
         const customElement = page.locator("test-element");
         const customElementInput = customElement.locator("input");
-        await expect(await customElementInput.getAttribute("disabled")).toEqual("");
+        await expect(customElementInput).toHaveAttribute("disabled");
     });
     test("create an attribute binding", async ({ page }) => {
         await page.goto("/attribute");
