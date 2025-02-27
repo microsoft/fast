@@ -22,6 +22,6 @@ test.describe("f-template", async () => {
         });
 
         await expect(customElement).toHaveAttribute("type", "radio");
-        await expect(await (await customElement.locator("input[type='radio']")).count()).toEqual(1);
+        await expect(customElement.locator("input[type='radio']")).toHaveCount(1);
     });
 });
