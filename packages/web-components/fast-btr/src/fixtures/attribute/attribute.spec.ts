@@ -13,7 +13,7 @@ test.describe("f-template", async () => {
 
         const customElement = page.locator("test-element");
 
-        await expect(await customElement.getAttribute("type")).toEqual("checkbox");
+        await expect(customElement).toHaveAttribute("type", "checkbox");
         await expect(await (await customElement.locator("input[type='checkbox']")).count()).toEqual(1);
 
         await page.evaluate(() => {
