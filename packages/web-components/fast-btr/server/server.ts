@@ -53,4 +53,10 @@ app.get("/binding", (req: Request, res: Response) =>
 app.get("/binding/main.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/binding/main.js", "text/javascript", req, res)
 );
+app.get("/when", (req: Request, res: Response) =>
+    handlePathRequest("./src/fixtures/when/when.fixture.html", "text/html", req, res)
+);
+app.get("/when/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/when/main.js", "text/javascript", req, res)
+);
 app.listen(PORT);
