@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-tooltip",
+  "id": "fast-tooltip",
+  "title": "Tooltip",
+  "description": "The FAST tooltip element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-tooltip",
+  "properties": {
+    "visible": {
+      "title": "Visible",
+      "description": "Sets whether the tooltip is visible or not",
+      "mapsToAttribute": "visible",
+      "type": "boolean"
+    },
+    "anchor": {
+      "title": "Anchor ID",
+      "description": "The HTML ID of the element the tooltip is positioned relative to",
+      "mapsToAttribute": "anchor",
+      "type": "string"
+    },
+    "delay": {
+      "default": 300,
+      "title": "Delay",
+      "description": "The delay in milliseconds before a tooltip is shown after a hover event",
+      "mapsToAttribute": "delay",
+      "type": "number"
+    },
+    "auto-update-mode": {
+      "enum": [
+        "anchor",
+        "auto"
+      ],
+      "default": "anchor",
+      "title": "Auto update mode",
+      "description": "Controls when the tooltip updates its position.",
+      "mapsToAttribute": "auto-update-mode",
+      "type": "string"
+    },
+    "position": {
+      "enum": [
+        "top",
+        "right",
+        "bottom",
+        "left",
+        "start",
+        "end"
+      ],
+      "title": "Position",
+      "description": "Controls the placement of the tooltip relative to the configured 'Anchor ID'",
+      "mapsToAttribute": "position",
+      "type": "string"
+    },
+    "horizontal-viewport-lock": {
+      "title": "Horizontal viewport lock",
+      "description": "Controls if the tooltip will always remain fully in the viewport on the horizontal axis",
+      "mapsToAttribute": "horizontal-viewport-lock",
+      "type": "boolean"
+    },
+    "vertical-viewport-lock": {
+      "title": "Vertical viewport lock",
+      "description": "Controls if the tooltip will always remain fully in the viewport on the vertical axis",
+      "mapsToAttribute": "vertical-viewport-lock",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The tooltip content",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

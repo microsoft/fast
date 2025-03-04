@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-dialog",
+  "id": "fast-dialog",
+  "title": "Dialog",
+  "description": "The FAST dialog element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-dialog",
+  "properties": {
+    "modal": {
+      "default": true,
+      "title": "Modal",
+      "description": "When modal, user interaction will be limited to the contents of the element",
+      "mapsToAttribute": "modal",
+      "type": "boolean"
+    },
+    "hidden": {
+      "title": "Hidden",
+      "description": "The hidden state of the element",
+      "mapsToAttribute": "hidden",
+      "type": "boolean"
+    },
+    "trap-focus": {
+      "default": true,
+      "title": "Trap focus",
+      "description": "Indicates that the dialog should trap focus",
+      "mapsToAttribute": "trap-focus",
+      "type": "boolean"
+    },
+    "aria-describedby": {
+      "title": "Accessibility description ID",
+      "description": "The HTML aria-describedby attribute",
+      "mapsToAttribute": "aria-describedby",
+      "type": "string"
+    },
+    "aria-labelledby": {
+      "title": "Accessibility label ID",
+      "description": "The HTML aria-labelledby attribute",
+      "mapsToAttribute": "aria-labelledby",
+      "type": "string"
+    },
+    "aria-label": {
+      "title": "Accessibility label",
+      "description": "The HTML aria-label attribute",
+      "mapsToAttribute": "aria-label",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The dialog content",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

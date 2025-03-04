@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-accordion-item",
+  "id": "fast-accordion-item",
+  "title": "Accordion item",
+  "description": "The FAST accordion item element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-accordion-item",
+  "properties": {
+    "heading-level": {
+      "default": 2,
+      "title": "Level",
+      "description": "The aria-level value (1-6) for the item heading, representing its semantic hierarchy",
+      "mapsToAttribute": "heading-level",
+      "type": "number"
+    },
+    "expanded": {
+      "title": "Expanded",
+      "description": "The expanded state of the item",
+      "mapsToAttribute": "expanded",
+      "type": "boolean"
+    },
+    "id": {
+      "title": "ID",
+      "description": "The HTML ID attribute for the invoking element",
+      "mapsToAttribute": "id",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The contents of the item",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotHeading": {
+      "title": "Heading slot",
+      "description": "The heading of the accordion item",
+      "mapsToSlot": "heading",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotStart": {
+      "title": "Start slot",
+      "description": "Contents of the start slot are positioned before the heading",
+      "mapsToSlot": "start",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotEnd": {
+      "title": "End slot",
+      "description": "Contents of the end slot are positioned after the heading and before the expand/collapse icons",
+      "mapsToSlot": "end",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotExpandedIcon": {
+      "title": "Expanded icon slot",
+      "description": "Slot to provide a custom icon representing the expanded state",
+      "mapsToSlot": "expanded-icon",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotCollapsedIcon": {
+      "title": "Collapsed icon slot",
+      "description": "Slot to provide a custom icon representing the collapsed state",
+      "mapsToSlot": "collapsed-icon",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
