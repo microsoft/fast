@@ -4,7 +4,7 @@
   "mainEntryPointFilePath": "./dist/dts/index.d.ts",
   "dtsRollup": {
     "enabled": true,
-    "untrimmedFilePath": "./dist/fast-btr.untrimmed.d.ts",
-    "betaTrimmedFilePath": "./dist/fast-btr.d.ts"
+    "untrimmedFilePath": "./dist/fast-html.untrimmed.d.ts",
+    "betaTrimmedFilePath": "./dist/fast-html.d.ts"
   }
 }

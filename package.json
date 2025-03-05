@@ -12,7 +12,7 @@
     "packages/web-components/fast-element",
     "packages/web-components/fast-router",
     "packages/web-components/fast-ssr",
-    "packages/web-components/fast-btr",
+    "packages/web-components/fast-html",
     "sites/site-utilities",
     "sites/website",
     "examples/todo-app",

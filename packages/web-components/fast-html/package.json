@@ -1,5 +1,5 @@
 {
-    "name": "@microsoft/fast-btr",
+    "name": "@microsoft/fast-html",
     "version": "1.0.0-alpha.0",
     "private": true,
     "type": "module",
@@ -12,7 +12,7 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Microsoft/fast.git",
-        "directory": "packages/web-components/fast-btr"
+        "directory": "packages/web-components/fast-html"
     },
     "bugs": {
         "url": "https://github.com/Microsoft/fast/issues/new/choose"
