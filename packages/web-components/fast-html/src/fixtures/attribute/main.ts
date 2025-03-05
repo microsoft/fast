@@ -1,9 +1,9 @@
-import { TemplateElement } from "@microsoft/fast-btr";
+import { TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement } from "@microsoft/fast-element";
 
 class TestElement extends FASTElement {
     @attr
-    text: string = "Hello";
+    type: string = "radio";
 }
 TestElement.define({
     name: "test-element",
