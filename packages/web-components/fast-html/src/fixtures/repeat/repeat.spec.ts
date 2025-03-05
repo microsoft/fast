@@ -21,6 +21,8 @@ test.describe("f-template", async () => {
             ];
         });
 
+        await expect(customElement).toHaveJSProperty("list", ["A", "B", "C"]);
+
         customElementListItems = await customElement.locator("li");
         expect(await customElementListItems.count()).toEqual(3);
         expect(await customElementListItems.nth(0).textContent()).toEqual("A");
