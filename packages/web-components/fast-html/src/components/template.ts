@@ -78,8 +78,8 @@ class TemplateElement extends FASTElement {
 
     /**
      * Resolve a template or behavior
-     * @param strings The strings array.
-     * @param values The interpreted values.
+     * @param strings - The strings array.
+     * @param values - The interpreted values.
      */
     private resolveTemplateOrBehavior(
         strings: Array<string>,
@@ -90,8 +90,8 @@ class TemplateElement extends FASTElement {
 
     /**
      * Resolve a directive
-     * @param behaviorConfig The directive behavior configuration object.
-     * @param externalValues The interpreted values from the parent.
+     * @param behaviorConfig - The directive behavior configuration object.
+     * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
      */
     private resolveDirective(
@@ -144,8 +144,9 @@ class TemplateElement extends FASTElement {
     /**
      * Resolver of the innerHTML string
      * @param innerHTML - The innerHTML.
-     * @param strings The strings array.
-     * @param values The interpreted values.
+     * @param strings - The strings array.
+     * @param values - The interpreted values.
+     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      */
     private resolveInnerHTML(
         innerHTML: string,
