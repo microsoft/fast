@@ -4,6 +4,7 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
+    repeat,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
@@ -57,11 +58,15 @@ class TemplateElement extends FASTElement {
     /**
      * Resolve strings and values from an innerHTML string
      * @param innerHTML - The innerHTML.
+     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      */
-    private resolveStringsAndValues(innerHTML: string): ResolvedStringsAndValues {
+    private resolveStringsAndValues(
+        innerHTML: string,
+        self: boolean = false
+    ): ResolvedStringsAndValues {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
-        this.resolveInnerHTML(innerHTML, strings, values);
+        this.resolveInnerHTML(innerHTML, strings, values, self);
 
         (strings as any).raw = strings.map(value => String.raw({ raw: value }));
 
@@ -94,21 +99,44 @@ class TemplateElement extends FASTElement {
         externalValues: Array<any>,
         innerHTML: string
     ): void {
-        const { strings, values } = this.resolveStringsAndValues(
-            innerHTML.slice(
-                behaviorConfig.openingTagEndIndex,
-                behaviorConfig.closingTagStartIndex
-            )
-        );
-
         switch (behaviorConfig.name) {
             case "when":
-                externalValues.push(
-                    when(
-                        x => x?.[behaviorConfig.value],
-                        this.resolveTemplateOrBehavior(strings, values)
-                    )
-                );
+                {
+                    const { strings, values } = this.resolveStringsAndValues(
+                        innerHTML.slice(
+                            behaviorConfig.openingTagEndIndex,
+                            behaviorConfig.closingTagStartIndex
+                        )
+                    );
+
+                    externalValues.push(
+                        when(
+                            x => x?.[behaviorConfig.value],
+                            this.resolveTemplateOrBehavior(strings, values)
+                        )
+                    );
+                }
+
+                break;
+            case "repeat":
+                {
+                    const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
+                    const { strings, values } = this.resolveStringsAndValues(
+                        innerHTML.slice(
+                            behaviorConfig.openingTagEndIndex,
+                            behaviorConfig.closingTagStartIndex
+                        ),
+                        true
+                    );
+
+                    externalValues.push(
+                        repeat(
+                            x => x?.[valueAttr[2]],
+                            this.resolveTemplateOrBehavior(strings, values)
+                        )
+                    );
+                }
+
                 break;
         }
     }
@@ -122,7 +150,8 @@ class TemplateElement extends FASTElement {
     private resolveInnerHTML(
         innerHTML: string,
         strings: Array<string>,
-        values: Array<any>
+        values: Array<any>,
+        self: boolean = false
     ): void {
         const behaviorConfig = getNextBehavior(innerHTML);
 
@@ -131,22 +160,27 @@ class TemplateElement extends FASTElement {
         } else {
             switch (behaviorConfig.type) {
                 case "dataBinding":
-                    strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                    values.push(
-                        (x: any) =>
-                            x[
-                                innerHTML.slice(
-                                    behaviorConfig.openingEndIndex,
-                                    behaviorConfig.closingStartIndex
-                                )
-                            ]
-                    );
+                    {
+                        strings.push(
+                            innerHTML.slice(0, behaviorConfig.openingStartIndex)
+                        );
+                        const propName = innerHTML.slice(
+                            behaviorConfig.openingEndIndex,
+                            behaviorConfig.closingStartIndex
+                        );
+                        const binding = self ? (x: any) => x : (x: any) => x[propName];
+                        values.push(binding);
 
-                    this.resolveInnerHTML(
-                        innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
-                        strings,
-                        values
-                    );
+                        this.resolveInnerHTML(
+                            innerHTML.slice(
+                                behaviorConfig.closingEndIndex,
+                                innerHTML.length
+                            ),
+                            strings,
+                            values
+                        );
+                    }
+
                     break;
                 case "directive":
                     strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));

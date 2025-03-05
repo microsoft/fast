@@ -59,4 +59,10 @@ app.get("/when", (req: Request, res: Response) =>
 app.get("/when/main.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/when/main.js", "text/javascript", req, res)
 );
+app.get("/repeat", (req: Request, res: Response) =>
+    handlePathRequest("./src/fixtures/repeat/repeat.fixture.html", "text/html", req, res)
+);
+app.get("/repeat/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/repeat/main.js", "text/javascript", req, res)
+);
 app.listen(PORT);
