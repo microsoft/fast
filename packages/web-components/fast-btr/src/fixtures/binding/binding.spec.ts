@@ -7,7 +7,7 @@ test.describe("f-template", async () => {
         const customElement = await page.locator("test-element");
 
         await expect(await customElement.getAttribute("text")).toEqual("Hello world");
-        await expect((await customElement.textContent()) || "".includes("Hello world")).toBeTruthy();
+        await expect(customElement).toHaveText("Hello world");
 
         await page.evaluate(() => {
             const customElement = document.getElementsByTagName("test-element");
@@ -15,6 +15,6 @@ test.describe("f-template", async () => {
         });
 
         await expect(await customElement.getAttribute("text")).toEqual("Hello pluto");
-        await expect((await customElement.textContent()) || "".includes("Hello pluto")).toBeTruthy();
+        await expect(customElement).toHaveText("Hello pluto");
     });
 });

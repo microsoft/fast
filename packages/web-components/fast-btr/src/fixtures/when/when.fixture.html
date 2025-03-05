@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="/when/main.js"></script>
+    </head>
+    <body>
+        <f-template name="test-element">
+            <template><f-when value="{{show}}">Hello world</f-when></template>
+        </f-template>
+        <test-element id="show" show>
+            <template shadowrootmode="open">Hello world</template>
+        </test-element>
+        <test-element id="hide">
+            <template shadowrootmode="open"></template>
+        </test-element>
+    </body>
+</html>
