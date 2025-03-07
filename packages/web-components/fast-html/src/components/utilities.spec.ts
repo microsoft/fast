@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { DirectiveBehaviorConfig, getNextBehavior } from "./utilities.js";
+import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, DirectiveBehaviorConfig, getNextBehavior } from "./utilities.js";
 import type { DataBindingBehaviorConfig } from "./utilities.js";
 
 test.describe("utilities", async () => {
@@ -9,10 +9,11 @@ test.describe("utilities", async () => {
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
-            expect((templateResult as DataBindingBehaviorConfig)?.openingStartIndex).toEqual(0);
-            expect((templateResult as DataBindingBehaviorConfig)?.openingEndIndex).toEqual(2);
-            expect((templateResult as DataBindingBehaviorConfig)?.closingStartIndex).toEqual(6);
-            expect((templateResult as DataBindingBehaviorConfig)?.closingEndIndex).toEqual(8);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual("content");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(0);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingEndIndex).toEqual(2);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(6);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingEndIndex).toEqual(8);
         });
     });
 
@@ -22,10 +23,25 @@ test.describe("utilities", async () => {
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
-            expect((templateResult as DataBindingBehaviorConfig)?.openingStartIndex).toEqual(13);
-            expect((templateResult as DataBindingBehaviorConfig)?.openingEndIndex).toEqual(15);
-            expect((templateResult as DataBindingBehaviorConfig)?.closingStartIndex).toEqual(19);
-            expect((templateResult as DataBindingBehaviorConfig)?.closingEndIndex).toEqual(21);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual(null);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex).toEqual(13);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(15);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(19);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(21);
+        });
+
+        test("get the next attribute event binding", async () => {
+            const innerHTML = "<input @click=\"{{handleClick()}}\">";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual("@");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex).toEqual(15);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(17);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(30);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(32);
         });
     });
 

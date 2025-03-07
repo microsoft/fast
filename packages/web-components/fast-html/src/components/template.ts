@@ -10,7 +10,11 @@ import {
 } from "@microsoft/fast-element";
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 import { Message } from "../interfaces.js";
-import { DirectiveBehaviorConfig, getNextBehavior } from "./utilities.js";
+import {
+    DataBindingBehaviorConfig,
+    DirectiveBehaviorConfig,
+    getNextBehavior,
+} from "./utilities.js";
 
 interface ResolvedStringsAndValues {
     strings: Array<string>;
@@ -142,6 +146,60 @@ class TemplateElement extends FASTElement {
     }
 
     /**
+     * Resolver of a data binding
+     * @param innerHTML - The innerHTML.
+     * @param strings - The strings array.
+     * @param values - The interpreted values.
+     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param behaviorConfig - The binding behavior configuration object.
+     */
+    private resolveDataBinding(
+        innerHTML: string,
+        strings: Array<string>,
+        values: Array<any>,
+        self: boolean = false,
+        behaviorConfig: DataBindingBehaviorConfig
+    ): void {
+        strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
+
+        switch (behaviorConfig.subtype) {
+            case "content":
+                {
+                    const propName = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex
+                    );
+                    const binding = self ? (x: any) => x : (x: any) => x[propName];
+                    values.push(binding);
+                }
+                break;
+            case "attribute":
+                if (behaviorConfig.aspect === "@") {
+                    const propName = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex - 2
+                    );
+                    const binding = (x: any) => x[propName]();
+                    values.push(binding);
+                } else {
+                    const propName = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex
+                    );
+                    const binding = self ? (x: any) => x : (x: any) => x[propName];
+                    values.push(binding);
+                }
+                break;
+        }
+
+        this.resolveInnerHTML(
+            innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+            strings,
+            values
+        );
+    }
+
+    /**
      * Resolver of the innerHTML string
      * @param innerHTML - The innerHTML.
      * @param strings - The strings array.
@@ -161,26 +219,13 @@ class TemplateElement extends FASTElement {
         } else {
             switch (behaviorConfig.type) {
                 case "dataBinding":
-                    {
-                        strings.push(
-                            innerHTML.slice(0, behaviorConfig.openingStartIndex)
-                        );
-                        const propName = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex
-                        );
-                        const binding = self ? (x: any) => x : (x: any) => x[propName];
-                        values.push(binding);
-
-                        this.resolveInnerHTML(
-                            innerHTML.slice(
-                                behaviorConfig.closingEndIndex,
-                                innerHTML.length
-                            ),
-                            strings,
-                            values
-                        );
-                    }
+                    this.resolveDataBinding(
+                        innerHTML,
+                        strings,
+                        values,
+                        self,
+                        behaviorConfig
+                    );
 
                     break;
                 case "directive":

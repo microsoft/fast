@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <test-element>
+            <template shadowrootmode="open"><button>Hello world</button></template>
+        </test-element>
+        <f-template name="test-element">
+            <template><button @click="{{handleClick()}}">Hello world</button></template>
+        </f-template>
+        <script type="module" src="/event/main.js"></script>
+    </body>
+</html>
