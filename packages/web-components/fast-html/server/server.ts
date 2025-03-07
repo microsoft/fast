@@ -42,6 +42,12 @@ app.get("/attribute", (req: Request, res: Response) =>
 app.get("/attribute/main.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/attribute/main.js", "text/javascript", req, res)
 );
+app.get("/event", (req: Request, res: Response) =>
+    handlePathRequest("./src/fixtures/event/event.fixture.html", "text/html", req, res)
+);
+app.get("/event/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/event/main.js", "text/javascript", req, res)
+);
 app.get("/binding", (req: Request, res: Response) =>
     handlePathRequest(
         "./src/fixtures/binding/binding.fixture.html",

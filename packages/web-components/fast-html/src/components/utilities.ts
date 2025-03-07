@@ -6,7 +6,21 @@ interface BehaviorConfig {
     type: BehaviorType;
 }
 
-export interface DataBindingBehaviorConfig extends BehaviorConfig {
+export interface ContentDataBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
+    subtype: "content";
+}
+
+export interface AttributeDataBindingBehaviorConfig
+    extends BaseDataBindingBehaviorConfig {
+    subtype: "attribute";
+    aspect: "@" | ":" | "?" | null;
+}
+
+export type DataBindingBehaviorConfig =
+    | ContentDataBindingBehaviorConfig
+    | AttributeDataBindingBehaviorConfig;
+
+export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
     type: "dataBinding";
     openingStartIndex: number;
     openingEndIndex: number;
@@ -98,6 +112,56 @@ function getNextDirectiveBehavior(innerHTML: string): DirectiveBehaviorConfig {
 }
 
 /**
+ * Determine if this binding is an attribute binding
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param openingStartIndex - The index of the binding opening marker
+ * @returns boolean
+ */
+function isAttribute(innerHTML: string, openingStartIndex: number): boolean {
+    return innerHTML.slice(openingStartIndex - 2, openingStartIndex - 1) === "=";
+}
+
+/**
+ * Get the attribute binding config
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param config - The base configuration of the binding
+ * @returns AttributeDataBindingBehaviorConfig
+ */
+function getAttributeDataBindingConfig(
+    innerHTML: string,
+    config: BaseDataBindingBehaviorConfig
+): AttributeDataBindingBehaviorConfig {
+    const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
+    const firstCharOfAttribute = splitInnerHTML[splitInnerHTML.length - 1][0];
+    const aspect =
+        firstCharOfAttribute === "?" ||
+        firstCharOfAttribute === "@" ||
+        firstCharOfAttribute === ":"
+            ? firstCharOfAttribute
+            : null;
+
+    return {
+        ...config,
+        subtype: "attribute",
+        aspect,
+    };
+}
+
+/**
+ * Get the content data binding config
+ * @param config - The base configuration of the binding
+ * @returns ContentDataBindingBehaviorConfig
+ */
+function getContentDataBindingConfig(
+    config: BaseDataBindingBehaviorConfig
+): ContentDataBindingBehaviorConfig {
+    return {
+        ...config,
+        subtype: "content",
+    };
+}
+
+/**
  * Get the next data binding
  * @param innerHTML - The innerHTML string to evaluate
  * @returns DataBindingBehaviorConfig - A configuration object
@@ -105,14 +169,17 @@ function getNextDirectiveBehavior(innerHTML: string): DirectiveBehaviorConfig {
 function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfig {
     const openingStartIndex = innerHTML.indexOf(openBinding);
     const closingStartIndex = innerHTML.indexOf(closeBinding);
-
-    return {
+    const partialConfig: BaseDataBindingBehaviorConfig = {
         type: "dataBinding",
         openingStartIndex,
         openingEndIndex: openingStartIndex + 2,
         closingStartIndex,
         closingEndIndex: closingStartIndex + 2,
     };
+
+    return isAttribute(innerHTML, openingStartIndex)
+        ? getAttributeDataBindingConfig(innerHTML, partialConfig)
+        : getContentDataBindingConfig(partialConfig);
 }
 
 /**
