@@ -33,7 +33,7 @@ The `main.ts` is for the client bundle, which is created by the `webpack.config.
 - [ ] Property - a property binding (`:`)
 - [ ] Event - an event binding (`@`)
 - [x] When - the when directive
-- [ ] Repeat - the repeat directive
+- [x] Repeat - the repeat directive
 - [ ] Ref - the ref directive
 - [ ] Slotted - the slotted directive
 - [ ] Children - the children directive

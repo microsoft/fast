@@ -1,6 +1,6 @@
 type BehaviorType = "dataBinding" | "directive";
 
-type DirectiveName = "when";
+type DirectiveName = "when" | "repeat";
 
 interface BehaviorConfig {
     type: BehaviorType;
