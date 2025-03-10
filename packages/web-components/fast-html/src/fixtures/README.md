@@ -31,7 +31,7 @@ The `main.ts` is for the client bundle, which is created by the `webpack.config.
 - [x] Attribute - an attribute binding
 - [ ] Boolean Attribute - a boolean attribute binding (`?`)
 - [ ] Property - a property binding (`:`)
-- [ ] Event - an event binding (`@`)
+- [x] Event - an event binding (`@`)
 - [x] When - the when directive
 - [x] Repeat - the repeat directive
 - [ ] Ref - the ref directive
