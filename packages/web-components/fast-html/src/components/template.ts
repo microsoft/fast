@@ -4,9 +4,7 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
-    repeat,
     ViewTemplate,
-    when,
 } from "@microsoft/fast-element";
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 import { Message } from "../interfaces.js";
@@ -37,13 +35,13 @@ class TemplateElement extends FASTElement {
         if (this.name) {
             this.$fastController.definition.registry
                 .whenDefined(this.name)
-                .then(value => {
+                .then(async value => {
                     const registeredFastElement: FASTElementDefinition | undefined =
                         fastElementRegistry.getByType(value);
                     const template = this.getElementsByTagName("template").item(0);
 
                     if (template) {
-                        const { strings, values } = this.resolveStringsAndValues(
+                        const { strings, values } = await this.resolveStringsAndValues(
                             this.innerHTML
                         );
 
@@ -64,13 +62,13 @@ class TemplateElement extends FASTElement {
      * @param innerHTML - The innerHTML.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      */
-    private resolveStringsAndValues(
+    private async resolveStringsAndValues(
         innerHTML: string,
         self: boolean = false
-    ): ResolvedStringsAndValues {
+    ): Promise<ResolvedStringsAndValues> {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
-        this.resolveInnerHTML(innerHTML, strings, values, self);
+        await this.resolveInnerHTML(innerHTML, strings, values, self);
 
         (strings as any).raw = strings.map(value => String.raw({ raw: value }));
 
@@ -98,20 +96,22 @@ class TemplateElement extends FASTElement {
      * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
      */
-    private resolveDirective(
+    private async resolveDirective(
         behaviorConfig: DirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string
-    ): void {
+    ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when":
                 {
-                    const { strings, values } = this.resolveStringsAndValues(
+                    const { strings, values } = await this.resolveStringsAndValues(
                         innerHTML.slice(
                             behaviorConfig.openingTagEndIndex,
                             behaviorConfig.closingTagStartIndex
                         )
                     );
+
+                    const { when } = await import("@microsoft/fast-element");
 
                     externalValues.push(
                         when(
@@ -125,13 +125,15 @@ class TemplateElement extends FASTElement {
             case "repeat":
                 {
                     const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
-                    const { strings, values } = this.resolveStringsAndValues(
+                    const { strings, values } = await this.resolveStringsAndValues(
                         innerHTML.slice(
                             behaviorConfig.openingTagEndIndex,
                             behaviorConfig.closingTagStartIndex
                         ),
                         true
                     );
+
+                    const { repeat } = await import("@microsoft/fast-element");
 
                     externalValues.push(
                         repeat(
@@ -153,13 +155,13 @@ class TemplateElement extends FASTElement {
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      * @param behaviorConfig - The binding behavior configuration object.
      */
-    private resolveDataBinding(
+    private async resolveDataBinding(
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
         self: boolean = false,
         behaviorConfig: DataBindingBehaviorConfig
-    ): void {
+    ): Promise<void> {
         strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
 
         switch (behaviorConfig.subtype) {
@@ -192,7 +194,7 @@ class TemplateElement extends FASTElement {
                 break;
         }
 
-        this.resolveInnerHTML(
+        await this.resolveInnerHTML(
             innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
             strings,
             values
@@ -206,12 +208,12 @@ class TemplateElement extends FASTElement {
      * @param values - The interpreted values.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      */
-    private resolveInnerHTML(
+    private async resolveInnerHTML(
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
         self: boolean = false
-    ): void {
+    ): Promise<void> {
         const behaviorConfig = getNextBehavior(innerHTML);
 
         if (behaviorConfig === null) {
@@ -219,7 +221,7 @@ class TemplateElement extends FASTElement {
         } else {
             switch (behaviorConfig.type) {
                 case "dataBinding":
-                    this.resolveDataBinding(
+                    await this.resolveDataBinding(
                         innerHTML,
                         strings,
                         values,
@@ -230,9 +232,9 @@ class TemplateElement extends FASTElement {
                     break;
                 case "directive":
                     strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));
-                    this.resolveDirective(behaviorConfig, values, innerHTML);
+                    await this.resolveDirective(behaviorConfig, values, innerHTML);
 
-                    this.resolveInnerHTML(
+                    await this.resolveInnerHTML(
                         innerHTML.slice(
                             behaviorConfig.closingTagEndIndex,
                             innerHTML.length
