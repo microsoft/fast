@@ -1,6 +1,8 @@
-type BehaviorType = "dataBinding" | "directive";
+type BehaviorType = "dataBinding" | "templateDirective";
 
-type DirectiveName = "when" | "repeat";
+type TemplateDirective = "when" | "repeat";
+
+export type AttributeDirective = "children";
 
 interface BehaviorConfig {
     type: BehaviorType;
@@ -16,9 +18,16 @@ export interface AttributeDataBindingBehaviorConfig
     aspect: "@" | ":" | "?" | null;
 }
 
+export interface AttributeDirectiveBindingBehaviorConfig
+    extends BaseDataBindingBehaviorConfig {
+    subtype: "attributeDirective";
+    name: AttributeDirective;
+}
+
 export type DataBindingBehaviorConfig =
     | ContentDataBindingBehaviorConfig
-    | AttributeDataBindingBehaviorConfig;
+    | AttributeDataBindingBehaviorConfig
+    | AttributeDirectiveBindingBehaviorConfig;
 
 export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
     type: "dataBinding";
@@ -28,9 +37,9 @@ export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
     closingEndIndex: number;
 }
 
-export interface DirectiveBehaviorConfig extends BehaviorConfig {
-    type: "directive";
-    name: DirectiveName;
+export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
+    type: "templateDirective";
+    name: TemplateDirective;
     value: string;
     openingTagStartIndex: number;
     openingTagEndIndex: number;
@@ -48,12 +57,14 @@ const tagEndDirective: string = ">";
 
 const closeTagStartDirective: string = "</f-";
 
+const attributeDirectivePrefix: string = "f-";
+
 /**
  * Get the next directive
  * @param innerHTML - The innerHTML string to evaluate
  * @returns DirectiveBehaviorConfig - A configuration object
  */
-function getNextDirectiveBehavior(innerHTML: string): DirectiveBehaviorConfig {
+function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
     const openingTagStartIndex = innerHTML.indexOf(openTagStartDirective);
     const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
     const openingTagEndIndex =
@@ -98,8 +109,8 @@ function getNextDirectiveBehavior(innerHTML: string): DirectiveBehaviorConfig {
     } while (tagCount > 0);
 
     return {
-        type: "directive",
-        name: directiveTag as DirectiveName,
+        type: "templateDirective",
+        name: directiveTag as TemplateDirective,
         value: innerHTML.slice(
             directiveValue.openingEndIndex,
             directiveValue.closingStartIndex
@@ -119,6 +130,17 @@ function getNextDirectiveBehavior(innerHTML: string): DirectiveBehaviorConfig {
  */
 function isAttribute(innerHTML: string, openingStartIndex: number): boolean {
     return innerHTML.slice(openingStartIndex - 2, openingStartIndex - 1) === "=";
+}
+
+/**
+ * Determine if this binding is an attribute directive binding
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param openingStartIndex - The index of the binding opening marker
+ * @returns boolean
+ */
+function isAttributeDirective(innerHTML: string, openingStartIndex: number): boolean {
+    const splitHTML = innerHTML.slice(0, openingStartIndex - 2).split(" ");
+    return splitHTML[splitHTML.length - 1].startsWith(attributeDirectivePrefix);
 }
 
 /**
@@ -144,6 +166,28 @@ function getAttributeDataBindingConfig(
         ...config,
         subtype: "attribute",
         aspect,
+    };
+}
+
+/**
+ * Get the attribute directive binding config
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param config - The base configuration of the binding
+ * @returns AttributeDirectiveBindingBehaviorConfig
+ */
+function getAttributeDirectiveDataBindingConfig(
+    innerHTML: string,
+    config: BaseDataBindingBehaviorConfig
+): AttributeDirectiveBindingBehaviorConfig {
+    const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
+    const lastItem = splitInnerHTML[splitInnerHTML.length - 1];
+    const equals = lastItem.indexOf("=");
+    const name = lastItem.slice(2, equals);
+
+    return {
+        ...config,
+        subtype: "attributeDirective",
+        name: name as AttributeDirective,
     };
 }
 
@@ -177,7 +221,9 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
         closingEndIndex: closingStartIndex + 2,
     };
 
-    return isAttribute(innerHTML, openingStartIndex)
+    return isAttributeDirective(innerHTML, openingStartIndex)
+        ? getAttributeDirectiveDataBindingConfig(innerHTML, partialConfig)
+        : isAttribute(innerHTML, openingStartIndex)
         ? getAttributeDataBindingConfig(innerHTML, partialConfig)
         : getContentDataBindingConfig(partialConfig);
 }
@@ -189,7 +235,7 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  */
 export function getNextBehavior(
     innerHTML: string
-): DataBindingBehaviorConfig | DirectiveBehaviorConfig | null {
+): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
     const dataBindingOpen = innerHTML.indexOf(openBinding);
     const directiveBindingOpen = innerHTML.indexOf(openTagStartDirective);
 
