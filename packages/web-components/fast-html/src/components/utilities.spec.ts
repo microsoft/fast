@@ -1,6 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, DirectiveBehaviorConfig, getNextBehavior } from "./utilities.js";
-import type { DataBindingBehaviorConfig } from "./utilities.js";
+import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig } from "./utilities.js";
 
 test.describe("utilities", async () => {
     test.describe("content", async () => {
@@ -50,31 +49,46 @@ test.describe("utilities", async () => {
             const innerHTML = "<f-when value=\"{{show}}\">Hello world</f-when>";
             const templateResult = getNextBehavior(innerHTML);
 
-            expect(templateResult?.type).toEqual("directive");
-            expect((templateResult as DirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(0);
-            expect((templateResult as DirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(25);
-            expect((templateResult as DirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(36);
-            expect((templateResult as DirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(45);
+            expect(templateResult?.type).toEqual("templateDirective");
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(0);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(25);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(36);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(45);
         });
         test("when directive with content", async () => {
             const innerHTML = "Hello pluto<f-when value=\"{{show}}\">Hello world</f-when>";
             const templateResult = getNextBehavior(innerHTML);
 
-            expect(templateResult?.type).toEqual("directive");
-            expect((templateResult as DirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(11);
-            expect((templateResult as DirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(36);
-            expect((templateResult as DirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(47);
-            expect((templateResult as DirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(56);
+            expect(templateResult?.type).toEqual("templateDirective");
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(11);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(36);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(47);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(56);
         });
         test("when directive with binding", async () => {
             const innerHTML = "<f-when value=\"{{show}}\">{{text}}</f-when>";
             const templateResult = getNextBehavior(innerHTML);
 
-            expect(templateResult?.type).toEqual("directive");
-            expect((templateResult as DirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(0);
-            expect((templateResult as DirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(25);
-            expect((templateResult as DirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(33);
-            expect((templateResult as DirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(42);
+            expect(templateResult?.type).toEqual("templateDirective");
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(0);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(25);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(33);
+            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(42);
+        });
+    });
+
+    test.describe("attributes", async () => {
+        test("children directive", async () => {
+            const innerHTML = "<ul f-children=\"{{list}}\"></ul>";
+            const result = getNextBehavior(innerHTML);
+
+            expect(result?.type).toEqual("dataBinding");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("children");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(16);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(18);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(22);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(24);
         });
     });
 });

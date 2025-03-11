@@ -9,9 +9,10 @@ import {
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 import { Message } from "../interfaces.js";
 import {
+    AttributeDirective,
     DataBindingBehaviorConfig,
-    DirectiveBehaviorConfig,
     getNextBehavior,
+    TemplateDirectiveBehaviorConfig,
 } from "./utilities.js";
 
 interface ResolvedStringsAndValues {
@@ -91,13 +92,13 @@ class TemplateElement extends FASTElement {
     }
 
     /**
-     * Resolve a directive
+     * Resolve a template directive
      * @param behaviorConfig - The directive behavior configuration object.
      * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
      */
-    private async resolveDirective(
-        behaviorConfig: DirectiveBehaviorConfig,
+    private async resolveTemplateDirective(
+        behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string
     ): Promise<void> {
@@ -148,6 +149,29 @@ class TemplateElement extends FASTElement {
     }
 
     /**
+     * Resolve a template directive
+     * @param name - The name of the directive.
+     * @param propName - The property name to pass to the directive.
+     * @param externalValues - The interpreted values from the parent.
+     */
+    private async resolveAttributeDirective(
+        name: AttributeDirective,
+        propName: string,
+        externalValues: Array<any>
+    ) {
+        switch (name) {
+            case "children":
+                {
+                    const { children } = await import("@microsoft/fast-element");
+
+                    externalValues.push(children(propName));
+                }
+
+                break;
+        }
+    }
+
+    /**
      * Resolver of a data binding
      * @param innerHTML - The innerHTML.
      * @param strings - The strings array.
@@ -162,20 +186,25 @@ class TemplateElement extends FASTElement {
         self: boolean = false,
         behaviorConfig: DataBindingBehaviorConfig
     ): Promise<void> {
-        strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-
         switch (behaviorConfig.subtype) {
             case "content":
                 {
+                    strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
                     const binding = self ? (x: any) => x : (x: any) => x[propName];
                     values.push(binding);
+                    await this.resolveInnerHTML(
+                        innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+                        strings,
+                        values
+                    );
                 }
                 break;
             case "attribute":
+                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                 if (behaviorConfig.aspect === "@") {
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
@@ -191,14 +220,43 @@ class TemplateElement extends FASTElement {
                     const binding = self ? (x: any) => x : (x: any) => x[propName];
                     values.push(binding);
                 }
+
+                await this.resolveInnerHTML(
+                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+                    strings,
+                    values
+                );
+                break;
+            case "attributeDirective":
+                {
+                    strings.push(
+                        innerHTML.slice(
+                            0,
+                            behaviorConfig.openingStartIndex -
+                                behaviorConfig.name.length -
+                                4
+                        )
+                    );
+                    const propName = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex
+                    );
+                    await this.resolveAttributeDirective(
+                        behaviorConfig.name,
+                        propName,
+                        values
+                    );
+                    await this.resolveInnerHTML(
+                        innerHTML.slice(
+                            behaviorConfig.closingEndIndex + 1,
+                            innerHTML.length
+                        ),
+                        strings,
+                        values
+                    );
+                }
                 break;
         }
-
-        await this.resolveInnerHTML(
-            innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
-            strings,
-            values
-        );
     }
 
     /**
@@ -230,9 +288,13 @@ class TemplateElement extends FASTElement {
                     );
 
                     break;
-                case "directive":
+                case "templateDirective":
                     strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));
-                    await this.resolveDirective(behaviorConfig, values, innerHTML);
+                    await this.resolveTemplateDirective(
+                        behaviorConfig,
+                        values,
+                        innerHTML
+                    );
 
                     await this.resolveInnerHTML(
                         innerHTML.slice(
