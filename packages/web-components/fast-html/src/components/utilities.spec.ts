@@ -90,5 +90,17 @@ test.describe("utilities", async () => {
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(22);
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(24);
         });
+        test("slotted directive", async () => {
+            const innerHTML = "<slot f-slotted=\"{{slottedNodes}}\"></slot>";
+            const result = getNextBehavior(innerHTML);
+
+            expect(result?.type).toEqual("dataBinding");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("slotted");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(17);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(19);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(31);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(33);
+        });
     });
 });

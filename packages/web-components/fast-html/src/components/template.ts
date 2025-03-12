@@ -168,6 +168,14 @@ class TemplateElement extends FASTElement {
                 }
 
                 break;
+            case "slotted":
+                {
+                    const { slotted } = await import("@microsoft/fast-element");
+
+                    externalValues.push(slotted(propName));
+                }
+
+                break;
         }
     }
 

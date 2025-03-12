@@ -35,6 +35,6 @@ The `main.ts` is for the client bundle, which is created by the `webpack.config.
 - [x] When - the when directive
 - [x] Repeat - the repeat directive
 - [ ] Ref - the ref directive
-- [ ] Slotted - the slotted directive
+- [x] Slotted - the slotted directive
 - [x] Children - the children directive
 - [ ] Template - template references

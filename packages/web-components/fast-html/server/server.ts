@@ -91,4 +91,18 @@ app.get("/repeat/main.js", (req: Request, res: Response) =>
 app.get("/repeat/bundle.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/repeat/bundle.js", "text/javascript", req, res)
 );
+app.get("/slotted", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./src/fixtures/slotted/slotted.fixture.html",
+        "text/html",
+        req,
+        res
+    )
+);
+app.get("/slotted/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/slotted/main.js", "text/javascript", req, res)
+);
+app.get("/slotted/bundle.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/slotted/bundle.js", "text/javascript", req, res)
+);
 app.listen(PORT);
