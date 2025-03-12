@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="/slotted/main.js"></script>
+    </head>
+    <body>
+        <f-template name="test-element">
+            <template><slot f-slotted="{{slottedNodes}}"></slot></template>
+        </f-template>
+        <test-element>
+            <template shadowrootmode="open"><slot></slot></template>
+            <ul><li>Foo</li><li>Bar</li></ul>
+        </test-element>
+    </body>
+</html>
