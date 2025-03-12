@@ -82,6 +82,15 @@ app.get("/when/main.js", (req: Request, res: Response) =>
 app.get("/when/bundle.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/when/bundle.js", "text/javascript", req, res)
 );
+app.get("/ref", (req: Request, res: Response) =>
+    handlePathRequest("./src/fixtures/ref/ref.fixture.html", "text/html", req, res)
+);
+app.get("/ref/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/ref/main.js", "text/javascript", req, res)
+);
+app.get("/ref/bundle.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/ref/bundle.js", "text/javascript", req, res)
+);
 app.get("/repeat", (req: Request, res: Response) =>
     handlePathRequest("./src/fixtures/repeat/repeat.fixture.html", "text/html", req, res)
 );
