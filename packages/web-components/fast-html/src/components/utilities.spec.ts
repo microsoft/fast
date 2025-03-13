@@ -102,5 +102,17 @@ test.describe("utilities", async () => {
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(31);
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(33);
         });
+        test("ref directive", async () => {
+            const innerHTML = "<video f-ref=\"{{video}}\"></video>";
+            const result = getNextBehavior(innerHTML);
+
+            expect(result?.type).toEqual("dataBinding");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("ref");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(14);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(16);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(21);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(23);
+        });
     });
 });

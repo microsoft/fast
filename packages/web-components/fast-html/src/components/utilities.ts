@@ -2,7 +2,7 @@ type BehaviorType = "dataBinding" | "templateDirective";
 
 type TemplateDirective = "when" | "repeat";
 
-export type AttributeDirective = "children" | "slotted";
+export type AttributeDirective = "children" | "slotted" | "ref";
 
 interface BehaviorConfig {
     type: BehaviorType;

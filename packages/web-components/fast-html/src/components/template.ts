@@ -176,6 +176,14 @@ class TemplateElement extends FASTElement {
                 }
 
                 break;
+            case "ref":
+                {
+                    const { ref } = await import("@microsoft/fast-element");
+
+                    externalValues.push(ref(propName));
+                }
+
+                break;
         }
     }
 
