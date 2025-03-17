@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig } from "./utilities.js";
+import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag } from "./utilities.js";
 
 test.describe("utilities", async () => {
     test.describe("content", async () => {
@@ -113,6 +113,76 @@ test.describe("utilities", async () => {
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(16);
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(21);
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(23);
+        });
+    });
+
+    test.describe("partials", async () => {
+        test("get a single partial", async () => {
+            const partialContent = "{{text}}";
+            const partial = `<f-partial id="foo">${partialContent}</f-partial>`;
+            const allPartials = getAllPartials(partial);
+
+            expect(allPartials.foo.innerHTML).toEqual(partialContent);
+            expect(allPartials.foo.startIndex).toEqual(20);
+            expect(allPartials.foo.endIndex).toEqual(28);
+        });
+        test("get multiple partials", async () => {
+            const partial1Content = "{{text}}";
+            const partial2Content = "{{othertext}}";
+            const partial1 = `<f-partial id="foo">${partial1Content}</f-partial>`;
+            const partial2 = `<f-partial id="foobar">${partial2Content}</f-partial>`;
+            const allPartials = getAllPartials(`${partial1}${partial2}`);
+
+            expect(allPartials.foo.innerHTML).toEqual(partial1Content);
+            expect(allPartials.foo.startIndex).toEqual(20);
+            expect(allPartials.foo.endIndex).toEqual(28);
+
+            expect(allPartials.foobar.innerHTML).toEqual(partial2Content);
+            expect(allPartials.foobar.startIndex).toEqual(63);
+            expect(allPartials.foobar.endIndex).toEqual(76);
+        });
+    });
+
+    test.describe("getIndexOfNextMatchingTag", async () => {
+        test("should resolve a single tag", async () => {
+            const index = getIndexOfNextMatchingTag(
+                `<div>Hello world</div>`,
+                `<div`,
+                `</div>`,
+                0
+            );
+
+            expect(index).toEqual(16);
+        });
+        test("should resolve when there is a nested tag", async () => {
+            const index = getIndexOfNextMatchingTag(
+                `<div><div>Hello world</div></div>`,
+                `<div`,
+                `</div>`,
+                0
+            );
+
+            expect(index).toEqual(27);
+        });
+        test("should get adjacent tags", async () => {
+            const index = getIndexOfNextMatchingTag(
+                `<div>Hello world</div><div>Hello pluto</div>`,
+                `<div`,
+                `</div>`,
+                0
+            );
+
+            expect(index).toEqual(16);
+        });
+        test("should add an offset for content before the tag", async () => {
+            const index = getIndexOfNextMatchingTag(
+                `<div>Hello world</div>`,
+                `<div`,
+                `</div>`,
+                23
+            );
+
+            expect(index).toEqual(39);
         });
     });
 });

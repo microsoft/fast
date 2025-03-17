@@ -37,4 +37,5 @@ The `main.ts` is for the client bundle, which is created by the `webpack.config.
 - [x] Ref - the ref directive
 - [x] Slotted - the slotted directive
 - [x] Children - the children directive
-- [ ] Template - template references
+- [x] Template - template references
+- [ ] Object syntax - dot syntax for property references (e.g `foo.bar`)

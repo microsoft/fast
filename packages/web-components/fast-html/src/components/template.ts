@@ -11,6 +11,7 @@ import { Message } from "../interfaces.js";
 import {
     AttributeDirective,
     DataBindingBehaviorConfig,
+    getAllPartials,
     getNextBehavior,
     TemplateDirectiveBehaviorConfig,
 } from "./utilities.js";
@@ -30,6 +31,8 @@ class TemplateElement extends FASTElement {
     @attr
     public name?: string;
 
+    private partials: { [key: string]: ViewTemplate } = {};
+
     connectedCallback(): void {
         super.connectedCallback();
 
@@ -42,6 +45,8 @@ class TemplateElement extends FASTElement {
                     const template = this.getElementsByTagName("template").item(0);
 
                     if (template) {
+                        await this.resolveAllPartials(this.innerHTML);
+
                         const { strings, values } = await this.resolveStringsAndValues(
                             this.innerHTML
                         );
@@ -145,6 +150,26 @@ class TemplateElement extends FASTElement {
                 }
 
                 break;
+            case "apply": {
+                const openingTag = innerHTML.slice(
+                    behaviorConfig.openingTagStartIndex,
+                    behaviorConfig.openingTagEndIndex
+                );
+                const partial: string | undefined = openingTag
+                    .split(" ")
+                    .find(tagPart => {
+                        return tagPart.startsWith("partial");
+                    })
+                    ?.split('"')[1];
+
+                if (partial && this.partials[partial]) {
+                    const { when } = await import("@microsoft/fast-element");
+
+                    externalValues.push(
+                        when(x => x?.[behaviorConfig.value], this.partials[partial])
+                    );
+                }
+            }
         }
     }
 
@@ -323,6 +348,24 @@ class TemplateElement extends FASTElement {
 
                     break;
             }
+        }
+    }
+
+    /**
+     * Resolve all partial templates
+     * @param unresolvedInnerHTML - The innerHTML.
+     */
+    private async resolveAllPartials(unresolvedInnerHTML: string): Promise<void> {
+        const allPartials = Object.entries(getAllPartials(unresolvedInnerHTML));
+
+        for (let i = 0, partialLength = allPartials.length; i < partialLength; i++) {
+            const { strings, values } = await this.resolveStringsAndValues(
+                allPartials[i][1].innerHTML
+            );
+            this.partials[allPartials[i][0]] = this.resolveTemplateOrBehavior(
+                strings,
+                values
+            );
         }
     }
 }
