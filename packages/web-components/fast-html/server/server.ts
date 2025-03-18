@@ -73,6 +73,20 @@ app.get("/children/main.js", (req: Request, res: Response) =>
 app.get("/children/bundle.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/children/bundle.js", "text/javascript", req, res)
 );
+app.get("/partial", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./src/fixtures/partial/partial.fixture.html",
+        "text/html",
+        req,
+        res
+    )
+);
+app.get("/partial/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/partial/main.js", "text/javascript", req, res)
+);
+app.get("/partial/bundle.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/partial/bundle.js", "text/javascript", req, res)
+);
 app.get("/when", (req: Request, res: Response) =>
     handlePathRequest("./src/fixtures/when/when.fixture.html", "text/html", req, res)
 );

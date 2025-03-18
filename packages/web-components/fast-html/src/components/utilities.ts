@@ -1,6 +1,6 @@
 type BehaviorType = "dataBinding" | "templateDirective";
 
-type TemplateDirective = "when" | "repeat";
+type TemplateDirective = "when" | "repeat" | "apply";
 
 export type AttributeDirective = "children" | "slotted" | "ref";
 
@@ -47,17 +47,77 @@ export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
     closingTagEndIndex: number;
 }
 
+interface PartialTemplateConfig {
+    innerHTML: string;
+    startIndex: number;
+    endIndex: number;
+}
+
 const openBinding: string = "{{";
 
 const closeBinding: string = "}}";
 
-const openTagStartDirective: string = "<f-";
+const openTagStart: string = "<f-";
 
-const tagEndDirective: string = ">";
+const tagEnd: string = ">";
 
-const closeTagStartDirective: string = "</f-";
+const closeTagStart: string = "</f-";
 
 const attributeDirectivePrefix: string = "f-";
+
+/**
+ * Get the index of the next matching tag
+ * @param openingTagStartSlice - The slice starting from the opening tag
+ * @param openingTag - The opening tag string
+ * @param closingTag - The closing tag
+ * @param openingTagStartIndex - The opening tag start index derived from the innerHTML
+ * @returns index
+ */
+export function getIndexOfNextMatchingTag(
+    openingTagStartSlice: string,
+    openingTag: string,
+    closingTag: string,
+    openingTagStartIndex: number
+): number {
+    let tagCount = 1;
+    let matchingCloseTagIndex = -1;
+    const openingTagLength = openingTag.length;
+    const closingTagLength = closingTag.length;
+    let nextSlice = openingTagStartSlice.slice(openingTagLength);
+    let nextOpenTag = nextSlice.indexOf(openingTag);
+    let nextCloseTag = nextSlice.indexOf(closingTag);
+    let tagOffset = openingTagStartIndex + openingTagLength;
+
+    do {
+        // if a closing tag has been found for the last open tag, decrement the tag count
+        if (nextOpenTag > nextCloseTag || nextOpenTag === -1) {
+            tagCount--;
+
+            if (tagCount === 0) {
+                matchingCloseTagIndex = nextCloseTag + tagOffset;
+                break;
+            }
+
+            tagOffset += nextCloseTag + closingTagLength;
+            nextSlice = nextSlice.slice(nextCloseTag + closingTagLength);
+            nextOpenTag = nextSlice.indexOf(openingTag);
+            nextCloseTag = nextSlice.indexOf(closingTag);
+        } else if (nextOpenTag !== -1) {
+            tagCount++;
+            tagOffset += nextOpenTag + openingTagLength;
+            nextSlice = nextSlice.slice(nextOpenTag + openingTagLength);
+            nextOpenTag = nextSlice.indexOf(openingTag);
+            nextCloseTag = nextSlice.indexOf(closingTag);
+        }
+
+        if (tagCount === 0) {
+            matchingCloseTagIndex = nextCloseTag + tagOffset;
+            break;
+        }
+    } while (tagCount > 0);
+
+    return matchingCloseTagIndex;
+}
 
 /**
  * Get the next directive
@@ -65,48 +125,25 @@ const attributeDirectivePrefix: string = "f-";
  * @returns DirectiveBehaviorConfig - A configuration object
  */
 function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
-    const openingTagStartIndex = innerHTML.indexOf(openTagStartDirective);
+    const openingTagStartIndex = innerHTML.indexOf(openTagStart);
     const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
     const openingTagEndIndex =
-        openingTagStartSlice.indexOf(tagEndDirective) + openingTagStartIndex + 1;
+        openingTagStartSlice.indexOf(tagEnd) + openingTagStartIndex + 1;
 
     const directiveTag = innerHTML
         .slice(openingTagStartIndex + 3, openingTagEndIndex - 1)
         .split(" ")[0];
     const directiveValue = getNextDataBindingBehavior(innerHTML);
 
-    const openingTag = `${openTagStartDirective}${directiveTag}`;
-    const closingTag = `${closeTagStartDirective}${directiveTag}${tagEndDirective}`;
+    const openingTag = `${openTagStart}${directiveTag}`;
+    const closingTag = `${closeTagStart}${directiveTag}${tagEnd}`;
 
-    let tagCount = 0;
-    let matchingCloseTagIndex = -1;
-    let nextSlice = openingTagStartSlice.slice(openingTag.length);
-    let nextOpenTag = nextSlice.indexOf(openingTag);
-    let nextCloseTag = nextSlice.indexOf(closingTag);
-    let tagOffset = openingTagStartIndex + openingTag.length;
-
-    do {
-        if (nextOpenTag !== -1) {
-            tagOffset += nextOpenTag;
-        }
-
-        // if there is the same open tag available and it occurs before the next closing of the
-        // same tag increment the number of tags found
-        if (nextOpenTag !== -1 && nextOpenTag < nextCloseTag) {
-            tagCount++;
-            // if a closing tag has been found for the next open tag, decrement the tag count
-        } else if (nextOpenTag > nextCloseTag) {
-            tagCount--;
-        }
-
-        if (tagCount === 0) {
-            matchingCloseTagIndex = nextCloseTag + tagOffset;
-        } else {
-            nextSlice = nextSlice.slice(nextOpenTag);
-            nextOpenTag = nextSlice.indexOf(openingTag);
-            nextCloseTag = nextSlice.indexOf(closingTag);
-        }
-    } while (tagCount > 0);
+    const matchingCloseTagIndex = getIndexOfNextMatchingTag(
+        openingTagStartSlice,
+        openingTag,
+        closingTag,
+        openingTagStartIndex
+    );
 
     return {
         type: "templateDirective",
@@ -237,7 +274,7 @@ export function getNextBehavior(
     innerHTML: string
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
     const dataBindingOpen = innerHTML.indexOf(openBinding);
-    const directiveBindingOpen = innerHTML.indexOf(openTagStartDirective);
+    const directiveBindingOpen = innerHTML.indexOf(openTagStart);
 
     if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
         return null;
@@ -248,4 +285,51 @@ export function getNextBehavior(
     }
 
     return getNextDataBindingBehavior(innerHTML);
+}
+
+/**
+ * Gets all the partials with their IDs
+ * @param innerHTML - The innerHTML string to evaluate
+ * @param offset - The index offset from the innerHTML
+ * @param partials - The partials found
+ * @returns {[key: string]: PartialTemplateConfig}
+ */
+export function getAllPartials(
+    innerHTML: string,
+    offset: number = 0,
+    partials: { [key: string]: PartialTemplateConfig } = {}
+): { [key: string]: PartialTemplateConfig } {
+    const openingTag = `${openTagStart}partial`;
+    const openingTagStartIndex = innerHTML.indexOf(openingTag);
+
+    if (openingTagStartIndex >= 0) {
+        const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
+        const closingTag = `${closeTagStart}partial${tagEnd}`;
+        const closingTagLength = closingTag.length;
+        const matchingCloseTagIndex =
+            getIndexOfNextMatchingTag(
+                openingTagStartSlice,
+                openingTag,
+                closingTag,
+                openingTagStartIndex
+            ) + closingTagLength;
+        const startId = openingTagStartIndex + ' id="'.length + openingTag.length;
+        const endId = innerHTML.slice(startId).indexOf('"') + startId;
+        const id = innerHTML.slice(startId, endId);
+        const openingTagEndIndex =
+            openingTagStartSlice.indexOf(">") + 1 + openingTagStartIndex;
+        const closingTagStartIndex = matchingCloseTagIndex - closingTagLength;
+
+        partials[id] = {
+            innerHTML: innerHTML.slice(openingTagEndIndex, closingTagStartIndex),
+            startIndex: openingTagEndIndex + offset,
+            endIndex: closingTagStartIndex + offset,
+        };
+
+        offset += matchingCloseTagIndex;
+
+        return getAllPartials(innerHTML.slice(matchingCloseTagIndex), offset, partials);
+    }
+
+    return partials;
 }
