@@ -2,6 +2,33 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 19 Mar 2025 21:09:36 GMT",
+      "version": "10.0.0",
+      "tag": "@ni/fast-foundation_v10.0.0",
+      "comments": {
+        "major": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-foundation",
+            "commit": "d218abe4c69ab0cf4a2a36997c4194751b75959b",
+            "comment": "README updates"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-element to v10.0.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-web-utilities to v10.0.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 24 Jan 2025 18:10:34 GMT",
       "version": "0.0.6",
       "tag": "@ni/fast-foundation_v0.0.6",

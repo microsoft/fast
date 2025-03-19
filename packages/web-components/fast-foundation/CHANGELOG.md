@@ -1,8 +1,18 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Fri, 24 Jan 2025 18:10:34 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 19 Mar 2025 21:09:36 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.0.0
+
+Wed, 19 Mar 2025 21:09:36 GMT
+
+### Major changes
+
+- README updates ([ni/fast@d218abe](https://github.com/ni/fast/commit/d218abe4c69ab0cf4a2a36997c4194751b75959b))
+- Bump @ni/fast-element to v10.0.0
+- Bump @ni/fast-web-utilities to v10.0.0
 
 ## 0.0.6
 
