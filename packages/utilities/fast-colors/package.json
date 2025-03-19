@@ -2,7 +2,7 @@
   "name": "@ni/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
   "sideEffects": false,
-  "version": "0.0.5",
+  "version": "9.0.0",
   "author": {
     "name": "National Instruments"
   },
@@ -42,7 +42,6 @@
     "@types/mocha": "^10.0.10",
     "chai": "^4",
     "mocha": "^11.0.1",
-    "@ni/eslint-config-fast-dna": "^1.0.0",
     "eslint-config-prettier": "^10.0.1",
     "prettier": "3.4.2",
     "rimraf": "^6.0.1",

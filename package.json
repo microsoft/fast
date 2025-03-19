@@ -37,14 +37,9 @@
   "devDependencies": {
     "@types/node": "^22",
     "beachball": "^2.24.0",
-    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "glob": "^11.0.1",
-    "markdown-it": "^14.1.0",
     "playwright": "1.44.0",
     "prettier": "3.4.2",
-    "ts-node": "^10.9.2",
-    "typescript": "~5.4.5",
-    "yargs": "^17.7.2"
+    "typescript": "~5.4.5"
   }
 }

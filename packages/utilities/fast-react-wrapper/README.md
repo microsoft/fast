@@ -1,33 +1,32 @@
+<div align="center">
+    <p><b>ni | fast | react wrapper</b></p>
+</div>
+
 # FAST React Wrapper
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-react-wrapper.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-react-wrapper)
+[![NI FAST React Wrapper NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-react-wrapper.svg?label=@ni/fast-react-wrapper)](https://www.npmjs.com/package/@ni/fast-react-wrapper)
 
 The `fast-react-wrapper` package contains a utility that enables automatically wrapping Web Components in a React component for ease of integration into React projects.
 
-## Installation
+## Getting Started
 
-### From NPM
+### Installing from NPM
 
-To install the `fast-react-wrapper` library, use either `npm` or `yarn` as follows:
-
-```shell
-npm install --save @microsoft/fast-react-wrapper
-```
+To install the `fast-react-wrapper` library, use `npm` as follows:
 
 ```shell
-yarn add @microsoft/fast-react-wrapper
+npm install @ni/fast-react-wrapper
 ```
 
 Within your JavaScript or TypeScript code, you can then and use the wrapper like this:
 
 ```ts
 import React from 'react';
-import { provideReactWrapper } from '@microsoft/fast-react-wrapper';
+import { provideReactWrapper } from '@ni/fast-react-wrapper';
 
 const { wrap } = provideReactWrapper(React);
 
 const MyComponent = wrap(MyComponent);
 ```
 
-For additional wrapper settings and more information on integrating with Design Systems, see [our integration docs](https://fast.design/docs/integrations/react).
+For additional wrapper settings and more information on integrating with Design Systems, see the [FAST 1.x: React integration docs](https://fast.design/docs/1.x/integrations/react).

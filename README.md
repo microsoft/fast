@@ -1,119 +1,66 @@
 
-![fast_banner_github_914.png](https://static.fast.design/assets/fast_banner_github_914.png)
+<div align="center">
+    <p><b>ni | fast</b></p>
+</div>
 
 # FAST
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-f8bc45.svg)](https://github.com/prettier/prettier)
+NI fork of Microsoft FAST to support the [NI Nimble Design System](https://github.com/ni/nimble).
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast/test_coverage)
-[![Validate PRs](https://github.com/microsoft/fast/actions/workflows/ci-validate-pr.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/ci-validate-pr.yml)
-[![Validate Platforms/Browsers](https://github.com/microsoft/fast/actions/workflows/ci-validate-platforms.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/ci-validate-platforms.yml)
+If you are at NI, lucky you! **Reach out to ask questions** via Microsoft Teams on the Design System [`General` channel](https://teams.microsoft.com/l/channel/19%3ACb5zEPCpdADS7kC0XTWXJGwZCq0qHVxnjkiPEWeEz7k1%40thread.tacv2/General?groupId=180bf0c7-4ff2-405e-8330-fdbe8ab6eb52&tenantId=eb06985d-06ca-4a17-81da-629ab99f6505) or via NI Stack Overflow with the [`nimble` tag](https://ni.stackenterprise.co/questions/tagged/813).
 
-[![Deploy Documentation (staging)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-staging.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-staging.yml)
-[![Deploy Documentation (production)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml)
-[![Deploy CDN](https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml)
-[![Deploy Component Explorer](https://github.com/microsoft/fast/actions/workflows/cd-deploy-explore-staging.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-explore-staging.yml)
-[![Deploy Color Explorer](https://github.com/microsoft/fast/actions/workflows/cd-deploy-color-staging.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-color-staging.yml)
-
-[![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
-[![Twitter](https://img.shields.io/twitter/follow/fast_ui.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_ui)
-
-This is the FAST monorepo, containing web component packages, tools, examples, and documentation. FAST tech can be used à la carte or as a suite to build enterprise-grade websites, applications, components, design systems, and more.
-
-:star: We appreciate your star, it helps!
+If you are outside NI, we want to hear from you too! See how to reach out in the [**Community**](#community) section below.
 
 ## Introduction
 
 FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
 
-**TL;DR**
+In May 2024 the [Microsoft FAST project changed directions](https://github.com/microsoft/fast/issues/6955) and is no longer supporting the FAST Foundation library concept. The [Nimble Design System response](https://github.com/ni/nimble/blob/main/specs/fast-project-realignment/README.md) was to create this fork of the libraries to enable bug fixes and continued maintenance of the FAST libraries for the short to mid-term.
 
-* Create reusable UI components based on web component standards.
-* Use our standard library of pre-built web components in your apps.
-* Build your own design system without re-implementing component logic.
-* Integrate with any front-end framework or build system.
+## Goals
 
-For an in-depth explanation of FAST [see our docs introduction](https://www.fast.design/docs/introduction/).
-
-## Packages
-
-### `@microsoft/fast-element`
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-element.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-element)
-
-The `@microsoft/fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. To get up and running with `@microsoft/fast-element` see [the Getting Started guide](https://fast.design/docs/fast-element/getting-started).
-
-### `@microsoft/fast-foundation`
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-foundation.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-foundation)
-
-The `@microsoft/fast-foundation` package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems (e.g. Fluent Design, Material Design, etc.). The exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.
-
-This package does not export Web Components registered as [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) - it exports parts and pieces intended to be *composed* into Web Components, allowing you to implement your own design language by simply applying CSS styles and behaviors without having to write all the JavaScript that's involved in building production-quality component implementations.
-
-### `@fluentui/web-components`
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![npm version](https://badge.fury.io/js/%40fluentui%2Fweb-components.svg)](https://badge.fury.io/js/%40fluentui%2Fweb-components)
-
-`@fluentui/web-components` is a library of Web Components that *composes* `@microsoft/fast-foundation`. `@fluentui/web-components` makes use of different stylesheets and may include components that specifically support Microsoft's Fluent design language.
-
-The source for `@fluentui/web-components` is hosted in [the Fluent UI monorepo](https://github.com/microsoft/fluentui/tree/master/packages/web-components).
+- Maintain the FAST libraries used in the fork.
+- Perform dependency version updates and generic bug fixes for existing features.
+- Adopt minor features targeted to consistency / alignment for general purpose use.
+- Avoid new major feature or component development, prefer forking templates for significant or non-generic changes.
+- Potentially re-integrate [removed packages or features](https://github.com/ni/nimble/blob/main/specs/fast-project-realignment/README.md#minimal-fork-proposal) based on future needs or community feedback.
+- Potentially stage / research minor changes to assist in [future work for handling FAST re-alignment](https://github.com/ni/nimble/blob/main/specs/fast-project-realignment/README.md#future-work).
 
 ## Getting Started
 
-We hope you're excited by the possibilities that FAST presents. But, you may be wondering where to start. Here are a few statements that describe various members of our community. We recommend that you pick the statement you most identify with and follow the links where they lead. You can always come back and explore another topic at any time.
+See the corresponding `Getting Started` section in the packages hosted in the repository.
 
-* "I want to build my own design system."
-  * [Jump to the design system docs.](https://fast.design/docs/design-systems/overview)
-* "I want to build my own components."
-  * [Jump to the fast-element docs.](https://fast.design/docs/fast-element/getting-started)
-* "I need to integrate FAST with another framework or build system."
-  * [Jump to the integration docs.](https://fast.design/docs/integrations/introduction)
+### Component packages
 
-## Joining the Community
+[![NI FAST Element NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-element.svg?label=@ni/fast-element)](https://www.npmjs.com/package/@ni/fast-element)
+[![NI FAST Foundation NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-foundation.svg?label=@ni/fast-foundation)](https://www.npmjs.com/package/@ni/fast-foundation)
 
-Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+- **[`@ni/fast-element`](/packages/web-components/fast-element/)** - FAST base class, templating, and modelling system.
+  - See related [FAST 1.x: Defining Elements](https://fast.design/docs/1.x/fast-element/defining-elements) documentation.
+  - See related [`@microsoft/fast-element` API](https://fast.design/docs/1.x/api/fast-element) documentation.
+- **[`@ni/fast-foundation`](/packages/web-components/fast-foundation/)** - FAST foundation base classes for common design system components.
+  - See related [FAST 1.x: Creating a Component Library](https://fast.design/docs/1.x/design-systems/creating-a-component-library) documentation.
+  - See related [`@microsoft/fast-foundation` API](https://fast.design/docs/1.x/api/fast-foundation) documentation.
 
-Get started here with the [Contributor Guide](https://www.fast.design/docs/community/contributor-guide).
+### Utility packages
 
-We look forward to building an amazing open source community with you!
+[![NI FAST Colors NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-colors.svg?label=@ni/fast-colors)](https://www.npmjs.com/package/@ni/fast-colors)
+[![NI FAST React Wrapper NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-react-wrapper.svg?label=@ni/fast-react-wrapper)](https://www.npmjs.com/package/@ni/fast-react-wrapper)
+[![NI FAST Web Utilities NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-web-utilities.svg?label=@ni/fast-web-utilities)](https://www.npmjs.com/package/@ni/fast-web-utilities)
 
-## Features & benefits
+- **[`@ni/fast-colors`](/packages/utilities/fast-colors/)** - Color classes and utilities to parse and manipulate colors.
+- **[`@ni/fast-react-wrapper`](/packages/utilities/fast-react-wrapper/)** - A utility that enables automatically wrapping Web Components in a React component.
+  - See related [FAST 1.x: React integration](https://fast.design/docs/1.x/integrations/react) documentation.
+- **[`@ni/fast-web-utilities`](/packages/utilities/fast-web-utilities/)** - A collection of utilities intended to be used for web projects.
 
-### Unopinionated
+## Community
 
-There are a million and one great ways to build your next website or application. To support the technologies you choose, creating unopinionated code is at the center of every decision we make in FAST.
+We welcome feedback and contributions aligned with our goals for the repo!
 
-This principle of being unopinionated manifests in several important ways including:
+The fastest way to ask questions is to [join the discussion on Teams](https://teams.microsoft.com/l/channel/19%3ACb5zEPCpdADS7kC0XTWXJGwZCq0qHVxnjkiPEWeEz7k1%40thread.tacv2/General?groupId=180bf0c7-4ff2-405e-8330-fdbe8ab6eb52&tenantId=eb06985d-06ca-4a17-81da-629ab99f6505) or the [NI Stack Overflow](https://ni.stackenterprise.co/questions/tagged/813) (accessible to NI employees only). You can also start a discussion on GitHub by filing an issue using the [**🎙 Discussion**](https://github.com/ni/nimble/issues/new/choose) template.
 
-* A flat component architecture that lets you compose what you need without struggling with rigid patterns and complex objects.
-* Separating base components from styles and design systems to support multiple implementations without re-writing or duplicating styles. Use the design system to customize existing styled components, or build your own styles, with your design system, without having to rebuild or duplicate the base components.
-* Framework agnostic tooling that lets you use our development tools with any view framework.
-* The ability to replace almost any FAST package with your package of choice. Get started with our animation package and add more as you need them. Alternatively, use our suite of packages to build your next project from the ground up; it's your call.
+## Contributing
 
-### UI development and style guide tools
+See `Getting Started` in [`Contributing.md`](/CONTRIBUTING.md#getting-started) to get started with building the monorepo.
 
-When developing components and views, excellent development tooling can make all the difference. FAST offers development and style guide tools that work with FAST components, components from other frameworks, or your components.
-
-Try out component properties with an auto-generated property UI, get a live preview of the code based on any property’s configuration, preview localization (RTL/LTR) and themes, and preview component compositing with a transparency grid.
-
-Also, we built FAST development tools from re-usable packages, so if you have special needs, you can build your tools from the same shared libraries.
-
-### Bring your design system
-
-Widely available design systems from companies like Microsoft (Fluent), Google (Material), or Salesforce (Lightning) are useful when it is essential to align with a platform or take advantage of a polished system at low cost, but many companies have a design system of their own, and some may have multiple design systems or variations.
-
-Because FAST has abstracted base components from their style, you get a head start on your design system by building on top of tried and true base components and style libraries like our offerings for color, animation, and elevation.
-
-## Contact
-
-* Join the community and chat with us in real-time on [Discord](https://discord.gg/FcSNfg4).
-* Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose).
-* Contribute by helping out on some of our recommended first issues on [GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+[![contributors](https://markupgo.com/github/ni/fast/contributors?width=800&count=0&circleSpacing=10&removeLogo=true)](https://github.com/ni/nimble/graphs/contributors)

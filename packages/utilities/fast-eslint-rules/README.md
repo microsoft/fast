@@ -1,21 +1,15 @@
-# `@microsoft/fast-eslint-rules`
+# ESLint Plugin FAST
 
-## Usage
+`@ni/eslint-config-fast-dna` is private / unpublished package used in the `ni/fast` monorepo for eslint configuration.
 
-### Installation
+## Getting Started
 
-Install the package:
-```
-npm install @microsoft/eslint-config-fast-dna
-```
+Add `@ni/eslint-config-fast-dna` as an extension in your eslint config:
 
-### Configure your eslint config
-
-Add `fast-eslint-rules` as an extension in your eslint config
 ```js
 {
     "extends": [
-        "@microsoft/eslint-config-fast-dna",
+        "@ni/eslint-config-fast-dna",
         // Other rule sets (if any)
     ]
 }

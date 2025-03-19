@@ -23,7 +23,7 @@ const commonChromeFlags = [
     "--disable-translate",
 ];
 
-module.exports = function (config: any) {
+module.exports = function (config) {
     let browsers;
     if (process.env.BROWSERS) {
         browsers = [process.env.BROWSERS];

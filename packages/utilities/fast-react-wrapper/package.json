@@ -2,7 +2,7 @@
   "name": "@ni/fast-react-wrapper",
   "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
-  "version": "0.0.6",
+  "version": "9.0.0",
   "author": {
     "name": "National Instruments"
   },
@@ -81,7 +81,6 @@
     "source-map": "^0.7.3",
     "source-map-loader": "^5.0.0",
     "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "~5.4.5",
     "webpack": "^5.97.1"

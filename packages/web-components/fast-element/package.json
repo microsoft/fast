@@ -2,7 +2,7 @@
   "name": "@ni/fast-element",
   "description": "A library for constructing Web Components",
   "sideEffects": false,
-  "version": "0.0.5",
+  "version": "9.0.0",
   "author": {
     "name": "National Instruments"
   },
@@ -80,7 +80,6 @@
     "source-map": "^0.7.3",
     "source-map-loader": "^5.0.0",
     "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.8.1",
     "typescript": "~5.4.5",

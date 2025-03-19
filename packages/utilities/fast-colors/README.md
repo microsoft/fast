@@ -1,8 +1,26 @@
+<div align="center">
+    <p><b>ni | fast | colors</b></p>
+</div>
+
 # FAST Colors
 
-`@microsoft/fast-colors` includes a number of color classes and utilities designed to make parsing and manipulating colors easy, fast, and light-weight.
+[![NI FAST Colors NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-colors.svg?label=@ni/fast-colors)](https://www.npmjs.com/package/@ni/fast-colors)
 
-## Color classes
+`@ni/fast-colors` includes a number of color classes and utilities designed to make parsing and manipulating colors easy, fast, and light-weight.
+
+## Getting Started
+
+### Installing from NPM
+
+To install the `fast-colors` library, use `npm` as follows:
+
+```shell
+npm install @ni/fast-colors
+```
+
+## Usage
+
+### Color classes
 
 There are a number of color classes exported for common color formats. These include:
 
@@ -19,7 +37,7 @@ const myColor: new ColorRGBA64(0, 0, 0, 1);
 myColor.toStringHexRGB() // "#000000"
 ```
 
-## Color parsers
+### Color parsers
 
 A number of color parsers are also available to parse a variety of different color formats.
 
@@ -28,9 +46,9 @@ A number of color parsers are also available to parse a variety of different col
 - `parseColorHexRGBA(raw: string): ColorRGBA64 | null` parses `#RGBA` or `#RRGGBBAA` color strings
 - `parseColorWebRGB(raw: string): ColorRGBA64 | null` parses `#rgb(R, G, B)` color strings
 - `parseColorWebRGBA(raw: string): ColorRGBA64 | null` parses `#rgb(R, G, B, A)` color strings
-- `parseColorNamned(raw: string): ColorRGBA64 | null` parses [named color strings](https://www.w3schools.com/colors/colors_names.asp)
+- `parseColorNamed(raw: string): ColorRGBA64 | null` parses [named color strings](https://developer.mozilla.org/en-US/docs/Web/CSS/named-color)
 
-## Color Palette
+### Color Palette
 
 A utility for creating a palette of colors from a source color and configuration options:
 
@@ -59,7 +77,7 @@ const palette: ColorPalette = new ColorPalette({
 })
 ```
 
-## Color converters
+### Color converters
 
 A number of color converters are available to convert one color format to the other. Each color accepts a color class of the source type and returns a color class of the converted type:
 

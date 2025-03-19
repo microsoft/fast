@@ -246,7 +246,7 @@ export function parseColorWebRGBA(raw: string): ColorRGBA64 | null {
 
 /**
  * Converts a named color to a {@link @ni/fast-colors#ColorRGBA64}.
- * @param raw - a {@link https://www.w3schools.com/colors/colors_names.asp | CSS color name}.
+ * @param raw - a {@link https://developer.mozilla.org/en-US/docs/Web/CSS/named-color | CSS color name}.
  * @example
  * ```ts
  * parseColorNamed("red");
@@ -274,7 +274,7 @@ export function parseColorNamed(
  *
   Expects any of the following and attempts to determine which is being used
  * #RRGGBB, #AARRGGBB, rgb(RR,GG,BB) rgba(RR,GG,BB,a),
- * or any of the {@link https://www.w3schools.com/colors/colors_names.asp | CSS color names}.
+ * or any of the {@link https://developer.mozilla.org/en-US/docs/Web/CSS/named-color | CSS color names}.
  * @param raw - the color string to parse
  * @public
  */

@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "README updates",
+  "packageName": "@ni/fast-foundation",
+  "email": "rajsite@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

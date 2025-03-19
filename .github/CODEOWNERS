@@ -1,39 +1,14 @@
-# Approval for at least one *code owner* is required all packages.
+# Each line is a file pattern followed by one or more owners.
+# More info: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners
 
-# Lines starting with '#' are comments.
-# Each line is a file pattern followed by one or more *code owners*.
-# The last matching pattern has the most precendence.
+# These owners will be the default owners for everything in the repo.
+* @rajsite @jattasNI
 
-# These *code owners* will be the default owners for everything in the repository.
-* @chrisdholt @janechu @nicholasrice @EisenbergEffect
+# Owners of specific locations or file patterns in the repo. Locations are relative to the root of the repo.
+# Order is important. The last matching pattern has the most precedence.
 
-# File type specific owners
-# Markdown specific files
-*.md @awentzel @chrisdholt @falkicon @EisenbergEffect
-/docs/ @awentzel @chrisdholt @falkicon @EisenbergEffect
+# Specific packages
+# None
 
-# GitHub management
-.github/ @awentzel @janechu @chrisdholt @nicholasrice
-.github/workflows/ @awentzel @chrisdholt @nicholasrice
-
-# Build scripts
-*.yml @awentzel @janechu @nicholasrice @chrisdholt @EisenbergEffect
-build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
-
-# Specifications
-/specs/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
-
-# Sites
-/sites/fast-color-explorer/ @nicholasrice @janechu @bheston
-/sites/website/ @awentzel @chrisdholt @falkicon @EisenbergEffect
-
-# Package specific owners
-
-# Utilities
-/packages/utilities/fast-colors/ @nicholasrice @chrisdholt
-/packages/utilities/fast-eslint-rules/ @nicholasrice @janechu @chrisdholt
-/packages/utilities/fast-web-utilities/ @janechu @chrisdholt @nicholasrice
-
-# Web components
-/packages/web-components/fast-element/ @EisenbergEffect @chrisdholt @janechu @nicholasrice
-/packages/web-components/fast-foundation/ @EisenbergEffect @chrisdholt @nicholasrice
+# Change files don't need explicit reviewers
+/change

@@ -1,7 +1,7 @@
 import { ColorRGBA64Config } from "./color-rgba-64.js";
 
 /**
- * Browser {@link https://www.w3schools.com/colors/colors_names.asp | named colors}.
+ * Browser {@link https://developer.mozilla.org/en-US/docs/Web/CSS/named-color | named colors}.
  * @public
  */
 export type NamedColors =
