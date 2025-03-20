@@ -1,13 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:recommended"],
   "enabledManagers": ["npm", "github-actions"],
   "rebaseWhen": "conflicted",
-  "schedule": [
-    "monthly"
-  ],
+  "schedule": ["monthly"],
   "packageRules": [
     {
       "matchManagers": ["npm", "github-actions"],
@@ -25,9 +21,8 @@
       "matchManagers": ["npm"],
       "rangeStrategy": "update-lockfile",
       "matchDepTypes": ["dependencies", "devDependencies", "peerDependencies"],
-      "excludePackagePatterns":[
-      ],
-      "enabled": true
+      "enabled": true,
+      "matchPackageNames": []
     },
     {
       "groupName": "github actions dependencies",
