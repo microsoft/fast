@@ -13,6 +13,7 @@ import {
     DataBindingBehaviorConfig,
     getAllPartials,
     getNextBehavior,
+    pathResolver,
     TemplateDirectiveBehaviorConfig,
 } from "./utilities.js";
 
@@ -105,7 +106,8 @@ class TemplateElement extends FASTElement {
     private async resolveTemplateDirective(
         behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
-        innerHTML: string
+        innerHTML: string,
+        self: boolean = false
     ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when":
@@ -121,7 +123,7 @@ class TemplateElement extends FASTElement {
 
                     externalValues.push(
                         when(
-                            x => x?.[behaviorConfig.value],
+                            x => pathResolver(behaviorConfig.value, self)(x),
                             this.resolveTemplateOrBehavior(strings, values)
                         )
                     );
@@ -143,7 +145,7 @@ class TemplateElement extends FASTElement {
 
                     externalValues.push(
                         repeat(
-                            x => x?.[valueAttr[2]],
+                            x => pathResolver(valueAttr[2], self)(x),
                             this.resolveTemplateOrBehavior(strings, values)
                         )
                     );
@@ -162,11 +164,14 @@ class TemplateElement extends FASTElement {
                     })
                     ?.split('"')[1];
 
-                if (partial && this.partials[partial]) {
+                if (partial) {
                     const { when } = await import("@microsoft/fast-element");
 
                     externalValues.push(
-                        when(x => x?.[behaviorConfig.value], this.partials[partial])
+                        when(
+                            x => pathResolver(behaviorConfig.value, self)(x),
+                            () => this.partials[partial]
+                        )
                     );
                 }
             }
@@ -235,12 +240,13 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = self ? (x: any) => x : (x: any) => x[propName];
+                    const binding = (x: any) => pathResolver(propName, self)(x);
                     values.push(binding);
                     await this.resolveInnerHTML(
                         innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
                         strings,
-                        values
+                        values,
+                        self
                     );
                 }
                 break;
@@ -251,21 +257,22 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex - 2
                     );
-                    const binding = (x: any) => x[propName]();
+                    const binding = (x: any) => pathResolver(propName, self)(x)();
                     values.push(binding);
                 } else {
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = self ? (x: any) => x : (x: any) => x[propName];
+                    const binding = (x: any) => pathResolver(propName, self)(x);
                     values.push(binding);
                 }
 
                 await this.resolveInnerHTML(
                     innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
                     strings,
-                    values
+                    values,
+                    self
                 );
                 break;
             case "attributeDirective":
@@ -293,7 +300,8 @@ class TemplateElement extends FASTElement {
                             innerHTML.length
                         ),
                         strings,
-                        values
+                        values,
+                        self
                     );
                 }
                 break;
@@ -334,7 +342,8 @@ class TemplateElement extends FASTElement {
                     await this.resolveTemplateDirective(
                         behaviorConfig,
                         values,
-                        innerHTML
+                        innerHTML,
+                        self
                     );
 
                     await this.resolveInnerHTML(
@@ -343,7 +352,8 @@ class TemplateElement extends FASTElement {
                             innerHTML.length
                         ),
                         strings,
-                        values
+                        values,
+                        self
                     );
 
                     break;

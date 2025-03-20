@@ -8,8 +8,10 @@ test.describe("f-template", async () => {
 
         let customElementListItems = await customElement.locator("li");
 
-        expect(await customElementListItems.count()).toEqual(2);
+        expect(await customElementListItems.count()).toEqual(4);
         expect(await customElementListItems.nth(0).textContent()).toEqual("Hello");
-        expect(await customElementListItems.nth(1).textContent()).toEqual("World");
+        expect(await customElementListItems.nth(1).textContent()).toContain("Earth");
+        expect(await customElementListItems.nth(2).textContent()).toContain("Pluto");
+        expect(await customElementListItems.nth(3).textContent()).toContain("Mars");
     });
 });

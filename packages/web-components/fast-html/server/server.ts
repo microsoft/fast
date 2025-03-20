@@ -73,6 +73,20 @@ app.get("/children/main.js", (req: Request, res: Response) =>
 app.get("/children/bundle.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/children/bundle.js", "text/javascript", req, res)
 );
+app.get("/dot-syntax", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./src/fixtures/dot-syntax/dot-syntax.fixture.html",
+        "text/html",
+        req,
+        res
+    )
+);
+app.get("/dot-syntax/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/dot-syntax/main.js", "text/javascript", req, res)
+);
+app.get("/dot-syntax/bundle.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/dot-syntax/bundle.js", "text/javascript", req, res)
+);
 app.get("/partial", (req: Request, res: Response) =>
     handlePathRequest(
         "./src/fixtures/partial/partial.fixture.html",
