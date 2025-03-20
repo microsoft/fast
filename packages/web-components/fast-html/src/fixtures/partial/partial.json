@@ -1,6 +1,20 @@
 {
     "items": [
-        "Hello",
-        "World"
+        {
+            "text": "Hello"
+        },
+        {
+            "text": "Earth",
+            "items": [
+                {
+                    "text": "Pluto",
+                    "items": [
+                        {
+                            "text": "Mars"
+                        }
+                    ]
+                }
+            ]
+        }
     ]
 }

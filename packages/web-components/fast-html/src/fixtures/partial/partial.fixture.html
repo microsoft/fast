@@ -9,13 +9,13 @@
         <f-template name="test-element">
             <template>
                 <f-partial id="test">
-                    <ul><f-repeat value="{{item in items}}"><li>{{item}}</li></f-repeat></ul>
+                    <ul><f-repeat value="{{item in items}}"><li>{{item.text}}<f-apply partial="test" value="{{item.items}}"></f-apply></li></f-repeat></ul>
                 </f-partial>
                 <f-apply partial="test" value="{{items}}"></f-apply>
             </template>
         </f-template>
         <test-element id="test">
-            <template shadowrootmode="open"></template>
+            <template shadowrootmode="open"><ul><li>Hello</li><li>Earth<ul><li>Pluto<ul><li>Mars</li></ul></li></ul></li></ul></template>
         </test-element>
     </body>
 </html>

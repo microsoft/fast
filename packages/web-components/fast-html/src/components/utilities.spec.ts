@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag } from "./utilities.js";
+import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag, pathResolver } from "./utilities.js";
 
 test.describe("utilities", async () => {
     test.describe("content", async () => {
@@ -183,6 +183,21 @@ test.describe("utilities", async () => {
             );
 
             expect(index).toEqual(39);
+        });
+    });
+
+    test.describe("pathResolver", async () => {
+        test("should resolve a path with no nesting", async () => {
+            expect(pathResolver("foo")({ foo: "bar" })).toEqual("bar");
+        });
+        test("should resolve a path with nesting", async () => {
+            expect(pathResolver("foo.bar.bat")({ foo: { bar: { bat: "baz" }} })).toEqual("baz");
+        });
+        test("should resolve a path with no nesting and self reference", async () => {
+            expect(pathResolver("foo", true)("bar")).toEqual("bar");
+        });
+        test("should resolve a path with nesting and self reference", async () => {
+            expect(pathResolver("foo.bar.bat", true)({ bar: { bat: "baz" }})).toEqual("baz");
         });
     });
 });

@@ -333,3 +333,41 @@ export function getAllPartials(
 
     return partials;
 }
+
+type AccessibleObject = { [key: string]: AccessibleObject };
+
+/**
+ * Create a function to resolve a value from an object using a path with dot syntax.
+ * e.g. "foo.bar"
+ * @param path - The dot syntax path to an objects property.
+ * @param self - Where the first item in the path path refers to the item itself (used by repeat).
+ * @returns A function to access the value from a given path.
+ */
+export function pathResolver(
+    path: string,
+    self: boolean = false
+): (accessibleObject: any) => any {
+    let splitPath = path.split(".");
+
+    if (self) {
+        if (splitPath.length > 1) {
+            splitPath = splitPath.slice(1);
+        } else {
+            return (accessibleObject: AccessibleObject) => {
+                return accessibleObject;
+            };
+        }
+    }
+
+    if (splitPath.length === 1) {
+        return (accessibleObject: AccessibleObject) => {
+            return accessibleObject?.[splitPath[0]];
+        };
+    }
+
+    return (accessibleObject: AccessibleObject) => {
+        return splitPath.reduce((previousAccessors, pathItem) => {
+            return previousAccessors?.[pathItem];
+        }, accessibleObject);
+    };
+}
