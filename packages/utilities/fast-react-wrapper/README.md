@@ -6,7 +6,8 @@
 
 [![NI FAST React Wrapper NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-react-wrapper.svg?label=@ni/fast-react-wrapper)](https://www.npmjs.com/package/@ni/fast-react-wrapper)
 
-The `fast-react-wrapper` package contains a utility that enables automatically wrapping Web Components in a React component for ease of integration into React projects.
+The `fast-react-wrapper` package contains a utility that enables automatically wrapping Web Components in a React component for ease of integration into React projects. This `@ni/fast-react-wrapper` library is a fork of [`@microsoft/fast-react-wrapper`](https://github.com/microsoft/fast/tree/archives/fast-element-1/packages/utilities/fast-react-wrapper).
+
 
 ## Getting Started
 

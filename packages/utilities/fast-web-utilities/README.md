@@ -6,7 +6,8 @@
 
 [![NI FAST Web Utilities NPM version and repo link](https://img.shields.io/npm/v/@ni/fast-web-utilities.svg?label=@ni/fast-web-utilities)](https://www.npmjs.com/package/@ni/fast-web-utilities)
 
-This package is a collection of utilities intended to be used for web projects.
+This package is a collection of utilities intended to be used for web projects. This `@ni/fast-web-utilities` library is a fork of [`@microsoft/fast-web-utilities`](https://github.com/microsoft/fast/tree/archives/fast-element-1/packages/utilities/fast-web-utilities).
+
 
 ## Getting Started
 

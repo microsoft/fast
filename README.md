@@ -57,10 +57,14 @@ See the corresponding `Getting Started` section in the packages hosted in the re
 
 We welcome feedback and contributions aligned with our goals for the repo!
 
-The fastest way to ask questions is to [join the discussion on Teams](https://teams.microsoft.com/l/channel/19%3ACb5zEPCpdADS7kC0XTWXJGwZCq0qHVxnjkiPEWeEz7k1%40thread.tacv2/General?groupId=180bf0c7-4ff2-405e-8330-fdbe8ab6eb52&tenantId=eb06985d-06ca-4a17-81da-629ab99f6505) or the [NI Stack Overflow](https://ni.stackenterprise.co/questions/tagged/813) (accessible to NI employees only). You can also start a discussion on GitHub by filing an issue using the [**🎙 Discussion**](https://github.com/ni/nimble/issues/new/choose) template.
+The fastest way to ask questions is to [join the discussion on Teams](https://teams.microsoft.com/l/channel/19%3ACb5zEPCpdADS7kC0XTWXJGwZCq0qHVxnjkiPEWeEz7k1%40thread.tacv2/General?groupId=180bf0c7-4ff2-405e-8330-fdbe8ab6eb52&tenantId=eb06985d-06ca-4a17-81da-629ab99f6505) or the [NI Stack Overflow](https://ni.stackenterprise.co/questions/tagged/813) (accessible to NI employees only). You can also start a discussion on GitHub by [filing an issue](https://github.com/ni/fast/issues/new/choose).
 
 ## Contributing
 
 See `Getting Started` in [`Contributing.md`](/CONTRIBUTING.md#getting-started) to get started with building the monorepo.
 
-[![contributors](https://markupgo.com/github/ni/fast/contributors?width=800&count=0&circleSpacing=10&removeLogo=true)](https://github.com/ni/nimble/graphs/contributors)
+[![contributors](https://markupgo.com/github/ni/fast/contributors?width=800&count=0&circleSpacing=10&removeLogo=true)](https://github.com/ni/fast/graphs/contributors)
+
+## Acknowledgements
+
+Thank you to the team at [Microsoft FAST](https://github.com/microsoft/fast) for starting this project!
