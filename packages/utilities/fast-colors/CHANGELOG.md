@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-colors
 
-<!-- This log was last generated on Wed, 19 Mar 2025 21:09:36 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 20 Mar 2025 18:12:50 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.0.1
+
+Thu, 20 Mar 2025 18:12:50 GMT
+
+### Patches
+
+- Trivial README update ([ni/fast@5a9d2bd](https://github.com/ni/fast/commit/5a9d2bde1430798c80e5fcf1d38a66374f6da8c8))
 
 ## 10.0.0
 
