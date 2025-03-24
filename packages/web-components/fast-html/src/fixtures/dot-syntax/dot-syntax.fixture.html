@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="/dot-syntax/main.js"></script>
+    </head>
+    <body>
+        <f-template name="test-element">
+            <template>{{object.foo}}</template>
+        </f-template>
+        <test-element>
+            <template shadowrootmode="open">bar</template>
+        </test-element>
+    </body>
+</html>

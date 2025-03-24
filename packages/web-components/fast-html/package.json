@@ -1,0 +1,83 @@
+{
+    "name": "@microsoft/fast-html",
+    "version": "1.0.0-alpha.0",
+    "private": true,
+    "type": "module",
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "homepage": "https://www.fast.design/",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git",
+        "directory": "packages/web-components/fast-html"
+    },
+    "bugs": {
+        "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    },
+    "scripts": {
+        "clean": "tsc -b --clean src",
+        "clean:dist": "node ../../../build/clean.js dist",
+        "build": "tsc -b src && npm run doc",
+        "build:attribute": "webpack --config ./src/fixtures/attribute/webpack.config.js",
+        "build:event": "webpack --config ./src/fixtures/event/webpack.config.js",
+        "build:binding": "webpack --config ./src/fixtures/binding/webpack.config.js",
+        "build:children": "webpack --config ./src/fixtures/children/webpack.config.js",
+        "build:dot-syntax": "webpack --config ./src/fixtures/dot-syntax/webpack.config.js",
+        "build:partial": "webpack --config ./src/fixtures/partial/webpack.config.js",
+        "build:when": "webpack --config ./src/fixtures/when/webpack.config.js",
+        "build:ref": "webpack --config ./src/fixtures/ref/webpack.config.js",
+        "build:repeat": "webpack --config ./src/fixtures/repeat/webpack.config.js",
+        "build:slotted": "webpack --config ./src/fixtures/slotted/webpack.config.js",
+        "build-app": "npm run build:attribute && npm run build:dot-syntax && npm run build:partial && npm run build:event && npm run build:children && npm run build:binding && npm run build:when && npm run build:ref && npm run build:repeat && npm run build:slotted",
+        "build-server": "tsc -b server",
+        "doc": "api-extractor run --local",
+        "doc:ci": "api-extractor run",
+        "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
+        "prepublishOnly": "npm run clean && npm run build",
+        "pretest": "npm run build && npm run build-server",
+        "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
+        "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
+        "test": "npm run build-app && playwright test --config=playwright.config.cjs",
+        "test-server": "node server/dist/server.js",
+        "install-playwright-browsers": "npm run playwright install",
+        "dev": "npm run build && npm run build-app && npm run build-server && npm run test-server"
+    },
+    "description": "A package for facilitating rendering FAST Web Components in a non-browser environment.",
+    "exports": {
+        ".": {
+            "types": "./dist/dts/index.d.ts",
+            "default": "./dist/esm/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "sideEffects": [
+        "./dist/esm/index.js"
+    ],
+    "peerDependencies": {
+        "@microsoft/fast-element": "^2.0.1"
+    },
+    "devDependencies": {
+        "@microsoft/api-extractor": "^7.47.0",
+        "@microsoft/fast-element": "^2.0.1",
+        "@playwright/test": "^1.49.0",
+        "@types/express": "^4.17.21",
+        "@types/node": "^17.0.17",
+        "express": "^4.19.2",
+        "typescript": "~5.3.0",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1",
+        "webpack-merge": "^6.0.1"
+    },
+    "beachball": {
+        "disallowedChangeTypes": [
+            "major",
+            "minor",
+            "patch"
+        ],
+        "tag": "alpha"
+    }
+}

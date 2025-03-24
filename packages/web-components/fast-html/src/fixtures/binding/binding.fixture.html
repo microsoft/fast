@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <test-element text="Hello world">
+            <template shadowrootmode="open">Hello world</template>
+        </test-element>
+        <f-template name="test-element">
+            <template>{{text}}</template>
+        </f-template>
+        <script type="module" src="/binding/main.js"></script>
+    </body>
+</html>

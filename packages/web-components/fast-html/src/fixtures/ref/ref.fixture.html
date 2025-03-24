@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="/ref/main.js"></script>
+    </head>
+    <body>
+        <f-template name="test-element">
+            <template><video f-ref="{{video}}"></video></template>
+        </f-template>
+        <test-element>
+            <template shadowrootmode="open"><video></video></template>
+        </test-element>
+    </body>
+</html>

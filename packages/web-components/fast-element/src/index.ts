@@ -143,6 +143,8 @@ export {
     FASTElementDefinition,
     PartialFASTElementDefinition,
     ShadowRootOptions,
+    fastElementRegistry,
+    TypeRegistry,
 } from "./components/fast-definitions.js";
 export {
     attr,
