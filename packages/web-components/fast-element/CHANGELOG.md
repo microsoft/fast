@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Thu, 13 Feb 2025 17:34:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 24 Mar 2025 18:26:13 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.2.0
+
+Mon, 24 Mar 2025 18:26:13 GMT
+
+### Minor changes
+
+- Expose the fast registry and allow triggering definition updates (7559015+janechu@users.noreply.github.com)
 
 ## 2.1.0
 

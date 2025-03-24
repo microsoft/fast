@@ -1,0 +1,26 @@
+{
+  "name": "@microsoft/fast-html",
+  "entries": [
+    {
+      "date": "Mon, 24 Mar 2025 18:26:13 GMT",
+      "version": "1.0.0-alpha.1",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.1",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "9740d42f280b335b0b5b45c5fe63d1251bae263e",
+            "comment": "Update private flag for initial release"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.2.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    }
+  ]
+}

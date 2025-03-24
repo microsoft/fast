@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 24 Mar 2025 18:26:13 GMT",
+      "version": "2.2.0",
+      "tag": "@microsoft/fast-element_v2.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4ef0c4d19c6ccce86756a55a26ad0a6a3c1cdb47",
+            "comment": "Expose the fast registry and allow triggering definition updates"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 13 Feb 2025 17:34:08 GMT",
       "version": "2.1.0",
       "tag": "@microsoft/fast-element_v2.1.0",
