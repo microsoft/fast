@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Update private flag for initial release",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
