@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 25 Mar 2025 19:31:26 GMT",
+      "version": "1.0.0-alpha.2",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.2",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "eae96d5cc9cae71b29d444b293006872badce9b6",
+            "comment": "Includes correct files for published package"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 24 Mar 2025 18:26:13 GMT",
       "version": "1.0.0-alpha.1",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.1",
