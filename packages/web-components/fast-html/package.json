@@ -16,6 +16,9 @@
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
+  "files": [
+    "./dist"
+  ],
   "scripts": {
     "clean": "tsc -b --clean src",
     "clean:dist": "node ../../../build/clean.js dist",
