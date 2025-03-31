@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 25 Mar 2025 19:31:26 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 31 Mar 2025 00:32:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.3
+
+Mon, 31 Mar 2025 00:32:15 GMT
+
+### Changes
+
+- Remove inclusion of alpha tag as there is no stable version yet (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.2
 
