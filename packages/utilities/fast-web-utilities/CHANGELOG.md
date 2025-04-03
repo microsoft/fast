@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-web-utilities
 
-<!-- This log was last generated on Thu, 20 Mar 2025 18:12:51 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 03 Apr 2025 00:08:47 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.0.2
+
+Thu, 03 Apr 2025 00:08:47 GMT
+
+### Patches
+
+- Dependency update ([ni/fast@8b5019e](https://github.com/ni/fast/commit/8b5019ee7e61c82929d023a26ce840fe26b3aca1))
 
 ## 10.0.1
 

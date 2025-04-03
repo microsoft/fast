@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Dependency update",
-  "packageName": "@ni/fast-react-wrapper",
-  "email": "rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
