@@ -38,7 +38,7 @@
     "@types/node": "^22",
     "beachball": "^2.24.0",
     "cross-env": "^7.0.3",
-    "playwright": "1.44.0",
+    "playwright": "^1.51.1",
     "prettier": "3.4.2",
     "typescript": "~5.4.5"
   }
