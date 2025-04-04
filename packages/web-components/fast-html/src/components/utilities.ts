@@ -127,8 +127,8 @@ export function getIndexOfNextMatchingTag(
 function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
     const openingTagStartIndex = innerHTML.indexOf(openTagStart);
     const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
-    const openingTagEndIndex =
-        openingTagStartSlice.indexOf(tagEnd) + openingTagStartIndex + 1;
+    const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
+        openingTagStartSlice.indexOf(`"${tagEnd}`) + openingTagStartIndex + 2;
 
     const directiveTag = innerHTML
         .slice(openingTagStartIndex + 3, openingTagEndIndex - 1)
@@ -317,7 +317,7 @@ export function getAllPartials(
         const endId = innerHTML.slice(startId).indexOf('"') + startId;
         const id = innerHTML.slice(startId, endId);
         const openingTagEndIndex =
-            openingTagStartSlice.indexOf(">") + 1 + openingTagStartIndex;
+            openingTagStartSlice.indexOf(tagEnd) + 1 + openingTagStartIndex;
         const closingTagStartIndex = matchingCloseTagIndex - closingTagLength;
 
         partials[id] = {
@@ -369,5 +369,99 @@ export function pathResolver(
         return splitPath.reduce((previousAccessors, pathItem) => {
             return previousAccessors?.[pathItem];
         }, accessibleObject);
+    };
+}
+
+/**
+ * Determine if the operand is a value (boolean, number, string) or an accessor.
+ * @param operand
+ */
+function isOperandValue(operand: string): {
+    value: boolean | number | string;
+    isValue: boolean;
+} {
+    try {
+        const value = JSON.parse(operand);
+
+        return {
+            value,
+            isValue: true,
+        };
+    } catch (e) {
+        return {
+            value: operand,
+            isValue: false,
+        };
+    }
+}
+
+/**
+ * Available operators include:
+ *
+ * - access (no operator)
+ * - not (!)
+ * - equals (==)
+ * - not equal (!=)
+ * - greater than or equal (>=)
+ * - greater than (>)
+ * - less than or equal (<=)
+ * - less than (<)
+ * - or (||)
+ * - and (&&) and the HTML character entity (&amp;&amp;)
+ */
+type Operator =
+    | "access"
+    | "!"
+    | "=="
+    | "!="
+    | ">="
+    | ">"
+    | "<="
+    | "<"
+    | "||"
+    | "&&"
+    | "&amp;&amp;";
+
+interface OperatorConfig {
+    operator: Operator;
+    left: string;
+    right: string | boolean | number | null;
+    rightIsValue: boolean | null;
+}
+
+/**
+ * Get the operator used.
+ * @param value the binded value
+ * @returns Operator
+ */
+export function getOperator(value: string): OperatorConfig {
+    if (value[0] === "!") {
+        return {
+            operator: "!",
+            left: value.slice(1),
+            right: null,
+            rightIsValue: null,
+        };
+    }
+
+    const split = value.split(" ");
+
+    if (split.length === 3) {
+        const operator: Operator = split[1] as Operator;
+        const { value, isValue } = isOperandValue(split[2]);
+
+        return {
+            operator,
+            left: split[0],
+            right: isValue ? value : split[2],
+            rightIsValue: isValue,
+        };
+    }
+
+    return {
+        operator: "access",
+        left: value,
+        right: null,
+        rightIsValue: null,
     };
 }

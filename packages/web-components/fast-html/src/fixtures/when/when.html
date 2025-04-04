@@ -1,1 +1,10 @@
 <f-when value="{{show}}">Hello world</f-when>
+<f-when value="{{!show}}">Hello world</f-when>
+<f-when value="{{varA == 3}}">Equals 3</f-when>
+<f-when value="{{varA != 3}}">Not equals 3</f-when>
+<f-when value="{{varA >= 2}}">Two and Over</f-when>
+<f-when value="{{varA > 2}}">Over two</f-when>
+<f-when value="{{varA <= 2}}">Two and Under</f-when>
+<f-when value="{{varA < 2}}">Under two</f-when>
+<f-when value="{{thisVar || thatVar}}">This or That</f-when>
+<f-when value="{{thisVar && thatVar}}">This and That</f-when>

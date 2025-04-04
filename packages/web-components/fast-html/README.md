@@ -95,7 +95,20 @@ Template directives include:
     Example:
     ```html
     <f-when value="{{show}}">Hello world</f-when>
+    <f-when value="{{!show}}">Goodbye world</f-when>
     ```
+
+The following operators can also be used:
+- `==`
+- `!=`
+- `>=`
+- `>`
+- `<=`
+- `<`
+- `||`
+- `&&`
+
+Where the right operand can be either a reference to a value (string e.g. `{{foo == 'bar'}}`, boolean e.g. `{{foo == true}}`, number e.g. `{{foo == 3}}`) or another binding value.
 
 - **repeat**
 
