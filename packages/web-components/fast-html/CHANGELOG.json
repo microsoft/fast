@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 04 Apr 2025 20:54:43 GMT",
+      "version": "1.0.0-alpha.4",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.4",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "47e251d6c9e4846ea62aa19e6c8c2bdaa1ee594b",
+            "comment": "Add logic to the when directive for a subset of operators"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 31 Mar 2025 00:32:15 GMT",
       "version": "1.0.0-alpha.3",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.3",

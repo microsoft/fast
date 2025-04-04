@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 31 Mar 2025 00:32:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 04 Apr 2025 20:54:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.4
+
+Fri, 04 Apr 2025 20:54:43 GMT
+
+### Changes
+
+- Add logic to the when directive for a subset of operators (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.3
 
