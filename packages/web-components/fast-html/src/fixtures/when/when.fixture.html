@@ -6,6 +6,7 @@
         <script type="module" src="/when/main.js"></script>
     </head>
     <body>
+        <!-- boolean -->
         <f-template name="test-element">
             <template><f-when value="{{show}}">Hello world</f-when></template>
         </f-template>
@@ -15,5 +16,95 @@
         <test-element id="hide">
             <template shadowrootmode="open"></template>
         </test-element>
+        <!-- not -->
+        <f-template name="test-element-not">
+            <template><f-when value="{{!hide}}">Hello world</f-when></template>
+        </f-template>
+        <test-element-not id="show-not">
+            <template shadowrootmode="open">Hello world</template>
+        </test-element-not>
+        <test-element-not id="hide-not" hide>
+            <template shadowrootmode="open"></template>
+        </test-element-not>
+        <!-- equals -->
+        <f-template name="test-element-equals">
+            <template><f-when value="{{varA == 3}}">Equals 3</f-when></template>
+        </f-template>
+        <test-element-equals id="equals-true" var-a="3">
+            <template shadowrootmode="open">Equals 3</template>
+        </test-element-equals>
+        <test-element-equals id="equals-false" var-a="4">
+            <template shadowrootmode="open"></template>
+        </test-element-equals>
+        <!-- not equals -->
+        <f-template name="test-element-not-equals">
+            <template><f-when value="{{varA != 3}}">Not equals 3</f-when></template>
+        </f-template>
+        <test-element-not-equals id="not-equals-true" var-a="4">
+            <template shadowrootmode="open">Not equals 3</template>
+        </test-element-not-equals>
+        <test-element-not-equals id="not-equals-false" var-a="3">
+            <template shadowrootmode="open"></template>
+        </test-element-not-equals>
+        <!-- greater than or equals -->
+        <f-template name="test-element-ge">
+            <template><f-when value="{{varA >= 2}}">Two and Over</f-when></template>
+        </f-template>
+        <test-element-ge id="ge-true" var-a="3">
+            <template shadowrootmode="open">Two and Over</template>
+        </test-element-ge>
+        <test-element-ge id="ge-false" var-a="0">
+            <template shadowrootmode="open"></template>
+        </test-element-ge>
+        <!-- greater than -->
+        <f-template name="test-element-gt">
+            <template><f-when value="{{varA > 2}}">Over two</f-when></template>
+        </f-template>
+        <test-element-gt id="gt-true" var-a="3">
+            <template shadowrootmode="open">Over two</template>
+        </test-element-gt>
+        <test-element-gt id="gt-false" var-a="0">
+            <template shadowrootmode="open"></template>
+        </test-element-gt>
+        <!-- less than or equals -->
+        <f-template name="test-element-le">
+            <template><f-when value="{{varA <= 2}}">Two and Under</f-when></template>
+        </f-template>
+        <test-element-le id="le-true" var-a="2">
+            <template shadowrootmode="open">Two and Under</template>
+        </test-element-le>
+        <test-element-le id="le-false" var-a="4">
+            <template shadowrootmode="open"></template>
+        </test-element-le>
+        <!-- less than -->
+        <f-template name="test-element-lt">
+            <template><f-when value="{{varA < 2}}">Under two</f-when></template>
+        </f-template>
+        <test-element-lt id="lt-true" var-a="1">
+            <template shadowrootmode="open">Under two</template>
+        </test-element-lt>
+        <test-element-lt id="lt-false" var-a="3">
+            <template shadowrootmode="open"></template>
+        </test-element-lt>
+        <!-- or -->
+        <f-template name="test-element-or">
+            <template><f-when value="{{thisVar || thatVar}}">This or That</f-when></template>
+        </f-template>
+        <test-element-or id="or-true" this-var="3">
+            <template shadowrootmode="open">This or That</template>
+        </test-element-or>
+        <test-element-or id="or-false">
+            <template shadowrootmode="open"></template>
+        </test-element-or>
+        <!-- and -->
+        <f-template name="test-element-and">
+            <template><f-when value="{{thisVar && thatVar}}">This and That</f-when></template>
+        </f-template>
+        <test-element-and id="and-true" this-var that-var>
+            <template shadowrootmode="open">This and That</template>
+        </test-element-and>
+        <test-element-and id="and-false" this-var>
+            <template shadowrootmode="open"></template>
+        </test-element-and>
     </body>
 </html>

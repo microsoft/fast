@@ -13,6 +13,7 @@ import {
     DataBindingBehaviorConfig,
     getAllPartials,
     getNextBehavior,
+    getOperator,
     pathResolver,
     TemplateDirectiveBehaviorConfig,
 } from "./utilities.js";
@@ -121,11 +122,76 @@ class TemplateElement extends FASTElement {
 
                     const { when } = await import("@microsoft/fast-element");
 
+                    const { operator, left, right, rightIsValue } = getOperator(
+                        behaviorConfig.value
+                    );
+                    let whenLogic = (x: boolean) => pathResolver(left, self)(x);
+
+                    switch (operator) {
+                        case "!":
+                            whenLogic = (x: boolean) => !pathResolver(left, self)(x);
+                            break;
+                        case "==":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) ==
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case "!=":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) !=
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case "&&":
+                        case "&amp;&amp;":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) &&
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case "||":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) ||
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case ">=":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) >=
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case ">":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) >
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case "<=":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) <=
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                        case "<":
+                            whenLogic = (x: boolean) =>
+                                pathResolver(left, self)(x) <
+                                (rightIsValue
+                                    ? right
+                                    : pathResolver(right as string, self)(x));
+                            break;
+                    }
+
                     externalValues.push(
-                        when(
-                            x => pathResolver(behaviorConfig.value, self)(x),
-                            this.resolveTemplateOrBehavior(strings, values)
-                        )
+                        when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
                     );
                 }
 
