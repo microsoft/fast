@@ -200,7 +200,7 @@ test.describe("utilities", async () => {
             expect(pathResolver("foo.bar.bat", true)({ bar: { bat: "baz" }}, {})).toEqual("baz");
         });
         test("should resolve a path with context", async () => {
-            expect(pathResolver("^foo")({}, {parent: {foo: "bar"}})).toEqual("bar");
+            expect(pathResolver("../foo")({}, {parent: {foo: "bar"}})).toEqual("bar");
         });
     });
 });
