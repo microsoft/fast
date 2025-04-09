@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 09 Apr 2025 23:46:40 GMT",
+      "version": "1.0.0-alpha.5",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.5",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "80be60f56e6d2958cccc20bf8772b9074d445229",
+            "comment": "Bump packages"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "1fc764cb74f945309980036a7125efde78d33580",
+            "comment": "Add parent context access to bindings"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 04 Apr 2025 21:01:38 GMT",
       "version": "1.0.0-alpha.4",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.4",

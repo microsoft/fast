@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 04 Apr 2025 21:01:38 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 09 Apr 2025 23:46:40 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.5
+
+Wed, 09 Apr 2025 23:46:40 GMT
+
+### Changes
+
+- Add parent context access to bindings (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.4
 
