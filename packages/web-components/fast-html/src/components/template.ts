@@ -125,68 +125,70 @@ class TemplateElement extends FASTElement {
                     const { operator, left, right, rightIsValue } = getOperator(
                         behaviorConfig.value
                     );
-                    let whenLogic = (x: boolean) => pathResolver(left, self)(x);
+                    let whenLogic = (x: boolean, c: any) =>
+                        pathResolver(left, self)(x, c);
 
                     switch (operator) {
                         case "!":
-                            whenLogic = (x: boolean) => !pathResolver(left, self)(x);
+                            whenLogic = (x: boolean, c: any) =>
+                                !pathResolver(left, self)(x, c);
                             break;
                         case "==":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) ==
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) ==
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case "!=":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) !=
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) !=
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case "&&":
                         case "&amp;&amp;":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) &&
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) &&
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case "||":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) ||
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) ||
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case ">=":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) >=
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) >=
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case ">":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) >
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) >
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case "<=":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) <=
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) <=
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                         case "<":
-                            whenLogic = (x: boolean) =>
-                                pathResolver(left, self)(x) <
+                            whenLogic = (x: boolean, c: any) =>
+                                pathResolver(left, self)(x, c) <
                                 (rightIsValue
                                     ? right
-                                    : pathResolver(right as string, self)(x));
+                                    : pathResolver(right as string, self)(x, c));
                             break;
                     }
 
@@ -211,7 +213,7 @@ class TemplateElement extends FASTElement {
 
                     externalValues.push(
                         repeat(
-                            x => pathResolver(valueAttr[2], self)(x),
+                            (x, c) => pathResolver(valueAttr[2], self)(x, c),
                             this.resolveTemplateOrBehavior(strings, values)
                         )
                     );
@@ -235,7 +237,7 @@ class TemplateElement extends FASTElement {
 
                     externalValues.push(
                         when(
-                            x => pathResolver(behaviorConfig.value, self)(x),
+                            (x, c) => pathResolver(behaviorConfig.value, self)(x, c),
                             () => this.partials[partial]
                         )
                     );
@@ -306,7 +308,8 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = (x: any) => pathResolver(propName, self)(x);
+                    const binding = (x: any, c: any) =>
+                        pathResolver(propName, self)(x, c);
                     values.push(binding);
                     await this.resolveInnerHTML(
                         innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
@@ -323,14 +326,16 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex - 2
                     );
-                    const binding = (x: any) => pathResolver(propName, self)(x)();
+                    const binding = (x: any, c: any) =>
+                        pathResolver(propName, self)(x, c)();
                     values.push(binding);
                 } else {
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = (x: any) => pathResolver(propName, self)(x);
+                    const binding = (x: any, c: any) =>
+                        pathResolver(propName, self)(x, c);
                     values.push(binding);
                 }
 

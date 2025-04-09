@@ -117,6 +117,13 @@ Where the right operand can be either a reference to a value (string e.g. `{{foo
     <ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
     ```
 
+    Should you need to refer to the parent element (not the individual item in the list), you can use `^`. This will map to what `html` tag template literal uses, `c.parent`.
+
+    Example:
+    ```html
+    <ul><f-repeat value="{{item in list}}"><li>{{item}} - {{^title}}</li></f-repeat></ul>
+    ```
+
 - **partial & apply**
 
     These directives are new to the declarative HTML model and allow for the ability to declare a `partial` directive containing a template partial which can then be referenced by an `apply` directive.
