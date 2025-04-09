@@ -7,10 +7,10 @@
     </head>
     <body>
         <f-template name="test-element">
-            <template><ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
+            <template><ul><f-repeat value="{{item in list}}"><li>{{item}} - {{../parent}}</li></f-repeat></ul></template>
         </f-template>
         <test-element>
-            <template shadowrootmode="open"><ul><li>Foo</li><li>Bar</li></ul></template>
+            <template shadowrootmode="open"><ul><li>Foo - Bat</li><li>Bar - Bat</li></ul></template>
         </test-element>
     </body>
 </html>

@@ -188,16 +188,19 @@ test.describe("utilities", async () => {
 
     test.describe("pathResolver", async () => {
         test("should resolve a path with no nesting", async () => {
-            expect(pathResolver("foo")({ foo: "bar" })).toEqual("bar");
+            expect(pathResolver("foo")({ foo: "bar" }, {})).toEqual("bar");
         });
         test("should resolve a path with nesting", async () => {
-            expect(pathResolver("foo.bar.bat")({ foo: { bar: { bat: "baz" }} })).toEqual("baz");
+            expect(pathResolver("foo.bar.bat")({ foo: { bar: { bat: "baz" }} }, {})).toEqual("baz");
         });
         test("should resolve a path with no nesting and self reference", async () => {
-            expect(pathResolver("foo", true)("bar")).toEqual("bar");
+            expect(pathResolver("foo", true)("bar", {})).toEqual("bar");
         });
         test("should resolve a path with nesting and self reference", async () => {
-            expect(pathResolver("foo.bar.bat", true)({ bar: { bat: "baz" }})).toEqual("baz");
+            expect(pathResolver("foo.bar.bat", true)({ bar: { bat: "baz" }}, {})).toEqual("baz");
+        });
+        test("should resolve a path with context", async () => {
+            expect(pathResolver("../foo")({}, {parent: {foo: "bar"}})).toEqual("bar");
         });
     });
 });

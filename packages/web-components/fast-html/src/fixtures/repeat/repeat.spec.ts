@@ -8,8 +8,8 @@ test.describe("f-template", async () => {
         let customElementListItems = await customElement.locator("li");
 
         expect(await customElementListItems.count()).toEqual(2);
-        expect(await customElementListItems.nth(0).textContent()).toEqual("Foo");
-        expect(await customElementListItems.nth(1).textContent()).toEqual("Bar");
+        expect(await customElementListItems.nth(0).textContent()).toEqual("Foo - Bat");
+        expect(await customElementListItems.nth(1).textContent()).toEqual("Bar - Bat");
 
         await page.evaluate(() => {
             const customElement = document.getElementsByTagName("test-element");
@@ -25,8 +25,8 @@ test.describe("f-template", async () => {
 
         customElementListItems = await customElement.locator("li");
         expect(await customElementListItems.count()).toEqual(3);
-        expect(await customElementListItems.nth(0).textContent()).toEqual("A");
-        expect(await customElementListItems.nth(1).textContent()).toEqual("B");
-        expect(await customElementListItems.nth(2).textContent()).toEqual("C");
+        expect(await customElementListItems.nth(0).textContent()).toEqual("A - Bat");
+        expect(await customElementListItems.nth(1).textContent()).toEqual("B - Bat");
+        expect(await customElementListItems.nth(2).textContent()).toEqual("C - Bat");
     });
 });

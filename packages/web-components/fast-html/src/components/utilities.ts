@@ -346,10 +346,11 @@ type AccessibleObject = { [key: string]: AccessibleObject };
 export function pathResolver(
     path: string,
     self: boolean = false
-): (accessibleObject: any) => any {
+): (accessibleObject: any, context: any) => any {
     let splitPath = path.split(".");
+    const usesContext = path.startsWith("../");
 
-    if (self) {
+    if (self && !usesContext) {
         if (splitPath.length > 1) {
             splitPath = splitPath.slice(1);
         } else {
@@ -359,13 +360,28 @@ export function pathResolver(
         }
     }
 
-    if (splitPath.length === 1) {
+    if (splitPath.length === 1 && !usesContext) {
         return (accessibleObject: AccessibleObject) => {
             return accessibleObject?.[splitPath[0]];
         };
     }
 
-    return (accessibleObject: AccessibleObject) => {
+    return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
+        if (usesContext) {
+            splitPath = [];
+            path.split("../").forEach(pathItem => {
+                if (pathItem === "") {
+                    splitPath.unshift("parent");
+                } else {
+                    splitPath.push(...pathItem.split("."));
+                }
+            });
+
+            return splitPath.reduce((previousAccessors, pathItem) => {
+                return previousAccessors?.[pathItem];
+            }, context);
+        }
+
         return splitPath.reduce((previousAccessors, pathItem) => {
             return previousAccessors?.[pathItem];
         }, accessibleObject);
