@@ -1,9 +1,20 @@
 import { TemplateElement } from "@microsoft/fast-html";
-import { FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 class TestElement extends FASTElement {
-    public handleClick = (): void => {
-        console.log("click!");
+    @attr
+    foo: string = "";
+
+    public handleNoArgsClick = (): void => {
+        console.log("no args");
+    };
+
+    public handleEventArgClick = (e: MouseEvent): void => {
+        console.log(e.type);
+    };
+
+    public handleAttributeArgClick = (foo: string): void => {
+        console.log(foo);
     };
 }
 TestElement.define({
