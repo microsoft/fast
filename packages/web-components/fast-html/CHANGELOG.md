@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 09 Apr 2025 23:46:40 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 10 Apr 2025 21:08:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.6
+
+Thu, 10 Apr 2025 21:08:35 GMT
+
+### Changes
+
+- Allow passing events or context to event handlers (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.5
 

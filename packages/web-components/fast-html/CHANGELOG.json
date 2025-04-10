@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 10 Apr 2025 21:08:35 GMT",
+      "version": "1.0.0-alpha.6",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.6",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "2c4bfb441e89b00480e0f65e752a45483f51ae70",
+            "comment": "Allow passing events or context to event handlers"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Apr 2025 23:46:40 GMT",
       "version": "1.0.0-alpha.5",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.5",
