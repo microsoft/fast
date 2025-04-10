@@ -63,6 +63,18 @@ Event bindings must include the `()` as well as being preceeded by `@` in keepin
 <button @click="{{handleClick()}}"></button>
 ```
 
+In addition you may include an event or attribute or observable, events are denoted with `e` as a reserved letter.
+
+Event:
+```html
+<button @click="{{handleClick(e)}}"></button>
+```
+
+Attribute/Observable:
+```html
+<button @click="{{handleClick(foo)}}"></button>
+```
+
 #### Directives
 
 Directives are assumed to be either an attribute directive or a directive that also serves a template. Both are prepended by `f-`. The logic of these directives and what their use cases are is explained in the [FAST html documentation](https://fast.design/docs/getting-started/html-directives).

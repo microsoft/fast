@@ -5,11 +5,19 @@
         <title></title>
     </head>
     <body>
-        <test-element>
-            <template shadowrootmode="open"><button>Hello world</button></template>
+        <test-element foo="bar">
+            <template shadowrootmode="open">
+                <button>No arguments</button>
+                <button>event argument</button>
+                <button>attribute argument</button>
+            </template>
         </test-element>
         <f-template name="test-element">
-            <template><button @click="{{handleClick()}}">Hello world</button></template>
+            <template>
+                <button @click="{{handleNoArgsClick()}}">No arguments</button>
+                <button @click="{{handleEventArgClick(e)}}">event argument</button>
+                <button @click="{{handleAttributeArgClick(foo)}}">attribute argument</button>
+            </template>
         </f-template>
         <script type="module" src="/event/main.js"></script>
     </body>

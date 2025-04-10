@@ -322,12 +322,29 @@ class TemplateElement extends FASTElement {
             case "attribute":
                 strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                 if (behaviorConfig.aspect === "@") {
+                    const bindingHTML = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex
+                    );
+                    const openingParenthesis = bindingHTML.indexOf("(");
+                    const closingParenthesis = bindingHTML.indexOf(")");
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex - 2
+                        behaviorConfig.closingStartIndex -
+                            (closingParenthesis - openingParenthesis) -
+                            1
+                    );
+                    const arg = bindingHTML.slice(
+                        openingParenthesis + 1,
+                        closingParenthesis
                     );
                     const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c)();
+                        pathResolver(propName, self)(x, c)(
+                            ...(arg === "e" ? [c.event] : []),
+                            ...(arg !== "e" && arg !== ""
+                                ? [pathResolver(arg)(x, c)]
+                                : [])
+                        );
                     values.push(binding);
                 } else {
                     const propName = innerHTML.slice(
