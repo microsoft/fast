@@ -14,9 +14,9 @@
         </test-element>
         <f-template name="test-element">
             <template>
-                <button @click="{{handleNoArgsClick()}}">No arguments</button>
-                <button @click="{{handleEventArgClick(e)}}">event argument</button>
-                <button @click="{{handleAttributeArgClick(foo)}}">attribute argument</button>
+                <button @click="{handleNoArgsClick()}">No arguments</button>
+                <button @click="{handleEventArgClick(e)}">event argument</button>
+                <button @click="{handleAttributeArgClick(foo)}">attribute argument</button>
             </template>
         </f-template>
         <script type="module" src="/event/main.js"></script>

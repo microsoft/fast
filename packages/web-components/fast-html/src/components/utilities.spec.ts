@@ -9,6 +9,7 @@ test.describe("utilities", async () => {
 
             expect(templateResult?.type).toEqual("dataBinding");
             expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual("content");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.bindingType).toEqual("default");
             expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(0);
             expect((templateResult as ContentDataBindingBehaviorConfig)?.openingEndIndex).toEqual(2);
             expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(6);
@@ -24,6 +25,7 @@ test.describe("utilities", async () => {
             expect(templateResult?.type).toEqual("dataBinding");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual(null);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("default");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex).toEqual(13);
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(15);
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(19);
@@ -31,16 +33,17 @@ test.describe("utilities", async () => {
         });
 
         test("get the next attribute event binding", async () => {
-            const innerHTML = "<input @click=\"{{handleClick()}}\">";
+            const innerHTML = "<input @click=\"{handleClick()}\">";
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual("@");
+            expect((templateResult as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex).toEqual(15);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(17);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(30);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(32);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(16);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(29);
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(30);
         });
     });
 
@@ -79,40 +82,43 @@ test.describe("utilities", async () => {
 
     test.describe("attributes", async () => {
         test("children directive", async () => {
-            const innerHTML = "<ul f-children=\"{{list}}\"></ul>";
+            const innerHTML = "<ul f-children=\"{list}\"></ul>";
             const result = getNextBehavior(innerHTML);
 
             expect(result?.type).toEqual("dataBinding");
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("children");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(16);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(18);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(22);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(24);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(17);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(21);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(22);
         });
         test("slotted directive", async () => {
-            const innerHTML = "<slot f-slotted=\"{{slottedNodes}}\"></slot>";
+            const innerHTML = "<slot f-slotted=\"{slottedNodes}\"></slot>";
             const result = getNextBehavior(innerHTML);
 
             expect(result?.type).toEqual("dataBinding");
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("slotted");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(17);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(19);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(31);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(33);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(18);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(30);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(31);
         });
         test("ref directive", async () => {
-            const innerHTML = "<video f-ref=\"{{video}}\"></video>";
+            const innerHTML = "<video f-ref=\"{video}\"></video>";
             const result = getNextBehavior(innerHTML);
 
             expect(result?.type).toEqual("dataBinding");
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("ref");
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
             expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(14);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(16);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(21);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(23);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(15);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(20);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(21);
         });
     });
 
