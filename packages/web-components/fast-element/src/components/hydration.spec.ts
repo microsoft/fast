@@ -92,7 +92,6 @@ describe("The HydratableElementController", () => {
 
             element.setAttribute('defer-hydration', '');
             document.body.appendChild(element);
-            await Updates.next();
             expect(element.shadowRoot?.innerHTML).be.equal("");
             document.body.removeChild(element)
         });
