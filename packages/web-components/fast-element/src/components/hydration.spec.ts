@@ -126,10 +126,9 @@ describe("The HydratableElementController", () => {
             const { element, controller } = createController<Controller>({template: html`<p>Hello world</p>`})
             element.setAttribute('defer-hydration', '')
             controller.connect();
-            await Updates.next();
             expect(controller.isConnected).to.equal(false);
-            element.removeAttribute('defer-hydration');
             await Updates.next();
+            element.removeAttribute('defer-hydration');
             expect(controller.isConnected).to.equal(true);
             ElementController.setStrategy(HydratableElementController)
         })
