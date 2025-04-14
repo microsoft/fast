@@ -62,7 +62,6 @@ describe("The HydratableElementController", () => {
             const { element } = createController({template: html`<p>Hello world</p>`})
 
             document.body.appendChild(element);
-            await Updates.next();
             expect(element.shadowRoot?.innerHTML).to.be.equal("<p>Hello world</p>");
             document.body.removeChild(element)
         });
