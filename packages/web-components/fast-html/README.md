@@ -47,7 +47,15 @@ Example:
 
 ### Syntax
 
-All bindings use a handlebars syntax.
+All bindings use a handlebars-like syntax.
+
+Some bindings are only relevant to the browser, such as for click handlers or other pieces of dynamic interaction. As such, their bindings use single curly braces `{}`, this is to prevent an intial SSR (Server Side Rendering) or other build time rendering technologies from needing to interpret them.
+
+If a binding is relevant to both client and the back end rendering engine, it will use `{{}}` or `{{{}}}` depending on what type of data injection is being done.
+
+Browser-only bindings:
+- Event bindings
+- Attribute directives
 
 #### Content binding
 
@@ -60,45 +68,47 @@ All bindings use a handlebars syntax.
 Event bindings must include the `()` as well as being preceeded by `@` in keeping with `@microsoft/fast-element` tagged template `html` syntax.
 
 ```html
-<button @click="{{handleClick()}}"></button>
+<button @click="{handleClick()}"></button>
 ```
 
 In addition you may include an event or attribute or observable, events are denoted with `e` as a reserved letter.
 
 Event:
 ```html
-<button @click="{{handleClick(e)}}"></button>
+<button @click="{handleClick(e)}"></button>
 ```
 
 Attribute/Observable:
 ```html
-<button @click="{{handleClick(foo)}}"></button>
+<button @click="{handleClick(foo)}"></button>
 ```
 
 #### Directives
 
 Directives are assumed to be either an attribute directive or a directive that also serves a template. Both are prepended by `f-`. The logic of these directives and what their use cases are is explained in the [FAST html documentation](https://fast.design/docs/getting-started/html-directives).
 
+Attribute directives are part of [client side binding](#syntax) and therefore use the `{}` syntax.
+
 Attribute directives include:
 - **slotted**
 
     Example:
     ```html
-    <slot f-slotted="{{slottedNodes}}"></slot>
+    <slot f-slotted="{slottedNodes}"></slot>
     ```
 
 - **children**
 
     Example:
     ```html
-    <ul f-children="{{listItems}}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
+    <ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
     ```
 
 - **ref**
 
     Example:
     ```html
-    <video f-ref="{{video}}"></video>
+    <video f-ref="{video}"></video>
     ```
 
 Template directives include:

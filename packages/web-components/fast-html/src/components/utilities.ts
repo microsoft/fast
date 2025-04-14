@@ -4,6 +4,8 @@ type TemplateDirective = "when" | "repeat" | "apply";
 
 export type AttributeDirective = "children" | "slotted" | "ref";
 
+type DataBindingBindingType = "client" | "default" | "unescaped";
+
 interface BehaviorConfig {
     type: BehaviorType;
 }
@@ -31,6 +33,7 @@ export type DataBindingBehaviorConfig =
 
 export interface BaseDataBindingBehaviorConfig extends BehaviorConfig {
     type: "dataBinding";
+    bindingType: DataBindingBindingType;
     openingStartIndex: number;
     openingEndIndex: number;
     closingStartIndex: number;
@@ -53,9 +56,17 @@ interface PartialTemplateConfig {
     endIndex: number;
 }
 
-const openBinding: string = "{{";
+const openClientSideBinding: string = "{";
 
-const closeBinding: string = "}}";
+const closeClientSideBinding: string = "}";
+
+const openContentBinding: string = "{{";
+
+const closeContentBinding: string = "}}";
+
+const openUnescapedBinding: string = "{{{";
+
+const closeUnescapedBinding: string = "}}}";
 
 const openTagStart: string = "<f-";
 
@@ -242,20 +253,73 @@ function getContentDataBindingConfig(
     };
 }
 
+interface NextDataBindingBehaviorConfig {
+    openingStartIndex: number;
+    closingStartIndex: number;
+    bindingType: DataBindingBindingType;
+}
+
+function getIndexAndBindingTypeOfNextDataBindingBehavior(
+    innerHTML: string
+): NextDataBindingBehaviorConfig {
+    // {{{}}} binding
+    const openingUnescapedStartIndex = innerHTML.indexOf(openUnescapedBinding);
+    const closingUnescapedStartIndex = innerHTML.indexOf(closeUnescapedBinding);
+    // {{}} binding
+    const openingContentStartIndex = innerHTML.indexOf(openContentBinding);
+    const closingContentStartIndex = innerHTML.indexOf(closeContentBinding);
+    // {} binding
+    const openingClientStartIndex = innerHTML.indexOf(openClientSideBinding);
+    const closingClientStartIndex = innerHTML.indexOf(closeClientSideBinding);
+
+    if (
+        openingUnescapedStartIndex !== -1 &&
+        openingUnescapedStartIndex <= openingContentStartIndex &&
+        openingUnescapedStartIndex <= openingClientStartIndex
+    ) {
+        // is unescaped {{{}}}
+        return {
+            openingStartIndex: openingUnescapedStartIndex,
+            closingStartIndex: closingUnescapedStartIndex,
+            bindingType: "unescaped",
+        };
+    } else if (
+        openingContentStartIndex !== -1 &&
+        openingContentStartIndex <= openingClientStartIndex
+    ) {
+        // is default {{}}
+        return {
+            openingStartIndex: openingContentStartIndex,
+            closingStartIndex: closingContentStartIndex,
+            bindingType: "default",
+        };
+    }
+
+    // is client {}
+    return {
+        openingStartIndex: openingClientStartIndex,
+        closingStartIndex: closingClientStartIndex,
+        bindingType: "client",
+    };
+}
+
 /**
  * Get the next data binding
  * @param innerHTML - The innerHTML string to evaluate
  * @returns DataBindingBehaviorConfig - A configuration object
  */
 function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfig {
-    const openingStartIndex = innerHTML.indexOf(openBinding);
-    const closingStartIndex = innerHTML.indexOf(closeBinding);
+    const { openingStartIndex, closingStartIndex, bindingType } =
+        getIndexAndBindingTypeOfNextDataBindingBehavior(innerHTML);
+    const bindingLength =
+        bindingType === "client" ? 1 : bindingType === "default" ? 2 : 3;
     const partialConfig: BaseDataBindingBehaviorConfig = {
         type: "dataBinding",
+        bindingType,
         openingStartIndex,
-        openingEndIndex: openingStartIndex + 2,
+        openingEndIndex: openingStartIndex + bindingLength,
         closingStartIndex,
-        closingEndIndex: closingStartIndex + 2,
+        closingEndIndex: closingStartIndex + bindingLength,
     };
 
     return isAttributeDirective(innerHTML, openingStartIndex)
@@ -273,7 +337,7 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
 export function getNextBehavior(
     innerHTML: string
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const dataBindingOpen = innerHTML.indexOf(openBinding);
+    const dataBindingOpen = innerHTML.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
     const directiveBindingOpen = innerHTML.indexOf(openTagStart);
 
     if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
