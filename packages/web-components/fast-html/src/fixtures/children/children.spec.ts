@@ -24,6 +24,12 @@ test.describe("f-template", async () => {
             ];
         });
 
+        const timeout = new Promise(function(resolve) {
+            setTimeout(resolve, 100);
+        });
+
+        await timeout;
+
         const listItemCount2 = await page.evaluate(() => {
             const customElement = document.getElementsByTagName("test-element");
             const listItems = (customElement.item(0) as any)?.listItems.filter((listItem: Node) => {

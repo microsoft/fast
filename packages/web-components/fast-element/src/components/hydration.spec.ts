@@ -62,7 +62,6 @@ describe("The HydratableElementController", () => {
             const { element } = createController({template: html`<p>Hello world</p>`})
 
             document.body.appendChild(element);
-            await Updates.next();
             expect(element.shadowRoot?.innerHTML).to.be.equal("<p>Hello world</p>");
             document.body.removeChild(element)
         });
@@ -93,7 +92,6 @@ describe("The HydratableElementController", () => {
 
             element.setAttribute('defer-hydration', '');
             document.body.appendChild(element);
-            await Updates.next();
             expect(element.shadowRoot?.innerHTML).be.equal("");
             document.body.removeChild(element)
         });
@@ -128,10 +126,15 @@ describe("The HydratableElementController", () => {
             const { element, controller } = createController<Controller>({template: html`<p>Hello world</p>`})
             element.setAttribute('defer-hydration', '')
             controller.connect();
-            await Updates.next();
             expect(controller.isConnected).to.equal(false);
             element.removeAttribute('defer-hydration');
-            await Updates.next();
+
+            const timeout = new Promise(function(resolve) {
+                setTimeout(resolve, 100);
+            });
+
+            await Promise.race([Updates.next(), timeout]);
+
             expect(controller.isConnected).to.equal(true);
             ElementController.setStrategy(HydratableElementController)
         })
@@ -143,10 +146,15 @@ describe("The HydratableElementController", () => {
 
             element.setAttribute('defer-hydration', '');
             document.body.appendChild(element);
-            await Updates.next();
             expect(element.shadowRoot?.innerHTML).be.equal("");
             element.removeAttribute('defer-hydration')
-            await Updates.next();
+
+            const timeout = new Promise(function(resolve) {
+                setTimeout(resolve, 100);
+            });
+
+            await Promise.race([Updates.next(), timeout]);
+
             expect(element.shadowRoot?.innerHTML).to.be.equal("<p>Hello world</p>");
             document.body.removeChild(element)
         });
@@ -157,7 +165,13 @@ describe("The HydratableElementController", () => {
             document.body.appendChild(element);
             expect(element.$fastController.mainStyles?.isAttachedTo(element)).to.be.false;
             element.removeAttribute('defer-hydration');
-            await Updates.next();
+
+            const timeout = new Promise(function(resolve) {
+                setTimeout(resolve, 100);
+            });
+
+            await Promise.race([Updates.next(), timeout]);
+
             expect(element.$fastController.mainStyles?.isAttachedTo(element)).to.be.true;
             document.body.removeChild(element);
         });
@@ -173,7 +187,13 @@ describe("The HydratableElementController", () => {
             document.body.appendChild(element);
             expect(behavior.connectedCallback).not.to.have.been.called();
             element.removeAttribute('defer-hydration');
-            await Updates.next();
+
+            const timeout = new Promise(function(resolve) {
+                setTimeout(resolve, 100);
+            });
+
+            await Promise.race([Updates.next(), timeout]);
+
             expect(behavior.connectedCallback).to.have.been.called();
             document.body.removeChild(element)
         });
