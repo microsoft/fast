@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: use Observable method instead of decorator in FASTElementDefinition class",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

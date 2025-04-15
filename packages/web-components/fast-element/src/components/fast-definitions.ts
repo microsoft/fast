@@ -1,5 +1,5 @@
 import { Constructable, isString, KernelServiceId } from "../interfaces.js";
-import { observable, Observable } from "../observation/observable.js";
+import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
@@ -123,7 +123,6 @@ export class FASTElementDefinition<
     /**
      * The template to render for the custom element.
      */
-    @observable
     public template?: ElementViewTemplate;
 
     /**
@@ -256,3 +255,5 @@ export class FASTElementDefinition<
      */
     static readonly getForInstance = fastElementRegistry.getForInstance;
 }
+
+Observable.defineProperty(FASTElementDefinition.prototype, "template");
