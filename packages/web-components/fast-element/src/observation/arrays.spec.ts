@@ -4,9 +4,17 @@ import { ArrayObserver, lengthOf, Splice, Sort } from "./arrays.js";
 import { SubscriberSet } from "./notifier.js";
 import { Updates } from "./update-queue.js";
 
-const timeout = new Promise(function(resolve) {
-    setTimeout(resolve, 50);
-});
+const conditionalTimeout = function(condition) {
+    return new Promise(function(resolve) {
+        setTimeout(() => {
+            if (!condition) {
+                conditionalTimeout(condition).then(resolve);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
 
 describe("The ArrayObserver", () => {
     it("can be retrieved through Observable.getNotifier()", () => {
@@ -81,17 +89,19 @@ describe("The ArrayObserver", () => {
         array.pop();
         expect(array).members(["foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
         expect(changeArgs![0].removed).members(["bar"]);
         expect(changeArgs![0].index).equal(1);
 
+        changeArgs = null;
+
         Array.prototype.pop.call(array);
         expect(array).members([]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
@@ -121,17 +131,19 @@ describe("The ArrayObserver", () => {
         array.push("hello");
         expect(array).members(["foo", "bar", "hello"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
         expect(changeArgs![0].removed).members([]);
         expect(changeArgs![0].index).equal(2);
 
+        changeArgs = null;
+
         Array.prototype.push.call(array, "world");
         expect(array).members(["foo", "bar", "hello", "world"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
@@ -161,7 +173,7 @@ describe("The ArrayObserver", () => {
         array.reverse();
         expect(array).ordered.members([4, 3, 2, 1]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].sorted).to.have.ordered.members(
@@ -173,10 +185,11 @@ describe("The ArrayObserver", () => {
             ]
         );
         changeArgs = null;
+
         array.reverse();
         expect(array).ordered.members([1, 2, 3, 4]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].sorted).to.have.ordered.members(
@@ -211,17 +224,19 @@ describe("The ArrayObserver", () => {
         array.shift();
         expect(array).members(["world"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
         expect(changeArgs![0].removed).members(["hello"]);
         expect(changeArgs![0].index).equal(0);
 
+        changeArgs = null;
+
         Array.prototype.shift.call(array);
         expect(array).members([]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
@@ -252,7 +267,7 @@ describe("The ArrayObserver", () => {
         array.sort((a, b) => b - a);
         expect(array).ordered.members([4, 3, 3, 2, 1]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].sorted).to.have.ordered.members(
@@ -288,17 +303,19 @@ describe("The ArrayObserver", () => {
         array.splice(1, 1, "foo");
         expect(array).members([1, "foo", "world", 4]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
         expect(changeArgs![0].removed).members(["hello"]);
         expect(changeArgs![0].index).equal(1);
 
+        changeArgs = null;
+
         Array.prototype.splice.call(array, 2, 1, 'bar');
         expect(array).members([1, "foo", "bar", 4]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
@@ -328,17 +345,19 @@ describe("The ArrayObserver", () => {
         array.unshift("hello");
         expect(array).members(["hello", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
         expect(changeArgs![0].removed).members([]);
         expect(changeArgs![0].index).equal(0);
 
+        changeArgs = null;
+
         Array.prototype.unshift.call(array, 'world');
         expect(array).members(["world", "hello", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
@@ -368,57 +387,67 @@ describe("The ArrayObserver", () => {
         array.unshift("hello");
         expect(array).members(["hello", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
         expect(changeArgs![0].removed).members([]);
         expect(changeArgs![0].index).equal(0);
 
+        changeArgs = null;
+
         Array.prototype.shift.call(array);
         expect(array).members([ "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(0);
         expect(changeArgs![0].removed).members(['hello']);
         expect(changeArgs![0].index).equal(0);
 
+        changeArgs = null;
+
         array.unshift("hello", "world");
         expect(array).members(["hello", "world", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(2);
         expect(changeArgs![0].removed).members([]);
         expect(changeArgs![0].index).equal(0);
+
+        changeArgs = null;
 
         Array.prototype.unshift.call(array, "hi", "there");
         expect(array).members([ "hi", "there","hello", "world", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(2);
         expect(changeArgs![0].removed).members([]);
         expect(changeArgs![0].index).equal(0);
 
+        changeArgs = null;
+
         Array.prototype.splice.call(array, 2, 2, "bye", "foo");
         expect(array).members([ "hi", "there", "bye", "foo", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(2);
         expect(changeArgs![0].removed).members(["hello", "world"]);
         expect(changeArgs![0].index).equal(2);
 
+        changeArgs = null;
+
         Array.prototype.splice.call(array, 1, 0, "hello");
         expect(array).members([ "hi", "there", "hello", "bye", "foo", "bar", "foo"]);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changeArgs !== null)]);
 
         expect(changeArgs).length(1);
         expect(changeArgs![0].addedCount).equal(1);
@@ -439,7 +468,7 @@ describe("The ArrayObserver", () => {
             }
         });
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(wasCalled)]);
 
         expect(wasCalled).to.be.false;
     })
@@ -458,7 +487,7 @@ describe("The ArrayObserver", () => {
 
         array.splice(0, array.length, ...array);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(Array.isArray(splices))]);
 
         expect(splices.length).to.equal(0);
     })
@@ -521,7 +550,7 @@ describe("The array length observer", () => {
 
         instance.items.push(6);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changed)]);
 
         expect(changed).to.be.true;
         expect(observer.observe(instance)).to.equal(6);
@@ -546,7 +575,7 @@ describe("The array length observer", () => {
 
         instance.items.splice(2, 1, 6);
 
-        await Promise.race([Updates.next(), timeout]);
+        await Promise.race([Updates.next(), conditionalTimeout(changed)]);
 
         expect(changed).to.be.false;
         expect(observer.observe(instance)).to.equal(5);
