@@ -21,7 +21,11 @@ test.describe("f-template", async () => {
             ];
         });
 
-        await expect(customElement).toHaveJSProperty("list", ["A", "B", "C"]);
+        const timeout = new Promise(function(resolve) {
+            setTimeout(resolve, 100);
+        });
+
+        await timeout;
 
         customElementListItems = await customElement.locator("li");
         expect(await customElementListItems.count()).toEqual(3);

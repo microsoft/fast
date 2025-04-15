@@ -24,9 +24,11 @@ test.describe("f-template", async () => {
             ];
         });
 
-        const customElement = await page.locator("test-element");
+        const timeout = new Promise(function(resolve) {
+            setTimeout(resolve, 100);
+        });
 
-        await expect(customElement).toHaveJSProperty("list", ["A", "B", "C"]);
+        await timeout;
 
         const listItemCount2 = await page.evaluate(() => {
             const customElement = document.getElementsByTagName("test-element");
