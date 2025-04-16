@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 16 Apr 2025 15:53:12 GMT",
+      "version": "1.0.0-alpha.7",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.7",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "0f9349a9d1a983dde9704cf1525a3303790c073d",
+            "comment": "Fix f-template children directive flaky test"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "45c8765f9c70fa720780e6a447f103e885195c07",
+            "comment": "Change client only bindings to single curly braces and categorize single, double, and tripe curly brace bindings"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.2.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Apr 2025 21:08:35 GMT",
       "version": "1.0.0-alpha.6",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.6",

@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 10 Apr 2025 21:08:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 16 Apr 2025 15:53:12 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.7
+
+Wed, 16 Apr 2025 15:53:12 GMT
+
+### Changes
+
+- Change client only bindings to single curly braces and categorize single, double, and tripe curly brace bindings (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.2.1
 
 ## 1.0.0-alpha.6
 

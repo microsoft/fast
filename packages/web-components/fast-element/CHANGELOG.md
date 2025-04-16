@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 24 Mar 2025 18:26:13 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 16 Apr 2025 15:53:12 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.2.1
+
+Wed, 16 Apr 2025 15:53:12 GMT
+
+### Patches
+
+- fix: use Observable method instead of decorator in FASTElementDefinition class (863023+radium-v@users.noreply.github.com)
 
 ## 2.2.0
 

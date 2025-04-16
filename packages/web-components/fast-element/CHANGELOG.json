@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 16 Apr 2025 15:53:12 GMT",
+      "version": "2.2.1",
+      "tag": "@microsoft/fast-element_v2.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "cd0139a2fd49a07a2602e5f31c1f4e6cab8b88e2",
+            "comment": "fix: use Observable method instead of decorator in FASTElementDefinition class"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "0f9349a9d1a983dde9704cf1525a3303790c073d",
+            "comment": "Remove Updates.next() on flaky hydration test"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 24 Mar 2025 18:26:13 GMT",
       "version": "2.2.0",
       "tag": "@microsoft/fast-element_v2.2.0",
