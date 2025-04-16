@@ -7,12 +7,12 @@ import { Updates } from "./update-queue.js";
 const conditionalTimeout = function(condition, iteration = 0) {
     return new Promise(function(resolve) {
         setTimeout(() => {
-            if (iteration === 3 || condition) {
+            if (iteration === 10 || condition) {
                 resolve(true);
             }
 
-            conditionalTimeout(condition, iteration + 1).then(resolve);
-        });
+            conditionalTimeout(condition, iteration + 1);
+        }, 5);
     });
 }
 
