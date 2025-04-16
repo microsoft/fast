@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag, pathResolver } from "./utilities.js";
+import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag, pathResolver, transformInnerHTML } from "./utilities.js";
 
 test.describe("utilities", async () => {
     test.describe("content", async () => {
@@ -207,6 +207,34 @@ test.describe("utilities", async () => {
         });
         test("should resolve a path with context", async () => {
             expect(pathResolver("../foo")({}, {parent: {foo: "bar"}})).toEqual("bar");
+        });
+    });
+
+    test.describe("transformInnerHTML", async () => {
+        test("should resolve a single unescaped data binding", async () => {
+            expect(transformInnerHTML(`{{{html}}}`)).toEqual(`<div :innerHTML="{{html}}"></div>`);
+        });
+        test("should resolve multiple unescaped data bindings", async () => {
+            expect(transformInnerHTML(`{{{foo}}}{{{bar}}}`)).toEqual(`<div :innerHTML="{{foo}}"></div><div :innerHTML="{{bar}}"></div>`);
+        });
+        test("should resolve a unescaped data bindings in a mix of other data content bindings", async () => {
+            expect(transformInnerHTML(`{{text1}}{{{foo}}}{{text2}}{{{bar}}}{{text3}}`)).toEqual(`{{text1}}<div :innerHTML="{{foo}}"></div>{{text2}}<div :innerHTML="{{bar}}"></div>{{text3}}`);
+        });
+        test("should resolve a unescaped data bindings in a mix of other data attribute bindings and nesting", async () => {
+            expect(
+                transformInnerHTML(
+                    `<div data-foo="{{text1}}">{{{foo}}}</div><div data-bar="{{text2}}"></div>{{{bar}}}<div data-bat="{{text3}}"></div>`
+                )).toEqual(
+                    `<div data-foo="{{text1}}"><div :innerHTML="{{foo}}"></div></div><div data-bar="{{text2}}"></div><div :innerHTML="{{bar}}"></div><div data-bat="{{text3}}"></div>`
+                );
+        });
+        test("should resolve a non-data and non-attribute bindings", async () => {
+            expect(
+                transformInnerHTML(
+                    `<button @click="{handleNoArgsClick()}">No arguments</button>`
+                )).toEqual(
+                    `<button @click="{handleNoArgsClick()}">No arguments</button>`
+                );
         });
     });
 });

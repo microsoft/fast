@@ -76,6 +76,14 @@ const closeTagStart: string = "</f-";
 
 const attributeDirectivePrefix: string = "f-";
 
+const startInnerHTMLDiv = `<div :innerHTML="{{`;
+
+const startInnerHTMLDivLength = startInnerHTMLDiv.length;
+
+const endInnerHTMLDiv = `}}"></div>`;
+
+const endInnerHTMLDivLength = endInnerHTMLDiv.length;
+
 /**
  * Get the index of the next matching tag
  * @param openingTagStartSlice - The slice starting from the opening tag
@@ -544,4 +552,56 @@ export function getOperator(value: string): OperatorConfig {
         right: null,
         rightIsValue: null,
     };
+}
+
+/**
+ * This is the transform utility for rationalizing declarative HTML syntax
+ * with bindings in the ViewTemplate
+ * @param innerHTML The innerHTML to transform
+ * @param index The index to start the current slice of HTML to evaluate
+ */
+export function transformInnerHTML(innerHTML: string, index = 0): string {
+    const sliceToEvaluate = innerHTML.slice(index);
+    const nextBinding = getNextBehavior(sliceToEvaluate);
+    let transformedInnerHTML = innerHTML;
+
+    if (nextBinding && nextBinding.type === "dataBinding") {
+        if (nextBinding.bindingType === "unescaped") {
+            transformedInnerHTML = `${innerHTML.slice(0, index)}${sliceToEvaluate.slice(
+                0,
+                nextBinding.openingStartIndex
+            )}${startInnerHTMLDiv}${sliceToEvaluate.slice(
+                nextBinding.openingStartIndex + 3,
+                nextBinding.closingStartIndex
+            )}${endInnerHTMLDiv}${sliceToEvaluate.slice(
+                nextBinding.closingStartIndex + 3
+            )}`;
+
+            return transformInnerHTML(
+                transformedInnerHTML,
+                index +
+                    startInnerHTMLDivLength +
+                    endInnerHTMLDivLength +
+                    nextBinding.closingStartIndex -
+                    3
+            );
+        } else if (nextBinding.bindingType === "client") {
+            return transformInnerHTML(
+                transformedInnerHTML,
+                index + nextBinding.closingEndIndex
+            );
+        }
+
+        return transformInnerHTML(
+            transformedInnerHTML,
+            index + nextBinding.closingStartIndex - 2
+        );
+    } else if (nextBinding) {
+        return transformInnerHTML(
+            transformedInnerHTML,
+            index + nextBinding.closingTagEndIndex
+        );
+    }
+
+    return transformedInnerHTML;
 }

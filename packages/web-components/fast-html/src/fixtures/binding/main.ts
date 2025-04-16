@@ -9,6 +9,13 @@ TestElement.define({
     name: "test-element",
 });
 
+class TestElementUnescaped extends FASTElement {
+    public html = `<p>Hello world</p>`;
+}
+TestElementUnescaped.define({
+    name: "test-element-unescaped",
+});
+
 TemplateElement.define({
     name: "f-template",
 });
