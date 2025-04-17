@@ -17,4 +17,12 @@ test.describe("f-template", async () => {
         await expect(await customElement.getAttribute("text")).toEqual("Hello pluto");
         await expect(customElement).toHaveText("Hello pluto");
     });
+    test("create an unescaped binding", async ({ page }) => {
+        await page.goto("/binding");
+
+        const customElement = await page.locator("test-element-unescaped");
+
+        await expect(await customElement.locator("p").count()).toEqual(1);
+        await expect(customElement).toHaveText("Hello world");
+    });
 });

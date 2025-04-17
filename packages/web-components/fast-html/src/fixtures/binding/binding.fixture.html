@@ -8,8 +8,14 @@
         <test-element text="Hello world">
             <template shadowrootmode="open">Hello world</template>
         </test-element>
+        <test-element-unescaped>
+            <template shadowrootmode="open"><p>Hello world</p></template>
+        </test-element-unescaped>
         <f-template name="test-element">
             <template>{{text}}</template>
+        </f-template>
+        <f-template name="test-element-unescaped">
+            <template>{{{html}}}</template>
         </f-template>
         <script type="module" src="/binding/main.js"></script>
     </body>

@@ -4,15 +4,15 @@ import { ArrayObserver, lengthOf, Splice, Sort } from "./arrays.js";
 import { SubscriberSet } from "./notifier.js";
 import { Updates } from "./update-queue.js";
 
-const conditionalTimeout = function(condition) {
+const conditionalTimeout = function(condition, iteration = 0) {
     return new Promise(function(resolve) {
         setTimeout(() => {
-            if (!condition) {
-                conditionalTimeout(condition).then(resolve);
-            } else {
+            if (iteration === 10 || condition) {
                 resolve(true);
             }
-        });
+
+            conditionalTimeout(condition, iteration + 1);
+        }, 5);
     });
 }
 
