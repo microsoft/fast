@@ -1,5 +1,7 @@
 import {
     attr,
+    DOMAspect,
+    DOMSink,
     FAST,
     FASTElement,
     FASTElementDefinition,
@@ -16,11 +18,23 @@ import {
     getOperator,
     pathResolver,
     TemplateDirectiveBehaviorConfig,
+    transformInnerHTML,
 } from "./utilities.js";
 
 interface ResolvedStringsAndValues {
     strings: Array<string>;
     values: Array<any>;
+}
+
+function allow(
+    tagName: string | null,
+    aspect: DOMAspect,
+    aspectName: string,
+    sink: DOMSink
+): DOMSink {
+    return (target: Node, name: string, value: string, ...rest: any[]) => {
+        sink(target, name, value, ...rest);
+    };
 }
 
 /**
@@ -47,10 +61,12 @@ class TemplateElement extends FASTElement {
                     const template = this.getElementsByTagName("template").item(0);
 
                     if (template) {
-                        await this.resolveAllPartials(this.innerHTML);
+                        const innerHTML = await transformInnerHTML(this.innerHTML);
+
+                        await this.resolveAllPartials(innerHTML);
 
                         const { strings, values } = await this.resolveStringsAndValues(
-                            this.innerHTML
+                            innerHTML
                         );
 
                         if (registeredFastElement) {
@@ -95,7 +111,19 @@ class TemplateElement extends FASTElement {
         strings: Array<string>,
         values: Array<any>
     ): ViewTemplate<any, any> {
-        return ViewTemplate.create(strings, values, DOMPolicy.create());
+        return ViewTemplate.create(
+            strings,
+            values,
+            DOMPolicy.create({
+                guards: {
+                    aspects: {
+                        [DOMAspect.property]: {
+                            innerHTML: allow,
+                        },
+                    },
+                },
+            })
+        );
     }
 
     /**

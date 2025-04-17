@@ -162,6 +162,15 @@ Where the right operand can be either a reference to a value (string e.g. `{{foo
     <f-apply partial="test" value="{{items}}"></f-apply>
     ```
 
+#### Unescaped HTML
+
+You can add unescaped HTML using triple braces, this will create an additional `div` element as the HTML needs an element to bind to. Where possible it is advisable to not use unescaped HTML and instead use other binding techniques as well as partials.
+
+Example:
+```html
+{{{html}}}
+```
+
 ### Writing Components
 
 When writing components with the intention of using the declarative HTML syntax, it is imperative that components are written with styling and rendering of the component to be less reliant on any JavaScript state management. An example of this is relying on `elementInterals` state to style a component.
