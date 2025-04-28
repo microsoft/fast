@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 16 Apr 2025 15:53:12 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 28 Apr 2025 16:06:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.8
+
+Mon, 28 Apr 2025 16:06:00 GMT
+
+### Changes
+
+- Add unescaped bindings syntax interpretation (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.7
 

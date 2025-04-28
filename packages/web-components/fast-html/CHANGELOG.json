@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 28 Apr 2025 16:06:00 GMT",
+      "version": "1.0.0-alpha.8",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.8",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3217b8f88254fb703bd3aae6a408ba2de8b8f741",
+            "comment": "Add unescaped bindings syntax interpretation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Apr 2025 15:53:12 GMT",
       "version": "1.0.0-alpha.7",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.7",
