@@ -1,0 +1,15 @@
+id: binding - convert member expression
+valid:
+  - export const template = html`
+      <slot>{{foo}}</slot>
+    `;
+  - export const template = html`
+      <button id="{{id}}"></button>
+    `;
+invalid:
+  - export const template = html`
+      <slot>${x => x.foo}</slot>
+    `;
+  - export const template = html`
+      <button id="${x => x.id}"></button>
+    `;

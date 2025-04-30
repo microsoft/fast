@@ -1,0 +1,15 @@
+id: binding - convert attribute directives
+valid:
+  - export const template = html`
+      <slot f-slotted="{slottedNodes}"></slot>
+    `;
+  - export const template = html`
+      <slot f-children="{childNodes}"></slot>
+    `;
+invalid:
+  - export const template = html`
+      <slot ${slotted("slottedNodes")}></slot>
+    `;
+  - export const template = html`
+      <slot ${children("childNodes")}></slot>
+    `;

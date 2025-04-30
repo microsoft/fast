@@ -1,0 +1,33 @@
+# https://ast-grep.github.io/guide/rule-config.html#rule
+# from: ${x => x.foo}
+# to: {{foo}}
+id: binding - convert member expression
+language: typescript
+utils:
+  arrow-function:
+    has:
+      kind: arrow_function
+      all:
+        - matches: identifier
+        - matches: member-expression
+  member-expression:
+    has:
+      kind: member_expression
+      nthChild: 2
+      all:
+        - matches: identifier
+        - matches: property-identifier
+  identifier:
+    has:
+      kind: identifier
+      nthChild: 1
+  property-identifier:
+    has:
+      kind: property_identifier
+      nthChild: 2
+      pattern: $A
+rule:
+  kind: template_substitution
+  matches: arrow-function
+fix:
+  '{{$A}}'

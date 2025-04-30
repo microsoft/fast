@@ -1,0 +1,11 @@
+id: convert tag function to template literal
+valid:
+  - export const template = `
+      <slot></slot>
+    `;
+  - export const template = ``;
+invalid:
+  - export const template = html`
+      <slot></slot>
+    `;
+  - export const template = html``;

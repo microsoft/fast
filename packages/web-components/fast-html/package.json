@@ -17,7 +17,8 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "files": [
-    "./dist"
+    "./dist",
+    "./rules/*.yml"
   ],
   "scripts": {
     "clean": "tsc -b --clean src",
@@ -43,8 +44,9 @@
     "pretest": "npm run build && npm run build-server",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
-    "test": "npm run build-app && playwright test --config=playwright.config.cjs",
+    "test": "npm run build-app && playwright test --config=playwright.config.cjs && npm run test:rules",
     "test-server": "node server/dist/server.js",
+    "test:rules": "sg test --skip-snapshot-tests",
     "install-playwright-browsers": "npm run playwright install",
     "dev": "npm run build && npm run build-app && npm run build-server && npm run test-server"
   },
@@ -54,6 +56,7 @@
       "types": "./dist/dts/index.d.ts",
       "default": "./dist/esm/index.js"
     },
+    "./rules/*.yml": "./rules/*.yml",
     "./package.json": "./package.json"
   },
   "sideEffects": [
@@ -63,6 +66,7 @@
     "@microsoft/fast-element": "^2.2.1"
   },
   "devDependencies": {
+    "@ast-grep/cli": "^0.37.0",
     "@microsoft/api-extractor": "^7.47.0",
     "@microsoft/fast-element": "^2.2.1",
     "@playwright/test": "^1.49.0",
