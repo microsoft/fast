@@ -1,0 +1,38 @@
+# https://ast-grep.github.io/guide/rule-config.html#rule
+# from: ${ref("defaultSlot")}
+# to: f-ref="{defaultSlot}"
+id: binding - convert attribute directives
+language: typescript
+utils:
+  call-expression:
+    has:
+      nthChild: 1
+      kind: call_expression
+      all:
+        - matches: identifier
+        - matches: arguments
+  identifier:
+    has:
+      nthChild: 1
+      kind: identifier
+      pattern: $DIRECTIVE
+  arguments:
+    has:
+      kind: arguments
+      matches: string
+  string:
+    has:
+      kind: string
+      matches: string-fragment
+  string-fragment:
+    has:
+      kind: string_fragment
+      pattern: $STRING
+constraints:
+  DIRECTIVE:
+    regex: ref|slotted|children
+rule:
+  kind: template_substitution
+  matches: call-expression
+fix:
+  'f-$DIRECTIVE="{$STRING}"'

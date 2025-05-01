@@ -175,6 +175,34 @@ Example:
 
 When writing components with the intention of using the declarative HTML syntax, it is imperative that components are written with styling and rendering of the component to be less reliant on any JavaScript state management. An example of this is relying on `elementInterals` state to style a component.
 
+### Converting Components
+
+FAST Components written using the `html` tag template literal can be partially converted via the supplied `.yml` rules made for use with [ast-grep](https://ast-grep.github.io/).
+
+Example:
+
+```ts
+// before
+export const template = html`
+    <slot ${slotted("slottedNodes")}></slot>
+`;
+// after
+export const template = `
+    <slot f-slotted="{slottedNodes}"></slot>
+`;
+```
+
+Which creates a starting point for converting the tag template literals to the declarative HTML syntax.
+
+If your template includes JavaScript specific logic that does not conform to those rules, the fix may not be applied or may apply incorrectly. It is therefore suggested that complex logic instead leverages the custom elements JavaScript class.
+
+#### Available Rules
+
+- `@microsoft/fast-html/rules/attribute-directive.yml`
+- `@microsoft/fast-html/rules/call-expression-with-event-argument.yml`
+- `@microsoft/fast-html/rules/member-expression.yml`
+- `@microsoft/fast-html/rules/tag-function-to-template-literal.yml`
+
 ## Acknowledgements
 
 This project has been heavily inspired by [Handlebars](https://handlebarsjs.com/) and [Vue.js](https://vuejs.org/).

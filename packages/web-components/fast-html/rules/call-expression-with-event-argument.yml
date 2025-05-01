@@ -1,0 +1,41 @@
+# https://ast-grep.github.io/guide/rule-config.html#rule
+# from: ${(x, c) => x.foo(c.event)}
+# to: {foo(event)}
+id: binding - convert call expression with event argument
+language: typescript
+utils:
+  arrow-function:
+    has:
+      kind: arrow_function
+      matches: call-expression
+  call-expression:
+    has:
+      kind: call_expression
+      all:
+        - matches: handler-arguments
+        - matches: handler-expression
+  handler-expression:
+    has:
+      kind: member_expression
+      matches: handler-expression-property
+  handler-expression-property:
+    has:
+      kind: property_identifier
+      pattern: $A
+  handler-arguments:
+    has:
+      kind: arguments
+      matches: handler-arguments-member-expression
+  handler-arguments-member-expression:
+    has:
+      kind: member_expression
+      matches: handler-arguments-property-identifier
+  handler-arguments-property-identifier:
+    has:
+      kind: property_identifier
+      pattern: $B
+rule:
+  kind: template_substitution
+  matches: arrow-function
+fix:
+  '{$A($B)}'

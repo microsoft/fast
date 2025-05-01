@@ -1,0 +1,16 @@
+# https://ast-grep.github.io/guide/rule-config.html#rule
+# from: export const template = html`<slot></slot>`
+# to: `<slot></slot>`
+id: convert tag function to template literal
+language: typescript
+utils:
+  is-tag-template:
+    has:
+      kind: template_string
+      pattern: $B
+rule:
+  kind: call_expression
+  matches: is-tag-template
+  pattern: $A
+fix:
+  '$B'

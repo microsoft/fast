@@ -1,0 +1,15 @@
+id: binding - convert call expression with event argument
+valid:
+  - export const template = html`
+      <button @click="{foo(event)}"></button>
+    `;
+  - export const template = html`
+      <input @focus="{foo(event)}"/>
+    `;
+invalid:
+  - export const template = html`
+      <button @click="${(x, c) => x.foo(c.event)}"></button>
+    `;
+  - export const template = html`
+      <input @focus="${(x, c) => x.foo(c.event)}"/>
+    `;
