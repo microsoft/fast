@@ -311,6 +311,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     // (undocumented)
     protected renderTemplate(template: ElementViewTemplate | null | undefined): void;
     static setStrategy(strategy: ElementControllerStrategy): void;
+    // (undocumented)
+    get shadowOptions(): ShadowRootOptions | undefined;
+    set shadowOptions(value: ShadowRootOptions | undefined);
     readonly source: TElement;
     get sourceLifetime(): SourceLifetime | undefined;
     // Warning: (ae-forgotten-export) The symbol "Stages" needs to be exported by the entry point index.d.ts
@@ -456,7 +459,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
-    readonly shadowOptions?: ShadowRootOptions;
+    shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate;
     readonly type: TType;

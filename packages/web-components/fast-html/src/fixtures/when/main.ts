@@ -85,8 +85,60 @@ class TestElementAnd extends FASTElement {
 }
 TestElementAnd.define({
     name: "test-element-and",
+    shadowOptions: null,
 });
 
-TemplateElement.define({
+TemplateElement.options({
+    "test-element": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-not": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-equals": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-not-equals": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-ge": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-gt": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-le": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-lt": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-or": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-and": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+}).define({
     name: "f-template",
 });
