@@ -38,6 +38,9 @@ function allow(
     };
 }
 
+/**
+ * A dictionary of element options the TemplateElement will use to update the registered element
+ */
 interface ElementOptions {
     [key: string]: {
         shadowOptions: ShadowRootOptions | undefined;
@@ -55,7 +58,7 @@ class TemplateElement extends FASTElement {
     public name?: string;
 
     /**
-     * The shadowRoot options per custom element
+     * A dictionary of custom element options
      */
     public static elementOptions: ElementOptions = {};
 
