@@ -174,9 +174,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     }
 
     public set shadowOptions(value: ShadowRootOptions | undefined) {
-        this._shadowRootOptions = value;
+        // options on the shadowRoot can only be set once
+        if (this._shadowRootOptions === void 0 && value !== void 0) {
+            this._shadowRootOptions = value;
 
-        if (value !== void 0) {
             let shadowRoot = this.source.shadowRoot;
 
             if (shadowRoot) {
