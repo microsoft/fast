@@ -13,9 +13,11 @@ TestElement.define({
     shadowOptions: null,
 });
 
-TemplateElement.templateShadowOptions({
+TemplateElement.options({
     "test-element": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
 }).define({
     name: "f-template",

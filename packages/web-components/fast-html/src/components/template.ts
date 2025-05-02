@@ -38,6 +38,12 @@ function allow(
     };
 }
 
+interface ElementOptions {
+    [key: string]: {
+        shadowOptions: ShadowRootOptions | undefined;
+    };
+}
+
 /**
  * The <f-template> custom element that will provide view logic to the element
  */
@@ -51,16 +57,12 @@ class TemplateElement extends FASTElement {
     /**
      * The shadowRoot options per custom element
      */
-    public static elementShadowRootOptions: {
-        [key: string]: ShadowRootOptions | undefined;
-    } = {};
+    public static elementOptions: ElementOptions = {};
 
     private partials: { [key: string]: ViewTemplate } = {};
 
-    public static templateShadowOptions(
-        elementShadowRootOptions: { [key: string]: ShadowRootOptions | undefined } = {}
-    ) {
-        this.elementShadowRootOptions = elementShadowRootOptions;
+    public static options(elementOptions: ElementOptions = {}) {
+        this.elementOptions = elementOptions;
 
         return this;
     }
@@ -91,9 +93,9 @@ class TemplateElement extends FASTElement {
                                 this.resolveTemplateOrBehavior(strings, values);
                             // set shadow options as defined by the f-template
                             registeredFastElement.shadowOptions =
-                                TemplateElement.elementShadowRootOptions[
+                                TemplateElement.elementOptions[
                                     this.name as string
-                                ];
+                                ]?.shadowOptions;
                         }
                     } else {
                         throw FAST.error(Message.noTemplateProvided, { name: this.name });

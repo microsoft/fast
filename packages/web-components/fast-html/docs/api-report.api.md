@@ -11,14 +11,11 @@ import { ShadowRootOptions } from '@microsoft/fast-element';
 export class TemplateElement extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
-    static elementShadowRootOptions: {
-        [key: string]: ShadowRootOptions | undefined;
-    };
+    // Warning: (ae-forgotten-export) The symbol "ElementOptions" needs to be exported by the entry point index.d.ts
+    static elementOptions: ElementOptions;
     name?: string;
     // (undocumented)
-    static templateShadowOptions(elementShadowRootOptions?: {
-        [key: string]: ShadowRootOptions | undefined;
-    }): typeof TemplateElement;
+    static options(elementOptions?: ElementOptions): typeof TemplateElement;
 }
 
 // (No @packageDocumentation comment for this package)

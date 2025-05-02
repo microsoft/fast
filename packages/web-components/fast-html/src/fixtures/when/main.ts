@@ -88,36 +88,56 @@ TestElementAnd.define({
     shadowOptions: null,
 });
 
-TemplateElement.templateShadowOptions({
+TemplateElement.options({
     "test-element": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-not": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-equals": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-not-equals": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-ge": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-gt": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-le": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-lt": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-or": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
     "test-element-and": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        },
     },
 }).define({
     name: "f-template",

@@ -23,16 +23,18 @@ In your JS bundle you will need to include the `@microsoft/fast-html` package:
 
 ```typescript
 import { TemplateElement } from "@microsoft/fast-html";
-import { TestElement } from "./my-custom-element";
+import { MyCustomElement } from "./my-custom-element";
 
 MyCustomElement.define({
     name: "my-custom-element",
     shadowOptions: null,
 });
 
-TemplateElement.templateShadowOptions({
+TemplateElement.options({
     "my-custom-element": {
-        mode: "closed",
+        shadowOptions: {
+            mode: "closed",
+        }
     },
 }).define({
     name: "f-template",
