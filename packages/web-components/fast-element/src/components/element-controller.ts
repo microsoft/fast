@@ -14,7 +14,7 @@ import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import { UnobservableMutationObserver } from "../utilities.js";
-import { FASTElementDefinition } from "./fast-definitions.js";
+import { FASTElementDefinition, ShadowRootOptions } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { HydrationMarkup, isHydratable } from "./hydration.js";
 
@@ -61,6 +61,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     protected needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
+    private _shadowRootOptions: ShadowRootOptions | undefined;
     protected stage: Stages = Stages.disconnected;
     /**
      * A guard against connecting behaviors multiple times
@@ -168,6 +169,28 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    public get shadowOptions(): ShadowRootOptions | undefined {
+        return this._shadowRootOptions;
+    }
+
+    public set shadowOptions(value: ShadowRootOptions | undefined) {
+        this._shadowRootOptions = value;
+
+        if (value !== void 0) {
+            let shadowRoot = this.source.shadowRoot;
+
+            if (shadowRoot) {
+                this.hasExistingShadowRoot = true;
+            } else {
+                shadowRoot = this.source.attachShadow(value);
+
+                if (value.mode === "closed") {
+                    shadowRoots.set(this.source, shadowRoot);
+                }
+            }
+        }
+    }
+
     /**
      * The main set of styles used for the component, independent
      * of any dynamically added styles.
@@ -217,22 +240,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         this.source = element;
         this.definition = definition;
-
-        const shadowOptions = definition.shadowOptions;
-
-        if (shadowOptions !== void 0) {
-            let shadowRoot = element.shadowRoot;
-
-            if (shadowRoot) {
-                this.hasExistingShadowRoot = true;
-            } else {
-                shadowRoot = element.attachShadow(shadowOptions);
-
-                if (shadowOptions.mode === "closed") {
-                    shadowRoots.set(element, shadowRoot);
-                }
-            }
-        }
+        this.shadowOptions = definition.shadowOptions;
 
         // Capture any observable values that were set by the binding engine before
         // the browser upgraded the element. Then delete the property since it will
@@ -562,6 +570,16 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 },
             },
             "template"
+        );
+
+        Observable.getNotifier(definition).subscribe(
+            {
+                handleChange: () => {
+                    ElementController.forCustomElement(element as FASTElement, true);
+                    (element as FASTElement).$fastController.connect();
+                },
+            },
+            "shadowOptions"
         );
 
         return ((element as any).$fastController = new elementControllerStrategy(

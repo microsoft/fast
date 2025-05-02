@@ -6,6 +6,7 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
+    ShadowRootOptions,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
@@ -47,7 +48,22 @@ class TemplateElement extends FASTElement {
     @attr
     public name?: string;
 
+    /**
+     * The shadowRoot options per custom element
+     */
+    public static elementShadowRootOptions: {
+        [key: string]: ShadowRootOptions | undefined;
+    } = {};
+
     private partials: { [key: string]: ViewTemplate } = {};
+
+    public static templateShadowOptions(
+        elementShadowRootOptions: { [key: string]: ShadowRootOptions | undefined } = {}
+    ) {
+        this.elementShadowRootOptions = elementShadowRootOptions;
+
+        return this;
+    }
 
     connectedCallback(): void {
         super.connectedCallback();
@@ -70,6 +86,11 @@ class TemplateElement extends FASTElement {
                         );
 
                         if (registeredFastElement) {
+                            // set shadow options as defined by the f-template
+                            registeredFastElement.shadowOptions =
+                                TemplateElement.elementShadowRootOptions[
+                                    this.name as string
+                                ];
                             // all new elements will get the updated template
                             registeredFastElement.template =
                                 this.resolveTemplateOrBehavior(strings, values);

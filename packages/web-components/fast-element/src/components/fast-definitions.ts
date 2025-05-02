@@ -133,7 +133,7 @@ export class FASTElementDefinition<
     /**
      * Options controlling the creation of the custom element's shadow DOM.
      */
-    public readonly shadowOptions?: ShadowRootOptions;
+    public shadowOptions?: ShadowRootOptions;
 
     /**
      * Options controlling how the custom element is defined with the platform.
@@ -257,3 +257,4 @@ export class FASTElementDefinition<
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");
+Observable.defineProperty(FASTElementDefinition.prototype, "shadowOptions");

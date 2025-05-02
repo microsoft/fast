@@ -57,11 +57,19 @@ describe("The ElementController", () => {
             expect(shadowRoot).to.be.instanceOf(ShadowRoot);
         });
 
-        it("if shadow options nullled, does not create shadow root", () => {
+        it("if shadow options nulled, does not create shadow root", () => {
             const { shadowRoot } = createController({ shadowOptions: null });
             expect(shadowRoot).to.equal(null);
         });
 
+        it("if shadow options updated, apply updates", () => {
+            const { element, shadowRoot, controller } = createController({ shadowOptions: null });
+            expect(shadowRoot).to.equal(null);
+
+            controller.definition.shadowOptions = { mode: "open" };
+
+            expect(element.shadowRoot).not.to.equal(null);
+        });
         it("if shadow options closed, does not expose shadow root", () => {
             const { shadowRoot } = createController({
                 shadowOptions: { mode: "closed" },

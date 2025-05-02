@@ -5,12 +5,20 @@
 ```ts
 
 import { FASTElement } from '@microsoft/fast-element';
+import { ShadowRootOptions } from '@microsoft/fast-element';
 
 // @public
 export class TemplateElement extends FASTElement {
     // (undocumented)
     connectedCallback(): void;
+    static elementShadowRootOptions: {
+        [key: string]: ShadowRootOptions | undefined;
+    };
     name?: string;
+    // (undocumented)
+    static templateShadowOptions(elementShadowRootOptions?: {
+        [key: string]: ShadowRootOptions | undefined;
+    }): typeof TemplateElement;
 }
 
 // (No @packageDocumentation comment for this package)

@@ -9,8 +9,13 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
+    shadowOptions: null,
 });
 
-TemplateElement.define({
+TemplateElement.templateShadowOptions({
+    "test-element": {
+        mode: "closed",
+    },
+}).define({
     name: "f-template",
 });

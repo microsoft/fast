@@ -14,8 +14,16 @@ class TestElementUnescaped extends FASTElement {
 }
 TestElementUnescaped.define({
     name: "test-element-unescaped",
+    shadowOptions: null,
 });
 
-TemplateElement.define({
+TemplateElement.templateShadowOptions({
+    "test-element": {
+        mode: "closed",
+    },
+    "test-element-unescaped": {
+        mode: "closed",
+    },
+}).define({
     name: "f-template",
 });
