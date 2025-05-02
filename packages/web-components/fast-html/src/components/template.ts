@@ -86,14 +86,14 @@ class TemplateElement extends FASTElement {
                         );
 
                         if (registeredFastElement) {
+                            // all new elements will get the updated template
+                            registeredFastElement.template =
+                                this.resolveTemplateOrBehavior(strings, values);
                             // set shadow options as defined by the f-template
                             registeredFastElement.shadowOptions =
                                 TemplateElement.elementShadowRootOptions[
                                     this.name as string
                                 ];
-                            // all new elements will get the updated template
-                            registeredFastElement.template =
-                                this.resolveTemplateOrBehavior(strings, values);
                         }
                     } else {
                         throw FAST.error(Message.noTemplateProvided, { name: this.name });
