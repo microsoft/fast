@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 05 May 2025 00:33:41 GMT",
+      "version": "1.0.0-alpha.9",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.9",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "9ccfe094e922753556ab041f833cec716402cdd3",
+            "comment": "Add an options method for the TemplateElement that can pass additional configuration details to components"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "fd1560393641a9b1fe96fbf073ac95794cddabf1",
+            "comment": "Add some utilities for converting html tag templates"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.3.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 28 Apr 2025 16:06:00 GMT",
       "version": "1.0.0-alpha.8",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.8",

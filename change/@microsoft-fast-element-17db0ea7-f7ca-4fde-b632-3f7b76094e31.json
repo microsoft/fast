@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Allow shadowOptions to be observed",
-  "packageName": "@microsoft/fast-element",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

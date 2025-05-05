@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 28 Apr 2025 16:06:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 05 May 2025 00:33:41 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.9
+
+Mon, 05 May 2025 00:33:41 GMT
+
+### Changes
+
+- Add an options method for the TemplateElement that can pass additional configuration details to components (7559015+janechu@users.noreply.github.com)
+- Add some utilities for converting html tag templates (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.3.0
 
 ## 1.0.0-alpha.8
 
