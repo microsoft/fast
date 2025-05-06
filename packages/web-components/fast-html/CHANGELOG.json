@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 06 May 2025 20:54:32 GMT",
+      "version": "1.0.0-alpha.10",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.10",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "0975c3f0a7af423d3b1ec3a3083e38d5e9ce28be",
+            "comment": "Fixes an issue with transforming innerHTML where the inner contents were not slicing correctly"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 05 May 2025 00:33:41 GMT",
       "version": "1.0.0-alpha.9",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.9",
