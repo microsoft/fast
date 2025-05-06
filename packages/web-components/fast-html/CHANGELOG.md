@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 05 May 2025 00:33:41 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 06 May 2025 20:54:32 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.10
+
+Tue, 06 May 2025 20:54:32 GMT
+
+### Changes
+
+- Fixes an issue with transforming innerHTML where the inner contents were not slicing correctly (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.9
 
