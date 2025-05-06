@@ -217,10 +217,13 @@ test.describe("utilities", async () => {
         test("should resolve multiple unescaped data bindings", async () => {
             expect(transformInnerHTML(`{{{foo}}}{{{bar}}}`)).toEqual(`<div :innerHTML="{{foo}}"></div><div :innerHTML="{{bar}}"></div>`);
         });
-        test("should resolve a unescaped data bindings in a mix of other data content bindings", async () => {
+        test("should resolve an unescaped data bindings in a mix of other data content bindings", async () => {
             expect(transformInnerHTML(`{{text1}}{{{foo}}}{{text2}}{{{bar}}}{{text3}}`)).toEqual(`{{text1}}<div :innerHTML="{{foo}}"></div>{{text2}}<div :innerHTML="{{bar}}"></div>{{text3}}`);
         });
-        test("should resolve a unescaped data bindings in a mix of other data attribute bindings and nesting", async () => {
+        test("should resolve default data bindings in sequence", async () => {
+            expect(transformInnerHTML(`{{text1}}{{text2}}`)).toEqual(`{{text1}}{{text2}}`);
+        });
+        test("should resolve an unescaped data bindings in a mix of other data attribute bindings and nesting", async () => {
             expect(
                 transformInnerHTML(
                     `<div data-foo="{{text1}}">{{{foo}}}</div><div data-bar="{{text2}}"></div>{{{bar}}}<div data-bat="{{text3}}"></div>`
