@@ -594,7 +594,7 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
 
         return transformInnerHTML(
             transformedInnerHTML,
-            index + nextBinding.closingStartIndex - 2
+            index + nextBinding.closingEndIndex
         );
     } else if (nextBinding) {
         return transformInnerHTML(

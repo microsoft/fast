@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fixes an issue with transforming innerHTML where the inner contents were not slicing correctly",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
