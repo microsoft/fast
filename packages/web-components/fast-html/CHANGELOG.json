@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 12 May 2025 00:33:45 GMT",
+      "version": "1.0.0-alpha.10",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.10",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "a094417ba018c0cfbb8b5a720e177ec86c8ca53f",
+            "comment": "Manually bumping due to access token issue"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 06 May 2025 20:54:32 GMT",
       "version": "1.0.0-alpha.10",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.10",
