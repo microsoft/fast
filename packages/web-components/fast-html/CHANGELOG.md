@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 06 May 2025 20:54:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 14 May 2025 05:27:34 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.11
+
+Wed, 14 May 2025 05:27:34 GMT
+
+### Changes
+
+- Resolve chained expressions and fix an issue with single quotes in f-when binding (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.10
 

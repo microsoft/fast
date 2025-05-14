@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 14 May 2025 05:27:34 GMT",
+      "version": "1.0.0-alpha.11",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.11",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f3cb730f094274dbf651db6d93f3a9718535d500",
+            "comment": "Resolve chained expressions and fix an issue with single quotes in f-when binding"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 12 May 2025 00:33:45 GMT",
       "version": "1.0.0-alpha.10",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.10",
