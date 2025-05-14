@@ -469,6 +469,7 @@ function isOperandValue(operand: string): {
     isValue: boolean;
 } {
     try {
+        operand = operand.replaceAll("'", '"');
         const value = JSON.parse(operand);
 
         return {
@@ -497,32 +498,63 @@ function isOperandValue(operand: string): {
  * - or (||)
  * - and (&&) and the HTML character entity (&amp;&amp;)
  */
-type Operator =
-    | "access"
-    | "!"
-    | "=="
-    | "!="
-    | ">="
-    | ">"
-    | "<="
-    | "<"
-    | "||"
-    | "&&"
-    | "&amp;&amp;";
+type Operator = "access" | "!" | "==" | "!=" | ">=" | ">" | "<=" | "<";
+type ChainingOperator = "||" | "&&" | "&amp;&amp;";
 
-interface OperatorConfig {
+interface Expression {
     operator: Operator;
     left: string;
     right: string | boolean | number | null;
     rightIsValue: boolean | null;
 }
 
+export interface ChainedExpression {
+    operator?: ChainingOperator;
+    expression: Expression;
+    next?: ChainedExpression;
+}
+
 /**
- * Get the operator used.
- * @param value the binded value
- * @returns Operator
+ * Gets the expression chain as a configuration object
+ * @param value - The binding string value
+ * @returns - A configuration object containing information about the expression
  */
-export function getOperator(value: string): OperatorConfig {
+export function getExpressionChain(value: string): ChainedExpression | void {
+    const split = value.split(" ");
+    let expressionString: string = "";
+    let chainedExpression;
+
+    // split expressions by chaining operators
+    split.forEach((splitItem, index) => {
+        if (splitItem === "&&" || splitItem === "||" || splitItem === "&amp;&amp;") {
+            chainedExpression = {
+                expression: getExpression(expressionString),
+                next: {
+                    operator: splitItem,
+                    ...getExpressionChain(split.slice(index + 1).join(" ")),
+                },
+            };
+        } else {
+            expressionString = `${
+                expressionString ? `${expressionString} ` : ""
+            }${splitItem}`;
+        }
+    });
+
+    if (chainedExpression) {
+        return chainedExpression;
+    }
+
+    if (expressionString) {
+        return {
+            expression: getExpression(expressionString),
+        };
+    }
+
+    return void 0;
+}
+
+function getExpression(value: string): Expression {
     if (value[0] === "!") {
         return {
             operator: "!",
@@ -552,6 +584,95 @@ export function getOperator(value: string): OperatorConfig {
         right: null,
         rightIsValue: null,
     };
+}
+
+/**
+ * Resolve a single expression
+ * @param x - The context
+ * @param c - The parent context
+ * @param self - Where the first item in the path path refers to the item itself (used by repeat).
+ * @param expression - The expression being evaluated
+ * @returns - A function resolving the binding for this expression
+ */
+function resolveExpression(
+    x: boolean,
+    c: any,
+    self: boolean,
+    expression: Expression
+): any {
+    const { operator, left, right, rightIsValue } = expression;
+
+    switch (operator) {
+        case "!":
+            return !pathResolver(left, self)(x, c);
+        case "==":
+            return (
+                pathResolver(left, self)(x, c) ==
+                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+            );
+        case "!=":
+            return (
+                pathResolver(left, self)(x, c) !=
+                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+            );
+        case ">=":
+            return (
+                pathResolver(left, self)(x, c) >=
+                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+            );
+        case ">":
+            return (
+                pathResolver(left, self)(x, c) >
+                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+            );
+        case "<=":
+            return (
+                pathResolver(left, self)(x, c) <=
+                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+            );
+        case "<":
+            return (
+                pathResolver(left, self)(x, c) <
+                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+            );
+        default:
+            return pathResolver(left, self)(x, c);
+    }
+}
+
+/**
+ * Resolve a chained expression
+ * @param x - The context
+ * @param c - The parent context
+ * @param self - Where the first item in the path path refers to the item itself (used by repeat).
+ * @param expression - The expression being evaluated
+ * @param next - The next expression to be chained
+ * @returns - A resolved return value for a binding
+ */
+function resolveChainedExpression(
+    x: boolean,
+    c: any,
+    self: boolean,
+    expression: Expression,
+    next?: ChainedExpression
+): any {
+    if (next) {
+        switch (next.operator) {
+            case "&&":
+            case "&amp;&amp;":
+                return (
+                    resolveExpression(x, c, self, expression) &&
+                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                );
+            case "||":
+                return (
+                    resolveExpression(x, c, self, expression) ||
+                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                );
+        }
+    }
+
+    return resolveExpression(x, c, self, expression);
 }
 
 /**
@@ -604,4 +725,18 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
     }
 
     return transformedInnerHTML;
+}
+
+/**
+ * Resolves f-when
+ * @param self - Where the first item in the path path refers to the item itself (used by repeat).
+ * @param chainedExpression - The chained expression which includes the expression and the next expression
+ * if there is another in the chain
+ * @returns - A binding that resolves the chained expression logic
+ */
+export function resolveWhen(
+    self: boolean,
+    { expression, next }: ChainedExpression
+): (x: boolean, c: any) => any {
+    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression, next);
 }
