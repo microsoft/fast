@@ -13,11 +13,13 @@ import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 import { Message } from "../interfaces.js";
 import {
     AttributeDirective,
+    ChainedExpression,
     DataBindingBehaviorConfig,
     getAllPartials,
+    getExpressionChain,
     getNextBehavior,
-    getOperator,
     pathResolver,
+    resolveWhen,
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -176,75 +178,12 @@ class TemplateElement extends FASTElement {
 
                     const { when } = await import("@microsoft/fast-element");
 
-                    const { operator, left, right, rightIsValue } = getOperator(
-                        behaviorConfig.value
-                    );
-                    let whenLogic = (x: boolean, c: any) =>
-                        pathResolver(left, self)(x, c);
+                    const expressionChain = getExpressionChain(behaviorConfig.value);
 
-                    switch (operator) {
-                        case "!":
-                            whenLogic = (x: boolean, c: any) =>
-                                !pathResolver(left, self)(x, c);
-                            break;
-                        case "==":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) ==
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case "!=":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) !=
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case "&&":
-                        case "&amp;&amp;":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) &&
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case "||":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) ||
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case ">=":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) >=
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case ">":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) >
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case "<=":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) <=
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                        case "<":
-                            whenLogic = (x: boolean, c: any) =>
-                                pathResolver(left, self)(x, c) <
-                                (rightIsValue
-                                    ? right
-                                    : pathResolver(right as string, self)(x, c));
-                            break;
-                    }
+                    const whenLogic = resolveWhen(
+                        self,
+                        expressionChain as ChainedExpression
+                    );
 
                     externalValues.push(
                         when(whenLogic, this.resolveTemplateOrBehavior(strings, values))

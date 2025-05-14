@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag, pathResolver, transformInnerHTML } from "./utilities.js";
+import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag, pathResolver, transformInnerHTML, getExpressionChain } from "./utilities.js";
 
 test.describe("utilities", async () => {
     test.describe("content", async () => {
@@ -238,6 +238,96 @@ test.describe("utilities", async () => {
                 )).toEqual(
                     `<button @click="{handleNoArgsClick()}">No arguments</button>`
                 );
+        });
+    });
+
+    test.describe("getExpressionChain", async () => {
+        test("should resolve a truthy value", async () => {
+            expect(getExpressionChain("foo")).toEqual({
+                expression: {
+                    operator: "access",
+                    left: "foo",
+                    right: null,
+                    rightIsValue: null,
+                }
+            });
+        });
+        test("should resolve a falsy value", async () => {
+            expect(getExpressionChain("!foo")).toEqual({
+                expression: {
+                    operator: "!",
+                    left: "foo",
+                    right: null,
+                    rightIsValue: null,
+                }
+            });
+        });
+        test("should resolve a path not equal to string value", async () => {
+            expect(getExpressionChain("foo != 'test'")).toEqual({
+                expression: {
+                    operator: "!=",
+                    left: "foo",
+                    right: "test",
+                    rightIsValue: true,
+                }
+            });
+        });
+        test("should resolve a path not equal to boolean value", async () => {
+            expect(getExpressionChain("foo != false")).toEqual({
+                expression: {
+                    operator: "!=",
+                    left: "foo",
+                    right: false,
+                    rightIsValue: true,
+                }
+            });
+        });
+        test("should resolve a path not equal to numerical value", async () => {
+            expect(getExpressionChain("foo != 5")).toEqual({
+                expression: {
+                    operator: "!=",
+                    left: "foo",
+                    right: 5,
+                    rightIsValue: true,
+                }
+            });
+        });
+        test("should resolve chained expressions", async () => {
+            expect(getExpressionChain("foo != 'bat' && bar == 'baz'")).toEqual({
+                expression: {
+                    operator: "!=",
+                    left: "foo",
+                    right: "bat",
+                    rightIsValue: true,
+                },
+                next: {
+                    operator: "&&",
+                    expression: {
+                        operator: "==",
+                        left: "bar",
+                        right: "baz",
+                        rightIsValue: true,
+                    }
+                }
+            });
+
+            expect(getExpressionChain("foo && bar")).toEqual({
+                expression: {
+                    operator: "access",
+                    left: "foo",
+                    right: null,
+                    rightIsValue: null,
+                },
+                next: {
+                    operator: "&&",
+                    expression: {
+                        operator: "access",
+                        left: "bar",
+                        right: null,
+                        rightIsValue: null,
+                    }
+                }
+            });
         });
     });
 });
