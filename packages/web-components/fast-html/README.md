@@ -217,6 +217,10 @@ If your template includes JavaScript specific logic that does not conform to tho
 - `@microsoft/fast-html/rules/member-expression.yml`
 - `@microsoft/fast-html/rules/tag-function-to-template-literal.yml`
 
+### Non-browser HTML rendering
+
+One of the benefits of FAST declarative HTML templates is that the server can be stack agnostic as JavaScript does not need to be interpreted. FASTElement will expect hydratable content however and uses comments and datasets for tracking the binding logic. For more information on what that markup should look like, as well as an example of how initial state may be applied, read our [documentation](./RENDERING.md) to understand what markup should be generated for a hydratable experience.
+
 ## Acknowledgements
 
 This project has been heavily inspired by [Handlebars](https://handlebarsjs.com/) and [Vue.js](https://vuejs.org/).
