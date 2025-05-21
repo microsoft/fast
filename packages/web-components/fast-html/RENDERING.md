@@ -150,7 +150,7 @@ A content binding syntax can be broken into parts:
 - `fe-b` - declares this as a FASTElement Binding.
 - `start|end` - indicates the start or end of the binding.
 - `number` - the number in order in the template of bindings, these increment for every binding.
-- `UUID` - a unique string identifying the binding.
+- `UUID` - a unique string identifying the binding. The examples shown here have been generated from a 10 character long string used in the [FAST SSR package](https://github.com/microsoft/fast/blob/main/packages/web-components/fast-ssr/src/template-parser/id-generator.ts).
 
 Separator:
 - `$$` - a separator string between the parts.
