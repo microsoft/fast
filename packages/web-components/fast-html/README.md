@@ -43,7 +43,7 @@ TemplateElement.options({
 
 This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component as well as the `shadowOptions` for any element an `<f-template>` has been used to define.
 
-It is necessary to set the initial `shadowOptions` of your custom elements to `null` otherwise a shadowRoot will be attached and cause a FOUC (Flash Of Unstyled Content).
+It is necessary to set the initial `shadowOptions` of your custom elements to `null` otherwise a shadowRoot will be attached and cause a FOUC (Flash Of Unstyled Content). For more information about how this affects hydration, check out our [document](./RENDERING.md#setting-shadow-options) on rendering DOM from non-browser.
 
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 

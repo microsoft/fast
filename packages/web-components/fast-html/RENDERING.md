@@ -132,6 +132,32 @@ Notice that there is a `defer-hydration` attribute that gets removed once initia
 
 Depending on your application structure it might be more maintainable to create an abstract class that extends `FASTElement` to re-use the service logic and the removal of `defer-hydration`.
 
+## Setting shadow options
+
+You may notice in the example above we have set the `shadowOptions` to `null`, when using `define` on a `FASTElement` you must set your `shadowOptions` to `null` if you intend to set them later - they can only be set once. This way `FASTElement` will delay the creation of a shadowRoot so your declarative shadow DOM will not immediately get overwritten causing a FOUC (Flash of Unstyled Content). Then, when initializing the `TemplateElement` from `@microsoft/fast-html`, be sure to pass `shadowOptions` as a part of the component options so they can be set correctly and the `defer-hydration` can be removed.
+
+Example:
+```typescript
+import { FASTElement } from "@microsoft/fast-element";
+
+class MyComponent extends FASTElement {}
+
+MyComponent.define({
+    name: "my-component",
+    shadowOptions: null
+});
+
+TemplateElement.options({
+    "my-component": {
+        shadowOptions: {
+            mode: "open"
+        }
+    }
+}).define({
+    name: "f-template",
+});
+```
+
 ## Hydration Comments and Datasets
 
 When hydrating the HTML FAST uses the `HydratableElementController` which can be included in your bundle like so:
