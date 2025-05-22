@@ -163,13 +163,13 @@ An attribute binding is tracked using a dataset attribute with the name `data-fe
 
 Content bindings such as:
 ```html
-<h1>{{title}}</h1>
+<h1>{{text}}</h1>
 ```
 
 When combined with state such as:
 ```json
 {
-    "title": "Hello world"
+    "text": "Hello world"
 }
 ```
 
@@ -182,25 +182,25 @@ Should result in:
 
 Attribute binding such as:
 ```html
-<h1 title="{{title}}"></h1>
+<h1 text="{{text}}"></h1>
 ```
 
 Should result in:
 
 ```html
-<h1 data-fe-b="0" title="Hello world"></h1>
+<h1 data-fe-b="0" text="Hello world"></h1>
 ```
 
 If multiple attribute bindings exist on the same element, these will be separated by a space.
 
 Example:
 ```html
-<h1 title="{{title}}" subtitle="{{subtitle}}"></h1>
+<h1 text="{{text}}" subtitle="{{subtitle}}"></h1>
 ```
 
 Expected result:
 ```html
-<h1 data-fe-b="0 1" title="Hello" subtitle="world"></h1>
+<h1 data-fe-b="0 1" text="Hello" subtitle="world"></h1>
 ```
 
 **Mixed attribute and content example**
@@ -208,7 +208,7 @@ Expected result:
 Multiple attributes and content bindings such as:
 ```html
 <div show="{{show}}" appearance="{{appearance}}">
-    <h1>{{title}}</h1>
+    <h1>{{text}}</h1>
     <span>{{subtitle}}</span>
 </div>
 ```
