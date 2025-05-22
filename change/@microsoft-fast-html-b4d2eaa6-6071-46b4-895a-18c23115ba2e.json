@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Add information about non-browser rendering of hydratable markup and initial state",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
