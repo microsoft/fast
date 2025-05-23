@@ -173,7 +173,8 @@ class TemplateElement extends FASTElement {
                         innerHTML.slice(
                             behaviorConfig.openingTagEndIndex,
                             behaviorConfig.closingTagStartIndex
-                        )
+                        ),
+                        self
                     );
 
                     const { when } = await import("@microsoft/fast-element");

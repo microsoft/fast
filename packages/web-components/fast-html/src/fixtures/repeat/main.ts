@@ -12,8 +12,31 @@ TestElement.define({
     shadowOptions: null,
 });
 
+class TestElementInnerWhen extends FASTElement {
+    @observable
+    list: Array<any> = [
+        {
+            show: true,
+            text: "Foo",
+        },
+        {
+            show: false,
+            text: "Bar",
+        },
+    ];
+}
+TestElementInnerWhen.define({
+    name: "test-element-inner-when",
+    shadowOptions: null,
+});
+
 TemplateElement.options({
     "test-element": {
+        shadowOptions: {
+            mode: "closed",
+        },
+    },
+    "test-element-inner-when": {
         shadowOptions: {
             mode: "closed",
         },

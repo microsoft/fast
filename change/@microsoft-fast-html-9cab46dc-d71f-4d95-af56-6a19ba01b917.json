@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Keep a f-repeat context when creating bindings for f-when",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

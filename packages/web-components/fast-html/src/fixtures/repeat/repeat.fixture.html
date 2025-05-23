@@ -9,8 +9,26 @@
         <f-template name="test-element">
             <template><ul><f-repeat value="{{item in list}}"><li>{{item}} - {{../parent}}</li></f-repeat></ul></template>
         </f-template>
+        <f-template name="test-element-inner-when">
+            <template>
+                <ul>
+                    <f-repeat value="{{item in list}}">
+                        <f-when value="{{item.show}}">
+                            <li>{{item.text}}</li>
+                        </f-when>
+                    </f-repeat>
+                </ul>
+            </template>
+        </f-template>
         <test-element>
             <template shadowrootmode="open"><ul><li>Foo - Bat</li><li>Bar - Bat</li></ul></template>
         </test-element>
+        <test-element-inner-when>
+            <template shadowrootmode="open">
+                <ul>
+                    <li>Foo</li>
+                </ul>
+            </template>
+        </test-element-inner-when>
     </body>
 </html>
