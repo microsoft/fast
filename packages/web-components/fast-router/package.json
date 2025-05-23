@@ -48,7 +48,7 @@
   "devDependencies": {
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
     "@microsoft/api-extractor": "^7.47.0",
-    "@microsoft/fast-element": "^2.3.0",
+    "@microsoft/fast-element": "^2.4.0",
     "@types/chai": "^4.2.11",
     "@types/karma": "^6.3.3",
     "@types/mocha": "^7.0.2",
@@ -82,7 +82,7 @@
     "webpack-cli": "^5.1.4"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.3.0"
+    "@microsoft/fast-element": "^2.4.0"
   },
   "beachball": {
     "disallowedChangeTypes": [

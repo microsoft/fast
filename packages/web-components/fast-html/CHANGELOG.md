@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 14 May 2025 05:27:34 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 23 May 2025 23:52:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.12
+
+Fri, 23 May 2025 23:52:29 GMT
+
+### Changes
+
+- Keep a f-repeat context when creating bindings for f-when (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.4.0
 
 ## 1.0.0-alpha.11
 

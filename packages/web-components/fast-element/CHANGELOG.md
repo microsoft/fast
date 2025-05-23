@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 05 May 2025 00:33:41 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 23 May 2025 23:52:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.4.0
+
+Fri, 23 May 2025 23:52:29 GMT
+
+### Minor changes
+
+- Add enumerated hydration binding markers (7559015+janechu@users.noreply.github.com)
 
 ## 2.3.0
 

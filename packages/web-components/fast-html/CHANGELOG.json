@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 23 May 2025 23:52:29 GMT",
+      "version": "1.0.0-alpha.12",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.12",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "746baedf522782b78b6827c99062366770ecd384",
+            "comment": "Update documentation on attribute binding markers"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "74b06718c3b3de12af2f843c29fddfc537bb1bb7",
+            "comment": "Add information about non-browser rendering of hydratable markup and initial state"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "cd50832a5d6ca768703da075af47caff89ae5ef0",
+            "comment": "Keep a f-repeat context when creating bindings for f-when"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.4.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 14 May 2025 05:27:34 GMT",
       "version": "1.0.0-alpha.11",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.11",
