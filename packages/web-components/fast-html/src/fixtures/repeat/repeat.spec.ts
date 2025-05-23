@@ -33,4 +33,13 @@ test.describe("f-template", async () => {
         expect(await customElementListItems.nth(1).textContent()).toEqual("B - Bat");
         expect(await customElementListItems.nth(2).textContent()).toEqual("C - Bat");
     });
+    test("create a repeat directive with an inner when", async ({ page }) => {
+        await page.goto("/repeat");
+
+        const customElement = await page.locator("test-element-inner-when");
+        let customElementListItems = await customElement.locator("li");
+
+        expect(await customElementListItems.count()).toEqual(1);
+        expect(await customElementListItems.nth(0).textContent()).toEqual("Foo");
+    });
 });
