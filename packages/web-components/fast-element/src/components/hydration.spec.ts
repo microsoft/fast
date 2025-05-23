@@ -243,7 +243,7 @@ describe("HydrationMarkup", () => {
             el.setAttribute(`${HydrationMarkup.attributeMarkerName}-0`, "");
             el.setAttribute(`${HydrationMarkup.attributeMarkerName}-1`, "");
             el.setAttribute(`${HydrationMarkup.attributeMarkerName}-2`, "");
-            expect(HydrationMarkup.parseAttributeBinding(el)).to.eql([0, 1, 2]);
+            expect(HydrationMarkup.parseEnumeratedAttributeBinding(el)).to.eql([0, 1, 2]);
         });
     });
 
