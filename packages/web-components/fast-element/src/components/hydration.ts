@@ -70,6 +70,22 @@ export const HydrationMarkup = Object.freeze({
             : attr.split(this.attributeBindingSeparator).map(i => parseInt(i));
     },
     /**
+     * Returns the indexes of the ViewBehaviorFactories affecting
+     * attributes for the element, or null if no factories were found.
+     *
+     * Uses the alternative syntax of data-fe-b-<number>
+     */
+    parseEnumeratedAttributeBinding(node: Element): null | number[] {
+        const attrs: number[] = [];
+        let count = 0;
+
+        while (node.hasAttribute(`${this.attributeMarkerName}-${count}`)) {
+            attrs.push(count++);
+        }
+
+        return count === 0 ? null : attrs;
+    },
+    /**
      * Parses the ViewBehaviorFactory index from string data. Returns
      * the binding index or null if the index cannot be retrieved.
      */

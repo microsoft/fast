@@ -181,7 +181,7 @@ A content binding syntax can be broken into parts:
 Separator:
 - `$$` - a separator string between the parts.
 
-An attribute binding is tracked using a dataset attribute with the name `data-fe-b` followed by the binding number.
+An attribute binding is tracked using a dataset attribute with the name `data-fe-b-<binding number>`.
 
 #### Examples
 
@@ -214,7 +214,7 @@ Attribute binding such as:
 Should result in:
 
 ```html
-<h1 data-fe-b="0" text="Hello world"></h1>
+<h1 data-fe-b-0 text="Hello world"></h1>
 ```
 
 If multiple attribute bindings exist on the same element, these will be separated by a space.
@@ -226,7 +226,7 @@ Example:
 
 Expected result:
 ```html
-<h1 data-fe-b="0 1" text="Hello" subtitle="world"></h1>
+<h1 data-fe-b-0 data-fe-b-1 text="Hello" subtitle="world"></h1>
 ```
 
 **Mixed attribute and content example**
@@ -241,7 +241,7 @@ Multiple attributes and content bindings such as:
 
 Should result in:
 ```html
-<div data-fe-b="0 1" show appearance="large">
+<div data-fe-b-0 data-fe-b-1 show appearance="large">
     <h1><!--fe-b$$start$$2$$ZJEYduCZlM$$fe-b-->Hello<!--fe-b$$end$$2$$ZJEYduCZlM$$fe-b--></h1>
     <span><!--fe-b$$start$$3$$t01oHhokPY$$fe-b-->world<!--fe-b$$end$$3$$t01oHhokPY$$fe-b--></span>
 </div>
