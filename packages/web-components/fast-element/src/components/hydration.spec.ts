@@ -238,6 +238,13 @@ describe("HydrationMarkup", () => {
             el.setAttribute(HydrationMarkup.attributeMarkerName, "0 1 2");
             expect(HydrationMarkup.parseAttributeBinding(el)).to.eql([0, 1, 2]);
         });
+        it("should return the binding ids as numbers when assigned enumerated marker attributes", () => {
+            const el = document.createElement("div");
+            el.setAttribute(`${HydrationMarkup.attributeMarkerName}-0`, "");
+            el.setAttribute(`${HydrationMarkup.attributeMarkerName}-1`, "");
+            el.setAttribute(`${HydrationMarkup.attributeMarkerName}-2`, "");
+            expect(HydrationMarkup.parseAttributeBinding(el)).to.eql([0, 1, 2]);
+        });
     });
 
     describe("repeat parser", () => {

@@ -134,7 +134,9 @@ function targetElement(
     targets: ViewBehaviorTargets
 ) {
     // Check for attributes and map any factories.
-    const attrFactoryIds = HydrationMarkup.parseAttributeBinding(node);
+    const attrFactoryIds =
+        HydrationMarkup.parseAttributeBinding(node) ??
+        HydrationMarkup.parseEnumeratedAttributeBinding(node);
 
     if (attrFactoryIds !== null) {
         for (const id of attrFactoryIds) {
