@@ -85,11 +85,9 @@
     "typescript": "~5.4.5",
     "webpack": "^5.97.1"
   },
-  "dependencies": {
-    "@ni/fast-element": "^10.0.2",
-    "@ni/fast-foundation": "^10.0.2"
-  },
   "peerDependencies": {
-    "react": "^18"
+    "@ni/fast-element": "^10.0.2",
+    "@ni/fast-foundation": "^10.0.2",
+    "react": "^16 || ^17 || ^18"
   }
 }

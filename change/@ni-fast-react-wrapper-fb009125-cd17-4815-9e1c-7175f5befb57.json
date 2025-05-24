@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Increase react supported version range and make all fast deps peerDependencies",
+  "packageName": "@ni/fast-react-wrapper",
+  "email": "rajsite@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
