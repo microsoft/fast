@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-react-wrapper
 
-<!-- This log was last generated on Thu, 03 Apr 2025 00:08:47 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 24 May 2025 20:20:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.0
+
+Sat, 24 May 2025 20:20:30 GMT
+
+### Minor changes
+
+- Increase react supported version range and make all fast deps peerDependencies ([ni/fast@c49c93d](https://github.com/ni/fast/commit/c49c93db405c862df5d19502b6b3773be31c7fc9))
 
 ## 10.0.2
 

@@ -2,6 +2,21 @@
   "name": "@ni/fast-react-wrapper",
   "entries": [
     {
+      "date": "Sat, 24 May 2025 20:20:30 GMT",
+      "version": "10.1.0",
+      "tag": "@ni/fast-react-wrapper_v10.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-react-wrapper",
+            "commit": "c49c93db405c862df5d19502b6b3773be31c7fc9",
+            "comment": "Increase react supported version range and make all fast deps peerDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 03 Apr 2025 00:08:47 GMT",
       "version": "10.0.2",
       "tag": "@ni/fast-react-wrapper_v10.0.2",
