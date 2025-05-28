@@ -335,3 +335,128 @@ Should result in:
 <!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
 <!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
 ```
+
+#### More Examples
+
+##### Nested Whens
+
+Example when binding:
+```html
+<f-when value="{show}">
+    <span>{{text}}</span>
+    <f-when value="{showInternal}">
+        <span>{{internalText}}</span>
+    </f-when>
+</f-when>
+```
+
+Combined with state:
+```json
+{
+    "show": true,
+    "text": "Hello world",
+    "showInternal": true,
+    "internalText": "Hello pluto"
+}
+```
+
+Should result in:
+```html
+<!--fe-b$$start$$0$$jrvV0wUQrP$$fe-b-->
+<span>
+    <!--fe-b$$start$$0$$CdUO4vHUmG$$fe-b-->Hello world<!--fe-b$$end$$0$$CdUO4vHUmG$$fe-b-->
+</span>
+    <!--fe-b$$start$$1$$CdUO4vHUmG$$fe-b-->
+    <span>
+        <!--fe-b$$start$$0$$dF9tRRuOjZ$$fe-b-->Hello pluto<!--fe-b$$end$$0$$dF9tRRuOjZ$$fe-b-->
+    </span>
+    <!--fe-b$$end$$1$$CdUO4vHUmG$$fe-b-->
+<!--fe-b$$end$$0$$jrvV0wUQrP$$fe-b-->
+```
+
+##### Nested Repeats
+
+Example when binding:
+```html
+<f-repeat value="{item in items}">
+    <div>
+        <span>{{item.name}}</span>
+        <f-when value="{!!item.nested}">
+            <ul>
+                <f-repeat value="{person in item.nested}">
+                    <li>{{person.name}}</li>
+                </f-repeat>
+            </ul>
+        </f-when>
+</f-repeat>
+```
+
+Combined with state:
+```json
+{
+    "items": [
+        {
+            "name": "Bob"
+        },
+        {
+            "name": "Alice"
+        },
+        {
+            "name": "Sue",
+            "nested": [
+                {
+                    "name": "Amy"
+                },
+                {
+                    "name": "Clarice"
+                },
+                {
+                    "name": "Lawrence"
+                }
+            ]
+        }
+    ]
+}
+```
+
+Should result in:
+```html
+<!--fe-b$$start$$0$$kk4YD4Dgs4$$fe-b-->
+    <!--fe-repeat$$start$$0$$fe-repeat-->
+    <div>
+        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Bob<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
+        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b--><!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+    </div>
+    <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+    <div>
+        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Alice<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
+        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b--><!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+    </div>
+    <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat-->
+    <div>
+        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Sue<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
+        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b-->
+            <ul>
+                <!--fe-b$$start$$0$$ZfcR5fBAPc$$fe-b-->
+                <!--fe-repeat$$start$$0$$fe-repeat-->
+                <li>
+                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Amy<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                </li>
+                <!--fe-repeat$$end$$0$$fe-repeat-->
+                <!--fe-repeat$$start$$1$$fe-repeat-->
+                <li>
+                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Clarice<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                </li>
+                <!--fe-repeat$$end$$1$$fe-repeat-->
+                <!--fe-repeat$$start$$2$$fe-repeat-->
+                <li>
+                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Lawrence<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                </li>
+                <!--fe-repeat$$end$$2$$fe-repeat-->
+                <!--fe-b$$end$$0$$ZfcR5fBAPc$$fe-b-->
+            </ul>
+        <!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+    </div>
+    <!--fe-repeat$$end$$2$$fe-repeat-->
+<!--fe-b$$end$$0$$kk4YD4Dgs4$$fe-b-->
+```
