@@ -185,6 +185,21 @@ An attribute binding is tracked using a dataset attribute with the name `data-fe
 
 #### Examples
 
+**Note**
+Examples shown below mostly skip the wrapping custom element and the internal template element with `shadowrootmode="open"`.
+
+Typically along with the content from the examples below, the rendering should include:
+
+```html
+<my-component defer-hydration needs-hydration>
+    <template shadowrootmode="open" shadowroot="open">
+        <!-- hydratable content -->
+    </template>
+</my-component>
+```
+
+The `needs-hydration` attribute is controlled by the hydration logic once `defer-hydration` has been removed, there is no need to modify it manually but it must be included to indicate that this component has not yet been hydrated.
+
 **Simple content example**
 
 Content bindings such as:
@@ -334,4 +349,175 @@ Should result in:
 ```html
 <!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
 <!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+```
+
+#### More Examples
+
+##### Nested Whens
+
+Example when binding:
+```html
+<f-when value="{show}">
+    <span>{{text}}</span>
+    <f-when value="{showInternal}">
+        <span>{{internalText}}</span>
+    </f-when>
+</f-when>
+```
+
+Combined with state:
+```json
+{
+    "show": true,
+    "text": "Hello world",
+    "showInternal": true,
+    "internalText": "Hello pluto"
+}
+```
+
+Should result in:
+```html
+<!--fe-b$$start$$0$$jrvV0wUQrP$$fe-b-->
+<span>
+    <!--fe-b$$start$$0$$CdUO4vHUmG$$fe-b-->Hello world<!--fe-b$$end$$0$$CdUO4vHUmG$$fe-b-->
+</span>
+    <!--fe-b$$start$$1$$CdUO4vHUmG$$fe-b-->
+    <span>
+        <!--fe-b$$start$$0$$dF9tRRuOjZ$$fe-b-->Hello pluto<!--fe-b$$end$$0$$dF9tRRuOjZ$$fe-b-->
+    </span>
+    <!--fe-b$$end$$1$$CdUO4vHUmG$$fe-b-->
+<!--fe-b$$end$$0$$jrvV0wUQrP$$fe-b-->
+```
+
+##### Nested Repeats
+
+Example when binding:
+```html
+<f-repeat value="{item in items}">
+    <div>
+        <span>{{item.name}}</span>
+        <f-when value="{!!item.nested}">
+            <ul>
+                <f-repeat value="{person in item.nested}">
+                    <li>{{person.name}}</li>
+                </f-repeat>
+            </ul>
+        </f-when>
+    </div>
+</f-repeat>
+```
+
+Combined with state:
+```json
+{
+    "items": [
+        {
+            "name": "Bob"
+        },
+        {
+            "name": "Alice"
+        },
+        {
+            "name": "Sue",
+            "nested": [
+                {
+                    "name": "Amy"
+                },
+                {
+                    "name": "Clarice"
+                },
+                {
+                    "name": "Lawrence"
+                }
+            ]
+        }
+    ]
+}
+```
+
+Should result in:
+```html
+<!--fe-b$$start$$0$$kk4YD4Dgs4$$fe-b-->
+    <!--fe-repeat$$start$$0$$fe-repeat-->
+    <div>
+        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Bob<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
+        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b--><!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+    </div>
+    <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+    <div>
+        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Alice<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
+        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b--><!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+    </div>
+    <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat-->
+    <div>
+        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Sue<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
+        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b-->
+            <ul>
+                <!--fe-b$$start$$0$$ZfcR5fBAPc$$fe-b-->
+                <!--fe-repeat$$start$$0$$fe-repeat-->
+                <li>
+                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Amy<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                </li>
+                <!--fe-repeat$$end$$0$$fe-repeat-->
+                <!--fe-repeat$$start$$1$$fe-repeat-->
+                <li>
+                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Clarice<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                </li>
+                <!--fe-repeat$$end$$1$$fe-repeat-->
+                <!--fe-repeat$$start$$2$$fe-repeat-->
+                <li>
+                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Lawrence<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                </li>
+                <!--fe-repeat$$end$$2$$fe-repeat-->
+                <!--fe-b$$end$$0$$ZfcR5fBAPc$$fe-b-->
+            </ul>
+        <!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+    </div>
+    <!--fe-repeat$$end$$2$$fe-repeat-->
+<!--fe-b$$end$$0$$kk4YD4Dgs4$$fe-b-->
+```
+
+##### Nested components with `<slot>`
+
+This example shows the wrapping custom element tag as well as the template component with `shadowrootmode="open"` for the sake of illustrating an example that would exist in the DOM.
+
+Example template of component "nested-component":
+```html
+<f-when value="{showButton}">
+    <my-button appearance="{{appearance}}">{{text}}</my-button>
+</f-when>
+```
+
+Example template of component "my-button":
+```html
+<button class="{{appearance}}">
+    <slot></slot>
+</button>
+```
+
+Combined with state:
+```json
+{
+    "showButton": true,
+    "text": "Hello world",
+    "appearance": "fancy"
+}
+```
+
+Should result in:
+```html
+<nested-components defer-hydration needs-hydration>
+    <template shadowrootmode="open" shadowroot="open">
+        <!--fe-b$$start$$0$$3oGiwLq7Ct$$fe-b-->
+        <my-button data-fe-b-0 appearance="fancy" defer-hydration needs-hydration>
+            <template shadowrootmode="open" shadowroot="open">
+                <button class="default" data-fe-b-0>
+                    <slot></slot>
+                </button>
+            </template>
+            <!--fe-b$$start$$1$$SUBjh6rowl$$fe-b-->Hello world<!--fe-b$$end$$1$$SUBjh6rowl$$fe-b-->
+        </my-button>
+        <!--fe-b$$end$$0$$3oGiwLq7Ct$$fe-b-->
+    </template>
+</nested-components>
 ```
