@@ -77,13 +77,23 @@ export const HydrationMarkup = Object.freeze({
      */
     parseEnumeratedAttributeBinding(node: Element): null | number[] {
         const attrs: number[] = [];
-        let count = 0;
+        const prefixLength = this.attributeMarkerName.length + 1;
+        const prefix = `${this.attributeMarkerName}-`;
 
-        while (node.hasAttribute(`${this.attributeMarkerName}-${count}`)) {
-            attrs.push(count++);
+        for (const attr of node.getAttributeNames()) {
+            if (attr.startsWith(prefix)) {
+                const count = Number(attr.slice(prefixLength));
+                if (!Number.isNaN(count)) {
+                    attrs.push(count);
+                } else {
+                    throw new Error(
+                        `Invalid attribute marker name: ${attr}. Expected format is ${prefix}<number>.`
+                    );
+                }
+            }
         }
 
-        return count === 0 ? null : attrs;
+        return attrs.length === 0 ? null : attrs;
     },
     /**
      * Parses the ViewBehaviorFactory index from string data. Returns
