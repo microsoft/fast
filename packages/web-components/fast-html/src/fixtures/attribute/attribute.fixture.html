@@ -6,7 +6,9 @@
     </head>
     <body>
         <test-element type="checkbox">
-            <template shadowrootmode="open"><input type="checkbox" disabled></template>
+            <template shadowrootmode="open">
+                <input disabled data-fe-b-0 type="checkbox">
+            </template>
         </test-element>
         <f-template name="test-element">
             <template><input type="{{type}}" disabled></template>

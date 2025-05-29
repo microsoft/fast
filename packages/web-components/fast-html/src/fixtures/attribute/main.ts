@@ -1,7 +1,7 @@
-import { TemplateElement } from "@microsoft/fast-html";
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { attr } from "@microsoft/fast-element";
 
-class TestElement extends FASTElement {
+class TestElement extends RenderableFASTElement {
     @attr
     type: string = "radio";
 }
@@ -10,12 +10,6 @@ TestElement.define({
     shadowOptions: null,
 });
 
-TemplateElement.options({
-    "test-element": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });

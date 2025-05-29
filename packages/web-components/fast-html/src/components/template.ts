@@ -6,9 +6,11 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
+    HydratableElementController,
     ShadowRootOptions,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 import { Message } from "../interfaces.js";
 import {
@@ -40,13 +42,15 @@ function allow(
     };
 }
 
+export interface ElementOptions {
+    shadowOptions?: ShadowRootOptions | undefined;
+}
+
 /**
  * A dictionary of element options the TemplateElement will use to update the registered element
  */
-interface ElementOptions {
-    [key: string]: {
-        shadowOptions: ShadowRootOptions | undefined;
-    };
+export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
+    [key: string]: ElementOptionsType;
 }
 
 /**
@@ -62,14 +66,51 @@ class TemplateElement extends FASTElement {
     /**
      * A dictionary of custom element options
      */
-    public static elementOptions: ElementOptions = {};
+    public static elementOptions: ElementOptionsDictionary = {};
 
     private partials: { [key: string]: ViewTemplate } = {};
 
-    public static options(elementOptions: ElementOptions = {}) {
-        this.elementOptions = elementOptions;
+    private static defaultElementOptions: ElementOptions = {
+        shadowOptions: {
+            mode: "open",
+        },
+    };
+
+    public static options(elementOptions: ElementOptionsDictionary = {}) {
+        const result: ElementOptionsDictionary = {};
+
+        for (const key in elementOptions) {
+            const value = elementOptions[key];
+            result[key] = {
+                shadowOptions:
+                    value.shadowOptions ??
+                    TemplateElement.defaultElementOptions.shadowOptions,
+            };
+        }
+
+        this.elementOptions = result;
+
+        HydratableElementController.install();
 
         return this;
+    }
+
+    constructor() {
+        super();
+
+        if (!!TemplateElement.elementOptions) {
+            TemplateElement.options();
+        }
+    }
+
+    /**
+     * Set options for a custom element
+     * @param name - The name of the custom element to set options for.
+     */
+    private static setOptions(name: string): void {
+        if (!!!TemplateElement.elementOptions[name]) {
+            TemplateElement.elementOptions[name] = TemplateElement.defaultElementOptions;
+        }
     }
 
     connectedCallback(): void {
@@ -79,6 +120,10 @@ class TemplateElement extends FASTElement {
             this.$fastController.definition.registry
                 .whenDefined(this.name)
                 .then(async value => {
+                    if (this.name && !!!TemplateElement.elementOptions?.[this.name]) {
+                        TemplateElement.setOptions(this.name);
+                    }
+
                     const registeredFastElement: FASTElementDefinition | undefined =
                         fastElementRegistry.getByType(value);
                     const template = this.getElementsByTagName("template").item(0);

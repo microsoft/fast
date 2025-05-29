@@ -160,13 +160,7 @@ TemplateElement.options({
 
 ## Hydration Comments and Datasets
 
-When hydrating the HTML FAST uses the `HydratableElementController` which can be included in your bundle like so:
-
-```typescript
-import "@microsoft/fast-element/install-element-hydration.js";
-```
-
-The `HydratableElementController` will take over from the `ElementController` to use hydration "markers" such as comments and dataset attributes to rationalize bindings with existing HTML.
+When hydrating the HTML, FAST uses the `HydratableElementController` which will take over from the `ElementController` to use hydration "markers" such as comments and dataset attributes to rationalize bindings with existing HTML. By default the `@microsoft/fast-html` package will assume that component hydration will occur so rendering hydratable markup is required.
 
 ### Bindings
 

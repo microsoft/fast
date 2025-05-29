@@ -6,10 +6,14 @@
     </head>
     <body>
         <test-element text="Hello world">
-            <template shadowrootmode="open">Hello world</template>
+            <template shadowrootmode="open">
+                <!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->Hello world<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b-->
+            </template>
         </test-element>
         <test-element-unescaped>
-            <template shadowrootmode="open"><p>Hello world</p></template>
+            <template shadowrootmode="open">
+                <div><p><!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->Hello world<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b--></p></div>
+            </template>
         </test-element-unescaped>
         <f-template name="test-element">
             <template>{{text}}</template>
