@@ -333,7 +333,7 @@ class TemplateElement extends FASTElement {
                         closingParenthesis
                     );
                     const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c)(
+                        pathResolver(propName, self)(x, c).bind(x)(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
                                 ? [pathResolver(arg)(x, c)]
