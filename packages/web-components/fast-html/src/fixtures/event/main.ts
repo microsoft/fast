@@ -16,6 +16,10 @@ class TestElement extends FASTElement {
     public handleAttributeArgClick = (foo: string): void => {
         console.log(foo);
     };
+
+    public handleModifyAttributeClick() {
+        this.foo = "modified-by-click";
+    }
 }
 TestElement.define({
     name: "test-element",

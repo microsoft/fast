@@ -37,4 +37,15 @@ test.describe("f-template", async () => {
 
         expect(message).toEqual("bar");
     });
+    test("should properly bind events with `this`", async ({ page }) => {
+        await page.goto("/event");
+
+        const customElement = await page.locator("test-element");
+
+        await expect(customElement).toHaveJSProperty("foo", "bar");
+
+        await customElement.locator("button").nth(3).click();
+
+        await expect(customElement).toHaveJSProperty("foo", "modified-by-click");
+    });
 });

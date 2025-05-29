@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: event handler binding",
+  "packageName": "@microsoft/fast-html",
+  "email": "machi@microsoft.com",
+  "dependentChangeType": "none"
+}
