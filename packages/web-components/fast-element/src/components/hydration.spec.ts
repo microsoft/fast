@@ -245,6 +245,17 @@ describe("HydrationMarkup", () => {
             el.setAttribute(`${HydrationMarkup.attributeMarkerName}-2`, "");
             expect(HydrationMarkup.parseEnumeratedAttributeBinding(el)).to.eql([0, 1, 2]);
         });
+        it("should return the binding ids as numbers when assigned enumerated marker attributes on multiple elements", () => {
+            const el = document.createElement("div");
+            const el2 = document.createElement("div");
+            const el3 = document.createElement("div");
+            el.setAttribute(`${HydrationMarkup.attributeMarkerName}-0`, "");
+            el2.setAttribute(`${HydrationMarkup.attributeMarkerName}-1`, "");
+            el3.setAttribute(`${HydrationMarkup.attributeMarkerName}-2`, "");
+            expect(HydrationMarkup.parseEnumeratedAttributeBinding(el)).to.eql([0]);
+            expect(HydrationMarkup.parseEnumeratedAttributeBinding(el2)).to.eql([1]);
+            expect(HydrationMarkup.parseEnumeratedAttributeBinding(el3)).to.eql([2]);
+        });
     });
 
     describe("repeat parser", () => {

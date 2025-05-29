@@ -74,6 +74,10 @@
       "types": "./dist/dts/components/install-hydration.d.ts",
       "default": "./dist/esm/components/install-hydration.js"
     },
+    "./install-hydratable-view-templates.js": {
+      "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
+      "default": "./dist/esm/templating/install-hydratable-view-templates.js"
+    },
     "./pending-task.js": {
       "types": "./dist/dts/pending-task.d.ts",
       "default": "./dist/esm/pending-task.js"
@@ -88,7 +92,8 @@
   "sideEffects": [
     "./dist/esm/debug.js",
     "./dist/esm/polyfills.js",
-    "./dist/esm/components/install-hydration.js"
+    "./dist/esm/components/install-hydration.js",
+    "./dist/esm/templating/install-hydratable-view-templates.js"
   ],
   "scripts": {
     "benchmark": "npm run clean:dist && npm run build && node ./scripts/run-benchmarks",
