@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 23 May 2025 23:52:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 30 May 2025 05:02:03 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.4.1
+
+Fri, 30 May 2025 05:02:03 GMT
+
+### Patches
+
+- Update logic for enumerated attribute hydration markers, add view hydration as export (7559015+janechu@users.noreply.github.com)
 
 ## 2.4.0
 
