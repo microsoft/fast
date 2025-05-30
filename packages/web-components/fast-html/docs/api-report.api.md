@@ -7,15 +7,25 @@
 import { FASTElement } from '@microsoft/fast-element';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 
+// @public (undocumented)
+export abstract class RenderableFASTElement extends FASTElement {
+    constructor();
+    // (undocumented)
+    deferHydration: boolean;
+    // (undocumented)
+    needsHydration: boolean;
+}
+
 // @public
 export class TemplateElement extends FASTElement {
+    constructor();
     // (undocumented)
     connectedCallback(): void;
-    // Warning: (ae-forgotten-export) The symbol "ElementOptions" needs to be exported by the entry point index.d.ts
-    static elementOptions: ElementOptions;
+    // Warning: (ae-forgotten-export) The symbol "ElementOptionsDictionary" needs to be exported by the entry point index.d.ts
+    static elementOptions: ElementOptionsDictionary;
     name?: string;
     // (undocumented)
-    static options(elementOptions?: ElementOptions): typeof TemplateElement;
+    static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
 }
 
 // (No @packageDocumentation comment for this package)

@@ -1,7 +1,7 @@
-import { TemplateElement } from "@microsoft/fast-html";
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { observable } from "@microsoft/fast-element";
 
-class TestElement extends FASTElement {
+class TestElement extends RenderableFASTElement {
     @observable
     list: Array<string> = ["Foo", "Bar"];
 
@@ -12,7 +12,7 @@ TestElement.define({
     shadowOptions: null,
 });
 
-class TestElementInnerWhen extends FASTElement {
+class TestElementInnerWhen extends RenderableFASTElement {
     @observable
     list: Array<any> = [
         {
@@ -30,17 +30,6 @@ TestElementInnerWhen.define({
     shadowOptions: null,
 });
 
-TemplateElement.options({
-    "test-element": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-inner-when": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });

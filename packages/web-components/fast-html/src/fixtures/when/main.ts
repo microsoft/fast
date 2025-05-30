@@ -1,71 +1,79 @@
-import { TemplateElement } from "@microsoft/fast-html";
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { attr } from "@microsoft/fast-element";
 
-class TestElement extends FASTElement {
+class TestElement extends RenderableFASTElement {
     @attr({ mode: "boolean" })
     show: boolean = false;
 }
 TestElement.define({
     name: "test-element",
+    shadowOptions: null,
 });
 
-class TestElementNot extends FASTElement {
+class TestElementNot extends RenderableFASTElement {
     @attr({ mode: "boolean" })
     hide: boolean = false;
 }
 TestElementNot.define({
     name: "test-element-not",
+    shadowOptions: null,
 });
 
-class TestElementEquals extends FASTElement {
+class TestElementEquals extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
 TestElementEquals.define({
     name: "test-element-equals",
+    shadowOptions: null,
 });
 
-class TestElementNotEquals extends FASTElement {
+class TestElementNotEquals extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
 TestElementNotEquals.define({
     name: "test-element-not-equals",
+    shadowOptions: null,
 });
 
-class TestElementGe extends FASTElement {
+class TestElementGe extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
 TestElementGe.define({
     name: "test-element-ge",
+    shadowOptions: null,
 });
 
-class TestElementGt extends FASTElement {
+class TestElementGt extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
 TestElementGt.define({
     name: "test-element-gt",
+    shadowOptions: null,
 });
 
-class TestElementLe extends FASTElement {
+class TestElementLe extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
 TestElementLe.define({
     name: "test-element-le",
+    shadowOptions: null,
 });
 
-class TestElementLt extends FASTElement {
+class TestElementLt extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
 TestElementLt.define({
     name: "test-element-lt",
+    shadowOptions: null,
 });
 
-class TestElementOr extends FASTElement {
+class TestElementOr extends RenderableFASTElement {
     @attr({ attribute: "this-var", mode: "boolean" })
     thisVar: boolean = false;
 
@@ -74,9 +82,10 @@ class TestElementOr extends FASTElement {
 }
 TestElementOr.define({
     name: "test-element-or",
+    shadowOptions: null,
 });
 
-class TestElementAnd extends FASTElement {
+class TestElementAnd extends RenderableFASTElement {
     @attr({ attribute: "this-var", mode: "boolean" })
     thisVar: boolean = false;
 
@@ -88,57 +97,6 @@ TestElementAnd.define({
     shadowOptions: null,
 });
 
-TemplateElement.options({
-    "test-element": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-not": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-equals": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-not-equals": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-ge": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-gt": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-le": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-lt": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-or": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-    "test-element-and": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });

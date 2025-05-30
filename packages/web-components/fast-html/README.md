@@ -30,20 +30,14 @@ MyCustomElement.define({
     shadowOptions: null,
 });
 
-TemplateElement.options({
-    "my-custom-element": {
-        shadowOptions: {
-            mode: "closed",
-        }
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });
 ```
 
 This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component as well as the `shadowOptions` for any element an `<f-template>` has been used to define.
 
-It is necessary to set the initial `shadowOptions` of your custom elements to `null` otherwise a shadowRoot will be attached and cause a FOUC (Flash Of Unstyled Content). For more information about how this affects hydration, check out our [document](./RENDERING.md#setting-shadow-options) on rendering DOM from non-browser.
+It is necessary to set the initial `shadowOptions` of your custom elements to `null` otherwise a shadowRoot will be attached and cause a FOUC (Flash Of Unstyled Content). For more information about how this affects hydration, check out our [document](./RENDERING.md#setting-shadow-options) on rendering DOM from a non-browser environment.
 
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 
@@ -57,6 +51,50 @@ Example:
 <f-template name="my-custom-element">
     <template>{{greeting}}</template>
 </f-template>
+```
+
+#### Non-browser HTML rendering
+
+One of the benefits of FAST declarative HTML templates is that the server can be stack agnostic as JavaScript does not need to be interpreted. By default `@microsoft/fast-html` will expect hydratable content and uses comments and datasets for tracking the binding logic. For more information on what that markup should look like, as well as an example of how initial state may be applied, read our [documentation](./RENDERING.md) to understand what markup should be generated for a hydratable experience. For the sake of brevity hydratable markup will be excluded from the README.
+
+#### Adding shadowOptions
+
+By default `shadowOptions` via the `TemplateElement` will be with `"mode": "open"` once the template has been set. To set each components `shadowOptions` you can pass an `options` object.
+
+Example:
+
+```typescript
+TemplateElement.options({
+    "my-custom-element": {
+        shadowOptions: {
+            mode: "closed",
+        }
+    },
+}).define({
+    name: "f-template",
+});
+```
+
+#### Using the RenderableFASTElement
+
+The exported abstract class `RenderableFASTElement` is available for automatic addition and removal of `defer-hydration` and `needs-hydration`. If you use `FASTElement` you will need to add `defer-hydration` and `needs-hydration` attributes to your rendered markup and remove them via your component.
+
+Example:
+```typescript
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+
+class MyCustomElement extends RenderableFASTElement {
+    // component logic
+}
+
+MyCustomElement.define({
+    name: "my-custom-element",
+    shadowOptions: null,
+});
+
+TemplateElement.define({
+    name: "f-template",
+});
 ```
 
 ### Syntax
@@ -216,10 +254,6 @@ If your template includes JavaScript specific logic that does not conform to tho
 - `@microsoft/fast-html/rules/call-expression-with-event-argument.yml`
 - `@microsoft/fast-html/rules/member-expression.yml`
 - `@microsoft/fast-html/rules/tag-function-to-template-literal.yml`
-
-### Non-browser HTML rendering
-
-One of the benefits of FAST declarative HTML templates is that the server can be stack agnostic as JavaScript does not need to be interpreted. FASTElement will expect hydratable content however and uses comments and datasets for tracking the binding logic. For more information on what that markup should look like, as well as an example of how initial state may be applied, read our [documentation](./RENDERING.md) to understand what markup should be generated for a hydratable experience.
 
 ## Acknowledgements
 
