@@ -26,8 +26,6 @@ export class TemplateElement extends FASTElement {
     name?: string;
     // (undocumented)
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
-    // (undocumented)
-    static setOptions(name: string): void;
 }
 
 // (No @packageDocumentation comment for this package)
