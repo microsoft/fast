@@ -1,7 +1,5 @@
 import {
     attr,
-    DOMAspect,
-    DOMSink,
     FAST,
     FASTElement,
     FASTElementDefinition,
@@ -11,7 +9,6 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
-import { DOMPolicy } from "@microsoft/fast-element/dom-policy.js";
 import { Message } from "../interfaces.js";
 import {
     AttributeDirective,
@@ -29,17 +26,6 @@ import {
 interface ResolvedStringsAndValues {
     strings: Array<string>;
     values: Array<any>;
-}
-
-function allow(
-    tagName: string | null,
-    aspect: DOMAspect,
-    aspectName: string,
-    sink: DOMSink
-): DOMSink {
-    return (target: Node, name: string, value: string, ...rest: any[]) => {
-        sink(target, name, value, ...rest);
-    };
 }
 
 export interface ElementOptions {
@@ -184,19 +170,7 @@ class TemplateElement extends FASTElement {
         strings: Array<string>,
         values: Array<any>
     ): ViewTemplate<any, any> {
-        return ViewTemplate.create(
-            strings,
-            values,
-            DOMPolicy.create({
-                guards: {
-                    aspects: {
-                        [DOMAspect.property]: {
-                            innerHTML: allow,
-                        },
-                    },
-                },
-            })
-        );
+        return ViewTemplate.create(strings, values);
     }
 
     /**
