@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 30 May 2025 05:02:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 14 Jun 2025 20:48:12 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.14
+
+Sat, 14 Jun 2025 20:48:12 GMT
+
+### Changes
+
+- Remove setting explicit DOM policy as this causes an issue with CSP duplicate policy creation (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.13
 
