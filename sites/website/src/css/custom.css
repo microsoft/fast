@@ -1,0 +1,89 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #fb356d;
+  --ifm-color-primary-dark: rgb(33, 175, 144);
+  --ifm-color-primary-darker: rgb(31, 165, 136);
+  --ifm-color-primary-darkest: rgb(26, 136, 112);
+  --ifm-color-primary-light: rgb(70, 203, 174);
+  --ifm-color-primary-lighter: rgb(102, 212, 189);
+  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-code-font-size: 95%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+html[data-theme='light'] .DocSearch {
+  --docsearch-muted-color: var(--ifm-color-secondary-darkest);
+  --docsearch-container-background: rgba(94, 100, 112, 0.7);
+  --docsearch-modal-background: var(--ifm-color-secondary-lighter);
+  --docsearch-searchbox-background: var(--ifm-color-secondary);
+  --docsearch-searchbox-focus-background: var(--ifm-color-white);
+  --docsearch-footer-background: var(--ifm-color-white);
+}
+
+html[data-theme='dark'] .DocSearch {
+  --docsearch-muted-color: var(--ifm-color-secondary-darkest);
+  --docsearch-container-background: rgba(47, 55, 69, 0.7);
+  --docsearch-modal-background: var(--ifm-background-color);
+  --docsearch-searchbox-background: var(--ifm-background-color);
+  --docsearch-searchbox-focus-background: var(--ifm-color-black);
+  --docsearch-footer-background: var(--ifm-background-surface-color);
+  --docsearch-key-gradient: linear-gradient(
+    -26.5deg,
+    var(--ifm-color-emphasis-200) 0%,
+    var(--ifm-color-emphasis-100) 100%
+  );
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a {
+  background: var(--ifm-color-white);
+  border: 3px solid var(--ifm-color-primary);
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a * {
+  color: var(--ifm-font-color-base) !important;
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a mark {
+  color: var(--ifm-color-primary) !important;
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a {
+  background: rgba(47, 55, 69, 0.7);
+  border: 3px solid var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a * {
+  color: var(--ifm-font-color-base) !important;
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a mark {
+  color: var(--ifm-color-primary) !important;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: #212121;
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+.example-dialog::part(control) {
+  --dialog-width: 400px;
+  --dialog-height: auto;
+  padding: 16px;
+}
+
+.button.button--secondary.button--sm.menu__button {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-color-secondary);
+}

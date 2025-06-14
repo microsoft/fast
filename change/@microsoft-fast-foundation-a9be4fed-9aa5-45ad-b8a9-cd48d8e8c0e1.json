@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "upgrade to Storybook 8",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "prerelease"
+}

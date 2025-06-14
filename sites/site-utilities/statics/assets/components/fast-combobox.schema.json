@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-combobox",
+  "id": "fast-combobox",
+  "title": "Combobox",
+  "description": "The FAST combobox element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-combobox",
+  "properties": {
+    "autocomplete": {
+      "enum": [
+        "inline",
+        "list",
+        "both",
+        "none"
+      ],
+      "title": "Autocomplete",
+      "description": "Sets the autocomplete method to use when the combobox receives user input",
+      "mapsToAttribute": "autocomplete",
+      "type": "string"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the combobox",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "name": {
+      "title": "Name",
+      "description": "This element's value will be surfaced during form submission under the provided name",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "position": {
+      "enum": [
+        "above",
+        "below"
+      ],
+      "title": "Position",
+      "description": "Controls the placement of the combobox dropdown",
+      "mapsToAttribute": "position",
+      "type": "string"
+    },
+    "placeholder": {
+      "title": "Placeholder",
+      "description": "Sets the placeholder value of the combobox to provide a hint to the user",
+      "mapsToAttribute": "placeholder",
+      "type": "string"
+    },
+    "value": {
+      "title": "Value",
+      "description": "The initial value of the combobox",
+      "mapsToAttribute": "value",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "Supports fast-option, option elements, or elements with a role of option",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotControl": {
+      "title": "Input Control slot",
+      "description": "Slot to replace the contents of the control container",
+      "mapsToSlot": "control",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotIndicator": {
+      "title": "Indicator slot",
+      "description": "Slot to provide a custom icon to represent the visual indicator",
+      "mapsToSlot": "indicator",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotStart": {
+      "title": "Start slot",
+      "description": "Contents of the start slot are positioned before the contents of the control container",
+      "mapsToSlot": "start",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotEnd": {
+      "title": "End slot",
+      "description": "Contents of the end slot are positioned after the contents of the control container",
+      "mapsToSlot": "end",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

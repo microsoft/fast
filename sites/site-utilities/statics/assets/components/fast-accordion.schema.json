@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-accordion",
+  "id": "fast-accordion",
+  "title": "Accordion",
+  "description": "The FAST accordion element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-accordion",
+  "properties": {
+    "expand-mode": {
+      "enum": [
+        "single",
+        "multi"
+      ],
+      "default": "multi",
+      "title": "Expand mode",
+      "description": "The way items are allowed to expand",
+      "mapsToAttribute": "expand-mode",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The default slot for accordion items",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

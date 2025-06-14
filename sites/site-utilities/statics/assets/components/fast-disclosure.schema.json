@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-disclosure",
+  "id": "fast-disclosure",
+  "title": "Disclosure",
+  "description": "The FAST disclosure element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-disclosure",
+  "properties": {
+    "expanded": {
+      "title": "Expanded",
+      "description": "Determines the visibility of the additional content",
+      "mapsToAttribute": "expanded",
+      "type": "boolean"
+    },
+    "title": {
+      "title": "Title",
+      "description": "Default slotted content of the button which toggles the visbility of the additional disclosure content",
+      "mapsToAttribute": "title",
+      "type": "string"
+    },
+    "appearance": {
+      "enum": [
+        "accent",
+        "lightweight"
+      ],
+      "default": "accent",
+      "title": "Appearance",
+      "description": "The disclosure's visual treatment",
+      "mapsToAttribute": "appearance",
+      "type": "string"
+    },
+    "SlotTitle": {
+      "title": "Title slot",
+      "description": "The content of the button which toggles the visbility of the additional disclosure content",
+      "mapsToSlot": "title",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotStart": {
+      "title": "Start slot",
+      "description": "Contents of the start slot are positioned before the button content",
+      "mapsToSlot": "start",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotEnd": {
+      "title": "End slot",
+      "description": "Contents of the end slot are positioned after the button content",
+      "mapsToSlot": "end",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The disclosure content",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
