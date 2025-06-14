@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Remove setting explicit DOM policy as this causes an issue with CSP duplicate policy creation",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
