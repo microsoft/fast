@@ -35,7 +35,11 @@ This accepts the same configuration options as the `@attr` so for example to bin
 import { FASTElement, html, css } from '@microsoft/fast-element';
 
 export class MyElement extends FASTElement {
-  currentCount = 42;
+  constructor() {
+    super();
+
+    this.currentCount = 42;
+  }
 }
 
 MyElement.define({
@@ -55,6 +59,9 @@ MyElement.define({
 <my-element current-count="42">
 ```
 
+:::note
+In the above example we are setting the `currentCount` in the constructor and not as a class initializer, this is due to a difference in how decorators are elevated and initialized.
+
 If you need to add a converter to your attribute:
 
 ```javascript
@@ -70,7 +77,11 @@ const converter = {
 };
 
 export class MyElement extends FASTElement {
-  currentCount = 42;
+  constructor() {
+    super();
+
+    this.currentCount = 42;
+  }
 }
 
 MyElement.define({
