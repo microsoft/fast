@@ -10,18 +10,31 @@ export abstract class RenderableFASTElement extends FASTElement {
     constructor() {
         super();
 
-        this.setAttribute("defer-hydration", "");
-        this.setAttribute("needs-hydration", "");
+        // If the elements template has already been defined there is no need to defer hydration.
+        if (!this.$fastController?.definition?.shadowOptions) {
+            this.setAttribute("defer-hydration", "");
+            this.setAttribute("needs-hydration", "");
+        }
 
         Observable.defineProperty(this.$fastController.definition, "shadowOptions");
 
         Observable.getNotifier(this.$fastController.definition).subscribe(
             {
-                handleChange: () => {
+                handleChange: async () => {
+                    if (this.prepare) {
+                        await this.prepare();
+                    }
+
                     this.deferHydration = false;
                 },
             },
             "shadowOptions"
         );
     }
+
+    /**
+     * A user defined function for determining if the element is ready to be hydrated.
+     * This function will get called if it has been defined after the template is connected.
+     */
+    private async prepare?(): Promise<void>;
 }
