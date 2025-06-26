@@ -1,5 +1,6 @@
 import {
     attr,
+    elements,
     DOMAspect,
     DOMSink,
     FAST,
@@ -264,7 +265,26 @@ class TemplateElement extends FASTElement {
                 {
                     const { slotted } = await import("@microsoft/fast-element");
 
-                    externalValues.push(slotted(propName));
+                    const parts = propName.split(" ");
+                    const slottedOption = {
+                        property: parts[0],
+                    };
+
+                    if (parts[1] === "filter" && parts[2]) {
+                        const matches = parts[2].match(/(\w+)(\(([^)]*)\))?/);
+                        const filterName = matches?.[1];
+                        const filterParams = matches?.[3] ?? undefined;
+
+                        switch (filterName) {
+                            case "elements":
+                                Object.assign(slottedOption, {
+                                    filter: elements(filterParams),
+                                });
+                                break;
+                        }
+                    }
+
+                    externalValues.push(slotted(slottedOption));
                 }
 
                 break;
