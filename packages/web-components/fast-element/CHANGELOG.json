@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 30 May 2025 05:02:03 GMT",
+      "version": "2.4.1",
+      "tag": "@microsoft/fast-element_v2.4.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "a31632f4c15256f2fe89c8f0decaba1fa8b5905b",
+            "comment": "Update logic for enumerated attribute hydration markers, add view hydration as export"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 May 2025 23:52:29 GMT",
       "version": "2.4.0",
       "tag": "@microsoft/fast-element_v2.4.0",

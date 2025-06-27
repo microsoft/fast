@@ -14,6 +14,7 @@ function handlePathRequest(
     res: Response
 ) {
     res.set("Content-Type", contentType);
+    res.set("Content-Security-Policy", "trusted-types fast-html");
     fs.readFile(path.resolve(__dirname, mapPath), { encoding: "utf8" }, (err, data) => {
         const stream = (Readable as any).from(data);
 

@@ -2,6 +2,56 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sat, 14 Jun 2025 20:48:12 GMT",
+      "version": "1.0.0-alpha.14",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.14",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "e3baa611b5606f693960d574e398a27415bac49b",
+            "comment": "Remove setting explicit DOM policy as this causes an issue with CSP duplicate policy creation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 30 May 2025 05:02:03 GMT",
+      "version": "1.0.0-alpha.13",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.13",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "9b13225147c30da01fab0386145f3efae8e9d6be",
+            "comment": "Add a RenderableFASTElement and default shadow options"
+          },
+          {
+            "author": "machi@microsoft.com",
+            "package": "@microsoft/fast-html",
+            "commit": "fee3c1e894e58ccb8858566c0a3597b6d17f98cf",
+            "comment": "fix: event handler binding"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.4.1",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "8a259116dccb5f2bb3da15c5b576911543a577ba",
+            "comment": "Adds some more nesting examples with hydration markup"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 May 2025 23:52:29 GMT",
       "version": "1.0.0-alpha.12",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.12",

@@ -26,12 +26,6 @@ TestElement.define({
     shadowOptions: null,
 });
 
-TemplateElement.options({
-    "test-element": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });

@@ -1,7 +1,6 @@
-import { TemplateElement } from "@microsoft/fast-html";
-import { FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
-class TestElement extends FASTElement {
+class TestElement extends RenderableFASTElement {
     public object: any = {
         foo: "bar",
     };
@@ -11,12 +10,6 @@ TestElement.define({
     shadowOptions: null,
 });
 
-TemplateElement.options({
-    "test-element": {
-        shadowOptions: {
-            mode: "closed",
-        },
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });

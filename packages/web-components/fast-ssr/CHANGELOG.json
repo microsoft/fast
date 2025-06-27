@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 30 May 2025 05:02:03 GMT",
+      "version": "1.0.0-beta.35",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.35",
+      "comments": {
+        "none": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.4.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 23 May 2025 23:52:29 GMT",
       "version": "1.0.0-beta.35",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.35",

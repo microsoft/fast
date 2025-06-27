@@ -16,7 +16,10 @@
         <test-element>
             <template shadowrootmode="open">
                 <slot></slot>
-                <slot name="foo"></slot>
+            </template>
+            <template shadowrootmode="open">
+                <slot></slot>
+                <slot name="foo" data-fe-b-0></slot>
                 <slot name="bar"></slot>
             </template>
             <div>Slotted</div>

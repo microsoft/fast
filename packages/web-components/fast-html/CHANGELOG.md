@@ -1,8 +1,26 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 23 May 2025 23:52:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 14 Jun 2025 20:48:12 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.14
+
+Sat, 14 Jun 2025 20:48:12 GMT
+
+### Changes
+
+- Remove setting explicit DOM policy as this causes an issue with CSP duplicate policy creation (7559015+janechu@users.noreply.github.com)
+
+## 1.0.0-alpha.13
+
+Fri, 30 May 2025 05:02:03 GMT
+
+### Changes
+
+- Add a RenderableFASTElement and default shadow options (7559015+janechu@users.noreply.github.com)
+- fix: event handler binding (machi@microsoft.com)
+- Bump @microsoft/fast-element to v2.4.1
 
 ## 1.0.0-alpha.12
 

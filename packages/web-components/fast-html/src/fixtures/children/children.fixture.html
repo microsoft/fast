@@ -10,7 +10,14 @@
             <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
         </f-template>
         <test-element>
-            <template shadowrootmode="open"><ul><li>Foo</li><li>Bar</li></ul></template>
+            <template shadowrootmode="open">
+                <ul data-fe-b-0>
+                <!--fe-b$$start$$1$$t01oHhokPY$$fe-b-->
+                <!--fe-repeat$$start$$0$$fe-repeat--><li><!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->Foo<!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b--></li><!--fe-repeat$$end$$0$$fe-repeat-->
+                <!--fe-repeat$$start$$1$$fe-repeat--><li><!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->Bar<!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b--></li><!--fe-repeat$$end$$1$$fe-repeat-->
+                <!--fe-b$$end$$1$$t01oHhokPY$$fe-b-->
+                </ul>
+            </template>
         </test-element>
     </body>
 </html>
