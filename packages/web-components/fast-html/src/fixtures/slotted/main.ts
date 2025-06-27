@@ -5,9 +5,15 @@ class TestElement extends FASTElement {
     @observable
     slottedNodes: Node[] = [];
 
-    slottedNodesChanged() {
-        this.classList.add(`class-${this.slottedNodes.length}`);
+    @observable
+    slottedFooNodes: Node[] = [];
+
+    slottedFooNodesChanged() {
+        this.classList.add(`class-${this.slottedFooNodes.length}`);
     }
+
+    @observable
+    slottedBarNodes: Node[] = [];
 }
 TestElement.define({
     name: "test-element",

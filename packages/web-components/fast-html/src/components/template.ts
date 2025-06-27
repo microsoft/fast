@@ -269,13 +269,13 @@ class TemplateElement extends FASTElement {
                         .trim()
                         .replace(/\n/g, " ")
                         .replace(/\s{2,}/g, " ")
-                        .split(" ");
+                        .split(" filter ");
                     const slottedOption = {
                         property: parts[0],
                     };
 
-                    if (parts[1] === "filter" && parts[2]) {
-                        const matches = parts[2].match(/(\w+)(\(([^)]*)\))?/);
+                    if (parts[1]) {
+                        const matches = parts[1].match(/(\w+)(\(([^)]*)\))?/);
                         const filterName = matches?.[1];
                         const filterParams = matches?.[3] ?? undefined;
 
