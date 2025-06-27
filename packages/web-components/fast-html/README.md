@@ -109,6 +109,8 @@ Attribute directives include:
     Example:
     ```html
     <slot f-slotted="{slottedNodes}"></slot>
+    <slot f-slotted="{slottedNodes filter elements}"></slot>
+    <slot f-slotted="{slottedNodes filter elements(div, p)}"></slot>
     ```
 
 - **children**
