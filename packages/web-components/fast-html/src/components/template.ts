@@ -265,7 +265,11 @@ class TemplateElement extends FASTElement {
                 {
                     const { slotted } = await import("@microsoft/fast-element");
 
-                    const parts = propName.split(" ");
+                    const parts = propName
+                        .trim()
+                        .replace(/\n/g, " ")
+                        .replace(/\s{2,}/g, " ")
+                        .split(" ");
                     const slottedOption = {
                         property: parts[0],
                     };
