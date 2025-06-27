@@ -1,5 +1,6 @@
 import {
     attr,
+    elements,
     FAST,
     FASTElement,
     FASTElementDefinition,
@@ -283,7 +284,30 @@ class TemplateElement extends FASTElement {
                 {
                     const { slotted } = await import("@microsoft/fast-element");
 
-                    externalValues.push(slotted(propName));
+                    const parts = propName
+                        .trim()
+                        .replace(/\n/g, " ")
+                        .replace(/\s{2,}/g, " ")
+                        .split(" filter ");
+                    const slottedOption = {
+                        property: parts[0],
+                    };
+
+                    if (parts[1]) {
+                        const matches = parts[1].match(/(\w+)(\(([^)]*)\))?/);
+                        const filterName = matches?.[1];
+                        const filterParams = matches?.[3] ?? undefined;
+
+                        switch (filterName) {
+                            case "elements":
+                                Object.assign(slottedOption, {
+                                    filter: elements(filterParams),
+                                });
+                                break;
+                        }
+                    }
+
+                    externalValues.push(slotted(slottedOption));
                 }
 
                 break;
