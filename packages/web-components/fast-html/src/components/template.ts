@@ -284,26 +284,18 @@ class TemplateElement extends FASTElement {
                 {
                     const { slotted } = await import("@microsoft/fast-element");
 
-                    const parts = propName
-                        .trim()
-                        .replace(/\n/g, " ")
-                        .replace(/\s{2,}/g, " ")
-                        .split(" filter ");
+                    const parts = propName.trim().split(" filter ");
                     const slottedOption = {
                         property: parts[0],
                     };
 
                     if (parts[1]) {
-                        const matches = parts[1].match(/(\w+)(\(([^)]*)\))?/);
-                        const filterName = matches?.[1];
-                        const filterParams = matches?.[3] ?? undefined;
-
-                        switch (filterName) {
-                            case "elements":
-                                Object.assign(slottedOption, {
-                                    filter: elements(filterParams),
-                                });
-                                break;
+                        if (parts[1].startsWith("elements(")) {
+                            let params = parts[1].replace("elements(", "");
+                            params = params.substring(0, params.lastIndexOf(")"));
+                            Object.assign(slottedOption, {
+                                filter: elements(params || undefined),
+                            });
                         }
                     }
 

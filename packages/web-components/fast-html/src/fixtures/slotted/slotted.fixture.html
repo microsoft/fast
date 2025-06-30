@@ -8,7 +8,7 @@
     <body>
         <f-template name="test-element">
             <template>
-                <slot f-slotted="{slottedNodes filter elements}"></slot>
+                <slot f-slotted="{slottedNodes filter elements()}"></slot>
                 <slot name="foo" f-slotted="{slottedFooNodes}"></slot>
                 <slot name="bar" f-slotted="{slottedBarNodes filter elements(p, ol)}"></slot>
             </template>
