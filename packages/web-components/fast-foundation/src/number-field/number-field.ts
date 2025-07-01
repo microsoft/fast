@@ -224,7 +224,7 @@ export class NumberField extends FormAssociatedNumberField {
         }
 
         if (this.control && !this.isUserInput) {
-            this.control.value = this.value;
+            this.syncValueToInnerControl();
         }
 
         super.valueChanged(previous, this.value);
@@ -309,7 +309,7 @@ export class NumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
-        this.control.value = this.value;
+        this.syncValueToInnerControl();
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -340,9 +340,9 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
-        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.control.value = this.sanitizeInput(this.control.value);
         this.isUserInput = true;
-        this.value = this.control.value;
+        this.syncValueFromInnerControl();
     }
 
     /**
@@ -384,6 +384,29 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleBlur(): void {
+        this.syncValueToInnerControl();
+    }
+
+    /**
+     * Sanitizes the text input by the user.
+     * @param inputText The user-input text to sanitize
+     * @returns The sanitized text, containing only valid characters for a number field
+     */
+    protected sanitizeInput(inputText: string): string {
+        return inputText.replace(/[^0-9\-+e.]/g, "");
+    }
+
+    /**
+     * Synchronizes the value from the input control in the shadow DOM to the host component.
+     */
+    protected syncValueFromInnerControl(): void {
+        this.value = this.control.value;
+    }
+
+    /**
+     * Synchronizes the value from the host component to the input control in the shadow DOM.
+     */
+    protected syncValueToInnerControl(): void {
         this.control.value = this.value;
     }
 }
