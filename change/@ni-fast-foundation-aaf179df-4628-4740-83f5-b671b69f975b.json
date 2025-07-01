@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Abstract NumberField input filtering and value synchronization",
-  "packageName": "@ni/fast-foundation",
-  "email": "mert.akinc@emerson.com",
-  "dependentChangeType": "patch"
-}

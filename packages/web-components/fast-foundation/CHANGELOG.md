@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Thu, 03 Apr 2025 00:08:47 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 01 Jul 2025 17:34:14 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.0
+
+Tue, 01 Jul 2025 17:34:14 GMT
+
+### Minor changes
+
+- Abstract NumberField input filtering and value synchronization ([ni/fast@8b837f6](https://github.com/ni/fast/commit/8b837f6bf7a3c70daa44e8e7fc972c21255f5544))
 
 ## 10.0.2
 

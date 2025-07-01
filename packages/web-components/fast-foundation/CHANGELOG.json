@@ -2,6 +2,21 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 01 Jul 2025 17:34:14 GMT",
+      "version": "10.1.0",
+      "tag": "@ni/fast-foundation_v10.1.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "mert.akinc@emerson.com",
+            "package": "@ni/fast-foundation",
+            "commit": "8b837f6bf7a3c70daa44e8e7fc972c21255f5544",
+            "comment": "Abstract NumberField input filtering and value synchronization"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 03 Apr 2025 00:08:47 GMT",
       "version": "10.0.2",
       "tag": "@ni/fast-foundation_v10.0.2",
