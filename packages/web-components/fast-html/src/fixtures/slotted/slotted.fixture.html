@@ -7,11 +7,23 @@
     </head>
     <body>
         <f-template name="test-element">
-            <template><slot f-slotted="{slottedNodes}"></slot></template>
+            <template>
+                <slot f-slotted="{slottedNodes filter elements()}"></slot>
+                <slot name="foo" f-slotted="{slottedFooNodes}"></slot>
+                <slot name="bar" f-slotted="{slottedBarNodes filter elements(p, ol)}"></slot>
+            </template>
         </f-template>
         <test-element>
-            <template shadowrootmode="open"><slot data-fe-b-0></slot></template>
-            <ul><li>Foo</li><li>Bar</li></ul>
+            <template shadowrootmode="open">
+                <slot data-fe-b-0></slot>
+                <slot name="foo" data-fe-b-1></slot>
+                <slot name="bar" data-fe-b-2></slot>
+            </template>
+            <div>Slotted</div>
+            Not slotted
+            <ul slot="foo"><li>Item 1</li><li>Item 2</li></ul>
+            <div slot="bar"></div>
+            <p slot="bar"></p>
         </test-element>
     </body>
 </html>

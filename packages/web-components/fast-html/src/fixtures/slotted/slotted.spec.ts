@@ -1,30 +1,29 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Locator, test } from "@playwright/test";
 
-test.describe("f-template", async () => {
-    test("create a slotted directive", async ({ page }) => {
+test.describe("f-template", () => {
+    let element: Locator;
+    test.beforeEach(async ({ page }) => {
         await page.goto("/slotted");
+        element = page.locator("test-element");
+    });
 
-        const classCount1 = await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
+    test("create a slotted directive", async () => {
+        await expect(element).toHaveJSProperty("classList.length", 2);
 
-            return (customElement.item(0) as any)?.classList.length;
-        });
-
-        expect(classCount1).toEqual(2);
-
-        await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
-
+        await element.evaluate((node) => {
             const newElement = document.createElement("button");
-            customElement.item(0)?.append(newElement);
+            newElement.slot = "foo";
+            node.append(newElement);
         });
 
-        const classCount2 = await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
+        await expect(element).toHaveJSProperty("classList.length", 3);
+    });
 
-            return (customElement.item(0) as any)?.classList.length;
-        });
+    test("slotted nodes are filtered by elements()", async () => {
+        await expect(element).toHaveJSProperty("slottedNodes.length", 1);
+    });
 
-        expect(classCount2).toEqual(3);
+    test("slotted nodes are filtered by elements() with query", async () => {
+        await expect(element).toHaveJSProperty("slottedBarNodes.length", 1);
     });
 });
