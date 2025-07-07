@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: supports filter in f-slotted directive",
-  "packageName": "@microsoft/fast-html",
-  "email": "machi@microsoft.com",
-  "dependentChangeType": "none"
-}

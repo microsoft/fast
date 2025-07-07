@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 07 Jul 2025 00:35:58 GMT",
+      "version": "1.0.0-alpha.15",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.15",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3c6d88f4bf7e6e2651d93de85489c049d3295684",
+            "comment": "Fix the RenderableFASTElement to account for rendering when not hydrating and add an optional function to await if the user needs to perform additional hydratable actions"
+          },
+          {
+            "author": "machi@microsoft.com",
+            "package": "@microsoft/fast-html",
+            "commit": "182dfa06fc2b29a4bfcbe48f7aad0d6063210253",
+            "comment": "feat: supports filter in f-slotted directive"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 14 Jun 2025 20:48:12 GMT",
       "version": "1.0.0-alpha.14",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.14",

@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Sat, 14 Jun 2025 20:48:12 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 07 Jul 2025 00:35:58 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.15
+
+Mon, 07 Jul 2025 00:35:58 GMT
+
+### Changes
+
+- Fix the RenderableFASTElement to account for rendering when not hydrating and add an optional function to await if the user needs to perform additional hydratable actions (7559015+janechu@users.noreply.github.com)
+- feat: supports filter in f-slotted directive (machi@microsoft.com)
 
 ## 1.0.0-alpha.14
 

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fix the RenderableFASTElement to account for rendering when not hydrating and add an optional function to await if the user needs to perform additional hydratable actions",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
