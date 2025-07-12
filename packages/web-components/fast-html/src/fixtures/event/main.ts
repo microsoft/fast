@@ -21,9 +21,9 @@ class TestElement extends RenderableFASTElement {
         this.foo = "modified-by-click";
     }
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

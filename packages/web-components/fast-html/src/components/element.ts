@@ -1,35 +1,19 @@
-import { attr, FASTElement, Observable } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
 export abstract class RenderableFASTElement extends FASTElement {
     @attr({ mode: "boolean", attribute: "defer-hydration" })
     deferHydration: boolean = true;
 
-    @attr({ mode: "boolean", attribute: "needs-hydration" })
-    needsHydration: boolean = true;
-
     constructor() {
         super();
 
-        // If the elements template has already been defined there is no need to defer hydration.
-        if (!this.$fastController?.definition?.shadowOptions) {
-            this.setAttribute("defer-hydration", "");
-            this.setAttribute("needs-hydration", "");
+        if (this.prepare) {
+            this.prepare().then(() => {
+                this.deferHydration = false;
+            });
+        } else {
+            this.deferHydration = false;
         }
-
-        Observable.defineProperty(this.$fastController.definition, "shadowOptions");
-
-        Observable.getNotifier(this.$fastController.definition).subscribe(
-            {
-                handleChange: async () => {
-                    if (this.prepare) {
-                        await this.prepare();
-                    }
-
-                    this.deferHydration = false;
-                },
-            },
-            "shadowOptions"
-        );
     }
 
     /**

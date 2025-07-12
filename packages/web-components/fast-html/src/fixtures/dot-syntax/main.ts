@@ -5,9 +5,9 @@ class TestElement extends RenderableFASTElement {
         foo: "bar",
     };
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

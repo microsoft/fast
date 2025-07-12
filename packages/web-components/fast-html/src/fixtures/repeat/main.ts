@@ -7,9 +7,9 @@ class TestElement extends RenderableFASTElement {
 
     parent: string = "Bat";
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementInnerWhen extends RenderableFASTElement {
@@ -25,9 +25,9 @@ class TestElementInnerWhen extends RenderableFASTElement {
         },
     ];
 }
-TestElementInnerWhen.define({
+TestElementInnerWhen.defineAsync({
     name: "test-element-inner-when",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

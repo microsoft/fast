@@ -563,6 +563,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
+        if (definition.templateOptions === "defer-and-hydrate" && !definition.template) {
+            element.setAttribute(deferHydrationAttribute, "");
+            element.setAttribute(needsHydrationAttribute, "");
+        }
+
         Observable.getNotifier(definition).subscribe(
             {
                 handleChange: () => {

@@ -8,9 +8,9 @@ class TestElement extends RenderableFASTElement {
     @observable
     list: Array<string> = ["Foo", "Bar"];
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({
