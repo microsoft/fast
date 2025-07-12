@@ -144,6 +144,7 @@ export {
     PartialFASTElementDefinition,
     ShadowRootOptions,
     fastElementRegistry,
+    TemplateOptions,
     TypeRegistry,
 } from "./components/fast-definitions.js";
 export {

@@ -104,40 +104,40 @@ class TemplateElement extends FASTElement {
         super.connectedCallback();
 
         if (this.name) {
-            this.$fastController.definition.registry
-                .whenDefined(this.name)
-                .then(async value => {
-                    if (this.name && !!!TemplateElement.elementOptions?.[this.name]) {
-                        TemplateElement.setOptions(this.name);
-                    }
+            FASTElementDefinition.whenRegistered(this.name).then(async value => {
+                if (this.name && !!!TemplateElement.elementOptions?.[this.name]) {
+                    TemplateElement.setOptions(this.name);
+                }
 
-                    const registeredFastElement: FASTElementDefinition | undefined =
-                        fastElementRegistry.getByType(value);
-                    const template = this.getElementsByTagName("template").item(0);
+                const registeredFastElement: FASTElementDefinition | undefined =
+                    fastElementRegistry.getByType(value);
+                const template = this.getElementsByTagName("template").item(0);
 
-                    if (template) {
-                        const innerHTML = await transformInnerHTML(this.innerHTML);
+                if (template) {
+                    const innerHTML = await transformInnerHTML(this.innerHTML);
 
-                        await this.resolveAllPartials(innerHTML);
+                    await this.resolveAllPartials(innerHTML);
 
-                        const { strings, values } = await this.resolveStringsAndValues(
-                            innerHTML
+                    const { strings, values } = await this.resolveStringsAndValues(
+                        innerHTML
+                    );
+
+                    if (registeredFastElement) {
+                        // all new elements will get the updated template
+                        registeredFastElement.template = this.resolveTemplateOrBehavior(
+                            strings,
+                            values
                         );
-
-                        if (registeredFastElement) {
-                            // all new elements will get the updated template
-                            registeredFastElement.template =
-                                this.resolveTemplateOrBehavior(strings, values);
-                            // set shadow options as defined by the f-template
-                            registeredFastElement.shadowOptions =
-                                TemplateElement.elementOptions[
-                                    this.name as string
-                                ]?.shadowOptions;
-                        }
-                    } else {
-                        throw FAST.error(Message.noTemplateProvided, { name: this.name });
+                        // set shadow options as defined by the f-template
+                        registeredFastElement.shadowOptions =
+                            TemplateElement.elementOptions[
+                                this.name as string
+                            ]?.shadowOptions;
                     }
-                });
+                } else {
+                    throw FAST.error(Message.noTemplateProvided, { name: this.name });
+                }
+            });
         }
     }
 

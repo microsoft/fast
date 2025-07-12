@@ -12,8 +12,6 @@ export abstract class RenderableFASTElement extends FASTElement {
     constructor();
     // (undocumented)
     deferHydration: boolean;
-    // (undocumented)
-    needsHydration: boolean;
 }
 
 // @public

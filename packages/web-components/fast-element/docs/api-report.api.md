@@ -441,6 +441,7 @@ export const FASTElement: {
     new (): FASTElement;
     define: typeof define;
     compose: typeof compose;
+    defineAsync: typeof defineAsync;
     from: typeof from;
 };
 
@@ -454,6 +455,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
+    static isRegistered: Record<string, Function>;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @internal
@@ -462,7 +464,12 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate;
+    templateOptions?: TemplateOptions;
     readonly type: TType;
+    // @alpha
+    static whenComposed<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+    // @alpha
+    static whenRegistered: (name: string) => Promise<Function>;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
@@ -727,6 +734,7 @@ export interface PartialFASTElementDefinition {
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate;
+    readonly templateOptions?: TemplateOptions;
 }
 
 // @public
@@ -959,6 +967,9 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 }
 
 // @public
+export type TemplateOptions = "defer-and-hydrate";
+
+// @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
 
 // @public
@@ -1051,9 +1062,10 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:63:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:64:5 - (ae-forgotten-export) The symbol "defineAsync" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:65:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

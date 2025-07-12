@@ -3,9 +3,9 @@ import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 class TestElement extends RenderableFASTElement {
     public video: HTMLVideoElement | null = null;
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

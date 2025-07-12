@@ -34,6 +34,13 @@ export interface ShadowRootOptions extends ShadowRootInit {
 }
 
 /**
+ * Template options.
+ * @public
+ * @alpha
+ */
+export type TemplateOptions = "defer-and-hydrate";
+
+/**
  * Represents metadata configuration for a custom element.
  * @public
  */
@@ -47,6 +54,11 @@ export interface PartialFASTElementDefinition {
      * The template to render for the custom element.
      */
     readonly template?: ElementViewTemplate;
+
+    /**
+     * Options controlling how the template will be created.
+     */
+    readonly templateOptions?: TemplateOptions;
 
     /**
      * The styles to associate with the custom element.
@@ -126,6 +138,11 @@ export class FASTElementDefinition<
     public template?: ElementViewTemplate;
 
     /**
+     * The template options.
+     */
+    public templateOptions?: TemplateOptions;
+
+    /**
      * The styles to associate with the custom element.
      */
     public readonly styles?: ElementStyles;
@@ -145,6 +162,11 @@ export class FASTElementDefinition<
      */
     readonly registry: CustomElementRegistry;
 
+    /**
+     * The definition has been registered to the FAST element registry.
+     */
+    public static isRegistered: Record<string, Function> = {};
+
     private constructor(
         type: TType,
         nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition
@@ -156,6 +178,7 @@ export class FASTElementDefinition<
         this.type = type;
         this.name = nameOrConfig.name;
         this.template = nameOrConfig.template;
+        this.templateOptions = nameOrConfig.templateOptions;
         this.registry = nameOrConfig.registry ?? customElements;
 
         const proto = type.prototype;
@@ -196,6 +219,8 @@ export class FASTElementDefinition<
         this.styles = ElementStyles.normalize(nameOrConfig.styles);
 
         fastElementRegistry.register(this);
+        Observable.defineProperty(FASTElementDefinition.isRegistered, this.name);
+        FASTElementDefinition.isRegistered[this.name] = this.type;
     }
 
     /**
@@ -254,6 +279,71 @@ export class FASTElementDefinition<
      * @param instance - The custom element instance to retrieve the definition for.
      */
     static readonly getForInstance = fastElementRegistry.getForInstance;
+
+    /**
+     * Indicates when a custom elements definition has been registered with the fastElementRegistry.
+     * @param name - The name of the defined custom element.
+     * @alpha
+     */
+    public static whenRegistered = async (name: string): Promise<Function> => {
+        return new Promise(resolve => {
+            if (FASTElementDefinition.isRegistered[name]) {
+                resolve(FASTElementDefinition.isRegistered[name]);
+            }
+
+            Observable.getNotifier(FASTElementDefinition.isRegistered).subscribe(
+                {
+                    handleChange: () => resolve(FASTElementDefinition.isRegistered[name]),
+                },
+                name
+            );
+        });
+    };
+
+    /**
+     * Creates an instance of FASTElementDefinition asynchronously.
+     * @param type - The type this definition is being created for.
+     * @param nameOrDef - The name of the element to define or a config object
+     * that describes the element to define.
+     * @alpha
+     */
+    public static whenComposed<
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    >(
+        type: TType,
+        nameOrDef?: string | PartialFASTElementDefinition
+    ): Promise<FASTElementDefinition<TType>> {
+        return new Promise(resolve => {
+            if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
+                resolve(
+                    new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
+                );
+            }
+
+            const definition = new FASTElementDefinition<TType>(type, nameOrDef);
+
+            Promise.all([
+                new Promise<void>(resolve => {
+                    Observable.getNotifier(definition).subscribe(
+                        {
+                            handleChange: () => resolve(),
+                        },
+                        "template"
+                    );
+                }),
+                new Promise<void>(resolve => {
+                    Observable.getNotifier(definition).subscribe(
+                        {
+                            handleChange: () => resolve(),
+                        },
+                        "shadowOptions"
+                    );
+                }),
+            ]).then(() => {
+                resolve(definition);
+            });
+        });
+    }
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

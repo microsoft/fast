@@ -15,9 +15,9 @@ class TestElement extends RenderableFASTElement {
     @observable
     slottedBarNodes: Node[] = [];
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({
