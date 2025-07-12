@@ -563,11 +563,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             throw FAST.error(Message.missingElementDefinition);
         }
 
-        if (definition.templateOptions === "defer-and-hydrate" && !definition.template) {
-            element.setAttribute(deferHydrationAttribute, "");
-            element.setAttribute(needsHydrationAttribute, "");
-        }
-
         Observable.getNotifier(definition).subscribe(
             {
                 handleChange: () => {
@@ -778,6 +773,24 @@ export class HydratableElementController<
             HydratableElementController.hydrationObserver.unobserve(record.target);
             (record.target as any).$fastController.connect();
         }
+    }
+
+    public static forCustomElement(
+        element: HTMLElement,
+        override?: boolean
+    ): ElementController<HTMLElement> {
+        const definition = FASTElementDefinition.getForInstance(element);
+
+        if (
+            definition !== undefined &&
+            definition.templateOptions === "defer-and-hydrate" &&
+            !definition.template
+        ) {
+            element.setAttribute(deferHydrationAttribute, "");
+            element.setAttribute(needsHydrationAttribute, "");
+        }
+
+        return super.forCustomElement(element, override);
     }
 
     public connect() {

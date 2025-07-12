@@ -464,6 +464,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate;
+    // @alpha
     templateOptions?: TemplateOptions;
     readonly type: TType;
     // @alpha
@@ -598,6 +599,8 @@ export class HydratableElementController<TElement extends HTMLElement = HTMLElem
     connect(): void;
     // (undocumented)
     disconnect(): void;
+    // (undocumented)
+    static forCustomElement(element: HTMLElement, override?: boolean): ElementController<HTMLElement>;
     // (undocumented)
     static install(): void;
     protected needsHydration?: boolean;
@@ -734,6 +737,7 @@ export interface PartialFASTElementDefinition {
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate;
+    // @alpha
     readonly templateOptions?: TemplateOptions;
 }
 
@@ -966,7 +970,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     inline(): CaptureType<TSource, TParent>;
 }
 
-// @public
+// @alpha
 export type TemplateOptions = "defer-and-hydrate";
 
 // @public

@@ -35,7 +35,6 @@ export interface ShadowRootOptions extends ShadowRootInit {
 
 /**
  * Template options.
- * @public
  * @alpha
  */
 export type TemplateOptions = "defer-and-hydrate";
@@ -57,6 +56,7 @@ export interface PartialFASTElementDefinition {
 
     /**
      * Options controlling how the template will be created.
+     * @alpha
      */
     readonly templateOptions?: TemplateOptions;
 
@@ -139,6 +139,7 @@ export class FASTElementDefinition<
 
     /**
      * The template options.
+     * @alpha
      */
     public templateOptions?: TemplateOptions;
 
@@ -301,7 +302,9 @@ export class FASTElementDefinition<
     };
 
     /**
-     * Creates an instance of FASTElementDefinition asynchronously.
+     * Creates an instance of FASTElementDefinition asynchronously. This option assumes
+     * that a template and shadowOptions will be provided and completes when those requirements
+     * are met.
      * @param type - The type this definition is being created for.
      * @param nameOrDef - The name of the element to define or a config object
      * that describes the element to define.
