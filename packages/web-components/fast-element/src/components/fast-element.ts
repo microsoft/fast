@@ -144,7 +144,7 @@ function defineAsync<
 ): Promise<TType> {
     if (isFunction(type)) {
         return new Promise<FASTElementDefinition<TType>>(resolve => {
-            FASTElementDefinition.whenComposed(type, nameOrDef).then(value => {
+            FASTElementDefinition.composeAsync(type, nameOrDef).then(value => {
                 resolve(value);
             });
         }).then(value => {
@@ -153,7 +153,7 @@ function defineAsync<
     }
 
     return new Promise<FASTElementDefinition<TType>>(resolve => {
-        FASTElementDefinition.whenComposed(this, type).then(value => {
+        FASTElementDefinition.composeAsync(this, type).then(value => {
             resolve(value);
         });
     }).then(value => {

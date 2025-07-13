@@ -450,6 +450,8 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
+    // @alpha
+    static composeAsync<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -458,6 +460,8 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static isRegistered: Record<string, Function>;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
+    // @alpha
+    static registerAsync: (name: string) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
@@ -467,10 +471,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     // @alpha
     templateOptions?: TemplateOptions;
     readonly type: TType;
-    // @alpha
-    static whenComposed<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
-    // @alpha
-    static whenRegistered: (name: string) => Promise<Function>;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal

@@ -104,7 +104,7 @@ class TemplateElement extends FASTElement {
         super.connectedCallback();
 
         if (this.name) {
-            FASTElementDefinition.whenRegistered(this.name).then(async value => {
+            FASTElementDefinition.registerAsync(this.name).then(async value => {
                 if (this.name && !!!TemplateElement.elementOptions?.[this.name]) {
                     TemplateElement.setOptions(this.name);
                 }

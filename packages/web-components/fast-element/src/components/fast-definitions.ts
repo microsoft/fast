@@ -286,7 +286,7 @@ export class FASTElementDefinition<
      * @param name - The name of the defined custom element.
      * @alpha
      */
-    public static whenRegistered = async (name: string): Promise<Function> => {
+    public static registerAsync = async (name: string): Promise<Function> => {
         return new Promise(resolve => {
             if (FASTElementDefinition.isRegistered[name]) {
                 resolve(FASTElementDefinition.isRegistered[name]);
@@ -310,7 +310,7 @@ export class FASTElementDefinition<
      * that describes the element to define.
      * @alpha
      */
-    public static whenComposed<
+    public static composeAsync<
         TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
     >(
         type: TType,
