@@ -158,4 +158,32 @@ describe("FASTElementDefinition", () => {
             expect(Reflect.getPrototypeOf(def2.type)).equals(FASTElement);
         });
     });
+
+    context("register async", () => {
+        it("registers a new element when a partial definition is added", async () => {
+            const elName = uniqueElementName();
+
+            await FASTElementDefinition.composeAsync(
+                FASTElement,
+                elName
+            );
+
+            const registeredEl = await FASTElementDefinition.registerAsync(
+                elName
+            );
+
+            expect(Reflect.getPrototypeOf(registeredEl)).equals(HTMLElement);
+        });
+    });
+
+    context("compose async", () => {
+        it("composes a new element when a new template is defined and shadow options have been added", async () => {
+            const def1 = await FASTElementDefinition.composeAsync(
+                FASTElement,
+                uniqueElementName()
+            );
+
+            expect(Reflect.getPrototypeOf(def1.type)).equals(FASTElement);
+        });
+    });
 });

@@ -6,46 +6,46 @@ import { css } from "../styles/css.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { toHTML } from "../__test__/helpers.js";
-import { ElementController } from "./element-controller.js";
+import { deferHydrationAttribute, ElementController, HydratableElementController, needsHydrationAttribute } from "./element-controller.js";
 import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
 import spies from "chai-spies";
 
 chai.use(spies);
 
+const templateA = html`a`;
+const templateB = html`b`;
+const cssA = "class-a { color: red; }";
+const stylesA = css`${cssA}`;
+const cssB = "class-b { color: blue; }";
+const stylesB = css`${cssB}`;
+
+function createController<T extends ElementController = ElementController>(
+    config: Omit<PartialFASTElementDefinition, "name"> = {},
+    BaseClass = FASTElement
+) {
+    const name = uniqueElementName();
+    const definition = FASTElementDefinition.compose(
+        class ControllerTest extends BaseClass {
+            static definition = { ...config, name };
+        }
+    ).define();
+
+    const element = document.createElement(name);
+    const controller = ElementController.forCustomElement(element) as T;
+
+    return {
+        name,
+        element,
+        controller,
+        definition,
+        shadowRoot: element.shadowRoot! as ShadowRoot & {
+            adoptedStyleSheets: CSSStyleSheet[];
+        },
+    };
+}
+
 describe("The ElementController", () => {
-    const templateA = html`a`;
-    const templateB = html`b`;
-    const cssA = "class-a { color: red; }";
-    const stylesA = css`${cssA}`;
-    const cssB = "class-b { color: blue; }";
-    const stylesB = css`${cssB}`;
-
-    function createController<T extends ElementController = ElementController>(
-        config: Omit<PartialFASTElementDefinition, "name"> = {},
-        BaseClass = FASTElement
-    ) {
-        const name = uniqueElementName();
-        const definition = FASTElementDefinition.compose(
-            class ControllerTest extends BaseClass {
-                static definition = { ...config, name };
-            }
-        ).define();
-
-        const element = document.createElement(name);
-        const controller = ElementController.forCustomElement(element) as T;
-
-        return {
-            name,
-            element,
-            controller,
-            definition,
-            shadowRoot: element.shadowRoot! as ShadowRoot & {
-                adoptedStyleSheets: CSSStyleSheet[];
-            },
-        };
-    }
-
     context("during construction", () => {
         it("if no shadow options defined, uses open shadow dom", () => {
             const { shadowRoot } = createController();
@@ -698,5 +698,29 @@ describe("The ElementController", () => {
         expect(() => {
             JSON.stringify(controller.element);
         }).to.not.throw();
+    });
+});
+
+describe("The HydratableElementController", () => {
+    it("should not set a defer-hydration and needs-hydration attribute if the template is set", () => {
+        const { element } = createController();
+
+        HydratableElementController.forCustomElement(element);
+
+        expect(element.getAttribute(deferHydrationAttribute)).to.equal(null);
+        expect(element.getAttribute(needsHydrationAttribute)).to.equal(null);
+    });
+    it("should set a defer-hydration and needs-hydration attribute if the template is not set", () => {
+        const { element } = createController();
+
+        const definition = FASTElementDefinition.getForInstance(element);
+
+        (definition as FASTElementDefinition).template = undefined;
+        (definition as FASTElementDefinition).templateOptions = "defer-and-hydrate";
+
+        HydratableElementController.forCustomElement(element);
+
+        expect(element.getAttribute(deferHydrationAttribute)).to.equal("");
+        expect(element.getAttribute(needsHydrationAttribute)).to.equal("");
     });
 });

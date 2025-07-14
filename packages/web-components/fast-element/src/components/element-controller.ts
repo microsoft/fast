@@ -746,8 +746,8 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
     ElementStyles.setDefaultStrategy(StyleElementStrategy);
 }
 
-const deferHydrationAttribute = "defer-hydration";
-const needsHydrationAttribute = "needs-hydration";
+export const deferHydrationAttribute = "defer-hydration";
+export const needsHydrationAttribute = "needs-hydration";
 
 /**
  * An ElementController capable of hydrating FAST elements from
