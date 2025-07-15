@@ -5,9 +5,9 @@ class TestElement extends RenderableFASTElement {
     @attr
     type: string = "radio";
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

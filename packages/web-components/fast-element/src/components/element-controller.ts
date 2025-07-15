@@ -746,8 +746,8 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
     ElementStyles.setDefaultStrategy(StyleElementStrategy);
 }
 
-const deferHydrationAttribute = "defer-hydration";
-const needsHydrationAttribute = "needs-hydration";
+export const deferHydrationAttribute = "defer-hydration";
+export const needsHydrationAttribute = "needs-hydration";
 
 /**
  * An ElementController capable of hydrating FAST elements from
@@ -773,6 +773,24 @@ export class HydratableElementController<
             HydratableElementController.hydrationObserver.unobserve(record.target);
             (record.target as any).$fastController.connect();
         }
+    }
+
+    public static forCustomElement(
+        element: HTMLElement,
+        override?: boolean
+    ): ElementController<HTMLElement> {
+        const definition = FASTElementDefinition.getForInstance(element);
+
+        if (
+            definition !== undefined &&
+            definition.templateOptions === "defer-and-hydrate" &&
+            !definition.template
+        ) {
+            element.setAttribute(deferHydrationAttribute, "");
+            element.setAttribute(needsHydrationAttribute, "");
+        }
+
+        return super.forCustomElement(element, override);
     }
 
     public connect() {

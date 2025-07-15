@@ -5,17 +5,17 @@ class TestElement extends RenderableFASTElement {
     @attr
     text: string = "Hello";
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementUnescaped extends RenderableFASTElement {
     public html = `<p>Hello world</p>`;
 }
-TestElementUnescaped.define({
+TestElementUnescaped.defineAsync({
     name: "test-element-unescaped",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

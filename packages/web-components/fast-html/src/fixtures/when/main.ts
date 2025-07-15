@@ -5,72 +5,72 @@ class TestElement extends RenderableFASTElement {
     @attr({ mode: "boolean" })
     show: boolean = false;
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementNot extends RenderableFASTElement {
     @attr({ mode: "boolean" })
     hide: boolean = false;
 }
-TestElementNot.define({
+TestElementNot.defineAsync({
     name: "test-element-not",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementEquals extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementEquals.define({
+TestElementEquals.defineAsync({
     name: "test-element-equals",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementNotEquals extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementNotEquals.define({
+TestElementNotEquals.defineAsync({
     name: "test-element-not-equals",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementGe extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementGe.define({
+TestElementGe.defineAsync({
     name: "test-element-ge",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementGt extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementGt.define({
+TestElementGt.defineAsync({
     name: "test-element-gt",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementLe extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementLe.define({
+TestElementLe.defineAsync({
     name: "test-element-le",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementLt extends RenderableFASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementLt.define({
+TestElementLt.defineAsync({
     name: "test-element-lt",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementOr extends RenderableFASTElement {
@@ -80,9 +80,9 @@ class TestElementOr extends RenderableFASTElement {
     @attr({ attribute: "that-var", mode: "boolean" })
     thatVar: boolean = false;
 }
-TestElementOr.define({
+TestElementOr.defineAsync({
     name: "test-element-or",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementAnd extends RenderableFASTElement {
@@ -92,9 +92,9 @@ class TestElementAnd extends RenderableFASTElement {
     @attr({ attribute: "that-var", mode: "boolean" })
     thatVar: boolean = false;
 }
-TestElementAnd.define({
+TestElementAnd.defineAsync({
     name: "test-element-and",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({

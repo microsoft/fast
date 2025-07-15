@@ -1,7 +1,6 @@
-import { TemplateElement } from "@microsoft/fast-html";
-import { FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
-class TestElement extends FASTElement {
+class TestElement extends RenderableFASTElement {
     public items = [
         {
             text: "Hello",
@@ -21,9 +20,9 @@ class TestElement extends FASTElement {
         },
     ];
 }
-TestElement.define({
+TestElement.defineAsync({
     name: "test-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({
