@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 16 Jul 2025 22:43:52 GMT",
+      "version": "2.5.0",
+      "tag": "@microsoft/fast-element_v2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "245c8e45d68513ee5d733340784bdaa2afcaf909",
+            "comment": "Update component lifecycles with async methods to allow for a deferred define step"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 30 May 2025 05:02:03 GMT",
       "version": "2.4.1",
       "tag": "@microsoft/fast-element_v2.4.1",

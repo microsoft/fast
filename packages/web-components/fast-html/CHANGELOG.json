@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 16 Jul 2025 22:43:52 GMT",
+      "version": "1.0.0-alpha.16",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.16",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "245c8e45d68513ee5d733340784bdaa2afcaf909",
+            "comment": "Update component lifecycles with async methods to allow for a deferred define step"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.5.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 07 Jul 2025 00:35:58 GMT",
       "version": "1.0.0-alpha.15",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.15",

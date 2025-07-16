@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 30 May 2025 05:02:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 16 Jul 2025 22:43:52 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.5.0
+
+Wed, 16 Jul 2025 22:43:52 GMT
+
+### Minor changes
+
+- Update component lifecycles with async methods to allow for a deferred define step (7559015+janechu@users.noreply.github.com)
 
 ## 2.4.1
 
