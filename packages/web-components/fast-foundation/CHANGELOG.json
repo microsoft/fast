@@ -2,6 +2,21 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 16 Jul 2025 05:39:44 GMT",
+      "version": "10.1.1",
+      "tag": "@ni/fast-foundation_v10.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "hari.ram.karthik@emerson.com",
+            "package": "@ni/fast-foundation",
+            "commit": "5912b5bac050f868a886b306cdf6bc2d2eefa363",
+            "comment": "increase number field precision to 15"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 01 Jul 2025 17:34:14 GMT",
       "version": "10.1.0",
       "tag": "@ni/fast-foundation_v10.1.0",

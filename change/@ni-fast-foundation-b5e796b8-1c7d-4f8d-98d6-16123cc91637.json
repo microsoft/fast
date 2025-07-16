@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "increase number field precision to 15",
-  "packageName": "@ni/fast-foundation",
-  "email": "hari.ram.karthik@emerson.com",
-  "dependentChangeType": "patch"
-}

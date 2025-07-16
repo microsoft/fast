@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Tue, 01 Jul 2025 17:34:14 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 16 Jul 2025 05:39:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.1
+
+Wed, 16 Jul 2025 05:39:44 GMT
+
+### Patches
+
+- increase number field precision to 15 ([ni/fast@5912b5b](https://github.com/ni/fast/commit/5912b5bac050f868a886b306cdf6bc2d2eefa363))
 
 ## 10.1.0
 
