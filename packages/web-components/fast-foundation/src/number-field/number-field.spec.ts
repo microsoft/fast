@@ -848,6 +848,50 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+
+        it("should allow 15 digits float entry", async () => {
+            const { element, disconnect } = await setup();
+            const floatValue = "0.123456789012345";
+
+            element.setAttribute("value", floatValue);
+            expect(element.value).to.equal(floatValue);
+
+            await disconnect();
+        });
+
+        it("should round off float values to 15 precision", async () => {
+            const { element, disconnect } = await setup();
+            const floatValue = "0.1234567890123456";
+            const expectedValue = "0.123456789012346";
+
+            element.setAttribute("value", floatValue);
+            expect(element.value).to.equal(expectedValue);
+
+            await disconnect();
+        });
+
+        it("should allow number entry up to 15 digits", async () => {
+            const value = "123456789012345";
+            const { element, disconnect } = await setup();
+
+            element.setAttribute("value", value);
+
+            expect(element.value).to.equal(value);
+
+            await disconnect();
+        });
+
+        it("should round off number entry to 15 digits", async () => {
+            const value = "12345678901234567";
+            const expectedValue = "12345678901234600";
+            const { element, disconnect } = await setup();
+
+            element.setAttribute("value", value);
+
+            expect(element.value).to.equal(expectedValue);
+
+            await disconnect();
+        });
     });
 
     describe("hide step", () => {
@@ -901,6 +945,46 @@ describe("NumberField", () => {
             element.value = "18";
 
             expect(element.valueAsNumber).to.equal(18);
+
+            await disconnect();
+        });
+
+        it("should allow reading value as number up to 15 digits", async () => {
+            const { element, disconnect } = await setup();
+
+            element.value = "123456789012345";
+
+            expect(element.valueAsNumber).to.equal(123456789012345);
+
+            await disconnect();
+        });
+
+        it("should allow reading value as number up to 15 fractional digits", async () => {
+            const { element, disconnect } = await setup();
+
+            element.value = "0.123456789012345";
+
+            expect(element.valueAsNumber).to.equal(0.123456789012345);
+
+            await disconnect();
+        });
+
+        it("should round off value as number to 15 digits", async () => {
+            const { element, disconnect } = await setup();
+
+            element.value = "12345678901234567";
+
+            expect(element.valueAsNumber).to.equal(12345678901234600);
+
+            await disconnect();
+        });
+
+        it("should round off value as number to 15 fractional digits", async () => {
+            const { element, disconnect } = await setup();
+
+            element.value = "0.1234567890123456";
+
+            expect(element.valueAsNumber).to.equal(0.123456789012346);
 
             await disconnect();
         });
