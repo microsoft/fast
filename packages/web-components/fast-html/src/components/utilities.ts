@@ -479,6 +479,37 @@ export function expressionResolver(
 }
 
 /**
+ * Extracts all paths from a ChainedExpression, including nested expressions
+ * @param chainedExpression - The chained expression to extract paths from
+ * @returns A Set containing all unique paths found in the expression chain
+ */
+export function extractPathsFromChainedExpression(
+    chainedExpression: ChainedExpression
+): Set<string> {
+    const paths = new Set<string>();
+
+    function processExpression(expr: Expression) {
+        // Check left operand (only add if it's not a literal value)
+        if (typeof expr.left === "string" && !expr.leftIsValue) {
+            paths.add(expr.left);
+        }
+
+        // Check right operand (only add if it's not a literal value)
+        if (typeof expr.right === "string" && !expr.rightIsValue) {
+            paths.add(expr.right);
+        }
+    }
+
+    let current: ChainedExpression | undefined = chainedExpression;
+    while (current !== undefined) {
+        processExpression(current.expression);
+        current = current.next;
+    }
+
+    return paths;
+}
+
+/**
  * Determine if the operand is a value (boolean, number, string) or an accessor.
  * @param operand
  */
@@ -539,34 +570,92 @@ export interface ChainedExpression {
  * @returns - A configuration object containing information about the expression
  */
 export function getExpressionChain(value: string): ChainedExpression | void {
-    const split = value.split(" ");
-    let expressionString: string = "";
-    let chainedExpression;
+    // Handle operator precedence: || has lower precedence than &&
+    // First, split by || (lowest precedence)
+    const orParts = value.split(" || ");
 
-    // split expressions by chaining operators
-    split.forEach((splitItem, index) => {
-        if (splitItem === "&&" || splitItem === "||" || splitItem === "&amp;&amp;") {
-            chainedExpression = {
-                expression: getExpression(expressionString),
-                next: {
-                    operator: splitItem,
-                    ...getExpressionChain(split.slice(index + 1).join(" ")),
-                },
-            };
-        } else {
-            expressionString = `${
-                expressionString ? `${expressionString} ` : ""
-            }${splitItem}`;
+    if (orParts.length > 1) {
+        // Process each part recursively and chain them with ||
+        const firstPart = getExpressionChain(orParts[0]);
+        if (firstPart) {
+            let current = firstPart;
+
+            for (let i = 1; i < orParts.length; i++) {
+                const nextPart = getExpressionChain(orParts[i]);
+                if (nextPart) {
+                    // Find the end of the current chain
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = {
+                        operator: "||",
+                        ...nextPart,
+                    };
+                }
+            }
+
+            return firstPart;
         }
-    });
-
-    if (chainedExpression) {
-        return chainedExpression;
     }
 
-    if (expressionString) {
+    // If no ||, check for && (higher precedence)
+    const andParts = value.split(" && ");
+
+    if (andParts.length > 1) {
+        // Process each part recursively and chain them with &&
+        const firstPart = getExpressionChain(andParts[0]);
+        if (firstPart) {
+            let current = firstPart;
+
+            for (let i = 1; i < andParts.length; i++) {
+                const nextPart = getExpressionChain(andParts[i]);
+                if (nextPart) {
+                    // Find the end of the current chain
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = {
+                        operator: "&&",
+                        ...nextPart,
+                    };
+                }
+            }
+
+            return firstPart;
+        }
+    }
+
+    // Handle HTML entity version of &&
+    const ampParts = value.split(" &amp;&amp; ");
+
+    if (ampParts.length > 1) {
+        // Process each part recursively and chain them with &amp;&amp;
+        const firstPart = getExpressionChain(ampParts[0]);
+        if (firstPart) {
+            let current = firstPart;
+
+            for (let i = 1; i < ampParts.length; i++) {
+                const nextPart = getExpressionChain(ampParts[i]);
+                if (nextPart) {
+                    // Find the end of the current chain
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = {
+                        operator: "&amp;&amp;",
+                        ...nextPart,
+                    };
+                }
+            }
+
+            return firstPart;
+        }
+    }
+
+    // No chaining operators found, create a single expression
+    if (value.trim()) {
         return {
-            expression: getExpression(expressionString),
+            expression: getExpression(value.trim()),
         };
     }
 
