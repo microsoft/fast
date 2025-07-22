@@ -522,6 +522,7 @@ type ChainingOperator = "||" | "&&" | "&amp;&amp;";
 interface Expression {
     operator: Operator;
     left: string;
+    leftIsValue: boolean | null;
     right: string | boolean | number | null;
     rightIsValue: boolean | null;
 }
@@ -574,9 +575,13 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
 function getExpression(value: string): Expression {
     if (value[0] === "!") {
+        const left = (value as string).slice(1);
+        const operandValue = isOperandValue(left);
+
         return {
             operator: "!",
-            left: value.slice(1),
+            left,
+            leftIsValue: operandValue.isValue,
             right: null,
             rightIsValue: null,
         };
@@ -586,19 +591,24 @@ function getExpression(value: string): Expression {
 
     if (split.length === 3) {
         const operator: Operator = split[1] as Operator;
-        const { value, isValue } = isOperandValue(split[2]);
+        const right = split[2];
+        const rightOperandValue = isOperandValue(right);
+        const left = split[0];
+        const leftOperandValue = isOperandValue(left);
 
         return {
             operator,
             left: split[0],
-            right: isValue ? value : split[2],
-            rightIsValue: isValue,
+            leftIsValue: leftOperandValue.isValue,
+            right: rightOperandValue.isValue ? rightOperandValue.value : right,
+            rightIsValue: rightOperandValue.isValue,
         };
     }
 
     return {
         operator: "access",
         left: value,
+        leftIsValue: false,
         right: null,
         rightIsValue: null,
     };

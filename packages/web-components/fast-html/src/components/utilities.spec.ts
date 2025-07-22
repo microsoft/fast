@@ -247,6 +247,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "access",
                     left: "foo",
+                    leftIsValue: false,
                     right: null,
                     rightIsValue: null,
                 }
@@ -257,6 +258,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!",
                     left: "foo",
+                    leftIsValue: false,
                     right: null,
                     rightIsValue: null,
                 }
@@ -267,6 +269,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: "test",
                     rightIsValue: true,
                 }
@@ -277,6 +280,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: false,
                     rightIsValue: true,
                 }
@@ -287,6 +291,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: 5,
                     rightIsValue: true,
                 }
@@ -297,6 +302,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: "bat",
                     rightIsValue: true,
                 },
@@ -305,6 +311,7 @@ test.describe("utilities", async () => {
                     expression: {
                         operator: "==",
                         left: "bar",
+                        leftIsValue: false,
                         right: "baz",
                         rightIsValue: true,
                     }
@@ -315,6 +322,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "access",
                     left: "foo",
+                    leftIsValue: false,
                     right: null,
                     rightIsValue: null,
                 },
@@ -323,6 +331,7 @@ test.describe("utilities", async () => {
                     expression: {
                         operator: "access",
                         left: "bar",
+                        leftIsValue: false,
                         right: null,
                         rightIsValue: null,
                     }
