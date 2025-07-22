@@ -471,12 +471,11 @@ export function bindingResolver(
 
 export function expressionResolver(
     self: boolean,
-    expression: Expression,
-    next?: ChainedExpression
+    expression: ChainedExpression
 ): (accessibleObject: any, context: any) => any {
     // TODO: cache paths in expression
 
-    return (x, c) => resolveChainedExpression(x, c, self, expression, next);
+    return (x, c) => resolveChainedExpression(x, c, self, expression);
 }
 
 /**
@@ -672,26 +671,25 @@ function resolveChainedExpression(
     x: boolean,
     c: any,
     self: boolean,
-    expression: Expression,
-    next?: ChainedExpression
+    expression: ChainedExpression
 ): any {
-    if (next) {
-        switch (next.operator) {
+    if (expression.next) {
+        switch (expression.next.operator) {
             case "&&":
             case "&amp;&amp;":
                 return (
-                    resolveExpression(x, c, self, expression) &&
-                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                    resolveExpression(x, c, self, expression.expression) &&
+                    resolveChainedExpression(x, c, self, expression.next)
                 );
             case "||":
                 return (
-                    resolveExpression(x, c, self, expression) ||
-                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                    resolveExpression(x, c, self, expression.expression) ||
+                    resolveChainedExpression(x, c, self, expression.next)
                 );
         }
     }
 
-    return resolveExpression(x, c, self, expression);
+    return resolveExpression(x, c, self, expression.expression);
 }
 
 /**
@@ -755,8 +753,8 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  */
 export function resolveWhen(
     self: boolean,
-    { expression, next }: ChainedExpression
+    expression: ChainedExpression
 ): (x: boolean, c: any) => any {
-    const binding = expressionResolver(self, expression, next);
+    const binding = expressionResolver(self, expression);
     return (x: boolean, c: any) => binding(x, c);
 }
