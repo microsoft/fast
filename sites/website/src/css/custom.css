@@ -330,6 +330,10 @@ html[data-theme="light"] {
     --ifm-breadcrumb-color-active: var(--ifm-link-color);
 }
 
+code {
+    background: transparent;
+}
+
 a code {
     --ifm-link-color: #ff5ac4;
 }
