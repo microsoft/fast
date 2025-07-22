@@ -460,6 +460,25 @@ export function pathResolver(
     };
 }
 
+export function bindingResolver(
+    path: string,
+    self: boolean = false
+): (accessibleObject: any, context: any) => any {
+    // TODO: cache path
+
+    return pathResolver(path, self);
+}
+
+export function expressionResolver(
+    self: boolean,
+    expression: Expression,
+    next?: ChainedExpression
+): (accessibleObject: any, context: any) => any {
+    // TODO: cache paths in expression
+
+    return (x, c) => resolveChainedExpression(x, c, self, expression, next);
+}
+
 /**
  * Determine if the operand is a value (boolean, number, string) or an accessor.
  * @param operand
@@ -738,5 +757,6 @@ export function resolveWhen(
     self: boolean,
     { expression, next }: ChainedExpression
 ): (x: boolean, c: any) => any {
-    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression, next);
+    const binding = expressionResolver(self, expression, next);
+    return (x: boolean, c: any) => binding(x, c);
 }

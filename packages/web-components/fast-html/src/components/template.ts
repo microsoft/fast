@@ -13,12 +13,12 @@ import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
 import {
     AttributeDirective,
+    bindingResolver,
     ChainedExpression,
     DataBindingBehaviorConfig,
     getAllPartials,
     getExpressionChain,
     getNextBehavior,
-    pathResolver,
     resolveWhen,
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
@@ -225,9 +225,11 @@ class TemplateElement extends FASTElement {
 
                     const { repeat } = await import("@microsoft/fast-element");
 
+                    const binding = bindingResolver(valueAttr[2], self);
+
                     externalValues.push(
                         repeat(
-                            (x, c) => pathResolver(valueAttr[2], self)(x, c),
+                            (x, c) => binding(x, c),
                             this.resolveTemplateOrBehavior(strings, values)
                         )
                     );
@@ -249,9 +251,11 @@ class TemplateElement extends FASTElement {
                 if (partial) {
                     const { when } = await import("@microsoft/fast-element");
 
+                    const binding = bindingResolver(behaviorConfig.value, self);
+
                     externalValues.push(
                         when(
-                            (x, c) => pathResolver(behaviorConfig.value, self)(x, c),
+                            (x, c) => binding(x, c),
                             () => this.partials[partial]
                         )
                     );
@@ -337,9 +341,9 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c);
-                    values.push(binding);
+                    const binding = bindingResolver(propName, self);
+                    const contentBinding = (x: any, c: any) => binding(x, c);
+                    values.push(contentBinding);
                     await this.resolveInnerHTML(
                         innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
                         strings,
@@ -367,22 +371,23 @@ class TemplateElement extends FASTElement {
                         openingParenthesis + 1,
                         closingParenthesis
                     );
-                    const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c).bind(x)(
+                    const binding = bindingResolver(propName, self);
+                    const attributeBinding = (x: any, c: any) =>
+                        binding(x, c).bind(x)(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
-                                ? [pathResolver(arg)(x, c)]
+                                ? [bindingResolver(arg)(x, c)]
                                 : [])
                         );
-                    values.push(binding);
+                    values.push(attributeBinding);
                 } else {
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c);
-                    values.push(binding);
+                    const binding = bindingResolver(propName, self);
+                    const attributeBinding = (x: any, c: any) => binding(x, c);
+                    values.push(attributeBinding);
                 }
 
                 await this.resolveInnerHTML(
