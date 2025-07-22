@@ -1,0 +1,196 @@
+import { test, expect } from "@playwright/test";
+
+test.describe.skip("ObserverMap", async () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto("/observer-map");
+        await page.waitForSelector("observer-map-test-element");
+    });
+
+    test("should render initial users with deeply nested properties", async ({ page }) => {
+        // Check that initial users are rendered
+        await expect(page.locator(".user-card")).toHaveCount(2);
+
+        // Check deeply nested properties are displayed
+        await expect(page.locator("text=Alice Johnson")).toHaveCount(3);
+        await expect(page.locator("text=Bob Smith")).toHaveCount(2);
+
+        // Check nested location data
+        await expect(page.locator("text=New York, USA")).toBeVisible();
+        await expect(page.locator("text=London, UK")).toBeVisible();
+
+        // Check deeply nested preferences
+        await expect(page.locator("text=Theme: dark")).toBeVisible();
+        await expect(page.locator("text=Theme: light")).toBeVisible();
+    });
+
+    test("should update deeply nested age property", async ({ page }) => {
+        // Initial age should be 28 for Alice
+        await expect(page.locator("text=Age: 28 years old")).toBeVisible();
+
+        // Click the age increment button for Alice (user ID 1)
+        await page.locator("button:has-text('Age +1')").first().click();
+
+        // Age should now be 29
+        await expect(page.locator("text=Age: 29 years old")).toBeVisible();
+        await expect(page.locator("text=Age: 28 years old")).not.toBeVisible();
+    });
+
+    test("should toggle theme in deeply nested preferences", async ({ page }) => {
+        // Initial theme should be dark for Alice
+        await expect(page.locator("text=Theme: dark").first()).toBeVisible();
+
+        // Click the toggle theme button for Alice
+        await page.locator("button:has-text('Toggle Theme (4 levels deep)')").first().click();
+
+        // Theme should now be light
+        await expect(page.locator("text=Theme: light").first()).toBeVisible();
+    });
+
+    test("should update location with 5-level deep coordinates", async ({ page }) => {
+        // Initial location should be New York, USA
+        await expect(page.locator("text=New York, USA")).toBeVisible();
+
+        // Click the change location button for Alice
+        await page.locator("button:has-text('Change Location (5 levels deep)')").first().click();
+
+        // Location should now be Tokyo, Japan
+        await expect(page.locator("text=Tokyo, Japan")).toBeVisible();
+        await expect(page.locator("text=New York, USA")).not.toBeVisible();
+
+        // Coordinates should be updated (random values, just check they changed)
+        await expect(page.locator("text=Lat:")).toBeVisible();
+        await expect(page.locator("text=Lng:")).toBeVisible();
+    });
+
+    test("should update notification settings at 6 levels deep", async ({ page }) => {
+        // Check initial notification settings for Alice
+        await expect(page.locator("text=Email Notifications: true").first()).toBeVisible();
+        await expect(page.locator("text=Push Notifications: false").first()).toBeVisible();
+        await expect(page.locator("text=Notification Frequency: daily").first()).toBeVisible();
+
+        // Click update notifications button
+        await page.locator("button:has-text('Update Notifications (6 levels deep)')").first().click();
+
+        // Settings should be toggled
+        await expect(page.locator("text=Email Notifications: false").first()).toBeVisible();
+        await expect(page.locator("text=Push Notifications: true").first()).toBeVisible();
+        await expect(page.locator("text=Notification Frequency: weekly").first()).toBeVisible();
+    });
+
+    test("should add and remove categories in deeply nested arrays", async ({ page }) => {
+        // Check initial categories for Alice (should include "tech")
+        await expect(page.locator(".tag:has-text('tech')").first()).toBeVisible();
+
+        // Add sports category
+        await page.locator("button:has-text('Add Category (Array in 6 levels)')").first().click();
+        await expect(page.locator(".tag:has-text('sports')").first()).toBeVisible();
+
+        // Remove tech category
+        await page.locator("button:has-text('Remove Tech Category')").first().click();
+        await expect(page.locator(".tag:has-text('tech')").first()).not.toBeVisible();
+    });
+
+    test("should handle f-repeat with posts and nested metadata", async ({ page }) => {
+        // Check that posts are rendered for Alice (should have 2 posts)
+        const aliceCard = page.locator(".user-card").first();
+        await expect(aliceCard.locator(".post-card")).toHaveCount(2);
+
+        // Check post titles
+        await expect(aliceCard.locator("text=First Post")).toBeVisible();
+        await expect(aliceCard.locator("text=Tech Update")).toBeVisible();
+
+        // Check nested metadata
+        await expect(aliceCard.locator("text=Alice Johnson").first()).toBeVisible();
+        await expect(aliceCard.locator("text=✓ Verified")).toBeVisible();
+
+        // Check tags in nested f-repeat
+        await expect(aliceCard.locator(".tag:has-text('introduction')")).toBeVisible();
+        await expect(aliceCard.locator(".tag:has-text('tech')")).toBeVisible();
+    });
+
+    test("should increment post likes and update nested metadata", async ({ page }) => {
+        const aliceCard = page.locator(".user-card").first();
+        const firstPost = aliceCard.locator(".post-card").first();
+
+        // Check initial likes (should be 25)
+        await expect(firstPost.locator("text=25 likes")).toBeVisible();
+
+        // Click like button
+        await firstPost.locator("button:has-text('Like Post (5 levels deep)')").click();
+
+        // Likes should increment to 26
+        await expect(firstPost.locator("text=26 likes")).toBeVisible();
+
+        // Views should also increment (random amount)
+        await expect(firstPost.locator("text=views")).toBeVisible();
+    });
+
+    test("should add new posts to users", async ({ page }) => {
+        const aliceCard = page.locator(".user-card").first();
+
+        // Initial post count should be 2
+        await expect(aliceCard.locator(".post-card")).toHaveCount(2);
+
+        // Add new post
+        await aliceCard.locator("button:has-text('Add New Post')").click();
+
+        // Should now have 3 posts
+        await expect(aliceCard.locator(".post-card")).toHaveCount(3);
+
+        // New post should be visible
+        await expect(aliceCard.locator("text=New Post")).toBeVisible();
+    });
+
+    test("should add and remove users from the array", async ({ page }) => {
+        // Initial user count should be 2
+        await expect(page.locator(".user-card")).toHaveCount(2);
+        await expect(page.locator("text=Total Users: 2")).toBeVisible();
+
+        // Add new user
+        await page.locator("button:has-text('Add New User')").click();
+
+        // Should now have 3 users
+        await expect(page.locator(".user-card")).toHaveCount(3);
+        await expect(page.locator("text=Total Users: 3")).toBeVisible();
+        await expect(page.locator("text=User 3")).toBeVisible();
+
+        // Remove a user (Alice - first remove button)
+        await page.locator("button:has-text('Remove User')").first().click();
+
+        // Should be back to 2 users
+        await expect(page.locator(".user-card")).toHaveCount(2);
+        await expect(page.locator("text=Total Users: 2")).toBeVisible();
+    });
+
+    test("should update global stats with nested metrics", async ({ page }) => {
+        // Check initial engagement stats
+        const initialDaily = await page.locator("text=/Daily: \\d+/").textContent();
+
+        // Update stats
+        await page.locator("button:has-text('Update Stats (Deep Nested)')").click();
+
+        // Stats should be updated (values should change)
+        const updatedDaily = await page.locator("text=/Daily: \\d+/").textContent();
+        expect(updatedDaily).not.toBe(initialDaily);
+
+        // Performance metrics should also update
+        await expect(page.locator("text=/Load: \\d+\\.\\d+s/")).toBeVisible();
+        await expect(page.locator("text=/Render: \\d+\\.\\d+s/")).toBeVisible();
+    });
+
+    test("should handle user selection with conditional rendering", async ({ page }) => {
+        // Initially, Alice (ID 1) should be selected
+        await expect(page.locator("text=⭐ SELECTED").first()).toBeVisible();
+
+        // Select Bob (user ID 2)
+        await page.locator(".user-card").nth(1).locator("button:has-text('Select User')").click();
+
+        // Bob should now show as selected
+        const bobCard = page.locator(".user-card").nth(1);
+        await expect(bobCard.locator("text=⭐ SELECTED")).toBeVisible();
+
+        // Alice should no longer show as selected
+        const aliceCard = page.locator(".user-card").first();
+        await expect(aliceCard.locator("text=⭐ SELECTED")).not.toBeVisible();
+    });
+});

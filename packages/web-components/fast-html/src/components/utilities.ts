@@ -1,3 +1,5 @@
+import { type ObserverMap } from "./observer-map.js";
+
 type BehaviorType = "dataBinding" | "templateDirective";
 
 type TemplateDirective = "when" | "repeat" | "apply";
@@ -9,6 +11,8 @@ type DataBindingBindingType = "client" | "default" | "unescaped";
 interface BehaviorConfig {
     type: BehaviorType;
 }
+
+export type PathType = "access" | "default" | "event" | "repeat";
 
 export interface ContentDataBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
     subtype: "content";
@@ -419,8 +423,31 @@ export function pathResolver(
     path: string,
     self: boolean = false
 ): (accessibleObject: any, context: any) => any {
-    let splitPath = path.split(".");
-    const usesContext = path.startsWith("../");
+    let splitPath: string[] = [];
+    path.split("../").forEach((pathItem, index) => {
+        if (pathItem === "") {
+            splitPath.unshift("../");
+        } else {
+            splitPath.push(...pathItem.split("."));
+        }
+    });
+    splitPath = splitPath.map((pathItem: string, index: number) => {
+        if (pathItem === "../") {
+            if (splitPath[index + 1] === "../") {
+                return "parentContext";
+            }
+
+            return "parent";
+        }
+
+        return pathItem;
+    });
+
+    return pathWithContextResolver(splitPath, self);
+}
+
+function pathWithContextResolver(splitPath: string[], self: boolean): any {
+    const usesContext = splitPath[0] === "parent" || splitPath[0] === "parentContext";
 
     if (self && !usesContext) {
         if (splitPath.length > 1) {
@@ -432,32 +459,103 @@ export function pathResolver(
         }
     }
 
-    if (splitPath.length === 1 && !usesContext) {
-        return (accessibleObject: AccessibleObject) => {
-            return accessibleObject?.[splitPath[0]];
-        };
-    }
-
-    return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
-        if (usesContext) {
-            splitPath = [];
-            path.split("../").forEach(pathItem => {
-                if (pathItem === "") {
-                    splitPath.unshift("parent");
-                } else {
-                    splitPath.push(...pathItem.split("."));
-                }
-            });
-
+    if (usesContext) {
+        return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
             return splitPath.reduce((previousAccessors, pathItem) => {
                 return previousAccessors?.[pathItem];
             }, context);
-        }
+        };
+    }
 
+    return (accessibleObject: AccessibleObject) => {
         return splitPath.reduce((previousAccessors, pathItem) => {
             return previousAccessors?.[pathItem];
         }, accessibleObject);
     };
+}
+
+export function bindingResolver(
+    path: string,
+    self: boolean = false,
+    parentContext: string | null,
+    type: PathType,
+    observerMap: ObserverMap | null,
+    contextPath: string | null,
+    level: number
+): (accessibleObject: any, context: any) => any {
+    // Cache path during template processing when ObserverMap is provided
+    if (observerMap) {
+        // TODO: replace cachePath with cachePathWithContext
+        observerMap.cachePath(path, self, parentContext, contextPath, type);
+        observerMap.cachePathWithContext(
+            path,
+            self,
+            parentContext,
+            contextPath,
+            type,
+            level
+        );
+    }
+
+    return pathResolver(path, self);
+}
+
+export function expressionResolver(
+    self: boolean,
+    expression: ChainedExpression,
+    parentContext: string | null,
+    level: number,
+    observerMap?: ObserverMap
+): (accessibleObject: any, context: any) => any {
+    // Cache paths from expression during template processing when ObserverMap is provided
+    if (observerMap) {
+        const paths = extractPathsFromChainedExpression(expression);
+        paths.forEach(path => {
+            // TODO: replace cachePath with cachePathWithContext
+            observerMap.cachePath(path, self, parentContext, null, "access");
+            observerMap.cachePathWithContext(
+                path,
+                self,
+                parentContext,
+                null,
+                "access",
+                level
+            );
+        });
+    }
+
+    return (x, c) => resolveChainedExpression(x, c, self, expression);
+}
+
+/**
+ * Extracts all paths from a ChainedExpression, including nested expressions
+ * @param chainedExpression - The chained expression to extract paths from
+ * @returns A Set containing all unique paths found in the expression chain
+ */
+export function extractPathsFromChainedExpression(
+    chainedExpression: ChainedExpression
+): Set<string> {
+    const paths = new Set<string>();
+
+    function processExpression(expr: Expression) {
+        // Check left operand (only add if it's not a literal value)
+        if (typeof expr.left === "string" && !expr.leftIsValue) {
+            paths.add(expr.left);
+        }
+
+        // Check right operand (only add if it's not a literal value)
+        if (typeof expr.right === "string" && !expr.rightIsValue) {
+            paths.add(expr.right);
+        }
+    }
+
+    let current: ChainedExpression | undefined = chainedExpression;
+    while (current !== undefined) {
+        processExpression(current.expression);
+        current = current.next;
+    }
+
+    return paths;
 }
 
 /**
@@ -504,6 +602,7 @@ type ChainingOperator = "||" | "&&" | "&amp;&amp;";
 interface Expression {
     operator: Operator;
     left: string;
+    leftIsValue: boolean | null;
     right: string | boolean | number | null;
     rightIsValue: boolean | null;
 }
@@ -520,34 +619,92 @@ export interface ChainedExpression {
  * @returns - A configuration object containing information about the expression
  */
 export function getExpressionChain(value: string): ChainedExpression | void {
-    const split = value.split(" ");
-    let expressionString: string = "";
-    let chainedExpression;
+    // Handle operator precedence: || has lower precedence than &&
+    // First, split by || (lowest precedence)
+    const orParts = value.split(" || ");
 
-    // split expressions by chaining operators
-    split.forEach((splitItem, index) => {
-        if (splitItem === "&&" || splitItem === "||" || splitItem === "&amp;&amp;") {
-            chainedExpression = {
-                expression: getExpression(expressionString),
-                next: {
-                    operator: splitItem,
-                    ...getExpressionChain(split.slice(index + 1).join(" ")),
-                },
-            };
-        } else {
-            expressionString = `${
-                expressionString ? `${expressionString} ` : ""
-            }${splitItem}`;
+    if (orParts.length > 1) {
+        // Process each part recursively and chain them with ||
+        const firstPart = getExpressionChain(orParts[0]);
+        if (firstPart) {
+            let current = firstPart;
+
+            for (let i = 1; i < orParts.length; i++) {
+                const nextPart = getExpressionChain(orParts[i]);
+                if (nextPart) {
+                    // Find the end of the current chain
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = {
+                        operator: "||",
+                        ...nextPart,
+                    };
+                }
+            }
+
+            return firstPart;
         }
-    });
-
-    if (chainedExpression) {
-        return chainedExpression;
     }
 
-    if (expressionString) {
+    // If no ||, check for && (higher precedence)
+    const andParts = value.split(" && ");
+
+    if (andParts.length > 1) {
+        // Process each part recursively and chain them with &&
+        const firstPart = getExpressionChain(andParts[0]);
+        if (firstPart) {
+            let current = firstPart;
+
+            for (let i = 1; i < andParts.length; i++) {
+                const nextPart = getExpressionChain(andParts[i]);
+                if (nextPart) {
+                    // Find the end of the current chain
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = {
+                        operator: "&&",
+                        ...nextPart,
+                    };
+                }
+            }
+
+            return firstPart;
+        }
+    }
+
+    // Handle HTML entity version of &&
+    const ampParts = value.split(" &amp;&amp; ");
+
+    if (ampParts.length > 1) {
+        // Process each part recursively and chain them with &amp;&amp;
+        const firstPart = getExpressionChain(ampParts[0]);
+        if (firstPart) {
+            let current = firstPart;
+
+            for (let i = 1; i < ampParts.length; i++) {
+                const nextPart = getExpressionChain(ampParts[i]);
+                if (nextPart) {
+                    // Find the end of the current chain
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = {
+                        operator: "&amp;&amp;",
+                        ...nextPart,
+                    };
+                }
+            }
+
+            return firstPart;
+        }
+    }
+
+    // No chaining operators found, create a single expression
+    if (value.trim()) {
         return {
-            expression: getExpression(expressionString),
+            expression: getExpression(value.trim()),
         };
     }
 
@@ -556,9 +713,13 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
 function getExpression(value: string): Expression {
     if (value[0] === "!") {
+        const left = (value as string).slice(1);
+        const operandValue = isOperandValue(left);
+
         return {
             operator: "!",
-            left: value.slice(1),
+            left,
+            leftIsValue: operandValue.isValue,
             right: null,
             rightIsValue: null,
         };
@@ -568,19 +729,24 @@ function getExpression(value: string): Expression {
 
     if (split.length === 3) {
         const operator: Operator = split[1] as Operator;
-        const { value, isValue } = isOperandValue(split[2]);
+        const right = split[2];
+        const rightOperandValue = isOperandValue(right);
+        const left = split[0];
+        const leftOperandValue = isOperandValue(left);
 
         return {
             operator,
             left: split[0],
-            right: isValue ? value : split[2],
-            rightIsValue: isValue,
+            leftIsValue: leftOperandValue.isValue,
+            right: rightOperandValue.isValue ? rightOperandValue.value : right,
+            rightIsValue: rightOperandValue.isValue,
         };
     }
 
     return {
         operator: "access",
         left: value,
+        leftIsValue: false,
         right: null,
         rightIsValue: null,
     };
@@ -653,26 +819,25 @@ function resolveChainedExpression(
     x: boolean,
     c: any,
     self: boolean,
-    expression: Expression,
-    next?: ChainedExpression
+    expression: ChainedExpression
 ): any {
-    if (next) {
-        switch (next.operator) {
+    if (expression.next) {
+        switch (expression.next.operator) {
             case "&&":
             case "&amp;&amp;":
                 return (
-                    resolveExpression(x, c, self, expression) &&
-                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                    resolveExpression(x, c, self, expression.expression) &&
+                    resolveChainedExpression(x, c, self, expression.next)
                 );
             case "||":
                 return (
-                    resolveExpression(x, c, self, expression) ||
-                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                    resolveExpression(x, c, self, expression.expression) ||
+                    resolveChainedExpression(x, c, self, expression.next)
                 );
         }
     }
 
-    return resolveExpression(x, c, self, expression);
+    return resolveExpression(x, c, self, expression.expression);
 }
 
 /**
@@ -732,11 +897,22 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param chainedExpression - The chained expression which includes the expression and the next expression
  * if there is another in the chain
+ * @param observerMap - Optional ObserverMap instance for caching paths during template processing
  * @returns - A binding that resolves the chained expression logic
  */
 export function resolveWhen(
     self: boolean,
-    { expression, next }: ChainedExpression
+    expression: ChainedExpression,
+    parentContext: string | null,
+    level: number,
+    observerMap?: ObserverMap
 ): (x: boolean, c: any) => any {
-    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression, next);
+    const binding = expressionResolver(
+        self,
+        expression,
+        parentContext,
+        level,
+        observerMap
+    );
+    return (x: boolean, c: any) => binding(x, c);
 }
