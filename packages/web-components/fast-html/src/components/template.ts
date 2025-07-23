@@ -61,7 +61,7 @@ class TemplateElement extends FASTElement {
     /**
      * ObserverMap instance for caching binding paths
      */
-    private observerMap: ObserverMap = new ObserverMap();
+    private observerMap: ObserverMap = new ObserverMap(TemplateElement.prototype);
 
     private static defaultElementOptions: ElementOptions = {
         shadowOptions: {

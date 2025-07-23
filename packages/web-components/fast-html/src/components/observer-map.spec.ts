@@ -3,22 +3,22 @@ import { ObserverMap } from "./observer-map.js";
 
 test.describe("ObserverMap", async () => {
     let observableMap: ObserverMap;
+    class TestClass {}
 
     test.beforeEach(async () => {
-        observableMap = new ObserverMap();
+        observableMap = new ObserverMap(TestClass.prototype);
     });
 
     test("should create new instances", async () => {
-        const instance1 = new ObserverMap();
-        const instance2 = new ObserverMap();
+        const instance1 = new ObserverMap(TestClass.prototype);
+        const instance2 = new ObserverMap(TestClass.prototype);
         expect(instance1).not.toBe(instance2);
     });
 
     test("should define observable properties on prototypes", async () => {
-        class TestClass {}
-        observableMap.defineProperty(TestClass.prototype, "testProperty");
+        observableMap.defineProperty("testProperty");
 
-        const definedProperties = observableMap.getDefinedProperties(TestClass.prototype);
+        const definedProperties = observableMap.getDefinedProperties();
         expect(definedProperties.has("testProperty")).toBe(true);
     });
 
@@ -46,15 +46,14 @@ test.describe("ObserverMap", async () => {
     });
 
     test("should clear all observers and properties", async () => {
-        class TestClass {}
         const target = { object: { foo: "bar" } };
 
-        observableMap.defineProperty(TestClass.prototype, "testProperty");
+        observableMap.defineProperty("testProperty");
         observableMap.createPathProxy(target, "object.foo");
 
         observableMap.clear();
 
-        const definedProperties = observableMap.getDefinedProperties(TestClass.prototype);
+        const definedProperties = observableMap.getDefinedProperties();
         expect(definedProperties.size).toEqual(0);
     });
 });

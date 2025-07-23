@@ -19,6 +19,11 @@ export class ObserverMap {
     private observerEntries = new Map<string, ObserverMapEntry>();
     private propertyDefinitions = new WeakMap<any, Set<string>>();
     private cachedPaths = new Set<string>();
+    private classPrototype: any;
+
+    constructor(classPrototype: any) {
+        this.classPrototype = classPrototype;
+    }
 
     /**
      * Caches a binding path for later use
@@ -37,22 +42,21 @@ export class ObserverMap {
     }
 
     /**
-     * Defines an observable property on a class prototype
-     * @param target - The prototype to define the property on
+     * Defines an observable property on the class prototype
      * @param propertyName - The name of the property to define
      */
-    public defineProperty(target: any, propertyName: string): void {
+    public defineProperty(propertyName: string): void {
         // Track defined properties for this prototype
-        if (!this.propertyDefinitions.has(target)) {
-            this.propertyDefinitions.set(target, new Set());
+        if (!this.propertyDefinitions.has(this.classPrototype)) {
+            this.propertyDefinitions.set(this.classPrototype, new Set());
         }
-        const propertySet = this.propertyDefinitions.get(target);
+        const propertySet = this.propertyDefinitions.get(this.classPrototype);
         if (propertySet) {
             propertySet.add(propertyName);
         }
 
         // Use fast-element's Observable.defineProperty
-        Observable.defineProperty(target, propertyName);
+        Observable.defineProperty(this.classPrototype, propertyName);
     }
 
     /**
@@ -74,7 +78,7 @@ export class ObserverMap {
         const rootProperty = pathSegments[0];
 
         // Ensure the root property is observable by defining it if needed
-        this.defineProperty(target, rootProperty);
+        this.defineProperty(rootProperty);
 
         // Create proxy that intercepts property access
         const proxy = this.createNestedProxy(target, pathSegments);
@@ -128,12 +132,11 @@ export class ObserverMap {
     }
 
     /**
-     * Gets all defined properties for a given prototype
-     * @param target - The prototype to check
+     * Gets all defined properties for the class prototype
      * @returns Set of property names that have been defined as observable
      */
-    public getDefinedProperties(target: any): Set<string> {
-        return this.propertyDefinitions.get(target) || new Set();
+    public getDefinedProperties(): Set<string> {
+        return this.propertyDefinitions.get(this.classPrototype) || new Set();
     }
 
     /**
