@@ -13,11 +13,12 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(Base
 export class ObserverMap {
     constructor(classPrototype: any);
     cachePath(path: string): void;
-    clear(): void;
     defineProperty(propertyName: string): void;
     getCachedPaths(): Set<string>;
+    getCachedRootProperties(): Set<string>;
     getDefinedProperties(): Set<string>;
-    removePathObserver(target: any, path: string): void;
+    hasPathProxy(target: any, path: string): boolean;
+    processCachedPaths(target: any, rootProperty: string): void;
 }
 
 // @public (undocumented)

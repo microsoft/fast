@@ -38,7 +38,22 @@ export class ObserverMap {
      * @returns Set of cached paths
      */
     public getCachedPaths(): Set<string> {
-        return new Set(this.cachedPaths);
+        return this.cachedPaths;
+    }
+
+    /**
+     * Gets the root properties from all cached paths
+     * @returns Set of root property names extracted from cached paths
+     */
+    public getCachedRootProperties(): Set<string> {
+        const rootProperties = new Set<string>();
+
+        for (const path of this.cachedPaths) {
+            const rootProperty = path.split(".")[0];
+            rootProperties.add(rootProperty);
+        }
+
+        return rootProperties;
     }
 
     /**
@@ -96,21 +111,17 @@ export class ObserverMap {
      * @returns A proxy object that intercepts property access
      */
     private createPathProxy(target: any, path: string): any {
-        const key = `${target.constructor.name}:${path}`;
-
         // Return existing proxy if it exists
-        const existingEntry = this.observerEntries.get(key);
+        const existingEntry = this.observerEntries.get(path);
         if (existingEntry) {
             return existingEntry.proxy;
         }
 
-        const pathSegments = path.split(".");
-
         // Create proxy that intercepts property access
-        const proxy = this.createNestedProxy(target, pathSegments);
+        const proxy = this.createObservableProxy(target);
 
         // Store the observer entry
-        this.observerEntries.set(key, {
+        this.observerEntries.set(path, {
             proxy,
             notifier: Observable.getNotifier(target),
             originalObject: target,
@@ -121,12 +132,11 @@ export class ObserverMap {
     }
 
     /**
-     * Creates a nested proxy for deep property observation
+     * Creates a proxy that makes property changes observable
      * @param target - The target object
-     * @param pathSegments - Array of property names in the path
-     * @returns Proxy object
+     * @returns Proxy object that notifies on property changes
      */
-    private createNestedProxy(target: any, pathSegments: string[]): any {
+    private createObservableProxy(target: any): any {
         // Create a proxy for the target object
         return new Proxy(target, {
             set: (obj: any, prop: string | symbol, value: any) => {
@@ -136,25 +146,48 @@ export class ObserverMap {
                 // Notify of change if the value actually changed
                 if (oldValue !== value && typeof prop === "string") {
                     Observable.notify(obj, prop);
+
+                    // If property is set to undefined or null, clean up related observer entries
+                    if (value === undefined || value === null) {
+                        this.cleanupObserverEntries(prop);
+                    }
                 }
 
                 return true;
+            },
+            deleteProperty: (obj: any, prop: string | symbol) => {
+                if (typeof prop === "string" && prop in obj) {
+                    delete obj[prop];
+                    Observable.notify(obj, prop);
+
+                    // Clean up related observer entries when property is deleted
+                    this.cleanupObserverEntries(prop);
+
+                    return true;
+                }
+                return false;
             },
         });
     }
 
     /**
-     * Removes observation for a specific path
-     * @param target - The target object
-     * @param path - The dot syntax path to stop observing
+     * Cleans up observer entries for paths that start with the given property
+     * @param propertyName - The property name that was set to undefined/null or deleted
      */
-    public removePathObserver(target: any, path: string): void {
-        const key = `${target.constructor.name}:${path}`;
-        const entry = this.observerEntries.get(key);
+    private cleanupObserverEntries(propertyName: string): void {
+        // Find all observer entries that start with this property
+        const entriesToRemove: string[] = [];
 
-        if (entry) {
-            this.observerEntries.delete(key);
+        for (const path of this.observerEntries.keys()) {
+            if (path.startsWith(propertyName + ".") || path === propertyName) {
+                entriesToRemove.push(path);
+            }
         }
+
+        // Remove the entries
+        entriesToRemove.forEach(path => {
+            this.observerEntries.delete(path);
+        });
     }
 
     /**
@@ -166,11 +199,51 @@ export class ObserverMap {
     }
 
     /**
-     * Clears all observer entries and property definitions
+     * Checks if a path proxy exists and the path is valid in the target object
+     * @param target - The target object to check
+     * @param path - The property path to check
+     * @returns True if a proxy exists AND the path is traversable
      */
-    public clear(): void {
-        this.observerEntries.clear();
-        this.propertyDefinitions = new WeakMap();
-        this.cachedPaths.clear();
+    public hasPathProxy(target: any, path: string): boolean {
+        // First check if we have an observer entry for this path
+        if (!this.observerEntries.has(path)) {
+            return false;
+        }
+
+        // Then verify the path is actually traversable in the target object
+        const pathSegments = path.split(".");
+        let current = target;
+
+        for (const segment of pathSegments) {
+            // Check if current is null, undefined, or doesn't have the property
+            if (current == null || typeof current !== "object") {
+                return false;
+            }
+
+            if (!(segment in current)) {
+                return false;
+            }
+
+            current = current[segment];
+        }
+
+        return true;
+    }
+
+    /**
+     * Manually processes cached paths for a target object (primarily for testing)
+     * @param target - The target object to process cached paths for
+     * @param rootProperty - The root property that was defined
+     */
+    public processCachedPaths(target: any, rootProperty: string): void {
+        // Find all cached paths that match this root property
+        const matchingPaths = Array.from(this.cachedPaths).filter(
+            path => path.startsWith(rootProperty + ".") || path === rootProperty
+        );
+
+        // Create path proxies for all matching paths
+        matchingPaths.forEach(path => {
+            this.createPathProxy(target, path);
+        });
     }
 }
