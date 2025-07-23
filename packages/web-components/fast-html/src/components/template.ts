@@ -23,6 +23,7 @@ import {
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
+import { ObserverMap } from "./observer-map.js";
 
 interface ResolvedStringsAndValues {
     strings: Array<string>;
@@ -56,6 +57,11 @@ class TemplateElement extends FASTElement {
     public static elementOptions: ElementOptionsDictionary = {};
 
     private partials: { [key: string]: ViewTemplate } = {};
+
+    /**
+     * ObserverMap instance for caching binding paths
+     */
+    private observerMap: ObserverMap = new ObserverMap();
 
     private static defaultElementOptions: ElementOptions = {
         shadowOptions: {
@@ -118,9 +124,14 @@ class TemplateElement extends FASTElement {
 
                     await this.resolveAllPartials(innerHTML);
 
+                    // Cache paths during template processing
                     const { strings, values } = await this.resolveStringsAndValues(
-                        innerHTML
+                        innerHTML,
+                        false,
+                        this.observerMap
                     );
+
+                    // TODO: define the paths cached in the observer map
 
                     if (registeredFastElement) {
                         // all new elements will get the updated template
@@ -145,14 +156,16 @@ class TemplateElement extends FASTElement {
      * Resolve strings and values from an innerHTML string
      * @param innerHTML - The innerHTML.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param observerMap - ObserverMap instance for caching binding paths.
      */
     private async resolveStringsAndValues(
         innerHTML: string,
-        self: boolean = false
+        self: boolean = false,
+        observerMap: ObserverMap
     ): Promise<ResolvedStringsAndValues> {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
-        await this.resolveInnerHTML(innerHTML, strings, values, self);
+        await this.resolveInnerHTML(innerHTML, strings, values, self, observerMap);
 
         (strings as any).raw = strings.map(value => String.raw({ raw: value }));
 
@@ -179,12 +192,17 @@ class TemplateElement extends FASTElement {
      * @param behaviorConfig - The directive behavior configuration object.
      * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
+     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param enableCaching - Whether to cache binding paths.
+     * @param pathCacheFunction - Function to cache single paths.
+     * @param pathsCacheFunction - Function to cache multiple paths.
      */
     private async resolveTemplateDirective(
         behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string,
-        self: boolean = false
+        self: boolean = false,
+        observerMap: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when":
@@ -194,7 +212,8 @@ class TemplateElement extends FASTElement {
                             behaviorConfig.openingTagEndIndex,
                             behaviorConfig.closingTagStartIndex
                         ),
-                        self
+                        self,
+                        observerMap
                     );
 
                     const { when } = await import("@microsoft/fast-element");
@@ -203,7 +222,8 @@ class TemplateElement extends FASTElement {
 
                     const whenLogic = resolveWhen(
                         self,
-                        expressionChain as ChainedExpression
+                        expressionChain as ChainedExpression,
+                        observerMap
                     );
 
                     externalValues.push(
@@ -220,12 +240,13 @@ class TemplateElement extends FASTElement {
                             behaviorConfig.openingTagEndIndex,
                             behaviorConfig.closingTagStartIndex
                         ),
-                        true
+                        true,
+                        observerMap
                     );
 
                     const { repeat } = await import("@microsoft/fast-element");
 
-                    const binding = bindingResolver(valueAttr[2], self);
+                    const binding = bindingResolver(valueAttr[2], self, observerMap);
 
                     externalValues.push(
                         repeat(
@@ -251,7 +272,11 @@ class TemplateElement extends FASTElement {
                 if (partial) {
                     const { when } = await import("@microsoft/fast-element");
 
-                    const binding = bindingResolver(behaviorConfig.value, self);
+                    const binding = bindingResolver(
+                        behaviorConfig.value,
+                        self,
+                        observerMap
+                    );
 
                     externalValues.push(
                         when(
@@ -331,7 +356,8 @@ class TemplateElement extends FASTElement {
         strings: Array<string>,
         values: Array<any>,
         self: boolean = false,
-        behaviorConfig: DataBindingBehaviorConfig
+        behaviorConfig: DataBindingBehaviorConfig,
+        observerMap: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.subtype) {
             case "content":
@@ -341,14 +367,15 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = bindingResolver(propName, self);
+                    const binding = bindingResolver(propName, self, observerMap);
                     const contentBinding = (x: any, c: any) => binding(x, c);
                     values.push(contentBinding);
                     await this.resolveInnerHTML(
                         innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
                         strings,
                         values,
-                        self
+                        self,
+                        observerMap
                     );
                 }
                 break;
@@ -371,12 +398,12 @@ class TemplateElement extends FASTElement {
                         openingParenthesis + 1,
                         closingParenthesis
                     );
-                    const binding = bindingResolver(propName, self);
+                    const binding = bindingResolver(propName, self, observerMap);
                     const attributeBinding = (x: any, c: any) =>
                         binding(x, c).bind(x)(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
-                                ? [bindingResolver(arg)(x, c)]
+                                ? [bindingResolver(arg, undefined, observerMap)(x, c)]
                                 : [])
                         );
                     values.push(attributeBinding);
@@ -385,7 +412,7 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = bindingResolver(propName, self);
+                    const binding = bindingResolver(propName, self, observerMap);
                     const attributeBinding = (x: any, c: any) => binding(x, c);
                     values.push(attributeBinding);
                 }
@@ -394,7 +421,8 @@ class TemplateElement extends FASTElement {
                     innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
                     strings,
                     values,
-                    self
+                    self,
+                    observerMap
                 );
                 break;
             case "attributeDirective":
@@ -423,7 +451,8 @@ class TemplateElement extends FASTElement {
                         ),
                         strings,
                         values,
-                        self
+                        self,
+                        observerMap
                     );
                 }
                 break;
@@ -436,12 +465,16 @@ class TemplateElement extends FASTElement {
      * @param strings - The strings array.
      * @param values - The interpreted values.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param enableCaching - Whether to cache binding paths.
+     * @param pathCacheFunction - Function to cache single paths.
+     * @param pathsCacheFunction - Function to cache multiple paths.
      */
     private async resolveInnerHTML(
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
-        self: boolean = false
+        self: boolean = false,
+        observerMap: ObserverMap
     ): Promise<void> {
         const behaviorConfig = getNextBehavior(innerHTML);
 
@@ -455,7 +488,8 @@ class TemplateElement extends FASTElement {
                         strings,
                         values,
                         self,
-                        behaviorConfig
+                        behaviorConfig,
+                        observerMap
                     );
 
                     break;
@@ -465,7 +499,8 @@ class TemplateElement extends FASTElement {
                         behaviorConfig,
                         values,
                         innerHTML,
-                        self
+                        self,
+                        observerMap
                     );
 
                     await this.resolveInnerHTML(
@@ -475,8 +510,11 @@ class TemplateElement extends FASTElement {
                         ),
                         strings,
                         values,
-                        self
+                        self,
+                        observerMap
                     );
+
+                    break;
 
                     break;
             }
@@ -492,7 +530,9 @@ class TemplateElement extends FASTElement {
 
         for (let i = 0, partialLength = allPartials.length; i < partialLength; i++) {
             const { strings, values } = await this.resolveStringsAndValues(
-                allPartials[i][1].innerHTML
+                allPartials[i][1].innerHTML,
+                undefined,
+                this.observerMap
             );
             this.partials[allPartials[i][0]] = this.resolveTemplateOrBehavior(
                 strings,

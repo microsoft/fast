@@ -18,6 +18,23 @@ interface ObserverMapEntry {
 export class ObserverMap {
     private observerEntries = new Map<string, ObserverMapEntry>();
     private propertyDefinitions = new WeakMap<any, Set<string>>();
+    private cachedPaths = new Set<string>();
+
+    /**
+     * Caches a binding path for later use
+     * @param path - The path to cache
+     */
+    public cachePath(path: string): void {
+        this.cachedPaths.add(path);
+    }
+
+    /**
+     * Gets all cached paths
+     * @returns Set of cached paths
+     */
+    public getCachedPaths(): Set<string> {
+        return new Set(this.cachedPaths);
+    }
 
     /**
      * Defines an observable property on a class prototype
@@ -125,5 +142,6 @@ export class ObserverMap {
     public clear(): void {
         this.observerEntries.clear();
         this.propertyDefinitions = new WeakMap();
+        this.cachedPaths.clear();
     }
 }

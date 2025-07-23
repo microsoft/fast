@@ -1,3 +1,5 @@
+import { type ObserverMap } from "./observer-map.js";
+
 type BehaviorType = "dataBinding" | "templateDirective";
 
 type TemplateDirective = "when" | "repeat" | "apply";
@@ -462,18 +464,23 @@ export function pathResolver(
 
 export function bindingResolver(
     path: string,
-    self: boolean = false
+    self: boolean = false,
+    observerMap: ObserverMap
 ): (accessibleObject: any, context: any) => any {
-    // TODO: cache path
+    // Cache path during template processing when ObserverMap is provided
+    observerMap.cachePath(path);
 
     return pathResolver(path, self);
 }
 
 export function expressionResolver(
     self: boolean,
-    expression: ChainedExpression
+    expression: ChainedExpression,
+    observerMap: ObserverMap
 ): (accessibleObject: any, context: any) => any {
-    // TODO: cache paths in expression
+    // Cache paths from expression during template processing when ObserverMap is provided
+    const paths = extractPathsFromChainedExpression(expression);
+    paths.forEach(path => observerMap.cachePath(path));
 
     return (x, c) => resolveChainedExpression(x, c, self, expression);
 }
@@ -848,12 +855,14 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param chainedExpression - The chained expression which includes the expression and the next expression
  * if there is another in the chain
+ * @param observerMap - Optional ObserverMap instance for caching paths during template processing
  * @returns - A binding that resolves the chained expression logic
  */
 export function resolveWhen(
     self: boolean,
-    expression: ChainedExpression
+    expression: ChainedExpression,
+    observerMap?: any
 ): (x: boolean, c: any) => any {
-    const binding = expressionResolver(self, expression);
+    const binding = expressionResolver(self, expression, observerMap);
     return (x: boolean, c: any) => binding(x, c);
 }
