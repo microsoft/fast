@@ -57,6 +57,36 @@ export class ObserverMap {
 
         // Use fast-element's Observable.defineProperty
         Observable.defineProperty(this.classPrototype, propertyName);
+
+        // Set up notification handling for the property
+        const notifier = Observable.getNotifier(this.classPrototype);
+        notifier.subscribe(
+            {
+                handleChange: (source: any, args: any) =>
+                    this.handlePropertyChange(source, args, propertyName),
+            },
+            propertyName
+        );
+    }
+
+    /**
+     * Handles property changes and creates path proxies when properties change from undefined to defined
+     * @param source - The source object that changed
+     * @param args - The change arguments containing property name and values
+     * @param rootProperty - The root property name that was defined
+     */
+    private handlePropertyChange(source: any, args: any, rootProperty: string): void {
+        if (args && args.oldValue === undefined && args.newValue !== undefined) {
+            // Find all cached paths that match this root property
+            const matchingPaths = Array.from(this.cachedPaths).filter(
+                path => path.startsWith(rootProperty + ".") || path === rootProperty
+            );
+
+            // Create path proxies for all matching paths
+            matchingPaths.forEach(path => {
+                this.createPathProxy(source, path);
+            });
+        }
     }
 
     /**
@@ -65,7 +95,7 @@ export class ObserverMap {
      * @param path - The dot syntax path (e.g., "object.foo")
      * @returns A proxy object that intercepts property access
      */
-    public createPathProxy(target: any, path: string): any {
+    private createPathProxy(target: any, path: string): any {
         const key = `${target.constructor.name}:${path}`;
 
         // Return existing proxy if it exists
@@ -75,10 +105,6 @@ export class ObserverMap {
         }
 
         const pathSegments = path.split(".");
-        const rootProperty = pathSegments[0];
-
-        // Ensure the root property is observable by defining it if needed
-        this.defineProperty(rootProperty);
 
         // Create proxy that intercepts property access
         const proxy = this.createNestedProxy(target, pathSegments);

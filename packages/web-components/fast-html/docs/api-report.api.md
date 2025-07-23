@@ -14,7 +14,6 @@ export class ObserverMap {
     constructor(classPrototype: any);
     cachePath(path: string): void;
     clear(): void;
-    createPathProxy(target: any, path: string): any;
     defineProperty(propertyName: string): void;
     getCachedPaths(): Set<string>;
     getDefinedProperties(): Set<string>;
