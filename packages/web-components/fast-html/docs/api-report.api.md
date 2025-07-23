@@ -17,8 +17,6 @@ export class ObserverMap {
     getCachedPaths(): Set<string>;
     getCachedRootProperties(): Set<string>;
     getDefinedProperties(): Set<string>;
-    hasPathProxy(target: any, path: string): boolean;
-    processCachedPaths(target: any, rootProperty: string): void;
 }
 
 // @public (undocumented)

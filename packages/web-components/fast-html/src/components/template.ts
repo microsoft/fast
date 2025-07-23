@@ -61,7 +61,7 @@ class TemplateElement extends FASTElement {
     /**
      * ObserverMap instance for caching binding paths
      */
-    private observerMap: ObserverMap = new ObserverMap(TemplateElement.prototype);
+    private observerMap?: ObserverMap;
 
     private static defaultElementOptions: ElementOptions = {
         shadowOptions: {
@@ -115,6 +115,8 @@ class TemplateElement extends FASTElement {
                     TemplateElement.setOptions(this.name);
                 }
 
+                this.observerMap = new ObserverMap(value.prototype);
+
                 const registeredFastElement: FASTElementDefinition | undefined =
                     fastElementRegistry.getByType(value);
                 const template = this.getElementsByTagName("template").item(0);
@@ -131,7 +133,10 @@ class TemplateElement extends FASTElement {
                         this.observerMap
                     );
 
-                    // TODO: define the paths cached in the observer map
+                    // Define the root properties cached in the observer map as observable
+                    for (const rootProperty of this.observerMap.getCachedRootProperties()) {
+                        this.observerMap.defineProperty(rootProperty);
+                    }
 
                     if (registeredFastElement) {
                         // all new elements will get the updated template
@@ -532,7 +537,7 @@ class TemplateElement extends FASTElement {
             const { strings, values } = await this.resolveStringsAndValues(
                 allPartials[i][1].innerHTML,
                 undefined,
-                this.observerMap
+                this.observerMap as ObserverMap
             );
             this.partials[allPartials[i][0]] = this.resolveTemplateOrBehavior(
                 strings,
