@@ -1,98 +1,98 @@
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-import { attr } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
-class TestElement extends RenderableFASTElement {
+class TestElement extends FASTElement {
     @attr({ mode: "boolean" })
     show: boolean = false;
 }
-TestElement.defineAsync({
+RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementNot extends RenderableFASTElement {
+class TestElementNot extends FASTElement {
     @attr({ mode: "boolean" })
     hide: boolean = false;
 }
-TestElementNot.defineAsync({
+RenderableFASTElement(TestElementNot).defineAsync({
     name: "test-element-not",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementEquals extends RenderableFASTElement {
+class TestElementEquals extends FASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementEquals.defineAsync({
+RenderableFASTElement(TestElementEquals).defineAsync({
     name: "test-element-equals",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementNotEquals extends RenderableFASTElement {
+class TestElementNotEquals extends FASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementNotEquals.defineAsync({
+RenderableFASTElement(TestElementNotEquals).defineAsync({
     name: "test-element-not-equals",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementGe extends RenderableFASTElement {
+class TestElementGe extends FASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementGe.defineAsync({
+RenderableFASTElement(TestElementGe).defineAsync({
     name: "test-element-ge",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementGt extends RenderableFASTElement {
+class TestElementGt extends FASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementGt.defineAsync({
+RenderableFASTElement(TestElementGt).defineAsync({
     name: "test-element-gt",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementLe extends RenderableFASTElement {
+class TestElementLe extends FASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementLe.defineAsync({
+RenderableFASTElement(TestElementLe).defineAsync({
     name: "test-element-le",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementLt extends RenderableFASTElement {
+class TestElementLt extends FASTElement {
     @attr({ attribute: "var-a" })
     varA: number = 0;
 }
-TestElementLt.defineAsync({
+RenderableFASTElement(TestElementLt).defineAsync({
     name: "test-element-lt",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementOr extends RenderableFASTElement {
+class TestElementOr extends FASTElement {
     @attr({ attribute: "this-var", mode: "boolean" })
     thisVar: boolean = false;
 
     @attr({ attribute: "that-var", mode: "boolean" })
     thatVar: boolean = false;
 }
-TestElementOr.defineAsync({
+RenderableFASTElement(TestElementOr).defineAsync({
     name: "test-element-or",
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementAnd extends RenderableFASTElement {
+class TestElementAnd extends FASTElement {
     @attr({ attribute: "this-var", mode: "boolean" })
     thisVar: boolean = false;
 
     @attr({ attribute: "that-var", mode: "boolean" })
     thatVar: boolean = false;
 }
-TestElementAnd.defineAsync({
+RenderableFASTElement(TestElementAnd).defineAsync({
     name: "test-element-and",
     templateOptions: "defer-and-hydrate",
 });

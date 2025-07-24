@@ -1,7 +1,7 @@
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-import { attr } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 
-class TestElement extends RenderableFASTElement {
+class TestElement extends FASTElement {
     @attr
     foo: string = "";
 
@@ -21,7 +21,7 @@ class TestElement extends RenderableFASTElement {
         this.foo = "modified-by-click";
     }
 }
-TestElement.defineAsync({
+RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });

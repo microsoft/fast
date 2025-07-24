@@ -4,15 +4,12 @@
 
 ```ts
 
+import { Constructable } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 
-// @public (undocumented)
-export abstract class RenderableFASTElement extends FASTElement {
-    constructor();
-    // (undocumented)
-    deferHydration: boolean;
-}
+// @public
+export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
 
 // @public
 export class TemplateElement extends FASTElement {
