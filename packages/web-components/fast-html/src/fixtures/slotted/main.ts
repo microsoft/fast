@@ -1,7 +1,7 @@
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-import { observable } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 
-class TestElement extends RenderableFASTElement {
+class TestElement extends FASTElement {
     @observable
     slottedNodes: Node[] = [];
 
@@ -15,7 +15,7 @@ class TestElement extends RenderableFASTElement {
     @observable
     slottedBarNodes: Node[] = [];
 }
-TestElement.defineAsync({
+RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
