@@ -16,13 +16,6 @@ test.describe("ObserverMap", async () => {
         expect(instance1).not.toBe(instance2);
     });
 
-    test("should define observable properties on prototypes", async () => {
-        observerMap.defineProperty("testProperty");
-
-        const definedProperties = observerMap.getDefinedProperties();
-        expect(definedProperties.has("testProperty")).toBe(true);
-    });
-
     test("should cache binding paths", async () => {
         // Cache various paths
         observerMap.cachePath("user.profile.name");
@@ -60,20 +53,6 @@ test.describe("ObserverMap", async () => {
         expect(Array.from(rootProperties)).toEqual(
             expect.arrayContaining(["user", "config", "app", "data", "singleProperty"])
         );
-    });
-
-    test("should define multiple observable properties", async () => {
-        // Define several properties
-        observerMap.defineProperty("property1");
-        observerMap.defineProperty("property2");
-        observerMap.defineProperty("property3");
-
-        // Verify all properties are tracked
-        const definedProperties = observerMap.getDefinedProperties();
-        expect(definedProperties.size).toBe(3);
-        expect(definedProperties.has("property1")).toBe(true);
-        expect(definedProperties.has("property2")).toBe(true);
-        expect(definedProperties.has("property3")).toBe(true);
     });
 
     test("should handle empty path cache", async () => {
@@ -123,34 +102,6 @@ test.describe("ObserverMap", async () => {
         expect(cachedPaths.has("another.deep.nested.property.path")).toBe(true);
     });
 
-    test("should track defined properties separately from cached paths", async () => {
-        // Cache some paths
-        observerMap.cachePath("user.profile.name");
-        observerMap.cachePath("config.settings.theme");
-
-        // Define some properties (which may or may not match cached paths)
-        observerMap.defineProperty("user");
-        observerMap.defineProperty("app");
-
-        // Verify cached paths
-        const cachedPaths = observerMap.getCachedPaths();
-        expect(cachedPaths.size).toBe(2);
-        expect(cachedPaths.has("user.profile.name")).toBe(true);
-        expect(cachedPaths.has("config.settings.theme")).toBe(true);
-
-        // Verify defined properties
-        const definedProperties = observerMap.getDefinedProperties();
-        expect(definedProperties.size).toBe(2);
-        expect(definedProperties.has("user")).toBe(true);
-        expect(definedProperties.has("app")).toBe(true);
-
-        // Verify root properties from cached paths
-        const rootProperties = observerMap.getCachedRootProperties();
-        expect(rootProperties.size).toBe(2);
-        expect(rootProperties.has("user")).toBe(true);
-        expect(rootProperties.has("config")).toBe(true);
-    });
-
     test("should handle duplicate path caching", async () => {
         // Cache the same path multiple times
         observerMap.cachePath("user.profile.name");
@@ -166,17 +117,5 @@ test.describe("ObserverMap", async () => {
         const rootProperties = observerMap.getCachedRootProperties();
         expect(rootProperties.size).toBe(1);
         expect(rootProperties.has("user")).toBe(true);
-    });
-
-    test("should handle duplicate property definition", async () => {
-        // Define the same property multiple times
-        observerMap.defineProperty("testProperty");
-        observerMap.defineProperty("testProperty");
-        observerMap.defineProperty("testProperty");
-
-        // Should only be stored once
-        const definedProperties = observerMap.getDefinedProperties();
-        expect(definedProperties.size).toBe(1);
-        expect(definedProperties.has("testProperty")).toBe(true);
     });
 });

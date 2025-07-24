@@ -16,7 +16,8 @@ export class ObserverMap {
     defineProperty(propertyName: string): void;
     getCachedPaths(): Set<string>;
     getCachedRootProperties(): Set<string>;
-    getDefinedProperties(): Set<string>;
+    getClassPrototype(): any;
+    getDefinedProperties(): IterableIterator<string>;
 }
 
 // @public (undocumented)
