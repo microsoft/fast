@@ -5,10 +5,14 @@ import { Observable } from "@microsoft/fast-element/observable.js";
  * and defining observable properties on class prototypes
  */
 export class ObserverMap {
-    // where the key is the root property and the value is a set of paths
+    // Where the key is the root property and the value is a set of paths on that property
     private propertyDefinitions = new Map<string, Set<string>>();
     private cachedPaths = new Set<string>();
     private classPrototype: any;
+    // Cache for root properties to avoid recomputation
+    private rootPropertiesCache: Set<string> | null = null;
+    // Track if paths have been modified since last root properties calculation
+    private pathsCacheDirty = false;
 
     constructor(classPrototype: any) {
         this.classPrototype = classPrototype;
@@ -19,7 +23,10 @@ export class ObserverMap {
      * @param path - The path to cache
      */
     public cachePath(path: string): void {
-        this.cachedPaths.add(path);
+        if (!this.cachedPaths.has(path)) {
+            this.cachedPaths.add(path);
+            this.pathsCacheDirty = true;
+        }
     }
 
     /**
@@ -43,13 +50,19 @@ export class ObserverMap {
      * @returns Set of root property names extracted from cached paths
      */
     public getCachedRootProperties(): Set<string> {
-        const rootProperties = new Set<string>();
+        if (this.rootPropertiesCache && !this.pathsCacheDirty) {
+            return this.rootPropertiesCache;
+        }
 
+        const rootProperties = new Set<string>();
         for (const path of this.cachedPaths) {
-            const rootProperty = path.split(".")[0];
+            const dotIndex = path.indexOf(".");
+            const rootProperty = dotIndex === -1 ? path : path.substring(0, dotIndex);
             rootProperties.add(rootProperty);
         }
 
+        this.rootPropertiesCache = rootProperties;
+        this.pathsCacheDirty = false;
         return rootProperties;
     }
 
@@ -61,11 +74,14 @@ export class ObserverMap {
         if (!this.propertyDefinitions.has(propertyName)) {
             // store sub-paths belonging to this property definition
             const paths = new Set<string>();
-            this.getCachedPaths().forEach(value => {
-                if (value.startsWith(`${propertyName}.`)) {
-                    paths.add(value.split(".").slice(1).join("."));
+            const propertyPrefix = `${propertyName}.`;
+
+            for (const value of this.cachedPaths) {
+                if (value.startsWith(propertyPrefix)) {
+                    // More efficient substring operation instead of split/slice/join
+                    paths.add(value.substring(propertyPrefix.length));
                 }
-            });
+            }
 
             this.propertyDefinitions.set(propertyName, paths);
 
@@ -88,27 +104,29 @@ export class ObserverMap {
         object: any,
         currentPath: string | null
     ): void => {
-        (this.propertyDefinitions?.get(rootProperty) || []).forEach(value => {
-            if (
-                currentPath === null ||
-                (currentPath !== null && value.startsWith(`${currentPath}.`))
-            ) {
+        const propertyPaths = this.propertyDefinitions.get(rootProperty);
+        if (!propertyPaths) return;
+
+        for (const value of propertyPaths) {
+            if (currentPath === null || value.startsWith(`${currentPath}.`)) {
                 // Create the path to traverse from current position
                 const pathToTraverse =
                     currentPath === null
                         ? value.split(".")
                         : value.substring(currentPath.length + 1).split(".");
 
-                // Traverse the path and create proxies for nested objects
-                this.traverseAndProxyPath(
-                    target,
-                    rootProperty,
-                    object,
-                    currentPath,
-                    pathToTraverse
-                );
+                // Only traverse if we have segments to process
+                if (pathToTraverse.length > 0 && pathToTraverse[0] !== "") {
+                    this.traverseAndProxyPath(
+                        target,
+                        rootProperty,
+                        object,
+                        currentPath,
+                        pathToTraverse
+                    );
+                }
             }
-        });
+        }
     };
 
     /**
@@ -126,24 +144,21 @@ export class ObserverMap {
         currentPath: string | null,
         remainingPath: string[]
     ): void => {
-        if (remainingPath.length === 0) {
+        if (remainingPath.length === 0 || !currentObject) {
             return;
         }
 
         const [nextSegment, ...restOfPath] = remainingPath;
+        const nextObject = currentObject[nextSegment];
 
-        if (
-            currentObject &&
-            typeof currentObject[nextSegment] === "object" &&
-            currentObject[nextSegment] !== null
-        ) {
-            const newPath = this.getCurrentPath(currentPath, nextSegment);
+        if (nextObject && typeof nextObject === "object" && nextObject !== null) {
+            const newPath = currentPath ? `${currentPath}.${nextSegment}` : nextSegment;
 
             // Create proxy for this object
             currentObject[nextSegment] = this.getProxyForObject(
                 target,
                 rootProperty,
-                currentObject[nextSegment],
+                nextObject,
                 newPath,
                 this.getCurrentPath,
                 this.evaluatePaths
@@ -169,7 +184,7 @@ export class ObserverMap {
      * @returns The combined path string
      */
     private getCurrentPath(currentPath: string | null, pathItem: string): string {
-        return `${currentPath !== null ? `${currentPath}.` : ""}${pathItem as string}`;
+        return currentPath ? `${currentPath}.${pathItem}` : pathItem;
     }
 
     /**
