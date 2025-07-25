@@ -423,7 +423,7 @@ class TemplateElement extends FASTElement {
                         binding(x, c).bind(x)(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
-                                ? [bindingResolver(arg, undefined, observerMap)(x, c)]
+                                ? [bindingResolver(arg, self, observerMap)(x, c)]
                                 : [])
                         );
                     values.push(attributeBinding);
