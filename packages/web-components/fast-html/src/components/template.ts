@@ -30,8 +30,11 @@ interface ResolvedStringsAndValues {
     values: Array<any>;
 }
 
+export type ObserverMapOption = "all";
+
 export interface ElementOptions {
     shadowOptions?: ShadowRootOptions | undefined;
+    observerMap?: ObserverMapOption | undefined;
 }
 
 /**
@@ -78,6 +81,7 @@ class TemplateElement extends FASTElement {
                 shadowOptions:
                     value.shadowOptions ??
                     TemplateElement.defaultElementOptions.shadowOptions,
+                observerMap: value.observerMap,
             };
         }
 
@@ -91,7 +95,11 @@ class TemplateElement extends FASTElement {
     constructor() {
         super();
 
-        if (!!TemplateElement.elementOptions) {
+        // Ensure elementOptions is initialized if it's empty
+        if (
+            !TemplateElement.elementOptions ||
+            Object.keys(TemplateElement.elementOptions).length === 0
+        ) {
             TemplateElement.options();
         }
     }
@@ -101,7 +109,7 @@ class TemplateElement extends FASTElement {
      * @param name - The name of the custom element to set options for.
      */
     private static setOptions(name: string): void {
-        if (!!!TemplateElement.elementOptions[name]) {
+        if (!TemplateElement.elementOptions[name]) {
             TemplateElement.elementOptions[name] = TemplateElement.defaultElementOptions;
         }
     }
@@ -111,11 +119,17 @@ class TemplateElement extends FASTElement {
 
         if (this.name) {
             FASTElementDefinition.registerAsync(this.name).then(async value => {
-                if (this.name && !!!TemplateElement.elementOptions?.[this.name]) {
-                    TemplateElement.setOptions(this.name);
-                }
+                if (this.name) {
+                    if (!TemplateElement.elementOptions?.[this.name]) {
+                        TemplateElement.setOptions(this.name);
+                    }
 
-                this.observerMap = new ObserverMap(value.prototype);
+                    if (
+                        TemplateElement.elementOptions[this.name]?.observerMap === "all"
+                    ) {
+                        this.observerMap = new ObserverMap(value.prototype);
+                    }
+                }
 
                 const registeredFastElement: FASTElementDefinition | undefined =
                     fastElementRegistry.getByType(value);
@@ -126,16 +140,18 @@ class TemplateElement extends FASTElement {
 
                     await this.resolveAllPartials(innerHTML);
 
-                    // Cache paths during template processing
+                    // Cache paths during template processing (pass undefined if observerMap is not available)
                     const { strings, values } = await this.resolveStringsAndValues(
                         innerHTML,
                         false,
                         this.observerMap
                     );
 
-                    // Define the root properties cached in the observer map as observable
-                    for (const rootProperty of this.observerMap.getCachedRootProperties()) {
-                        this.observerMap.defineProperty(rootProperty);
+                    // Define the root properties cached in the observer map as observable (only if observerMap exists)
+                    if (this.observerMap) {
+                        for (const rootProperty of this.observerMap.getCachedRootProperties()) {
+                            this.observerMap.defineProperty(rootProperty);
+                        }
                     }
 
                     if (registeredFastElement) {
@@ -161,12 +177,12 @@ class TemplateElement extends FASTElement {
      * Resolve strings and values from an innerHTML string
      * @param innerHTML - The innerHTML.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveStringsAndValues(
         innerHTML: string,
         self: boolean = false,
-        observerMap: ObserverMap
+        observerMap?: ObserverMap
     ): Promise<ResolvedStringsAndValues> {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
@@ -198,16 +214,14 @@ class TemplateElement extends FASTElement {
      * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param enableCaching - Whether to cache binding paths.
-     * @param pathCacheFunction - Function to cache single paths.
-     * @param pathsCacheFunction - Function to cache multiple paths.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveTemplateDirective(
         behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string,
         self: boolean = false,
-        observerMap: ObserverMap
+        observerMap?: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when":
@@ -355,6 +369,7 @@ class TemplateElement extends FASTElement {
      * @param values - The interpreted values.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      * @param behaviorConfig - The binding behavior configuration object.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveDataBinding(
         innerHTML: string,
@@ -362,7 +377,7 @@ class TemplateElement extends FASTElement {
         values: Array<any>,
         self: boolean = false,
         behaviorConfig: DataBindingBehaviorConfig,
-        observerMap: ObserverMap
+        observerMap?: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.subtype) {
             case "content":
@@ -470,16 +485,14 @@ class TemplateElement extends FASTElement {
      * @param strings - The strings array.
      * @param values - The interpreted values.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param enableCaching - Whether to cache binding paths.
-     * @param pathCacheFunction - Function to cache single paths.
-     * @param pathsCacheFunction - Function to cache multiple paths.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveInnerHTML(
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
         self: boolean = false,
-        observerMap: ObserverMap
+        observerMap?: ObserverMap
     ): Promise<void> {
         const behaviorConfig = getNextBehavior(innerHTML);
 
@@ -537,7 +550,7 @@ class TemplateElement extends FASTElement {
             const { strings, values } = await this.resolveStringsAndValues(
                 allPartials[i][1].innerHTML,
                 undefined,
-                this.observerMap as ObserverMap
+                this.observerMap
             );
             this.partials[allPartials[i][0]] = this.resolveTemplateOrBehavior(
                 strings,

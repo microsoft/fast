@@ -34,6 +34,10 @@ RenderableFASTElement(TestElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-TemplateElement.define({
+TemplateElement.options({
+    "test-element": {
+        observerMap: "all",
+    },
+}).define({
     name: "f-template",
 });
