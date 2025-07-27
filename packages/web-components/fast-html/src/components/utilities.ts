@@ -421,8 +421,31 @@ export function pathResolver(
     path: string,
     self: boolean = false
 ): (accessibleObject: any, context: any) => any {
-    let splitPath = path.split(".");
-    const usesContext = path.startsWith("../");
+    let splitPath: string[] = [];
+    path.split("../").forEach((pathItem, index) => {
+        if (pathItem === "") {
+            splitPath.unshift("../");
+        } else {
+            splitPath.push(...pathItem.split("."));
+        }
+    });
+    splitPath = splitPath.map((pathItem: string, index: number) => {
+        if (pathItem === "../") {
+            if (splitPath[index + 1] === "../") {
+                return "parentContext";
+            }
+
+            return "parent";
+        }
+
+        return pathItem;
+    });
+
+    return pathWithContextResolver(splitPath, self);
+}
+
+function pathWithContextResolver(splitPath: string[], self: boolean): any {
+    const usesContext = splitPath[0] === "parent" || splitPath[0] === "parentContext";
 
     if (self && !usesContext) {
         if (splitPath.length > 1) {
@@ -434,28 +457,15 @@ export function pathResolver(
         }
     }
 
-    if (splitPath.length === 1 && !usesContext) {
-        return (accessibleObject: AccessibleObject) => {
-            return accessibleObject?.[splitPath[0]];
-        };
-    }
-
-    return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
-        if (usesContext) {
-            splitPath = [];
-            path.split("../").forEach(pathItem => {
-                if (pathItem === "") {
-                    splitPath.unshift("parent");
-                } else {
-                    splitPath.push(...pathItem.split("."));
-                }
-            });
-
+    if (usesContext) {
+        return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
             return splitPath.reduce((previousAccessors, pathItem) => {
                 return previousAccessors?.[pathItem];
             }, context);
-        }
+        };
+    }
 
+    return (accessibleObject: AccessibleObject) => {
         return splitPath.reduce((previousAccessors, pathItem) => {
             return previousAccessors?.[pathItem];
         }, accessibleObject);

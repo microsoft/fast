@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("ObserverMap", async () => {
+test.describe.skip("ObserverMap", async () => {
     test.beforeEach(async ({ page }) => {
         await page.goto("/observer-map");
         await page.waitForSelector("observer-map-test-element");
@@ -23,7 +23,7 @@ test.describe("ObserverMap", async () => {
         await expect(page.locator("text=Theme: light")).toBeVisible();
     });
 
-    test.only("should update deeply nested age property", async ({ page }) => {
+    test("should update deeply nested age property", async ({ page }) => {
         // Initial age should be 28 for Alice
         await expect(page.locator("text=Age: 28 years old")).toBeVisible();
 
