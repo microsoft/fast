@@ -7,6 +7,9 @@ import { Observable } from "@microsoft/fast-element/observable.js";
 export class ObserverMap {
     // Where the key is the root property and the value is a set of paths on that property
     private propertyDefinitions = new Map<string, Set<string>>();
+    // Where the key is a path that belongs to a property definition or another contextPaths parent
+    // and the value is any paths belonging on that path
+    private contextPathDefinitions = new Map<string, Set<string>>();
     private cachedPaths = new Set<string>();
     private classPrototype: any;
     // Cache for root properties to avoid recomputation
@@ -22,7 +25,28 @@ export class ObserverMap {
      * Caches a binding path for later use
      * @param path - The path to cache
      */
-    public cachePath(path: string): void {
+    public cachePath(
+        path: string,
+        self: boolean,
+        parentContext: string | null,
+        contextPath?: string
+    ): void {
+        if (self && contextPath) {
+            if (parentContext) {
+                if (!this.contextPathDefinitions.has(parentContext)) {
+                    const paths = new Set<string>();
+                    paths.add(contextPath);
+                    this.contextPathDefinitions.set(parentContext, paths);
+                } else {
+                    const paths = this.contextPathDefinitions.get(
+                        parentContext
+                    ) as Set<string>;
+                    paths.add(contextPath);
+                    this.contextPathDefinitions.set(parentContext, paths);
+                }
+            }
+        }
+
         if (!this.cachedPaths.has(path)) {
             this.cachedPaths.add(path);
             this.pathsCacheDirty = true;
@@ -104,6 +128,12 @@ export class ObserverMap {
         object: any,
         currentPath: string | null
     ): void => {
+        console.log("evaluatePaths");
+
+        // TODO: we currently check if the value starts the current path
+        // we should also check to see if there is parent context and get root
+        // path from there
+
         const propertyPaths = this.propertyDefinitions.get(rootProperty);
         if (!propertyPaths) return;
 

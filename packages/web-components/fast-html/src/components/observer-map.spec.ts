@@ -18,9 +18,9 @@ test.describe("ObserverMap", async () => {
 
     test("should cache binding paths", async () => {
         // Cache various paths
-        observerMap.cachePath("user.profile.name");
-        observerMap.cachePath("user.settings.theme");
-        observerMap.cachePath("config.version");
+        observerMap.cachePath("user.profile.name", false, null);
+        observerMap.cachePath("user.settings.theme", false, null);
+        observerMap.cachePath("config.version", false, null);
 
         // Verify paths are cached
         const cachedPaths = observerMap.getCachedPaths();
@@ -31,12 +31,12 @@ test.describe("ObserverMap", async () => {
 
     test("should extract root properties from cached paths", async () => {
         // Cache various paths with different root properties
-        observerMap.cachePath("user.profile.name");
-        observerMap.cachePath("user.settings.theme");
-        observerMap.cachePath("config.version");
-        observerMap.cachePath("app.modules.auth.enabled");
-        observerMap.cachePath("data.items.title");
-        observerMap.cachePath("singleProperty");
+        observerMap.cachePath("user.profile.name", false, null);
+        observerMap.cachePath("user.settings.theme", false, null);
+        observerMap.cachePath("config.version", false, null);
+        observerMap.cachePath("app.modules.auth.enabled", false, null);
+        observerMap.cachePath("data.items.title", false, null);
+        observerMap.cachePath("singleProperty", false, null);
 
         // Get root properties
         const rootProperties = observerMap.getCachedRootProperties();
@@ -67,9 +67,9 @@ test.describe("ObserverMap", async () => {
 
     test("should handle single-level paths (no dots)", async () => {
         // Cache single-level paths
-        observerMap.cachePath("user");
-        observerMap.cachePath("config");
-        observerMap.cachePath("data");
+        observerMap.cachePath("user", false, null);
+        observerMap.cachePath("config", false, null);
+        observerMap.cachePath("data", false, null);
 
         // Get root properties - should be the same as the paths
         const rootProperties = observerMap.getCachedRootProperties();
@@ -87,8 +87,8 @@ test.describe("ObserverMap", async () => {
 
     test("should handle deeply nested paths", async () => {
         // Cache deeply nested paths
-        observerMap.cachePath("level1.level2.level3.level4.value");
-        observerMap.cachePath("another.deep.nested.property.path");
+        observerMap.cachePath("level1.level2.level3.level4.value", false, null);
+        observerMap.cachePath("another.deep.nested.property.path", false, null);
 
         // Get root properties
         const rootProperties = observerMap.getCachedRootProperties();
@@ -104,9 +104,9 @@ test.describe("ObserverMap", async () => {
 
     test("should handle duplicate path caching", async () => {
         // Cache the same path multiple times
-        observerMap.cachePath("user.profile.name");
-        observerMap.cachePath("user.profile.name");
-        observerMap.cachePath("user.profile.name");
+        observerMap.cachePath("user.profile.name", false, null);
+        observerMap.cachePath("user.profile.name", false, null);
+        observerMap.cachePath("user.profile.name", false, null);
 
         // Should only be stored once
         const cachedPaths = observerMap.getCachedPaths();

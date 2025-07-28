@@ -12,7 +12,7 @@ import { ShadowRootOptions } from '@microsoft/fast-element';
 export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
 export class ObserverMap {
     constructor(classPrototype: any);
-    cachePath(path: string): void;
+    cachePath(path: string, self: boolean, parentContext: string | null, contextPath?: string): void;
     defineProperty(propertyName: string): void;
     getCachedPaths(): Set<string>;
     getCachedRootProperties(): Set<string>;

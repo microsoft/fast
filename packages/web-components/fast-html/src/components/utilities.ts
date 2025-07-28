@@ -475,11 +475,13 @@ function pathWithContextResolver(splitPath: string[], self: boolean): any {
 export function bindingResolver(
     path: string,
     self: boolean = false,
-    observerMap?: ObserverMap
+    parentContext: string | null,
+    observerMap?: ObserverMap,
+    contextPath?: string
 ): (accessibleObject: any, context: any) => any {
     // Cache path during template processing when ObserverMap is provided
     if (observerMap) {
-        observerMap.cachePath(path);
+        observerMap.cachePath(path, self, parentContext, contextPath);
     }
 
     return pathResolver(path, self);
@@ -488,12 +490,13 @@ export function bindingResolver(
 export function expressionResolver(
     self: boolean,
     expression: ChainedExpression,
+    parentContext: string | null,
     observerMap?: ObserverMap
 ): (accessibleObject: any, context: any) => any {
     // Cache paths from expression during template processing when ObserverMap is provided
     if (observerMap) {
         const paths = extractPathsFromChainedExpression(expression);
-        paths.forEach(path => observerMap.cachePath(path));
+        paths.forEach(path => observerMap.cachePath(path, self, parentContext));
     }
 
     return (x, c) => resolveChainedExpression(x, c, self, expression);
@@ -875,8 +878,9 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
 export function resolveWhen(
     self: boolean,
     expression: ChainedExpression,
+    parentContext: string | null,
     observerMap?: ObserverMap
 ): (x: boolean, c: any) => any {
-    const binding = expressionResolver(self, expression, observerMap);
+    const binding = expressionResolver(self, expression, parentContext, observerMap);
     return (x: boolean, c: any) => binding(x, c);
 }
