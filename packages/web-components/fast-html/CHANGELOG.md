@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 16 Jul 2025 22:43:52 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 28 Jul 2025 00:36:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.17
+
+Mon, 28 Jul 2025 00:36:37 GMT
+
+### Changes
+
+- convert RenderableFASTElement to a mixin function (863023+radium-v@users.noreply.github.com)
 
 ## 1.0.0-alpha.16
 

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 28 Jul 2025 00:36:37 GMT",
+      "version": "1.0.0-alpha.17",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.17",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "34dc0ce20530081eac9f933d7141b15f93adb7ab",
+            "comment": "convert RenderableFASTElement to a mixin function"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Jul 2025 22:43:52 GMT",
       "version": "1.0.0-alpha.16",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.16",
