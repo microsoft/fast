@@ -109,52 +109,10 @@ export class ObserverMap {
 
     // Where the key is the root property and the value is a set of paths on that property
     private propertyDefinitions = new Map<string, Set<string>>();
-    // Where the key is a path that belongs to a property definition or another contextPaths parent
-    // and the value is any paths belonging on that path, this does not account for same-name
-    // contexts
-    private contextPathDefinitions = new Map<string, Set<string>>();
-    private cachedPaths = new Set<string>();
     private classPrototype: any;
-    // Cache for root properties to avoid recomputation
-    private rootPropertiesCache: Set<string> | null = null;
-    // Track if paths have been modified since last root properties calculation
-    private pathsCacheDirty = false;
 
     constructor(classPrototype: any) {
         this.classPrototype = classPrototype;
-    }
-
-    /**
-     * Caches a binding path for later use
-     * @param path - The path to cache
-     */
-    public cachePath(
-        path: string,
-        self: boolean,
-        parentContext: string | null,
-        contextPath: string | null,
-        type: PathType
-    ): void {
-        if (self && contextPath) {
-            if (parentContext) {
-                if (!this.contextPathDefinitions.has(parentContext)) {
-                    const paths = new Set<string>();
-                    paths.add(contextPath);
-                    this.contextPathDefinitions.set(parentContext, paths);
-                } else {
-                    const paths = this.contextPathDefinitions.get(
-                        parentContext
-                    ) as Set<string>;
-                    paths.add(contextPath);
-                    this.contextPathDefinitions.set(parentContext, paths);
-                }
-            }
-        }
-
-        if (!this.cachedPaths.has(path)) {
-            this.cachedPaths.add(path);
-            this.pathsCacheDirty = true;
-        }
     }
 
     private getRootProperty(
@@ -462,7 +420,7 @@ export class ObserverMap {
         const pathWithoutContext = path.startsWith(contextPrefix)
             ? path.substring(contextPrefix.length)
             : path;
-        
+
         // If the path is just the context name itself, don't append anything after __index__
         if (path === contextName) {
             absolutePath += `.__index__.${pathKey}.__index__`;
@@ -516,18 +474,18 @@ export class ObserverMap {
         // For nested repeats, we need to find the path in the cache structure
         // The cache is organized as: root.items.users.badges
         // But the absolute path might be: root.items.__index__.users.__index__.badges.__index__
-        
+
         const absolutePathSplit = context.absolutePath.split(".");
         absolutePathSplit.shift(); // Remove root
-        
+
         // Remove __index__ placeholders and the final __index__ if present
         const cleanedPath = absolutePathSplit.filter(segment => segment !== "__index__");
-        
+
         // Remove the last segment as it represents the current context position, not the parent path
         if (cleanedPath.length > 1) {
             cleanedPath.pop();
         }
-        
+
         return cleanedPath.join(".");
     }
 
@@ -568,7 +526,7 @@ export class ObserverMap {
         const parentRepeatPath = this.findParentRepeatPath(parentContext, rootPath);
         const pathSegment = path.split(".").pop() as string;
 
-        const tempCachePaths = parentRepeatPath 
+        const tempCachePaths = parentRepeatPath
             ? [...parentRepeatPath, pathSegment]
             : [rootPath, pathSegment];
 
@@ -582,20 +540,23 @@ export class ObserverMap {
     /**
      * Finds the cache path where a parent context's repeat structure is located
      */
-    private findParentRepeatPath(parentContext: string, rootPath: string): string[] | null {
+    private findParentRepeatPath(
+        parentContext: string,
+        rootPath: string
+    ): string[] | null {
         // Search through the cache structure to find where this context is defined
         const searchInStructure = (obj: any, currentPath: string[]): string[] | null => {
             if (obj.type === "repeat" && obj.context === parentContext) {
                 return currentPath;
             }
-            
+
             if (obj.paths) {
                 for (const [key, value] of Object.entries(obj.paths)) {
                     const result = searchInStructure(value, [...currentPath, key]);
                     if (result) return result;
                 }
             }
-            
+
             return null;
         };
 
@@ -618,17 +579,20 @@ export class ObserverMap {
                     previousValue.paths[tempCachePath] = cachePath;
                     return previousValue;
                 }
-                
+
                 // Navigate to the next level
-                const nextValue = index === 0
-                    ? previousValue[tempCachePath]
-                    : previousValue.paths?.[tempCachePath];
-                
+                const nextValue =
+                    index === 0
+                        ? previousValue[tempCachePath]
+                        : previousValue.paths?.[tempCachePath];
+
                 // Ensure the next value exists and has paths property if needed
                 if (!nextValue) {
-                    throw new Error(`Cannot resolve context path: missing intermediate path at '${tempCachePath}'`);
+                    throw new Error(
+                        `Cannot resolve context path: missing intermediate path at '${tempCachePath}'`
+                    );
                 }
-                
+
                 return nextValue;
             },
             this.tempCachePaths
@@ -779,64 +743,12 @@ export class ObserverMap {
         }
     }
 
-    /**
-     * Gets all cached paths
-     * @returns Set of cached paths
-     */
-    public getCachedPaths(): Set<string> {
-        return this.cachedPaths;
-    }
-
-    /**
-     * Gets the class prototype
-     * @returns The class prototype for this instance
-     */
-    public getClassPrototype(): any {
-        return this.classPrototype;
-    }
-
-    /**
-     * Gets the root properties from all cached paths
-     * @returns Set of root property names extracted from cached paths
-     */
-    public getCachedRootProperties(): Set<string> {
-        if (this.rootPropertiesCache && !this.pathsCacheDirty) {
-            return this.rootPropertiesCache;
-        }
-
-        const rootProperties = new Set<string>();
-        for (const path of this.cachedPaths) {
-            const dotIndex = path.indexOf(".");
-            const rootProperty = dotIndex === -1 ? path : path.substring(0, dotIndex);
-            rootProperties.add(rootProperty);
-        }
-
-        this.rootPropertiesCache = rootProperties;
-        this.pathsCacheDirty = false;
-        return rootProperties;
-    }
-
-    /**
-     * Defines an observable property on the class prototype
-     * @param propertyName - The name of the property to define
-     */
-    public defineProperty(propertyName: string): void {
-        if (!this.propertyDefinitions.has(propertyName)) {
-            const paths = new Set<string>();
-            const propertyPrefix = `${propertyName}.`;
-
-            for (const value of this.cachedPaths) {
-                if (value.startsWith(propertyPrefix)) {
-                    paths.add(value.substring(propertyPrefix.length));
-                }
-            }
-
-            this.propertyDefinitions.set(propertyName, paths);
-
+    public defineProperties(): void {
+        Object.keys(this.tempCachePaths).forEach(propertyName => {
             Observable.defineProperty(this.classPrototype, propertyName);
             this.classPrototype[`${propertyName}Changed`] =
                 this.defineChanged(propertyName);
-        }
+        });
     }
 
     /**
@@ -1024,12 +936,4 @@ export class ObserverMap {
 
         return instanceResolverChanged;
     };
-
-    /**
-     * Gets all defined properties for the class prototype
-     * @returns Set of property names that have been defined as observable
-     */
-    public getDefinedProperties(): IterableIterator<string> {
-        return this.propertyDefinitions.keys();
-    }
 }
