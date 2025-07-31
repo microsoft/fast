@@ -1,5 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { type AccessCachedPath, type DefaultCachedPath, ObserverMap, RepeatCachedPath } from "./observer-map.js";
+import { ObserverMap } from "./observer-map.js";
+import {
+    AccessCachedPath,
+    CachedPathMap,
+    DefaultCachedPath,
+    RepeatCachedPath,
+} from "./utilities.js";
 
 test.describe.only("ObserverMap", async () => {
     let observerMap: ObserverMap;
@@ -273,5 +279,5 @@ test.describe.only("ObserverMap", async () => {
             expect(settingVisibility.relativePath).toEqual("setting.visibility");
             expect(settingVisibility.absolutePath).toEqual("root.items.__index__.settings.__index__.visibility");
         });
-    })
+    });
 });

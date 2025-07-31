@@ -1,62 +1,14 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
 import { PathType } from "./utilities.js";
+import type {
+    CachedPath,
+    CachedPathMap,
+    ContextCache,
+    DefaultCachedPath,
+    RepeatCachedPath,
+} from "./utilities.js";
 
 const reservedIndexPlaceholder = "__index__";
-
-type AccessCachedPathType = "access";
-
-export interface AccessCachedPath {
-    type: AccessCachedPathType;
-    relativePath: string;
-    absolutePath: string;
-}
-
-type DefaultCachedPathType = "default";
-
-export interface DefaultCachedPath {
-    type: DefaultCachedPathType;
-    paths: Record<string, CachedPath>; // where the key is the relativePath
-}
-
-type EventCachedPathType = "event";
-
-export interface EventCachedPath {
-    type: EventCachedPathType;
-    relativePath: string;
-    absolutePath: string;
-}
-
-type RepeatCachedPathType = "repeat";
-
-export interface RepeatCachedPath {
-    type: RepeatCachedPathType;
-    context: string | null;
-    paths: Record<string, CachedPath>;
-}
-
-export type CachedPath =
-    | DefaultCachedPath
-    | RepeatCachedPath
-    | AccessCachedPath
-    | EventCachedPath;
-
-export type CachedPathMap = Record<string, CachedPath>;
-
-interface ContextCache {
-    /**
-     * The path to this context
-     */
-    absolutePath: string; // users
-    /**
-     * The self string of that context
-     */
-    context: string; // user
-
-    /**
-     * The parent of this context
-     */
-    parent: string | null;
-}
 
 /**
  * ObserverMap provides functionality for caching binding paths, extracting root properties,
@@ -706,16 +658,17 @@ export class ObserverMap {
      * @param target - The target instance that owns the root property
      * @param rootProperty - The name of the root property for notification purposes
      * @param object - The object to wrap with a proxy
-     * @param currentPath - The current path context for this object
-     * @param getCurrentPath - Function to construct path strings
-     * @param evaluatePaths - Function to evaluate and create proxies for nested objects
      * @returns A proxy that triggers notifications on property mutations
      */
-    private getProxyForObject(
+    private getAndAssignProxies(
         target: any,
         rootProperty: string,
-        object: any
+        object: any,
+        cachePaths: CachedPathMap
     ): typeof Proxy {
+        // TODO: use the utility in utilities for traverseCachedPaths to get resolvers for each path per object
+        // property and resolve proxies for each of those
+
         // Create a proxy for the object that triggers Observable.notify on mutations
         return new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
@@ -749,7 +702,9 @@ export class ObserverMap {
      * @returns A function that handles property changes and sets up proxies for object values
      */
     private defineChanged = (propertyName: string): ((prev: any, next: any) => void) => {
-        const getProxyForObjectAlias = this.getProxyForObject;
+        const getAndAssignProxiesAlias = this.getAndAssignProxies;
+        const cachePaths = this.cachePaths;
+
         function instanceResolverChanged(this: any, prev: any, next: any): void {
             if (
                 prev === undefined &&
@@ -757,10 +712,17 @@ export class ObserverMap {
                 typeof next === "object" &&
                 next !== null
             ) {
-                const proxy = getProxyForObjectAlias(this, propertyName, next);
+                const proxy = getAndAssignProxiesAlias(
+                    this,
+                    propertyName,
+                    next,
+                    cachePaths
+                );
 
-                // TODO: add logic based on the tempCachePath to traverse any items
+                // TODO: add logic based on the cachePath to traverse any items
                 // found within its paths structure and proxy their parent objects
+                console.log("the changed object", propertyName, next);
+                console.log("the cachePath", cachePaths);
 
                 this[propertyName] = proxy;
             }

@@ -60,6 +60,61 @@ interface PartialTemplateConfig {
     endIndex: number;
 }
 
+type AccessCachedPathType = "access";
+
+export interface AccessCachedPath {
+    type: AccessCachedPathType;
+    relativePath: string;
+    absolutePath: string;
+}
+
+type DefaultCachedPathType = "default";
+
+export interface DefaultCachedPath {
+    type: DefaultCachedPathType;
+    paths: Record<string, CachedPath>; // where the key is the relativePath
+}
+
+type EventCachedPathType = "event";
+
+export interface EventCachedPath {
+    type: EventCachedPathType;
+    relativePath: string;
+    absolutePath: string;
+}
+
+type RepeatCachedPathType = "repeat";
+
+export interface RepeatCachedPath {
+    type: RepeatCachedPathType;
+    context: string | null;
+    paths: Record<string, CachedPath>;
+}
+
+export type CachedPath =
+    | DefaultCachedPath
+    | RepeatCachedPath
+    | AccessCachedPath
+    | EventCachedPath;
+
+export type CachedPathMap = Record<string, CachedPath>;
+
+export interface ContextCache {
+    /**
+     * The path to this context
+     */
+    absolutePath: string; // users
+    /**
+     * The self string of that context
+     */
+    context: string; // user
+
+    /**
+     * The parent of this context
+     */
+    parent: string | null;
+}
+
 const openClientSideBinding: string = "{";
 
 const closeClientSideBinding: string = "}";
@@ -911,4 +966,357 @@ export function resolveWhen(
         observerMap
     );
     return (x: boolean, c: any) => binding(x, c);
+}
+
+interface ObjectCachePathResolver {
+    type: "object";
+    propertyName: string | number;
+    // resolver: (object: any) => typeof Proxy;
+    paths: Array<CachePathResolver>;
+}
+
+interface ArrayCachePathResolver {
+    type: "array";
+    propertyName: string;
+    paths: Array<CachePathResolver>;
+}
+
+type CachePathResolver = ObjectCachePathResolver | ArrayCachePathResolver;
+
+type DataType = "array" | "object" | "primitive";
+
+/**
+ * Helper function to determine the data type of an object property
+ */
+function getDataType(object: any, propertyName: string | number): DataType {
+    if (Array.isArray(object[propertyName])) return "array";
+    if (typeof object[propertyName] === "object" && object[propertyName] !== null)
+        return "object";
+    return "primitive";
+}
+
+/**
+ * Helper function to check if a path matches the current path
+ */
+function pathMatches(absolutePath: string, currentPath: string): boolean {
+    return absolutePath === currentPath || absolutePath.startsWith(currentPath + ".");
+}
+
+/**
+ * Helper function to check if a path is nested under a parent path
+ */
+function isNestedPath(path: string, parentPath: string): boolean {
+    return path !== parentPath && path.startsWith(parentPath + ".");
+}
+
+/**
+ * Helper function to extract remaining path after a prefix
+ */
+function getPathAfterPrefix(fullPath: string, prefixLength: number): string {
+    return fullPath.substring(prefixLength + 1);
+}
+
+/**
+ * Helper function to filter access cache values
+ */
+function getAccessCacheValues(
+    cachedPaths: Record<string, CachedPath>
+): AccessCachedPath[] {
+    return Object.values(cachedPaths).filter(
+        cacheValue => cacheValue.type === "access"
+    ) as AccessCachedPath[];
+}
+
+/**
+ * Helper function to filter paths that match a current path
+ */
+function getMatchingPaths(
+    cachedPaths: Record<string, CachedPath>,
+    currentPath: string
+): AccessCachedPath[] {
+    return getAccessCacheValues(cachedPaths).filter(cacheValue =>
+        pathMatches(cacheValue.absolutePath, currentPath)
+    );
+}
+
+/**
+ * Helper function to build nested paths for object processing
+ */
+function buildNestedPaths(
+    cachedPaths: Record<string, CachedPath>,
+    currentPath: string,
+    propertyName: string | number
+): Record<string, CachedPath> {
+    return getMatchingPaths(cachedPaths, currentPath).reduce((acc, cacheValue) => {
+        const absolutePath = cacheValue.absolutePath;
+
+        // Skip exact matches (no nested paths needed)
+        if (absolutePath === currentPath) return acc;
+
+        // Add deeper paths
+        if (isNestedPath(absolutePath, currentPath)) {
+            const remainingPath = getPathAfterPrefix(
+                absolutePath,
+                String(propertyName).length
+            );
+            acc[remainingPath] = {
+                type: "access",
+                relativePath: cacheValue.relativePath,
+                absolutePath: remainingPath,
+            };
+        }
+
+        return acc;
+    }, {} as Record<string, CachedPath>);
+}
+
+/**
+ * Helper function to check if there are any matching cached paths
+ */
+function hasMatchingPaths(
+    cachedPaths: Record<string, CachedPath>,
+    currentPath: string
+): boolean {
+    return getAccessCacheValues(cachedPaths).some(cacheValue =>
+        pathMatches(cacheValue.absolutePath, currentPath)
+    );
+}
+
+/**
+ * Helper function to process object properties
+ */
+function processObjectProperty(
+    key: string,
+    object: any,
+    propertyName: string | number,
+    cachedPaths: Record<string, CachedPath>
+): CachePathResolver | null {
+    const currentPath = `${propertyName}.${key}`;
+
+    if (!hasMatchingPaths(cachedPaths, currentPath)) return null;
+
+    const nestedPaths = buildNestedPaths(cachedPaths, currentPath, propertyName);
+
+    return {
+        type: "object",
+        propertyName: key,
+        paths: traverseCachedPaths(key, object[propertyName], {
+            [key]: { type: "default", paths: nestedPaths },
+        }),
+    };
+}
+
+/**
+ * Helper function to extract item cached paths from array context
+ */
+function extractItemCachedPaths(
+    cachedPaths: Record<string, CachedPath>,
+    context: string | null
+): Record<string, CachedPath> {
+    const itemCachedPaths: Record<string, CachedPath> = {};
+
+    getAccessCacheValues(cachedPaths).forEach(cacheValue => {
+        const relativePath = cacheValue.relativePath;
+
+        if (context && isNestedPath(relativePath, context)) {
+            const propertyAfterContext = getPathAfterPrefix(relativePath, context.length);
+            itemCachedPaths[propertyAfterContext] = {
+                type: "access",
+                relativePath: propertyAfterContext,
+                absolutePath: propertyAfterContext,
+            };
+        }
+    });
+
+    return itemCachedPaths;
+}
+
+/**
+ * Helper function to check if an object property is valid for processing
+ */
+function isValidObjectProperty(item: any, propertyName: string): boolean {
+    return (
+        item[propertyName] !== undefined &&
+        typeof item[propertyName] === "object" &&
+        item[propertyName] !== null
+    );
+}
+
+/**
+ * Helper function to create nested resolvers for array items
+ */
+function createNestedResolversForProperty(
+    rootProperty: string,
+    item: any,
+    itemCachedPaths: Record<string, CachedPath>,
+    pathsBeyondRoot: string[]
+): Array<CachePathResolver> {
+    const nestedResolvers: Array<CachePathResolver> = [];
+
+    // Get unique next-level properties
+    const nextLevelProperties = new Set<string>();
+    pathsBeyondRoot.forEach(path => {
+        const remainingPath = path.substring(rootProperty.length + 1);
+        const nextProperty = remainingPath.split(".")[0];
+        nextLevelProperties.add(nextProperty);
+    });
+
+    // Process each next-level property
+    nextLevelProperties.forEach(nextProperty => {
+        if (!isValidObjectProperty(item[rootProperty], nextProperty)) return;
+
+        const pathsBeyondNext = pathsBeyondRoot.filter(path => {
+            const remainingPath = path.substring(rootProperty.length + 1);
+            return (
+                remainingPath !== nextProperty &&
+                remainingPath.startsWith(nextProperty + ".")
+            );
+        });
+
+        if (pathsBeyondNext.length === 0) return;
+
+        // Build nested cached paths
+        const nextNestedCachedPaths: Record<string, CachedPath> = {};
+        pathsBeyondNext.forEach(path => {
+            const remainingPath = path.substring(
+                rootProperty.length + 1 + nextProperty.length + 1
+            );
+            nextNestedCachedPaths[remainingPath] = itemCachedPaths[path];
+        });
+
+        if (Object.keys(nextNestedCachedPaths).length === 0) return;
+
+        const nextNestedResolvers = traverseCachedPaths(
+            nextProperty,
+            item[rootProperty],
+            {
+                [nextProperty]: { type: "default", paths: nextNestedCachedPaths },
+            }
+        );
+
+        nestedResolvers.push({
+            type: "object",
+            propertyName: nextProperty,
+            paths: nextNestedResolvers,
+        });
+    });
+
+    return nestedResolvers;
+}
+
+/**
+ * Helper function to process array item resolvers
+ */
+function processArrayItemResolvers(
+    item: any,
+    itemCachedPaths: Record<string, CachedPath>
+): Array<CachePathResolver> {
+    const itemResolvers: Array<CachePathResolver> = [];
+
+    // Get unique root properties
+    const rootProperties = new Set<string>();
+    Object.keys(itemCachedPaths).forEach(path => {
+        rootProperties.add(path.split(".")[0]);
+    });
+
+    rootProperties.forEach(rootProperty => {
+        if (!isValidObjectProperty(item, rootProperty)) return;
+
+        // Get paths for this root property
+        const matchingPaths = Object.keys(itemCachedPaths).filter(
+            path => path === rootProperty || path.startsWith(rootProperty + ".")
+        );
+
+        if (matchingPaths.length === 0) return;
+
+        // Get paths that go beyond the root property
+        const pathsBeyondRoot = matchingPaths.filter(
+            path => path !== rootProperty && path.startsWith(rootProperty + ".")
+        );
+
+        const nestedResolvers =
+            pathsBeyondRoot.length > 0
+                ? createNestedResolversForProperty(
+                      rootProperty,
+                      item,
+                      itemCachedPaths,
+                      pathsBeyondRoot
+                  )
+                : [];
+
+        itemResolvers.push({
+            type: "object",
+            propertyName: rootProperty,
+            paths: nestedResolvers,
+        });
+    });
+
+    return itemResolvers;
+}
+
+/**
+ * This function is the entry point for a property that is being observed,
+ * it will take the property and associated object as well as cached paths
+ * and reconcile cache paths with the objects structure. When it discovers an
+ * access path, it will then determine the each containing object and push the parent
+ * item to an array and create a new resolver path item until it reaches the access
+ * types parent.
+ * @param propertyName
+ * @param object
+ * @param cachePaths
+ * @returns
+ */
+export function traverseCachedPaths(
+    propertyName: string | number,
+    object: any,
+    cachePaths: CachedPathMap
+): Array<CachePathResolver> {
+    const resolvers: Array<CachePathResolver> = [];
+
+    if (!cachePaths[propertyName]) return resolvers;
+
+    const type = getDataType(object, propertyName);
+
+    switch (type) {
+        case "object": {
+            const cachedPaths = (cachePaths[propertyName] as DefaultCachedPath).paths;
+
+            Object.entries(object[propertyName]).forEach(([key]) => {
+                const resolver = processObjectProperty(
+                    key,
+                    object,
+                    propertyName,
+                    cachedPaths
+                );
+                if (resolver) {
+                    resolvers.push(resolver);
+                }
+            });
+            break;
+        }
+        case "array": {
+            const cachedPaths = (cachePaths[propertyName] as RepeatCachedPath).paths;
+            const context = (cachePaths[propertyName] as RepeatCachedPath).context;
+
+            object[propertyName].forEach((item: any, index: number) => {
+                const itemCachedPaths = extractItemCachedPaths(cachedPaths, context);
+
+                if (Object.keys(itemCachedPaths).length === 0) return;
+
+                const itemResolvers = processArrayItemResolvers(item, itemCachedPaths);
+
+                resolvers.push({
+                    type: "object",
+                    propertyName: index,
+                    paths: itemResolvers,
+                });
+            });
+            break;
+        }
+        case "primitive":
+            // TODO: add attribute logic
+            break;
+    }
+
+    return resolvers;
 }
