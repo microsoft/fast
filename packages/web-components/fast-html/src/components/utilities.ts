@@ -485,8 +485,6 @@ export function bindingResolver(
 ): (accessibleObject: any, context: any) => any {
     // Cache path during template processing when ObserverMap is provided
     if (observerMap) {
-        // TODO: replace cachePath with cachePathWithContext
-        observerMap.cachePath(path, self, parentContext, contextPath, type);
         observerMap.cachePathWithContext(
             path,
             self,
@@ -511,8 +509,6 @@ export function expressionResolver(
     if (observerMap) {
         const paths = extractPathsFromChainedExpression(expression);
         paths.forEach(path => {
-            // TODO: replace cachePath with cachePathWithContext
-            observerMap.cachePath(path, self, parentContext, null, "access");
             observerMap.cachePathWithContext(
                 path,
                 self,

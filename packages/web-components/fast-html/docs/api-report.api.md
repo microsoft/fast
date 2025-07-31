@@ -12,20 +12,15 @@ import { ShadowRootOptions } from '@microsoft/fast-element';
 export class ObserverMap {
     constructor(classPrototype: any);
     // Warning: (ae-forgotten-export) The symbol "PathType" needs to be exported by the entry point index.d.ts
-    cachePath(path: string, self: boolean, parentContext: string | null, contextPath: string | null, type: PathType): void;
-    // (undocumented)
     cachePathWithContext(path: string, self: boolean, parentContext: string | null, contextPath: string | null, type: PathType, level: number): void;
-    defineProperty(propertyName: string): void;
     // (undocumented)
-    getAbsolutePath(path: string, self: boolean, level: number, contextPath: string | null, type: PathType): string;
-    getCachedPaths(): Set<string>;
+    defineProperties(): void;
+    // (undocumented)
+    getAbsolutePath(path: string, self: boolean, level: number, parentContext: string | null, contextPath: string | null, type: PathType): string;
     // Warning: (ae-forgotten-export) The symbol "CachedPathMap" needs to be exported by the entry point index.d.ts
     //
     // (undocumented)
     getCachedPathsWithContext(): CachedPathMap;
-    getCachedRootProperties(): Set<string>;
-    getClassPrototype(): any;
-    getDefinedProperties(): IterableIterator<string>;
 }
 
 // @public

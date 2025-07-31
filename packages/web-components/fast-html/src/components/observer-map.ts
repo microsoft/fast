@@ -58,57 +58,13 @@ interface ContextCache {
     parent: string | null;
 }
 
-// TODO: remove this
-const tempPaths: CachedPathMap = {
-    users: {
-        type: "repeat",
-        context: "user",
-        paths: {
-            "user.id": {
-                type: "access",
-                relativePath: "user.id",
-                absolutePath: "users.__index__.id",
-            },
-            "user.posts": {
-                type: "repeat",
-                context: "post",
-                paths: {
-                    "post.title": {
-                        type: "access",
-                        relativePath: "post.title",
-                        absolutePath: "users.__index__.posts.__index__.title",
-                    },
-                },
-            },
-        },
-    },
-    stats: {
-        type: "default",
-        paths: {
-            "stats.totalUsers": {
-                type: "access",
-                relativePath: "stats.totalUsers",
-                absolutePath: "totalUsers",
-            },
-            "stats.metrics.engagement.daily": {
-                type: "access",
-                relativePath: "stats.metrics.engagement.daily",
-                absolutePath: "stats.metrics.engagement.daily",
-            },
-        },
-    },
-};
-
 /**
  * ObserverMap provides functionality for caching binding paths, extracting root properties,
  * and defining observable properties on class prototypes
  */
 export class ObserverMap {
-    private tempCachePaths: CachedPathMap = {};
-    private tempContextCache: Array<ContextCache> = [];
-
-    // Where the key is the root property and the value is a set of paths on that property
-    private propertyDefinitions = new Map<string, Set<string>>();
+    private cachePaths: CachedPathMap = {};
+    private contextCache: Array<ContextCache> = [];
     private classPrototype: any;
 
     constructor(classPrototype: any) {
@@ -125,7 +81,7 @@ export class ObserverMap {
         const splitPath = path.split(".");
 
         if (self) {
-            const contextCacheItem = this.tempContextCache.find(contextCacheItem => {
+            const contextCacheItem = this.contextCache.find(contextCacheItem => {
                 return contextCacheItem.context === parentContext;
             });
 
@@ -249,7 +205,7 @@ export class ObserverMap {
         rootPath: string
     ): void {
         // Add to context cache first
-        this.tempContextCache.push({
+        this.contextCache.push({
             absolutePath: this.getAbsolutePath(
                 path,
                 self,
@@ -278,8 +234,8 @@ export class ObserverMap {
         parentContext: string | null,
         rootPath: string
     ): void {
-        const tempCachePaths = [rootPath, path];
-        this.resolveContextPath(tempCachePaths, {
+        const cachePaths = [rootPath, path];
+        this.resolveContextPath(cachePaths, {
             type: "access",
             relativePath: path,
             absolutePath: this.getAbsolutePath(
@@ -297,7 +253,7 @@ export class ObserverMap {
      * Finds a context item in the temporary context cache
      */
     private findContextInCache(parentContext: string | null): ContextCache | undefined {
-        return this.tempContextCache.find(item => item.context === parentContext);
+        return this.contextCache.find(item => item.context === parentContext);
     }
 
     /**
@@ -307,7 +263,7 @@ export class ObserverMap {
     private tryPlaceInExistingRepeat(path: string, context: ContextCache): boolean {
         const contextName = context.context;
 
-        for (const [rootKey, rootValue] of Object.entries(this.tempCachePaths)) {
+        for (const [rootKey, rootValue] of Object.entries(this.cachePaths)) {
             if (this.searchAndPlaceInRepeat(rootValue, [rootKey], path, contextName)) {
                 return true;
             }
@@ -378,7 +334,7 @@ export class ObserverMap {
         path: string,
         contextName: string
     ): void {
-        const tempCachePaths = [...currentPath, pathKey, path];
+        const cachePaths = [...currentPath, pathKey, path];
         const absolutePath = this.buildNestedRepeatAbsolutePath(
             currentPath,
             pathKey,
@@ -386,7 +342,7 @@ export class ObserverMap {
             contextName
         );
 
-        this.resolveContextPath(tempCachePaths, {
+        this.resolveContextPath(cachePaths, {
             type: "access",
             relativePath: path,
             absolutePath: absolutePath,
@@ -408,11 +364,9 @@ export class ObserverMap {
         // Build path through the hierarchy
         for (let i = 1; i < currentPath.length; i++) {
             const segment = currentPath[i];
-            if (i === 1) {
-                absolutePath += `.${segment}`;
-            } else {
-                absolutePath += `.__index__.${segment}`;
-            }
+
+            absolutePath +=
+                i === 1 ? `.${segment}` : `.${reservedIndexPlaceholder}.${segment}`;
         }
 
         // Add the final repeat and property
@@ -422,11 +376,10 @@ export class ObserverMap {
             : path;
 
         // If the path is just the context name itself, don't append anything after __index__
-        if (path === contextName) {
-            absolutePath += `.__index__.${pathKey}.__index__`;
-        } else {
-            absolutePath += `.__index__.${pathKey}.__index__.${pathWithoutContext}`;
-        }
+        absolutePath +=
+            path === contextName
+                ? `.${reservedIndexPlaceholder}.${pathKey}.${reservedIndexPlaceholder}`
+                : `.${reservedIndexPlaceholder}.${pathKey}.${reservedIndexPlaceholder}.${pathWithoutContext}`;
 
         return absolutePath;
     }
@@ -448,8 +401,8 @@ export class ObserverMap {
         this.ensureRepeatStructureExists(rootPath, contextPathRelative, context);
 
         if (self && contextPathRelative !== "") {
-            const tempCachePaths = [rootPath, contextPathRelative, path];
-            this.resolveContextPath(tempCachePaths, {
+            const cachePaths = [rootPath, contextPathRelative, path];
+            this.resolveContextPath(cachePaths, {
                 type: "access",
                 relativePath: path,
                 absolutePath: this.getAbsolutePath(
@@ -479,7 +432,9 @@ export class ObserverMap {
         absolutePathSplit.shift(); // Remove root
 
         // Remove __index__ placeholders and the final __index__ if present
-        const cleanedPath = absolutePathSplit.filter(segment => segment !== "__index__");
+        const cleanedPath = absolutePathSplit.filter(
+            segment => segment !== reservedIndexPlaceholder
+        );
 
         // Remove the last segment as it represents the current context position, not the parent path
         if (cleanedPath.length > 1) {
@@ -498,7 +453,7 @@ export class ObserverMap {
         context: ContextCache
     ): void {
         if (contextPathRelative !== "") {
-            const rootCachedPath = this.tempCachePaths[rootPath] as DefaultCachedPath;
+            const rootCachedPath = this.cachePaths[rootPath] as DefaultCachedPath;
             if (!rootCachedPath.paths[contextPathRelative]) {
                 rootCachedPath.paths[contextPathRelative] = {
                     type: "repeat",
@@ -526,11 +481,11 @@ export class ObserverMap {
         const parentRepeatPath = this.findParentRepeatPath(parentContext, rootPath);
         const pathSegment = path.split(".").pop() as string;
 
-        const tempCachePaths = parentRepeatPath
+        const cachePaths = parentRepeatPath
             ? [...parentRepeatPath, pathSegment]
             : [rootPath, pathSegment];
 
-        this.resolveContextPath(tempCachePaths, {
+        this.resolveContextPath(cachePaths, {
             type: "repeat",
             context: contextPath,
             paths: {},
@@ -560,43 +515,40 @@ export class ObserverMap {
             return null;
         };
 
-        return searchInStructure(this.tempCachePaths[rootPath], [rootPath]);
+        return searchInStructure(this.cachePaths[rootPath], [rootPath]);
     }
 
     public getCachedPathsWithContext(): CachedPathMap {
-        return this.tempCachePaths;
+        return this.cachePaths;
     }
 
-    private resolveContextPath(tempCachePaths: string[], cachePath: CachedPath): void {
-        const tempCachePathLastItem = tempCachePaths.length - 1;
-        tempCachePaths.reduce(
-            (previousValue: any, tempCachePath: string, index: number) => {
-                if (index === tempCachePathLastItem) {
-                    // Ensure the previous value has a paths property
-                    if (!previousValue.paths) {
-                        previousValue.paths = {};
-                    }
-                    previousValue.paths[tempCachePath] = cachePath;
-                    return previousValue;
+    private resolveContextPath(cachePaths: string[], cachePath: CachedPath): void {
+        const tempCachePathLastItem = cachePaths.length - 1;
+        cachePaths.reduce((previousValue: any, tempCachePath: string, index: number) => {
+            if (index === tempCachePathLastItem) {
+                // Ensure the previous value has a paths property
+                if (!previousValue.paths) {
+                    previousValue.paths = {};
                 }
+                previousValue.paths[tempCachePath] = cachePath;
+                return previousValue;
+            }
 
-                // Navigate to the next level
-                const nextValue =
-                    index === 0
-                        ? previousValue[tempCachePath]
-                        : previousValue.paths?.[tempCachePath];
+            // Navigate to the next level
+            const nextValue =
+                index === 0
+                    ? previousValue[tempCachePath]
+                    : previousValue.paths?.[tempCachePath];
 
-                // Ensure the next value exists and has paths property if needed
-                if (!nextValue) {
-                    throw new Error(
-                        `Cannot resolve context path: missing intermediate path at '${tempCachePath}'`
-                    );
-                }
+            // Ensure the next value exists and has paths property if needed
+            if (!nextValue) {
+                throw new Error(
+                    `Cannot resolve context path: missing intermediate path at '${tempCachePath}'`
+                );
+            }
 
-                return nextValue;
-            },
-            this.tempCachePaths
-        );
+            return nextValue;
+        }, this.cachePaths);
     }
 
     private resolveRootAndContextPath(
@@ -608,14 +560,12 @@ export class ObserverMap {
         switch (type) {
             case "access":
                 {
-                    const containsContext = this.tempContextCache.find(
-                        contextCacheItem => {
-                            return contextCacheItem.context === rootPath;
-                        }
-                    );
+                    const containsContext = this.contextCache.find(contextCacheItem => {
+                        return contextCacheItem.context === rootPath;
+                    });
                     // add a root path if one has not been assigned
-                    if (!this.tempCachePaths[rootPath] && !containsContext) {
-                        this.tempCachePaths[rootPath] = {
+                    if (!this.cachePaths[rootPath] && !containsContext) {
+                        this.cachePaths[rootPath] = {
                             type: "default",
                             paths: {},
                         };
@@ -627,7 +577,7 @@ export class ObserverMap {
                     // add a context path if one has not been assigned
                     // add a root path if one has not been assigned
                     if (rootPath === path) {
-                        (this.tempCachePaths[rootPath] as RepeatCachedPath) = {
+                        (this.cachePaths[rootPath] as RepeatCachedPath) = {
                             type: "repeat",
                             context: contextPath,
                             paths: {},
@@ -674,7 +624,7 @@ export class ObserverMap {
             // For array items, remove the context prefix and build full path
             splitPath.shift();
 
-            // Build the full path by recursively traversing tempContextCache
+            // Build the full path by recursively traversing contextCache
             const fullContextPath = this.getPathFromCachedContext(
                 parentContext,
                 contextPath
@@ -701,7 +651,7 @@ export class ObserverMap {
     }
 
     /**
-     * Builds the full context path by looking up parent contexts in tempContextCache
+     * Builds the full context path by looking up parent contexts in contextCache
      * @param parentContext - The immediate parent context to start from
      * @param contextPath - The current context path (like "items")
      * @returns The full absolute path including all parent contexts
@@ -714,8 +664,8 @@ export class ObserverMap {
             return contextPath || "";
         }
 
-        // Find the parent context in tempContextCache
-        const parentContextItem = this.tempContextCache.find(
+        // Find the parent context in contextCache
+        const parentContextItem = this.contextCache.find(
             item => item.context === parentContext
         );
 
@@ -744,107 +694,11 @@ export class ObserverMap {
     }
 
     public defineProperties(): void {
-        Object.keys(this.tempCachePaths).forEach(propertyName => {
+        Object.keys(this.cachePaths).forEach(propertyName => {
             Observable.defineProperty(this.classPrototype, propertyName);
             this.classPrototype[`${propertyName}Changed`] =
                 this.defineChanged(propertyName);
         });
-    }
-
-    /**
-     * Evaluates cached paths and creates proxies for nested objects that match the current path context
-     * @param target - The target instance that owns the root property
-     * @param rootProperty - The name of the root property being evaluated
-     * @param object - The current object being evaluated for proxy creation
-     * @param currentPath - The current path context (null for root level)
-     */
-    private evaluatePaths = (
-        target: any,
-        rootProperty: string,
-        object: any,
-        currentPath: string | null
-    ): void => {
-        const propertyPaths = this.propertyDefinitions.get(rootProperty);
-        if (!propertyPaths) return;
-
-        for (const value of propertyPaths) {
-            if (currentPath === null || value.startsWith(`${currentPath}.`)) {
-                // Create the path to traverse from current position
-                const pathToTraverse =
-                    currentPath === null
-                        ? value.split(".")
-                        : value.substring(currentPath.length + 1).split(".");
-
-                // Only traverse if we have segments to process
-                if (pathToTraverse.length > 0 && pathToTraverse[0] !== "") {
-                    this.traverseAndProxyPath(
-                        target,
-                        rootProperty,
-                        object,
-                        currentPath,
-                        pathToTraverse
-                    );
-                }
-            }
-        }
-    };
-
-    /**
-     * Recursively traverses a path and creates proxies for nested objects at each level
-     * @param target - The target instance that owns the root property
-     * @param rootProperty - The name of the root property being evaluated
-     * @param currentObject - The current object being traversed
-     * @param currentPath - The current path context (null for root level)
-     * @param remainingPath - Array of remaining path segments to traverse
-     */
-    private traverseAndProxyPath = (
-        target: any,
-        rootProperty: string,
-        currentObject: any,
-        currentPath: string | null,
-        remainingPath: string[]
-    ): void => {
-        if (remainingPath.length === 0 || !currentObject) {
-            return;
-        }
-
-        const [nextSegment, ...restOfPath] = remainingPath;
-        const nextObject = currentObject[nextSegment];
-
-        if (nextObject && typeof nextObject === "object" && nextObject !== null) {
-            const newPath = currentPath ? `${currentPath}.${nextSegment}` : nextSegment;
-
-            // Create proxy for this object
-            currentObject[nextSegment] = this.getProxyForObject(
-                target,
-                rootProperty,
-                nextObject,
-                newPath,
-                this.getCurrentPath,
-                this.evaluatePaths
-            );
-
-            // Continue traversing deeper if there are more segments
-            if (restOfPath.length > 0) {
-                this.traverseAndProxyPath(
-                    target,
-                    rootProperty,
-                    currentObject[nextSegment],
-                    newPath,
-                    restOfPath
-                );
-            }
-        }
-    };
-
-    /**
-     * Constructs a path string by combining the current path with a new path item
-     * @param currentPath - The current path context (null for root level)
-     * @param pathItem - The path segment to append
-     * @returns The combined path string
-     */
-    private getCurrentPath(currentPath: string | null, pathItem: string): string {
-        return currentPath ? `${currentPath}.${pathItem}` : pathItem;
     }
 
     /**
@@ -860,29 +714,14 @@ export class ObserverMap {
     private getProxyForObject(
         target: any,
         rootProperty: string,
-        object: any,
-        currentPath: string | null,
-        getCurrentPath: (currentPath: string | null, pathItem: string) => string,
-        evaluatePaths: (
-            target: any,
-            rootProperty: string,
-            object: any,
-            currentPath: string | null
-        ) => void
+        object: any
     ): typeof Proxy {
         // Create a proxy for the object that triggers Observable.notify on mutations
         return new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
                 obj[prop] = value;
 
-                if (typeof prop === "string") {
-                    const newPath = getCurrentPath(currentPath, prop);
-
-                    // If the new value is an object, evaluate paths for it
-                    if (typeof value === "object" && value !== null) {
-                        evaluatePaths(target, rootProperty, obj, newPath);
-                    }
-                }
+                // TODO: determine if this changes any paths
 
                 // Trigger notification for property changes
                 Observable.notify(target, rootProperty);
@@ -910,10 +749,7 @@ export class ObserverMap {
      * @returns A function that handles property changes and sets up proxies for object values
      */
     private defineChanged = (propertyName: string): ((prev: any, next: any) => void) => {
-        const evaluatePathsAlias = this.evaluatePaths;
         const getProxyForObjectAlias = this.getProxyForObject;
-        const getCurrentPathAlias = this.getCurrentPath;
-
         function instanceResolverChanged(this: any, prev: any, next: any): void {
             if (
                 prev === undefined &&
@@ -921,15 +757,11 @@ export class ObserverMap {
                 typeof next === "object" &&
                 next !== null
             ) {
-                const proxy = getProxyForObjectAlias(
-                    this,
-                    propertyName,
-                    next,
-                    null,
-                    getCurrentPathAlias,
-                    evaluatePathsAlias
-                );
-                evaluatePathsAlias(this, propertyName, proxy, null);
+                const proxy = getProxyForObjectAlias(this, propertyName, next);
+
+                // TODO: add logic based on the tempCachePath to traverse any items
+                // found within its paths structure and proxy their parent objects
+
                 this[propertyName] = proxy;
             }
         }

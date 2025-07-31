@@ -151,9 +151,7 @@ class TemplateElement extends FASTElement {
 
                     // Define the root properties cached in the observer map as observable (only if observerMap exists)
                     if (this.observerMap) {
-                        for (const rootProperty of this.observerMap.getCachedRootProperties()) {
-                            this.observerMap.defineProperty(rootProperty);
-                        }
+                        this.observerMap.defineProperties();
                     }
 
                     if (registeredFastElement) {

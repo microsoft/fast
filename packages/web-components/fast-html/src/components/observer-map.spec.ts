@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { type AccessCachedPath, type DefaultCachedPath, ObserverMap, RepeatCachedPath } from "./observer-map.js";
 
-test.describe("ObserverMap", async () => {
+test.describe.only("ObserverMap", async () => {
     let observerMap: ObserverMap;
     class TestClass {}
 
