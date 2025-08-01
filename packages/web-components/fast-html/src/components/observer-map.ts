@@ -1,10 +1,11 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { PathType } from "./utilities.js";
+import { getNextProperty } from "./utilities.js";
 import type {
     CachedPath,
     CachedPathMap,
     ContextCache,
     DefaultCachedPath,
+    PathType,
     RepeatCachedPath,
 } from "./utilities.js";
 
@@ -30,8 +31,6 @@ export class ObserverMap {
         contextPath: string | null,
         type: PathType
     ): string {
-        const splitPath = path.split(".");
-
         if (self) {
             const contextCacheItem = this.contextCache.find(contextCacheItem => {
                 return contextCacheItem.context === parentContext;
@@ -47,11 +46,11 @@ export class ObserverMap {
                         type
                     );
                 }
-                return contextCacheItem.absolutePath.split(".")[0];
+                return getNextProperty(contextCacheItem.absolutePath);
             }
         }
 
-        return self ? (parentContext as string) : splitPath[0];
+        return self ? (parentContext as string) : getNextProperty(path);
     }
 
     /**

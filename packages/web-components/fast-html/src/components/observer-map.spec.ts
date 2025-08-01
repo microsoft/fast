@@ -1,8 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { ObserverMap } from "./observer-map.js";
-import {
+import type {
     AccessCachedPath,
-    CachedPathMap,
     DefaultCachedPath,
     RepeatCachedPath,
 } from "./utilities.js";

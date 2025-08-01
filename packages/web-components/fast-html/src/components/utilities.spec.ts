@@ -824,5 +824,47 @@ test.describe.only("utilities", async () => {
             expect(resolvers[1].paths[0].paths[0].propertyName).toEqual("b");
             expect(resolvers[1].paths[0].paths[0].paths.length).toEqual(0);
         });
+        test.skip("should traverse a CachePathMap and return resolvers when the given property is an object containing an array", async () => {
+            const cachedPaths: CachedPathMap = {
+                "obj": {
+                    type: "default",
+                    paths: {
+                        "items": {
+                            type: "repeat",
+                            context: "item",
+                            paths: {
+                                "item.a": {
+                                    type: "access",
+                                    relativePath: "item.a",
+                                    absolutePath: "items.__index__.a",
+                                },
+                            }
+                        }
+                    }
+                }
+            };
+
+            const resolvers = traverseCachedPaths(
+                "obj",
+                {
+                    obj: {
+                        items: [
+                            {
+                                a: "foo"
+                            },
+                        ]
+                    }
+                },
+                cachedPaths
+            );
+
+            expect(resolvers.length).toEqual(1);
+            expect(resolvers[0].type).toEqual("array");
+            expect(resolvers[0].propertyName).toEqual("items");
+            expect(resolvers[0].paths.length).toEqual(1);
+            expect(resolvers[0].paths[0].type).toEqual("object");
+            expect(resolvers[0].paths[0].propertyName).toEqual(0);
+            expect(resolvers[0].paths[0].paths.length).toEqual(0);
+        });
     });
 });

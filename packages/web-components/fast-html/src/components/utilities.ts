@@ -1085,7 +1085,7 @@ function hasMatchingPaths(
 /**
  * Helper function to process object properties
  */
-function processObjectProperty(
+function getObjectPropertyResolvers(
     key: string,
     object: any,
     propertyName: string | number,
@@ -1109,7 +1109,7 @@ function processObjectProperty(
 /**
  * Helper function to extract item cached paths from array context
  */
-function extractItemCachedPaths(
+function getCachedPathFromContext(
     cachedPaths: Record<string, CachedPath>,
     context: string | null
 ): Record<string, CachedPath> {
@@ -1145,7 +1145,7 @@ function isValidObjectProperty(item: any, propertyName: string): boolean {
 /**
  * Helper function to create nested resolvers for array items
  */
-function createNestedResolversForProperty(
+function getPathsResolvers(
     rootProperty: string,
     item: any,
     itemCachedPaths: Record<string, CachedPath>,
@@ -1157,7 +1157,7 @@ function createNestedResolversForProperty(
     const nextLevelProperties = new Set<string>();
     pathsBeyondRoot.forEach(path => {
         const remainingPath = path.substring(rootProperty.length + 1);
-        const nextProperty = remainingPath.split(".")[0];
+        const nextProperty = getNextProperty(remainingPath);
         nextLevelProperties.add(nextProperty);
     });
 
@@ -1205,9 +1205,18 @@ function createNestedResolversForProperty(
 }
 
 /**
+ * Get the next property
+ * @param path The dot syntax data path
+ * @returns The next property
+ */
+export function getNextProperty(path: string): string {
+    return path.split(".")[0];
+}
+
+/**
  * Helper function to process array item resolvers
  */
-function processArrayItemResolvers(
+function getArrayItemResolvers(
     item: any,
     itemCachedPaths: Record<string, CachedPath>
 ): Array<CachePathResolver> {
@@ -1216,7 +1225,7 @@ function processArrayItemResolvers(
     // Get unique root properties
     const rootProperties = new Set<string>();
     Object.keys(itemCachedPaths).forEach(path => {
-        rootProperties.add(path.split(".")[0]);
+        rootProperties.add(getNextProperty(path));
     });
 
     rootProperties.forEach(rootProperty => {
@@ -1229,25 +1238,17 @@ function processArrayItemResolvers(
 
         if (matchingPaths.length === 0) return;
 
-        // Get paths that go beyond the root property
-        const pathsBeyondRoot = matchingPaths.filter(
-            path => path !== rootProperty && path.startsWith(rootProperty + ".")
-        );
-
-        const nestedResolvers =
-            pathsBeyondRoot.length > 0
-                ? createNestedResolversForProperty(
-                      rootProperty,
-                      item,
-                      itemCachedPaths,
-                      pathsBeyondRoot
-                  )
-                : [];
-
         itemResolvers.push({
             type: "object",
             propertyName: rootProperty,
-            paths: nestedResolvers,
+            paths: getPathsResolvers(
+                rootProperty,
+                item,
+                itemCachedPaths,
+                matchingPaths.filter(
+                    path => path !== rootProperty && path.startsWith(rootProperty + ".")
+                )
+            ),
         });
     });
 
@@ -1281,8 +1282,8 @@ export function traverseCachedPaths(
         case "object": {
             const cachedPaths = (cachePaths[propertyName] as DefaultCachedPath).paths;
 
-            Object.entries(object[propertyName]).forEach(([key]) => {
-                const resolver = processObjectProperty(
+            Object.keys(object[propertyName]).forEach(key => {
+                const resolver = getObjectPropertyResolvers(
                     key,
                     object,
                     propertyName,
@@ -1299,11 +1300,11 @@ export function traverseCachedPaths(
             const context = (cachePaths[propertyName] as RepeatCachedPath).context;
 
             object[propertyName].forEach((item: any, index: number) => {
-                const itemCachedPaths = extractItemCachedPaths(cachedPaths, context);
+                const itemCachedPaths = getCachedPathFromContext(cachedPaths, context);
 
                 if (Object.keys(itemCachedPaths).length === 0) return;
 
-                const itemResolvers = processArrayItemResolvers(item, itemCachedPaths);
+                const itemResolvers = getArrayItemResolvers(item, itemCachedPaths);
 
                 resolvers.push({
                     type: "object",
