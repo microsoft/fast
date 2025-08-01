@@ -968,20 +968,20 @@ export function resolveWhen(
     return (x: boolean, c: any) => binding(x, c);
 }
 
-interface ObjectCachePathResolver {
-    type: "object";
-    propertyName: string | number;
-    // resolver: (object: any) => typeof Proxy;
-    paths: Array<CachePathResolver>;
-}
+// interface ObjectCachePathResolver {
+//     type: "object";
+//     propertyName: string | number;
+//     // resolver: (object: any) => typeof Proxy;
+//     paths: Array<CachePathResolver>;
+// }
 
-interface ArrayCachePathResolver {
-    type: "array";
-    propertyName: string;
-    paths: Array<CachePathResolver>;
-}
+// interface ArrayCachePathResolver {
+//     type: "array";
+//     propertyName: string;
+//     paths: Array<CachePathResolver>;
+// }
 
-type CachePathResolver = ObjectCachePathResolver | ArrayCachePathResolver;
+// type CachePathResolver = ObjectCachePathResolver | ArrayCachePathResolver;
 
 type DataType = "array" | "object" | "primitive";
 
@@ -1082,29 +1082,29 @@ function hasMatchingPaths(
     );
 }
 
-/**
- * Helper function to process object properties
- */
-function getObjectPropertyResolvers(
-    key: string,
-    object: any,
-    propertyName: string | number,
-    cachedPaths: Record<string, CachedPath>
-): CachePathResolver | null {
-    const currentPath = `${propertyName}.${key}`;
+// /**
+//  * Helper function to process object properties
+//  */
+// function getObjectPropertyResolvers(
+//     key: string,
+//     object: any,
+//     propertyName: string | number,
+//     cachedPaths: Record<string, CachedPath>
+// ): CachePathResolver | null {
+//     const currentPath = `${propertyName}.${key}`;
+// console.log("getObjectPropertyResolvers", key, object, propertyName);
+//     if (!hasMatchingPaths(cachedPaths, currentPath)) return null;
 
-    if (!hasMatchingPaths(cachedPaths, currentPath)) return null;
+//     const nestedPaths = buildNestedPaths(cachedPaths, currentPath, propertyName);
 
-    const nestedPaths = buildNestedPaths(cachedPaths, currentPath, propertyName);
-
-    return {
-        type: "object",
-        propertyName: key,
-        paths: traverseCachedPaths(key, object[propertyName], {
-            [key]: { type: "default", paths: nestedPaths },
-        }),
-    };
-}
+//     return {
+//         type: "object",
+//         propertyName: key,
+//         paths: traverseCachedPaths(key, object[propertyName], {
+//             [key]: { type: "default", paths: nestedPaths },
+//         }),
+//     };
+// }
 
 /**
  * Helper function to extract item cached paths from array context
@@ -1145,64 +1145,64 @@ function isValidObjectProperty(item: any, propertyName: string): boolean {
 /**
  * Helper function to create nested resolvers for array items
  */
-function getPathsResolvers(
-    rootProperty: string,
-    item: any,
-    itemCachedPaths: Record<string, CachedPath>,
-    pathsBeyondRoot: string[]
-): Array<CachePathResolver> {
-    const nestedResolvers: Array<CachePathResolver> = [];
+// function getPathsResolvers(
+//     rootProperty: string,
+//     item: any,
+//     itemCachedPaths: Record<string, CachedPath>,
+//     pathsBeyondRoot: string[]
+// ): Array<CachePathResolver> {
+//     const nestedResolvers: Array<CachePathResolver> = [];
 
-    // Get unique next-level properties
-    const nextLevelProperties = new Set<string>();
-    pathsBeyondRoot.forEach(path => {
-        const remainingPath = path.substring(rootProperty.length + 1);
-        const nextProperty = getNextProperty(remainingPath);
-        nextLevelProperties.add(nextProperty);
-    });
+//     // Get unique next-level properties
+//     const nextLevelProperties = new Set<string>();
+//     pathsBeyondRoot.forEach(path => {
+//         const remainingPath = path.substring(rootProperty.length + 1);
+//         const nextProperty = getNextProperty(remainingPath);
+//         nextLevelProperties.add(nextProperty);
+//     });
 
-    // Process each next-level property
-    nextLevelProperties.forEach(nextProperty => {
-        if (!isValidObjectProperty(item[rootProperty], nextProperty)) return;
+//     // Process each next-level property
+//     nextLevelProperties.forEach(nextProperty => {
+//         if (!isValidObjectProperty(item[rootProperty], nextProperty)) return;
 
-        const pathsBeyondNext = pathsBeyondRoot.filter(path => {
-            const remainingPath = path.substring(rootProperty.length + 1);
-            return (
-                remainingPath !== nextProperty &&
-                remainingPath.startsWith(nextProperty + ".")
-            );
-        });
+//         const pathsBeyondNext = pathsBeyondRoot.filter(path => {
+//             const remainingPath = path.substring(rootProperty.length + 1);
+//             return (
+//                 remainingPath !== nextProperty &&
+//                 remainingPath.startsWith(nextProperty + ".")
+//             );
+//         });
 
-        if (pathsBeyondNext.length === 0) return;
+//         if (pathsBeyondNext.length === 0) return;
 
-        // Build nested cached paths
-        const nextNestedCachedPaths: Record<string, CachedPath> = {};
-        pathsBeyondNext.forEach(path => {
-            const remainingPath = path.substring(
-                rootProperty.length + 1 + nextProperty.length + 1
-            );
-            nextNestedCachedPaths[remainingPath] = itemCachedPaths[path];
-        });
+//         // Build nested cached paths
+//         const nextNestedCachedPaths: Record<string, CachedPath> = {};
+//         pathsBeyondNext.forEach(path => {
+//             const remainingPath = path.substring(
+//                 rootProperty.length + 1 + nextProperty.length + 1
+//             );
+//             nextNestedCachedPaths[remainingPath] = itemCachedPaths[path];
+//         });
 
-        if (Object.keys(nextNestedCachedPaths).length === 0) return;
+//         if (Object.keys(nextNestedCachedPaths).length === 0) return;
 
-        const nextNestedResolvers = traverseCachedPaths(
-            nextProperty,
-            item[rootProperty],
-            {
-                [nextProperty]: { type: "default", paths: nextNestedCachedPaths },
-            }
-        );
+//         const nextNestedResolvers = traverseCachedPaths(
+//             nextProperty,
+//             item[rootProperty],
+//             {
+//                 [nextProperty]: { type: "default", paths: nextNestedCachedPaths },
+//             }
+//         );
 
-        nestedResolvers.push({
-            type: "object",
-            propertyName: nextProperty,
-            paths: nextNestedResolvers,
-        });
-    });
+//         nestedResolvers.push({
+//             type: "object",
+//             propertyName: nextProperty,
+//             paths: nextNestedResolvers,
+//         });
+//     });
 
-    return nestedResolvers;
-}
+//     return nestedResolvers;
+// }
 
 /**
  * Get the next property
@@ -1216,44 +1216,44 @@ export function getNextProperty(path: string): string {
 /**
  * Helper function to process array item resolvers
  */
-function getArrayItemResolvers(
-    item: any,
-    itemCachedPaths: Record<string, CachedPath>
-): Array<CachePathResolver> {
-    const itemResolvers: Array<CachePathResolver> = [];
+// function getArrayItemResolvers(
+//     item: any,
+//     itemCachedPaths: Record<string, CachedPath>
+// ): Array<CachePathResolver> {
+//     const itemResolvers: Array<CachePathResolver> = [];
 
-    // Get unique root properties
-    const rootProperties = new Set<string>();
-    Object.keys(itemCachedPaths).forEach(path => {
-        rootProperties.add(getNextProperty(path));
-    });
+//     // Get unique root properties
+//     const rootProperties = new Set<string>();
+//     Object.keys(itemCachedPaths).forEach(path => {
+//         rootProperties.add(getNextProperty(path));
+//     });
 
-    rootProperties.forEach(rootProperty => {
-        if (!isValidObjectProperty(item, rootProperty)) return;
+//     rootProperties.forEach(rootProperty => {
+//         if (!isValidObjectProperty(item, rootProperty)) return;
 
-        // Get paths for this root property
-        const matchingPaths = Object.keys(itemCachedPaths).filter(
-            path => path === rootProperty || path.startsWith(rootProperty + ".")
-        );
+//         // Get paths for this root property
+//         const matchingPaths = Object.keys(itemCachedPaths).filter(
+//             path => path === rootProperty || path.startsWith(rootProperty + ".")
+//         );
 
-        if (matchingPaths.length === 0) return;
+//         if (matchingPaths.length === 0) return;
 
-        itemResolvers.push({
-            type: "object",
-            propertyName: rootProperty,
-            paths: getPathsResolvers(
-                rootProperty,
-                item,
-                itemCachedPaths,
-                matchingPaths.filter(
-                    path => path !== rootProperty && path.startsWith(rootProperty + ".")
-                )
-            ),
-        });
-    });
+//         itemResolvers.push({
+//             type: "object",
+//             propertyName: rootProperty,
+//             paths: getPathsResolvers(
+//                 rootProperty,
+//                 item,
+//                 itemCachedPaths,
+//                 matchingPaths.filter(
+//                     path => path !== rootProperty && path.startsWith(rootProperty + ".")
+//                 )
+//             ),
+//         });
+//     });
 
-    return itemResolvers;
-}
+//     return itemResolvers;
+// }
 
 /**
  * This function is the entry point for a property that is being observed,
@@ -1267,57 +1267,62 @@ function getArrayItemResolvers(
  * @param cachePaths
  * @returns
  */
-export function traverseCachedPaths(
-    propertyName: string | number,
-    object: any,
-    cachePaths: CachedPathMap
-): Array<CachePathResolver> {
-    const resolvers: Array<CachePathResolver> = [];
+// export function traverseCachedPaths(
+//     propertyName: string | number,
+//     object: any,
+//     cachePaths: CachedPathMap
+// ): Array<CachePathResolver> {
+//     const resolvers: Array<CachePathResolver> = [];
 
-    if (!cachePaths[propertyName]) return resolvers;
+//     if (!cachePaths[propertyName]) return resolvers;
 
-    const type = getDataType(object, propertyName);
+//     const type = getDataType(object, propertyName);
 
-    switch (type) {
-        case "object": {
-            const cachedPaths = (cachePaths[propertyName] as DefaultCachedPath).paths;
+//     switch (type) {
+//         case "object": {
+//             const cachedPaths = (cachePaths[propertyName] as DefaultCachedPath).paths;
 
-            Object.keys(object[propertyName]).forEach(key => {
-                const resolver = getObjectPropertyResolvers(
-                    key,
-                    object,
-                    propertyName,
-                    cachedPaths
-                );
-                if (resolver) {
-                    resolvers.push(resolver);
-                }
-            });
-            break;
-        }
-        case "array": {
-            const cachedPaths = (cachePaths[propertyName] as RepeatCachedPath).paths;
-            const context = (cachePaths[propertyName] as RepeatCachedPath).context;
+//             Object.keys(object[propertyName]).forEach(key => {
+//                 const resolver = getObjectPropertyResolvers(
+//                     key,
+//                     object,
+//                     propertyName,
+//                     cachedPaths
+//                 );
+//                 if (resolver) {
+//                     resolvers.push(resolver);
+//                 }
+//             });
+//             break;
+//         }
+//         case "array": {
+//             const cachedPaths = (cachePaths[propertyName] as RepeatCachedPath).paths;
+//             const context = (cachePaths[propertyName] as RepeatCachedPath).context;
 
-            object[propertyName].forEach((item: any, index: number) => {
-                const itemCachedPaths = getCachedPathFromContext(cachedPaths, context);
+//             object[propertyName].forEach((item: any, index: number) => {
+//                 const itemCachedPaths = getCachedPathFromContext(cachedPaths, context);
 
-                if (Object.keys(itemCachedPaths).length === 0) return;
+//                 if (Object.keys(itemCachedPaths).length === 0) return;
 
-                const itemResolvers = getArrayItemResolvers(item, itemCachedPaths);
+//                 const itemResolvers = getArrayItemResolvers(item, itemCachedPaths);
 
-                resolvers.push({
-                    type: "object",
-                    propertyName: index,
-                    paths: itemResolvers,
-                });
-            });
-            break;
-        }
-        case "primitive":
-            // TODO: add attribute logic
-            break;
-    }
+//                 resolvers.push({
+//                     type: "object",
+//                     propertyName: index,
+//                     paths: itemResolvers,
+//                 });
+//             });
+//             break;
+//         }
+//         case "primitive":
+//             // TODO: add attribute logic
+//             break;
+//     }
 
-    return resolvers;
+//     return resolvers;
+// }
+
+export function assignProxiesToObjects(cachePath: CachedPath, object: any): any {
+    console.log("evaluate cache paths", cachePath, object);
+    return object;
 }

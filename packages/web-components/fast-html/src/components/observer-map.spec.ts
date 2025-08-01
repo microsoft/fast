@@ -6,7 +6,7 @@ import type {
     RepeatCachedPath,
 } from "./utilities.js";
 
-test.describe.only("ObserverMap", async () => {
+test.describe("ObserverMap", async () => {
     let observerMap: ObserverMap;
     class TestClass {}
 

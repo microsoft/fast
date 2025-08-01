@@ -11,7 +11,7 @@ import {
     transformInnerHTML,
     getExpressionChain,
     extractPathsFromChainedExpression,
-    traverseCachedPaths,
+    // traverseCachedPaths,
     type CachedPathMap,
 } from "./utilities.js";
 
@@ -492,379 +492,379 @@ test.describe.only("utilities", async () => {
         });
     });
 
-    test.describe("should traverse and get a resolver from cached paths", async () => {
-        test("should traverse a CachePathMap and return no resolvers when the given property has no paths and is undefined", async () => {
-            const cachedPaths: CachedPathMap = {};
+    // test.describe("should traverse and get a resolver from cached paths", async () => {
+    //     test("should traverse a CachePathMap and return no resolvers when the given property has no paths and is undefined", async () => {
+    //         const cachedPaths: CachedPathMap = {};
 
-            const resolvers = traverseCachedPaths("a", {}, cachedPaths);
+    //         const resolvers = traverseCachedPaths("a", {}, cachedPaths);
 
-            expect(resolvers).toEqual([]);
-        });
-        test("should traverse a CachePathMap and return no resolvers when the given property does not have the path", async () => {
-            const cachedPaths: CachedPathMap = {
-                "a": {
-                    type: "default",
-                    paths: {}
-                }
-            };
+    //         expect(resolvers).toEqual([]);
+    //     });
+    //     test("should traverse a CachePathMap and return no resolvers when the given property does not have the path", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "a": {
+    //                 type: "default",
+    //                 paths: {}
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths("a", {}, cachedPaths);
+    //         const resolvers = traverseCachedPaths("a", {}, cachedPaths);
 
-            expect(resolvers).toEqual([]);
-        });
-        test("should traverse a CachePathMap and return no resolver when the given property does have a path but there is no data", async () => {
-            const cachedPaths: CachedPathMap = {
-                "a": {
-                    type: "default",
-                    paths: {
-                        b: {
-                            type: "access",
-                            relativePath: "a.b",
-                            absolutePath: "a.b",
-                        }
-                    }
-                }
-            };
+    //         expect(resolvers).toEqual([]);
+    //     });
+    //     test("should traverse a CachePathMap and return no resolver when the given property does have a path but there is no data", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "a": {
+    //                 type: "default",
+    //                 paths: {
+    //                     b: {
+    //                         type: "access",
+    //                         relativePath: "a.b",
+    //                         absolutePath: "a.b",
+    //                     }
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths("a", {}, cachedPaths);
+    //         const resolvers = traverseCachedPaths("a", {}, cachedPaths);
 
-            expect(resolvers).toEqual([]);
-        });
-        test("should traverse a CachePathMap and return a resolver when the given property does have a path and there is data", async () => {
-            const cachedPaths: CachedPathMap = {
-                "a": {
-                    type: "default",
-                    paths: {
-                        "a.b": {
-                            type: "access",
-                            relativePath: "a.b",
-                            absolutePath: "a.b",
-                        }
-                    }
-                }
-            };
+    //         expect(resolvers).toEqual([]);
+    //     });
+    //     test("should traverse a CachePathMap and return a resolver when the given property does have a path and there is data", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "a": {
+    //                 type: "default",
+    //                 paths: {
+    //                     "a.b": {
+    //                         type: "access",
+    //                         relativePath: "a.b",
+    //                         absolutePath: "a.b",
+    //                     }
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "a",
-                {
-                    a: {
-                        b: {}
-                    }
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "a",
+    //             {
+    //                 a: {
+    //                     b: {}
+    //                 }
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(1);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual("b");
-            expect(resolvers[0].paths.length).toEqual(0);
-        });
-        test("should traverse a CachePathMap and return multiple resolvers when the given property has multiple paths and there is data", async () => {
-            const cachedPaths: CachedPathMap = {
-                "a": {
-                    type: "default",
-                    paths: {
-                        "a.b": {
-                            type: "access",
-                            relativePath: "a.b",
-                            absolutePath: "a.b",
-                        },
-                        "a.c": {
-                            type: "access",
-                            relativePath: "a.c",
-                            absolutePath: "a.c",
-                        },
-                        "a.d": {
-                            type: "access",
-                            relativePath: "a.d",
-                            absolutePath: "a.d",
-                        }
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(1);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual("b");
+    //         expect(resolvers[0].paths.length).toEqual(0);
+    //     });
+    //     test("should traverse a CachePathMap and return multiple resolvers when the given property has multiple paths and there is data", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "a": {
+    //                 type: "default",
+    //                 paths: {
+    //                     "a.b": {
+    //                         type: "access",
+    //                         relativePath: "a.b",
+    //                         absolutePath: "a.b",
+    //                     },
+    //                     "a.c": {
+    //                         type: "access",
+    //                         relativePath: "a.c",
+    //                         absolutePath: "a.c",
+    //                     },
+    //                     "a.d": {
+    //                         type: "access",
+    //                         relativePath: "a.d",
+    //                         absolutePath: "a.d",
+    //                     }
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "a",
-                {
-                    a: {
-                        b: { value: "test1" },
-                        c: { value: "test2" },
-                        d: { value: "test3" }
-                    }
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "a",
+    //             {
+    //                 a: {
+    //                     b: { value: "test1" },
+    //                     c: { value: "test2" },
+    //                     d: { value: "test3" }
+    //                 }
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(3);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual("b");
-            expect(resolvers[1].type).toEqual("object");
-            expect(resolvers[1].propertyName).toEqual("c");
-            expect(resolvers[2].type).toEqual("object");
-            expect(resolvers[2].propertyName).toEqual("d");
-        });
-        test("should traverse a CachePathMap and return nested resolvers when the given property has nested paths and there is data", async () => {
-            const cachedPaths: CachedPathMap = {
-                "a": {
-                    type: "default",
-                    paths: {
-                        "a.b.c": {
-                            type: "access",
-                            relativePath: "a.b.c",
-                            absolutePath: "a.b.c",
-                        },
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(3);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual("b");
+    //         expect(resolvers[1].type).toEqual("object");
+    //         expect(resolvers[1].propertyName).toEqual("c");
+    //         expect(resolvers[2].type).toEqual("object");
+    //         expect(resolvers[2].propertyName).toEqual("d");
+    //     });
+    //     test("should traverse a CachePathMap and return nested resolvers when the given property has nested paths and there is data", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "a": {
+    //                 type: "default",
+    //                 paths: {
+    //                     "a.b.c": {
+    //                         type: "access",
+    //                         relativePath: "a.b.c",
+    //                         absolutePath: "a.b.c",
+    //                     },
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "a",
-                {
-                    a: {
-                        b: {
-                            c: { value: "test1" },
-                        }
-                    }
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "a",
+    //             {
+    //                 a: {
+    //                     b: {
+    //                         c: { value: "test1" },
+    //                     }
+    //                 }
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(1);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual("b");
-            expect(resolvers[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].propertyName).toEqual("c");
-            expect(resolvers[0].paths[0].paths.length).toEqual(0);
-        });
-        test("should traverse a CachePathMap and return deeply nested resolvers when the given property has nested paths and there is data", async () => {
-            const cachedPaths: CachedPathMap = {
-                "a": {
-                    type: "default",
-                    paths: {
-                        "a.b.c.d": {
-                            type: "access",
-                            relativePath: "a.b.c.d",
-                            absolutePath: "a.b.c.d",
-                        },
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(1);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual("b");
+    //         expect(resolvers[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].propertyName).toEqual("c");
+    //         expect(resolvers[0].paths[0].paths.length).toEqual(0);
+    //     });
+    //     test("should traverse a CachePathMap and return deeply nested resolvers when the given property has nested paths and there is data", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "a": {
+    //                 type: "default",
+    //                 paths: {
+    //                     "a.b.c.d": {
+    //                         type: "access",
+    //                         relativePath: "a.b.c.d",
+    //                         absolutePath: "a.b.c.d",
+    //                     },
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "a",
-                {
-                    a: {
-                        b: {
-                            c: {
-                                d: { value: "test1" },
-                            }
-                        }
-                    }
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "a",
+    //             {
+    //                 a: {
+    //                     b: {
+    //                         c: {
+    //                             d: { value: "test1" },
+    //                         }
+    //                     }
+    //                 }
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(1);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual("b");
-            expect(resolvers[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].propertyName).toEqual("c");
-            expect(resolvers[0].paths[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].paths[0].propertyName).toEqual("d");
-            expect(resolvers[0].paths[0].paths[0].paths.length).toEqual(0);
-        });
-        test("should traverse a CachePathMap and return resolvers when the given property is an array", async () => {
-            const cachedPaths: CachedPathMap = {
-                "items": {
-                    type: "repeat",
-                    context: "item",
-                    paths: {
-                        "item.a": {
-                            type: "access",
-                            relativePath: "item.a",
-                            absolutePath: "items.__index__.a",
-                        },
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(1);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual("b");
+    //         expect(resolvers[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].propertyName).toEqual("c");
+    //         expect(resolvers[0].paths[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].paths[0].propertyName).toEqual("d");
+    //         expect(resolvers[0].paths[0].paths[0].paths.length).toEqual(0);
+    //     });
+    //     test("should traverse a CachePathMap and return resolvers when the given property is an array", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "items": {
+    //                 type: "repeat",
+    //                 context: "item",
+    //                 paths: {
+    //                     "item.a": {
+    //                         type: "access",
+    //                         relativePath: "item.a",
+    //                         absolutePath: "items.__index__.a",
+    //                     },
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "items",
-                {
-                    items: [
-                        {
-                            a: "foo"
-                        },
-                        {
-                            a: "bar"
-                        }
-                    ]
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "items",
+    //             {
+    //                 items: [
+    //                     {
+    //                         a: "foo"
+    //                     },
+    //                     {
+    //                         a: "bar"
+    //                     }
+    //                 ]
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(2);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual(0);
-            expect(resolvers[0].paths.length).toEqual(0);
-            expect(resolvers[1].type).toEqual("object");
-            expect(resolvers[1].propertyName).toEqual(1);
-            expect(resolvers[1].paths.length).toEqual(0);
-        });
-        test("should traverse a CachePathMap and return resolvers when the given property is an array with nested objects", async () => {
-            const cachedPaths: CachedPathMap = {
-                "items": {
-                    type: "repeat",
-                    context: "item",
-                    paths: {
-                        "item.a.b": {
-                            type: "access",
-                            relativePath: "item.a.b",
-                            absolutePath: "items.__index__.a.b",
-                        },
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(2);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual(0);
+    //         expect(resolvers[0].paths.length).toEqual(0);
+    //         expect(resolvers[1].type).toEqual("object");
+    //         expect(resolvers[1].propertyName).toEqual(1);
+    //         expect(resolvers[1].paths.length).toEqual(0);
+    //     });
+    //     test("should traverse a CachePathMap and return resolvers when the given property is an array with nested objects", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "items": {
+    //                 type: "repeat",
+    //                 context: "item",
+    //                 paths: {
+    //                     "item.a.b": {
+    //                         type: "access",
+    //                         relativePath: "item.a.b",
+    //                         absolutePath: "items.__index__.a.b",
+    //                     },
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "items",
-                {
-                    items: [
-                        {
-                            a: {
-                                b: {
-                                    c: "foo"
-                                }
-                            }
-                        },
-                        {
-                            a: {
-                                b: {
-                                    c: "bar"
-                                }
-                            }
-                        }
-                    ]
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "items",
+    //             {
+    //                 items: [
+    //                     {
+    //                         a: {
+    //                             b: {
+    //                                 c: "foo"
+    //                             }
+    //                         }
+    //                     },
+    //                     {
+    //                         a: {
+    //                             b: {
+    //                                 c: "bar"
+    //                             }
+    //                         }
+    //                     }
+    //                 ]
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(2);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual(0);
-            expect(resolvers[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].propertyName).toEqual("a");
-            expect(resolvers[0].paths[0].paths.length).toEqual(0);
-            expect(resolvers[1].type).toEqual("object");
-            expect(resolvers[1].propertyName).toEqual(1);
-            expect(resolvers[1].paths.length).toEqual(1);
-            expect(resolvers[1].paths[0].type).toEqual("object");
-            expect(resolvers[1].paths[0].propertyName).toEqual("a");
-            expect(resolvers[1].paths[0].paths.length).toEqual(0);
-        });
-        test("should traverse a CachePathMap and return resolvers when the given property is an array with deeply nested objects", async () => {
-            const cachedPaths: CachedPathMap = {
-                "items": {
-                    type: "repeat",
-                    context: "item",
-                    paths: {
-                        "item.a.b.c": {
-                            type: "access",
-                            relativePath: "item.a.b.c",
-                            absolutePath: "items.__index__.a.b.c",
-                        },
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(2);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual(0);
+    //         expect(resolvers[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].propertyName).toEqual("a");
+    //         expect(resolvers[0].paths[0].paths.length).toEqual(0);
+    //         expect(resolvers[1].type).toEqual("object");
+    //         expect(resolvers[1].propertyName).toEqual(1);
+    //         expect(resolvers[1].paths.length).toEqual(1);
+    //         expect(resolvers[1].paths[0].type).toEqual("object");
+    //         expect(resolvers[1].paths[0].propertyName).toEqual("a");
+    //         expect(resolvers[1].paths[0].paths.length).toEqual(0);
+    //     });
+    //     test("should traverse a CachePathMap and return resolvers when the given property is an array with deeply nested objects", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "items": {
+    //                 type: "repeat",
+    //                 context: "item",
+    //                 paths: {
+    //                     "item.a.b.c": {
+    //                         type: "access",
+    //                         relativePath: "item.a.b.c",
+    //                         absolutePath: "items.__index__.a.b.c",
+    //                     },
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "items",
-                {
-                    items: [
-                        {
-                            a: {
-                                b: {
-                                    c: "foo"
-                                }
-                            }
-                        },
-                        {
-                            a: {
-                                b: {
-                                    c: "bar"
-                                }
-                            }
-                        }
-                    ]
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "items",
+    //             {
+    //                 items: [
+    //                     {
+    //                         a: {
+    //                             b: {
+    //                                 c: "foo"
+    //                             }
+    //                         }
+    //                     },
+    //                     {
+    //                         a: {
+    //                             b: {
+    //                                 c: "bar"
+    //                             }
+    //                         }
+    //                     }
+    //                 ]
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(2);
-            expect(resolvers[0].type).toEqual("object");
-            expect(resolvers[0].propertyName).toEqual(0);
-            expect(resolvers[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].propertyName).toEqual("a");
-            expect(resolvers[0].paths[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].paths[0].propertyName).toEqual("b");
-            expect(resolvers[0].paths[0].paths[0].paths.length).toEqual(0);
-            expect(resolvers[1].type).toEqual("object");
-            expect(resolvers[1].propertyName).toEqual(1);
-            expect(resolvers[1].paths.length).toEqual(1);
-            expect(resolvers[1].paths[0].type).toEqual("object");
-            expect(resolvers[1].paths[0].propertyName).toEqual("a");
-            expect(resolvers[1].paths[0].paths.length).toEqual(1);
-            expect(resolvers[1].paths[0].paths[0].type).toEqual("object");
-            expect(resolvers[1].paths[0].paths[0].propertyName).toEqual("b");
-            expect(resolvers[1].paths[0].paths[0].paths.length).toEqual(0);
-        });
-        test.skip("should traverse a CachePathMap and return resolvers when the given property is an object containing an array", async () => {
-            const cachedPaths: CachedPathMap = {
-                "obj": {
-                    type: "default",
-                    paths: {
-                        "items": {
-                            type: "repeat",
-                            context: "item",
-                            paths: {
-                                "item.a": {
-                                    type: "access",
-                                    relativePath: "item.a",
-                                    absolutePath: "items.__index__.a",
-                                },
-                            }
-                        }
-                    }
-                }
-            };
+    //         expect(resolvers.length).toEqual(2);
+    //         expect(resolvers[0].type).toEqual("object");
+    //         expect(resolvers[0].propertyName).toEqual(0);
+    //         expect(resolvers[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].propertyName).toEqual("a");
+    //         expect(resolvers[0].paths[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].paths[0].propertyName).toEqual("b");
+    //         expect(resolvers[0].paths[0].paths[0].paths.length).toEqual(0);
+    //         expect(resolvers[1].type).toEqual("object");
+    //         expect(resolvers[1].propertyName).toEqual(1);
+    //         expect(resolvers[1].paths.length).toEqual(1);
+    //         expect(resolvers[1].paths[0].type).toEqual("object");
+    //         expect(resolvers[1].paths[0].propertyName).toEqual("a");
+    //         expect(resolvers[1].paths[0].paths.length).toEqual(1);
+    //         expect(resolvers[1].paths[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[1].paths[0].paths[0].propertyName).toEqual("b");
+    //         expect(resolvers[1].paths[0].paths[0].paths.length).toEqual(0);
+    //     });
+    //     test.only("should traverse a CachePathMap and return resolvers when the given property is an object containing an array", async () => {
+    //         const cachedPaths: CachedPathMap = {
+    //             "obj": {
+    //                 type: "default",
+    //                 paths: {
+    //                     "items": {
+    //                         type: "repeat",
+    //                         context: "item",
+    //                         paths: {
+    //                             "item.a": {
+    //                                 type: "access",
+    //                                 relativePath: "item.a",
+    //                                 absolutePath: "items.__index__.a",
+    //                             },
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         };
 
-            const resolvers = traverseCachedPaths(
-                "obj",
-                {
-                    obj: {
-                        items: [
-                            {
-                                a: "foo"
-                            },
-                        ]
-                    }
-                },
-                cachedPaths
-            );
+    //         const resolvers = traverseCachedPaths(
+    //             "obj",
+    //             {
+    //                 obj: {
+    //                     items: [
+    //                         {
+    //                             a: "foo"
+    //                         },
+    //                     ]
+    //                 }
+    //             },
+    //             cachedPaths
+    //         );
 
-            expect(resolvers.length).toEqual(1);
-            expect(resolvers[0].type).toEqual("array");
-            expect(resolvers[0].propertyName).toEqual("items");
-            expect(resolvers[0].paths.length).toEqual(1);
-            expect(resolvers[0].paths[0].type).toEqual("object");
-            expect(resolvers[0].paths[0].propertyName).toEqual(0);
-            expect(resolvers[0].paths[0].paths.length).toEqual(0);
-        });
-    });
+    //         expect(resolvers.length).toEqual(1);
+    //         expect(resolvers[0].type).toEqual("array");
+    //         expect(resolvers[0].propertyName).toEqual("items");
+    //         expect(resolvers[0].paths.length).toEqual(1);
+    //         expect(resolvers[0].paths[0].type).toEqual("object");
+    //         expect(resolvers[0].paths[0].propertyName).toEqual(0);
+    //         expect(resolvers[0].paths[0].paths.length).toEqual(0);
+    //     });
+    // });
 });

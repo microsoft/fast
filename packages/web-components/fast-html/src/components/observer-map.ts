@@ -1,5 +1,5 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { getNextProperty } from "./utilities.js";
+import { assignProxiesToObjects, getNextProperty } from "./utilities.js";
 import type {
     CachedPath,
     CachedPathMap,
@@ -665,8 +665,9 @@ export class ObserverMap {
         object: any,
         cachePaths: CachedPathMap
     ): typeof Proxy {
-        // TODO: use the utility in utilities for traverseCachedPaths to get resolvers for each path per object
-        // property and resolve proxies for each of those
+        if (cachePaths[rootProperty]) {
+            object = assignProxiesToObjects(cachePaths[rootProperty], object);
+        }
 
         // Create a proxy for the object that triggers Observable.notify on mutations
         return new Proxy(object, {
@@ -674,6 +675,7 @@ export class ObserverMap {
                 obj[prop] = value;
 
                 // TODO: determine if this changes any paths
+                console.log("does this change any paths");
 
                 // Trigger notification for property changes
                 Observable.notify(target, rootProperty);
