@@ -621,9 +621,21 @@ RenderableFASTElement(ObserverMapTestElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+class ObserverMapInternalTestElement extends FASTElement {
+    public selectedUserId?: number;
+}
+
+RenderableFASTElement(ObserverMapInternalTestElement).defineAsync({
+    name: "observer-map-internal-test-element",
+    templateOptions: "defer-and-hydrate",
+});
+
 // Configure TemplateElement with observerMap enabled for this test
 TemplateElement.options({
     "observer-map-test-element": {
+        observerMap: "all", // Enable ObserverMap to track all the nested property changes
+    },
+    "observer-map-internal-test-element": {
         observerMap: "all", // Enable ObserverMap to track all the nested property changes
     },
 }).define({
