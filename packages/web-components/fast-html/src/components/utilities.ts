@@ -1010,8 +1010,6 @@ export function assignObservables(
     const dataType = getDataType(data);
     let proxiedData = data;
 
-    console.log("dataType", dataType, data, rootProperty);
-
     switch (dataType) {
         case "array": {
             if (cachePath.type === "repeat") {
@@ -1061,10 +1059,23 @@ export function assignObservables(
             break;
         }
         case "object": {
-            if (cachePath.type === "access") {
-                // console.log("object");
-                // console.log("cache", cachePath);
-                // console.log("context", contextCache);
+            if (cachePath.type === "default") {
+                const relativePaths = Object.values(
+                    cachePath.paths as Record<string, AccessCachedPath>
+                )
+                    .map((value: AccessCachedPath) => {
+                        return value.relativePath.split(".").slice(1); // the first item is the root path
+                    })
+                    .sort(sortByDeepestNestingItem);
+
+                for (const relativePath of relativePaths) {
+                    proxiedData = assignProxyToItemsInObject(
+                        relativePath,
+                        target,
+                        rootProperty,
+                        proxiedData
+                    );
+                }
             }
             break;
         }
