@@ -786,7 +786,6 @@ export class ObserverMap {
     }
 
     public defineProperties(): void {
-        console.log("defineProperties", this.cachePaths, this.contextCache);
         Object.keys(this.cachePaths).forEach(propertyName => {
             Observable.defineProperty(this.classPrototype, propertyName);
 
@@ -806,15 +805,13 @@ export class ObserverMap {
         target: any,
         rootProperty: string,
         object: any,
-        cachePaths: CachedPathMap,
-        contextCache: Array<ContextCache>
+        cachePaths: CachedPathMap
     ): typeof Proxy {
         let proxiedObject = object;
 
         if (cachePaths[rootProperty]) {
             proxiedObject = assignObservables(
                 cachePaths[rootProperty],
-                contextCache,
                 proxiedObject,
                 target,
                 rootProperty
@@ -822,32 +819,6 @@ export class ObserverMap {
         }
 
         return proxiedObject;
-
-        // Create a proxy for the object that triggers Observable.notify on mutations
-        // return new Proxy(proxiedObject, {
-        //     set: (obj: any, prop: string | symbol, value: any) => {
-        //         obj[prop] = value;
-
-        //         // TODO: determine if this changes any paths
-        //         console.log("does this change any paths");
-
-        //         // Trigger notification for property changes
-        //         Observable.notify(target, rootProperty);
-
-        //         return true;
-        //     },
-        //     deleteProperty: (obj: any, prop: string | symbol) => {
-        //         if (prop in obj) {
-        //             delete obj[prop];
-
-        //             // Trigger notification for property deletion
-        //             Observable.notify(target, rootProperty);
-
-        //             return true;
-        //         }
-        //         return false;
-        //     },
-        // });
     }
 
     /**
@@ -859,7 +830,6 @@ export class ObserverMap {
     private defineChanged = (propertyName: string): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const cachePaths = this.cachePaths;
-        const contextCache = this.contextCache;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
             if (prev === undefined && next !== undefined) {
@@ -867,8 +837,7 @@ export class ObserverMap {
                     this,
                     propertyName,
                     next,
-                    cachePaths,
-                    contextCache
+                    cachePaths
                 );
 
                 this[propertyName] = proxy;

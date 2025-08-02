@@ -1002,7 +1002,6 @@ function sortByDeepestNestingItem(first: string[], second: string[]): number {
 
 export function assignObservables(
     cachePath: CachedPath,
-    contextCache: Array<ContextCache>,
     data: any,
     target: any,
     rootProperty: string
@@ -1014,46 +1013,39 @@ export function assignObservables(
         case "array": {
             if (cachePath.type === "repeat") {
                 proxiedData = proxiedData.map((item: any) => {
-                    const relativePaths = (
-                        Object.values(cachePath.paths).filter(pathItem => {
-                            if (pathItem.type === "access") {
-                                return pathItem.relativePath.startsWith(
-                                    `${cachePath.context}.`
-                                );
-                            }
+                    const originalItem = Object.assign({}, item);
+                    const itemProperties = Object.keys(item);
 
-                            return false;
-                        }) as Array<AccessCachedPath>
-                    )
-                        .map(value => {
-                            return value.relativePath.split(".").slice(1); // the first item is the context
-                        })
-                        .sort(sortByDeepestNestingItem);
+                    itemProperties.forEach(key => {
+                        Observable.defineProperty(item, key);
 
-                    for (const relativePath of relativePaths) {
-                        item = assignProxyToItemsInObject(
-                            relativePath,
-                            target,
-                            rootProperty,
-                            item
-                        );
-                    }
+                        const relativePaths = (
+                            Object.values(cachePath.paths).filter(pathItem => {
+                                if (pathItem.type === "access") {
+                                    return pathItem.relativePath.startsWith(
+                                        `${cachePath.context}.${key}.`
+                                    );
+                                }
 
-                    // TODO: setup objects in the array if they exist
+                                return false;
+                            }) as Array<AccessCachedPath>
+                        )
+                            .map(value => {
+                                return value.relativePath.split(".").slice(2); // the first item is the context, the next is the property
+                            })
+                            .sort(sortByDeepestNestingItem);
 
-                    // const notifier = Observable.getNotifier(item);
-                    // const handler = {
-                    //     handleChange(source: any, propertyName: string) {
-                    //         // respond to the change here
-                    //         // source will be the person instance
-                    //         // propertyName will be "name"
-                    //         console.log("SOMEONE HIT NOTIFY?")
-                    //     }
-                    // };
+                        for (const relativePath of relativePaths) {
+                            originalItem[key] = assignProxyToItemsInObject(
+                                relativePath,
+                                item,
+                                key,
+                                originalItem[key]
+                            );
+                        }
+                    });
 
-                    // notifier.subscribe(handler, rootProperty);
-                    // // const notifier = Observable.getNotifier(item);
-                    return item;
+                    return Object.assign(item, originalItem);
                 });
             }
             break;
