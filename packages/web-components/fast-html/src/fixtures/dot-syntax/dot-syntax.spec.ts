@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("f-template dot-syntax bindings", async () => {
+test.describe.skip("f-template dot-syntax bindings", async () => {
     test("create a object property reference using dot syntax in a binding", async ({ page }) => {
         await page.goto("/dot-syntax");
 

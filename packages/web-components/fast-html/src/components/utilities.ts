@@ -1,3 +1,4 @@
+import { Observable } from "@microsoft/fast-element/observable.js";
 import { type ObserverMap } from "./observer-map.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
@@ -87,7 +88,7 @@ type RepeatCachedPathType = "repeat";
 
 export interface RepeatCachedPath {
     type: RepeatCachedPathType;
-    context: string | null;
+    context: string;
     paths: Record<string, CachedPath>;
 }
 
@@ -988,21 +989,160 @@ export function getNextProperty(path: string): string {
     return path.split(".")[0];
 }
 
-export function assignProxiesToObjects(cachePath: CachedPath, object: any): any {
-    const dataType = getDataType(object);
+function sortByDeepestNestingItem(first: string[], second: string[]): number {
+    const firstRelativePathLength = first.length;
+    const secondRelativePathLength = second.length;
+
+    return firstRelativePathLength > secondRelativePathLength
+        ? -1
+        : secondRelativePathLength > firstRelativePathLength
+        ? 1
+        : 0;
+}
+
+export function assignProxiesToObjects(
+    cachePath: CachedPath,
+    contextCache: Array<ContextCache>,
+    data: any,
+    target: any,
+    rootProperty: string
+): typeof Proxy {
+    const dataType = getDataType(data);
+    let proxiedData = data;
+
+    console.log("dataType", dataType, data, rootProperty);
 
     switch (dataType) {
         case "array": {
+            if (cachePath.type === "repeat") {
+                proxiedData = proxiedData.map((item: any) => {
+                    const relativePaths = (
+                        Object.values(cachePath.paths).filter(pathItem => {
+                            if (pathItem.type === "access") {
+                                return pathItem.relativePath.startsWith(
+                                    `${cachePath.context}.`
+                                );
+                            }
+
+                            return false;
+                        }) as Array<AccessCachedPath>
+                    )
+                        .map(value => {
+                            return value.relativePath.split(".").slice(1); // the first item is the context
+                        })
+                        .sort(sortByDeepestNestingItem);
+
+                    for (const relativePath of relativePaths) {
+                        item = assignProxyToItemsInObject(
+                            relativePath,
+                            target,
+                            rootProperty,
+                            item
+                        );
+                    }
+
+                    // TODO: setup objects in the array if they exist
+
+                    // const notifier = Observable.getNotifier(item);
+                    // const handler = {
+                    //     handleChange(source: any, propertyName: string) {
+                    //         // respond to the change here
+                    //         // source will be the person instance
+                    //         // propertyName will be "name"
+                    //         console.log("SOMEONE HIT NOTIFY?")
+                    //     }
+                    // };
+
+                    // notifier.subscribe(handler, rootProperty);
+                    // // const notifier = Observable.getNotifier(item);
+                    return item;
+                });
+            }
             break;
         }
         case "object": {
+            if (cachePath.type === "access") {
+                // console.log("object");
+                // console.log("cache", cachePath);
+                // console.log("context", contextCache);
+            }
             break;
         }
         case "primitive": {
+            if (cachePath.type === "access") {
+                console.log("primitive");
+            }
             break;
         }
     }
 
-    console.log("evaluate cache paths", cachePath, object);
+    return proxiedData;
+}
+
+function assignProxyToItemsInObject(
+    paths: string[],
+    target: any,
+    rootProperty: string,
+    object: any
+): any | typeof Proxy {
+    const type = getDataType(object);
+    let proxiedObject = object;
+
+    if (type === "object") {
+        // navigate through all items in the object
+        proxiedObject[paths[0]] = assignProxyToItemsInObject(
+            paths.slice(1),
+            target,
+            rootProperty,
+            proxiedObject[paths[0]]
+        );
+
+        // assign a Proxy to the object
+        proxiedObject = assignProxy(target, rootProperty, object);
+    }
+
+    return proxiedObject;
+}
+
+export function assignProxy(
+    target: any,
+    rootProperty: string,
+    object: any
+): typeof Proxy {
+    if (object.$isProxy === undefined) {
+        // Create a proxy for the object that triggers Observable.notify on mutations
+        return new Proxy(object, {
+            set: (obj: any, prop: string | symbol, value: any) => {
+                obj[prop] = value;
+
+                // TODO: determine if this changes any paths
+
+                // Trigger notification for property changes
+                Observable.notify(target, rootProperty);
+                console.log("notify", target, rootProperty);
+
+                return true;
+            },
+            get: (target, key) => {
+                if (key !== "$isProxy") {
+                    return target[key];
+                }
+
+                return true;
+            },
+            deleteProperty: (obj: any, prop: string | symbol) => {
+                if (prop in obj) {
+                    delete obj[prop];
+
+                    // Trigger notification for property deletion
+                    Observable.notify(target, rootProperty);
+
+                    return true;
+                }
+                return false;
+            },
+        });
+    }
+
     return object;
 }
