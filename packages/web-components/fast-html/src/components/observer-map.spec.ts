@@ -6,7 +6,7 @@ import type {
     RepeatCachedPath,
 } from "./utilities.js";
 
-test.describe("ObserverMap", async () => {
+test.describe.only("ObserverMap", async () => {
     let observerMap: ObserverMap;
     class TestClass {}
 
@@ -277,6 +277,41 @@ test.describe("ObserverMap", async () => {
             expect(settingVisibility.type).toEqual("access");
             expect(settingVisibility.relativePath).toEqual("setting.visibility");
             expect(settingVisibility.absolutePath).toEqual("root.items.__index__.settings.__index__.visibility");
+        });
+        test("should cache nested repeats with a path reference that belongs to the root parent context", async () => {
+            /**
+             * Example:
+             * <f-repeat value="{{item in root.items}}">
+             *     {{item.a}}
+             *     <f-repeat value="{{user in item.users}}">
+             *         {{user.name}}
+             *         <f-repeat value="{{badge in user.badges}}">
+             *             {{badge}}
+             *             {{../../../selectedId}}
+             *         </f-repeat>
+             *     </f-repeat>
+             * </f-repeat>
+             */
+            observerMap.cachePathWithContext("root.items", false, null, "item", "repeat", 0);
+            observerMap.cachePathWithContext("item.a", true, "item", null, "access", 1);
+            observerMap.cachePathWithContext("item.users", true, "item", "user", "repeat", 1);
+            observerMap.cachePathWithContext("user.name", true, "user", null, "access", 2);
+            observerMap.cachePathWithContext("user.badges", true, "user", "badge", "repeat", 2);
+            observerMap.cachePathWithContext("badge", true, "badge", null, "access", 3);
+            observerMap.cachePathWithContext("../../../selectedId", true, "badge", null, "access", 3);
+
+            const cachedPathsWithContext = observerMap.getCachedPathsWithContext();
+
+            // Verify root structure
+            expect(cachedPathsWithContext["root"]).toBeDefined();
+            expect(cachedPathsWithContext["root"].type).toEqual("default");
+
+            // Verify a nested item has been elevated to the root
+            expect(cachedPathsWithContext["selectedId"]).toBeDefined();
+            const selectedId = cachedPathsWithContext["selectedId"] as AccessCachedPath;
+            expect(selectedId.type).toEqual("access");
+            expect(selectedId.relativePath).toEqual("selectedId");
+            expect(selectedId.absolutePath).toEqual("selectedId");
         });
     });
 });

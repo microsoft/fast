@@ -70,6 +70,12 @@ export class ObserverMap {
         type: PathType,
         level: number
     ): void {
+        // Handle relative path navigation with "../"
+        if (path.includes("../")) {
+            this.handleRelativePathCaching(path, parentContext, type);
+            return;
+        }
+
         const rootPath = this.getRootProperty(
             path,
             self,
@@ -104,6 +110,141 @@ export class ObserverMap {
                 );
                 break;
         }
+    }
+
+    /**
+     * Handles caching of paths with relative navigation ("../")
+     * Determines the correct context level and caches the path accordingly
+     */
+    private handleRelativePathCaching(
+        path: string,
+        parentContext: string | null,
+        type: PathType
+    ): void {
+        // Count the number of "../" to determine how many levels to go up
+        const upLevels = this.countRelativeNavigationLevels(path);
+
+        // Extract the property name after all the "../" sequences
+        const propertyName = this.extractPropertyNameFromRelativePath(path);
+
+        // Determine the target context based on navigation level
+        const targetContext = this.getTargetContextForRelativePath(
+            parentContext,
+            upLevels
+        );
+
+        // Create the absolute path based on where we end up
+        const absolutePath =
+            targetContext === null ? propertyName : `${targetContext}.${propertyName}`;
+
+        // Cache the path at the determined context level
+        if (targetContext === null) {
+            // Cache at root level
+            this.cacheAtRootLevel(propertyName, propertyName, type);
+        } else {
+            // Cache at the specified context level
+            this.cacheAtContextLevel(propertyName, absolutePath, targetContext, type);
+        }
+    }
+
+    /**
+     * Counts the number of "../" sequences in a path without using regex
+     */
+    private countRelativeNavigationLevels(path: string): number {
+        let count = 0;
+        let index = 0;
+
+        while (index < path.length) {
+            const foundIndex = path.indexOf("../", index);
+            if (foundIndex === -1) {
+                break;
+            }
+            count++;
+            index = foundIndex + 3; // Move past the current "../"
+        }
+
+        return count;
+    }
+
+    /**
+     * Extracts the property name from a relative path, removing all "../" sequences
+     */
+    private extractPropertyNameFromRelativePath(path: string): string {
+        // Remove all "../" sequences and get the remaining path
+        const cleaned = path.replace(/\.\.\//g, "");
+        return cleaned;
+    }
+
+    /**
+     * Determines the target context after navigating up the specified number of levels
+     */
+    private getTargetContextForRelativePath(
+        currentContext: string | null,
+        upLevels: number
+    ): string | null {
+        if (currentContext === null) {
+            return null;
+        }
+
+        let targetContext: string | null = currentContext;
+
+        // Navigate up the context hierarchy
+        for (let i = 0; i < upLevels; i++) {
+            const contextItem = this.contextCache.find(
+                item => item.context === targetContext
+            );
+            if (contextItem?.parent) {
+                targetContext = contextItem.parent;
+            } else {
+                // Reached root level
+                targetContext = null;
+                break;
+            }
+        }
+
+        return targetContext;
+    }
+
+    /**
+     * Caches a path at the root level
+     */
+    private cacheAtRootLevel(
+        propertyName: string,
+        absolutePath: string,
+        type: PathType
+    ): void {
+        // For access type, cache the property directly as an access path
+        if (type === "access") {
+            this.cachePaths[propertyName] = {
+                type,
+                relativePath: propertyName,
+                absolutePath: absolutePath,
+            };
+        }
+    }
+
+    /**
+     * Caches a path at a specific context level
+     */
+    private cacheAtContextLevel(
+        propertyName: string,
+        absolutePath: string,
+        targetContext: string,
+        type: PathType
+    ): void {
+        // Find the context in cache to determine where to place this
+        const contextItem = this.contextCache.find(
+            item => item.context === targetContext
+        );
+        if (!contextItem) {
+            // Fallback to root level if context not found
+            this.cacheAtRootLevel(propertyName, absolutePath, type);
+            return;
+        }
+
+        // For now, cache at root level since the context structure is complex
+        // This could be enhanced to place at the exact context level if needed
+        this.cacheAtRootLevel(propertyName, absolutePath, type);
     }
 
     /**
@@ -669,7 +810,7 @@ export class ObserverMap {
         contextCache: Array<ContextCache>
     ): typeof Proxy {
         let proxiedObject = object;
-        console.log("create a proxy of", object);
+
         if (cachePaths[rootProperty]) {
             proxiedObject = assignProxiesToObjects(
                 cachePaths[rootProperty],
