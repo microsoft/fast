@@ -1068,12 +1068,6 @@ export function assignObservables(
             }
             break;
         }
-        case "primitive": {
-            if (cachePath.type === "access") {
-                console.log("primitive");
-            }
-            break;
-        }
     }
 
     return proxiedData;
