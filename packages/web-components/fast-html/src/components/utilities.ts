@@ -1000,7 +1000,7 @@ function sortByDeepestNestingItem(first: string[], second: string[]): number {
         : 0;
 }
 
-export function assignProxiesToObjects(
+export function assignObservables(
     cachePath: CachedPath,
     contextCache: Array<ContextCache>,
     data: any,
@@ -1119,7 +1119,6 @@ export function assignProxy(
 
                 // Trigger notification for property changes
                 Observable.notify(target, rootProperty);
-                console.log("notify", target, rootProperty);
 
                 return true;
             },

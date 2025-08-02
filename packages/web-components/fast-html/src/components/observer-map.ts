@@ -1,5 +1,5 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { assignProxiesToObjects, getNextProperty } from "./utilities.js";
+import { assignObservables, getNextProperty } from "./utilities.js";
 import type {
     CachedPath,
     CachedPathMap,
@@ -802,7 +802,7 @@ export class ObserverMap {
      * @param object - The object to wrap with a proxy
      * @returns A proxy that triggers notifications on property mutations
      */
-    private getAndAssignProxies(
+    private getAndAssignObservables(
         target: any,
         rootProperty: string,
         object: any,
@@ -812,7 +812,7 @@ export class ObserverMap {
         let proxiedObject = object;
 
         if (cachePaths[rootProperty]) {
-            proxiedObject = assignProxiesToObjects(
+            proxiedObject = assignObservables(
                 cachePaths[rootProperty],
                 contextCache,
                 proxiedObject,
@@ -857,18 +857,13 @@ export class ObserverMap {
      * @returns A function that handles property changes and sets up proxies for object values
      */
     private defineChanged = (propertyName: string): ((prev: any, next: any) => void) => {
-        const getAndAssignProxiesAlias = this.getAndAssignProxies;
+        const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const cachePaths = this.cachePaths;
         const contextCache = this.contextCache;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
-            if (
-                prev === undefined &&
-                next !== undefined &&
-                typeof next === "object" &&
-                next !== null
-            ) {
-                const proxy = getAndAssignProxiesAlias(
+            if (prev === undefined && next !== undefined) {
+                const proxy = getAndAssignObservablesAlias(
                     this,
                     propertyName,
                     next,
