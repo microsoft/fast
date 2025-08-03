@@ -803,6 +803,7 @@ export class ObserverMap {
      */
     private getAndAssignObservables(
         target: any,
+        contextCache: ContextCache[],
         rootProperty: string,
         object: any,
         cachePaths: CachedPathMap
@@ -810,6 +811,7 @@ export class ObserverMap {
         let proxiedObject = object;
 
         if (cachePaths[rootProperty]) {
+            console.log("assign observables", cachePaths);
             proxiedObject = assignObservables(
                 cachePaths[rootProperty],
                 proxiedObject,
@@ -830,11 +832,13 @@ export class ObserverMap {
     private defineChanged = (propertyName: string): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const cachePaths = this.cachePaths;
+        const contextCache = this.contextCache;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
             if (prev === undefined && next !== undefined) {
                 const proxy = getAndAssignObservablesAlias(
                     this,
+                    contextCache,
                     propertyName,
                     next,
                     cachePaths

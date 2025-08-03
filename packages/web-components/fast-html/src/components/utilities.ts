@@ -1014,36 +1014,8 @@ export function assignObservables(
             if (cachePath.type === "repeat") {
                 proxiedData = proxiedData.map((item: any) => {
                     const originalItem = Object.assign({}, item);
-                    const itemProperties = Object.keys(item);
 
-                    itemProperties.forEach(key => {
-                        Observable.defineProperty(item, key);
-
-                        const relativePaths = (
-                            Object.values(cachePath.paths).filter(pathItem => {
-                                if (pathItem.type === "access") {
-                                    return pathItem.relativePath.startsWith(
-                                        `${cachePath.context}.${key}.`
-                                    );
-                                }
-
-                                return false;
-                            }) as Array<AccessCachedPath>
-                        )
-                            .map(value => {
-                                return value.relativePath.split(".").slice(2); // the first item is the context, the next is the property
-                            })
-                            .sort(sortByDeepestNestingItem);
-
-                        for (const relativePath of relativePaths) {
-                            originalItem[key] = assignProxyToItemsInObject(
-                                relativePath,
-                                item,
-                                key,
-                                originalItem[key]
-                            );
-                        }
-                    });
+                    assignProxyToItemsInArray(item, originalItem, cachePath);
 
                     return Object.assign(item, originalItem);
                 });
@@ -1065,7 +1037,8 @@ export function assignObservables(
                         relativePath,
                         target,
                         rootProperty,
-                        proxiedData
+                        proxiedData,
+                        cachePath
                     );
                 }
             }
@@ -1076,29 +1049,83 @@ export function assignObservables(
     return proxiedData;
 }
 
+function assignProxyToItemsInArray(
+    item: any,
+    originalItem: any,
+    cachePath: RepeatCachedPath
+): void {
+    const itemProperties = Object.keys(item);
+
+    itemProperties.forEach(key => {
+        Observable.defineProperty(item, key);
+
+        const relativePaths = (
+            Object.values(cachePath.paths).filter(pathItem => {
+                if (pathItem.type === "access") {
+                    return pathItem.relativePath.startsWith(
+                        `${cachePath.context}.${key}.`
+                    );
+                }
+
+                return false;
+            }) as Array<AccessCachedPath>
+        )
+            .map(value => {
+                return value.relativePath.split(".").slice(2); // the first item is the context, the next is the property
+            })
+            .sort(sortByDeepestNestingItem);
+
+        for (const relativePath of relativePaths) {
+            originalItem[key] = assignProxyToItemsInObject(
+                relativePath,
+                item,
+                key,
+                originalItem[key],
+                cachePath
+            );
+        }
+    });
+}
+
 function assignProxyToItemsInObject(
     paths: string[],
     target: any,
     rootProperty: string,
-    object: any
+    data: any,
+    cachePath: CachedPath
 ): any | typeof Proxy {
-    const type = getDataType(object);
-    let proxiedObject = object;
+    const type = getDataType(data);
+    let proxiedData = data;
 
     if (type === "object") {
         // navigate through all items in the object
-        proxiedObject[paths[0]] = assignProxyToItemsInObject(
+        proxiedData[paths[0]] = assignProxyToItemsInObject(
             paths.slice(1),
             target,
             rootProperty,
-            proxiedObject[paths[0]]
+            proxiedData[paths[0]],
+            cachePath
         );
 
         // assign a Proxy to the object
-        proxiedObject = assignProxy(target, rootProperty, object);
+        proxiedData = assignProxy(target, rootProperty, data);
+    } else if (type === "array") {
+        if (cachePath.type === "repeat") {
+            proxiedData = proxiedData.map((item: any) => {
+                const originalItem = Object.assign({}, item);
+
+                assignProxyToItemsInArray(
+                    item,
+                    originalItem,
+                    cachePath.paths[rootProperty] as RepeatCachedPath
+                );
+
+                return Object.assign(item, originalItem);
+            });
+        }
     }
 
-    return proxiedObject;
+    return proxiedData;
 }
 
 export function assignProxy(
