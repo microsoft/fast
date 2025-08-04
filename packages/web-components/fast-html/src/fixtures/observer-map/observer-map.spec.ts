@@ -144,8 +144,15 @@ test.describe.only("ObserverMap", async () => {
         // Update stats
         await page.locator(".stats .controls button").nth(0).click();
 
+        await page.evaluate(() => {
+            return new Promise((resolve) => {
+                requestAnimationFrame(() => resolve(true));
+            });
+        });
+
         // Stats should be updated (values should change)
         const updatedDaily = await page.locator(".stats .nested-info").nth(1).textContent();
+
         expect(updatedDaily).not.toBe(initialDaily);
     });
 
