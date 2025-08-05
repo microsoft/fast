@@ -1,5 +1,17 @@
 import { expect, test } from "@playwright/test";
-import { AttributeDataBindingBehaviorConfig, ContentDataBindingBehaviorConfig, TemplateDirectiveBehaviorConfig, getNextBehavior, AttributeDirectiveBindingBehaviorConfig, getAllPartials, getIndexOfNextMatchingTag, pathResolver, transformInnerHTML, getExpressionChain } from "./utilities.js";
+import {
+    type AttributeDataBindingBehaviorConfig,
+    type ContentDataBindingBehaviorConfig,
+    type TemplateDirectiveBehaviorConfig,
+    getNextBehavior,
+    type AttributeDirectiveBindingBehaviorConfig,
+    getAllPartials,
+    getIndexOfNextMatchingTag,
+    pathResolver,
+    transformInnerHTML,
+    getExpressionChain,
+    extractPathsFromChainedExpression,
+} from "./utilities.js";
 
 test.describe("utilities", async () => {
     test.describe("content", async () => {
@@ -247,6 +259,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "access",
                     left: "foo",
+                    leftIsValue: false,
                     right: null,
                     rightIsValue: null,
                 }
@@ -257,6 +270,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!",
                     left: "foo",
+                    leftIsValue: false,
                     right: null,
                     rightIsValue: null,
                 }
@@ -267,6 +281,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: "test",
                     rightIsValue: true,
                 }
@@ -277,6 +292,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: false,
                     rightIsValue: true,
                 }
@@ -287,6 +303,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: 5,
                     rightIsValue: true,
                 }
@@ -297,6 +314,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "!=",
                     left: "foo",
+                    leftIsValue: false,
                     right: "bat",
                     rightIsValue: true,
                 },
@@ -305,6 +323,7 @@ test.describe("utilities", async () => {
                     expression: {
                         operator: "==",
                         left: "bar",
+                        leftIsValue: false,
                         right: "baz",
                         rightIsValue: true,
                     }
@@ -315,6 +334,7 @@ test.describe("utilities", async () => {
                 expression: {
                     operator: "access",
                     left: "foo",
+                    leftIsValue: false,
                     right: null,
                     rightIsValue: null,
                 },
@@ -323,11 +343,150 @@ test.describe("utilities", async () => {
                     expression: {
                         operator: "access",
                         left: "bar",
+                        leftIsValue: false,
                         right: null,
                         rightIsValue: null,
                     }
                 }
             });
+        });
+    });
+
+    test.describe("extractPathsFromChainedExpression", async () => {
+        test("should extract paths from simple access expression", async () => {
+            const expressionChain = getExpressionChain("user");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(1);
+            expect(paths.has("user")).toBe(true);
+        });
+
+        test("should extract paths from dot notation expression", async () => {
+            const expressionChain = getExpressionChain("user.name");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(1);
+            expect(paths.has("user.name")).toBe(true);
+        });
+
+        test("should extract paths from comparison with literal values", async () => {
+            const expressionChain = getExpressionChain("user.age > 18");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(1);
+            expect(paths.has("user.age")).toBe(true);
+        });
+
+        test("should extract paths from comparison between two properties", async () => {
+            const expressionChain = getExpressionChain("user.age >= admin.minAge");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(2);
+            expect(paths.has("user.age")).toBe(true);
+            expect(paths.has("admin.minAge")).toBe(true);
+        });
+
+        test("should extract paths from chained AND expressions", async () => {
+            const expressionChain = getExpressionChain("isActive && user.name");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(2);
+            expect(paths.has("isActive")).toBe(true);
+            expect(paths.has("user.name")).toBe(true);
+        });
+
+        test("should extract paths from chained OR expressions", async () => {
+            const expressionChain = getExpressionChain("user.isAdmin || permissions.canEdit");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(2);
+            expect(paths.has("user.isAdmin")).toBe(true);
+            expect(paths.has("permissions.canEdit")).toBe(true);
+        });
+
+        test("should extract paths from complex chained expressions", async () => {
+            const expressionChain = getExpressionChain("user.age > 18 && user.status == 'active' || admin.override");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(3);
+            expect(paths.has("user.age")).toBe(true);
+            expect(paths.has("user.status")).toBe(true);
+            expect(paths.has("admin.override")).toBe(true);
+        });
+
+        test("should extract paths from NOT expressions", async () => {
+            const expressionChain = getExpressionChain("!user.isDisabled");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(1);
+            expect(paths.has("user.isDisabled")).toBe(true);
+        });
+
+        test("should handle expressions with only literal values", async () => {
+            const expressionChain = getExpressionChain("5 > 3");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(0);
+        });
+
+        test("should handle mixed literal and property expressions", async () => {
+            const expressionChain = getExpressionChain("count > 0 && status == 'ready'");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(2);
+            expect(paths.has("count")).toBe(true);
+            expect(paths.has("status")).toBe(true);
+        });
+
+        test("should deduplicate identical paths", async () => {
+            const expressionChain = getExpressionChain("user.name && user.name != 'anonymous'");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(1);
+            expect(paths.has("user.name")).toBe(true);
+        });
+
+        test("should handle HTML entity operators", async () => {
+            const expressionChain = getExpressionChain("isValid &amp;&amp; data.ready");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(2);
+            expect(paths.has("isValid")).toBe(true);
+            expect(paths.has("data.ready")).toBe(true);
+        });
+
+        test("should handle deeply nested property paths", async () => {
+            const expressionChain = getExpressionChain("app.user.profile.settings.theme");
+            expect(expressionChain).toBeDefined();
+
+            const paths = extractPathsFromChainedExpression(expressionChain!);
+
+            expect(paths.size).toEqual(1);
+            expect(paths.has("app.user.profile.settings.theme")).toBe(true);
         });
     });
 });
