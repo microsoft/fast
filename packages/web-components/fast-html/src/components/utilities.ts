@@ -841,7 +841,7 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  */
 export function resolveWhen(
     self: boolean,
-    { expression, next }: ChainedExpression
+    expression: ChainedExpression
 ): (x: boolean, c: any) => any {
-    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression, next);
+    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression);
 }
