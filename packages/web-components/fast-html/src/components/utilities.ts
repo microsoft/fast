@@ -1000,6 +1000,39 @@ function sortByDeepestNestingItem(first: string[], second: string[]): number {
         : 0;
 }
 
+function assignObservablesToArray(proxiedData: any, cachePath: CachedPath): any {
+    const data = proxiedData.map((item: any) => {
+        const originalItem = Object.assign({}, item);
+
+        assignProxyToItemsInArray(item, originalItem, cachePath as RepeatCachedPath);
+
+        return Object.assign(item, originalItem);
+    });
+
+    Observable.getNotifier(data).subscribe({
+        handleChange(subject, args) {
+            args.forEach((arg: any) => {
+                if (arg.addedCount > 0) {
+                    for (let i = arg.addedCount - 1; i >= 0; i--) {
+                        const item = subject[arg.index + i];
+                        const originalItem = Object.assign({}, item);
+
+                        assignProxyToItemsInArray(
+                            item,
+                            originalItem,
+                            cachePath as RepeatCachedPath
+                        );
+
+                        return Object.assign(item, originalItem);
+                    }
+                }
+            });
+        },
+    });
+
+    return data;
+}
+
 export function assignObservables(
     cachePath: CachedPath,
     data: any,
@@ -1012,34 +1045,7 @@ export function assignObservables(
     switch (dataType) {
         case "array": {
             if (cachePath.type === "repeat") {
-                proxiedData = proxiedData.map((item: any) => {
-                    const originalItem = Object.assign({}, item);
-
-                    assignProxyToItemsInArray(item, originalItem, cachePath);
-
-                    return Object.assign(item, originalItem);
-                });
-
-                Observable.getNotifier(proxiedData).subscribe({
-                    handleChange(subject, args) {
-                        args.forEach((arg: any) => {
-                            if (arg.addedCount > 0) {
-                                for (let i = arg.addedCount - 1; i >= 0; i--) {
-                                    const item = subject[arg.index + i];
-                                    const originalItem = Object.assign({}, item);
-
-                                    assignProxyToItemsInArray(
-                                        item,
-                                        originalItem,
-                                        cachePath
-                                    );
-
-                                    return Object.assign(item, originalItem);
-                                }
-                            }
-                        });
-                    },
-                });
+                proxiedData = assignObservablesToArray(proxiedData, cachePath);
             }
             break;
         }
@@ -1132,38 +1138,10 @@ function assignProxyToItemsInObject(
         proxiedData = assignProxy(target, rootProperty, data);
     } else if (type === "array") {
         if (cachePath.type === "repeat") {
-            proxiedData = proxiedData.map((item: any) => {
-                const originalItem = Object.assign({}, item);
-
-                assignProxyToItemsInArray(
-                    item,
-                    originalItem,
-                    cachePath.paths[rootProperty] as RepeatCachedPath
-                );
-
-                return Object.assign(item, originalItem);
-            });
-
-            Observable.getNotifier(proxiedData).subscribe({
-                handleChange(subject, args) {
-                    args.forEach((arg: any) => {
-                        if (arg.addedCount > 0) {
-                            for (let i = arg.addedCount - 1; i >= 0; i--) {
-                                const item = subject[arg.index + i];
-                                const originalItem = Object.assign({}, item);
-
-                                assignProxyToItemsInArray(
-                                    item,
-                                    originalItem,
-                                    cachePath.paths[rootProperty] as RepeatCachedPath
-                                );
-
-                                return Object.assign(item, originalItem);
-                            }
-                        }
-                    });
-                },
-            });
+            proxiedData = assignObservablesToArray(
+                proxiedData,
+                cachePath.paths[rootProperty]
+            );
         }
     }
 
