@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Wed, 16 Jul 2025 05:39:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 05 Aug 2025 19:45:58 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.2
+
+Tue, 05 Aug 2025 19:45:58 GMT
+
+### Patches
+
+- Number field limit precision when clamping to min/max ([ni/fast@91acc98](https://github.com/ni/fast/commit/91acc989c661fb315503586f1a11478d0bbe76d5))
 
 ## 10.1.1
 

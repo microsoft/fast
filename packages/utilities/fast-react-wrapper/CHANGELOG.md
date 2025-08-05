@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-react-wrapper
 
-<!-- This log was last generated on Wed, 16 Jul 2025 05:39:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 05 Aug 2025 19:45:58 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.3
+
+Tue, 05 Aug 2025 19:45:58 GMT
+
+### Patches
+
+- Bump @ni/fast-foundation to v10.1.2
 
 ## 10.1.2
 
