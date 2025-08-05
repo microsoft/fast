@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix lint warnings",
+  "packageName": "@ni/fast-foundation",
+  "email": "jattasNI@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
