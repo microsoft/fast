@@ -275,9 +275,9 @@ class TemplateElement extends FASTElement {
                     const { repeat } = await import("@microsoft/fast-element");
 
                     const binding = bindingResolver(
-                        valueAttr[2], // TODO: is this right? this makes path users so "user in users"
+                        valueAttr[2],
                         self,
-                        parentContext, // this makes this path user in "user in users" seems backwards
+                        parentContext,
                         "repeat",
                         observerMap ?? null,
                         valueAttr[0],

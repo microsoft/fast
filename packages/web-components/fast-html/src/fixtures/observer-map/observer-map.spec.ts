@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe.only("ObserverMap", async () => {
+test.describe("ObserverMap", async () => {
     test.beforeEach(async ({ page }) => {
         await page.goto("/observer-map");
         await page.waitForSelector("observer-map-test-element");
