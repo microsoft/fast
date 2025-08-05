@@ -9,6 +9,21 @@ import { FASTElement } from '@microsoft/fast-element';
 import { ShadowRootOptions } from '@microsoft/fast-element';
 
 // @public
+export class ObserverMap {
+    constructor(classPrototype: any);
+    // Warning: (ae-forgotten-export) The symbol "PathConfig" needs to be exported by the entry point index.d.ts
+    cachePathWithContext(config: PathConfig): void;
+    // (undocumented)
+    defineProperties(): void;
+    // (undocumented)
+    getAbsolutePath(config: PathConfig): string;
+    // Warning: (ae-forgotten-export) The symbol "CachedPathMap" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    getCachedPathsWithContext(): CachedPathMap;
+}
+
+// @public
 export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
 
 // @public

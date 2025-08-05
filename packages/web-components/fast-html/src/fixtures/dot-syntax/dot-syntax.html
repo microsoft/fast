@@ -1,1 +1,6 @@
-{{object.foo}}
+<span>{{object.b}}</span>
+<span>{{object.a.b1}}</span>
+<span>{{object.a.b2.c}}</span>
+<button @click="{handleBClick()}">Set b</button>
+<button @click="{handleAB1Click()}">Set a.b1</button>
+<button @click="{handleAB2CClick()}">Set a.b2.c</button>
