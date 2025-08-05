@@ -1074,11 +1074,9 @@ export function transient<T extends Constructable>(
 type SingletonOptions = { scoped: boolean };
 const defaultSingletonOptions = { scoped: false };
 
-function singletonDecorator<T extends Constructable>(
+type SingletonDecoratorType = <T extends Constructable>(
     target: T & Partial<RegisterSelf<T>>
-): T & RegisterSelf<T> {
-    return DI.singleton(target);
-}
+) => T & RegisterSelf<T>;
 
 /**
  * Registers the decorated class as a singleton dependency; the class will only be created once. Each
@@ -1093,7 +1091,7 @@ function singletonDecorator<T extends Constructable>(
  * @public
  */
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-export function singleton<T extends Constructable>(): typeof singletonDecorator;
+export function singleton<T extends Constructable>(): SingletonDecoratorType;
 
 /**
  * @public
@@ -1101,7 +1099,7 @@ export function singleton<T extends Constructable>(): typeof singletonDecorator;
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function singleton<T extends Constructable>(
     options?: SingletonOptions
-): typeof singletonDecorator;
+): SingletonDecoratorType;
 
 /**
  * Registers the `target` class as a singleton dependency; the class will only be created once. Each
@@ -1126,7 +1124,7 @@ export function singleton<T extends Constructable>(
  */
 export function singleton<T extends Constructable>(
     targetOrOptions?: (T & Partial<RegisterSelf<T>>) | SingletonOptions
-): (T & RegisterSelf<T>) | typeof singletonDecorator {
+): (T & RegisterSelf<T>) | SingletonDecoratorType {
     if (typeof targetOrOptions === "function") {
         return DI.singleton(targetOrOptions);
     }
