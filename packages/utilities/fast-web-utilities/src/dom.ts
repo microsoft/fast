@@ -76,7 +76,7 @@ export function canUseFocusVisible(): boolean {
     try {
         (styleElement.sheet as any).insertRule("foo:focus-visible {color:inherit}", 0);
         _canUseFocusVisible = true;
-    } catch (e) {
+    } catch {
         _canUseFocusVisible = false;
     } finally {
         document.head.removeChild(styleElement);
