@@ -242,6 +242,10 @@ export class NumberField extends FormAssociatedNumberField {
         super.validate(this.control);
     }
 
+    private limitPrecision(value: number): number {
+        return parseFloat(value.toPrecision(15));
+    }
+
     /**
      * Sets the internal value to a valid number between the min and max properties
      * @param value - user input
@@ -249,15 +253,18 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     private getValidValue(value: string): string {
-        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(15));
+        let validValue: number = this.limitPrecision(parseFloat(value));
         if (isNaN(validValue)) {
-            validValue = "";
-        } else {
-            validValue = Math.min(validValue, this.max ?? validValue);
-            validValue = Math.max(validValue, this.min ?? validValue).toString();
+            return "";
+        }
+        if (this.max !== undefined) {
+            validValue = Math.min(validValue, this.limitPrecision(this.max));
+        }
+        if (this.min !== undefined) {
+            validValue = Math.max(validValue, this.limitPrecision(this.min));
         }
 
-        return validValue;
+        return validValue.toString();
     }
 
     /**

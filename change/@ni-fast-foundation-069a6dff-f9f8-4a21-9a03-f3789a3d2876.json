@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Number field limit precision when clamping to min/max",
+  "packageName": "@ni/fast-foundation",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

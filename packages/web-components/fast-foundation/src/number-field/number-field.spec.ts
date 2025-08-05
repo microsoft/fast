@@ -527,7 +527,7 @@ describe("NumberField", () => {
 
         it("should set max value", async () => {
             const max = 10;
-            const { element, connect, disconnect } = await setup({max});
+            const { element, disconnect } = await setup({max});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("max")
@@ -542,6 +542,16 @@ describe("NumberField", () => {
             const { element, disconnect } = await setup({value, max});
 
             expect(element.value).to.equal(max.toString());
+
+            await disconnect();
+        });
+
+        it("should limit precision when clamping to max", async () => {
+            const max = 1000000.0123456789; // 17 digits of precision
+            const value = '1000001';
+            const { element, disconnect } = await setup({value, max});
+
+            expect(element.value).to.equal("1000000.01234568");
 
             await disconnect();
         });
@@ -572,6 +582,16 @@ describe("NumberField", () => {
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(min.toString());
+            await disconnect();
+        });
+
+        it("should limit precision when clamping to min", async () => {
+            const min = 1000000.0123456789; // 17 digits of precision
+            const value = '999999';
+            const { element, disconnect } = await setup({value, min});
+
+            expect(element.value).to.equal("1000000.01234568");
+
             await disconnect();
         });
 
