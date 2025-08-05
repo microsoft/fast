@@ -811,7 +811,6 @@ export class ObserverMap {
         let proxiedObject = object;
 
         if (cachePaths[rootProperty]) {
-            console.log("assign observables", cachePaths);
             proxiedObject = assignObservables(
                 cachePaths[rootProperty],
                 proxiedObject,

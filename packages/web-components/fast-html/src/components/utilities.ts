@@ -1019,6 +1019,27 @@ export function assignObservables(
 
                     return Object.assign(item, originalItem);
                 });
+
+                Observable.getNotifier(proxiedData).subscribe({
+                    handleChange(subject, args) {
+                        args.forEach((arg: any) => {
+                            if (arg.addedCount > 0) {
+                                for (let i = arg.addedCount - 1; i >= 0; i--) {
+                                    const item = subject[arg.index + i];
+                                    const originalItem = Object.assign({}, item);
+
+                                    assignProxyToItemsInArray(
+                                        item,
+                                        originalItem,
+                                        cachePath
+                                    );
+
+                                    return Object.assign(item, originalItem);
+                                }
+                            }
+                        });
+                    },
+                });
             }
             break;
         }
@@ -1121,6 +1142,27 @@ function assignProxyToItemsInObject(
                 );
 
                 return Object.assign(item, originalItem);
+            });
+
+            Observable.getNotifier(proxiedData).subscribe({
+                handleChange(subject, args) {
+                    args.forEach((arg: any) => {
+                        if (arg.addedCount > 0) {
+                            for (let i = arg.addedCount - 1; i >= 0; i--) {
+                                const item = subject[arg.index + i];
+                                const originalItem = Object.assign({}, item);
+
+                                assignProxyToItemsInArray(
+                                    item,
+                                    originalItem,
+                                    cachePath.paths[rootProperty] as RepeatCachedPath
+                                );
+
+                                return Object.assign(item, originalItem);
+                            }
+                        }
+                    });
+                },
             });
         }
     }

@@ -116,6 +116,29 @@ test.describe.only("ObserverMap", async () => {
         await expect(aliceCard.locator(".post-card")).toHaveCount(3);
     });
 
+    test("should update the likes on a new post", async ({ page }) => {
+        const aliceCard = page.locator(".user-card").first();
+
+        // Add new post first
+        await aliceCard.locator("button:has-text('Add New Post')").click();
+
+        // Should now have 3 posts
+        await expect(aliceCard.locator(".post-card")).toHaveCount(3);
+
+        // Get the newly added post (should be the last one)
+        const newPost = aliceCard.locator(".post-card").nth(2);
+
+        // Check initial likes on the new post (should be 0)
+        await expect(newPost.locator("text=0 likes")).toBeVisible();
+
+        // Click like button on the new post
+        await newPost.locator("button:has-text('Like Post')").click();
+
+        // Likes should increment to 1
+        await expect(newPost.locator("text=1 likes")).toBeVisible();
+        await expect(newPost.locator("text=0 likes")).not.toBeVisible();
+    });
+
     test("should add and remove users from the array", async ({ page }) => {
         // Initial user count should be 2
         await expect(page.locator(".user-card")).toHaveCount(2);
