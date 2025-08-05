@@ -553,7 +553,16 @@ export interface ChainedExpression {
     next?: ChainedExpression;
 }
 
-function splitExpressionChain(parts: string[], operator: ChainingOperator) {
+/**
+ * Evaluates parts of an expression chain
+ * @param parts Each part of an expression chain
+ * @param operator The operator between expressions
+ * @returns
+ */
+function evaluatePartsInExpressionChain(
+    parts: string[],
+    operator: ChainingOperator
+): void | ChainedExpression {
     // Process each part recursively and chain them with ||
     const firstPart = getExpressionChain(parts[0]);
     if (firstPart) {
@@ -588,7 +597,7 @@ export function getExpressionChain(value: string): ChainedExpression | void {
     const orParts = value.split(" || ");
 
     if (orParts.length > 1) {
-        const firstPart = splitExpressionChain(orParts, "||");
+        const firstPart = evaluatePartsInExpressionChain(orParts, "||");
 
         if (firstPart) {
             return firstPart;
@@ -600,7 +609,7 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
     if (andParts.length > 1) {
         // Process each part recursively and chain them with &&
-        const firstPart = splitExpressionChain(andParts, "&&");
+        const firstPart = evaluatePartsInExpressionChain(andParts, "&&");
 
         if (firstPart) {
             return firstPart;
@@ -612,7 +621,7 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
     if (ampParts.length > 1) {
         // Process each part recursively and chain them with &amp;&amp;
-        const firstPart = splitExpressionChain(ampParts, "&amp;&amp;");
+        const firstPart = evaluatePartsInExpressionChain(ampParts, "&amp;&amp;");
 
         if (firstPart) {
             return firstPart;
