@@ -340,7 +340,7 @@ export class Calendar extends FoundationElement {
      * @public
      */
     public handleDateSelect(event: Event, day: CalendarDateInfo): void {
-        event.preventDefault;
+        event.preventDefault();
         this.$emit("dateselected", day);
     }
 
