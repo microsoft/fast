@@ -86,6 +86,10 @@
       "types": "./dist/dts/dom-policy.d.ts",
       "default": "./dist/esm/dom-policy.js"
     },
+    "./observable.js": {
+      "types": "./dist/dts/observation/observable.d.ts",
+      "default": "./dist/esm/observation/observable.js"
+    },
     "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",
