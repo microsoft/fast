@@ -553,6 +553,30 @@ export interface ChainedExpression {
     next?: ChainedExpression;
 }
 
+function splitExpressionChain(parts: string[], operator: ChainingOperator) {
+    // Process each part recursively and chain them with ||
+    const firstPart = getExpressionChain(parts[0]);
+    if (firstPart) {
+        let current = firstPart;
+
+        for (let i = 1; i < parts.length; i++) {
+            const nextPart = getExpressionChain(parts[i]);
+            if (nextPart) {
+                // Find the end of the current chain
+                while (current.next) {
+                    current = current.next;
+                }
+                current.next = {
+                    operator,
+                    ...nextPart,
+                };
+            }
+        }
+
+        return firstPart;
+    }
+}
+
 /**
  * Gets the expression chain as a configuration object
  * @param value - The binding string value
@@ -564,25 +588,9 @@ export function getExpressionChain(value: string): ChainedExpression | void {
     const orParts = value.split(" || ");
 
     if (orParts.length > 1) {
-        // Process each part recursively and chain them with ||
-        const firstPart = getExpressionChain(orParts[0]);
+        const firstPart = splitExpressionChain(orParts, "||");
+
         if (firstPart) {
-            let current = firstPart;
-
-            for (let i = 1; i < orParts.length; i++) {
-                const nextPart = getExpressionChain(orParts[i]);
-                if (nextPart) {
-                    // Find the end of the current chain
-                    while (current.next) {
-                        current = current.next;
-                    }
-                    current.next = {
-                        operator: "||",
-                        ...nextPart,
-                    };
-                }
-            }
-
             return firstPart;
         }
     }
@@ -592,24 +600,9 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
     if (andParts.length > 1) {
         // Process each part recursively and chain them with &&
-        const firstPart = getExpressionChain(andParts[0]);
+        const firstPart = splitExpressionChain(andParts, "&&");
+
         if (firstPart) {
-            let current = firstPart;
-
-            for (let i = 1; i < andParts.length; i++) {
-                const nextPart = getExpressionChain(andParts[i]);
-                if (nextPart) {
-                    // Find the end of the current chain
-                    while (current.next) {
-                        current = current.next;
-                    }
-                    current.next = {
-                        operator: "&&",
-                        ...nextPart,
-                    };
-                }
-            }
-
             return firstPart;
         }
     }
@@ -619,24 +612,9 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
     if (ampParts.length > 1) {
         // Process each part recursively and chain them with &amp;&amp;
-        const firstPart = getExpressionChain(ampParts[0]);
+        const firstPart = splitExpressionChain(ampParts, "&amp;&amp;");
+
         if (firstPart) {
-            let current = firstPart;
-
-            for (let i = 1; i < ampParts.length; i++) {
-                const nextPart = getExpressionChain(ampParts[i]);
-                if (nextPart) {
-                    // Find the end of the current chain
-                    while (current.next) {
-                        current = current.next;
-                    }
-                    current.next = {
-                        operator: "&amp;&amp;",
-                        ...nextPart,
-                    };
-                }
-            }
-
             return firstPart;
         }
     }
