@@ -96,9 +96,7 @@ export class Accordion extends FoundationElement {
             if (item instanceof AccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
-                    this.activeItemIndex !== index
-                        ? (item.expanded = false)
-                        : (item.expanded = true);
+                    item.expanded = this.activeItemIndex === index
                 }
             }
             const itemId: string | null = this.accordionIds[index];

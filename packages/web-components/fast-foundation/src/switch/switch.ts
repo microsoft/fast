@@ -41,9 +41,11 @@ export class Switch extends FormAssociatedSwitch {
             this.proxy.readOnly = this.readOnly;
         }
 
-        this.readOnly
-            ? this.classList.add("readonly")
-            : this.classList.remove("readonly");
+        if (this.readOnly) {
+            this.classList.add("readonly");
+        } else {
+            this.classList.remove("readonly");
+        }
     }
 
     /**
@@ -99,6 +101,10 @@ export class Switch extends FormAssociatedSwitch {
         /**
          * @deprecated - this behavior already exists in the template and should not exist in the class.
          */
-        this.checked ? this.classList.add("checked") : this.classList.remove("checked");
+        if (this.checked) {
+            this.classList.add("checked");
+         } else {
+            this.classList.remove("checked");
+         }
     }
 }
