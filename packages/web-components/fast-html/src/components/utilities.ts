@@ -460,6 +460,44 @@ export function pathResolver(
     };
 }
 
+export function expressionResolver(
+    self: boolean,
+    expression: ChainedExpression
+): (accessibleObject: any, context: any) => any {
+    return (x, c) => resolveChainedExpression(x, c, self, expression);
+}
+
+/**
+ * Extracts all paths from a ChainedExpression, including nested expressions
+ * @param chainedExpression - The chained expression to extract paths from
+ * @returns A Set containing all unique paths found in the expression chain
+ */
+export function extractPathsFromChainedExpression(
+    chainedExpression: ChainedExpression
+): Set<string> {
+    const paths = new Set<string>();
+
+    function processExpression(expr: Expression) {
+        // Check left operand (only add if it's not a literal value)
+        if (typeof expr.left === "string" && !expr.leftIsValue) {
+            paths.add(expr.left);
+        }
+
+        // Check right operand (only add if it's not a literal value)
+        if (typeof expr.right === "string" && !expr.rightIsValue) {
+            paths.add(expr.right);
+        }
+    }
+
+    let current: ChainedExpression | undefined = chainedExpression;
+    while (current !== undefined) {
+        processExpression(current.expression);
+        current = current.next;
+    }
+
+    return paths;
+}
+
 /**
  * Determine if the operand is a value (boolean, number, string) or an accessor.
  * @param operand
@@ -504,6 +542,7 @@ type ChainingOperator = "||" | "&&" | "&amp;&amp;";
 interface Expression {
     operator: Operator;
     left: string;
+    leftIsValue: boolean | null;
     right: string | boolean | number | null;
     rightIsValue: boolean | null;
 }
@@ -515,39 +554,84 @@ export interface ChainedExpression {
 }
 
 /**
+ * Evaluates parts of an expression chain
+ * @param parts Each part of an expression chain
+ * @param operator The operator between expressions
+ * @returns
+ */
+function evaluatePartsInExpressionChain(
+    parts: string[],
+    operator: ChainingOperator
+): void | ChainedExpression {
+    // Process each part recursively and chain them with ||
+    const firstPart = getExpressionChain(parts[0]);
+    if (firstPart) {
+        let current = firstPart;
+
+        for (let i = 1; i < parts.length; i++) {
+            const nextPart = getExpressionChain(parts[i]);
+            if (nextPart) {
+                // Find the end of the current chain
+                while (current.next) {
+                    current = current.next;
+                }
+                current.next = {
+                    operator,
+                    ...nextPart,
+                };
+            }
+        }
+
+        return firstPart;
+    }
+}
+
+/**
  * Gets the expression chain as a configuration object
  * @param value - The binding string value
  * @returns - A configuration object containing information about the expression
  */
 export function getExpressionChain(value: string): ChainedExpression | void {
-    const split = value.split(" ");
-    let expressionString: string = "";
-    let chainedExpression;
+    // Handle operator precedence: || has lower precedence than &&
+    // First, split by || (lowest precedence)
+    const orParts = value.split(" || ");
 
-    // split expressions by chaining operators
-    split.forEach((splitItem, index) => {
-        if (splitItem === "&&" || splitItem === "||" || splitItem === "&amp;&amp;") {
-            chainedExpression = {
-                expression: getExpression(expressionString),
-                next: {
-                    operator: splitItem,
-                    ...getExpressionChain(split.slice(index + 1).join(" ")),
-                },
-            };
-        } else {
-            expressionString = `${
-                expressionString ? `${expressionString} ` : ""
-            }${splitItem}`;
+    if (orParts.length > 1) {
+        const firstPart = evaluatePartsInExpressionChain(orParts, "||");
+
+        if (firstPart) {
+            return firstPart;
         }
-    });
-
-    if (chainedExpression) {
-        return chainedExpression;
     }
 
-    if (expressionString) {
+    // If no ||, check for && (higher precedence)
+    const andParts = value.split(" && ");
+
+    if (andParts.length > 1) {
+        // Process each part recursively and chain them with &&
+        const firstPart = evaluatePartsInExpressionChain(andParts, "&&");
+
+        if (firstPart) {
+            return firstPart;
+        }
+    }
+
+    // Handle HTML entity version of &&
+    const ampParts = value.split(" &amp;&amp; ");
+
+    if (ampParts.length > 1) {
+        // Process each part recursively and chain them with &amp;&amp;
+        const firstPart = evaluatePartsInExpressionChain(ampParts, "&amp;&amp;");
+
+        if (firstPart) {
+            return firstPart;
+        }
+    }
+
+    // No chaining operators found, create a single expression
+    if (value.trim()) {
         return {
-            expression: getExpression(expressionString),
+            expression: getExpression(value.trim()),
         };
     }
 
@@ -556,9 +640,13 @@ export function getExpressionChain(value: string): ChainedExpression | void {
 
 function getExpression(value: string): Expression {
     if (value[0] === "!") {
+        const left = (value as string).slice(1);
+        const operandValue = isOperandValue(left);
+
         return {
             operator: "!",
-            left: value.slice(1),
+            left,
+            leftIsValue: operandValue.isValue,
             right: null,
             rightIsValue: null,
         };
@@ -568,19 +656,24 @@ function getExpression(value: string): Expression {
 
     if (split.length === 3) {
         const operator: Operator = split[1] as Operator;
-        const { value, isValue } = isOperandValue(split[2]);
+        const right = split[2];
+        const rightOperandValue = isOperandValue(right);
+        const left = split[0];
+        const leftOperandValue = isOperandValue(left);
 
         return {
             operator,
             left: split[0],
-            right: isValue ? value : split[2],
-            rightIsValue: isValue,
+            leftIsValue: leftOperandValue.isValue,
+            right: rightOperandValue.isValue ? rightOperandValue.value : right,
+            rightIsValue: rightOperandValue.isValue,
         };
     }
 
     return {
         operator: "access",
         left: value,
+        leftIsValue: false,
         right: null,
         rightIsValue: null,
     };
@@ -653,26 +746,25 @@ function resolveChainedExpression(
     x: boolean,
     c: any,
     self: boolean,
-    expression: Expression,
-    next?: ChainedExpression
+    expression: ChainedExpression
 ): any {
-    if (next) {
-        switch (next.operator) {
+    if (expression.next) {
+        switch (expression.next.operator) {
             case "&&":
             case "&amp;&amp;":
                 return (
-                    resolveExpression(x, c, self, expression) &&
-                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                    resolveExpression(x, c, self, expression.expression) &&
+                    resolveChainedExpression(x, c, self, expression.next)
                 );
             case "||":
                 return (
-                    resolveExpression(x, c, self, expression) ||
-                    resolveChainedExpression(x, c, self, next.expression, next.next)
+                    resolveExpression(x, c, self, expression.expression) ||
+                    resolveChainedExpression(x, c, self, expression.next)
                 );
         }
     }
 
-    return resolveExpression(x, c, self, expression);
+    return resolveExpression(x, c, self, expression.expression);
 }
 
 /**
@@ -736,7 +828,7 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  */
 export function resolveWhen(
     self: boolean,
-    { expression, next }: ChainedExpression
+    expression: ChainedExpression
 ): (x: boolean, c: any) => any {
-    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression, next);
+    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression);
 }
