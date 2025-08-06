@@ -1,5 +1,5 @@
 {
-  "name": "fast-site",
+  "name": "@microsoft/fast-site",
   "version": "0.6.2",
   "private": true,
   "scripts": {

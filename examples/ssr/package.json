@@ -1,5 +1,5 @@
 {
-  "name": "fast-ssr",
+  "name": "@microsoft/fast-ssr-example",
   "version": "1.0.0",
   "description": "",
   "main": "dist/exports.js",

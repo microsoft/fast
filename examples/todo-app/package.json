@@ -1,5 +1,5 @@
 {
-  "name": "fast-todo-app",
+  "name": "@microsoft/fast-todo-app-example",
   "version": "1.0.0",
   "description": "",
   "main": "dist/exports.js",
