@@ -302,6 +302,20 @@ RenderableFASTElement(ObserverMapTestElement).defineAsync({
 
 class ObserverMapInternalTestElement extends FASTElement {
     public selectedUserId?: number;
+
+    public a: any = {
+        b: {},
+    };
+
+    public defineB() {
+        this.a.b = {
+            c: "Hello world",
+        };
+    }
+
+    public updateC() {
+        this.a.b.c = "Hello pluto";
+    }
 }
 
 RenderableFASTElement(ObserverMapInternalTestElement).defineAsync({

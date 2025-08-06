@@ -122,6 +122,11 @@
             <f-template name="observer-map-internal-test-element">
                 <template>
                     {{selecteduserid}} <!-- because this is bound to an attribute property it must be lowercase -->
+                    <f-when value="{a}">
+                        <span class="nested-define">{{a.b.c}}</span>
+                    </f-when>
+                    <button @click="{defineB()}">Define internal object</button>
+                    <button @click="{updateC()}">Update internal object</button>
                 </template>
             </f-template>
         </div>

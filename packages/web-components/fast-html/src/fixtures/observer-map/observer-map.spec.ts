@@ -194,4 +194,41 @@ test.describe("ObserverMap", async () => {
         const aliceCard = page.locator(".user-card").first();
         await expect(aliceCard.locator("text=⭐ SELECTED")).not.toBeVisible();
     });
+
+    test("should update when a nested property has been defined", async ({ page }) => {
+        const undefinedText = await page.locator(".nested-define").textContent();
+
+        await expect(undefinedText).toEqual("");
+
+        // Define the object
+        await page.locator("button:has-text('Define internal object')").nth(0).click();
+
+        await page.evaluate(() => {
+            return new Promise((resolve) => {
+                requestAnimationFrame(() => resolve(true));
+            });
+        });
+
+        const definedText = await page.locator(".nested-define").textContent();
+
+        await expect(definedText).toEqual("Hello world");
+    });
+
+    test("should update when a nested property has been updated", async ({ page }) => {
+        // Define the object
+        await page.locator("button:has-text('Define internal object')").nth(0).click();
+
+        // Update the object
+        await page.locator("button:has-text('Update internal object')").nth(0).click();
+
+        await page.evaluate(() => {
+            return new Promise((resolve) => {
+                requestAnimationFrame(() => resolve(true));
+            });
+        });
+
+        const updatedText = await page.locator(".nested-define").textContent();
+
+        await expect(updatedText).toEqual("Hello pluto");
+    });
 });

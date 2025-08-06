@@ -1126,7 +1126,7 @@ function assignProxyToItemsInObject(
         );
 
         // assign a Proxy to the object
-        proxiedData = assignProxy(target, rootProperty, data);
+        proxiedData = assignProxy(cachePath, target, rootProperty, data);
     } else if (type === "array") {
         if (cachePath.type === "repeat") {
             proxiedData = assignObservablesToArray(
@@ -1140,6 +1140,7 @@ function assignProxyToItemsInObject(
 }
 
 export function assignProxy(
+    cachePath: CachedPath,
     target: any,
     rootProperty: string,
     object: any
@@ -1148,9 +1149,7 @@ export function assignProxy(
         // Create a proxy for the object that triggers Observable.notify on mutations
         return new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
-                obj[prop] = value;
-
-                // TODO: determine if this changes any paths
+                obj[prop] = assignObservables(cachePath, value, target, rootProperty);
 
                 // Trigger notification for property changes
                 Observable.notify(target, rootProperty);
