@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 06 Aug 2025 07:15:14 GMT",
+      "version": "1.0.0-alpha.18",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.18",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "398199565277de9857ec2d6e2287c203c90c3205",
+            "comment": "Add an optional observer map"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "725870ffc6e2ffa31820a76a2272aa0d36be38e9",
+            "comment": "Fix left hand expression logic"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.6.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 28 Jul 2025 00:36:37 GMT",
       "version": "1.0.0-alpha.17",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.17",

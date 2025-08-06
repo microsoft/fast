@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 16 Jul 2025 22:43:52 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 06 Aug 2025 07:15:13 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.6.0
+
+Wed, 06 Aug 2025 07:15:13 GMT
+
+### Minor changes
+
+- Add observervable export path (7559015+janechu@users.noreply.github.com)
 
 ## 2.5.0
 

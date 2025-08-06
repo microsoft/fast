@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 28 Jul 2025 00:36:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 06 Aug 2025 07:15:14 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.18
+
+Wed, 06 Aug 2025 07:15:14 GMT
+
+### Changes
+
+- Add an optional observer map (7559015+janechu@users.noreply.github.com)
+- Fix left hand expression logic (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.6.0
 
 ## 1.0.0-alpha.17
 

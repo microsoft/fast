@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-html",
-  "version": "1.0.0-alpha.17",
+  "version": "1.0.0-alpha.18",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -64,12 +64,12 @@
     "./dist/esm/index.js"
   ],
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.5.0"
+    "@microsoft/fast-element": "^2.6.0"
   },
   "devDependencies": {
     "@ast-grep/cli": "^0.37.0",
     "@microsoft/api-extractor": "^7.47.0",
-    "@microsoft/fast-element": "^2.5.0",
+    "@microsoft/fast-element": "^2.6.0",
     "@playwright/test": "^1.49.0",
     "@types/express": "^4.17.21",
     "@types/node": "^17.0.17",
