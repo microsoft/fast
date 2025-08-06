@@ -7,10 +7,24 @@
     </head>
     <body>
         <f-template name="test-element">
-            <template>{{object.foo}}</template>
+            <template>
+                <span>{{object.b}}</span>
+                <span>{{object.a.b1}}</span>
+                <span>{{object.a.b2.c}}</span>
+                <button @click="{handleBClick()}">Set b</button>
+                <button @click="{handleAB1Click()}">Set a.b1</button>
+                <button @click="{handleAB2CClick()}">Set a.b2.c</button>
+            </template>
         </f-template>
         <test-element>
-            <template shadowrootmode="open"><!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->bar<!--fe-b$$end$$0$$t01oHhokPY$$fe-b--></template>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->bar<!--fe-b$$end$$0$$t01oHhokPY$$fe-b--></span>
+                <span><!--fe-b$$start$$1$$t01oHhokPY$$fe-b--><!--fe-b$$end$$1$$t01oHhokPY$$fe-b--></span>
+                <span><!--fe-b$$start$$2$$t01oHhokPY$$fe-b--><!--fe-b$$end$$2$$t01oHhokPY$$fe-b--></span>
+                <button>Set b</button>
+                <button>Set a.b1</button>
+                <button>Set a.b2.c</button>
+            </template>
         </test-element>
     </body>
 </html>

@@ -88,6 +88,20 @@ app.get("/dot-syntax/main.js", (req: Request, res: Response) =>
 app.get("/dot-syntax/bundle.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/dot-syntax/bundle.js", "text/javascript", req, res)
 );
+app.get("/observer-map", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./src/fixtures/observer-map/observer-map.fixture.html",
+        "text/html",
+        req,
+        res
+    )
+);
+app.get("/observer-map/main.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/observer-map/main.js", "text/javascript", req, res)
+);
+app.get("/observer-map/bundle.js", (req: Request, res: Response) =>
+    handlePathRequest("./server/dist/observer-map/bundle.js", "text/javascript", req, res)
+);
 app.get("/partial", (req: Request, res: Response) =>
     handlePathRequest(
         "./src/fixtures/partial/partial.fixture.html",

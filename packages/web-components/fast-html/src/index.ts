@@ -3,4 +3,8 @@ import { debugMessages } from "./debug.js";
 
 FAST.addMessages(debugMessages);
 
-export { RenderableFASTElement, TemplateElement } from "./components/index.js";
+export {
+    RenderableFASTElement,
+    TemplateElement,
+    ObserverMap,
+} from "./components/index.js";

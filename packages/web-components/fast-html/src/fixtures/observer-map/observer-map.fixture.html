@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="/observer-map/main.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <observer-map-test-element></observer-map-test-element>
+            <f-template name="observer-map-test-element">
+                <template>
+                    <observer-map-internal-test-element
+                        :selecteduserid="{{selectedUserId}}"
+                    ></observer-map-internal-test-element>
+                    <div class="stats">
+                        <h2>Global Stats</h2>
+                        <div class="nested-info">
+                            <strong>Total Users:</strong> {{stats.totalUsers}} |
+                            <strong>Active Users:</strong> {{stats.activeUsers}}
+                        </div>
+                        <div class="nested-info">
+                            <strong>Engagement:</strong>
+                            Daily: {{stats.metrics.engagement.daily}},
+                            Weekly: {{stats.metrics.engagement.weekly}},
+                            Monthly: {{stats.metrics.engagement.monthly}}
+                        </div>
+                        <div class="nested-info">
+                            <strong>Performance:</strong>
+                            Load: {{stats.metrics.performance.loadTime}}s,
+                            Render: {{stats.metrics.performance.renderTime}}s
+                        </div>
+                        <div class="controls">
+                            <button @click="{updateStats()}">Update Stats</button>
+                            <button @click="{addNewUser()}">Add New User</button>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>Users List</h2>
+                        <f-repeat value="{{user in users}}">
+                            <div class="user-card">
+                                <h3>{{user.name}} (ID: {{user.id}})
+                                    <f-when value="{{user.id == ../selectedUserId}}">
+                                        <span>⭐ SELECTED</span>
+                                    </f-when>
+                                </h3>
+
+                                <div class="nested-info">
+                                    <strong>Age:</strong> {{user.details.personal.age}} years old
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Location:</strong> {{user.details.personal.location.city}}, {{user.details.personal.location.country}}
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Coordinates:</strong>
+                                    Lat: {{user.details.personal.location.coordinates.lat}},
+                                    Lng: {{user.details.personal.location.coordinates.lng}}
+                                </div>
+
+                                <div class="nested-info">
+                                    <strong>Theme:</strong> {{user.details.preferences.theme}} |
+                                    <strong>Email Notifications:</strong> {{user.details.preferences.notifications.email}} |
+                                    <strong>Push Notifications:</strong> {{user.details.preferences.notifications.push}}
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Notification Frequency:</strong> {{user.details.preferences.notifications.settings.frequency}}
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Categories:</strong>
+                                    <f-repeat value="{{category in user.details.preferences.notifications.settings.categories}}">
+                                        <span class="tag">{{category}}</span>
+                                    </f-repeat>
+                                </div>
+
+                                <div class="controls">
+                                    <button @click="{../selectUser(user.id)}">Select User</button>
+                                    <button @click="{../updateUserAge(user.id)}">Age +1</button>
+                                    <button @click="{../toggleUserTheme(user.id)}">Toggle Theme</button>
+                                    <button @click="{../updateUserLocation(user.id)}">Change Location</button>
+                                    <button @click="{../updateNotificationSettings(user.id)}">Update Notifications</button>
+                                    <button @click="{../addNotificationCategory(user.id)}">Add Category</button>
+                                    <button @click="{../removeNotificationCategory(user.id)}">Remove Tech Category</button>
+                                    <button @click="{../removeUser(user.id)}">Remove User</button>
+                                </div>
+
+                                <div>
+                                    <h4>Posts ({{user.posts.length}} posts)</h4>
+                                    <f-repeat value="{{post in user.posts}}">
+                                        <div class="post-card">
+                                            <div><strong>{{post.title}}</strong> (ID: {{post.id}})</div>
+                                            <div class="nested-info">{{post.content}}</div>
+                                            <div class="nested-info">
+                                                <strong>Author:</strong> {{post.metadata.author.name}}
+                                                <f-when value="{{post.metadata.author.verified}}">
+                                                    <span>✓ Verified</span>
+                                                </f-when>
+                                            </div>
+                                            <div class="nested-info">
+                                                <strong>Stats:</strong> {{post.metadata.views}} views, {{post.metadata.likes}} likes
+                                            </div>
+                                            <div class="nested-info">
+                                                <strong>Tags:</strong>
+                                                <f-repeat value="{{tag in post.metadata.tags}}">
+                                                    <span class="tag">{{tag}}</span>
+                                                </f-repeat>
+                                            </div>
+                                            <div class="controls">
+                                                <button @click="{../../incrementPostLikes(post.id)}">Like Post</button>
+                                            </div>
+                                        </div>
+                                    </f-repeat>
+                                    <div class="controls">
+                                        <button @click="{../addPostToUser(user.id)}">Add New Post</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </f-repeat>
+                    </div>
+                </template>
+            </f-template>
+            <f-template name="observer-map-internal-test-element">
+                <template>
+                    {{selecteduserid}} <!-- because this is bound to an attribute property it must be lowercase -->
+                    <f-when value="{a}">
+                        <span class="nested-define">{{a.b.c}}</span>
+                    </f-when>
+                    <button @click="{defineB()}">Define internal object</button>
+                    <button @click="{updateC()}">Update internal object</button>
+                </template>
+            </f-template>
+        </div>
+    </body>
+</html>

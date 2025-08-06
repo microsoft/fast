@@ -1,3 +1,6 @@
+import { Observable } from "@microsoft/fast-element/observable.js";
+import { type ObserverMap } from "./observer-map.js";
+
 type BehaviorType = "dataBinding" | "templateDirective";
 
 type TemplateDirective = "when" | "repeat" | "apply";
@@ -9,6 +12,8 @@ type DataBindingBindingType = "client" | "default" | "unescaped";
 interface BehaviorConfig {
     type: BehaviorType;
 }
+
+export type PathType = "access" | "default" | "event" | "repeat";
 
 export interface ContentDataBindingBehaviorConfig extends BaseDataBindingBehaviorConfig {
     subtype: "content";
@@ -54,6 +59,61 @@ interface PartialTemplateConfig {
     innerHTML: string;
     startIndex: number;
     endIndex: number;
+}
+
+type AccessCachedPathType = "access";
+
+export interface AccessCachedPath {
+    type: AccessCachedPathType;
+    relativePath: string;
+    absolutePath: string;
+}
+
+type DefaultCachedPathType = "default";
+
+export interface DefaultCachedPath {
+    type: DefaultCachedPathType;
+    paths: Record<string, CachedPath>; // where the key is the relativePath
+}
+
+type EventCachedPathType = "event";
+
+export interface EventCachedPath {
+    type: EventCachedPathType;
+    relativePath: string;
+    absolutePath: string;
+}
+
+type RepeatCachedPathType = "repeat";
+
+export interface RepeatCachedPath {
+    type: RepeatCachedPathType;
+    context: string;
+    paths: Record<string, CachedPath>;
+}
+
+export type CachedPath =
+    | DefaultCachedPath
+    | RepeatCachedPath
+    | AccessCachedPath
+    | EventCachedPath;
+
+export type CachedPathMap = Record<string, CachedPath>;
+
+export interface ContextCache {
+    /**
+     * The path to this context
+     */
+    absolutePath: string; // users
+    /**
+     * The self string of that context
+     */
+    context: string; // user
+
+    /**
+     * The parent of this context
+     */
+    parent: string | null;
 }
 
 const openClientSideBinding: string = "{";
@@ -419,8 +479,31 @@ export function pathResolver(
     path: string,
     self: boolean = false
 ): (accessibleObject: any, context: any) => any {
-    let splitPath = path.split(".");
-    const usesContext = path.startsWith("../");
+    let splitPath: string[] = [];
+    path.split("../").forEach((pathItem, index) => {
+        if (pathItem === "") {
+            splitPath.unshift("../");
+        } else {
+            splitPath.push(...pathItem.split("."));
+        }
+    });
+    splitPath = splitPath.map((pathItem: string, index: number) => {
+        if (pathItem === "../") {
+            if (splitPath[index + 1] === "../") {
+                return "parentContext";
+            }
+
+            return "parent";
+        }
+
+        return pathItem;
+    });
+
+    return pathWithContextResolver(splitPath, self);
+}
+
+function pathWithContextResolver(splitPath: string[], self: boolean): any {
+    const usesContext = splitPath[0] === "parent" || splitPath[0] === "parentContext";
 
     if (self && !usesContext) {
         if (splitPath.length > 1) {
@@ -432,38 +515,71 @@ export function pathResolver(
         }
     }
 
-    if (splitPath.length === 1 && !usesContext) {
-        return (accessibleObject: AccessibleObject) => {
-            return accessibleObject?.[splitPath[0]];
-        };
-    }
-
-    return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
-        if (usesContext) {
-            splitPath = [];
-            path.split("../").forEach(pathItem => {
-                if (pathItem === "") {
-                    splitPath.unshift("parent");
-                } else {
-                    splitPath.push(...pathItem.split("."));
-                }
-            });
-
+    if (usesContext) {
+        return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
             return splitPath.reduce((previousAccessors, pathItem) => {
                 return previousAccessors?.[pathItem];
             }, context);
-        }
+        };
+    }
 
+    return (accessibleObject: AccessibleObject) => {
         return splitPath.reduce((previousAccessors, pathItem) => {
             return previousAccessors?.[pathItem];
         }, accessibleObject);
     };
 }
 
+export function bindingResolver(
+    path: string,
+    self: boolean = false,
+    parentContext: string | null,
+    type: PathType,
+    observerMap: ObserverMap | null,
+    contextPath: string | null,
+    level: number
+): (accessibleObject: any, context: any) => any {
+    // Cache path during template processing when ObserverMap is provided
+    if (observerMap) {
+        observerMap.cachePathWithContext({
+            path,
+            self,
+            parentContext,
+            contextPath,
+            type,
+            level,
+            rootPath: null,
+            context: null,
+        });
+    }
+
+    return pathResolver(path, self);
+}
+
 export function expressionResolver(
     self: boolean,
-    expression: ChainedExpression
+    expression: ChainedExpression,
+    parentContext: string | null,
+    level: number,
+    observerMap?: ObserverMap
 ): (accessibleObject: any, context: any) => any {
+    // Cache paths from expression during template processing when ObserverMap is provided
+    if (observerMap) {
+        const paths = extractPathsFromChainedExpression(expression);
+        paths.forEach(path => {
+            observerMap.cachePathWithContext({
+                path,
+                self,
+                parentContext,
+                contextPath: null,
+                type: "access",
+                level,
+                rootPath: null,
+                context: null,
+            });
+        });
+    }
+
     return (x, c) => resolveChainedExpression(x, c, self, expression);
 }
 
@@ -824,11 +940,242 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param chainedExpression - The chained expression which includes the expression and the next expression
  * if there is another in the chain
+ * @param observerMap - Optional ObserverMap instance for caching paths during template processing
  * @returns - A binding that resolves the chained expression logic
  */
 export function resolveWhen(
     self: boolean,
-    expression: ChainedExpression
+    expression: ChainedExpression,
+    parentContext: string | null,
+    level: number,
+    observerMap?: ObserverMap
 ): (x: boolean, c: any) => any {
-    return (x: boolean, c: any) => resolveChainedExpression(x, c, self, expression);
+    const binding = expressionResolver(
+        self,
+        expression,
+        parentContext,
+        level,
+        observerMap
+    );
+    return (x: boolean, c: any) => binding(x, c);
+}
+
+type DataType = "array" | "object" | "primitive";
+
+/**
+ * Helper function to determine the data type of an object property
+ */
+function getDataType(object: any): DataType {
+    if (Array.isArray(object)) return "array";
+    if (typeof object === "object" && object !== null) return "object";
+    return "primitive";
+}
+
+/**
+ * Get the next property
+ * @param path The dot syntax data path
+ * @returns The next property
+ */
+export function getNextProperty(path: string): string {
+    return path.split(".")[0];
+}
+
+function sortByDeepestNestingItem(first: string[], second: string[]): number {
+    const firstRelativePathLength = first.length;
+    const secondRelativePathLength = second.length;
+
+    return firstRelativePathLength > secondRelativePathLength
+        ? -1
+        : secondRelativePathLength > firstRelativePathLength
+        ? 1
+        : 0;
+}
+
+function assignObservablesToArray(proxiedData: any, cachePath: CachedPath): any {
+    const data = proxiedData.map((item: any) => {
+        const originalItem = Object.assign({}, item);
+
+        assignProxyToItemsInArray(item, originalItem, cachePath as RepeatCachedPath);
+
+        return Object.assign(item, originalItem);
+    });
+
+    Observable.getNotifier(data).subscribe({
+        handleChange(subject, args) {
+            args.forEach((arg: any) => {
+                if (arg.addedCount > 0) {
+                    for (let i = arg.addedCount - 1; i >= 0; i--) {
+                        const item = subject[arg.index + i];
+                        const originalItem = Object.assign({}, item);
+
+                        assignProxyToItemsInArray(
+                            item,
+                            originalItem,
+                            cachePath as RepeatCachedPath
+                        );
+
+                        return Object.assign(item, originalItem);
+                    }
+                }
+            });
+        },
+    });
+
+    return data;
+}
+
+export function assignObservables(
+    cachePath: CachedPath,
+    data: any,
+    target: any,
+    rootProperty: string
+): typeof Proxy {
+    const dataType = getDataType(data);
+    let proxiedData = data;
+
+    switch (dataType) {
+        case "array": {
+            if (cachePath.type === "repeat") {
+                proxiedData = assignObservablesToArray(proxiedData, cachePath);
+            }
+            break;
+        }
+        case "object": {
+            if (cachePath.type === "default") {
+                const relativePaths = Object.values(
+                    cachePath.paths as Record<string, AccessCachedPath>
+                )
+                    .map((value: AccessCachedPath) => {
+                        return value.relativePath.split(".").slice(1); // the first item is the root path
+                    })
+                    .sort(sortByDeepestNestingItem);
+
+                for (const relativePath of relativePaths) {
+                    proxiedData = assignProxyToItemsInObject(
+                        relativePath,
+                        target,
+                        rootProperty,
+                        proxiedData,
+                        cachePath
+                    );
+                }
+            }
+            break;
+        }
+    }
+
+    return proxiedData;
+}
+
+function assignProxyToItemsInArray(
+    item: any,
+    originalItem: any,
+    cachePath: RepeatCachedPath
+): void {
+    const itemProperties = Object.keys(item);
+
+    itemProperties.forEach(key => {
+        Observable.defineProperty(item, key);
+
+        const relativePaths = (
+            Object.values(cachePath.paths).filter(pathItem => {
+                if (pathItem.type === "access") {
+                    return pathItem.relativePath.startsWith(
+                        `${cachePath.context}.${key}.`
+                    );
+                }
+
+                return false;
+            }) as Array<AccessCachedPath>
+        )
+            .map(value => {
+                return value.relativePath.split(".").slice(2); // the first item is the context, the next is the property
+            })
+            .sort(sortByDeepestNestingItem);
+
+        for (const relativePath of relativePaths) {
+            originalItem[key] = assignProxyToItemsInObject(
+                relativePath,
+                item,
+                key,
+                originalItem[key],
+                cachePath
+            );
+        }
+    });
+}
+
+function assignProxyToItemsInObject(
+    paths: string[],
+    target: any,
+    rootProperty: string,
+    data: any,
+    cachePath: CachedPath
+): any | typeof Proxy {
+    const type = getDataType(data);
+    let proxiedData = data;
+
+    if (type === "object") {
+        // navigate through all items in the object
+        proxiedData[paths[0]] = assignProxyToItemsInObject(
+            paths.slice(1),
+            target,
+            rootProperty,
+            proxiedData[paths[0]],
+            cachePath
+        );
+
+        // assign a Proxy to the object
+        proxiedData = assignProxy(cachePath, target, rootProperty, data);
+    } else if (type === "array") {
+        if (cachePath.type === "repeat") {
+            proxiedData = assignObservablesToArray(
+                proxiedData,
+                cachePath.paths[rootProperty]
+            );
+        }
+    }
+
+    return proxiedData;
+}
+
+export function assignProxy(
+    cachePath: CachedPath,
+    target: any,
+    rootProperty: string,
+    object: any
+): typeof Proxy {
+    if (object.$isProxy === undefined) {
+        // Create a proxy for the object that triggers Observable.notify on mutations
+        return new Proxy(object, {
+            set: (obj: any, prop: string | symbol, value: any) => {
+                obj[prop] = assignObservables(cachePath, value, target, rootProperty);
+
+                // Trigger notification for property changes
+                Observable.notify(target, rootProperty);
+
+                return true;
+            },
+            get: (target, key) => {
+                if (key !== "$isProxy") {
+                    return target[key];
+                }
+
+                return true;
+            },
+            deleteProperty: (obj: any, prop: string | symbol) => {
+                if (prop in obj) {
+                    delete obj[prop];
+
+                    // Trigger notification for property deletion
+                    Observable.notify(target, rootProperty);
+
+                    return true;
+                }
+                return false;
+            },
+        });
+    }
+
+    return object;
 }

@@ -17,9 +17,9 @@ class TestElement extends FASTElement {
         console.log(foo);
     };
 
-    public handleModifyAttributeClick() {
+    public handleModifyAttributeClick = (): void => {
         this.foo = "modified-by-click";
-    }
+    };
 }
 RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",

@@ -13,24 +13,28 @@ import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
 import {
     AttributeDirective,
+    bindingResolver,
     ChainedExpression,
     DataBindingBehaviorConfig,
     getAllPartials,
     getExpressionChain,
     getNextBehavior,
-    pathResolver,
     resolveWhen,
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
+import { ObserverMap } from "./observer-map.js";
 
 interface ResolvedStringsAndValues {
     strings: Array<string>;
     values: Array<any>;
 }
 
+export type ObserverMapOption = "all";
+
 export interface ElementOptions {
     shadowOptions?: ShadowRootOptions | undefined;
+    observerMap?: ObserverMapOption | undefined;
 }
 
 /**
@@ -57,6 +61,11 @@ class TemplateElement extends FASTElement {
 
     private partials: { [key: string]: ViewTemplate } = {};
 
+    /**
+     * ObserverMap instance for caching binding paths
+     */
+    private observerMap?: ObserverMap;
+
     private static defaultElementOptions: ElementOptions = {
         shadowOptions: {
             mode: "open",
@@ -72,6 +81,7 @@ class TemplateElement extends FASTElement {
                 shadowOptions:
                     value.shadowOptions ??
                     TemplateElement.defaultElementOptions.shadowOptions,
+                observerMap: value.observerMap,
             };
         }
 
@@ -85,7 +95,11 @@ class TemplateElement extends FASTElement {
     constructor() {
         super();
 
-        if (!!TemplateElement.elementOptions) {
+        // Ensure elementOptions is initialized if it's empty
+        if (
+            !TemplateElement.elementOptions ||
+            Object.keys(TemplateElement.elementOptions).length === 0
+        ) {
             TemplateElement.options();
         }
     }
@@ -95,7 +109,7 @@ class TemplateElement extends FASTElement {
      * @param name - The name of the custom element to set options for.
      */
     private static setOptions(name: string): void {
-        if (!!!TemplateElement.elementOptions[name]) {
+        if (!TemplateElement.elementOptions[name]) {
             TemplateElement.elementOptions[name] = TemplateElement.defaultElementOptions;
         }
     }
@@ -103,10 +117,17 @@ class TemplateElement extends FASTElement {
     connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.name) {
+        if (typeof this.name === "string") {
             FASTElementDefinition.registerAsync(this.name).then(async value => {
-                if (this.name && !!!TemplateElement.elementOptions?.[this.name]) {
-                    TemplateElement.setOptions(this.name);
+                if (!TemplateElement.elementOptions?.[this.name as string]) {
+                    TemplateElement.setOptions(this.name as string);
+                }
+
+                if (
+                    TemplateElement.elementOptions[this.name as string]?.observerMap ===
+                    "all"
+                ) {
+                    this.observerMap = new ObserverMap(value.prototype);
                 }
 
                 const registeredFastElement: FASTElementDefinition | undefined =
@@ -118,9 +139,17 @@ class TemplateElement extends FASTElement {
 
                     await this.resolveAllPartials(innerHTML);
 
+                    // Cache paths during template processing (pass undefined if observerMap is not available)
                     const { strings, values } = await this.resolveStringsAndValues(
-                        innerHTML
+                        innerHTML,
+                        false,
+                        null,
+                        0,
+                        this.observerMap
                     );
+
+                    // Define the root properties cached in the observer map as observable (only if observerMap exists)
+                    this.observerMap?.defineProperties();
 
                     if (registeredFastElement) {
                         // all new elements will get the updated template
@@ -145,14 +174,26 @@ class TemplateElement extends FASTElement {
      * Resolve strings and values from an innerHTML string
      * @param innerHTML - The innerHTML.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveStringsAndValues(
         innerHTML: string,
-        self: boolean = false
+        self: boolean = false,
+        parentContext: string | null,
+        level: number,
+        observerMap?: ObserverMap
     ): Promise<ResolvedStringsAndValues> {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
-        await this.resolveInnerHTML(innerHTML, strings, values, self);
+        await this.resolveInnerHTML(
+            innerHTML,
+            strings,
+            values,
+            self,
+            parentContext,
+            level,
+            observerMap
+        );
 
         (strings as any).raw = strings.map(value => String.raw({ raw: value }));
 
@@ -179,61 +220,85 @@ class TemplateElement extends FASTElement {
      * @param behaviorConfig - The directive behavior configuration object.
      * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
+     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveTemplateDirective(
         behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string,
-        self: boolean = false
+        self: boolean = false,
+        parentContext: string | null,
+        level: number,
+        observerMap?: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.name) {
-            case "when":
-                {
-                    const { strings, values } = await this.resolveStringsAndValues(
-                        innerHTML.slice(
-                            behaviorConfig.openingTagEndIndex,
-                            behaviorConfig.closingTagStartIndex
-                        ),
-                        self
-                    );
+            case "when": {
+                const { when } = await import("@microsoft/fast-element");
 
-                    const { when } = await import("@microsoft/fast-element");
+                const expressionChain = getExpressionChain(behaviorConfig.value);
 
-                    const expressionChain = getExpressionChain(behaviorConfig.value);
+                const whenLogic = resolveWhen(
+                    self,
+                    expressionChain as ChainedExpression,
+                    parentContext,
+                    level,
+                    observerMap
+                );
 
-                    const whenLogic = resolveWhen(
-                        self,
-                        expressionChain as ChainedExpression
-                    );
+                const { strings, values } = await this.resolveStringsAndValues(
+                    innerHTML.slice(
+                        behaviorConfig.openingTagEndIndex,
+                        behaviorConfig.closingTagStartIndex
+                    ),
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
+                );
 
-                    externalValues.push(
-                        when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
-                    );
-                }
-
-                break;
-            case "repeat":
-                {
-                    const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
-                    const { strings, values } = await this.resolveStringsAndValues(
-                        innerHTML.slice(
-                            behaviorConfig.openingTagEndIndex,
-                            behaviorConfig.closingTagStartIndex
-                        ),
-                        true
-                    );
-
-                    const { repeat } = await import("@microsoft/fast-element");
-
-                    externalValues.push(
-                        repeat(
-                            (x, c) => pathResolver(valueAttr[2], self)(x, c),
-                            this.resolveTemplateOrBehavior(strings, values)
-                        )
-                    );
-                }
+                externalValues.push(
+                    when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
+                );
 
                 break;
+            }
+            case "repeat": {
+                const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
+                const updatedLevel = level + 1;
+
+                const { repeat } = await import("@microsoft/fast-element");
+
+                const binding = bindingResolver(
+                    valueAttr[2],
+                    self,
+                    parentContext,
+                    "repeat",
+                    observerMap ?? null,
+                    valueAttr[0],
+                    level
+                );
+
+                const { strings, values } = await this.resolveStringsAndValues(
+                    innerHTML.slice(
+                        behaviorConfig.openingTagEndIndex,
+                        behaviorConfig.closingTagStartIndex
+                    ),
+                    true,
+                    valueAttr[0],
+                    updatedLevel,
+                    observerMap
+                );
+
+                externalValues.push(
+                    repeat(
+                        (x, c) => binding(x, c),
+                        this.resolveTemplateOrBehavior(strings, values)
+                    )
+                );
+
+                break;
+            }
             case "apply": {
                 const openingTag = innerHTML.slice(
                     behaviorConfig.openingTagStartIndex,
@@ -249,9 +314,19 @@ class TemplateElement extends FASTElement {
                 if (partial) {
                     const { when } = await import("@microsoft/fast-element");
 
+                    const binding = bindingResolver(
+                        behaviorConfig.value,
+                        self,
+                        parentContext,
+                        "access",
+                        observerMap ?? null,
+                        null,
+                        level
+                    );
+
                     externalValues.push(
                         when(
-                            (x, c) => pathResolver(behaviorConfig.value, self)(x, c),
+                            (x, c) => binding(x, c),
                             () => this.partials[partial]
                         )
                     );
@@ -272,45 +347,42 @@ class TemplateElement extends FASTElement {
         externalValues: Array<any>
     ) {
         switch (name) {
-            case "children":
-                {
-                    const { children } = await import("@microsoft/fast-element");
+            case "children": {
+                const { children } = await import("@microsoft/fast-element");
 
-                    externalValues.push(children(propName));
-                }
+                externalValues.push(children(propName));
 
                 break;
-            case "slotted":
-                {
-                    const { slotted } = await import("@microsoft/fast-element");
+            }
+            case "slotted": {
+                const { slotted } = await import("@microsoft/fast-element");
 
-                    const parts = propName.trim().split(" filter ");
-                    const slottedOption = {
-                        property: parts[0],
-                    };
+                const parts = propName.trim().split(" filter ");
+                const slottedOption = {
+                    property: parts[0],
+                };
 
-                    if (parts[1]) {
-                        if (parts[1].startsWith("elements(")) {
-                            let params = parts[1].replace("elements(", "");
-                            params = params.substring(0, params.lastIndexOf(")"));
-                            Object.assign(slottedOption, {
-                                filter: elements(params || undefined),
-                            });
-                        }
+                if (parts[1]) {
+                    if (parts[1].startsWith("elements(")) {
+                        let params = parts[1].replace("elements(", "");
+                        params = params.substring(0, params.lastIndexOf(")"));
+                        Object.assign(slottedOption, {
+                            filter: elements(params || undefined),
+                        });
                     }
-
-                    externalValues.push(slotted(slottedOption));
                 }
 
-                break;
-            case "ref":
-                {
-                    const { ref } = await import("@microsoft/fast-element");
-
-                    externalValues.push(ref(propName));
-                }
+                externalValues.push(slotted(slottedOption));
 
                 break;
+            }
+            case "ref": {
+                const { ref } = await import("@microsoft/fast-element");
+
+                externalValues.push(ref(propName));
+
+                break;
+            }
         }
     }
 
@@ -321,34 +393,49 @@ class TemplateElement extends FASTElement {
      * @param values - The interpreted values.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
      * @param behaviorConfig - The binding behavior configuration object.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveDataBinding(
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
         self: boolean = false,
-        behaviorConfig: DataBindingBehaviorConfig
+        behaviorConfig: DataBindingBehaviorConfig,
+        parentContext: string | null,
+        level: number,
+        observerMap?: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.subtype) {
-            case "content":
-                {
-                    strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex
-                    );
-                    const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c);
-                    values.push(binding);
-                    await this.resolveInnerHTML(
-                        innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
-                        strings,
-                        values,
-                        self
-                    );
-                }
+            case "content": {
+                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
+                const propName = innerHTML.slice(
+                    behaviorConfig.openingEndIndex,
+                    behaviorConfig.closingStartIndex
+                );
+                const binding = bindingResolver(
+                    propName,
+                    self,
+                    parentContext,
+                    "access",
+                    observerMap ?? null,
+                    null,
+                    level
+                );
+                const contentBinding = (x: any, c: any) => binding(x, c);
+                values.push(contentBinding);
+                await this.resolveInnerHTML(
+                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+                    strings,
+                    values,
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
+                );
+
                 break;
-            case "attribute":
+            }
+            case "attribute": {
                 strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                 if (behaviorConfig.aspect === "@") {
                     const bindingHTML = innerHTML.slice(
@@ -367,61 +454,91 @@ class TemplateElement extends FASTElement {
                         openingParenthesis + 1,
                         closingParenthesis
                     );
-                    const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c).bind(x)(
+                    const binding = bindingResolver(
+                        propName,
+                        self,
+                        parentContext,
+                        "event",
+                        observerMap ?? null,
+                        null,
+                        level
+                    );
+                    const attributeBinding = (x: any, c: any) =>
+                        binding(x, c).bind(x)(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
-                                ? [pathResolver(arg)(x, c)]
+                                ? [
+                                      bindingResolver(
+                                          arg,
+                                          self,
+                                          parentContext,
+                                          "event",
+                                          observerMap ?? null,
+                                          null,
+                                          level
+                                      )(x, c),
+                                  ]
                                 : [])
                         );
-                    values.push(binding);
+                    values.push(attributeBinding);
                 } else {
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const binding = (x: any, c: any) =>
-                        pathResolver(propName, self)(x, c);
-                    values.push(binding);
+                    const binding = bindingResolver(
+                        propName,
+                        self,
+                        parentContext,
+                        "access",
+                        observerMap ?? null,
+                        null,
+                        level
+                    );
+                    const attributeBinding = (x: any, c: any) => binding(x, c);
+                    values.push(attributeBinding);
                 }
 
                 await this.resolveInnerHTML(
                     innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
                     strings,
                     values,
-                    self
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
                 );
+
                 break;
-            case "attributeDirective":
-                {
-                    strings.push(
-                        innerHTML.slice(
-                            0,
-                            behaviorConfig.openingStartIndex -
-                                behaviorConfig.name.length -
-                                4
-                        )
-                    );
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex
-                    );
-                    await this.resolveAttributeDirective(
-                        behaviorConfig.name,
-                        propName,
-                        values
-                    );
-                    await this.resolveInnerHTML(
-                        innerHTML.slice(
-                            behaviorConfig.closingEndIndex + 1,
-                            innerHTML.length
-                        ),
-                        strings,
-                        values,
-                        self
-                    );
-                }
+            }
+            case "attributeDirective": {
+                strings.push(
+                    innerHTML.slice(
+                        0,
+                        behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4
+                    )
+                );
+                const propName = innerHTML.slice(
+                    behaviorConfig.openingEndIndex,
+                    behaviorConfig.closingStartIndex
+                );
+                await this.resolveAttributeDirective(
+                    behaviorConfig.name,
+                    propName,
+                    values
+                );
+                await this.resolveInnerHTML(
+                    innerHTML.slice(behaviorConfig.closingEndIndex + 1, innerHTML.length),
+                    strings,
+                    values,
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
+                );
+
                 break;
+            }
         }
     }
 
@@ -431,12 +548,16 @@ class TemplateElement extends FASTElement {
      * @param strings - The strings array.
      * @param values - The interpreted values.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
+     * @param observerMap - ObserverMap instance for caching binding paths (optional).
      */
     private async resolveInnerHTML(
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
-        self: boolean = false
+        self: boolean = false,
+        parentContext: string | null,
+        level: number,
+        observerMap?: ObserverMap
     ): Promise<void> {
         const behaviorConfig = getNextBehavior(innerHTML);
 
@@ -444,23 +565,30 @@ class TemplateElement extends FASTElement {
             strings.push(innerHTML);
         } else {
             switch (behaviorConfig.type) {
-                case "dataBinding":
+                case "dataBinding": {
                     await this.resolveDataBinding(
                         innerHTML,
                         strings,
                         values,
                         self,
-                        behaviorConfig
+                        behaviorConfig,
+                        parentContext,
+                        level,
+                        observerMap
                     );
 
                     break;
-                case "templateDirective":
+                }
+                case "templateDirective": {
                     strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));
                     await this.resolveTemplateDirective(
                         behaviorConfig,
                         values,
                         innerHTML,
-                        self
+                        self,
+                        parentContext,
+                        level,
+                        observerMap
                     );
 
                     await this.resolveInnerHTML(
@@ -470,10 +598,14 @@ class TemplateElement extends FASTElement {
                         ),
                         strings,
                         values,
-                        self
+                        self,
+                        parentContext,
+                        level,
+                        observerMap
                     );
 
                     break;
+                }
             }
         }
     }
@@ -487,7 +619,11 @@ class TemplateElement extends FASTElement {
 
         for (let i = 0, partialLength = allPartials.length; i < partialLength; i++) {
             const { strings, values } = await this.resolveStringsAndValues(
-                allPartials[i][1].innerHTML
+                allPartials[i][1].innerHTML,
+                undefined,
+                null,
+                0,
+                this.observerMap
             );
             this.partials[allPartials[i][0]] = this.resolveTemplateOrBehavior(
                 strings,
