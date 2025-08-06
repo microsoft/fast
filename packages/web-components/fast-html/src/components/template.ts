@@ -117,18 +117,17 @@ class TemplateElement extends FASTElement {
     connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.name) {
+        if (typeof this.name === "string") {
             FASTElementDefinition.registerAsync(this.name).then(async value => {
-                if (this.name) {
-                    if (!TemplateElement.elementOptions?.[this.name]) {
-                        TemplateElement.setOptions(this.name);
-                    }
+                if (!TemplateElement.elementOptions?.[this.name as string]) {
+                    TemplateElement.setOptions(this.name as string);
+                }
 
-                    if (
-                        TemplateElement.elementOptions[this.name]?.observerMap === "all"
-                    ) {
-                        this.observerMap = new ObserverMap(value.prototype);
-                    }
+                if (
+                    TemplateElement.elementOptions[this.name as string]?.observerMap ===
+                    "all"
+                ) {
+                    this.observerMap = new ObserverMap(value.prototype);
                 }
 
                 const registeredFastElement: FASTElementDefinition | undefined =
@@ -150,9 +149,7 @@ class TemplateElement extends FASTElement {
                     );
 
                     // Define the root properties cached in the observer map as observable (only if observerMap exists)
-                    if (this.observerMap) {
-                        this.observerMap.defineProperties();
-                    }
+                    this.observerMap?.defineProperties();
 
                     if (registeredFastElement) {
                         // all new elements will get the updated template
@@ -236,74 +233,72 @@ class TemplateElement extends FASTElement {
         observerMap?: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.name) {
-            case "when":
-                {
-                    const { when } = await import("@microsoft/fast-element");
+            case "when": {
+                const { when } = await import("@microsoft/fast-element");
 
-                    const expressionChain = getExpressionChain(behaviorConfig.value);
+                const expressionChain = getExpressionChain(behaviorConfig.value);
 
-                    const whenLogic = resolveWhen(
-                        self,
-                        expressionChain as ChainedExpression,
-                        parentContext,
-                        level,
-                        observerMap
-                    );
+                const whenLogic = resolveWhen(
+                    self,
+                    expressionChain as ChainedExpression,
+                    parentContext,
+                    level,
+                    observerMap
+                );
 
-                    const { strings, values } = await this.resolveStringsAndValues(
-                        innerHTML.slice(
-                            behaviorConfig.openingTagEndIndex,
-                            behaviorConfig.closingTagStartIndex
-                        ),
-                        self,
-                        parentContext,
-                        level,
-                        observerMap
-                    );
+                const { strings, values } = await this.resolveStringsAndValues(
+                    innerHTML.slice(
+                        behaviorConfig.openingTagEndIndex,
+                        behaviorConfig.closingTagStartIndex
+                    ),
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
+                );
 
-                    externalValues.push(
-                        when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
-                    );
-                }
+                externalValues.push(
+                    when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
+                );
 
                 break;
-            case "repeat":
-                {
-                    const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
-                    const updatedLevel = level + 1;
+            }
+            case "repeat": {
+                const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
+                const updatedLevel = level + 1;
 
-                    const { repeat } = await import("@microsoft/fast-element");
+                const { repeat } = await import("@microsoft/fast-element");
 
-                    const binding = bindingResolver(
-                        valueAttr[2],
-                        self,
-                        parentContext,
-                        "repeat",
-                        observerMap ?? null,
-                        valueAttr[0],
-                        level
-                    );
+                const binding = bindingResolver(
+                    valueAttr[2],
+                    self,
+                    parentContext,
+                    "repeat",
+                    observerMap ?? null,
+                    valueAttr[0],
+                    level
+                );
 
-                    const { strings, values } = await this.resolveStringsAndValues(
-                        innerHTML.slice(
-                            behaviorConfig.openingTagEndIndex,
-                            behaviorConfig.closingTagStartIndex
-                        ),
-                        true,
-                        valueAttr[0],
-                        updatedLevel,
-                        observerMap
-                    );
+                const { strings, values } = await this.resolveStringsAndValues(
+                    innerHTML.slice(
+                        behaviorConfig.openingTagEndIndex,
+                        behaviorConfig.closingTagStartIndex
+                    ),
+                    true,
+                    valueAttr[0],
+                    updatedLevel,
+                    observerMap
+                );
 
-                    externalValues.push(
-                        repeat(
-                            (x, c) => binding(x, c),
-                            this.resolveTemplateOrBehavior(strings, values)
-                        )
-                    );
-                }
+                externalValues.push(
+                    repeat(
+                        (x, c) => binding(x, c),
+                        this.resolveTemplateOrBehavior(strings, values)
+                    )
+                );
 
                 break;
+            }
             case "apply": {
                 const openingTag = innerHTML.slice(
                     behaviorConfig.openingTagStartIndex,
@@ -352,45 +347,42 @@ class TemplateElement extends FASTElement {
         externalValues: Array<any>
     ) {
         switch (name) {
-            case "children":
-                {
-                    const { children } = await import("@microsoft/fast-element");
+            case "children": {
+                const { children } = await import("@microsoft/fast-element");
 
-                    externalValues.push(children(propName));
-                }
+                externalValues.push(children(propName));
 
                 break;
-            case "slotted":
-                {
-                    const { slotted } = await import("@microsoft/fast-element");
+            }
+            case "slotted": {
+                const { slotted } = await import("@microsoft/fast-element");
 
-                    const parts = propName.trim().split(" filter ");
-                    const slottedOption = {
-                        property: parts[0],
-                    };
+                const parts = propName.trim().split(" filter ");
+                const slottedOption = {
+                    property: parts[0],
+                };
 
-                    if (parts[1]) {
-                        if (parts[1].startsWith("elements(")) {
-                            let params = parts[1].replace("elements(", "");
-                            params = params.substring(0, params.lastIndexOf(")"));
-                            Object.assign(slottedOption, {
-                                filter: elements(params || undefined),
-                            });
-                        }
+                if (parts[1]) {
+                    if (parts[1].startsWith("elements(")) {
+                        let params = parts[1].replace("elements(", "");
+                        params = params.substring(0, params.lastIndexOf(")"));
+                        Object.assign(slottedOption, {
+                            filter: elements(params || undefined),
+                        });
                     }
-
-                    externalValues.push(slotted(slottedOption));
                 }
 
-                break;
-            case "ref":
-                {
-                    const { ref } = await import("@microsoft/fast-element");
-
-                    externalValues.push(ref(propName));
-                }
+                externalValues.push(slotted(slottedOption));
 
                 break;
+            }
+            case "ref": {
+                const { ref } = await import("@microsoft/fast-element");
+
+                externalValues.push(ref(propName));
+
+                break;
+            }
         }
     }
 
@@ -414,36 +406,36 @@ class TemplateElement extends FASTElement {
         observerMap?: ObserverMap
     ): Promise<void> {
         switch (behaviorConfig.subtype) {
-            case "content":
-                {
-                    strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex
-                    );
-                    const binding = bindingResolver(
-                        propName,
-                        self,
-                        parentContext,
-                        "access",
-                        observerMap ?? null,
-                        null,
-                        level
-                    );
-                    const contentBinding = (x: any, c: any) => binding(x, c);
-                    values.push(contentBinding);
-                    await this.resolveInnerHTML(
-                        innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
-                        strings,
-                        values,
-                        self,
-                        parentContext,
-                        level,
-                        observerMap
-                    );
-                }
+            case "content": {
+                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
+                const propName = innerHTML.slice(
+                    behaviorConfig.openingEndIndex,
+                    behaviorConfig.closingStartIndex
+                );
+                const binding = bindingResolver(
+                    propName,
+                    self,
+                    parentContext,
+                    "access",
+                    observerMap ?? null,
+                    null,
+                    level
+                );
+                const contentBinding = (x: any, c: any) => binding(x, c);
+                values.push(contentBinding);
+                await this.resolveInnerHTML(
+                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+                    strings,
+                    values,
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
+                );
+
                 break;
-            case "attribute":
+            }
+            case "attribute": {
                 strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                 if (behaviorConfig.aspect === "@") {
                     const bindingHTML = innerHTML.slice(
@@ -516,40 +508,37 @@ class TemplateElement extends FASTElement {
                     level,
                     observerMap
                 );
+
                 break;
-            case "attributeDirective":
-                {
-                    strings.push(
-                        innerHTML.slice(
-                            0,
-                            behaviorConfig.openingStartIndex -
-                                behaviorConfig.name.length -
-                                4
-                        )
-                    );
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex
-                    );
-                    await this.resolveAttributeDirective(
-                        behaviorConfig.name,
-                        propName,
-                        values
-                    );
-                    await this.resolveInnerHTML(
-                        innerHTML.slice(
-                            behaviorConfig.closingEndIndex + 1,
-                            innerHTML.length
-                        ),
-                        strings,
-                        values,
-                        self,
-                        parentContext,
-                        level,
-                        observerMap
-                    );
-                }
+            }
+            case "attributeDirective": {
+                strings.push(
+                    innerHTML.slice(
+                        0,
+                        behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4
+                    )
+                );
+                const propName = innerHTML.slice(
+                    behaviorConfig.openingEndIndex,
+                    behaviorConfig.closingStartIndex
+                );
+                await this.resolveAttributeDirective(
+                    behaviorConfig.name,
+                    propName,
+                    values
+                );
+                await this.resolveInnerHTML(
+                    innerHTML.slice(behaviorConfig.closingEndIndex + 1, innerHTML.length),
+                    strings,
+                    values,
+                    self,
+                    parentContext,
+                    level,
+                    observerMap
+                );
+
                 break;
+            }
         }
     }
 
@@ -576,7 +565,7 @@ class TemplateElement extends FASTElement {
             strings.push(innerHTML);
         } else {
             switch (behaviorConfig.type) {
-                case "dataBinding":
+                case "dataBinding": {
                     await this.resolveDataBinding(
                         innerHTML,
                         strings,
@@ -589,7 +578,8 @@ class TemplateElement extends FASTElement {
                     );
 
                     break;
-                case "templateDirective":
+                }
+                case "templateDirective": {
                     strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));
                     await this.resolveTemplateDirective(
                         behaviorConfig,
@@ -615,8 +605,7 @@ class TemplateElement extends FASTElement {
                     );
 
                     break;
-
-                    break;
+                }
             }
         }
     }

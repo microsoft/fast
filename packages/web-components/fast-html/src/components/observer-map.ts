@@ -32,23 +32,16 @@ interface NestedRepeatPathParams {
     contextName: string;
 }
 
-/**
- * Interface for root level caching parameters
- */
 interface RootLevelCacheParams {
     propertyName: string;
     absolutePath: string;
     type: PathType;
 }
-
 /**
  * Interface for context level caching parameters
  */
-interface ContextLevelCacheParams {
-    propertyName: string;
-    absolutePath: string;
+interface ContextLevelCacheParams extends RootLevelCacheParams {
     targetContext: string;
-    type: PathType;
 }
 
 /**
@@ -169,19 +162,11 @@ export class ObserverMap {
      * Counts the number of "../" sequences in a path without using regex
      */
     private countRelativeNavigationLevels(path: string): number {
-        let count = 0;
-        let index = 0;
-
-        while (index < path.length) {
-            const foundIndex = path.indexOf("../", index);
-            if (foundIndex === -1) {
-                break;
-            }
-            count++;
-            index = foundIndex + 3; // Move past the current "../"
+        if (!path || !path.includes("../")) {
+            return 0;
         }
 
-        return count;
+        return path.split("../").length - 1;
     }
 
     /**
@@ -200,7 +185,7 @@ export class ObserverMap {
         currentContext: string | null,
         upLevels: number
     ): string | null {
-        if (currentContext === null) {
+        if (currentContext === null || upLevels === 0) {
             return null;
         }
 
@@ -211,13 +196,8 @@ export class ObserverMap {
             const contextItem = this.contextCache.find(
                 item => item.context === targetContext
             );
-            if (contextItem?.parent) {
-                targetContext = contextItem.parent;
-            } else {
-                // Reached root level
-                targetContext = null;
-                break;
-            }
+
+            targetContext = contextItem?.parent ?? null;
         }
 
         return targetContext;
@@ -272,15 +252,9 @@ export class ObserverMap {
         }
 
         // Try to place this access path under an existing repeat structure
-        if (this.tryPlaceInExistingRepeat(config.path, context)) {
-            return;
+        if (!this.tryPlaceInExistingRepeat(config.path, context)) {
+            this.cacheAccessPathWithContext({ ...config, context });
         }
-
-        // Create new repeat structure or place under existing context
-        this.cacheAccessPathWithContext({
-            ...config,
-            context,
-        });
     }
 
     /**
@@ -624,33 +598,33 @@ export class ObserverMap {
         contextPath: string | null
     ): void {
         switch (type) {
-            case "access":
-                {
-                    const containsContext = this.contextCache.find(contextCacheItem => {
-                        return contextCacheItem.context === rootPath;
-                    });
-                    // add a root path if one has not been assigned
-                    if (!this.cachePaths[rootPath] && !containsContext) {
-                        this.cachePaths[rootPath] = {
-                            type: "default",
-                            paths: {},
-                        };
-                    }
+            case "access": {
+                const containsContext = this.contextCache.find(contextCacheItem => {
+                    return contextCacheItem.context === rootPath;
+                });
+                // add a root path if one has not been assigned
+                if (!this.cachePaths[rootPath] && !containsContext) {
+                    this.cachePaths[rootPath] = {
+                        type: "default",
+                        paths: {},
+                    };
                 }
+
                 break;
-            case "repeat":
-                {
-                    // add a context path if one has not been assigned
-                    // add a root path if one has not been assigned
-                    if (rootPath === path) {
-                        (this.cachePaths[rootPath] as RepeatCachedPath) = {
-                            type: "repeat",
-                            context: contextPath as string,
-                            paths: {},
-                        };
-                    }
+            }
+            case "repeat": {
+                // add a context path if one has not been assigned
+                // add a root path if one has not been assigned
+                if (rootPath === path) {
+                    (this.cachePaths[rootPath] as RepeatCachedPath) = {
+                        type: "repeat",
+                        context: contextPath as string,
+                        paths: {},
+                    };
                 }
+
                 break;
+            }
         }
     }
 
