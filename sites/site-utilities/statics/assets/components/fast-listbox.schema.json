@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-listbox",
+  "id": "fast-listbox",
+  "title": "Listbox",
+  "description": "The FAST listbox element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-listbox",
+  "properties": {
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the listbox",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "multiple": {
+      "title": "Multiple",
+      "description": "Indicates if the listbox is in multi-selection mode",
+      "mapsToAttribute": "multiple",
+      "type": "boolean"
+    },
+    "size": {
+      "title": "Size",
+      "description": "The maximum number of visible options",
+      "mapsToAttribute": "size",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "Supports fast-option or option elements",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
