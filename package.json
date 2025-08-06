@@ -35,7 +35,7 @@
     "change": "beachball change --dependent-change-type none",
     "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'npm run change' to generate a change file\"",
     "check": "beachball check ",
-    "build:gh-pages": "npm run build -w fast-site",
+    "build:gh-pages": "npm run build -w @microsoft/fast-site",
     "publish": "beachball publish",
     "publish-ci": "beachball publish -y --access public",
     "sync": "beachball sync",

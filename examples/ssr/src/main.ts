@@ -1,4 +1,4 @@
-import { app, DefaultTodoList, TodoList } from "fast-todo-app";
+import { app, DefaultTodoList, TodoList } from "@microsoft/fast-todo-app-example";
 
 const SSRState = (window as any).__SSR_STATE__ || [];
 
