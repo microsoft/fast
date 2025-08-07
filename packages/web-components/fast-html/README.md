@@ -22,12 +22,12 @@ npm install --save @microsoft/fast-html
 In your JS bundle you will need to include the `@microsoft/fast-html` package:
 
 ```typescript
-import { TemplateElement } from "@microsoft/fast-html";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { MyCustomElement } from "./my-custom-element";
 
-MyCustomElement.define({
+RenderableFASTElement(MyCustomElement).defineAsync({
     name: "my-custom-element",
-    shadowOptions: null,
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({
@@ -35,9 +35,7 @@ TemplateElement.define({
 });
 ```
 
-This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component as well as the `shadowOptions` for any element an `<f-template>` has been used to define.
-
-It is necessary to set the initial `shadowOptions` of your custom elements to `null` otherwise a shadowRoot will be attached and cause a FOUC (Flash Of Unstyled Content). For more information about how this affects hydration, check out our [document](./RENDERING.md#setting-shadow-options) on rendering DOM from a non-browser environment.
+This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component.
 
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 
@@ -77,23 +75,19 @@ TemplateElement.options({
 
 #### Using the RenderableFASTElement
 
-The exported abstract class `RenderableFASTElement` is available for automatic addition and removal of `defer-hydration` and `needs-hydration`. If you use `FASTElement` you will need to add `defer-hydration` and `needs-hydration` attributes to your rendered markup and remove them via your component.
+The use of `RenderableFASTElement` as a mixin for your custom element will automatically remove the `defer-hydration` attribute signalling for hydration to begin, and if you need to add state before hydration should occur you can make use of the `prepare` method.
 
 Example:
 ```typescript
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-
-class MyCustomElement extends RenderableFASTElement {
-    // component logic
+class MyCustomElement extends FASTElement {
+    private prepare(): Promise<void> {
+        // Get initial state
+    }
 }
 
-MyCustomElement.define({
+RenderableFASTElement(MyCustomElement).defineAsync({
     name: "my-custom-element",
-    shadowOptions: null,
-});
-
-TemplateElement.define({
-    name: "f-template",
+    templateOptions: "defer-and-hydrate",
 });
 ```
 
