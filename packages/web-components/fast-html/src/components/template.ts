@@ -85,7 +85,7 @@ class TemplateElement extends FASTElement {
             };
         }
 
-        this.elementOptions = result;
+        TemplateElement.elementOptions = result;
 
         HydratableElementController.install();
 
