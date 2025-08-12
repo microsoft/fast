@@ -5,7 +5,7 @@ class TestElement extends FASTElement {
     @observable
     list: Array<string> = ["Foo", "Bar"];
 
-    parent: string = "Bat";
+    item_parent: string = "Bat";
 }
 RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",

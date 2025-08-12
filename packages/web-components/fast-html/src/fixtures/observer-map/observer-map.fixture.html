@@ -41,7 +41,7 @@
                         <f-repeat value="{{user in users}}">
                             <div class="user-card">
                                 <h3>{{user.name}} (ID: {{user.id}})
-                                    <f-when value="{{user.id == ../selectedUserId}}">
+                                    <f-when value="{{user.id == selectedUserId}}">
                                         <span>⭐ SELECTED</span>
                                     </f-when>
                                 </h3>
@@ -74,14 +74,14 @@
                                 </div>
 
                                 <div class="controls">
-                                    <button @click="{../selectUser(user.id)}">Select User</button>
-                                    <button @click="{../updateUserAge(user.id)}">Age +1</button>
-                                    <button @click="{../toggleUserTheme(user.id)}">Toggle Theme</button>
-                                    <button @click="{../updateUserLocation(user.id)}">Change Location</button>
-                                    <button @click="{../updateNotificationSettings(user.id)}">Update Notifications</button>
-                                    <button @click="{../addNotificationCategory(user.id)}">Add Category</button>
-                                    <button @click="{../removeNotificationCategory(user.id)}">Remove Tech Category</button>
-                                    <button @click="{../removeUser(user.id)}">Remove User</button>
+                                    <button @click="{selectUser(user.id)}">Select User</button>
+                                    <button @click="{updateUserAge(user.id)}">Age +1</button>
+                                    <button @click="{toggleUserTheme(user.id)}">Toggle Theme</button>
+                                    <button @click="{updateUserLocation(user.id)}">Change Location</button>
+                                    <button @click="{updateNotificationSettings(user.id)}">Update Notifications</button>
+                                    <button @click="{addNotificationCategory(user.id)}">Add Category</button>
+                                    <button @click="{removeNotificationCategory(user.id)}">Remove Tech Category</button>
+                                    <button @click="{removeUser(user.id)}">Remove User</button>
                                 </div>
 
                                 <div>
@@ -106,12 +106,12 @@
                                                 </f-repeat>
                                             </div>
                                             <div class="controls">
-                                                <button @click="{../../incrementPostLikes(post.id)}">Like Post</button>
+                                                <button @click="{incrementPostLikes(post.id)}">Like Post</button>
                                             </div>
                                         </div>
                                     </f-repeat>
                                     <div class="controls">
-                                        <button @click="{../addPostToUser(user.id)}">Add New Post</button>
+                                        <button @click="{addPostToUser(user.id)}">Add New Post</button>
                                     </div>
                                 </div>
                             </div>

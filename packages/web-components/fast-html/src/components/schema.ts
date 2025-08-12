@@ -18,37 +18,34 @@ interface JSONSchema extends JSONSchemaCommon {
     $ref?: string;
 }
 
-type AccessCachedPathType = "access";
-
-export interface AccessCachedPath {
-    type: AccessCachedPathType;
+interface CachedPathCommon {
+    parentContext: string | null;
     currentContext: string | null;
     path: string;
+}
+
+type AccessCachedPathType = "access";
+
+export interface AccessCachedPath extends CachedPathCommon {
+    type: AccessCachedPathType;
 }
 
 type DefaultCachedPathType = "default";
 
-export interface DefaultCachedPath {
+export interface DefaultCachedPath extends CachedPathCommon {
     type: DefaultCachedPathType;
-    currentContext: string | null;
-    path: string;
 }
 
 type EventCachedPathType = "event";
 
-export interface EventCachedPath {
+export interface EventCachedPath extends CachedPathCommon {
     type: EventCachedPathType;
-    currentContext: string | null;
-    path: string;
 }
 
 type RepeatCachedPathType = "repeat";
 
-export interface RepeatCachedPath {
+export interface RepeatCachedPath extends CachedPathCommon {
     type: RepeatCachedPathType;
-    parentContext: string | null;
-    currentContext: string;
-    path: string;
 }
 
 export type CachedPath =
@@ -114,8 +111,14 @@ export class Schema {
                         config.pathConfig.currentContext
                     );
                 } else {
+                    if (!schema[defsPropertyName]?.[splitPath[0]]) {
+                        schema[defsPropertyName] = {
+                            [splitPath[0]]: {} as any,
+                        };
+                    }
+
                     this.addPropertiesToAContext(
-                        schema?.[defsPropertyName]?.[splitPath[0]],
+                        schema[defsPropertyName][splitPath[0]],
                         splitPath.slice(1),
                         config.pathConfig.currentContext
                     );
@@ -126,8 +129,8 @@ export class Schema {
             case "repeat": {
                 this.addContext(
                     schema,
-                    splitPath[splitPath.length - 1], // example items
-                    config.pathConfig.currentContext, // example item
+                    splitPath.at(-1) as string, // example items
+                    config.pathConfig.currentContext as string, // example item
                     config.pathConfig.parentContext
                 );
 
@@ -158,10 +161,14 @@ export class Schema {
                 } else {
                     schema.type = "array";
                     schema[refPropertyName] = this.getDefsPath(
-                        config.pathConfig.currentContext
+                        config.pathConfig.currentContext as string
                     );
                 }
 
+                break;
+            }
+            case "event": {
+                console.log("AN EVENT");
                 break;
             }
         }

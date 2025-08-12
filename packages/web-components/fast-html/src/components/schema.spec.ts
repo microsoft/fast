@@ -19,6 +19,7 @@ test.describe("Schema", async () => {
                 type: "default",
                 path: "a",
                 currentContext: null,
+                parentContext: null,
             }
         });
 
@@ -37,6 +38,7 @@ test.describe("Schema", async () => {
                 type: "default",
                 path: "a.b",
                 currentContext: null,
+                parentContext: null,
             },
         });
 
@@ -51,6 +53,7 @@ test.describe("Schema", async () => {
                 type: "default",
                 path: "a.b.c",
                 currentContext: null,
+                parentContext: null,
             },
         });
 
@@ -93,6 +96,7 @@ test.describe("Schema", async () => {
                 type: "default",
                 path: "a",
                 currentContext: null,
+                parentContext: null,
             },
         });
 
@@ -124,6 +128,7 @@ test.describe("Schema", async () => {
                 type: "default",
                 path: "a",
                 currentContext: null,
+                parentContext: null,
             },
         });
 
@@ -143,6 +148,7 @@ test.describe("Schema", async () => {
                 type: "access",
                 path: "item.b",
                 currentContext: "item",
+                parentContext: null,
             },
         });
 
@@ -165,6 +171,7 @@ test.describe("Schema", async () => {
                 type: "default",
                 path: "a",
                 currentContext: null,
+                parentContext: null,
             },
         });
 
@@ -217,6 +224,7 @@ test.describe("Schema", async () => {
                 type: "access",
                 path: "user.a.b",
                 currentContext: "user",
+                parentContext: null,
             },
         });
 
@@ -236,6 +244,7 @@ test.describe("Schema", async () => {
                 type: "access",
                 path: "post.c.d",
                 currentContext: "post",
+                parentContext: null,
             },
         });
 

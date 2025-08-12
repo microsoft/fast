@@ -8,6 +8,7 @@ import type {
     PathType,
     RepeatCachedPath,
 } from "./utilities.js";
+import { Schema } from "./schema.js";
 
 const reservedIndexPlaceholder = "__index__";
 
@@ -49,12 +50,14 @@ interface ContextLevelCacheParams extends RootLevelCacheParams {
  * and defining observable properties on class prototypes
  */
 export class ObserverMap {
+    private schema: Schema;
     private cachePaths: CachedPathMap = {};
     private contextCache: Array<ContextCache> = [];
     private classPrototype: any;
 
-    constructor(classPrototype: any) {
+    constructor(classPrototype: any, schema: Schema) {
         this.classPrototype = classPrototype;
+        this.schema = schema;
     }
 
     private getRootProperty(config: PathConfig): string {
