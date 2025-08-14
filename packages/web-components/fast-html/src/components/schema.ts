@@ -342,7 +342,7 @@ export class Schema {
 
         return this.getParentContexts(
             schema,
-            parentParentContext[parentParentContext.length - 1],
+            parentParentContext.at(-1),
             [parentContext, ...contexts]
         );
     }
