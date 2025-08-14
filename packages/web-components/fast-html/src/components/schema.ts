@@ -106,23 +106,19 @@ export class Schema {
             case "default":
             case "access": {
                 if (config.pathConfig.currentContext === null) {
-                    if (splitPath.length > 1) {
-                        this.addPropertiesToAnObject(
-                            this.jsonSchemaMap[config.rootPropertyName],
-                            splitPath.slice(1),
-                            config.pathConfig.currentContext
-                        );
-                    }
+                    this.addPropertiesToAnObject(
+                        this.jsonSchemaMap[config.rootPropertyName],
+                        splitPath.slice(1),
+                        config.pathConfig.currentContext
+                    );
                 } else {
-                    if (splitPath.length > 1) {
-                        this.addPropertiesToAContext(
-                            this.jsonSchemaMap?.[config.rootPropertyName]?.[
-                                defsPropertyName
-                            ]?.[splitPath[0]],
-                            splitPath.slice(1),
-                            config.pathConfig.currentContext
-                        );
-                    }
+                    this.addPropertiesToAContext(
+                        this.jsonSchemaMap?.[config.rootPropertyName]?.[
+                            defsPropertyName
+                        ]?.[splitPath[0]],
+                        splitPath.slice(1),
+                        config.pathConfig.currentContext
+                    );
                 }
 
                 break;
@@ -137,6 +133,7 @@ export class Schema {
 
                 if (splitPath.length > 2) {
                     let schema = this.jsonSchemaMap[config.rootPropertyName];
+
                     if (config.pathConfig.parentContext) {
                         schema = this.addPropertiesToAnObject(
                             this.jsonSchemaMap[config.rootPropertyName][
@@ -259,15 +256,13 @@ export class Schema {
             };
         }
 
-        if (context === null && type === "object") {
-            if (splitPath.length > 1) {
-                return this.addPropertiesToAnObject(
-                    schema.properties[splitPath[0]],
-                    splitPath.slice(1),
-                    context,
-                    type
-                );
-            }
+        if (context === null && type === "object" && splitPath.length > 1) {
+            return this.addPropertiesToAnObject(
+                schema.properties[splitPath[0]],
+                splitPath.slice(1),
+                context,
+                type
+            );
         } else if (type === "array") {
             if (splitPath.length > 1) {
                 return this.addPropertiesToAnObject(
