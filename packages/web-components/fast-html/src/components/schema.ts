@@ -57,7 +57,7 @@ export type CachedPath =
     | AccessCachedPath
     | EventCachedPath;
 
-export type CachedPathMap = Record<string, JSONSchema>;
+export type CachedPathMap = Map<string, JSONSchema>;
 
 interface RegisterPathConfig {
     rootPropertyName: string;
@@ -84,7 +84,7 @@ export class Schema {
     /**
      * A JSON schema describing each root schema
      */
-    private jsonSchemaMap: CachedPathMap = {};
+    private jsonSchemaMap: CachedPathMap = new Map();
 
     constructor(name: string) {
         this.customElementName = name;
@@ -96,10 +96,12 @@ export class Schema {
      */
     public addPath(config: RegisterPathConfig) {
         const splitPath = this.getSplitPath(config.pathConfig.path);
+        let schema = this.jsonSchemaMap.get(config.rootPropertyName);
 
         // Create a root level property JSON
-        if (!this.jsonSchemaMap[config.rootPropertyName]) {
+        if (!schema) {
             this.addNewSchema(config.rootPropertyName);
+            schema = this.jsonSchemaMap.get(config.rootPropertyName) as JSONSchema;
         }
 
         switch (config.pathConfig.type) {
@@ -107,15 +109,13 @@ export class Schema {
             case "access": {
                 if (config.pathConfig.currentContext === null) {
                     this.addPropertiesToAnObject(
-                        this.jsonSchemaMap[config.rootPropertyName],
+                        schema,
                         splitPath.slice(1),
                         config.pathConfig.currentContext
                     );
                 } else {
                     this.addPropertiesToAContext(
-                        this.jsonSchemaMap?.[config.rootPropertyName]?.[
-                            defsPropertyName
-                        ]?.[splitPath[0]],
+                        schema?.[defsPropertyName]?.[splitPath[0]],
                         splitPath.slice(1),
                         config.pathConfig.currentContext
                     );
@@ -125,42 +125,41 @@ export class Schema {
             }
             case "repeat": {
                 this.addContext(
-                    this.jsonSchemaMap[config.rootPropertyName],
+                    schema,
                     splitPath[splitPath.length - 1], // example items
                     config.pathConfig.currentContext, // example item
                     config.pathConfig.parentContext
                 );
 
                 if (splitPath.length > 2) {
-                    let schema = this.jsonSchemaMap[config.rootPropertyName];
+                    let updatedSchema = schema;
 
                     if (config.pathConfig.parentContext) {
-                        schema = this.addPropertiesToAnObject(
-                            this.jsonSchemaMap[config.rootPropertyName][
-                                defsPropertyName
-                            ]?.[config.pathConfig.parentContext],
+                        updatedSchema = this.addPropertiesToAnObject(
+                            schema[defsPropertyName]?.[config.pathConfig.parentContext],
                             splitPath.slice(1, -1),
                             config.pathConfig.parentContext
                         );
                     }
 
                     this.addPropertiesToAnObject(
-                        schema,
+                        updatedSchema,
                         splitPath.slice(-1),
                         config.pathConfig.currentContext,
                         "array"
                     );
                 } else if (splitPath.length > 1) {
                     this.addPropertiesToAnObject(
-                        this.jsonSchemaMap[config.rootPropertyName],
+                        schema,
                         splitPath.slice(1),
                         config.pathConfig.currentContext,
                         "array"
                     );
                 } else {
-                    this.jsonSchemaMap[config.rootPropertyName].type = "array";
-                    this.jsonSchemaMap[config.rootPropertyName][refPropertyName] =
-                        this.getDefsPath(config.pathConfig.currentContext);
+                    schema.type = "array";
+                    schema[refPropertyName] = this.getDefsPath(
+                        config.pathConfig.currentContext
+                    );
                 }
 
                 break;
@@ -174,7 +173,7 @@ export class Schema {
      * @returns The JSON schema for the root property
      */
     public getSchema(rootPropertyName: string): JSONSchema | null {
-        return this.jsonSchemaMap[rootPropertyName] ?? null;
+        return this.jsonSchemaMap.get(rootPropertyName) ?? null;
     }
 
     /**
@@ -200,11 +199,11 @@ export class Schema {
      * @param propertyName The name of the property to assign this JSON schema to
      */
     private addNewSchema(propertyName: string): void {
-        this.jsonSchemaMap[propertyName] = {
+        this.jsonSchemaMap.set(propertyName, {
             $schema: "https://json-schema.org/draft/2019-09/schema",
             $id: `https://fast.design/schemas/${this.customElementName}/${propertyName}.json`,
             [defsPropertyName]: {},
-        };
+        });
     }
 
     /**
@@ -336,13 +335,13 @@ export class Schema {
             return [null, ...contexts];
         }
 
-        const parentParentContext: string[] = schema?.[defsPropertyName]?.[
+        const parentParentContext: Array<string | null> = schema?.[defsPropertyName]?.[
             parentContext as string
-        ].$fast_parent_contexts as string[];
+        ].$fast_parent_contexts as Array<string | null>;
 
         return this.getParentContexts(
             schema,
-            parentParentContext.at(-1),
+            parentParentContext.at(-1) as string | null,
             [parentContext, ...contexts]
         );
     }
