@@ -55,24 +55,6 @@ Example:
 
 One of the benefits of FAST declarative HTML templates is that the server can be stack agnostic as JavaScript does not need to be interpreted. By default `@microsoft/fast-html` will expect hydratable content and uses comments and datasets for tracking the binding logic. For more information on what that markup should look like, as well as an example of how initial state may be applied, read our [documentation](./RENDERING.md) to understand what markup should be generated for a hydratable experience. For the sake of brevity hydratable markup will be excluded from the README.
 
-#### Adding shadowOptions
-
-By default `shadowOptions` via the `TemplateElement` will be with `"mode": "open"` once the template has been set. To set each components `shadowOptions` you can pass an `options` object.
-
-Example:
-
-```typescript
-TemplateElement.options({
-    "my-custom-element": {
-        shadowOptions: {
-            mode: "closed",
-        }
-    },
-}).define({
-    name: "f-template",
-});
-```
-
 #### Using the RenderableFASTElement
 
 The use of `RenderableFASTElement` as a mixin for your custom element will automatically remove the `defer-hydration` attribute signalling for hydration to begin, and if you need to add state before hydration should occur you can make use of the `prepare` method.

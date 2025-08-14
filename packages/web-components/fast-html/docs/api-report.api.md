@@ -6,7 +6,6 @@
 
 import { Constructable } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { ShadowRootOptions } from '@microsoft/fast-element';
 
 // @public
 export class ObserverMap {

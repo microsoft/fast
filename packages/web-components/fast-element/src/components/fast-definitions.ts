@@ -334,14 +334,6 @@ export class FASTElementDefinition<
                         "template"
                     );
                 }),
-                new Promise<void>(resolve => {
-                    Observable.getNotifier(definition).subscribe(
-                        {
-                            handleChange: () => resolve(),
-                        },
-                        "shadowOptions"
-                    );
-                }),
             ]).then(() => {
                 resolve(definition);
             });
@@ -350,4 +342,3 @@ export class FASTElementDefinition<
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");
-Observable.defineProperty(FASTElementDefinition.prototype, "shadowOptions");
