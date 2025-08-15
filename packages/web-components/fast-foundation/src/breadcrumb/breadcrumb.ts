@@ -68,13 +68,17 @@ export class Breadcrumb extends FoundationElement {
             item.hasAttribute("href") &&
             item instanceof BreadcrumbItem
         ) {
-            isLastNode
-                ? (item as BreadcrumbItem).setAttribute("aria-current", "page")
-                : (item as BreadcrumbItem).removeAttribute("aria-current");
+            if (isLastNode) {
+                (item as BreadcrumbItem).setAttribute("aria-current", "page");
+            } else {
+                (item as BreadcrumbItem).removeAttribute("aria-current");
+            }
         } else if (childNodeWithHref !== null) {
-            isLastNode
-                ? childNodeWithHref.setAttribute("aria-current", "page")
-                : childNodeWithHref.removeAttribute("aria-current");
+            if (isLastNode) {
+                childNodeWithHref.setAttribute("aria-current", "page");
+            } else {
+                childNodeWithHref.removeAttribute("aria-current");
+            }
         }
     }
 }

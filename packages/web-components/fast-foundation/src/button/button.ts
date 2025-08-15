@@ -139,10 +139,10 @@ export class Button extends FormAssociatedButton {
             this.proxy.type = this.type;
         }
 
-        next === "submit" && this.addEventListener("click", this.handleSubmission);
-        previous === "submit" && this.removeEventListener("click", this.handleSubmission);
-        next === "reset" && this.addEventListener("click", this.handleFormReset);
-        previous === "reset" && this.removeEventListener("click", this.handleFormReset);
+        if (next === "submit") this.addEventListener("click", this.handleSubmission);
+        if (previous === "submit") this.removeEventListener("click", this.handleSubmission);
+        if (next === "reset") this.addEventListener("click", this.handleFormReset);
+        if (previous === "reset") this.removeEventListener("click", this.handleFormReset);
     }
 
     /**
@@ -217,9 +217,11 @@ export class Button extends FormAssociatedButton {
 
         // Browser support for requestSubmit is not comprehensive
         // so click the proxy if it isn't supported
-        typeof this.form.requestSubmit === "function"
-            ? this.form.requestSubmit(this.proxy)
-            : this.proxy.click();
+        if (typeof this.form.requestSubmit === "function") {
+            this.form.requestSubmit(this.proxy);
+        } else {
+            this.proxy.click();
+        }
 
         if (!attached) {
             this.detachProxy();

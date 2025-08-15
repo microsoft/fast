@@ -191,7 +191,7 @@ if (DOM.supportsAdoptedStyleSheets) {
                 }
             }
         };
-    } catch (e) {
+    } catch {
         // Do nothing if an error is thrown, the default
         // case handles FrozenArray.
     }

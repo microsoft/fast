@@ -258,9 +258,13 @@ export class Controller extends PropertyChangeNotifier {
             if (targetBehaviors.has(behavior)) {
                 const count = targetBehaviors.get(behavior)! - 1;
 
-                count === 0 || force
-                    ? targetBehaviors.delete(behavior) && behaviorsToUnbind.push(behavior)
-                    : targetBehaviors.set(behavior, count);
+                if (count === 0 || force) {
+                    if(targetBehaviors.delete(behavior)) {
+                        behaviorsToUnbind.push(behavior);
+                    }
+                } else {
+                    targetBehaviors.set(behavior, count);
+                }
             }
         }
 

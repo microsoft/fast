@@ -237,9 +237,11 @@ export class Tabs extends FoundationElement {
             tab.style[gridHorizontalProperty] = "";
             tab.style[gridVerticalProperty] = "";
             tab.style[gridProperty] = `${index + 1}`;
-            !this.isHorizontal()
-                ? tab.classList.add("vertical")
-                : tab.classList.remove("vertical");
+            if (!this.isHorizontal()) {
+                tab.classList.add("vertical");
+            } else {
+                tab.classList.remove("vertical");
+            }
         });
     };
 
@@ -249,9 +251,11 @@ export class Tabs extends FoundationElement {
             const tabpanelId: string = this.tabpanelIds[index];
             tabpanel.setAttribute("id", tabpanelId);
             tabpanel.setAttribute("aria-labelledby", tabId);
-            this.activeTabIndex !== index
-                ? tabpanel.setAttribute("hidden", "")
-                : tabpanel.removeAttribute("hidden");
+            if (this.activeTabIndex !== index) {
+                tabpanel.setAttribute("hidden", "");
+            } else {
+                tabpanel.removeAttribute("hidden");
+            }
         });
     };
 
