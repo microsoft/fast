@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-element
 
-<!-- This log was last generated on Thu, 03 Apr 2025 00:08:47 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 15 Aug 2025 16:32:04 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.0.3
+
+Fri, 15 Aug 2025 16:32:04 GMT
+
+### Patches
+
+- Fix lint warnings ([ni/fast@7c3fb7a](https://github.com/ni/fast/commit/7c3fb7aa8d7869d8d93ef26ca5767512bbcdfdfd))
 
 ## 10.0.2
 

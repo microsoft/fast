@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix lint warnings",
-  "packageName": "@ni/fast-element",
-  "email": "jattasNI@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

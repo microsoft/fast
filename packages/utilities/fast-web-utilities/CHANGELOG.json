@@ -2,6 +2,21 @@
   "name": "@ni/fast-web-utilities",
   "entries": [
     {
+      "date": "Fri, 15 Aug 2025 16:32:04 GMT",
+      "version": "10.0.3",
+      "tag": "@ni/fast-web-utilities_v10.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "jattasNI@users.noreply.github.com",
+            "package": "@ni/fast-web-utilities",
+            "commit": "7c3fb7aa8d7869d8d93ef26ca5767512bbcdfdfd",
+            "comment": "Fix lint warnings"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 03 Apr 2025 00:08:47 GMT",
       "version": "10.0.2",
       "tag": "@ni/fast-web-utilities_v10.0.2",
