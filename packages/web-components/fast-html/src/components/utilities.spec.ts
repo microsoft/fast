@@ -5,7 +5,6 @@ import {
     type TemplateDirectiveBehaviorConfig,
     getNextBehavior,
     type AttributeDirectiveBindingBehaviorConfig,
-    getAllPartials,
     getIndexOfNextMatchingTag,
     pathResolver,
     transformInnerHTML,
@@ -134,33 +133,6 @@ test.describe("utilities", async () => {
         });
     });
 
-    test.describe("partials", async () => {
-        test("get a single partial", async () => {
-            const partialContent = "{{text}}";
-            const partial = `<f-partial id="foo">${partialContent}</f-partial>`;
-            const allPartials = getAllPartials(partial);
-
-            expect(allPartials.foo.innerHTML).toEqual(partialContent);
-            expect(allPartials.foo.startIndex).toEqual(20);
-            expect(allPartials.foo.endIndex).toEqual(28);
-        });
-        test("get multiple partials", async () => {
-            const partial1Content = "{{text}}";
-            const partial2Content = "{{othertext}}";
-            const partial1 = `<f-partial id="foo">${partial1Content}</f-partial>`;
-            const partial2 = `<f-partial id="foobar">${partial2Content}</f-partial>`;
-            const allPartials = getAllPartials(`${partial1}${partial2}`);
-
-            expect(allPartials.foo.innerHTML).toEqual(partial1Content);
-            expect(allPartials.foo.startIndex).toEqual(20);
-            expect(allPartials.foo.endIndex).toEqual(28);
-
-            expect(allPartials.foobar.innerHTML).toEqual(partial2Content);
-            expect(allPartials.foobar.startIndex).toEqual(63);
-            expect(allPartials.foobar.endIndex).toEqual(76);
-        });
-    });
-
     test.describe("getIndexOfNextMatchingTag", async () => {
         test("should resolve a single tag", async () => {
             const index = getIndexOfNextMatchingTag(
@@ -206,19 +178,19 @@ test.describe("utilities", async () => {
 
     test.describe("pathResolver", async () => {
         test("should resolve a path with no nesting", async () => {
-            expect(pathResolver("foo")({ foo: "bar" }, {})).toEqual("bar");
+            expect(pathResolver("foo", null, 0)({ foo: "bar" }, {})).toEqual("bar");
         });
         test("should resolve a path with nesting", async () => {
-            expect(pathResolver("foo.bar.bat")({ foo: { bar: { bat: "baz" }} }, {})).toEqual("baz");
+            expect(pathResolver("foo.bar.bat", null, 0)({ foo: { bar: { bat: "baz" }} }, {})).toEqual("baz");
         });
         test("should resolve a path with no nesting and self reference", async () => {
-            expect(pathResolver("foo", true)("bar", {})).toEqual("bar");
+            expect(pathResolver("foo", "foo", 0)("bar", {})).toEqual("bar");
         });
         test("should resolve a path with nesting and self reference", async () => {
-            expect(pathResolver("foo.bar.bat", true)({ bar: { bat: "baz" }}, {})).toEqual("baz");
+            expect(pathResolver("foo.bar.bat", "foo", 0)({ bar: { bat: "baz" }}, {})).toEqual("baz");
         });
         test("should resolve a path with context", async () => {
-            expect(pathResolver("../foo")({}, {parent: {foo: "bar"}})).toEqual("bar");
+            expect(pathResolver("foo", "parent", 1)({}, {parent: {foo: "bar"}})).toEqual("bar");
         });
     });
 

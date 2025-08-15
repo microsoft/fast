@@ -1,9 +1,10 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
 import { type ObserverMap } from "./observer-map.js";
+import { Schema } from "./schema.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 
-type TemplateDirective = "when" | "repeat" | "apply";
+type TemplateDirective = "when" | "repeat";
 
 export type AttributeDirective = "children" | "slotted" | "ref";
 
@@ -53,12 +54,6 @@ export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
     openingTagEndIndex: number;
     closingTagStartIndex: number;
     closingTagEndIndex: number;
-}
-
-interface PartialTemplateConfig {
-    innerHTML: string;
-    startIndex: number;
-    endIndex: number;
 }
 
 type AccessCachedPathType = "access";
@@ -419,53 +414,6 @@ export function getNextBehavior(
     return getNextDataBindingBehavior(innerHTML);
 }
 
-/**
- * Gets all the partials with their IDs
- * @param innerHTML - The innerHTML string to evaluate
- * @param offset - The index offset from the innerHTML
- * @param partials - The partials found
- * @returns {[key: string]: PartialTemplateConfig}
- */
-export function getAllPartials(
-    innerHTML: string,
-    offset: number = 0,
-    partials: { [key: string]: PartialTemplateConfig } = {}
-): { [key: string]: PartialTemplateConfig } {
-    const openingTag = `${openTagStart}partial`;
-    const openingTagStartIndex = innerHTML.indexOf(openingTag);
-
-    if (openingTagStartIndex >= 0) {
-        const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
-        const closingTag = `${closeTagStart}partial${tagEnd}`;
-        const closingTagLength = closingTag.length;
-        const matchingCloseTagIndex =
-            getIndexOfNextMatchingTag(
-                openingTagStartSlice,
-                openingTag,
-                closingTag,
-                openingTagStartIndex
-            ) + closingTagLength;
-        const startId = openingTagStartIndex + ' id="'.length + openingTag.length;
-        const endId = innerHTML.slice(startId).indexOf('"') + startId;
-        const id = innerHTML.slice(startId, endId);
-        const openingTagEndIndex =
-            openingTagStartSlice.indexOf(tagEnd) + 1 + openingTagStartIndex;
-        const closingTagStartIndex = matchingCloseTagIndex - closingTagLength;
-
-        partials[id] = {
-            innerHTML: innerHTML.slice(openingTagEndIndex, closingTagStartIndex),
-            startIndex: openingTagEndIndex + offset,
-            endIndex: closingTagStartIndex + offset,
-        };
-
-        offset += matchingCloseTagIndex;
-
-        return getAllPartials(innerHTML.slice(matchingCloseTagIndex), offset, partials);
-    }
-
-    return partials;
-}
-
 type AccessibleObject = { [key: string]: AccessibleObject };
 
 /**
@@ -477,35 +425,31 @@ type AccessibleObject = { [key: string]: AccessibleObject };
  */
 export function pathResolver(
     path: string,
-    self: boolean = false
+    contextPath: string | null,
+    level: number
 ): (accessibleObject: any, context: any) => any {
-    let splitPath: string[] = [];
-    path.split("../").forEach((pathItem, index) => {
-        if (pathItem === "") {
-            splitPath.unshift("../");
-        } else {
-            splitPath.push(...pathItem.split("."));
-        }
-    });
-    splitPath = splitPath.map((pathItem: string, index: number) => {
-        if (pathItem === "../") {
-            if (splitPath[index + 1] === "../") {
-                return "parentContext";
-            }
+    const splitPath: string[] = path.split(".");
+    let levelCount = level;
+    const self = splitPath[0] === contextPath;
 
-            return "parent";
+    while (levelCount > 0 && !self) {
+        if (levelCount !== 1) {
+            splitPath.unshift("parentContext");
         }
 
-        return pathItem;
-    });
+        splitPath.unshift("parent");
+
+        levelCount--;
+    }
 
     return pathWithContextResolver(splitPath, self);
 }
 
 function pathWithContextResolver(splitPath: string[], self: boolean): any {
-    const usesContext = splitPath[0] === "parent" || splitPath[0] === "parentContext";
+    const isInPreviousContext =
+        splitPath[0] === "parent" || splitPath[0] === "parentContext";
 
-    if (self && !usesContext) {
+    if (self && !isInPreviousContext) {
         if (splitPath.length > 1) {
             splitPath = splitPath.slice(1);
         } else {
@@ -515,7 +459,7 @@ function pathWithContextResolver(splitPath: string[], self: boolean): any {
         }
     }
 
-    if (usesContext) {
+    if (isInPreviousContext) {
         return (accessibleObject: AccessibleObject, context: AccessibleObject) => {
             return splitPath.reduce((previousAccessors, pathItem) => {
                 return previousAccessors?.[pathItem];
@@ -531,14 +475,28 @@ function pathWithContextResolver(splitPath: string[], self: boolean): any {
 }
 
 export function bindingResolver(
+    rootPropertyName: string | null,
     path: string,
     self: boolean = false,
     parentContext: string | null,
     type: PathType,
+    schema: Schema,
     observerMap: ObserverMap | null,
     contextPath: string | null,
     level: number
 ): (accessibleObject: any, context: any) => any {
+    rootPropertyName = getRootPropertyName(rootPropertyName, path, contextPath);
+
+    schema.addPath({
+        pathConfig: {
+            type,
+            currentContext: contextPath,
+            parentContext,
+            path,
+        },
+        rootPropertyName,
+    });
+
     // Cache path during template processing when ObserverMap is provided
     if (observerMap) {
         observerMap.cachePathWithContext({
@@ -553,14 +511,15 @@ export function bindingResolver(
         });
     }
 
-    return pathResolver(path, self);
+    return pathResolver(path, contextPath, level);
 }
 
 export function expressionResolver(
-    self: boolean,
+    rootPropertyName: string | null,
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
+    schema: Schema,
     observerMap?: ObserverMap
 ): (accessibleObject: any, context: any) => any {
     // Cache paths from expression during template processing when ObserverMap is provided
@@ -569,7 +528,7 @@ export function expressionResolver(
         paths.forEach(path => {
             observerMap.cachePathWithContext({
                 path,
-                self,
+                self: true,
                 parentContext,
                 contextPath: null,
                 type: "access",
@@ -580,7 +539,8 @@ export function expressionResolver(
         });
     }
 
-    return (x, c) => resolveChainedExpression(x, c, self, expression);
+    return (x, c) =>
+        resolveChainedExpression(x, c, level, parentContext || null, expression);
 }
 
 /**
@@ -799,53 +759,65 @@ function getExpression(value: string): Expression {
  * Resolve a single expression
  * @param x - The context
  * @param c - The parent context
- * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param expression - The expression being evaluated
  * @returns - A function resolving the binding for this expression
  */
 function resolveExpression(
     x: boolean,
     c: any,
-    self: boolean,
+    level: number,
+    contextPath: string | null,
     expression: Expression
 ): any {
     const { operator, left, right, rightIsValue } = expression;
 
     switch (operator) {
         case "!":
-            return !pathResolver(left, self)(x, c);
+            return !pathResolver(left, contextPath, level)(x, c);
         case "==":
             return (
-                pathResolver(left, self)(x, c) ==
-                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+                pathResolver(left, contextPath, level)(x, c) ==
+                (rightIsValue
+                    ? right
+                    : pathResolver(right as string, contextPath, level)(x, c))
             );
         case "!=":
             return (
-                pathResolver(left, self)(x, c) !=
-                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+                pathResolver(left, contextPath, level)(x, c) !=
+                (rightIsValue
+                    ? right
+                    : pathResolver(right as string, contextPath, level)(x, c))
             );
         case ">=":
             return (
-                pathResolver(left, self)(x, c) >=
-                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+                pathResolver(left, contextPath, level)(x, c) >=
+                (rightIsValue
+                    ? right
+                    : pathResolver(right as string, contextPath, level)(x, c))
             );
         case ">":
             return (
-                pathResolver(left, self)(x, c) >
-                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+                pathResolver(left, contextPath, level)(x, c) >
+                (rightIsValue
+                    ? right
+                    : pathResolver(right as string, contextPath, level)(x, c))
             );
         case "<=":
             return (
-                pathResolver(left, self)(x, c) <=
-                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+                pathResolver(left, contextPath, level)(x, c) <=
+                (rightIsValue
+                    ? right
+                    : pathResolver(right as string, contextPath, level)(x, c))
             );
         case "<":
             return (
-                pathResolver(left, self)(x, c) <
-                (rightIsValue ? right : pathResolver(right as string, self)(x, c))
+                pathResolver(left, contextPath, level)(x, c) <
+                (rightIsValue
+                    ? right
+                    : pathResolver(right as string, contextPath, level)(x, c))
             );
         default:
-            return pathResolver(left, self)(x, c);
+            return pathResolver(left, contextPath, level)(x, c);
     }
 }
 
@@ -861,7 +833,8 @@ function resolveExpression(
 function resolveChainedExpression(
     x: boolean,
     c: any,
-    self: boolean,
+    level: number,
+    contextPath: string | null,
     expression: ChainedExpression
 ): any {
     if (expression.next) {
@@ -869,18 +842,18 @@ function resolveChainedExpression(
             case "&&":
             case "&amp;&amp;":
                 return (
-                    resolveExpression(x, c, self, expression.expression) &&
-                    resolveChainedExpression(x, c, self, expression.next)
+                    resolveExpression(x, c, level, contextPath, expression.expression) &&
+                    resolveChainedExpression(x, c, level, contextPath, expression.next)
                 );
             case "||":
                 return (
-                    resolveExpression(x, c, self, expression.expression) ||
-                    resolveChainedExpression(x, c, self, expression.next)
+                    resolveExpression(x, c, level, contextPath, expression.expression) ||
+                    resolveChainedExpression(x, c, level, contextPath, expression.next)
                 );
         }
     }
 
-    return resolveExpression(x, c, self, expression.expression);
+    return resolveExpression(x, c, level, contextPath, expression.expression);
 }
 
 /**
@@ -944,17 +917,20 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  * @returns - A binding that resolves the chained expression logic
  */
 export function resolveWhen(
+    rootPropertyName: string | null,
     self: boolean,
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
+    schema: Schema,
     observerMap?: ObserverMap
 ): (x: boolean, c: any) => any {
     const binding = expressionResolver(
-        self,
+        rootPropertyName,
         expression,
         parentContext,
         level,
+        schema,
         observerMap
     );
     return (x: boolean, c: any) => binding(x, c);
@@ -1178,4 +1154,14 @@ export function assignProxy(
     }
 
     return object;
+}
+
+export function getRootPropertyName(
+    rootPropertyName: string | null,
+    path: string,
+    context: null | string
+): string {
+    return rootPropertyName === null || context === null
+        ? path.split(".")[0]
+        : rootPropertyName;
 }
