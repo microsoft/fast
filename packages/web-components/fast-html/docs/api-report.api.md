@@ -12,16 +12,8 @@ import { ShadowRootOptions } from '@microsoft/fast-element';
 export class ObserverMap {
     // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
     constructor(classPrototype: any, schema: Schema);
-    // Warning: (ae-forgotten-export) The symbol "PathConfig" needs to be exported by the entry point index.d.ts
-    cachePathWithContext(config: PathConfig): void;
     // (undocumented)
     defineProperties(): void;
-    // (undocumented)
-    getAbsolutePath(config: PathConfig): string;
-    // Warning: (ae-forgotten-export) The symbol "CachedPathMap" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    getCachedPathsWithContext(): CachedPathMap;
 }
 
 // @public

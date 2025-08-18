@@ -1,6 +1,11 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { type ObserverMap } from "./observer-map.js";
-import { Schema } from "./schema.js";
+import {
+    defsPropertyName,
+    JSONSchema,
+    JSONSchemaDefinition,
+    refPropertyName,
+    Schema,
+} from "./schema.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 
@@ -54,61 +59,6 @@ export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
     openingTagEndIndex: number;
     closingTagStartIndex: number;
     closingTagEndIndex: number;
-}
-
-type AccessCachedPathType = "access";
-
-export interface AccessCachedPath {
-    type: AccessCachedPathType;
-    relativePath: string;
-    absolutePath: string;
-}
-
-type DefaultCachedPathType = "default";
-
-export interface DefaultCachedPath {
-    type: DefaultCachedPathType;
-    paths: Record<string, CachedPath>; // where the key is the relativePath
-}
-
-type EventCachedPathType = "event";
-
-export interface EventCachedPath {
-    type: EventCachedPathType;
-    relativePath: string;
-    absolutePath: string;
-}
-
-type RepeatCachedPathType = "repeat";
-
-export interface RepeatCachedPath {
-    type: RepeatCachedPathType;
-    context: string;
-    paths: Record<string, CachedPath>;
-}
-
-export type CachedPath =
-    | DefaultCachedPath
-    | RepeatCachedPath
-    | AccessCachedPath
-    | EventCachedPath;
-
-export type CachedPathMap = Record<string, CachedPath>;
-
-export interface ContextCache {
-    /**
-     * The path to this context
-     */
-    absolutePath: string; // users
-    /**
-     * The self string of that context
-     */
-    context: string; // user
-
-    /**
-     * The parent of this context
-     */
-    parent: string | null;
 }
 
 const openClientSideBinding: string = "{";
@@ -322,6 +272,11 @@ interface NextDataBindingBehaviorConfig {
     bindingType: DataBindingBindingType;
 }
 
+/**
+ * Finds the next data binding in innerHTML and determines its type and indices
+ * @param innerHTML - The innerHTML string to search for data bindings
+ * @returns NextDataBindingBehaviorConfig containing the binding type and start indices
+ */
 function getIndexAndBindingTypeOfNextDataBindingBehavior(
     innerHTML: string
 ): NextDataBindingBehaviorConfig {
@@ -426,25 +381,43 @@ type AccessibleObject = { [key: string]: AccessibleObject };
 export function pathResolver(
     path: string,
     contextPath: string | null,
-    level: number
+    level: number,
+    rootSchema: JSONSchema
 ): (accessibleObject: any, context: any) => any {
-    const splitPath: string[] = path.split(".");
+    let splitPath: string[] = path.split(".");
     let levelCount = level;
-    const self = splitPath[0] === contextPath;
+    let self = splitPath[0] === contextPath;
+    const parentContexts = [];
+
+    if (
+        level > 0 &&
+        rootSchema?.[defsPropertyName]?.[contextPath as string]?.$fast_context ===
+            splitPath.at(-1)
+    ) {
+        self = true;
+    }
 
     while (levelCount > 0 && !self) {
         if (levelCount !== 1) {
-            splitPath.unshift("parentContext");
+            parentContexts.push("parentContext");
+        } else {
+            parentContexts.push("parent");
         }
-
-        splitPath.unshift("parent");
 
         levelCount--;
     }
 
+    splitPath = [...parentContexts, ...splitPath];
+
     return pathWithContextResolver(splitPath, self);
 }
 
+/**
+ * Creates a resolver function that can access properties from an object using a split path array
+ * @param splitPath - The dot syntax path split into an array of property names
+ * @param self - Whether the first item in the path refers to the item itself
+ * @returns A function that resolves the value from the given path on an accessible object
+ */
 function pathWithContextResolver(splitPath: string[], self: boolean): any {
     const isInPreviousContext =
         splitPath[0] === "parent" || splitPath[0] === "parentContext";
@@ -477,41 +450,32 @@ function pathWithContextResolver(splitPath: string[], self: boolean): any {
 export function bindingResolver(
     rootPropertyName: string | null,
     path: string,
-    self: boolean = false,
     parentContext: string | null,
     type: PathType,
     schema: Schema,
-    observerMap: ObserverMap | null,
-    contextPath: string | null,
+    currentContext: string | null,
     level: number
 ): (accessibleObject: any, context: any) => any {
-    rootPropertyName = getRootPropertyName(rootPropertyName, path, contextPath);
+    rootPropertyName = getRootPropertyName(rootPropertyName, path, currentContext, type);
 
-    schema.addPath({
-        pathConfig: {
-            type,
-            currentContext: contextPath,
-            parentContext,
-            path,
-        },
-        rootPropertyName,
-    });
-
-    // Cache path during template processing when ObserverMap is provided
-    if (observerMap) {
-        observerMap.cachePathWithContext({
-            path,
-            self,
-            parentContext,
-            contextPath,
-            type,
-            level,
-            rootPath: null,
-            context: null,
+    if (type !== "event" && rootPropertyName !== null) {
+        schema.addPath({
+            pathConfig: {
+                type,
+                currentContext,
+                parentContext,
+                path,
+            },
+            rootPropertyName,
         });
     }
 
-    return pathResolver(path, contextPath, level);
+    return pathResolver(
+        path,
+        currentContext,
+        level,
+        schema.getSchema(rootPropertyName as string) as JSONSchema
+    );
 }
 
 export function expressionResolver(
@@ -519,28 +483,17 @@ export function expressionResolver(
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
-    schema: Schema,
-    observerMap?: ObserverMap
+    schema: Schema
 ): (accessibleObject: any, context: any) => any {
-    // Cache paths from expression during template processing when ObserverMap is provided
-    if (observerMap) {
-        const paths = extractPathsFromChainedExpression(expression);
-        paths.forEach(path => {
-            observerMap.cachePathWithContext({
-                path,
-                self: true,
-                parentContext,
-                contextPath: null,
-                type: "access",
-                level,
-                rootPath: null,
-                context: null,
-            });
-        });
-    }
-
     return (x, c) =>
-        resolveChainedExpression(x, c, level, parentContext || null, expression);
+        resolveChainedExpression(
+            x,
+            c,
+            level,
+            parentContext || null,
+            expression,
+            schema.getSchema(rootPropertyName as string) as JSONSchema
+        );
 }
 
 /**
@@ -576,7 +529,8 @@ export function extractPathsFromChainedExpression(
 
 /**
  * Determine if the operand is a value (boolean, number, string) or an accessor.
- * @param operand
+ * @param operand - The string to evaluate as either a literal value or property accessor
+ * @returns An object containing the parsed value and whether it represents a literal value
  */
 function isOperandValue(operand: string): {
     value: boolean | number | string;
@@ -630,10 +584,10 @@ export interface ChainedExpression {
 }
 
 /**
- * Evaluates parts of an expression chain
- * @param parts Each part of an expression chain
- * @param operator The operator between expressions
- * @returns
+ * Evaluates parts of an expression chain and chains them with the specified operator
+ * @param parts - Each part of an expression chain to be evaluated
+ * @param operator - The logical operator used to chain the expression parts
+ * @returns A ChainedExpression object representing the linked expressions, or void if no valid expressions found
  */
 function evaluatePartsInExpressionChain(
     parts: string[],
@@ -714,6 +668,11 @@ export function getExpressionChain(value: string): ChainedExpression | void {
     return void 0;
 }
 
+/**
+ * Parses a binding value string into an Expression object
+ * @param value - The binding string value to parse (e.g., "!condition", "foo == bar", "property")
+ * @returns An Expression object containing the operator, operands, and whether operands are literal values
+ */
 function getExpression(value: string): Expression {
     if (value[0] === "!") {
         const left = (value as string).slice(1);
@@ -756,104 +715,138 @@ function getExpression(value: string): Expression {
 }
 
 /**
- * Resolve a single expression
- * @param x - The context
- * @param c - The parent context
- * @param expression - The expression being evaluated
- * @returns - A function resolving the binding for this expression
+ * Resolve a single expression by evaluating its operator and operands
+ * @param x - The current data context
+ * @param c - The parent context for accessing parent scope data
+ * @param level - The nesting level for context resolution
+ * @param contextPath - The current context path for property resolution
+ * @param expression - The expression object to evaluate
+ * @param rootSchema - The root JSON schema for data validation and navigation
+ * @returns The resolved value of the expression
  */
 function resolveExpression(
     x: boolean,
     c: any,
     level: number,
     contextPath: string | null,
-    expression: Expression
+    expression: Expression,
+    rootSchema: JSONSchema
 ): any {
     const { operator, left, right, rightIsValue } = expression;
 
     switch (operator) {
         case "!":
-            return !pathResolver(left, contextPath, level)(x, c);
+            return !pathResolver(left, contextPath, level, rootSchema)(x, c);
         case "==":
             return (
-                pathResolver(left, contextPath, level)(x, c) ==
+                pathResolver(left, contextPath, level, rootSchema)(x, c) ==
                 (rightIsValue
                     ? right
-                    : pathResolver(right as string, contextPath, level)(x, c))
+                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
             );
         case "!=":
             return (
-                pathResolver(left, contextPath, level)(x, c) !=
+                pathResolver(left, contextPath, level, rootSchema)(x, c) !=
                 (rightIsValue
                     ? right
-                    : pathResolver(right as string, contextPath, level)(x, c))
+                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
             );
         case ">=":
             return (
-                pathResolver(left, contextPath, level)(x, c) >=
+                pathResolver(left, contextPath, level, rootSchema)(x, c) >=
                 (rightIsValue
                     ? right
-                    : pathResolver(right as string, contextPath, level)(x, c))
+                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
             );
         case ">":
             return (
-                pathResolver(left, contextPath, level)(x, c) >
+                pathResolver(left, contextPath, level, rootSchema)(x, c) >
                 (rightIsValue
                     ? right
-                    : pathResolver(right as string, contextPath, level)(x, c))
+                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
             );
         case "<=":
             return (
-                pathResolver(left, contextPath, level)(x, c) <=
+                pathResolver(left, contextPath, level, rootSchema)(x, c) <=
                 (rightIsValue
                     ? right
-                    : pathResolver(right as string, contextPath, level)(x, c))
+                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
             );
         case "<":
             return (
-                pathResolver(left, contextPath, level)(x, c) <
+                pathResolver(left, contextPath, level, rootSchema)(x, c) <
                 (rightIsValue
                     ? right
-                    : pathResolver(right as string, contextPath, level)(x, c))
+                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
             );
         default:
-            return pathResolver(left, contextPath, level)(x, c);
+            return pathResolver(left, contextPath, level, rootSchema)(x, c);
     }
 }
 
 /**
- * Resolve a chained expression
- * @param x - The context
- * @param c - The parent context
- * @param self - Where the first item in the path path refers to the item itself (used by repeat).
- * @param expression - The expression being evaluated
- * @param next - The next expression to be chained
- * @returns - A resolved return value for a binding
+ * Resolve a chained expression by evaluating expressions linked with logical operators
+ * @param x - The current data context
+ * @param c - The parent context for accessing parent scope data
+ * @param level - The nesting level for context resolution
+ * @param contextPath - The current context path for property resolution
+ * @param expression - The chained expression object containing linked expressions
+ * @param rootSchema - The root JSON schema for data validation and navigation
+ * @returns The resolved boolean result of the chained expression
  */
 function resolveChainedExpression(
     x: boolean,
     c: any,
     level: number,
     contextPath: string | null,
-    expression: ChainedExpression
+    expression: ChainedExpression,
+    rootSchema: JSONSchema
 ): any {
     if (expression.next) {
         switch (expression.next.operator) {
             case "&&":
             case "&amp;&amp;":
                 return (
-                    resolveExpression(x, c, level, contextPath, expression.expression) &&
-                    resolveChainedExpression(x, c, level, contextPath, expression.next)
+                    resolveExpression(
+                        x,
+                        c,
+                        level,
+                        contextPath,
+                        expression.expression,
+                        rootSchema
+                    ) &&
+                    resolveChainedExpression(
+                        x,
+                        c,
+                        level,
+                        contextPath,
+                        expression.next,
+                        rootSchema
+                    )
                 );
             case "||":
                 return (
-                    resolveExpression(x, c, level, contextPath, expression.expression) ||
-                    resolveChainedExpression(x, c, level, contextPath, expression.next)
+                    resolveExpression(
+                        x,
+                        c,
+                        level,
+                        contextPath,
+                        expression.expression,
+                        rootSchema
+                    ) ||
+                    resolveChainedExpression(
+                        x,
+                        c,
+                        level,
+                        contextPath,
+                        expression.next,
+                        rootSchema
+                    )
                 );
         }
     }
 
-    return resolveExpression(x, c, level, contextPath, expression.expression);
+    return resolveExpression(x, c, level, contextPath, expression.expression, rootSchema);
 }
 
 /**
@@ -913,25 +906,21 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
  * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param chainedExpression - The chained expression which includes the expression and the next expression
  * if there is another in the chain
- * @param observerMap - Optional ObserverMap instance for caching paths during template processing
  * @returns - A binding that resolves the chained expression logic
  */
 export function resolveWhen(
     rootPropertyName: string | null,
-    self: boolean,
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
-    schema: Schema,
-    observerMap?: ObserverMap
+    schema: Schema
 ): (x: boolean, c: any) => any {
     const binding = expressionResolver(
         rootPropertyName,
         expression,
         parentContext,
         level,
-        schema,
-        observerMap
+        schema
     );
     return (x: boolean, c: any) => binding(x, c);
 }
@@ -939,39 +928,32 @@ export function resolveWhen(
 type DataType = "array" | "object" | "primitive";
 
 /**
- * Helper function to determine the data type of an object property
+ * Determines the data type of the provided data
+ * @param data - The data to analyze
+ * @returns "array" for arrays, "object" for non-null objects, "primitive" for other types
  */
-function getDataType(object: any): DataType {
-    if (Array.isArray(object)) return "array";
-    if (typeof object === "object" && object !== null) return "object";
+function getDataType(data: any): DataType {
+    if (Array.isArray(data)) return "array";
+    if (typeof data === "object" && data !== null) return "object";
     return "primitive";
 }
 
 /**
- * Get the next property
- * @param path The dot syntax data path
- * @returns The next property
+ * Assigns Observable properties to items in an array and sets up change notifications
+ * @param proxiedData - The array data to make observable
+ * @param schema - The schema defining the structure of array items
+ * @param rootSchema - The root schema for the entire data structure
+ * @returns The array with observable properties and change notifications
  */
-export function getNextProperty(path: string): string {
-    return path.split(".")[0];
-}
-
-function sortByDeepestNestingItem(first: string[], second: string[]): number {
-    const firstRelativePathLength = first.length;
-    const secondRelativePathLength = second.length;
-
-    return firstRelativePathLength > secondRelativePathLength
-        ? -1
-        : secondRelativePathLength > firstRelativePathLength
-        ? 1
-        : 0;
-}
-
-function assignObservablesToArray(proxiedData: any, cachePath: CachedPath): any {
+function assignObservablesToArray(
+    proxiedData: any,
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema
+): any {
     const data = proxiedData.map((item: any) => {
         const originalItem = Object.assign({}, item);
 
-        assignProxyToItemsInArray(item, originalItem, cachePath as RepeatCachedPath);
+        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
 
         return Object.assign(item, originalItem);
     });
@@ -984,11 +966,7 @@ function assignObservablesToArray(proxiedData: any, cachePath: CachedPath): any 
                         const item = subject[arg.index + i];
                         const originalItem = Object.assign({}, item);
 
-                        assignProxyToItemsInArray(
-                            item,
-                            originalItem,
-                            cachePath as RepeatCachedPath
-                        );
+                        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
 
                         return Object.assign(item, originalItem);
                     }
@@ -1000,8 +978,29 @@ function assignObservablesToArray(proxiedData: any, cachePath: CachedPath): any 
     return data;
 }
 
+/**
+ * Extracts the definition name from a JSON Schema $ref property
+ * @param defName - The $ref string (e.g., "#/$defs/MyType")
+ * @returns The definition name (e.g., "MyType")
+ */
+function getDefFromRef(defName: string): string {
+    const splitName = defName.split("/");
+
+    return splitName.at(-1) as string;
+}
+
+/**
+ * Assign observables to data
+ * @param schema - The schema
+ * @param rootSchema - The root schema mapping to the root property
+ * @param data - The data
+ * @param target - The target custom element
+ * @param rootProperty - The root property
+ * @returns
+ */
 export function assignObservables(
-    cachePath: CachedPath,
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema,
     data: any,
     target: any,
     rootProperty: string
@@ -1011,31 +1010,27 @@ export function assignObservables(
 
     switch (dataType) {
         case "array": {
-            if (cachePath.type === "repeat") {
-                proxiedData = assignObservablesToArray(proxiedData, cachePath);
-            }
+            const context = getDefFromRef(
+                (schema as JSONSchema)[refPropertyName] as string
+            );
+            proxiedData = assignObservablesToArray(
+                proxiedData,
+                (rootSchema as JSONSchema)[defsPropertyName]?.[
+                    context
+                ] as JSONSchemaDefinition,
+                rootSchema
+            );
+
             break;
         }
         case "object": {
-            if (cachePath.type === "default") {
-                const relativePaths = Object.values(
-                    cachePath.paths as Record<string, AccessCachedPath>
-                )
-                    .map((value: AccessCachedPath) => {
-                        return value.relativePath.split(".").slice(1); // the first item is the root path
-                    })
-                    .sort(sortByDeepestNestingItem);
-
-                for (const relativePath of relativePaths) {
-                    proxiedData = assignProxyToItemsInObject(
-                        relativePath,
-                        target,
-                        rootProperty,
-                        proxiedData,
-                        cachePath
-                    );
-                }
-            }
+            proxiedData = assignProxyToItemsInObject(
+                target,
+                rootProperty,
+                proxiedData,
+                schema,
+                rootSchema
+            );
             break;
         }
     }
@@ -1043,71 +1038,82 @@ export function assignObservables(
     return proxiedData;
 }
 
+/**
+ * Assign a proxy to items in an array
+ * @param item - The array item to proxy
+ * @param originalItem - The original array item
+ * @param schema - The schema mapping to the items in the array
+ * @param rootSchema - The root schema assigned to the root property
+ */
 function assignProxyToItemsInArray(
     item: any,
     originalItem: any,
-    cachePath: RepeatCachedPath
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema
 ): void {
     const itemProperties = Object.keys(item);
 
     itemProperties.forEach(key => {
         Observable.defineProperty(item, key);
 
-        const relativePaths = (
-            Object.values(cachePath.paths).filter(pathItem => {
-                if (pathItem.type === "access") {
-                    return pathItem.relativePath.startsWith(
-                        `${cachePath.context}.${key}.`
-                    );
-                }
-
-                return false;
-            }) as Array<AccessCachedPath>
-        )
-            .map(value => {
-                return value.relativePath.split(".").slice(2); // the first item is the context, the next is the property
-            })
-            .sort(sortByDeepestNestingItem);
-
-        for (const relativePath of relativePaths) {
+        if (originalItem[key] && schema && schema.properties) {
             originalItem[key] = assignProxyToItemsInObject(
-                relativePath,
                 item,
                 key,
                 originalItem[key],
-                cachePath
+                schema.properties[key],
+                rootSchema
             );
         }
     });
 }
 
+/**
+ * Assign a proxy to items in an object
+ * @param target - The target custom element
+ * @param rootProperty - The root property
+ * @param data - The data to proxy
+ * @param schema - The schema for the data
+ * @param rootSchema - The root schema for the root property
+ * @returns a Proxy
+ */
 function assignProxyToItemsInObject(
-    paths: string[],
     target: any,
     rootProperty: string,
     data: any,
-    cachePath: CachedPath
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema
 ): any | typeof Proxy {
     const type = getDataType(data);
     let proxiedData = data;
 
-    if (type === "object") {
+    if (type === "object" && schema?.properties) {
         // navigate through all items in the object
-        proxiedData[paths[0]] = assignProxyToItemsInObject(
-            paths.slice(1),
-            target,
-            rootProperty,
-            proxiedData[paths[0]],
-            cachePath
-        );
+        Object.keys(schema.properties).forEach(property => {
+            if (proxiedData[property] && schema && schema.properties) {
+                proxiedData[property] = assignProxyToItemsInObject(
+                    target,
+                    rootProperty,
+                    proxiedData[property],
+                    schema.properties[property],
+                    rootSchema
+                );
+            }
+        });
 
         // assign a Proxy to the object
-        proxiedData = assignProxy(cachePath, target, rootProperty, data);
+        proxiedData = assignProxy(schema, rootSchema, target, rootProperty, data);
     } else if (type === "array") {
-        if (cachePath.type === "repeat") {
+        const context = getDefFromRef(
+            (schema as JSONSchema).items[refPropertyName] as string
+        );
+        const definition = (rootSchema as JSONSchema)[defsPropertyName]?.[context];
+
+        if (definition?.type === "object") {
             proxiedData = assignObservablesToArray(
                 proxiedData,
-                cachePath.paths[rootProperty]
+                definition as JSONSchemaDefinition,
+                rootSchema
             );
         }
     }
@@ -1115,8 +1121,18 @@ function assignProxyToItemsInObject(
     return proxiedData;
 }
 
+/**
+ * Assign a proxy to an object
+ * @param schema - The current schema
+ * @param rootSchema - The root schema for the root property
+ * @param target - The target custom element
+ * @param rootProperty - The root property
+ * @param object - The object to assign the proxy to
+ * @returns Proxy object
+ */
 export function assignProxy(
-    cachePath: CachedPath,
+    schema: JSONSchema | JSONSchemaDefinition,
+    rootSchema: JSONSchema,
     target: any,
     rootProperty: string,
     object: any
@@ -1125,7 +1141,13 @@ export function assignProxy(
         // Create a proxy for the object that triggers Observable.notify on mutations
         return new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
-                obj[prop] = assignObservables(cachePath, value, target, rootProperty);
+                obj[prop] = assignObservables(
+                    schema,
+                    rootSchema,
+                    value,
+                    target,
+                    rootProperty
+                );
 
                 // Trigger notification for property changes
                 Observable.notify(target, rootProperty);
@@ -1156,12 +1178,21 @@ export function assignProxy(
     return object;
 }
 
+/**
+ * Get the root property name
+ * @param rootPropertyName - The root property
+ * @param path - The dot syntax path
+ * @param context - The context created by a repeat
+ * @param type - The type of path binding
+ * @returns
+ */
 export function getRootPropertyName(
     rootPropertyName: string | null,
     path: string,
-    context: null | string
-): string {
-    return rootPropertyName === null || context === null
+    context: null | string,
+    type: PathType
+): string | null {
+    return (rootPropertyName === null || context === null) && type !== "event"
         ? path.split(".")[0]
         : rootPropertyName;
 }
