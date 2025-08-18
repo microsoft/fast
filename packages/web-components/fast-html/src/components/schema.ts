@@ -1,7 +1,7 @@
 type FastContextMetaData = "$fast_context";
 type FastContextsMetaData = "$fast_parent_contexts";
 
-interface JSONSchemaDefinition extends JSONSchemaCommon {
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
     $fast_context: string;
     $fast_parent_contexts: Array<string>;
 }
@@ -9,46 +9,44 @@ interface JSONSchemaDefinition extends JSONSchemaCommon {
 interface JSONSchemaCommon {
     type?: string;
     properties?: any;
+    items?: any;
 }
 
-interface JSONSchema extends JSONSchemaCommon {
+export interface JSONSchema extends JSONSchemaCommon {
     $schema: string;
     $id: string;
     $defs?: Record<string, JSONSchemaDefinition>;
     $ref?: string;
 }
 
-type AccessCachedPathType = "access";
-
-export interface AccessCachedPath {
-    type: AccessCachedPathType;
+interface CachedPathCommon {
+    parentContext: string | null;
     currentContext: string | null;
     path: string;
+}
+
+type AccessCachedPathType = "access";
+
+export interface AccessCachedPath extends CachedPathCommon {
+    type: AccessCachedPathType;
 }
 
 type DefaultCachedPathType = "default";
 
-export interface DefaultCachedPath {
+export interface DefaultCachedPath extends CachedPathCommon {
     type: DefaultCachedPathType;
-    currentContext: string | null;
-    path: string;
 }
 
 type EventCachedPathType = "event";
 
-export interface EventCachedPath {
+export interface EventCachedPath extends CachedPathCommon {
     type: EventCachedPathType;
-    currentContext: string | null;
-    path: string;
 }
 
 type RepeatCachedPathType = "repeat";
 
-export interface RepeatCachedPath {
+export interface RepeatCachedPath extends CachedPathCommon {
     type: RepeatCachedPathType;
-    parentContext: string | null;
-    currentContext: string;
-    path: string;
 }
 
 export type CachedPath =
@@ -65,12 +63,12 @@ interface RegisterPathConfig {
 }
 
 // The context, in most cases the array property e.g. users
-const fastContextMetaData: FastContextMetaData = "$fast_context";
+export const fastContextMetaData: FastContextMetaData = "$fast_context";
 // The list of contexts preceeding this context, the first of which should be the root property
-const fastContextsMetaData: FastContextsMetaData = "$fast_parent_contexts";
+export const fastContextsMetaData: FastContextsMetaData = "$fast_parent_contexts";
 
-const defsPropertyName = "$defs";
-const refPropertyName = "$ref";
+export const defsPropertyName = "$defs";
+export const refPropertyName = "$ref";
 
 /**
  * A constructed JSON schema from a template
@@ -107,18 +105,26 @@ export class Schema {
         switch (config.pathConfig.type) {
             case "default":
             case "access": {
-                if (config.pathConfig.currentContext === null) {
-                    this.addPropertiesToAnObject(
-                        schema,
-                        splitPath.slice(1),
-                        config.pathConfig.currentContext
-                    );
-                } else {
-                    this.addPropertiesToAContext(
-                        schema?.[defsPropertyName]?.[splitPath[0]],
-                        splitPath.slice(1),
-                        config.pathConfig.currentContext
-                    );
+                if (splitPath.length > 1) {
+                    if (config.pathConfig.currentContext === null) {
+                        this.addPropertiesToAnObject(
+                            schema,
+                            splitPath.slice(1),
+                            config.pathConfig.currentContext
+                        );
+                    } else {
+                        if (!schema[defsPropertyName]?.[splitPath[0]]) {
+                            schema[defsPropertyName] = {
+                                [splitPath[0]]: {} as any,
+                            };
+                        }
+
+                        this.addPropertiesToAContext(
+                            schema[defsPropertyName][splitPath[0]],
+                            splitPath.slice(1),
+                            config.pathConfig.currentContext as string
+                        );
+                    }
                 }
 
                 break;
@@ -126,17 +132,20 @@ export class Schema {
             case "repeat": {
                 this.addContext(
                     schema,
-                    splitPath[splitPath.length - 1], // example items
-                    config.pathConfig.currentContext, // example item
+                    splitPath.at(-1) as string, // example items
+                    config.pathConfig.currentContext as string, // example item
                     config.pathConfig.parentContext
                 );
 
                 if (splitPath.length > 2) {
                     let updatedSchema = schema;
+                    const hasParentContext: boolean = !!config.pathConfig.parentContext;
 
-                    if (config.pathConfig.parentContext) {
+                    if (hasParentContext) {
                         updatedSchema = this.addPropertiesToAnObject(
-                            schema[defsPropertyName]?.[config.pathConfig.parentContext],
+                            schema[defsPropertyName]?.[
+                                config.pathConfig.parentContext as string
+                            ],
                             splitPath.slice(1, -1),
                             config.pathConfig.parentContext
                         );
@@ -144,13 +153,21 @@ export class Schema {
 
                     this.addPropertiesToAnObject(
                         updatedSchema,
-                        splitPath.slice(-1),
+                        hasParentContext ? splitPath.slice(2) : splitPath.slice(1),
                         config.pathConfig.currentContext,
                         "array"
                     );
                 } else if (splitPath.length > 1) {
+                    let schemaDefinition;
+
+                    if (config.pathConfig.parentContext) {
+                        schemaDefinition = schema?.[defsPropertyName]?.[
+                            config.pathConfig.parentContext
+                        ] as JSONSchemaDefinition;
+                    }
+
                     this.addPropertiesToAnObject(
-                        schema,
+                        schemaDefinition ?? schema,
                         splitPath.slice(1),
                         config.pathConfig.currentContext,
                         "array"
@@ -158,7 +175,7 @@ export class Schema {
                 } else {
                     schema.type = "array";
                     schema[refPropertyName] = this.getDefsPath(
-                        config.pathConfig.currentContext
+                        config.pathConfig.currentContext as string
                     );
                 }
 
@@ -174,6 +191,14 @@ export class Schema {
      */
     public getSchema(rootPropertyName: string): JSONSchema | null {
         return this.jsonSchemaMap.get(rootPropertyName) ?? null;
+    }
+
+    /**
+     * Gets root properties
+     * @returns IterableIterator<string>
+     */
+    public getRootProperties(): IterableIterator<string> {
+        return this.jsonSchemaMap.keys();
     }
 
     /**
@@ -215,9 +240,9 @@ export class Schema {
     private addPropertiesToAContext(schema: any, splitPath: string[], context: string) {
         schema.type = "object";
 
-        if (schema.properties) {
+        if (schema.properties && !schema.properties[splitPath[0]]) {
             schema.properties[splitPath[0]] = {};
-        } else {
+        } else if (!schema.properties) {
             schema.properties = {
                 [splitPath[0]]: {},
             };
@@ -247,15 +272,15 @@ export class Schema {
     ): any {
         schema.type = "object";
 
-        if (schema.properties) {
+        if (schema.properties && !schema.properties[splitPath[0]]) {
             schema.properties[splitPath[0]] = {};
-        } else {
+        } else if (!schema.properties) {
             schema.properties = {
                 [splitPath[0]]: {},
             };
         }
 
-        if (context === null && type === "object" && splitPath.length > 1) {
+        if (type === "object" && splitPath.length > 1) {
             return this.addPropertiesToAnObject(
                 schema.properties[splitPath[0]],
                 splitPath.slice(1),
@@ -337,7 +362,7 @@ export class Schema {
 
         const parentParentContext: Array<string | null> = schema?.[defsPropertyName]?.[
             parentContext as string
-        ].$fast_parent_contexts as Array<string | null>;
+        ][fastContextsMetaData] as Array<string | null>;
 
         return this.getParentContexts(
             schema,

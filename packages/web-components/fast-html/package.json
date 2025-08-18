@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-html",
-  "version": "1.0.0-alpha.18",
+  "version": "1.0.0-alpha.19",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -29,13 +29,12 @@
     "build:binding": "webpack --config ./src/fixtures/binding/webpack.config.js",
     "build:children": "webpack --config ./src/fixtures/children/webpack.config.js",
     "build:dot-syntax": "webpack --config ./src/fixtures/dot-syntax/webpack.config.js",
-    "build:partial": "webpack --config ./src/fixtures/partial/webpack.config.js",
     "build:when": "webpack --config ./src/fixtures/when/webpack.config.js",
     "build:ref": "webpack --config ./src/fixtures/ref/webpack.config.js",
     "build:repeat": "webpack --config ./src/fixtures/repeat/webpack.config.js",
     "build:observer-map": "webpack --config ./src/fixtures/observer-map/webpack.config.js",
     "build:slotted": "webpack --config ./src/fixtures/slotted/webpack.config.js",
-    "build-app": "npm run build:attribute && npm run build:dot-syntax && npm run build:partial && npm run build:event && npm run build:children && npm run build:binding && npm run build:when && npm run build:ref && npm run build:repeat && npm run build:observer-map && npm run build:slotted",
+    "build-app": "npm run build:attribute && npm run build:dot-syntax && npm run build:event && npm run build:children && npm run build:binding && npm run build:when && npm run build:ref && npm run build:repeat && npm run build:observer-map && npm run build:slotted",
     "build-server": "tsc -b server",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
