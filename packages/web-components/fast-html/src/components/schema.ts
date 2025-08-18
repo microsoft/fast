@@ -139,10 +139,13 @@ export class Schema {
 
                 if (splitPath.length > 2) {
                     let updatedSchema = schema;
+                    const hasParentContext: boolean = !!config.pathConfig.parentContext;
 
-                    if (config.pathConfig.parentContext) {
+                    if (hasParentContext) {
                         updatedSchema = this.addPropertiesToAnObject(
-                            schema[defsPropertyName]?.[config.pathConfig.parentContext],
+                            schema[defsPropertyName]?.[
+                                config.pathConfig.parentContext as string
+                            ],
                             splitPath.slice(1, -1),
                             config.pathConfig.parentContext
                         );
@@ -150,7 +153,7 @@ export class Schema {
 
                     this.addPropertiesToAnObject(
                         updatedSchema,
-                        splitPath.slice(2),
+                        hasParentContext ? splitPath.slice(2) : splitPath.slice(1),
                         config.pathConfig.currentContext,
                         "array"
                     );
@@ -359,7 +362,7 @@ export class Schema {
 
         const parentParentContext: Array<string | null> = schema?.[defsPropertyName]?.[
             parentContext as string
-        ].$fast_parent_contexts as Array<string | null>;
+        ][fastContextsMetaData] as Array<string | null>;
 
         return this.getParentContexts(
             schema,

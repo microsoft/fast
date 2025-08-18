@@ -1107,13 +1107,12 @@ function assignProxyToItemsInObject(
         const context = getDefFromRef(
             (schema as JSONSchema).items[refPropertyName] as string
         );
+        const definition = (rootSchema as JSONSchema)[defsPropertyName]?.[context];
 
-        if ((rootSchema as JSONSchema)[defsPropertyName]?.[context]?.type === "object") {
+        if (definition?.type === "object") {
             proxiedData = assignObservablesToArray(
                 proxiedData,
-                (rootSchema as JSONSchema)[defsPropertyName]?.[
-                    context
-                ] as JSONSchemaDefinition,
+                definition as JSONSchemaDefinition,
                 rootSchema
             );
         }
