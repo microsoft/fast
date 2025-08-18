@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 18 Aug 2025 07:29:43 GMT",
+      "version": "1.0.0-alpha.20",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.20",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "7e1e48f221f8b644f19e6261f94a75289b6f6709",
+            "comment": "Update utilities with path resolving logic that removes ../ additionally removes partial and apply"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Aug 2025 00:35:52 GMT",
       "version": "1.0.0-alpha.19",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.19",

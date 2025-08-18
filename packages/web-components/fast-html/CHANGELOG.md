@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 18 Aug 2025 00:35:52 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 18 Aug 2025 07:29:43 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.20
+
+Mon, 18 Aug 2025 07:29:43 GMT
+
+### Changes
+
+- Update utilities with path resolving logic that removes ../ additionally removes partial and apply (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.19
 
