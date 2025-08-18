@@ -187,32 +187,16 @@ Where the right operand can be either a reference to a value (string e.g. `{{foo
     <ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
     ```
 
-    Should you need to refer to the parent element (not the individual item in the list), you can use `../`. This will map to what `html` tag template literal uses, `c.parent`.
+    Should you need to refer to the parent element (not the individual item in the list), you can use the context of a previous repeat, or no context which will resolve to the custom element.
 
     Example:
     ```html
-    <ul><f-repeat value="{{item in list}}"><li>{{item}} - {{../title}}</li></f-repeat></ul>
-    ```
-
-- **partial & apply**
-
-    These directives are new to the declarative HTML model and allow for the ability to declare a `partial` directive containing a template partial which can then be referenced by an `apply` directive.
-
-    Example:
-    ```html
-    <f-partial id="test">
-        <ul>
-            <f-repeat value="{{item in items}}">
-                <li>{{item.text}}<f-apply partial="test" value="{{item.items}}"></f-apply></li>
-            </f-repeat>
-        </ul>
-    </f-partial>
-    <f-apply partial="test" value="{{items}}"></f-apply>
+    <ul><f-repeat value="{{item in list}}"><li>{{item}} - {{title}}</li></f-repeat></ul>
     ```
 
 #### Unescaped HTML
 
-You can add unescaped HTML using triple braces, this will create an additional `div` element as the HTML needs an element to bind to. Where possible it is advisable to not use unescaped HTML and instead use other binding techniques as well as partials.
+You can add unescaped HTML using triple braces, this will create an additional `div` element as the HTML needs an element to bind to. Where possible it is advisable to not use unescaped HTML and instead use other binding techniques.
 
 Example:
 ```html
