@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 18 Aug 2025 00:35:52 GMT",
+      "version": "1.0.0-alpha.19",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.19",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3cdf59c58f20929ad2f65954d5d892e92d434ce3",
+            "comment": "Add a Schema class that constructs a JSON schema from paths"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "b4777ced6475a2391654e6837e4914c4ea2f836b",
+            "comment": "fix: update elementOptions assignment to use static reference"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "89087ec8e897c31f01eb8387a8292dde2822c2b0",
+            "comment": "Update README for @microsoft/fast-html"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Aug 2025 07:15:14 GMT",
       "version": "1.0.0-alpha.18",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.18",

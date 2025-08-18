@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 06 Aug 2025 07:15:14 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 18 Aug 2025 00:35:52 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.19
+
+Mon, 18 Aug 2025 00:35:52 GMT
+
+### Changes
+
+- Add a Schema class that constructs a JSON schema from paths (7559015+janechu@users.noreply.github.com)
+- fix: update elementOptions assignment to use static reference (863023+radium-v@users.noreply.github.com)
 
 ## 1.0.0-alpha.18
 
