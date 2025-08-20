@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 20 Aug 2025 20:57:02 GMT",
+      "version": "2.7.0",
+      "tag": "@microsoft/fast-element_v2.7.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "machi@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "5201b7c0967da09a62f96e7315ba253c8b5937ec",
+            "comment": "remove shadowOptions observation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Aug 2025 07:15:13 GMT",
       "version": "2.6.0",
       "tag": "@microsoft/fast-element_v2.6.0",

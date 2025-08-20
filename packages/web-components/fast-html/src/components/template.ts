@@ -6,7 +6,6 @@ import {
     FASTElementDefinition,
     fastElementRegistry,
     HydratableElementController,
-    ShadowRootOptions,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
@@ -34,7 +33,6 @@ interface ResolvedStringsAndValues {
 export type ObserverMapOption = "all";
 
 export interface ElementOptions {
-    shadowOptions?: ShadowRootOptions | undefined;
     observerMap?: ObserverMapOption | undefined;
 }
 
@@ -67,13 +65,15 @@ class TemplateElement extends FASTElement {
      */
     private observerMap?: ObserverMap;
 
-    private schema?: Schema;
+    /**
+     * Default element options
+     */
+    private static defaultElementOptions: ElementOptions = {};
 
-    private static defaultElementOptions: ElementOptions = {
-        shadowOptions: {
-            mode: "open",
-        },
-    };
+    /**
+     * Metadata containing JSON schema for properties on a custom eleemnt
+     */
+    private schema?: Schema;
 
     public static options(elementOptions: ElementOptionsDictionary = {}) {
         const result: ElementOptionsDictionary = {};
@@ -81,9 +81,6 @@ class TemplateElement extends FASTElement {
         for (const key in elementOptions) {
             const value = elementOptions[key];
             result[key] = {
-                shadowOptions:
-                    value.shadowOptions ??
-                    TemplateElement.defaultElementOptions.shadowOptions,
                 observerMap: value.observerMap,
             };
         }
@@ -165,11 +162,6 @@ class TemplateElement extends FASTElement {
                             strings,
                             values
                         );
-                        // set shadow options as defined by the f-template
-                        registeredFastElement.shadowOptions =
-                            TemplateElement.elementOptions[
-                                this.name as string
-                            ]?.shadowOptions;
                     }
                 } else {
                     throw FAST.error(Message.noTemplateProvided, { name: this.name });
