@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "remove shadowOptions observation",
-  "packageName": "@microsoft/fast-element",
-  "email": "machi@microsoft.com",
-  "dependentChangeType": "none"
-}

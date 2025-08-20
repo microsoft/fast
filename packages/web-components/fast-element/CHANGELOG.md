@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 06 Aug 2025 07:15:13 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 20 Aug 2025 20:57:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.7.0
+
+Wed, 20 Aug 2025 20:57:02 GMT
+
+### Minor changes
+
+- remove shadowOptions observation (machi@microsoft.com)
 
 ## 2.6.0
 

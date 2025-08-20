@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 18 Aug 2025 07:29:43 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 20 Aug 2025 20:57:02 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.21
+
+Wed, 20 Aug 2025 20:57:02 GMT
+
+### Changes
+
+- remove shadowOptions from TemplateElement.options() (machi@microsoft.com)
+- Bump @microsoft/fast-element to v2.7.0
 
 ## 1.0.0-alpha.20
 

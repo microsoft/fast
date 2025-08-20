@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "remove shadowOptions from TemplateElement.options()",
-  "packageName": "@microsoft/fast-html",
-  "email": "machi@microsoft.com",
-  "dependentChangeType": "none"
-}

@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 20 Aug 2025 20:57:02 GMT",
+      "version": "1.0.0-alpha.21",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.21",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "machi@microsoft.com",
+            "package": "@microsoft/fast-html",
+            "commit": "5201b7c0967da09a62f96e7315ba253c8b5937ec",
+            "comment": "remove shadowOptions from TemplateElement.options()"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.7.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 18 Aug 2025 07:29:43 GMT",
       "version": "1.0.0-alpha.20",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.20",
