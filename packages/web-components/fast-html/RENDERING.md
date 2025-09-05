@@ -82,31 +82,16 @@ export class MyComponent extends FASTElement {
 
     service!: IInitialStateService;
 
-    private shadowOptions = false;
     public initialState = false;
 
     connectedCallback() {
         super.connectedCallback();
 
-        Observable.defineProperty(this.$fastController.definition, "shadowOptions");
-
-        Observable.getNotifier(this.$fastController.definition).subscribe(
-            {
-                handleChange: (value) => {
-                    if (value.shadowOptions) {
-                        this.shadowOptions = true;
-                        this.hasStateAndShadowOptions();
-                    }
-                },
-            },
-            "shadowOptions"
-        );
-
         this.loadItemFromInitialState();
     }
 
-    hasStateAndShadowOptions() {
-        if (this.shadowOptions && this.initialState) {
+    hasState() {
+        if (this.initialState) {
             this.deferHydration = false;
         }
     }
@@ -118,45 +103,19 @@ export class MyComponent extends FASTElement {
 
         this.initialState = true;
 
-        this.hasStateAndShadowOptions();
+        this.hasState();
     }
 }
 
-MyComponent.define({
+MyComponent.defineAsync({
     name: "my-component",
-    shadowOptions: null
+    templateOptions: "defer-and-hydrate",
 });
 ```
 
-Notice that there is a `defer-hydration` attribute that gets removed once initial state has been applied and `shadowOptions` has also been defined. This allows us to ensure that the template has been found and parsed to the component and the initial state has been applied before we connect the component to the rendered HTML.
+Notice that there is a `defer-hydration` attribute that gets removed once initial state has been applied. This allows us to ensure that the initial state has been applied before we connect the component to the rendered HTML.
 
 Depending on your application structure it might be more maintainable to create an abstract class that extends `FASTElement` to re-use the service logic and the removal of `defer-hydration`.
-
-## Setting shadow options
-
-You may notice in the example above we have set the `shadowOptions` to `null`, when using `define` on a `FASTElement` you must set your `shadowOptions` to `null` if you intend to set them later - they can only be set once. This way `FASTElement` will delay the creation of a shadowRoot so your declarative shadow DOM will not immediately get overwritten causing a FOUC (Flash of Unstyled Content). Then, when initializing the `TemplateElement` from `@microsoft/fast-html`, be sure to pass `shadowOptions` as a part of the component options so they can be set correctly and the `defer-hydration` can be removed.
-
-Example:
-```typescript
-import { FASTElement } from "@microsoft/fast-element";
-
-class MyComponent extends FASTElement {}
-
-MyComponent.define({
-    name: "my-component",
-    shadowOptions: null
-});
-
-TemplateElement.options({
-    "my-component": {
-        shadowOptions: {
-            mode: "open"
-        }
-    }
-}).define({
-    name: "f-template",
-});
-```
 
 ## Hydration Comments and Datasets
 
@@ -299,7 +258,7 @@ Should result in:
 <!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
 ```
 
-You may notice that the same UUID was used within the repeat markers, this is because they are templates and each UUID only needs to be unique to that template. The same is true for the binding number.
+You may notice that the same UUID was used within the repeat markers, this is because they are templates and each UUID only needs to be unique to that template. The same is true for the binding number. Additionally, a binding wraps the repeat markers, even if the array is empty, this binding must be rendered.
 
 #### When
 
@@ -515,3 +474,7 @@ Should result in:
     </template>
 </nested-components>
 ```
+
+## Rendering Lifecycle
+
+For information about the interaction between `@microsoft/fast-element` and `@microsoft/fast-html` packages and their rendering lifecycle, see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
