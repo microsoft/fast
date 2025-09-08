@@ -37,7 +37,7 @@ export interface ShadowRootOptions extends ShadowRootInit {
  * Template options.
  * @alpha
  */
-export type TemplateOptions = "defer-and-hydrate";
+export type TemplateOptions = "defer-and-hydrate" | "hydrate";
 
 /**
  * Represents metadata configuration for a custom element.

@@ -14,7 +14,7 @@ import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import { UnobservableMutationObserver } from "../utilities.js";
-import { FASTElementDefinition, ShadowRootOptions } from "./fast-definitions.js";
+import { FASTElementDefinition } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { HydrationMarkup, isHydratable } from "./hydration.js";
 
@@ -573,16 +573,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             "template"
         );
 
-        Observable.getNotifier(definition).subscribe(
-            {
-                handleChange: () => {
-                    ElementController.forCustomElement(element as FASTElement, true);
-                    (element as FASTElement).$fastController.connect();
-                },
-            },
-            "shadowOptions"
-        );
-
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
             definition
@@ -773,24 +763,6 @@ export class HydratableElementController<
             HydratableElementController.hydrationObserver.unobserve(record.target);
             (record.target as any).$fastController.connect();
         }
-    }
-
-    public static forCustomElement(
-        element: HTMLElement,
-        override?: boolean
-    ): ElementController<HTMLElement> {
-        const definition = FASTElementDefinition.getForInstance(element);
-
-        if (
-            definition !== undefined &&
-            definition.templateOptions === "defer-and-hydrate" &&
-            !definition.template
-        ) {
-            element.setAttribute(deferHydrationAttribute, "");
-            element.setAttribute(needsHydrationAttribute, "");
-        }
-
-        return super.forCustomElement(element, override);
     }
 
     public connect() {
