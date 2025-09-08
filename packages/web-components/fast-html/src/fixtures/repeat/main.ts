@@ -1,4 +1,4 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { FASTElement, observable } from "@microsoft/fast-element";
 
 class TestElement extends FASTElement {
@@ -7,9 +7,9 @@ class TestElement extends FASTElement {
 
     item_parent: string = "Bat";
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 class TestElementInnerWhen extends FASTElement {
@@ -25,9 +25,9 @@ class TestElementInnerWhen extends FASTElement {
         },
     ];
 }
-RenderableFASTElement(TestElementInnerWhen).defineAsync({
+TestElementInnerWhen.defineAsync({
     name: "test-element-inner-when",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 TemplateElement.define({

@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
     public object: any = {
@@ -29,9 +29,9 @@ class TestElement extends FASTElement {
         this.object.a.b2.c = "Pluto";
     };
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 TemplateElement.options({

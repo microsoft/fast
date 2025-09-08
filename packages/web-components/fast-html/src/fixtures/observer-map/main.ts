@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "../../components/index.js";
+import { TemplateElement } from "../../components/index.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -295,9 +295,9 @@ class ObserverMapTestElement extends FASTElement {
     };
 }
 
-RenderableFASTElement(ObserverMapTestElement).defineAsync({
+ObserverMapTestElement.defineAsync({
     name: "observer-map-test-element",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 class ObserverMapInternalTestElement extends FASTElement {
@@ -318,9 +318,9 @@ class ObserverMapInternalTestElement extends FASTElement {
     }
 }
 
-RenderableFASTElement(ObserverMapInternalTestElement).defineAsync({
+ObserverMapInternalTestElement.defineAsync({
     name: "observer-map-internal-test-element",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 // Configure TemplateElement with observerMap enabled for this test

@@ -1,21 +1,21 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement } from "@microsoft/fast-element";
 
 class TestElement extends FASTElement {
     @attr
     text: string = "Hello";
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 class TestElementUnescaped extends FASTElement {
     public html = `<p>Hello world</p>`;
 }
-RenderableFASTElement(TestElementUnescaped).defineAsync({
+TestElementUnescaped.defineAsync({
     name: "test-element-unescaped",
-    templateOptions: "defer-and-hydrate",
+    templateOptions: "hydrate",
 });
 
 TemplateElement.define({

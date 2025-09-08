@@ -600,8 +600,6 @@ export class HydratableElementController<TElement extends HTMLElement = HTMLElem
     // (undocumented)
     disconnect(): void;
     // (undocumented)
-    static forCustomElement(element: HTMLElement, override?: boolean): ElementController<HTMLElement>;
-    // (undocumented)
     static install(): void;
     protected needsHydration?: boolean;
 }
@@ -971,7 +969,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 }
 
 // @alpha
-export type TemplateOptions = "defer-and-hydrate";
+export type TemplateOptions = "defer-and-hydrate" | "hydrate";
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;

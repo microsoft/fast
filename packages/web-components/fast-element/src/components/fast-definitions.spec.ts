@@ -3,8 +3,9 @@ import { FASTElementDefinition } from "./fast-definitions.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import { uniqueElementName } from "../testing/fixture.js";
 import { FASTElement } from "./fast-element.js";
+import { deferHydrationAttribute, needsHydrationAttribute } from "./element-controller.js";
 
-describe("FASTElementDefinition", () => {
+describe.only("FASTElementDefinition", () => {
     class MyElement extends HTMLElement {}
 
     context("styles", () => {
@@ -124,6 +125,34 @@ describe("FASTElementDefinition", () => {
             def.define();
 
             expect(def.isDefined).to.be.true;
+        });
+    });
+
+    context("template options", () => {
+        it("adds defer-hydration and needs-hydration if the 'defer-and-hydrate' template option is specified", () => {
+            class MyElement extends HTMLElement {
+                deferHydration = true;
+            }
+            const def = FASTElementDefinition.compose(
+                MyElement,
+                { name: uniqueElementName(), templateOptions: "defer-and-hydrate"}
+            );
+
+            expect(typeof def.attributeLookup[deferHydrationAttribute]).not.equal("undefined");
+            expect(typeof def.attributeLookup[needsHydrationAttribute]).not.equal("undefined");
+            console.log("test", def.attributeLookup[deferHydrationAttribute].getValue(MyElement));
+        });
+        it("adds needs-hydration if the 'hydrate' template option is specified", () => {
+            const def = FASTElementDefinition.compose(MyElement, { name: uniqueElementName(), templateOptions: "hydrate"});
+
+            expect(typeof def.attributeLookup[deferHydrationAttribute]).equal("undefined");
+            expect(typeof def.attributeLookup[needsHydrationAttribute]).not.equal("undefined");
+        });
+        it("does not add any hydration attributes if no template option is specified", () => {
+            const def = FASTElementDefinition.compose(MyElement, uniqueElementName());
+
+            expect(typeof def.attributeLookup[deferHydrationAttribute]).equal("undefined");
+            expect(typeof def.attributeLookup[needsHydrationAttribute]).equal("undefined");
         });
     });
 

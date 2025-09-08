@@ -14,7 +14,7 @@ import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import { UnobservableMutationObserver } from "../utilities.js";
-import { FASTElementDefinition } from "./fast-definitions.js";
+import { FASTElementDefinition, ShadowRootOptions } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { HydrationMarkup, isHydratable } from "./hydration.js";
 

@@ -1,4 +1,10 @@
-import { attr, type Constructable, type FASTElement } from "@microsoft/fast-element";
+import { type Constructable, FASTElement } from "@microsoft/fast-element";
+
+abstract class DeferAndHydrateFASTElement extends FASTElement {
+    deferHydration: boolean;
+}
+
+type DeferAndHydrateFASTElementType = DeferAndHydrateFASTElement;
 
 /**
  * A mixin function that extends a base class with additional functionality for
@@ -8,12 +14,10 @@ import { attr, type Constructable, type FASTElement } from "@microsoft/fast-elem
  * @returns A new class that extends the provided base class with additional functionality for rendering and hydration.
  * @public
  */
-export function RenderableFASTElement<T extends Constructable<FASTElement>>(
-    BaseCtor: T
-): T {
+export function DeferredFASTElement<
+    T extends Constructable<DeferAndHydrateFASTElementType>
+>(BaseCtor: T): T {
     const C = class extends BaseCtor {
-        deferHydration: boolean = true;
-
         constructor(...args: any[]) {
             super(...args);
 
@@ -32,11 +36,6 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
          */
         public async prepare?(): Promise<void>;
     };
-
-    attr({ mode: "boolean", attribute: "defer-hydration" })(
-        C.prototype,
-        "deferHydration"
-    );
 
     return C;
 }

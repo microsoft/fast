@@ -692,27 +692,3 @@ describe("The ElementController", () => {
         }).to.not.throw();
     });
 });
-
-describe("The HydratableElementController", () => {
-    it("should not set a defer-hydration and needs-hydration attribute if the template is set", () => {
-        const { element } = createController();
-
-        HydratableElementController.forCustomElement(element);
-
-        expect(element.getAttribute(deferHydrationAttribute)).to.equal(null);
-        expect(element.getAttribute(needsHydrationAttribute)).to.equal(null);
-    });
-    it("should set a defer-hydration and needs-hydration attribute if the template is not set", () => {
-        const { element } = createController();
-
-        const definition = FASTElementDefinition.getForInstance(element);
-
-        (definition as FASTElementDefinition).template = undefined;
-        (definition as FASTElementDefinition).templateOptions = "defer-and-hydrate";
-
-        HydratableElementController.forCustomElement(element);
-
-        expect(element.getAttribute(deferHydrationAttribute)).to.equal("");
-        expect(element.getAttribute(needsHydrationAttribute)).to.equal("");
-    });
-});

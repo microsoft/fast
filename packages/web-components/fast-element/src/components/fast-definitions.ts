@@ -183,6 +183,25 @@ export class FASTElementDefinition<
         this.registry = nameOrConfig.registry ?? customElements;
 
         const proto = type.prototype;
+
+        switch (this.templateOptions) {
+            case "defer-and-hydrate":
+                AttributeConfiguration.locate(proto.constructor).push({
+                    property: "deferHydration",
+                    attribute: "defer-hydration",
+                    mode: "boolean",
+                });
+            // TODO: add default value
+            case "hydrate":
+                AttributeConfiguration.locate(proto.constructor).push({
+                    property: "needsHydration",
+                    attribute: "needs-hydration",
+                    mode: "boolean",
+                });
+                // TODO: add default value
+                break;
+        }
+
         const attributes = AttributeDefinition.collect(type, nameOrConfig.attributes);
         const observedAttributes = new Array<string>(attributes.length);
         const propertyLookup = {};
