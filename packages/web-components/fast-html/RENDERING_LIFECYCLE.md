@@ -11,6 +11,24 @@ The FAST Element rendering lifecycle involves a coordinated process between two 
 
 ## Lifecycle Phases
 
+Given a DOM which includes an `f-template` and a component:
+
+```html
+<my-component defer-hydration needs-hydration text="Hello World">
+    <template shadowrootmode="open">
+        <h1><!--fe-b$$start$$0$$abc123$$fe-b-->Hello World<!--fe-b$$end$$0$$abc123$$fe-b--></h1>
+    </template>
+</my-component>
+
+<f-template name="my-component">
+    <template>
+        <h1>{{text}}</h1>
+    </template>
+</f-template>
+```
+
+The following phases will then be kicked off once the JavaScript is parsed.
+
 ### Phase 1: Partial Element Registration
 
 Custom elements begin their lifecycle by registering as partial definitions with the FAST Element Registry using the `defineAsync()` method. This allows the element to be registered before its template is available.
@@ -45,15 +63,7 @@ TemplateElement.define({
 
 ### Phase 3: Template Processing and Attachment
 
-When an `f-template` element is connected to the DOM, it initiates the template attachment process:
-
-```html
-<f-template name="my-component">
-    <template>
-        <h1>{{text}}</h1>
-    </template>
-</f-template>
-```
+When an `f-template` element is connected to the DOM, it initiates the template attachment process.
 
 The lifecycle flow during this phase:
 
@@ -71,18 +81,20 @@ Once the template is attached to the partial definition, the element completes i
 
 ### Phase 5: Element Instantiation and Hydration
 
-When custom elements are instantiated in the DOM:
-
-```html
-<my-component defer-hydration needs-hydration text="Hello World">
-    <template shadowrootmode="open">
-        <h1><!--fe-b$$start$$0$$abc123$$fe-b-->Hello World<!--fe-b$$end$$0$$abc123$$fe-b--></h1>
-    </template>
-</my-component>
-```
+When custom elements are instantiated in the DOM: the following occurs:
 
 1. **Element Creation**: The platform creates instances of the custom element
 2. **Hydration**: Elements with `needs-hydration` attribute will now be hydrated, or this process may be delayed with the `defer-hydration` attribute which the developer can remove once they determine that the initial state has been provided to the custom element
+
+The DOM after hydration should look like this:
+
+```html
+<my-component text="Hello World">
+    <template shadowrootmode="open">
+        <h1><!---->Hello World<!----></h1>
+    </template>
+</my-component>
+```
 
 ## Key Integration Points
 

@@ -90,7 +90,7 @@ export class MyComponent extends FASTElement {
         this.loadItemFromInitialState();
     }
 
-    hasState() {
+    checkInitialState() {
         if (this.initialState) {
             this.deferHydration = false;
         }
@@ -103,7 +103,7 @@ export class MyComponent extends FASTElement {
 
         this.initialState = true;
 
-        this.hasState();
+        this.checkInitialState();
     }
 }
 
