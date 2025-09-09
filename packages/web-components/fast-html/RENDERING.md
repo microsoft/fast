@@ -260,6 +260,12 @@ Should result in:
 
 You may notice that the same UUID was used within the repeat markers, this is because they are templates and each UUID only needs to be unique to that template. The same is true for the binding number. Additionally, a binding wraps the repeat markers, even if the array is empty, this binding must be rendered.
 
+Example result of an empty array:
+```html
+<!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
+<!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+```
+
 #### When
 
 The when directive is either present in the DOM or not, and therefore does not need an extra marker for the template.
@@ -302,6 +308,38 @@ Should result in:
 ```html
 <!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
 <!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+```
+
+### Client Side Bindings
+
+Client side bindings are bindings which the client needs, but they are not necessary as part of an initial render. These must still be accounted for when creating hydration comments however, as the template needs to know which elements to attach these bindings to. There are two types of client side bindings, events and attribute directives. These do not require state as they are bound to class methods or properties.
+
+#### Event Bindings
+
+Event bindings such as `@keydown` and `@click` can be represented with hydration comments.
+
+Example event binding:
+```html
+<button @click="{handleClick(e)}">Button</button>
+```
+
+Should result in:
+```html
+<button data-fe-b-0>Button</button>
+```
+
+#### Attribute Directives
+
+Attribute directives such as `f-slotted` and `f-ref` can be represented with hydration comments.
+
+Example `f-ref` binding:
+```html
+<button f-ref="{button}">Button</button>
+```
+
+Should result in:
+```html
+<button data-fe-b-0>Button</button>
 ```
 
 #### More Examples
