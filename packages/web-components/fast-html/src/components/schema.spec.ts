@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { Schema } from "./schema.js";
 
-test.describe.only("Schema", async () => {
+test.describe("Schema", async () => {
     test("should instantiate with a custom element name without throwing", async () => {
         expect(() => new Schema("my-custom-element")).not.toThrow();
     });
