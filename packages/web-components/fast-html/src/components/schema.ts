@@ -55,7 +55,7 @@ export type CachedPath =
     | AccessCachedPath
     | EventCachedPath;
 
-export type CachedPathMap = Map<string, JSONSchema>;
+export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 
 interface RegisterPathConfig {
     rootPropertyName: string;
@@ -82,10 +82,11 @@ export class Schema {
     /**
      * A JSON schema describing each root schema
      */
-    private jsonSchemaMap: CachedPathMap = new Map();
+    public static jsonSchemaMap: CachedPathMap = new Map();
 
     constructor(name: string) {
         this.customElementName = name;
+        Schema.jsonSchemaMap.set(this.customElementName, new Map());
     }
 
     /**
@@ -94,12 +95,19 @@ export class Schema {
      */
     public addPath(config: RegisterPathConfig) {
         const splitPath = this.getSplitPath(config.pathConfig.path);
-        let schema = this.jsonSchemaMap.get(config.rootPropertyName);
+        let schema: JSONSchema | undefined = (
+            Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>
+        ).get(config.rootPropertyName);
 
         // Create a root level property JSON
         if (!schema) {
             this.addNewSchema(config.rootPropertyName);
-            schema = this.jsonSchemaMap.get(config.rootPropertyName) as JSONSchema;
+            schema = (
+                Schema.jsonSchemaMap.get(this.customElementName) as Map<
+                    string,
+                    JSONSchema
+                >
+            ).get(config.rootPropertyName) as JSONSchema;
         }
 
         switch (config.pathConfig.type) {
@@ -190,7 +198,14 @@ export class Schema {
      * @returns The JSON schema for the root property
      */
     public getSchema(rootPropertyName: string): JSONSchema | null {
-        return this.jsonSchemaMap.get(rootPropertyName) ?? null;
+        return (
+            (
+                Schema.jsonSchemaMap.get(this.customElementName) as Map<
+                    string,
+                    JSONSchema
+                >
+            ).get(rootPropertyName) ?? null
+        );
     }
 
     /**
@@ -198,7 +213,9 @@ export class Schema {
      * @returns IterableIterator<string>
      */
     public getRootProperties(): IterableIterator<string> {
-        return this.jsonSchemaMap.keys();
+        return (
+            Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>
+        ).keys();
     }
 
     /**
@@ -224,11 +241,14 @@ export class Schema {
      * @param propertyName The name of the property to assign this JSON schema to
      */
     private addNewSchema(propertyName: string): void {
-        this.jsonSchemaMap.set(propertyName, {
-            $schema: "https://json-schema.org/draft/2019-09/schema",
-            $id: `https://fast.design/schemas/${this.customElementName}/${propertyName}.json`,
-            [defsPropertyName]: {},
-        });
+        (Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>).set(
+            propertyName,
+            {
+                $schema: "https://json-schema.org/draft/2019-09/schema",
+                $id: `https://fast.design/schemas/${this.customElementName}/${propertyName}.json`,
+                [defsPropertyName]: {},
+            }
+        );
     }
 
     /**

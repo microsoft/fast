@@ -58,8 +58,6 @@ class TemplateElement extends FASTElement {
      */
     public static elementOptions: ElementOptionsDictionary = {};
 
-    private partials: { [key: string]: ViewTemplate } = {};
-
     /**
      * ObserverMap instance for caching binding paths
      */

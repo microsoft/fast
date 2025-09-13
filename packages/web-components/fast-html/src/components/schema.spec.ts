@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { Schema } from "./schema.js";
 
-test.describe("Schema", async () => {
+test.describe.only("Schema", async () => {
     test("should instantiate with a custom element name without throwing", async () => {
         expect(() => new Schema("my-custom-element")).not.toThrow();
     });
@@ -86,6 +86,42 @@ test.describe("Schema", async () => {
         expect(schemaA!.$defs?.["item"]).toBeDefined();
         expect(schemaA!.$defs?.["item"].$fast_context).toEqual("items");
         expect(schemaA!.$defs?.["item"].$fast_parent_contexts).toEqual([null]);
+    });
+    test("should add an object to a context in a schema", async () => {
+        const schema = new Schema("my-custom-element");
+
+        schema.addPath({
+            rootPropertyName: "items",
+            pathConfig: {
+                type: "repeat",
+                path: "items",
+                currentContext: "item",
+                parentContext: null,
+            },
+        });
+
+        schema.addPath({
+            rootPropertyName: "items",
+            pathConfig: {
+                type: "default",
+                path: "item.a.b",
+                currentContext: "item",
+                parentContext: null,
+            },
+        });
+
+        const schemaA = schema.getSchema("items");
+
+        expect(schemaA).toBeDefined();
+        expect(schemaA!.$ref).toBeDefined();
+        expect(schemaA!.$ref).toEqual("#/$defs/item");
+        expect(schemaA!.type).toEqual("array");
+        expect(schemaA!.$defs?.["item"]).toBeDefined();
+        expect(schemaA!.$defs?.["item"].$fast_context).toEqual("items");
+        expect(schemaA!.$defs?.["item"].$fast_parent_contexts).toEqual([null]);
+        expect(schemaA!.$defs?.["item"].properties).toBeDefined();
+        expect(schemaA!.$defs?.["item"].properties["a"]).toBeDefined();
+        expect(schemaA!.$defs?.["item"].properties["a"].type).toEqual("object");
     });
     test("should add a nested context in a schema", async () => {
         const schema = new Schema("my-custom-element");
