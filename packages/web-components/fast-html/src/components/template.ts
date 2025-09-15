@@ -282,6 +282,7 @@ class TemplateElement extends FASTElement {
                     behaviorConfig.name
                 );
                 const binding = bindingResolver(
+                    null,
                     rootPropertyName,
                     valueAttr[2],
                     parentContext,
@@ -403,6 +404,7 @@ class TemplateElement extends FASTElement {
                     type
                 );
                 const binding = bindingResolver(
+                    strings.join(""),
                     rootPropertyName,
                     propName,
                     parentContext,
@@ -454,6 +456,7 @@ class TemplateElement extends FASTElement {
                         closingParenthesis
                     );
                     const binding = bindingResolver(
+                        strings.join(""),
                         rootPropertyName,
                         propName,
                         parentContext,
@@ -468,6 +471,7 @@ class TemplateElement extends FASTElement {
                             ...(arg !== "e" && arg !== ""
                                 ? [
                                       bindingResolver(
+                                          strings.join(""),
                                           rootPropertyName,
                                           arg,
                                           parentContext,
@@ -495,6 +499,7 @@ class TemplateElement extends FASTElement {
                     );
 
                     const binding = bindingResolver(
+                        strings.join(""),
                         rootPropertyName,
                         propName,
                         parentContext,

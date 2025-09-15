@@ -301,7 +301,8 @@ RenderableFASTElement(ObserverMapTestElement).defineAsync({
 });
 
 class ObserverMapInternalTestElement extends FASTElement {
-    public selectedUserId?: number;
+    public selecteduserid?: number;
+    public totalusers?: number;
 
     public a: any = {
         b: {},

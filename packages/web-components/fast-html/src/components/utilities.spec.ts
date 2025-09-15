@@ -10,6 +10,7 @@ import {
     transformInnerHTML,
     getExpressionChain,
     extractPathsFromChainedExpression,
+    getChildrenMap,
 } from "./utilities.js";
 
 test.describe("utilities", async () => {
@@ -459,6 +460,40 @@ test.describe("utilities", async () => {
 
             expect(paths.size).toEqual(1);
             expect(paths.has("app.user.profile.settings.theme")).toBe(true);
+        });
+    });
+
+    test.describe("getChildrenMap", async () => {
+        test("should get a ChildrenMap if an attribute is part of a custom element", async () => {
+            const childrenMap = getChildrenMap(`<template><my-element foo="`);
+
+            expect(childrenMap).not.toBeNull();
+            expect(childrenMap?.attributeName).toEqual("foo");
+            expect(childrenMap?.customElementName).toEqual("my-element");
+        });
+        test("should not get a ChildrenMap if an attribute is part of a non-custom element", async () => {
+            const childrenMap = getChildrenMap(`<template><button foo="`);
+
+            expect(childrenMap).toBeNull();
+        });
+        test("should remove any aspected attributes from an attribute name", async () => {
+            const childrenMap = getChildrenMap(`<template><my-element :foo="`);
+
+            expect(childrenMap).not.toBeNull();
+            expect(childrenMap?.attributeName).toEqual("foo");
+            expect(childrenMap?.customElementName).toEqual("my-element");
+        });
+        test("should not get a ChildreMap if the previous string indicates the binding was not an attribute", async () => {
+            const childrenMap = getChildrenMap(`<template><my-element>`);
+
+            expect(childrenMap).toBeNull();
+        });
+        test("should get a ChildrenMap if there are multiple attributes are listed before this attribute", async () => {
+            const childrenMap = getChildrenMap(`<template><my-element foo="" bar="" bat="`);
+
+            expect(childrenMap).not.toBeNull();
+            expect(childrenMap?.attributeName).toEqual("bat");
+            expect(childrenMap?.customElementName).toEqual("my-element");
         });
     });
 });
