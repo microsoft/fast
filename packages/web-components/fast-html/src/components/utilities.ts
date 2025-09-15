@@ -61,6 +61,11 @@ export interface TemplateDirectiveBehaviorConfig extends BehaviorConfig {
     closingTagEndIndex: number;
 }
 
+export interface ChildrenMap {
+    customElementName: string;
+    attributeName: string;
+}
+
 const openClientSideBinding: string = "{";
 
 const closeClientSideBinding: string = "}";
@@ -448,6 +453,7 @@ function pathWithContextResolver(splitPath: string[], self: boolean): any {
 }
 
 export function bindingResolver(
+    previousString: string | null,
     rootPropertyName: string | null,
     path: string,
     parentContext: string | null,
@@ -459,6 +465,8 @@ export function bindingResolver(
     rootPropertyName = getRootPropertyName(rootPropertyName, path, currentContext, type);
 
     if (type !== "event" && rootPropertyName !== null) {
+        const childrenMap = getChildrenMap(previousString);
+
         schema.addPath({
             pathConfig: {
                 type,
@@ -467,6 +475,7 @@ export function bindingResolver(
                 path,
             },
             rootPropertyName,
+            childrenMap,
         });
     }
 
@@ -1195,4 +1204,71 @@ export function getRootPropertyName(
     return (rootPropertyName === null || context === null) && type !== "event"
         ? path.split(".")[0]
         : rootPropertyName;
+}
+
+/**
+ * Get details of bindings to the attributes of child custom elements
+ * @param previousString - The previous string before the binding
+ * @returns null, or a custom element name and attribute name
+ */
+export function getChildrenMap(previousString: string | null): ChildrenMap | null {
+    if (
+        typeof previousString === "string" &&
+        isAttribute(previousString, previousString.length)
+    ) {
+        const customElementName = getAttributesCustomElementName(previousString);
+
+        if (customElementName) {
+            return {
+                customElementName,
+                attributeName: getAttributeName(previousString),
+            };
+        }
+    }
+
+    return null;
+}
+
+/**
+ * Get the HTML element that is passing the attribute binding
+ * @param previousString - The previous string before the binding
+ * @returns null if this is not a custom element, or the custom element that is passing the binding as an attribute
+ */
+function getAttributesCustomElementName(previousString: string): string | null {
+    const indexOfElementTagStart = previousString.lastIndexOf("<") + 1;
+    const indexOfElementTagEnd =
+        previousString.slice(indexOfElementTagStart).indexOf(" ") +
+        indexOfElementTagStart;
+    const elementName = previousString.slice(
+        indexOfElementTagStart,
+        indexOfElementTagEnd
+    );
+
+    if (elementName.includes("-")) {
+        return elementName;
+    }
+
+    return null;
+}
+
+/**
+ * Gets a non-aspected attribute name
+ * @param previousString - The previous string before the binding
+ * @returns The attribute name with any aspects (:, ?, @) removed
+ */
+function getAttributeName(previousString: string): string {
+    const indexOfAttributeStart = previousString.lastIndexOf(" ") + 1;
+    const indexOfAttributeEnd =
+        previousString.slice(indexOfAttributeStart).indexOf("=") + indexOfAttributeStart;
+    const attributeName = previousString.slice(
+        indexOfAttributeStart,
+        indexOfAttributeEnd
+    );
+    const potentialAspect = attributeName.charAt(0);
+
+    if (potentialAspect === ":" || potentialAspect === "@" || potentialAspect === "?") {
+        return attributeName.slice(1);
+    }
+
+    return attributeName;
 }

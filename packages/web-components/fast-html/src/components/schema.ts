@@ -1,3 +1,5 @@
+import { type ChildrenMap } from "./utilities.js";
+
 type FastContextMetaData = "$fast_context";
 type FastContextsMetaData = "$fast_parent_contexts";
 
@@ -10,6 +12,7 @@ interface JSONSchemaCommon {
     type?: string;
     properties?: any;
     items?: any;
+    anyOf?: Array<any>;
 }
 
 export interface JSONSchema extends JSONSchemaCommon {
@@ -60,6 +63,7 @@ export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 interface RegisterPathConfig {
     rootPropertyName: string;
     pathConfig: CachedPath;
+    childrenMap: ChildrenMap | null;
 }
 
 // The context, in most cases the array property e.g. users
@@ -98,6 +102,7 @@ export class Schema {
         let schema: JSONSchema | undefined = (
             Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>
         ).get(config.rootPropertyName);
+        let childRef: string | null = null;
 
         // Create a root level property JSON
         if (!schema) {
@@ -110,6 +115,19 @@ export class Schema {
             ).get(config.rootPropertyName) as JSONSchema;
         }
 
+        if (config.childrenMap) {
+            childRef = this.getSchemaId(
+                config.childrenMap.customElementName,
+                config.childrenMap.attributeName
+            );
+
+            if (splitPath.length === 1) {
+                schema.anyOf
+                    ? schema.anyOf.push({ [refPropertyName]: childRef })
+                    : (schema.anyOf = [{ [refPropertyName]: childRef }]);
+            }
+        }
+
         switch (config.pathConfig.type) {
             case "default":
             case "access": {
@@ -118,7 +136,8 @@ export class Schema {
                         this.addPropertiesToAnObject(
                             schema,
                             splitPath.slice(1),
-                            config.pathConfig.currentContext
+                            config.pathConfig.currentContext,
+                            childRef
                         );
                     } else {
                         if (!schema[defsPropertyName]?.[splitPath[0]]) {
@@ -130,7 +149,8 @@ export class Schema {
                         this.addPropertiesToAContext(
                             schema[defsPropertyName][splitPath[0]],
                             splitPath.slice(1),
-                            config.pathConfig.currentContext as string
+                            config.pathConfig.currentContext as string,
+                            childRef
                         );
                     }
                 }
@@ -155,7 +175,8 @@ export class Schema {
                                 config.pathConfig.parentContext as string
                             ],
                             splitPath.slice(1, -1),
-                            config.pathConfig.parentContext
+                            config.pathConfig.parentContext,
+                            childRef
                         );
                     }
 
@@ -163,6 +184,7 @@ export class Schema {
                         updatedSchema,
                         hasParentContext ? splitPath.slice(2) : splitPath.slice(1),
                         config.pathConfig.currentContext,
+                        childRef,
                         "array"
                     );
                 } else if (splitPath.length > 1) {
@@ -178,6 +200,7 @@ export class Schema {
                         schemaDefinition ?? schema,
                         splitPath.slice(1),
                         config.pathConfig.currentContext,
+                        childRef,
                         "array"
                     );
                 } else {
@@ -237,6 +260,16 @@ export class Schema {
     }
 
     /**
+     * Get the schema $id
+     * @param customElementName - The custom element name
+     * @param propertyName - The property name
+     * @returns The ID that can be used in the JSON schema as $id
+     */
+    private getSchemaId(customElementName: string, propertyName: string): string {
+        return `https://fast.design/schemas/${customElementName}/${propertyName}.json`;
+    }
+
+    /**
      * Add a new JSON schema to the JSON schema map
      * @param propertyName The name of the property to assign this JSON schema to
      */
@@ -245,7 +278,7 @@ export class Schema {
             propertyName,
             {
                 $schema: "https://json-schema.org/draft/2019-09/schema",
-                $id: `https://fast.design/schemas/${this.customElementName}/${propertyName}.json`,
+                $id: this.getSchemaId(this.customElementName, propertyName),
                 [defsPropertyName]: {},
             }
         );
@@ -257,7 +290,12 @@ export class Schema {
      * @param splitPath The path split into property/context names
      * @param context The paths context
      */
-    private addPropertiesToAContext(schema: any, splitPath: string[], context: string) {
+    private addPropertiesToAContext(
+        schema: any,
+        splitPath: string[],
+        context: string,
+        childRef: string | null
+    ) {
         schema.type = "object";
 
         if (schema.properties && !schema.properties[splitPath[0]]) {
@@ -272,7 +310,8 @@ export class Schema {
             this.addPropertiesToAnObject(
                 schema.properties[splitPath[0]],
                 splitPath.slice(1),
-                context
+                context,
+                childRef
             );
         }
     }
@@ -288,6 +327,7 @@ export class Schema {
         schema: any,
         splitPath: string[],
         context: string | null,
+        childRef: string | null,
         type: string = "object"
     ): any {
         schema.type = "object";
@@ -305,6 +345,7 @@ export class Schema {
                 schema.properties[splitPath[0]],
                 splitPath.slice(1),
                 context,
+                childRef,
                 type
             );
         } else if (type === "array") {
@@ -313,6 +354,7 @@ export class Schema {
                     schema.properties[splitPath[0]],
                     splitPath.slice(1),
                     context,
+                    childRef,
                     type
                 );
             } else {
@@ -321,6 +363,12 @@ export class Schema {
                     context as string
                 );
             }
+        }
+
+        if (schema.properties[splitPath[0]].anyOf && childRef) {
+            schema.properties[splitPath[0]].anyOf.push({ [refPropertyName]: childRef });
+        } else if (childRef) {
+            schema.properties[splitPath[0]].anyOf = [{ [refPropertyName]: childRef }];
         }
 
         return schema.properties[splitPath[0]];

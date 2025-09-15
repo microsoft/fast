@@ -20,7 +20,8 @@ test.describe("Schema", async () => {
                 path: "a",
                 currentContext: null,
                 parentContext: null,
-            }
+            },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("a");
@@ -40,6 +41,7 @@ test.describe("Schema", async () => {
                 currentContext: null,
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         let schemaA = schema.getSchema("a");
@@ -55,6 +57,7 @@ test.describe("Schema", async () => {
                 currentContext: null,
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schemaA = schema.getSchema("a");
@@ -75,6 +78,7 @@ test.describe("Schema", async () => {
                 currentContext: "item",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("items");
@@ -98,6 +102,7 @@ test.describe("Schema", async () => {
                 currentContext: "item",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -108,6 +113,7 @@ test.describe("Schema", async () => {
                 currentContext: "item",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("items");
@@ -134,6 +140,7 @@ test.describe("Schema", async () => {
                 currentContext: null,
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -144,6 +151,7 @@ test.describe("Schema", async () => {
                 currentContext: "item",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("a");
@@ -166,6 +174,7 @@ test.describe("Schema", async () => {
                 currentContext: null,
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -176,6 +185,7 @@ test.describe("Schema", async () => {
                 currentContext: "item",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -186,6 +196,7 @@ test.describe("Schema", async () => {
                 currentContext: "item",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("a");
@@ -209,6 +220,7 @@ test.describe("Schema", async () => {
                 currentContext: null,
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -219,6 +231,7 @@ test.describe("Schema", async () => {
                 currentContext: "user",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -229,6 +242,7 @@ test.describe("Schema", async () => {
                 currentContext: "post",
                 parentContext: "user"
             },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("a");
@@ -252,6 +266,7 @@ test.describe("Schema", async () => {
                 currentContext: "user",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -262,6 +277,7 @@ test.describe("Schema", async () => {
                 currentContext: "user",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -272,6 +288,7 @@ test.describe("Schema", async () => {
                 currentContext: "post",
                 parentContext: "user"
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -282,6 +299,7 @@ test.describe("Schema", async () => {
                 currentContext: "post",
                 parentContext: null,
             },
+            childrenMap: null,
         });
 
         schema.addPath({
@@ -292,6 +310,7 @@ test.describe("Schema", async () => {
                 currentContext: "tag",
                 parentContext: "post"
             },
+            childrenMap: null,
         });
 
         const schemaA = schema.getSchema("a");
@@ -318,5 +337,158 @@ test.describe("Schema", async () => {
         expect(schemaA!.$defs?.["tag"]).toBeDefined();
         expect(schemaA!.$defs?.["tag"].$fast_context).toEqual("tags");
         expect(schemaA!.$defs?.["tag"].$fast_parent_contexts).toEqual([null, "user", "post"]);
+    });
+    test("should define an anyOf with a $ref to another schema", async () => {
+        const schema = new Schema("my-custom-element");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-2",
+                attributeName: "b",
+            },
+        });
+
+        const schemaA = schema.getSchema("a");
+
+        expect(schemaA).not.toBe(null);
+        expect(schemaA!.$id).toEqual("https://fast.design/schemas/my-custom-element/a.json");
+        expect(schemaA!.$schema).toEqual("https://json-schema.org/draft/2019-09/schema");
+        expect(schemaA!.anyOf).not.toBeUndefined();
+        expect(schemaA!.anyOf).toHaveLength(1);
+        expect(schemaA!.anyOf?.[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/b.json");
+    });
+    test("should define an anyOf with a $ref to multiple schemas", async () => {
+        const schema = new Schema("my-custom-element");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-2",
+                attributeName: "b",
+            },
+        });
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-3",
+                attributeName: "c",
+            },
+        });
+
+        const schemaA = schema.getSchema("a");
+
+        expect(schemaA).not.toBe(null);
+        expect(schemaA!.$id).toEqual("https://fast.design/schemas/my-custom-element/a.json");
+        expect(schemaA!.$schema).toEqual("https://json-schema.org/draft/2019-09/schema");
+        expect(schemaA!.anyOf).not.toBeUndefined();
+        expect(schemaA!.anyOf).toHaveLength(2);
+        expect(schemaA!.anyOf?.[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/b.json");
+        expect(schemaA!.anyOf?.[1].$ref).toEqual("https://fast.design/schemas/my-custom-element-3/c.json");
+    });
+    test("should define an anyOf with a $ref to another schema in a nested object", async () => {
+        const schema = new Schema("my-custom-element");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a.b",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: null,
+        });
+
+        let schemaA = schema.getSchema("a");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a.b.c",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-2",
+                attributeName: "test"
+            },
+        });
+
+        schemaA = schema.getSchema("a");
+
+        expect(schemaA!.properties.b.properties.c).toBeDefined();
+        expect(schemaA!.properties.b.properties.c.anyOf).not.toBeUndefined();
+        expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/test.json");
+    });
+    test("should define an anyOf with a $ref to multiple schemas in a nested object", async () => {
+        const schema = new Schema("my-custom-element");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a.b",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: null,
+        });
+
+        let schemaA = schema.getSchema("a");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a.b.c",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-2",
+                attributeName: "test"
+            },
+        });
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "default",
+                path: "a.b.c",
+                currentContext: null,
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-3",
+                attributeName: "test-2"
+            },
+        });
+
+        schemaA = schema.getSchema("a");
+
+        expect(schemaA!.properties.b.properties.c).toBeDefined();
+        expect(schemaA!.properties.b.properties.c.anyOf).not.toBeUndefined();
+        expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/test.json");
+        expect(schemaA!.properties.b.properties.c.anyOf[1].$ref).toEqual("https://fast.design/schemas/my-custom-element-3/test-2.json");
     });
 });
