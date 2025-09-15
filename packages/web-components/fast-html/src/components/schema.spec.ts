@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { Schema } from "./schema.js";
+import { refPropertyName, Schema } from "./schema.js";
 
 test.describe("Schema", async () => {
     test("should instantiate with a custom element name without throwing", async () => {
@@ -490,5 +490,46 @@ test.describe("Schema", async () => {
         expect(schemaA!.properties.b.properties.c.anyOf).not.toBeUndefined();
         expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/test.json");
         expect(schemaA!.properties.b.properties.c.anyOf[1].$ref).toEqual("https://fast.design/schemas/my-custom-element-3/test-2.json");
+    });
+    test("should define an anyOf with a $ref in a nested object in a context", async () => {
+        const schema = new Schema("my-custom-element");
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "repeat",
+                path: "a.users",
+                currentContext: "user",
+                parentContext: null,
+            },
+            childrenMap: null,
+        });
+
+        schema.addPath({
+            rootPropertyName: "a",
+            pathConfig: {
+                type: "access",
+                path: "user.a.b",
+                currentContext: "user",
+                parentContext: null,
+            },
+            childrenMap: {
+                customElementName: "my-custom-element-2",
+                attributeName: "c"
+            },
+        });
+
+        const schemaA = schema.getSchema("a");
+
+        expect(schemaA).toBeDefined();
+        expect(schemaA!.$defs?.["user"]).toBeDefined();
+        expect(schemaA!.$defs?.["user"].$fast_context).toEqual("users");
+        expect(schemaA!.$defs?.["user"].$fast_parent_contexts).toEqual([null]);
+        expect(schemaA!.$defs?.["user"].type).toEqual("object");
+        expect(schemaA!.$defs?.["user"].properties).toBeDefined();
+        expect(schemaA!.$defs?.["user"].properties["a"]).toBeDefined();
+        expect(schemaA!.$defs?.["user"].properties["a"].properties["b"]).toBeDefined();
+        expect(schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf).toHaveLength(1);
+        expect(schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf[0][refPropertyName]).toEqual("https://fast.design/schemas/my-custom-element-2/c.json");
     });
 });

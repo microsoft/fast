@@ -313,6 +313,14 @@ export class Schema {
                 context,
                 childRef
             );
+        } else if (childRef) {
+            if (schema.properties[splitPath[0]].anyOf) {
+                schema.properties[splitPath[0]].anyOf.push({
+                    [refPropertyName]: childRef,
+                });
+            } else {
+                schema.properties[splitPath[0]].anyOf = [{ [refPropertyName]: childRef }];
+            }
         }
     }
 
