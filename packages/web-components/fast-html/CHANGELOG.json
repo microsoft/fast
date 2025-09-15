@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 15 Sep 2025 00:33:20 GMT",
+      "version": "1.0.0-alpha.22",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.22",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "b92377104635c611c033cd3ab2379f1950f90201",
+            "comment": "Add rendering lifecycle documentation and update define to defineAsync"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "debc3858a501a7f86b701fc0cab42959aeaa9b57",
+            "comment": "Add further docs on client side bindings and hydration markers"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "4b768d6cf7323d6b8a7bcd2d1056e0f05e695a14",
+            "comment": "Make all generated JSON schemas available via a static property"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Aug 2025 20:57:02 GMT",
       "version": "1.0.0-alpha.21",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.21",
