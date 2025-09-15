@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 20 Aug 2025 20:57:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 15 Sep 2025 00:33:20 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.22
+
+Mon, 15 Sep 2025 00:33:20 GMT
+
+### Changes
+
+- Make all generated JSON schemas available via a static property (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.21
 
