@@ -66,6 +66,11 @@ export interface ChildrenMap {
     attributeName: string;
 }
 
+interface ObservedTargetsAndProperties {
+    target: any;
+    rootProperty: string;
+}
+
 const openClientSideBinding: string = "{";
 
 const closeClientSideBinding: string = "}";
@@ -93,6 +98,11 @@ const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;
 
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
+
+/**
+ * A map of proxied objects
+ */
+const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
 
 /**
  * Get the index of the next matching tag
@@ -948,6 +958,47 @@ function getDataType(data: any): DataType {
 }
 
 /**
+ * Get properties from an anyOf array
+ * @param anyOf - The anyOf array in a JSON schema
+ * @returns The array item matching a ref if it exists
+ */
+function getSchemaPropertiesFromAnyOf(anyOf: Array<any>): any | null {
+    let propertiesFromAnyOf: any | null = null;
+
+    for (const anyOfItem of anyOf) {
+        if (anyOfItem[refPropertyName]) {
+            const splitRef = anyOfItem[refPropertyName].split("/");
+            const customElement = splitRef.slice(-2)[0];
+            const attributeName = splitRef.slice(-1)[0].slice(0, -5);
+
+            if (Schema.jsonSchemaMap.has(customElement)) {
+                const customElementSchemaMap = Schema.jsonSchemaMap.get(
+                    customElement
+                ) as Map<string, JSONSchema>;
+                propertiesFromAnyOf = customElementSchemaMap.get(attributeName);
+            }
+        }
+    }
+
+    return propertiesFromAnyOf;
+}
+
+/**
+ * Gets a properties definition if one exists
+ * @param schema - The JSON schema to get properties from
+ * @returns A JSON schema with properties or null
+ */
+function getSchemaProperties(schema: any): any | null {
+    if (schema?.properties) {
+        return schema.properties;
+    } else if (schema?.anyOf) {
+        return getSchemaPropertiesFromAnyOf(schema.anyOf);
+    }
+
+    return null;
+}
+
+/**
  * Assigns Observable properties to items in an array and sets up change notifications
  * @param proxiedData - The array data to make observable
  * @param schema - The schema defining the structure of array items
@@ -1094,17 +1145,18 @@ function assignProxyToItemsInObject(
     rootSchema: JSONSchema
 ): any | typeof Proxy {
     const type = getDataType(data);
+    const schemaProperties = getSchemaProperties(schema);
     let proxiedData = data;
 
-    if (type === "object" && schema?.properties) {
+    if (type === "object" && schemaProperties) {
         // navigate through all items in the object
-        Object.keys(schema.properties).forEach(property => {
-            if (proxiedData[property] && schema && schema.properties) {
+        Object.keys(schemaProperties).forEach(property => {
+            if (proxiedData[property] && schema && schemaProperties) {
                 proxiedData[property] = assignProxyToItemsInObject(
                     target,
                     rootProperty,
                     proxiedData[property],
-                    schema.properties[property],
+                    schemaProperties[property],
                     rootSchema
                 );
             }
@@ -1112,6 +1164,9 @@ function assignProxyToItemsInObject(
 
         // assign a Proxy to the object
         proxiedData = assignProxy(schema, rootSchema, target, rootProperty, data);
+
+        // Add this target to the object's target list
+        addTargetToObject(proxiedData, target, rootProperty);
     } else if (type === "array") {
         const context = getDefFromRef(
             (schema as JSONSchema).items[refPropertyName] as string
@@ -1128,6 +1183,44 @@ function assignProxyToItemsInObject(
     }
 
     return proxiedData;
+}
+
+/**
+ * Add a target to an object's target list
+ * @param object - The object to associate with the target
+ * @param target - The target custom element
+ * @param rootProperty - The root property name
+ */
+function addTargetToObject(object: any, target: any, rootProperty: string): void {
+    if (!objectTargetsMap.has(object)) {
+        objectTargetsMap.set(object, []);
+    }
+
+    const targets = objectTargetsMap.get(object) as ObservedTargetsAndProperties[];
+
+    targets.push({ target, rootProperty });
+}
+
+/**
+ * Get all targets for an object
+ * @param object - The object to get targets for
+ * @returns Array of target info objects
+ */
+function getTargetsForObject(object: any): ObservedTargetsAndProperties[] {
+    return objectTargetsMap.get(object) || [];
+}
+
+/**
+ * Notify any observables mapped to the object
+ * @param targetObject The object that is mapped to a target and rootProperty
+ */
+function notifyObservables(targetObject: any) {
+    getTargetsForObject(targetObject).forEach(
+        (targetItem: ObservedTargetsAndProperties) => {
+            // Trigger notification for property changes
+            Observable.notify(targetItem.target, targetItem.rootProperty);
+        }
+    );
 }
 
 /**
@@ -1148,7 +1241,7 @@ export function assignProxy(
 ): typeof Proxy {
     if (object.$isProxy === undefined) {
         // Create a proxy for the object that triggers Observable.notify on mutations
-        return new Proxy(object, {
+        const proxy = new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
                 obj[prop] = assignObservables(
                     schema,
@@ -1158,8 +1251,7 @@ export function assignProxy(
                     rootProperty
                 );
 
-                // Trigger notification for property changes
-                Observable.notify(target, rootProperty);
+                notifyObservables(proxy);
 
                 return true;
             },
@@ -1174,14 +1266,15 @@ export function assignProxy(
                 if (prop in obj) {
                     delete obj[prop];
 
-                    // Trigger notification for property deletion
-                    Observable.notify(target, rootProperty);
+                    notifyObservables(proxy);
 
                     return true;
                 }
                 return false;
             },
         });
+
+        return proxy;
     }
 
     return object;

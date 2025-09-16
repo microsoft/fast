@@ -13,18 +13,13 @@
                     <observer-map-internal-test-element
                         :selecteduserid="{{selectedUserId}}"
                         :totalusers="{{stats.totalUsers}}"
+                        :metrics="{{stats.metrics}}"
                     ></observer-map-internal-test-element>
                     <div class="stats">
                         <h2>Global Stats</h2>
                         <div class="nested-info">
                             <strong>Total Users:</strong> {{stats.totalUsers}} |
                             <strong>Active Users:</strong> {{stats.activeUsers}}
-                        </div>
-                        <div class="nested-info">
-                            <strong>Engagement:</strong>
-                            Daily: {{stats.metrics.engagement.daily}},
-                            Weekly: {{stats.metrics.engagement.weekly}},
-                            Monthly: {{stats.metrics.engagement.monthly}}
                         </div>
                         <div class="nested-info">
                             <strong>Performance:</strong>
@@ -126,6 +121,14 @@
                     <br>
                     total users: {{totalusers}}
                     <br>
+                    <div class="stats">
+                        <div class="nested-info">
+                            <strong>Engagement:</strong>
+                            Daily: {{metrics.engagement.daily}},
+                            Weekly: {{metrics.engagement.weekly}},
+                            Monthly: {{metrics.engagement.monthly}}
+                        </div>
+                    </div>
                     <f-when value="{a}">
                         <span class="nested-define">{{a.b.c}}</span>
                     </f-when>
