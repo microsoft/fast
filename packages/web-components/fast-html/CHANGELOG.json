@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 16 Sep 2025 00:50:25 GMT",
+      "version": "1.0.0-alpha.23",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.23",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "b21bd547c8c502ff897eaeac8e3fcc496129ea2a",
+            "comment": "Update schema to reference children schemas that tie an attribute to data"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ce3b292a6043e081f3944f7f8612e92fb1b78b3a",
+            "comment": "Allow proxied data to have more than one target to notify of updates"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "e07e31b383fbb397348e1b887de2f3f0de79a221",
+            "comment": "Add anyOf with ref to contexts"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 15 Sep 2025 00:33:20 GMT",
       "version": "1.0.0-alpha.22",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.22",

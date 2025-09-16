@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 15 Sep 2025 00:33:20 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 16 Sep 2025 00:50:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.23
+
+Tue, 16 Sep 2025 00:50:25 GMT
+
+### Changes
+
+- Update schema to reference children schemas that tie an attribute to data (7559015+janechu@users.noreply.github.com)
+- Allow proxied data to have more than one target to notify of updates (7559015+janechu@users.noreply.github.com)
+- Add anyOf with ref to contexts (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.22
 

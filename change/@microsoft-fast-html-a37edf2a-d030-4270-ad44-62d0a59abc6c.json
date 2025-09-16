@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Allow proxied data to have more than one target to notify of updates",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
