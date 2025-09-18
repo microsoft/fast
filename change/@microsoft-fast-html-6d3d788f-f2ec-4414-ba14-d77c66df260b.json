@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Fix: definition finding should account for anyOf arrays",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

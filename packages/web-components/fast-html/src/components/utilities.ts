@@ -1050,6 +1050,43 @@ function getDefFromRef(defName: string): string {
 }
 
 /**
+ * Find a definition
+ * This may exist as a $ref at the root or as a $ref in any anyOf or not at all
+ * if the Observer Map has not been enabled on a child component
+ * @param schema - The JSON schema to find the ref in
+ * @returns The definition or null
+ */
+export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | null {
+    const defStartingString = "#/$defs";
+
+    if (
+        schema[refPropertyName] &&
+        schema[refPropertyName].startsWith(defStartingString)
+    ) {
+        return getDefFromRef(schema[refPropertyName]);
+    }
+
+    if (schema.anyOf) {
+        const index = schema.anyOf.findIndex((anyOfItem: JSONSchema) => {
+            return (
+                !!anyOfItem[refPropertyName] &&
+                anyOfItem[refPropertyName].startsWith(defStartingString)
+            );
+        });
+
+        if (index > -1) {
+            const ref = schema.anyOf[index][refPropertyName];
+
+            if (ref.startsWith(defStartingString)) {
+                return getDefFromRef(ref);
+            }
+        }
+    }
+
+    return null;
+}
+
+/**
  * Assign observables to data
  * @param schema - The schema
  * @param rootSchema - The root schema mapping to the root property
@@ -1070,16 +1107,17 @@ export function assignObservables(
 
     switch (dataType) {
         case "array": {
-            const context = getDefFromRef(
-                (schema as JSONSchema)[refPropertyName] as string
-            );
-            proxiedData = assignObservablesToArray(
-                proxiedData,
-                (rootSchema as JSONSchema)[defsPropertyName]?.[
-                    context
-                ] as JSONSchemaDefinition,
-                rootSchema
-            );
+            const context = findDef(schema);
+
+            if (context) {
+                proxiedData = assignObservablesToArray(
+                    proxiedData,
+                    (rootSchema as JSONSchema)[defsPropertyName]?.[
+                        context
+                    ] as JSONSchemaDefinition,
+                    rootSchema
+                );
+            }
 
             break;
         }
@@ -1168,17 +1206,18 @@ function assignProxyToItemsInObject(
         // Add this target to the object's target list
         addTargetToObject(proxiedData, target, rootProperty);
     } else if (type === "array") {
-        const context = getDefFromRef(
-            (schema as JSONSchema).items[refPropertyName] as string
-        );
-        const definition = (rootSchema as JSONSchema)[defsPropertyName]?.[context];
+        const context = findDef((schema as JSONSchema).items);
 
-        if (definition?.type === "object") {
-            proxiedData = assignObservablesToArray(
-                proxiedData,
-                definition as JSONSchemaDefinition,
-                rootSchema
-            );
+        if (context) {
+            const definition = (rootSchema as JSONSchema)[defsPropertyName]?.[context];
+
+            if (definition?.type === "object") {
+                proxiedData = assignObservablesToArray(
+                    proxiedData,
+                    definition as JSONSchemaDefinition,
+                    rootSchema
+                );
+            }
         }
     }
 
