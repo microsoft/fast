@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { JSONSchema, refPropertyName } from "./schema.js";
 import {
     type AttributeDataBindingBehaviorConfig,
     type ContentDataBindingBehaviorConfig,
@@ -11,6 +12,7 @@ import {
     getExpressionChain,
     extractPathsFromChainedExpression,
     getChildrenMap,
+    findDef,
 } from "./utilities.js";
 
 test.describe("utilities", async () => {
@@ -494,6 +496,69 @@ test.describe("utilities", async () => {
             expect(childrenMap).not.toBeNull();
             expect(childrenMap?.attributeName).toEqual("bat");
             expect(childrenMap?.customElementName).toEqual("my-element");
+        });
+    });
+
+    test.describe("schema functions", async () => {
+        test.describe("findDef", async () => {
+            test("should resolve from the root of a schema", async () => {
+                expect(
+                    findDef(
+                        {
+                            [refPropertyName]: "#/$defs/MyType"
+                        } as JSONSchema
+                    )
+                ).toEqual("MyType");
+            });
+            test("should resolve as null from an anyOf array containing a reference to another component", async () => {
+                expect(
+                    findDef(
+                        {
+                            anyOf: [
+                                {
+                                    [refPropertyName]: "https://fast.design/schemas/test-element/c.json"
+                                }
+                            ]
+                        } as JSONSchema
+                    )
+                ).toEqual(null);
+            });
+            test("should resolve from an anyOf array containing a reference to a $def", async () => {
+                expect(
+                    findDef(
+                        {
+                            anyOf: [
+                                {
+                                    [refPropertyName]: "#/$defs/MyType"
+                                }
+                            ]
+                        } as JSONSchema
+                    )
+                ).toEqual("MyType");
+            });
+            test("should resolve from an anyOf array containing a reference to another component and a reference to a $def", async () => {
+                expect(
+                    findDef(
+                        {
+                            anyOf: [
+                                {
+                                    [refPropertyName]: "https://fast.design/schemas/test-element/c.json"
+                                },
+                                {
+                                    [refPropertyName]: "#/$defs/MyType"
+                                }
+                            ]
+                        } as JSONSchema
+                    )
+                ).toEqual("MyType");
+            });
+            test("should resolve as null if not found", async () => {
+                expect(
+                    findDef(
+                        {} as JSONSchema
+                    )
+                ).toEqual(null);
+            });
         });
     });
 });

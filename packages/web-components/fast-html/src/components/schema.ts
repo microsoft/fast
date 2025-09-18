@@ -13,13 +13,13 @@ interface JSONSchemaCommon {
     properties?: any;
     items?: any;
     anyOf?: Array<any>;
+    $ref?: string;
 }
 
 export interface JSONSchema extends JSONSchemaCommon {
     $schema: string;
     $id: string;
     $defs?: Record<string, JSONSchemaDefinition>;
-    $ref?: string;
 }
 
 interface CachedPathCommon {
