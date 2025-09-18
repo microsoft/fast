@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 16 Sep 2025 00:50:25 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 18 Sep 2025 22:16:03 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.24
+
+Thu, 18 Sep 2025 22:16:03 GMT
+
+### Changes
+
+- Fix: definition finding should account for anyOf arrays (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.23
 

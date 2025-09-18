@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 18 Sep 2025 22:16:03 GMT",
+      "version": "1.0.0-alpha.24",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.24",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "46984b52e5be2471e9783534449c2b370d98ac50",
+            "comment": "Fix: definition finding should account for anyOf arrays"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Sep 2025 00:50:25 GMT",
       "version": "1.0.0-alpha.23",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.23",
