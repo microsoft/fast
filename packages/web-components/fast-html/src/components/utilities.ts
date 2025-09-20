@@ -106,6 +106,11 @@ const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 const objectTargetsMap = new WeakMap<object, ObservedTargetsAndProperties[]>();
 
 /**
+ * A map of arrays being observered
+ */
+const observedArraysMap = new WeakMap<object, void>();
+
+/**
  * Get the index of the next matching tag
  * @param openingTagStartSlice - The slice starting from the opening tag
  * @param openingTag - The opening tag string
@@ -1088,6 +1093,26 @@ export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | nul
 }
 
 /**
+ * Subscribe to a notifier on data that is an observed array
+ * @param data - The array being observed
+ * @param updateArrayObservables - The function to call to update the array item
+ */
+function assignSubscribeToObservableArray(
+    data: any,
+    updateArrayObservables: () => void
+): void {
+    Observable.getNotifier(data).subscribe({
+        handleChange(subject, args) {
+            args.forEach((arg: any) => {
+                if (arg.addedCount > 0) {
+                    updateArrayObservables();
+                }
+            });
+        },
+    });
+}
+
+/**
  * Assign observables to data
  * @param schema - The schema
  * @param rootSchema - The root schema mapping to the root property
@@ -1118,6 +1143,21 @@ export function assignObservables(
                     ] as JSONSchemaDefinition,
                     rootSchema
                 );
+
+                if (!observedArraysMap.has(proxiedData)) {
+                    observedArraysMap.set(
+                        proxiedData,
+                        assignSubscribeToObservableArray(proxiedData, () =>
+                            assignObservablesToArray(
+                                proxiedData,
+                                (rootSchema as JSONSchema)[defsPropertyName]?.[
+                                    context
+                                ] as JSONSchemaDefinition,
+                                rootSchema
+                            )
+                        )
+                    );
+                }
             }
 
             break;
@@ -1229,6 +1269,17 @@ function assignProxyToItemsInObject(
                     definition as JSONSchemaDefinition,
                     rootSchema
                 );
+
+                if (!observedArraysMap.has(proxiedData)) {
+                    observedArraysMap.set(
+                        proxiedData,
+                        assignObservablesToArray(
+                            proxiedData,
+                            definition as JSONSchemaDefinition,
+                            rootSchema
+                        )
+                    );
+                }
             }
         }
     }
