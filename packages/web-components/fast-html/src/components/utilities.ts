@@ -1,6 +1,7 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
 import {
     defsPropertyName,
+    fastContextMetaData,
     JSONSchema,
     JSONSchemaDefinition,
     refPropertyName,
@@ -406,7 +407,7 @@ export function pathResolver(
 
     if (
         level > 0 &&
-        rootSchema?.[defsPropertyName]?.[contextPath as string]?.$fast_context ===
+        rootSchema?.[defsPropertyName]?.[contextPath as string]?.[fastContextMetaData] ===
             splitPath.at(-1)
     ) {
         self = true;
@@ -1138,31 +1139,44 @@ export function assignObservables(
 
 /**
  * Assign a proxy to items in an array
- * @param item - The array item to proxy
+ * @param data - The array item to proxy
  * @param originalItem - The original array item
  * @param schema - The schema mapping to the items in the array
  * @param rootSchema - The root schema assigned to the root property
  */
 function assignProxyToItemsInArray(
-    item: any,
+    data: any,
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema
 ): void {
-    const itemProperties = Object.keys(item);
+    const schemaProperties = getSchemaProperties(schema);
 
-    itemProperties.forEach(key => {
-        Observable.defineProperty(item, key);
+    getObjectProperties(data, schemaProperties).forEach(key => {
+        Observable.defineProperty(data, key);
 
-        if (originalItem[key] && schema && schema.properties) {
-            originalItem[key] = assignProxyToItemsInObject(
-                item,
-                key,
-                originalItem[key],
-                schema.properties[key],
-                rootSchema
-            );
-        }
+        originalItem[key] = assignProxyToItemsInObject(
+            data,
+            key,
+            originalItem[key],
+            schemaProperties[key],
+            rootSchema
+        );
+    });
+}
+
+/**
+ * Get an objects properties as agreed upon between the schema and data
+ * @param data - The data
+ * @param schemaProperties - The schema properties
+ * @returns A list of strings the schema properties enumerate and is present in the data
+ */
+function getObjectProperties(data: any, schemaProperties: any): string[] {
+    const dataKeys = Object.keys(data);
+    const schemaPropertyKeys = Object.keys(schemaProperties ?? {});
+
+    return dataKeys.filter(function (key) {
+        return schemaPropertyKeys.indexOf(key) !== -1;
     });
 }
 
@@ -1188,16 +1202,14 @@ function assignProxyToItemsInObject(
 
     if (type === "object" && schemaProperties) {
         // navigate through all items in the object
-        Object.keys(schemaProperties).forEach(property => {
-            if (proxiedData[property] && schema && schemaProperties) {
-                proxiedData[property] = assignProxyToItemsInObject(
-                    target,
-                    rootProperty,
-                    proxiedData[property],
-                    schemaProperties[property],
-                    rootSchema
-                );
-            }
+        getObjectProperties(data, schemaProperties).forEach(property => {
+            proxiedData[property] = assignProxyToItemsInObject(
+                target,
+                rootProperty,
+                proxiedData[property],
+                schemaProperties[property],
+                rootSchema
+            );
         });
 
         // assign a Proxy to the object
