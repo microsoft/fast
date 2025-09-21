@@ -1179,24 +1179,24 @@ export function assignObservables(
 
 /**
  * Assign a proxy to items in an array
- * @param data - The array item to proxy
+ * @param proxiableItem - The array item to proxy
  * @param originalItem - The original array item
  * @param schema - The schema mapping to the items in the array
  * @param rootSchema - The root schema assigned to the root property
  */
 function assignProxyToItemsInArray(
-    data: any,
+    proxiableItem: any,
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema
 ): void {
     const schemaProperties = getSchemaProperties(schema);
 
-    getObjectProperties(data, schemaProperties).forEach(key => {
-        Observable.defineProperty(data, key);
+    getObjectProperties(proxiableItem, schemaProperties).forEach(key => {
+        Observable.defineProperty(proxiableItem, key);
 
         originalItem[key] = assignProxyToItemsInObject(
-            data,
+            proxiableItem,
             key,
             originalItem[key],
             schemaProperties[key],
@@ -1242,7 +1242,7 @@ function assignProxyToItemsInObject(
 
     if (type === "object" && schemaProperties) {
         // navigate through all items in the object
-        getObjectProperties(data, schemaProperties).forEach(property => {
+        getObjectProperties(proxiedData, schemaProperties).forEach(property => {
             proxiedData[property] = assignProxyToItemsInObject(
                 target,
                 rootProperty,
@@ -1253,7 +1253,7 @@ function assignProxyToItemsInObject(
         });
 
         // assign a Proxy to the object
-        proxiedData = assignProxy(schema, rootSchema, target, rootProperty, data);
+        proxiedData = assignProxy(schema, rootSchema, target, rootProperty, proxiedData);
 
         // Add this target to the object's target list
         addTargetToObject(proxiedData, target, rootProperty);
