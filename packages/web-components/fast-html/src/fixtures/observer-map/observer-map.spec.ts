@@ -160,6 +160,28 @@ test.describe("ObserverMap", async () => {
         await expect(page.locator("text=Total Users: 2")).toBeVisible();
     });
 
+    test("should be able to update nested properties on added users", async ({ page }) => {
+        // Initial user count should be 2
+        await expect(page.locator(".user-card")).toHaveCount(2);
+
+        // Add new user
+        await page.locator("button:has-text('Add New User')").click();
+
+        // Should now have 3 users
+        await expect(page.locator(".user-card")).toHaveCount(3);
+
+        const userCard3 = await page.locator(".user-card").nth(2);
+
+        // Initial theme should be dark for User 3
+        await expect(userCard3.locator("text=Theme: dark")).toBeVisible();
+
+        // Click the toggle theme button for User 3
+        await userCard3.locator("button:has-text('Toggle Theme')").click();
+
+        // Theme should now be light
+        await expect(userCard3.locator("text=Theme: light")).toBeVisible();
+    });
+
     test("should update global stats with nested metrics", async ({ page }) => {
         // Check initial engagement stats
         const initialDaily = await page.locator(".stats .nested-info").nth(1).textContent();
