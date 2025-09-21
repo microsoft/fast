@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "../../components/index.js";
+import { TemplateElement } from "../../components/index.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -295,11 +295,6 @@ class ObserverMapTestElement extends FASTElement {
     };
 }
 
-RenderableFASTElement(ObserverMapTestElement).defineAsync({
-    name: "observer-map-test-element",
-    templateOptions: "defer-and-hydrate",
-});
-
 class ObserverMapInternalTestElement extends FASTElement {
     public selecteduserid?: number;
     public totalusers?: number;
@@ -319,10 +314,16 @@ class ObserverMapInternalTestElement extends FASTElement {
     }
 }
 
-RenderableFASTElement(ObserverMapInternalTestElement).defineAsync({
-    name: "observer-map-internal-test-element",
-    templateOptions: "defer-and-hydrate",
-});
+// Nested child components must be defined first
+(async () => {
+    await ObserverMapInternalTestElement.defineAsync({
+        name: "observer-map-internal-test-element",
+    });
+
+    await ObserverMapTestElement.defineAsync({
+        name: "observer-map-test-element",
+    });
+})();
 
 // Configure TemplateElement with observerMap enabled for this test
 TemplateElement.options({
