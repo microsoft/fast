@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fixes an issue where object properties that are not present in the schema are proxied or observed",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

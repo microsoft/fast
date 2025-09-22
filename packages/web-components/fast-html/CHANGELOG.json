@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 22 Sep 2025 00:34:50 GMT",
+      "version": "1.0.0-alpha.25",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.25",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "4d07eecf25b1235dbd6a8f54758e0317b6a92121",
+            "comment": "Re-observe an array when new items are added"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3f1fbb3d032e2ea649e8ab48b8456a493a8572c3",
+            "comment": "Fixes an issue where object properties that are not present in the schema are proxied or observed"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "265cdb3d7801de5a25c0db290d91b7e6a11b6296",
+            "comment": "Fix an issue where proxied data was not being re-assigned, stabilize observer map test"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 18 Sep 2025 22:16:03 GMT",
       "version": "1.0.0-alpha.24",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.24",

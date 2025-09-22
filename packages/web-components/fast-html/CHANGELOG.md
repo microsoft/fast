@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 18 Sep 2025 22:16:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 22 Sep 2025 00:34:50 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.25
+
+Mon, 22 Sep 2025 00:34:50 GMT
+
+### Changes
+
+- Re-observe an array when new items are added (7559015+janechu@users.noreply.github.com)
+- Fixes an issue where object properties that are not present in the schema are proxied or observed (7559015+janechu@users.noreply.github.com)
+- Fix an issue where proxied data was not being re-assigned, stabilize observer map test (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.24
 

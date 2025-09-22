@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Fix an issue where proxied data was not being re-assigned, stabilize observer map test",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
