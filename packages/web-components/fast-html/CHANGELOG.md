@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 22 Sep 2025 00:34:50 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 23 Sep 2025 07:36:09 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.26
+
+Tue, 23 Sep 2025 07:36:09 GMT
+
+### Changes
+
+- Create a more elegant solution when setting objects to avoid Object.assign (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.25
 

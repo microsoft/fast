@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 23 Sep 2025 07:36:09 GMT",
+      "version": "1.0.0-alpha.26",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.26",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "a5ccfa89ca4da59f5530bc026affa07bced7de36",
+            "comment": "Create a more elegant solution when setting objects to avoid Object.assign"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 22 Sep 2025 00:34:50 GMT",
       "version": "1.0.0-alpha.25",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.25",

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "Create a more elegant solution when setting objects to avoid Object.assign",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
