@@ -299,18 +299,31 @@ class ObserverMapInternalTestElement extends FASTElement {
     public selecteduserid?: number;
     public totalusers?: number;
 
-    public a: any = {
-        b: {},
-    };
+    public a: any = {};
+    public x: any = undefined;
 
     public defineB() {
-        this.a.b = {
-            c: "Hello world",
+        this.a = {
+            b: {
+                c: "Hello world",
+            },
         };
     }
 
     public updateC() {
         this.a.b.c = "Hello pluto";
+    }
+
+    public defineY() {
+        this.x = {
+            y: {
+                z: "Z1",
+            },
+        };
+    }
+
+    public updateZ() {
+        this.x.y.z = "Z2";
     }
 }
 

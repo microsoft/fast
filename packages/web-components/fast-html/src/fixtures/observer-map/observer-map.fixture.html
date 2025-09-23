@@ -132,8 +132,14 @@
                     <f-when value="{a}">
                         <span class="nested-define">{{a.b.c}}</span>
                     </f-when>
-                    <button @click="{defineB()}">Define internal object</button>
-                    <button @click="{updateC()}">Update internal object</button>
+                    <button @click="{defineB()}">Define B</button>
+                    <button @click="{updateC()}">Update C</button>
+                    <br>
+                    <f-when value="{x}">
+                        <span class="nested-define-2">{{x.y.z}}</span>
+                    </f-when>
+                    <button @click="{defineY()}">Define Y</button>
+                    <button @click="{updateZ()}">Update Z</button>
                 </template>
             </f-template>
         </div>
