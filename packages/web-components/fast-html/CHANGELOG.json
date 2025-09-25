@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 25 Sep 2025 05:41:45 GMT",
+      "version": "1.0.0-alpha.27",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.27",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "2d9bf69dea6f06265113acd223942fc0997d61ae",
+            "comment": "Fixes an issue with undefined or null objects being checked for a proxy property"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 23 Sep 2025 07:36:09 GMT",
       "version": "1.0.0-alpha.26",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.26",

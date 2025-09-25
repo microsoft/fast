@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 23 Sep 2025 07:36:09 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 25 Sep 2025 05:41:45 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.27
+
+Thu, 25 Sep 2025 05:41:45 GMT
+
+### Changes
+
+- Fixes an issue with undefined or null objects being checked for a proxy property (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.26
 
