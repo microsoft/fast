@@ -1,12 +1,17 @@
 import {
     attr,
+    children,
     elements,
     FAST,
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
     HydratableElementController,
+    ref,
+    repeat,
+    slotted,
     ViewTemplate,
+    when,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
@@ -238,8 +243,6 @@ class TemplateElement extends FASTElement {
     ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when": {
-                const { when } = await import("@microsoft/fast-element");
-
                 const expressionChain = getExpressionChain(behaviorConfig.value);
 
                 const whenLogic = resolveWhen(
@@ -272,8 +275,6 @@ class TemplateElement extends FASTElement {
             case "repeat": {
                 const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
                 const updatedLevel = level + 1;
-
-                const { repeat } = await import("@microsoft/fast-element");
 
                 rootPropertyName = getRootPropertyName(
                     rootPropertyName,
@@ -330,15 +331,11 @@ class TemplateElement extends FASTElement {
     ) {
         switch (name) {
             case "children": {
-                const { children } = await import("@microsoft/fast-element");
-
                 externalValues.push(children(propName));
 
                 break;
             }
             case "slotted": {
-                const { slotted } = await import("@microsoft/fast-element");
-
                 const parts = propName.trim().split(" filter ");
                 const slottedOption = {
                     property: parts[0],
@@ -359,8 +356,6 @@ class TemplateElement extends FASTElement {
                 break;
             }
             case "ref": {
-                const { ref } = await import("@microsoft/fast-element");
-
                 externalValues.push(ref(propName));
 
                 break;
