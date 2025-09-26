@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 25 Sep 2025 05:41:45 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 26 Sep 2025 07:52:53 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.28
+
+Fri, 26 Sep 2025 07:52:53 GMT
+
+### Changes
+
+- Convert dynamic to static imports for directives (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.27
 
