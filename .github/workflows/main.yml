@@ -24,7 +24,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true'
         with:
           # Required for chromatic change detection
@@ -33,14 +33,14 @@ jobs:
           # Cannot rely on GITHUB_TOKEN with workflow contents permission
           # See: https://github.com/orgs/community/discussions/40971
           token: ${{ secrets.GITHUBPAGESDEPLOYTOKEN }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'false'
         with:
           # Required for chromatic change detection
           fetch-depth: 0
 
       # Install dependencies
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
