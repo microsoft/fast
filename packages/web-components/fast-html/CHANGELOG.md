@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 26 Sep 2025 07:52:53 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 01 Oct 2025 07:17:38 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.29
+
+Wed, 01 Oct 2025 07:17:38 GMT
+
+### Changes
+
+- fix: when an array is reduced to 0 items the observation should still happen when array items are added (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.28
 

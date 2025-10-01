@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 01 Oct 2025 07:17:38 GMT",
+      "version": "1.0.0-alpha.29",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.29",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "d0771a65c64715f5849ebe12c9e816679cf18793",
+            "comment": "fix: when an array is reduced to 0 items the observation should still happen when array items are added"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 26 Sep 2025 07:52:53 GMT",
       "version": "1.0.0-alpha.28",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.28",
