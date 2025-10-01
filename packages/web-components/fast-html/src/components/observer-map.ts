@@ -63,7 +63,11 @@ export class ObserverMap {
         const schema = this.schema;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
-            if (prev === undefined || (prev?.$isProxy && !next?.$isProxy)) {
+            if (
+                prev === undefined ||
+                (prev?.$isProxy && !next?.$isProxy) ||
+                (Array.isArray(prev) && prev.length === 0)
+            ) {
                 const proxy = getAndAssignObservablesAlias(
                     this,
                     propertyName,

@@ -182,6 +182,52 @@ test.describe("ObserverMap", async () => {
         await expect(userCard3.locator("text=Theme: light")).toBeVisible();
     });
 
+    test("should be able to update nested properties on added users after the items array has been emptied", async ({ page }) => {
+        // Initial item count should be 1
+        await expect(page.locator(".item")).toHaveCount(1);
+
+        // Remove item
+        await page.locator("button:has-text('Remove all items')").click();
+
+        // Should now have 0 items
+        await expect(page.locator(".item")).toHaveCount(0);
+
+        // Click the add item button
+        await page.locator("button:has-text('Add an item')").click();
+
+        // There should now be 1 item
+        await expect(page.locator(".item")).toHaveCount(1);
+
+        // Click the update item button
+        await page.locator("button:has-text('Update an item')").click();
+
+        // The item should have updated text
+        await expect(page.locator(".item")).toHaveText('item C')
+    });
+
+    test("should be able to update nested properties on added users after the group array has been emptied", async ({ page }) => {
+        // Initial item count should be 1
+        await expect(page.locator(".item")).toHaveCount(1);
+
+        // Remove groups
+        await page.locator("button:has-text('Remove groups')").click();
+
+        // Should now have 0 items
+        await expect(page.locator(".item")).toHaveCount(0);
+
+        // Click the add group button
+        await page.locator("button:has-text('Add group')").click();
+
+        // There should now be 1 item
+        await expect(page.locator(".item")).toHaveCount(1);
+
+        // Click the update item button
+        await page.locator("button:has-text('Update an item')").click();
+
+        // The item should have updated text
+        await expect(page.locator(".item")).toHaveText('item C')
+    });
+
     test("should update global stats with nested metrics", async ({ page }) => {
         // Check initial engagement stats
         const initialDaily = await page.locator(".stats .nested-info").nth(1).textContent();

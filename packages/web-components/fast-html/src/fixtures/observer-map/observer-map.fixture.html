@@ -140,6 +140,18 @@
                     </f-when>
                     <button @click="{defineY()}">Define Y</button>
                     <button @click="{updateZ()}">Update Z</button>
+                    <div>
+                        <f-repeat value="{{group in groups}}">
+                            <f-repeat value="{{item in group.items}}">
+                                <div class="item">{{item.text}}</div>
+                            </f-repeat>
+                        </f-repeat>
+                    </div>
+                    <button @click="{removeAllItems()}">Remove all items</button>
+                    <button @click="{addAnItem()}">Add an item</button>
+                    <button @click="{updateAnItem()}">Update an item</button>
+                    <button @click="{removeGroup()}">Remove groups</button>
+                    <button @click="{addGroup()}">Add group</button>
                 </template>
             </f-template>
         </div>

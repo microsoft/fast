@@ -1027,15 +1027,13 @@ function assignObservablesToArray(
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
             args.forEach((arg: any) => {
-                if (arg.addedCount > 0) {
-                    for (let i = arg.addedCount - 1; i >= 0; i--) {
-                        const item = subject[arg.index + i];
-                        const originalItem = Object.assign({}, item);
+                for (let i = arg.addedCount - 1; i >= 0; i--) {
+                    const item = subject[arg.index + i];
+                    const originalItem = Object.assign({}, item);
 
-                        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+                    assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
 
-                        return Object.assign(item, originalItem);
-                    }
+                    return Object.assign(item, originalItem);
                 }
             });
         },
@@ -1104,9 +1102,7 @@ function assignSubscribeToObservableArray(
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
             args.forEach((arg: any) => {
-                if (arg.addedCount > 0) {
-                    updateArrayObservables();
-                }
+                updateArrayObservables();
             });
         },
     });
