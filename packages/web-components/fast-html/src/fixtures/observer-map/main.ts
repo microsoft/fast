@@ -256,7 +256,7 @@ class ObserverMapTestElement extends FASTElement {
                     },
                 },
                 preferences: {
-                    theme: Math.random() > 0.5 ? "dark" : "light",
+                    theme: "dark",
                     notifications: {
                         email: Math.random() > 0.5,
                         push: Math.random() > 0.5,
@@ -301,6 +301,71 @@ class ObserverMapInternalTestElement extends FASTElement {
 
     public a: any = {};
     public x: any = undefined;
+
+    public groups = [
+        {
+            items: [
+                {
+                    text: "item A",
+                    actions: {
+                        trailing: [
+                            {
+                                label: "action label A",
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+    ];
+
+    public removeAllItems() {
+        this.groups[0].items.shift();
+    }
+
+    public addAnItem() {
+        this.groups[0].items.push({
+            text: "item B",
+            actions: {
+                trailing: [
+                    {
+                        label: "action label A",
+                    },
+                ],
+            },
+        });
+    }
+
+    public updateAnItem() {
+        this.groups[0].items[0].text = "item C";
+    }
+
+    public removeGroup() {
+        this.groups = [];
+    }
+
+    public addGroup() {
+        this.groups = [
+            {
+                items: [
+                    {
+                        text: "item A",
+                        actions: {
+                            trailing: [
+                                {
+                                    label: "action label A",
+                                },
+                            ],
+                        },
+                    },
+                ],
+            },
+        ];
+    }
+
+    public updateActionLabel() {
+        this.groups[0].items[0].actions.trailing[0].label = "action label B";
+    }
 
     public defineB() {
         this.a = {

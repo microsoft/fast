@@ -1104,9 +1104,7 @@ function assignSubscribeToObservableArray(
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
             args.forEach((arg: any) => {
-                if (arg.addedCount > 0) {
-                    updateArrayObservables();
-                }
+                updateArrayObservables();
             });
         },
     });
