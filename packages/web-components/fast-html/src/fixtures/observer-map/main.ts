@@ -307,6 +307,13 @@ class ObserverMapInternalTestElement extends FASTElement {
             items: [
                 {
                     text: "item A",
+                    actions: {
+                        trailing: [
+                            {
+                                label: "action label A",
+                            },
+                        ],
+                    },
                 },
             ],
         },
@@ -317,7 +324,16 @@ class ObserverMapInternalTestElement extends FASTElement {
     }
 
     public addAnItem() {
-        this.groups[0].items.push({ text: "item B" });
+        this.groups[0].items.push({
+            text: "item B",
+            actions: {
+                trailing: [
+                    {
+                        label: "action label A",
+                    },
+                ],
+            },
+        });
     }
 
     public updateAnItem() {
@@ -334,10 +350,21 @@ class ObserverMapInternalTestElement extends FASTElement {
                 items: [
                     {
                         text: "item A",
+                        actions: {
+                            trailing: [
+                                {
+                                    label: "action label A",
+                                },
+                            ],
+                        },
                     },
                 ],
             },
         ];
+    }
+
+    public updateActionLabel() {
+        this.groups[0].items[0].actions.trailing[0].label = "action label B";
     }
 
     public defineB() {

@@ -66,7 +66,9 @@ export class ObserverMap {
             if (
                 prev === undefined ||
                 (prev?.$isProxy && !next?.$isProxy) ||
-                (Array.isArray(prev) && prev.length === 0)
+                (Array.isArray(prev) &&
+                    Array.isArray(next) &&
+                    !(next as any)?.$fastController)
             ) {
                 const proxy = getAndAssignObservablesAlias(
                     this,

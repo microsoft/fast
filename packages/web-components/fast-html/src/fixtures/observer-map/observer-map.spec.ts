@@ -225,7 +225,13 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Update an item')").click();
 
         // The item should have updated text
-        await expect(page.locator(".item")).toHaveText('item C')
+        await expect(page.locator(".item")).toHaveText('item C');
+
+        // Click the update action label
+        await page.locator("button:has-text('Update an action label')").click();
+
+        // The action label should have updated text
+        await expect(page.locator(".action-label")).toHaveText('action label B');
     });
 
     test("should update global stats with nested metrics", async ({ page }) => {

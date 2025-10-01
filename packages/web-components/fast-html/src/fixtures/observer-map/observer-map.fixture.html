@@ -144,6 +144,11 @@
                         <f-repeat value="{{group in groups}}">
                             <f-repeat value="{{item in group.items}}">
                                 <div class="item">{{item.text}}</div>
+                                <span>
+                                    <f-repeat value="{{action in item.actions.trailing}}">
+                                        <span class="action-label">{{action.label}}</span>
+                                    </f-repeat>
+                                </span>
                             </f-repeat>
                         </f-repeat>
                     </div>
@@ -152,6 +157,7 @@
                     <button @click="{updateAnItem()}">Update an item</button>
                     <button @click="{removeGroup()}">Remove groups</button>
                     <button @click="{addGroup()}">Add group</button>
+                    <button @click="{updateActionLabel()}">Update an action label</button>
                 </template>
             </f-template>
         </div>
