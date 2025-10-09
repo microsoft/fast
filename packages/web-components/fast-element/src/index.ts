@@ -146,6 +146,7 @@ export {
     fastElementRegistry,
     TemplateOptions,
     TypeRegistry,
+    type TemplateLifecycleCallbacks,
 } from "./components/fast-definitions.js";
 export {
     attr,
@@ -162,4 +163,5 @@ export {
     ElementController,
     ElementControllerStrategy,
     HydratableElementController,
+    type HydrationControllerCallbacks,
 } from "./components/element-controller.js";

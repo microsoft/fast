@@ -124,41 +124,29 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
     return FASTElementDefinition.compose(this, type);
 }
 
-function defineAsync<
+async function defineAsync<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 >(
     this: TType,
     nameOrDef: string | PartialFASTElementDefinition
 ): Promise<FASTElementDefinition<TType>>;
-function defineAsync<
+async function defineAsync<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 >(
     type: TType,
     nameOrDef?: string | PartialFASTElementDefinition
 ): Promise<FASTElementDefinition<TType>>;
-function defineAsync<
+async function defineAsync<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
 >(
     type: TType | string | PartialFASTElementDefinition,
     nameOrDef?: string | PartialFASTElementDefinition
 ): Promise<TType> {
     if (isFunction(type)) {
-        return new Promise<FASTElementDefinition<TType>>(resolve => {
-            FASTElementDefinition.composeAsync(type, nameOrDef).then(value => {
-                resolve(value);
-            });
-        }).then(value => {
-            return value.define().type;
-        });
+        return (await FASTElementDefinition.composeAsync(type, nameOrDef)).define().type;
     }
 
-    return new Promise<FASTElementDefinition<TType>>(resolve => {
-        FASTElementDefinition.composeAsync(this, type).then(value => {
-            resolve(value);
-        });
-    }).then(value => {
-        return value.define().type;
-    });
+    return (await FASTElementDefinition.composeAsync(this, type)).define().type;
 }
 
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(

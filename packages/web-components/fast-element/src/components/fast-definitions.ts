@@ -34,10 +34,34 @@ export interface ShadowRootOptions extends ShadowRootInit {
 }
 
 /**
- * Template options.
+ * Values for the `templateOptions` property.
  * @alpha
  */
-export type TemplateOptions = "defer-and-hydrate";
+export const TemplateOptions = {
+    deferAndHydrate: "defer-and-hydrate",
+} as const;
+
+/**
+ * Type for the `TemplateOptions` const enum.
+ * @alpha
+ */
+export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
+
+/**
+ * Lifecycle callbacks for template events.
+ * @public
+ */
+export interface TemplateLifecycleCallbacks {
+    /**
+     * Called after the template has been assigned to the definition
+     */
+    templateDidUpdate?(name: string): void;
+
+    /**
+     * Called after the custom element has been defined
+     */
+    elementDidDefine?(name: string): void;
+}
 
 /**
  * Represents metadata configuration for a custom element.
@@ -89,6 +113,11 @@ export interface PartialFASTElementDefinition {
      * If not provided, defaults to the global registry.
      */
     readonly registry?: CustomElementRegistry;
+
+    /**
+     * Lifecycle callbacks for template events.
+     */
+    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
 }
 
 /**
@@ -164,6 +193,11 @@ export class FASTElementDefinition<
     readonly registry: CustomElementRegistry;
 
     /**
+     * Lifecycle callbacks for template events.
+     */
+    public readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
+
+    /**
      * The definition has been registered to the FAST element registry.
      */
     public static isRegistered: Record<string, Function> = {};
@@ -236,6 +270,7 @@ export class FASTElementDefinition<
         if (!registry.get(this.name)) {
             this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
+            this.lifecycleCallbacks?.elementDidDefine?.(this.name);
         }
 
         return this;
@@ -293,9 +328,7 @@ export class FASTElementDefinition<
             }
 
             Observable.getNotifier(FASTElementDefinition.isRegistered).subscribe(
-                {
-                    handleChange: () => resolve(FASTElementDefinition.isRegistered[name]),
-                },
+                { handleChange: () => resolve(FASTElementDefinition.isRegistered[name]) },
                 name
             );
         });
@@ -325,18 +358,17 @@ export class FASTElementDefinition<
 
             const definition = new FASTElementDefinition<TType>(type, nameOrDef);
 
-            Promise.all([
-                new Promise<void>(resolve => {
-                    Observable.getNotifier(definition).subscribe(
-                        {
-                            handleChange: () => resolve(),
-                        },
-                        "template"
-                    );
-                }),
-            ]).then(() => {
-                resolve(definition);
-            });
+            Observable.getNotifier(definition).subscribe(
+                {
+                    handleChange: () => {
+                        definition.lifecycleCallbacks?.templateDidUpdate?.(
+                            definition.name
+                        );
+                        resolve(definition);
+                    },
+                },
+                "template"
+            );
         });
     }
 }

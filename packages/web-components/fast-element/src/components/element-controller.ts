@@ -14,7 +14,11 @@ import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import { UnobservableMutationObserver } from "../utilities.js";
-import { FASTElementDefinition, ShadowRootOptions } from "./fast-definitions.js";
+import {
+    FASTElementDefinition,
+    ShadowRootOptions,
+    TemplateOptions,
+} from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { HydrationMarkup, isHydratable } from "./hydration.js";
 
@@ -750,6 +754,27 @@ export const deferHydrationAttribute = "defer-hydration";
 export const needsHydrationAttribute = "needs-hydration";
 
 /**
+ * Lifecycle callbacks for element hydration events
+ * @public
+ */
+export interface HydrationControllerCallbacks {
+    /**
+     * Called before hydration has started
+     */
+    elementWillHydrate?(name: string): void;
+
+    /**
+     * Called after hydration has finished
+     */
+    elementDidHydrate?(name: string): void;
+
+    /**
+     * Called after all elements have completed hydration
+     */
+    hydrationComplete?(): void;
+}
+
+/**
  * An ElementController capable of hydrating FAST elements from
  * Declarative Shadow DOM.
  *
@@ -768,10 +793,32 @@ export class HydratableElementController<
         HydratableElementController.hydrationObserverHandler
     );
 
+    /**
+     * Lifecycle callbacks for hydration events
+     */
+    private static lifecycleCallbacks?: HydrationControllerCallbacks;
+
+    /**
+     * Configure lifecycle callbacks for hydration events
+     */
+    public static config(callbacks: HydrationControllerCallbacks) {
+        HydratableElementController.lifecycleCallbacks = callbacks;
+        return this;
+    }
+
     private static hydrationObserverHandler(records: MutationRecord[]) {
         for (const record of records) {
             HydratableElementController.hydrationObserver.unobserve(record.target);
             (record.target as any).$fastController.connect();
+        }
+    }
+
+    /**
+     * Checks if all elements have completed hydration and dispatches event if complete
+     */
+    private static checkHydrationComplete(): void {
+        if (!document.querySelector(`[${needsHydrationAttribute}]`)) {
+            HydratableElementController.lifecycleCallbacks?.hydrationComplete?.();
         }
     }
 
@@ -782,12 +829,11 @@ export class HydratableElementController<
         const definition = FASTElementDefinition.getForInstance(element);
 
         if (
-            definition !== undefined &&
-            definition.templateOptions === "defer-and-hydrate" &&
+            definition?.templateOptions === TemplateOptions.deferAndHydrate &&
             !definition.template
         ) {
-            element.setAttribute(deferHydrationAttribute, "");
-            element.setAttribute(needsHydrationAttribute, "");
+            element.toggleAttribute(deferHydrationAttribute, true);
+            element.toggleAttribute(needsHydrationAttribute, true);
         }
 
         return super.forCustomElement(element, override);
@@ -822,6 +868,11 @@ export class HydratableElementController<
         if (this.stage !== Stages.disconnected) {
             return;
         }
+
+        // Callback: Before hydration has started
+        HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
+            this.definition.name
+        );
 
         this.stage = Stages.connecting;
 
@@ -866,6 +917,14 @@ export class HydratableElementController<
         this.source.removeAttribute(needsHydrationAttribute);
         this.needsInitialization = this.needsHydration = false;
         Observable.notify(this, isConnectedPropertyName);
+
+        // Callback: After hydration has finished
+        HydratableElementController.lifecycleCallbacks?.elementDidHydrate?.(
+            this.definition.name
+        );
+
+        // Check if hydration is complete after this element is hydrated
+        HydratableElementController.checkHydrationComplete();
     }
 
     public disconnect() {
