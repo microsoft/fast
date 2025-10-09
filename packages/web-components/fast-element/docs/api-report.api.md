@@ -458,6 +458,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     static isRegistered: Record<string, Function>;
+    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @alpha
@@ -595,6 +596,7 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
 
 // @beta
 export class HydratableElementController<TElement extends HTMLElement = HTMLElement> extends ElementController<TElement> {
+    static config(callbacks: HydrationControllerCallbacks): typeof HydratableElementController;
     // (undocumented)
     connect(): void;
     // (undocumented)
@@ -630,6 +632,13 @@ export class HydrationBindingError extends Error {
     readonly factory: ViewBehaviorFactory;
     readonly fragment: DocumentFragment;
     readonly templateString: string;
+}
+
+// @public
+export interface HydrationControllerCallbacks {
+    elementDidHydrate?(name: string): void;
+    elementWillHydrate?(name: string): void;
+    hydrationComplete?(): void;
 }
 
 // @public
@@ -732,6 +741,7 @@ export const Parser: Readonly<{
 export interface PartialFASTElementDefinition {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
+    readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
@@ -970,8 +980,19 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     inline(): CaptureType<TSource, TParent>;
 }
 
+// @public
+export interface TemplateLifecycleCallbacks {
+    elementDidDefine?(name: string): void;
+    templateDidUpdate?(name: string): void;
+}
+
 // @alpha
-export type TemplateOptions = "defer-and-hydrate";
+export const TemplateOptions: {
+    readonly deferAndHydrate: "defer-and-hydrate";
+};
+
+// @alpha
+export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
