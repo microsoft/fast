@@ -7,14 +7,18 @@ import {
     FASTElementDefinition,
     fastElementRegistry,
     HydratableElementController,
+    HydrationControllerCallbacks,
     ref,
     repeat,
     slotted,
+    TemplateLifecycleCallbacks,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
+import { ObserverMap } from "./observer-map.js";
+import { Schema } from "./schema.js";
 import {
     AttributeDirective,
     bindingResolver,
@@ -27,8 +31,6 @@ import {
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
-import { ObserverMap } from "./observer-map.js";
-import { Schema } from "./schema.js";
 
 interface ResolvedStringsAndValues {
     strings: Array<string>;
@@ -46,6 +48,24 @@ export interface ElementOptions {
  */
 export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
     [key: string]: ElementOptionsType;
+}
+
+/**
+ * Lifecycle callbacks for template and hydration events.
+ * Combines template lifecycle callbacks with hydration callbacks and adds template-processing events.
+ */
+export interface HydrationLifecycleCallbacks
+    extends HydrationControllerCallbacks,
+        TemplateLifecycleCallbacks {
+    /**
+     * Called after the JS class definition has been registered
+     */
+    elementDidRegister?(name: string): void;
+
+    /**
+     * Called before the template has been evaluated and assigned
+     */
+    templateWillUpdate?(name: string): void;
 }
 
 /**
@@ -77,6 +97,23 @@ class TemplateElement extends FASTElement {
      * Metadata containing JSON schema for properties on a custom eleemnt
      */
     private schema?: Schema;
+
+    /**
+     * Lifecycle callbacks for hydration events
+     */
+    private static lifecycleCallbacks: HydrationLifecycleCallbacks = {};
+
+    /**
+     * Configure lifecycle callbacks for hydration events
+     */
+    public static config(callbacks: HydrationLifecycleCallbacks) {
+        TemplateElement.lifecycleCallbacks = callbacks;
+
+        // Pass the hydration-specific callbacks to HydratableElementController
+        HydratableElementController.config({ ...callbacks });
+
+        return this;
+    }
 
     public static options(elementOptions: ElementOptionsDictionary = {}) {
         const result: ElementOptionsDictionary = {};
@@ -119,58 +156,73 @@ class TemplateElement extends FASTElement {
 
     connectedCallback(): void {
         super.connectedCallback();
+        const name = this.name;
 
-        if (typeof this.name === "string") {
-            this.schema = new Schema(this.name);
-
-            FASTElementDefinition.registerAsync(this.name).then(async value => {
-                if (!TemplateElement.elementOptions?.[this.name as string]) {
-                    TemplateElement.setOptions(this.name as string);
-                }
-
-                if (
-                    TemplateElement.elementOptions[this.name as string]?.observerMap ===
-                    "all"
-                ) {
-                    this.observerMap = new ObserverMap(
-                        value.prototype,
-                        this.schema as Schema
-                    );
-                }
-
-                const registeredFastElement: FASTElementDefinition | undefined =
-                    fastElementRegistry.getByType(value);
-                const template = this.getElementsByTagName("template").item(0);
-
-                if (template) {
-                    const innerHTML = await transformInnerHTML(this.innerHTML);
-
-                    // Cache paths during template processing (pass undefined if observerMap is not available)
-                    const { strings, values } = await this.resolveStringsAndValues(
-                        null,
-                        innerHTML,
-                        false,
-                        null,
-                        0,
-                        this.schema as Schema,
-                        this.observerMap
-                    );
-
-                    // Define the root properties cached in the observer map as observable (only if observerMap exists)
-                    this.observerMap?.defineProperties();
-
-                    if (registeredFastElement) {
-                        // all new elements will get the updated template
-                        registeredFastElement.template = this.resolveTemplateOrBehavior(
-                            strings,
-                            values
-                        );
-                    }
-                } else {
-                    throw FAST.error(Message.noTemplateProvided, { name: this.name });
-                }
-            });
+        if (typeof name !== "string") {
+            return;
         }
+
+        this.schema = new Schema(name);
+
+        FASTElementDefinition.registerAsync(name).then(async value => {
+            TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
+
+            if (!TemplateElement.elementOptions?.[name]) {
+                TemplateElement.setOptions(name);
+            }
+
+            if (TemplateElement.elementOptions[name]?.observerMap === "all") {
+                this.observerMap = new ObserverMap(
+                    value.prototype,
+                    this.schema as Schema
+                );
+            }
+
+            const registeredFastElement: FASTElementDefinition | undefined =
+                fastElementRegistry.getByType(value);
+            const template = this.getElementsByTagName("template").item(0);
+
+            if (template) {
+                // Callback: Before template has been evaluated and assigned
+                TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
+
+                const innerHTML = transformInnerHTML(this.innerHTML);
+
+                // Cache paths during template processing (pass undefined if observerMap is not available)
+                const { strings, values } = await this.resolveStringsAndValues(
+                    null,
+                    innerHTML,
+                    false,
+                    null,
+                    0,
+                    this.schema as Schema,
+                    this.observerMap
+                );
+
+                // Define the root properties cached in the observer map as observable (only if observerMap exists)
+                this.observerMap?.defineProperties();
+
+                if (registeredFastElement) {
+                    // Attach lifecycle callbacks to the definition before assigning template
+                    // This allows the Observable notification to trigger the callbacks
+                    (registeredFastElement as any).lifecycleCallbacks = {
+                        templateDidUpdate:
+                            TemplateElement.lifecycleCallbacks.templateDidUpdate,
+                        elementDidDefine:
+                            TemplateElement.lifecycleCallbacks.elementDidDefine,
+                    };
+
+                    // All new elements will get the updated template
+                    // This assignment triggers the Observable notification → callbacks fire
+                    registeredFastElement.template = this.resolveTemplateOrBehavior(
+                        strings,
+                        values
+                    );
+                }
+            } else {
+                throw FAST.error(Message.noTemplateProvided, { name: this.name });
+            }
+        });
     }
 
     /**

@@ -17,13 +17,9 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
         constructor(...args: any[]) {
             super(...args);
 
-            if (this.prepare) {
-                this.prepare().then(() => {
-                    this.deferHydration = false;
-                });
-            } else {
+            (this.prepare?.() ?? Promise.resolve()).then(() => {
                 this.deferHydration = false;
-            }
+            });
         }
 
         /**

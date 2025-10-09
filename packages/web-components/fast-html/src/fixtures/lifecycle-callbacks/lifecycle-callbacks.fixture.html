@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>Lifecycle Callbacks Test</title>
+    </head>
+    <body>
+        <!-- Simple element -->
+        <simple-element needs-hydration message="Hello">
+            <template shadowrootmode="open">
+                <!--fe-b$$start$$0$$message$$fe-b-->Hello<!--fe-b$$end$$0$$message$$fe-b--> World
+            </template>
+        </simple-element>
+
+        <!-- Complex element with nested element -->
+        <complex-element needs-hydration title="Complex">
+            <template shadowrootmode="open">
+                <div>
+                    <h2><!--fe-b$$start$$0$$title$$fe-b-->Complex<!--fe-b$$end$$0$$title$$fe-b--></h2>
+                    <p>Count: <!--fe-b$$start$$1$$count$$fe-b-->0<!--fe-b$$end$$1$$count$$fe-b--></p>
+                    <nested-element needs-hydration data-fe-b-2 label="Complex">
+                        <template shadowrootmode="open">
+                            <span><!--fe-b$$start$$0$$label$$fe-b-->Complex<!--fe-b$$end$$0$$label$$fe-b--></span>
+                        </template>
+                    </nested-element>
+                </div>
+            </template>
+        </complex-element>
+
+        <!-- Deferred element -->
+        <deferred-element needs-hydration defer-hydration status="pending">
+            <template shadowrootmode="open">
+                <p>Status: <!--fe-b$$start$$0$$status$$fe-b-->pending<!--fe-b$$end$$0$$status$$fe-b--></p>
+            </template>
+        </deferred-element>
+
+        <!-- Template definitions -->
+        <f-template name="simple-element">
+            <template>{{message}} World</template>
+        </f-template>
+
+        <f-template name="complex-element">
+            <template>
+                <div>
+                    <h2>{{title}}</h2>
+                    <p>Count: {{count}}</p>
+                    <nested-element label="{{title}}">
+                        <template shadowrootmode="open">
+                            <span>{{label}}</span>
+                        </template>
+                    </nested-element>
+                </div>
+            </template>
+        </f-template>
+
+        <f-template name="nested-element">
+            <template><span>{{label}}</span></template>
+        </f-template>
+
+        <f-template name="deferred-element">
+            <template><p>Status: {{status}}</p></template>
+        </f-template>
+
+        <script type="module" src="/lifecycle-callbacks/main.js"></script>
+    </body>
+</html>
