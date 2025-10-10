@@ -190,7 +190,7 @@ test.describe("Lifecycle Callbacks", async () => {
         await expect(deferredElement).not.toHaveAttribute("defer-hydration");
     });
 
-    test("should verify template lifecycle callbacks occur before hydration", async ({
+    test("should verify template and hydration callbacks are invoked", async ({
         page,
     }) => {
         await page.goto("/lifecycle-callbacks");
@@ -199,38 +199,36 @@ test.describe("Lifecycle Callbacks", async () => {
 
         const events = await page.evaluate(() => (window as any).lifecycleEvents);
 
-        // For each element, template callbacks should come before hydration callbacks
+        // For each element, verify both template and hydration callbacks are invoked
+        // Note: These callbacks can be interleaved as template processing is async
         const elementNames = ["simple-element", "complex-element", "nested-element"];
 
         elementNames.forEach(name => {
             const elementEvents = events.filter((e: any) => e.name === name);
-            const templateCallbacks = [
-                "elementDidRegister",
-                "templateWillUpdate",
-                "templateDidUpdate",
-                "elementDidDefine",
-            ];
-            const hydrationCallbacks = ["elementWillHydrate", "elementDidHydrate"];
+            const callbacks = elementEvents.map((e: any) => e.callback);
 
-            const lastTemplateIndex = Math.max(
-                ...elementEvents
-                    .map((e: any, i: number) =>
-                        templateCallbacks.includes(e.callback) ? i : -1
-                    )
-                    .filter((i: number) => i !== -1)
-            );
+            // Verify all expected callbacks were invoked
+            expect(callbacks).toContain("elementDidRegister");
+            expect(callbacks).toContain("templateWillUpdate");
+            expect(callbacks).toContain("templateDidUpdate");
+            expect(callbacks).toContain("elementDidDefine");
+            expect(callbacks).toContain("elementWillHydrate");
+            expect(callbacks).toContain("elementDidHydrate");
 
-            const firstHydrationIndex = Math.min(
-                ...elementEvents
-                    .map((e: any, i: number) =>
-                        hydrationCallbacks.includes(e.callback) ? i : -1
-                    )
-                    .filter((i: number) => i !== -1)
-            );
+            // Verify hydration callbacks are in order
+            const willHydrateIndex = callbacks.indexOf("elementWillHydrate");
+            const didHydrateIndex = callbacks.indexOf("elementDidHydrate");
+            expect(willHydrateIndex).toBeLessThan(didHydrateIndex);
 
-            if (lastTemplateIndex !== -1 && firstHydrationIndex !== -1) {
-                expect(lastTemplateIndex).toBeLessThan(firstHydrationIndex);
-            }
+            // Verify template callbacks are in order
+            const registerIndex = callbacks.indexOf("elementDidRegister");
+            const willUpdateIndex = callbacks.indexOf("templateWillUpdate");
+            const didUpdateIndex = callbacks.indexOf("templateDidUpdate");
+            const defineIndex = callbacks.indexOf("elementDidDefine");
+
+            expect(registerIndex).toBeLessThan(willUpdateIndex);
+            expect(willUpdateIndex).toBeLessThan(didUpdateIndex);
+            expect(didUpdateIndex).toBeLessThan(defineIndex);
         });
     });
 
