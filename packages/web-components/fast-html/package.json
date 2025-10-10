@@ -45,7 +45,7 @@
     "pretest": "npm run build && npm run build-server",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
-    "test": "npm run build-app && playwright test --config=playwright.config.cjs && npm run test:rules",
+    "test": "npm run build-app && playwright test && npm run test:rules",
     "test-server": "node server/dist/server.js",
     "test:rules": "sg test --skip-snapshot-tests",
     "install-playwright-browsers": "npm run playwright install",
