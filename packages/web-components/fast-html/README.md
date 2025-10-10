@@ -73,6 +73,150 @@ RenderableFASTElement(MyCustomElement).defineAsync({
 });
 ```
 
+#### Lifecycle Callbacks
+
+FAST HTML provides lifecycle callbacks that allow you to hook into various stages of template processing and element hydration. These callbacks are useful for tracking the rendering lifecycle, gathering analytics, or coordinating complex initialization sequences.
+
+##### Available Callbacks
+
+**Template Lifecycle Callbacks:**
+- `elementDidRegister(name: string)` - Called after the JavaScript class definition has been registered
+- `templateWillUpdate(name: string)` - Called before the template has been evaluated and assigned
+- `templateDidUpdate(name: string)` - Called after the template has been assigned to the definition
+- `elementDidDefine(name: string)` - Called after the custom element has been defined
+
+**Hydration Lifecycle Callbacks:**
+- `elementWillHydrate(name: string)` - Called before an element begins hydration
+- `elementDidHydrate(name: string)` - Called after an element completes hydration
+- `hydrationComplete()` - Called after all elements have completed hydration
+
+##### Configuring Callbacks
+
+Configure lifecycle callbacks using `TemplateElement.config()`:
+
+```typescript
+import { TemplateElement, type HydrationLifecycleCallbacks } from "@microsoft/fast-html";
+
+// You can configure all callbacks at once
+const callbacks: HydrationLifecycleCallbacks = {
+    elementDidRegister(name: string) {
+        console.log(`Element registered: ${name}`);
+    },
+    templateWillUpdate(name: string) {
+        console.log(`Template updating: ${name}`);
+    },
+    templateDidUpdate(name: string) {
+        console.log(`Template updated: ${name}`);
+    },
+    elementDidDefine(name: string) {
+        console.log(`Element defined: ${name}`);
+    },
+    elementWillHydrate(name: string) {
+        console.log(`Element will hydrate: ${name}`);
+    },
+    elementDidHydrate(name: string) {
+        console.log(`Element hydrated: ${name}`);
+    },
+    hydrationComplete() {
+        console.log('All elements hydrated');
+    }
+};
+
+TemplateElement.config(callbacks);
+
+// Or configure only the callbacks you need
+TemplateElement.config({
+    elementDidHydrate(name: string) {
+        console.log(`${name} is ready`);
+    },
+    hydrationComplete() {
+        console.log('Page is interactive');
+    }
+});
+```
+
+##### Lifecycle Order
+
+The lifecycle callbacks occur in the following general sequence:
+
+1. **Registration Phase**: `elementDidRegister` is called when the element class is registered
+2. **Template Phase**: `templateWillUpdate` → (template processing) → `templateDidUpdate` → `elementDidDefine`
+3. **Hydration Phase**: `elementWillHydrate` → (hydration) → `elementDidHydrate`
+4. **Completion**: `hydrationComplete` is called after all elements finish hydrating
+
+**Note:** Template processing is asynchronous and happens independently for each element. The template and hydration phases can be interleaved when multiple elements are being processed simultaneously.
+
+##### Use Cases
+
+**Performance Monitoring:**
+```typescript
+TemplateElement.config({
+    elementWillHydrate(name: string) {
+        performance.mark(`${name}-hydration-start`);
+    },
+    elementDidHydrate(name: string) {
+        performance.mark(`${name}-hydration-end`);
+        performance.measure(
+            `${name}-hydration`,
+            `${name}-hydration-start`,
+            `${name}-hydration-end`
+        );
+    },
+    hydrationComplete() {
+        // Report to analytics
+        const entries = performance.getEntriesByType('measure');
+        console.log('Hydration metrics:', entries);
+    }
+});
+```
+
+**Loading State Management:**
+```typescript
+TemplateElement.config({
+    elementWillHydrate(name: string) {
+        // Show loading indicator
+        document.body.classList.add('hydrating');
+    },
+    hydrationComplete() {
+        // Hide loading indicator once all elements are ready
+        document.body.classList.remove('hydrating');
+        document.body.classList.add('hydrated');
+    }
+});
+```
+
+**Debugging and Development:**
+```typescript
+if (process.env.NODE_ENV === 'development') {
+    const events: Array<{callback: string; name?: string; timestamp: number}> = [];
+    
+    TemplateElement.config({
+        elementDidRegister(name) {
+            events.push({ callback: 'elementDidRegister', name, timestamp: Date.now() });
+        },
+        templateWillUpdate(name) {
+            events.push({ callback: 'templateWillUpdate', name, timestamp: Date.now() });
+        },
+        templateDidUpdate(name) {
+            events.push({ callback: 'templateDidUpdate', name, timestamp: Date.now() });
+        },
+        elementDidDefine(name) {
+            events.push({ callback: 'elementDidDefine', name, timestamp: Date.now() });
+        },
+        elementWillHydrate(name) {
+            events.push({ callback: 'elementWillHydrate', name, timestamp: Date.now() });
+        },
+        elementDidHydrate(name) {
+            events.push({ callback: 'elementDidHydrate', name, timestamp: Date.now() });
+        },
+        hydrationComplete() {
+            events.push({ callback: 'hydrationComplete', timestamp: Date.now() });
+            console.table(events);
+        }
+    });
+}
+```
+
 ### Syntax
 
 All bindings use a handlebars-like syntax.

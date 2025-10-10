@@ -32,15 +32,32 @@ import {
     transformInnerHTML,
 } from "./utilities.js";
 
+/**
+ * The return type for {@link TemplateElement.resolveStringsAndValues}.
+ */
 interface ResolvedStringsAndValues {
     strings: Array<string>;
     values: Array<any>;
 }
 
-export type ObserverMapOption = "all";
+/**
+ * Values for the observerMap element option.
+ */
+export const ObserverMapOption = {
+    all: "all",
+} as const;
 
+/**
+ * Type for the observerMap element option.
+ */
+export type ObserverMapOption =
+    (typeof ObserverMapOption)[keyof typeof ObserverMapOption];
+
+/**
+ * Element options the TemplateElement will use to update the registered element
+ */
 export interface ElementOptions {
-    observerMap?: ObserverMapOption | undefined;
+    observerMap?: ObserverMapOption;
 }
 
 /**
@@ -104,7 +121,10 @@ class TemplateElement extends FASTElement {
     private static lifecycleCallbacks: HydrationLifecycleCallbacks = {};
 
     /**
-     * Configure lifecycle callbacks for hydration events
+     * Configure lifecycle callbacks for hydration events.
+     *
+     * @param callbacks - Lifecycle callbacks to configure.
+     * @returns The {@link TemplateElement} class.
      */
     public static config(callbacks: HydrationLifecycleCallbacks) {
         TemplateElement.lifecycleCallbacks = callbacks;
@@ -115,6 +135,12 @@ class TemplateElement extends FASTElement {
         return this;
     }
 
+    /**
+     * Set options for custom elements.
+     *
+     * @param elementOptions - A dictionary of custom element options
+     * @returns The TemplateElement class.
+     */
     public static options(elementOptions: ElementOptionsDictionary = {}) {
         const result: ElementOptionsDictionary = {};
 
