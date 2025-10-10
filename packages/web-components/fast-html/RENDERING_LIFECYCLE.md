@@ -130,3 +130,117 @@ The asynchronous nature of the lifecycle provides several performance benefits:
 - **Hydration Optimization**: Server-side rendered content can be hydrated efficiently
 
 This coordinated lifecycle enables powerful scenarios like server-side rendering, progressive enhancement, and dynamic template loading while maintaining the reactive capabilities of FAST Element.
+
+## Lifecycle Callbacks
+
+FAST HTML provides a set of lifecycle callbacks that allow you to hook into various stages of the rendering and hydration process. These callbacks are particularly useful for performance monitoring, debugging, analytics, and coordinating initialization sequences.
+
+### Available Callbacks
+
+The lifecycle callbacks are organized into three categories:
+
+**Template Registration Callbacks:**
+- `elementDidRegister(name: string)` - Called after the JavaScript class definition has been registered as a partial definition
+- `templateWillUpdate(name: string)` - Called before the template has been evaluated and assigned to the definition
+
+**Template Processing Callbacks:**
+- `templateDidUpdate(name: string)` - Called after the template has been assigned to the definition
+- `elementDidDefine(name: string)` - Called after the custom element has been fully defined with the platform
+
+**Hydration Callbacks:**
+- `elementWillHydrate(name: string)` - Called before an element begins hydration
+- `elementDidHydrate(name: string)` - Called after an element completes hydration
+- `hydrationComplete()` - Called once after all elements have completed hydration
+
+### Callback Execution Order
+
+The callbacks execute in the following sequence for each element:
+
+```
+Registration Phase:
+  1. elementDidRegister(name)
+  
+Template Processing Phase (asynchronous):
+  2. templateWillUpdate(name)
+  3. [Template processing occurs]
+  4. templateDidUpdate(name)
+  5. elementDidDefine(name)
+  
+Hydration Phase:
+  6. elementWillHydrate(name)
+  7. [Hydration occurs]
+  8. elementDidHydrate(name)
+  
+Completion (called once for all elements):
+  9. hydrationComplete()
+```
+
+**Important:** Template processing is asynchronous and happens independently for each element. When multiple elements are being processed, the template and hydration callbacks can be interleaved across different elements.
+
+### Configuring Callbacks
+
+Configure callbacks using `TemplateElement.config()` before defining the template element:
+
+```typescript
+import { TemplateElement, type HydrationLifecycleCallbacks } from "@microsoft/fast-html";
+
+TemplateElement.config({
+    elementDidRegister(name) {
+        console.log(`${name} registered`);
+    },
+    templateWillUpdate(name) {
+        console.log(`${name} template updating`);
+    },
+    templateDidUpdate(name) {
+        console.log(`${name} template updated`);
+    },
+    elementDidDefine(name) {
+        console.log(`${name} fully defined`);
+    },
+    elementWillHydrate(name) {
+        console.log(`${name} starting hydration`);
+    },
+    elementDidHydrate(name) {
+        console.log(`${name} hydrated`);
+    },
+    hydrationComplete() {
+        console.log('All elements hydrated');
+    }
+});
+
+TemplateElement.define({
+    name: "f-template",
+});
+```
+
+### Use Cases
+
+**Performance Monitoring:**
+```typescript
+TemplateElement.config({
+    elementWillHydrate(name) {
+        performance.mark(`${name}-hydration-start`);
+    },
+    elementDidHydrate(name) {
+        performance.mark(`${name}-hydration-end`);
+        performance.measure(`${name}-hydration`, `${name}-hydration-start`, `${name}-hydration-end`);
+    },
+    hydrationComplete() {
+        const measures = performance.getEntriesByType('measure');
+        // Send metrics to analytics
+    }
+});
+```
+
+**Loading State Management:**
+```typescript
+TemplateElement.config({
+    elementWillHydrate() {
+        document.body.classList.add('hydrating');
+    },
+    hydrationComplete() {
+        document.body.classList.remove('hydrating');
+        document.body.classList.add('interactive');
+    }
+});
+```

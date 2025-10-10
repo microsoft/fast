@@ -39,3 +39,4 @@ The `main.ts` is for the client bundle, which is created by the `webpack.config.
 - [x] Children - the children directive
 - [x] Template - template references
 - [x] Object syntax - dot syntax for property references (e.g `foo.bar`)
+- [x] Lifecycle Callbacks - hydration lifecycle callbacks testing

@@ -157,4 +157,20 @@ app.get("/slotted/main.js", (req: Request, res: Response) =>
 app.get("/slotted/bundle.js", (req: Request, res: Response) =>
     handlePathRequest("./server/dist/slotted/bundle.js", "text/javascript", req, res)
 );
+app.get("/lifecycle-callbacks", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./src/fixtures/lifecycle-callbacks/lifecycle-callbacks.fixture.html",
+        "text/html",
+        req,
+        res
+    )
+);
+app.get("/lifecycle-callbacks/main.js", (req: Request, res: Response) =>
+    handlePathRequest(
+        "./server/dist/lifecycle-callbacks/main.js",
+        "text/javascript",
+        req,
+        res
+    )
+);
 app.listen(PORT);

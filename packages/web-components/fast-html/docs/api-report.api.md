@@ -6,6 +6,8 @@
 
 import { Constructable } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { HydrationControllerCallbacks } from '@microsoft/fast-element';
+import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 
 // @public
 export class ObserverMap {
@@ -21,12 +23,13 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(Base
 // @public
 export class TemplateElement extends FASTElement {
     constructor();
+    // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
+    static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;
     // Warning: (ae-forgotten-export) The symbol "ElementOptionsDictionary" needs to be exported by the entry point index.d.ts
     static elementOptions: ElementOptionsDictionary;
     name?: string;
-    // (undocumented)
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
 }
 

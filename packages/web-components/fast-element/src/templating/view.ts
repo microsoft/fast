@@ -625,10 +625,45 @@ export class HydrationView<TSource = any, TParent = any>
                         templateString = templateString.innerHTML;
                     }
 
+                    const hostElement = (this.firstChild?.getRootNode() as ShadowRoot)
+                        .host;
+                    const hostName = hostElement?.nodeName || "unknown";
+                    const factoryInfo = factory as any;
+
+                    // Build detailed error message
+                    const details: string[] = [
+                        `HydrationView was unable to successfully target bindings inside "<${hostName.toLowerCase()}>".`,
+                        `\nMismatch Details:`,
+                        `  - Expected target node ID: "${factory.targetNodeId}"`,
+                        `  - Available target IDs: [${
+                            Object.keys(this.targets).join(", ") || "none"
+                        }]`,
+                    ];
+
+                    if (factory.targetTagName) {
+                        details.push(`  - Expected tag name: "${factory.targetTagName}"`);
+                    }
+
+                    if (factoryInfo.sourceAspect) {
+                        details.push(`  - Source aspect: "${factoryInfo.sourceAspect}"`);
+                    }
+
+                    if (factoryInfo.aspectType !== undefined) {
+                        details.push(`  - Aspect type: ${factoryInfo.aspectType}`);
+                    }
+
+                    details.push(
+                        `\nThis usually means:`,
+                        `  1. The server-rendered HTML doesn't match the client template`,
+                        `  2. The hydration markers are missing or corrupted`,
+                        `  3. The DOM structure was modified before hydration`,
+                        `\nTemplate: ${templateString.slice(0, 200)}${
+                            templateString.length > 200 ? "..." : ""
+                        }`
+                    );
+
                     throw new HydrationBindingError(
-                        `HydrationView was unable to successfully target bindings inside "${
-                            (this.firstChild?.getRootNode() as ShadowRoot).host?.nodeName
-                        }".`,
+                        details.join("\n"),
                         factory,
                         createRangeForNodes(
                             this.firstChild,

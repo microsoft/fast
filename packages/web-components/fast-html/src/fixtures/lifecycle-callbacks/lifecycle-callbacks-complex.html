@@ -1,0 +1,9 @@
+<div>
+    <h2>{{title}}</h2>
+    <p>Count: {{count}}</p>
+    <nested-element label="{{title}}">
+        <template shadowrootmode="open">
+            <span>{{label}}</span>
+        </template>
+    </nested-element>
+</div>
