@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 13 Oct 2025 00:37:08 GMT",
+      "version": "2.8.0",
+      "tag": "@microsoft/fast-element_v2.8.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "28a1d5dcae41f04e2ff8cb9114c312efb88fb1e1",
+            "comment": "[feat]: implement lifecycle callbacks for hydration and template events"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 20 Aug 2025 20:57:02 GMT",
       "version": "2.7.0",
       "tag": "@microsoft/fast-element_v2.7.0",

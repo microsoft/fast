@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "[feat]: implement lifecycle callbacks for hydration and template events",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

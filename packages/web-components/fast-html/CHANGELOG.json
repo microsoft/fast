@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Mon, 13 Oct 2025 00:37:08 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.30",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "28a1d5dcae41f04e2ff8cb9114c312efb88fb1e1",
+            "comment": "[feat]: implement lifecycle callbacks for hydration and template events"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.8.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Oct 2025 07:17:38 GMT",
       "version": "1.0.0-alpha.29",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.29",

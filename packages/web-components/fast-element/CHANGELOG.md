@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 20 Aug 2025 20:57:02 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 13 Oct 2025 00:37:08 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.8.0
+
+Mon, 13 Oct 2025 00:37:08 GMT
+
+### Minor changes
+
+- [feat]: implement lifecycle callbacks for hydration and template events (863023+radium-v@users.noreply.github.com)
 
 ## 2.7.0
 
