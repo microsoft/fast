@@ -12,3 +12,5 @@
 
 # Change files don't need explicit reviewers
 /change
+
+/.snyk @chris468 @cameronwaterman @BKnight760 @rbell517 @jattasNI @prestwick
