@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "composite": true,
-    "rootDir": ".",
-    "outDir": "../dist/esm",
-    "declarationDir": "../dist/dts",
+    "outDir": "dist/esm",
+    "declaration": true,
+    "declarationDir": "dist/dts",
     "target": "ES2015",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -19,4 +18,7 @@
       "esnext"
     ],
   },
+  "include": [
+    "src"
+  ]
 }

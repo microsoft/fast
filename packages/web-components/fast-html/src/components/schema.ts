@@ -1,4 +1,4 @@
-import { type ChildrenMap } from "./utilities.js";
+import type { ChildrenMap } from "./utilities.js";
 
 type FastContextMetaData = "$fast_context";
 type FastContextsMetaData = "$fast_parent_contexts";
