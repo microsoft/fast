@@ -6,7 +6,6 @@ import {
     Observable,
     SourceLifetime,
 } from "../observation/observable.js";
-import { Updates } from "../observation/update-queue.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
 import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
@@ -802,7 +801,7 @@ export class HydratableElementController<
     /**
      * An idle callback ID used to track hydration completion
      */
-    private static IdleCallbackId: number | null = null;
+    private static idleCallbackId: number | null = null;
 
     /**
      * Adds the current element instance to the hydrating instances map
@@ -847,10 +846,10 @@ export class HydratableElementController<
      *
      * @param deadline - the idle deadline object
      */
-    private static CheckHydrationComplete(deadline: IdleDeadline) {
+    private static checkHydrationComplete(deadline: IdleDeadline) {
         if (deadline.didTimeout) {
-            HydratableElementController.IdleCallbackId = requestIdleCallback(
-                HydratableElementController.CheckHydrationComplete,
+            HydratableElementController.idleCallbackId = requestIdleCallback(
+                HydratableElementController.checkHydrationComplete,
                 { timeout: 50 }
             );
             return;
@@ -999,12 +998,12 @@ export class HydratableElementController<
                 HydratableElementController.hydratingInstances.delete(name);
             }
 
-            if (HydratableElementController.IdleCallbackId) {
-                cancelIdleCallback(HydratableElementController.IdleCallbackId);
+            if (HydratableElementController.idleCallbackId) {
+                cancelIdleCallback(HydratableElementController.idleCallbackId);
             }
 
-            HydratableElementController.IdleCallbackId = requestIdleCallback(
-                HydratableElementController.CheckHydrationComplete,
+            HydratableElementController.idleCallbackId = requestIdleCallback(
+                HydratableElementController.checkHydrationComplete,
                 { timeout: 50 }
             );
         }
