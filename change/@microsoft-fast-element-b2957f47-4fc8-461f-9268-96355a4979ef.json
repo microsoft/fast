@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "feat: add methods to track hydrating instances",
-  "packageName": "@microsoft/fast-element",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
