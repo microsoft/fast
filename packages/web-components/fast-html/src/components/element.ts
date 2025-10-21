@@ -13,9 +13,14 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
 ): T {
     const C = class extends BaseCtor {
         deferHydration: boolean = true;
+        needsHydration: boolean = true;
 
         constructor(...args: any[]) {
             super(...args);
+
+            if ((this.$fastController as any).hasExistingShadowRoot) {
+                this.toggleAttribute("defer-hydration", true);
+            }
 
             (this.prepare?.() ?? Promise.resolve()).then(() => {
                 this.deferHydration = false;
@@ -32,6 +37,11 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
     attr({ mode: "boolean", attribute: "defer-hydration" })(
         C.prototype,
         "deferHydration"
+    );
+
+    attr({ mode: "boolean", attribute: "defer-hydration" })(
+        C.prototype,
+        "needsHydration"
     );
 
     return C;
