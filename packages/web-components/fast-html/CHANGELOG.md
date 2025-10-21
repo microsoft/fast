@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Mon, 13 Oct 2025 00:37:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 21 Oct 2025 23:42:35 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.31
+
+Tue, 21 Oct 2025 23:42:35 GMT
+
+### Changes
+
+- fix: add needsHydration attribute and update constructor logic for hydration handling (863023+radium-v@users.noreply.github.com)
 
 ## 1.0.0-alpha.30
 
