@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: add needsHydration attribute and update constructor logic for hydration handling",
+  "packageName": "@microsoft/fast-html",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
