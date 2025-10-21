@@ -796,7 +796,31 @@ export class HydratableElementController<
     /**
      * Lifecycle callbacks for hydration events
      */
-    private static lifecycleCallbacks?: HydrationControllerCallbacks;
+    public static lifecycleCallbacks?: HydrationControllerCallbacks;
+
+    /**
+     * An idle callback ID used to track hydration completion
+     */
+    private static idleCallbackId: number | null = null;
+
+    /**
+     * Adds the current element instance to the hydrating instances map
+     */
+    private addHydratingInstance() {
+        if (!HydratableElementController.hydratingInstances) {
+            return;
+        }
+
+        const name = this.definition.name;
+        let instances = HydratableElementController.hydratingInstances.get(name);
+
+        if (!instances) {
+            instances = new Set<FASTElement>();
+            HydratableElementController.hydratingInstances.set(name, instances);
+        }
+
+        instances.add(this.source);
+    }
 
     /**
      * Configure lifecycle callbacks for hydration events
@@ -808,17 +832,35 @@ export class HydratableElementController<
 
     private static hydrationObserverHandler(records: MutationRecord[]) {
         for (const record of records) {
-            HydratableElementController.hydrationObserver.unobserve(record.target);
-            (record.target as any).$fastController.connect();
+            if (!(record.target as HTMLElement).hasAttribute(deferHydrationAttribute)) {
+                HydratableElementController.hydrationObserver.unobserve(record.target);
+                (record.target as any).$fastController.connect();
+            }
         }
     }
 
     /**
-     * Checks if all elements have completed hydration and dispatches event if complete
+     * Checks to see if hydration is complete and if so, invokes the hydrationComplete callback.
+     * Then resets the ElementController strategy to the default so that future elements
+     * don't use the HydratableElementController.
+     *
+     * @param deadline - the idle deadline object
      */
-    private static checkHydrationComplete(): void {
-        if (!document.querySelector(`[${needsHydrationAttribute}]`)) {
+    private static checkHydrationComplete(deadline: IdleDeadline) {
+        if (deadline.didTimeout) {
+            HydratableElementController.idleCallbackId = requestIdleCallback(
+                HydratableElementController.checkHydrationComplete,
+                { timeout: 50 }
+            );
+            return;
+        }
+
+        // If there are no more hydrating instances, invoke the hydrationComplete callback
+        if (HydratableElementController.hydratingInstances?.size === 0) {
             HydratableElementController.lifecycleCallbacks?.hydrationComplete?.();
+
+            // Reset to the default strategy after hydration is complete
+            ElementController.setStrategy(ElementController);
         }
     }
 
@@ -841,14 +883,20 @@ export class HydratableElementController<
 
     public connect() {
         // Initialize needsHydration on first connect
-        if (this.needsHydration === undefined) {
-            this.needsHydration =
-                this.source.getAttribute(needsHydrationAttribute) !== null;
+        this.needsHydration =
+            this.needsHydration ??
+            this.source.getAttribute(needsHydrationAttribute) !== null;
+
+        if (this.needsHydration) {
+            HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
+                this.definition.name
+            );
         }
 
         // If the `defer-hydration` attribute exists on the source,
         // wait for it to be removed before continuing connection behavior.
         if (this.source.hasAttribute(deferHydrationAttribute)) {
+            this.addHydratingInstance();
             HydratableElementController.hydrationObserver.observe(this.source, {
                 attributeFilter: [deferHydrationAttribute],
             });
@@ -862,6 +910,7 @@ export class HydratableElementController<
         // class
         if (!this.needsHydration) {
             super.connect();
+            this.removeHydratingInstance();
             return;
         }
 
@@ -869,21 +918,16 @@ export class HydratableElementController<
             return;
         }
 
-        // Callback: Before hydration has started
-        HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
-            this.definition.name
-        );
-
         this.stage = Stages.connecting;
 
         this.bindObservables();
         this.connectBehaviors();
 
-        const element = this.source;
-        const host = getShadowRoot(element) ?? element;
-
         if (this.template) {
             if (isHydratable(this.template)) {
+                const element = this.source;
+                const host = getShadowRoot(element) ?? element;
+
                 let firstChild = host.firstChild!;
                 let lastChild = host.lastChild!;
 
@@ -916,15 +960,53 @@ export class HydratableElementController<
         this.stage = Stages.connected;
         this.source.removeAttribute(needsHydrationAttribute);
         this.needsInitialization = this.needsHydration = false;
+        this.removeHydratingInstance();
         Observable.notify(this, isConnectedPropertyName);
+    }
+
+    /**
+     * A map of element instances by the name of the custom element they are
+     * associated with. The key is the custom element name, and the value is the
+     * instances of hydratable elements which currently need to be hydrated.
+     *
+     * When all of the instances in the set have been hydrated, the set is
+     * cleared and removed from the map. If the map is empty, the
+     * hydrationComplete callback is invoked.
+     */
+    private static hydratingInstances?: Map<string, Set<HTMLElement>> = new Map();
+
+    /**
+     * Removes the current element instance from the hydrating instances map
+     */
+    private removeHydratingInstance() {
+        if (!HydratableElementController.hydratingInstances) {
+            return;
+        }
+
+        const name = this.definition.name;
+        const instances = HydratableElementController.hydratingInstances.get(name);
 
         // Callback: After hydration has finished
         HydratableElementController.lifecycleCallbacks?.elementDidHydrate?.(
             this.definition.name
         );
 
-        // Check if hydration is complete after this element is hydrated
-        HydratableElementController.checkHydrationComplete();
+        if (instances) {
+            instances.delete(this.source);
+
+            if (!instances.size) {
+                HydratableElementController.hydratingInstances.delete(name);
+            }
+
+            if (HydratableElementController.idleCallbackId) {
+                cancelIdleCallback(HydratableElementController.idleCallbackId);
+            }
+
+            HydratableElementController.idleCallbackId = requestIdleCallback(
+                HydratableElementController.checkHydrationComplete,
+                { timeout: 50 }
+            );
+        }
     }
 
     public disconnect() {

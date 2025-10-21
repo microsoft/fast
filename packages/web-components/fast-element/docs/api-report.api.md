@@ -605,6 +605,7 @@ export class HydratableElementController<TElement extends HTMLElement = HTMLElem
     static forCustomElement(element: HTMLElement, override?: boolean): ElementController<HTMLElement>;
     // (undocumented)
     static install(): void;
+    static lifecycleCallbacks?: HydrationControllerCallbacks;
     protected needsHydration?: boolean;
 }
 
