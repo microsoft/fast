@@ -1,10 +1,12 @@
-export default {
-    testDir: "./src/fixtures",
+import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+    testDir: ".",
+    testMatch: "**/*.spec.ts",
     retries: 3,
     webServer: {
         command: "npm run test-server",
-        port: 8080,
-        timeout: 120 * 1000,
+        port: 5173,
         reuseExistingServer: true,
     },
-};
+});
