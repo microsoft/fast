@@ -46,10 +46,18 @@ export interface ElementControllerStrategy {
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
 }
 
-const enum Stages {
+/**
+ * The various lifecycle stages of an ElementController.
+ * @public
+ */
+export const enum Stages {
+    /** The element is in the process of connecting. */
     connecting,
+    /** The element is connected. */
     connected,
+    /** The element is in the process of disconnecting. */
     disconnecting,
+    /** The element is disconnected. */
     disconnected,
 }
 
@@ -61,24 +69,58 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     extends PropertyChangeNotifier
     implements HostController<TElement>
 {
+    /**
+     * A map of observable properties that were set on the element before upgrade.
+     */
     private boundObservables: Record<string, any> | null = null;
+
+    /**
+     * Indicates whether the controller needs to perform initial rendering.
+     */
     protected needsInitialization: boolean = true;
+
+    /**
+     * Indicates whether the element has an existing shadow root (e.g. from declarative shadow DOM).
+     */
     protected hasExistingShadowRoot = false;
+
+    /**
+     * The template used to render the component.
+     */
     private _template: ElementViewTemplate<TElement> | null = null;
+
+    /**
+     * The shadow root options for the component.
+     */
     private _shadowRootOptions: ShadowRootOptions | undefined;
+
+    /**
+     * The current lifecycle stage of the controller.
+     */
     protected stage: Stages = Stages.disconnected;
+
     /**
      * A guard against connecting behaviors multiple times
      * during connect in scenarios where a behavior adds
      * another behavior during it's connectedCallback
      */
     private guardBehaviorConnection = false;
+
+    /**
+     * The behaviors associated with the component.
+     */
     protected behaviors: Map<HostBehavior<TElement>, number> | null = null;
+
     /**
      * Tracks whether behaviors are connected so that
      * behaviors cant be connected multiple times
      */
     private behaviorsConnected: boolean = false;
+
+    /**
+     * The main set of styles used for the component, independent of any
+     * dynamically added styles.
+     */
     private _mainStyles: ElementStyles | null = null;
 
     /**
@@ -173,10 +215,19 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    /**
+     * The shadow root options for the component.
+     */
     public get shadowOptions(): ShadowRootOptions | undefined {
         return this._shadowRootOptions;
     }
 
+    /**
+     * Sets the shadow root options for the component and attaches
+     * the shadow root if it does not already exist.
+     *
+     * @param value - The shadow root options to set.
+     */
     public set shadowOptions(value: ShadowRootOptions | undefined) {
         // options on the shadowRoot can only be set once
         if (this._shadowRootOptions === void 0 && value !== void 0) {
@@ -409,6 +460,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         Observable.notify(this, isConnectedPropertyName);
     }
 
+    /**
+     * Binds any observables that were set before upgrade.
+     */
     protected bindObservables() {
         if (this.boundObservables !== null) {
             const element = this.source;
@@ -424,6 +478,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    /**
+     * Connects any existing behaviors on the associated element.
+     */
     protected connectBehaviors() {
         if (this.behaviorsConnected === false) {
             const behaviors = this.behaviors;
@@ -440,6 +497,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
     }
 
+    /**
+     * Disconnects any behaviors on the associated element.
+     */
     protected disconnectBehaviors() {
         if (this.behaviorsConnected === true) {
             const behaviors = this.behaviors;
@@ -514,6 +574,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return false;
     }
 
+    /**
+     * Renders the provided template to the element.
+     *
+     * @param template - The template to render.
+     * @remarks
+     * If `null` is provided, any existing view will be removed.
+     */
     protected renderTemplate(template: ElementViewTemplate | null | undefined): void {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
@@ -750,7 +817,16 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
     ElementStyles.setDefaultStrategy(StyleElementStrategy);
 }
 
+/**
+ * The attribute used to defer hydration of an element.
+ * @public
+ */
 export const deferHydrationAttribute = "defer-hydration";
+
+/**
+ * The attribute used to indicate that an element needs hydration.
+ * @public
+ */
 export const needsHydrationAttribute = "needs-hydration";
 
 /**
@@ -1009,11 +1085,20 @@ export class HydratableElementController<
         }
     }
 
+    /**
+     * Unregisters the hydration observer when the element is disconnected.
+     */
     public disconnect() {
         super.disconnect();
         HydratableElementController.hydrationObserver.unobserve(this.source);
     }
 
+    /**
+     * Sets the ElementController strategy to HydratableElementController.
+     * @remarks
+     * This method is typically called during application startup to enable
+     * hydration support for FAST elements.
+     */
     public static install() {
         ElementController.setStrategy(HydratableElementController);
     }
