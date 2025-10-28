@@ -63,7 +63,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 {
     private boundObservables: Record<string, any> | null = null;
     protected needsInitialization: boolean = true;
-    private hasExistingShadowRoot = false;
+    protected hasExistingShadowRoot = false;
     private _template: ElementViewTemplate<TElement> | null = null;
     private _shadowRootOptions: ShadowRootOptions | undefined;
     protected stage: Stages = Stages.disconnected;
@@ -794,6 +794,21 @@ export class HydratableElementController<
     );
 
     /**
+     * Sets the defer-hydration and needs-hydration attributes when the TemplateOptions
+     * are set to deferAndHydrate and an existing shadow root is present.
+     */
+    public set shadowOptions(value: ShadowRootOptions | undefined) {
+        super.shadowOptions = value;
+        if (
+            this.hasExistingShadowRoot &&
+            this.definition.templateOptions === TemplateOptions.deferAndHydrate
+        ) {
+            this.source.toggleAttribute(deferHydrationAttribute, true);
+            this.source.toggleAttribute(needsHydrationAttribute, true);
+        }
+    }
+
+    /**
      * Lifecycle callbacks for hydration events
      */
     public static lifecycleCallbacks?: HydrationControllerCallbacks;
@@ -864,28 +879,13 @@ export class HydratableElementController<
         }
     }
 
-    public static forCustomElement(
-        element: HTMLElement,
-        override?: boolean
-    ): ElementController<HTMLElement> {
-        const definition = FASTElementDefinition.getForInstance(element);
-
-        if (
-            definition?.templateOptions === TemplateOptions.deferAndHydrate &&
-            !definition.template
-        ) {
-            element.toggleAttribute(deferHydrationAttribute, true);
-            element.toggleAttribute(needsHydrationAttribute, true);
-        }
-
-        return super.forCustomElement(element, override);
-    }
-
+    /**
+     * Runs connected lifecycle behavior on the associated element.
+     */
     public connect() {
         // Initialize needsHydration on first connect
         this.needsHydration =
-            this.needsHydration ??
-            this.source.getAttribute(needsHydrationAttribute) !== null;
+            this.needsHydration ?? this.source.hasAttribute(needsHydrationAttribute);
 
         if (this.needsHydration) {
             HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
