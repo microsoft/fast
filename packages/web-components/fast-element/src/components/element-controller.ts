@@ -222,12 +222,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         return this._shadowRootOptions;
     }
 
-    /**
-     * Sets the shadow root options for the component and attaches
-     * the shadow root if it does not already exist.
-     *
-     * @param value - The shadow root options to set.
-     */
     public set shadowOptions(value: ShadowRootOptions | undefined) {
         // options on the shadowRoot can only be set once
         if (this._shadowRootOptions === void 0 && value !== void 0) {
@@ -870,9 +864,12 @@ export class HydratableElementController<
     );
 
     /**
-     * Sets the defer-hydration and needs-hydration attributes when the TemplateOptions
-     * are set to deferAndHydrate and an existing shadow root is present.
+     * {@inheritdoc ElementController.shadowOptions}
      */
+    public get shadowOptions(): ShadowRootOptions | undefined {
+        return super.shadowOptions;
+    }
+
     public set shadowOptions(value: ShadowRootOptions | undefined) {
         super.shadowOptions = value;
         if (

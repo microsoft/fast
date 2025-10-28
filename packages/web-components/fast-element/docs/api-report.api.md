@@ -596,6 +596,7 @@ export class HydratableElementController<TElement extends HTMLElement = HTMLElem
     static install(): void;
     static lifecycleCallbacks?: HydrationControllerCallbacks;
     protected needsHydration?: boolean;
+    get shadowOptions(): ShadowRootOptions | undefined;
     set shadowOptions(value: ShadowRootOptions | undefined);
 }
 
