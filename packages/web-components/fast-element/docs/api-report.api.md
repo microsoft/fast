@@ -241,6 +241,9 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
 // @public
+export const deferHydrationAttribute = "defer-hydration";
+
+// @public
 export interface Disposable {
     dispose(): void;
 }
@@ -282,25 +285,21 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     constructor(element: TElement, definition: FASTElementDefinition);
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    // (undocumented)
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
-    // (undocumented)
     protected bindObservables(): void;
     connect(): void;
-    // (undocumented)
     protected connectBehaviors(): void;
     get context(): ExecutionContext;
     readonly definition: FASTElementDefinition;
     disconnect(): void;
-    // (undocumented)
     protected disconnectBehaviors(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement, override?: boolean): ElementController;
+    protected hasExistingShadowRoot: boolean;
     get isBound(): boolean;
     get isConnected(): boolean;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
-    // (undocumented)
     protected needsInitialization: boolean;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     onUnbind(behavior: {
@@ -308,17 +307,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     }): void;
     removeBehavior(behavior: HostBehavior<TElement>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    // (undocumented)
     protected renderTemplate(template: ElementViewTemplate | null | undefined): void;
     static setStrategy(strategy: ElementControllerStrategy): void;
-    // (undocumented)
     get shadowOptions(): ShadowRootOptions | undefined;
     set shadowOptions(value: ShadowRootOptions | undefined);
     readonly source: TElement;
     get sourceLifetime(): SourceLifetime | undefined;
-    // Warning: (ae-forgotten-export) The symbol "Stages" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
     protected stage: Stages;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
@@ -597,16 +591,13 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
 // @beta
 export class HydratableElementController<TElement extends HTMLElement = HTMLElement> extends ElementController<TElement> {
     static config(callbacks: HydrationControllerCallbacks): typeof HydratableElementController;
-    // (undocumented)
     connect(): void;
-    // (undocumented)
     disconnect(): void;
-    // (undocumented)
-    static forCustomElement(element: HTMLElement, override?: boolean): ElementController<HTMLElement>;
-    // (undocumented)
     static install(): void;
     static lifecycleCallbacks?: HydrationControllerCallbacks;
     protected needsHydration?: boolean;
+    get shadowOptions(): ShadowRootOptions | undefined;
+    set shadowOptions(value: ShadowRootOptions | undefined);
 }
 
 // @public (undocumented)
@@ -666,6 +657,9 @@ export const Markup: Readonly<{
     attribute: (id: string) => string;
     comment: (id: string) => string;
 }>;
+
+// @public
+export const needsHydrationAttribute = "needs-hydration";
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
@@ -921,6 +915,14 @@ export const SpliceStrategySupport: Readonly<{
 
 // @public
 export type SpliceStrategySupport = (typeof SpliceStrategySupport)[keyof typeof SpliceStrategySupport];
+
+// @public
+export const enum Stages {
+    connected = 1,
+    connecting = 0,
+    disconnected = 3,
+    disconnecting = 2
+}
 
 // @public
 export abstract class StatelessAttachedAttributeDirective<TOptions> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {

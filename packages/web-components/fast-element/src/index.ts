@@ -160,8 +160,11 @@ export {
     ValueConverter,
 } from "./components/attributes.js";
 export {
+    deferHydrationAttribute,
     ElementController,
     ElementControllerStrategy,
     HydratableElementController,
     type HydrationControllerCallbacks,
+    needsHydrationAttribute,
+    Stages,
 } from "./components/element-controller.js";
