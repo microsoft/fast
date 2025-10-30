@@ -70,7 +70,6 @@
     "@ast-grep/cli": "^0.37.0",
     "@microsoft/api-extractor": "^7.47.0",
     "@microsoft/fast-element": "^2.8.1",
-    "@playwright/test": "^1.49.0",
     "@types/express": "^4.17.21",
     "@types/node": "^17.0.17",
     "express": "^4.19.2",

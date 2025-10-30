@@ -61,6 +61,7 @@
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@octokit/rest": "^22.0.0",
+    "@playwright/test": "^1.56.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^15.0.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
