@@ -86,7 +86,7 @@
     "webpack": "^5.97.1"
   },
   "peerDependencies": {
-    "@ni/fast-element": "^10.0.3",
+    "@ni/fast-element": "^10.0.4",
     "@ni/fast-foundation": "^10.1.3",
     "react": "^16 || ^17 || ^18"
   }

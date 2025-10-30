@@ -88,7 +88,7 @@
     "webpack": "^5.97.1"
   },
   "dependencies": {
-    "@ni/fast-element": "^10.0.3",
+    "@ni/fast-element": "^10.0.4",
     "@ni/fast-web-utilities": "^10.0.3",
     "tabbable": "^6.2.0",
     "tslib": "^2.8.1"

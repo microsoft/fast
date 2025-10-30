@@ -2,7 +2,7 @@
   "name": "@ni/fast-colors",
   "description": "A color utility for generating a range of colors from a single color",
   "sideEffects": false,
-  "version": "10.0.1",
+  "version": "10.0.2",
   "author": {
     "name": "National Instruments"
   },
