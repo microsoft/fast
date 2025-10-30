@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Updates for npm trusted publishing",
+  "packageName": "@ni/fast-foundation",
+  "email": "rajsite@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

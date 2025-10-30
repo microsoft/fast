@@ -6,6 +6,10 @@ on:
     branches:
       - '**'
 
+permissions:
+  id-token: write
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -18,7 +22,6 @@ env:
   LANGUAGE: "en_US.UTF-8"
   TZ: "America/Chicago"
   HAS_GITHUBPAGESDEPLOYTOKEN: ${{secrets.GITHUBPAGESDEPLOYTOKEN != ''}}
-  HAS_NPM_TOKEN: ${{secrets.NPM_TOKEN != ''}}
 
 jobs:
   build:
@@ -42,7 +45,7 @@ jobs:
       # Install dependencies
       - uses: actions/setup-node@v5
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
       - run: npm ci
@@ -80,16 +83,10 @@ jobs:
           echo exit with error if there are changes.
           git diff-index --quiet --ignore-space-at-eol --stat HEAD
 
-      # Release
-      - name: Set Git User
+      # Update package versions, tag, and publish to npm
+      - name: Beachball publish
         if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true' && startsWith(github.ref, 'refs/heads/archives/fast-element-1')
         run: |
           git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
           git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
-
-      # Update package versions, tag, and publish to npm
-      - name: Beachball publish
-        if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true' && env.HAS_NPM_TOKEN == 'true' && startsWith(github.ref, 'refs/heads/archives/fast-element-1')
-        env:
-          NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run invoke-publish
+          npm run invoke-publish

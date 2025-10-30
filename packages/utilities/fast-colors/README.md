@@ -8,7 +8,6 @@
 
 `@ni/fast-colors` includes a number of color classes and utilities designed to make parsing and manipulating colors easy, fast, and light-weight. This `@ni/fast-colors` library is a fork of [`@microsoft/fast-colors`](https://github.com/microsoft/fast/tree/archives/fast-element-1/packages/utilities/fast-colors).
 
-
 ## Getting Started
 
 ### Installing from NPM

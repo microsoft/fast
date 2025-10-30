@@ -32,12 +32,11 @@
     "change": "beachball change",
     "check": "beachball check --changehint \"Run 'npm run change' to generate a change file\"",
     "sync": "beachball sync",
-    "invoke-publish": "cross-env-shell beachball publish --yes --access public --message \\\"applying package updates [skip ci]\\\" -n $NPM_SECRET_TOKEN"
+    "invoke-publish": "beachball publish --yes --access public --message \"applying package updates [skip ci]\""
   },
   "devDependencies": {
     "@types/node": "^22",
     "beachball": "^2.24.0",
-    "cross-env": "^7.0.3",
     "playwright": "^1.51.1",
     "prettier": "3.4.2",
     "typescript": "~5.4.5"

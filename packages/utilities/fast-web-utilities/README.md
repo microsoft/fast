@@ -8,7 +8,6 @@
 
 This package is a collection of utilities intended to be used for web projects. This `@ni/fast-web-utilities` library is a fork of [`@microsoft/fast-web-utilities`](https://github.com/microsoft/fast/tree/archives/fast-element-1/packages/utilities/fast-web-utilities).
 
-
 ## Getting Started
 
 ### Installing from NPM
