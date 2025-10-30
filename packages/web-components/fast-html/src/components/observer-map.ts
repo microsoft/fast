@@ -1,6 +1,6 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
 import { assignObservables } from "./utilities.js";
-import { JSONSchema, Schema } from "./schema.js";
+import type { JSONSchema, Schema } from "./schema.js";
 
 /**
  * ObserverMap provides functionality for caching binding paths, extracting root properties,

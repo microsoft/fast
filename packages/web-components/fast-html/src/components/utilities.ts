@@ -2,8 +2,8 @@ import { Observable } from "@microsoft/fast-element/observable.js";
 import {
     defsPropertyName,
     fastContextMetaData,
-    JSONSchema,
-    JSONSchemaDefinition,
+    type JSONSchema,
+    type JSONSchemaDefinition,
     refPropertyName,
     Schema,
 } from "./schema.js";

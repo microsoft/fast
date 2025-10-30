@@ -63,11 +63,12 @@
     "@octokit/rest": "^22.0.0",
     "@playwright/test": "^1.56.1",
     "@types/lodash-es": "^4.17.4",
-    "@types/node": "^15.0.1",
+    "@types/node": "^22.12.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "beachball": "^2.51.0",
     "chalk": "^2.4.2",
+    "concurrently": "^9.2.1",
     "copyfiles": "^2.4.1",
     "dotenv": "^6.0.0",
     "eslint": "^8.0.0",
@@ -81,6 +82,7 @@
     "rimraf": "^5.0.0",
     "ts-node": "^8.8.2",
     "typescript": "~4.7.0",
+    "vite": "^7.1.12",
     "yargs": "^16.2.0"
   },
   "overrides": {
