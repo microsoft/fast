@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 13 Oct 2025 00:37:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 21 Oct 2025 16:17:27 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.8.1
+
+Tue, 21 Oct 2025 16:17:27 GMT
+
+### Patches
+
+- feat: add methods to track hydrating instances (863023+radium-v@users.noreply.github.com)
 
 ## 2.8.0
 

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 21 Oct 2025 16:17:27 GMT",
+      "version": "2.8.1",
+      "tag": "@microsoft/fast-element_v2.8.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d66ae6571c97341890e5320048fc1a3ef38dc5be",
+            "comment": "feat: add methods to track hydrating instances"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 13 Oct 2025 00:37:08 GMT",
       "version": "2.8.0",
       "tag": "@microsoft/fast-element_v2.8.0",

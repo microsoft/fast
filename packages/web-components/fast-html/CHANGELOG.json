@@ -2,6 +2,42 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 21 Oct 2025 23:42:35 GMT",
+      "version": "1.0.0-alpha.31",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.31",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6b89c32ba442597458f22ba204496eade92e08b8",
+            "comment": "fix: add needsHydration attribute and update constructor logic for hydration handling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 21 Oct 2025 16:17:27 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.30",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "d66ae6571c97341890e5320048fc1a3ef38dc5be",
+            "comment": "chore: remove unused requestIdleCallback module"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.8.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 13 Oct 2025 00:37:08 GMT",
       "version": "1.0.0-alpha.30",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.30",
