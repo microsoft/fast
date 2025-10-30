@@ -2,6 +2,21 @@
   "name": "@ni/fast-element",
   "entries": [
     {
+      "date": "Thu, 30 Oct 2025 16:22:12 GMT",
+      "version": "10.0.5",
+      "tag": "@ni/fast-element_v10.0.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-element",
+            "commit": "0200fb37e37ff86f526c0828142f747f775920ae",
+            "comment": "Updates for npm trusted publishing"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 15 Aug 2025 16:32:04 GMT",
       "version": "10.0.3",
       "tag": "@ni/fast-element_v10.0.3",

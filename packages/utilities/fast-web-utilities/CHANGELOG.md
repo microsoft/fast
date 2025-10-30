@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-web-utilities
 
-<!-- This log was last generated on Fri, 15 Aug 2025 16:32:04 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 30 Oct 2025 16:22:12 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.0.4
+
+Thu, 30 Oct 2025 16:22:12 GMT
+
+### Patches
+
+- Updates for npm trusted publishing ([ni/fast@0200fb3](https://github.com/ni/fast/commit/0200fb37e37ff86f526c0828142f747f775920ae))
 
 ## 10.0.3
 

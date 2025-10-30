@@ -2,6 +2,21 @@
   "name": "@ni/fast-colors",
   "entries": [
     {
+      "date": "Thu, 30 Oct 2025 16:22:12 GMT",
+      "version": "10.0.3",
+      "tag": "@ni/fast-colors_v10.0.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "rajsite@users.noreply.github.com",
+            "package": "@ni/fast-colors",
+            "commit": "0200fb37e37ff86f526c0828142f747f775920ae",
+            "comment": "Updates for npm trusted publishing"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Mar 2025 18:12:50 GMT",
       "version": "10.0.1",
       "tag": "@ni/fast-colors_v10.0.1",
