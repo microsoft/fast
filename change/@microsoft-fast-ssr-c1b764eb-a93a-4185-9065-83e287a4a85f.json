@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "chore: hoist @playwright/test to root and upgrade to 1.56.1",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
