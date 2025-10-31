@@ -3,12 +3,25 @@ import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
     public object: any = {
-        b: "bar",
         a: {
             b2: {
                 c: "FOO",
             },
         },
+        b: "bar",
+        c: [
+            {
+                name: "Item 1",
+                status: "active",
+            },
+            {
+                name: "Item 2",
+                status: "active",
+            },
+            {
+                status: "active",
+            },
+        ],
     };
 
     public handleBClick = () => {

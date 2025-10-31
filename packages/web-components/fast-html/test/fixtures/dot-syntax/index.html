@@ -14,16 +14,40 @@
                 <button @click="{handleBClick()}">Set b</button>
                 <button @click="{handleAB1Click()}">Set a.b1</button>
                 <button @click="{handleAB2CClick()}">Set a.b2.c</button>
+                <f-when value="{{object.c}}">
+                    <f-repeat value="{{item in object.c}}">
+                        <f-when value="{{item.name && item.status == 'active'}}">
+                            <div>{{item.name}}</div>
+                        </f-when>
+                    </f-repeat>
+                </f-when>
             </template>
         </f-template>
         <test-element>
             <template shadowrootmode="open">
                 <span><!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->bar<!--fe-b$$end$$0$$t01oHhokPY$$fe-b--></span>
                 <span><!--fe-b$$start$$1$$t01oHhokPY$$fe-b--><!--fe-b$$end$$1$$t01oHhokPY$$fe-b--></span>
-                <span><!--fe-b$$start$$2$$t01oHhokPY$$fe-b--><!--fe-b$$end$$2$$t01oHhokPY$$fe-b--></span>
+                <span><!--fe-b$$start$$2$$t01oHhokPY$$fe-b-->FOO<!--fe-b$$end$$2$$t01oHhokPY$$fe-b--></span>
                 <button data-fe-b-3>Set b</button>
                 <button data-fe-b-4>Set a.b1</button>
                 <button data-fe-b-5>Set a.b2.c</button>
+                <!--fe-b$$start$$6$$asdf$$fe-b-->
+                <!--fe-b$$start$$0$$jklasdf$$fe-b-->
+                <!--fe-repeat$$start$$0$$fe-repeat-->
+                <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->
+                <div><!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->Item 1<!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b--></div>
+                <!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+                <!--fe-repeat$$end$$0$$fe-repeat-->
+                <!--fe-repeat$$start$$1$$fe-repeat-->
+                <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->
+                <div><!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->Item 2<!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b--></div>
+                <!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+                <!--fe-repeat$$end$$1$$fe-repeat-->
+                <!--fe-repeat$$start$$2$$fe-repeat-->
+                <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b--><!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+                <!--fe-repeat$$end$$2$$fe-repeat-->
+                <!--fe-b$$end$$0$$jklasdf$$fe-b-->
+                <!--fe-b$$end$$6$$asdf$$fe-b-->
             </template>
         </test-element>
     </body>

@@ -155,4 +155,48 @@ test.describe("f-template dot-syntax bindings", async () => {
         // Should update immediately due to reactive system
         await expect(bSpan).toHaveText("Hello", { timeout: 1000 });
     });
+
+    test("should observe changes to repeated items with missing nested properties", async ({ page }) => {
+        await page.goto("/fixtures/dot-syntax/");
+
+        const customElement = page.locator("test-element");
+
+        const divs = customElement.locator("div");
+
+        await expect(divs).toHaveCount(2);
+
+        await expect(divs.nth(0)).toHaveText("Item 1");
+        await expect(divs.nth(1)).toHaveText("Item 2");
+
+        await customElement.evaluate((el: any) => {
+            el.object.c[2].name = "Item 3";
+        });
+
+        await expect(divs).toHaveCount(3);
+        await expect(customElement.locator("div").nth(2)).toHaveText("Item 3");
+    });
+
+    test("should add new repeated items when nested properties are set", async ({ page }) => {
+        await page.goto("/fixtures/dot-syntax/");
+
+        const customElement = page.locator("test-element");
+
+        const divs = customElement.locator("div");
+
+        await expect(divs).toHaveCount(2);
+
+        await customElement.evaluate((el: any) => {
+            el.object.c.push({ name: "Item 3", status: "active" });
+        });
+
+        await expect(divs).toHaveCount(3);
+        await expect(customElement.locator("div").nth(2)).toHaveText("Item 3");
+
+        await customElement.evaluate((el: any) => {
+            el.object.c[3].status = "inactive";
+        });
+
+        await expect(divs).toHaveCount(2);
+
+    });
 });
