@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: switch fast-html test fixtures from webpack to vite",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

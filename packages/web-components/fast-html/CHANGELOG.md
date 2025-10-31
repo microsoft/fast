@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 21 Oct 2025 23:42:35 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 31 Oct 2025 20:45:55 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.32
+
+Fri, 31 Oct 2025 20:45:55 GMT
+
+### Changes
+
+- fix: delegate attribute handling to HydratableElementController (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.8.2
 
 ## 1.0.0-alpha.31
 
