@@ -1493,3 +1493,128 @@ function getAttributeName(previousString: string): string {
 
     return attributeName;
 }
+
+/**
+ * Deeply compares two objects for equality.
+ *
+ * @param obj1 - First object to compare
+ * @param obj2 - Second object to compare
+ * @returns True if the objects are deeply equal, false otherwise
+ */
+export function deepEqual(obj1: any, obj2: any): boolean {
+    if (Object.is(obj1, obj2)) {
+        return true;
+    }
+
+    if (obj1 == null || obj2 == null) {
+        return false;
+    }
+
+    const type1 = typeof obj1;
+    const type2 = typeof obj2;
+    if (type1 !== type2 || type1 !== "object") {
+        return false;
+    }
+
+    const isArray1 = Array.isArray(obj1);
+    const isArray2 = Array.isArray(obj2);
+    if (isArray1 !== isArray2) {
+        return false;
+    }
+
+    if (isArray1) {
+        const len = obj1.length;
+        if (len !== obj2.length) {
+            return false;
+        }
+        for (let i = 0; i < len; i++) {
+            if (!deepEqual(obj1[i], obj2[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const hasOwn = Object.prototype.hasOwnProperty;
+    let keyCount = 0;
+
+    for (const key in obj1) {
+        if (hasOwn.call(obj1, key)) {
+            keyCount++;
+            if (!hasOwn.call(obj2, key) || !deepEqual(obj1[key], obj2[key])) {
+                return false;
+            }
+        }
+    }
+
+    let obj2KeyCount = 0;
+    for (const key in obj2) {
+        if (hasOwn.call(obj2, key)) {
+            obj2KeyCount++;
+        }
+    }
+
+    return keyCount === obj2KeyCount;
+}
+
+/**
+ * Deeply merges the source object into the target object.
+ *
+ * @param target - The target object to merge into
+ * @param source - The source object to merge from
+ * @returns void
+ */
+export function deepMerge(target: any, source: any): void {
+    const hasOwn = Object.prototype.hasOwnProperty;
+
+    for (const key in source as any) {
+        if (!hasOwn.call(source, key)) {
+            continue;
+        }
+
+        const sourceValue = (source as any)[key];
+
+        if (sourceValue === void 0) {
+            continue;
+        }
+
+        const targetValue = target[key];
+
+        if (deepEqual(targetValue, sourceValue)) {
+            continue;
+        }
+
+        const isSourceArray = Array.isArray(sourceValue);
+
+        if (isSourceArray) {
+            const isTargetArray = Array.isArray(targetValue);
+            const clonedItems = sourceValue.map((item: unknown) =>
+                item && typeof item === "object" ? { ...item } : item
+            );
+
+            if (isTargetArray) {
+                // Use splice to maintain observable array tracking
+                targetValue.splice(0, targetValue.length, ...clonedItems);
+            } else {
+                // Target isn't an array, replace it
+                target[key] = clonedItems;
+            }
+            continue;
+        }
+
+        if (sourceValue && typeof sourceValue === "object") {
+            if (
+                !targetValue ||
+                typeof targetValue !== "object" ||
+                Array.isArray(targetValue)
+            ) {
+                target[key] = {};
+            }
+
+            deepMerge(target[key], sourceValue);
+            continue;
+        }
+
+        target[key] = sourceValue;
+    }
+}
