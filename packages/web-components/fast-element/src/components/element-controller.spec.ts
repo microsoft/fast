@@ -697,27 +697,27 @@ describe("The HydratableElementController", () => {
     it("should not set a defer-hydration and needs-hydration attribute if the template is set", () => {
         const { element } = createController();
 
-        HydratableElementController.forCustomElement(element).connect();
+        HydratableElementController.forCustomElement(element);
 
-        setTimeout(() => {
-
-            expect(element.getAttribute(deferHydrationAttribute)).to.equal(null);
-            expect(element.getAttribute(needsHydrationAttribute)).to.equal(null);
-        });
+        expect(element.hasAttribute(deferHydrationAttribute)).to.be.false;
+        expect(element.hasAttribute(needsHydrationAttribute)).to.be.false;
     });
+
     it("should set a defer-hydration and needs-hydration attribute if the template is not set", () => {
-        const { element } = createController();
+        ElementController.setStrategy(HydratableElementController);
 
-        const definition = FASTElementDefinition.getForInstance(element);
+        const { element } = createController({
+            shadowOptions: null,
+            template: undefined,
+            templateOptions: "defer-and-hydrate",
+        });
 
-        (definition as FASTElementDefinition).template = undefined;
-        (definition as FASTElementDefinition).templateOptions = "defer-and-hydrate";
+        const controller = HydratableElementController.forCustomElement(element);
+        controller.connect();
 
-        HydratableElementController.forCustomElement(element).connect();
+        controller.shadowOptions = { mode: "open" };
 
-        setTimeout(() => {
-            expect(element.getAttribute(deferHydrationAttribute)).to.equal("");
-            expect(element.getAttribute(needsHydrationAttribute)).to.equal("");
-        }, 0);
+        expect(element.hasAttribute(deferHydrationAttribute)).to.be.true;
+        expect(element.hasAttribute(needsHydrationAttribute)).to.be.true;
     });
 });
