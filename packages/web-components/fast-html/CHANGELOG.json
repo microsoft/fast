@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 12 Nov 2025 20:41:54 GMT",
+      "version": "1.0.0-alpha.33",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.33",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "e108fb955381efeaf070b943f89474bd1616233b",
+            "comment": "feat: add deepMerge and deepEquals helper functions"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.8.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 31 Oct 2025 20:45:55 GMT",
       "version": "1.0.0-alpha.32",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.32",

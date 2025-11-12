@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: update hydration attribute logic in HydratableElementController tests and implementation",
-  "packageName": "@microsoft/fast-element",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

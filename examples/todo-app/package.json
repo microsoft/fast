@@ -22,7 +22,7 @@
     "directory": "examples/todo-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.8.2",
+    "@microsoft/fast-element": "^2.8.3",
     "@microsoft/fast-foundation": "^3.0.0-alpha.33",
     "tslib": "^2.6.3"
   },

@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat: add deepMerge and deepEquals helper functions",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

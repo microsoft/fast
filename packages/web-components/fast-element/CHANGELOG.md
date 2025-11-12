@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Fri, 31 Oct 2025 20:45:55 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 12 Nov 2025 20:41:54 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.8.3
+
+Wed, 12 Nov 2025 20:41:54 GMT
+
+### Patches
+
+- fix: update hydration attribute logic in HydratableElementController tests and implementation (863023+radium-v@users.noreply.github.com)
 
 ## 2.8.2
 

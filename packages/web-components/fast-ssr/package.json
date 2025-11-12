@@ -56,11 +56,11 @@
     "tslib": "^2.6.3"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.8.2"
+    "@microsoft/fast-element": "^2.8.3"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.47.0",
-    "@microsoft/fast-element": "^2.8.2",
+    "@microsoft/fast-element": "^2.8.3",
     "@microsoft/fast-foundation": "^3.0.0-alpha.33",
     "@types/express": "^4.17.21",
     "@types/node": "^17.0.17",
