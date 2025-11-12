@@ -2,8 +2,8 @@ import { Observable } from "@microsoft/fast-element/observable.js";
 import {
     defsPropertyName,
     fastContextMetaData,
-    JSONSchema,
-    JSONSchemaDefinition,
+    type JSONSchema,
+    type JSONSchemaDefinition,
     refPropertyName,
     Schema,
 } from "./schema.js";
@@ -99,6 +99,33 @@ const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;
 
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
+
+const LogicalOperator = {
+    AND: "&&",
+    OR: "||",
+};
+
+type LogicalOperator = (typeof LogicalOperator)[keyof typeof LogicalOperator];
+
+const ComparisonOperator = {
+    ACCESS: "access",
+    EQUALS: "==",
+    GREATER_THAN: ">",
+    GREATER_THAN_OR_EQUALS: ">=",
+    LESS_THAN: "<",
+    LESS_THAN_OR_EQUALS: "<=",
+    NOT: "!",
+    NOT_EQUALS: "!=",
+} as const;
+
+type ComparisonOperator = (typeof ComparisonOperator)[keyof typeof ComparisonOperator];
+
+const Operator = {
+    ...LogicalOperator,
+    ...ComparisonOperator,
+} as const;
+
+type Operator = (typeof Operator)[keyof typeof Operator];
 
 /**
  * A map of proxied objects
@@ -510,6 +537,23 @@ export function expressionResolver(
     level: number,
     schema: Schema
 ): (accessibleObject: any, context: any) => any {
+    // Extract all paths from the expression and add them to the schema
+    if (rootPropertyName !== null) {
+        const paths = extractPathsFromChainedExpression(expression);
+        paths.forEach(path => {
+            schema.addPath({
+                pathConfig: {
+                    type: "access",
+                    currentContext: parentContext,
+                    parentContext: null,
+                    path,
+                },
+                rootPropertyName,
+                childrenMap: null,
+            });
+        });
+    }
+
     return (x, c) =>
         resolveChainedExpression(
             x,
@@ -577,23 +621,6 @@ function isOperandValue(operand: string): {
     }
 }
 
-/**
- * Available operators include:
- *
- * - access (no operator)
- * - not (!)
- * - equals (==)
- * - not equal (!=)
- * - greater than or equal (>=)
- * - greater than (>)
- * - less than or equal (<=)
- * - less than (<)
- * - or (||)
- * - and (&&) and the HTML character entity (&amp;&amp;)
- */
-type Operator = "access" | "!" | "==" | "!=" | ">=" | ">" | "<=" | "<";
-type ChainingOperator = "||" | "&&" | "&amp;&amp;";
-
 interface Expression {
     operator: Operator;
     left: string;
@@ -603,7 +630,7 @@ interface Expression {
 }
 
 export interface ChainedExpression {
-    operator?: ChainingOperator;
+    operator?: LogicalOperator;
     expression: Expression;
     next?: ChainedExpression;
 }
@@ -616,7 +643,7 @@ export interface ChainedExpression {
  */
 function evaluatePartsInExpressionChain(
     parts: string[],
-    operator: ChainingOperator
+    operator: LogicalOperator
 ): void | ChainedExpression {
     // Process each part recursively and chain them with ||
     const firstPart = getExpressionChain(parts[0]);
@@ -647,12 +674,15 @@ function evaluatePartsInExpressionChain(
  * @returns - A configuration object containing information about the expression
  */
 export function getExpressionChain(value: string): ChainedExpression | void {
+    // Decode HTML entities in the expression value first
+    const decodedValue = decodeExpressionOperators(value);
+
     // Handle operator precedence: || has lower precedence than &&
     // First, split by || (lowest precedence)
-    const orParts = value.split(" || ");
+    const orParts = decodedValue.split(/\s*\|\|\s*/);
 
     if (orParts.length > 1) {
-        const firstPart = evaluatePartsInExpressionChain(orParts, "||");
+        const firstPart = evaluatePartsInExpressionChain(orParts, Operator.OR);
 
         if (firstPart) {
             return firstPart;
@@ -660,7 +690,7 @@ export function getExpressionChain(value: string): ChainedExpression | void {
     }
 
     // If no ||, check for && (higher precedence)
-    const andParts = value.split(" && ");
+    const andParts = decodedValue.split(/\s*&&\s*/);
 
     if (andParts.length > 1) {
         // Process each part recursively and chain them with &&
@@ -671,22 +701,10 @@ export function getExpressionChain(value: string): ChainedExpression | void {
         }
     }
 
-    // Handle HTML entity version of &&
-    const ampParts = value.split(" &amp;&amp; ");
-
-    if (ampParts.length > 1) {
-        // Process each part recursively and chain them with &amp;&amp;
-        const firstPart = evaluatePartsInExpressionChain(ampParts, "&amp;&amp;");
-
-        if (firstPart) {
-            return firstPart;
-        }
-    }
-
     // No chaining operators found, create a single expression
-    if (value.trim()) {
+    if (decodedValue.trim()) {
         return {
-            expression: getExpression(value.trim()),
+            expression: getExpression(decodedValue.trim()),
         };
     }
 
@@ -699,12 +717,12 @@ export function getExpressionChain(value: string): ChainedExpression | void {
  * @returns An Expression object containing the operator, operands, and whether operands are literal values
  */
 function getExpression(value: string): Expression {
-    if (value[0] === "!") {
-        const left = (value as string).slice(1);
+    if (value[0] === Operator.NOT) {
+        const left = value.slice(1);
         const operandValue = isOperandValue(left);
 
         return {
-            operator: "!",
+            operator: Operator.NOT,
             left,
             leftIsValue: operandValue.isValue,
             right: null,
@@ -712,10 +730,10 @@ function getExpression(value: string): Expression {
         };
     }
 
-    const split = value.split(" ");
+    const split = value.split(/\s*([=!]=|[><]=?)\s*/);
 
     if (split.length === 3) {
-        const operator: Operator = split[1] as Operator;
+        const operator = split[1] as ComparisonOperator;
         const right = split[2];
         const rightOperandValue = isOperandValue(right);
         const left = split[0];
@@ -731,12 +749,26 @@ function getExpression(value: string): Expression {
     }
 
     return {
-        operator: "access",
+        operator: Operator.ACCESS,
         left: value,
         leftIsValue: false,
         right: null,
         rightIsValue: null,
     };
+}
+
+/**
+ * Decodes HTML entities within expression strings only (for operators like &&, <, >)
+ * This is safer than decoding the entire template as it preserves HTML-encoded content
+ * and only decodes operators needed for expression evaluation
+ * @param expression - The expression string to decode
+ * @returns The expression with operators decoded
+ */
+function decodeExpressionOperators(expression: string): string {
+    return expression
+        .replace(/&amp;&amp;/g, Operator.AND)
+        .replace(/&lt;/g, Operator.LESS_THAN)
+        .replace(/&gt;/g, Operator.GREATER_THAN);
 }
 
 /**
@@ -759,53 +791,45 @@ function resolveExpression(
 ): any {
     const { operator, left, right, rightIsValue } = expression;
 
+    const resolvedLeft = pathResolver(left, contextPath, level, rootSchema)(x, c);
+    let resolvedRight = right;
+
+    if (!rightIsValue && typeof right === "string") {
+        resolvedRight = pathResolver(right, contextPath, level, rootSchema)(x, c);
+    }
+
     switch (operator) {
-        case "!":
-            return !pathResolver(left, contextPath, level, rootSchema)(x, c);
-        case "==":
-            return (
-                pathResolver(left, contextPath, level, rootSchema)(x, c) ==
-                (rightIsValue
-                    ? right
-                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
-            );
-        case "!=":
-            return (
-                pathResolver(left, contextPath, level, rootSchema)(x, c) !=
-                (rightIsValue
-                    ? right
-                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
-            );
-        case ">=":
-            return (
-                pathResolver(left, contextPath, level, rootSchema)(x, c) >=
-                (rightIsValue
-                    ? right
-                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
-            );
-        case ">":
-            return (
-                pathResolver(left, contextPath, level, rootSchema)(x, c) >
-                (rightIsValue
-                    ? right
-                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
-            );
-        case "<=":
-            return (
-                pathResolver(left, contextPath, level, rootSchema)(x, c) <=
-                (rightIsValue
-                    ? right
-                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
-            );
-        case "<":
-            return (
-                pathResolver(left, contextPath, level, rootSchema)(x, c) <
-                (rightIsValue
-                    ? right
-                    : pathResolver(right as string, contextPath, level, rootSchema)(x, c))
-            );
-        default:
-            return pathResolver(left, contextPath, level, rootSchema)(x, c);
+        case Operator.NOT: {
+            return !resolvedLeft;
+        }
+
+        case Operator.EQUALS: {
+            return resolvedLeft == resolvedRight;
+        }
+
+        case Operator.NOT_EQUALS: {
+            return resolvedLeft != resolvedRight;
+        }
+
+        case Operator.GREATER_THAN_OR_EQUALS: {
+            return resolvedLeft >= (resolvedRight as number);
+        }
+
+        case Operator.GREATER_THAN: {
+            return resolvedLeft > (resolvedRight as number);
+        }
+
+        case Operator.LESS_THAN_OR_EQUALS: {
+            return resolvedLeft <= (resolvedRight as number);
+        }
+
+        case Operator.LESS_THAN: {
+            return resolvedLeft < (resolvedRight as number);
+        }
+
+        default: {
+            return resolvedLeft;
+        }
     }
 }
 
@@ -827,51 +851,31 @@ function resolveChainedExpression(
     expression: ChainedExpression,
     rootSchema: JSONSchema
 ): any {
-    if (expression.next) {
-        switch (expression.next.operator) {
-            case "&&":
-            case "&amp;&amp;":
-                return (
-                    resolveExpression(
-                        x,
-                        c,
-                        level,
-                        contextPath,
-                        expression.expression,
-                        rootSchema
-                    ) &&
-                    resolveChainedExpression(
-                        x,
-                        c,
-                        level,
-                        contextPath,
-                        expression.next,
-                        rootSchema
-                    )
-                );
-            case "||":
-                return (
-                    resolveExpression(
-                        x,
-                        c,
-                        level,
-                        contextPath,
-                        expression.expression,
-                        rootSchema
-                    ) ||
-                    resolveChainedExpression(
-                        x,
-                        c,
-                        level,
-                        contextPath,
-                        expression.next,
-                        rootSchema
-                    )
-                );
+    const { expression: expr, next } = expression;
+    const resolvedLeft = resolveExpression(x, c, level, contextPath, expr, rootSchema);
+
+    if (next) {
+        const resolvedRight = resolveChainedExpression(
+            x,
+            c,
+            level,
+            contextPath,
+            next,
+            rootSchema
+        );
+
+        switch (next.operator) {
+            case Operator.AND: {
+                return resolvedLeft && resolvedRight;
+            }
+
+            case Operator.OR: {
+                return resolvedLeft || resolvedRight;
+            }
         }
     }
 
-    return resolveExpression(x, c, level, contextPath, expression.expression, rootSchema);
+    return resolvedLeft;
 }
 
 /**
@@ -1014,7 +1018,9 @@ function getSchemaProperties(schema: any): any | null {
 function assignObservablesToArray(
     proxiedData: any,
     schema: JSONSchema | JSONSchemaDefinition,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
+    target: any,
+    rootProperty: string
 ): any {
     const data = proxiedData.map((item: any) => {
         const originalItem = Object.assign({}, item);
@@ -1034,8 +1040,11 @@ function assignObservablesToArray(
 
                         assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
 
-                        return Object.assign(item, originalItem);
+                        Object.assign(item, originalItem);
                     }
+
+                    // Notify observers of the target object's root property
+                    Observable.notify(target, rootProperty);
                 }
             });
         },
@@ -1139,7 +1148,9 @@ export function assignObservables(
                     (rootSchema as JSONSchema)[defsPropertyName]?.[
                         context
                     ] as JSONSchemaDefinition,
-                    rootSchema
+                    rootSchema,
+                    target,
+                    rootProperty
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1151,7 +1162,9 @@ export function assignObservables(
                                 (rootSchema as JSONSchema)[defsPropertyName]?.[
                                     context
                                 ] as JSONSchemaDefinition,
-                                rootSchema
+                                rootSchema,
+                                target,
+                                rootProperty
                             )
                         )
                     );
@@ -1191,8 +1204,12 @@ function assignProxyToItemsInArray(
     const schemaProperties = getSchemaProperties(schema);
 
     getObjectProperties(proxiableItem, schemaProperties).forEach(key => {
-        Observable.defineProperty(proxiableItem, key);
+        // Initialize the property as undefined if it doesn't exist
+        if (!(key in originalItem)) {
+            originalItem[key] = undefined;
+        }
 
+        // Assign the proxy first
         originalItem[key] = assignProxyToItemsInObject(
             proxiableItem,
             key,
@@ -1200,6 +1217,9 @@ function assignProxyToItemsInArray(
             schemaProperties[key],
             rootSchema
         );
+
+        // Then make the property observable
+        Observable.defineProperty(proxiableItem, key);
     });
 }
 
@@ -1207,13 +1227,17 @@ function assignProxyToItemsInArray(
  * Get an objects properties as agreed upon between the schema and data
  * @param data - The data
  * @param schemaProperties - The schema properties
- * @returns A list of strings the schema properties enumerate and is present in the data
+ * @returns A list of strings the schema properties enumerate (includes properties not present in data)
  */
 function getObjectProperties(data: any, schemaProperties: any): string[] {
     const dataKeys = Object.keys(data);
     const schemaPropertyKeys = Object.keys(schemaProperties ?? {});
 
-    return dataKeys.filter(function (key) {
+    // Return all schema properties that are either in the data or in the schema
+    // This ensures properties defined in schema but missing from data get initialized
+    const allKeys = new Set([...dataKeys, ...schemaPropertyKeys]);
+
+    return Array.from(allKeys).filter(function (key) {
         return schemaPropertyKeys.indexOf(key) !== -1;
     });
 }
@@ -1265,7 +1289,9 @@ function assignProxyToItemsInObject(
                 proxiedData = assignObservablesToArray(
                     proxiedData,
                     definition as JSONSchemaDefinition,
-                    rootSchema
+                    rootSchema,
+                    target,
+                    rootProperty
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1274,7 +1300,9 @@ function assignProxyToItemsInObject(
                         assignObservablesToArray(
                             proxiedData,
                             definition as JSONSchemaDefinition,
-                            rootSchema
+                            rootSchema,
+                            target,
+                            rootProperty
                         )
                     );
                 }
@@ -1464,4 +1492,129 @@ function getAttributeName(previousString: string): string {
     }
 
     return attributeName;
+}
+
+/**
+ * Deeply compares two objects for equality.
+ *
+ * @param obj1 - First object to compare
+ * @param obj2 - Second object to compare
+ * @returns True if the objects are deeply equal, false otherwise
+ */
+export function deepEqual(obj1: any, obj2: any): boolean {
+    if (Object.is(obj1, obj2)) {
+        return true;
+    }
+
+    if (obj1 == null || obj2 == null) {
+        return false;
+    }
+
+    const type1 = typeof obj1;
+    const type2 = typeof obj2;
+    if (type1 !== type2 || type1 !== "object") {
+        return false;
+    }
+
+    const isArray1 = Array.isArray(obj1);
+    const isArray2 = Array.isArray(obj2);
+    if (isArray1 !== isArray2) {
+        return false;
+    }
+
+    if (isArray1) {
+        const len = obj1.length;
+        if (len !== obj2.length) {
+            return false;
+        }
+        for (let i = 0; i < len; i++) {
+            if (!deepEqual(obj1[i], obj2[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const hasOwn = Object.prototype.hasOwnProperty;
+    let keyCount = 0;
+
+    for (const key in obj1) {
+        if (hasOwn.call(obj1, key)) {
+            keyCount++;
+            if (!hasOwn.call(obj2, key) || !deepEqual(obj1[key], obj2[key])) {
+                return false;
+            }
+        }
+    }
+
+    let obj2KeyCount = 0;
+    for (const key in obj2) {
+        if (hasOwn.call(obj2, key)) {
+            obj2KeyCount++;
+        }
+    }
+
+    return keyCount === obj2KeyCount;
+}
+
+/**
+ * Deeply merges the source object into the target object.
+ *
+ * @param target - The target object to merge into
+ * @param source - The source object to merge from
+ * @returns void
+ */
+export function deepMerge(target: any, source: any): void {
+    const hasOwn = Object.prototype.hasOwnProperty;
+
+    for (const key in source as any) {
+        if (!hasOwn.call(source, key)) {
+            continue;
+        }
+
+        const sourceValue = (source as any)[key];
+
+        if (sourceValue === void 0) {
+            continue;
+        }
+
+        const targetValue = target[key];
+
+        if (deepEqual(targetValue, sourceValue)) {
+            continue;
+        }
+
+        const isSourceArray = Array.isArray(sourceValue);
+
+        if (isSourceArray) {
+            const isTargetArray = Array.isArray(targetValue);
+            const clonedItems = sourceValue.map((item: unknown) =>
+                item && typeof item === "object" ? { ...item } : item
+            );
+
+            if (isTargetArray) {
+                // Use splice to maintain observable array tracking
+                targetValue.splice(0, targetValue.length, ...clonedItems);
+            } else {
+                // Target isn't an array, replace it
+                target[key] = clonedItems;
+            }
+            continue;
+        }
+
+        if (sourceValue && typeof sourceValue === "object") {
+            if (
+                !targetValue ||
+                typeof targetValue !== "object" ||
+                Array.isArray(targetValue)
+            ) {
+                target[key] = {};
+            }
+
+            deepMerge(target[key], sourceValue);
+            continue;
+        }
+
+        target[key] = sourceValue;
+    }
 }

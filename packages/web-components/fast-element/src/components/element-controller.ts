@@ -873,7 +873,7 @@ export class HydratableElementController<
     public set shadowOptions(value: ShadowRootOptions | undefined) {
         super.shadowOptions = value;
         if (
-            this.hasExistingShadowRoot &&
+            (this.hasExistingShadowRoot || (value !== void 0 && !this.template)) &&
             this.definition.templateOptions === TemplateOptions.deferAndHydrate
         ) {
             this.source.toggleAttribute(deferHydrationAttribute, true);
