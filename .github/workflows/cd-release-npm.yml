@@ -3,7 +3,7 @@ name: Release NPM Packages
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: '0 7 * * 0-4'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
