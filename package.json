@@ -83,6 +83,9 @@
     "yargs": "^16.2.0"
   },
   "overrides": {
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.2",
+    "@microsoft/fast-foundation": {
+      "@microsoft/fast-element": "file:./packages/fast-element"
+    }
   }
 }
