@@ -9,10 +9,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/web-components/fast-element",
-    "packages/web-components/fast-router",
-    "packages/web-components/fast-ssr",
-    "packages/web-components/fast-html",
+    "packages/*",
     "sites/site-utilities",
     "sites/website",
     "examples/todo-app",

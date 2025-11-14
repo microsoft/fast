@@ -6,11 +6,7 @@ export const config: BeachballConfig = {
     groups: [
         {
             name: "Microsoft FAST",
-            include: [
-                "packages/tooling/*",
-                "packages/utilities/*",
-                "packages/web-components/*",
-            ],
+            include: ["packages/*"],
             disallowedChangeTypes: ["major"],
         },
     ],

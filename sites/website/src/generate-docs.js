@@ -148,7 +148,7 @@ async function copyArticleMarkdown() {
                 title: "Acknowledgements",
                 sidebar_label: "Acknowledgements",
                 custom_edit_url:
-                    "https://github.com/microsoft/fast/edit/main/packages/web-components/fast-element/docs/ACKNOWLEDGEMENTS.md",
+                    "https://github.com/microsoft/fast/edit/main/packages/fast-element/docs/ACKNOWLEDGEMENTS.md",
                 description:
                     "There are many great open source projects that have inspired us and enabled us to build FAST.",
                 keywords: ["acknowlegements"],
