@@ -9,10 +9,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "packages/web-components/fast-element",
-    "packages/web-components/fast-router",
-    "packages/web-components/fast-ssr",
-    "packages/web-components/fast-html",
+    "packages/*",
     "sites/site-utilities",
     "sites/website",
     "examples/todo-app",
@@ -86,6 +83,9 @@
     "yargs": "^16.2.0"
   },
   "overrides": {
-    "webpack-dev-server": "^5.2.2"
+    "webpack-dev-server": "^5.2.2",
+    "@microsoft/fast-foundation": {
+      "@microsoft/fast-element": "file:./packages/fast-element"
+    }
   }
 }
