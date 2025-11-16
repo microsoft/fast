@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Sun, 16 Nov 2025 07:14:25 GMT",
+      "version": "1.0.0-alpha.29",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.29",
+      "comments": {
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "acbdd78666f70b0b49dc99f61b71af7c0b3e259e",
+            "comment": "chore: flatten repository package structure"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 12 Nov 2025 20:41:54 GMT",
       "version": "1.0.0-alpha.29",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.29",

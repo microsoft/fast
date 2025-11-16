@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: flatten repository package structure",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "13071055+chrisdholt@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

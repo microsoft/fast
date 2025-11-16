@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sun, 16 Nov 2025 07:14:24 GMT",
+      "version": "1.0.0-alpha.33",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.33",
+      "comments": {
+        "none": [
+          {
+            "author": "13071055+chrisdholt@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "acbdd78666f70b0b49dc99f61b71af7c0b3e259e",
+            "comment": "chore: flatten repository package structure"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "cf0a855d3ee2bd1cb78e08b35af008fc2d074064",
+            "comment": "Add documentation for JSON schema generation and observer map APIs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 12 Nov 2025 20:41:54 GMT",
       "version": "1.0.0-alpha.33",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.33",
