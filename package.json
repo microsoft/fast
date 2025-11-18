@@ -66,12 +66,11 @@
     "beachball": "^2.51.0",
     "chalk": "^2.4.2",
     "concurrently": "^9.2.1",
-    "copyfiles": "^2.4.1",
     "dotenv": "^6.0.0",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.25.0",
-    "glob": "^10.0.0",
+    "glob": "^11.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.2",
     "markdown-it": "^12.3.2",
@@ -83,6 +82,7 @@
     "yargs": "^16.2.0"
   },
   "overrides": {
+    "glob": "^11.1.0",
     "webpack-dev-server": "^5.2.2",
     "@microsoft/fast-foundation": {
       "@microsoft/fast-element": "file:./packages/fast-element"
