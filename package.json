@@ -70,7 +70,7 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.25.0",
-    "glob": "^12.0.0",
+    "glob": "^10.5.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.2",
     "markdown-it": "^12.3.2",
@@ -83,7 +83,12 @@
   },
   "overrides": {
     "webpack-dev-server": "^5.2.2",
-    "glob": "$glob",
+    "sucrase": {
+      "glob": "$glob"
+    },
+    "read-package-json": {
+      "glob": "$glob"
+    },
     "@microsoft/fast-foundation": {
       "@microsoft/fast-element": "file:./packages/fast-element"
     }
