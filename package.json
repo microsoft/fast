@@ -71,7 +71,7 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.25.0",
-    "glob": "^10.0.0",
+    "glob": "^11.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.1.2",
     "markdown-it": "^12.3.2",
