@@ -17,12 +17,23 @@ export class ObserverMap {
 
     public defineProperties(): void {
         const propertyNames = this.schema.getRootProperties();
+        const existingAccessors = Observable.getAccessors(this.classPrototype);
 
         for (const propertyName of propertyNames) {
+            // Skip if property already has an accessor (from `@attr` or `@observable` decorator)
+            if (existingAccessors.some(accessor => accessor.name === propertyName)) {
+                continue;
+            }
+
             Observable.defineProperty(this.classPrototype, propertyName);
 
-            this.classPrototype[`${propertyName}Changed`] =
-                this.defineChanged(propertyName);
+            const changedMethodName = `${propertyName}Changed`;
+            const existingChangedMethod = this.classPrototype[changedMethodName];
+
+            this.classPrototype[changedMethodName] = this.defineChanged(
+                propertyName,
+                existingChangedMethod
+            );
         }
     }
 
@@ -56,29 +67,35 @@ export class ObserverMap {
      * Creates a property change handler function for observable properties
      * This handler is called when an observable property transitions from undefined to a defined value
      * @param propertyName - The name of the property for which to create the change handler
+     * @param existingChangedMethod - Optional existing changed method to call after the instance resolver logic
      * @returns A function that handles property changes and sets up proxies for object values
      */
-    private defineChanged = (propertyName: string): ((prev: any, next: any) => void) => {
+    private defineChanged = (
+        propertyName: string,
+        existingChangedMethod?: (prev: any, next: any) => void
+    ): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const schema = this.schema;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
-            if (
+            if (next == null || typeof next !== "object") {
+                this[propertyName] = next;
+            } else if (
                 prev === undefined ||
                 (prev?.$isProxy && !next?.$isProxy) ||
                 (Array.isArray(prev) &&
                     Array.isArray(next) &&
                     !(next as any)?.$fastController)
             ) {
-                const proxy = getAndAssignObservablesAlias(
+                this[propertyName] = getAndAssignObservablesAlias(
                     this,
                     propertyName,
                     next,
                     schema
                 );
-
-                this[propertyName] = proxy;
             }
+
+            existingChangedMethod?.call(this, prev, next);
         }
 
         return instanceResolverChanged;
