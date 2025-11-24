@@ -78,7 +78,7 @@ export class ObserverMap {
         const schema = this.schema;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
-            if (next == null || typeof next !== "object") {
+            if (next === null || typeof next !== "object") {
                 this[propertyName] = next;
             } else if (
                 prev === undefined ||
