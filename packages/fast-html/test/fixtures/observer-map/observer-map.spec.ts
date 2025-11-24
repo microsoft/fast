@@ -340,6 +340,66 @@ test.describe("ObserverMap", async () => {
 
         const updatedText = await page.locator(".nested-define-2").textContent();
 
-        await expect(updatedText).toEqual("Z2");
+        expect(updatedText).toEqual("Z2");
+    });
+
+    test.describe("defineProperties behavior", async () => {
+        test("should not duplicate accessors for properties with existing @attr decorator", async ({ page }) => {
+            const element = page.locator("observer-map-with-observables-test-element");
+
+            await element.evaluate(node => {
+                node.setAttribute("attribute", "new value");
+            });
+
+            expect(await element.evaluate(node => {
+                return (window as any).Observable.getAccessors(node).filter((accessor: any) => accessor.name === "attribute");
+            })).toEqual([{
+                Owner: undefined,
+                attribute: "some-attribute",
+                callbackName: "attributeChanged",
+                converter: undefined,
+                fieldName: "_attribute",
+                guards: {},
+                hasCallback: true,
+                mode: "reflect",
+                name: "attribute",
+            }]);
+        });
+
+        test("should not duplicate accessors for properties with existing @observable decorator", async ({ page }) => {
+            const element = page.locator("observer-map-with-observables-test-element");
+
+            // There should only be one accessor for 'value1'
+            expect(await element.evaluate(node => {
+                return (window as any).Observable.getAccessors(node).filter((accessor: any) => accessor.name === "value1");
+            })).toEqual([{ name: 'value1', field: '_value1', callback: 'value1Changed' }]);
+        });
+
+        test("should define observable properties for properties without existing accessors", async ({ page }) => {
+            const element = page.locator("observer-map-with-observables-test-element");
+
+            expect(await element.evaluate(node => {
+                return (window as any).Observable.getAccessors(node).filter((accessor: any) => accessor.name === "value2");
+            })).toEqual([{ name: 'value2', field: '_value2', callback: 'value2Changed' }]);
+        });
+
+        test("should preserve existing changed methods", async ({ page }) => {
+            const element = page.locator("observer-map-with-observables-test-element");
+            const button = element.locator("button:text-is('Update Value1')");
+
+            await button.click();
+
+            await button.click();
+
+            await button.click();
+
+            const messages = await page.evaluate("window.messages");
+
+            expect(messages).toEqual(expect.arrayContaining(["value1 changed from 42 to 43"]));
+
+            expect(messages).toEqual(expect.arrayContaining(["value1 changed from 43 to 44"]));
+
+            expect(messages).toEqual(expect.arrayContaining(["value1 changed from 44 to 45"]));
+        });
     });
 });
