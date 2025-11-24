@@ -21,11 +21,9 @@ export class ObserverMap {
 
         for (const propertyName of propertyNames) {
             // Skip if property already has an accessor (from `@attr` or `@observable` decorator)
-            if (existingAccessors.some(accessor => accessor.name === propertyName)) {
-                continue;
+            if (!existingAccessors.some(accessor => accessor.name === propertyName)) {
+                Observable.defineProperty(this.classPrototype, propertyName);
             }
-
-            Observable.defineProperty(this.classPrototype, propertyName);
 
             const changedMethodName = `${propertyName}Changed`;
             const existingChangedMethod = this.classPrototype[changedMethodName];
