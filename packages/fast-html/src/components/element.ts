@@ -1,4 +1,10 @@
-import { attr, type Constructable, type FASTElement } from "@microsoft/fast-element";
+import {
+    attr,
+    type Constructable,
+    deferHydrationAttribute,
+    type FASTElement,
+} from "@microsoft/fast-element";
+import { waitForAncestorHydration } from "./utilities.js";
 
 /**
  * A mixin function that extends a base class with additional functionality for
@@ -17,9 +23,7 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
         constructor(...args: any[]) {
             super(...args);
 
-            (this.prepare?.() ?? Promise.resolve()).then(() => {
-                this.deferHydration = false;
-            });
+            void this.#prepare();
         }
 
         /**
@@ -27,9 +31,19 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
          * This function will get called if it has been defined after the template is connected.
          */
         public async prepare?(): Promise<void>;
+
+        async #prepare(): Promise<void> {
+            if (this.prepare) {
+                await this.prepare();
+            }
+
+            await waitForAncestorHydration(this);
+
+            this.deferHydration = false;
+        }
     };
 
-    attr({ mode: "boolean", attribute: "defer-hydration" })(
+    attr({ mode: "boolean", attribute: deferHydrationAttribute })(
         C.prototype,
         "deferHydration"
     );

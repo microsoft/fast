@@ -1,4 +1,6 @@
+import { deferHydrationAttribute } from "@microsoft/fast-element";
 import { Observable } from "@microsoft/fast-element/observable.js";
+import { composedParent } from "@microsoft/fast-element/utilities.js";
 import {
     defsPropertyName,
     fastContextMetaData,
@@ -1616,5 +1618,47 @@ export function deepMerge(target: any, source: any): void {
         }
 
         target[key] = sourceValue;
+    }
+}
+
+/**
+ * Waits for the `defer-hydration` attribute to be removed from the target element.
+ *
+ * @param target - The target element to wait for attribute removal
+ */
+export function waitForAttributeRemoval(target: HTMLElement): Promise<void> {
+    if (!target.hasAttribute(deferHydrationAttribute)) {
+        return Promise.resolve();
+    }
+
+    return new Promise(resolve => {
+        const observer = new MutationObserver(() => {
+            if (!target.hasAttribute(deferHydrationAttribute)) {
+                observer.disconnect();
+                resolve();
+            }
+        });
+
+        observer.observe(target, { attributeFilter: [deferHydrationAttribute] });
+    });
+}
+
+/**
+ * Waits until all ancestor elements no longer have the `defer-hydration` attribute.
+ *
+ * @param element - The element to wait for ancestor hydration
+ */
+export async function waitForAncestorHydration(element: HTMLElement): Promise<void> {
+    let ancestor = composedParent(element);
+
+    while (ancestor) {
+        if (
+            ancestor instanceof HTMLElement &&
+            ancestor.hasAttribute(deferHydrationAttribute)
+        ) {
+            await waitForAttributeRemoval(ancestor);
+        }
+
+        ancestor = composedParent(ancestor);
     }
 }
