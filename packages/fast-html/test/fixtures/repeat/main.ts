@@ -33,3 +33,12 @@ RenderableFASTElement(TestElementInnerWhen).defineAsync({
 TemplateElement.define({
     name: "f-template",
 });
+
+class TestElementNoContent extends FASTElement {
+    @observable
+    items: Array<string> = [];
+}
+RenderableFASTElement(TestElementNoContent).defineAsync({
+    name: "test-element-no-content",
+    templateOptions: "defer-and-hydrate",
+});

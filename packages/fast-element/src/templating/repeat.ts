@@ -138,14 +138,32 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         this.template = this.templateBindingObserver.bind(controller);
         this.observeItems(true);
 
+        // If location is undefined, hydration markers are missing.
+        // For an empty repeat, we can gracefully handle this by creating
+        // a placeholder comment node. For non-empty repeats, we'll need to
+        // fall back to normal rendering.
+        if (!this.location) {
+            // Create a comment node to serve as the location marker
+            // We need to find where to insert it - at the end of the host's shadow root
+            const host = (controller as any).firstChild?.getRootNode();
+            if (host && host instanceof ShadowRoot) {
+                this.location = document.createComment("");
+                host.appendChild(this.location);
+            }
+        }
+
         if (
             isHydratable(this.template) &&
             isHydratable(controller) &&
-            controller.hydrationStage !== HydrationStage.hydrated
+            controller.hydrationStage !== HydrationStage.hydrated &&
+            this.location // Only attempt hydration if we have a location
         ) {
             this.hydrateViews(this.template);
-        } else {
+        } else if (this.location) {
             this.refreshAllViews();
+        } else {
+            // No location and can't create one - initialize empty views array
+            this.views = [];
         }
 
         controller.onUnbind(this);

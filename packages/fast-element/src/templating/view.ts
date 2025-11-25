@@ -571,6 +571,57 @@ export class HydrationView<TSource = any, TParent = any>
         fragment.appendChild(end);
     }
 
+    private throwHydrationBindingError(factory: CompiledViewBehaviorFactory): never {
+        let templateString = this.sourceTemplate.html;
+
+        if (typeof templateString !== "string") {
+            templateString = templateString.innerHTML;
+        }
+
+        const hostElement = (this.firstChild?.getRootNode() as ShadowRoot).host;
+        const hostName = hostElement?.nodeName || "unknown";
+        const factoryInfo = factory as any;
+
+        // Build detailed error message
+        const details: string[] = [
+            `HydrationView was unable to successfully target bindings inside "<${hostName.toLowerCase()}>".`,
+            `\nMismatch Details:`,
+            `  - Expected target node ID: "${factory.targetNodeId}"`,
+            `  - Available target IDs: [${
+                Object.keys(this.targets).join(", ") || "none"
+            }]`,
+        ];
+
+        if (factory.targetTagName) {
+            details.push(`  - Expected tag name: "${factory.targetTagName}"`);
+        }
+
+        if (factoryInfo.sourceAspect) {
+            details.push(`  - Source aspect: "${factoryInfo.sourceAspect}"`);
+        }
+
+        if (factoryInfo.aspectType !== undefined) {
+            details.push(`  - Aspect type: ${factoryInfo.aspectType}`);
+        }
+
+        details.push(
+            `\nThis usually means:`,
+            `  1. The server-rendered HTML doesn't match the client template`,
+            `  2. The hydration markers are missing or corrupted`,
+            `  3. The DOM structure was modified before hydration`,
+            `\nTemplate: ${templateString.slice(0, 200)}${
+                templateString.length > 200 ? "..." : ""
+            }`
+        );
+
+        throw new HydrationBindingError(
+            details.join("\n"),
+            factory,
+            createRangeForNodes(this.firstChild, this.lastChild).cloneContents(),
+            templateString
+        );
+    }
+
     public bind(source: TSource, context: ExecutionContext<any> = this): void {
         if (this.hydrationStage !== HydrationStage.hydrated) {
             this._hydrationStage = HydrationStage.hydrating;
@@ -619,58 +670,28 @@ export class HydrationView<TSource = any, TParent = any>
                     behavior.bind(this);
                     behaviors[i] = behavior;
                 } else {
-                    let templateString = this.sourceTemplate.html;
-
-                    if (typeof templateString !== "string") {
-                        templateString = templateString.innerHTML;
+                    // Target not found. Check if this factory has a createHTML method,
+                    // which indicates it's a structural directive (like repeat/render)
+                    // that creates comment markers. If so, we can fall back to creating
+                    // a new HTMLView instead of hydrating.
+                    const factoryWithHTML = factory as any;
+                    if (typeof factoryWithHTML.createHTML === "function") {
+                        // This is likely a repeat or render directive with missing hydration markers.
+                        // Create the behavior which will handle rendering normally (non-hydration mode).
+                        // The behavior's bind method will either find or create the necessary DOM nodes.
+                        const behavior = factory.createBehavior();
+                        behaviors[i] = behavior;
+                        // Attempt to bind - the behavior should handle missing location
+                        try {
+                            behavior.bind(this);
+                        } catch (e) {
+                            // If binding still fails, throw the hydration error
+                            this.throwHydrationBindingError(factory);
+                        }
+                    } else {
+                        // For non-structural directives (attributes, etc.), throw the error immediately
+                        this.throwHydrationBindingError(factory);
                     }
-
-                    const hostElement = (this.firstChild?.getRootNode() as ShadowRoot)
-                        .host;
-                    const hostName = hostElement?.nodeName || "unknown";
-                    const factoryInfo = factory as any;
-
-                    // Build detailed error message
-                    const details: string[] = [
-                        `HydrationView was unable to successfully target bindings inside "<${hostName.toLowerCase()}>".`,
-                        `\nMismatch Details:`,
-                        `  - Expected target node ID: "${factory.targetNodeId}"`,
-                        `  - Available target IDs: [${
-                            Object.keys(this.targets).join(", ") || "none"
-                        }]`,
-                    ];
-
-                    if (factory.targetTagName) {
-                        details.push(`  - Expected tag name: "${factory.targetTagName}"`);
-                    }
-
-                    if (factoryInfo.sourceAspect) {
-                        details.push(`  - Source aspect: "${factoryInfo.sourceAspect}"`);
-                    }
-
-                    if (factoryInfo.aspectType !== undefined) {
-                        details.push(`  - Aspect type: ${factoryInfo.aspectType}`);
-                    }
-
-                    details.push(
-                        `\nThis usually means:`,
-                        `  1. The server-rendered HTML doesn't match the client template`,
-                        `  2. The hydration markers are missing or corrupted`,
-                        `  3. The DOM structure was modified before hydration`,
-                        `\nTemplate: ${templateString.slice(0, 200)}${
-                            templateString.length > 200 ? "..." : ""
-                        }`
-                    );
-
-                    throw new HydrationBindingError(
-                        details.join("\n"),
-                        factory,
-                        createRangeForNodes(
-                            this.firstChild,
-                            this.lastChild
-                        ).cloneContents(),
-                        templateString
-                    );
                 }
             }
         } else {

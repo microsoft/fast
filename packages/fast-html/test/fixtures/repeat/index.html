@@ -47,5 +47,18 @@
                 </ul>
             </template>
         </test-element-inner-when>
+
+        <test-element-no-content>
+            <template shadowrootmode="open">
+            </template>
+        </test-element-no-content>
+
+        <f-template name="test-element-no-content">
+            <template>
+                <ul>
+                    <f-repeat value="{item in items}"><li>{{item}}</li></f-repeat>
+                </ul>
+            </template>
+        </f-template>
     </body>
 </html>
