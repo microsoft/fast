@@ -960,12 +960,6 @@ export class HydratableElementController<
         this.needsHydration =
             this.needsHydration ?? this.source.hasAttribute(needsHydrationAttribute);
 
-        if (this.needsHydration) {
-            HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
-                this.definition.name
-            );
-        }
-
         // If the `defer-hydration` attribute exists on the source,
         // wait for it to be removed before continuing connection behavior.
         if (this.source.hasAttribute(deferHydrationAttribute)) {
@@ -990,6 +984,10 @@ export class HydratableElementController<
         if (this.stage !== Stages.disconnected) {
             return;
         }
+
+        HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
+            this.definition.name
+        );
 
         this.stage = Stages.connecting;
 
