@@ -97,7 +97,8 @@
     "./dist/esm/debug.js",
     "./dist/esm/polyfills.js",
     "./dist/esm/components/install-hydration.js",
-    "./dist/esm/templating/install-hydratable-view-templates.js"
+    "./dist/esm/templating/install-hydratable-view-templates.js",
+    "./dist/esm/interfaces.js"
   ],
   "scripts": {
     "benchmark": "npm run clean:dist && npm run build && node ./scripts/run-benchmarks",
