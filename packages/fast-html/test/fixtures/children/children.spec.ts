@@ -4,36 +4,29 @@ test.describe("f-template", async () => {
     test("create a children directive", async ({ page }) => {
         await page.goto("/fixtures/children/");
 
-        const listItemCount1 = await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
-            const listItems = (customElement.item(0) as any)?.listItems.filter((listItem: Node) => {
+        const element = page.locator("test-element");
+
+        await expect(element).toHaveCount(1);
+
+        const filteredItems = await element.evaluate((el: HTMLElement & { listItems: Node[] }) => {
+            return el.listItems.filter(item => item.nodeType === Node.ELEMENT_NODE);
+        });
+
+        expect(filteredItems).toHaveLength(2);
+
+        await expect(element).toHaveText("Foo Bar");
+
+        await element.evaluate((node: HTMLElement & { list: Array<string> }) => {
+            node.list = ["A", "B", "C"];
+        });
+
+        expect(await element.evaluate((node: HTMLElement & { listItems: Node[] }) => {
+            const listItems = node.listItems.filter((listItem: Node) => {
                 return listItem instanceof HTMLLIElement;
             });
             return listItems?.length;
-        });
+        })).toEqual(3);
 
-        expect(listItemCount1).toEqual(2);
-
-        await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
-
-            (customElement.item(0) as any).list = [
-                "A",
-                "B",
-                "C"
-            ];
-        });
-
-        await page.waitForTimeout(1000);
-
-        const listItemCount2 = await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
-            const listItems = (customElement.item(0) as any)?.listItems.filter((listItem: Node) => {
-                return listItem instanceof HTMLLIElement;
-            });
-            return listItems?.length;
-        });
-
-        expect(listItemCount2).toEqual(3);
+        await expect(element).toHaveText("A B C");
     });
 });
