@@ -190,6 +190,33 @@ test.describe("Lifecycle Callbacks", async () => {
         await expect(deferredElement).not.toHaveAttribute("defer-hydration");
     });
 
+        test("should defer child hydration until parent completes", async ({ page }) => {
+            await page.goto("/fixtures/lifecycle-callbacks/");
+
+            await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+
+            const events = await page.evaluate(() => (window as any).lifecycleEvents);
+
+            const parentWillHydrateIndex = events.findIndex(
+                (e: any) =>
+                    e.name === "deferred-parent-element" &&
+                    e.callback === "elementWillHydrate"
+            );
+
+            const childWillHydrateIndex = events.findIndex(
+                (e: any) =>
+                    e.name === "deferred-child-element" &&
+                    e.callback === "elementWillHydrate"
+            );
+
+            expect(parentWillHydrateIndex).toBeGreaterThan(-1);
+            expect(childWillHydrateIndex).toBeGreaterThan(parentWillHydrateIndex);
+
+            const childElement = page.locator("deferred-child-element");
+            await expect(childElement).not.toHaveAttribute("needs-hydration");
+            await expect(childElement).not.toHaveAttribute("defer-hydration");
+        });
+
     test("should verify template and hydration callbacks are invoked", async ({
         page,
     }) => {

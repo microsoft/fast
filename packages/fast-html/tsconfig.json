@@ -4,7 +4,7 @@
     "outDir": "dist/esm",
     "declaration": true,
     "declarationDir": "dist/dts",
-    "target": "ES2015",
+    "target": "ES2019",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "importHelpers": true,
