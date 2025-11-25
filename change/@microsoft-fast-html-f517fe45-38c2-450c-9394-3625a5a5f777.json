@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "fix: allow empty repeats to be processed during hydration",
+  "packageName": "@microsoft/fast-html",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
