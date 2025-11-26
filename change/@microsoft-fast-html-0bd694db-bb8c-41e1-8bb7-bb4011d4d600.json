@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: skip already-existing observables and attributes and run existing changed methods",
+  "packageName": "@microsoft/fast-html",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

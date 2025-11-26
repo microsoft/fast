@@ -8,6 +8,15 @@
     <body>
         <div class="container">
             <observer-map-test-element></observer-map-test-element>
+            <observer-map-with-observables-test-element>
+                <template shadowrootmode="open">
+                    Level 3 Value: <!--fe-b$$start$$0$$data$$fe-b-->42<!--fe-b$$end$$0$$data$$fe-b-->
+                    <button data-fe-b-1>Update Value1</button>
+                    <br>
+                    Level 3 Value Observable: <!--fe-b$$start$$2$$value2$$fe-b-->42<!--fe-b$$end$$2$$value2$$fe-b-->
+                    <button data-fe-b-3>Update Value2</button>
+                </template>
+            </observer-map-with-observables-test-element>
             <f-template name="observer-map-test-element">
                 <template>
                     <observer-map-internal-test-element
@@ -158,6 +167,15 @@
                     <button @click="{removeGroup()}">Remove groups</button>
                     <button @click="{addGroup()}">Add group</button>
                     <button @click="{updateActionLabel()}">Update an action label</button>
+                </template>
+            </f-template>
+            <f-template name="observer-map-with-observables-test-element">
+                <template>
+                    Level 3 Value: {{value1}}
+                    <button @click="{updateValue1()}">Update Value1</button>
+                    <br>
+                    Level 3 Value Observable: {{value2}}
+                    <button @click="{updateValue2()}">Update Value2</button>
                 </template>
             </f-template>
         </div>

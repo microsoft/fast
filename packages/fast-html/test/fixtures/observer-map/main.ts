@@ -1,5 +1,5 @@
-import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-html";
+import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -392,16 +392,50 @@ class ObserverMapInternalTestElement extends FASTElement {
     }
 }
 
-// Nested child components must be defined first
-(async () => {
-    await ObserverMapInternalTestElement.defineAsync({
-        name: "observer-map-internal-test-element",
-    });
+(window as any).messages = [];
 
-    await ObserverMapTestElement.defineAsync({
-        name: "observer-map-test-element",
-    });
-})();
+class ObserverMapWithObservablesTestElement extends FASTElement {
+    @observable
+    public value1: number = 42;
+
+    value1Changed(previous: any, current: any) {
+        (window as any).messages.push(`value1 changed from ${previous} to ${current}`);
+    }
+
+    public updateValue1() {
+        this.value1 += 1;
+    }
+
+    public value2: number = 42;
+
+    value2Changed(previous: any, current: any) {
+        (window as any).messages.push(`value2 changed from ${previous} to ${current}`);
+    }
+
+    @attr({ attribute: "some-attribute" })
+    attribute: string = "initial";
+
+    attributeChanged(previous: string, current: string) {
+        (window as any).messages.push(`attribute changed from ${previous} to ${current}`);
+    }
+
+    public updateValue2() {
+        this.value2 += 1;
+    }
+}
+
+ObserverMapInternalTestElement.defineAsync({
+    name: "observer-map-internal-test-element",
+});
+
+ObserverMapTestElement.defineAsync({
+    name: "observer-map-test-element",
+});
+
+RenderableFASTElement(ObserverMapWithObservablesTestElement).defineAsync({
+    name: "observer-map-with-observables-test-element",
+    templateOptions: "defer-and-hydrate",
+});
 
 // Configure TemplateElement with observerMap enabled for this test
 TemplateElement.options({
@@ -411,6 +445,11 @@ TemplateElement.options({
     "observer-map-internal-test-element": {
         observerMap: "all", // Enable ObserverMap to track all the nested property changes
     },
+    "observer-map-with-observables-test-element": {
+        observerMap: "all",
+    },
 }).define({
     name: "f-template",
 });
+
+(window as any).Observable = Observable;
