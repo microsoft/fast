@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 12 Nov 2025 20:41:54 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 26 Nov 2025 07:15:31 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.34
+
+Wed, 26 Nov 2025 07:15:31 GMT
+
+### Changes
+
+- fix: skip already-existing observables and attributes and run existing changed methods (863023+radium-v@users.noreply.github.com)
 
 ## 1.0.0-alpha.33
 

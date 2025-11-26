@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 26 Nov 2025 07:15:31 GMT",
+      "version": "1.0.0-alpha.34",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.34",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "fe43f1d58906c02566f9c887d38bbc22d214bbbf",
+            "comment": "fix: skip already-existing observables and attributes and run existing changed methods"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "7ceb0a96ebdc0d8f62c4aaa3d7e8108d009f7e24",
+            "comment": "fix: rewrite children spec tests"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 16 Nov 2025 07:14:24 GMT",
       "version": "1.0.0-alpha.33",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.33",
