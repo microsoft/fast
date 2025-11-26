@@ -23,7 +23,7 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
         constructor(...args: any[]) {
             super(...args);
 
-            void this.#prepare();
+            void this._prepare();
         }
 
         /**
@@ -32,7 +32,7 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
          */
         public async prepare?(): Promise<void>;
 
-        async #prepare(): Promise<void> {
+        private async _prepare(): Promise<void> {
             if (this.prepare) {
                 await this.prepare();
             }
