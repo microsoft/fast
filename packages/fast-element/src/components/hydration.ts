@@ -155,15 +155,25 @@ export const Hydratable = Symbol.for("fe-hydration");
  * @beta
  */
 export function isHydratable(view: ViewController): view is HydrationView;
+/** @beta */
 export function isHydratable<TSource = any, TParent = any>(
     template: SyntheticViewTemplate<TSource, TParent>
 ): template is HydratableSyntheticViewTemplate<TSource, TParent>;
+/** @beta */
 export function isHydratable<TSource = any, TParent = any>(
     template: ElementViewTemplate<TSource, TParent>
 ): template is HydratableElementViewTemplate<TSource, TParent>;
+/** @beta */
 export function isHydratable(
     template: ContentTemplate
 ): template is HydratableContentTemplate;
+/** @beta */
 export function isHydratable(value: any): any {
     return value[Hydratable] === Hydratable;
 }
+
+/**
+ * The attribute used to defer hydration of an element.
+ * @beta
+ */
+export const deferHydrationAttribute = "defer-hydration";
