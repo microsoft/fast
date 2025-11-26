@@ -2,6 +2,7 @@ import { Constructable, Message, ParameterDecorator } from "./interfaces.js";
 import { Metadata } from "./metadata.js";
 import { FAST } from "./platform.js";
 
+// Fixes #7223: Corrected JSDoc @param tag formatting for API Extractor compatibility
 /**
  * A Context object defines an optional initial value for a Context, as well as a name identifier for debugging purposes.
  * @public
