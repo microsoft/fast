@@ -1,4 +1,6 @@
 import { HydrationMarkup } from "../components/hydration.js";
+import { Message } from "../interfaces.js";
+import { FAST } from "../platform.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehaviorFactory,
@@ -180,6 +182,26 @@ function targetComment(
         const [index, id] = parsed;
 
         const factory = factories[index];
+
+        if (!factory) {
+            const root = node.getRootNode();
+            const host = root instanceof ShadowRoot ? root.host : null;
+            const fallbackTarget =
+                host ??
+                (node.parentNode instanceof Element ? node.parentNode : null) ??
+                (root instanceof Element ? root : null);
+            const hostName = host?.nodeName.toLowerCase() ?? "unknown";
+            const fastError = FAST.error(Message.hydrationMissingFactory, {
+                markerIndex: index,
+                hostName,
+            });
+            throw new HydrationTargetElementError(
+                fastError.message,
+                factories,
+                fallbackTarget ?? (node.parentElement as Element)
+            );
+        }
+
         const nodes: Node[] = [];
         let current: Node | null = walker.nextSibling();
         node.data = "";
@@ -269,4 +291,119 @@ export function targetFactory(
     }
 
     targets[factory.targetNodeId] = node;
+}
+
+/**
+ * Represents the node range managed by a compiled template.
+ * @internal
+ */
+export interface TargetNodeRange {
+    firstChild: ChildNode;
+    lastChild: ChildNode;
+}
+
+/**
+ * The resolved insertion point derived from a target id.
+ * @internal
+ */
+export interface TargetLocation {
+    parent: ParentNode;
+    reference: ChildNode | null;
+}
+
+/**
+ * Resolves the parent node and reference sibling for a compiler-generated target id.
+ * Useful when hydration markers are missing and structural directives recreate locations.
+ * @internal
+ */
+export function resolveTargetLocation(
+    range: TargetNodeRange,
+    targetNodeId: string
+): TargetLocation | null {
+    if (!range.firstChild || !range.lastChild) {
+        return null;
+    }
+
+    const segments = targetNodeId.split(".");
+
+    if (segments.length < 2 || segments[0] !== "r") {
+        return null;
+    }
+
+    const lastSegment = segments.pop()!;
+    const targetIndex = Number(lastSegment);
+
+    if (!Number.isInteger(targetIndex) || targetIndex < 0) {
+        return null;
+    }
+
+    if (segments.length === 1) {
+        const parentNode = range.firstChild.parentNode as ParentNode | null;
+
+        if (!parentNode) {
+            return null;
+        }
+
+        const children = collectRangeRootNodes(range.firstChild, range.lastChild);
+        return {
+            parent: parentNode,
+            reference: children[targetIndex] ?? null,
+        };
+    }
+
+    const parentNode = resolveRangeNode(range, segments) as ParentNode | null;
+
+    if (!parentNode) {
+        return null;
+    }
+
+    const reference = parentNode.childNodes.item(targetIndex) as ChildNode | null;
+    return {
+        parent: parentNode,
+        reference,
+    };
+}
+
+function collectRangeRootNodes(first: ChildNode, last: ChildNode): ChildNode[] {
+    const nodes: ChildNode[] = [];
+    let current: ChildNode | null = first;
+
+    while (current) {
+        nodes.push(current);
+        if (current === last) {
+            break;
+        }
+        current = current.nextSibling as ChildNode | null;
+    }
+
+    return nodes;
+}
+
+function resolveRangeNode(range: TargetNodeRange, segments: string[]): Node | null {
+    if (segments.length < 2 || segments[0] !== "r") {
+        return null;
+    }
+
+    let current: Node | null = null;
+    let children = collectRangeRootNodes(range.firstChild, range.lastChild);
+
+    for (let i = 1; i < segments.length; i++) {
+        const index = Number(segments[i]);
+
+        if (!Number.isInteger(index) || index < 0) {
+            return null;
+        }
+
+        current = children[index] ?? null;
+
+        if (!current) {
+            return null;
+        }
+
+        if (i < segments.length - 1) {
+            children = Array.from(current.childNodes) as ChildNode[];
+        }
+    }
+
+    return current;
 }

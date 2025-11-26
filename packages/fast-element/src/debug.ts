@@ -58,6 +58,29 @@ const debugMessages = {
     [1513 /* cyclicDependency */]: "Cyclic dependency found '${name}'.",
     [1514 /* connectUpdateRequiresController */]:
         "Injected properties that are updated on changes to DOM connectivity require the target object to be an instance of FASTElement.",
+    [1601 /* hydrationMissingTarget */]: [
+        'HydrationView was unable to successfully target bindings inside "<${hostName}>".',
+        "",
+        "Mismatch Details:",
+        '  - Expected target node ID: "${targetNodeId}"',
+        "  - Available target IDs: [${availableTargets}]",
+        "${extraDetails}",
+        "",
+        "This usually means:",
+        "  1. The server-rendered HTML doesn't match the client template",
+        "  2. The hydration markers are missing or corrupted",
+        "  3. The DOM structure was modified before hydration",
+        "",
+        "Template: ${templateSnippet}",
+    ].join("\n"),
+    [1602 /* hydrationMissingFactory */]: [
+        'HydrationView was unable to locate a compiled factory for binding marker "${markerIndex}" inside "<${hostName}>".',
+        "",
+        "This usually means:",
+        "  1. The server-rendered HTML no longer matches the hydrated template",
+        "  2. A hydration marker was removed or corrupted before hydration",
+        "  3. The template factories array is out of sync with the rendered markup",
+    ].join("\n"),
 };
 
 const allPlaceholders = /(\$\{\w+?})/g;

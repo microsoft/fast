@@ -3,17 +3,18 @@ import {
     buildViewBindingTargets,
     createRangeForNodes,
     HydrationTargetElementError,
+    resolveTargetLocation,
     targetFactory,
     ViewBehaviorBoundaries,
 } from "../hydration/target-builder.js";
 import type { ViewTemplate } from "../templating/template.js";
-import type { Disposable } from "../interfaces.js";
+import { type Disposable, Message } from "../interfaces.js";
 import {
     ExecutionContext,
     Observable,
     SourceLifetime,
 } from "../observation/observable.js";
-import { makeSerializationNoop } from "../platform.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehavior,
@@ -424,8 +425,8 @@ Observable.defineProperty(HTMLView.prototype, "length");
 
 /** @public */
 export interface HydratableView<TSource = any, TParent = any>
-    extends ElementView,
-        SyntheticView,
+    extends ElementView<TSource, TParent>,
+        SyntheticView<TSource, TParent>,
         DefaultExecutionContext<TParent> {
     [Hydratable]: symbol;
     readonly bindingViewBoundaries: Record<string, ViewNodes>;
@@ -571,57 +572,6 @@ export class HydrationView<TSource = any, TParent = any>
         fragment.appendChild(end);
     }
 
-    private throwHydrationBindingError(factory: CompiledViewBehaviorFactory): never {
-        let templateString = this.sourceTemplate.html;
-
-        if (typeof templateString !== "string") {
-            templateString = templateString.innerHTML;
-        }
-
-        const hostElement = (this.firstChild?.getRootNode() as ShadowRoot).host;
-        const hostName = hostElement?.nodeName || "unknown";
-        const factoryInfo = factory as any;
-
-        // Build detailed error message
-        const details: string[] = [
-            `HydrationView was unable to successfully target bindings inside "<${hostName.toLowerCase()}>".`,
-            `\nMismatch Details:`,
-            `  - Expected target node ID: "${factory.targetNodeId}"`,
-            `  - Available target IDs: [${
-                Object.keys(this.targets).join(", ") || "none"
-            }]`,
-        ];
-
-        if (factory.targetTagName) {
-            details.push(`  - Expected tag name: "${factory.targetTagName}"`);
-        }
-
-        if (factoryInfo.sourceAspect) {
-            details.push(`  - Source aspect: "${factoryInfo.sourceAspect}"`);
-        }
-
-        if (factoryInfo.aspectType !== undefined) {
-            details.push(`  - Aspect type: ${factoryInfo.aspectType}`);
-        }
-
-        details.push(
-            `\nThis usually means:`,
-            `  1. The server-rendered HTML doesn't match the client template`,
-            `  2. The hydration markers are missing or corrupted`,
-            `  3. The DOM structure was modified before hydration`,
-            `\nTemplate: ${templateString.slice(0, 200)}${
-                templateString.length > 200 ? "..." : ""
-            }`
-        );
-
-        throw new HydrationBindingError(
-            details.join("\n"),
-            factory,
-            createRangeForNodes(this.firstChild, this.lastChild).cloneContents(),
-            templateString
-        );
-    }
-
     public bind(source: TSource, context: ExecutionContext<any> = this): void {
         if (this.hydrationStage !== HydrationStage.hydrated) {
             this._hydrationStage = HydrationStage.hydrating;
@@ -664,34 +614,73 @@ export class HydrationView<TSource = any, TParent = any>
                     targetFactory(factory, this.hostBindingTarget, this._targets);
                 }
 
-                // If the binding has been targeted or it is a host binding and the view has a hostBindingTarget
-                if (factory.targetNodeId in this.targets) {
+                const hasTarget =
+                    factory.targetNodeId in this.targets ||
+                    this.tryResolveMissingStructuralTarget(factory);
+
+                if (hasTarget) {
                     const behavior = factory.createBehavior();
                     behavior.bind(this);
                     behaviors[i] = behavior;
                 } else {
-                    // Target not found. Check if this factory has a createHTML method,
-                    // which indicates it's a structural directive (like repeat/render)
-                    // that creates comment markers. If so, we can fall back to creating
-                    // a new HTMLView instead of hydrating.
-                    const factoryWithHTML = factory as any;
-                    if (typeof factoryWithHTML.createHTML === "function") {
-                        // This is likely a repeat or render directive with missing hydration markers.
-                        // Create the behavior which will handle rendering normally (non-hydration mode).
-                        // The behavior's bind method will either find or create the necessary DOM nodes.
-                        const behavior = factory.createBehavior();
-                        behaviors[i] = behavior;
-                        // Attempt to bind - the behavior should handle missing location
-                        try {
-                            behavior.bind(this);
-                        } catch (e) {
-                            // If binding still fails, throw the hydration error
-                            this.throwHydrationBindingError(factory);
-                        }
-                    } else {
-                        // For non-structural directives (attributes, etc.), throw the error immediately
-                        this.throwHydrationBindingError(factory);
+                    let templateString = this.sourceTemplate.html;
+
+                    if (typeof templateString !== "string") {
+                        templateString = templateString.innerHTML;
                     }
+
+                    const hostElement = (this.firstChild?.getRootNode() as ShadowRoot)
+                        .host;
+                    const hostName = hostElement?.nodeName || "unknown";
+                    const availableTargetIds = Object.keys(this.targets);
+                    const templateSnippet =
+                        templateString.length > 200
+                            ? `${templateString.slice(0, 200)}...`
+                            : templateString;
+                    const extraDetailsSegments: string[] = [];
+                    const structuralFactory = factory as any;
+
+                    if (factory.targetTagName) {
+                        extraDetailsSegments.push(
+                            `  - Expected tag name: "${factory.targetTagName}"`
+                        );
+                    }
+
+                    if (structuralFactory.sourceAspect) {
+                        extraDetailsSegments.push(
+                            `  - Source aspect: "${structuralFactory.sourceAspect}"`
+                        );
+                    }
+
+                    if (structuralFactory.aspectType !== undefined) {
+                        extraDetailsSegments.push(
+                            `  - Aspect type: ${structuralFactory.aspectType}`
+                        );
+                    }
+
+                    const extraDetails = extraDetailsSegments.length
+                        ? extraDetailsSegments.join("\n")
+                        : "";
+                    const fastError = FAST.error(Message.hydrationMissingTarget, {
+                        hostName: hostName.toLowerCase(),
+                        targetNodeId: factory.targetNodeId,
+                        availableTargets:
+                            availableTargetIds.length > 0
+                                ? availableTargetIds.join(", ")
+                                : "none",
+                        extraDetails,
+                        templateSnippet,
+                    });
+
+                    throw new HydrationBindingError(
+                        fastError.message,
+                        factory,
+                        createRangeForNodes(
+                            this.firstChild,
+                            this.lastChild
+                        ).cloneContents(),
+                        templateString
+                    );
                 }
             }
         } else {
@@ -722,6 +711,48 @@ export class HydrationView<TSource = any, TParent = any>
         this.source = null;
         this.context = this;
         this.isBound = false;
+    }
+
+    private tryResolveMissingStructuralTarget(
+        factory: CompiledViewBehaviorFactory
+    ): boolean {
+        const structuralFactory = factory as ViewBehaviorFactory & {
+            createHTML?: (...args: any[]) => string;
+        };
+
+        if (typeof structuralFactory.createHTML !== "function") {
+            return false;
+        }
+
+        const first = this.firstChild as ChildNode | null;
+        const last = this.lastChild as ChildNode | null;
+
+        if (!first || !last) {
+            return false;
+        }
+
+        const placement = resolveTargetLocation(
+            {
+                firstChild: first,
+                lastChild: last,
+            },
+            factory.targetNodeId
+        );
+
+        if (!placement) {
+            return false;
+        }
+
+        const marker = document.createComment("");
+
+        if (placement.reference) {
+            placement.parent.insertBefore(marker, placement.reference);
+        } else {
+            placement.parent.appendChild(marker);
+        }
+
+        this._targets[factory.targetNodeId] = marker;
+        return true;
     }
 
     /**

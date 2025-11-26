@@ -143,8 +143,6 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         // a placeholder comment node. For non-empty repeats, we'll need to
         // fall back to normal rendering.
         if (!this.location) {
-            // Create a comment node to serve as the location marker
-            // We need to find where to insert it - at the end of the host's shadow root
             const host = (controller as any).firstChild?.getRootNode();
             if (host && host instanceof ShadowRoot) {
                 this.location = document.createComment("");
@@ -152,16 +150,20 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             }
         }
 
+        let hydrated = false;
+
         if (
             isHydratable(this.template) &&
             isHydratable(controller) &&
             controller.hydrationStage !== HydrationStage.hydrated &&
             this.location // Only attempt hydration if we have a location
         ) {
-            this.hydrateViews(this.template);
-        } else if (this.location) {
+            hydrated = this.hydrateViews(this.template);
+        }
+
+        if (!hydrated && this.location) {
             this.refreshAllViews();
-        } else {
+        } else if (!this.location) {
             // No location and can't create one - initialize empty views array
             this.views = [];
         }
@@ -410,12 +412,13 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
     }
 
-    private hydrateViews(template: HydratableSyntheticViewTemplate) {
+    private hydrateViews(template: HydratableSyntheticViewTemplate): boolean {
         if (!this.items) {
-            return;
+            return false;
         }
 
-        this.views = new Array(this.items.length);
+        const hydratedViews = new Array<SyntheticView | undefined>(this.items.length);
+        let hydratedCount = 0;
         let current = this.location.previousSibling;
 
         while (current !== null) {
@@ -468,8 +471,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                             // start of repeat content is the nextSibling of start comment
                             start = start.nextSibling!;
                             const view = template.hydrate(start, end);
-                            this.views[index] = view;
+                            hydratedViews[index] = view;
                             this.bindView(view, this.items, index, this.controller);
+                            hydratedCount++;
                             break;
                         }
                     }
@@ -484,6 +488,22 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 );
             }
         }
+
+        if (hydratedCount === 0) {
+            this.views = [];
+            return false;
+        }
+
+        if (hydratedCount !== this.items.length) {
+            for (const view of hydratedViews) {
+                view?.dispose();
+            }
+            this.views = [];
+            return false;
+        }
+
+        this.views = hydratedViews as SyntheticView[];
+        return true;
     }
 }
 
