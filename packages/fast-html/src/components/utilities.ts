@@ -1379,10 +1379,16 @@ export function assignProxy(
     rootProperty: string,
     object: any
 ): typeof Proxy {
-    if (object.$isProxy === undefined) {
+    if (!object.$isProxy) {
         // Create a proxy for the object that triggers Observable.notify on mutations
         const proxy = new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
+                const currentValue = obj[prop];
+
+                if (deepEqual(currentValue, value)) {
+                    return true;
+                }
+
                 obj[prop] = assignObservables(
                     schema,
                     rootSchema,
@@ -1507,6 +1513,58 @@ function getAttributeName(previousString: string): string {
 }
 
 /**
+ * Determine if an object has an observable accessor for a backing field
+ * @param object - The object to check
+ * @param backingField - The backing field name
+ * @returns True if the object has an observable accessor for the backing field, false otherwise
+ */
+function hasObservableAccessor(object: any, backingField: string): boolean {
+    const accessors = Observable.getAccessors(object);
+
+    if (!accessors) {
+        return false;
+    }
+
+    return accessors.some((accessor: { name: string }) => accessor.name === backingField);
+}
+
+/**
+ * Determine if a key should be skipped during deep comparison
+ *
+ * @param object - The object to check
+ * @param key - The key to evaluate
+ * @returns True if the key should be skipped during comparison, false otherwise
+ */
+function shouldSkipKey(object: any, key: string): boolean {
+    if (key[0] !== "_" || key === "_") {
+        return false;
+    }
+
+    return hasObservableAccessor(object, key.slice(1));
+}
+
+/**
+ * Get comparable keys from an object, excluding those that should be skipped
+ *
+ * @param object - The object to extract keys from
+ * @returns An array of keys that should be compared
+ */
+function getComparableKeys(object: any): string[] {
+    const hasOwn = Object.prototype.hasOwnProperty;
+    const keys: string[] = [];
+
+    for (const key in object) {
+        if (!hasOwn.call(object, key) || shouldSkipKey(object, key)) {
+            continue;
+        }
+
+        keys.push(key);
+    }
+
+    return keys;
+}
+
+/**
  * Deeply compares two objects for equality.
  *
  * @param obj1 - First object to compare
@@ -1548,25 +1606,20 @@ export function deepEqual(obj1: any, obj2: any): boolean {
     }
 
     const hasOwn = Object.prototype.hasOwnProperty;
-    let keyCount = 0;
+    const obj1Keys = getComparableKeys(obj1);
+    const obj2Keys = getComparableKeys(obj2);
 
-    for (const key in obj1) {
-        if (hasOwn.call(obj1, key)) {
-            keyCount++;
-            if (!hasOwn.call(obj2, key) || !deepEqual(obj1[key], obj2[key])) {
-                return false;
-            }
+    if (obj1Keys.length !== obj2Keys.length) {
+        return false;
+    }
+
+    for (const key of obj1Keys) {
+        if (!hasOwn.call(obj2, key) || !deepEqual(obj1[key], obj2[key])) {
+            return false;
         }
     }
 
-    let obj2KeyCount = 0;
-    for (const key in obj2) {
-        if (hasOwn.call(obj2, key)) {
-            obj2KeyCount++;
-        }
-    }
-
-    return keyCount === obj2KeyCount;
+    return true;
 }
 
 /**
