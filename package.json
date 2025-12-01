@@ -71,7 +71,7 @@
     "markdown-it": "12.3.2",
     "prettier": "2.8.8",
     "rimraf": "6.1.0",
-    "typescript": "~4.7.0",
+    "typescript": "4.7.4",
     "vite": "7.1.12",
     "yargs": "17.7.2"
   },
