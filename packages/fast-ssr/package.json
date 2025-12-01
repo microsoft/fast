@@ -26,8 +26,8 @@
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "pretest": "npm run build-server && npm run build",
-    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
-    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,html}\"",
+    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
+    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
     "test": "playwright test --config=playwright.config.cjs",
     "test-server": "node server/dist/server.js",
     "install-playwright-browsers": "npm run playwright install"
