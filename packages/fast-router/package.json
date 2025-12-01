@@ -47,7 +47,6 @@
   },
   "devDependencies": {
     "@microsoft/fast-element": "^2.9.1",
-    "ts-loader": "^9.3.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^2.6.3",

@@ -130,7 +130,6 @@
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
-    "ts-loader": "^9.3.0",
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^2.6.3"
