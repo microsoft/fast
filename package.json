@@ -100,6 +100,7 @@
     "mocha": "10.8.2",
     "prettier": "2.8.8",
     "rimraf": "6.1.0",
+    "rollup": "2.79.2",
     "typescript": "5.3.3",
     "vite": "7.1.12",
     "yargs": "17.7.2"
