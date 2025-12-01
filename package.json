@@ -76,7 +76,7 @@
     "yargs": "17.7.2"
   },
   "overrides": {
-    "webpack-dev-server": "^5.2.2",
+    "webpack-dev-server": "5.2.2",
     "sucrase": {
       "glob": "$glob"
     },
