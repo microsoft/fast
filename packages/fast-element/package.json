@@ -130,7 +130,6 @@
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
-    "istanbul": "^0.4.5",
     "jsdom": "^16.2.2",
     "jsdom-global": "3.0.2",
     "karma": "^6.4.3",
