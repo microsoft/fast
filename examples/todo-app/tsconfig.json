@@ -17,7 +17,7 @@
     "pretty": true,
     "target": "ES2015",
     "module": "ES2015",
-    "moduleResolution": "Node16",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "experimentalDecorators": true,
     "declaration": true,
