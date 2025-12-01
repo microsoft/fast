@@ -130,7 +130,6 @@
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^8.3.2",
     "@tensile-perf/web-components": "^0.2.3",
     "@types/chai": "^4.2.11",
