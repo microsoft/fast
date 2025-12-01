@@ -130,7 +130,6 @@
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
     "chai-spies": "^1.0.0",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
