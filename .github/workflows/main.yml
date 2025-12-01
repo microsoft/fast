@@ -27,7 +27,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'true'
         with:
           # Required for chromatic change detection
@@ -36,7 +36,7 @@ jobs:
           # Cannot rely on GITHUB_TOKEN with workflow contents permission
           # See: https://github.com/orgs/community/discussions/40971
           token: ${{ secrets.GITHUBPAGESDEPLOYTOKEN }}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         if: env.HAS_GITHUBPAGESDEPLOYTOKEN == 'false'
         with:
           # Required for chromatic change detection
