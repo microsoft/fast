@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 01 Dec 2025 18:46:00 GMT",
+      "version": "2.8.4",
+      "tag": "@microsoft/fast-element_v2.8.4",
+      "comments": {
+        "patch": [
+          {
+            "author": "mmansour@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ed14307460fecef6636c0402199528f1db2cf97d",
+            "comment": "chore: add interfaces to sideEffects"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 16 Nov 2025 07:14:24 GMT",
       "version": "2.8.3",
       "tag": "@microsoft/fast-element_v2.8.3",

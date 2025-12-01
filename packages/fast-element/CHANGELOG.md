@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 12 Nov 2025 20:41:54 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 01 Dec 2025 18:46:00 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.8.4
+
+Mon, 01 Dec 2025 18:46:00 GMT
+
+### Patches
+
+- chore: add interfaces to sideEffects (mmansour@microsoft.com)
 
 ## 2.8.3
 

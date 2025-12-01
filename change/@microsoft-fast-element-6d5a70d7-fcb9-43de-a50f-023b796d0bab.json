@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "chore: add interfaces to sideEffects",
-  "packageName": "@microsoft/fast-element",
-  "email": "mmansour@microsoft.com",
-  "dependentChangeType": "none"
-}
