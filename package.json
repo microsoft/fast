@@ -55,7 +55,7 @@
     ]
   },
   "devDependencies": {
-    "@octokit/rest": "^22.0.0",
+    "@octokit/rest": "22.0.0",
     "@playwright/test": "^1.56.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^22.12.0",
