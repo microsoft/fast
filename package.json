@@ -101,6 +101,7 @@
     "prettier": "2.8.8",
     "rimraf": "6.1.0",
     "rollup": "2.79.2",
+    "rollup-plugin-filesize": "10.0.0",
     "typescript": "5.3.3",
     "vite": "7.1.12",
     "yargs": "17.7.2"
