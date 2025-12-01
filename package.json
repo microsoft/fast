@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "22.0.0",
-    "@playwright/test": "^1.56.1",
+    "@playwright/test": "1.56.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^22.12.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
