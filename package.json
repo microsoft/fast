@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@jsdevtools/coverage-istanbul-loader": "3.0.5",
     "@octokit/rest": "22.0.0",
     "@playwright/test": "1.56.1",
     "@types/node": "^22.12.0",
