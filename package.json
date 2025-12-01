@@ -97,6 +97,7 @@
     "karma-webpack": "5.0.1",
     "lint-staged": "10.5.4",
     "markdown-it": "12.3.2",
+    "mocha": "10.8.2",
     "prettier": "2.8.8",
     "rimraf": "6.1.0",
     "typescript": "4.7.4",

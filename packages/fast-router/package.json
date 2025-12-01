@@ -47,7 +47,6 @@
   },
   "devDependencies": {
     "@microsoft/fast-element": "^2.9.1",
-    "mocha": "^10.5.2",
     "prettier": "2.8.8",
     "source-map": "^0.7.3",
     "source-map-loader": "^5.0.0",
