@@ -102,6 +102,7 @@
     "rimraf": "6.1.0",
     "rollup": "2.79.2",
     "rollup-plugin-filesize": "10.0.0",
+    "source-map": "0.7.4",
     "typescript": "5.3.3",
     "vite": "7.1.12",
     "yargs": "17.7.2"
