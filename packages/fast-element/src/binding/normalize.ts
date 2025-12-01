@@ -14,7 +14,7 @@ export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(
     value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}
 ): Binding<TSource, TReturn, TParent> {
     return isFunction(value)
-        ? oneWay(value)
+        ? oneWay(value as Expression<TSource, TReturn, TParent>)
         : value instanceof Binding
         ? value
         : oneTime(() => value);
