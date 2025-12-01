@@ -8,6 +8,7 @@
         "strictPropertyInitialization": true,
         "module": "ES6",
         "moduleResolution": "node",
-        "target": "ES6"
+        "target": "ES6",
+        "ignoreDeprecations": "5.0"
     }
 }
