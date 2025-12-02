@@ -45,9 +45,11 @@
     "test-firefox": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage",
     "test-firefox:verbose": "karma start karma.conf.cjs --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
-  "devDependencies": {
-    "@microsoft/fast-element": "^2.9.1",
+  "dependencies": {
     "tslib": "^2.6.3"
+  },
+  "devDependencies": {
+    "@microsoft/fast-element": "^2.9.1"
   },
   "peerDependencies": {
     "@microsoft/fast-element": "^2.9.1"
