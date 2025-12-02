@@ -828,7 +828,19 @@ function resolveExpression(
         }
 
         default: {
-            return resolvedLeft;
+            if (typeof resolvedLeft === "boolean") {
+                return resolvedLeft;
+            }
+
+            if (typeof resolvedLeft === "number") {
+                return resolvedLeft !== 0;
+            }
+
+            if (typeof resolvedLeft === "string") {
+                return resolvedLeft.length > 0;
+            }
+
+            return !!resolvedLeft;
         }
     }
 }
