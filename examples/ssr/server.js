@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import "@microsoft/fast-ssr/install-dom-shim";
+import "@microsoft/fast-ssr/install-dom-shim.js";
 import fs from "fs";
 import { html } from "@microsoft/fast-element";
 import fastSSR, {
@@ -7,7 +7,7 @@ import fastSSR, {
     RequestStorageManager,
 } from "@microsoft/fast-ssr";
 import express from "express";
-import { DefaultTodoList, app as todoApp, TodoList } from "fast-todo-app";
+import { DefaultTodoList, app as todoApp, TodoList } from "@microsoft/fast-todo-app-example";
 import {
     DesignToken,
     DesignTokenEventResolutionStrategy,
