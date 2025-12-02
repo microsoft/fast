@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 02 Dec 2025 21:46:59 GMT",
+      "version": "2.8.5",
+      "tag": "@microsoft/fast-element_v2.8.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "78c90cc517baa58b21e1dfc99939636fac7fbac6",
+            "comment": "fix: move hydration lifecycle callback to correct position"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 01 Dec 2025 18:46:00 GMT",
       "version": "2.8.4",
       "tag": "@microsoft/fast-element_v2.8.4",

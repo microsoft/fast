@@ -1,8 +1,19 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 26 Nov 2025 07:15:31 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 02 Dec 2025 21:46:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.35
+
+Tue, 02 Dec 2025 21:46:59 GMT
+
+### Changes
+
+- fix: enhance ObserverMap functionality and improve test coverage for repeat directives (863023+radium-v@users.noreply.github.com)
+- fix: ensure child elements hydrate after ancestors (863023+radium-v@users.noreply.github.com)
+- fix: enhance boolean resolution in resolveExpression function (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.8.5
 
 ## 1.0.0-alpha.34
 

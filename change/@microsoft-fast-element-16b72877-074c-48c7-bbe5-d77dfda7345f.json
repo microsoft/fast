@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: move hydration lifecycle callback to correct position",
-  "packageName": "@microsoft/fast-element",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

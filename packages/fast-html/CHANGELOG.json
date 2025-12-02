@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 02 Dec 2025 21:46:59 GMT",
+      "version": "1.0.0-alpha.35",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.35",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "5e4e4360e8cf4544679f74bccfbb73193a400f8f",
+            "comment": "fix: enhance ObserverMap functionality and improve test coverage for repeat directives"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "78c90cc517baa58b21e1dfc99939636fac7fbac6",
+            "comment": "fix: ensure child elements hydrate after ancestors"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "21e40674a86484c43feb37adafbffc437b39e906",
+            "comment": "fix: enhance boolean resolution in resolveExpression function"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.8.5",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 01 Dec 2025 18:46:00 GMT",
       "version": "1.0.0-alpha.34",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.34",

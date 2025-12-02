@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 01 Dec 2025 18:46:00 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 02 Dec 2025 21:46:59 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.8.5
+
+Tue, 02 Dec 2025 21:46:59 GMT
+
+### Patches
+
+- fix: move hydration lifecycle callback to correct position (863023+radium-v@users.noreply.github.com)
 
 ## 2.8.4
 

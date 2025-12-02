@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: ensure child elements hydrate after ancestors",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
