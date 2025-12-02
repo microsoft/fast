@@ -50,7 +50,6 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^2.6.3",
-    "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4"
   },
   "peerDependencies": {
