@@ -61,9 +61,7 @@
     "@microsoft/fast-element": "^2.8.5"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.8.5",
-    "@types/express": "^4.17.21",
-    "@types/node": "^17.0.17"
+    "@microsoft/fast-element": "^2.8.5"
   },
   "beachball": {
     "disallowedChangeTypes": [
