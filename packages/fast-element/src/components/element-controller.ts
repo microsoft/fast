@@ -20,7 +20,12 @@ import {
     TemplateOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
-import { HydrationMarkup, isHydratable } from "./hydration.js";
+import { deferHydrationAttribute, HydrationMarkup, isHydratable } from "./hydration.js";
+
+/**
+ * @deprecated Use the export from ./hydration.js instead.
+ */
+export { deferHydrationAttribute } from "./hydration.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -812,12 +817,6 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
 }
 
 /**
- * The attribute used to defer hydration of an element.
- * @public
- */
-export const deferHydrationAttribute = "defer-hydration";
-
-/**
  * The attribute used to indicate that an element needs hydration.
  * @public
  */
@@ -960,12 +959,6 @@ export class HydratableElementController<
         this.needsHydration =
             this.needsHydration ?? this.source.hasAttribute(needsHydrationAttribute);
 
-        if (this.needsHydration) {
-            HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
-                this.definition.name
-            );
-        }
-
         // If the `defer-hydration` attribute exists on the source,
         // wait for it to be removed before continuing connection behavior.
         if (this.source.hasAttribute(deferHydrationAttribute)) {
@@ -990,6 +983,10 @@ export class HydratableElementController<
         if (this.stage !== Stages.disconnected) {
             return;
         }
+
+        HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
+            this.definition.name
+        );
 
         this.stage = Stages.connecting;
 

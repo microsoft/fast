@@ -34,6 +34,20 @@
             </template>
         </deferred-element>
 
+        <!-- Nested deferred elements -->
+        <deferred-parent-element needs-hydration defer-hydration label="Parent">
+            <template shadowrootmode="open">
+                <section>
+                    <p><!--fe-b$$start$$0$$label$$fe-b-->Parent<!--fe-b$$end$$0$$label$$fe-b--></p>
+                    <deferred-child-element needs-hydration defer-hydration label="Child" data-fe-b-1>
+                        <template shadowrootmode="open">
+                            <span><!--fe-b$$start$$0$$label$$fe-b-->Child<!--fe-b$$end$$0$$label$$fe-b--></span>
+                        </template>
+                    </deferred-child-element>
+                </section>
+            </template>
+        </deferred-parent-element>
+
         <!-- Template definitions -->
         <f-template name="simple-element">
             <template>{{message}} World</template>
@@ -59,6 +73,19 @@
 
         <f-template name="deferred-element">
             <template><p>Status: {{status}}</p></template>
+        </f-template>
+
+        <f-template name="deferred-parent-element">
+            <template>
+                <section>
+                    <p>{{label}}</p>
+                    <deferred-child-element label="{{label}}"></deferred-child-element>
+                </section>
+            </template>
+        </f-template>
+
+        <f-template name="deferred-child-element">
+            <template><span>{{label}}</span></template>
         </f-template>
 
         <script type="module" src="./main.ts"></script>

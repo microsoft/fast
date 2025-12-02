@@ -240,7 +240,7 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
-// @public
+// @beta
 export const deferHydrationAttribute = "defer-hydration";
 
 // @public
@@ -639,6 +639,26 @@ export class InlineTemplateDirective implements HTMLDirective {
     createHTML(add: AddViewBehaviorFactory): string;
     static readonly empty: InlineTemplateDirective;
 }
+
+// Warning: (ae-forgotten-export) The symbol "HydrationView" needs to be exported by the entry point index.d.ts
+//
+// @beta
+export function isHydratable(view: ViewController): view is HydrationView;
+
+// Warning: (ae-forgotten-export) The symbol "HydratableSyntheticViewTemplate" needs to be exported by the entry point index.d.ts
+//
+// @beta (undocumented)
+export function isHydratable<TSource = any, TParent = any>(template: SyntheticViewTemplate<TSource, TParent>): template is HydratableSyntheticViewTemplate<TSource, TParent>;
+
+// Warning: (ae-forgotten-export) The symbol "HydratableElementViewTemplate" needs to be exported by the entry point index.d.ts
+//
+// @beta (undocumented)
+export function isHydratable<TSource = any, TParent = any>(template: ElementViewTemplate<TSource, TParent>): template is HydratableElementViewTemplate<TSource, TParent>;
+
+// Warning: (ae-forgotten-export) The symbol "HydratableContentTemplate" needs to be exported by the entry point index.d.ts
+//
+// @beta (undocumented)
+export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
 
 // @public
 export interface LengthObserver extends Subscriber {

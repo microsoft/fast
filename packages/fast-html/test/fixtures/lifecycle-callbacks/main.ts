@@ -97,6 +97,35 @@ RenderableFASTElement(DeferredElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+// Nested deferred elements to verify parent-first hydration
+class DeferredParentElement extends FASTElement {
+    @attr
+    label: string = "Parent";
+
+    async prepare() {
+        await new Promise(resolve => setTimeout(resolve, 150));
+    }
+}
+
+RenderableFASTElement(DeferredParentElement).defineAsync({
+    name: "deferred-parent-element",
+    templateOptions: "defer-and-hydrate",
+});
+
+class DeferredChildElement extends FASTElement {
+    @attr
+    label: string = "Child";
+
+    async prepare() {
+        await new Promise(resolve => setTimeout(resolve, 0));
+    }
+}
+
+RenderableFASTElement(DeferredChildElement).defineAsync({
+    name: "deferred-child-element",
+    templateOptions: "defer-and-hydrate",
+});
+
 // Define templates
 TemplateElement.options({
     "complex-element": {

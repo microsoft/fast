@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nested Elements Hydration Tests</title>
+        <script type="module" src="./main.ts"></script>
+    </head>
+    <body>
+        <!-- Test case 1: Item list with nested child elements -->
+        <parent-element>
+            <template shadowrootmode="open">
+                <div class="list-container">
+                    <h2>
+                        <!--fe-b$$start$$0$$EVAQBRnUUH$$fe-b-->
+                        My Items
+                        <!--fe-b$$end$$0$$EVAQBRnUUH$$fe-b-->
+                    </h2>
+                    <div class="items">
+                        <!--fe-b$$start$$1$$EVAQBRnUUH$$fe-b-->
+                        <!--fe-repeat$$start$$0$$fe-repeat-->
+                        <child-element text="Item 1" idx="0" data-fe-b="0 1">
+                            <template shadowrootmode="open">
+                                <div class="item">
+                                    <span class="index">
+                                        <!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->
+                                        0
+                                        <!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                    <span class="text">
+                                        <!--fe-b$$start$$1$$vEbKKUHmwU$$fe-b-->
+                                        Item 1
+                                        <!--fe-b$$end$$1$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                </div>
+                            </template>
+                        </child-element>
+                        <!--fe-repeat$$end$$0$$fe-repeat-->
+                        <!--fe-repeat$$start$$1$$fe-repeat-->
+                        <child-element text="Item 2" idx="1" data-fe-b="0 1">
+                            <template shadowrootmode="open">
+                                <div class="item">
+                                    <span class="index">
+                                        <!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->
+                                        1
+                                        <!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                    <span class="text">
+                                        <!--fe-b$$start$$1$$vEbKKUHmwU$$fe-b-->
+                                        Item 2
+                                        <!--fe-b$$end$$1$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                </div>
+                            </template>
+                        </child-element>
+                        <!--fe-repeat$$end$$1$$fe-repeat-->
+                        <!--fe-repeat$$start$$2$$fe-repeat-->
+                        <child-element text="Item 3" idx="2" data-fe-b="0 1">
+                            <template shadowrootmode="open">
+                                <div class="item">
+                                    <span class="index">
+                                        <!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->
+                                        2
+                                        <!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                    <span class="text">
+                                        <!--fe-b$$start$$1$$vEbKKUHmwU$$fe-b-->
+                                        Item 3
+                                        <!--fe-b$$end$$1$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                </div>
+                            </template>
+                        </child-element>
+                        <!--fe-repeat$$end$$2$$fe-repeat-->
+                        <!--fe-b$$end$$1$$EVAQBRnUUH$$fe-b-->
+                    </div>
+                </div>
+            </template>
+        </parent-element>
+
+        <!-- Test case 2: Empty item list to test empty repeat -->
+        <parent-element>
+            <template shadowrootmode="open">
+                <div class="list-container">
+                    <h2>
+                        <!--fe-b$$start$$0$$EVAQBRnUUH$$fe-b-->
+                        Empty List
+                        <!--fe-b$$end$$0$$EVAQBRnUUH$$fe-b-->
+                    </h2>
+                    <div class="items">
+                        <!--fe-b$$start$$1$$EVAQBRnUUH$$fe-b-->
+                        <!--fe-b$$end$$1$$EVAQBRnUUH$$fe-b-->
+                    </div>
+                </div>
+            </template>
+        </parent-element>
+
+        <!-- Test case 3: Single item to test minimal nesting -->
+        <parent-element>
+            <template shadowrootmode="open">
+                <div class="list-container">
+                    <h2>
+                        <!--fe-b$$start$$0$$EVAQBRnUUH$$fe-b-->
+                        Single Item
+                        <!--fe-b$$end$$0$$EVAQBRnUUH$$fe-b-->
+                    </h2>
+                    <div class="items">
+                        <!--fe-b$$start$$1$$EVAQBRnUUH$$fe-b-->
+                        <!--fe-repeat$$start$$0$$fe-repeat-->
+                        <child-element text="Only Item" idx="0" data-fe-b="0 1">
+                            <template shadowrootmode="open">
+                                <div class="item">
+                                    <span class="index">
+                                        <!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->
+                                        0
+                                        <!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                    <span class="text">
+                                        <!--fe-b$$start$$1$$vEbKKUHmwU$$fe-b-->
+                                        Only Item
+                                        <!--fe-b$$end$$1$$vEbKKUHmwU$$fe-b-->
+                                    </span>
+                                </div>
+                            </template>
+                        </child-element>
+                        <!--fe-repeat$$end$$0$$fe-repeat-->
+                        <!--fe-b$$end$$1$$EVAQBRnUUH$$fe-b-->
+                    </div>
+                </div>
+            </template>
+        </parent-element>
+
+        <f-template name="child-element">
+            <template>
+                <div class="item">
+                    <span class="index">{{idx}}</span>
+                    <span class="text">{{text}}</span>
+                </div>
+            </template>
+        </f-template>
+        <f-template name="parent-element">
+            <template>
+                <div class="list-container">
+                    <h2>{{title}}</h2>
+                    <div class="items">
+                        <f-repeat value="{{item in items}}" positioning="true">
+                            <child-element
+                                text="{{item.text}}"
+                                idx="{{$index}}"
+                            ></child-element>
+                        </f-repeat>
+                    </div>
+                </div>
+            </template>
+        </f-template>
+    </body>
+</html>
