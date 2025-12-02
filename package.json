@@ -107,6 +107,7 @@
     "ts-loader": "9.5.1",
     "typescript": "5.3.3",
     "vite": "7.1.12",
+    "webpack": "5.97.1",
     "yargs": "17.7.2"
   },
   "overrides": {
