@@ -1,5 +1,5 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { assignObservables } from "./utilities.js";
+import { assignObservables, deepMerge } from "./utilities.js";
 import type { JSONSchema, Schema } from "./schema.js";
 
 /**
@@ -76,21 +76,27 @@ export class ObserverMap {
         const schema = this.schema;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
-            if (next === null || typeof next !== "object") {
+            const isObjectAssignment = next !== null && typeof next === "object";
+            const isManagedArray = Array.isArray(next) && (next as any)?.$fastController;
+            const shouldAssignProxy =
+                isObjectAssignment && !next?.$isProxy && !isManagedArray;
+            const hasExistingProxy =
+                prev !== null && typeof prev === "object" && prev.$isProxy;
+
+            if (shouldAssignProxy) {
+                if (hasExistingProxy) {
+                    deepMerge(prev, next);
+                    this[`_${propertyName}`] = prev;
+                } else {
+                    this[propertyName] = getAndAssignObservablesAlias(
+                        this,
+                        propertyName,
+                        next,
+                        schema
+                    );
+                }
+            } else if (!isObjectAssignment) {
                 this[propertyName] = next;
-            } else if (
-                prev === undefined ||
-                (prev?.$isProxy && !next?.$isProxy) ||
-                (Array.isArray(prev) &&
-                    Array.isArray(next) &&
-                    !(next as any)?.$fastController)
-            ) {
-                this[propertyName] = getAndAssignObservablesAlias(
-                    this,
-                    propertyName,
-                    next,
-                    schema
-                );
             }
 
             existingChangedMethod?.call(this, prev, next);

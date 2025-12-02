@@ -2,7 +2,7 @@ import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 import { FASTElement, observable } from "@microsoft/fast-element";
 
-class TestElement extends FASTElement {
+export class TestElement extends FASTElement {
     @observable
     list: Array<string> = ["Foo", "Bar"];
 
@@ -13,7 +13,7 @@ RenderableFASTElement(TestElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementInnerWhen extends FASTElement {
+export class TestElementInnerWhen extends FASTElement {
     @observable
     list: Array<any> = [
         {
@@ -31,23 +31,15 @@ RenderableFASTElement(TestElementInnerWhen).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementIntervalUpdates extends FASTElement {
+export class TestElementIntervalUpdates extends FASTElement {
     someData = { list1: [{ icon: "repeat" }], list2: [{ icon: "repeat" }] };
 
-    connectedCallback() {
-        super.connectedCallback();
-
-        setInterval(() => {
-            this.updateData();
-        }, 1000);
-    }
-
-    updateData = () => {
+    updateData() {
         deepMerge(this.someData, {
             list1: [{ icon: "repeat" }],
             list2: [{ icon: "repeat" }],
         });
-    };
+    }
 }
 
 RenderableFASTElement(TestElementIntervalUpdates).defineAsync({
