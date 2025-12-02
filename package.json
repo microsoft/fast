@@ -55,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "@ast-grep/cli": "0.37.0",
     "@jsdevtools/coverage-istanbul-loader": "3.0.5",
     "@microsoft/api-extractor": "7.47.0",
     "@octokit/rest": "22.0.0",
