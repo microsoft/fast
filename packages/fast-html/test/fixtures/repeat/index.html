@@ -7,7 +7,13 @@
     </head>
     <body>
         <f-template name="test-element">
-            <template><ul><f-repeat value="{{item in list}}"><li>{{item}} - {{item_parent}}</li></f-repeat></ul></template>
+            <template>
+                <ul>
+                    <f-repeat value="{{item in list}}">
+                        <li>{{item}} - {{item_parent}}</li>
+                    </f-repeat>
+                </ul>
+            </template>
         </f-template>
         <f-template name="test-element-inner-when">
             <template>
@@ -47,5 +53,53 @@
                 </ul>
             </template>
         </test-element-inner-when>
+
+        <f-template name="test-element-interval-updates">
+            <template>
+                <ul>
+                    <f-repeat value="{{item in someData.list1}}">
+                        <li>
+                            <svg width="20px" height="20px">
+                                <use href="sprites.svg#{{item.icon}}-icon"></use>
+                            </svg>
+                        </li>
+                    </f-repeat>
+
+                    <f-repeat value="{{item in someData.list2}}">
+                        <li>
+                            <svg width="20px" height="20px">
+                                <use href="sprites.svg#{{item.icon}}-icon"></use>
+                            </svg>
+                        </li>
+                    </f-repeat>
+                </ul>
+            </template>
+        </f-template>
+
+        <test-element-interval-updates>
+            <template shadowrootmode="open">
+                <ul>
+                    <!--fe-b$$start$$0$$f-repeat-item-in-someData.list1$$fe-b-->
+                    <!--fe-repeat$$start$$0$$fe-repeat-->
+                    <li>
+                        <svg width="20px" height="20px">
+                            <use data-fe-b-0 href="sprites.svg#repeat-icon"></use>
+                        </svg>
+                    </li>
+                    <!--fe-repeat$$end$$0$$fe-repeat-->
+                    <!--fe-b$$end$$0$$f-repeat-item-in-someData.list1$$fe-b-->
+
+                    <!--fe-b$$start$$1$$f-repeat-item-in-someData.list2$$fe-b-->
+                    <!--fe-repeat$$start$$0$$fe-repeat-->
+                    <li>
+                        <svg width="20px" height="20px">
+                            <use data-fe-b-0 href="sprites.svg#repeat-icon"></use>
+                        </svg>
+                    </li>
+                    <!--fe-repeat$$end$$0$$fe-repeat-->
+                    <!--fe-b$$end$$1$$f-repeat-item-in-someData.list2$$fe-b-->
+                </ul>
+            </template>
+        </test-element-interval-updates>
     </body>
 </html>
