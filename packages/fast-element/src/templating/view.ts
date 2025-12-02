@@ -3,17 +3,18 @@ import {
     buildViewBindingTargets,
     createRangeForNodes,
     HydrationTargetElementError,
+    resolveTargetLocation,
     targetFactory,
     ViewBehaviorBoundaries,
 } from "../hydration/target-builder.js";
 import type { ViewTemplate } from "../templating/template.js";
-import type { Disposable } from "../interfaces.js";
+import { type Disposable, Message } from "../interfaces.js";
 import {
     ExecutionContext,
     Observable,
     SourceLifetime,
 } from "../observation/observable.js";
-import { makeSerializationNoop } from "../platform.js";
+import { FAST, makeSerializationNoop } from "../platform.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehavior,
@@ -424,8 +425,8 @@ Observable.defineProperty(HTMLView.prototype, "length");
 
 /** @public */
 export interface HydratableView<TSource = any, TParent = any>
-    extends ElementView,
-        SyntheticView,
+    extends ElementView<TSource, TParent>,
+        SyntheticView<TSource, TParent>,
         DefaultExecutionContext<TParent> {
     [Hydratable]: symbol;
     readonly bindingViewBoundaries: Record<string, ViewNodes>;
@@ -613,8 +614,11 @@ export class HydrationView<TSource = any, TParent = any>
                     targetFactory(factory, this.hostBindingTarget, this._targets);
                 }
 
-                // If the binding has been targeted or it is a host binding and the view has a hostBindingTarget
-                if (factory.targetNodeId in this.targets) {
+                const hasTarget =
+                    factory.targetNodeId in this.targets ||
+                    this.tryResolveMissingStructuralTarget(factory);
+
+                if (hasTarget) {
                     const behavior = factory.createBehavior();
                     behavior.bind(this);
                     behaviors[i] = behavior;
@@ -628,42 +632,48 @@ export class HydrationView<TSource = any, TParent = any>
                     const hostElement = (this.firstChild?.getRootNode() as ShadowRoot)
                         .host;
                     const hostName = hostElement?.nodeName || "unknown";
-                    const factoryInfo = factory as any;
-
-                    // Build detailed error message
-                    const details: string[] = [
-                        `HydrationView was unable to successfully target bindings inside "<${hostName.toLowerCase()}>".`,
-                        `\nMismatch Details:`,
-                        `  - Expected target node ID: "${factory.targetNodeId}"`,
-                        `  - Available target IDs: [${
-                            Object.keys(this.targets).join(", ") || "none"
-                        }]`,
-                    ];
+                    const availableTargetIds = Object.keys(this.targets);
+                    const templateSnippet =
+                        templateString.length > 200
+                            ? `${templateString.slice(0, 200)}...`
+                            : templateString;
+                    const extraDetailsSegments: string[] = [];
+                    const structuralFactory = factory as any;
 
                     if (factory.targetTagName) {
-                        details.push(`  - Expected tag name: "${factory.targetTagName}"`);
+                        extraDetailsSegments.push(
+                            `  - Expected tag name: "${factory.targetTagName}"`
+                        );
                     }
 
-                    if (factoryInfo.sourceAspect) {
-                        details.push(`  - Source aspect: "${factoryInfo.sourceAspect}"`);
+                    if (structuralFactory.sourceAspect) {
+                        extraDetailsSegments.push(
+                            `  - Source aspect: "${structuralFactory.sourceAspect}"`
+                        );
                     }
 
-                    if (factoryInfo.aspectType !== undefined) {
-                        details.push(`  - Aspect type: ${factoryInfo.aspectType}`);
+                    if (structuralFactory.aspectType !== undefined) {
+                        extraDetailsSegments.push(
+                            `  - Aspect type: ${structuralFactory.aspectType}`
+                        );
                     }
 
-                    details.push(
-                        `\nThis usually means:`,
-                        `  1. The server-rendered HTML doesn't match the client template`,
-                        `  2. The hydration markers are missing or corrupted`,
-                        `  3. The DOM structure was modified before hydration`,
-                        `\nTemplate: ${templateString.slice(0, 200)}${
-                            templateString.length > 200 ? "..." : ""
-                        }`
-                    );
+                    const extraDetails = extraDetailsSegments.length
+                        ? extraDetailsSegments.join("\n")
+                        : "";
+                    const fastError = FAST.error(Message.hydrationMissingTarget, {
+                        hostName: hostName.toLowerCase(),
+                        targetNodeId: factory.targetNodeId,
+                        availableTargets:
+                            availableTargetIds.length > 0
+                                ? availableTargetIds.join(", ")
+                                : "none",
+                        extraDetails,
+                        templateSnippet,
+                    });
 
                     throw new HydrationBindingError(
-                        details.join("\n"),
+                        fastError.message,
                         factory,
                         createRangeForNodes(
                             this.firstChild,
@@ -701,6 +711,48 @@ export class HydrationView<TSource = any, TParent = any>
         this.source = null;
         this.context = this;
         this.isBound = false;
+    }
+
+    private tryResolveMissingStructuralTarget(
+        factory: CompiledViewBehaviorFactory
+    ): boolean {
+        const structuralFactory = factory as ViewBehaviorFactory & {
+            createHTML?: (...args: any[]) => string;
+        };
+
+        if (typeof structuralFactory.createHTML !== "function") {
+            return false;
+        }
+
+        const first = this.firstChild as ChildNode | null;
+        const last = this.lastChild as ChildNode | null;
+
+        if (!first || !last) {
+            return false;
+        }
+
+        const placement = resolveTargetLocation(
+            {
+                firstChild: first,
+                lastChild: last,
+            },
+            factory.targetNodeId
+        );
+
+        if (!placement) {
+            return false;
+        }
+
+        const marker = document.createComment("");
+
+        if (placement.reference) {
+            placement.parent.insertBefore(marker, placement.reference);
+        } else {
+            placement.parent.appendChild(marker);
+        }
+
+        this._targets[factory.targetNodeId] = marker;
+        return true;
     }
 
     /**

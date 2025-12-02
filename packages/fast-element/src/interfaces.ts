@@ -203,6 +203,9 @@ export const enum Message {
     noDefaultResolver = 1512,
     cyclicDependency = 1513,
     connectUpdateRequiresController = 1514,
+    // 1601 - 1700 Hydration
+    hydrationMissingTarget = 1601,
+    hydrationMissingFactory = 1602,
 }
 
 /**

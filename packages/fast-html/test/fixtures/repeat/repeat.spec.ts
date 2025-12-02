@@ -42,4 +42,21 @@ test.describe("f-template", async () => {
         expect(await customElementListItems.count()).toEqual(1);
         expect(await customElementListItems.nth(0).textContent()).toEqual("Foo");
     });
+
+    test("create a repeat directive with no content", async ({ page }) => {
+        await page.goto("/fixtures/repeat/");
+
+        const customElement = page.locator("test-element-no-content");
+        let customElementListItems = customElement.locator("li");
+
+        await expect(customElementListItems).toHaveCount(0);
+
+        await customElement.evaluate((el: any) => {
+            el.items = ["One", "Two", "Three"];
+        });
+
+        await expect(customElementListItems).toHaveCount(3);
+
+        await expect(customElement).toContainText("OneTwoThree");
+    });
 });

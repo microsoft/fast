@@ -601,7 +601,7 @@ export class HydratableElementController<TElement extends HTMLElement = HTMLElem
 }
 
 // @public (undocumented)
-export interface HydratableView<TSource = any, TParent = any> extends ElementView, SyntheticView, DefaultExecutionContext<TParent> {
+export interface HydratableView<TSource = any, TParent = any> extends ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, DefaultExecutionContext<TParent> {
     // (undocumented)
     [Hydratable]: symbol;
     // Warning: (ae-forgotten-export) The symbol "ViewNodes" needs to be exported by the entry point index.d.ts
