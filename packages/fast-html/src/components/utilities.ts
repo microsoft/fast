@@ -1656,44 +1656,67 @@ export function deepMerge(target: any, source: any): boolean {
 
         const targetValue = target[key];
 
-        if (deepEqual(targetValue, sourceValue)) {
+        // Fast path: reference equality check (monomorphic comparison)
+        if (targetValue === sourceValue) {
             continue;
         }
 
-        hasChanges = true;
-
+        // Inline type checks for monomorphic behavior
         if (Array.isArray(sourceValue)) {
-            const isTargetArray = Array.isArray(targetValue);
-            const clonedItems = sourceValue.map((item: unknown) =>
-                isPlainObject(item) ? { ...item } : item
-            );
+            // Array branch
+            if (Array.isArray(targetValue)) {
+                // Both arrays - check equality
+                const srcLen = sourceValue.length;
+                const tgtLen = targetValue.length;
 
-            if (isTargetArray) {
-                // Use splice to maintain observable array tracking
-                targetValue.splice(0, targetValue.length, ...clonedItems);
+                if (srcLen === tgtLen) {
+                    let same = true;
+                    for (let i = 0; i < srcLen; ++i) {
+                        if (!deepEqual(sourceValue[i], targetValue[i])) {
+                            same = false;
+                            break;
+                        }
+                    }
+                    if (same) continue;
+                }
+
+                // Arrays differ - clone and splice
+                hasChanges = true;
+                const cloned = sourceValue.map((item: unknown) =>
+                    isPlainObject(item) ? { ...item } : item
+                );
+                targetValue.splice(0, tgtLen, ...cloned);
             } else {
-                // Target isn't an array, replace it
-                target[key] = clonedItems;
+                // Target is not array - replace
+                hasChanges = true;
+                target[key] = sourceValue.map((item: unknown) =>
+                    isPlainObject(item) ? { ...item } : item
+                );
             }
             continue;
         }
 
         if (isPlainObject(sourceValue)) {
-            const targetIsObject = isPlainObject(targetValue);
-            const nextTarget = targetIsObject ? { ...targetValue } : {};
-            const nestedChanged = deepMerge(nextTarget, sourceValue);
-
-            if (!targetIsObject) {
-                target[key] = nextTarget;
-                continue;
-            }
-
-            if (nestedChanged) {
-                target[key] = nextTarget;
+            // Object branch
+            if (isPlainObject(targetValue)) {
+                // Both objects - recurse
+                const cloned = { ...targetValue };
+                if (deepMerge(cloned, sourceValue)) {
+                    hasChanges = true;
+                    target[key] = cloned;
+                }
+            } else {
+                // Target is not object - create new
+                hasChanges = true;
+                const fresh = {};
+                deepMerge(fresh, sourceValue);
+                target[key] = fresh;
             }
             continue;
         }
 
+        // Primitive value
+        hasChanges = true;
         target[key] = sourceValue;
     }
 
