@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "chore: improve deepMerge perf by ~2x",
+  "packageName": "@microsoft/fast-html",
+  "email": "mmansour@microsoft.com",
+  "dependentChangeType": "none"
+}
