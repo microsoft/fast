@@ -1623,14 +1623,25 @@ export function deepEqual(obj1: any, obj2: any): boolean {
 }
 
 /**
+ * Checks if a value is a plain object (not an array, null, or other type).
+ *
+ * @param value - The value to check
+ * @returns True if the value is a plain object, false otherwise
+ */
+export function isPlainObject(value: any): value is Record<string, any> {
+    return !!value && typeof value === "object" && !Array.isArray(value);
+}
+
+/**
  * Deeply merges the source object into the target object.
  *
  * @param target - The target object to merge into
  * @param source - The source object to merge from
- * @returns void
+ * @returns boolean indicating whether changes were made
  */
-export function deepMerge(target: any, source: any): void {
+export function deepMerge(target: any, source: any): boolean {
     const hasOwn = Object.prototype.hasOwnProperty;
+    let hasChanges = false;
 
     for (const key in source as any) {
         if (!hasOwn.call(source, key)) {
@@ -1649,12 +1660,12 @@ export function deepMerge(target: any, source: any): void {
             continue;
         }
 
-        const isSourceArray = Array.isArray(sourceValue);
+        hasChanges = true;
 
-        if (isSourceArray) {
+        if (Array.isArray(sourceValue)) {
             const isTargetArray = Array.isArray(targetValue);
             const clonedItems = sourceValue.map((item: unknown) =>
-                item && typeof item === "object" ? { ...item } : item
+                isPlainObject(item) ? { ...item } : item
             );
 
             if (isTargetArray) {
@@ -1667,19 +1678,24 @@ export function deepMerge(target: any, source: any): void {
             continue;
         }
 
-        if (sourceValue && typeof sourceValue === "object") {
-            if (
-                !targetValue ||
-                typeof targetValue !== "object" ||
-                Array.isArray(targetValue)
-            ) {
-                target[key] = {};
+        if (isPlainObject(sourceValue)) {
+            const targetIsObject = isPlainObject(targetValue);
+            const nextTarget = targetIsObject ? { ...targetValue } : {};
+            const nestedChanged = deepMerge(nextTarget, sourceValue);
+
+            if (!targetIsObject) {
+                target[key] = nextTarget;
+                continue;
             }
 
-            deepMerge(target[key], sourceValue);
+            if (nestedChanged) {
+                target[key] = nextTarget;
+            }
             continue;
         }
 
         target[key] = sourceValue;
     }
+
+    return hasChanges;
 }
