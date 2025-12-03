@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 03 Dec 2025 00:42:25 GMT",
+      "version": "1.0.0-alpha.36",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.36",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "21e4565468d854398096f1b36529f2d0a3ecdfe9",
+            "comment": "fix: ensure plain object properties are deep merged"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 02 Dec 2025 21:46:59 GMT",
       "version": "1.0.0-alpha.35",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.35",

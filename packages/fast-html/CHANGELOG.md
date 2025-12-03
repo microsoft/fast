@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 02 Dec 2025 21:46:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 03 Dec 2025 00:42:25 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.36
+
+Wed, 03 Dec 2025 00:42:25 GMT
+
+### Changes
+
+- fix: ensure plain object properties are deep merged (863023+radium-v@users.noreply.github.com)
 
 ## 1.0.0-alpha.35
 
