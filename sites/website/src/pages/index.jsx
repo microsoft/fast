@@ -72,7 +72,7 @@ export default function () {
                     <h3>Install the package</h3>
                     <CodeBlock>npm install @microsoft/fast-element</CodeBlock>
 
-                    <h3>Create a web component</h3>
+                    <h3>Create a web component in the file `hello-world.ts`</h3>
                     <CodeBlock language="typescript">
                         {`/*
  * import utilities from @microsoft/fast-element
@@ -105,6 +105,20 @@ HelloWorld.define({
                     <h3>Add it to your project</h3>
                     <CodeBlock language="html">
                         {`<hello-world name="Earth"></hello-world>`}
+                    </CodeBlock>
+
+                    <h3>Update your tsconfig.json file to support decorators</h3>
+                    <CodeBlock language="json">
+                      {{
+                        "compilerOptions": {
+                        "experimentalDecorators": true,
+                        "emitDecoratorMetadata": true,
+                        "module": "ESNext",
+                        "moduleResolution": "bundler",
+                        "target": "ES2020",
+                        "useDefineForClassFields": false
+                        }
+                      }}
                     </CodeBlock>
                 </section>
 
