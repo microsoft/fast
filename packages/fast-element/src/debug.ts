@@ -58,6 +58,12 @@ const debugMessages = {
     [1513 /* cyclicDependency */]: "Cyclic dependency found '${name}'.",
     [1514 /* connectUpdateRequiresController */]:
         "Injected properties that are updated on changes to DOM connectivity require the target object to be an instance of FASTElement.",
+    [1601 /* invalidAttributeMarkerName */]:
+        "Invalid attribute marker name: ${name}. Expected format is ${expectedFormat}.",
+    [1602 /* invalidCompactAttributeMarkerValues */]:
+        "Invalid compact attribute marker values in ${markerName}. Both index and count must be positive integers.",
+    [1604 /* invalidCompactAttributeMarkerName */]:
+        "Invalid compact attribute marker name: ${name}. Expected format is ${expectedFormat}.",
 };
 
 const allPlaceholders = /(\$\{\w+?})/g;
