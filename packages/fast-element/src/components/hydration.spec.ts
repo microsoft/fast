@@ -258,6 +258,50 @@ describe("HydrationMarkup", () => {
         });
     });
 
+    describe("compact attribute binding parser", () => {
+        it("should return the binding ids as numbers when assigned compact marker attributes", () => {
+            const el = document.createElement("div");
+            const el2 = document.createElement("div");
+            el.setAttribute(`${HydrationMarkup.compactAttributeMarkerName}-5-3`, "");
+            el2.setAttribute(`${HydrationMarkup.compactAttributeMarkerName}-2-1`, "");
+
+            expect(HydrationMarkup.parseCompactAttributeBinding(el)).to.eql([5, 6, 7]);
+            expect(HydrationMarkup.parseCompactAttributeBinding(el2)).to.eql([2]);
+        });
+
+        it("should throw when assigned invalid compact marker attributes", () => {
+            const el = document.createElement("div");
+            el.setAttribute(`${HydrationMarkup.compactAttributeMarkerName}-5`, "");
+
+            expect(() => HydrationMarkup.parseCompactAttributeBinding(el)).to.throw("Invalid compact attribute marker name: data-fe-c-5. Expected format is data-fe-c-{index}-{count}.");
+        });
+
+        it("should throw when assigned non-numeric compact marker attributes", () => {
+
+            const el2 = document.createElement("div");
+            el2.toggleAttribute(`${HydrationMarkup.compactAttributeMarkerName}-foo-bar`);
+
+            expect(() => HydrationMarkup.parseCompactAttributeBinding(el2)).to.throw("Invalid compact attribute marker name: data-fe-c-foo-bar. Expected format is data-fe-c-{index}-{count}.");
+        });
+
+        it("should throw when assigned compact marker attributes with invalid count", () => {
+
+            const el3 = document.createElement("div");
+            el3.setAttribute(`${HydrationMarkup.compactAttributeMarkerName}-5-baz`, "");
+
+            expect(() => HydrationMarkup.parseCompactAttributeBinding(el3)).to.throw();
+        });
+
+        it("should throw when assigned compact marker attributes with invalid index", () => {
+
+            const el4 = document.createElement("div");
+            el4.setAttribute(`${HydrationMarkup.compactAttributeMarkerName}-foo-3`, "");
+
+            expect(() => HydrationMarkup.parseCompactAttributeBinding(el4)).to.throw();
+        });
+    });
+
+
     describe("repeat parser", () => {
         it("isRepeatViewStartMarker should return true when provided the output of repeatStartMarker", () => {
             expect(HydrationMarkup.isRepeatViewStartMarker(HydrationMarkup.repeatStartMarker(12))).to.equal(true);

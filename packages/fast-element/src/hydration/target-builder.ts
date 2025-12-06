@@ -136,7 +136,8 @@ function targetElement(
     // Check for attributes and map any factories.
     const attrFactoryIds =
         HydrationMarkup.parseAttributeBinding(node) ??
-        HydrationMarkup.parseEnumeratedAttributeBinding(node);
+        HydrationMarkup.parseEnumeratedAttributeBinding(node) ??
+        HydrationMarkup.parseCompactAttributeBinding(node);
 
     if (attrFactoryIds !== null) {
         for (const id of attrFactoryIds) {
