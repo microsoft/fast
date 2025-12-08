@@ -6,7 +6,7 @@ declare const FAST: FASTGlobal;
 
 test.describe("The FAST global", () => {
     test.describe("kernel API", () => {
-        test("can get a lazily defined service by id", () => {
+        test("can get a lazily defined service by id", async () => {
             const id = "test-id";
             const service = {};
             const found = FAST.getById(id, () => service);
@@ -14,7 +14,7 @@ test.describe("The FAST global", () => {
             expect(found).toBe(service);
         });
 
-        test("returns the first service defined for an id", () => {
+        test("returns the first service defined for an id", async () => {
             const id = "test-id-2";
             const service1 = {};
             const service2 = {};
@@ -25,7 +25,7 @@ test.describe("The FAST global", () => {
             expect(found2).toBe(service1);
         });
 
-        test("returns null for optional services", () => {
+        test("returns null for optional services", async () => {
             const id = "test-id-3";
             const found = FAST.getById(id);
 
@@ -35,14 +35,14 @@ test.describe("The FAST global", () => {
 });
 
 test.describe("TypeRegistry", () => {
-    test("returns undefined when getting the definition for null", () => {
+    test("returns undefined when getting the definition for null", async () => {
         const reg = createTypeRegistry<TypeDefinition>();
         const value = reg.getForInstance(null);
 
         expect(value).toBeUndefined();
     });
 
-    test("returns undefined when getting the definition for undefined", () => {
+    test("returns undefined when getting the definition for undefined", async () => {
         const reg = createTypeRegistry<TypeDefinition>();
         const value = reg.getForInstance(undefined);
 
