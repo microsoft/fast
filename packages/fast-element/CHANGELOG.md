@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Tue, 02 Dec 2025 21:46:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 08 Dec 2025 19:47:51 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.9.0
+
+Mon, 08 Dec 2025 19:47:51 GMT
+
+### Minor changes
+
+- feat: add support for compact attribute binding markers (863023+radium-v@users.noreply.github.com)
 
 ## 2.8.5
 

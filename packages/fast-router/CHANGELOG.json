@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Mon, 08 Dec 2025 19:47:51 GMT",
+      "version": "1.0.0-alpha.29",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.29",
+      "comments": {
+        "none": [
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.9.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 02 Dec 2025 21:47:00 GMT",
       "version": "1.0.0-alpha.29",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.29",

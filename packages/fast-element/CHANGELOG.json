@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 08 Dec 2025 19:47:51 GMT",
+      "version": "2.9.0",
+      "tag": "@microsoft/fast-element_v2.9.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1e21fa3cac5f940f639bf76311af291e1a368da1",
+            "comment": "feat: add support for compact attribute binding markers"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 02 Dec 2025 21:46:59 GMT",
       "version": "2.8.5",
       "tag": "@microsoft/fast-element_v2.8.5",
