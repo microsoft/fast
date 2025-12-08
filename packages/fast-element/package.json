@@ -117,6 +117,8 @@
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
+    "test:playwright": "playwright test",
+    "test-server": "npx vite test/ --clearScreen false",
     "test": "npm run eslint && npm run test-chrome:verbose && npm run doc:ci && npm run doc:exports:ci",
     "test-node": "mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:verbose": "mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
