@@ -123,20 +123,23 @@ When hydrating the HTML, FAST uses the `HydratableElementController` which will 
 
 ### Bindings
 
-#### Syntax
+#### Content Bindings
+
+Content binding markers are represented using HTML comments. These comments are used to indicate where dynamic content exists in the template.
 
 A content binding syntax can be broken into parts:
 - `fe-b` - declares this as a FASTElement Binding.
 - `start|end` - indicates the start or end of the binding.
 - `number` - the number in order in the template of bindings, these increment for every binding.
 - `UUID` - a unique string identifying the binding. The examples shown here have been generated from a 10 character long string used in the [FAST SSR package](https://github.com/microsoft/fast/blob/main/packages/fast-ssr/src/template-parser/id-generator.ts).
+- `fe-b` - closes the binding comment.
 
-Separator:
-- `$$` - a separator string between the parts.
+Bindings use `$$` as a separator string between the parts.
 
-An attribute binding is tracked using a dataset attribute with the name `data-fe-b-<binding number>`.
+* Start binding: `<!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->`
+* End binding: `<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b-->`
 
-#### Examples
+##### Content Binding Marker Examples
 
 **Note**
 Examples shown below mostly skip the wrapping custom element and the internal template element with `shadowrootmode="open"`.
@@ -172,46 +175,108 @@ Should result in:
 <h1><!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->Hello world<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b--></h1>
 ```
 
-**Simple attribute example**
+#### Attribute Bindings
+
+Attribute bindings are tracked using dataset attributes. Three formats are supported:
+
+**Space-separated format**: A single attribute `data-fe-b` with space-separated binding numbers (e.g., `data-fe-b="0 1 2"`).
+
+**Enumerated format**: Individual attributes for each binding (e.g., `data-fe-b-0`, `data-fe-b-1`, `data-fe-b-2`). This format is preferred when the rendering system streams output inline, as it allows generated output to be inserted immediately without needing to count or combine binding instances.
+
+**Compact format**: Attributes shaped like `data-fe-c-{index}-{count}` (e.g., `data-fe-c-4-3`). This format encodes a start index and count for consecutive bindings, reducing attribute noise for elements with many attribute bindings.
+
+All formats are functionally equivalent and fully supported by the hydration system.
+
+##### Examples
+
+###### Single attribute example
 
 Attribute binding such as:
 ```html
-<h1 text="{{text}}"></h1>
+<h1 greeting="{{greeting}}"></h1>
 ```
 
-Should result in:
-
-```html
-<h1 data-fe-b-0 text="Hello world"></h1>
+When combined with state such as:
+```json
+{
+    "greeting": "Hello"
+}
 ```
 
-If multiple attribute bindings exist on the same element, these will be separated by a space.
+Should result in any of the following formats:
 
-Example:
 ```html
-<h1 text="{{text}}" subtitle="{{subtitle}}"></h1>
+<!-- Space-separated format -->
+<h1 data-fe-b="0" greeting="Hello world!"></h1>
+
+<!-- Enumerated format -->
+<h1 data-fe-b-0 greeting="Hello world!"></h1>
+
+<!-- Compact format (not recommended for single bindings, but supported) -->
+<h1 data-fe-c-0-1 greeting="Hello world!"></h1>
 ```
 
-Expected result:
+###### Multiple attribute bindings
+
+When multiple attribute bindings exist on the same element:
 ```html
-<h1 data-fe-b-0 data-fe-b-1 text="Hello" subtitle="world"></h1>
+<h1 greeting="{{greeting}}" subtitle="{{subtitle}}" punctuation="{{punctuation}}"></h1>
+```
+
+When combined with state such as:
+```json
+{
+    "greeting": "Hello",
+    "subtitle": "world",
+    "punctuation": "!"
+}
+```
+
+Should result in any of the following formats:
+
+```html
+<!-- Space-separated format -->
+<h1 data-fe-b="0 1 2" greeting="Hello" subtitle="world" punctuation="!"></h1>
+
+<!-- Enumerated format -->
+<h1 data-fe-b-0 data-fe-b-1 data-fe-b-2 greeting="Hello" subtitle="world" punctuation="!"></h1>
+
+<!-- Compact format -->
+<h1 data-fe-c-0-3 greeting="Hello" subtitle="world" punctuation="!"></h1>
 ```
 
 **Mixed attribute and content example**
 
 Multiple attributes and content bindings such as:
 ```html
-<div show="{{show}}" appearance="{{appearance}}">
+<div show="{{show}}" appearance="{{appearance}}" punctuation="{{punctuation}}">
     <h1>{{text}}</h1>
     <span>{{subtitle}}</span>
+    <span>{{punctuation}}</span>
 </div>
 ```
 
 Should result in:
 ```html
-<div data-fe-b-0 data-fe-b-1 show appearance="large">
-    <h1><!--fe-b$$start$$2$$ZJEYduCZlM$$fe-b-->Hello<!--fe-b$$end$$2$$ZJEYduCZlM$$fe-b--></h1>
-    <span><!--fe-b$$start$$3$$t01oHhokPY$$fe-b-->world<!--fe-b$$end$$3$$t01oHhokPY$$fe-b--></span>
+<!-- Space-separated format -->
+<div data-fe-b="0 1 2" show appearance="large" punctuation="!">
+    <h1><!--fe-b$$start$$3$$UniqueID1$$fe-b-->Hello<!--fe-b$$end$$3$$UniqueID1$$fe-b--></h1>
+    <span><!--fe-b$$start$$4$$UniqueID2$$fe-b-->world<!--fe-b$$end$$4$$UniqueID2$$fe-b--></span>
+    <span><!--fe-b$$start$$5$$UniqueID3$$fe-b-->!<!--fe-b$$end$$5$$UniqueID3$$fe-b--></span>
+</div>
+
+<!-- Enumerated format -->
+<div data-fe-b-0 data-fe-b-1 data-fe-b-2 show appearance="large" punctuation="!">
+    <h1><!--fe-b$$start$$3$$UniqueID1$$fe-b-->Hello<!--fe-b$$end$$3$$UniqueID1$$fe-b--></h1>
+    <span><!--fe-b$$start$$4$$UniqueID2$$fe-b-->world<!--fe-b$$end$$4$$UniqueID2$$fe-b--></span>
+    <span><!--fe-b$$start$$5$$UniqueID3$$fe-b-->!<!--fe-b$$end$$5$$UniqueID3$$fe-b--></span>
+</div>
+
+<!-- Compact format -->
+<div data-fe-c-0-3 show appearance="large" punctuation="!">
+    <h1><!--fe-b$$start$$3$$UniqueID1$$fe-b-->Hello<!--fe-b$$end$$3$$UniqueID1$$fe-b--></h1>
+    <span><!--fe-b$$start$$4$$UniqueID2$$fe-b-->world<!--fe-b$$end$$4$$UniqueID2$$fe-b--></span>
+    <span><!--fe-b$$start$$5$$UniqueID3$$fe-b-->!<!--fe-b$$end$$5$$UniqueID3$$fe-b--></span>
 </div>
 ```
 

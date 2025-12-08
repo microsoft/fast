@@ -10,6 +10,7 @@ import type {
     SyntheticViewTemplate,
 } from "../templating/template.js";
 import type { HydrationView } from "../templating/view.js";
+import { FAST } from "../platform.js";
 
 const bindingStartMarker = /fe-b\$\$start\$\$(\d+)\$\$(.+)\$\$fe-b/;
 const bindingEndMarker = /fe-b\$\$end\$\$(\d+)\$\$(.+)\$\$fe-b/;
@@ -28,6 +29,7 @@ function isComment(node: Node): node is Comment {
  */
 export const HydrationMarkup = Object.freeze({
     attributeMarkerName: "data-fe-b",
+    compactAttributeMarkerName: "data-fe-c",
     attributeBindingSeparator: " ",
     contentBindingStartMarker(index: number, uniqueId: string) {
         return `fe-b$$start$$${index}$$${uniqueId}$$fe-b`;
@@ -62,6 +64,8 @@ export const HydrationMarkup = Object.freeze({
     /**
      * Returns the indexes of the ViewBehaviorFactories affecting
      * attributes for the element, or null if no factories were found.
+     *
+     * This method parses the space-separated format: `data-fe-b="0 1 2"`.
      */
     parseAttributeBinding(node: Element): null | number[] {
         const attr = node.getAttribute(this.attributeMarkerName);
@@ -73,7 +77,8 @@ export const HydrationMarkup = Object.freeze({
      * Returns the indexes of the ViewBehaviorFactories affecting
      * attributes for the element, or null if no factories were found.
      *
-     * Uses the alternative syntax of data-fe-b-<number>
+     * This method parses the enumerated format: `data-fe-b-0`, `data-fe-b-1`, `data-fe-b-2`.
+     * This is an alternative format that uses separate attributes for each binding index.
      */
     parseEnumeratedAttributeBinding(node: Element): null | number[] {
         const attrs: number[] = [];
@@ -86,15 +91,57 @@ export const HydrationMarkup = Object.freeze({
                 if (!Number.isNaN(count)) {
                     attrs.push(count);
                 } else {
-                    throw new Error(
-                        `Invalid attribute marker name: ${attr}. Expected format is ${prefix}<number>.`
-                    );
+                    throw FAST.error(1601 /* invalidAttributeMarkerName */, {
+                        name: attr,
+                        expectedFormat: `${prefix}<number>`,
+                    });
                 }
             }
         }
 
         return attrs.length === 0 ? null : attrs;
     },
+
+    /**
+     * Returns the indexes of the ViewBehaviorFactories affecting
+     * attributes for the element, or null if no factories were found.
+     *
+     * This method parses the compact format: `data-fe-c-{index}-{count}`.
+     */
+    parseCompactAttributeBinding(node: Element): null | number[] {
+        const prefix = `${this.compactAttributeMarkerName}-`;
+        const attrName = node.getAttributeNames().find(name => name.startsWith(prefix));
+
+        if (!attrName) {
+            return null;
+        }
+
+        const suffix = attrName.slice(prefix.length);
+        const parts = suffix.split("-");
+        const startIndex = parseInt(parts[0], 10);
+        const count = parseInt(parts[1], 10);
+
+        if (
+            parts.length !== 2 ||
+            Number.isNaN(startIndex) ||
+            Number.isNaN(count) ||
+            startIndex < 0 ||
+            count < 1
+        ) {
+            throw FAST.error(1604 /* invalidCompactAttributeMarkerName */, {
+                name: attrName,
+                expectedFormat: `${this.compactAttributeMarkerName}-{index}-{count}`,
+            });
+        }
+
+        const indexes: number[] = [];
+        for (let i = 0; i < count; i++) {
+            indexes.push(startIndex + i);
+        }
+
+        return indexes;
+    },
+
     /**
      * Parses the ViewBehaviorFactory index from string data. Returns
      * the binding index or null if the index cannot be retrieved.
