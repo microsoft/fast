@@ -593,6 +593,19 @@ test.describe("TemplateRenderer", () => {
 
             expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p   ${hydrationMarker.attribute([0, 1])}></p></template></${name}>`)
         });
+        test("should restart marker indexes inside the template after host bindings", () => {
+            const name = uniqueElementName();
+            FASTElement.define({
+                name,
+                template: html`<template @click="${() => void 0}"><span attr="${() => "value"}"></span></template>`,
+            });
+            const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(
+                `<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><span attr="value" ${hydrationMarker.attribute([0])}></span></template></${name}>`
+            );
+        });
         test("should only emit markers for custom element templates", () => {
             const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
             const result = consolidate(templateRenderer.render(html`<p>${x => "hello world"}</p>`));
