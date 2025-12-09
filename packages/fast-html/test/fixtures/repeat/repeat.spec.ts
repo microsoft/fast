@@ -92,4 +92,42 @@ test.describe("f-template", async () => {
             });
         })).resolves.toEqual("mutations detected");
     });
+
+    test("repeat directive with no item binding should not error", async ({ page }) => {
+        await page.goto("/fixtures/repeat/");
+
+        const element = page.locator("test-element-no-item-repeat-binding");
+        const listItems = element.locator("li");
+
+        await expect(listItems).toHaveCount(0);
+
+        const commentNodeContent = await element.evaluate((node: TestElement) => {
+            const walker = document.createTreeWalker(
+                node.shadowRoot!,
+                NodeFilter.SHOW_COMMENT,
+            );
+
+            const comments: string[] = [];
+            let currentNode: Node | null = walker.nextNode();
+            while (currentNode) {
+                comments.push(currentNode.nodeValue!);
+                currentNode = walker.nextNode();
+            }
+
+            return comments;
+        });
+
+        expect(commentNodeContent).toEqual(["", ""]);
+
+        await element.evaluate((node: TestElement) => {
+            node.list = [
+                "A",
+                "B",
+                "C"
+            ];
+        });
+
+        await expect(listItems).toHaveCount(3);
+        await expect(listItems).toContainText(["A", "B", "C"]);
+    });
 });
