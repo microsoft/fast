@@ -1,6 +1,7 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
+        "isolatedModules": true,
         "paths": {
             "@microsoft/fast-element": [
                 "../src"
