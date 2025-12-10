@@ -1,0 +1,92 @@
+name: Bundle Size Tracker
+
+on:
+  pull_request:
+    branches:
+      - main
+      - releases/*
+      - features/*
+    paths:
+      - 'packages/fast-element/**'
+      - '.github/workflows/bundle-size-tracker.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  track-bundle-size:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages
+        run: npm run build
+
+      - name: Analyze PR bundle size
+        run: node build/analyze-bundle-size.mjs --output-json --output-file=bundle-size-pr.json      - name: Upload PR bundle size
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-size-pr
+          path: bundle-size-pr.json
+
+      - name: Checkout target branch
+        run: |
+          git checkout ${{ github.event.pull_request.base.sha }}
+
+      - name: Install dependencies (target branch)
+        run: npm ci
+
+      - name: Build packages (target branch)
+        run: npm run build
+
+      - name: Analyze target branch bundle size
+        run: node build/analyze-bundle-size.mjs --output-json --output-file=bundle-size-base.json
+
+      - name: Upload base bundle size
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-size-base
+          path: bundle-size-base.json
+
+      - name: Checkout PR branch again
+        run: git checkout ${{ github.event.pull_request.head.sha }}
+
+      - name: Download PR bundle size
+        uses: actions/download-artifact@v4
+        with:
+          name: bundle-size-pr
+
+      - name: Download base bundle size
+        uses: actions/download-artifact@v4
+        with:
+          name: bundle-size-base
+
+      - name: Compare bundle sizes and generate report
+        run: node build/compare-bundle-sizes.mjs --pr-file=bundle-size-pr.json --base-file=bundle-size-base.json --output-file=bundle-report.md
+
+      - name: Comment PR with bundle size report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: node build/comment-pr-bundle-size.mjs --report-file=bundle-report.md
+
+      - name: Upload bundle report
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-report
+          path: bundle-report.md
