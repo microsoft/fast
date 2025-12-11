@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix: correct hydration marker indexes for templates with host bindings",
+  "packageName": "@microsoft/fast-ssr",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

@@ -593,6 +593,111 @@ test.describe("TemplateRenderer", () => {
 
             expect(result).toBe(`<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><p   ${hydrationMarker.attribute([0, 1])}></p></template></${name}>`)
         });
+        test("should restart marker indexes inside the template after host bindings", () => {
+            const name = uniqueElementName();
+            FASTElement.define({
+                name,
+                template: html`<template @click="${() => void 0}"><span attr="${() => "value"}"></span></template>`,
+            });
+            const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(
+                `<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><span attr="value" ${hydrationMarker.attribute([0])}></span></template></${name}>`
+            );
+        });
+        test("should restart marker indexes after multiple host bindings of different types", () => {
+            // Test various permutations of host binding types to ensure order doesn't matter
+            const hostBindings = {
+                event: `@click="\${() => void 0}"`,
+                boolean: `?disabled="\${() => true}"`,
+                property: `:title="\${() => 'tooltip'}"`,
+                attribute: `attr="\${() => 'value'}"`,
+            };
+
+            const permutations = [
+                ["event", "boolean", "property", "attribute"],
+                ["attribute", "property", "boolean", "event"],
+                ["boolean", "event", "attribute", "property"],
+                ["property", "attribute", "event", "boolean"],
+            ] as const;
+
+            for (const order of permutations) {
+                const name = uniqueElementName();
+                const hostBindingString = order.map(key => hostBindings[key]).join(" ");
+                const templateString = `<template ${hostBindingString}><span attr="\${() => 'value'}"></span></template>`;
+
+                FASTElement.define({
+                    name,
+                    template: new Function("html", `return html\`${templateString}\``)(html),
+                });
+                const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+                const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+                // Verify content binding is at index 0 regardless of host binding order
+                // Attribute order on host may vary, so check for key parts
+                expect(result).toContain(`<${name}`);
+                expect(result).toContain(`disabled`);
+                expect(result).toContain(`attr="value"`);
+                expect(result).toContain(`needs-hydration`);
+                expect(result).toContain(`<span attr="value" ${hydrationMarker.attribute([0])}></span>`);
+                expect(result).toContain(`</${name}>`);
+            }
+        });
+        test("should restart marker indexes after host bindings with static attributes", () => {
+            const name = uniqueElementName();
+            FASTElement.define({
+                name,
+                template: html`<template id="static-id" @click="${() => void 0}"><span attr="${() => "value"}"></span></template>`,
+            });
+            const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(
+                `<${name} id="static-id" needs-hydration><template shadowrootmode="open" shadowroot="open"><span attr="value" ${hydrationMarker.attribute([0])}></span></template></${name}>`
+            );
+        });
+        test("should restart marker indexes after multiple host events", () => {
+            const name = uniqueElementName();
+            FASTElement.define({
+                name,
+                template: html`<template @click="${() => void 0}" @keydown="${() => void 0}"><span attr="${() => "value"}"></span></template>`,
+            });
+            const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(
+                `<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><span attr="value" ${hydrationMarker.attribute([0])}></span></template></${name}>`
+            );
+        });
+        test("should restart marker indexes with host bindings and multiple content bindings", () => {
+            const name = uniqueElementName();
+            FASTElement.define({
+                name,
+                template: html`<template @click="${() => void 0}"><span first="${() => "a"}" second="${() => "b"}"></span></template>`,
+            });
+            const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+
+            expect(result).toBe(
+                `<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><span first="a" second="b" ${hydrationMarker.attribute([0, 1])}></span></template></${name}>`
+            );
+        });
+        test("should restart marker indexes with host bindings and content text bindings", () => {
+            const name = uniqueElementName();
+            const template = html`<template @click="${() => void 0}"><span>${() => "text"}</span></template>`;
+            FASTElement.define({
+                name,
+                template,
+            });
+            const { templateRenderer } = fastSSR({ emitHydratableMarkup: true });
+            const result = consolidate(templateRenderer.render(`<${name}></${name}>`));
+            const codes = (template.create() as unknown as SSRView).codes;
+
+            expect(result).toBe(
+                `<${name} needs-hydration><template shadowrootmode="open" shadowroot="open"><span>${hydrationMarker.contentBindingStart(0, codes.id)}text${hydrationMarker.contentBindingEnd(0, codes.id)}</span></template></${name}>`
+            );
+        });
         test("should only emit markers for custom element templates", () => {
             const { templateRenderer } = fastSSR({emitHydratableMarkup: true});
             const result = consolidate(templateRenderer.render(html`<p>${x => "hello world"}</p>`));
