@@ -113,6 +113,7 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
         source: unknown,
         context: ExecutionContext
     ): IterableIterator<string> {
+        const hydrationIndexOffset = codes.hydrationIndexOffset ?? 0;
         for (const code of codes) {
             switch (code.type) {
                 case OpType.text:
@@ -123,7 +124,10 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
                     const renderer = this.getFactoryRenderer(factory);
 
                     if (this.shouldEmitHydrationMarkup(renderInfo)) {
-                        yield hydrationMarker.contentBindingStart(code.index, codes.id);
+                        yield hydrationMarker.contentBindingStart(
+                            code.index - hydrationIndexOffset,
+                            codes.id
+                        );
                     }
 
                     if (renderer) {
@@ -142,7 +146,10 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
                     }
 
                     if (this.shouldEmitHydrationMarkup(renderInfo)) {
-                        yield hydrationMarker.contentBindingEnd(code.index, codes.id);
+                        yield hydrationMarker.contentBindingEnd(
+                            code.index - hydrationIndexOffset,
+                            codes.id
+                        );
                     }
 
                     break;
@@ -256,7 +263,10 @@ export class DefaultTemplateRenderer extends EventEmitter implements TemplateRen
 
                 case OpType.attributeBindingMarker:
                     if (this.shouldEmitHydrationMarkup(renderInfo)) {
-                        yield ` ${hydrationMarker.attribute(code.indexes)}`;
+                        const relativeIndexes = code.indexes.map(
+                            index => index - hydrationIndexOffset
+                        );
+                        yield ` ${hydrationMarker.attribute(relativeIndexes)}`;
                     }
 
                     break;

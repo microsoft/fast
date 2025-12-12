@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>Host Bindings Test</title>
+        <style>
+            /* Ensure custom elements display as block to prevent overlap */
+            host-event-element,
+            host-multi-element,
+            host-static-element,
+            host-events-element,
+            host-multi-content-element,
+            host-text-binding-element,
+            host-property-element,
+            host-all-types-element,
+            host-perm-attr-first,
+            host-perm-bool-first,
+            host-perm-prop-first {
+                display: block;
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Test 1: Single host event binding with content attribute binding -->
+        <!-- Verifies marker indexes restart at 0 inside content after host binding -->
+        <host-event-element>
+            <template shadowrootmode="open">
+                <span data-fe-b-0>Hello</span>
+            </template>
+        </host-event-element>
+        <f-template name="host-event-element">
+            <template @click="{handleClick()}">
+                <span>{{greeting}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 2: Multiple host bindings (event + boolean attr) with content binding -->
+        <!-- Verifies multiple host bindings don't affect content indexing -->
+        <host-multi-element disabled>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$HostMulti$$fe-b-->World<!--fe-b$$end$$0$$HostMulti$$fe-b--></span>
+            </template>
+        </host-multi-element>
+        <f-template name="host-multi-element">
+            <template @click="{handleClick()}" ?disabled="{isDisabled}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 3: Host bindings with static attribute and multiple content text bindings -->
+        <!-- Verifies static attributes on host + host event + content bindings work together -->
+        <host-static-element id="static-host">
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$StaticEl1$$fe-b-->first<!--fe-b$$end$$0$$StaticEl1$$fe-b--> <!--fe-b$$start$$1$$StaticEl1$$fe-b-->second<!--fe-b$$end$$1$$StaticEl1$$fe-b--></span>
+            </template>
+        </host-static-element>
+        <f-template name="host-static-element">
+            <template id="static-host" @click="{handleClick()}">
+                <span>{{first}} {{second}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 4: Multiple host events with content text binding -->
+        <!-- Verifies multiple host event bindings + text binding -->
+        <host-events-element>
+            <template shadowrootmode="open">
+                <!--fe-b$$start$$0$$HostEvent1$$fe-b-->content text<!--fe-b$$end$$0$$HostEvent1$$fe-b-->
+            </template>
+        </host-events-element>
+        <f-template name="host-events-element">
+            <template @click="{handleClick()}" @mouseenter="{handleMouseEnter()}">
+                {{text}}
+            </template>
+        </f-template>
+
+        <!-- Test 5: Host event with multiple content attribute bindings on same element -->
+        <!-- KEY TEST: Verifies that content binding indexes are 0,1 not offset by host bindings -->
+        <host-multi-content-element>
+            <template shadowrootmode="open">
+                <span first="a" second="b" data-fe-b="0 1"></span>
+            </template>
+        </host-multi-content-element>
+        <f-template name="host-multi-content-element">
+            <template @click="{handleClick()}">
+                <span first="{first}" second="{second}"></span>
+            </template>
+        </f-template>
+
+        <!-- Test 6: Host event with content text binding in span -->
+        <!-- Verifies host event + text binding in element -->
+        <host-text-binding-element>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$TextBind1$$fe-b-->text content<!--fe-b$$end$$0$$TextBind1$$fe-b--></span>
+            </template>
+        </host-text-binding-element>
+        <f-template name="host-text-binding-element">
+            <template @click="{handleClick()}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 7: Host property binding with content binding -->
+        <!-- Verifies property binding (:property) on host works correctly -->
+        <host-property-element>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$PropEl1$$fe-b-->property test<!--fe-b$$end$$0$$PropEl1$$fe-b--></span>
+            </template>
+        </host-property-element>
+        <f-template name="host-property-element">
+            <template :title="{hostTitle}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 8: All host binding types (event + boolean + property + attribute) -->
+        <!-- Verifies all binding types on host with content binding -->
+        <host-all-types-element attr="value" disabled>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$AllTypes1$$fe-b-->all types<!--fe-b$$end$$0$$AllTypes1$$fe-b--></span>
+            </template>
+        </host-all-types-element>
+        <f-template name="host-all-types-element">
+            <template @click="{handleClick()}" ?disabled="{isDisabled}" :title="{hostTitle}" attr="{hostAttr}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 9: Host binding permutation - attribute first -->
+        <!-- Order: attribute, property, boolean, event -->
+        <host-perm-attr-first attr="value" disabled>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$PermAttr1$$fe-b-->perm attr first<!--fe-b$$end$$0$$PermAttr1$$fe-b--></span>
+            </template>
+        </host-perm-attr-first>
+        <f-template name="host-perm-attr-first">
+            <template attr="{hostAttr}" :title="{hostTitle}" ?disabled="{isDisabled}" @click="{handleClick()}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 10: Host binding permutation - boolean first -->
+        <!-- Order: boolean, event, attribute, property -->
+        <host-perm-bool-first attr="value" disabled>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$PermBool1$$fe-b-->perm bool first<!--fe-b$$end$$0$$PermBool1$$fe-b--></span>
+            </template>
+        </host-perm-bool-first>
+        <f-template name="host-perm-bool-first">
+            <template ?disabled="{isDisabled}" @click="{handleClick()}" attr="{hostAttr}" :title="{hostTitle}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <!-- Test 11: Host binding permutation - property first -->
+        <!-- Order: property, attribute, event, boolean -->
+        <host-perm-prop-first attr="value" disabled>
+            <template shadowrootmode="open">
+                <span><!--fe-b$$start$$0$$PermProp1$$fe-b-->perm prop first<!--fe-b$$end$$0$$PermProp1$$fe-b--></span>
+            </template>
+        </host-perm-prop-first>
+        <f-template name="host-perm-prop-first">
+            <template :title="{hostTitle}" attr="{hostAttr}" @click="{handleClick()}" ?disabled="{isDisabled}">
+                <span>{{text}}</span>
+            </template>
+        </f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
