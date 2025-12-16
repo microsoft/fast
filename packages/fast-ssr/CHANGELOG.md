@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-ssr
 
-This log was last generated on Mon, 19 Aug 2024 22:04:19 GMT and should not be manually modified.
+<!-- This log was last generated on Tue, 16 Dec 2025 21:27:19 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-beta.36
+
+Tue, 16 Dec 2025 21:27:19 GMT
+
+### Changes
+
+- fix: correct hydration marker indexes for templates with host bindings (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.9.1
 
 ## 1.0.0-beta.35
 
