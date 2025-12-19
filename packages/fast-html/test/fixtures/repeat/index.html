@@ -101,5 +101,22 @@
                 </ul>
             </template>
         </test-element-interval-updates>
+
+        <test-element-no-item-repeat-binding>
+            <template shadowrootmode="open">
+                <ul>
+                    <!--fe-b$$start$$0$$item-in-list$$fe-b--><!--fe-b$$end$$0$$item-in-list$$fe-b-->
+                </ul>
+            </template>
+        </test-element-no-item-repeat-binding>
+        <f-template name="test-element-no-item-repeat-binding">
+            <template>
+                <ul>
+                    <f-repeat value="{item in list}">
+                        <li>{{item}}</li>
+                    </f-repeat>
+                </ul>
+            </template>
+        </f-template>
     </body>
 </html>
