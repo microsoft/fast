@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Moves handleEvent from a class property into a closure in children.ts to remove non-standard observer.target property assignment",
+  "packageName": "@microsoft/fast-element",
+  "email": "email not defined",
+  "dependentChangeType": "none"
+}
