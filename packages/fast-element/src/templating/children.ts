@@ -65,12 +65,14 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
         let observer = target[this.observerProperty];
 
         if (!observer) {
-            observer = new MutationObserver(this.handleEvent);
+            const handleEvent = (mutations, observer) => {
+                this.updateTarget(this.getSource(target), this.computeNodes(target));
+            };
+            observer = new MutationObserver(handleEvent);
             observer.toJSON = noop;
             target[this.observerProperty] = observer;
         }
 
-        observer.target = target;
         observer.observe(target, this.options);
     }
 
@@ -80,7 +82,6 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
      */
     disconnect(target: any): void {
         const observer = target[this.observerProperty];
-        observer.target = null;
         observer.disconnect();
     }
 
@@ -95,11 +96,6 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 
         return Array.from(target.childNodes);
     }
-
-    private handleEvent = (mutations: MutationRecord[], observer: any): void => {
-        const target = observer.target;
-        this.updateTarget(this.getSource(target), this.computeNodes(target));
-    };
 }
 
 HTMLDirective.define(ChildrenDirective);
