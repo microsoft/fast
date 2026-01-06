@@ -188,6 +188,7 @@ export function parseStringToOpCodes(
     const opCodes = new OpCodes();
 
     let hostBindingTarget: null | DefaultTreeElement = null;
+    let hydrationIndexOffset = 0;
 
     /**
      * Parses an Element node, pushing all op codes for the element into
@@ -261,6 +262,9 @@ export function parseStringToOpCodes(
                 dynamicAttributes: Array.from(attributes.dynamic.values()),
             });
             skipTo(node.sourceCodeLocation!.startTag.endOffset);
+            if (node === hostBindingTarget) {
+                hydrationIndexOffset = factoryIndex;
+            }
             return;
         }
 
@@ -428,6 +432,7 @@ export function parseStringToOpCodes(
 
     // Flush the remaining string content before returning op codes.
     flushTo();
+    opCodes.hydrationIndexOffset = hydrationIndexOffset;
 
     return opCodes;
 }

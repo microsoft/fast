@@ -131,6 +131,7 @@ export type Op =
 export class OpCodes extends Array<Op> {
     private static readonly cache: WeakMap<ViewTemplate, OpCodes> = new WeakMap();
     public readonly id = IDManager.getFor(this);
+    public hydrationIndexOffset = 0;
 
     static get(key: ViewTemplate) {
         return OpCodes.cache.get(key);

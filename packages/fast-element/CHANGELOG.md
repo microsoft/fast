@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 08 Dec 2025 19:47:51 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 16 Dec 2025 21:27:19 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.9.1
+
+Tue, 16 Dec 2025 21:27:19 GMT
+
+### Patches
+
+- fix: correct hydration marker indexes for templates with host bindings (863023+radium-v@users.noreply.github.com)
 
 ## 2.9.0
 

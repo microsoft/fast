@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 16 Dec 2025 21:27:19 GMT",
+      "version": "2.9.1",
+      "tag": "@microsoft/fast-element_v2.9.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "2c8de46fbde0440593f559cd2ddd8d7c6248f68d",
+            "comment": "fix: correct hydration marker indexes for templates with host bindings"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 08 Dec 2025 19:47:51 GMT",
       "version": "2.9.0",
       "tag": "@microsoft/fast-element_v2.9.0",

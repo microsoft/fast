@@ -39,13 +39,13 @@ module.exports = function (config) {
             require("karma-webpack"),
             require("karma-source-map-support"),
             require("karma-sourcemap-loader"),
-            require("karma-coverage-istanbul-reporter"),
+            require("karma-coverage"),
             require("karma-chrome-launcher"),
             require("karma-firefox-launcher"),
         ],
-        files: [`dist/esm/__test__/${setup}.cjs`],
+        files: [`src/__test__/${setup}.cjs`],
         preprocessors: {
-            [`dist/esm/__test__/${setup}.cjs`]: ["webpack", "sourcemap"],
+            [`src/__test__/${setup}.cjs`]: ["webpack", "sourcemap"],
         },
         webpackMiddleware: {
             // webpack-dev-middleware configuration
@@ -125,10 +125,16 @@ module.exports = function (config) {
             options: { esModules: true },
             test: /\.[tj]s$/,
         });
-        options.reporters = ["coverage-istanbul", ...options.reporters];
-        options.coverageIstanbulReporter = {
-            reports: ["html", "text-summary", "json", "lcovonly", "cobertura"],
-            dir: "coverage",
+        options.reporters = ["coverage", ...options.reporters];
+        options.coverageReporter = {
+            dir: path.join(basePath, "coverage"),
+            reporters: [
+                { type: "html", subdir: "html" },
+                { type: "text-summary" },
+                { type: "json", subdir: ".", file: "coverage.json" },
+                { type: "lcovonly", subdir: ".", file: "lcov.info" },
+                { type: "cobertura", subdir: ".", file: "cobertura-coverage.xml" },
+            ],
             fixWebpackSourcePaths: true,
         };
         options.junitReporter = {

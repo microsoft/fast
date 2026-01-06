@@ -92,6 +92,7 @@ export function buildViewBindingTargets(
 ): { targets: ViewBehaviorTargets; boundaries: ViewBehaviorBoundaries } {
     const range = createRangeForNodes(firstNode, lastNode);
     const treeRoot = range.commonAncestorContainer;
+    const hydrationIndexOffset = getHydrationIndexOffset(factories);
     const walker = document.createTreeWalker(
         treeRoot,
         NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_COMMENT + NodeFilter.SHOW_TEXT,
@@ -111,12 +112,19 @@ export function buildViewBindingTargets(
     while (node !== null) {
         switch (node.nodeType) {
             case Node.ELEMENT_NODE: {
-                targetElement(node as Element, factories, targets);
+                targetElement(node as Element, factories, targets, hydrationIndexOffset);
                 break;
             }
 
             case Node.COMMENT_NODE: {
-                targetComment(node as Comment, walker, factories, targets, boundaries);
+                targetComment(
+                    node as Comment,
+                    walker,
+                    factories,
+                    targets,
+                    boundaries,
+                    hydrationIndexOffset
+                );
                 break;
             }
         }
@@ -131,7 +139,8 @@ export function buildViewBindingTargets(
 function targetElement(
     node: Element,
     factories: CompiledViewBehaviorFactory[],
-    targets: ViewBehaviorTargets
+    targets: ViewBehaviorTargets,
+    hydrationIndexOffset: number
 ) {
     // Check for attributes and map any factories.
     const attrFactoryIds =
@@ -141,7 +150,8 @@ function targetElement(
 
     if (attrFactoryIds !== null) {
         for (const id of attrFactoryIds) {
-            if (!factories[id]) {
+            const factory = factories[id + hydrationIndexOffset];
+            if (!factory) {
                 throw new HydrationTargetElementError(
                     `HydrationView was unable to successfully target factory on ${
                         node.nodeName
@@ -152,7 +162,7 @@ function targetElement(
                     node
                 );
             }
-            targetFactory(factories[id], node, targets);
+            targetFactory(factory, node, targets);
         }
 
         node.removeAttribute(HydrationMarkup.attributeMarkerName);
@@ -164,7 +174,8 @@ function targetComment(
     walker: TreeWalker,
     factories: CompiledViewBehaviorFactory[],
     targets: ViewBehaviorTargets,
-    boundaries: ViewBehaviorBoundaries
+    boundaries: ViewBehaviorBoundaries,
+    hydrationIndexOffset: number
 ) {
     if (HydrationMarkup.isElementBoundaryStartMarker(node)) {
         skipToElementBoundaryEndMarker(node, walker);
@@ -180,7 +191,7 @@ function targetComment(
 
         const [index, id] = parsed;
 
-        const factory = factories[index];
+        const factory = factories[index + hydrationIndexOffset];
         const nodes: Node[] = [];
         let current: Node | null = walker.nextSibling();
         node.data = "";
@@ -257,6 +268,20 @@ function skipToElementBoundaryEndMarker(node: Comment, walker: TreeWalker) {
 
         current = walker.nextSibling();
     }
+}
+
+function getHydrationIndexOffset(factories: CompiledViewBehaviorFactory[]): number {
+    let offset = 0;
+
+    for (let i = 0, ii = factories.length; i < ii; ++i) {
+        if (factories[i].targetNodeId === "h") {
+            offset++;
+        } else {
+            break;
+        }
+    }
+
+    return offset;
 }
 
 export function targetFactory(
