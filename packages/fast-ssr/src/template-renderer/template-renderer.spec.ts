@@ -225,7 +225,6 @@ test.describe("TemplateRenderer", () => {
 
             const { templateRenderer } = fastSSR();
             const result = templateRenderer.render(html`<${html.partial(name)}><p>Hello world</p></${html.partial(name)}>`);
-            console.log(result);
 
             expect(consolidate(result)).toBe(`<${name}><p>Hello world</p></${name}>`);
         });
