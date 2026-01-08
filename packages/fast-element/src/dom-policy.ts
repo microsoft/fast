@@ -1,5 +1,5 @@
-import { DOMAspect, DOMPolicy, DOMSink } from "./dom.js";
-import { isString, Message, TrustedTypesPolicy } from "./interfaces.js";
+import { DOMAspect, type DOMSink, type DOMPolicy as IDOMPolicy } from "./dom.js";
+import { isString, Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
 /**
@@ -458,7 +458,7 @@ const DOMPolicy = Object.freeze({
      * @param options The options to use in creating the policy.
      * @returns The newly created DOMPolicy.
      */
-    create(options: DOMPolicyOptions = {}): Readonly<DOMPolicy> {
+    create(options: DOMPolicyOptions = {}): Readonly<IDOMPolicy> {
         const trustedType = options.trustedType ?? createTrustedType();
         const guards = createDOMGuards(options.guards ?? {}, defaultDOMGuards);
 
