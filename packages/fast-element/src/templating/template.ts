@@ -306,7 +306,9 @@ export class ViewTemplate<TSource = any, TParent = any>
             html += currentString;
 
             if (isFunction(currentValue)) {
-                currentValue = new HTMLBindingDirective(oneWay(currentValue));
+                currentValue = new HTMLBindingDirective(
+                    oneWay(currentValue as Expression<TSource, any, TParent>)
+                );
             } else if (currentValue instanceof Binding) {
                 currentValue = new HTMLBindingDirective(currentValue);
             } else if (!(definition = HTMLDirective.getForInstance(currentValue))) {
