@@ -119,7 +119,7 @@
     "eslint:fix": "eslint . --ext .ts --fix",
     "test:playwright": "playwright test",
     "test-server": "npx vite test/ --clearScreen false",
-    "test": "npm run eslint && npm run test-chrome:verbose && npm run doc:ci && npm run doc:exports:ci",
+    "test": "npm run eslint && npm run test-chrome:verbose && npm run doc:ci && npm run doc:exports:ci && test:playwright",
     "test-node": "nyc --reporter=lcov --reporter=text-summary --report-dir=coverage/node --temp-dir=coverage/.nyc_output mocha --reporter min --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-node:verbose": "nyc --reporter=lcov --reporter=text-summary --report-dir=coverage/node --temp-dir=coverage/.nyc_output mocha --reporter spec --exit dist/esm/__test__/setup-node.js './dist/esm/**/*.spec.js'",
     "test-chrome": "karma start karma.conf.cjs --browsers=ChromeHeadlessOpt --single-run --coverage",
