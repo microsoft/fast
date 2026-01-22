@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "introduce playwright for testing",
+  "packageName": "@microsoft/fast-element",
+  "email": "machi@microsoft.com",
+  "dependentChangeType": "none"
+}
