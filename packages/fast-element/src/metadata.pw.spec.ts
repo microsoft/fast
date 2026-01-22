@@ -77,25 +77,25 @@ test.describe("Metadata", () => {
         });
 
         test.describe(`falls back to Object for declarations that cannot be statically analyzed`, () => {
-            test.fixme();
-
             interface ArgCtor {}
 
-            for (const argCtor of [
-                class Bar {},
-                function () {
+            const ctors = {
+                Bar: class Bar {},
+                fuction: function () {
                     return;
                 },
-                () => {
+                "arrow function": () => {
                     return;
                 },
-                class {},
-                {},
-                Error,
-                Array,
-                class Bar {}.prototype,
-                class Bar {}.prototype.constructor,
-            ] as any[]) {
+                "unnamed class": class {},
+                "object literal": {},
+                Error: Error,
+                Array: Array,
+                "Bar prototype": class Bar {}.prototype,
+                "Bar prototype.constructor": class Bar {}.prototype.constructor,
+            };
+
+            for (const [name, ctor] of Object.entries(ctors) as any[]) {
                 test.fixme();
 
                 class FooDecoratorInvocation {
@@ -103,7 +103,7 @@ test.describe("Metadata", () => {
                 }
                 decorator()(FooDecoratorInvocation);
 
-                test(`FooDecoratorInvocation { constructor(${argCtor.name}) }`, () => {
+                test(`FooDecoratorInvocation { constructor(${name}) }`, () => {
                     const actual = Metadata.getDesignParamTypes(FooDecoratorInvocation);
                     expect(actual).toHaveLength(1);
                     expect(actual[0]).toBe(Object);
@@ -114,7 +114,7 @@ test.describe("Metadata", () => {
                 }
                 decorator()(FooDecoratorNonInvocation);
 
-                test(`FooDecoratorNonInvocation { constructor(${argCtor.name}) }`, () => {
+                test(`FooDecoratorNonInvocation { constructor(${name}) }`, () => {
                     const actual = Metadata.getDesignParamTypes(FooDecoratorInvocation);
                     expect(actual).toHaveLength(1);
                     expect(actual[0]).toBe(Object);
