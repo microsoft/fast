@@ -19,6 +19,8 @@ steps:
   - checkout: self
     persistCredentials: "true"
 
+  - script: git config --global user.email fastsvc@microsoft.com && git config --global user.name "Microsoft FAST Builds"
+
   - task: UseNode@1
     inputs:
       version: "22.x"
