@@ -72,3 +72,6 @@ obj/
 
 # Test results
 test-results/
+
+# Pack directory
+publish_artifacts/
