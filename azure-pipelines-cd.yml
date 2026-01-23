@@ -1,6 +1,14 @@
 trigger: none
 pr: none
 
+# The `resources` specify the location and version of the 1ES PT.
+resources:
+  repositories:
+  - repository: fastPipelines
+    type: git
+    name: fast/FASTPipelineTemplates
+    ref: main
+
 pool:
   vmImage: "ubuntu-latest"
 
@@ -39,3 +47,5 @@ steps:
   - script: |
       npm pack --workspace "packages" --pack-destination "publish_artifacts"
     displayName: "Pack NPM packages to tgz"
+
+  - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
