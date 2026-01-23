@@ -1,0 +1,41 @@
+trigger: none
+pr: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  npm_config_cache: $(Pipeline.Workspace)/.npm
+
+steps:
+  - checkout: self
+    persistCredentials: "true"
+
+  - task: UseNode@1
+    inputs:
+      version: "22.x"
+    displayName: "Install Node.js"
+
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package-lock.json'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
+      path: $(npm_config_cache)
+    displayName: "Cache npm"
+
+  - script: |
+      npm ci
+    displayName: "Install package dependencies"
+
+  - script: |
+      npm run build
+    displayName: "Build workspaces"
+
+  - script: |
+      mkdir publish_artifacts
+    displayName: "Create a folder for published artifacts"
+
+  - script: |
+      npm pack --workspace "packages" --pack-destination "publish_artifacts"
+    displayName: "Pack NPM packages to tgz"
