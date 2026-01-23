@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Fri, 23 Jan 2026 21:36:23 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.30",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "d1cd327a6d37cea742b1b1df48f807fe9a1da4f7",
+            "comment": "chore: hoist devDependencies"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-router",
+            "comment": "Bump @microsoft/fast-element to v2.9.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Dec 2025 21:27:19 GMT",
       "version": "1.0.0-alpha.29",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.29",

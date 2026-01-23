@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Tue, 16 Dec 2025 21:27:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 23 Jan 2026 21:36:23 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.9.2
+
+Fri, 23 Jan 2026 21:36:23 GMT
+
+### Patches
+
+- chore: hoist devDependencies (863023+radium-v@users.noreply.github.com)
 
 ## 2.9.1
 

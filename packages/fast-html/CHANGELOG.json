@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 23 Jan 2026 21:36:23 GMT",
+      "version": "1.0.0-alpha.37",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.37",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "d1cd327a6d37cea742b1b1df48f807fe9a1da4f7",
+            "comment": "chore: hoist devDependencies"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.9.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Dec 2025 21:27:19 GMT",
       "version": "1.0.0-alpha.36",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.36",

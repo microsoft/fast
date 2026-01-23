@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 23 Jan 2026 21:36:23 GMT",
+      "version": "2.9.2",
+      "tag": "@microsoft/fast-element_v2.9.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "d1cd327a6d37cea742b1b1df48f807fe9a1da4f7",
+            "comment": "chore: hoist devDependencies"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 16 Dec 2025 21:27:19 GMT",
       "version": "2.9.1",
       "tag": "@microsoft/fast-element_v2.9.1",

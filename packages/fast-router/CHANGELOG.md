@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Wed, 11 Dec 2024 19:53:31 GMT and should not be manually modified.
+<!-- This log was last generated on Fri, 23 Jan 2026 21:36:23 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.30
+
+Fri, 23 Jan 2026 21:36:23 GMT
+
+### Changes
+
+- chore: hoist devDependencies (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.9.2
 
 ## 1.0.0-alpha.29
 
