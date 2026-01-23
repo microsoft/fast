@@ -41,6 +41,10 @@ steps:
     displayName: "Build workspaces"
 
   - script: |
+      npm run publish-ci
+    displayName: "Use Beachball publish to bump and commit without publishing"
+
+  - script: |
       mkdir publish_artifacts
     displayName: "Create a folder for published artifacts"
 

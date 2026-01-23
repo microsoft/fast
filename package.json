@@ -34,7 +34,7 @@
     "check": "beachball check ",
     "build:gh-pages": "npm run build -w @microsoft/fast-site",
     "publish": "beachball publish",
-    "publish-ci": "beachball publish -y --access public",
+    "publish-ci": "beachball publish -y --no-publish",
     "sync": "beachball sync",
     "test:diff:error": "echo \"Untracked files exist, try running npm prepare to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
