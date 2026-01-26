@@ -1,4 +1,5 @@
 import chai, { expect } from "chai";
+import "../debug.js";
 import { css, HostBehavior, Updates } from "../index.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/exports.js";
