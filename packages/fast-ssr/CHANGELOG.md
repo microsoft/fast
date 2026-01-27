@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-ssr
 
-<!-- This log was last generated on Tue, 16 Dec 2025 21:27:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 27 Jan 2026 17:28:54 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-beta.37
+
+Tue, 27 Jan 2026 17:28:54 GMT
+
+### Changes
+
+- chore: hoist devDependencies (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.9.2
 
 ## 1.0.0-beta.36
 

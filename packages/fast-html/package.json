@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-html",
-  "version": "1.0.0-alpha.36",
+  "version": "1.0.0-alpha.37",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -58,10 +58,10 @@
     "./dist/esm/index.js"
   ],
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.9.1"
+    "@microsoft/fast-element": "^2.9.2"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.9.1"
+    "@microsoft/fast-element": "^2.9.2"
   },
   "beachball": {
     "disallowedChangeTypes": [

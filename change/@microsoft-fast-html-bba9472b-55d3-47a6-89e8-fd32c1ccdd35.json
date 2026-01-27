@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "chore: hoist devDependencies",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
