@@ -19,7 +19,10 @@ steps:
   - checkout: self
     persistCredentials: "true"
 
-  - script: git config --global user.email fastsvc@microsoft.com && git config --global user.name "Microsoft FAST Builds"
+  - script: |
+      git config --global user.email fastsvc@microsoft.com
+      git config --global user.name "Microsoft FAST Builds"
+      git remote set-url origin https://$(GH_TOKEN)@github.com/microsoft/fast.git
 
   - task: UseNode@1
     inputs:
@@ -45,6 +48,8 @@ steps:
   - script: |
       npm run publish-ci
     displayName: "Use Beachball publish to bump and commit without publishing"
+    env:
+      GH_TOKEN: $(GH_TOKEN)
 
   - script: |
       mkdir publish_artifacts
