@@ -21,5 +21,8 @@
             "ES2016.Array.Include"
         ]
     },
-    "include": [ "src" ]
+    "include": [ "src" ],
+    "exclude": [
+        "src/**/*.pw.spec.ts"
+    ]
 }

@@ -1,6 +1,6 @@
 import { Constructable, isString, KernelServiceId } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
-import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
+import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";

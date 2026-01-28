@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import "../debug.js";
 import { DI, optional } from "./di.js";
 
 describe("DI Exception", function () {
