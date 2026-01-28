@@ -59,8 +59,7 @@
     "@microsoft/fast-element": "^2.9.2"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.9.2",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.33"
+    "@microsoft/fast-element": "^2.9.2"
   },
   "beachball": {
     "disallowedChangeTypes": [
