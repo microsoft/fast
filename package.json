@@ -120,9 +120,6 @@
     },
     "read-package-json": {
       "glob": "$glob"
-    },
-    "@microsoft/fast-foundation": {
-      "@microsoft/fast-element": "file:./packages/fast-element"
     }
   }
 }
