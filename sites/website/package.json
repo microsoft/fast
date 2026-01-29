@@ -2,15 +2,13 @@
   "name": "@microsoft/fast-site",
   "version": "0.6.2",
   "private": true,
+  "type": "module",
   "scripts": {
-    "clean": "concurrently \"npm run clean-docs\" \"npm run clean-static\"",
-    "clean-docs": "node ../../build/clean.js docs",
-    "clean-static": "node ../../build/clean.js static",
-    "copy-static": "node src/copy-static.js",
-    "generate-docs": "node src/generate-docs.js",
-    "prebuild": "npm run clean && npm run generate-docs && npm run copy-static",
-    "build": "npx @11ty/eleventy",
-    "start": "npx @11ty/eleventy --serve"
+    "clean": "node ../../build/clean.js build",
+    "generate-docs": "node scripts/generate-docs.cjs",
+    "build": "npx @11ty/eleventy --output=build --input=src",
+    "start": "npx @11ty/eleventy --output=build --input=src --serve",
+    "help": "npx @11ty/eleventy --help"
   },
   "browserslist": {
     "production": [
@@ -26,6 +24,8 @@
   },
   "dependencies": {
     "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-navigation": "^1.0.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@microsoft/api-documenter": "7.28.0"
   }
 }
