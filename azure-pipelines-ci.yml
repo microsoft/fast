@@ -46,7 +46,7 @@ extends:
 
           - task: UseNode@1
             inputs:
-              version: "20.x"
+              version: "22.x"
             displayName: "Install Node.js"
 
           - task: Cache@2
