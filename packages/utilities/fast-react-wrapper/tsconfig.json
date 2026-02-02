@@ -4,8 +4,8 @@
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
         "experimentalDecorators": true,
-        "target": "es2015",
-        "module": "ESNext",
+        "target": "es2022",
+        "module": "es2020",
         "importHelpers": true,
         "jsx": "react",
         "types": [
@@ -14,7 +14,7 @@
         ],
         "lib": [
             "DOM",
-            "ES2015"
+            "ES2022"
         ]
     },
     "include": ["src"]
