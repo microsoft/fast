@@ -4,7 +4,7 @@ import { enableArrayObservation } from "./array-observer";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
 import { defaultExecutionContext, Observable, observable, volatile } from "./observable";
 
-describe.only("The Observable", () => {
+describe("The Observable", () => {
     class Model {
         @observable child = new ChildModel();
         @observable child2 = new ChildModel();
