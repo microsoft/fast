@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Target es2022 rather than es2015",
+  "packageName": "@ni/fast-react-wrapper",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
