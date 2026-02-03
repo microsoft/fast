@@ -89,7 +89,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
  * @public
  */
 export const Observable = FAST.getById(KernelServiceId.observable, () => {
-    const volatileRegex = /(:|&&|\|\||if)/;
+    const volatileRegex = /(\?\?|:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     const queueUpdate = DOM.queueUpdate;
     let watcher: BindingObserverImplementation | undefined = void 0;

@@ -1,5 +1,5 @@
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom.js";
-import type { Binding, ExecutionContext } from "../observation/observable.js";
+import { type Binding, type ExecutionContext, Observable } from "../observation/observable.js";
 import { HTMLBindingDirective } from "./binding.js";
 import type { HTMLDirective, NodeBehaviorFactory } from "./html-directive.js";
 
@@ -53,6 +53,7 @@ function createAggregateBinding(
     }
 
     let targetName: string | undefined;
+    let isVolatile = false;
     const partCount = parts.length;
     const finalParts = parts.map((x: string | InlineDirective) => {
         if (typeof x === "string") {
@@ -60,6 +61,7 @@ function createAggregateBinding(
         }
 
         targetName = x.targetName || targetName;
+        isVolatile = isVolatile || Observable.isVolatileBinding(x.binding);
         return x.binding;
     });
 
@@ -73,7 +75,7 @@ function createAggregateBinding(
         return output;
     };
 
-    const directive = new HTMLBindingDirective(binding);
+    const directive = new HTMLBindingDirective(binding, isVolatile);
     directive.targetName = targetName;
     return directive;
 }

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add support for ?? in observable bindings",
+  "packageName": "@ni/fast-element",
+  "email": "7282195+m-akinc@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

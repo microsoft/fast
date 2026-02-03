@@ -6,13 +6,14 @@
         "experimentalDecorators": true,
         "suppressImplicitAnyIndexErrors": true,
         "strictPropertyInitialization": false,
+        "useDefineForClassFields": false,
         "importsNotUsedAsValues": "error",
         "ignoreDeprecations": "5.0",
-        "target": "es2015",
-        "module": "ESNext",
+        "target": "es2022",
+        "module": "es2020",
         "importHelpers": true,
         "types": ["mocha", "webpack-env"],
-        "lib": ["DOM", "ES2015", "ES2016.Array.Include"]
+        "lib": ["DOM", "ES2022"]
     },
     "include": ["src"]
 }

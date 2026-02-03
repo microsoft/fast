@@ -8,8 +8,9 @@
         "experimentalDecorators": true,
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
-        "target": "es2015",
-        "module": "ESNext",
+        "useDefineForClassFields": false,
+        "target": "es2022",
+        "module": "es2020",
         "types": [
             "mocha",
             "webpack-env",
@@ -17,8 +18,7 @@
         ],
         "lib": [
             "DOM",
-            "ES2015",
-            "ES2016.Array.Include"
+            "ES2022"
         ]
     },
     "include": ["src"]

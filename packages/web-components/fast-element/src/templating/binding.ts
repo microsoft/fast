@@ -197,10 +197,11 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
     /**
      * Creates an instance of BindingDirective.
      * @param binding - A binding that returns the data used to update the DOM.
+     * @param isVolatile - Optional parameter indicating whether the binding is volatile. If not provided, the volatility of the binding is determined by Observable.isVolatileBinding().
      */
-    public constructor(public binding: Binding) {
+    public constructor(public binding: Binding, isVolatile?: boolean) {
         super();
-        this.isBindingVolatile = Observable.isVolatileBinding(this.binding);
+        this.isBindingVolatile = isVolatile ?? Observable.isVolatileBinding(this.binding);
     }
 
     /**

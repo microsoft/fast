@@ -5,7 +5,7 @@ import { defaultExecutionContext } from "../observation/observable";
 import { css } from "../styles/css";
 import type { StyleTarget } from "../styles/element-styles";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
-import { HTMLBindingDirective } from "./binding";
+import { BindingBehavior, HTMLBindingDirective } from "./binding";
 import { compileTemplate } from "./compiler";
 import type { HTMLDirective } from "./html-directive";
 import { html } from "./template";
@@ -23,6 +23,10 @@ describe("The template compiler", () => {
 
     function binding(result = "result") {
         return new HTMLBindingDirective(() => result);
+    }
+
+    function volatileBinding() {
+        return new HTMLBindingDirective(() => Math.random() > 0.5 ? "greater" : "less");
     }
 
     const scope = {};
@@ -342,6 +346,42 @@ describe("The template compiler", () => {
                     }
                 }
             });
+        });
+
+        it(`marks aggregate binding volatile when first binding is volatile and second is not`, () => {
+            const html = `<a href="beginning ${inline(0)} ${inline(1)}">Link</a>`;
+            const directives = [volatileBinding(), binding()];
+            const { fragment, viewBehaviorFactories } = compile(html, directives);
+
+            const behavior = viewBehaviorFactories[0].createBehavior(fragment) as BindingBehavior;
+            expect(behavior.isBindingVolatile).to.be.true;
+        });
+
+        it(`marks aggregate binding volatile when second binding is volatile and first is not`, () => {
+            const html = `<a href="beginning ${inline(0)} ${inline(1)}">Link</a>`;
+            const directives = [binding(), volatileBinding()];
+            const { fragment, viewBehaviorFactories } = compile(html, directives);
+
+            const behavior = viewBehaviorFactories[0].createBehavior(fragment) as BindingBehavior;
+            expect(behavior.isBindingVolatile).to.be.true;
+        });
+
+        it(`marks aggregate binding non-volatile when neither of two bindings are volatile`, () => {
+            const html = `<a href="beginning ${inline(0)} ${inline(1)}">Link</a>`;
+            const directives = [binding(), binding()];
+            const { fragment, viewBehaviorFactories } = compile(html, directives);
+
+            const behavior = viewBehaviorFactories[0].createBehavior(fragment) as BindingBehavior;
+            expect(behavior.isBindingVolatile).to.be.false;
+        });
+
+        it(`marks aggregate binding volatile when both of two bindings are volatile`, () => {
+            const html = `<a href="beginning ${inline(0)} ${inline(1)}">Link</a>`;
+            const directives = [volatileBinding(), volatileBinding()];
+            const { fragment, viewBehaviorFactories } = compile(html, directives);
+
+            const behavior = viewBehaviorFactories[0].createBehavior(fragment) as BindingBehavior;
+            expect(behavior.isBindingVolatile).to.be.true;
         });
     });
 
