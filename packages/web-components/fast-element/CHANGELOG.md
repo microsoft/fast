@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-element
 
-<!-- This log was last generated on Thu, 30 Oct 2025 16:22:12 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 03 Feb 2026 23:58:32 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.0
+
+Tue, 03 Feb 2026 23:58:32 GMT
+
+### Minor changes
+
+- Add support for ?? in observable bindings ([ni/fast@ad97e08](https://github.com/ni/fast/commit/ad97e08985e1a351a5d39c2bab1488bc337da055))
 
 ## 10.0.5
 

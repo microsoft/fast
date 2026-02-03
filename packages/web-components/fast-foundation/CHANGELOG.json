@@ -2,6 +2,27 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 03 Feb 2026 23:58:32 GMT",
+      "version": "10.1.5",
+      "tag": "@ni/fast-foundation_v10.1.5",
+      "comments": {
+        "patch": [
+          {
+            "author": "7282195+m-akinc@users.noreply.github.com",
+            "package": "@ni/fast-foundation",
+            "commit": "ad97e08985e1a351a5d39c2bab1488bc337da055",
+            "comment": "Target es2022 rather than es2015"
+          },
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-element to v10.1.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Oct 2025 16:22:12 GMT",
       "version": "10.1.4",
       "tag": "@ni/fast-foundation_v10.1.4",
