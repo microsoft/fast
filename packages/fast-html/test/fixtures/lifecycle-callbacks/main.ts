@@ -21,11 +21,11 @@ TemplateElement.config({
     elementDidDefine(name: string): void {
         lifecycleEvents.push({ callback: "elementDidDefine", name });
     },
-    elementWillHydrate(name: string): void {
-        lifecycleEvents.push({ callback: "elementWillHydrate", name });
+    elementWillHydrate(source: HTMLElement): void {
+        lifecycleEvents.push({ callback: "elementWillHydrate", name: source.localName });
     },
-    elementDidHydrate(name: string): void {
-        lifecycleEvents.push({ callback: "elementDidHydrate", name });
+    elementDidHydrate(source: HTMLElement): void {
+        lifecycleEvents.push({ callback: "elementDidHydrate", name: source.localName });
     },
     hydrationComplete(): void {
         lifecycleEvents.push({ callback: "hydrationComplete" });
