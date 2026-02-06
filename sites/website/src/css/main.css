@@ -2583,12 +2583,8 @@ body:not(.navigation-with-keyboard) :not(input):focus {
     }
 
     .footer__link-separator,
-    .navbar__item {
+    .navbar__items--right .navbar__item {
         display: none;
-    }
-
-    .navbar__item.dropdown {
-        display: flex;
     }
 
     .footer__col {
@@ -2602,6 +2598,10 @@ body:not(.navigation-with-keyboard) :not(input):focus {
     .navbar>.container,
     .navbar>.container-fluid {
         padding: 0
+    }
+
+    .home .navbar__toggle {
+        display: none;
     }
 
     .navbar__toggle {
