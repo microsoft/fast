@@ -13,6 +13,20 @@ export {
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { HydrationMarkup } from "../src/components/hydration.js";
 export { Context } from "../src/context.js";
+export {
+    Container,
+    ContainerConfiguration,
+    ContainerImpl,
+    DefaultResolver,
+    DI,
+    FactoryImpl,
+    inject,
+    Registration,
+    ResolverImpl,
+    ResolverStrategy,
+    singleton,
+    transient,
+} from "../src/di/di.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
 export { Observable, observable } from "../src/observation/observable.js";
