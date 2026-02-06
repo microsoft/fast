@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "clean": "node ../../build/clean.js build",
-    "generate-docs": "node scripts/generate-docs.cjs",
-    "build": "npx @11ty/eleventy --output=build --input=src",
-    "start": "npx @11ty/eleventy --output=build --input=src --serve",
+    "prebuild": "node scripts/generate-docs.cjs",
+    "build": "npm run prebuild && npx @11ty/eleventy --output=build --input=src",
+    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=src --serve",
     "help": "npx @11ty/eleventy --help"
   },
   "browserslist": {

@@ -6,31 +6,8 @@ const { getPackageJsonDir } = require("../../../build/get-package-json");
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
-const root = path.resolve(projectRoot, "../../");
-const outputDir = path.resolve(projectRoot, "docs");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
 const markdownAPIDir = path.resolve(projectRoot, "src/docs/2.x/api");
-
-function findFiles(startPath, filter, paths = []) {
-    if (!fs.existsSync(startPath)) {
-        return;
-    }
-
-    const files = fs.readdirSync(startPath);
-
-    for (let i = 0, ii = files.length; i < ii; ++i) {
-        const filename = path.join(startPath, files[i]);
-        const stat = fs.lstatSync(filename);
-
-        if (stat.isDirectory()) {
-            findFiles(filename, filter, paths);
-        } else if (filename.indexOf(filter) !== -1) {
-            paths.push(filename);
-        }
-    }
-
-    return paths;
-}
 
 const packages = [
     {
