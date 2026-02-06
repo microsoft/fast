@@ -1,3 +1,5 @@
+import "../src/debug.js";
+
 export { customElement, FASTElement } from "../src/components/fast-element.js";
 export {
     attr,
@@ -9,6 +11,7 @@ export {
     HydratableElementController,
 } from "../src/components/element-controller.js";
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
+export { HydrationMarkup } from "../src/components/hydration.js";
 export { Context } from "../src/context.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
