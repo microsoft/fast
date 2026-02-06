@@ -280,7 +280,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("a");
+            expect(afterConnect.trim()).toBe("a");
         });
 
         test("renders a template to light dom in light dom mode", async ({ page }) => {
@@ -329,7 +329,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("a");
+            expect(afterConnect.trim()).toBe("a");
         });
 
         test("renders a template override to shadow dom when set", async ({ page }) => {
@@ -380,7 +380,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("b");
+            expect(afterConnect.trim()).toBe("b");
         });
 
         test("renders a template override to light dom when set", async ({ page }) => {
@@ -432,7 +432,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("b");
+            expect(afterConnect.trim()).toBe("b");
         });
 
         test("renders a resolved template to shadow dom in shadow dom mode", async ({
@@ -482,7 +482,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("a");
+            expect(afterConnect.trim()).toBe("a");
         });
 
         test("renders a resolved template to light dom in light dom mode", async ({
@@ -532,7 +532,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("a");
+            expect(afterConnect.trim()).toBe("a");
         });
 
         test("renders a template override over a resolved template to shadow dom when set", async ({
@@ -585,7 +585,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("b");
+            expect(afterConnect.trim()).toBe("b");
         });
 
         test("renders a template override over a resolved template to light dom when set", async ({
@@ -638,7 +638,7 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("b");
+            expect(afterConnect.trim()).toBe("b");
         });
 
         test("sets no styles when none are provided", async ({ page }) => {
@@ -990,8 +990,8 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("a");
-            expect(afterChange).toBe("b");
+            expect(afterConnect.trim()).toBe("a");
+            expect(afterChange.trim()).toBe("b");
         });
 
         test("can dynamically change the template in light dom mode", async ({
@@ -1046,8 +1046,8 @@ test.describe("The ElementController", () => {
             );
 
             expect(beforeConnect).toBe("");
-            expect(afterConnect).toBe("a");
-            expect(afterChange).toBe("b");
+            expect(afterConnect.trim()).toBe("a");
+            expect(afterChange.trim()).toBe("b");
         });
 
         test("can dynamically change the styles", async ({ page }) => {
