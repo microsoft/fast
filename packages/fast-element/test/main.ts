@@ -21,6 +21,7 @@ export {
     DI,
     FactoryImpl,
     inject,
+    optional,
     Registration,
     ResolverImpl,
     ResolverStrategy,
