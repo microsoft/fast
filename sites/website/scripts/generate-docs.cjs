@@ -8,6 +8,7 @@ const { getPackageJsonDir } = require("../../../build/get-package-json");
 const projectRoot = path.resolve(__dirname, "../");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
 const markdownAPIDir = path.resolve(projectRoot, "src/docs/2.x/api");
+const currentVersion = "2x";
 
 const packages = [
     {
@@ -76,7 +77,7 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 
             const isAPIHome = id === "index";
             const docPath = path.join(dir, docFile);
-            let parent = "api2x";
+            let parent = `api${currentVersion}`;
             let title = "";
             const folders = dir.split("/");
             const folderName = folders[folders.length - 1];
@@ -120,7 +121,7 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 
                 if (pkg && exportPath) {
                     line = line.replace(pkg, `${pkg}/${exportPath}`);
-                    parent = `${pkg}/${exportPath}2x`;
+                    parent = `${pkg}/${exportPath}${currentVersion}`;
                 }
 
                 const homeLink = line.match(/\[Home\]\(.\/index\.md\) &gt; (.*)/);
@@ -157,16 +158,16 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
             title = title.replace("\\\[", "");
 
             if (isAPIHome) {
-                const key = `api2x${parent}`;
+                const key = `api${currentVersion}${parent}`;
 
                 const headerSidebarLink = [
                     "---",
                     `id: "${id}"`,
                     `title: "${title}"`,
-                    `layout: 2x`,
+                    `layout: ${currentVersion}`,
                     `eleventyNavigation:`,
                     `  key: "${key}"`,
-                    `  parent: "api2x"`,
+                    `  parent: "api${currentVersion}"`,
                     `  title: "${pkg ? `${pkg}/${exportPath}` : `@microsoft/fast-element`}"`,
                     `navigationOptions:`,
                     `  activeKey: "${key}"`,
@@ -175,15 +176,15 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
 
                 await safeWrite(docPath, headerSidebarLink.concat(output).join("\n"));
             } else {
-                const key = `${exportPath ? exportPath : ""}api2x${id}`;
-                parent = id.startsWith("fast-element.") && parent === "api2x"
-                    ? `api2xfast-element`
+                const key = `${exportPath ? exportPath : ""}api${currentVersion}${id}`;
+                parent = id.startsWith("fast-element.") && parent === `api${currentVersion}`
+                    ? `api${currentVersion}fast-element`
                     : parent;
                 const header = [
                     "---",
                     `id: "${id}"`,
                     `title: "${title}"`,
-                    `layout: 2x-api`,
+                    `layout: ${currentVersion}-api`,
                     `eleventyNavigation:`,
                     `  key: "${key}"`,
                     `  parent: "${parent}"`,
