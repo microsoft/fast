@@ -1,4 +1,9 @@
 export { customElement, FASTElement } from "../src/components/fast-element.js";
+export {
+    attr,
+    AttributeConfiguration,
+    AttributeDefinition,
+} from "../src/components/attributes.js";
 export { Context } from "../src/context.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
