@@ -4,11 +4,18 @@ export {
     AttributeConfiguration,
     AttributeDefinition,
 } from "../src/components/attributes.js";
+export {
+    ElementController,
+    HydratableElementController,
+} from "../src/components/element-controller.js";
+export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { Context } from "../src/context.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
-export { observable } from "../src/observation/observable.js";
+export { Observable, observable } from "../src/observation/observable.js";
 export { Updates } from "../src/observation/update-queue.js";
+export { css } from "../src/styles/css.js";
+export { ElementStyles } from "../src/styles/element-styles.js";
 export { ref } from "../src/templating/ref.js";
 export { html } from "../src/templating/template.js";
 export { uniqueElementName } from "../src/testing/fixture.js";
