@@ -1,6 +1,6 @@
 const path = require("path");
 const { createInterface } = require("readline");
-const { exec } = require("child_process");
+const { execFile } = require("child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("../../../build/get-package-json");
 
@@ -205,8 +205,9 @@ async function buildAPIMarkdown() {
     await copyAPI();
 
     await new Promise((resolve, reject) =>
-        exec(
-            `api-documenter markdown -i ${tempAPIDir} -o ${markdownAPIDir}`,
+        execFile(
+            'api-documenter',
+            ['markdown', '-i', tempAPIDir, '-o', markdownAPIDir],
             (err, stdout, stderr) => {
                 console.log(stdout);
                 console.error(stderr);
@@ -222,8 +223,9 @@ async function buildAPIMarkdown() {
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
             await new Promise((resolve, reject) =>
-                exec(
-                    `api-documenter markdown -i ${tempAPIDir}/${pkg.main}/${pkgExport} -o ${markdownAPIDir}/${pkg.main}/${pkgExport}`,
+                execFile(
+                    'api-documenter',
+                    ['markdown', '-i', `${tempAPIDir}/${pkg.main}/${pkgExport}`, '-o', `${markdownAPIDir}/${pkg.main}/${pkgExport}`],
                     (err, stdout, stderr) => {
                         console.log(stdout);
                         console.error(stderr);
