@@ -1,6 +1,6 @@
 const path = require("path");
 const { createInterface } = require("readline");
-const { execFile } = require("child_process");
+const { exec } = require("child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
@@ -206,9 +206,8 @@ async function buildAPIMarkdown() {
     await copyAPI();
 
     await new Promise((resolve, reject) =>
-        execFile(
-            'api-documenter',
-            ['markdown', '-i', tempAPIDir, '-o', markdownAPIDir],
+        exec(
+            `api-documenter markdown -i ${tempAPIDir} -o ${markdownAPIDir}`,
             (err, stdout, stderr) => {
                 console.log(stdout);
                 console.error(stderr);
@@ -224,9 +223,8 @@ async function buildAPIMarkdown() {
     for (const pkg of packages) {
         for (const pkgExport of pkg.exports) {
             await new Promise((resolve, reject) =>
-                execFile(
-                    'api-documenter',
-                    ['markdown', '-i', `${tempAPIDir}/${pkg.main}/${pkgExport}`, '-o', `${markdownAPIDir}/${pkg.main}/${pkgExport}`],
+                exec(
+                    `api-documenter markdown -i ${tempAPIDir}/${pkg.main}/${pkgExport} -o ${markdownAPIDir}/${pkg.main}/${pkgExport}`,
                     (err, stdout, stderr) => {
                         console.log(stdout);
                         console.error(stderr);
