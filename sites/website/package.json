@@ -2,19 +2,15 @@
   "name": "@microsoft/fast-site",
   "version": "0.6.2",
   "private": true,
+  "type": "module",
   "scripts": {
-    "clean": "concurrently \"npm run clean-docs\" \"npm run clean-static\"",
-    "clean-docs": "node ../../build/clean.js docs",
-    "clean-static": "node ../../build/clean.js static",
-    "copy-static": "node src/copy-static.js",
-    "generate-docs": "node src/generate-docs.js",
-    "prebuild": "npm run clean && npm run generate-docs && npm run copy-static",
-    "build": "docusaurus build",
-    "prestart": "npm run prebuild",
-    "serve": "docusaurus serve",
-    "start": "docusaurus start",
-    "swizzle": "docusaurus swizzle",
-    "test": "npx docusaurus-mdx-checker"
+    "clean:build": "node ../../build/clean.js build",
+    "clean:tmp": "node ../../build/clean.js tmp",
+    "clean": "npm run clean:tmp && npm run clean:build",
+    "prebuild": "npm run clean && node scripts/generate-docs.cjs",
+    "build": "npm run prebuild && npx @11ty/eleventy --output=build --input=src",
+    "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=src --serve",
+    "help": "npx @11ty/eleventy --help"
   },
   "browserslist": {
     "production": [
@@ -29,17 +25,9 @@
     ]
   },
   "dependencies": {
-    "@docusaurus/core": "3.4.0",
-    "@docusaurus/module-type-aliases": "3.4.0",
-    "@docusaurus/preset-classic": "3.4.0",
-    "@docusaurus/theme-live-codeblock": "3.4.0",
-    "@docusaurus/theme-mermaid": "3.4.0",
-    "@docusaurus/types": "3.4.0",
-    "@mdx-js/react": "3.0.1",
-    "@microsoft/api-documenter": "7.28.0",
-    "@types/react": "18.3.3",
-    "prism-react-renderer": "2.3.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "@11ty/eleventy": "^3.1.2",
+    "@11ty/eleventy-navigation": "^1.0.5",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
+    "@microsoft/api-documenter": "7.28.0"
   }
 }

@@ -1,0 +1,31 @@
+---
+layout: doc.njk
+navigationOptions:
+  listElement: "ul"
+  listItemElement: "li"
+  listClass: "menu__list"
+  listItemClass: "menu__list-item"
+  listItemHasChildrenClass: "menu__list-item-collapsible"
+  activeListItemClass: "menu__list-item-collapsible--active"
+  anchorClass: "menu__link"
+  activeAnchorClass: "menu__link--active"
+  useAriaCurrentAttr: true
+  showExcerpt: false
+---
+<aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                {{ collections.1x | eleventyNavigation | eleventyNavigationToHtml(navigationOptions) | safe }}
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        {{ content | safe }}
+    </div>
+  </div>
+</main>
