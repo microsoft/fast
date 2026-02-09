@@ -1,6 +1,7 @@
 import eleventyNavigationPlugin from "@11ty/eleventy-navigation";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 import { IdAttributePlugin } from "@11ty/eleventy";
+import { admonitionPlugin } from "./plugins/admonitions.js";
 
 export default function(eleventyConfig) {
   /**
@@ -28,6 +29,13 @@ export default function(eleventyConfig) {
   eleventyConfig.addPlugin(eleventyNavigationPlugin);
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.addPlugin(IdAttributePlugin);
+
+  /**
+   * Markdown
+   */
+  eleventyConfig.amendLibrary("md", (md) => {
+    md.use(admonitionPlugin);
+  });
 
   /**
    * Filters
