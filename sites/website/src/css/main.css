@@ -1189,7 +1189,12 @@ hr {
     border-left-width: var(--ifm-alert-border-left-width);
     border-radius: var(--ifm-alert-border-radius);
     box-shadow: var(--ifm-alert-shadow);
-    padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal)
+    padding: var(--ifm-alert-padding-vertical) var(--ifm-alert-padding-horizontal);
+    margin-bottom: 1em;
+
+    *:last-child {
+        margin-bottom: 0;
+    }
 }
 
 .alert__heading {

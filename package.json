@@ -9,6 +9,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
+    "build",
     "packages/*",
     "sites/website",
     "examples/todo-app",
