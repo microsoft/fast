@@ -2,7 +2,7 @@ const path = require("path");
 const { createInterface } = require("readline");
 const { execFile } = require("child_process");
 const fs = require("fs-extra");
-const { getPackageJsonDir } = require("../../../build/get-package-json");
+const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");

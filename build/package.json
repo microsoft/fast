@@ -1,0 +1,6 @@
+{
+  "name": "@microsoft/fast-build",
+  "description": "Build utilities for FAST monorepo",
+  "version": "0.0.0",
+  "private": true
+}
