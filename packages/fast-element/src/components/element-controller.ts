@@ -826,16 +826,18 @@ export const needsHydrationAttribute = "needs-hydration";
  * Lifecycle callbacks for element hydration events
  * @public
  */
-export interface HydrationControllerCallbacks {
+export interface HydrationControllerCallbacks<
+    TElement extends HTMLElement = HTMLElement
+> {
     /**
      * Called before hydration has started
      */
-    elementWillHydrate?(name: string): void;
+    elementWillHydrate?(source: TElement): void;
 
     /**
      * Called after hydration has finished
      */
-    elementDidHydrate?(name: string): void;
+    elementDidHydrate?(source: TElement): void;
 
     /**
      * Called after all elements have completed hydration
@@ -883,7 +885,7 @@ export class HydratableElementController<
     /**
      * Lifecycle callbacks for hydration events
      */
-    public static lifecycleCallbacks?: HydrationControllerCallbacks;
+    public static lifecycleCallbacks: HydrationControllerCallbacks = {};
 
     /**
      * An idle callback ID used to track hydration completion
@@ -944,7 +946,7 @@ export class HydratableElementController<
 
         // If there are no more hydrating instances, invoke the hydrationComplete callback
         if (HydratableElementController.hydratingInstances?.size === 0) {
-            HydratableElementController.lifecycleCallbacks?.hydrationComplete?.();
+            HydratableElementController.notifyHydrationComplete();
 
             // Reset to the default strategy after hydration is complete
             ElementController.setStrategy(ElementController);
@@ -984,9 +986,7 @@ export class HydratableElementController<
             return;
         }
 
-        HydratableElementController.lifecycleCallbacks?.elementWillHydrate?.(
-            this.definition.name
-        );
+        this.notifyWillHydrate();
 
         this.stage = Stages.connecting;
 
@@ -1056,10 +1056,7 @@ export class HydratableElementController<
         const name = this.definition.name;
         const instances = HydratableElementController.hydratingInstances.get(name);
 
-        // Callback: After hydration has finished
-        HydratableElementController.lifecycleCallbacks?.elementDidHydrate?.(
-            this.definition.name
-        );
+        this.notifyDidHydrate();
 
         if (instances) {
             instances.delete(this.source);
@@ -1076,6 +1073,55 @@ export class HydratableElementController<
                 HydratableElementController.checkHydrationComplete,
                 { timeout: 50 }
             );
+        }
+    }
+
+    /**
+     * Notifies that hydration is about to start for this element.
+     * Safely invokes the configured elementWillHydrate callback, if any.
+     */
+    private notifyWillHydrate(): void {
+        const callback =
+            HydratableElementController.lifecycleCallbacks.elementWillHydrate;
+
+        if (callback) {
+            try {
+                callback(this.source);
+            } catch {
+                // A lifecycle callback must never prevent hydration.
+            }
+        }
+    }
+
+    /**
+     * Notifies that hydration has finished for this element.
+     * Safely invokes the configured elementDidHydrate callback, if any.
+     */
+    private notifyDidHydrate(): void {
+        const callback = HydratableElementController.lifecycleCallbacks.elementDidHydrate;
+
+        if (callback) {
+            try {
+                callback(this.source);
+            } catch {
+                // A lifecycle callback must never prevent hydration.
+            }
+        }
+    }
+
+    /**
+     * Notifies that all elements have completed hydration.
+     * Safely invokes the configured hydrationComplete callback, if any.
+     */
+    private static notifyHydrationComplete(): void {
+        const callback = HydratableElementController.lifecycleCallbacks.hydrationComplete;
+
+        if (callback) {
+            try {
+                callback();
+            } catch {
+                // A lifecycle callback must never prevent post-hydration cleanup.
+            }
         }
     }
 
