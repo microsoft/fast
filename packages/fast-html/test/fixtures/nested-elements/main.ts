@@ -131,9 +131,9 @@ TemplateElement.options({
                 `Element did define: ${name} [${performance.now()}]`
             );
         },
-        elementDidHydrate(name: string) {
+        elementDidHydrate(source: HTMLElement) {
             (window as any).messages.push(
-                `Element did hydrate: ${name} [${performance.now()}]`
+                `Element did hydrate: ${source.localName} [${performance.now()}]`
             );
         },
         elementDidRegister(name: string) {
@@ -141,9 +141,9 @@ TemplateElement.options({
                 `Element did register: ${name} [${performance.now()}]`
             );
         },
-        elementWillHydrate(name: string) {
+        elementWillHydrate(source: HTMLElement) {
             (window as any).messages.push(
-                `Element will hydrate: ${name} [${performance.now()}]`
+                `Element will hydrate: ${source.localName} [${performance.now()}]`
             );
         },
         hydrationComplete() {

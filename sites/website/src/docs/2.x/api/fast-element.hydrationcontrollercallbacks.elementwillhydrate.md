@@ -20,7 +20,7 @@ Called before hydration has started
 **Signature:**
 
 ```typescript
-elementWillHydrate?(name: string): void;
+elementWillHydrate?(source: TElement): void;
 ```
 
 ## Parameters
@@ -43,12 +43,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-name
+source
 
 
 </td><td>
 
-string
+TElement
 
 
 </td><td>

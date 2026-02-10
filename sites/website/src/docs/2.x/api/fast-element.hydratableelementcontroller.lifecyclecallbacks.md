@@ -23,5 +23,5 @@ Lifecycle callbacks for hydration events
 **Signature:**
 
 ```typescript
-static lifecycleCallbacks?: HydrationControllerCallbacks;
+static lifecycleCallbacks: HydrationControllerCallbacks;
 ```

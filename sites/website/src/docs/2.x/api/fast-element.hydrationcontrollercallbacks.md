@@ -20,7 +20,7 @@ Lifecycle callbacks for element hydration events
 **Signature:**
 
 ```typescript
-export interface HydrationControllerCallbacks 
+export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> 
 ```
 
 ## Methods
@@ -38,7 +38,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[elementDidHydrate(name)?](../fast-element.hydrationcontrollercallbacks.elementdidhydrate/)
+[elementDidHydrate(source)?](../fast-element.hydrationcontrollercallbacks.elementdidhydrate/)
 
 
 </td><td>
@@ -49,7 +49,7 @@ _(Optional)_ Called after hydration has finished
 </td></tr>
 <tr><td>
 
-[elementWillHydrate(name)?](../fast-element.hydrationcontrollercallbacks.elementwillhydrate/)
+[elementWillHydrate(source)?](../fast-element.hydrationcontrollercallbacks.elementwillhydrate/)
 
 
 </td><td>

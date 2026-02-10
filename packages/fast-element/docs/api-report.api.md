@@ -594,7 +594,7 @@ export class HydratableElementController<TElement extends HTMLElement = HTMLElem
     connect(): void;
     disconnect(): void;
     static install(): void;
-    static lifecycleCallbacks?: HydrationControllerCallbacks;
+    static lifecycleCallbacks: HydrationControllerCallbacks;
     protected needsHydration?: boolean;
     get shadowOptions(): ShadowRootOptions | undefined;
     set shadowOptions(value: ShadowRootOptions | undefined);
@@ -627,9 +627,9 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
-export interface HydrationControllerCallbacks {
-    elementDidHydrate?(name: string): void;
-    elementWillHydrate?(name: string): void;
+export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> {
+    elementDidHydrate?(source: TElement): void;
+    elementWillHydrate?(source: TElement): void;
     hydrationComplete?(): void;
 }
 
