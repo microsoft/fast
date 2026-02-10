@@ -52,7 +52,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[lifecycleCallbacks?](../fast-element.hydratableelementcontroller.lifecyclecallbacks/)
+[lifecycleCallbacks](../fast-element.hydratableelementcontroller.lifecyclecallbacks/)
 
 
 </td><td>
@@ -67,7 +67,7 @@ Description
 
 </td><td>
 
-**_(BETA)_** _(Optional)_ Lifecycle callbacks for hydration events
+**_(BETA)_** Lifecycle callbacks for hydration events
 
 
 </td></tr>
