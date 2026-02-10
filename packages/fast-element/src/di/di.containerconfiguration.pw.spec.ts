@@ -1,91 +1,60 @@
 import { expect, test } from "@playwright/test";
+import { ContainerConfiguration, DefaultResolver, DI } from "./di.js";
 
 test.describe("ContainerConfiguration", () => {
     test.describe("child", () => {
         test.describe("defaultResolver - transient", () => {
             test.describe("root container", () => {
-                test("class", async ({ page }) => {
-                    await page.goto("/");
-
-                    const results = await page.evaluate(async () => {
-                        // @ts-expect-error: Client module.
-                        const { DI, ContainerConfiguration, DefaultResolver } =
-                            await import("/main.js");
-
-                        const container0 = DI.createContainer({
-                            ...ContainerConfiguration.default,
-                            defaultResolver: DefaultResolver.transient,
-                        });
-
-                        const container1 = container0.createChild();
-                        const container2 = container0.createChild();
-
-                        class Foo {
-                            public test(): string {
-                                return "hello";
-                            }
-                        }
-
-                        const foo1 = container1.get(Foo);
-                        const foo2 = container2.get(Foo);
-
-                        return {
-                            foo1Test: foo1.test(),
-                            foo2Test: foo2.test(),
-                            sameChildDifferent: container1.get(Foo) !== foo1,
-                            differentChildDifferent: foo1 !== foo2,
-                            rootHas: container0.has(Foo, true),
-                        };
+                test("class", async () => {
+                    const container0 = DI.createContainer({
+                        ...ContainerConfiguration.default,
+                        defaultResolver: DefaultResolver.transient,
                     });
 
-                    expect(results.foo1Test).toBe("hello");
-                    expect(results.foo2Test).toBe("hello");
-                    expect(results.sameChildDifferent).toBe(true);
-                    expect(results.differentChildDifferent).toBe(true);
-                    expect(results.rootHas).toBe(true);
+                    const container1 = container0.createChild();
+                    const container2 = container0.createChild();
+
+                    class Foo {
+                        public test(): string {
+                            return "hello";
+                        }
+                    }
+
+                    const foo1 = container1.get(Foo);
+                    const foo2 = container2.get(Foo);
+
+                    expect(foo1.test()).toBe("hello");
+                    expect(foo2.test()).toBe("hello");
+                    expect(container1.get(Foo) !== foo1).toBe(true);
+                    expect(foo1 !== foo2).toBe(true);
+                    expect(container0.has(Foo, true)).toBe(true);
                 });
             });
 
             test.describe("one child container", () => {
-                test("class", async ({ page }) => {
-                    await page.goto("/");
+                test("class", async () => {
+                    const container0 = DI.createContainer();
 
-                    const results = await page.evaluate(async () => {
-                        // @ts-expect-error: Client module.
-                        const { DI, ContainerConfiguration, DefaultResolver } =
-                            await import("/main.js");
-
-                        const container0 = DI.createContainer();
-
-                        const container1 = container0.createChild({
-                            ...ContainerConfiguration.default,
-                            defaultResolver: DefaultResolver.transient,
-                        });
-                        const container2 = container0.createChild();
-
-                        class Foo {
-                            public test(): string {
-                                return "hello";
-                            }
-                        }
-
-                        const foo1 = container1.get(Foo);
-                        const foo2 = container2.get(Foo);
-
-                        return {
-                            foo1Test: foo1.test(),
-                            foo2Test: foo2.test(),
-                            sameChildDifferent: container1.get(Foo) !== foo2,
-                            differentChildDifferent: foo1 !== foo2,
-                            rootHas: container0.has(Foo, true),
-                        };
+                    const container1 = container0.createChild({
+                        ...ContainerConfiguration.default,
+                        defaultResolver: DefaultResolver.transient,
                     });
+                    const container2 = container0.createChild();
 
-                    expect(results.foo2Test).toBe("hello");
-                    expect(results.foo1Test).toBe("hello");
-                    expect(results.sameChildDifferent).toBe(true);
-                    expect(results.differentChildDifferent).toBe(true);
-                    expect(results.rootHas).toBe(true);
+                    class Foo {
+                        public test(): string {
+                            return "hello";
+                        }
+                    }
+
+                    const foo1 = container1.get(Foo);
+                    const foo2 = container2.get(Foo);
+
+                    expect(foo2.test()).toBe("hello");
+                    expect(foo1.test()).toBe("hello");
+                    expect(container1.get(Foo) !== foo2).toBe(true);
+                    expect(foo1 !== foo2).toBe(true);
+                    expect(container0.has(Foo, true)).toBe(true);
                 });
             });
         });
