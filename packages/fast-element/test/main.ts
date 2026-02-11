@@ -32,13 +32,15 @@ export {
 } from "../src/di/di.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
-export { Observable, observable } from "../src/observation/observable.js";
+export { Observable, observable, volatile } from "../src/observation/observable.js";
 export { Updates } from "../src/observation/update-queue.js";
 export { css } from "../src/styles/css.js";
 export { ElementStyles } from "../src/styles/element-styles.js";
 export { ref } from "../src/templating/ref.js";
 export { html } from "../src/templating/template.js";
 export { uniqueElementName } from "../src/testing/fixture.js";
+export { ChildModel, DerivedModel, Model } from "../src/testing/models.js";
+export { Fake } from "../src/testing/fakes.js";
 export { composedContains, composedParent } from "../src/utilities.js";
 export const conditionalTimeout = function (
     condition: boolean,
