@@ -57,3 +57,4 @@ export const conditionalTimeout = function (
     });
 };
 export { ArrayObserver, lengthOf } from "../src/observation/arrays.js";
+export { ownedState, state } from "../src/state/state.js";
