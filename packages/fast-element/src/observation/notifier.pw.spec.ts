@@ -1,30 +1,31 @@
-import { expect } from "chai";
-import { PropertyChangeNotifier, type Subscriber, SubscriberSet } from "./notifier.js";
+import { expect, test } from "@playwright/test";
+import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier.js";
 
-describe(`A SubscriberSet`, () => {
+test.describe(`A SubscriberSet`, () => {
     const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-    oneThroughTen.forEach(x => {
-        context(`for ${x} subscriber(s)`, () => {
+    for (let i = 0; i < oneThroughTen.length; i++) {
+        const x = oneThroughTen[i];
+        test.describe(`${i}: for ${x} subscriber(s)`, () => {
             const subscriberCounts = oneThroughTen.filter(y => y <= x);
             const sourceValue = {};
 
-            it(`can add each subscriber`, () => {
+            test(`can add each subscriber`, () => {
                 const subscribers = new Array(x);
                 const set = new SubscriberSet(sourceValue);
 
                 subscriberCounts.forEach(y => {
                     const subscriber = (subscribers[y - 1] = { handleChange() {} });
                     set.subscribe(subscriber);
-                    expect(set.has(subscriber)).to.be.true;
+                    expect(set.has(subscriber)).toBe(true);
                 });
 
                 subscribers.forEach(y => {
-                    expect(set.has(y)).to.be.true;
+                    expect(set.has(y)).toBe(true);
                 });
             });
 
-            it(`can remove each subscriber`, () => {
+            test(`can remove each subscriber`, () => {
                 const subscribers = new Array(x);
                 const set = new SubscriberSet(sourceValue);
 
@@ -33,7 +34,7 @@ describe(`A SubscriberSet`, () => {
                 });
 
                 subscribers.forEach(y => {
-                    expect(set.has(y)).to.be.true;
+                    expect(set.has(y)).toBe(true);
                 });
 
                 subscribers.forEach(y => {
@@ -41,11 +42,11 @@ describe(`A SubscriberSet`, () => {
                 });
 
                 subscribers.forEach(y => {
-                    expect(set.has(y)).to.not.be.true;
+                    expect(set.has(y)).not.toBe(true);
                 });
             });
 
-            it(`can notify all subscribers`, () => {
+            test(`can notify all subscribers`, () => {
                 const subscribers = new Array(x);
                 const set = new SubscriberSet(sourceValue);
                 const notified: Subscriber[] = [];
@@ -54,9 +55,9 @@ describe(`A SubscriberSet`, () => {
                 subscriberCounts.forEach(y => {
                     set.subscribe(
                         (subscribers[y - 1] = {
-                            handleChange(source, args) {
-                                expect(source).to.equal(sourceValue);
-                                expect(args).to.equal(argsValue);
+                            handleChange(source: any, args: any) {
+                                expect(source).toBe(sourceValue);
+                                expect(args).toBe(argsValue);
                                 notified.push(this);
                             },
                         })
@@ -64,10 +65,10 @@ describe(`A SubscriberSet`, () => {
                 });
 
                 set.notify(argsValue);
-                expect(notified).to.eql(subscribers);
+                expect(notified).toEqual(subscribers);
             });
 
-            it(`dedupes subscribers`, () => {
+            test(`dedupes subscribers`, () => {
                 const subscribers = new Array(x);
                 const set = new SubscriberSet(sourceValue);
                 const argsValue = "someProperty";
@@ -85,13 +86,13 @@ describe(`A SubscriberSet`, () => {
                 });
 
                 set.notify(argsValue);
-                subscribers.forEach(sub => expect(sub.invocationCount).to.equal(1));
+                subscribers.forEach((sub: any) => expect(sub.invocationCount).toBe(1));
             });
         });
-    });
+    }
 });
 
-describe(`A PropertyChangeNotifier`, () => {
+test.describe(`A PropertyChangeNotifier`, () => {
     const possibleProperties = ["propertyOne", "propertyTwo", "propertyThree"];
     const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -105,20 +106,22 @@ describe(`A PropertyChangeNotifier`, () => {
         return possibleProperties[index];
     }
 
-    possibleProperties.forEach(propertyName => {
-        oneThroughTen.forEach(x => {
-            context(`for ${x} subscriber(s)`, () => {
+    for (let pi = 0; pi < possibleProperties.length; pi++) {
+        const propertyName = possibleProperties[pi];
+        for (let i = 0; i < oneThroughTen.length; i++) {
+            const x = oneThroughTen[i];
+            test.describe(`${pi}-${i}: for ${x} subscriber(s)`, () => {
                 const subscriberCounts = oneThroughTen.filter(y => y <= x);
                 const sourceValue = {};
 
-                it(`can subscribe to a specific property`, () => {
+                test(`can subscribe to a specific property`, () => {
                     const notifier = new PropertyChangeNotifier(sourceValue);
                     const subscribers = new Array(x);
                     const nextPropertyName = getNextProperty(propertyName);
 
                     subscriberCounts.forEach(y => {
                         const handler = (subscribers[y - 1] = {
-                            invokedWith: [],
+                            invokedWith: [] as string[],
                             handleChange(source: any, propertyName: string) {
                                 this.invokedWith.push(propertyName);
                             },
@@ -130,13 +133,13 @@ describe(`A PropertyChangeNotifier`, () => {
                     notifier.notify(propertyName);
                     notifier.notify(nextPropertyName);
 
-                    subscribers.forEach(subscriber => {
-                        expect(subscriber.invokedWith).to.contain(propertyName);
-                        expect(subscriber.invokedWith).to.not.contain(nextPropertyName);
+                    subscribers.forEach((subscriber: any) => {
+                        expect(subscriber.invokedWith).toContain(propertyName);
+                        expect(subscriber.invokedWith).not.toContain(nextPropertyName);
                     });
                 });
 
-                it(`can subscribe to multiple properties`, () => {
+                test(`can subscribe to multiple properties`, () => {
                     const notifier = new PropertyChangeNotifier(sourceValue);
                     const subscribers = new Array(x);
                     const nextPropertyName = getNextProperty(propertyName);
@@ -144,7 +147,7 @@ describe(`A PropertyChangeNotifier`, () => {
 
                     subscriberCounts.forEach(y => {
                         const handler = (subscribers[y - 1] = {
-                            invokedWith: [],
+                            invokedWith: [] as string[],
                             handleChange(source: any, propertyName: string) {
                                 this.invokedWith.push(propertyName);
                             },
@@ -158,23 +161,23 @@ describe(`A PropertyChangeNotifier`, () => {
                     notifier.notify(nextPropertyName);
                     notifier.notify(nextPropertyName);
 
-                    subscribers.forEach(subscriber => {
-                        expect(subscriber.invokedWith).to.contain(propertyName);
-                        expect(subscriber.invokedWith).to.contain(nextPropertyName);
-                        expect(subscriber.invokedWith).to.not.contain(
+                    subscribers.forEach((subscriber: any) => {
+                        expect(subscriber.invokedWith).toContain(propertyName);
+                        expect(subscriber.invokedWith).toContain(nextPropertyName);
+                        expect(subscriber.invokedWith).not.toContain(
                             nextNextPropertyName
                         );
                     });
                 });
 
-                it(`can unsubscribe from a specific property`, () => {
+                test(`can unsubscribe from a specific property`, () => {
                     const notifier = new PropertyChangeNotifier(sourceValue);
                     const subscribers = new Array(x);
                     const nextPropertyName = getNextProperty(propertyName);
 
                     subscriberCounts.forEach(y => {
                         const handler = (subscribers[y - 1] = {
-                            invokedWith: [],
+                            invokedWith: [] as string[],
                             handleChange(source: any, propertyName: string) {
                                 this.invokedWith.push(propertyName);
                             },
@@ -187,12 +190,12 @@ describe(`A PropertyChangeNotifier`, () => {
                     notifier.notify(propertyName);
                     notifier.notify(nextPropertyName);
 
-                    subscribers.forEach(subscriber => {
-                        expect(subscriber.invokedWith).to.contain(propertyName);
-                        expect(subscriber.invokedWith).to.contain(nextPropertyName);
+                    subscribers.forEach((subscriber: any) => {
+                        expect(subscriber.invokedWith).toContain(propertyName);
+                        expect(subscriber.invokedWith).toContain(nextPropertyName);
                     });
 
-                    subscribers.forEach(subscriber => {
+                    subscribers.forEach((subscriber: any) => {
                         subscriber.invokedWith = [];
                         notifier.unsubscribe(subscriber, propertyName);
                     });
@@ -200,20 +203,20 @@ describe(`A PropertyChangeNotifier`, () => {
                     notifier.notify(propertyName);
                     notifier.notify(nextPropertyName);
 
-                    subscribers.forEach(subscriber => {
-                        expect(subscriber.invokedWith).to.not.contain(propertyName);
-                        expect(subscriber.invokedWith).to.contain(nextPropertyName);
+                    subscribers.forEach((subscriber: any) => {
+                        expect(subscriber.invokedWith).not.toContain(propertyName);
+                        expect(subscriber.invokedWith).toContain(nextPropertyName);
                     });
                 });
 
-                it(`can unsubscribe from multiple properties`, () => {
+                test(`can unsubscribe from multiple properties`, () => {
                     const notifier = new PropertyChangeNotifier(sourceValue);
                     const subscribers = new Array(x);
                     const nextPropertyName = getNextProperty(propertyName);
 
                     subscriberCounts.forEach(y => {
                         const handler = (subscribers[y - 1] = {
-                            invokedWith: [],
+                            invokedWith: [] as string[],
                             handleChange(source: any, propertyName: string) {
                                 this.invokedWith.push(propertyName);
                             },
@@ -226,12 +229,12 @@ describe(`A PropertyChangeNotifier`, () => {
                     notifier.notify(propertyName);
                     notifier.notify(nextPropertyName);
 
-                    subscribers.forEach(subscriber => {
-                        expect(subscriber.invokedWith).to.contain(propertyName);
-                        expect(subscriber.invokedWith).to.contain(nextPropertyName);
+                    subscribers.forEach((subscriber: any) => {
+                        expect(subscriber.invokedWith).toContain(propertyName);
+                        expect(subscriber.invokedWith).toContain(nextPropertyName);
                     });
 
-                    subscribers.forEach(subscriber => {
+                    subscribers.forEach((subscriber: any) => {
                         subscriber.invokedWith = [];
                         notifier.unsubscribe(subscriber, propertyName);
                         notifier.unsubscribe(subscriber, nextPropertyName);
@@ -240,12 +243,12 @@ describe(`A PropertyChangeNotifier`, () => {
                     notifier.notify(propertyName);
                     notifier.notify(nextPropertyName);
 
-                    subscribers.forEach(subscriber => {
-                        expect(subscriber.invokedWith).to.not.contain(propertyName);
-                        expect(subscriber.invokedWith).to.not.contain(nextPropertyName);
+                    subscribers.forEach((subscriber: any) => {
+                        expect(subscriber.invokedWith).not.toContain(propertyName);
+                        expect(subscriber.invokedWith).not.toContain(nextPropertyName);
                     });
                 });
             });
-        });
-    });
+        }
+    }
 });
