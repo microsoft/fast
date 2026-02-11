@@ -58,3 +58,5 @@ export const conditionalTimeout = function (
 };
 export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";
 export { ownedState, reactive, state, watch } from "../src/state/exports.js";
+export { fixture } from "../src/testing/fixture.js";
+export { CSSBindingDirective } from "../src/styles/css-binding-directive.js";
