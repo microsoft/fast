@@ -1,7 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { Fake } from "../testing/fakes.js";
 import { ChildModel, DerivedModel, Model } from "../testing/models.js";
-import { Updates } from "./update-queue.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import { Expression, Observable } from "./observable.js";
 
