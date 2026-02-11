@@ -40,3 +40,18 @@ export { ref } from "../src/templating/ref.js";
 export { html } from "../src/templating/template.js";
 export { uniqueElementName } from "../src/testing/fixture.js";
 export { composedContains, composedParent } from "../src/utilities.js";
+export const conditionalTimeout = function (
+    condition: boolean,
+    iteration = 0
+): Promise<boolean> {
+    return new Promise(function (resolve) {
+        setTimeout(() => {
+            if (iteration === 10 || condition) {
+                resolve(true);
+            }
+
+            conditionalTimeout(condition, iteration + 1);
+        }, 5);
+    });
+};
+export { ArrayObserver, lengthOf } from "../src/observation/arrays.js";
