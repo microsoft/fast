@@ -9,6 +9,8 @@ export {
 export {
     ElementController,
     HydratableElementController,
+    AdoptedStyleSheetsStrategy,
+    StyleElementStrategy,
 } from "../src/components/element-controller.js";
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { HydrationMarkup } from "../src/components/hydration.js";
@@ -60,3 +62,7 @@ export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";
 export { ownedState, reactive, state, watch } from "../src/state/exports.js";
 export { fixture } from "../src/testing/fixture.js";
 export { CSSBindingDirective } from "../src/styles/css-binding-directive.js";
+export { cssDirective, CSSDirective } from "../src/styles/css-directive.js";
+export { ExecutionContext } from "../src/observation/observable.js";
+export { Binding } from "../src/binding/binding.js";
+export { oneTime } from "../src/binding/one-time.js";
