@@ -56,5 +56,5 @@ export const conditionalTimeout = function (
         }, 5);
     });
 };
-export { ArrayObserver, lengthOf } from "../src/observation/arrays.js";
-export { ownedState, state } from "../src/state/state.js";
+export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";
+export { ownedState, reactive, state, watch } from "../src/state/exports.js";
