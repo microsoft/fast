@@ -75,3 +75,5 @@ export { HTMLView } from "../src/templating/view.js";
 export { HTMLDirective } from "../src/templating/html-directive.js";
 export { nextId } from "../src/templating/markup.js";
 export { createTrackableDOMPolicy, toHTML } from "../src/__test__/helpers.js";
+export { children, ChildrenDirective } from "../src/templating/children.js";
+export { elements } from "../src/templating/node-observation.js";
