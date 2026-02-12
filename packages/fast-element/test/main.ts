@@ -77,3 +77,5 @@ export { nextId } from "../src/templating/markup.js";
 export { createTrackableDOMPolicy, toHTML } from "../src/__test__/helpers.js";
 export { children, ChildrenDirective } from "../src/templating/children.js";
 export { elements } from "../src/templating/node-observation.js";
+export { Compiler } from "../src/templating/compiler.js";
+export { Markup } from "../src/templating/markup.js";
