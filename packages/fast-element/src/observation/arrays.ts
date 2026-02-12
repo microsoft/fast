@@ -1,5 +1,5 @@
 import { emptyArray } from "../platform.js";
-import { Notifier, Subscriber, SubscriberSet } from "./notifier.js";
+import { type Notifier, type Subscriber, SubscriberSet } from "./notifier.js";
 import { Observable } from "./observable.js";
 import { Updates } from "./update-queue.js";
 

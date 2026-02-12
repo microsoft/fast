@@ -1,19 +1,19 @@
+import { Binding } from "../binding/binding.js";
+import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
 import type { DOMPolicy } from "../dom.js";
 import { isFunction, isString, Message } from "../interfaces.js";
-import { Binding } from "../binding/binding.js";
 import type { Expression } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
-import { oneWay } from "../binding/one-way.js";
-import { oneTime } from "../binding/one-time.js";
-import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { Compiler } from "./compiler.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import {
-    AddViewBehaviorFactory,
-    Aspected,
-    CompiledViewBehaviorFactory,
+    type AddViewBehaviorFactory,
+    type Aspected,
+    type CompiledViewBehaviorFactory,
     HTMLDirective,
-    HTMLDirectiveDefinition,
-    ViewBehaviorFactory,
+    type HTMLDirectiveDefinition,
+    type ViewBehaviorFactory,
 } from "./html-directive.js";
 import { nextId } from "./markup.js";
 import type { ElementView, HTMLView, SyntheticView } from "./view.js";

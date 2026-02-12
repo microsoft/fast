@@ -1,7 +1,7 @@
 import {
     HTMLDirective,
     StatelessAttachedAttributeDirective,
-    ViewController,
+    type ViewController,
 } from "./html-directive.js";
 import type { CaptureType } from "./template.js";
 

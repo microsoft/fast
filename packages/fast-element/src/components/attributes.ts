@@ -1,4 +1,4 @@
-import { Accessor, Observable } from "../observation/observable.js";
+import { type Accessor, Observable } from "../observation/observable.js";
 import type { Notifier } from "../observation/notifier.js";
 import { isString } from "../interfaces.js";
 import { Updates } from "../observation/update-queue.js";

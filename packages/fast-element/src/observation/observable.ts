@@ -1,14 +1,14 @@
 import {
-    Disposable,
+    type Disposable,
     isFunction,
     isString,
     KernelServiceId,
     Message,
 } from "../interfaces.js";
 import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
-import { Updates } from "./update-queue.js";
-import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
+import { Updates } from "./update-queue.js";
 
 /**
  * Represents a getter/setter property accessor on an object.

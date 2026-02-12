@@ -1,23 +1,23 @@
 import { expect } from "chai";
+import { Binding } from "../binding/binding.js";
+import { oneTime } from "../binding/one-time.js";
 import {
     AdoptedStyleSheetsStrategy, StyleElementStrategy
 } from "../components/element-controller.js";
-import type { StyleTarget } from "./style-strategy.js";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { ExecutionContext } from "../observation/observable.js";
+import { ref } from "../templating/ref.js";
+import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
-import { AddBehavior, cssDirective, CSSDirective } from "./css-directive.js";
+import { CSSBindingDirective } from "./css-binding-directive.js";
+import { cssDirective, CSSDirective, type AddBehavior } from "./css-directive.js";
 import { css } from "./css.js";
 import {
-    ComposableStyles,
-    ElementStyles
+    ElementStyles,
+    type ComposableStyles
 } from "./element-styles.js";
 import type { HostBehavior } from "./host.js";
-import { html} from "../templating/template.js"
-import { ref} from "../templating/ref.js"
-import { FASTElement, customElement } from "../components/fast-element.js";
-import { ExecutionContext } from "../observation/observable.js";
-import { CSSBindingDirective } from "./css-binding-directive.js";
-import { Binding } from "../binding/binding.js";
-import { oneTime } from "../binding/one-time.js";
+import type { StyleTarget } from "./style-strategy.js";
 
 if (ElementStyles.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {

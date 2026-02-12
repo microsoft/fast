@@ -1,20 +1,20 @@
+import type { Binding, BindingDirective } from "../binding/binding.js";
 import { isHydratable } from "../components/hydration.js";
-import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
+import { DOM, DOMAspect, type DOMPolicy } from "../dom.js";
 import { Message } from "../interfaces.js";
 import {
     ExecutionContext,
-    Expression,
-    ExpressionObserver,
+    type Expression,
+    type ExpressionObserver,
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import type { Binding, BindingDirective } from "../binding/binding.js";
 import {
-    AddViewBehaviorFactory,
-    Aspected,
+    type AddViewBehaviorFactory,
+    type Aspected,
     HTMLDirective,
-    ViewBehavior,
-    ViewBehaviorFactory,
-    ViewController,
+    type ViewBehavior,
+    type ViewBehaviorFactory,
+    type ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
 import { HydrationStage } from "./view.js";

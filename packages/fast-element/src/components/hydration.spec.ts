@@ -1,12 +1,12 @@
 import chai, { expect } from "chai";
+import spies from "chai-spies";
 import "../debug.js";
-import { css, HostBehavior, Updates } from "../index.js";
+import { css, Updates, type HostBehavior } from "../index.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/exports.js";
 import { ElementController, HydratableElementController } from "./element-controller.js";
-import { FASTElementDefinition, PartialFASTElementDefinition } from "./fast-definitions.js";
+import { FASTElementDefinition, type PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
-import spies from "chai-spies";
 import { HydrationMarkup } from "./hydration.js";
 
 chai.use(spies)

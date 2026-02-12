@@ -1,8 +1,8 @@
-import { Message, Mutable } from "../interfaces.js";
+import { Message, type Mutable } from "../interfaces.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import {
     ExecutionContext,
-    ExpressionController,
+    type ExpressionController,
     Observable,
     SourceLifetime,
 } from "../observation/observable.js";
@@ -16,7 +16,7 @@ import type { ElementView } from "../templating/view.js";
 import { UnobservableMutationObserver } from "../utilities.js";
 import {
     FASTElementDefinition,
-    ShadowRootOptions,
+    type ShadowRootOptions,
     TemplateOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";

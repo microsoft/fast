@@ -2,7 +2,13 @@ import { expect } from "chai";
 import { Message } from "../interfaces.js";
 import { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { AddViewBehaviorFactory, HTMLDirective, ViewBehavior, ViewBehaviorFactory, ViewController } from "./html-directive.js";
+import {
+    HTMLDirective,
+    type AddViewBehaviorFactory,
+    type ViewBehavior,
+    type ViewBehaviorFactory,
+    type ViewController,
+} from "./html-directive.js";
 import { Markup } from "./markup.js";
 import { html } from "./template.js";
 import { HTMLView } from "./view.js";

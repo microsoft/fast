@@ -1,5 +1,8 @@
 import { emptyArray } from "../platform.js";
-import { StatelessAttachedAttributeDirective, ViewController } from "./html-directive.js";
+import {
+    StatelessAttachedAttributeDirective,
+    type ViewController,
+} from "./html-directive.js";
 
 /**
  * Options for configuring node observation behavior.

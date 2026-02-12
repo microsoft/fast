@@ -1,17 +1,17 @@
 import { expect } from "chai";
-import { customElement, FASTElement } from "../components/fast-element.js";
-import { Markup } from './markup.js';
-import { css } from "../styles/css.js";
 import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
-import { HTMLBindingDirective } from "./html-binding-directive.js";
-import { Compiler } from "./compiler.js";
-import { CompiledViewBehaviorFactory, HTMLDirective, ViewBehaviorFactory } from "./html-directive.js";
-import { html } from "./template.js";
-import { ElementStyles } from "../index.debug.js";
-import { uniqueElementName } from "../testing/fixture.js";
-import { Fake } from "../testing/fakes.js";
-import { DOM, DOMAspect, DOMPolicy } from "../dom.js";
 import { oneWay } from "../binding/one-way.js";
+import { customElement, FASTElement } from "../components/fast-element.js";
+import { DOM, DOMAspect, type DOMPolicy } from "../dom.js";
+import { ElementStyles } from "../index.debug.js";
+import { css } from "../styles/css.js";
+import { Fake } from "../testing/fakes.js";
+import { uniqueElementName } from "../testing/fixture.js";
+import { Compiler } from "./compiler.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
+import { HTMLDirective, type CompiledViewBehaviorFactory, type ViewBehaviorFactory } from "./html-directive.js";
+import { Markup } from './markup.js';
+import { html } from "./template.js";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
