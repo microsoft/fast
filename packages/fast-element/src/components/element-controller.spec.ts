@@ -1,15 +1,15 @@
 import chai, { expect } from "chai";
+import spies from "chai-spies";
+import { toHTML } from "../__test__/helpers.js";
 import { ElementStyles } from "../index.debug.js";
-import type { HostBehavior, HostController } from "../styles/host.js";
 import { observable, Observable } from "../observation/observable.js";
 import { css } from "../styles/css.js";
+import type { HostBehavior, HostController } from "../styles/host.js";
 import { html } from "../templating/template.js";
 import { uniqueElementName } from "../testing/fixture.js";
-import { toHTML } from "../__test__/helpers.js";
 import { deferHydrationAttribute, ElementController, HydratableElementController, needsHydrationAttribute } from "./element-controller.js";
-import { FASTElementDefinition, PartialFASTElementDefinition, TemplateOptions } from "./fast-definitions.js";
+import { FASTElementDefinition, type PartialFASTElementDefinition } from "./fast-definitions.js";
 import { FASTElement } from "./fast-element.js";
-import spies from "chai-spies";
 
 chai.use(spies);
 

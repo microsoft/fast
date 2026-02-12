@@ -2,8 +2,13 @@
  * Big thanks to https://github.com/fkleuver and the https://github.com/aurelia/aurelia project
  * for the bulk of this code and many of the associated tests.
  */
-import { Context, ContextDecorator, ContextEvent, UnknownContext } from "../context.js";
-import { Class, Constructable, Message } from "../interfaces.js";
+import {
+    Context,
+    type ContextDecorator,
+    ContextEvent,
+    type UnknownContext,
+} from "../context.js";
+import { type Class, type Constructable, Message } from "../interfaces.js";
 import { Metadata } from "../metadata.js";
 import { emptyArray, FAST } from "../platform.js";
 

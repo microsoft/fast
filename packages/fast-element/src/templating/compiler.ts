@@ -1,17 +1,17 @@
+import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
+import { DOM, type DOMPolicy } from "../dom.js";
 import { isFunction, isString, Message } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
-import { DOM, DOMPolicy } from "../dom.js";
-import { oneTime } from "../binding/one-time.js";
-import { oneWay } from "../binding/one-way.js";
-import { nextId, Parser } from "./markup.js";
 import { HTMLBindingDirective } from "./html-binding-directive.js";
 import {
-    Aspected,
-    CompiledViewBehaviorFactory,
+    type Aspected,
+    type CompiledViewBehaviorFactory,
     HTMLDirective,
-    ViewBehaviorFactory,
+    type ViewBehaviorFactory,
 } from "./html-directive.js";
+import { nextId, Parser } from "./markup.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 

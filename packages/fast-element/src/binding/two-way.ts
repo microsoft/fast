@@ -3,14 +3,14 @@ import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
     ExecutionContext,
-    Expression,
-    ExpressionController,
-    ExpressionObserver,
+    type Expression,
+    type ExpressionController,
+    type ExpressionObserver,
     Observable,
-    ObservationRecord,
+    type ObservationRecord,
 } from "../observation/observable.js";
 import { FAST, makeSerializationNoop } from "../platform.js";
-import { Binding, BindingDirective } from "./binding.js";
+import { Binding, type BindingDirective } from "./binding.js";
 
 /**
  * The twoWay binding options.

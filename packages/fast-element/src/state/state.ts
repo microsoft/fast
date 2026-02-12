@@ -1,8 +1,8 @@
 // Inspired by https://www.starbeamjs.com/
 
-import { Disposable, isFunction, isString } from "../interfaces.js";
+import { type Disposable, isFunction, isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
-import { ExpressionNotifier, Observable } from "../observation/observable.js";
+import { type ExpressionNotifier, Observable } from "../observation/observable.js";
 import { reactive } from "./reactive.js";
 
 /**

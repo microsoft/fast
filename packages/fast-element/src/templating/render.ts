@@ -1,32 +1,32 @@
+import { Binding, type BindingDirective } from "../binding/binding.js";
+import { normalizeBinding } from "../binding/normalize.js";
+import { oneTime } from "../binding/one-time.js";
+import { oneWay } from "../binding/one-way.js";
 import { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { FASTElement } from "../components/fast-element.js";
 import { isHydratable } from "../components/hydration.js";
 import type { DOMPolicy } from "../dom.js";
-import { Constructable, isFunction, isString } from "../interfaces.js";
-import { Binding, BindingDirective } from "../binding/binding.js";
+import { type Constructable, isFunction, isString } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import type {
     ExecutionContext,
     Expression,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { oneTime } from "../binding/one-time.js";
-import { oneWay } from "../binding/one-way.js";
-import { normalizeBinding } from "../binding/normalize.js";
 import type { ContentTemplate, ContentView } from "./html-binding-directive.js";
 import {
-    AddViewBehaviorFactory,
+    type AddViewBehaviorFactory,
     HTMLDirective,
-    ViewBehavior,
-    ViewBehaviorFactory,
-    ViewController,
+    type ViewBehavior,
+    type ViewBehaviorFactory,
+    type ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
 import {
-    CaptureType,
+    type CaptureType,
     html,
-    SyntheticViewTemplate,
-    TemplateValue,
+    type SyntheticViewTemplate,
+    type TemplateValue,
     ViewTemplate,
 } from "./template.js";
 import { HydrationStage } from "./view.js";

@@ -1,14 +1,14 @@
 import { expect } from "chai";
-import { html, ViewTemplate } from "./template.js";
-import { Markup, nextId, Parser } from "./markup.js";
-import { HTMLBindingDirective } from "./html-binding-directive.js";
-import { HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory, CompiledViewBehaviorFactory } from "./html-directive.js";
-import { Constructable, isString } from "../interfaces.js";
-import { Fake } from "../testing/fakes.js";
-import { DOMAspect, DOMPolicy } from "../dom.js";
 import { createTrackableDOMPolicy } from "../__test__/helpers.js";
-import { Compiler } from "./compiler.js";
 import { oneWay } from "../binding/one-way.js";
+import { DOMAspect, type DOMPolicy } from "../dom.js";
+import { isString, type Constructable } from "../interfaces.js";
+import { Fake } from "../testing/fakes.js";
+import { Compiler } from "./compiler.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
+import { HTMLDirective, htmlDirective, type AddViewBehaviorFactory, type Aspected, type CompiledViewBehaviorFactory, type ViewBehaviorFactory } from "./html-directive.js";
+import { Markup, nextId, Parser } from "./markup.js";
+import { html, ViewTemplate } from "./template.js";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {

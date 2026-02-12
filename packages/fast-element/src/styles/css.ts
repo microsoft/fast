@@ -1,11 +1,11 @@
-import { isFunction, isString } from "../interfaces.js";
-import type { Expression } from "../observation/observable.js";
 import { Binding } from "../binding/binding.js";
 import { oneWay } from "../binding/one-way.js";
-import type { HostBehavior, HostController } from "./host.js";
-import { AddBehavior, CSSDirective } from "./css-directive.js";
-import { ComposableStyles, ElementStyles } from "./element-styles.js";
+import { isFunction, isString } from "../interfaces.js";
+import type { Expression } from "../observation/observable.js";
 import { CSSBindingDirective } from "./css-binding-directive.js";
+import { type AddBehavior, CSSDirective } from "./css-directive.js";
+import { type ComposableStyles, ElementStyles } from "./element-styles.js";
+import type { HostBehavior, HostController } from "./host.js";
 
 /**
  * Represents the types of values that can be interpolated into a template.

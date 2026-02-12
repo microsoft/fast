@@ -1,8 +1,8 @@
-import { Disposable, isFunction, noop } from "../interfaces.js";
+import { type Disposable, isFunction, noop } from "../interfaces.js";
 import { ArrayObserver } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { Observable } from "../observation/observable.js";
-import { ObjectVisitor, visitObject } from "./visitor.js";
+import { type ObjectVisitor, visitObject } from "./visitor.js";
 
 interface WatchData {
     notifiers: Notifier[];

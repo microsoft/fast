@@ -1,6 +1,9 @@
 import { isString, noop } from "../interfaces.js";
 import { HTMLDirective } from "./html-directive.js";
-import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
+import {
+    type NodeBehaviorOptions,
+    NodeObservationDirective,
+} from "./node-observation.js";
 import type { CaptureType } from "./template.js";
 
 /**

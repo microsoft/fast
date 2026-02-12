@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "chore: enable verbatimModuleSyntax to identify type-only imports and exports",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

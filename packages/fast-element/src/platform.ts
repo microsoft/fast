@@ -1,4 +1,4 @@
-import { FASTGlobal, noop } from "./interfaces.js";
+import { type FASTGlobal, noop } from "./interfaces.js";
 import "./polyfills.js";
 
 // ensure FAST global - duplicated debug.ts
