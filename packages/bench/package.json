@@ -1,0 +1,15 @@
+{
+  "name": "@microsoft/fast-bench",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "serve": "vite --clearScreen false",
+    "start": "node server/server.mjs",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@microsoft/fast-element": "*"
+  }
+}
