@@ -79,3 +79,4 @@ export { children, ChildrenDirective } from "../src/templating/children.js";
 export { elements } from "../src/templating/node-observation.js";
 export { Compiler } from "../src/templating/compiler.js";
 export { Markup } from "../src/templating/markup.js";
+export { when } from "../src/templating/when.js";
