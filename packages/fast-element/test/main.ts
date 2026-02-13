@@ -88,3 +88,4 @@ export {
     NodeTemplate,
     renderWith,
 } from "../src/templating/render.js";
+export { repeat, RepeatBehavior, RepeatDirective } from "../src/templating/repeat.js";
