@@ -6,6 +6,10 @@ import { defineConfig } from "vite";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const benchmarksDir = resolve(__dirname, "src");
 
+function getPackageDir(packageName: string): string {
+    return dirname(fileURLToPath(import.meta.resolve(`${packageName}/package.json`)));
+}
+
 function discoverBenchmarkInputs(): Record<string, string> {
     const inputs: Record<string, string> = {
         main: resolve(benchmarksDir, "index.html"),
@@ -22,6 +26,15 @@ function discoverBenchmarkInputs(): Record<string, string> {
 
 export default defineConfig({
     root: benchmarksDir,
+    resolve: {
+        alias: {
+            "@microsoft/fast-element": resolve(
+                getPackageDir("@microsoft/fast-element"),
+                "src",
+                "index.ts"
+            ),
+        },
+    },
     server: {
         port: 5173,
     },
