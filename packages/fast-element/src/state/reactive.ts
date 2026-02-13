@@ -1,6 +1,6 @@
 import { noop } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
-import { ObjectVisitor, visitObject } from "./visitor.js";
+import { type ObjectVisitor, visitObject } from "./visitor.js";
 
 const observed = new WeakSet<any>();
 

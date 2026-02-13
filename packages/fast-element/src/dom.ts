@@ -1,4 +1,4 @@
-import { Message, TrustedTypesPolicy } from "./interfaces.js";
+import { Message, type TrustedTypesPolicy } from "./interfaces.js";
 import { FAST } from "./platform.js";
 
 /**

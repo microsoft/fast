@@ -1,6 +1,10 @@
 import type { DOMPolicy } from "../dom.js";
 import type { Subscriber } from "../observation/notifier.js";
-import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
+import {
+    type Expression,
+    type ExpressionObserver,
+    Observable,
+} from "../observation/observable.js";
 import { Binding } from "./binding.js";
 
 class OneWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding<

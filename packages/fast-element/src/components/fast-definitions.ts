@@ -1,7 +1,7 @@
-import { Constructable, isString, KernelServiceId } from "../interfaces.js";
+import { type Constructable, isString, KernelServiceId } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
-import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
+import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
@@ -18,7 +18,7 @@ export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.get
     () => createTypeRegistry<FASTElementDefinition>()
 );
 
-export { TypeRegistry };
+export type { TypeRegistry };
 
 /**
  * Shadow root initialization options.

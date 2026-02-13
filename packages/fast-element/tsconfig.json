@@ -3,7 +3,7 @@
     "compilerOptions": {
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
-        "importsNotUsedAsValues": "error",
+        "verbatimModuleSyntax": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "noImplicitAny": false,

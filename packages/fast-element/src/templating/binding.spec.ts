@@ -1,18 +1,18 @@
 import { expect } from "chai";
-import { HTMLBindingDirective } from "./html-binding-directive.js";
-import { observable } from "../observation/observable.js";
-import { html, ViewTemplate } from "./template.js";
 import { createTrackableDOMPolicy, toHTML } from "../__test__/helpers.js";
-import { SyntheticView, HTMLView } from "./view.js";
-import { Updates } from "../observation/update-queue.js";
-import { DOM, DOMPolicy } from "../dom.js";
+import { oneTime } from "../binding/one-time.js";
+import { listener, oneWay } from "../binding/one-way.js";
 import { Signal, signal } from "../binding/signal.js";
-import { twoWay, TwoWayBindingOptions } from "../binding/two-way.js";
+import { twoWay, type TwoWayBindingOptions } from "../binding/two-way.js";
+import { DOM, type DOMPolicy } from "../dom.js";
+import { observable } from "../observation/observable.js";
+import { Updates } from "../observation/update-queue.js";
 import { Fake } from "../testing/fakes.js";
+import { HTMLBindingDirective } from "./html-binding-directive.js";
 import { HTMLDirective } from "./html-directive.js";
 import { nextId } from "./markup.js";
-import { oneWay, listener } from "../binding/one-way.js";
-import { oneTime } from "../binding/one-time.js";
+import { html, ViewTemplate } from "./template.js";
+import { HTMLView, type SyntheticView } from "./view.js";
 
 describe("The HTML binding directive", () => {
     class Model {

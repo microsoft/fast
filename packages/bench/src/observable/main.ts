@@ -1,16 +1,17 @@
-import { attr, FASTElement, Observable } from "../index.js";
-import { _random, adjectives, nouns } from "../__test__/utilities.js";
+import { attr, FASTElement, Observable } from "@microsoft/fast-element";
+import { runBenchmark } from "../harness.js";
+import { _random, adjectives, nouns } from "../utilities.js";
 
-export class TestObservable extends FASTElement {
+class TestObservable extends FASTElement {
     private _greetMessage: string = "";
     private _name: string = "";
     private _exit: boolean = false;
 
     @attr
-    firstName: string;
+    firstName!: string;
 
     @attr
-    lastName: string;
+    lastName!: string;
 
     connectedCallback(): void {
         super.connectedCallback();
@@ -78,5 +79,4 @@ const itemRenderer = (): HTMLElement => {
     return testObservable;
 };
 
-export default itemRenderer;
-export { tests } from "@tensile-perf/web-components";
+runBenchmark(itemRenderer);

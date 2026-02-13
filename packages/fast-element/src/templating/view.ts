@@ -4,9 +4,8 @@ import {
     createRangeForNodes,
     HydrationTargetElementError,
     targetFactory,
-    ViewBehaviorBoundaries,
+    type ViewBehaviorBoundaries,
 } from "../hydration/target-builder.js";
-import type { ViewTemplate } from "../templating/template.js";
 import type { Disposable } from "../interfaces.js";
 import {
     ExecutionContext,
@@ -14,6 +13,7 @@ import {
     SourceLifetime,
 } from "../observation/observable.js";
 import { makeSerializationNoop } from "../platform.js";
+import type { ViewTemplate } from "../templating/template.js";
 import type {
     CompiledViewBehaviorFactory,
     ViewBehavior,

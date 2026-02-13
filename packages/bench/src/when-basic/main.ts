@@ -1,4 +1,5 @@
-import { attr, FASTElement, html, when } from "../index.js";
+import { attr, FASTElement, html, when } from "@microsoft/fast-element";
+import { runBenchmark } from "../harness.js";
 
 class TestWhen extends FASTElement {
     @attr({
@@ -15,20 +16,11 @@ TestWhen.define({
                 <span>Yes</span>
             `
         )}
-        ${when(
-            x => !x.try,
-            html`
-                <span>No</span>
-            `
-        )}
     `,
 });
 
 const itemRenderer = (): HTMLElement => {
-    const testWhen = document.createElement("test-when");
-
-    return testWhen;
+    return document.createElement("test-when");
 };
 
-export default itemRenderer;
-export { tests } from "@tensile-perf/web-components";
+runBenchmark(itemRenderer);

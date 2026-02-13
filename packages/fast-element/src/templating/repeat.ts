@@ -1,16 +1,20 @@
+import type { Binding, BindingDirective } from "../binding/binding.js";
+import { normalizeBinding } from "../binding/normalize.js";
 import { HydrationMarkup, isHydratable } from "../components/hydration.js";
 import { ArrayObserver, Sort, Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
-import { Expression, ExpressionObserver, Observable } from "../observation/observable.js";
-import { emptyArray } from "../platform.js";
-import type { Binding, BindingDirective } from "../binding/binding.js";
-import { normalizeBinding } from "../binding/normalize.js";
 import {
-    AddViewBehaviorFactory,
+    type Expression,
+    type ExpressionObserver,
+    Observable,
+} from "../observation/observable.js";
+import { emptyArray } from "../platform.js";
+import {
+    type AddViewBehaviorFactory,
     HTMLDirective,
-    ViewBehavior,
-    ViewBehaviorFactory,
-    ViewController,
+    type ViewBehavior,
+    type ViewBehaviorFactory,
+    type ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
 import type {
@@ -19,7 +23,7 @@ import type {
     SyntheticViewTemplate,
     ViewTemplate,
 } from "./template.js";
-import { HTMLView, HydrationStage, HydrationView, SyntheticView } from "./view.js";
+import { HTMLView, HydrationStage, HydrationView, type SyntheticView } from "./view.js";
 
 /**
  * Options for configuring repeat behavior.

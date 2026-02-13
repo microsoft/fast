@@ -1,170 +1,166 @@
 // Kernel
 export type {
     Callable,
-    Constructable,
     Class,
+    Constructable,
     Disposable,
     FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
-export { FAST, emptyArray } from "./platform.js";
+export { emptyArray, FAST } from "./platform.js";
 
 // DOM
-export { DOMAspect, DOMSink, DOMPolicy, DOM } from "./dom.js";
+export { DOM, DOMAspect, type DOMPolicy, type DOMSink } from "./dom.js";
 
 // Observation
 export {
-    Accessor,
-    Expression,
-    ExecutionContext,
-    ExpressionController,
-    ExpressionObserver,
-    ExpressionNotifier,
-    Observable,
-    observable,
-    ObservationRecord,
-    SourceLifetime,
-    volatile,
-} from "./observation/observable.js";
-export {
-    Notifier,
-    PropertyChangeNotifier,
-    Subscriber,
-    SubscriberSet,
-} from "./observation/notifier.js";
-export {
     ArrayObserver,
-    LengthObserver,
     lengthOf,
+    Sort,
+    sortedCount,
     Splice,
     SpliceStrategy,
     SpliceStrategySupport,
-    Sort,
-    SortObserver,
-    sortedCount,
+    type LengthObserver,
+    type SortObserver,
 } from "./observation/arrays.js";
-export { UpdateQueue, Updates } from "./observation/update-queue.js";
+export {
+    PropertyChangeNotifier,
+    SubscriberSet,
+    type Notifier,
+    type Subscriber,
+} from "./observation/notifier.js";
+export {
+    ExecutionContext,
+    Observable,
+    observable,
+    SourceLifetime,
+    volatile,
+    type Accessor,
+    type Expression,
+    type ExpressionController,
+    type ExpressionNotifier,
+    type ExpressionObserver,
+    type ObservationRecord,
+} from "./observation/observable.js";
+export { Updates, type UpdateQueue } from "./observation/update-queue.js";
 
 // Binding
-export { Binding, BindingDirective } from "./binding/binding.js";
-export { listener, oneWay } from "./binding/one-way.js";
-export { oneTime } from "./binding/one-time.js";
+export { Binding, type BindingDirective } from "./binding/binding.js";
 export { normalizeBinding } from "./binding/normalize.js";
+export { oneTime } from "./binding/one-time.js";
+export { listener, oneWay } from "./binding/one-way.js";
 
 // Styles
+export { CSSBindingDirective } from "./styles/css-binding-directive.js";
 export {
-    ComposableStyles,
-    ConstructibleStyleStrategy,
-    ElementStyles,
-} from "./styles/element-styles.js";
-export { css, CSSTemplateTag, CSSValue } from "./styles/css.js";
-export {
-    AddBehavior,
     cssDirective,
     CSSDirective,
-    CSSDirectiveDefinition,
+    type AddBehavior,
+    type CSSDirectiveDefinition,
 } from "./styles/css-directive.js";
-export { HostController, HostBehavior } from "./styles/host.js";
-export { StyleStrategy, StyleTarget } from "./styles/style-strategy.js";
-export { CSSBindingDirective } from "./styles/css-binding-directive.js";
+export { css, type CSSTemplateTag, type CSSValue } from "./styles/css.js";
+export {
+    ElementStyles,
+    type ComposableStyles,
+    type ConstructibleStyleStrategy,
+} from "./styles/element-styles.js";
+export { type HostBehavior } from "./styles/host.js";
+export type { HostController } from "./styles/host.js";
+export type { StyleStrategy, StyleTarget } from "./styles/style-strategy.js";
 
 // Templating
-export {
-    CaptureType,
-    ElementViewTemplate,
-    html,
-    HTMLTemplateCompilationResult,
-    HTMLTemplateTag,
-    InlineTemplateDirective,
-    SyntheticViewTemplate,
-    TemplateValue,
-    ViewTemplate,
-} from "./templating/template.js";
-export { CompilationStrategy, Compiler } from "./templating/compiler.js";
-export { Markup, Parser } from "./templating/markup.js";
-export {
+export { children, ChildrenDirective } from "./templating/children.js";
+export type {
+    ChildListDirectiveOptions,
+    ChildrenDirectiveOptions,
+    SubtreeDirectiveOptions,
+} from "./templating/children.js";
+export { Compiler } from "./templating/compiler.js";
+export type { CompilationStrategy } from "./templating/compiler.js";
+export { HTMLBindingDirective } from "./templating/html-binding-directive.js";
+export type {
     ContentTemplate,
     ContentView,
-    HTMLBindingDirective,
 } from "./templating/html-binding-directive.js";
 export {
+    htmlDirective,
+    HTMLDirective,
+    StatelessAttachedAttributeDirective,
+} from "./templating/html-directive.js";
+export type {
     AddViewBehaviorFactory,
     Aspected,
     CompiledViewBehaviorFactory,
-    htmlDirective,
-    HTMLDirective,
     HTMLDirectiveDefinition,
     PartialHTMLDirectiveDefinition,
-    StatelessAttachedAttributeDirective,
     ViewBehavior,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
     ViewController,
 } from "./templating/html-directive.js";
-export { ref, RefDirective } from "./templating/ref.js";
-export { when } from "./templating/when.js";
-export {
-    repeat,
-    RepeatBehavior,
-    RepeatDirective,
-    RepeatOptions,
-} from "./templating/repeat.js";
-export {
-    slotted,
-    SlottedDirective,
-    SlottedDirectiveOptions,
-} from "./templating/slotted.js";
-export {
-    children,
-    ChildrenDirective,
-    ChildrenDirectiveOptions,
-    ChildListDirectiveOptions,
-    SubtreeDirectiveOptions,
-} from "./templating/children.js";
-export {
-    ElementView,
-    HTMLView,
-    SyntheticView,
-    View,
-    HydratableView,
-    HydrationBindingError,
-} from "./templating/view.js";
-export {
-    elements,
+export { Markup, Parser } from "./templating/markup.js";
+export { elements, NodeObservationDirective } from "./templating/node-observation.js";
+export type {
     ElementsFilter,
     NodeBehaviorOptions,
-    NodeObservationDirective,
 } from "./templating/node-observation.js";
+export { ref, RefDirective } from "./templating/ref.js";
 export { render, RenderBehavior, RenderDirective } from "./templating/render.js";
+export { repeat, RepeatBehavior, RepeatDirective } from "./templating/repeat.js";
+export type { RepeatOptions } from "./templating/repeat.js";
+export { slotted, SlottedDirective } from "./templating/slotted.js";
+export type { SlottedDirectiveOptions } from "./templating/slotted.js";
+export { html, InlineTemplateDirective, ViewTemplate } from "./templating/template.js";
+export type {
+    CaptureType,
+    ElementViewTemplate,
+    HTMLTemplateCompilationResult,
+    HTMLTemplateTag,
+    SyntheticViewTemplate,
+    TemplateValue,
+} from "./templating/template.js";
+export { HTMLView, HydrationBindingError } from "./templating/view.js";
+export type {
+    ElementView,
+    HydratableView,
+    SyntheticView,
+    View,
+} from "./templating/view.js";
+export { when } from "./templating/when.js";
 
 // Components
-export { customElement, FASTElement } from "./components/fast-element.js";
-export {
-    FASTElementDefinition,
-    PartialFASTElementDefinition,
-    ShadowRootOptions,
-    fastElementRegistry,
-    TemplateOptions,
-    TypeRegistry,
-    type TemplateLifecycleCallbacks,
-} from "./components/fast-definitions.js";
 export {
     attr,
     AttributeConfiguration,
     AttributeDefinition,
-    AttributeMode,
     booleanConverter,
-    DecoratorAttributeConfiguration,
     nullableBooleanConverter,
     nullableNumberConverter,
+} from "./components/attributes.js";
+export type {
+    AttributeMode,
+    DecoratorAttributeConfiguration,
     ValueConverter,
 } from "./components/attributes.js";
 export {
     ElementController,
-    ElementControllerStrategy,
     HydratableElementController,
-    type HydrationControllerCallbacks,
     needsHydrationAttribute,
     Stages,
+    type HydrationControllerCallbacks,
 } from "./components/element-controller.js";
+export type { ElementControllerStrategy } from "./components/element-controller.js";
+export {
+    FASTElementDefinition,
+    fastElementRegistry,
+    TemplateOptions,
+    type TemplateLifecycleCallbacks,
+} from "./components/fast-definitions.js";
+export type {
+    PartialFASTElementDefinition,
+    ShadowRootOptions,
+    TypeRegistry,
+} from "./components/fast-definitions.js";
+export { customElement, FASTElement } from "./components/fast-element.js";
 export { deferHydrationAttribute, isHydratable } from "./components/hydration.js";
