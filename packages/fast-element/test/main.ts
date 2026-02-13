@@ -89,3 +89,4 @@ export {
     renderWith,
 } from "../src/templating/render.js";
 export { repeat, RepeatBehavior, RepeatDirective } from "../src/templating/repeat.js";
+export { slotted, SlottedDirective } from "../src/templating/slotted.js";
