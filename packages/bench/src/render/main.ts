@@ -1,5 +1,7 @@
-import { attr, css, FASTElement, html, oneTime, repeat } from "../index.js";
-import { data, RandomItem } from "../__test__/utilities.js";
+import { attr, css, FASTElement, html, oneTime, repeat } from "@microsoft/fast-element";
+import type { RandomItem } from "../utilities.js";
+import { data } from "../utilities.js";
+import { runBenchmark } from "../harness.js";
 
 const xItemTemplate = html<XItem>`
     <div @click="${x => x.onClick}" class="item">${x => x.value}</div>
@@ -35,6 +37,7 @@ const xAppTemplate = html<XApp>`
         )}
     </div>
 `;
+
 class XApp extends FASTElement {
     items: RandomItem[] = data;
 }
@@ -44,10 +47,7 @@ XApp.define({
 });
 
 const itemRenderer = (): HTMLElement => {
-    const testRender = document.createElement("x-app");
-
-    return testRender;
+    return document.createElement("x-app");
 };
 
-export default itemRenderer;
-export { tests } from "@tensile-perf/web-components";
+runBenchmark(itemRenderer);

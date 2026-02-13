@@ -1,4 +1,11 @@
-import { attr, FASTElement, html, nullableNumberConverter, when } from "../index.js";
+import {
+    attr,
+    FASTElement,
+    html,
+    nullableNumberConverter,
+    when,
+} from "@microsoft/fast-element";
+import { runBenchmark } from "../harness.js";
 
 const emotionalTemplates = {
     depressed: html`
@@ -27,6 +34,7 @@ const emotionalTemplates = {
         </div>
     `,
 };
+
 class TestWhen extends FASTElement {
     @attr({
         mode: "fromView",
@@ -37,7 +45,13 @@ class TestWhen extends FASTElement {
 TestWhen.define({
     name: "test-when",
     template: html`
-        <button @click="${x => x.update(true)}">Click Me</button>
+        <button
+            @click="${x => {
+                x.value = (x.value + 1) % 11;
+            }}"
+        >
+            Click Me
+        </button>
         ${when(x => x.value <= 1, emotionalTemplates.depressed)}
         ${when(x => x.value === 2 || x.value === 3, emotionalTemplates.sad)}
         ${when(x => x.value === 4 || x.value === 5, emotionalTemplates.indifferent)}
@@ -48,11 +62,8 @@ TestWhen.define({
 
 const itemRenderer = (): HTMLElement => {
     const testWhen = document.createElement("test-when");
-
     testWhen.click();
-
     return testWhen;
 };
 
-export default itemRenderer;
-export { tests } from "@tensile-perf/web-components";
+runBenchmark(itemRenderer);

@@ -1,17 +1,28 @@
-import { attr, FASTElement, html, nullableNumberConverter, repeat } from "../index.js";
+import {
+    attr,
+    FASTElement,
+    html,
+    nullableNumberConverter,
+    observable,
+    repeat,
+} from "@microsoft/fast-element";
+import { runBenchmark } from "../harness.js";
 
-class TestRepeat extends FASTElement {
+export class TestRepeat extends FASTElement {
     @attr({
         mode: "fromView",
         converter: nullableNumberConverter,
     })
-    count: number = 0;
+    count: number;
+    countChanged(prev: number, next: number): void {
+        this.items = new Array(this.count).fill("foo");
+    }
 
-    public items: Array<string> = new Array(this.count).fill("foo");
+    public items: string[];
 
     connectedCallback(): void {
         super.connectedCallback();
-        this.items.reverse();
+        this.items.shift();
     }
 }
 TestRepeat.define({
@@ -28,11 +39,8 @@ TestRepeat.define({
 
 const itemRenderer = (): HTMLElement => {
     const testRepeat = document.createElement("test-repeat");
-
     testRepeat.setAttribute("count", "100");
-
     return testRepeat;
 };
 
-export default itemRenderer;
-export { tests } from "@tensile-perf/web-components";
+runBenchmark(itemRenderer);
