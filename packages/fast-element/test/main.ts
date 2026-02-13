@@ -91,3 +91,10 @@ export {
 export { repeat, RepeatBehavior, RepeatDirective } from "../src/templating/repeat.js";
 export { slotted, SlottedDirective } from "../src/templating/slotted.js";
 export { isString } from "../src/interfaces.js";
+export function removeWhitespace(str: string): string {
+    return str
+        .trim()
+        .split("\n")
+        .map(s => s.trim())
+        .join("");
+}

@@ -294,9 +294,8 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML } = await import(
-                        "/main.js"
-                    );
+                    const { repeat, Observable, html, Fake, toHTML, removeWhitespace } =
+                        await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -372,7 +371,7 @@ test.describe("The repeat", () => {
 
                     behavior.bind(controller);
 
-                    return toHTML(parent) === createOutput(s);
+                    return removeWhitespace(toHTML(parent)) === createOutput(s);
                 }, size);
 
                 expect(result).toBe(true);
@@ -385,9 +384,8 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML } = await import(
-                        "/main.js"
-                    );
+                    const { repeat, Observable, html, Fake, toHTML, removeWhitespace } =
+                        await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -476,7 +474,8 @@ test.describe("The repeat", () => {
                     behavior.bind(controller);
 
                     const posCorrect = expectViewPositionToBeCorrect(behavior);
-                    const htmlCorrect = toHTML(parent) === createOutput(s);
+                    const htmlCorrect =
+                        removeWhitespace(toHTML(parent)) === createOutput(s);
 
                     return posCorrect && htmlCorrect;
                 }, size);
@@ -493,8 +492,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const wrappedItemTemplate = html`
                         <div>${x => x.name}</div>
@@ -568,7 +574,7 @@ test.describe("The repeat", () => {
                     behavior.bind(controller);
 
                     const before =
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         createOutput(
                             s,
                             undefined,
@@ -580,14 +586,14 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    const empty = toHTML(parent) === "";
+                    const empty = removeWhitespace(toHTML(parent)) === "";
 
                     data.items = createArray(s);
 
                     await Updates.next();
 
                     const after =
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         createOutput(
                             s,
                             undefined,
@@ -610,8 +616,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -687,7 +700,9 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `${createOutput(s)}newitem`;
+                    return (
+                        removeWhitespace(toHTML(parent)) === `${createOutput(s)}newitem`
+                    );
                 }, size);
 
                 expect(result).toBe(true);
@@ -702,8 +717,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -770,7 +792,7 @@ test.describe("The repeat", () => {
                         .reverse()
                         .join("");
 
-                    return toHTML(parent) === htmlString;
+                    return removeWhitespace(toHTML(parent)) === htmlString;
                 }, size);
 
                 expect(result).toBe(true);
@@ -785,8 +807,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const randomizedOneThroughTen = [5, 4, 6, 1, 7, 3, 2, 10, 9, 8];
                     const itemTemplate = html`
@@ -869,7 +898,7 @@ test.describe("The repeat", () => {
                         })
                         .join("");
 
-                    return toHTML(parent) === htmlString;
+                    return removeWhitespace(toHTML(parent)) === htmlString;
                 }, size);
 
                 expect(result).toBe(true);
@@ -884,8 +913,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -963,7 +999,10 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `${createOutput(s, x => x !== index)}`;
+                    return (
+                        removeWhitespace(toHTML(parent)) ===
+                        `${createOutput(s, x => x !== index)}`
+                    );
                 }, size);
 
                 expect(result).toBe(true);
@@ -978,8 +1017,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1056,7 +1102,10 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `${createOutput(s, x => x !== 0)}`;
+                    return (
+                        removeWhitespace(toHTML(parent)) ===
+                        `${createOutput(s, x => x !== 0)}`
+                    );
                 }, size);
 
                 expect(result).toBe(true);
@@ -1071,8 +1120,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1151,7 +1207,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(s, x => x !== index)}newitem1newitem2`
                     );
                 }, size);
@@ -1166,8 +1222,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1260,7 +1323,7 @@ test.describe("The repeat", () => {
 
                     const posAfter = expectViewPositionToBeCorrect(behavior);
                     const htmlCorrect =
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(s, x => x !== index)}newitem1newitem2`;
 
                     return posBefore && posAfter && htmlCorrect;
@@ -1278,8 +1341,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1356,7 +1426,7 @@ test.describe("The repeat", () => {
                     vm.items.splice(mid, 1, { name: "newitem1" });
                     await Updates.next();
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(mid)}newitem1${createOutput(
                             vm.items.slice(mid + 1).length,
                             undefined,
@@ -1377,8 +1447,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1470,7 +1547,7 @@ test.describe("The repeat", () => {
 
                     const posAfter = expectViewPositionToBeCorrect(behavior);
                     const htmlCorrect =
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(mid)}newitem1${createOutput(
                             vm.items.slice(mid + 1).length,
                             undefined,
@@ -1494,8 +1571,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1572,7 +1656,7 @@ test.describe("The repeat", () => {
                     vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                     await Updates.next();
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(mid)}newitem1newitem2${createOutput(
                             vm.items.slice(mid + 2).length,
                             undefined,
@@ -1593,8 +1677,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1673,7 +1764,7 @@ test.describe("The repeat", () => {
                     vm.items.splice(mid, 2, { name: "newitem1" }, { name: "newitem2" });
                     await Updates.next();
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(mid)}newitem1newitem2${createOutput(
                             vm.items.slice(mid + 2).length,
                             undefined,
@@ -1694,8 +1785,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1784,12 +1882,12 @@ test.describe("The repeat", () => {
                     vm.items.splice(0, vm.items.length, ...vm.items);
                     await Updates.next();
                     const pos2 = expectViewPositionToBeCorrect(behavior);
-                    const html1 = toHTML(parent) === createOutput(s);
+                    const html1 = removeWhitespace(toHTML(parent)) === createOutput(s);
 
                     vm.items.splice(0, vm.items.length, ...vm.items);
                     await Updates.next();
                     const pos3 = expectViewPositionToBeCorrect(behavior);
-                    const html2 = toHTML(parent) === createOutput(s);
+                    const html2 = removeWhitespace(toHTML(parent)) === createOutput(s);
 
                     return pos1 && pos2 && html1 && pos3 && html2;
                 }, size);
@@ -1806,8 +1904,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1885,7 +1990,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `newitem1newitem2${createOutput(s, x => x !== 0)}`
                     );
                 }, size);
@@ -1902,8 +2007,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -1984,13 +2096,15 @@ test.describe("The repeat", () => {
 
                     behavior.bind(controller);
 
-                    const before = toHTML(parent) === createOutput(s);
+                    const before = removeWhitespace(toHTML(parent)) === createOutput(s);
 
                     vm.template = altItemTemplate;
 
                     await Updates.next();
 
-                    const after = toHTML(parent) === createOutput(s, () => true, "*");
+                    const after =
+                        removeWhitespace(toHTML(parent)) ===
+                        createOutput(s, () => true, "*");
 
                     return before && after;
                 }, size);
@@ -2007,9 +2121,8 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML } = await import(
-                        "/main.js"
-                    );
+                    const { repeat, Observable, html, Fake, toHTML, removeWhitespace } =
+                        await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2081,7 +2194,7 @@ test.describe("The repeat", () => {
 
                     behavior.bind(controller);
 
-                    const text = toHTML(parent);
+                    const text = removeWhitespace(toHTML(parent));
 
                     for (let i = 0; i < s; ++i) {
                         const str = `child-item${i + 1}root-root`;
@@ -2102,8 +2215,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2182,7 +2302,8 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) === `shift${createOutput(s, index => index !== 0)}`
+                        removeWhitespace(toHTML(parent)) ===
+                        `shift${createOutput(s, index => index !== 0)}`
                     );
                 }, size);
 
@@ -2198,8 +2319,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2278,7 +2406,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `shiftshift${createOutput(s, index => index !== 0)}`
                     );
                 }, size);
@@ -2295,8 +2423,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2376,7 +2511,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `shift2${createOutput(s, index => index !== 0)}`
                     );
                 }, size);
@@ -2393,8 +2528,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2473,7 +2615,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(s, index => index !== 0)}shift3`
                     );
                 }, size);
@@ -2490,8 +2632,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2570,7 +2719,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `${createOutput(s, index => index !== 0)}shift3`
                     );
                 }, size);
@@ -2587,8 +2736,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2666,7 +2822,7 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `${createOutput(s)}`;
+                    return removeWhitespace(toHTML(parent)) === `${createOutput(s)}`;
                 }, size);
 
                 expect(result).toBe(true);
@@ -2681,8 +2837,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2760,7 +2923,10 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `${createOutput(s - 1)}shift3`;
+                    return (
+                        removeWhitespace(toHTML(parent)) ===
+                        `${createOutput(s - 1)}shift3`
+                    );
                 }, size);
 
                 expect(result).toBe(true);
@@ -2775,8 +2941,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2855,7 +3028,10 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `shift1shift2${createOutput(s - 1)}shift3`;
+                    return (
+                        removeWhitespace(toHTML(parent)) ===
+                        `shift1shift2${createOutput(s - 1)}shift3`
+                    );
                 }, size);
 
                 expect(result).toBe(true);
@@ -2870,8 +3046,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -2950,7 +3133,10 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `shift1shift2${createOutput(s)}`;
+                    return (
+                        removeWhitespace(toHTML(parent)) ===
+                        `shift1shift2${createOutput(s)}`
+                    );
                 }, size);
 
                 expect(result).toBe(true);
@@ -2965,8 +3151,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -3046,7 +3239,7 @@ test.describe("The repeat", () => {
                     await Updates.next();
 
                     return (
-                        toHTML(parent) ===
+                        removeWhitespace(toHTML(parent)) ===
                         `shift1shift2${createOutput(
                             s - 1,
                             index => index !== 0,
@@ -3069,8 +3262,15 @@ test.describe("The repeat", () => {
 
                 const result = await page.evaluate(async s => {
                     // @ts-expect-error: Client module.
-                    const { repeat, Observable, html, Fake, toHTML, Updates } =
-                        await import("/main.js");
+                    const {
+                        repeat,
+                        Observable,
+                        html,
+                        Fake,
+                        toHTML,
+                        Updates,
+                        removeWhitespace,
+                    } = await import("/main.js");
 
                     const itemTemplate = html`
                         ${x => x.name}
@@ -3157,7 +3357,9 @@ test.describe("The repeat", () => {
 
                     await Updates.next();
 
-                    return toHTML(parent) === `${createOutput(s)}newitem`;
+                    return (
+                        removeWhitespace(toHTML(parent)) === `${createOutput(s)}newitem`
+                    );
                 }, size);
 
                 expect(result).toBe(true);

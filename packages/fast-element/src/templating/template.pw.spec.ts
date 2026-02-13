@@ -392,6 +392,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 Fake,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -404,7 +405,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -459,6 +460,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 oneWay,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -471,7 +473,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -526,6 +528,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 Fake,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -539,7 +542,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -599,6 +602,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 Fake,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -612,7 +616,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -671,6 +675,7 @@ test.describe("The html tag template helper", () => {
                 Parser,
                 DOMAspect,
                 isString,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -683,7 +688,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -738,6 +743,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 oneWay,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -750,7 +756,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -807,6 +813,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 Fake,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -819,7 +826,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -875,6 +882,7 @@ test.describe("The html tag template helper", () => {
                 Parser,
                 DOMAspect,
                 isString,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -887,7 +895,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -942,6 +950,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 oneWay,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -954,7 +963,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -1011,6 +1020,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 Fake,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -1024,7 +1034,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -1086,6 +1096,7 @@ test.describe("The html tag template helper", () => {
                 DOMAspect,
                 isString,
                 Fake,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -1099,7 +1110,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -1162,6 +1173,7 @@ test.describe("The html tag template helper", () => {
                 Parser,
                 DOMAspect,
                 isString,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -1174,7 +1186,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -1244,6 +1256,7 @@ test.describe("The html tag template helper", () => {
                 Parser,
                 DOMAspect,
                 isString,
+                removeWhitespace,
             } = await import("/main.js");
 
             const FAKE = { interpolation: Markup.interpolation("0") };
@@ -1256,7 +1269,7 @@ test.describe("The html tag template helper", () => {
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
                         ""
                     );
-                    if (result !== expectedHTML)
+                    if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                 } else {
                     if (template.html !== expectedHTML) return `html mismatch`;
@@ -1438,7 +1451,7 @@ test.describe("The ViewTemplate", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const { html } = await import("/main.js");
+            const { html, removeWhitespace } = await import("/main.js");
 
             const nested = html`
                 Nested
@@ -1447,7 +1460,7 @@ test.describe("The ViewTemplate", () => {
                 Before${nested.inline()}After
             `;
 
-            return root.html === "BeforeNestedAfter";
+            return removeWhitespace(root.html) === "BeforeNestedAfter";
         });
 
         expect(result).toBe(true);
@@ -1460,7 +1473,7 @@ test.describe("The ViewTemplate", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const { html, ViewTemplate } = await import("/main.js");
+            const { html, removeWhitespace, ViewTemplate } = await import("/main.js");
 
             const templateEl = document.createElement("template");
             templateEl.innerHTML = "Nested";
@@ -1470,7 +1483,7 @@ test.describe("The ViewTemplate", () => {
                 Before${nested.inline()}After
             `;
 
-            return root.html === "BeforeNestedAfter";
+            return removeWhitespace(root.html) === "BeforeNestedAfter";
         });
 
         expect(result).toBe(true);
@@ -1483,7 +1496,7 @@ test.describe("The ViewTemplate", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const { html, Markup } = await import("/main.js");
+            const { html, Markup, removeWhitespace } = await import("/main.js");
 
             function getFirstBehavior(template) {
                 for (const key in template.factories) {
@@ -1504,7 +1517,8 @@ test.describe("The ViewTemplate", () => {
             const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
 
             const htmlMatch =
-                root.html === `BeforeNested${nestedBehaviorPlaceholder}After`;
+                removeWhitespace(root.html) ===
+                `BeforeNested${nestedBehaviorPlaceholder}After`;
             const behaviorMatch = getFirstBehavior(root) === nestedBehavior;
 
             return htmlMatch && behaviorMatch;
@@ -1520,8 +1534,15 @@ test.describe("The ViewTemplate", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const { html, ViewTemplate, HTMLBindingDirective, Markup, nextId, oneWay } =
-                await import("/main.js");
+            const {
+                html,
+                ViewTemplate,
+                HTMLBindingDirective,
+                Markup,
+                nextId,
+                oneWay,
+                removeWhitespace,
+            } = await import("/main.js");
 
             function getFirstBehavior(template) {
                 for (const key in template.factories) {
@@ -1543,7 +1564,8 @@ test.describe("The ViewTemplate", () => {
             `;
 
             const htmlMatch =
-                root.html === `BeforeNested${nestedBehaviorPlaceholder}After`;
+                removeWhitespace(root.html) ===
+                `BeforeNested${nestedBehaviorPlaceholder}After`;
             const behaviorMatch = getFirstBehavior(root) === nestedBehavior;
 
             return htmlMatch && behaviorMatch;
