@@ -1560,8 +1560,15 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { render, RenderDirective, Observable, html, Fake, toHTML } =
-                    await import("/main.js");
+                const {
+                    render,
+                    RenderDirective,
+                    Observable,
+                    html,
+                    Fake,
+                    toHTML,
+                    removeWhitespace,
+                } = await import("/main.js");
 
                 const childTemplate = html`
                     This is a template. ${x => x.knownValue}
@@ -1619,7 +1626,7 @@ test.describe("The render", () => {
 
                 behavior.bind(controller);
 
-                return toHTML(parentNode);
+                return removeWhitespace(toHTML(parentNode));
             });
 
             expect(result).toBe("This is a template. value");
@@ -1639,6 +1646,7 @@ test.describe("The render", () => {
                     html,
                     Fake,
                     toHTML,
+                    removeWhitespace,
                     Updates,
                 } = await import("/main.js");
 
@@ -1697,7 +1705,7 @@ test.describe("The render", () => {
 
                 behavior.bind(controller);
 
-                const before = toHTML(parentNode);
+                const before = removeWhitespace(toHTML(parentNode));
 
                 model.innerTemplate = html`
                     This is a new template. ${x => x.knownValue}
@@ -1705,7 +1713,7 @@ test.describe("The render", () => {
 
                 await Updates.next();
 
-                const after = toHTML(parentNode);
+                const after = removeWhitespace(toHTML(parentNode));
 
                 return { before, after };
             });
@@ -1726,6 +1734,7 @@ test.describe("The render", () => {
                     html,
                     Fake,
                     toHTML,
+                    removeWhitespace,
                     Updates,
                 } = await import("/main.js");
 
@@ -1785,13 +1794,13 @@ test.describe("The render", () => {
                 behavior.bind(controller);
                 const inserted = node.previousSibling;
 
-                const before = toHTML(parentNode);
+                const before = removeWhitespace(toHTML(parentNode));
 
                 model.trigger++;
 
                 await Updates.next();
 
-                const after = toHTML(parentNode);
+                const after = removeWhitespace(toHTML(parentNode));
                 const sameNode = node.previousSibling === inserted;
 
                 return { before, after, sameNode };
@@ -1807,8 +1816,15 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { render, RenderDirective, Observable, html, Fake, toHTML } =
-                    await import("/main.js");
+                const {
+                    render,
+                    RenderDirective,
+                    Observable,
+                    html,
+                    Fake,
+                    toHTML,
+                    removeWhitespace,
+                } = await import("/main.js");
 
                 const childTemplate = html`
                     This is a template. ${x => x.knownValue}
@@ -1867,7 +1883,7 @@ test.describe("The render", () => {
                 const view = behavior.view;
 
                 const sourceBefore = view.source === model.child;
-                const htmlBefore = toHTML(parentNode);
+                const htmlBefore = removeWhitespace(toHTML(parentNode));
 
                 controller.unbind();
 
@@ -1886,8 +1902,15 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { render, RenderDirective, Observable, html, Fake, toHTML } =
-                    await import("/main.js");
+                const {
+                    render,
+                    RenderDirective,
+                    Observable,
+                    html,
+                    Fake,
+                    toHTML,
+                    removeWhitespace,
+                } = await import("/main.js");
 
                 const childTemplate = html`
                     This is a template. ${x => x.knownValue}
@@ -1946,7 +1969,7 @@ test.describe("The render", () => {
                 const view = behavior.view;
 
                 const sourceBefore = view.source === model.child;
-                const htmlBefore = toHTML(parentNode);
+                const htmlBefore = removeWhitespace(toHTML(parentNode));
 
                 behavior.unbind(controller);
 
@@ -1957,7 +1980,7 @@ test.describe("The render", () => {
                 const newView = behavior.view;
                 const sourceAfterRebind = newView.source === model.child;
                 const sameView = newView === view;
-                const htmlAfterRebind = toHTML(parentNode);
+                const htmlAfterRebind = removeWhitespace(toHTML(parentNode));
 
                 return {
                     sourceBefore,
@@ -1999,9 +2022,8 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { RenderInstruction, Observable, toHTML } = await import(
-                    "/main.js"
-                );
+                const { RenderInstruction, Observable, toHTML, removeWhitespace } =
+                    await import("/main.js");
 
                 class RenderSource {}
                 Observable.defineProperty(RenderSource.prototype, "knownValue");
@@ -2026,7 +2048,7 @@ test.describe("The render", () => {
 
                 return {
                     sourceMatch: view.source === source,
-                    html: toHTML(targetNode),
+                    html: removeWhitespace(toHTML(targetNode)),
                 };
             });
 
@@ -2039,7 +2061,9 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { RenderInstruction, toHTML } = await import("/main.js");
+                const { RenderInstruction, toHTML, removeWhitespace } = await import(
+                    "/main.js"
+                );
 
                 const templateStaticViewOptions = {
                     content: "foo",
@@ -2056,7 +2080,7 @@ test.describe("The render", () => {
 
                 return {
                     sourceNull: view.source === null,
-                    html: toHTML(targetNode.firstElementChild),
+                    html: removeWhitespace(toHTML(targetNode.firstElementChild)),
                 };
             });
 
@@ -2071,9 +2095,8 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { RenderInstruction, Observable, html, toHTML } = await import(
-                    "/main.js"
-                );
+                const { RenderInstruction, Observable, html, toHTML, removeWhitespace } =
+                    await import("/main.js");
 
                 class RenderSource {}
                 Observable.defineProperty(RenderSource.prototype, "knownValue");
@@ -2102,7 +2125,7 @@ test.describe("The render", () => {
 
                 return {
                     sourceMatch: view.source === source,
-                    html: toHTML(targetNode.firstElementChild),
+                    html: removeWhitespace(toHTML(targetNode.firstElementChild)),
                 };
             });
 
@@ -2117,8 +2140,14 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { RenderInstruction, Observable, html, toHTML, Updates } =
-                    await import("/main.js");
+                const {
+                    RenderInstruction,
+                    Observable,
+                    html,
+                    toHTML,
+                    Updates,
+                    removeWhitespace,
+                } = await import("/main.js");
 
                 class RenderSource {}
                 Observable.defineProperty(RenderSource.prototype, "knownValue");
@@ -2145,13 +2174,13 @@ test.describe("The render", () => {
                 view.bind(source);
                 view.appendTo(targetNode);
 
-                const before = toHTML(targetNode.firstElementChild);
+                const before = removeWhitespace(toHTML(targetNode.firstElementChild));
 
                 source.knownValue = "new-value";
 
                 await Updates.next();
 
-                const after = toHTML(targetNode.firstElementChild);
+                const after = removeWhitespace(toHTML(targetNode.firstElementChild));
 
                 return { sourceMatch: view.source === source, before, after };
             });
@@ -2168,8 +2197,14 @@ test.describe("The render", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { RenderInstruction, Observable, ref, toHTML, Updates } =
-                    await import("/main.js");
+                const {
+                    RenderInstruction,
+                    Observable,
+                    ref,
+                    toHTML,
+                    Updates,
+                    removeWhitespace,
+                } = await import("/main.js");
 
                 class RenderSource {}
                 Observable.defineProperty(RenderSource.prototype, "knownValue");
@@ -2219,6 +2254,7 @@ test.describe("The render", () => {
                     elements,
                     html,
                     toHTML,
+                    removeWhitespace,
                     Updates,
                 } = await import("/main.js");
 
