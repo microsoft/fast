@@ -3,9 +3,10 @@
     <head>
         <meta charset="utf-8" />
         <title>Performance Metrics Test</title>
+        <link rel="preload" as="style" href="./fast-card.css" />
     </head>
     <body>
-        <fast-card defer-delay="0">
+        <fast-card needs-hydration defer-hydration defer-delay="0">
             <template shadowrootmode="open">
                 <link rel="stylesheet" href="./fast-card.css" />
                 <dl>
@@ -20,12 +21,205 @@
                 </dl>
             </template>
         </fast-card>
-        <fast-card defer-delay="100">
+
+        <fast-card needs-hydration defer-hydration defer-delay="0">
             <template shadowrootmode="open">
                 <link rel="stylesheet" href="./fast-card.css" />
                 <dl>
                     <dt>Configured Delay</dt>
-                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->100ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->0ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="0">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->0ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="0">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->0ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="0">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->0ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="150">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->150ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="150">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->150ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="150">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->150ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="150">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->150ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="300">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->300ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="300">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->300ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="300">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->300ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="300">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->300ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
+                    <dt>Element Will Hydrate</dt>
+                    <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
+                    <dt>Element Did Hydrate</dt>
+                    <dd><!--fe-b$$start$$2$$didhydrate$$fe-b-->0ms<!--fe-b$$end$$2$$didhydrate$$fe-b--></dd>
+                    <dt>Element Hydration Duration</dt>
+                    <dd><!--fe-b$$start$$3$$hydrationduration$$fe-b-->0ms<!--fe-b$$end$$3$$hydrationduration$$fe-b--></dd>
+                </dl>
+            </template>
+        </fast-card>
+
+        <fast-card needs-hydration defer-hydration defer-delay="300">
+            <template shadowrootmode="open">
+                <link rel="stylesheet" href="./fast-card.css" />
+                <dl>
+                    <dt>Configured Delay</dt>
+                    <dd><!--fe-b$$start$$0$$displayDelay$$fe-b-->300ms<!--fe-b$$end$$0$$displayDelay$$fe-b--></dd>
                     <dt>Element Will Hydrate</dt>
                     <dd><!--fe-b$$start$$1$$willhydrate$$fe-b-->0ms<!--fe-b$$end$$1$$willhydrate$$fe-b--></dd>
                     <dt>Element Did Hydrate</dt>
@@ -40,14 +234,14 @@
             <template>
                 <link rel="stylesheet" href="./fast-card.css" />
                 <dl>
-                    <dt>Configured Defer Delay</dt>
-                    <dd id="defer-delay">{{displayDelay}}ms</dd>
+                    <dt>Configured Delay</dt>
+                    <dd>{{displayDelay}}</dd>
                     <dt>Element Will Hydrate</dt>
-                    <dd id="hydration-started">{{willHydrate}}</dd>
+                    <dd>{{willHydrate}}</dd>
                     <dt>Element Did Hydrate</dt>
-                    <dd id="hydration-completed">{{didHydrate}}</dd>
+                    <dd>{{didHydrate}}</dd>
                     <dt>Element Hydration Duration</dt>
-                    <dd id="hydration-duration">{{hydrationDuration}}</dd>
+                    <dd>{{hydrationDuration}}</dd>
                 </dl>
             </template>
         </f-template>
