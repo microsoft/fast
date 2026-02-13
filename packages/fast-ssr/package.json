@@ -59,6 +59,7 @@
     "@microsoft/fast-element": "^2.9.2"
   },
   "devDependencies": {
+    "@types/parse5": "^5.0.0",
     "@microsoft/fast-element": "^2.9.2"
   },
   "beachball": {
