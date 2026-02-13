@@ -1,11 +1,17 @@
 import { Observable, observable } from "../observation/observable.js";
 
-class ChildModel {}
+class ChildModel {
+    value!: string;
+}
 observable(ChildModel.prototype, "value");
 ChildModel.prototype.value = "value";
 
 class Model {
     childChangedCalled = false;
+    trigger!: number;
+    value!: number;
+    child!: ChildModel;
+    child2!: ChildModel;
 
     childChanged() {
         this.childChangedCalled = true;
@@ -56,6 +62,8 @@ class DerivedModel extends Model {
     child2Changed() {
         this.child2ChangedCalled = true;
     }
+
+    derivedChild!: ChildModel;
 }
 observable(DerivedModel.prototype, "derivedChild");
 DerivedModel.prototype.derivedChild = new ChildModel();
