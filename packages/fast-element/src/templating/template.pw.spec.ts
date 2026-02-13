@@ -120,125 +120,82 @@ test.describe("The html tag template helper", () => {
                 const scenarios = [
                     // string
                     {
-                        template: html`
-                            ${stringValue} end
-                        `,
+                        template: html`${stringValue} end`,
                         result: `${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${stringValue} end
-                        `,
+                        template: html`beginning ${stringValue} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${stringValue}
-                        `,
+                        template: html`beginning ${stringValue}`,
                         result: `beginning ${FAKE.interpolation}`,
                     },
                     // number
                     {
-                        template: html`
-                            ${numberValue} end
-                        `,
+                        template: html`${numberValue} end`,
                         result: `${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${numberValue} end
-                        `,
+                        template: html`beginning ${numberValue} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${numberValue}
-                        `,
+                        template: html`beginning ${numberValue}`,
                         result: `beginning ${FAKE.interpolation}`,
                     },
                     // expression
                     {
-                        template: html`
-                            ${x => x.value} end
-                        `,
+                        template: html`${x => x.value} end`,
                         result: `${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning ${x => x.value} end
-                        `,
+                        template: html`beginning ${x => x.value} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning ${x => x.value}
-                        `,
+                        template: html`beginning ${x => x.value}`,
                         result: `beginning ${FAKE.interpolation}`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     // directive
                     {
-                        template: html`
-                            ${new TestDirective()} end
-                        `,
+                        template: html`${new TestDirective()} end`,
                         result: `${FAKE.comment} end`,
                         expectDirectives: [TestDirective],
                     },
                     {
-                        template: html`
-                            beginning ${new TestDirective()} end
-                        `,
+                        template: html`beginning ${new TestDirective()} end`,
                         result: `beginning ${FAKE.comment} end`,
                         expectDirectives: [TestDirective],
                     },
                     {
-                        template: html`
-                            beginning ${new TestDirective()}
-                        `,
+                        template: html`beginning ${new TestDirective()}`,
                         result: `beginning ${FAKE.comment}`,
                         expectDirectives: [TestDirective],
                     },
                     // template
                     {
-                        template: html`
-                            ${html`
-                                sub-template
-                            `}
-                            end
-                        `,
+                        template: html`${html`sub-template`} end`,
                         result: `${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${html`
-                                sub-template
-                            `}
-                            end
-                        `,
+                        template: html`beginning ${html`sub-template`} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${html`
-                                sub-template
-                            `}
-                        `,
+                        template: html`beginning ${html`sub-template`}`,
                         result: `beginning ${FAKE.interpolation}`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     // mixed back-to-back
                     {
-                        template: html`
-                            ${stringValue}${numberValue}${x =>
-                                x.value}${new TestDirective()}
-                            end
-                        `,
+                        template: html`${stringValue}${numberValue}${
+                            x => x.value}${new TestDirective()} end`,
                         result: `${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -247,12 +204,9 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}${numberValue}${x =>
-                                x.value}${new TestDirective()}
-                            end
-                        `,
+                        template: html`beginning ${stringValue}${numberValue}${
+                            x => x.value
+                        }${new TestDirective()} end`,
                         result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -261,11 +215,9 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}${numberValue}${x =>
-                                x.value}${new TestDirective()}
-                        `,
+                        template: html`beginning ${stringValue}${numberValue}${
+                            x => x.value}${new TestDirective()
+                        }`,
                         result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -275,11 +227,9 @@ test.describe("The html tag template helper", () => {
                     },
                     // mixed separated
                     {
-                        template: html`
-                            ${stringValue}separator${numberValue}separator${x =>
-                                x.value}separator${new TestDirective()}
-                            end
-                        `,
+                        template: html`${stringValue}separator${numberValue}separator${
+                            x => x.value
+                        }separator${new TestDirective()} end`,
                         result: `${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -288,12 +238,9 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}separator${numberValue}separator${x =>
-                                x.value}separator${new TestDirective()}
-                            end
-                        `,
+                        template: html`beginning ${stringValue}separator${numberValue}separator${
+                            x => x.value
+                        }separator${new TestDirective()} end`,
                         result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -302,11 +249,9 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}separator${numberValue}separator${x =>
-                                x.value}separator${new TestDirective()}
-                        `,
+                        template: html`beginning ${stringValue}separator${numberValue}separator${
+                            x => x.value
+                        }separator${new TestDirective()}`,
                         result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -333,7 +278,10 @@ test.describe("The html tag template helper", () => {
                         if (result !== expectedHTML)
                             return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                     } else {
-                        if (template.html !== expectedHTML)
+                        if (
+                            template.html !==
+                            expectedHTML
+                        )
                             return `html mismatch: got "${template.html}" expected "${expectedHTML}"`;
                     }
 
@@ -362,7 +310,10 @@ test.describe("The html tag template helper", () => {
                                 }
                             }
 
-                            if (behaviorFactory.id !== id) {
+                            if (
+                                behaviorFactory.id !==
+                                id
+                            ) {
                                 return `id mismatch: expected "${id}", got "${behaviorFactory.id}"`;
                             }
                         }
@@ -1517,8 +1468,7 @@ test.describe("The ViewTemplate", () => {
             const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
 
             const htmlMatch =
-                removeWhitespace(root.html) ===
-                `BeforeNested${nestedBehaviorPlaceholder}After`;
+                removeWhitespace(root.html) === `BeforeNested${nestedBehaviorPlaceholder}After`;
             const behaviorMatch = getFirstBehavior(root) === nestedBehavior;
 
             return htmlMatch && behaviorMatch;
@@ -1534,15 +1484,8 @@ test.describe("The ViewTemplate", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const {
-                html,
-                ViewTemplate,
-                HTMLBindingDirective,
-                Markup,
-                nextId,
-                oneWay,
-                removeWhitespace,
-            } = await import("/main.js");
+            const { html, ViewTemplate, HTMLBindingDirective, Markup, nextId, oneWay, removeWhitespace } =
+                await import("/main.js");
 
             function getFirstBehavior(template) {
                 for (const key in template.factories) {
@@ -1564,8 +1507,7 @@ test.describe("The ViewTemplate", () => {
             `;
 
             const htmlMatch =
-                removeWhitespace(root.html) ===
-                `BeforeNested${nestedBehaviorPlaceholder}After`;
+                removeWhitespace(root.html) === `BeforeNested${nestedBehaviorPlaceholder}After`;
             const behaviorMatch = getFirstBehavior(root) === nestedBehavior;
 
             return htmlMatch && behaviorMatch;
