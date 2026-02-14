@@ -49,7 +49,7 @@ jobs:
 
     - name: Install playwright dependencies and browsers
       run: |
-        npx playwright install
+        npx playwright install --with-deps
 
     - name: Testing unit tests
       run: npm run test
