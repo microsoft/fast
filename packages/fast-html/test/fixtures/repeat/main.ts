@@ -47,6 +47,15 @@ RenderableFASTElement(TestElementIntervalUpdates).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+export class TestElementNoItemRepeatBinding extends FASTElement {
+    @observable
+    list: Array<string> = [];
+}
+RenderableFASTElement(TestElementNoItemRepeatBinding).defineAsync({
+    name: "test-element-no-item-repeat-binding",
+    templateOptions: "defer-and-hydrate",
+});
+
 TemplateElement.options({
     "test-element-interval-updates": {
         observerMap: "all",
