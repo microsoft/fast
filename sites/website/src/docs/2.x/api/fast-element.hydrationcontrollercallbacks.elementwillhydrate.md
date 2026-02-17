@@ -15,7 +15,7 @@ navigationOptions:
 
 ## HydrationControllerCallbacks.elementWillHydrate() method
 
-Called before hydration has started
+Called before an individual element's hydration begins
 
 **Signature:**
 

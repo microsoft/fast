@@ -1,6 +1,10 @@
 import { attr, FASTElement, observable, volatile } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
+let hydrationMarks: WeakMap<HTMLElement, string>;
+let markId = 0;
+let markSequence = 0;
+
 class FastCard extends RenderableFASTElement(FASTElement) {
     @attr({ attribute: "defer-delay" })
     deferDelay!: number;
@@ -22,8 +26,28 @@ class FastCard extends RenderableFASTElement(FASTElement) {
     @observable
     hydrationDuration: string = "";
 
+    // Set inside prepare(), not as a field initializer, because prepare()
+    // runs during super() before field initializers execute.
+    private uniqueId!: string;
+
     async prepare() {
-        await new Promise(resolve => setTimeout(resolve, this.deferDelay));
+        this.uniqueId = Math.random().toString(16).slice(2);
+        const markName = `element-prepare-start:${this.localName}:${this.uniqueId}`;
+        performance.mark(markName);
+
+        // Read from the DOM attribute directly because prepare() runs during
+        // super() before boundObservables are applied, so this.deferDelay is
+        // still undefined at this point.
+        const delay = Number(this.getAttribute("defer-delay")) || 0;
+
+        if (delay > 0) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+
+        performance.measure(`element-prepared:${this.localName}:${this.uniqueId}`, {
+            start: markName,
+            detail: { delay },
+        });
     }
 }
 
@@ -32,15 +56,32 @@ FastCard.defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-let hydrationMarks: WeakMap<HTMLElement, string>;
-let markId = 0;
-
 TemplateElement.config({
+    hydrationStarted(): void {
+        hydrationMarks = new WeakMap<HTMLElement, string>();
+        performance.mark("hydration:started", { detail: { sequence: markSequence++ } });
+    },
+
     templateWillUpdate(name: string) {
-        if (!hydrationMarks) {
-            hydrationMarks = new WeakMap<HTMLElement, string>();
-            performance.mark("hydration:started");
-        }
+        performance.mark(`template-update:${name}:start`, {
+            detail: { sequence: markSequence++ },
+        });
+    },
+
+    templateDidUpdate(name) {
+        performance.measure(`template-update:${name}`, `template-update:${name}:start`);
+    },
+
+    elementDidDefine(name) {
+        performance.mark(`element-define:${name}`, {
+            detail: { sequence: markSequence++ },
+        });
+    },
+
+    elementDidRegister(name) {
+        performance.mark(`element-register:${name}`, {
+            detail: { sequence: markSequence++ },
+        });
     },
 
     elementWillHydrate(source: HTMLElement): void {

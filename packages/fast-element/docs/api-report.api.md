@@ -631,6 +631,7 @@ export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTM
     elementDidHydrate?(source: TElement): void;
     elementWillHydrate?(source: TElement): void;
     hydrationComplete?(): void;
+    hydrationStarted?(): void;
 }
 
 // @public
