@@ -49,10 +49,10 @@
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.9.2"
+    "@microsoft/fast-element": "^2.10.0"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.9.2"
+    "@microsoft/fast-element": "^2.10.0"
   },
   "beachball": {
     "disallowedChangeTypes": [

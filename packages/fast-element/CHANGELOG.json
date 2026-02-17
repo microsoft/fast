@@ -2,6 +2,49 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 17 Feb 2026 20:49:29 GMT",
+      "version": "2.10.0",
+      "tag": "@microsoft/fast-element_v2.10.0",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4176d0cb01260e6c5d03c53351eb9be0d2736b90",
+            "comment": "chore: enable verbatimModuleSyntax to identify type-only imports and exports"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "65f87c8f1fff03011d77f8159bae96e0f3fe9fce",
+            "comment": "chore: remove benchmark scripts and related utilities from fast-element package"
+          },
+          {
+            "author": "machi@microsoft.com",
+            "package": "@microsoft/fast-element",
+            "commit": "b5ed37b3aa98bc37430f2ba5cd47de3768066a3a",
+            "comment": "introduce playwright for testing"
+          }
+        ],
+        "minor": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "350bb02ec3c35f7b354314dd9e4dfb614c335723",
+            "comment": "feat: pass source element to hydration lifecycle callbacks"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "57ef1a5495298ad3aadc6b74c95b10bbdbdde3ca",
+            "comment": "feat(hydration): add hydrationStarted callback and update documentation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 27 Jan 2026 17:28:54 GMT",
       "version": "2.9.2",
       "tag": "@microsoft/fast-element_v2.9.2",

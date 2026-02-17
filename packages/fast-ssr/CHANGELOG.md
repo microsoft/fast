@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-ssr
 
-<!-- This log was last generated on Tue, 27 Jan 2026 17:28:54 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 17 Feb 2026 20:49:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-beta.38
+
+Tue, 17 Feb 2026 20:49:30 GMT
+
+### Changes
+
+- chore: add @types/parse5 as a dev dependency (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.10.0
 
 ## 1.0.0-beta.37
 

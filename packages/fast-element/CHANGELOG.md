@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Tue, 27 Jan 2026 17:28:54 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 17 Feb 2026 20:49:29 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.10.0
+
+Tue, 17 Feb 2026 20:49:29 GMT
+
+### Minor changes
+
+- feat: pass source element to hydration lifecycle callbacks (863023+radium-v@users.noreply.github.com)
+- feat(hydration): add hydrationStarted callback and update documentation (863023+radium-v@users.noreply.github.com)
+
+### Patches
+
+- chore: enable verbatimModuleSyntax to identify type-only imports and exports (863023+radium-v@users.noreply.github.com)
 
 ## 2.9.2
 

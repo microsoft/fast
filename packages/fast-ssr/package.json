@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-ssr",
-  "version": "1.0.0-beta.37",
+  "version": "1.0.0-beta.38",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -56,11 +56,11 @@
     "tslib": "^2.6.3"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.9.2"
+    "@microsoft/fast-element": "^2.10.0"
   },
   "devDependencies": {
     "@types/parse5": "^5.0.0",
-    "@microsoft/fast-element": "^2.9.2"
+    "@microsoft/fast-element": "^2.10.0"
   },
   "beachball": {
     "disallowedChangeTypes": [

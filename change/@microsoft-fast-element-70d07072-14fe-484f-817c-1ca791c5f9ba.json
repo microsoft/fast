@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat(hydration): add hydrationStarted callback and update documentation",
-  "packageName": "@microsoft/fast-element",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

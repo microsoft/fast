@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "test: update test fixtures for source-based lifecycle callbacks",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

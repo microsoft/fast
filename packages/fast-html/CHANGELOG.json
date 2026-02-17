@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 17 Feb 2026 20:49:30 GMT",
+      "version": "1.0.0-alpha.38",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.38",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "350bb02ec3c35f7b354314dd9e4dfb614c335723",
+            "comment": "test: update test fixtures for source-based lifecycle callbacks"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "57ef1a5495298ad3aadc6b74c95b10bbdbdde3ca",
+            "comment": "test(performance-metrics): enhance performance tracking and add hydration metrics"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.10.0",
+            "commit": "not available"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ec73f27b5ba62dbb7adbd5a9164ae18a6c8209cd",
+            "comment": "chore: add tests for no item repeat binding"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 27 Jan 2026 17:28:54 GMT",
       "version": "1.0.0-alpha.37",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.37",

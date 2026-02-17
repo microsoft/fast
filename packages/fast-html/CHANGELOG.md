@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 27 Jan 2026 17:28:54 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 17 Feb 2026 20:49:30 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.38
+
+Tue, 17 Feb 2026 20:49:30 GMT
+
+### Changes
+
+- test: update test fixtures for source-based lifecycle callbacks (863023+radium-v@users.noreply.github.com)
+- test(performance-metrics): enhance performance tracking and add hydration metrics (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.10.0
 
 ## 1.0.0-alpha.37
 

@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Tue, 17 Feb 2026 20:49:30 GMT",
+      "version": "1.0.0-beta.38",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.38",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "ee995d8eeddfed3085bc41494a34886d86116252",
+            "comment": "Remove foundation as a dependency"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "65f87c8f1fff03011d77f8159bae96e0f3fe9fce",
+            "comment": "chore: add @types/parse5 as a dev dependency"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-ssr",
+            "comment": "Bump @microsoft/fast-element to v2.10.0",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 27 Jan 2026 17:28:54 GMT",
       "version": "1.0.0-beta.37",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.37",

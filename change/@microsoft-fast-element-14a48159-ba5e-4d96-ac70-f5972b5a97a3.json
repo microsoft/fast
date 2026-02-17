@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: remove benchmark scripts and related utilities from fast-element package",
-  "packageName": "@microsoft/fast-element",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
