@@ -1,0 +1,12 @@
+# Tests
+__test__/
+*.spec.*
+*.test.*
+
+# Source files
+coverage/
+src/
+
+# config
+babel.config.js
+tsconfig.json

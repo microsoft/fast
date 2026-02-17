@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Working with Shadow DOM</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" aria-current="page" class="menu__link menu__link--active">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <p>So far we've looked at how to define elements, how to define attributes on those elements, and how to control element rendering through declarative templates. However, we haven't yet seen how our custom elements can be composed together with standard HTML or other custom elements.</p>
+<h2 id="the-default-slot">The default slot</h2>
+<p>To enable composition, <code>FASTElement</code> leverages the Shadow DOM standard. Previously, we've seen how <code>FASTElement</code> automatically attaches a <code>ShadowRoot</code>, and when your element declares a template, it renders that template into the Shadow DOM. To enable element composition, all we need to do is make use of the standard <code>&lt;slot&gt;</code> element within our template.</p>
+<p>Let's return to our original <code>name-tag</code> element example and see how we can use a <code>slot</code> to compose the person's name.</p>
+<p><strong>Example: Using Slots in a <code>FASTElement</code></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr<span class="token punctuation">,</span> html <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> template <span class="token operator">=</span> html<span class="token operator">&lt;</span>NameTag<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  &lt;div class="header">
+    &lt;h3></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>greeting<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/h3>
+    &lt;h4>my name is&lt;/h4>
+  &lt;/div>
+
+  &lt;div class="body">
+    &lt;slot>&lt;/slot>
+  &lt;/div>
+
+  &lt;div class="footer">&lt;/div>
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">'name-tag'</span><span class="token punctuation">,</span>
+  template
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> greeting<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'Hello'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Inside the body <code>div</code>, we've placed a <code>slot</code> element. This is referred to as the &quot;default slot&quot; for the component because, by default, all content placed between the element's opening and closing tags will be <em>rendered</em> at this location.</p>
+<p>To make this clear, let's look at how the <code>name-tag</code> element would be used with content and then see how the browser would composite the final rendered output.</p>
+<p><strong>Example: Using <code>name-tag</code> with a Default Slot</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span>John Doe<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+<p><strong>Example: Rendered Output for <code>name-tag</code> with a  Default Slot</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span>
+  #shadow-root
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h3</span><span class="token punctuation">></span></span>HELLO<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h3</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h4</span><span class="token punctuation">></span></span>my name is<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h4</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>body<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span>John Doe<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>footer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  #shadow-root
+
+  John Doe
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+<p>The text &quot;John Doe&quot; exists in the &quot;Light DOM&quot;, but it gets <em>projected</em> into the location of the <code>slot</code> within the &quot;Shadow DOM&quot;.</p>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>If you find the terms &quot;Light DOM&quot; and &quot;Shadow DOM&quot; unintuitive, you're not alone. Another way to think of &quot;Light DOM&quot; is as the &quot;Semantic DOM&quot;. It represents your semantic content model, without any concern for rendering. Another way to think of &quot;Shadow DOM&quot; is as the &quot;Render DOM&quot;. It represents how your element is rendered, independent of content, or semantics.</p></div>
+<p>With slots at our disposal, we now unlock the full compositional model of HTML for use in our own elements. However, there's even more that slots can do.</p>
+<h2 id="named-slots">Named slots</h2>
+<p>In the example above, we use a single <code>slot</code> element to render <em>all</em> content placed between the start and end tags of the <code>name-tag</code>. However, we're not limited to only having a default slot. We can also have <em>named slots</em> that declare other locations to which we can render content. To demonstrate this, let's add a named slot to our <code>name-tag</code>'s template where we can display the person's avatar.</p>
+<p><strong>Example: <code>name-tag</code> with a Named Slot</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr<span class="token punctuation">,</span> html <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> template <span class="token operator">=</span> html<span class="token operator">&lt;</span>NameTag<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  &lt;div class="header">
+    &lt;slot name="avatar">&lt;/slot>
+    &lt;h3></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>greeting<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/h3>
+    &lt;h4>my name is&lt;/h4>
+  &lt;/div>
+
+  &lt;div class="body">
+    &lt;slot>&lt;/slot>
+  &lt;/div>
+
+  &lt;div class="footer">&lt;/div>
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">'name-tag'</span><span class="token punctuation">,</span>
+  template
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> greeting<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'Hello'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Example: Using <code>name-tag</code> with a Named Slot</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span>
+  John Doe
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>...<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+<p><strong>Example: Rendered Output for <code>name-tag</code> with a Named Slot</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span>
+  #shadow-root
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>header<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>...<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h3</span><span class="token punctuation">></span></span>HELLO<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h3</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h4</span><span class="token punctuation">></span></span>my name is<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h4</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>body<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span>John Doe<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>footer<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  #shadow-root
+
+  John Doe
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>...<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+<p>If an element declares named slots, its content can then leverage the <code>slot</code> <em>attribute</em> to indicate where it wants to be slotted. Anything without a <code>slot</code> attribute will be projected to the default slot. Anything with a <code>slot</code> attribute will be projected into its requested slot.</p>
+<p>Here are a couple of quick notes on slots:</p>
+<ul>
+<li>You can have any number of content nodes project into the same slot.</li>
+<li>You can only place <code>slot</code> attributes on the direct content of the containing element.<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span> <span class="token comment">&lt;!--Projected to default slot--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span><span class="token punctuation">></span></span> <span class="token comment">&lt;!--Slot Ignored!--></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span><span class="token punctuation">></span></span> <span class="token comment">&lt;!--Projected to "avatar" slot--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+</li>
+<li>If you have direct content elements in the Light DOM for which there is no corresponding Shadow DOM slot, it will not be rendered.</li>
+<li>Ordering is maintained when projecting to slots. So, if you have two elements projecting into the same slot, they will render in the slot in the same order as they appeared in the Light DOM.</li>
+<li>A <code>slot</code> element can also have a <code>slot</code> attribute if the slot element is the direct child of another custom element used in your template. In this case, it means that whatever content would be projected into that slot gets re-projected into the slot of the containing element.<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>uber-name-tag-template<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  ...
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>uber-avatar<span class="token punctuation">"</span></span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>avatar<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token comment">&lt;!--uber-name-tag's "uber-avatar" content gets projected into name-tag's "avatar" slot--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span>
+      <span class="token comment">&lt;!--uber-name-tag's default content gets projected into name-tag's default slot--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span>
+  ...
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+</li>
+<li>You do not need to provide content for every declared slot. In the above example, just because the <code>name-tag</code> has an &quot;avatar&quot; slot does not mean we must provide content for that slot. If no content is provided for a slot, then nothing will be rendered at that location, unless the slot declared fallback content...</li>
+</ul>
+<h2 id="fallback-content">Fallback content</h2>
+<p>There are several scenarios for using slots in your elements. So far, we've been showing how to use slots for content projection. However, another major use case is to enable various parts of your element's rendering to be replaced by the software using your element. To enable this, you can provide <em>fallback content</em> for any slot. This content will render if the element consumer provides no content for that slot, but if they do, their own content will override the fallback content.</p>
+<p><strong>Example: Fallback Slot Content</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my-slider-template<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>thumb<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>thumb<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>In the example above, the author of the <code>my-slider</code> custom element provides default HTML for the slider's &quot;thumb&quot;, ensuring that the element will always render and function properly. However, this design leaves open the option to the component's consumer, to replace the thumb with their own HTML by simply providing HTML and assigning the proper slot name.</p>
+<h2 id="slot-apis">Slot APIs</h2>
+<p>In addition to the declarative means of using slots described so far, the browser offers a number of slot-specific APIs you can use directly in JavaScript code. Below is a summary of what is available to you.</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>slotchange</code></td>
+<td>By adding an event listener for the <code>slotchange</code> event on a <code>slot</code> element, you can receive notifications any time the slotted nodes of a particular slot change.</td>
+</tr>
+<tr>
+<td><code>assignedNodes()</code></td>
+<td>The <code>slot</code> element provides an <code>assignedNodes()</code> method that can be called to get a list of all nodes that a particular slot currently renders. You can pass an options object with <code>{ flatten: true }</code> if you wish to also see fallback content nodes.</td>
+</tr>
+<tr>
+<td><code>assignedSlot</code></td>
+<td>The <code>assignedSlot</code> property is present on any element that has been projected to a slot so that you can determine where it is projected.</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert--success">
+<div class="alert__heading">Tip</div>
+<p>Remember that you can use the templating system's event support to respond to <code>slotchange</code> events with <code>&lt;slot @slotchange=${...}&gt;&lt;/slot&gt;</code>. You can also obtain a reference to any slot with the <code>ref</code> directive, making it easy to call APIs like <code>assignedNodes()</code> or manually add/remove event listeners.</p></div>
+<h2 id="events">Events</h2>
+<p>Events originating from within the Shadow DOM appear as if they originated from the custom element itself. In order for an event to propagate from within the Shadow DOM, it must be dispatched with the <code>composed: true</code> option. The following is a list of built-in events that compose:</p>
+<ul>
+<li><code>blur</code>, <code>focus</code>, <code>focusin</code>, <code>focusout</code></li>
+<li><code>click</code>, <code>dblclick</code>, <code>mousedown</code>, <code>mouseenter</code>, <code>mousemove</code>, etc.</li>
+<li><code>wheel</code></li>
+<li><code>beforeinput</code>, <code>input</code></li>
+<li><code>keydown</code>, <code>keyup</code></li>
+<li><code>compositionstart</code>, <code>compositionupdate</code>, <code>compositionend</code></li>
+<li><code>dragstart</code>, <code>drag</code>, <code>dragend</code>, <code>drop</code>, etc.</li>
+</ul>
+<p>Here are some events which do not compose and are only visible from within the Shadow DOM itself:</p>
+<ul>
+<li><code>mouseenter</code>, <code>mouseleave</code></li>
+<li><code>load</code>, <code>unload</code>, <code>abort</code>, <code>error</code></li>
+<li><code>select</code></li>
+<li><code>slotchange</code></li>
+</ul>
+<p>To get the fully composed event path from an event object, invoke the <code>composedPath()</code> method on the event itself. This will return an array of targets representing the path through which the event bubbled. If your custom element uses <code>closed</code> Shadow DOM mode, targets within the Shadow DOM will not be present in the composed path, and it will appear as if the custom element itself was the first target.</p>
+<h3 id="custom-events">Custom events</h3>
+<p>In various scenarios, it may be appropriate for a custom element to publish its own element-specific events. To do this, you can use the <code>$emit</code> helper on <code>FASTElement</code>. It's a convenience method that creates an instance of <code>CustomEvent</code> and uses the <code>dispatchEvent</code> API on <code>FASTElement</code> with the <code>bubbles: true</code> and <code>composed: true</code> options. It also ensures that the event is only emitted if the custom element is fully connected to the DOM. Here's an example:</p>
+<p><strong>Example: Custom Event Dispatch</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">customElement</span><span class="token punctuation">(</span><span class="token string">'my-input'</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyInput</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> value<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
+
+  <span class="token function">valueChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">$emit</span><span class="token punctuation">(</span><span class="token string">'change'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<div class="alert alert--success">
+<div class="alert__heading">Tip</div>
+<p>When emitting custom events, ensure that your event name is always lower-case, so that your Web Components stay compatible with various front-end frameworks that attach events through DOM binding patterns (the DOM is case insensitive).</p></div>
+<h2 id="shadow-dom-configuration">Shadow DOM configuration</h2>
+<p>In all the examples we've seen so far <code>FASTElement</code> automatically creates a Shadow Root for your element and attaches it in <code>open</code> mode. However, if desired, you can specify <code>closed</code> mode or make the element render into the Light DOM instead. These choices can be made by using the <code>shadowOptions</code> setting with your <code>@customElement</code> decorator.</p>
+<p><strong>Example: Shadow DOM in Closed Mode</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">'name-tag'</span><span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  shadowOptions<span class="token operator">:</span> <span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">'closed'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> greeting<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'Hello'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<div class="alert alert--success">
+<div class="alert__heading">Tip</div>
+<p>Avoid using <code>closed</code> mode since it affects event propagation and makes custom elements less inspectable.</p></div>
+<p><strong>Example: Render to Light DOM</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">'name-tag'</span><span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  shadowOptions<span class="token operator">:</span> <span class="token keyword">null</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> greeting<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'Hello'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<div class="alert alert--info">
+<div class="alert__heading">Important</div>
+<p>If you choose to render to the Light DOM, you will not be able to compose the content, use slots, or leverage encapsulated styles. Light DOM rendering is not recommended for reusable components. It may have some limited use as the root component of a small app.</p></div>
+<p>In addition to the Shadow DOM mode, <code>shadowOptions</code> exposes all the options that can be set through the standard <code>attachShadow</code> API. This means that you can also use it to specify new options such as <code>delegatesFocus: true</code>. You only need to specify options that are different from the defaults mentioned above.</p>
+<h2 id="shadow-dom-and-the-element-lifecycle">Shadow DOM and the element lifecycle</h2>
+<p>It is during the constructor that <code>FASTElement</code> attaches the Shadow DOM for an element. The <code>shadowRoot</code> is then available directly as a property on your Custom Element, assuming that the element uses <code>open</code> mode.</p>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

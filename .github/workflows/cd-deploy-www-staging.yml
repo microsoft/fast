@@ -1,0 +1,138 @@
+name: Deploy Documentation (staging)
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/cd-deploy-www-staging.yml'
+      - 'packages/utilities/fast-animation/docs/api-report.md'
+      - 'packages/utilities/fast-color/docs/api-report.md'
+      - 'packages/web-components/**/docs/api-report.md'
+      - 'sites/fast-website/**'
+      - 'sites/website/**'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
+    paths:
+      - '.github/workflows/cd-deploy-www-staging.yml'
+      - 'packages/utilities/fast-animation/docs/api-report.md'
+      - 'packages/utilities/fast-color/docs/api-report.md'
+      - 'packages/web-components/**/docs/api-report.md'
+      - 'sites/fast-website/**'
+      - 'sites/website/**'
+
+env:
+  AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app
+  AZURE_WEBAPP_PASSIVE_STAGE_NAME: www-east-app
+  AZURE_WEBAPP_BUILD_PATH: sites/website
+  AZURE_WEBAPP_DIST_PATH: sites/website/build
+  AZURE_WEBAPP_SLOT_NAME: stage
+  ARTIFACT_NAME: documentation-site
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Branch
+      uses: actions/checkout@master
+
+    - name: Install Lerna
+      run: yarn global add lerna@5.5.2
+
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Build & Prepare Web Application
+      run: |
+        cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
+        yarn install
+        yarn build
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build
+        cd build
+        npm i
+        ls -lta
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+  deploy_to_staging:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Deploy PR
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+    - name: 'Deploy to Active Azure Region'
+      uses: azure/webapps-deploy@v2
+      with:
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_ACTIVE }}
+        app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+
+    - name: 'Deploy to Passive Azure Region'
+      uses: azure/webapps-deploy@v2
+      with:
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_PASSIVE }}
+        app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+
+  deploy_pr:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy PR
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+      - name: Deploy Documentation
+        id: deploypr
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        continue-on-error: ${{ (github.event_name == 'pull_request' && github.event.action != 'closed') }}
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+          output_location: ''
+          skip_app_build: true
+
+  destroy_pr:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Destroy PR
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
+          action: 'close'
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy_to_staging
+
+    steps:
+    - name: Notify on Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps Documentation Bot'
+        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-staging.yml'

@@ -1,0 +1,87 @@
+name: Validate Platforms/Browsers
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+  schedule:
+    - cron: 0 7 * * 3
+
+jobs:
+  cross-platform_cross-browser:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-11]
+
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
+
+    steps:
+      - name: Set git to use LF
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Checkout Branch
+        uses: actions/checkout@v2
+
+      - if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/master:refs/remotes/origin/master
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo '::set-output name=dir::$(yarn cache dir)'
+
+      - name: Set up node_modules cache
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-yarn_cache-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn_cache-
+
+      - name: Install package dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts --network-timeout=360000 --prefer-offline
+
+      - name: Test Prettier format
+        run: yarn format:check
+
+      - name: Prepare workspaces
+        run: yarn prepare
+
+      - name: Install playwright dependencies and browsers
+        run: |
+          yarn playwright install-deps
+          yarn playwright install
+
+      - name: Run tests in changed packages
+        if: ${{ github.event_name == 'pull_request' }}
+        run: yarn lerna run test --stream --since=origin/master
+
+      - name: Run tests in all Lerna Packages
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        run: yarn lerna run test --stream
+
+      - name: Initialize CodeQL
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: github/codeql-action/init@v1
+        with:
+          languages: javascript, typescript
+
+      - name: Perform CodeQL Analysis
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+        uses: github/codeql-action/analyze@v1

@@ -1,0 +1,9 @@
+{
+    "extends": ["../../../.eslintrc.js"],
+    "rules": {
+        "import/extensions": [
+            "error",
+            "always"
+        ]
+    }
+}

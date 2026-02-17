@@ -1,0 +1,282 @@
+{
+  "name": "@microsoft/fast-foundation",
+  "description": "A library of Web Component building blocks",
+  "version": "3.0.0-alpha.32",
+  "sideEffects": false,
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/web-components/fast-foundation"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "main": "dist/esm/index.js",
+  "types": "dist/dts/index.d.ts",
+  "unpkg": "dist/fast-foundation.min.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "default": "./dist/esm/index.js"
+    },
+    "./accordion.js": {
+      "types": "./dist/dts/accordion/index.d.ts",
+      "default": "./dist/esm/accordion/index.js"
+    },
+    "./accordion-item.js": {
+      "types": "./dist/dts/accordion-item/index.d.ts",
+      "default": "./dist/esm/accordion-item/index.js"
+    },
+    "./anchor.js": {
+      "types": "./dist/dts/anchor/index.d.ts",
+      "default": "./dist/esm/anchor/index.js"
+    },
+    "./anchored-region.js": {
+      "types": "./dist/dts/anchored-region/index.d.ts",
+      "default": "./dist/esm/anchored-region/index.js"
+    },
+    "./avatar.js": {
+      "types": "./dist/dts/avatar/index.d.ts",
+      "default": "./dist/esm/avatar/index.js"
+    },
+    "./badge.js": {
+      "types": "./dist/dts/badge/index.d.ts",
+      "default": "./dist/esm/badge/index.js"
+    },
+    "./breadcrumb.js": {
+      "types": "./dist/dts/breadcrumb/index.d.ts",
+      "default": "./dist/esm/breadcrumb/index.js"
+    },
+    "./breadcrumb-item.js": {
+      "types": "./dist/dts/breadcrumb-item/index.d.ts",
+      "default": "./dist/esm/breadcrumb-item/index.js"
+    },
+    "./button.js": {
+      "types": "./dist/dts/button/index.d.ts",
+      "default": "./dist/esm/button/index.js"
+    },
+    "./calendar.js": {
+      "types": "./dist/dts/calendar/index.d.ts",
+      "default": "./dist/esm/calendar/index.js"
+    },
+    "./card.js": {
+      "types": "./dist/dts/card/index.d.ts",
+      "default": "./dist/esm/card/index.js"
+    },
+    "./checkbox.js": {
+      "types": "./dist/dts/checkbox/index.d.ts",
+      "default": "./dist/esm/checkbox/index.js"
+    },
+    "./combobox.js": {
+      "types": "./dist/dts/combobox/index.d.ts",
+      "default": "./dist/esm/combobox/index.js"
+    },
+    "./data-grid.js": {
+      "types": "./dist/dts/data-grid/index.d.ts",
+      "default": "./dist/esm/data-grid/index.js"
+    },
+    "./design-token.js": {
+      "types": "./dist/dts/design-token/exports.d.ts",
+      "default": "./dist/esm/design-token/exports.js"
+    },
+    "./dialog.js": {
+      "types": "./dist/dts/dialog/index.d.ts",
+      "default": "./dist/esm/dialog/index.js"
+    },
+    "./disclosure.js": {
+      "types": "./dist/dts/disclosure/index.d.ts",
+      "default": "./dist/esm/disclosure/index.js"
+    },
+    "./divider.js": {
+      "types": "./dist/dts/divider/index.d.ts",
+      "default": "./dist/esm/divider/index.js"
+    },
+    "./flipper.js": {
+      "types": "./dist/dts/flipper/index.d.ts",
+      "default": "./dist/esm/flipper/index.js"
+    },
+    "./horizontal-scroll.js": {
+      "types": "./dist/dts/horizontal-scroll/index.d.ts",
+      "default": "./dist/esm/horizontal-scroll/index.js"
+    },
+    "./listbox.js": {
+      "types": "./dist/dts/listbox/index.d.ts",
+      "default": "./dist/esm/listbox/index.js"
+    },
+    "./listbox-option.js": {
+      "types": "./dist/dts/listbox-option/index.d.ts",
+      "default": "./dist/esm/listbox-option/index.js"
+    },
+    "./menu.js": {
+      "types": "./dist/dts/menu/index.d.ts",
+      "default": "./dist/esm/menu/index.js"
+    },
+    "./menu-item.js": {
+      "types": "./dist/dts/menu-item/index.d.ts",
+      "default": "./dist/esm/menu-item/index.js"
+    },
+    "./number-field.js": {
+      "types": "./dist/dts/number-field/index.d.ts",
+      "default": "./dist/esm/number-field/index.js"
+    },
+    "./picker.js": {
+      "types": "./dist/dts/picker/index.d.ts",
+      "default": "./dist/esm/picker/index.js"
+    },
+    "./progress.js": {
+      "types": "./dist/dts/progress/index.d.ts",
+      "default": "./dist/esm/progress/index.js"
+    },
+    "./progress-ring.js": {
+      "types": "./dist/dts/progress-ring/index.d.ts",
+      "default": "./dist/esm/progress-ring/index.js"
+    },
+    "./radio.js": {
+      "types": "./dist/dts/radio/index.d.ts",
+      "default": "./dist/esm/radio/index.js"
+    },
+    "./radio-group.js": {
+      "types": "./dist/dts/radio-group/index.d.ts",
+      "default": "./dist/esm/radio-group/index.js"
+    },
+    "./search.js": {
+      "types": "./dist/dts/search/index.d.ts",
+      "default": "./dist/esm/search/index.js"
+    },
+    "./select.js": {
+      "types": "./dist/dts/select/index.d.ts",
+      "default": "./dist/esm/select/index.js"
+    },
+    "./skeleton.js": {
+      "types": "./dist/dts/skeleton/index.d.ts",
+      "default": "./dist/esm/skeleton/index.js"
+    },
+    "./slider.js": {
+      "types": "./dist/dts/slider/index.d.ts",
+      "default": "./dist/esm/slider/index.js"
+    },
+    "./slider-label.js": {
+      "types": "./dist/dts/slider-label/index.d.ts",
+      "default": "./dist/esm/slider-label/index.js"
+    },
+    "./switch.js": {
+      "types": "./dist/dts/switch/index.d.ts",
+      "default": "./dist/esm/switch/index.js"
+    },
+    "./tab.js": {
+      "types": "./dist/dts/tab/index.d.ts",
+      "default": "./dist/esm/tab/index.js"
+    },
+    "./tab-panel.js": {
+      "types": "./dist/dts/tab-panel/index.d.ts",
+      "default": "./dist/esm/tab-panel/index.js"
+    },
+    "./tabs.js": {
+      "types": "./dist/dts/tabs/index.d.ts",
+      "default": "./dist/esm/tabs/index.js"
+    },
+    "./text-area.js": {
+      "types": "./dist/dts/text-area/index.d.ts",
+      "default": "./dist/esm/text-area/index.js"
+    },
+    "./text-field.js": {
+      "types": "./dist/dts/text-field/index.d.ts",
+      "default": "./dist/esm/text-field/index.js"
+    },
+    "./toolbar.js": {
+      "types": "./dist/dts/toolbar/index.d.ts",
+      "default": "./dist/esm/toolbar/index.js"
+    },
+    "./tooltip.js": {
+      "types": "./dist/dts/tooltip/index.d.ts",
+      "default": "./dist/esm/tooltip/index.js"
+    },
+    "./tree-item.js": {
+      "types": "./dist/dts/tree-item/index.d.ts",
+      "default": "./dist/esm/tree-item/index.js"
+    },
+    "./tree-view.js": {
+      "types": "./dist/dts/tree-view/index.d.ts",
+      "default": "./dist/esm/tree-view/index.js"
+    },
+    "./utilities.js": {
+      "types": "./dist/dts/utilities/index.d.ts",
+      "default": "./dist/esm/utilities/index.js"
+    },
+    "./patterns.js": {
+      "types": "./dist/dts/patterns/index.d.ts",
+      "default": "./dist/esm/patterns/index.js"
+    },
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./design-token-core.js": {
+      "types": "./dist/dts/design-token/core/exports.d.ts",
+      "default": "./dist/esm/design-token/core/exports.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "clean:dist": "rimraf dist storybook-static",
+    "doc": "api-extractor run --local",
+    "doc:ci": "api-extractor run",
+    "build:rollup": "rollup -c",
+    "build:tsc": "tsc -p ./tsconfig.build.json",
+    "prebuild": "yarn build:tsc",
+    "build": "yarn build:rollup",
+    "postbuild": "yarn doc && yarn cem",
+    "dev": "tsc -p ./tsconfig.build.json -w",
+    "cem": "yarn cem-analyze && yarn cem-markdown",
+    "cem-analyze": "cem analyze",
+    "cem-markdown": "node CEMToMarkdown.mjs",
+    "tdd": "yarn dev & yarn test-chrome:watch",
+    "tdd:firefox": "yarn dev & yarn test-firefox:watch",
+    "prepare": "yarn clean:dist && yarn build",
+    "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
+    "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "pretest": "yarn eslint && yarn storybook build --test",
+    "test": "playwright test",
+    "posttest:ci": "yarn doc:ci",
+    "start": "storybook dev -p 6006"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.9.3",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@microsoft/api-extractor": "7.24.2",
+    "@microsoft/tsdoc-config": "^0.13.4",
+    "@playwright/test": "^1.41.2",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@storybook/addon-essentials": "^8.0.0",
+    "@storybook/addon-links": "^8.0.0",
+    "@storybook/csf": "^0.1.3",
+    "@storybook/html-vite": "^8.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint-plugin-storybook": "^0.8.0",
+    "express": "^4.18.1",
+    "expect": "29.2.1",
+    "prettier": "2.8.8",
+    "qs": "^6.11.0",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-transform-tagged-template": "^0.0.3",
+    "rollup": "^2.71.1",
+    "storybook": "^8.0.0",
+    "typescript": "^4.7.0",
+    "vite": "^5.1.6"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "^1.0.3",
+    "@microsoft/fast-element": "2.0.0-beta.26",
+    "@microsoft/fast-web-utilities": "^6.0.0",
+    "tabbable": "^5.2.0",
+    "tslib": "^2.4.0"
+  },
+  "customElements": "dist/custom-elements.json"
+}

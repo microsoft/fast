@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Release Planning</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/2.x/introduction">2.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item"><a href="/docs/2.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Getting Started</a><ul><li class="menu__list-item"><a href="/docs/2.x/getting-started/css-templates/" class="menu__link">CSS Templates</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/getting-started/fast-element/" class="menu__link">FASTElement</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/getting-started/html-directives/" class="menu__link">HTML Directives</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/getting-started/html-templates/" class="menu__link">HTML Templates</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/getting-started/quick-start/" class="menu__link">Quick Start</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Advanced Concepts</a><ul><li class="menu__list-item"><a href="/docs/2.x/advanced/dependency-injection/" class="menu__link">Dependency Injection</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/advanced/working-with-custom-elements/" class="menu__link">Working with Custom Elements</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/advanced/working-without-decorators/" class="menu__link">Working without Decorators</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>API Reference</a><ul><li class="menu__list-item"><a href="/docs/2.x/api/" class="menu__link">@microsoft/fast-element</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/api/fast-element/context/" class="menu__link">@microsoft/fast-element/context.js</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/api/fast-element/di/" class="menu__link">@microsoft/fast-element/di.js</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community Contribution</a><ul><li class="menu__list-item"><a href="/docs/2.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/2.x/community/release-planning/" aria-current="page" class="menu__link menu__link--active">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/2.x/integrations/" class="menu__link">Integrations</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/migration-guide/" class="menu__link">Migration Guide</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/2.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/2.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main class="docs-main">
+    <div class="container padding-top--md padding-bottom--lg">
+        <div class="col doc-item">
+            <p>In order to both provide features and fixes to our community, while not creating unnecessary breaking changes or churn, FAST has adopted the following release planning process and policies.</p>
+<h2 id="quarterly-planning">Quarterly planning</h2>
+<p>As mentioned in <a href="./issue-management.md">Issue Management</a>, feature teams engage in a quarterly planning exercise. During this exercise, engineers look at the big picture and make plans to address broader &quot;themes&quot; that we see emerging which can't be handled week-to-week. The quarterly planning is then used to shape the weekly planning sessions that happen over the following three months.</p>
+<p>The process for identifying quarterly work consists of multiple phases. In each phase, we filter issues out until we end up with the quarterly plan.</p>
+<ul>
+<li>Filtering &amp; Individual prioritization</li>
+<li>Rough costing</li>
+<li>Team review &amp; Priority adjustment</li>
+<li>Capacity planning</li>
+<li>Define the cut line</li>
+</ul>
+<h3 id="filtering">Filtering</h3>
+<p>At this stage, all the issues are distributed to engineers by feature areas. Each engineering lead reviews all the issues within their feature area and returns with a prioritized list.</p>
+<h3 id="rough-costing">Rough costing</h3>
+<p>At this phase, engineers apply rough cost estimates to the final list of issues that they are proposing. This will be used later during the planning process.</p>
+<p>For issues which don't have a clear description of the associated work, it's important to drop a comment summarizing the work involved. This will help at a later time, in case a question about the cost will be raised.</p>
+<p><strong>Note</strong>: while costing issues, it's important to reevaluate costs for those, which already have cost applied. Those are most probably from the past and may be outdated, not properly representing the cost anymore.</p>
+<h3 id="team-review-and-priority-adjustment">Team review &amp; priority adjustment</h3>
+<p>Now that all the issues are prepared, the team reviews each issue starting from the highest priority ones. We discuss the issues and agree on the priority at this point. Sometimes we make adjustments to the suggested individual priorities. After discussing each issue the work is summarized in the quarterly plan document, where we double-check our alignment to team mission, pillars, and OKRs.</p>
+<h3 id="capacity-planning">Capacity Planning</h3>
+<p>We usually reserve only 50% of the team capacity for the defined quarterly work. The reason is that we will be getting a lot of incoming feedback throughout the year and we need to allocate time for handling this feedback throughout the year. So we calculate the capacity of the team in weeks for the upcoming year and use half of the final number later in this process.</p>
+<h3 id="define-the-cut-line">Define the cut line</h3>
+<p>At this point, we have all the candidate issues that we think are worth considering for the upcoming quarter. This number is quite large, so the teams usually won't have enough capacity to handle all this.
+We start stack ranking issues so the most important work remains on the top of the list. We then draw the cut line and that defines the rough list of things the team will work on during the upcoming quarter. If there are any issues we think may be at risk, we indicate those as well.</p>
+<h2 id="release-cadence">Release cadence</h2>
+<p>Our quarterly planning enables us to tackle larger projects and strategic work while our weekly planning enables us to be adaptive and responsive to the changing needs of the community and project. As a result, each week typically produces PRs to the project, which triggers releases.</p>
+<h3 id="minor-and-patch-releases">Minor and patch releases</h3>
+<p>The majority of the work coming from the quarterly planning process and the weekly planning process results in minor features and bug fixes. Once a PR for a <code>minor</code> or <code>patch</code> change is merged to main it will be automatically published in the nightly release. Releases are published Sunday through Thursday evenings (Pacific). Unless there is an emergency need, we avoid releasing on Fridays or the weekend (manual intervention required by us).</p>
+<h3 id="major-releases">Major releases</h3>
+<p>Major releases signal breaking changes in libraries. We strive to have only 1-2 major releases per year so that we don't destabilize the community. This means that we will often delay certain issues from one quarter to the next in order to explicitly batch the work together into a single breaking-change release.</p>
+<h3 id="major-visual-update-releases">Major visual update releases</h3>
+<p>Sometimes component libraries undergo significant visual refreshes. In this case, even though there is no breaking API change, we bump the major version to avoid surprises for the community.</p>
+
+
+        </div>
+    </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

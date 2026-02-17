@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>NodeBehaviorOptions interface</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <!-- Do not edit this file. It is automatically generated by API Documenter. -->
+<p><a href="./fast-element.md">@microsoft/fast-element</a> &gt; <a href="./fast-element.nodebehavioroptions.md">NodeBehaviorOptions</a></p>
+<h2 id="nodebehavioroptions-interface">NodeBehaviorOptions interface</h2>
+<p>Options for configuring node observation behavior.</p>
+<p><b>Signature:</b></p>
+<pre class="language-typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">NodeBehaviorOptions<span class="token operator">&lt;</span><span class="token constant">T</span> <span class="token operator">=</span> <span class="token builtin">any</span><span class="token operator">></span></span> </code></pre>
+<h2 id="properties">Properties</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-element.nodebehavioroptions.filter.md">filter</a></td>
+<td><a href="./fast-element.elementsfilter.md">ElementsFilter</a></td>
+<td>Filters nodes that are synced with the property. Called one time for each element in the array.</td>
+</tr>
+<tr>
+<td><a href="./fast-element.nodebehavioroptions.property.md">property</a></td>
+<td>T</td>
+<td>The property to assign the observed nodes to.</td>
+</tr>
+</tbody>
+</table>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Svelte</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/integrations/svelte/" aria-current="page" class="menu__link menu__link--active">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <p>FAST works great with <code>Svelte</code>, <code>Vite</code>, and <code>TypeScript</code>, using a standard setup. Let's take a look at how you can set up a FAST+Svelte+Vite+TypeScript project, starting from scratch.</p>
+<h2 id="setting-up-the-svelte-project">Setting up the Svelte project</h2>
+<p>First, you'll need to make sure that you have <code>Node.js</code> version &gt;=12.2.0 installed. You can learn more and download that <a href="https://nodejs.org/">on the official site</a>.</p>
+<p>With <code>Node.js</code> installed, you can use <a href="https://github.com/vitejs/vite/tree/main/packages/create-vite">create-vite</a> to scaffold a new Svelte project.</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> create vite@latest fast-svelte <span class="token parameter variable">--template</span> svelte-ts</code></pre>
+<p>Follow the prompts, answering each question in turn. Select <code>svelte</code> as the framework and <code>svelte-ts</code> as the variant. When the CLI completes, you should have a basic runnable Svelte application.</p>
+<p>Let's move into the project directory, where we'll set up our project.</p>
+<pre class="language-shell"><code class="language-shell"><span class="token builtin class-name">cd</span> fast-svelte</code></pre>
+<h2 id="configuring-packages">Configuring packages</h2>
+<p>From your new project folder, run this command to install the FAST packages, along with supporting libraries.</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">--save</span> @microsoft/fast-components @microsoft/fast-foundation @microsoft/fast-element</code></pre>
+<h2 id="adding-configuration-and-source">Adding configuration and source</h2>
+<p>Now that we have a Svelte project scaffolded, let's get things configured.</p>
+<p>In the root of your project folder, you will see a <code>tsconfig.js</code> file.  Replace the contents of the file with the following markup:</p>
+<pre class="language-js"><code class="language-js"><span class="token punctuation">{</span>
+  <span class="token string-property property">"extends"</span><span class="token operator">:</span> <span class="token string">"@tsconfig/svelte/tsconfig.json"</span><span class="token punctuation">,</span>
+  <span class="token string-property property">"compilerOptions"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string-property property">"target"</span><span class="token operator">:</span> <span class="token string">"esnext"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"useDefineForClassFields"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"module"</span><span class="token operator">:</span> <span class="token string">"esnext"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"resolveJsonModule"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"experimentalDecorators"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"baseUrl"</span><span class="token operator">:</span> <span class="token string">"."</span><span class="token punctuation">,</span>
+    <span class="token comment">/**
+     * Typecheck JS in `.svelte` and `.js` files by default.
+     * Disable checkJs if you'd like to use dynamic types in JS.
+     * Note that setting allowJs false does not prevent the use
+     * of JS in `.svelte` files.
+     */</span>
+    <span class="token string-property property">"allowJs"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"checkJs"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"isolatedModules"</span><span class="token operator">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string-property property">"include"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/**/*.d.ts"</span><span class="token punctuation">,</span> <span class="token string">"src/**/*.ts"</span><span class="token punctuation">,</span> <span class="token string">"src/**/*.js"</span><span class="token punctuation">,</span> <span class="token string">"src/**/*.svelte"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string-property property">"references"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> <span class="token string-property property">"path"</span><span class="token operator">:</span> <span class="token string">"./tsconfig.node.json"</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre>
+<h2 id="using-the-components">Using the components</h2>
+<p>Open your <code>main.ts</code> file and replace the contents of the file with the following code:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.svelte'</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">{</span> 
+  provideFASTDesignSystem<span class="token punctuation">,</span> 
+  fastCard<span class="token punctuation">,</span> 
+  fastButton
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-components'</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+    <span class="token function">fastCard</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">App</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  target<span class="token operator">:</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'app'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> app</code></pre>
+<p>This code uses the FAST Design System to register the <code>&lt;fast-card&gt;</code> and <code>&lt;fast-button&gt;</code> components. Let's update our App.svelte file to use our components. Replace the contents of the file with the following markup:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fast-card</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Hello World!<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fast-button</span> <span class="token attr-name">appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>accent<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Click Me<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>fast-button</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>fast-card</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span><span class="token punctuation">></span></span><span class="token style"><span class="token language-css">
+  <span class="token selector">fast-card</span> <span class="token punctuation">{</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> 16px<span class="token punctuation">;</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+    <span class="token property">flex-direction</span><span class="token punctuation">:</span> column<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token selector">h2</span> <span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> white<span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--type-ramp-plus-5-font-size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--type-ramp-plus-5-line-height<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token selector">fast-card > fast-button</span> <span class="token punctuation">{</span>
+    <span class="token property">align-self</span><span class="token punctuation">:</span> flex-end<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span></code></pre>
+<p>With all the basic pieces in place, let's run our app in dev mode with <code>npm run dev</code>. The Svelte CLI should build your project and make it available on localhost.</p>
+<p>Congratulations! You're now set up to use FAST, Svelte, Vite, and TypeScript. You can import and use more components, build your own components, and when you are ready, build and deploy your website or app to production.</p>
+<p>See a FAST+Svelte+Vite+TypeScript starter project <a href="https://github.com/microsoft/fast/tree/archives/fast-foundation-3/examples/svelte-starters/svelte-fast-typescript-starter">here</a>.</p>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

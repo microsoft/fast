@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Blazor</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/integrations/blazor/" aria-current="page" class="menu__link menu__link--active">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <p>FAST works seamlessly with Blazor, including integration with Blazor's binding engine and components. Let's take a look at how to set things up.</p>
+<h2 id="setting-up-the-blazor-project">Setting up the Blazor project</h2>
+<p>First, you'll need to make sure that you have the .NET SDK installed. You can learn more and download that <a href="https://dotnet.microsoft.com/download">on the official site</a>.</p>
+<p>With the SDK installed, you have access to the <code>dotnet</code> command-line interface. This can be used to create a new Blazor project. For example, to create a new Blazor App named &quot;fast-blazor&quot;, you would use the following command:</p>
+<pre class="language-shell"><code class="language-shell">dotnet new blazorwasm <span class="token parameter variable">-o</span> fast-blazor</code></pre>
+<p>Create a project using the command above if you don't already have one. When the CLI completes, you should have a basic runnable Blazor application. For more information on setting up and using Blazor, <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started">see the official Blazor Getting Started guide</a>.</p>
+<h2 id="getting-started-with-the-fluentui-web-components">Getting Started with the FluentUI Web Components</h2>
+<p>FAST has special Blazor support for Microsoft's FluentUI Web Components. To get started using the Fluent UI Web Components for Blazor, you will first need to install <a href="https://www.nuget.org/packages/Microsoft.Fast.Components.FluentUI/">the official Nuget package for Fluent UI</a>. You can use the following command:</p>
+<pre class="language-shell"><code class="language-shell">dotnet <span class="token function">add</span> package Microsoft.Fast.Components.FluentUI</code></pre>
+<p>Next, you need to add the web components script. You can either add the script from CDN directly, or you can install it with NPM, whichever you prefer.</p>
+<p>To add the script from CDN use the following markup:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/web-components.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<p>The markup above always references the latest release of the components. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/@fluentui/web-components@2.0.2/dist/web-components.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<p>The best place to put the script tag is typically in your index.html file in the script section at the bottom of the <code>&lt;body&gt;</code>.</p>
+<p>If you wish to leverage NPM instead, run the following command:</p>
+<pre class="language-html"><code class="language-html">npm install --save @fluentui/web-components</code></pre>
+<p>You can locate the single file script build in the following location:</p>
+<pre class="language-html"><code class="language-html">node_modules/@fluentui/web-components/dist/web-components.min.js</code></pre>
+<p>Copy this to your <code>wwwroot/script</code> folder and reference it with a script tag as described above.</p>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the <code>@</code> character by repeating it in the source link. For more information check out the <a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0">Razor Pages syntax documentation</a>.</p></div>
+<h3 id="using-the-fluentui-web-components">Using the FluentUI Web Components</h3>
+<p>With the package installed and the script configured, you can begin using the Fluent UI Web Components in the same way as any other Blazor component. Just be sure to add the following using statement to your views:</p>
+<pre class="language-html"><code class="language-html">@using Microsoft.Fast.Components.FluentUI</code></pre>
+<p>Here's a small example of a <code>FluentCard</code> with a <code>FluentButton</code> that uses the Fluent &quot;Accent&quot; appearance:</p>
+<pre class="language-html"><code class="language-html">@using Microsoft.Fast.Components.FluentUI
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentCard</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Hello World!<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@Appearance.Accent<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Click Me<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentCard</span><span class="token punctuation">></span></span></code></pre>
+<div class="alert alert--success">
+<div class="alert__heading">Tip</div>
+<p>You can add <code>@using Microsoft.Fast.Components.FluentUI</code> to the namespace collection in <code>_Imports.razor</code>, so that you can avoid repeating it in every single razor page.</p></div>
+<p>If you are using the .NET CLI, you can run your project with the following command from the project folder:</p>
+<pre class="language-shell"><code class="language-shell">dotnet <span class="token function">watch</span> run</code></pre>
+<p>Congratulations! You're now set up to use the Fluent UI Web Components with Blazor!</p>
+<h3 id="configuring-the-design-system">Configuring the Design System</h3>
+<p>The Fluent UI Web Components are built on FAST's Adaptive UI technology, which enables design customization and personalization, while automatically maintaining accessibility. This is accomplished through setting various &quot;Design Tokens&quot;. As of version 1.4 you can use all of the (160) individual Design Tokens, both from code as in a declarative way in your <code>.razor</code> pages. See https://docs.microsoft.com/en-us/fluent-ui/web-components/design-system/design-tokens for more information on how Design Tokens work</p>
+<h4 id="option-1-using-design-tokens-from-c-code">Option 1: Using Design Tokens from C# code</h4>
+<p>Given the following <code>.razor</code> page fragment:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">@ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ref1<span class="token punctuation">"</span></span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Filled<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>A button<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">@ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ref2<span class="token punctuation">"</span></span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Filled<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Another button<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">@ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ref3<span class="token punctuation">"</span></span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Filled<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>And one more<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">@ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ref4<span class="token punctuation">"</span></span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Filled<span class="token punctuation">"</span></span> <span class="token attr-name">@onclick</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span>OnClick</span><span class="token punctuation">></span></span>Last button<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+</code></pre>
+<p>You can use Design Tokens to manipulate the styles from C# code as follows:</p>
+<pre class="language-csharp"><code class="language-csharp"><span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Inject</span></span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token return-type class-name">BaseLayerLuminance</span> BaseLayerLuminance <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token operator">!</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Inject</span></span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token return-type class-name">AccentBaseColor</span> AccentBaseColor <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token operator">!</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Inject</span></span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token return-type class-name">BodyFont</span> BodyFont <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token operator">!</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Inject</span></span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token return-type class-name">StrokeWidth</span> StrokeWidth <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token operator">!</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">[</span><span class="token attribute"><span class="token class-name">Inject</span></span><span class="token punctuation">]</span>
+<span class="token keyword">private</span> <span class="token return-type class-name">ControlCornerRadius</span> ControlCornerRadius <span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">;</span> <span class="token keyword">set</span><span class="token punctuation">;</span> <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">default</span><span class="token operator">!</span><span class="token punctuation">;</span>
+
+<span class="token keyword">private</span> <span class="token class-name">FluentButton<span class="token punctuation">?</span></span> ref1<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token class-name">FluentButton<span class="token punctuation">?</span></span> ref2<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token class-name">FluentButton<span class="token punctuation">?</span></span> ref3<span class="token punctuation">;</span>
+<span class="token keyword">private</span> <span class="token class-name">FluentButton<span class="token punctuation">?</span></span> ref4<span class="token punctuation">;</span>
+
+<span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">OnAfterRenderAsync</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">bool</span></span> firstRender<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>firstRender<span class="token punctuation">)</span>
+	<span class="token punctuation">{</span>
+		<span class="token comment">//Set to dark mode</span>
+		<span class="token keyword">await</span> BaseLayerLuminance<span class="token punctuation">.</span><span class="token function">SetValueFor</span><span class="token punctuation">(</span>ref1<span class="token operator">!</span><span class="token punctuation">.</span>Element<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">float</span><span class="token punctuation">)</span><span class="token number">0.15</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token comment">//Set to Excel color</span>
+		<span class="token keyword">await</span> AccentBaseColor<span class="token punctuation">.</span><span class="token function">SetValueFor</span><span class="token punctuation">(</span>ref2<span class="token operator">!</span><span class="token punctuation">.</span>Element<span class="token punctuation">,</span> <span class="token string">"#185ABD"</span><span class="token punctuation">.</span><span class="token function">ToSwatch</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token comment">//Set the font</span>
+		<span class="token keyword">await</span> BodyFont<span class="token punctuation">.</span><span class="token function">SetValueFor</span><span class="token punctuation">(</span>ref3<span class="token operator">!</span><span class="token punctuation">.</span>Element<span class="token punctuation">,</span> <span class="token string">"Comic Sans MS"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token comment">//Set 'border' width for ref4</span>
+		<span class="token keyword">await</span> StrokeWidth<span class="token punctuation">.</span><span class="token function">SetValueFor</span><span class="token punctuation">(</span>ref4<span class="token operator">!</span><span class="token punctuation">.</span>Element<span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">//And change conrner radius as well</span>
+		<span class="token keyword">await</span> ControlCornerRadius<span class="token punctuation">.</span><span class="token function">SetValueFor</span><span class="token punctuation">(</span>ref4<span class="token operator">!</span><span class="token punctuation">.</span>Element<span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token function">StateHasChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">async</span> <span class="token return-type class-name">Task</span> <span class="token function">OnClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token comment">//Remove the wide border</span>
+	<span class="token keyword">await</span> StrokeWidth<span class="token punctuation">.</span><span class="token function">DeleteValueFor</span><span class="token punctuation">(</span>ref4<span class="token operator">!</span><span class="token punctuation">.</span>Element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>As can be seen in the code above (with the <code>ref4.Element</code>), it is posible to apply multiple tokens to the same component.</p>
+<p>For Design Tokens that work with a color value, you must call the <code>ToSwatch()</code> extension method on a string value or use one of the <code>Swatch</code> constructors. This makes sure the color is using a format that Design Tokens can handle. A <code>Swatch</code> has a lot of commonality with the <code>System.Drawing.Color</code> struct. Instead of the values of the components being between 0 and 255, in a <code>Swatch</code> they are expressed as a value between 0 and 1.</p>
+<div class="alert alert--info">
+<div class="alert__heading">Important</div>
+<p>The Design Tokens are manipulated through JavaScript interop working with an <code>ElementReference</code>. There is no JavaScript element until after the component is rendered. This means you can only work with the Design Tokens from code after the component has been rendered in <code>OnAfterRenderAsync</code> and not in any earlier lifecycle methods.</p></div>
+<h4 id="option-2-using-design-tokens-as-components">Option 2: Using Design Tokens as components</h4>
+<p>The Design Tokens can also be used as components in a <code>.razor</code> page directely. It looks like this:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>BaseLayerLuminance</span> <span class="token attr-name">Value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>(float?)0.15<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentCard</span> <span class="token attr-name">BackReference</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@context<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>contents<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+			Dark
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Accent<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Accent<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Stealth<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Stealth<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Outline<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Outline<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentButton</span> <span class="token attr-name">Appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Appearance.Lightweight<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Lightweight<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentButton</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentCard</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>BaseLayerLuminance</span><span class="token punctuation">></span></span></code></pre>
+<p>To make this work, a link needs to be created between the Design Token component and its child components. This is done with the <code>BackReference=&quot;@context&quot;</code> construct.</p>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>Only one Design Token component at a time can be used this way. If you need to set more tokens, use the code approach as described in Option 1 above.</p></div>
+<h4 id="option-3-using-the-fluentdesignsystemprovider">Option 3: Using the <code>&lt;FluentDesignSystemProvider&gt;</code></h4>
+<p>The third way to customize the design in Blazor is to wrap the entire block you want to manipulate in a <code>&lt;FluentDesignSystemProvider&gt;</code>. This special element has a number of properties you can set to configure a subset of the tokens. <strong>Not all tokens are available/supported</strong> and we recommend this to only be used as a fall-back mechanism. The preferred mehod of working with the desgn tokens is to manipulate them from code as described in option 1.</p>
+<p>Here's an example of changing the &quot;accent base color&quot; and switching the system into dark mode (in the file <code>app.razor</code>):</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>FluentDesignSystemProvider</span> <span class="token attr-name">AccentBaseColor</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>#464EB8<span class="token punctuation">"</span></span> <span class="token attr-name">BaseLayerLuminance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Router</span> <span class="token attr-name">AppAssembly</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@typeof(App).Assembly<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Found</span> <span class="token attr-name">Context</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>routeData<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>RouteView</span> <span class="token attr-name">RouteData</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@routeData<span class="token punctuation">"</span></span> <span class="token attr-name">DefaultLayout</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@typeof(MainLayout)<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Found</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>NotFound</span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>PageTitle</span><span class="token punctuation">></span></span>Not found<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>PageTitle</span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>LayoutView</span> <span class="token attr-name">Layout</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>@typeof(MainLayout)<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+				<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">role</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>alert<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Sorry, there's nothing at this address.<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+			<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>LayoutView</span><span class="token punctuation">></span></span>
+		<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>NotFound</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Router</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>FluentDesignSystemProvider</span><span class="token punctuation">></span></span></code></pre>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>Provider token attributes can be changed on-the-fly like any other Blazor component attribute.</p></div>
+<h4 id="colors-for-integration-with-specific-microsoft-products">Colors for integration with specific Microsoft products</h4>
+<p>If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides <code>AccentBaseColor</code> values you can use:</p>
+<table>
+<thead>
+<tr>
+<th>Product</th>
+<th>AccentBaseColor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Office</td>
+<td>#D83B01</td>
+</tr>
+<tr>
+<td>Word</td>
+<td>#185ABD</td>
+</tr>
+<tr>
+<td>Excel</td>
+<td>#107C41</td>
+</tr>
+<tr>
+<td>PowerPoint</td>
+<td>#C43E1C</td>
+</tr>
+<tr>
+<td>Teams</td>
+<td>#6264A7</td>
+</tr>
+<tr>
+<td>OneNote</td>
+<td>#7719AA</td>
+</tr>
+<tr>
+<td>SharePoint</td>
+<td>#03787C</td>
+</tr>
+<tr>
+<td>Stream</td>
+<td>#BC1948</td>
+</tr>
+</tbody>
+</table>
+<p>For a list of all available token attributes, <a href="https://github.com/microsoft/fast-blazor/blob/main/src/Microsoft.Fast.Components.FluentUI/Components/FluentDesignSystemProvider.razor#L69">see here</a>. More examples for other components can be found in the <code>examples</code> folder <a href="https://github.com/microsoft/fast-blazor">of this repository</a>.</p>
+<h2 id="web-components-blazor-components-mapping-implementation-status-and-remarks">Web components / Blazor components mapping, implementation status and remarks</h2>
+<table>
+<thead>
+<tr>
+<th>Web component</th>
+<th>Blazor component</th>
+<th>Status</th>
+<th>Remarks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/accordion"><code>&lt;fluent-accordion&gt;</code></a></td>
+<td><code>&lt;FluentAccordion&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-accordion-item&gt;</code></td>
+<td><code>&lt;FluentAccordionItem&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/anchor"><code>&lt;fluent-anchor&gt;</code></a></td>
+<td><code>&lt;FluentAnchor&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/anchored-region"><code>&lt;fluent-anchored-region&gt;</code></a></td>
+<td><code>&lt;FluentAnchoredRegion&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/badge"><code>&lt;fluent-badge&gt;</code></a></td>
+<td><code>&lt;FluentBadge&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/breadcrumb"><code>&lt;fluent-breadcrumb&gt;</code></a></td>
+<td><code>&lt;FluentBreadcrumb&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-breadcrumb-item&gt;</code></td>
+<td><code>&lt;FluentBreadcrumbItem&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/button"><code>&lt;fluent-button&gt;</code></a></td>
+<td><code>&lt;FluentButton&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/card"><code>&lt;fluent-card&gt;</code></a></td>
+<td><code>&lt;FluentCard&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/checkbox"><code>&lt;fluent-checkbox&gt;</code></a></td>
+<td><code>&lt;FluentCheckbox&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/combobox"><code>&lt;fluent-combobox&gt;</code></a></td>
+<td><code>&lt;FluentCombobox&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/grid"><code>&lt;fluent-data-grid&gt;</code></a></td>
+<td><code>&lt;FluentDataGrid&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-data-grid-cell&gt;</code></td>
+<td><code>&lt;FluentDataGridCell&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-data-grid-row&gt;</code></td>
+<td><code>&lt;FluentDataGridRow&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/provider"><code>&lt;fluent-design-system-provider&gt;</code></a></td>
+<td><code>&lt;FluentDesignSystemProvider&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/dialog"><code>&lt;fluent-dialog&gt;</code></a></td>
+<td><code>&lt;FluentDialog&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/divider"><code>&lt;fluent-divider&gt;</code></a></td>
+<td><code>&lt;FluentDivider&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/flipper"><code>&lt;fluent-flipper&gt;</code></a></td>
+<td><code>&lt;FluentFlipper&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/horizontal-scroll"><code>&lt;fluent-horizontal-scroll&gt;</code></a></td>
+<td><code>&lt;FluentHorizontalScroll&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td>No web component</td>
+<td><code>&lt;FluentIcon&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/listbox"><code>&lt;fluent-listbox&gt;</code></a></td>
+<td><code>&lt;FluentListbox&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/menu"><code>&lt;fluent-menu&gt;</code></a></td>
+<td><code>&lt;FluentMenu&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-menu-item&gt;</code></td>
+<td><code>&lt;FluentMenuItem&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/number-field"><code>&lt;fluent-number-field&gt;</code></a></td>
+<td><code>&lt;FluentNumberField&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-option&gt;</code></td>
+<td><code>&lt;FluentOption&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/progress"><code>&lt;fluent-progress&gt;</code></a></td>
+<td><code>&lt;FluentProgress&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/progress-ring"><code>&lt;fluent-progress-ring&gt;</code></a></td>
+<td><code>&lt;FluentProgressRing&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/radio-group"><code>&lt;fluent-radio&gt;</code></a></td>
+<td><code>&lt;FluentRadio&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/radio-group"><code>&lt;fluent-radio-group&gt;</code></a></td>
+<td><code>&lt;FluentRadioGroup&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/select"><code>&lt;fluent-select&gt;</code></a></td>
+<td><code>&lt;FluentSelect&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/skeleton"><code>&lt;fluent-skeleton&gt;</code></a></td>
+<td><code>&lt;FluentSkeleton&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/slider"><code>&lt;fluent-slider&gt;</code></a></td>
+<td><code>&lt;FluentSlider&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-slider-label&gt;</code></td>
+<td><code>&lt;FluentSliderLabel&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/switch"><code>&lt;fluent-switch&gt;</code></a></td>
+<td><code>&lt;FluentSwitch&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/tabs"><code>&lt;fluent-tabs&gt;</code></a></td>
+<td><code>&lt;FluentTabs&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-tab&gt;</code></td>
+<td><code>&lt;FluentTab&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-tab-panel&gt;</code></td>
+<td><code>&lt;FluentTabPanel&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/text-area"><code>&lt;fluent-text-area&gt;</code></a></td>
+<td><code>&lt;FluentTextArea&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/text-field"><code>&lt;fluent-text-field&gt;</code></a></td>
+<td><code>&lt;FluentTextField&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/toolbar"><code>&lt;fluent-toolbar&gt;</code></a></td>
+<td><code>&lt;FluentToolbar&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/tooltip"><code>&lt;fluent-tooltip&gt;</code></a></td>
+<td><code>&lt;FluentTooltip&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><a href="https://docs.microsoft.com/en-us/fluent-ui/web-components/components/tree-view"><code>&lt;fluent-tree-view&gt;</code></a></td>
+<td><code>&lt;FluentTreeView&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>&lt;fluent-tree-item&gt;</code></td>
+<td><code>&lt;FluentTreeItem&gt;</code></td>
+<td>✔️</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-slider-label",
+  "id": "fast-slider-label",
+  "title": "Slider label",
+  "description": "The FAST slider-label element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-slider-label",
+  "properties": {
+    "hide-mark": {
+      "title": "Hide mark",
+      "description": "Hides the tick mark",
+      "mapsToAttribute": "hide-mark",
+      "type": "boolean"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the label",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "position": {
+      "title": "Position",
+      "description": "The position of the label relative to the min and max value of the parent",
+      "mapsToAttribute": "position",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The content of the slider label",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

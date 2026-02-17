@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Cheat Sheet</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/resources/cheat-sheet/" aria-current="page" class="menu__link menu__link--active">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <h1 id="cheat-sheet">Cheat Sheet</h1>
+<h2 id="packages">Packages</h2>
+<h3 id="microsoft-fast-element"><a href="../fast-element/getting-started.md">@microsoft/fast-element</a></h3>
+<p><strong>A lightweight library for building performant, memory-efficient, standards-compliant Web Components.</strong></p>
+<ul>
+<li>Provides a thin layer of opinion on top of <a href="./why-web-components.md">Web Components</a>, lifting the level of abstraction just enough to make it easier and faster to <a href="#building-components">build components</a>.</li>
+<li>Use this library when you want to create new custom web components.</li>
+</ul>
+<p>To install the <code>fast-element</code> library, use either <code>npm</code> or <code>yarn</code>:</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">--save</span> @microsoft/fast-element</code></pre>
+<pre class="language-shell"><code class="language-shell"><span class="token function">yarn</span> <span class="token function">add</span> @microsoft/fast-element</code></pre>
+<p>Within your JavaScript or TypeScript code, you can then import library APIs like this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span></code></pre>
+<hr>
+<h3 id="microsoft-fast-foundation"><a href="../introduction.md#how-can-fast-help-me">@microsoft/fast-foundation</a></h3>
+<p><strong>This package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems.</strong></p>
+<ul>
+<li>Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.</li>
+<li>Use this library when you want to create something like Google's Material Design or Bootstrap.</li>
+</ul>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+  Button <span class="token keyword">as</span> FoundationButton<span class="token punctuation">,</span>
+  buttonTemplate <span class="token keyword">as</span> template<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> css <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyButton</span> <span class="token keyword">extends</span> <span class="token class-name">FoundationButton</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> buttonStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host {
+    background-color: azure;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> myButton <span class="token operator">=</span> MyButton<span class="token punctuation">.</span><span class="token function">compose</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  baseName<span class="token operator">:</span> <span class="token string">"button"</span><span class="token punctuation">,</span>
+  baseClass<span class="token operator">:</span> FoundationButton<span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  styles<span class="token operator">:</span> buttonStyles<span class="token punctuation">,</span>
+  shadowOptions<span class="token operator">:</span> <span class="token punctuation">{</span>
+    delegatesFocus<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<hr>
+<h3 id="microsoft-fast-components"><a href="../components/getting-started.md">@microsoft/fast-components</a></h3>
+<p><strong>The FAST component library and visual system <a href="../design-systems/fast-frame.md">FAST Frame</a>, which implements fast-foundation.</strong></p>
+<ul>
+<li>Assembles the building blocks of <code>@microsoft/fast-foundation</code> to create its component set.</li>
+<li>Use this library when you want to integrate <a href="#using-components">FAST Components</a> into an existing site or app.</li>
+</ul>
+<p>To install the components, use either <code>npm</code> or <code>yarn</code>:</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">--save</span> @microsoft/fast-components</code></pre>
+<pre class="language-shell"><code class="language-shell"><span class="token function">yarn</span> <span class="token function">add</span> @microsoft/fast-components</code></pre>
+<p>To use a component as a custom element in HTML, the custom element must be registered.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> 
+  fastButton<span class="token punctuation">,</span> 
+  provideFASTDesignSystem 
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+    <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// custom element registration</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<hr>
+<h2 id="using-components"><a href="../components/getting-started.md">Using components</a></h2>
+<h3 id="setup">Setup</h3>
+<p><strong>Example</strong></p>
+<p>To register design system components:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> 
+  fastButton<span class="token punctuation">,</span> 
+  provideFASTDesignSystem 
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+    <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// custom element registration</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Or, register all system components:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> 
+  allComponents<span class="token punctuation">,</span> 
+  provideFASTDesignSystem 
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>allComponents<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>With the components registered, add any component to the HTML.</p>
+<p><strong>Example</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fast-button</span><span class="token punctuation">></span></span>Hello world<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>fast-button</span><span class="token punctuation">></span></span></code></pre>
+<hr>
+<p>Launch our <a href="https://explore.fast.design/">Component Explorer</a> for a comprehensive list of FAST Components.</p>
+<hr>
+<h3 id="integrations"><a href="../integrations/introduction.md">Integrations</a></h3>
+<p>FAST libraries can also be used in combination with a wide variety of existing technologies:</p>
+<ul>
+<li><a href="../integrations/angular.md">Angular</a></li>
+<li><a href="../integrations/aspnet.md">ASP.NET</a></li>
+<li><a href="../integrations/aurelia.md">Aurelia</a></li>
+<li><a href="../integrations/blazor.md">Blazor</a></li>
+<li><a href="../integrations/ember.md">Ember</a></li>
+<li><a href="../integrations/react.md">React</a></li>
+<li><a href="../integrations/rollup.md">Rollup</a></li>
+<li><a href="../integrations/svelte.md">Svelte</a></li>
+<li><a href="../integrations/vite.md">Vite</a></li>
+<li><a href="../integrations/vue.md">Vue</a></li>
+<li><a href="../integrations/webpack.md">Webpack</a></li>
+</ul>
+<p>Not seeing an integration for your preferred technology?  Open an issue on <a href="https://github.com/microsoft/fast/issues/new/choose">GitHub</a>.</p>
+<hr>
+<h2 id="building-components"><a href="../fast-element/getting-started.md">Building components</a></h2>
+<p>There are two main approaches to building a component:</p>
+<ul>
+<li>The first approach is for simple declarations of non-shared components.</li>
+<li>The second approach is for components designed to be published in <a href="#design-system">shareable libraries</a>.</li>
+</ul>
+<h3 id="setup-2">Setup</h3>
+<p><strong>Example</strong></p>
+<p>To define a custom element:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token string">"name-tag"</span><span class="token punctuation">)</span> <span class="token comment">// custom element being created</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span></code></pre>
+<p>With this in place, you can now use your <code>&lt;name-tag&gt;</code> element anywhere in HTML with the following markup:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+<hr>
+<h3 id="attributes"><a href="../fast-element/defining-elements.md#customizing-attributes">Attributes</a></h3>
+<p>To add attributes to your HTML element, create properties decorated by the <code>@attr</code> decorator.</p>
+<p>All attributes defined this way will be automatically registered with the platform so that they can be updated through the browser's native <code>setAttribute</code> API as well as the property.</p>
+<p>You can optionally add a method with the naming convention <em>propertyName</em>Changed to your class, and this method will be called whenever your property changes, whether it changes through the property or the attribute API.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token string">"name-tag"</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> greeting<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">"Hello"</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// optional method </span>
+  <span class="token function">greetingChanged</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">...</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Example: To use a Web Component with Attributes</strong></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name-tag</span> <span class="token attr-name">greeting</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Hola<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name-tag</span><span class="token punctuation">></span></span></code></pre>
+<hr>
+<h4 id="customizing-attributes"><a href="../fast-element/defining-elements.md#customizing-attributes">Customizing attributes</a></h4>
+<p>There are three modes available through the <code>mode</code> property of the attribute configuration:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Mode</th>
+<th style="text-align:left">Guidance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">reflect</td>
+<td style="text-align:left">The default mode that is used if none is specified.</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">This mode causes your attribute to function using the HTML boolean attribute behavior.</td>
+</tr>
+<tr>
+<td style="text-align:left">fromView</td>
+<td style="text-align:left">This mode skips reflecting the value of the property back to the HTML attribute.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>In addition to setting the mode, you can also supply a custom <code>ValueConverter</code> by setting the <code>converter</code> property of the attribute configuration.</p>
+<p>The converter must implement the following interface:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">interface</span> <span class="token class-name">ValueConverter</span> <span class="token punctuation">{</span>
+  <span class="token function">toView</span><span class="token punctuation">(</span>value<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+  <span class="token function">fromView</span><span class="token punctuation">(</span>value<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Example: An Attribute in <code>Reflect</code> Mode with No Special Conversion</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token string">'name-tag'</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> greeting<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">'Hello'</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Example: An Attribute in <code>Boolean</code> Mode with Boolean Conversion</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token string">'my-checkbox'</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyCheckbox</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span> mode<span class="token operator">:</span> <span class="token string">'boolean'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> disabled<span class="token operator">:</span> <span class="token builtin">boolean</span> <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><strong>Example: An Attribute in <code>Reflect</code> Mode with Custom Conversion</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr<span class="token punctuation">,</span> ValueConverter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> numberConverter<span class="token operator">:</span> ValueConverter <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token function">toView</span><span class="token punctuation">(</span>value<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">String</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token function">fromView</span><span class="token punctuation">(</span>value<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">number</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">Number</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token string">"my-counter"</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyCounter</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    mode<span class="token operator">:</span> <span class="token string">"reflect"</span><span class="token punctuation">,</span>
+    converter<span class="token operator">:</span> numberConverter
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  count<span class="token operator">:</span> <span class="token builtin">number</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<h3 id="templates"><a href="../fast-element/declaring-templates.md">Templates</a></h3>
+<p>To create an HTML template for an element, import and use the <code>html</code> tagged template helper and pass the template to the <code>@customElement</code> decorator.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> attr<span class="token punctuation">,</span> html <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> template <span class="token operator">=</span> html<span class="token operator">&lt;</span>NameTag<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  &lt;div class="header">
+    &lt;h3></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>greeting<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/h3>
+    &lt;h4>my name is&lt;/h4>
+  &lt;/div>
+
+  &lt;div class="body">TODO: Name Here&lt;/div>
+
+  &lt;div class="footer">&lt;/div>
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"name-tag"</span><span class="token punctuation">,</span>
+  template
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">NameTag</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<h3 id="observables"><a href="../fast-element/observables-and-state.md#observable-features">Observables</a></h3>
+<p>To enable binding tracking and change notification, properties must be decorated with either <code>@attr</code> or <code>@observable</code>.</p>
+<p>Use <code>@attr</code> for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML <a href="#attributes">attributes</a>. Use <code>@observable</code> for all other property types on an HTMLElement and all observable properties on plain classes.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> Observable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">observable</span></span> firstName <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">observable</span></span> lastName <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">get</span> <span class="token function">fullName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>firstName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>LastName<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<h3 id="bindings"><a href="../fast-element/declaring-templates.md#understanding-bindings">Bindings</a></h3>
+<p>(<code>x</code> refers to the custom-element class instance in the examples below.)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Binding Type</th>
+<th style="text-align:left">Example</th>
+<th style="text-align:left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Content</td>
+<td style="text-align:left"><code>&lt;p&gt;${x =&gt; x.greeting} friend!&lt;/p&gt;</code></td>
+<td style="text-align:left">Creates a binding to interpolate text or child templates into element content.</td>
+</tr>
+<tr>
+<td style="text-align:left">HTML Attribute</td>
+<td style="text-align:left"><code>&lt;a href=${x =&gt; x.aboutLink}&gt;&lt;/a&gt;</code></td>
+<td style="text-align:left">Creates a binding that uses the setAttribute API. Attribute bindings also support interpolation with text and other bindings.</td>
+</tr>
+<tr>
+<td style="text-align:left">HTML Boolean Attribute</td>
+<td style="text-align:left"><code>&lt;input ?disabled=${x =&gt; x.isDisabled}&gt;</code></td>
+<td style="text-align:left">Creates a binding that adds or removes the attribute based on truthy/falsey values.</td>
+</tr>
+<tr>
+<td style="text-align:left">JS Property</td>
+<td style="text-align:left"><code>&lt;input :value=${x =&gt; x.name}&gt;</code></td>
+<td style="text-align:left">Creates a binding that sets a JavaScript property on the element.</td>
+</tr>
+<tr>
+<td style="text-align:left">Event Handler</td>
+<td style="text-align:left"><code>&lt;button @click=${x =&gt; x.handleClick()}&gt;Button&lt;/button&gt;</code></td>
+<td style="text-align:left">Registers an event handler using addEventListener. The listener is automatically removed when the template is unbound. <br><br>After your event handler is executed, preventDefault() will be called on the event object by default. You can return true from your handler to opt-out of this behavior.</td>
+</tr>
+<tr>
+<td style="text-align:left">HTML Element Reference</td>
+<td style="text-align:left"><code>&lt;button ${ref(&quot;myButton&quot;)}&gt;Button&lt;/button&gt;</code></td>
+<td style="text-align:left">Captures a reference to the element and assigns it to the named property on the element instance.</td>
+</tr>
+<tr>
+<td style="text-align:left">Slotted Node Capture</td>
+<td style="text-align:left"><code>&lt;slot ${slotted(&quot;defaultSlotNodes&quot;)}&gt;&lt;/slot&gt;</code></td>
+<td style="text-align:left">Watches the slot for changes and synchronizes those to an array, assigned to the named property on the element instance.</td>
+</tr>
+<tr>
+<td style="text-align:left">Child Node Capture</td>
+<td style="text-align:left"><code>&lt;div ${children(&quot;divChildren&quot;)}&gt;&lt;/div&gt;</code></td>
+<td style="text-align:left">Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the element instance.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="directives"><a href="../fast-element/using-directives.md">Directives</a></h3>
+<p>Use the <a href="../fast-element/using-directives.md#the-when-directive"><code>when</code></a> directive to conditionally render blocks of HTML.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> observable<span class="token punctuation">,</span> html<span class="token punctuation">,</span> when <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> template <span class="token operator">=</span> html<span class="token operator">&lt;</span>MyApp<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+ ...
+  </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">when</span><span class="token punctuation">(</span>x <span class="token operator">=></span> <span class="token operator">!</span>x<span class="token punctuation">.</span>ready<span class="token punctuation">,</span> html<span class="token operator">&lt;</span>MyApp<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+    Loading...
+  </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"my-app"</span><span class="token punctuation">,</span>
+  template
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyApp</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">observable</span></span> ready<span class="token operator">:</span> <span class="token builtin">boolean</span> <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<p>Use the <a href="../fast-element/using-directives.md#the-repeat-directive"><code>repeat</code></a> directive to render a list of data.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> observable<span class="token punctuation">,</span> html<span class="token punctuation">,</span> repeat <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> template <span class="token operator">=</span> html<span class="token operator">&lt;</span>FriendList<span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  ...
+    </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">repeat</span><span class="token punctuation">(</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>friends<span class="token punctuation">,</span> html<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+      &lt;li></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/li>
+    </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">"friend-list"</span><span class="token punctuation">,</span>
+  template
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">FriendList</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">observable</span></span> friends<span class="token operator">:</span> Person<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<p>Properties available on the context object within a <code>repeat</code> block:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Property</th>
+<th style="text-align:left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">event</td>
+<td style="text-align:left">The event object when inside an event handler.</td>
+</tr>
+<tr>
+<td style="text-align:left">parent</td>
+<td style="text-align:left">The parent view-model when inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">parentContext</td>
+<td style="text-align:left">The parent ExecutionContext when inside a repeat block. This is useful when repeats are nested and the inner-most repeat needs access to the root view-model.</td>
+</tr>
+</tbody>
+</table>
+<p><code>Opt-in</code> properties that are not available by default:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Opt-in Properties</th>
+<th style="text-align:left">Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">index</td>
+<td style="text-align:left">The index of the current item when inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">length</td>
+<td style="text-align:left">The length of the array when inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">isEven</td>
+<td style="text-align:left">True if the index of the current item is even when inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">isOdd</td>
+<td style="text-align:left">True if the index of the current item is odd when inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">isFirst</td>
+<td style="text-align:left">True if the current item is first in the array inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">isInMiddle</td>
+<td style="text-align:left">True if the current item is somewhere in the middle of the array inside a repeat block.</td>
+</tr>
+<tr>
+<td style="text-align:left">isLast</td>
+<td style="text-align:left">True if the current item is last in the array inside a repeat block.</td>
+</tr>
+</tbody>
+</table>
+<p>To opt into the positioning properties, pass options to the <code>repeat</code> directive, with the setting <code>positioning: true</code>.</p>
+<p><strong>Example: Rendering a list with Item Index</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token operator">&lt;</span>ul<span class="token operator">></span>
+  $<span class="token punctuation">{</span><span class="token function">repeat</span><span class="token punctuation">(</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>friends<span class="token punctuation">,</span> html<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token operator">></span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+    &lt;li></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> c<span class="token punctuation">)</span> <span class="token operator">=></span> c<span class="token punctuation">.</span>index<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/li>
+  </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> <span class="token punctuation">{</span> positioning<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>ul<span class="token operator">></span></code></pre>
+<hr>
+<h3 id="styles"><a href="../fast-element/leveraging-css.md#basic-styles">Styles</a></h3>
+<p><code>FASTElement</code> provides a css tagged template helper that allows for the creation of <code>ElementStyles</code>.</p>
+<p><strong>Example: Adding CSS to a <code>FASTElement</code></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> css<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> disabledOpacity <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"../design-tokens"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> styles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host([disabled]) {
+    opacity: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>disabledOpacity<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  styles
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">MyElement</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></code></pre>
+<hr>
+<h4 id="composing-styles"><a href="../fast-element/leveraging-css.md#composing-styles">Composing styles</a></h4>
+<p><code>ElementStyles</code> can be composed with other styles.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> normalize <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./normalize"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> styles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>normalize<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">
+  :host {
+    ...
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<hr>
+<h4 id="partial-css"><a href="../fast-element/leveraging-css.md#partial-css">Partial CSS</a></h4>
+<p>Use the <code>cssPartial</code> tagged template literal to create reusable blocks of partial CSS.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> css<span class="token punctuation">,</span> cssPartial <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> partial <span class="token operator">=</span> cssPartial<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">color: red;</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> styles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">:host{ </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>partial<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> }</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<hr>
+<h3 id="cssdirective"><a href="../fast-element/leveraging-css.md#cssdirective">CSSDirective</a></h3>
+<p>To create a <code>CSSDirective</code>, import and extend <code>CSSDirective</code> from <code>@microsoft/fast-element</code>.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> CSSDirective <span class="token punctuation">}</span>  <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span>
+
+<span class="token keyword">class</span> <span class="token class-name">RandomWidth</span> <span class="token keyword">extends</span> <span class="token class-name">CSSDirective</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></code></pre>
+<hr>
+<h4 id="createcss-method"><a href="../fast-element/leveraging-css.md#createcss">createCSS method</a></h4>
+<p><code>CSSDirective</code> has a <code>createCSS()</code> method that returns a string to be interpolated into an <code>ElementStyles</code>.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name">RandomWidth</span> <span class="token keyword">extends</span> <span class="token class-name">CSSDirective</span> <span class="token punctuation">{</span>
+  <span class="token function">createCSS</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token string">"width: var(--random-width);"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<h4 id="createbehavior-method"><a href="../fast-element/leveraging-css.md#createbehavior">createBehavior method</a></h4>
+<p>The <code>createBehavior()</code> method can be used to create a <code>Behavior</code> that is bound to the element using the <code>CSSDirective</code>.</p>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">class</span> <span class="token class-name">RandomWidth</span> <span class="token keyword">extends</span> <span class="token class-name">CSSDirective</span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span> property <span class="token operator">=</span> <span class="token string">"20px"</span><span class="token punctuation">;</span>
+  <span class="token function">createCSS</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">width: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>property<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">;</span><span class="token template-punctuation string">`</span></span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">createBehavior</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      <span class="token function">bind</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        el<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>property<span class="token punctuation">,</span> Math<span class="token punctuation">.</span><span class="token function">floor</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"px"</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+      <span class="token function">unbind</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        el<span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">removeProperty</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>property<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<h2 id="design-system">Design system</h2>
+<h3 id="creating-a-design-system"><a href="../design-systems/creating-a-component-library.md#defining-a-design-system">Creating a design system</a></h3>
+<ol>
+<li>Start with the base components defined in <code>@microsoft/fast-foundation</code> and compose them with your own styles.</li>
+</ol>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+  Button<span class="token punctuation">,</span>
+  buttonTemplate <span class="token keyword">as</span> template<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> buttonStyles <span class="token keyword">as</span> styles <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./special-button.styles"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> specialButton <span class="token operator">=</span> Button<span class="token punctuation">.</span><span class="token function">compose</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  baseName<span class="token operator">:</span> <span class="token string">"button"</span><span class="token punctuation">,</span>
+  template<span class="token punctuation">,</span>
+  styles<span class="token punctuation">,</span>
+  shadowOptions<span class="token operator">:</span> <span class="token punctuation">{</span>
+    delegatesFocus<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> buttonStyles <span class="token operator">=</span> styles<span class="token punctuation">;</span></code></pre>
+<ol start="2">
+<li>Export a <code>provider function</code> for your community to use in setting everything up.</li>
+</ol>
+<p><strong>Example</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">provideSpecialDesignSystem</span><span class="token punctuation">(</span>element<span class="token operator">?</span><span class="token operator">:</span> HTMLElement<span class="token punctuation">)</span><span class="token operator">:</span> DesignSystem <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> DesignSystem<span class="token punctuation">.</span><span class="token function">getOrCreate</span><span class="token punctuation">(</span>element<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">withPrefix</span><span class="token punctuation">(</span><span class="token string">"special"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<hr>
+<h3 id="design-tokens"><a href="../design-systems/design-tokens.md">Design tokens</a></h3>
+<p><strong>Example: <a href="../design-systems/design-tokens.md#create-a-token">Creating a token</a></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> DesignToken <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+
+<span class="token comment">// create a design token</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> specialColor <span class="token operator">=</span> DesignToken<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">create</span><span class="token generic class-name"><span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token string">"special-color"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Example: <a href="../design-systems/design-tokens.md#using-design-tokens-in-css">Using design tokens in CSS</a></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// use the design token to build styles</span>
+<span class="token keyword">const</span> styles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+  :host {
+    background: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>specialColor<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">;
+  }
+</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p><strong>Example: <a href="../design-systems/design-tokens.md#setting-values">Setting values</a></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// change the value for a given element</span>
+specialColor<span class="token punctuation">.</span><span class="token function">setValueFor</span><span class="token punctuation">(</span>ancestor<span class="token punctuation">,</span> <span class="token string">"#FFF"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+specialColor<span class="token punctuation">.</span><span class="token function">setValueFor</span><span class="token punctuation">(</span>descendent<span class="token punctuation">,</span> <span class="token string">"#000"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p><strong>Example: <a href="../design-systems/design-tokens.md#getting-values">Getting values</a></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// get the value</span>
+specialColor<span class="token punctuation">.</span><span class="token function">getValueFor</span><span class="token punctuation">(</span>ancestor<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "#FFF"</span>
+specialColor<span class="token punctuation">.</span><span class="token function">getValueFor</span><span class="token punctuation">(</span>descendent<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "#000"</span></code></pre>
+<p><strong>Example: <a href="../design-systems/design-tokens.md#deleting-values">Deleting values</a></strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// unset the value (inherits from ancestor)</span>
+specialColor<span class="token punctuation">.</span><span class="token function">deleteValueFor</span><span class="token punctuation">(</span>descendent<span class="token punctuation">)</span><span class="token punctuation">;</span>
+specialColor<span class="token punctuation">.</span><span class="token function">getValueFor</span><span class="token punctuation">(</span>descendent<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "#FFF"</span></code></pre>
+<hr>
+<h4 id="configuring-a-fast-design-token">Configuring a FAST design token</h4>
+<p>FAST exposes non-color related <a href="../design-systems/fast-frame.md#fast-frame-design-tokens">Design Tokens</a> that can be used to configure components stylistically.  For Design Tokens related to color, see the <a href="../design-systems/fast-frame.md#adaptive-color-system">adaptive color system</a>.</p>
+<p><strong>Example: Changing the value for the <code>typeRampBaseFontSize</code> design token</strong></p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> typeRampBaseFontSize <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> myElement <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">"my-element"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> FASTElement<span class="token punctuation">;</span>
+
+typeRampBaseFontSize<span class="token punctuation">.</span><span class="token function">setValueFor</span><span class="token punctuation">(</span>myElement<span class="token punctuation">,</span> <span class="token string">"20px"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<hr>
+<h2 id="contributing-to-fast"><a href="../community/join.md">Contributing to FAST</a></h2>
+<p><strong>Connect with us</strong>:</p>
+<ul>
+<li>Join our <a href="https://discord.gg/FcSNfg4">Discord</a> server.</li>
+<li>Report bugs, request features through <a href="https://github.com/microsoft/fast/issues/new/choose">Github</a>.</li>
+</ul>
+<p><strong>Unsure of what to work on?</strong></p>
+<ul>
+<li>Here are <a href="https://github.com/microsoft/fast/labels/community:good-first-issue">good first issues</a>.</li>
+</ul>
+<hr>
+<h3 id="contributor-guide"><a href="../community/contributor-guide.md">Contributor guide</a></h3>
+<ul>
+<li><a href="../community/contributor-guide.md#machine-setup">Machine setup</a></li>
+<li><a href="../community/contributor-guide.md#cloning-the-repository">Cloning the repository</a></li>
+<li><a href="../community/contributor-guide.md#installing-and-building">Installing &amp; building</a></li>
+<li><a href="../community/contributor-guide.md#testing">Testing</a></li>
+<li><a href="../community/contributor-guide.md#submitting-a-pull-request">Submitting a pull request</a></li>
+<li><a href="../community/contributor-guide.md#merging-a-pull-request">Merging a pull request</a></li>
+</ul>
+<hr>
+<h3 id="branch-guide"><a href="../community/branch-guide.md">Branch Guide</a></h3>
+<p>When contributing to the FAST repository, please follow the standards defined in this guide.</p>
+<hr>
+<h3 id="contributing-to-fast-components"><a href="../community/contributor-guide.md#developing-in-fast-components">Contributing to <code>fast-components</code></a></h3>
+<pre class="language-shell"><code class="language-shell"><span class="token builtin class-name">cd</span> packages/web-components/fast-components
+<span class="token function">yarn</span> start</code></pre>
+<p><a href="https://storybook.js.org/">Storybook</a> will open in a browser window at <code>localhost:6006</code>.</p>
+<hr>
+<h3 id="contributing-to-documentation"><a href="../community/writing-documentation.md">Contributing to documentation</a></h3>
+<pre class="language-shell"><code class="language-shell"><span class="token builtin class-name">cd</span> sites/website
+<span class="token function">yarn</span> start</code></pre>
+<p><a href="https://docusaurus.io/">Docusaurus</a> will open in a browser window at <code>localhost:3000</code>.</p>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

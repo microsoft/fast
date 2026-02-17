@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>Creating a Component Library</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/design-systems/creating-a-component-library/" aria-current="page" class="menu__link menu__link--active">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <p>Not only is FAST great for creating individual components, but it also shines when creating libraries or systems of components. FAST Foundation exposes several powerful abstractions in order to enable library authors to provide ergonomic APIs to application authors. These APIs ensure that app authors who consume your library have a consistent way to configure, augment, and override various details of the components. For example:</p>
+<ul>
+<li>Custom element tag names are easily configured and disambiguated.</li>
+<li>Custom elements are explicitly registered to avoid tree-shaking.</li>
+<li>Templates, styles, default slotted content, and arbitrary component configurations are all configurable by application authors.</li>
+<li>Shadow DOM options are easily configurable.</li>
+</ul>
+<p>All these configuration capabilities are designed to give application authors the flexibility necessary to align library components to application or business requirements. This section walks through the process of defining a component from a library author’s perspective, detailing component, template, and style creation that supports the configuration capabilities described above.</p>
+<h2 id="defining-components">Defining components</h2>
+<p>To opt into the features above, begin by extending your components from the <code>FoundationElement</code> base class in <code>@microsoft/fast-foundation</code> rather than <code>FASTElement</code>. <code>FoundationElement</code> is a light extension of <code>FASTElement</code> that supports element configuration during component registration as well as DOM-scoped, overridable templates and styles. Here's an example of a basic <code>Counter</code> component that inherits from <code>FoundationElement</code>.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FoundationElement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> attr <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">Counter</span> <span class="token keyword">extends</span> <span class="token class-name">FoundationElement</span> <span class="token punctuation">{</span>
+    <span class="token decorator"><span class="token at operator">@</span><span class="token function">attr</span></span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>One important detail to note is that we do not use the <code>@customElement</code> decorator in this case. The <code>@customElement</code> decorator forces immediate template and style resolution, and platform component element name registration. This is fine when building application components, or components not intended to be used as part of a library in another application. However, if used for library components, it prevents the consumer of the component from having the opportunity to customize the component in ways that might be critical for their app. <code>FoundationElement</code> helps address this challenge.</p>
+<h3 id="define-templates-and-styles">Define Templates and Styles</h3>
+<p>With our <code>Counter</code> component class written, we now need to define its templates and styles. There are two ways to accomplish this. Just like <code>FASTElement</code>, a component that extends <code>FoundationElement</code> can be used with the <a href="../fast-element/declaring-templates.md"><code>html</code></a> and <a href="../fast-element/leveraging-css.md"><code>css</code></a> tagged template literals. So, we could define our template and styles in the same fashion as any other component, like this:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> html<span class="token punctuation">,</span> css  <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> counterStyles <span class="token operator">=</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/* ... */</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> counterTemplate <span class="token operator">=</span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;!-- ... --></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p>However, a <code>FoundationElement</code> also supports a lazily-defined template and style type. This lazy option is a function invoked with <a href="../api/fast-foundation.elementdefinitioncontext.md">ElementDefinitionContext</a> and <a href="../api/fast-foundation.foundationelementdefinition.md">FoundationElementDefinition</a> options, providing opportunity to adjust the template or styles based on how the element or other elements are defined. Lazy template and style definitions provide incredible flexibility and are what can allow application authors to re-name component tag names, override default slotted content, and communicate any component-specific configuration options. Here's how we would convert the previous standard templates and styles into lazy templates and styles:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> html<span class="token punctuation">,</span> css  <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ElementDefinitionContext<span class="token punctuation">,</span> FoundationElementDefinition <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">counterStyles</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+    context<span class="token operator">:</span> ElementDefinitionContext<span class="token punctuation">,</span>
+    definition<span class="token operator">:</span> FoundationElementDefinition
+<span class="token punctuation">)</span> <span class="token operator">=></span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/* ... */</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">counterTemplate</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+    context<span class="token operator">:</span> ElementDefinitionContext<span class="token punctuation">,</span>
+    definition<span class="token operator">:</span> FoundationElementDefinition
+<span class="token punctuation">)</span> <span class="token operator">=></span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">&lt;!-- ... --></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span></code></pre>
+<p>Let’s take a closer look at what the two arguments to these lazily evaluated functions give us.</p>
+<h4 id="what-is-the-elementdefinitioncontext">What is the <code>ElementDefinitionContext</code>?</h4>
+<p>The first argument is the <code>ElementDefinitionContext</code>. This context object provides information that is available <em>during</em> the attempt to register the element. For example, it will tell you the HTML element tag <code>name</code> that the component will be defined as. You can also see what the default <code>shadowRootMode</code> of the <code>DesignSystem</code> is. Most of the other APIs are used internally by <code>FoundationElement.compose</code> (see below) to define the element, but one particular API of note is the <code>tagFor()</code> method of the context. This API is used to inspect the tag-name of other components and allows usage of other library components in a template or stylesheet without knowing ahead of time what the tag-name for the element will be. Here's an example of how the reusable <code>Counter</code> component would leverage this to ensure that the <code>Button</code>'s tag name is correct, even if the app developer decides to rename <code>Button</code> in some way.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> html<span class="token punctuation">,</span> css <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Button <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">{</span> ElementDefinitionContext <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">counterTemplate</span> <span class="token operator">=</span> <span class="token punctuation">(</span>context<span class="token operator">:</span> ElementDefinitionContext<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> buttonTag <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">tagFor</span><span class="token punctuation">(</span>Button<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+        &lt;div>The count is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>count<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.&lt;/div>
+        &lt;</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>buttonTag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> @click=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">>Count!&lt;/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>buttonTag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">>
+    </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">counterStyles</span> <span class="token operator">=</span> <span class="token punctuation">(</span>context<span class="token operator">:</span> ElementDefinitionContext<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> buttonTag <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">tagFor</span><span class="token punctuation">(</span>Button<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+        </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>buttonTag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> {
+            margin-inline-start: 12px;
+        }
+    </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h4 id="what-is-the-foundationelementdefinition">What is the <code>FoundationElementDefinition</code>?</h4>
+<p>The <code>FoundationElementDefinition</code> is the configuration for the element itself. This argument allows you to inspect the aggregated options configured for the component, giving you access to the <code>shadowOptions</code>, <code>elementOptions</code>, and more.</p>
+<p>This definition can also be arbitrarily extended by library authors, allowing custom configuration to flow through the registration process. For example, this mechanism can facilitate default slotted content overrides. To see how our <code>Counter</code> could leverage this, let's enable the <code>Button</code> content to be overridden by the application developer. Here's what that would look like:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> html <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-element"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ElementDefinitionContext<span class="token punctuation">,</span> FoundationElementDefinition <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Button <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Extend the configuration with custom properties</span>
+<span class="token keyword">interface</span> <span class="token class-name">CounterDefinition</span> <span class="token keyword">extends</span> <span class="token class-name">FoundationElementDefinition</span> <span class="token punctuation">{</span>
+    defaultButtonContent<span class="token operator">?</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">counterTemplate</span> <span class="token operator">=</span> <span class="token punctuation">(</span>context<span class="token operator">:</span> ElementDefinitionContext<span class="token punctuation">,</span> definition<span class="token operator">:</span> CounterDefinition<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> buttonTag <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">tagFor</span><span class="token punctuation">(</span>Button<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+        &lt;div>The count is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span>count<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.&lt;/div>
+        &lt;</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>buttonTag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> @click=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x <span class="token operator">=></span> x<span class="token punctuation">.</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">>
+            &lt;slot></span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>definition<span class="token punctuation">.</span>defaultButtonContent<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">&lt;/slot> &lt;!--Use the custom configuration-->
+        &lt;/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>buttonTag<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">>
+    </span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>When the library author creates the registration function (see next section), they can provide the default content. Then, during component registration with the <code>DesignSystem</code>, an application author can optionally provide a <code>defaultButtonContent</code> field as a configuration to override this setting.</p>
+<h3 id="compose-and-export-registration">Compose and Export Registration</h3>
+<p>The final step in the process is to create and export the registration function so that application authors can register the component in their <code>DesignSystem</code>. Here's how we would create the registration function for <code>Counter</code>, using our extended <code>CounterDefinition</code> configuration:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">export</span> <span class="token keyword">const</span> counter <span class="token operator">=</span> Counter<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">compose</span><span class="token generic class-name"><span class="token operator">&lt;</span>CounterDefinition<span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    baseName<span class="token operator">:</span> <span class="token string">'counter'</span><span class="token punctuation">,</span>
+    template<span class="token punctuation">,</span>
+    styles<span class="token punctuation">,</span>
+    defaultButtonContent<span class="token operator">:</span> <span class="token string">"Count!"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Here we provide the base component name of <code>counter</code>, which will be combined with the <code>DesignSystem</code> element prefix during registration. We also provide our lazy template and styles. Finally, we specify the <code>defaultButtonContent</code> value.</p>
+<h3 id="registering-library-components-in-an-application">Registering Library Components in an Application</h3>
+<p>To register the component, an application author will import the registration and register it in their <code>DesignSystem</code>, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the following code could be used:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> counter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"your-package"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> provideFASTDesignSystem<span class="token punctuation">,</span> fastButton <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token function">counter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> defaultButtonContent<span class="token operator">:</span> <span class="token string">"Please count."</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>The advantage of setting <code>defaultButtonContent</code> here is that it overrides the <code>Counter</code>'s default slotted content for <strong>all</strong> instances of <code>your-counter</code>. Instead of having to define it everywhere in the app that the button is used, the app author provides the configuration once in a centralized location. This can be extremely useful in scenarios where components contain default icons that the app author may need to swap.</p>
+<h2 id="defining-a-design-system">Defining a design system</h2>
+<p>The above examples show how to build a single component that can be flexibly registered with an existing design system. But, you can create your own design system as well. To do so, you would start with the base components defined in <code>@microsoft/fast-foundation</code> and compose them with your own styles. You would also define your own <code>DesignToken</code>s to be used within your styles. Finally, you would export a &quot;provider function&quot; for your community to use in setting everything up.</p>
+<h3 id="fast-design-system-thinking">FAST design system thinking</h3>
+<p>When creating a design system, it can be helpful to think in terms of layers and use cases.</p>
+<ol>
+<li><strong>foundation components</strong>: A reusable set of component classes and templates, independent of any design system, and designed for maximum flexibility.</li>
+<li><strong>design system</strong>: Leverages the flexibility of the foundation components, but adds the unique opinions of the design system (e.g. styles, element prefix, design tokens, theme colors, etc). It exports the component registration functions so that apps can decide what to use. This layer may also choose to &quot;lock down&quot; certain options so that the design system remains coherent when used.</li>
+<li><strong>application</strong>: Registers only the components needed by the app itself.</li>
+<li><strong>features</strong>: Only uses the components available in the app. Get access to design tokens to create feature-specific styled components in alignment with the design system.</li>
+</ol>
+<p>Notice that the strength of the opinions increases as you proceed down the list, with each layer further constraining the system. When creating a design system, it's important to think through these use cases and consider how different scenarios are impacted.</p>
+<h3 id="composing-a-foundation-component">Composing a foundation component</h3>
+<p>Let's imagine that we want to add a <code>Button</code> to our design system. We only need to import the <code>@microsoft/fast-foundation</code> <code>Button</code> component class and template, and then compose them with our design system's button styles:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span>
+    Button<span class="token punctuation">,</span>
+    buttonTemplate <span class="token keyword">as</span> template<span class="token punctuation">,</span>
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-foundation"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> buttonStyles <span class="token keyword">as</span> styles <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./special-button.styles"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> specialButton <span class="token operator">=</span> Button<span class="token punctuation">.</span><span class="token function">compose</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    baseName<span class="token operator">:</span> <span class="token string">"button"</span><span class="token punctuation">,</span>
+    template<span class="token punctuation">,</span>
+    styles<span class="token punctuation">,</span>
+    shadowOptions<span class="token operator">:</span> <span class="token punctuation">{</span>
+        delegatesFocus<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> buttonStyles <span class="token operator">=</span> styles<span class="token punctuation">;</span></code></pre>
+<p>As a practice, always be sure to export your styles independently as well. This enables the consumers of your components to build their own versions of your component, reusing and augmenting your styles as needed.</p>
+<p>When authoring your own styles, you'll also want to leverage design tokens. Please see <a href="./design-tokens.md">the design token documentation</a> for how to create and use design tokens.</p>
+<h3 id="creating-a-design-system-provider-function">Creating a design system provider function</h3>
+<p>For convenience, and to ensure consistent design system configuration, it's a good idea to provide a simple function that sets up your design system. If we wanted to create a function for the &quot;special&quot; design system, we would use the following code:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">provideSpecialDesignSystem</span><span class="token punctuation">(</span>element<span class="token operator">?</span><span class="token operator">:</span> HTMLElement<span class="token punctuation">)</span><span class="token operator">:</span> DesignSystem <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> DesignSystem<span class="token punctuation">.</span><span class="token function">getOrCreate</span><span class="token punctuation">(</span>element<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">withPrefix</span><span class="token punctuation">(</span><span class="token string">"special"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>The underlying <code>DesignSystem.getOrCreate</code> API gets the design system directly attached to the provided element. If one does not exist, it creates one. By default, if no element is provided, the design system is created on the <code>document.body</code>. Using this function abstracts those details and provides a much-improved set of ergonomics to those using your components, while also giving you the opportunity to bake in certain configuration yourself, such as defining the default element prefix.</p>
+<p>Now consumers of your components can setup your design system in their application with the button component as follows:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideSpecialDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">specialButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

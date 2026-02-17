@@ -1,0 +1,78 @@
+name: Deploy Documentation (production)
+on:
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_ACTIVE_PRODUCTION_NAME: www-west-app
+  AZURE_WEBAPP_PASSIVE_PRODUCTION_NAME: www-east-app
+  AZURE_WEBAPP_BUILD_PATH: sites/website
+  AZURE_WEBAPP_DIST_PATH: sites/website/build
+  ARTIFACT_NAME: documentation-site
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: contains('chrisdholt,janechu,nicholasrice,awentzel,eisenbergeffect', github.actor)
+
+    steps:
+    - name: Checkout Branch
+      uses: actions/checkout@master
+
+    - name: Install Lerna
+      run: yarn global add lerna@5.5.2
+
+    - name: Install package dependencies / prepare workspaces
+      run: yarn install --frozen-lockfile
+
+    - name: Build & Prepare Web Application
+      run: |
+        cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
+        yarn install
+        yarn build
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build
+        cd build
+        npm i
+        ls -lta
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+  deploy_to_production:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+    - name: 'Deploy to Active Azure Region'
+      uses: azure/webapps-deploy@v2
+      with:
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_ACTIVE_PRODUCTION }}
+        app-name: ${{ env.AZURE_WEBAPP_ACTIVE_PRODUCTION_NAME }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+    - name: 'Deploy to Passive Azure Region'
+      uses: azure/webapps-deploy@v2
+      with:
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_PASSIVE_PRODUCTION }}
+        app-name: ${{ env.AZURE_WEBAPP_PASSIVE_PRODUCTION_NAME }}
+        package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy_to_production
+
+    steps:
+    - name: Notify on Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps Documentation Bot'
+        message: 'Deployment has completed to Production on https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml'

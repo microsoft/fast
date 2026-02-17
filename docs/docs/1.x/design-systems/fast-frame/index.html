@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>The FAST Frame Design System</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/design-systems/fast-frame/" aria-current="page" class="menu__link menu__link--active">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <p>FAST Frame (<a href="https://www.npmjs.com/package/@microsoft/fast-components"><code>@microsoft/fast-components</code></a>) is a highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools. You can drop it into any app to start with a robust component library and an adaptive and accessible UI system immediately.</p>
+<h2 id="using-fast-frame-components">Using FAST Frame Components</h2>
+<h3 id="create-a-designsystem">Create a <code>DesignSystem</code></h3>
+<p>Web components from FAST Frame must be registered with the <code>DesignSystem</code> prior to being used in HTML. To set up the <code>DesignSystem</code>, first import and invoke the provider function from <code>@microsoft/fast-foundation</code> to get the <code>DesignSystem</code> instance. Then import the registrations of the components you want to use from <code>@microsoft/fast-components</code> and register them with the <code>DesignSystem</code>:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> 
+    fastButton<span class="token punctuation">,</span> 
+    fastMenu<span class="token punctuation">,</span> 
+    provideFASTDesignSystem 
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token function">fastMenu</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="add-element-to-html">Add Element to HTML</h3>
+<p>Once you've registered the components, as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>fast-button</span><span class="token punctuation">></span></span>Click me!<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>fast-button</span><span class="token punctuation">></span></span></code></pre>
+<h3 id="hide-undefined-elements">Hide undefined elements</h3>
+<p>Custom Elements that have not been <a href="https://developers.google.com/web/fundamentals/web-components/customelements#upgrades">upgraded</a> and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a <em>flash of un-styled content</em> (FOUC), visually hide Custom Elements that are not yet defined:</p>
+<pre class="language-CSS"><code class="language-CSS">:not(:defined) {
+    visibility: hidden;
+}</code></pre>
+<div class="alert alert--info">
+<div class="alert__heading">Important</div>
+<p>The consuming application must apply this, as the components themselves do not.</p></div>
+<h2 id="configuring-components">Configuring Components</h2>
+<p>FAST Frame components are highly configurable, so let’s look at some of the opportunities for configuration that can be leveraged. If you’d like to understand these APIs further, check out the <a href="./creating-a-component-library.md">creating a component library</a> documentation.</p>
+<h3 id="configuring-the-designsystem">Configuring the DesignSystem</h3>
+<p>The <code>DesignSystem</code> is the entry-point for most component configurations. It can be used to control the options for which the custom element is defined in the browser, which template and stylesheet to use, and how to disambiguate custom elements that are defined for a single element tag name.</p>
+<p>For all APIs described in this section, the configuration overrides apply to all components registered to the DesignSystem except when the option is explicitly provided <a href="./fast-frame.md#configuring-components-during-registration">during component registration</a>.</p>
+<h4 id="designsystem-withprefix"><code>DesignSystem.withPrefix()</code></h4>
+<p>As <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">Web Components</a>, FAST Components are <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements">Custom Elements</a> subject to the <a href="https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name">naming conventions defined by HTML</a>. This means that the element name must contain a ‘-‘ character. By default, the DesignSystem defines all elements registered with it with the “fast” prefix. <a href="#add-element-to-html">The example above</a> illustrates this, where the FastButton is defined with the ‘fast’ prefix.</p>
+<p>This prefix can be changed for all components registered by the DesignSystem using the <code>DesignSystem.withPrefix()</code> API:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> fastButton<span class="token punctuation">,</span> provideFASTDesignSystem <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@microsoft/fast-components"</span><span class="token punctuation">;</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">withPrefix</span><span class="token punctuation">(</span><span class="token string">"faster"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>In this case, the element can be used in HTML using the ‘faster’:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>faster-button</span><span class="token punctuation">></span></span>Click me!<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>faster-button</span><span class="token punctuation">></span></span></code></pre>
+<h4 id="designsystem-withshadowrootmode"><code>DesignSystem.withShadowRootMode()</code></h4>
+<p>Unless specified during <a href="./creating-a-component-library.md#compose-and-export-registration">component registration creation</a>, all components registered with the DesignSystem are defined with <a href="https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode">the shadow root mode</a> originally specified by the component developer (typically &quot;open&quot;, as that is both recommended and the default). This behavior can be changed using <code>DesignSystem.withShadowRootMode()</code> to close all shadow roots by default:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">withShadowRootMode</span><span class="token punctuation">(</span><span class="token string">"closed"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token comment">/* ... */</span><span class="token punctuation">)</span></code></pre>
+<h4 id="designsystem-withelementdisambiguation"><code>DesignSystem.withElementDisambiguation()</code></h4>
+<p>By default, an element registered with an already-taken name will not be re-registered with the platform. However, its element definition callback will still be invoked, allowing it to define an alternate presentation (styles and template), scoped to the DOM tree that the design system is defined on.</p>
+<p>As a best practice, one should try to avoid registering the same component more than once. However, if your architecture makes this difficult or impossible, you can provide a custom callback to handle disambiguating the duplicate elements.</p>
+<p>The <code>ElementDisambiguationCallback</code> will be passed the tag name being registered, the type being registered, and the type that was already registered with the tag. Your callback can then return one of three types of values:</p>
+<ul>
+<li><code>string</code> - Return a string to select an alternate name for the element to be registered under.</li>
+<li><code>ElementDisambiguation.definitionCallbackOnly</code> - This is the default callback's return value, which prevents re-registering the element but allows its callback to run and define alternate presentations for the element (styles and template). Note that having more than one presentation for the same element will trigger a slower rendering code path for elements of that type. So, it's best to avoid this unless it's absolutely needed for your application design.</li>
+<li><code>ElementDisambiguation.ignoreDuplicate</code> - This option completely ignores the duplicate element and no action is taken during registration if an element with the same tag is already registered.</li>
+</ul>
+<p>Here's an example custom disambiguation callback showing a couple of these options.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">withElementDisambiguation</span><span class="token punctuation">(</span><span class="token punctuation">(</span>nameAttempt<span class="token punctuation">,</span> typeAttempt<span class="token punctuation">,</span> existingType<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>nameAttempt <span class="token operator">===</span> <span class="token string">"foo"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token string">"bar"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> ElementDisambiguation<span class="token punctuation">.</span>ignoreDuplicate<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token comment">/* ... */</span><span class="token punctuation">)</span></code></pre>
+<h3 id="configuring-components-during-registration">Configuring Components During Registration</h3>
+<p>The DesignSystem APIs described above impact all components registered to the DesignSystem, but those options can also be configured or overridden on a per-component basis. Configuring the component itself takes priority over any DesignSystem configuration.</p>
+<h4 id="prefix">Prefix</h4>
+<p>The prefix for a component can be configured for a component registration by providing a configuration object with a prefix field during registration:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">{</span> prefix<span class="token operator">:</span> <span class="token string">"faster"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h4 id="template">Template</h4>
+<p>To use a custom template for a component, provide a <code>template</code> field to the configuration object during registration:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">{</span> 
+            template<span class="token operator">:</span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+                &lt;p>A completely new template&lt;/p>
+            </span><span class="token template-punctuation string">`</span></span> 
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span></code></pre>
+<h4 id="styles">Styles</h4>
+<p>Styles for a component can be configured as well, by providing a <code>styles</code> field to the configuration object during registration:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">{</span> 
+            styles<span class="token operator">:</span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+                /* completely replace the original styles */
+            </span><span class="token template-punctuation string">`</span></span> 
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span></code></pre>
+<p>It's also worth noting that this can be used to extend the existing styles, by importing the originals and composing those with new styles by calling the style function. Here's what that would look like:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            <span class="token function-variable function">styles</span><span class="token operator">:</span> <span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> def<span class="token punctuation">)</span> <span class="token operator">=></span> css<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">
+                </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token function">buttonStyles</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> def<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">
+                /* add your style augmentations here */
+            </span><span class="token template-punctuation string">`</span></span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span></code></pre>
+<div class="alert alert--info">
+<div class="alert__heading">Important</div>
+<p>At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows <code>${buttonStyles(ctx, def as any)}</code>. <a href="https://github.com/microsoft/fast/issues/5047">We have tracked this issue</a> and are planning a fix soon.</p></div>
+<h4 id="shadow-options">Shadow Options</h4>
+<p>Shadow options can be configured as well, including both <a href="https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode">shadow root mode</a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus">focus delegation</a>:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">{</span> 
+            shadowOptions<span class="token operator">:</span> <span class="token punctuation">{</span>
+                mode<span class="token operator">:</span> <span class="token string">"closed"</span><span class="token punctuation">,</span>
+                delegatesFocus<span class="token operator">:</span> <span class="token boolean">true</span> 
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>For more information on shadow options, see <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow">Element.attachShadow()</a>.</p>
+<h2 id="configuring-styles">Configuring Styles</h2>
+<p>FAST Frame is designed to be stylistically flexible, allowing dramatic changes to visual design with minimal code changes. This is possible through the extensive use of <a href="./design-tokens.md">Design Tokens</a> and an <a href="#adaptive-color-system">adaptive color system</a>.</p>
+<h3 id="fast-frame-design-tokens">FAST Frame Design Tokens</h3>
+<p>FAST exposes the following Design Tokens that can be used to configure components stylistically. This section describes the non-color related Design Tokens. For Design Tokens related to color, see the <a href="#adaptive-color-system">adaptive color system section</a></p>
+<h4 id="typography">Typography</h4>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Font Size Token Name</th>
+<th>Line Height Token Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minus 2 (smallest)</td>
+<td><code>typeRampMinus2FontSize</code></td>
+<td><code>typeRampMinus2LineHeight</code></td>
+</tr>
+<tr>
+<td>Minus 1</td>
+<td><code>typeRampMinus1FontSize</code></td>
+<td><code>typeRampMinus1LineHeight</code></td>
+</tr>
+<tr>
+<td>Base (body)</td>
+<td><code>typeRampBaseFontSize</code></td>
+<td><code>typeRampBaseLineHeight</code></td>
+</tr>
+<tr>
+<td>Plus 1</td>
+<td><code>typeRampPlus1FontSize</code></td>
+<td><code>typeRampPlus1LineHeight</code></td>
+</tr>
+<tr>
+<td>Plus 2</td>
+<td><code>typeRampPlus2FontSize</code></td>
+<td><code>typeRampPlus2LineHeight</code></td>
+</tr>
+<tr>
+<td>Plus 3</td>
+<td><code>typeRampPlus3FontSize</code></td>
+<td><code>typeRampPlus3LineHeight</code></td>
+</tr>
+<tr>
+<td>Plus 4</td>
+<td><code>typeRampPlus4FontSize</code></td>
+<td><code>typeRampPlus4LineHeight</code></td>
+</tr>
+<tr>
+<td>Plus 5</td>
+<td><code>typeRampPlus5FontSize</code></td>
+<td><code>typeRampPlus5LineHeight</code></td>
+</tr>
+<tr>
+<td>Plus 6 (largest)</td>
+<td><code>typeRampPlus6FontSize</code></td>
+<td><code>typeRampPlus6LineHeight</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="sizing">Sizing</h4>
+<ul>
+<li><code>baseHeightMultiplier</code>: This value, multiplied by <code>designUnit</code>, sets the base height of most controls. Works with adaptive <code>density</code> values.</li>
+<li><code>baseHorizontalSpacingMultiplier</code> (future): This value, multiplied by <code>designUnit</code>, sets the internal horizontal padding of most controls. Works with adaptive <code>density</code> values.</li>
+<li><code>controlCornerRadius</code>: Sets the corner radius used by controls with backplates.</li>
+<li><code>density</code> (in process): An adjustment to sizing tokens <code>baseHeightMultiplier</code> and <code>baseHorizontalSpacingMultiplier</code>.</li>
+<li><code>designUnit</code>: The unit size of the Design Grid. Used to calculate height and spacing sizes for controls.</li>
+</ul>
+<h4 id="misc">Misc.</h4>
+<ul>
+<li><code>direction</code>: The primary document direction (LTR or RTL).</li>
+<li><code>disabledOpacity</code>: The opacity of disabled controls.</li>
+<li><code>strokeWidth</code>: Controls the width of the stroke of a component that has a stroke.</li>
+<li><code>focusStrokeWidth</code>: Controls the width of the stroke of a component that has a stroke when it has document focus.</li>
+</ul>
+<h3 id="adaptive-color-system">Adaptive Color System</h3>
+<p>FAST Frame implements an adaptive color system that provides some unique advantages:</p>
+<ul>
+<li>Ensure text meets <a href="https://www.w3.org/WAI/standards-guidelines/wcag/">WCAG</a> contrast requirements.</li>
+<li>Easily swap from light mode to dark, or anywhere in-between.</li>
+<li>Color theming through palette tinting.</li>
+<li>Perceptually uniform UI across background colors.</li>
+</ul>
+<p>To accomplish these goals, FAST Frame makes heavy use of algorithmic colors called Recipes. Recipes are a combination of an algorithm and input values that produce a desired result. Just as you can bake different types of cookies with different combinations of sugar, butter, flour, and salt, you can produce different design system treatments by altering recipe values (measurements) or algorithms (instructions).</p>
+<p>The current base recipes are closely related to their algorithm, but that's a convention and not a requirement. What follows is a list of the algorithms, which function on like-named values. For instance, <code>accentFill</code> relies on <code>accentFillRestDelta</code>, <code>accentFillHoverDelta</code>, <code>accentFillActiveDelta</code>, and <code>accentFillFocusDelta</code>.</p>
+<p>Recipes are currently used for color values, but they are not limited to that and their usage will be expanded soon.</p>
+<p><strong>To better visualize how this works, FAST built an application specificity for exploring the system. Check out <a href="https://color.fast.design/">the Color Explorer.</a></strong></p>
+<h4 id="common-functionality">Common functionality</h4>
+<p>Most color recipes are based on a <code>palette</code>. Currently, <code>fast-components</code> has built-in support for <code>accent</code> and <code>neutral</code> palettes.</p>
+<p>Most color recipes take a <code>reference</code> <code>Swatch</code>. This is a core concept of Adaptive UI which allows the recipes to vary based on the containing component's color. For instance, supporting a button with consistent treatment between light and dark modes is done with a single recipe.</p>
+<p>Many recipes are &quot;stateful&quot;, meaning they support rest, hover, active, and focus states for a component.</p>
+<p><strong>&quot;Fill&quot;</strong> means the recipe is intended to fill a larger area, commonly like a component backplate.</p>
+<p><strong>&quot;Foreground&quot;</strong> means the recipe is intended for text, icons, or other lightweight decorations where you need or want to meet contrast requirements.</p>
+<p><strong>&quot;Stroke&quot;</strong> means the recipe is intended for lines, either outline or divider.</p>
+<h4 id="accent-algorithms">Accent algorithms</h4>
+<h5 id="accentfill">accentFill</h5>
+<p>Stateful.</p>
+<p>Relies on <code>textColor</code> and <code>contrastTarget</code> to find the closest colors from the supplied palette that can be used for component states. For instance, colors needed to support white text and a 14px font (which requires 4.5:1 contrast).</p>
+<h5 id="accentforeground">accentForeground</h5>
+<p>Stateful.</p>
+<p>Commonly for link text or icon. Also for smaller elements that might not show up well using <code>accentFill</code>, for instance, if your accent color is dark purple and you support a dark mode interface.</p>
+<p>Like <code>accentFill</code> this relies on <code>textColor</code> and <code>contrastTarget</code> to find the closest colors from the supplied palette that can be used for component states.</p>
+<h5 id="foregroundonaccent">foregroundOnAccent</h5>
+<p>Not stateful.</p>
+<p>Technically this doesn't <em>use</em> the accent palette, but it's designed to be used <em>over</em> the accent palette. This algorithm simply returns black or white based on the provided <code>contrastTarget</code>. It returns white if possible, as a common treatment for an accent button is white text over the accent color.</p>
+<h4 id="neutral-algorithms">Neutral algorithms</h4>
+<h5 id="neutraldivider">neutralDivider</h5>
+<p>Not stateful.</p>
+<p>Used for decorative dividers that do not need to meet contrast requirements.</p>
+<h5 id="neutralfill">neutralFill</h5>
+<p>Stateful.</p>
+<p>The most basic fill used for buttons or other components.</p>
+<h5 id="neutralfillcontrast">neutralFillContrast</h5>
+<p>Stateful.</p>
+<p>Often Used as a selected state or anywhere you want to draw attention. Meets contrast requirements with the containing background.</p>
+<h5 id="neutralfillinput">neutralFillInput</h5>
+<p>Stateful.</p>
+<p>Another basic fill, applied to input elements to allow easy differentiation from other components like buttons.</p>
+<h5 id="neutralfillstealth">neutralFillStealth</h5>
+<p>Stateful.</p>
+<p>More subtle than <code>neutralFill</code> in that the resting state is transparent. Often used for low-priority features to draw less attention.</p>
+<h5 id="neutralforeground">neutralForeground</h5>
+<p>Not stateful.</p>
+<p>Most common recipe, used for plain text or icons.</p>
+<h5 id="neutralforegroundhint">neutralForegroundHint</h5>
+<p>Not stateful.</p>
+<p>Used for subtle text. Meets 4.5:1 minimum contrast requirement.</p>
+<h5 id="neutralstroke">neutralStroke</h5>
+<p>Stateful.</p>
+<p>Used for strong outline, either alone or with a fill.</p>
+<h4 id="layers">Layers</h4>
+<p>The layer recipes are used for different sections of an app or site. They are designed to be able to stack, but that is not required. When stacked in sequence, the layers will lighten on top of each other.</p>
+<p>The key feature of layering is to support the primary container color for light or dark mode. This produces absolute colors based on the <code>baseLayerLuminance</code> value, which sets the luminance for layer one. This is any value between 0 for black or 1 for white.</p>
+<p>The difference between each layer is defined with <code>neutralFillLayerRestDelta</code>.</p>
+<p>Layers are not stateful.</p>
+<h5 id="neutralfilllayer">neutralFillLayer</h5>
+<p>The only layer recipe that's relative to the container color instead of absolute. The most common example of this is a Card, which will be one layer color lighter than its container.</p>
+<h5 id="neutrallayer1-neutrallayer2-neutrallayer3-and-neutrallayer4">neutralLayer1, neutralLayer2, neutralLayer3, and neutralLayer4</h5>
+<p>Absolute layer colors derived from and starting at <code>baseLayerLuminance</code>. Layer one is lightest and the values darken as the layer number increases.</p>
+<h5 id="neutrallayercardcontainer">neutralLayerCardContainer</h5>
+<p>A special layer to support experiences primarily built with cards, especially in light mode, so cards can be white and the container color can be one layer darker.</p>
+<h5 id="neutrallayerfloating">neutralLayerFloating</h5>
+<p>A special layer for floating layers, like flyouts or menus. It will be lighter than any other layers if possible, but will also be white in default light mode, as will neutral layer one.</p>
+<h4 id="adaptive-color-don-ts">Adaptive Color &quot;Don'ts&quot;</h4>
+<p>The adaptive color system lives entirely in JavaScript, emitting CSS custom properties for styling purposes where appropriate. This means that you should consider the CSS custom properties emitted by color Design Tokens to be immutable. If you declare the CSS custom property in CSS, the adaptive Color System is unable to know that has happened and components will render with incorrect colors, which can lead to accessibility issues. If you need to change the values for those CSS custom properties, set the value using the <a href="./design-tokens.md#setting-values">DesignToken.setValueFor()</a> API.</p>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-flipper",
+  "id": "fast-flipper",
+  "title": "Flipper",
+  "description": "The FAST flipper element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-flipper",
+  "properties": {
+    "disabled": {
+      "default": true,
+      "title": "Disabled",
+      "description": "Sets the disabled state of the flipper",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "aria-hidden": {
+      "default": true,
+      "title": "ARIA hidden",
+      "description": "Flippers are often a duplicate method of navigation, so by default they are hidden from assistive technology (AT). When set to true, the element is exposed to AT",
+      "mapsToAttribute": "aria-hidden",
+      "type": "boolean"
+    },
+    "direction": {
+      "enum": [
+        "previous",
+        "next"
+      ],
+      "default": "next",
+      "title": "Direction",
+      "description": "The navigation direction of the flipper",
+      "mapsToAttribute": "direction",
+      "type": "string"
+    },
+    "SlotPrevious": {
+      "title": "Previous slot",
+      "description": "Slot to provide a custom icon to represent the 'previous' flipper state",
+      "mapsToSlot": "previous",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotNext": {
+      "title": "Next slot",
+      "description": "Slot to provide a custom icon to represent the 'next' flipper state",
+      "mapsToSlot": "next",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

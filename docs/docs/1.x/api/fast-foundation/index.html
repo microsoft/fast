@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>fast-foundation</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <!-- Do not edit this file. It is automatically generated by API Documenter. -->
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-foundation.accordion.md">Accordion</a></td>
+<td>An Accordion Custom HTML Element Implements <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion">ARIA Accordion</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.accordionitem.md">AccordionItem</a></td>
+<td>An individual item in an <a href="./fast-foundation.accordion.md">Accordion</a><!-- -->.<!-- -->start - Content which can be provided between the heading and the icon<!-- -->end - Content which can be provided between the start slot and icon<!-- -->heading - Content which serves as the accordion item heading and text of the expand button<!-- -->- The default slot for accordion item content<!-- -->expanded-icon - The expanded icon<!-- -->collapsed-icon - The collapsed icon<!-- -->change - Fires a custom 'change' event when the button is invoked<!-- -->heading - Wraps the button<!-- -->button - The button which serves to invoke the item<!-- -->heading-content - Wraps the slot for the heading content within the button<!-- -->icon - The icon container<!-- -->expanded-icon - The expanded icon slot<!-- -->collapsed-icon - The collapsed icon<!-- -->region - The wrapper for the accordion item content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.anchor.md">Anchor</a></td>
+<td>An Anchor Custom HTML Element. Based largely on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a">&lt;a&gt; element</a><!-- -->.<!-- -->start - Content which can be provided before the anchor content<!-- -->end - Content which can be provided after the anchor content<!-- -->- The default slot for anchor content<!-- -->control - The anchor element<!-- -->content - The element wrapping anchor content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.anchoredregion.md">AnchoredRegion</a></td>
+<td>An anchored region Custom HTML Element.<!-- -->- The default slot for the content<!-- -->loaded - Fires a custom 'loaded' event when the region is loaded and visible<!-- -->positionchange - Fires a custom 'positionchange' event when the position has changed</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.ariaglobalstatesandproperties.md">ARIAGlobalStatesAndProperties</a></td>
+<td>Some states and properties are applicable to all host language elements regardless of whether a role is applied. The following global states and properties are supported by all roles and by all base markup elements. <a href="https://www.w3.org/TR/wai-aria-1.1/#global_states">https://www.w3.org/TR/wai-aria-1.1/#global_states</a><!-- -->This is intended to be used as a mixin. Be sure you extend FASTElement.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.avatar.md">Avatar</a></td>
+<td>An Avatar Custom HTML Element<!-- -->media - Used for media such as an image<!-- -->- The default slot for avatar text, commonly a name or initials<!-- -->badge - Used to provide a badge, such as a status badge<!-- -->backplate - The wrapping container for the avatar<!-- -->link - The avatar link<!-- -->media - The media slot<!-- -->content - The default slot</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.badge.md">Badge</a></td>
+<td>A Badge Custom HTML Element.<!-- -->- The default slot for the badge<!-- -->control - The element representing the badge, which wraps the default slot</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.baseprogress.md">BaseProgress</a></td>
+<td>An Progress HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#progressbar">ARIA progressbar</a><!-- -->.<!-- -->indeterminate - The slot for a custom indeterminate indicator<!-- -->progress - Represents the progress element<!-- -->determinate - The determinate indicator<!-- -->indeterminate - The indeterminate indicator</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.breadcrumb.md">Breadcrumb</a></td>
+<td>A Breadcrumb Custom HTML Element.<!-- -->- The default slot for the breadcrumb items<!-- -->list - The element wrapping the slotted items</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.breadcrumbitem.md">BreadcrumbItem</a></td>
+<td>A Breadcrumb Item Custom HTML Element.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.button.md">Button</a></td>
+<td>A Button Custom HTML Element. Based largely on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button">&lt;button&gt; element</a><!-- -->.<!-- -->start - Content which can be provided before the button content<!-- -->end - Content which can be provided after the button content<!-- -->- The default slot for button content<!-- -->control - The button element<!-- -->content - The element wrapping button content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendar.md">Calendar</a></td>
+<td>Calendar component<!-- -->- The default slot for calendar content<!-- -->dateselected - Fires a custom 'dateselected' event when Enter is invoked via keyboard on a date</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.card.md">Card</a></td>
+<td>An Card Custom HTML Element.<!-- -->- The default slot for the card content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.checkbox.md">Checkbox</a></td>
+<td>A Checkbox Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#checkbox">ARIA checkbox</a><!-- -->.<!-- -->checked-indicator - The checked indicator<!-- -->indeterminate-indicator - The indeterminate indicator<!-- -->- The default slot for the label<!-- -->control - The element representing the visual checkbox control<!-- -->label - The label<!-- -->change - Emits a custom change event when the checked state changes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.combobox.md">Combobox</a></td>
+<td>A Combobox Custom HTML Element. Implements the <a href="https://w3c.github.io/aria-practices/#combobox">ARIA combobox</a><!-- -->.<!-- -->start - Content which can be provided before the input<!-- -->end - Content which can be provided after the input<!-- -->control - Used to replace the input element representing the combobox<!-- -->indicator - The visual indicator representing the expanded state<!-- -->- The default slot for the options<!-- -->control - The wrapper element containing the input area, including start and end<!-- -->selected-value - The input element representing the selected value<!-- -->indicator - The element wrapping the indicator slot<!-- -->listbox - The wrapper for the listbox slotted options<!-- -->change - Fires a custom 'change' event when the value updates</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagrid.md">DataGrid</a></td>
+<td>A Data Grid Custom HTML Element.<!-- -->- The default slot for custom row elements</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridcell.md">DataGridCell</a></td>
+<td>A Data Grid Cell Custom HTML Element.<!-- -->cell-focused - Fires a custom 'cell-focused' event when focus is on the cell or its contents<!-- -->- The default slot for cell contents. The &quot;cell contents template&quot; renders here.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridrow.md">DataGridRow</a></td>
+<td>A Data Grid Row Custom HTML Element.<!-- -->row-focused - Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row<!-- -->- The default slot for custom cell elements</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dateformatter.md">DateFormatter</a></td>
+<td>Date formatting utility</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.defaultcomponentpresentation.md">DefaultComponentPresentation</a></td>
+<td>The default implementation of ComponentPresentation, used by FoundationElement.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesariabutton.md">DelegatesARIAButton</a></td>
+<td>Includes ARIA states and properties relating to the ARIA button role</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesariacombobox.md">DelegatesARIACombobox</a></td>
+<td>Includes ARIA states and properties relating to the ARIA combobox role.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesarialink.md">DelegatesARIALink</a></td>
+<td>Includes ARIA states and properties relating to the ARIA link role</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesarialistbox.md">DelegatesARIAListbox</a></td>
+<td>Includes ARIA states and properties relating to the ARIA listbox role</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesarialistboxoption.md">DelegatesARIAListboxOption</a></td>
+<td>States and properties relating to the ARIA <code>option</code> role.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesariasearch.md">DelegatesARIASearch</a></td>
+<td>Includes ARIA states and properties relating to the ARIA textbox role</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesariaselect.md">DelegatesARIASelect</a></td>
+<td>Includes ARIA states and properties relating to the ARIA select role.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesariatextbox.md">DelegatesARIATextbox</a></td>
+<td>Includes ARIA states and properties relating to the ARIA textbox role</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.delegatesariatoolbar.md">DelegatesARIAToolbar</a></td>
+<td>Includes ARIA states and properties relating to the ARIA toolbar role</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dialog.md">Dialog</a></td>
+<td>A Switch Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#dialog">ARIA dialog</a><!-- -->.<!-- -->- The default slot for the dialog content<!-- -->positioning-region - A wrapping element used to center the dialog and position the modal overlay<!-- -->overlay - The modal dialog overlay<!-- -->control - The dialog element<!-- -->cancel - Fires a custom 'cancel' event when the modal overlay is clicked<!-- -->close - Fires a custom 'close' event when the dialog is hidden</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.disclosure.md">Disclosure</a></td>
+<td>A Disclosure Custom HTML Element. Based largely on the <a href="https://w3c.github.io/aria-practices/#disclosure">disclosure element</a><!-- -->.<!-- -->start - Content which can be provided before the summary content<!-- -->end - Content which can be provided after the summary content<!-- -->title - The summary content<!-- -->- The default slot for the disclosure content<!-- -->toggle - fires a toggle event when the summary is toggled</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.divider.md">Divider</a></td>
+<td>A Divider Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#separator">ARIA separator</a> or <a href="https://www.w3.org/TR/wai-aria-1.1/#presentation">ARIA presentation</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flipper.md">Flipper</a></td>
+<td>A Flipper Custom HTML Element. Flippers are a form of button that implies directional content navigation, such as in a carousel.<!-- -->next - The next flipper content<!-- -->previous - The previous flipper content<!-- -->next - Wraps the next flipper content<!-- -->previous - Wraps the previous flipper content<!-- -->click - Fires a custom 'click' event when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.foundationelement.md">FoundationElement</a></td>
+<td>Defines a foundation element class that: 1. Connects the element to its ComponentPresentation 2. Allows resolving the element template from the instance or ComponentPresentation 3. Allows resolving the element styles from the instance or ComponentPresentation</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.horizontalscroll.md">HorizontalScroll</a></td>
+<td>A HorizontalScroll Custom HTML Element<!-- -->start - Content which can be provided before the scroll area<!-- -->end - Content which can be provided after the scroll area<!-- -->scroll-area - Wraps the entire scrollable region<!-- -->scroll-view - The visible scroll area<!-- -->content-container - The container for the content<!-- -->scroll-prev - The previous flipper container<!-- -->scroll-action-previous - The element wrapping the previous flipper<!-- -->scroll-next - The next flipper container<!-- -->scroll-action-next - The element wrapping the next flipper<!-- -->scrollstart - Fires a custom 'scrollstart' event when scrolling<!-- -->scrollend - Fires a custom 'scrollend' event when scrolling stops</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.listbox.md">Listbox</a></td>
+<td>A Listbox Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#listbox">ARIA listbox</a><!-- -->.<!-- -->- The default slot for the listbox options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.listboxelement.md">ListboxElement</a></td>
+<td>A Listbox Custom HTML Element. Implements the <a href="https://w3c.github.io/aria/#listbox">ARIA listbox</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.listboxoption.md">ListboxOption</a></td>
+<td>An Option Custom HTML Element. Implements <a href="https://www.w3.org/TR/wai-aria-1.1/#option">ARIA option</a><!-- -->.<!-- -->start - Content which can be provided before the listbox option content<!-- -->end - Content which can be provided after the listbox option content<!-- -->- The default slot for listbox option content<!-- -->content - Wraps the listbox option content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.matchmediabehavior.md">MatchMediaBehavior</a></td>
+<td>An abstract behavior to react to media queries. Implementations should implement the <code>constructListener</code> method to perform some action based on media query changes.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.matchmediastylesheetbehavior.md">MatchMediaStyleSheetBehavior</a></td>
+<td>A behavior to add or remove a stylesheet from an element based on a media query. The behavior ensures that styles are applied while the a query matches the environment and that styles are not applied if the query does not match the environment.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menu.md">Menu</a></td>
+<td>A Menu Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#menu">ARIA menu</a><!-- -->.<!-- -->- The default slot for the menu items</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuitem.md">MenuItem</a></td>
+<td>A Switch Custom HTML Element. Implements <a href="https://www.w3.org/TR/wai-aria-1.1/#menuitem">ARIA menuitem</a><!-- -->, <a href="https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox">ARIA menuitemcheckbox</a><!-- -->, or <a href="https://www.w3.org/TR/wai-aria-1.1/#menuitemradio">ARIA menuitemradio</a><!-- -->.<!-- -->checked-indicator - The checked indicator<!-- -->radio-indicator - The radio indicator<!-- -->start - Content which can be provided before the menu item content<!-- -->end - Content which can be provided after the menu item content<!-- -->- The default slot for menu item content<!-- -->expand-collapse-indicator - The expand/collapse indicator<!-- -->submenu - Used to nest menu's within menu items<!-- -->input-container - The element representing the visual checked or radio indicator<!-- -->checkbox - The element wrapping the <code>menuitemcheckbox</code> indicator<!-- -->radio - The element wrapping the <code>menuitemradio</code> indicator<!-- -->content - The element wrapping the menu item content<!-- -->expand-collapse-glyph-container - The element wrapping the expand collapse element<!-- -->expand-collapse - The expand/collapse element<!-- -->submenu-region - The container for the submenu, used for positioning<!-- -->expanded-change - Fires a custom 'expanded-change' event when the expanded state changes<!-- -->change - Fires a custom 'change' event when a non-submenu item with a role of <code>menuitemcheckbox</code>, <code>menuitemradio</code>, or <code>menuitem</code> is invoked</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.numberfield.md">NumberField</a></td>
+<td>A Number Field Custom HTML Element. Based largely on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number">&lt;input type=&quot;number&quot; /&gt; element</a><!-- -->.<!-- -->start - Content which can be provided before the number field input<!-- -->end - Content which can be provided after the number field input<!-- -->- The default slot for the label<!-- -->step-up-glyph - The glyph for the step up control<!-- -->step-down-glyph - The glyph for the step down control<!-- -->label - The label<!-- -->root - The element wrapping the control, including start and end slots<!-- -->control - The element representing the input<!-- -->controls - The step up and step down controls<!-- -->step-up - The step up control<!-- -->step-down - The step down control<!-- -->input - Fires a custom 'input' event when the value has changed<!-- -->change - Fires a custom 'change' event when the value has changed</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.propertystylesheetbehavior.md">PropertyStyleSheetBehavior</a></td>
+<td>A behavior to add or remove a stylesheet from an element based on a property. The behavior ensures that styles are applied while the property matches and that styles are not applied if the property does not match.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.radio.md">Radio</a></td>
+<td>A Radio Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#radio">ARIA radio</a><!-- -->.<!-- -->checked-indicator - The checked indicator<!-- -->- The default slot for the label<!-- -->control - The element representing the visual radio control<!-- -->label - The label<!-- -->change - Emits a custom change event when the checked state changes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.radiogroup.md">RadioGroup</a></td>
+<td>An Radio Group Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#radiogroup">ARIA radiogroup</a><!-- -->.<!-- -->label - The slot for the label<!-- -->- The default slot for radio buttons<!-- -->positioning-region - The positioning region for laying out the radios<!-- -->change - Fires a custom 'change' event when the value changes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.resolverbuilder.md">ResolverBuilder</a></td>
+<td>A utility class used that constructs and registers resolvers for a dependency injection container. Supports a standard set of object lifetimes.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.search.md">Search</a></td>
+<td>A Search Custom HTML Element. Based largely on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search">&lt;input type=&quot;search&quot; /&gt; element</a><!-- -->.<!-- -->start - Content which can be provided before the search input<!-- -->end - Content which can be provided after the search clear button<!-- -->- The default slot for the label<!-- -->close-button - The clear button<!-- -->close-glyph - The clear glyph<!-- -->label - The label<!-- -->root - The element wrapping the control, including start and end slots<!-- -->control - The element representing the input<!-- -->clear-button - The button to clear the input</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.select.md">Select</a></td>
+<td>A Select Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#select">ARIA select</a><!-- -->.<!-- -->start - Content which can be provided before the button content<!-- -->end - Content which can be provided after the button content<!-- -->button-container - The element representing the select button<!-- -->selected-value - The selected value<!-- -->indicator - The visual indicator for the expand/collapse state of the button<!-- -->- The default slot for slotted options<!-- -->control - The element representing the select invoking element<!-- -->selected-value - The element wrapping the selected value<!-- -->indicator - The element wrapping the visual indicator<!-- -->listbox - The listbox element<!-- -->input - Fires a custom 'input' event when the value updates<!-- -->change - Fires a custom 'change' event when the value updates</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.skeleton.md">Skeleton</a></td>
+<td>A Skeleton Custom HTML Element.<!-- -->- The default slot</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.slider.md">Slider</a></td>
+<td>A Slider Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#slider">ARIA slider</a><!-- -->.<!-- -->track - The track of the slider<!-- -->track-start - The track-start visual indicator<!-- -->thumb - The slider thumb<!-- -->- The default slot for labels<!-- -->positioning-region - The region used to position the elements of the slider<!-- -->track-container - The region containing the track elements<!-- -->track-start - The element wrapping the track start slot<!-- -->thumb-container - The thumb container element which is programatically positioned<!-- -->change - Fires a custom 'change' event when the slider value changes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.sliderlabel.md">SliderLabel</a></td>
+<td>A label element intended to be used with the <a href="./fast-foundation.slider.md">Slider</a> component.<!-- -->- The default slot for the label content<!-- -->root - The element wrapping the label mark and text</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.startend.md">StartEnd</a></td>
+<td>A mixin class implementing start and end elements. These are generally used to decorate text elements with icons or other visual indicators.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.switch.md">Switch</a></td>
+<td>A Switch Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#switch">ARIA switch</a><!-- -->.<!-- -->- The deafult slot for the label<!-- -->checked-message - The message when in a checked state<!-- -->unchecked-message - The message when in an unchecked state<!-- -->label - The label<!-- -->switch - The element representing the switch, which wraps the indicator<!-- -->status-message - The wrapper for the status messages<!-- -->checked-message - The checked message<!-- -->unchecked-message - The unchecked message<!-- -->change - Emits a custom change event when the checked state changes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tab.md">Tab</a></td>
+<td>A Tab Component to be used with <a href="./fast-foundation.tabs.md">Tabs</a><!-- -->- The default slot for the tab content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabpanel.md">TabPanel</a></td>
+<td>A TabPanel Component to be used with <a href="./fast-foundation.tabs.md">Tabs</a><!-- -->- The default slot for the tabpanel content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabs.md">Tabs</a></td>
+<td>A Tabs Custom HTML Element. Implements the <a href="https://www.w3.org/TR/wai-aria-1.1/#tablist">ARIA tablist</a><!-- -->.<!-- -->start - Content which can be provided before the tablist element<!-- -->end - Content which can be provided after the tablist element<!-- -->tab - The slot for tabs<!-- -->tabpanel - The slot for tabpanels<!-- -->tablist - The element wrapping for the tabs<!-- -->tab - The tab slot<!-- -->activeIndicator - The visual indicator<!-- -->tabpanel - The tabpanel slot<!-- -->change - Fires a custom 'change' event when a tab is clicked or during keyboard navigation</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textarea.md">TextArea</a></td>
+<td>A Text Area Custom HTML Element. Based largely on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea">&lt;textarea&gt; element</a><!-- -->.<!-- -->- The default slot for the label<!-- -->label - The label<!-- -->root - The element wrapping the control<!-- -->control - The textarea element<!-- -->change - Emits a custom 'change' event when the textarea emits a change event</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textfield.md">TextField</a></td>
+<td>A Text Field Custom HTML Element. Based largely on the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text">&lt;input type=&quot;text&quot; /&gt; element</a><!-- -->.<!-- -->start - Content which can be provided before the number field input<!-- -->end - Content which can be provided after the number field input<!-- -->- The default slot for the label<!-- -->label - The label<!-- -->root - The element wrapping the control, including start and end slots<!-- -->control - The text field element<!-- -->change - Fires a custom 'change' event when the value has changed</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.toolbar.md">Toolbar</a></td>
+<td>A Toolbar Custom HTML Element. Implements the <a href="https://w3c.github.io/aria-practices/#Toolbar">ARIA Toolbar</a><!-- -->.<!-- -->start - Content which can be provided before the slotted items<!-- -->end - Content which can be provided after the slotted items<!-- -->- The default slot for slotted items<!-- -->label - The toolbar label<!-- -->positioning-region - The element containing the items, start and end slots</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tooltip.md">Tooltip</a></td>
+<td>An Tooltip Custom HTML Element.<!-- -->- The default slot for the tooltip content<!-- -->tooltip - The tooltip element<!-- -->dismiss - Fires a custom 'dismiss' event when the tooltip is visible and escape key is pressed</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.treeitem.md">TreeItem</a></td>
+<td>A Tree item Custom HTML Element.<!-- -->start - Content which can be provided before the tree item content<!-- -->end - Content which can be provided after the tree item content<!-- -->- The default slot for tree item text content<!-- -->item - The slot for tree items (fast tree items manage this assignment themselves)<!-- -->expand-collapse-button - The expand/collapse button<!-- -->positioning-region - The element used to position the tree item content with exception of any child nodes<!-- -->content-region - The element containing the expand/collapse, start, and end slots<!-- -->items - The element wrapping any child items<!-- -->expand-collapse-button - The expand/collapse button<!-- -->expanded-change - Fires a custom 'expanded-change' event when the expanded state changes<!-- -->selected-change - Fires a custom 'selected-change' event when the selected state changes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.treeview.md">TreeView</a></td>
+<td>A Tree view Custom HTML Element. Implements the <a href="https://w3c.github.io/aria-practices/#TreeView">ARIA TreeView</a><!-- -->.<!-- -->- The default slot for tree items</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-foundation.applymixins.md">applyMixins(derivedCtor, baseCtors)</a></td>
+<td>Apply mixins to a constructor. Sourced from <a href="https://www.typescriptlang.org/docs/handbook/mixins.html">TypeScript Documentation</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.composedcontains.md">composedContains(reference, test)</a></td>
+<td>Determines if the reference element contains the test element in a &quot;composed&quot; DOM tree that ignores shadow DOM boundaries.<!-- -->Returns true of the test element is a descendent of the reference, or exist in a shadow DOM that is a logical descendent of the reference. Otherwise returns false.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.composedparent.md">composedParent(element)</a></td>
+<td>Retrieves the &quot;composed parent&quot; element of a node, ignoring DOM tree boundaries. When the parent of a node is a shadow-root, it will return the host element of the shadow root. Otherwise it will return the parent node or null if no parent node exists.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.display.md">display(displayValue)</a></td>
+<td>Applies a CSS display property. Also adds CSS rules to not display the element when the [hidden] attribute is applied to the element.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.ignore.md">ignore(target, property, descriptor)</a></td>
+<td>A decorator that tells the container not to try to inject a dependency.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.islistboxoption.md">isListboxOption(el)</a></td>
+<td>Determines if the element is a <a href="./fast-foundation.listboxoption.md">ListboxOption</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.istreeitemelement.md">isTreeItemElement(el)</a></td>
+<td>check if the item is a tree item</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.reflectattributes.md">reflectAttributes(attributes)</a></td>
+<td><b><i>(BETA)</i></b> Reflects attributes from the host element to the target element of the directive.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.singleton.md">singleton()</a></td>
+<td>Registers the decorated class as a singleton dependency; the class will only be created once. Each consecutive time the dependency is resolved, the same instance will be returned.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.singleton_1.md">singleton(options)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.singleton_2.md">singleton(target)</a></td>
+<td>Registers the <code>target</code> class as a singleton dependency; the class will only be created once. Each consecutive time the dependency is resolved, the same instance will be returned.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.transient.md">transient()</a></td>
+<td>Registers the decorated class as a transient dependency; each time the dependency is resolved a new instance will be created.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.transient_1.md">transient(target)</a></td>
+<td>Registers the <code>target</code> class as a transient dependency; each time the dependency is resolved a new instance will be created.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.whitespacefilter.md">whitespaceFilter(value, index, array)</a></td>
+<td>a method to filter out any whitespace _only_ nodes, to be used inside a template</td>
+</tr>
+</tbody>
+</table>
+<h2 id="interfaces">Interfaces</h2>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-foundation.anchoredregionconfig.md">AnchoredRegionConfig</a></td>
+<td>A utility interface to store anchored region configurations that correspond to various common flyout positioning schemes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.columndefinition.md">ColumnDefinition</a></td>
+<td>Defines a column in the grid</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.componentpresentation.md">ComponentPresentation</a></td>
+<td>Applies presentation details, such as template and styles, to a component instance.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.container.md">Container</a></td>
+<td>Implemented by dependency injection containers.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.containerconfiguration.md">ContainerConfiguration</a></td>
+<td>Configuration for a dependency injection container.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.cssdesigntoken.md">CSSDesignToken</a></td>
+<td>A  that emits a CSS custom property.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designsystem.md">DesignSystem</a></td>
+<td>Represents a configurable design system.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designsystemregistrationcontext.md">DesignSystemRegistrationContext</a></td>
+<td>Design system contextual APIs and configuration usable within component registries.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designtoken.md">DesignToken</a></td>
+<td>Describes a DesignToken instance.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designtokenchangerecord.md">DesignTokenChangeRecord</a></td>
+<td>Change record provided to to a <a href="./fast-foundation.designtokensubscriber.md">DesignTokenSubscriber</a> when a token changes for a target.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designtokenconfiguration.md">DesignTokenConfiguration</a></td>
+<td>Describes a  configuration</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designtokensubscriber.md">DesignTokenSubscriber</a></td>
+<td>A subscriber that should receive <a href="./fast-foundation.designtokenchangerecord.md">change records</a> when a token changes for a target</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.elementdefinitioncontext.md">ElementDefinitionContext</a></td>
+<td>The design system context in which an element can be defined.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.elementdefinitionparams.md">ElementDefinitionParams</a></td>
+<td>The element definition context interface. Designed to be used in <code>tryDefineElement</code></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.factory.md">Factory</a></td>
+<td>Used by the default Resolver to create instances of objects when needed.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.foundationelementdefinition.md">FoundationElementDefinition</a></td>
+<td>An element definition used to define a FoundationElement when registered through the design system registry.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.interfaceconfiguration.md">InterfaceConfiguration</a></td>
+<td>Used to configure a dependency injection interface key.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.registration.md">Registration</a></td>
+<td>Implemented by objects that wish to register dependencies in the container by creating resolvers.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.registry.md">Registry</a></td>
+<td>Implemented by objects that which to register dependencies in a container.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.resolver.md">Resolver</a></td>
+<td>Internally, the DI system maps &quot;keys&quot; to &quot;resolvers&quot;. A resolver controls how a dependency is resolved. Resolvers for transient, singleton, etc. are provided out of the box, but you can also implement Resolver yourself and supply custom logic for resolution.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.servicelocator.md">ServiceLocator</a></td>
+<td>Implemented by objects capable of resolving services and other dependencies.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.sliderconfiguration.md">SliderConfiguration</a></td>
+<td>The configuration structure of <a href="./fast-foundation.slider.md">Slider</a><!-- -->.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="variables">Variables</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-foundation.accordionexpandmode.md">AccordionExpandMode</a></td>
+<td>Expand mode for <a href="./fast-foundation.accordion.md">Accordion</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.accordionitemtemplate.md">accordionItemTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.accordionitem.md">AccordionItem</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.accordiontemplate.md">accordionTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.accordion.md">Accordion</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.all.md">all</a></td>
+<td>A decorator and DI resolver that will resolve an array of all dependencies registered with the specified key.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.anchoredregiontemplate.md">anchoredRegionTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.anchoredregion.md">AnchoredRegion</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.anchortemplate.md">anchorTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.anchor.md">Anchor</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.avatartemplate.md">avatarTemplate</a></td>
+<td>The template for <a href="./fast-foundation.avatar.md">Avatar</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.badgetemplate.md">badgeTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.badge.md">Badge</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.breadcrumbitemtemplate.md">breadcrumbItemTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.breadcrumbitem.md">BreadcrumbItem</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.breadcrumbtemplate.md">breadcrumbTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.breadcrumb.md">Breadcrumb</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.buttontemplate.md">buttonTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.button.md">Button</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendarcelltemplate.md">calendarCellTemplate</a></td>
+<td>A calendar day template</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendarrowtemplate.md">calendarRowTemplate</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendartemplate.md">calendarTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.calendar.md">Calendar</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendartitletemplate.md">CalendarTitleTemplate</a></td>
+<td>A basic Calendar title template that includes the month and year</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendarweekdaytemplate.md">calendarWeekdayTemplate</a></td>
+<td>Calendar weekday label template</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.cardtemplate.md">cardTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.card.md">Card</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.checkboxtemplate.md">checkboxTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.checkbox.md">Checkbox</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.comboboxautocomplete.md">ComboboxAutocomplete</a></td>
+<td>Autocomplete values for combobox.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.comboboxtemplate.md">comboboxTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.combobox.md">Combobox</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.componentpresentation.md">ComponentPresentation</a></td>
+<td>An API gateway to component presentation features.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.container.md">Container</a></td>
+<td>The interface key that resolves the dependency injection container itself.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.containerconfiguration.md">ContainerConfiguration</a></td>
+<td>Configuration for a dependency injection container.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.darkmodestylesheetbehavior.md">darkModeStylesheetBehavior</a></td>
+<td>This can be used to construct a behavior to apply a prefers color scheme: dark only stylesheet.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridcelltemplate.md">dataGridCellTemplate</a></td>
+<td>Generates a template for the <a href="./fast-foundation.datagridcell.md">DataGridCell</a> component using the provided prefix.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridcelltypes.md">DataGridCellTypes</a></td>
+<td>Enumerates possible data grid cell types.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridrowtemplate.md">dataGridRowTemplate</a></td>
+<td>Generates a template for the <a href="./fast-foundation.datagridrow.md">DataGridRow</a> component using the provided prefix.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridrowtypes.md">DataGridRowTypes</a></td>
+<td>Enumerates possible data grid row types</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridtemplate.md">dataGridTemplate</a></td>
+<td>Generates a template for the <a href="./fast-foundation.datagrid.md">DataGrid</a> component using the provided prefix.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.defaultresolver.md">DefaultResolver</a></td>
+<td>A set of default resolvers useful in configuring a container.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designsystem.md">DesignSystem</a></td>
+<td>An API gateway to design system features.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designtoken.md">DesignToken</a></td>
+<td>Factory object for creating  instances.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.di.md">DI</a></td>
+<td>The gateway to dependency injection APIs.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dialogtemplate.md">dialogTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.dialog.md">Dialog</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.disabledcursor.md">disabledCursor</a></td>
+<td>The CSS value for disabled cursors.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.disclosuretemplate.md">disclosureTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.disclosure.md">Disclosure</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dividerrole.md">DividerRole</a></td>
+<td>Divider roles</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dividertemplate.md">dividerTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.divider.md">Divider</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.elementdisambiguation.md">ElementDisambiguation</a></td>
+<td>Indicates what to do with an ambiguous (duplicate) element.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.endslottemplate.md">endSlotTemplate</a></td>
+<td>The template for the end element. For use with <a href="./fast-foundation.startend.md">StartEnd</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.endtemplate.md">endTemplate</a></td>
+<td>The template for the end element. For use with <a href="./fast-foundation.startend.md">StartEnd</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flipperdirection.md">FlipperDirection</a></td>
+<td>The direction options for flipper.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flippertemplate.md">flipperTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.flipper.md">Flipper</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flyoutposbottom.md">FlyoutPosBottom</a></td>
+<td>A region that always places itself below the anchor, has a width to match the anchor, and is sized vertically by content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flyoutposbottomfill.md">FlyoutPosBottomFill</a></td>
+<td>A region that always places itself below the anchor, has a width to match the anchor, and is sized vertically by available space</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flyoutpostallest.md">FlyoutPosTallest</a></td>
+<td>A region that places itself above or below the anchor based on available space, has a width to match the anchor, and is sized vertically by content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flyoutpostallestfill.md">FlyoutPosTallestFill</a></td>
+<td>A region that places itself above or below the anchor based on available space, has a width to match the anchor, and is sized vertically by available space</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flyoutpostop.md">FlyoutPosTop</a></td>
+<td>A region that always places itself above the anchor, has a width to match the anchor, and is sized vertically by content</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flyoutpostopfill.md">FlyoutPosTopFill</a></td>
+<td>A region that always places itself above the anchor, has a width to match the anchor, and is sized vertically by available space</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.focusvisible.md">focusVisible</a></td>
+<td>The string representing the focus selector to be used. Value will be &quot;focus-visible&quot; when https://drafts.csswg.org/selectors-4/#the-focus-visible-pseudo is supported and &quot;focus&quot; when it is not.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.forcedcolorsstylesheetbehavior.md">forcedColorsStylesheetBehavior</a></td>
+<td>This can be used to construct a behavior to apply a forced-colors only stylesheet.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.generateheaderoptions.md">GenerateHeaderOptions</a></td>
+<td>Enumerates the data grid auto generated header options default option generates a non-sticky header row</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.getdirection.md">getDirection</a></td>
+<td>a method to determine the current localization direction of the view</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.hidden.md">hidden</a></td>
+<td>A CSS fragment to set <code>display: none;</code> when the host is hidden using the [hidden] attribute.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.horizontalscrolltemplate.md">horizontalScrollTemplate</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.inject.md">inject</a></td>
+<td>A decorator that specifies what to inject into its target.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.lazy.md">lazy</a></td>
+<td>A decorator that lazily injects a dependency depending on whether the <code>Key</code> is present at the time of function call.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.lightmodestylesheetbehavior.md">lightModeStylesheetBehavior</a></td>
+<td>This can be used to construct a behavior to apply a prefers color scheme: light only stylesheet.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.listboxoptiontemplate.md">listboxOptionTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.listboxoption.md">ListboxOption</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.listboxtemplate.md">listboxTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.listbox.md">Listbox</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuitemrole.md">MenuItemRole</a></td>
+<td>Menu items roles.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuitemtemplate.md">menuItemTemplate</a></td>
+<td>Generates a template for the <a href="./fast-foundation.menuitem.md">MenuItem</a> component using the provided prefix.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menutemplate.md">menuTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.menu.md">Menu</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.newinstanceforscope.md">newInstanceForScope</a></td>
+<td>A decorator that indicates that a new instance should be injected scoped to the container that requested the instance.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.newinstanceof.md">newInstanceOf</a></td>
+<td>A decorator that indicates that a new instance should be injected.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.numberfieldtemplate.md">numberFieldTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.numberfield.md">NumberField</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.optional.md">optional</a></td>
+<td>A decorator that allows you to optionally inject a dependency depending on whether the [[<code>Key</code>]] is present, for example:</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.pickerlistitemtemplate.md">pickerListItemTemplate</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.pickerlisttemplate.md">pickerListTemplate</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.pickermenuoptiontemplate.md">pickerMenuOptionTemplate</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.pickermenutemplate.md">pickerMenuTemplate</a></td>
+<td>The template for the List Picker component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.pickertemplate.md">pickerTemplate</a></td>
+<td>The template for the List Picker component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.progressringtemplate.md">progressRingTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.baseprogress.md">BaseProgress</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.progresstemplate.md">progressTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.baseprogress.md">BaseProgress</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.radiogrouptemplate.md">radioGroupTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.radiogroup.md">RadioGroup</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.radiotemplate.md">radioTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.radio.md">Radio</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.registration.md">Registration</a></td>
+<td>You can use the resulting Registration of any of the factory methods to register with the container.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.searchtemplate.md">searchTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.search.md">Search</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.selectposition.md">SelectPosition</a></td>
+<td>Positioning directions for the listbox when a select is open.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.selecttemplate.md">selectTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.select.md">Select</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.servicelocator.md">ServiceLocator</a></td>
+<td>The interface key that resolves the service locator itself.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.skeletontemplate.md">skeletonTemplate</a></td>
+<td>The template for the fast-skeleton component</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.sliderlabeltemplate.md">sliderLabelTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.sliderlabel.md">SliderLabel</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.slidermode.md">SliderMode</a></td>
+<td>The selection modes of a <a href="./fast-foundation.slider.md">Slider</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.slidertemplate.md">sliderTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.slider.md">Slider</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.startslottemplate.md">startSlotTemplate</a></td>
+<td>The template for the start element. For use with <a href="./fast-foundation.startend.md">StartEnd</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.starttemplate.md">startTemplate</a></td>
+<td>The template for the start element. For use with <a href="./fast-foundation.startend.md">StartEnd</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.switchtemplate.md">switchTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.switch.md">Switch</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabpaneltemplate.md">tabPanelTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.tabpanel.md">TabPanel</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabsorientation.md">TabsOrientation</a></td>
+<td>The orientation of the <a href="./fast-foundation.tabs.md">Tabs</a> component</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabstemplate.md">tabsTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.tabs.md">Tabs</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabtemplate.md">tabTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.tab.md">Tab</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textarearesize.md">TextAreaResize</a></td>
+<td>Resize mode for a TextArea</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textareatemplate.md">textAreaTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.textarea.md">TextArea</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textfieldtemplate.md">textFieldTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.textfield.md">TextField</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textfieldtype.md">TextFieldType</a></td>
+<td>Text field sub-types</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.toolbartemplate.md">toolbarTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.toolbar.md">Toolbar</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tooltipposition.md">TooltipPosition</a></td>
+<td>Enumerates possible tooltip positions</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tooltiptemplate.md">tooltipTemplate</a></td>
+<td>Creates a template for the <a href="./fast-foundation.tooltip.md">Tooltip</a> component using the provided prefix.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.treeitemtemplate.md">treeItemTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.treeitem.md">TreeItem</a> component.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.treeviewtemplate.md">treeViewTemplate</a></td>
+<td>The template for the <a href="./fast-foundation.treeview.md">TreeView</a> component.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="type-aliases">Type Aliases</h2>
+<table>
+<thead>
+<tr>
+<th>Type Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-foundation.accordionexpandmode.md">AccordionExpandMode</a></td>
+<td>Type for the <a href="./fast-foundation.accordion.md">Accordion</a> Expand Mode</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.accordionitemoptions.md">AccordionItemOptions</a></td>
+<td>Accordion Item configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.anchoredregionpositionlabel.md">AnchoredRegionPositionLabel</a></td>
+<td>Describes the possible positions of the region relative to its anchor. Depending on the axis start = left/top, end = right/bottom</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.anchoroptions.md">AnchorOptions</a></td>
+<td>Anchor configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.autoupdatemode.md">AutoUpdateMode</a></td>
+<td>Defines if the component updates its position automatically. Calling update() always provokes an update. anchor - the component only updates its position when the anchor resizes (default) auto - the component updates its position when: - update() is called - the anchor resizes - the window resizes - the viewport resizes - any scroll event in the document</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.avataroptions.md">AvatarOptions</a></td>
+<td>Avatar configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.axispositioningmode.md">AxisPositioningMode</a></td>
+<td>Defines the base behavior of an anchored region on a particular axis</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.axisscalingmode.md">AxisScalingMode</a></td>
+<td>Defines the scaling behavior of an anchored region on a particular axis</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.breadcrumbitemoptions.md">BreadcrumbItemOptions</a></td>
+<td>Breadcrumb Item configuration options<!-- -->- The default slot for when no href is provided or for providing your own custom elements<!-- -->separator - The slot for providing a custom separator<!-- -->listitem - The wrapping container for the item, represents a semantic listitem<!-- -->separator - The wrapping element for the separator</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.buttonoptions.md">ButtonOptions</a></td>
+<td>Button configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendardateinfo.md">CalendarDateInfo</a></td>
+<td>Caldendar date info used to represent a date</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendarinfo.md">CalendarInfo</a></td>
+<td>Calendar information needed for rendering including the next and previous months</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.calendaroptions.md">CalendarOptions</a></td>
+<td>Calendar configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.checkboxoptions.md">CheckboxOptions</a></td>
+<td>Checkbox configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.comboboxautocomplete.md">ComboboxAutocomplete</a></td>
+<td>Autocomplete type for combobox.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.comboboxoptions.md">ComboboxOptions</a></td>
+<td>Combobox configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.contextualelementdefinition.md">ContextualElementDefinition</a></td>
+<td>Enables defining an element within the context of a design system.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.cssdisplaypropertyvalue.md">CSSDisplayPropertyValue</a></td>
+<td>Define all possible CSS display values.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridcelltypes.md">DataGridCellTypes</a></td>
+<td>The possible cell types.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.datagridrowtypes.md">DataGridRowTypes</a></td>
+<td>The possible data grid row types</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dayformat.md">DayFormat</a></td>
+<td>A type representing the different day formats</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.deriveddesigntokenvalue.md">DerivedDesignTokenValue</a></td>
+<td>A  value that is derived. These values can depend on other s or arbitrary observable properties.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.designtokenvalue.md">DesignTokenValue</a></td>
+<td>The type that a  can be set to.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.dividerrole.md">DividerRole</a></td>
+<td>The types for Divider roles</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.elementdefinitioncallback.md">ElementDefinitionCallback</a></td>
+<td>The callback type that is invoked when an element can be defined by a design system.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.elementdisambiguationcallback.md">ElementDisambiguationCallback</a></td>
+<td>The callback type that is invoked when two elements are trying to define themselves with the same name.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.elementdisambiguationresult.md">ElementDisambiguationResult</a></td>
+<td>Represents the return values expected from an ElementDisambiguationCallback.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.endoptions.md">EndOptions</a></td>
+<td>End configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flipperdirection.md">FlipperDirection</a></td>
+<td>The types for the flipper direction options.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.flipperoptions.md">FlipperOptions</a></td>
+<td>Flipper configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.foundationelementtemplate.md">FoundationElementTemplate</a></td>
+<td>A foundation element template function.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.generateheaderoptions.md">GenerateHeaderOptions</a></td>
+<td>The types for the data grid auto generated header options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.horizontalposition.md">HorizontalPosition</a></td>
+<td>Defines the horizontal positioning options for an anchored region</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.horizontalscrolloptions.md">HorizontalScrollOptions</a></td>
+<td>Horizontal scroll configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.horizontalscrollview.md">HorizontalScrollView</a></td>
+<td>The views types for a horizontal-scroll <a href="./fast-foundation.horizontalscroll.md">HorizontalScroll</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.injectable.md">Injectable</a></td>
+<td>A class that declares constructor injected dependencies through a static &quot;inject&quot; field array of keys.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.interfacesymbol.md">InterfaceSymbol</a></td>
+<td>A constant key that can be used to represent an interface to a registered dependency. The key can be used in DI registrations but also doubles as a decorator for resolving the associated, registered dependency.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.key.md">Key</a></td>
+<td>A key that is used to register dependencies with a dependency injection container.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.listboxoptionoptions.md">ListboxOptionOptions</a></td>
+<td>Listbox option configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.mediaquerylistlistener.md">MediaQueryListListener</a></td>
+<td>An event listener fired by a <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList">MediaQueryList</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuconfigs.md">menuConfigs</a></td>
+<td><b><i>(BETA)</i></b> Defines the vertical positioning options for an anchored region</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuitemcolumncount.md">MenuItemColumnCount</a></td>
+<td>Types of menu item column count.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuitemoptions.md">MenuItemOptions</a></td>
+<td>Menu Item configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.menuitemrole.md">MenuItemRole</a></td>
+<td>The types for menu item roles</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.monthformat.md">MonthFormat</a></td>
+<td>A type representing the different month formats</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.monthinfo.md">MonthInfo</a></td>
+<td>Information about a month</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.numberfieldoptions.md">NumberFieldOptions</a></td>
+<td>Number Field configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.overridefoundationelementdefinition.md">OverrideFoundationElementDefinition</a></td>
+<td>A set of properties which the component consumer can override during the element registration process.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.parentlocator.md">ParentLocator</a></td>
+<td>A function capable of locating the parent container based on a container's owner.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.progressoptions.md">ProgressOptions</a></td>
+<td>Progress configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.progressringoptions.md">ProgressRingOptions</a></td>
+<td>ProgressRing configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.radiocontrol.md">RadioControl</a></td>
+<td>A structure representing a <a href="./fast-foundation.radio.md">Radio</a> element</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.radiooptions.md">RadioOptions</a></td>
+<td>Radio configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.registerself.md">RegisterSelf</a></td>
+<td>Represents an object that can register itself.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.resolvecallback.md">ResolveCallback</a></td>
+<td>Represents a custom callback for resolving a request from the container. The handler is the container that is invoking the callback. The requestor is the original container that made the request. The handler and the requestor may not be the same if the request has bubbled up to a parent container in the DI hierarchy. The resolver is the instance of the resolver that stores the callback. This is provided in case the callback needs a place or key against which to store state across resolutions.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.resolved.md">Resolved</a></td>
+<td>Represents something resolved from a service locator.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.scrolleasing.md">ScrollEasing</a></td>
+<td>The easing types available for the horizontal-scroll <a href="./fast-foundation.horizontalscroll.md">HorizontalScroll</a></td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.searchoptions.md">SearchOptions</a></td>
+<td>Search configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.selectoptions.md">SelectOptions</a></td>
+<td>Select configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.selectposition.md">SelectPosition</a></td>
+<td>Types for positioning the select element listbox when open</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.skeletonshape.md">SkeletonShape</a></td>
+<td>A structure representing skeleton shapes</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.slidermode.md">SliderMode</a></td>
+<td>The types for the selection mode of the slider</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.slideroptions.md">SliderOptions</a></td>
+<td>Slider configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.startendoptions.md">StartEndOptions</a></td>
+<td>Start/End configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.startoptions.md">StartOptions</a></td>
+<td>Start configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.staticdesigntokenvalue.md">StaticDesignTokenValue</a></td>
+<td>A design token value with no observable dependencies</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.switchoptions.md">SwitchOptions</a></td>
+<td>Switch configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabsoptions.md">TabsOptions</a></td>
+<td>Tabs option configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tabsorientation.md">TabsOrientation</a></td>
+<td>The types for the Tabs component</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textarearesize.md">TextAreaResize</a></td>
+<td>Types for the Text Area resize mode</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textfieldoptions.md">TextFieldOptions</a></td>
+<td>Text field configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.textfieldtype.md">TextFieldType</a></td>
+<td>Types for the text field sub-types</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.toolbaroptions.md">ToolbarOptions</a></td>
+<td>Toolbar configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.tooltipposition.md">TooltipPosition</a></td>
+<td>The possible tooltip positions</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.transformer_2.md">Transformer_2</a></td>
+<td>Transforms an object after it is created but before it is returned to the requestor.</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.treeitemoptions.md">TreeItemOptions</a></td>
+<td>Tree Item configuration options</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.verticalposition.md">VerticalPosition</a></td>
+<td>Defines the vertical positioning options for an anchored region</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.weekdayformat.md">WeekdayFormat</a></td>
+<td>A type representing the different weekday formats</td>
+</tr>
+<tr>
+<td><a href="./fast-foundation.yearformat.md">YearFormat</a></td>
+<td>A type representing the different year formats</td>
+</tr>
+</tbody>
+</table>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

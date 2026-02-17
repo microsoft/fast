@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-slider",
+  "id": "fast-slider",
+  "title": "Slider",
+  "description": "The FAST slider element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-slider",
+  "properties": {
+    "value": {
+      "title": "Value",
+      "description": "The slider value",
+      "mapsToAttribute": "value",
+      "type": "number"
+    },
+    "max": {
+      "title": "Maximum",
+      "description": "The maximum value",
+      "mapsToAttribute": "max",
+      "type": "string"
+    },
+    "min": {
+      "title": "Minimum",
+      "description": "The minimum value",
+      "mapsToAttribute": "min",
+      "type": "string"
+    },
+    "step": {
+      "title": "Increment",
+      "description": "Amount to increment or decrement the value by",
+      "mapsToAttribute": "step",
+      "type": "string"
+    },
+    "orientation": {
+      "enum": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "title": "Orientation",
+      "description": "The orientation of the slider",
+      "mapsToAttribute": "orientation",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "description": "This element's value will be surfaced during form submission under the provided name",
+      "mapsToAttribute": "name",
+      "type": "string"
+    },
+    "required": {
+      "title": "Required",
+      "description": "Require the field to be completed prior to form submission",
+      "mapsToAttribute": "required",
+      "type": "boolean"
+    },
+    "disabled": {
+      "title": "Disabled",
+      "description": "Sets the disabled state of the slider",
+      "mapsToAttribute": "disabled",
+      "type": "boolean"
+    },
+    "readonly": {
+      "title": "Readonly",
+      "description": "When true, the control will be immutable by user interaction",
+      "mapsToAttribute": "readonly",
+      "type": "boolean"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "Default slotted content of the slider represents its visual labels",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotTrack": {
+      "title": "Track slot",
+      "description": "Slot to replace the slider track",
+      "mapsToSlot": "track",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotThumb": {
+      "title": "Thumb slot",
+      "description": "Slot to replace the slider thumb",
+      "mapsToSlot": "thumb",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

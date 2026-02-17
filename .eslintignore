@@ -1,0 +1,15 @@
+# Never lint test files
+*.spec.ts
+!*.pw.spec.ts
+
+# Never lint node_modules
+node_modules
+
+# Never lint build output
+dist
+
+# Never lint coverage output
+coverage
+
+# Never lint karma configs
+karma.conf.cjs

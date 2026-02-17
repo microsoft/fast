@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>fast-colors</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/react/" class="menu__link">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <!-- Do not edit this file. It is automatically generated by API Documenter. -->
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-colors.colorhsl.md">ColorHSL</a></td>
+<td>This uses Hue values in &quot;degree&quot; format. So expect a range of [0,360]. Some other implementations instead uses radians or a normalized Hue with range [0,1]. Be aware of this when checking values or using other libraries.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorhsv.md">ColorHSV</a></td>
+<td>This uses Hue values in &quot;degree&quot; format. So expect a range of [0,360]. Some other implementations instead uses radians or a normalized Hue with range [0,1]. Be aware of this when checking values or using other libraries.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorlab.md">ColorLAB</a></td>
+<td><a href="https://en.wikipedia.org/wiki/CIELAB_color_space">CIELAB color space</a> This implementation uses the D65 constants for 2 degrees. That determines the constants used for the pure white point of the XYZ space of 0.95047, 1.0, 1.08883. <a href="https://en.wikipedia.org/wiki/Illuminant_D65">https://en.wikipedia.org/wiki/Illuminant_D65</a> These constants determine how the XYZ, LCH and LAB colors convert to/from RGB.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorlch.md">ColorLCH</a></td>
+<td><a href="https://en.wikipedia.org/wiki/CIELAB_color_space">CIELCH color space</a><!-- -->This is a cylindrical representation of the CIELAB space useful for saturation operations This uses Hue values in &quot;degree&quot; format. So expect a range of [0,360]. Some other implementations instead uses radians or a normalized Hue with range [0,1]. Be aware of this when checking values or using other libraries. This implementation uses the D65 constants for 2 degrees. That determines the constants used for the pure white point of the XYZ space of 0.95047, 1.0, 1.08883. <a href="https://en.wikipedia.org/wiki/Illuminant_D65">https://en.wikipedia.org/wiki/Illuminant_D65</a> These constants determine how the XYZ, LCH and LAB colors convert to/from RGB.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorpalette.md">ColorPalette</a></td>
+<td>Generates a color palette</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+<td>A RGBA color with 64 bit channels.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorscale.md">ColorScale</a></td>
+<td>A color scale created from linear stops</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorxyz.md">ColorXYZ</a></td>
+<td><a href="https://en.wikipedia.org/wiki/CIE_1931_color_space">XYZ color space</a><!-- -->This implementation uses the D65 constants for 2 degrees. That determines the constants used for the pure white point of the XYZ space of 0.95047, 1.0, 1.08883. <a href="https://en.wikipedia.org/wiki/Illuminant_D65">https://en.wikipedia.org/wiki/Illuminant_D65</a> These constants determine how the XYZ, LCH and LAB colors convert to/from RGB.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.componentstatecolorpalette.md">ComponentStateColorPalette</a></td>
+<td>Creates a color palette for UI components</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.histogram.md">Histogram</a></td>
+<td>For each possible color, this counts how many pixels in the source image match that color. If signifigantBits is less than 8, each channel (eg: red, green, blue) in each color is reduced to fit in significantBits. So for the default value of 5 significantBits colors are reduced from 8 bits per channel (0-255) to 5 (0-31). Colors that were previously distinct get combined together. If the image source has more than 2^32 pixels (eg: a square image 65536x65536 in size) of the same color this code will break.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.imagedatapixelblob.md">ImageDataPixelBlob</a></td>
+<td>A <a href="./fast-colors.pixelblob.md">PixelBlob</a> implementation from an <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">ImageData</a> object.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.pixelbox.md">PixelBox</a></td>
+<td>Represents a range of colors in RGB color space.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enumerations">Enumerations</h2>
+<table>
+<thead>
+<tr>
+<th>Enumeration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-colors.colorblendmode.md">ColorBlendMode</a></td>
+<td>Color blend modes.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorinterpolationspace.md">ColorInterpolationSpace</a></td>
+<td>Color interpolation spaces</td>
+</tr>
+</tbody>
+</table>
+<h2 id="functions">Functions</h2>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-colors.blend.md">blend(mode, bottom, top)</a></td>
+<td>Blend two colors.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendburn.md">blendBurn(bottom, top)</a></td>
+<td>Blends two colors with the burn mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendburnchannel.md">blendBurnChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendcolor.md">blendColor(bottom, top)</a></td>
+<td>Blends two colors</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blenddarken.md">blendDarken(bottom, top)</a></td>
+<td>Blends two colors with the darken mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blenddarkenchannel.md">blendDarkenChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blenddodge.md">blendDodge(bottom, top)</a></td>
+<td>Blends two colors with the dodge mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blenddodgechannel.md">blendDodgeChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendlighten.md">blendLighten(bottom, top)</a></td>
+<td>Blends two colors with the lighten mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendlightenchannel.md">blendLightenChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendmultiply.md">blendMultiply(bottom, top)</a></td>
+<td>Blends two colors with the multiply mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendmultiplychannel.md">blendMultiplyChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendoverlay.md">blendOverlay(bottom, top)</a></td>
+<td>Blends two colors with the overlay mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendoverlaychannel.md">blendOverlayChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendscreen.md">blendScreen(bottom, top)</a></td>
+<td>Blends two colors with the screen mode</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.blendscreenchannel.md">blendScreenChannel(bottom, top)</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.calculateoverlaycolor.md">calculateOverlayColor(rgbMatch, rgbBackground, rgbOverlay)</a></td>
+<td>Calculate an overlay color that uses rgba (rgb + alpha) that matches the appearance of a given solid color when placed on the same background</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.centeredrescale.md">centeredRescale(input, config)</a></td>
+<td>Takes an input array of colors and extrapolates them to a larger palette. The mapping first takes the input array and extrapolates between each color so that they are separated by spacing-1 slots. Then it adds to either end enough new colors to make up the desired targetSize. All output color slots between the defined stops are interpolated.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.clamp.md">clamp(i, min, max)</a></td>
+<td>Ensures that an input number does not exceed a max value and is not less than a min value.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.computealphablend.md">computeAlphaBlend(bottom, top)</a></td>
+<td>Alpha channel of bottom is ignored The returned color always has an alpha channel of 1 Different programs (eg: paint.net, photoshop) will give different answers than this occasionally but within +/- 1/255 in each channel. Just depends on the details of how they round off decimals</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.contrastratio.md">contrastRatio(a, b)</a></td>
+<td>Calculate the contrast ratio between two colors. Uses the formula described by <a href="https://www.w3.org/TR/WCAG20-TECHS/G17.html">WCAG 2.0</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.darkenvialab.md">darkenViaLAB(input, amount, darkenConstant)</a></td>
+<td>Darken a color using LAB color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.degreestoradians.md">degreesToRadians(i)</a></td>
+<td>Converts degrees to radians.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.denormalize.md">denormalize(i, min, max)</a></td>
+<td>Scales a number between 0 and 1</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.desaturatevialch.md">desaturateViaLCH(input, saturation, saturationConstant)</a></td>
+<td>De-saturate a color using LCH color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.extractpalette.md">extractPalette(colors, config)</a></td>
+<td>Extracts a palette.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.generateoffcenterpalette.md">generateOffCenterPalette(input, outputSteps, greyscaleConfig, colorConfig)</a></td>
+<td>Generates a greyscale palette using greyscaleConfig. The Lightness (in HSL) of the input color is then compared to the greyscale palette to determine how far off center the input color should be placed. The output palette is then generated with outputSteps number of steps using colorConfig.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.generatescaledpalettes.md">generateScaledPalettes(input, shortPaletteLength, config)</a></td>
+<td>Generates two palettes of length shortPaletteLength and longPaletteLength from a base color. The base color is compared to the default greyscale palette to determine where it should be placed. The short palette is then fed into centeredRescale to create the long palette. The colors in the short palette are always contained within the long.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.gethexstringforbyte.md">getHexStringForByte(i)</a></td>
+<td>Converts a number between 0 and 255 to a hex string.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.hsltorgb.md">hslToRGB(hsl, alpha)</a></td>
+<td>Converts a <a href="./fast-colors.colorhsl.md">ColorHSL</a> to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.hsvtorgb.md">hsvToRGB(hsv, alpha)</a></td>
+<td>Converts a <a href="./fast-colors.colorhsv.md">ColorHSV</a> to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.insertintosortedlist.md">insertIntoSortedList(list, newItem, sortPriority)</a></td>
+<td>Adds a newItem to an already sorted list without needing to do a full re-sort. Higher sort priority puts the newItem closer to the start (index 0) of the list.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatebycolorspace.md">interpolateByColorSpace(position, space, left, right)</a></td>
+<td>Interpolate by color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatehsl.md">interpolateHSL(position, left, right)</a></td>
+<td>Interpolate by HSL color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatehsv.md">interpolateHSV(position, left, right)</a></td>
+<td>Interpolate by HSV color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatelab.md">interpolateLAB(position, left, right)</a></td>
+<td>Interpolate by LAB color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatelch.md">interpolateLCH(position, left, right)</a></td>
+<td>Interpolate by LCH color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatergb.md">interpolateRGB(position, left, right)</a></td>
+<td>Interpolate by RGB color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.interpolatexyz.md">interpolateXYZ(position, left, right)</a></td>
+<td>Interpolate by XYZ color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.iscolornamed.md">isColorNamed(raw)</a></td>
+<td>Tests whether a color is in <a href="./fast-colors.namedcolors.md">NamedColors</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.iscolorstringhexargb.md">isColorStringHexARGB(raw)</a></td>
+<td>Test if a color matches #AARRGGBB or #ARGB</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.iscolorstringhexrgb.md">isColorStringHexRGB(raw)</a></td>
+<td>Test if a color matches #RRGGBB or #RGB</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.iscolorstringhexrgba.md">isColorStringHexRGBA(raw)</a></td>
+<td>Test if a color matches #RRGGBBAA or #RGBA</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.iscolorstringwebrgb.md">isColorStringWebRGB(raw)</a></td>
+<td>Test if a color matches rgb(rr, gg, bb)</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.iscolorstringwebrgba.md">isColorStringWebRGBA(raw)</a></td>
+<td>Test if a color matches rgba(rr, gg, bb, aa)</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.labtolch.md">labToLCH(lab)</a></td>
+<td>Converts a <a href="./fast-colors.colorlab.md">ColorLAB</a> to a <a href="./fast-colors.colorlch.md">ColorLCH</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.labtorgb.md">labToRGB(lab, alpha)</a></td>
+<td>Converts a <a href="./fast-colors.colorlab.md">ColorLAB</a> to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.labtoxyz.md">labToXYZ(lab)</a></td>
+<td>Converts a <a href="./fast-colors.colorlab.md">ColorLAB</a> to a <a href="./fast-colors.colorxyz.md">ColorXYZ</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.lchtolab.md">lchToLAB(lch)</a></td>
+<td>Converts a <a href="./fast-colors.colorlch.md">ColorLCH</a> to a <a href="./fast-colors.colorlab.md">ColorLAB</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.lchtorgb.md">lchToRGB(lch, alpha)</a></td>
+<td>Convert a <a href="./fast-colors.colorlch.md">ColorLCH</a> to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.lerp.md">lerp(i, min, max)</a></td>
+<td>Linearly interpolate</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.lerpanglesindegrees.md">lerpAnglesInDegrees(i, min, max)</a></td>
+<td>Linearly interpolate angles in degrees</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.lerpanglesinradians.md">lerpAnglesInRadians(i, min, max)</a></td>
+<td>Linearly interpolate angles in radians</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.lightenvialab.md">lightenViaLAB(input, amount, darkenConstant)</a></td>
+<td>Lighten a color using LAB color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.loadimagedata.md">loadImageData(source)</a></td>
+<td>Creates an HTMLImageElement and loads the source argument as its src. Then an HTMLCanvasElement is created and the image is copied into the canvas. The pixel data is then returned from the CanvasRenderingContext2D for that canvas.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.matchlightnessindex.md">matchLightnessIndex(input, reference)</a></td>
+<td>Takes the input color and compares it to each color in the reference array to find the index with the closest Lightness value in HSL color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.normalize.md">normalize(i, min, max)</a></td>
+<td>Scales an input to a number between 0 and 1</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolor.md">parseColor(raw)</a></td>
+<td>Expects any of the following and attempts to determine which is being used #RRGGBB, #AARRGGBB, rgb(RR,GG,BB) rgba(RR,GG,BB,a), or any of the <a href="https://www.w3schools.com/colors/colors_names.asp">CSS color names</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolorhexargb.md">parseColorHexARGB(raw)</a></td>
+<td>Converts a hexadecimal color string to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolorhexrgb.md">parseColorHexRGB(raw)</a></td>
+<td>Converts a hexadecimal color string to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolorhexrgba.md">parseColorHexRGBA(raw)</a></td>
+<td>Converts a hexadecimal color string to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolornamed.md">parseColorNamed(raw)</a></td>
+<td>Converts a named color to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolorwebrgb.md">parseColorWebRGB(raw)</a></td>
+<td>Converts a rgb color string to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.parsecolorwebrgba.md">parseColorWebRGBA(raw)</a></td>
+<td>Converts a rgba color string to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a><!-- -->.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.quantize.md">quantize(source, config)</a></td>
+<td>The image stored in the source PixelBlob is reduced down to a small set of colors. Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.quantizehistogram.md">quantizeHistogram(histogram, config)</a></td>
+<td>The data in the color histogram is reduced down to a small set of colors. It can be useful to create the Histogram manually in cases where one wants to remove or alter the colors in it or to re-use it in order to quantize multiple times with different config settings. Based on the Modified Median Cut Quantization implementation from https://github.com/DanBloomberg/leptonica/blob/master/src/colorquant2.c</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.radianstodegrees.md">radiansToDegrees(i)</a></td>
+<td>Converts radians to degrees.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rescale.md">rescale(input, targetSize, preserveInputColors)</a></td>
+<td>Take the input array of colors and extrapolates them to a larger palette of size targetSize. If preserveInputColors is false the input colors are evenly distributed into the output. Otherwise, the positions of the input colors are adjusted from a perfectly even distribution in order to ensure that the exact color values appearing in the input array also appear in the output array. The larger targetSize is compared to input.length the smaller those adjustments will be.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtohsl.md">rgbToHSL(rgb)</a></td>
+<td>Converts a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a> to a <a href="./fast-colors.colorhsl.md">ColorHSL</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtohsv.md">rgbToHSV(rgb)</a></td>
+<td>Converts a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a> to a <a href="./fast-colors.colorhsv.md">ColorHSV</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtolab.md">rgbToLAB(rgb)</a></td>
+<td>Converts a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a> to a <a href="./fast-colors.colorlab.md">ColorLAB</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtolch.md">rgbToLCH(rgb)</a></td>
+<td>Convert a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a> to a <a href="./fast-colors.colorlch.md">ColorLCH</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtolinearluminance.md">rgbToLinearLuminance(rgb)</a></td>
+<td>Get the luminance of a color in the linear RGB space. This is not the same as the relative luminance in the sRGB space for WCAG contrast calculations. Use rgbToRelativeLuminance instead.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtorelativeluminance.md">rgbToRelativeLuminance(rgb)</a></td>
+<td>Get the relative luminance of a color. Adjusts the color to sRGB space, which is necessary for the WCAG contrast spec. The alpha channel of the input is ignored.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtotemperature.md">rgbToTemperature(rgb)</a></td>
+<td>Convert a rgb color to a color temperature</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.rgbtoxyz.md">rgbToXYZ(rgb)</a></td>
+<td>Converts a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a> to a <a href="./fast-colors.colorxyz.md">ColorXYZ</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.roundtoprecisionsmall.md">roundToPrecisionSmall(i, precision)</a></td>
+<td>Will return infinity if i*10^(precision) overflows number note that floating point rounding rules come into play here so values that end up rounding on a .5 round to the nearest even not always up so 2.5 rounds to 2</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.saturatevialch.md">saturateViaLCH(input, saturation, saturationConstant)</a></td>
+<td>Saturate a color using LCH color space</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.temperaturetorgb.md">temperatureToRGB(tempKelvin, alpha)</a></td>
+<td>Converts a color temperature to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.xyztolab.md">xyzToLAB(xyz)</a></td>
+<td>Converts a <a href="./fast-colors.colorxyz.md">ColorXYZ</a> to a <a href="./fast-colors.colorlab.md">ColorLAB</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.xyztorgb.md">xyzToRGB(xyz, alpha)</a></td>
+<td>Converts a <a href="./fast-colors.colorxyz.md">ColorXYZ</a> to a <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="interfaces">Interfaces</h2>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-colors.centeredrescaleconfig.md">CenteredRescaleConfig</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorpaletteconfig.md">ColorPaletteConfig</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorrgba64config.md">ColorRGBA64Config</a></td>
+<td>Configuration object for <a href="./fast-colors.colorrgba64.md">ColorRGBA64</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.colorscalestop.md">ColorScaleStop</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.componentstatecolorpaletteconfig.md">ComponentStateColorPaletteConfig</a></td>
+<td>Configuration for <a href="./fast-colors.componentstatecolorpalette.md">ComponentStateColorPalette</a></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.paletteentry.md">PaletteEntry</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.paletteentryconstraint.md">PaletteEntryConstraint</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.paletteextractionconfig.md">PaletteExtractionConfig</a></td>
+<td>Configuration structure for palette extraction.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.pixelblob.md">PixelBlob</a></td>
+<td>Represents a blob of pixel data.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.quantizeconfig.md">QuantizeConfig</a></td>
+<td>A quantize configuration object.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.quantizedcolor.md">QuantizedColor</a></td>
+<td>A quantized color</td>
+</tr>
+</tbody>
+</table>
+<h2 id="variables">Variables</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-colors.defaultcenteredrescaleconfig.md">defaultCenteredRescaleConfig</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="./fast-colors.defaultpaletteextractionconfig.md">defaultPaletteExtractionConfig</a></td>
+<td>The default configuration for palette extraction.</td>
+</tr>
+<tr>
+<td><a href="./fast-colors.defaultquantizeconfig.md">defaultQuantizeConfig</a></td>
+<td>The default quantize configuration.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="type-aliases">Type Aliases</h2>
+<table>
+<thead>
+<tr>
+<th>Type Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="./fast-colors.namedcolors.md">NamedColors</a></td>
+<td>Browser <a href="https://www.w3schools.com/colors/colors_names.asp">named colors</a><!-- -->.</td>
+</tr>
+</tbody>
+</table>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>

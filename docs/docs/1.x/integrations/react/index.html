@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title>React</title>
+    <meta data-rh="true" name="twitter:card" content="summary_large_image">
+    <meta data-rh="true" property="og:url" content="https://www.fast.design/">
+    <meta data-rh="true" property="og:locale" content="en">
+    <meta data-rh="true" name="docsearch:language" content="en">
+    <meta data-rh="true" property="og:title" content="web components | FAST">
+    <meta data-rh="true" name="description" content="FAST web components">
+    <meta data-rh="true" property="og:description" content="FAST web components">
+    <link data-rh="true" rel="icon" href="/static/favicon.ico">
+    <link data-rh="true" rel="canonical" href="https://www.fast.design/">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="en">
+    <link data-rh="true" rel="alternate" href="https://www.fast.design/" hreflang="x-default">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/prism-vsc-dark-plus.css">
+    <link rel="stylesheet" href="/css/variables.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" data-rh="true">
+    <script src="/js/navbar-toggle.js"></script>
+    </head>
+  <body class="">
+    <nav aria-label="Main" class="navbar navbar--fixed-top">
+        <div class="navbar__inner">
+            <div class="navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path>
+                    </svg></button><a href="https://www.fast.design" target="_self" rel="noopener noreferrer" class="navbar__brand">
+                    <div class="navbar__logo"><img src="/static/fast-inline-logo.svg" alt="Line drawing of a small moon orbiting around a planet with the words FAST next to it" class="themed-component themed-component__dark"></div>
+                </a><a class="navbar__item navbar__link" href="/docs/2.x/introduction">Docs</a>
+                <div class="navbar__item dropdown dropdown--hoverable"><a class="navbar__link" aria-haspopup="true" aria-expanded="false" role="button" href="/docs/1.x/introduction">1.x</a>
+                    <ul class="dropdown__menu">
+                        <li><a class="dropdown__link" href="/docs/2.x/introduction">2.x</a></li>
+                        <li><a class="dropdown__link" href="/docs/1.x/introduction">1.x</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="navbar__items navbar__items--right"><a href="https://www.fast.design" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Home<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://discord.com/invite/FcSNfg4" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Community<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                        <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                        </path>
+                    </svg></a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-wrapper">
+        <div class="docs-wrapper">
+    <div class="doc-root">
+        <aside class="theme-doc-sidebar-container sidebar-container">
+    <div class="sidebar-viewport">
+        <div class="sidebar">
+            <nav class="menu thin-scrollbar menu-nav">
+                <ul class="menu__list"><li class="menu__list-item menu__list-item-collapsible"><a>Apps and Experiences</a><ul><li class="menu__list-item"><a href="/docs/1.x/apps-and-experiences/dependency-injection/" class="menu__link">Dependency Injection</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Community</a><ul><li class="menu__list-item"><a href="/docs/1.x/community/branch-guide/" class="menu__link">Branch Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/code-of-conduct/" class="menu__link">Code of Conduct</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/contributor-guide/" class="menu__link">Contributor Guide</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/issue-management/" class="menu__link">Issue Management</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/join/" class="menu__link">Joining the community</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/release-planning/" class="menu__link">Release Planning</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/community/writing-documentation/" class="menu__link">Writing documentation</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Components</a><ul><li class="menu__list-item"><a href="/docs/1.x/components/getting-started/" class="menu__link">Components QuickStart</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design Systems</a><ul><li class="menu__list-item"><a href="/docs/1.x/design-systems/creating-a-component-library/" class="menu__link">Creating a Component Library</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/design-tokens/" class="menu__link">Design Tokens</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/fast-frame/" class="menu__link">The FAST Frame Design System</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/high-contrast/" class="menu__link">High Contrast in FAST</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design-systems/overview/" class="menu__link">What is a Design System?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Design</a><ul><li class="menu__list-item"><a href="/docs/1.x/design/localization/" class="menu__link">Localization</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/design/match-media-stylesheets/" class="menu__link">MatchMedia Stylesheets</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>FAST Element</a><ul><li class="menu__list-item"><a href="/docs/1.x/fast-element/declaring-templates/" class="menu__link">Declaring Templates</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/defining-elements/" class="menu__link">Defining Elements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/getting-started/" class="menu__link">Getting Started with FAST Element</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/leveraging-css/" class="menu__link">Leveraging CSS</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/next-steps/" class="menu__link">Next Steps</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/observables-and-state/" class="menu__link">Observables and State</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/using-directives/" class="menu__link">Using Directives</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/fast-element/working-with-shadow-dom/" class="menu__link">Working with Shadow DOM</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Integrations</a><ul><li class="menu__list-item"><a href="/docs/1.x/integrations/angular/" class="menu__link">Angular</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aspnet/" class="menu__link">ASP.NET</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/aurelia/" class="menu__link">Aurelia</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/blazor/" class="menu__link">Blazor</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/ember/" class="menu__link">Ember</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible--active"><a href="/docs/1.x/integrations/react/" aria-current="page" class="menu__link menu__link--active">React</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/rollup/" class="menu__link">Rollup</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/svelte/" class="menu__link">Svelte</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vite/" class="menu__link">Vite</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/vue/" class="menu__link">Vue</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/integrations/webpack/" class="menu__link">Webpack</a></li></ul></li>
+<li class="menu__list-item"><a href="/docs/1.x/introduction/" class="menu__link">Introduction</a></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Resources</a><ul><li class="menu__list-item"><a href="/docs/1.x/resources/acknowledgements/" class="menu__link">Acknowledgements</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/browser-support/" class="menu__link">Browser Support</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/cheat-sheet/" class="menu__link">Cheat Sheet</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/faq/" class="menu__link">FAQ</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/glossary/" class="menu__link">Glossary</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/license/" class="menu__link">License</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/security/" class="menu__link">Security</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/resources/why-web-components/" class="menu__link">Why Web Components?</a></li></ul></li>
+<li class="menu__list-item menu__list-item-collapsible"><a>Tools</a><ul><li class="menu__list-item"><a href="/docs/1.x/tools/component-explorer/" class="menu__link">Component Explorer</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/hot-module-reload/" class="menu__link">Hot Module Reload</a></li>
+<li class="menu__list-item"><a href="/docs/1.x/tools/vscode/" class="menu__link">Visual Studio Code</a></li></ul></li></ul>
+            </nav>
+        </div>
+    </div>
+</aside>
+
+<main>
+  <div class="container padding-top--md padding-bottom--lg">
+    <div class="col doc-item">
+        <p>FAST can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.</p>
+<h2 id="setting-up-the-react-project">Setting up the React project</h2>
+<p>First, you'll need to make sure that you have Node.js &gt;= 8.2 and npm &gt;= 5.6 installed. You can learn more and download that <a href="https://nodejs.org/">on the official site</a>.</p>
+<p>With Node.js installed, you can use <a href="https://reactjs.org/docs/create-a-new-react-app.html#create-react-app">create-react-app</a> to create a new React project.</p>
+<pre class="language-shell"><code class="language-shell">npx create-react-app fast-app</code></pre>
+<h2 id="configuring-packages">Configuring packages</h2>
+<p>Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">--save</span> @microsoft/fast-components @microsoft/fast-foundation @microsoft/fast-element @microsoft/fast-react-wrapper</code></pre>
+<h2 id="configure-create-react-app">Configure create-react-app</h2>
+<p><a href="https://reactjs.org/docs/create-a-new-react-app.html#create-react-app">create-react-app</a> ships with an <a href="https://eslint.org/">eslint</a> rule that makes working with FAST components difficult. There are two changes that will need to be made in the <code>package.json</code>:</p>
+<p><strong>Set the EXTEND_ESLINT environment variable in start, build, and test scripts</strong></p>
+<pre class="language-jsonc"><code class="language-jsonc">{
+    //...
+    "scripts": {
+        "start": "EXTEND_ESLINT=true react-scripts start",
+        "build": "EXTEND_ESLINT=true react-scripts build",
+        "test": "EXTEND_ESLINT=true react-scripts test",
+    }
+    // ...
+}</code></pre>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>The above will not work on Windows. You can adjust the scripts to use <a href="https://www.npmjs.com/package/cross-env">cross-env</a> to add Windows support.</p></div>
+<p><strong>Override the <code>eslintConfig</code> field to turn off the 'no-unused-expressions' rule</strong></p>
+<pre class="language-jsonc"><code class="language-jsonc">{
+    //..
+    "eslintConfig": {
+        "extends": "react-app",
+        "rules": {
+            "no-unused-expressions": "off"
+        }
+    },
+    //..
+}</code></pre>
+<p>See <a href="https://create-react-app.dev/docs/setting-up-your-editor#experimental-extending-the-eslint-config">configuring eslint</a> for more information.</p>
+<h2 id="using-the-components">Using the components</h2>
+<p>With all the basic pieces in place, let's run our app in dev mode with <code>npm start</code>. Right now, it displays the React logo and some editing instructions, since we haven't added any code or interesting HTML. Let's change that.</p>
+<p>First, open your <code>src/app.js</code> file and add the following code:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span> 
+    provideFASTDesignSystem<span class="token punctuation">,</span> 
+    fastCard<span class="token punctuation">,</span> 
+    fastButton
+<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-components'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> provideReactWrapper <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-react-wrapper'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">'react'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>
+    React<span class="token punctuation">,</span> 
+    <span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> FastCard <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token function">fastCard</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> FastButton <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>This code uses the FAST Design System to register the <code>&lt;fast-card&gt;</code> and <code>&lt;fast-button&gt;</code> components while automatically wrapping them into React components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the App component in your <code>src/app.js</code> file with the following:</p>
+<pre class="language-jsx"><code class="language-jsx"><span class="token keyword">function</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">FastCard</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+          </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span><span class="token plain-text">FAST React</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><span class="token plain-text">
+          </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">FastButton</span></span> <span class="token attr-name">appearance</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>accent<span class="token punctuation">"</span></span> <span class="token attr-name">onClick</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"clicked"</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token plain-text">Click Me</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">FastButton</span></span><span class="token punctuation">></span></span><span class="token plain-text">
+      </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">FastCard</span></span><span class="token punctuation">></span></span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>To add a splash of style, add the following to the <code>src/App.css</code>:</p>
+<pre class="language-css"><code class="language-css"><span class="token selector">fast-card</span> <span class="token punctuation">{</span>
+  <span class="token property">padding</span><span class="token punctuation">:</span> 16px<span class="token punctuation">;</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+  <span class="token property">flex-direction</span><span class="token punctuation">:</span> column<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">h2</span> <span class="token punctuation">{</span>
+  <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--type-ramp-plus-5-font-size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--type-ramp-plus-5-line-height<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">fast-card > fast-button</span> <span class="token punctuation">{</span>
+  <span class="token property">align-self</span><span class="token punctuation">:</span> flex-end<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Congratulations! You're now set up to use FAST and React!</p>
+<h2 id="using-the-react-wrapper">Using the React Wrapper</h2>
+<p>Above, we leveraged the <code>@microsoft/fast-react-wrapper</code> library to enable seamless integration of FAST Components. There are a few additional ways to use this API for different web component scenarios.</p>
+<h3 id="wrapping-design-system-components">Wrapping Design System Components</h3>
+<p>Previously, you've seen that we can wrap a Design System component by passing its registration function to the <code>wrap</code> method as follows:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>
+    React<span class="token punctuation">,</span> 
+    <span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> FastButton <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<p>This code creates a wrapper that is configured with a React-compatible API and a Design System instance. When passing a Design System as the second parameter, you can then pass component registration functions to the <code>wrap</code> helper. The helper will both register the web component with the Design System and wrap it in a type-safe React component, all with a single call.</p>
+<p>Alternatively, you can skip providing the Design System to the wrapper, and use the generated registry to manually register all previously wrapped components.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token punctuation">{</span> wrap<span class="token punctuation">,</span> registry <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>React<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> FastButton <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>registry<span class="token punctuation">)</span></code></pre>
+<p>The final option is to handle everything by hand:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>React<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> FastButton <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span>
+        <span class="token function">fastButton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="wrapping-fast-components">Wrapping FAST Components</h3>
+<p>The <code>wrap</code> helper can also wrap any FAST Web Component defined using the <code>@customElement</code> decorator or by manually calling <code>FASTElement.define</code>. To do so, pass the custom element class to the wrapper.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> FASTElement<span class="token punctuation">,</span> customElement<span class="token punctuation">,</span> html <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@microsoft/fast-element'</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">customElement</span></span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  name<span class="token operator">:</span> <span class="token string">'my-component'</span><span class="token punctuation">,</span>
+  template<span class="token operator">:</span> html<span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">...</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+  styles<span class="token operator">:</span><span class="token operator">...</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">_MyComponent</span> <span class="token keyword">extends</span> <span class="token class-name">FASTElement</span> <span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> MyComponent <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>React<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">wrap</span><span class="token punctuation">(</span>_MyComponent<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<div class="alert alert--secondary">
+<div class="alert__heading">Note</div>
+<p>When using decorators in a create-react-app setup, you will most likely get this error <code>Support for the experimental syntax 'decorators-legacy' isn't currently enabled</code>. See the &quot;Additional Notes&quot; below for options to add support for decorators.</p></div>
+<h3 id="wrapping-vanillajs-web-components">Wrapping VanillaJS Web Components</h3>
+<p>If you have a component from a 3rd party library, not written with FAST, or a VanillaJS Web Component, you can wrap that as well. In this scenario, you will have to provide some additional information, such as the element name and the list of properties that should be handled by the wrapper rather than React. Components created with libraries like <code>Lit</code> require the element name to be configured but not the properties, while some other libraries or hand-written components may also require the property list. This depends on how the component was defined. Below is an example of configuring both the name and the property list.</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">import</span> <span class="token punctuation">{</span> CoolComponent <span class="token keyword">as</span> _CoolComponent <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@cool/component'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>React<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> CoolComponent <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span>
+  _CoolComponent<span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    name<span class="token operator">:</span> <span class="token string">'cool-component'</span><span class="token punctuation">,</span>
+    properties<span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token string">'list'</span><span class="token punctuation">,</span>
+      <span class="token string">'properties'</span><span class="token punctuation">,</span>
+      <span class="token string">'here'</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h3 id="configuring-custom-events">Configuring Custom Events</h3>
+<p>If the wrapped component uses custom events that you intend to use from React, you will need to manually configure a mapping from React event name to the native event name. Here's an example of what that would look like if you wanted to leverage the FAST MenuItem's <code>expanded-change</code> event:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token keyword">const</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">provideReactWrapper</span><span class="token punctuation">(</span>
+    React<span class="token punctuation">,</span> 
+    <span class="token function">provideFASTDesignSystem</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> FastMenuItem <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span>
+    <span class="token function">fastMenuItem</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      events<span class="token operator">:</span> <span class="token punctuation">{</span>
+        onExpandedChange<span class="token operator">:</span> <span class="token string">'expanded-change'</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">)</span></code></pre>
+<h2 id="additional-notes">Additional Notes</h2>
+<h3 id="create-react-app">create-react-app</h3>
+<p>FAST makes use of decorators to define components. At this time, <code>create-react-app</code> <a href="https://create-react-app.dev/docs/can-i-use-decorators/">does not support decorators</a>. This won't be a problem when using components <em>imported</em> from FAST because they have already been transpiled by TypeScript - but to <em>create</em> components in a <code>create-react-app</code> application you'll need to do one of the following:</p>
+<ul>
+<li><a href="../fast-element/defining-elements.md#working-without-decorators">Define components without decorators</a></li>
+<li><a href="https://create-react-app.dev/docs/available-scripts#npm-run-eject">Eject</a><code>create-react-app</code> and change Babel to support decorators</li>
+<li>Use an intermediary like <a href="https://www.npmjs.com/package/react-app-rewired">react-app-rewired</a></li>
+</ul>
+<p>You can read more about decorator configuration issues <a href="https://github.com/microsoft/fast/issues/4503">here.</a></p>
+<h3 id="configure-ejected-create-react-app">Configure ejected create-react-app</h3>
+<p>Eject create-react-app:</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> run <span class="token function">eject</span></code></pre>
+<p>Install babel plugins:</p>
+<pre class="language-shell"><code class="language-shell"><span class="token function">npm</span> i --save-dev @babel/plugin-proposal-decorators @babel/preset-env</code></pre>
+<h4 id="configure-babel-loader-options">Configure babel-loader options</h4>
+<p>Go to the <code>webpack.config.js</code> file under the <code>config</code> folder and find where <code>babel-loader</code> is (around line 407).</p>
+<p>Add <code>@babel/preset-env</code> to presets. This allows you to use the latest JavaScript features.
+Targeting specific browser versions prevents Babel from transpiling too much to support old JavaScript versions, increasing file size.</p>
+<pre class="language-js"><code class="language-js"><span class="token literal-property property">presets</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">[</span><span class="token string">"@babel/preset-env"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token string-property property">"targets"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token string-property property">"browsers"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"last 2 versions"</span><span class="token punctuation">,</span> <span class="token string">"safari >= 7"</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token operator">...</span></code></pre>
+<p>Add <code>@babel/plugin-proposal-decorators</code> to support decorators.</p>
+<pre class="language-js"><code class="language-js"><span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">[</span><span class="token string">"@babel/plugin-proposal-decorators"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token string-property property">"legacy"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token operator">...</span></code></pre>
+<h3 id="working-without-the-fast-react-wrapper">Working without the fast-react-wrapper</h3>
+<p>The <code>@microsoft/fast-react-wrapper</code> library described above addresses all the challenges involved in using Web Components from React. We strongly recommend using this library for integration. However, if you cannot use this library or want to explore other options, below you'll find information on alternative approaches.</p>
+<h4 id="html-attributes">HTML Attributes</h4>
+<p>React is capable of rendering custom HTML elements and binding data to them, but it is beneficial to understand <em>how</em> React does this. React will apply all <em>props</em> to a custom HTML element as <em>HTML attributes</em> - including non-primitive types such as arrays and objects. Where some UI libraries provide binding syntaxes to distinguish setting properties, attributes, and events, React does not. This means that it can be very easy to end up with <code>my-prop=&quot;[object Object]&quot;</code> in your HTML. React is exploring solutions <a href="https://github.com/facebook/react/issues/11347">in this issue</a>. See the section on <a href="#interop-layers-skatejsval-and-reactify-wc">interop layers</a> for a work-around for this issue.</p>
+<h4 id="custom-events">Custom events</h4>
+<p>React's synthetic eventing system comes with an unfortunate side-effect of being incapable of declaratively applying <a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent"><code>CustomEvent</code></a> listeners. <a href="#interop-layers-skatejsval-and-reactify-wc">interop layers</a> can be used to address this issue. Alternatively, a <code>ref</code> can be used on the custom element to imperatively apply the event listener to the HTML element directly.</p>
+<h4 id="interop-layers-skatejs-val-and-reactify-wc">Interop layers: @skatejs/val and reactify-wc</h4>
+<p><a href="https://github.com/skatejs/val">@skatejs/val</a> is a small library that wraps React's <code>createElement</code> function and provides the ability direct React <em>props</em> explicitly to HTML attributes, DOM properties, or to declarative event listeners.</p>
+<p>Another good option is <a href="https://github.com/BBKolton/reactify-wc">reactify-wc</a>. It provides similar capabilities as <code>@skatejs/val</code> but does so by creating component wrappers.</p>
+<h4 id="typescript-and-tsx-support">TypeScript and TSX support</h4>
+<p>If you're using TypeScript, you'll need to augment the <code>JSX.IntrinsicElements</code> interface to use custom elements in TSX. To do so, create a <code>custom-elements.d.ts</code> file in your source directory and add the following:</p>
+<pre class="language-ts"><code class="language-ts"><span class="token comment">// custom-elements.d.ts</span>
+<span class="token keyword">declare</span> <span class="token keyword">namespace</span> <span class="token constant">JSX</span> <span class="token punctuation">{</span>
+    <span class="token keyword">interface</span> <span class="token class-name">IntrinsicElements</span> <span class="token punctuation">{</span>
+        <span class="token comment">/**
+         *  React.DetailedHTMLProps&lt;React.HTMLAttributes&lt;HTMLElement>, HTMLElement> allows setting standard HTML attributes on the element
+         */</span>
+        <span class="token string-property property">"my-element"</span><span class="token operator">:</span> React<span class="token punctuation">.</span>DetailedHTMLProps<span class="token operator">&lt;</span>React<span class="token punctuation">.</span>HTMLAttributes<span class="token operator">&lt;</span>HTMLElement<span class="token operator">></span><span class="token punctuation">,</span> HTMLElement<span class="token operator">></span> <span class="token operator">&amp;</span> <span class="token punctuation">{</span>
+            <span class="token string-property property">"my-attribute-name"</span><span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+
+
+    </div>
+  </div>
+</main>
+
+    </div>
+</div>
+
+    </div>
+    <footer class="footer footer--dark">
+        <div class="container container-fluid">
+            <div class="row footer__links">
+                <div class="col footer__col">
+                    <div class="footer__title">Docs</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a class="footer__link-item" href="/docs/getting-started/quick-start">FAST Element</a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Community</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://discord.gg/FcSNfg4" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Social</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://medium.com/fast-design" target="_blank" rel="noopener noreferrer" class="footer__link-item">Blog<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://twitter.com/FAST_UI" target="_blank" rel="noopener noreferrer" class="footer__link-item">Twitter<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+                <div class="col footer__col">
+                    <div class="footer__title">Legal</div>
+                    <ul class="footer__items clean-list">
+                        <li class="footer__item"><a href="https://github.com/microsoft/fast/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer__link-item">License<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkId=521839" target="_blank" rel="noopener noreferrer" class="footer__link-item">Privacy &amp;
+                                cookies<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://go.microsoft.com/fwlink/?LinkID=206977" target="_blank" rel="noopener noreferrer" class="footer__link-item">Terms of use<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                        <li class="footer__item"><a href="https://www.microsoft.com/trademarks" target="_blank" rel="noopener noreferrer" class="footer__link-item">Trademarks<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="icon-external-link">
+                                    <path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z">
+                                    </path>
+                                </svg></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom text--center">
+                <div class="footer__copyright">© Microsoft 2025</div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/sidebar-navigation.js"></script>
+  </body>
+</html>
