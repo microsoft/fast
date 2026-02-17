@@ -43,7 +43,7 @@ Description
 
 </td><td>
 
-_(Optional)_ Called after hydration has finished
+_(Optional)_ Called after an individual element's hydration has finished
 
 
 </td></tr>
@@ -54,7 +54,7 @@ _(Optional)_ Called after hydration has finished
 
 </td><td>
 
-_(Optional)_ Called before hydration has started
+_(Optional)_ Called before an individual element's hydration begins
 
 
 </td></tr>
@@ -66,6 +66,17 @@ _(Optional)_ Called before hydration has started
 </td><td>
 
 _(Optional)_ Called after all elements have completed hydration
+
+
+</td></tr>
+<tr><td>
+
+[hydrationStarted()?](../fast-element.hydrationcontrollercallbacks.hydrationstarted/)
+
+
+</td><td>
+
+_(Optional)_ Called once when the first element enters the hydration pipeline. This is the earliest point at which we know a component has been async-defined with `defer-and-hydrate`<!-- -->, a template is pending via `<f-template>`<!-- -->, and the element has `needs-hydration`<!-- -->.
 
 
 </td></tr>

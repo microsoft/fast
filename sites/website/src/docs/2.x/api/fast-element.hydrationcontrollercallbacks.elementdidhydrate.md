@@ -15,7 +15,7 @@ navigationOptions:
 
 ## HydrationControllerCallbacks.elementDidHydrate() method
 
-Called after hydration has finished
+Called after an individual element's hydration has finished
 
 **Signature:**
 
