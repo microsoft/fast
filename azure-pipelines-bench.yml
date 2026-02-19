@@ -1,0 +1,13 @@
+trigger: none
+pr: none
+
+# The `resources` specify the location and version of the Pipeline Template.
+resources:
+  repositories:
+  - repository: fastPipelines
+    type: git
+    name: fast/FASTPipelineTemplates
+    ref: main
+
+extends:
+  template: FAST.Benchmarks.PipelineTemplate.yml@fastPipelines  # Template reference
