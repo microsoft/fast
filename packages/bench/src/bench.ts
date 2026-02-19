@@ -15,7 +15,7 @@ const BENCHMARKS = readdirSync(benchmarksDir, { withFileTypes: true })
     .filter(d => d.isDirectory())
     .map(d => d.name);
 
-const ITERATIONS = parseInt(process.env.BENCH_ITERATIONS ?? "10", 10);
+const ITERATIONS = parseInt(process.env.BENCH_ITERATIONS ?? "50", 10);
 const useDist = process.env.BENCH_DIST === "true";
 const port = useDist ? 5174 : 5173;
 const baseUrl = `http://localhost:${port}`;
