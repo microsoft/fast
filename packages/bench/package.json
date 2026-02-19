@@ -7,7 +7,7 @@
     "build": "vite build",
     "serve": "vite --clearScreen false",
     "start": "node server/server.mjs",
-    "test": "playwright test"
+    "bench": "node src/bench.ts"
   },
   "dependencies": {
     "@microsoft/fast-element": "*"
