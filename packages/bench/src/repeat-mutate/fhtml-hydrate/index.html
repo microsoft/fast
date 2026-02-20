@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>repeat-mutate / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-repeat-mutate needs-hydration>
+            <template shadowrootmode="open"><ul><!--fe-b$$start$$0$$rp$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 0<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 1<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 2<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$2$$fe-repeat--><!--fe-repeat$$start$$3$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 3<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$3$$fe-repeat--><!--fe-repeat$$start$$4$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 4<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$4$$fe-repeat--><!--fe-repeat$$start$$5$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 5<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$5$$fe-repeat--><!--fe-repeat$$start$$6$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 6<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$6$$fe-repeat--><!--fe-repeat$$start$$7$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 7<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$7$$fe-repeat--><!--fe-repeat$$start$$8$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 8<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$8$$fe-repeat--><!--fe-repeat$$start$$9$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 9<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$9$$fe-repeat--><!--fe-repeat$$start$$10$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 10<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$10$$fe-repeat--><!--fe-repeat$$start$$11$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 11<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$11$$fe-repeat--><!--fe-repeat$$start$$12$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 12<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$12$$fe-repeat--><!--fe-repeat$$start$$13$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 13<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$13$$fe-repeat--><!--fe-repeat$$start$$14$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 14<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$14$$fe-repeat--><!--fe-repeat$$start$$15$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 15<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$15$$fe-repeat--><!--fe-repeat$$start$$16$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 16<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$16$$fe-repeat--><!--fe-repeat$$start$$17$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 17<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$17$$fe-repeat--><!--fe-repeat$$start$$18$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 18<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$18$$fe-repeat--><!--fe-repeat$$start$$19$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->Item 19<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$19$$fe-repeat--><!--fe-b$$end$$0$$rp$$fe-b--></ul></template>
+        </bench-repeat-mutate>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-repeat-mutate">
+        <template><ul><f-repeat value="{{item in items}}"><li>{{item.text}}</li></f-repeat></ul></template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

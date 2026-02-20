@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bind-event / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-bind-event needs-hydration>
+            <template shadowrootmode="open"><button data-fe-b-0>Count: <!--fe-b$$start$$1$$t0$$fe-b-->0<!--fe-b$$end$$1$$t0$$fe-b--></button></template>
+        </bench-bind-event>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-bind-event">
+        <template><button @click="{handleClick()}">Count: {{count}}</button></template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

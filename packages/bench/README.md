@@ -25,7 +25,7 @@ npm install
 From this folder (`packages/bench`):
 
 ```bash
-npm run test
+npm run bench
 ```
 
 This uses:
@@ -39,8 +39,8 @@ This uses:
 Build once, then run tests with `BENCH_DIST=true`:
 
 ```bash
-npm run build # builds Vite output to `server/dist`
-BENCH_DIST=true npm run test
+npm run bundle # builds Vite output to `server/dist`
+BENCH_DIST=true npm run bench
 ```
 
 This uses:
@@ -57,13 +57,13 @@ Default iterations per benchmark are `10`.
 Override with `BENCH_ITERATIONS`:
 
 ```bash
-BENCH_ITERATIONS=50 npm run test
+BENCH_ITERATIONS=50 npm run bench
 ```
 
 You can combine with dist mode:
 
 ```bash
-BENCH_DIST=true BENCH_ITERATIONS=50 npm run test
+BENCH_DIST=true BENCH_ITERATIONS=50 npm run bench
 ```
 
 ## Running from repo root
@@ -71,9 +71,9 @@ BENCH_DIST=true BENCH_ITERATIONS=50 npm run test
 You can run workspace scripts without changing directories:
 
 ```bash
-npm run test -w @microsoft/fast-bench
-npm run build -w @microsoft/fast-bench
-BENCH_DIST=true npm run test -w @microsoft/fast-bench
+npm run bench -w @microsoft/fast-bench
+npm run bundle -w @microsoft/fast-bench
+BENCH_DIST=true npm run bench -w @microsoft/fast-bench
 ```
 
 ## Output

@@ -17,7 +17,7 @@ const MIME_TYPES = {
 };
 
 if (!existsSync(distDir)) {
-    console.error(`dist/ not found. Run "npm run build" first.`);
+    console.error(`dist/ not found. Run "npm run bundle" first.`);
     process.exit(1);
 }
 

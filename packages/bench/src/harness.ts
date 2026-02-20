@@ -32,3 +32,15 @@ export function runBenchmark(itemRenderer: () => HTMLElement): void {
         }, 0);
     });
 }
+
+/**
+ * Signal that the benchmark is complete without using the tree harness.
+ * Useful for benchmarks that manage their own DOM setup (e.g. hydration).
+ */
+export function signalDone(): void {
+    requestAnimationFrame(() => {
+        setTimeout(() => {
+            (window as any).__benchmarkDone = true;
+        }, 0);
+    });
+}
