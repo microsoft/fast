@@ -71,7 +71,7 @@
     "@types/webpack-env": "1.18.5",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
-    "beachball": "2.51.0",
+    "beachball": "2.63.0",
     "chai": "4.4.1",
     "chai-spies": "1.1.0",
     "concurrently": "9.2.1",
