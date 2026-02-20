@@ -11,7 +11,7 @@ class EventElement extends FASTElement {
 EventElement.define({
     name: "bench-event",
     template: html`
-        <button @click="${x => x.handleClick}">Count: ${x => x.count}</button>
+        <button @click="${x => x.handleClick()}">Count: ${x => x.count}</button>
     `,
 });
 

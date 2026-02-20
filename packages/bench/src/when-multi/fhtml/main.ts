@@ -1,9 +1,9 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 import { runBenchmark } from "../../harness.js";
 
 class WhenMultiElement extends FASTElement {
-    level = 3;
+    @observable level = 3;
 
     connectedCallback(): void {
         super.connectedCallback();

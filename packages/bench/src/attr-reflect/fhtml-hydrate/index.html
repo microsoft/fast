@@ -8,9 +8,11 @@
 <body>
     <div id="container">
         <!-- @bench-ssr count="100" -->
+        <div>
         <bench-attr needs-hydration label="item-1" count="1" active>
             <template shadowrootmode="open"><span><!--fe-b$$start$$0$$t0$$fe-b-->item-1<!--fe-b$$end$$0$$t0$$fe-b--> (<!--fe-b$$start$$1$$t0$$fe-b-->1<!--fe-b$$end$$1$$t0$$fe-b-->)</span></template>
         </bench-attr>
+        </div>
         <!-- @/bench-ssr -->
     </div>
     <f-template name="bench-attr">
