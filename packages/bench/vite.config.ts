@@ -40,7 +40,7 @@ export default defineConfig({
             name: "html-transform",
             enforce: "pre",
             transformIndexHtml(html) {
-                // Expand SSR repeat blocks:
+                // Transform SSR repeat blocks to fill out n number of items:
                 // <!-- @bench-ssr count="N" -->...<!-- @/bench-ssr -->
                 html = html.replace(
                     /<!--\s*@bench-ssr\s+count="(\d+)"\s*-->([\s\S]*?)<!--\s*@\/bench-ssr\s*-->/g,

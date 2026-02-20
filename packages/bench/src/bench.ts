@@ -154,12 +154,10 @@ async function main(): Promise<void> {
 
         const results: BenchmarkResult[] = [];
 
-        for (let b = 0; b < BENCHMARKS.length; b++) {
+        for (let b = 0, bLength = BENCHMARKS.length; b < bLength; b++) {
             const benchName = BENCHMARKS[b];
             console.log(
-                `  [${b + 1}/${
-                    BENCHMARKS.length
-                }] ${benchName} (${ITERATIONS} iterations)`
+                `  [${b + 1}/${bLength}] ${benchName} (${ITERATIONS} iterations)`
             );
             const metrics: TraceMetrics[] = [];
             const page = await context.newPage();
