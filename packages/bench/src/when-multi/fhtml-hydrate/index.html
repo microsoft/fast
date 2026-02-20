@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>when-multi / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-when-multi needs-hydration>
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$w0$$fe-b--><!--fe-b$$end$$0$$w0$$fe-b--><!--fe-b$$start$$1$$w1$$fe-b--><!--fe-b$$end$$1$$w1$$fe-b--><!--fe-b$$start$$2$$w2$$fe-b--><span>Level 3</span><!--fe-b$$end$$2$$w2$$fe-b--><!--fe-b$$start$$3$$w3$$fe-b--><!--fe-b$$end$$3$$w3$$fe-b--><!--fe-b$$start$$4$$w4$$fe-b--><!--fe-b$$end$$4$$w4$$fe-b--></template>
+        </bench-when-multi>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-when-multi">
+        <template>
+            <f-when value="{{level == 1}}"><span>Level 1</span></f-when>
+            <f-when value="{{level == 2}}"><span>Level 2</span></f-when>
+            <f-when value="{{level == 3}}"><span>Level 3</span></f-when>
+            <f-when value="{{level == 4}}"><span>Level 4</span></f-when>
+            <f-when value="{{level == 5}}"><span>Level 5</span></f-when>
+        </template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

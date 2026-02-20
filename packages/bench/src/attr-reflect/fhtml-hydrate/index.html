@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>attr-reflect / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-attr needs-hydration label="item-1" count="1" active>
+            <template shadowrootmode="open"><span><!--fe-b$$start$$0$$t0$$fe-b-->item-1<!--fe-b$$end$$0$$t0$$fe-b--> (<!--fe-b$$start$$1$$t0$$fe-b-->1<!--fe-b$$end$$1$$t0$$fe-b-->)</span></template>
+        </bench-attr>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-attr">
+        <template><span>{{label}} ({{count}})</span></template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

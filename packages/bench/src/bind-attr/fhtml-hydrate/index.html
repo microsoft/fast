@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bind-attr / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-bind-attr needs-hydration>
+            <template shadowrootmode="open"><input type="text" data-fe-b="0 1 2" value="test" title="Test Title" /></template>
+        </bench-bind-attr>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-bind-attr">
+        <template><input type="text" :value="{{value}}" ?disabled="{{disabled}}" title="{{title}}" /></template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

@@ -11,9 +11,36 @@ import {
 } from "./trace.ts";
 
 const benchmarksDir = resolve(import.meta.dirname);
-const BENCHMARKS = readdirSync(benchmarksDir, { withFileTypes: true })
-    .filter(d => d.isDirectory())
-    .map(d => d.name);
+
+/**
+ * Discover benchmark paths. Each scenario directory contains variant
+ * subdirectories (e.g. `fe/`, `fhtml/`), each with its own `index.html`.
+ * Returns paths like `"basic/fe"`, `"basic/fhtml"`.
+ */
+function discoverBenchmarks(): string[] {
+    const results: string[] = [];
+
+    for (const scenario of readdirSync(benchmarksDir, { withFileTypes: true })) {
+        if (!scenario.isDirectory()) {
+            continue;
+        }
+
+        const scenarioDir = resolve(benchmarksDir, scenario.name);
+        const variants = readdirSync(scenarioDir, { withFileTypes: true }).filter(d =>
+            d.isDirectory()
+        );
+
+        if (variants.length > 0) {
+            for (const variant of variants) {
+                results.push(`${scenario.name}/${variant.name}`);
+            }
+        }
+    }
+
+    return results;
+}
+
+const BENCHMARKS = discoverBenchmarks();
 
 const ITERATIONS = parseInt(process.env.BENCH_ITERATIONS ?? "50", 10);
 const useDist = process.env.BENCH_DIST === "true";
@@ -114,23 +141,34 @@ async function main(): Promise<void> {
         console.log("Warming up...");
         const warmupPage = await context.newPage();
         for (const benchName of BENCHMARKS) {
+            process.stdout.write(`  warming ${benchName}...`);
             await warmupPage.goto(`${baseUrl}/${benchName}/`);
             await warmupPage.waitForFunction(
                 () => (window as any).__benchmarkDone === true,
                 null,
                 { timeout: PER_ITERATION_TIMEOUT }
             );
+            console.log(" ok");
         }
         await warmupPage.close();
 
         const results: BenchmarkResult[] = [];
 
-        for (const benchName of BENCHMARKS) {
-            process.stdout.write(`  ${benchName}...`);
+        for (let b = 0; b < BENCHMARKS.length; b++) {
+            const benchName = BENCHMARKS[b];
+            console.log(
+                `  [${b + 1}/${
+                    BENCHMARKS.length
+                }] ${benchName} (${ITERATIONS} iterations)`
+            );
             const metrics: TraceMetrics[] = [];
             const page = await context.newPage();
 
             for (let i = 0; i < ITERATIONS; i++) {
+                if (ITERATIONS > 1) {
+                    process.stdout.write(`\r    iteration ${i + 1}/${ITERATIONS}`);
+                }
+
                 const client = await page.context().newCDPSession(page);
 
                 await client.send("Tracing.start", {
@@ -151,6 +189,10 @@ async function main(): Promise<void> {
                 await client.detach();
             }
 
+            if (ITERATIONS > 1) {
+                process.stdout.write("\r");
+            }
+
             await page.close();
 
             results.push({
@@ -163,7 +205,9 @@ async function main(): Promise<void> {
                 userMeasure: computeStats(metrics.map(m => m.userMeasure)),
             });
 
-            console.log(" done");
+            console.log(
+                `    done (median: ${results.at(-1)?.total.median.toFixed(1)}ms)`
+            );
         }
 
         for (const r of results) {

@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "bundle": "vite build",
     "serve": "vite --clearScreen false",
     "start": "node server/server.mjs",
     "bench": "node src/bench.ts"
   },
   "dependencies": {
-    "@microsoft/fast-element": "*"
+    "@microsoft/fast-element": "*",
+    "@microsoft/fast-html": "*"
   }
 }

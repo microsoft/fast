@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>when-toggle / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-when-toggle needs-hydration>
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$w0$$fe-b--><span>Visible</span><!--fe-b$$end$$0$$w0$$fe-b--><!--fe-b$$start$$1$$w1$$fe-b--><!--fe-b$$end$$1$$w1$$fe-b--></template>
+        </bench-when-toggle>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-when-toggle">
+        <template>
+            <f-when value="{{show}}"><span>Visible</span></f-when>
+            <f-when value="{{!show}}"><span>Hidden</span></f-when>
+        </template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

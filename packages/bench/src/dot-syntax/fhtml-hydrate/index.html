@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dot-syntax / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-dot-syntax needs-hydration>
+            <template shadowrootmode="open"><div><span><!--fe-b$$start$$0$$t0$$fe-b-->Jane<!--fe-b$$end$$0$$t0$$fe-b--></span><span><!--fe-b$$start$$1$$t0$$fe-b-->Seattle<!--fe-b$$end$$1$$t0$$fe-b--></span><span><!--fe-b$$start$$2$$t0$$fe-b-->47.6<!--fe-b$$end$$2$$t0$$fe-b--></span></div></template>
+        </bench-dot-syntax>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-dot-syntax">
+        <template>
+            <div>
+                <span>{{user.name}}</span>
+                <span>{{user.address.city}}</span>
+                <span>{{user.address.geo.lat}}</span>
+            </div>
+        </template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

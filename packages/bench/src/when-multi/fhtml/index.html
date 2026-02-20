@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>when-multi / fast-html</title>
+</head>
+<body>
+    <div id="container"></div>
+    <f-template name="bench-when-multi">
+        <template>
+            <f-when value="{{level == 1}}"><div>Branch 1 — low</div></f-when>
+            <f-when value="{{level == 2}}"><div>Branch 2 — mid-low</div></f-when>
+            <f-when value="{{level == 3}}"><div>Branch 3 — mid</div></f-when>
+            <f-when value="{{level == 4}}"><div>Branch 4 — mid-high</div></f-when>
+            <f-when value="{{level == 5}}"><div>Branch 5 — high</div></f-when>
+        </template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

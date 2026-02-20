@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bind-text / fast-html (hydrate)</title>
+</head>
+<body>
+    <div id="container">
+        <!-- @bench-ssr count="100" -->
+        <bench-bind-text needs-hydration label="Hello">
+            <template shadowrootmode="open"><span><!--fe-b$$start$$0$$t0$$fe-b-->Hello<!--fe-b$$end$$0$$t0$$fe-b--></span></template>
+        </bench-bind-text>
+        <!-- @/bench-ssr -->
+    </div>
+    <f-template name="bench-bind-text">
+        <template><span>{{label}}</span></template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>repeat-mutate / fast-html</title>
+</head>
+<body>
+    <div id="container"></div>
+    <f-template name="bench-repeat-mutate">
+        <template>
+            <ul>
+                <f-repeat value="{{item in items}}">
+                    <li>{{item}}</li>
+                </f-repeat>
+            </ul>
+        </template>
+    </f-template>
+    <script type="module" src="./main.ts"></script>
+</body>
+</html>

@@ -39,7 +39,7 @@ This uses:
 Build once, then run tests with `BENCH_DIST=true`:
 
 ```bash
-npm run build # builds Vite output to `server/dist`
+npm run bundle # builds Vite output to `server/dist`
 BENCH_DIST=true npm run bench
 ```
 
@@ -72,7 +72,7 @@ You can run workspace scripts without changing directories:
 
 ```bash
 npm run bench -w @microsoft/fast-bench
-npm run build -w @microsoft/fast-bench
+npm run bundle -w @microsoft/fast-bench
 BENCH_DIST=true npm run bench -w @microsoft/fast-bench
 ```
 
