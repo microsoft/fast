@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const benchmarksDir = resolve(__dirname, "src");
+const benchmarksDir = resolve(__dirname, "src", "scenarios");
 
 function discoverBenchmarkInputs(): Record<string, string> {
     const inputs: Record<string, string> = {

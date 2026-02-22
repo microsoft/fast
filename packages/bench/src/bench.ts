@@ -1,16 +1,20 @@
-import { readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdirSync, readdirSync, symlinkSync, unlinkSync, writeFileSync } from "node:fs";
+import { basename, resolve } from "node:path";
 import { type ChildProcess, spawn } from "node:child_process";
 import { type CDPSession, chromium } from "@playwright/test";
 import {
     computeStats,
     parseTraceEvents,
+    toMetricSeries,
     TRACE_CATEGORIES,
+    TRACE_METRIC_KEYS,
     type TraceEvent,
     type TraceMetrics,
+    type TraceMetricSeries,
 } from "./trace.ts";
+import { renderHtmlReport } from "./report.ts";
 
-const benchmarksDir = resolve(import.meta.dirname);
+const benchmarksDir = resolve(import.meta.dirname, "scenarios");
 
 /**
  * Discover benchmark paths. Each scenario directory contains variant
@@ -40,15 +44,34 @@ function discoverBenchmarks(): string[] {
     return results;
 }
 
-const BENCHMARKS = discoverBenchmarks();
+/**
+ * Filter benchmarks by CLI args. Each arg is matched as a substring
+ * against the benchmark name (e.g. "basic" matches "basic/fe",
+ * "basic/fhtml", etc.). No args means run everything.
+ */
+function filterBenchmarks(all: string[]): string[] {
+    const filters = process.argv.slice(2);
+    if (filters.length === 0) {
+        return all;
+    }
+    return all.filter(name => filters.some(f => name.includes(f)));
+}
+
+const BENCHMARKS = filterBenchmarks(discoverBenchmarks());
+
+if (BENCHMARKS.length === 0) {
+    const filters = process.argv.slice(2);
+    console.error(`No benchmarks matched: ${filters.join(", ")}`);
+    process.exit(1);
+}
 
 const ITERATIONS = parseInt(process.env.BENCH_ITERATIONS ?? "50", 10);
-const useDist = process.env.BENCH_DIST === "true";
-const port = useDist ? 5174 : 5173;
+const port = 5174;
 const baseUrl = `http://localhost:${port}`;
 
 interface BenchmarkResult {
     name: string;
+    iterations: TraceMetricSeries;
     scripting: ReturnType<typeof computeStats>;
     layout: ReturnType<typeof computeStats>;
     styleRecalc: ReturnType<typeof computeStats>;
@@ -108,8 +131,7 @@ async function waitForServer(url: string, timeout = 30_000): Promise<void> {
 }
 
 function startServer(): ChildProcess {
-    const args = useDist ? ["start"] : ["run", "serve"];
-    return spawn("npm", args, {
+    return spawn("npm", ["start"], {
         cwd: resolve(import.meta.dirname, ".."),
         stdio: "pipe",
     });
@@ -135,23 +157,6 @@ async function main(): Promise<void> {
     try {
         const context = await browser.newContext();
 
-        // Warm up: navigate to each benchmark once so the browser has compiled
-        // and cached scripts, JIT'd hot paths, and resolved network resources
-        // before we start collecting real measurements.
-        console.log("Warming up...");
-        const warmupPage = await context.newPage();
-        for (const benchName of BENCHMARKS) {
-            process.stdout.write(`  warming ${benchName}...`);
-            await warmupPage.goto(`${baseUrl}/${benchName}/`);
-            await warmupPage.waitForFunction(
-                () => (window as any).__benchmarkDone === true,
-                null,
-                { timeout: PER_ITERATION_TIMEOUT }
-            );
-            console.log(" ok");
-        }
-        await warmupPage.close();
-
         const results: BenchmarkResult[] = [];
 
         for (let b = 0, bLength = BENCHMARKS.length; b < bLength; b++) {
@@ -161,6 +166,16 @@ async function main(): Promise<void> {
             );
             const metrics: TraceMetrics[] = [];
             const page = await context.newPage();
+
+            // Warm up: run the benchmark once without tracing so the
+            // browser has compiled scripts, JIT'd hot paths, and
+            // resolved network resources for this page.
+            await page.goto(`${baseUrl}/${benchName}/`);
+            await page.waitForFunction(
+                () => (window as any).__benchmarkDone === true,
+                null,
+                { timeout: PER_ITERATION_TIMEOUT }
+            );
 
             for (let i = 0; i < ITERATIONS; i++) {
                 if (ITERATIONS > 1) {
@@ -195,6 +210,7 @@ async function main(): Promise<void> {
 
             results.push({
                 name: benchName,
+                iterations: toMetricSeries(metrics),
                 scripting: computeStats(metrics.map(m => m.scripting)),
                 layout: computeStats(metrics.map(m => m.layout)),
                 styleRecalc: computeStats(metrics.map(m => m.styleRecalc)),
@@ -219,6 +235,42 @@ async function main(): Promise<void> {
                 "User Measure": formatStat(r.userMeasure),
             });
         }
+
+        const outDir = resolve(import.meta.dirname, "..", "results");
+        mkdirSync(outDir, { recursive: true });
+
+        const reportData = results.map(r => ({
+            name: r.name,
+            iterations: r.iterations,
+            stats: {
+                scripting: r.scripting,
+                layout: r.layout,
+                styleRecalc: r.styleRecalc,
+                paint: r.paint,
+                total: r.total,
+                userMeasure: r.userMeasure,
+            },
+        }));
+        const html = renderHtmlReport(reportData, {
+            metrics: [...TRACE_METRIC_KEYS],
+        });
+
+        const ts = new Date().toISOString().replace(/[:T]/g, "-").replace(/\..+/, "");
+        const filename = `${ts}.html`;
+        const htmlPath = resolve(outDir, filename);
+        writeFileSync(htmlPath, html);
+
+        // Symlink latest.html → this run
+        const latestPath = resolve(outDir, "latest.html");
+        try {
+            unlinkSync(latestPath);
+        } catch {
+            // ignore if it doesn't exist
+        }
+        symlinkSync(basename(htmlPath), latestPath);
+
+        console.log(`\n  Report: ${htmlPath}`);
+        console.log(`  Latest: ${latestPath}`);
     } finally {
         await browser.close();
         server?.kill();
