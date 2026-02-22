@@ -224,6 +224,33 @@ export function parseTraceEvents(events: TraceEvent[]): TraceMetrics {
     };
 }
 
+/** Metric key names in display order. */
+export const TRACE_METRIC_KEYS = [
+    "scripting",
+    "layout",
+    "styleRecalc",
+    "paint",
+    "total",
+    "userMeasure",
+] as const;
+
+export type TraceMetricKey = (typeof TRACE_METRIC_KEYS)[number];
+
+/** Per-iteration metric arrays for a full benchmark run. */
+export type TraceMetricSeries = Record<TraceMetricKey, number[]>;
+
+/** Convert an array of per-iteration metrics into column-oriented series. */
+export function toMetricSeries(metrics: TraceMetrics[]): TraceMetricSeries {
+    return {
+        scripting: metrics.map(m => m.scripting),
+        layout: metrics.map(m => m.layout),
+        styleRecalc: metrics.map(m => m.styleRecalc),
+        paint: metrics.map(m => m.paint),
+        total: metrics.map(m => m.total),
+        userMeasure: metrics.map(m => m.userMeasure),
+    };
+}
+
 /**
  * Compute summary statistics for an array of numbers.
  */
