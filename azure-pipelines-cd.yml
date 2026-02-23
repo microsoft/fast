@@ -47,16 +47,8 @@ steps:
 
   - script: |
       npm run publish-ci
-    displayName: "Use Beachball publish to bump and commit without publishing"
+    displayName: "Use Beachball publish to bump, pack, and commit without publishing"
     env:
       GH_TOKEN: $(GH_TOKEN)
-
-  - script: |
-      mkdir publish_artifacts
-    displayName: "Create a folder for published artifacts"
-
-  - script: |
-      npm pack --workspace "packages" --pack-destination "publish_artifacts"
-    displayName: "Pack NPM packages to tgz"
 
   - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference

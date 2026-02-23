@@ -10,5 +10,6 @@ module.exports = {
         "src/fixtures/**",
         // This one is especially important (otherwise dependabot would be blocked by change file requirements)
         "package-lock.json",
-    ]
+    ],
+    packToPath: "publish_artifacts"
 };
