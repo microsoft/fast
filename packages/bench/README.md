@@ -1,12 +1,6 @@
 # Benchmarking FAST templates and rendering scenarios
 
-This package provides a framework for running benchmarks against FAST templates and rendering scenarios. It uses Playwright to automate Chrome and collect performance data, which is then printed in a readable format.
-
-## What this package does
-
-- Discovers benchmark suites from `src/*/` directories.
-- Runs each benchmark serially with Playwright (`src/bench.spec.ts`).
-- Collects Chrome trace data and prints timing stats (min/median/mean/p95/max).
+This package benchmarks FAST Element and FAST HTML rendering scenarios. It uses Playwright to automate Chrome, collects CDP trace data, computes timing statistics, and generates an interactive HTML report.
 
 ## Prerequisites
 
@@ -18,9 +12,7 @@ This package provides a framework for running benchmarks against FAST templates 
 npm install
 ```
 
-## Local workflows
-
-### 1) Run benchmarks against the Vite dev server (default)
+## Running benchmarks
 
 From this folder (`packages/bench`):
 
@@ -28,67 +20,89 @@ From this folder (`packages/bench`):
 npm run bench
 ```
 
-This uses:
+This will:
 
-- `npm run serve` (Vite on `http://localhost:5173`)
-- Playwright test file: `src/bench.spec.ts`
-- Desktop Chrome with `headless: false`
-
-### 2) Run benchmarks against the built `dist` output
-
-Build once, then run tests with `BENCH_DIST=true`:
-
-```bash
-npm run bundle # builds Vite output to `server/dist`
-BENCH_DIST=true npm run bench
-```
-
-This uses:
-
-- `npm start` (static server from `server/dist` on `http://localhost:5174`)
-- The same Playwright benchmark suite
-
-## Controlling benchmark runs
+1. Build the scenarios with Vite (into `server/dist`)
+2. Start the static server on `http://localhost:5174`
+3. Run all discovered scenarios through Playwright
+4. Print stats tables to the console
+5. Generate an interactive HTML report at `results/index.html`
 
 ### Iteration count
 
-Default iterations per benchmark are `10`.
-
-Override with `BENCH_ITERATIONS`:
+Default is 50 iterations per benchmark. Override with `BENCH_ITERATIONS`:
 
 ```bash
-BENCH_ITERATIONS=50 npm run bench
+BENCH_ITERATIONS=100 npm run bench
 ```
 
-You can combine with dist mode:
+### Running specific scenarios
+
+Pass scenario names as arguments to filter which benchmarks run:
 
 ```bash
-BENCH_DIST=true BENCH_ITERATIONS=50 npm run bench
+npm run bench -- basic bind-text
+```
+
+Each argument is matched as a substring, so `basic` runs `basic/fe`, `basic/fhtml`, and `basic/fhtml-hydrate`. You can also target a specific variant:
+
+```bash
+npm run bench -- basic/fe
 ```
 
 ## Running from repo root
 
-You can run workspace scripts without changing directories:
-
 ```bash
 npm run bench -w @microsoft/fast-bench
-npm run bundle -w @microsoft/fast-bench
-BENCH_DIST=true npm run bench -w @microsoft/fast-bench
+```
+
+## Project structure
+
+```text
+src/
+  bench.ts        Runner orchestrator (Playwright + CDP)
+  chart.ts        SVG chart rendering
+  report.ts       HTML report assembly
+  trace.ts        CDP trace event parsing + stats
+  scenarios/
+    harness.ts    Shared benchmark runtime
+    tree.ts       Tree data generator for scenarios
+    report.css    Report styles (inlined into output)
+    report.js     Report interaction (inlined into output)
+    index.html    Dev server landing page
+    basic/        Scenario directories...
+    bind-attr/
+    ...
 ```
 
 ## Output
 
-After all suites finish, results are printed in grouped tables per benchmark:
+The report at `results/index.html` includes:
 
-- Scripting
-- Layout
-- Style Recalc
-- Paint
-- Total (trace)
-- User Measure
+- **Overlaid line charts** per scenario with all variants (fe, fhtml, fhtml-hydrate) on shared axes
+- **Hover-to-emphasize** and **click-to-select** variant interaction
+- **Winner table** showing the best value per metric/stat, color-coded by variant
+- **Variant drill-down** — click a variant to see its full stats
+
+Metrics collected per iteration:
+
+| Metric | Description |
+| --- | --- |
+| Scripting | JS execution (EvaluateScript, FunctionCall, etc.) |
+| Layout | Layout computation |
+| Style Recalc | Style recalculation |
+| Paint | Paint, compositing, layerization |
+| Total (trace) | Sum of the above four |
+| User Measure | Duration of the `bench` performance.measure |
 
 All values are in milliseconds.
 
-## Server implementation
+## Dev server
 
-The `server/` folder contains a simple Node.js HTTP server that serves static files from `server/dist`. After building the Vite output, this server is used to run benchmarks against the production build. The entire server directory can then be used to host the built output, and the server will serve files from the `dist` subfolder.
+For iterating on scenarios without running the full benchmark:
+
+```bash
+npm run serve
+```
+
+This starts Vite on `http://localhost:5173` with hot reload.
