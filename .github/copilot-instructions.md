@@ -1,5 +1,9 @@
 # Instructions for FAST
 
+## General
+
+- **Explicit instruction only**: Do not take any action unless explicitly instructed. Wait for clear direction before making changes, running commands, or modifying files.
+
 ## Repository Overview
 
 FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-standards-compliant Web Components. The core package is `@microsoft/fast-element` — a lightweight, performant Web Component authoring library. Additional packages provide routing and declarative HTML support.
