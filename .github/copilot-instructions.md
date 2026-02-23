@@ -20,7 +20,8 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 
 - **Build from root**: Always run commands from the monorepo root using workspace flags (e.g., `npm run build -w @microsoft/fast-element`).
 - **Change files**: Any `packages/*` change requires a beachball change file — run `npm run change`.
-- **TypeScript**: See [`.github/typescript/SKILL.md`](.github/typescript/SKILL.md) for TypeScript constraints, patterns, commands, and testing conventions.
+- **TypeScript**: See [`.github/skills/typescript/SKILL.md`](.github/skills/typescript/SKILL.md) for TypeScript constraints, patterns, commands, and testing conventions.
+- **Contributing**: See [`.github/skills/contributing/SKILL.md`](.github/skills/contributing/SKILL.md) for pull request guidelines, change file generation, and documentation updates.
 
 ## Acceptance Checklist
 
