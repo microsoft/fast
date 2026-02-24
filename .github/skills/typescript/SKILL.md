@@ -8,9 +8,6 @@ Before suggesting or applying changes, read and use:
 
 1. The root `tsconfig.json` (base compiler options for the monorepo).
 2. The target package's `tsconfig.json` under `packages/<package>/` (per-package overrides).
-3. The target package's `package.json` for scripts, exports map, and entry points.
-4. The root `.eslintrc.js` (linting rules and naming conventions).
-5. The root `.prettierrc` (formatting: 90 print width, 4 spaces, double quotes, trailing commas `es5`).
 
 Treat these constraints as mandatory unless the user explicitly asks to change them:
 
@@ -23,36 +20,6 @@ Treat these constraints as mandatory unless the user explicitly asks to change t
 - Interfaces must NOT use the `I` prefix (enforced by ESLint naming convention).
 - Maximum line length is 140 characters (ESLint `max-len` rule).
 - Import order is enforced (`import/order` + `sort-imports`).
-
-# Repository-specific commands
-
-Prefer these commands for this repository. Always run from the monorepo root.
-
-## Building
-
-- `npm ci` — clean install all dependencies
-- `npm run build` — build all workspaces
-- `npm run build -w @microsoft/fast-element` — build a single package
-- `npm run build -w @microsoft/fast-html` — build HTML package
-
-## Testing
-
-- `npm run test` — run all tests across all packages
-- `npm run test -w @microsoft/fast-element` — test a single package (ESLint + API Extractor + Playwright)
-- `npm run test -w @microsoft/fast-html` — test HTML package (includes ast-grep rule tests)
-
-## Formatting & Linting
-
-- `npm run format:check` — check Prettier formatting (CI gate)
-- `npm run format` — auto-fix Prettier formatting
-- `npx eslint packages/<package>/src/**/*.ts` — lint a specific package
-
-## Change management
-
-- `npm run change` — generate a beachball change file (required for `packages/*` changes)
-- `npm run checkchange` — verify change files exist (CI gate)
-
-If command cost is high, run the narrowest command that validates the touched package first, then broaden as needed.
 
 # Testing conventions
 
