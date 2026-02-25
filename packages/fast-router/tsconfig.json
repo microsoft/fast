@@ -10,6 +10,9 @@
         "module": "NodeNext",
         "importHelpers": true,
         "moduleResolution": "NodeNext",
+        "types": [
+            "webpack-env"
+        ],
         "lib": [
             "DOM",
             "ES2015"
