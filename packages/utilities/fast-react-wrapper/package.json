@@ -2,7 +2,7 @@
   "name": "@ni/fast-react-wrapper",
   "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
-  "version": "10.1.6",
+  "version": "10.1.7",
   "author": {
     "name": "National Instruments"
   },
@@ -87,7 +87,7 @@
   },
   "peerDependencies": {
     "@ni/fast-element": "^10.1.0",
-    "@ni/fast-foundation": "^10.1.5",
+    "@ni/fast-foundation": "^10.2.0",
     "react": "^16 || ^17 || ^18"
   }
 }

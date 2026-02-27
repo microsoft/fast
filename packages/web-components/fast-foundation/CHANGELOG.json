@@ -2,6 +2,21 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 27 Feb 2026 18:10:08 GMT",
+      "version": "10.2.0",
+      "tag": "@ni/fast-foundation_v10.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "1588923+rajsite@users.noreply.github.com",
+            "package": "@ni/fast-foundation",
+            "commit": "65b4289a7a873342128b48f90264d6d61e7abadc",
+            "comment": "Add custom-elements.json"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 Feb 2026 23:58:32 GMT",
       "version": "10.1.5",
       "tag": "@ni/fast-foundation_v10.1.5",

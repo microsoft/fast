@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add custom-elements.json",
-  "packageName": "@ni/fast-foundation",
-  "email": "1588923+rajsite@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
