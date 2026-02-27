@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Fri, 27 Feb 2026 18:10:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 27 Feb 2026 19:14:34 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.2.1
+
+Fri, 27 Feb 2026 19:14:34 GMT
+
+### Patches
+
+- Actually include custom-elements.json in build ([ni/fast@91b40a0](https://github.com/ni/fast/commit/91b40a090ba4c4206f3c8761ace1c4a2040abe73))
 
 ## 10.2.0
 

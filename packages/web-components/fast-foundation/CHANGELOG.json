@@ -2,6 +2,21 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 27 Feb 2026 19:14:34 GMT",
+      "version": "10.2.1",
+      "tag": "@ni/fast-foundation_v10.2.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "1588923+rajsite@users.noreply.github.com",
+            "package": "@ni/fast-foundation",
+            "commit": "91b40a090ba4c4206f3c8761ace1c4a2040abe73",
+            "comment": "Actually include custom-elements.json in build"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Feb 2026 18:10:08 GMT",
       "version": "10.2.0",
       "tag": "@ni/fast-foundation_v10.2.0",
