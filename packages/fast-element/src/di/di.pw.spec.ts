@@ -8,6 +8,8 @@ import {
     Registration,
     ResolverImpl,
     ResolverStrategy,
+    singleton,
+    transient,
 } from "./di.js";
 
 function simulateTSCompilerDesignParamTypes(target: any, deps: any[]) {
@@ -138,8 +140,6 @@ test.describe(`The DI object`, () => {
         });
 
         test(`causes DI to handle Context decorators`, async ({ page }) => {
-            test.fixme(true, "Decorator doesn’t work in page.evaluate");
-
             await page.goto("/");
 
             const { result, value } = await page.evaluate(async () => {
@@ -149,9 +149,8 @@ test.describe(`The DI object`, () => {
                 const value = "hello world";
                 const TestContext = Context.create<string>("TestContext");
                 const elementName = "a-a";
-                class TestElement extends HTMLElement {
-                    @TestContext test: string;
-                }
+                class TestElement extends HTMLElement {}
+                TestContext(TestElement.prototype, "test");
 
                 customElements.define(elementName, TestElement);
 
@@ -380,63 +379,72 @@ test.describe(`The inject function`, () => {
     });
 
     test(`can decorate constructor parameters explicitly`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
-
         class Foo {
-            public constructor() // @inject(Dep1) dep1: Dep1, // TODO: uncomment these when test is fixed
-            // @inject(Dep2) dep2: Dep2,
-            // @inject(Dep3) dep3: Dep3
+            public constructor(dep1, dep2, dep3)
             {
                 return;
             }
         }
+        inject(...[Dep1])(Foo, "dep1", 0);
+        inject(...[Dep2])(Foo, "dep2", 1);
+        inject(...[Dep3])(Foo, "dep3", 2);
 
         expect(DI.getDependencies(Foo)).toEqual([Dep1, Dep2, Dep3]);
     });
 
     test(`can decorate constructor parameters implicitly`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
-
         class Foo {
-            constructor() // @inject() dep1: Dep1, // TODO: uncomment these when test is fixed
-            // @inject() dep2: Dep2,
-            // @inject() dep3: Dep3
+            public constructor(dep1, dep2, dep3)
             {
                 return;
             }
         }
+        inject()(Foo, "dep1", 0);
+        inject()(Foo, "dep2", 1);
+        inject()(Foo, "dep3", 2);
 
         simulateTSCompilerDesignParamTypes(Foo, [Dep1, Dep2, Dep3]);
 
         expect(DI.getDependencies(Foo)).toEqual([Dep1, Dep2, Dep3]);
     });
 
-    test(`can decorate properties explicitly`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
+    test(`can decorate properties explicitly`, async ({ page }) => {
+        await page.goto("/");
 
-        // @ts-ignore
-        class Foo {
-            // TODO: uncomment these when test is fixed
-            // @inject(Dep1) public dep1: Dep1;
-            // @inject(Dep2) public dep2: Dep2;
-            // @inject(Dep3) public dep3: Dep3;
-        }
+        const { dep1, dep2, dep3 } = await page.evaluate(async () => {
+            const { inject } = await import("/main.js");
 
-        const instance = new Foo();
+            class Dep1 {}
+            class Dep2 {}
+            class Dep3 {}
 
-        expect(instance.dep1).toBeInstanceOf(Dep1);
-        expect(instance.dep2).toBeInstanceOf(Dep2);
-        expect(instance.dep3).toBeInstanceOf(Dep3);
+            class Foo extends HTMLElement {}
+            inject(...[Dep1])(Foo.prototype, "dep1");
+            inject(...[Dep2])(Foo.prototype, "dep2");
+            inject(...[Dep3])(Foo.prototype, "dep3");
+
+            customElements.define("my-foo", Foo);
+
+            const instance = new Foo();
+
+            return {
+                dep1: instance.dep1 instanceof Dep1,
+                dep2: instance.dep2 instanceof Dep2,
+                dep3: instance.dep3 instanceof Dep3
+            }
+        });
+
+        expect(dep1).toBe(true);
+        expect(dep2).toBe(true);
+        expect(dep3).toBe(true);
     });
 });
 
 test.describe(`The transient decorator`, () => {
     test(`works as a plain decorator`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
-
-        // TODO: uncomment these when test is fixed
-        // @transient
         class Foo {}
+        transient(Foo);
+
         expect(Foo["register"]).toBeInstanceOf(Function);
         const container = DI.createContainer();
         const foo1 = container.get(Foo);
@@ -444,11 +452,9 @@ test.describe(`The transient decorator`, () => {
         expect(foo1).not.toBe(foo2);
     });
     test(`works as an invocation`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
-
-        // TODO: uncomment these when test is fixed
-        // @transient()
         class Foo {}
+        transient(Foo);
+
         expect(Foo["register"]).toBeInstanceOf(Function);
         const container = DI.createContainer();
         const foo1 = container.get(Foo);
@@ -459,11 +465,9 @@ test.describe(`The transient decorator`, () => {
 
 test.describe(`The singleton decorator`, () => {
     test(`works as a plain decorator`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
-
-        // TODO: uncomment these when test is fixed
-        // @singleton
         class Foo {}
+        singleton(Foo);
+
         expect(Foo["register"]).toBeInstanceOf(Function);
         const container = DI.createContainer();
         const foo1 = container.get(Foo);
@@ -471,11 +475,9 @@ test.describe(`The singleton decorator`, () => {
         expect(foo1).toBe(foo2);
     });
     test(`works as an invocation`, () => {
-        test.fixme(true, "Decorator doesn't work in Playwright environment");
-
-        // TODO: uncomment these when test is fixed
-        // @singleton()
         class Foo {}
+        singleton(Foo);
+
         expect(Foo["register"]).toBeInstanceOf(Function);
         const container = DI.createContainer();
         const foo1 = container.get(Foo);
