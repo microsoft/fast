@@ -5,12 +5,12 @@ export default {
     "src/**/*.ts"
   ],
   exclude: [
-    "**/__test__/",
-    "**/design-system/",
-    "**/design-token/",
-    "**/di/",
-    "**/utilities/",
-    "**/test-utilities/",
+    "**/__test__/**",
+    "**/design-system/**",
+    "**/design-token/**",
+    "**/di/**",
+    "**/utilities/**",
+    "**/test-utilities/**",
     "**/*.spec.ts",
     "**/*.template.ts",
     "**/index.ts",
