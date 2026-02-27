@@ -8,47 +8,69 @@ resources:
     type: git
     name: fast/FASTPipelineTemplates
     ref: main
+  - repository: 1esPipelines
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
 
-pool:
-  vmImage: "ubuntu-latest"
+extends:
+  # The pipeline extends the 1ES PT which will inject different SDL and compliance tasks.
+  # For non-production pipelines, use "Unofficial" as defined below.
+  # For productions pipelines, use "Official".
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    # Update the pool with your team's 1ES hosted pool.
+    pool:
+      name: OneESPool  # Name of your hosted pool
+      image: HostedPoolLinuxImage  # Name of the image in your pool. If not specified, first image of the pool is used
+      os: linux  # OS of the image. This value cannot be a variable. Allowed values: windows, linux, macOS
+    sdl:
+      sourceAnalysisPool:
+        name: OneESPool  # Name of your hosted pool
+        image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
+        os: windows  # OS of the image. Allowed values: windows, linux, macOS
+    stages:
+    - stage: Stage
+      jobs:
+      - job: HostJob
 
-variables:
-  npm_config_cache: $(Pipeline.Workspace)/.npm
+        variables:
+          npm_config_cache: $(Pipeline.Workspace)/.npm
 
-steps:
-  - checkout: self
-    persistCredentials: "true"
+        steps:
+          - checkout: self
+            persistCredentials: "true"
 
-  - script: |
-      git config --global user.email fastsvc@microsoft.com
-      git config --global user.name "Microsoft FAST Builds"
-      git remote set-url origin https://$(GH_TOKEN)@github.com/microsoft/fast.git
+          - script: |
+              git config --global user.email fastsvc@microsoft.com
+              git config --global user.name "Microsoft FAST Builds"
+              git remote set-url origin https://$(GH_TOKEN)@github.com/microsoft/fast.git
 
-  - task: UseNode@1
-    inputs:
-      version: "22.x"
-    displayName: "Install Node.js"
+          - task: UseNode@1
+            inputs:
+              version: "22.x"
+            displayName: "Install Node.js"
 
-  - task: Cache@2
-    inputs:
-      key: 'npm | "$(Agent.OS)" | package-lock.json'
-      restoreKeys: |
-        npm | "$(Agent.OS)"
-      path: $(npm_config_cache)
-    displayName: "Cache npm"
+          - task: Cache@2
+            inputs:
+              key: 'npm | "$(Agent.OS)" | package-lock.json'
+              restoreKeys: |
+                npm | "$(Agent.OS)"
+              path: $(npm_config_cache)
+            displayName: "Cache npm"
 
-  - script: |
-      npm ci
-    displayName: "Install package dependencies"
+          - script: |
+              npm ci
+            displayName: "Install package dependencies"
 
-  - script: |
-      npm run build
-    displayName: "Build workspaces"
+          - script: |
+              npm run build
+            displayName: "Build workspaces"
 
-  - script: |
-      npm run publish-ci
-    displayName: "Use Beachball publish to bump, pack, and commit without publishing"
-    env:
-      GH_TOKEN: $(GH_TOKEN)
+          - script: |
+              npm run publish-ci
+            displayName: "Use Beachball publish to bump, pack, and commit without publishing"
+            env:
+              GH_TOKEN: $(GH_TOKEN)
 
-  - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
+          - template: FAST.Release.PipelineTemplate.yml@fastPipelines  # Template reference
