@@ -52,6 +52,35 @@ NameTag.define({
 
 When the greeting attribute is updated, so will the template.
 
+### Content
+
+To bind the content of an element, simply provide the expression within the start and end tags of the element. It can be the sole content of the element or interwoven with other elements and text.
+
+**Example: Basic Text Content**
+
+```html
+<h3>${x => x.greeting.toUpperCase()}</h3>
+```
+
+**Example: Interpolated Text Content**
+
+```html
+<h3>${x => x.greeting}, my name is ${x => x.name}.</h3>
+```
+
+**Example: Heterogeneous Content**
+
+```html
+<h3>
+  ${x => x.greeting}, my name is
+  <span class="name">${x => x.name}</span>.
+</h3>
+```
+
+:::note
+Dynamic content is set via the `textContent` HTML property for security reasons. You *cannot* set HTML content this way. See the Properties binding section for the explicit, opt-in mechanism for setting HTML via `:innerHTML`.
+:::
+
 ### Booleans
 
 Boolean bindings use the `?` symbol, use these for Boolean attributes.
