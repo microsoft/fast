@@ -12,6 +12,23 @@ import type {
 import type { HydrationView } from "../templating/view.js";
 import { FAST } from "../platform.js";
 
+/**
+ * Regex patterns for parsing hydration markers embedded as HTML comments by the SSR renderer.
+ * Each marker type encodes factory indices so the client can map markers back to ViewBehaviorFactories.
+ *
+ * Content binding markers bracket text/template content:
+ *   <!-- fe-b$$start$$<factoryIndex>$$<uniqueId>$$fe-b -->
+ *   ...content...
+ *   <!-- fe-b$$end$$<factoryIndex>$$<uniqueId>$$fe-b -->
+ *
+ * Repeat markers bracket each repeated item:
+ *   <!-- fe-repeat$$start$$<itemIndex>$$fe-repeat -->
+ *   <!-- fe-repeat$$end$$<itemIndex>$$fe-repeat -->
+ *
+ * Element boundary markers demarcate nested custom elements so parent walkers can skip them:
+ *   <!-- fe-eb$$start$$<elementId>$$fe-eb -->
+ *   <!-- fe-eb$$end$$<elementId>$$fe-eb -->
+ */
 const bindingStartMarker = /fe-b\$\$start\$\$(\d+)\$\$(.+)\$\$fe-b/;
 const bindingEndMarker = /fe-b\$\$end\$\$(\d+)\$\$(.+)\$\$fe-b/;
 const repeatViewStartMarker = /fe-repeat\$\$start\$\$(\d+)\$\$fe-repeat/;
