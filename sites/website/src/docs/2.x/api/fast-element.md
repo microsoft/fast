@@ -100,7 +100,11 @@ Defines metadata for a FASTElement.
 
 </td><td>
 
-A directive that applies bindings.
+The central binding directive that bridges data expressions and DOM updates.
+
+HTMLBindingDirective fulfills three roles simultaneously: - \*\*HTMLDirective\*\*: Produces placeholder HTML via createHTML() during template authoring. - \*\*ViewBehaviorFactory\*\*: Creates behaviors (returns itself) during view creation. - \*\*ViewBehavior / EventListener\*\*: Attaches to a DOM node during bind, manages expression observers for reactive updates, and handles DOM events directly.
+
+The aspectType (set by HTMLDirective.assignAspect during template processing) determines which DOM "sink" function is used to apply values — e.g., setAttribute for attributes, addEventListener for events, textContent for content.
 
 
 </td></tr>

@@ -339,6 +339,17 @@ export class HTMLView<TSource = any, TParent = any>
 
     /**
      * Binds a view's behaviors to its binding source.
+     *
+     * On the first call, this iterates through all compiled factories, calling
+     * createBehavior() on each to produce a ViewBehavior instance (e.g., an
+     * HTMLBindingDirective), and then immediately binds it. This is where event
+     * listeners are registered, expression observers are created, and initial
+     * DOM values are set.
+     *
+     * On subsequent calls with a new source, existing behaviors are re-bound
+     * to the new data source, which re-evaluates all binding expressions and
+     * updates the DOM accordingly.
+     *
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
@@ -350,6 +361,8 @@ export class HTMLView<TSource = any, TParent = any>
         let behaviors = this.behaviors;
 
         if (behaviors === null) {
+            // First bind: create behaviors from factories and bind each one.
+            // The view (this) acts as the ViewController, providing targets and source.
             this.source = source;
             this.context = context;
             this.behaviors = behaviors = new Array<ViewBehavior>(this.factories.length);
