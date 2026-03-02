@@ -167,6 +167,50 @@ test.describe("The HydratableElementController", () => {
 
             expect(stylesAttached).toBe(true);
         });
+
+        test("should invoke a HostBehavior's connectedCallback", async ({ page }) => {
+            await page.goto("/");
+
+            const wasCalled = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    ElementController,
+                    HydratableElementController,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                HydratableElementController.install();
+
+                const name = uniqueElementName();
+                FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    }
+                ).define();
+
+                const element = document.createElement(name) as any;
+                element.setAttribute("needs-hydration", "");
+                const controller = ElementController.forCustomElement(element);
+
+                let called = false;
+                controller.addBehavior({
+                    connectedCallback() {
+                        called = true;
+                    },
+                });
+
+                document.body.appendChild(element);
+                const result = called;
+                document.body.removeChild(element);
+
+                ElementController.setStrategy(ElementController);
+                return result;
+            });
+
+            expect(wasCalled).toBe(true);
+        });
     });
 
     test.describe("with the `defer-hydration` is set before connection", () => {
@@ -259,6 +303,115 @@ test.describe("The HydratableElementController", () => {
             });
 
             expect(stylesAttached).toBe(false);
+        });
+
+        test("should not invoke a HostBehavior's connectedCallback", async ({ page }) => {
+            await page.goto("/");
+
+            const wasCalled = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const {
+                    FASTElement,
+                    FASTElementDefinition,
+                    ElementController,
+                    HydratableElementController,
+                    uniqueElementName,
+                } = await import("/main.js");
+
+                HydratableElementController.install();
+
+                const name = uniqueElementName();
+                FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    }
+                ).define();
+
+                const element = document.createElement(name) as any;
+                element.setAttribute("needs-hydration", "");
+                const controller = ElementController.forCustomElement(element);
+
+                element.setAttribute("defer-hydration", "");
+
+                let called = false;
+                controller.addBehavior({
+                    connectedCallback() {
+                        called = true;
+                    },
+                });
+
+                document.body.appendChild(element);
+                const result = called;
+                document.body.removeChild(element);
+
+                ElementController.setStrategy(ElementController);
+                return result;
+            });
+
+            expect(wasCalled).toBe(false);
+        });
+
+        test("should defer connection when 'needsHydration' is assigned false and 'defer-hydration' attribute exists", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const { beforeRemoveAttr, afterRemoveAttr } = await page.evaluate(
+                async () => {
+                    // @ts-expect-error: Client module.
+                    const {
+                        FASTElement,
+                        FASTElementDefinition,
+                        ElementController,
+                        HydratableElementController,
+                        html,
+                        Updates,
+                        uniqueElementName,
+                    } = await import("/main.js");
+
+                    class Controller extends HydratableElementController {
+                        needsHydration = false;
+                    }
+
+                    ElementController.setStrategy(Controller);
+
+                    const name = uniqueElementName();
+                    FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = {
+                                name,
+                                template: html`
+                                    <p>Hello world</p>
+                                `,
+                            };
+                        }
+                    ).define();
+
+                    const element = document.createElement(name) as any;
+                    element.setAttribute("needs-hydration", "");
+                    const controller = ElementController.forCustomElement(element);
+
+                    element.setAttribute("defer-hydration", "");
+                    controller.connect();
+                    const beforeRemoveAttr = controller.isConnected;
+
+                    element.removeAttribute("defer-hydration");
+
+                    const timeout = new Promise(function (resolve) {
+                        setTimeout(resolve, 100);
+                    });
+
+                    await Promise.race([Updates.next(), timeout]);
+
+                    const afterRemoveAttr = controller.isConnected;
+
+                    ElementController.setStrategy(HydratableElementController);
+                    return { beforeRemoveAttr, afterRemoveAttr };
+                }
+            );
+
+            expect(beforeRemoveAttr).toBe(false);
+            expect(afterRemoveAttr).toBe(true);
         });
     });
 
@@ -378,6 +531,66 @@ test.describe("The HydratableElementController", () => {
             expect(beforeRemove).toBe(false);
             expect(afterRemove).toBe(true);
         });
+
+        test("should invoke a HostBehavior's connectedCallback", async ({ page }) => {
+            await page.goto("/");
+
+            const { beforeRemoveAttr, afterRemoveAttr } = await page.evaluate(
+                async () => {
+                    // @ts-expect-error: Client module.
+                    const {
+                        FASTElement,
+                        FASTElementDefinition,
+                        ElementController,
+                        HydratableElementController,
+                        Updates,
+                        uniqueElementName,
+                    } = await import("/main.js");
+
+                    HydratableElementController.install();
+
+                    const name = uniqueElementName();
+                    FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        }
+                    ).define();
+
+                    const element = document.createElement(name) as any;
+                    element.setAttribute("needs-hydration", "");
+                    const controller = ElementController.forCustomElement(element);
+
+                    element.setAttribute("defer-hydration", "");
+
+                    let called = false;
+                    controller.addBehavior({
+                        connectedCallback() {
+                            called = true;
+                        },
+                    });
+
+                    document.body.appendChild(element);
+                    const beforeRemoveAttr = called;
+
+                    element.removeAttribute("defer-hydration");
+
+                    const timeout = new Promise(function (resolve) {
+                        setTimeout(resolve, 100);
+                    });
+
+                    await Promise.race([Updates.next(), timeout]);
+
+                    const afterRemoveAttr = called;
+                    document.body.removeChild(element);
+
+                    ElementController.setStrategy(ElementController);
+                    return { beforeRemoveAttr, afterRemoveAttr };
+                }
+            );
+
+            expect(beforeRemoveAttr).toBe(false);
+            expect(afterRemoveAttr).toBe(true);
+        });
     });
 });
 
@@ -432,6 +645,23 @@ test.describe("HydrationMarkup", () => {
             });
 
             expect(result).toBe(true);
+        });
+
+        test("isContentBindingEndMarker should return false when provided the output of isBindingStartMarker", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { HydrationMarkup } = await import("/main.js");
+
+                return HydrationMarkup.isContentBindingEndMarker(
+                    HydrationMarkup.contentBindingStartMarker(12, "foobar")
+                );
+            });
+
+            expect(result).toBe(false);
         });
 
         test("parseContentBindingStartMarker should return null when not provided a start marker", async ({
@@ -657,6 +887,58 @@ test.describe("HydrationMarkup", () => {
             });
 
             expect(errorMessage).toContain("Invalid compact attribute marker name");
+        });
+
+        test("should throw when assigned compact marker attributes with invalid count", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const errorMessage = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { HydrationMarkup } = await import("/main.js");
+
+                const el = document.createElement("div");
+                el.setAttribute(
+                    `${HydrationMarkup.compactAttributeMarkerName}-5-baz`,
+                    ""
+                );
+
+                try {
+                    HydrationMarkup.parseCompactAttributeBinding(el);
+                    return null;
+                } catch (error: any) {
+                    return error.message;
+                }
+            });
+
+            expect(errorMessage).toBeTruthy();
+        });
+
+        test("should throw when assigned compact marker attributes with invalid index", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const errorMessage = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { HydrationMarkup } = await import("/main.js");
+
+                const el = document.createElement("div");
+                el.setAttribute(
+                    `${HydrationMarkup.compactAttributeMarkerName}-foo-3`,
+                    ""
+                );
+
+                try {
+                    HydrationMarkup.parseCompactAttributeBinding(el);
+                    return null;
+                } catch (error: any) {
+                    return error.message;
+                }
+            });
+
+            expect(errorMessage).toBeTruthy();
         });
     });
 
