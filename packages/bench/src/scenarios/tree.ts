@@ -112,6 +112,13 @@ export const SIZE_PRESETS: Record<string, TreeConfig> = {
     },
 };
 
+/**
+ * The tree configuration used by all benchmark scenarios.
+ * Changing this value affects both client-side (harness) and
+ * server-side (Vite SSR) tree generation.
+ */
+export const BENCH_TREE_CONFIG: TreeConfig = SIZE_PRESETS.m;
+
 // ---------------------------------------------------------------------------
 // Tree builder
 // ---------------------------------------------------------------------------
@@ -193,6 +200,61 @@ export function renderTree(node: TreeNode, itemRenderer: () => HTMLElement): HTM
     }
 
     return wrapper;
+}
+
+/**
+ * Render a `TreeNode` hierarchy to an HTML string.
+ *
+ * This is the string-based counterpart of {@link renderTree}. It produces
+ * the same `<div class="tree-node depth-N index-N">` wrapper structure but
+ * works without a DOM, making it suitable for build-time generation (e.g.
+ * the Vite `@bench-ssr-tree` directive).
+ *
+ * @param node - The tree node to render.
+ * @param itemHTML - The HTML string to insert at every node position.
+ */
+export function renderTreeToHTML(node: TreeNode, itemHTML: string): string {
+    let html = `<div class="tree-node depth-${node.depth} index-${node.index}">`;
+    html += itemHTML;
+
+    for (const child of node.children) {
+        html += renderTreeToHTML(child, itemHTML);
+    }
+
+    html += "</div>";
+    return html;
+}
+
+/**
+ * Render a `TreeNode` hierarchy to an HTML string, calling `renderItem`
+ * with a sequential index for each node.
+ *
+ * This is like {@link renderTreeToHTML} but accepts a callback instead of
+ * a static string, allowing each node to produce unique content based on
+ * its position in the flattened traversal order.
+ *
+ * @param node - The tree node to render.
+ * @param renderItem - Called once per node with a sequential index; returns HTML.
+ */
+export function renderTreeToHTMLWith(
+    node: TreeNode,
+    renderItem: (index: number) => string
+): string {
+    let counter = 0;
+
+    function walk(n: TreeNode): string {
+        let html = `<div class="tree-node depth-${n.depth} index-${n.index}">`;
+        html += renderItem(counter++);
+
+        for (const child of n.children) {
+            html += walk(child);
+        }
+
+        html += "</div>";
+        return html;
+    }
+
+    return walk(node);
 }
 
 /**

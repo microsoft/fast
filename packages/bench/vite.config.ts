@@ -1,7 +1,12 @@
-import { readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { defineConfig } from "vite";
+import {
+    BENCH_TREE_CONFIG,
+    buildTree,
+    renderTreeToHTMLWith,
+} from "./src/scenarios/tree.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const benchmarksDir = resolve(__dirname, "src", "scenarios");
@@ -33,19 +38,42 @@ function discoverBenchmarkInputs(): Record<string, string> {
 export default defineConfig({
     root: benchmarksDir,
     server: {
+        hmr: false,
         port: 5173,
     },
     plugins: [
         {
             name: "html-transform",
             enforce: "pre",
-            transformIndexHtml(html) {
-                // Transform SSR repeat blocks to fill out n number of items:
-                // <!-- @bench-ssr count="N" -->...<!-- @/bench-ssr -->
-                html = html.replace(
-                    /<!--\s*@bench-ssr\s+count="(\d+)"\s*-->([\s\S]*?)<!--\s*@\/bench-ssr\s*-->/g,
-                    (_, count, content) => content.repeat(parseInt(count, 10))
-                );
+            async transformIndexHtml(html, { filename }) {
+                // Render-function driven SSR: builds a deterministic
+                // tree (~1 000 nodes) and calls the scenario's render()
+                // function discovered next to the index.html being processed.
+                // <!-- @bench-ssr-render -->
+                const renderModulePath = resolve(dirname(filename), "render.ts");
+
+                if (html.includes("<!-- f-template -->")) {
+                    const templatePath = resolve(
+                        dirname(filename),
+                        "..",
+                        "template.html"
+                    );
+                    if (existsSync(templatePath)) {
+                        const template = readFileSync(templatePath, "utf-8");
+                        html = html.replace("<!-- f-template -->", template);
+                    }
+                }
+
+                if (html.includes("@bench-ssr-render") && existsSync(renderModulePath)) {
+                    const { render } = (await import(
+                        pathToFileURL(renderModulePath).href
+                    )) as { render: (index: number) => string };
+
+                    html = html.replace(/<!--\s*@bench-ssr-render\s*-->/g, () => {
+                        const tree = buildTree(BENCH_TREE_CONFIG);
+                        return renderTreeToHTMLWith(tree, render);
+                    });
+                }
 
                 // Inject table of contents into the root index page
                 html = html.replace(
