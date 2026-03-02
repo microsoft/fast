@@ -184,7 +184,7 @@ export const HTMLDirective = Object.freeze({
      *   - No prefix (e.g. "class")  → DOMAspect.attribute
      *   - ":" prefix (e.g. ":value") → DOMAspect.property (":classList" → DOMAspect.tokenList)
      *   - "?" prefix (e.g. "?disabled") → DOMAspect.booleanAttribute
-     *   - "@" prefix (e.g. "@click") → DOMAspect.event
+     *   - "\@" prefix (e.g. "\@click") → DOMAspect.event
      *   - No value (text content)     → DOMAspect.content
      * @param directive - The directive to assign the aspect to.
      * @param value - The value to base the aspect determination on.
