@@ -11,6 +11,8 @@ export {
     HydratableElementController,
     AdoptedStyleSheetsStrategy,
     StyleElementStrategy,
+    needsHydrationAttribute,
+    deferHydrationAttribute,
 } from "../src/components/element-controller.js";
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { HydrationMarkup } from "../src/components/hydration.js";
