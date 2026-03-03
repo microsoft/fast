@@ -1,6 +1,13 @@
 trigger: none
 pr: none
 
+schedules:
+- cron: '0 0 * * *'
+  displayName: Daily Release
+  branches:
+    include:
+    - main
+
 # The `resources` specify the location and version of the 1ES PT.
 resources:
   repositories:
