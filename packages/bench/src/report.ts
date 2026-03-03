@@ -82,11 +82,12 @@ const reportJs = readFileSync(
     "utf-8"
 );
 
-const STAT_KEYS = ["min", "median", "mean", "p95", "max"] as const;
+const STAT_KEYS = ["min", "median", "mean", "geoMean", "p95", "max"] as const;
 const STAT_LABELS: Record<(typeof STAT_KEYS)[number], string> = {
     min: "Min",
     median: "Median",
     mean: "Mean",
+    geoMean: "Geo Mean",
     p95: "P95",
     max: "Max",
 };
