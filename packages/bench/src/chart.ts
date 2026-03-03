@@ -55,13 +55,15 @@ function fmt(v: number): string {
 }
 
 /**
- * A palette of visually distinct colors assigned to variants by hashing
- * the variant name. This avoids hardcoding colors for specific names.
+ * A palette of visually distinct colors assigned to variants by
+ * insertion order. Colors are chosen to maximize contrast between
+ * adjacent entries so that the first two variants in any scenario
+ * are always easy to distinguish.
  */
 const VARIANT_PALETTE = [
     "#6366f1", // indigo
-    "#06b6d4", // cyan
     "#f59e0b", // amber
+    "#06b6d4", // cyan
     "#ec4899", // pink
     "#10b981", // emerald
     "#8b5cf6", // violet
@@ -71,16 +73,13 @@ const VARIANT_PALETTE = [
     "#3b82f6", // blue
 ];
 
+let variantColorIndex = 0;
 const variantColorCache = new Map<string, string>();
 
 export function variantColor(variant: string): string {
     let color = variantColorCache.get(variant);
     if (!color) {
-        let hash = 0;
-        for (let i = 0; i < variant.length; i++) {
-            hash = Math.imul(31, hash) + variant.charCodeAt(i);
-        }
-        color = VARIANT_PALETTE[Math.abs(hash) % VARIANT_PALETTE.length];
+        color = VARIANT_PALETTE[variantColorIndex++ % VARIANT_PALETTE.length];
         variantColorCache.set(variant, color);
     }
     return color;
