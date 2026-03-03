@@ -9,10 +9,12 @@ import {
     TRACE_CATEGORIES,
     TRACE_METRIC_KEYS,
     type TraceEvent,
+    type TraceMetricKey,
     type TraceMetrics,
     type TraceMetricSeries,
 } from "./trace.ts";
 import { renderHtmlReport } from "./report.ts";
+import { METRIC_LABELS } from "./chart.ts";
 
 const benchmarksDir = resolve(import.meta.dirname, "scenarios");
 
@@ -72,12 +74,7 @@ const baseUrl = `http://localhost:${port}`;
 interface BenchmarkResult {
     name: string;
     iterations: TraceMetricSeries;
-    scripting: ReturnType<typeof computeStats>;
-    layout: ReturnType<typeof computeStats>;
-    styleRecalc: ReturnType<typeof computeStats>;
-    paint: ReturnType<typeof computeStats>;
-    total: ReturnType<typeof computeStats>;
-    userMeasure: ReturnType<typeof computeStats>;
+    stats: Record<TraceMetricKey, ReturnType<typeof computeStats>>;
 }
 
 /**
@@ -105,6 +102,7 @@ function formatStat(stat: ReturnType<typeof computeStats>): Record<string, strin
         Min: stat.min.toFixed(3),
         Median: stat.median.toFixed(3),
         Mean: stat.mean.toFixed(3),
+        GeoMean: stat.geoMean.toFixed(3),
         P95: stat.p95.toFixed(3),
         Max: stat.max.toFixed(3),
     };
@@ -152,7 +150,15 @@ async function main(): Promise<void> {
         `Running ${BENCHMARKS.length} benchmark(s) × ${ITERATIONS} iteration(s).\n`
     );
 
-    const browser = await chromium.launch();
+    const browser = await chromium.launch({
+        args: [
+            // Prevent Chrome from throttling or skipping paint timing in headless
+            "--disable-backgrounding-occluded-windows",
+            "--disable-renderer-backgrounding",
+            "--disable-background-timer-throttling",
+            "--disable-features=BackForwardCache",
+        ],
+    });
 
     try {
         const context = await browser.newContext();
@@ -165,24 +171,52 @@ async function main(): Promise<void> {
                 `  [${b + 1}/${bLength}] ${benchName} (${ITERATIONS} iterations)`
             );
             const metrics: TraceMetrics[] = [];
-            const page = await context.newPage();
 
             // Warm up: run the benchmark once without tracing so the
             // browser has compiled scripts, JIT'd hot paths, and
             // resolved network resources for this page.
-            await page.goto(`${baseUrl}/${benchName}/`);
-            await page.waitForFunction(
+            const warmupPage = await context.newPage();
+            await warmupPage.goto(`${baseUrl}/${benchName}/`);
+            await warmupPage.waitForFunction(
                 () => (window as any).__benchmarkDone === true,
                 null,
                 { timeout: PER_ITERATION_TIMEOUT }
             );
+            await warmupPage.close();
 
             for (let i = 0; i < ITERATIONS; i++) {
                 if (ITERATIONS > 1) {
                     process.stdout.write(`\r    iteration ${i + 1}/${ITERATIONS}`);
                 }
 
+                // Use a fresh page per iteration so Chrome treats each
+                // navigation as a brand-new page load and reliably emits
+                // FCP/LCP timing events.
+                const page = await context.newPage();
                 const client = await page.context().newCDPSession(page);
+
+                // Enable lifecycle events so we can wait for FCP before
+                // stopping the trace.
+                await client.send("Page.enable");
+
+                // Wait for FCP via whichever signal fires first: CDP
+                // lifecycle event or Performance API entry.
+                const fcpPromise = Promise.race([
+                    new Promise<void>(resolve => {
+                        client.on("Page.lifecycleEvent", (params: any) => {
+                            if (params.name === "firstContentfulPaint") {
+                                resolve();
+                            }
+                        });
+                    }),
+                    page.waitForFunction(
+                        () =>
+                            performance.getEntriesByName("first-contentful-paint")
+                                .length > 0,
+                        null,
+                        { timeout: PER_ITERATION_TIMEOUT }
+                    ),
+                ]);
 
                 await client.send("Tracing.start", {
                     categories: TRACE_CATEGORIES.join(","),
@@ -196,44 +230,38 @@ async function main(): Promise<void> {
                     { timeout: PER_ITERATION_TIMEOUT }
                 );
 
+                // Wait for Chrome to finalize FCP before stopping the trace.
+                await fcpPromise;
+
                 const events = await collectTrace(client);
                 metrics.push(parseTraceEvents(events));
 
                 await client.detach();
+                await page.close();
             }
 
             if (ITERATIONS > 1) {
                 process.stdout.write("\r");
             }
 
-            await page.close();
+            const iterations = toMetricSeries(metrics);
+            const stats = {} as Record<TraceMetricKey, ReturnType<typeof computeStats>>;
+            for (const key of TRACE_METRIC_KEYS) {
+                stats[key] = computeStats(iterations[key]);
+            }
 
-            results.push({
-                name: benchName,
-                iterations: toMetricSeries(metrics),
-                scripting: computeStats(metrics.map(m => m.scripting)),
-                layout: computeStats(metrics.map(m => m.layout)),
-                styleRecalc: computeStats(metrics.map(m => m.styleRecalc)),
-                paint: computeStats(metrics.map(m => m.paint)),
-                total: computeStats(metrics.map(m => m.total)),
-                userMeasure: computeStats(metrics.map(m => m.userMeasure)),
-            });
+            results.push({ name: benchName, iterations, stats });
 
-            console.log(
-                `    done (median: ${results.at(-1)?.total.median.toFixed(1)}ms)`
-            );
+            console.log(`    done (median: ${stats.total.median.toFixed(1)}ms)`);
         }
 
         for (const r of results) {
             console.log(`\n=== ${r.name} (ms) ===\n`);
-            console.table({
-                Scripting: formatStat(r.scripting),
-                Layout: formatStat(r.layout),
-                "Style Recalc": formatStat(r.styleRecalc),
-                Paint: formatStat(r.paint),
-                "Total (trace)": formatStat(r.total),
-                "User Measure": formatStat(r.userMeasure),
-            });
+            const table: Record<string, Record<string, string>> = {};
+            for (const key of TRACE_METRIC_KEYS) {
+                table[METRIC_LABELS[key]] = formatStat(r.stats[key]);
+            }
+            console.table(table);
         }
 
         const outDir = resolve(import.meta.dirname, "..", "results");
@@ -242,14 +270,7 @@ async function main(): Promise<void> {
         const reportData = results.map(r => ({
             name: r.name,
             iterations: r.iterations,
-            stats: {
-                scripting: r.scripting,
-                layout: r.layout,
-                styleRecalc: r.styleRecalc,
-                paint: r.paint,
-                total: r.total,
-                userMeasure: r.userMeasure,
-            },
+            stats: r.stats,
         }));
         const html = renderHtmlReport(reportData, {
             metrics: [...TRACE_METRIC_KEYS],
