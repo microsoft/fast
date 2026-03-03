@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Mon, 02 Mar 2026 22:31:57 GMT",
+      "version": "2.10.1",
+      "tag": "@microsoft/fast-element_v2.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@microsoft/fast-element",
+            "commit": "c992d2a5311f64272c3aebfb24105f374dd22cb1",
+            "comment": "Moves handleEvent from a class property into a closure in children.ts to remove non-standard observer.target property assignment"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Feb 2026 20:49:29 GMT",
       "version": "2.10.0",
       "tag": "@microsoft/fast-element_v2.10.0",

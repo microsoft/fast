@@ -58,10 +58,10 @@
     "./dist/esm/index.js"
   ],
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.0"
+    "@microsoft/fast-element": "^2.10.1"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.10.0"
+    "@microsoft/fast-element": "^2.10.1"
   },
   "beachball": {
     "disallowedChangeTypes": [
