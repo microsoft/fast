@@ -56,11 +56,11 @@
     "tslib": "^2.6.3"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.0"
+    "@microsoft/fast-element": "^2.10.1"
   },
   "devDependencies": {
     "@types/parse5": "^5.0.0",
-    "@microsoft/fast-element": "^2.10.0"
+    "@microsoft/fast-element": "^2.10.1"
   },
   "beachball": {
     "disallowedChangeTypes": [
