@@ -12,6 +12,7 @@ export const TRACE_CATEGORIES = [
     "devtools.timeline",
     "v8.execute",
     "blink.user_timing",
+    "loading",
 ] as const;
 
 /** Trace event phases we care about. */
@@ -43,6 +44,12 @@ export interface TraceMetrics {
     total: number;
     /** Duration from the user-timing "bench" measure, if present (ms). */
     userMeasure: number;
+    /** First Contentful Paint relative to navigation start (ms), or -1 if not available. */
+    fcp: number;
+    /** Largest Contentful Paint relative to navigation start (ms), or -1 if not available. */
+    lcp: number;
+    /** DOMContentLoaded relative to navigation start (ms), or -1 if not available. */
+    dcl: number;
 }
 
 /**
@@ -155,6 +162,66 @@ function sumCategory(
 }
 
 /**
+ * Extract navigation-relative timing metrics (FCP, LCP, DCL) in a single
+ * pass over the events. Finds the last navigationStart before bench-start,
+ * then computes each metric relative to it. Returns -1 for any metric
+ * whose trace event was not emitted.
+ */
+function extractNavMetrics(
+    events: TraceEvent[],
+    benchStart: number
+): { fcp: number; lcp: number; dcl: number } {
+    let navStart = -1;
+    let fcp = -1;
+    let lcp = -1;
+    let dcl = -1;
+
+    // First pass: find the last navigationStart before bench-start.
+    for (const ev of events) {
+        if (
+            ev.cat.includes("blink.user_timing") &&
+            ev.name === "navigationStart" &&
+            (ev.ph === "I" || ev.ph === "R") &&
+            ev.ts <= benchStart
+        ) {
+            navStart = ev.ts;
+        }
+    }
+
+    if (navStart < 0) {
+        return { fcp, lcp, dcl };
+    }
+
+    // Second pass: extract FCP, LCP, DCL relative to navStart.
+    for (const ev of events) {
+        if (ev.ts < navStart || (ev.ph !== "I" && ev.ph !== "R")) {
+            continue;
+        }
+
+        if (
+            ev.name === "firstContentfulPaint" &&
+            ev.cat.includes("devtools.timeline") &&
+            fcp < 0
+        ) {
+            fcp = (ev.ts - navStart) / 1000;
+        } else if (
+            ev.name === "largestContentfulPaint::Candidate" &&
+            ev.cat.includes("devtools.timeline")
+        ) {
+            lcp = (ev.ts - navStart) / 1000; // take the last candidate
+        } else if (
+            ev.name === "MarkDOMContent" &&
+            ev.cat.includes("devtools.timeline") &&
+            dcl < 0
+        ) {
+            dcl = (ev.ts - navStart) / 1000;
+        }
+    }
+
+    return { fcp, lcp, dcl };
+}
+
+/**
  * Extract the user-timing "bench" measure duration from trace events.
  */
 function extractUserMeasure(events: TraceEvent[]): number {
@@ -193,6 +260,11 @@ function extractUserMeasure(events: TraceEvent[]): number {
  */
 export function parseTraceEvents(events: TraceEvent[]): TraceMetrics {
     const range = findBenchmarkRange(events);
+    const benchStart = range?.start ?? -1;
+    const { fcp, lcp, dcl } =
+        benchStart > 0
+            ? extractNavMetrics(events, benchStart)
+            : { fcp: -1, lcp: -1, dcl: -1 };
 
     if (!range) {
         return {
@@ -202,6 +274,9 @@ export function parseTraceEvents(events: TraceEvent[]): TraceMetrics {
             paint: -1,
             total: -1,
             userMeasure: extractUserMeasure(events),
+            fcp,
+            lcp,
+            dcl,
         };
     }
 
@@ -221,6 +296,9 @@ export function parseTraceEvents(events: TraceEvent[]): TraceMetrics {
         paint,
         total: scripting + layout + styleRecalc + paint,
         userMeasure: extractUserMeasure(events),
+        fcp,
+        lcp,
+        dcl,
     };
 }
 
@@ -232,6 +310,9 @@ export const TRACE_METRIC_KEYS = [
     "paint",
     "total",
     "userMeasure",
+    "fcp",
+    "lcp",
+    "dcl",
 ] as const;
 
 export type TraceMetricKey = (typeof TRACE_METRIC_KEYS)[number];
@@ -248,6 +329,9 @@ export function toMetricSeries(metrics: TraceMetrics[]): TraceMetricSeries {
         paint: metrics.map(m => m.paint),
         total: metrics.map(m => m.total),
         userMeasure: metrics.map(m => m.userMeasure),
+        fcp: metrics.map(m => m.fcp),
+        lcp: metrics.map(m => m.lcp),
+        dcl: metrics.map(m => m.dcl),
     };
 }
 
@@ -258,15 +342,23 @@ export function computeStats(values: number[]): {
     min: number;
     median: number;
     mean: number;
+    geoMean: number;
     p95: number;
     max: number;
 } {
     const sorted = [...values].sort((a, b) => a - b);
     const len = sorted.length;
+    const geoMean =
+        len > 0
+            ? Math.exp(
+                  values.reduce((acc, v) => acc + Math.log(Math.max(v, 1e-9)), 0) / len
+              )
+            : 0;
     return {
         min: sorted[0],
         median: sorted[Math.floor(len / 2)],
         mean: values.reduce((a, b) => a + b, 0) / len,
+        geoMean,
         p95: sorted[Math.floor(len * 0.95)],
         max: sorted[len - 1],
     };

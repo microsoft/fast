@@ -1,36 +1,30 @@
-import { buildTree, renderTree, SIZE_PRESETS } from "./tree.js";
+import { BENCH_TREE_CONFIG, buildTree, renderTree } from "./tree.js";
 
 /**
  * Run a benchmark by mounting `itemRenderer` once per node in a
  * deterministic random tree.
  *
- * The tree size can be controlled via the `?size=` query parameter
- * (`xs` | `s` | `m` | `l` | `xl`; default `m` ≈ 1 000 nodes).
  * This mirrors tensile-perf's mount test: each tree node creates a
  * wrapper `<div>`, calls `itemRenderer()`, and recurses into children,
  * producing a deeply nested DOM that exercises the component at scale.
+ *
+ * @param itemRenderer - Factory that creates one element per tree node.
+ * @param targetSize - Number of tree nodes. Defaults to BENCH_TREE_CONFIG (~1 000).
  */
-export function runBenchmark(itemRenderer: () => HTMLElement): void {
+export function runBenchmark(
+    itemRenderer: () => HTMLElement,
+    targetSize: number = BENCH_TREE_CONFIG.targetSize
+): void {
     const container = document.getElementById("container");
 
-    const params = new URLSearchParams(window.location.search);
-    const sizeName = params.get("size") ?? "m";
-    const config = SIZE_PRESETS[sizeName] ?? SIZE_PRESETS.m;
+    const config = { ...BENCH_TREE_CONFIG, targetSize };
     const tree = buildTree(config);
 
     performance.mark("bench-start");
     container?.appendChild(renderTree(tree, itemRenderer));
     performance.mark("bench-end");
 
-    performance.measure("bench", "bench-start", "bench-end");
-
-    // Wait for the browser to complete layout and paint before signaling done.
-    // This ensures CDP tracing captures the full rendering pipeline.
-    requestAnimationFrame(() => {
-        setTimeout(() => {
-            (window as any).__benchmarkDone = true;
-        }, 0);
-    });
+    signalDone();
 }
 
 /**
@@ -38,9 +32,17 @@ export function runBenchmark(itemRenderer: () => HTMLElement): void {
  * Useful for benchmarks that manage their own DOM setup (e.g. hydration).
  */
 export function signalDone(): void {
+    performance.measure("bench", "bench-start", "bench-end");
+
+    const { port1, port2 } = new MessageChannel();
+    port1.onmessage = () => {
+        (window as any).__benchmarkDone = true;
+    };
+
+    // Wait for the browser to complete layout and paint before signaling done.
+    // rAF fires before paint; the MessageChannel callback fires after paint
+    // completes, similar to the `afterframe` library used by tensile-perf.
     requestAnimationFrame(() => {
-        setTimeout(() => {
-            (window as any).__benchmarkDone = true;
-        }, 0);
+        port2.postMessage(undefined);
     });
 }
