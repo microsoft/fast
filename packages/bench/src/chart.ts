@@ -22,6 +22,9 @@ export const METRIC_LABELS: Record<TraceMetricKey, string> = {
     paint: "Paint",
     total: "Total (trace)",
     userMeasure: "User Measure",
+    fcp: "FCP",
+    lcp: "LCP",
+    dcl: "DCL",
 };
 
 export const METRIC_COLORS: Record<TraceMetricKey, string> = {
@@ -31,6 +34,9 @@ export const METRIC_COLORS: Record<TraceMetricKey, string> = {
     paint: "#34a853",
     total: "#8b5cf6",
     userMeasure: "#f97316",
+    fcp: "#14b8a6",
+    lcp: "#ec4899",
+    dcl: "#0ea5e9",
 };
 
 export function escapeXml(s: string): string {
@@ -172,17 +178,6 @@ export function renderSvgChart(
                 )}</text>`
             );
         }
-
-        // Area fill
-        const areaPoints: string[] = [];
-        areaPoints.push(`${toX(0)},${panelY + panelHeight}`);
-        for (let i = 0; i < data.length; i++) {
-            areaPoints.push(`${toX(i)},${toY(data[i])}`);
-        }
-        areaPoints.push(`${toX(data.length - 1)},${panelY + panelHeight}`);
-        parts.push(
-            `<polygon points="${areaPoints.join(" ")}" fill="${color}" opacity="0.08"/>`
-        );
 
         // Line
         const linePoints: string[] = [];
@@ -446,18 +441,6 @@ export function renderComparisonChart(
             const toX = (i: number) =>
                 margin.left +
                 (data.length > 1 ? (i / (data.length - 1)) * plotWidth : plotWidth / 2);
-
-            // Area fill
-            const areaPoints: string[] = [];
-            areaPoints.push(`${toX(0)},${panelY + panelHeight}`);
-            for (let i = 0; i < data.length; i++) {
-                areaPoints.push(`${toX(i)},${toY(data[i])}`);
-            }
-            areaPoints.push(`${toX(data.length - 1)},${panelY + panelHeight}`);
-            parts.push(
-                `<polygon points="${areaPoints.join(" ")}"` +
-                    ` fill="${vc}" opacity="0.07"/>`
-            );
 
             // Line
             const linePoints: string[] = [];
