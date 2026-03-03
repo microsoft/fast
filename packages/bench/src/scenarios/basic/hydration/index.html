@@ -4,18 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>basic / fast-html (hydrate)</title>
+    <style>.tree-node { background-color: #FF00FF10 }</style>
 </head>
 <body>
     <div id="container">
-        <!-- @bench-ssr count="100" -->
-        <bench-basic needs-hydration>
-            <template shadowrootmode="open"><span>hello</span></template>
-        </bench-basic>
-        <!-- @/bench-ssr -->
+        <!-- @bench-ssr-render -->
     </div>
-    <f-template name="bench-basic">
-        <template><span>hello</span></template>
-    </f-template>
+    <!-- f-template -->
     <script type="module" src="./main.ts"></script>
 </body>
 </html>

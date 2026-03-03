@@ -1,11 +1,9 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { signalDone } from "../../harness.js";
-
-class BasicElement extends FASTElement {}
+import { BasicElement } from "../element.js";
 
 RenderableFASTElement(BasicElement).defineAsync({
-    name: "bench-basic",
+    name: "basic-element",
     templateOptions: "defer-and-hydrate",
 });
 
@@ -14,7 +12,6 @@ performance.mark("bench-start");
 TemplateElement.config({
     hydrationComplete() {
         performance.mark("bench-end");
-        performance.measure("bench", "bench-start", "bench-end");
         signalDone();
     },
 }).define({ name: "f-template" });
