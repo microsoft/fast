@@ -1,9 +1,10 @@
-import { TemplateElement } from "@microsoft/fast-html";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
-BenchElement.defineAsync({
+RenderableFASTElement(BenchElement).defineAsync({
     name: "bench-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 performance.mark("bench-start");

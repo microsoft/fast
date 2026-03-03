@@ -2,9 +2,10 @@ export function render(): string {
     return /* html */ `
         <bench-element needs-hydration>
             <template shadowrootmode="open">
-                <slot></span>
+                <h3 data-fe-b-0>Title</h3>
+                <slot data-fe-b-1></slot>
             </template>
-            hello
+            <span>slotted content</span>
         </bench-element>
     `;
 }
