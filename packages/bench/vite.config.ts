@@ -69,10 +69,19 @@ export default defineConfig({
                         pathToFileURL(renderModulePath).href
                     )) as { render: (index: number) => string };
 
-                    html = html.replace(/<!--\s*@bench-ssr-render\s*-->/g, () => {
-                        const tree = buildTree(BENCH_TREE_CONFIG);
-                        return renderTreeToHTMLWith(tree, render);
-                    });
+                    html = html.replace(
+                        /<!--\s*@bench-ssr-render(?:\s+(\d+))?\s*-->/g,
+                        (_match, sizeStr) => {
+                            const config = sizeStr
+                                ? {
+                                      ...BENCH_TREE_CONFIG,
+                                      targetSize: parseInt(sizeStr, 10),
+                                  }
+                                : BENCH_TREE_CONFIG;
+                            const tree = buildTree(config);
+                            return renderTreeToHTMLWith(tree, render);
+                        }
+                    );
                 }
 
                 // Inject table of contents into the root index page

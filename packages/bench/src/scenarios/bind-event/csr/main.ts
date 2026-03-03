@@ -4,13 +4,9 @@ import { BenchElement } from "../element.js";
 
 BenchElement.define({
     name: "bench-element",
-    template: html`
-        <slot></slot>
+    template: html<BenchElement>`
+        <button @click="${x => x.handleClick()}">Count: ${x => x.count}</button>
     `,
 });
 
-runBenchmark(() => {
-    const el = document.createElement("bench-element");
-    el.innerHTML = "hello";
-    return el;
-});
+runBenchmark(() => document.createElement("bench-element"));
