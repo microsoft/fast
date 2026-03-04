@@ -2,9 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Host Bindings Hydration", async () => {
     test.describe("should restart marker indexes inside the template after host bindings", () => {
-        test("single host event binding with content text binding", async ({
-            page,
-        }) => {
+        test("single host event binding with content text binding", async ({ page }) => {
             await page.goto("/fixtures/host-bindings/");
 
             const element = page.locator("host-event-element");
@@ -277,9 +275,9 @@ test.describe("Host Bindings Hydration", async () => {
 
                 await element.click({ force: true }); // force because element is disabled
 
-                expect(
-                    messages.some(m => m.includes(`${selector} clicked: 1`))
-                ).toBe(true);
+                expect(messages.some(m => m.includes(`${selector} clicked: 1`))).toBe(
+                    true
+                );
 
                 // KEY TEST: Verify updating content binding works regardless of host binding order
                 await element.evaluate((el: any) => {

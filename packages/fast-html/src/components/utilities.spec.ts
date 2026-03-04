@@ -2,18 +2,18 @@ import { expect, test } from "@playwright/test";
 import { type JSONSchema, refPropertyName, Schema } from "./schema.js";
 import {
     type AttributeDataBindingBehaviorConfig,
-    type ContentDataBindingBehaviorConfig,
-    type TemplateDirectiveBehaviorConfig,
-    getNextBehavior,
     type AttributeDirectiveBindingBehaviorConfig,
-    getIndexOfNextMatchingTag,
-    pathResolver,
-    transformInnerHTML,
-    getExpressionChain,
+    type ContentDataBindingBehaviorConfig,
     extractPathsFromChainedExpression,
-    getChildrenMap,
     findDef,
+    getChildrenMap,
+    getExpressionChain,
+    getIndexOfNextMatchingTag,
+    getNextBehavior,
+    pathResolver,
     resolveWhen,
+    type TemplateDirectiveBehaviorConfig,
+    transformInnerHTML,
 } from "./utilities.js";
 
 test.describe("utilities", async () => {
@@ -23,117 +23,223 @@ test.describe("utilities", async () => {
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual("content");
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.bindingType).toEqual("default");
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(0);
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingEndIndex).toEqual(2);
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(6);
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingEndIndex).toEqual(8);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual(
+                "content"
+            );
+            expect(
+                (templateResult as ContentDataBindingBehaviorConfig)?.bindingType
+            ).toEqual("default");
+            expect(
+                (templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex
+            ).toEqual(0);
+            expect(
+                (templateResult as ContentDataBindingBehaviorConfig)?.openingEndIndex
+            ).toEqual(2);
+            expect(
+                (templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex
+            ).toEqual(6);
+            expect(
+                (templateResult as ContentDataBindingBehaviorConfig)?.closingEndIndex
+            ).toEqual(8);
         });
     });
 
     test.describe("attributes", async () => {
         test("get the next attribute binding", async () => {
-            const innerHTML = "<input type=\"{{type}}\" disabled>";
+            const innerHTML = '<input type="{{type}}" disabled>';
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual(null);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("default");
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex).toEqual(13);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(15);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(19);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(21);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.subtype
+            ).toEqual("attribute");
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.aspect
+            ).toEqual(null);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.bindingType
+            ).toEqual("default");
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex
+            ).toEqual(13);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex
+            ).toEqual(15);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex
+            ).toEqual(19);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex
+            ).toEqual(21);
         });
 
         test("get the next attribute event binding", async () => {
-            const innerHTML = "<input @click=\"{handleClick()}\">";
+            const innerHTML = '<input @click="{handleClick()}">';
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual("@");
-            expect((templateResult as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex).toEqual(15);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex).toEqual(16);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(29);
-            expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(30);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.subtype
+            ).toEqual("attribute");
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.aspect
+            ).toEqual("@");
+            expect(
+                (templateResult as AttributeDirectiveBindingBehaviorConfig)?.bindingType
+            ).toEqual("client");
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.openingStartIndex
+            ).toEqual(15);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.openingEndIndex
+            ).toEqual(16);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex
+            ).toEqual(29);
+            expect(
+                (templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex
+            ).toEqual(30);
         });
     });
 
     test.describe("templates", async () => {
         test("when directive", async () => {
-            const innerHTML = "<f-when value=\"{{show}}\">Hello world</f-when>";
+            const innerHTML = '<f-when value="{{show}}">Hello world</f-when>';
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("templateDirective");
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(0);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(25);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(36);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(45);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex
+            ).toEqual(0);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex
+            ).toEqual(25);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex
+            ).toEqual(36);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex
+            ).toEqual(45);
         });
         test("when directive with content", async () => {
-            const innerHTML = "Hello pluto<f-when value=\"{{show}}\">Hello world</f-when>";
+            const innerHTML = 'Hello pluto<f-when value="{{show}}">Hello world</f-when>';
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("templateDirective");
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(11);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(36);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(47);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(56);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex
+            ).toEqual(11);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex
+            ).toEqual(36);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex
+            ).toEqual(47);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex
+            ).toEqual(56);
         });
         test("when directive with binding", async () => {
-            const innerHTML = "<f-when value=\"{{show}}\">{{text}}</f-when>";
+            const innerHTML = '<f-when value="{{show}}">{{text}}</f-when>';
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("templateDirective");
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex).toEqual(0);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex).toEqual(25);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(33);
-            expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(42);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagStartIndex
+            ).toEqual(0);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.openingTagEndIndex
+            ).toEqual(25);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex
+            ).toEqual(33);
+            expect(
+                (templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex
+            ).toEqual(42);
         });
     });
 
     test.describe("attributes", async () => {
         test("children directive", async () => {
-            const innerHTML = "<ul f-children=\"{list}\"></ul>";
+            const innerHTML = '<ul f-children="{list}"></ul>';
             const result = getNextBehavior(innerHTML);
 
             expect(result?.type).toEqual("dataBinding");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("children");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(16);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(17);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(21);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(22);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual(
+                "attributeDirective"
+            );
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual(
+                "children"
+            );
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.bindingType
+            ).toEqual("client");
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex
+            ).toEqual(16);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex
+            ).toEqual(17);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex
+            ).toEqual(21);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex
+            ).toEqual(22);
         });
         test("slotted directive", async () => {
-            const innerHTML = "<slot f-slotted=\"{slottedNodes}\"></slot>";
+            const innerHTML = '<slot f-slotted="{slottedNodes}"></slot>';
             const result = getNextBehavior(innerHTML);
 
             expect(result?.type).toEqual("dataBinding");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("slotted");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(17);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(18);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(30);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(31);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual(
+                "attributeDirective"
+            );
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual(
+                "slotted"
+            );
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.bindingType
+            ).toEqual("client");
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex
+            ).toEqual(17);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex
+            ).toEqual(18);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex
+            ).toEqual(30);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex
+            ).toEqual(31);
         });
         test("ref directive", async () => {
-            const innerHTML = "<video f-ref=\"{video}\"></video>";
+            const innerHTML = '<video f-ref="{video}"></video>';
             const result = getNextBehavior(innerHTML);
 
             expect(result?.type).toEqual("dataBinding");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual("attributeDirective")
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual("ref");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.bindingType).toEqual("client");
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex).toEqual(14);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex).toEqual(15);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex).toEqual(20);
-            expect((result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex).toEqual(21);
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.subtype).toEqual(
+                "attributeDirective"
+            );
+            expect((result as AttributeDirectiveBindingBehaviorConfig)?.name).toEqual(
+                "ref"
+            );
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.bindingType
+            ).toEqual("client");
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.openingStartIndex
+            ).toEqual(14);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.openingEndIndex
+            ).toEqual(15);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.closingStartIndex
+            ).toEqual(20);
+            expect(
+                (result as AttributeDirectiveBindingBehaviorConfig)?.closingEndIndex
+            ).toEqual(21);
         });
     });
 
@@ -182,50 +288,85 @@ test.describe("utilities", async () => {
 
     test.describe("pathResolver", async () => {
         test("should resolve a path with no nesting", async () => {
-            expect(pathResolver("foo", null, 0, {} as any)({ foo: "bar" }, {})).toEqual("bar");
+            expect(pathResolver("foo", null, 0, {} as any)({ foo: "bar" }, {})).toEqual(
+                "bar"
+            );
         });
         test("should resolve a path with nesting", async () => {
-            expect(pathResolver("foo.bar.bat", null, 0, {} as any)({ foo: { bar: { bat: "baz" }} }, {})).toEqual("baz");
+            expect(
+                pathResolver(
+                    "foo.bar.bat",
+                    null,
+                    0,
+                    {} as any
+                )({ foo: { bar: { bat: "baz" } } }, {})
+            ).toEqual("baz");
         });
         test("should resolve a path with no nesting and self reference", async () => {
             expect(pathResolver("foo", "foo", 0, {} as any)("bar", {})).toEqual("bar");
         });
         test("should resolve a path with nesting and self reference", async () => {
-            expect(pathResolver("foo.bar.bat", "foo", 0, {} as any)({ bar: { bat: "baz" }}, {})).toEqual("baz");
+            expect(
+                pathResolver(
+                    "foo.bar.bat",
+                    "foo",
+                    0,
+                    {} as any
+                )({ bar: { bat: "baz" } }, {})
+            ).toEqual("baz");
         });
         test("should resolve a path with context", async () => {
-            expect(pathResolver("foo", "parent", 1, {} as any)({}, {parent: {foo: "bar"}})).toEqual("bar");
+            expect(
+                pathResolver(
+                    "foo",
+                    "parent",
+                    1,
+                    {} as any
+                )({}, { parent: { foo: "bar" } })
+            ).toEqual("bar");
         });
     });
 
     test.describe("transformInnerHTML", async () => {
         test("should resolve a single unescaped data binding", async () => {
-            expect(transformInnerHTML(`{{{html}}}`)).toEqual(`<div :innerHTML="{{html}}"></div>`);
+            expect(transformInnerHTML(`{{{html}}}`)).toEqual(
+                `<div :innerHTML="{{html}}"></div>`
+            );
         });
         test("should resolve multiple unescaped data bindings", async () => {
-            expect(transformInnerHTML(`{{{foo}}}{{{bar}}}`)).toEqual(`<div :innerHTML="{{foo}}"></div><div :innerHTML="{{bar}}"></div>`);
+            expect(transformInnerHTML(`{{{foo}}}{{{bar}}}`)).toEqual(
+                `<div :innerHTML="{{foo}}"></div><div :innerHTML="{{bar}}"></div>`
+            );
         });
         test("should resolve an unescaped data bindings in a mix of other data content bindings", async () => {
-            expect(transformInnerHTML(`{{text1}}{{{foo}}}{{text2}}{{{bar}}}{{text3}}`)).toEqual(`{{text1}}<div :innerHTML="{{foo}}"></div>{{text2}}<div :innerHTML="{{bar}}"></div>{{text3}}`);
+            // eslint-disable-next-line max-len
+            expect(
+                transformInnerHTML(`{{text1}}{{{foo}}}{{text2}}{{{bar}}}{{text3}}`)
+            ).toEqual(
+                `{{text1}}<div :innerHTML="{{foo}}"></div>{{text2}}<div :innerHTML="{{bar}}"></div>{{text3}}`
+            );
         });
         test("should resolve default data bindings in sequence", async () => {
-            expect(transformInnerHTML(`{{text1}}{{text2}}`)).toEqual(`{{text1}}{{text2}}`);
+            expect(transformInnerHTML(`{{text1}}{{text2}}`)).toEqual(
+                `{{text1}}{{text2}}`
+            );
         });
         test("should resolve an unescaped data bindings in a mix of other data attribute bindings and nesting", async () => {
             expect(
                 transformInnerHTML(
                     `<div data-foo="{{text1}}">{{{foo}}}</div><div data-bar="{{text2}}"></div>{{{bar}}}<div data-bat="{{text3}}"></div>`
-                )).toEqual(
-                    `<div data-foo="{{text1}}"><div :innerHTML="{{foo}}"></div></div><div data-bar="{{text2}}"></div><div :innerHTML="{{bar}}"></div><div data-bat="{{text3}}"></div>`
-                );
+                )
+            ).toEqual(
+                // eslint-disable-next-line max-len
+                `<div data-foo="{{text1}}"><div :innerHTML="{{foo}}"></div></div><div data-bar="{{text2}}"></div><div :innerHTML="{{bar}}"></div><div data-bat="{{text3}}"></div>`
+            );
         });
         test("should resolve a non-data and non-attribute bindings", async () => {
             expect(
                 transformInnerHTML(
                     `<button @click="{handleNoArgsClick()}">No arguments</button>`
-                )).toEqual(
-                    `<button @click="{handleNoArgsClick()}">No arguments</button>`
-                );
+                )
+            ).toEqual(`<button @click="{handleNoArgsClick()}">No arguments</button>`);
         });
     });
 
@@ -238,7 +379,7 @@ test.describe("utilities", async () => {
                     leftIsValue: false,
                     right: null,
                     rightIsValue: null,
-                }
+                },
             });
         });
         test("should resolve a falsy value", async () => {
@@ -249,7 +390,7 @@ test.describe("utilities", async () => {
                     leftIsValue: false,
                     right: null,
                     rightIsValue: null,
-                }
+                },
             });
         });
         test("should resolve a path not equal to string value", async () => {
@@ -260,7 +401,7 @@ test.describe("utilities", async () => {
                     leftIsValue: false,
                     right: "test",
                     rightIsValue: true,
-                }
+                },
             });
         });
         test("should resolve a path not equal to boolean value", async () => {
@@ -271,7 +412,7 @@ test.describe("utilities", async () => {
                     leftIsValue: false,
                     right: false,
                     rightIsValue: true,
-                }
+                },
             });
         });
         test("should resolve a path not equal to numerical value", async () => {
@@ -282,7 +423,7 @@ test.describe("utilities", async () => {
                     leftIsValue: false,
                     right: 5,
                     rightIsValue: true,
-                }
+                },
             });
         });
         test("should resolve chained expressions", async () => {
@@ -302,8 +443,8 @@ test.describe("utilities", async () => {
                         leftIsValue: false,
                         right: "baz",
                         rightIsValue: true,
-                    }
-                }
+                    },
+                },
             });
 
             expect(getExpressionChain("foo && bar")).toEqual({
@@ -322,8 +463,8 @@ test.describe("utilities", async () => {
                         leftIsValue: false,
                         right: null,
                         rightIsValue: null,
-                    }
-                }
+                    },
+                },
             });
         });
     });
@@ -382,7 +523,9 @@ test.describe("utilities", async () => {
         });
 
         test("should extract paths from chained OR expressions", async () => {
-            const expressionChain = getExpressionChain("user.isAdmin || permissions.canEdit");
+            const expressionChain = getExpressionChain(
+                "user.isAdmin || permissions.canEdit"
+            );
             expect(expressionChain).toBeDefined();
 
             const paths = extractPathsFromChainedExpression(expressionChain!);
@@ -393,7 +536,9 @@ test.describe("utilities", async () => {
         });
 
         test("should extract paths from complex chained expressions", async () => {
-            const expressionChain = getExpressionChain("user.age > 18 && user.status == 'active' || admin.override");
+            const expressionChain = getExpressionChain(
+                "user.age > 18 && user.status == 'active' || admin.override"
+            );
             expect(expressionChain).toBeDefined();
 
             const paths = extractPathsFromChainedExpression(expressionChain!);
@@ -435,7 +580,9 @@ test.describe("utilities", async () => {
         });
 
         test("should deduplicate identical paths", async () => {
-            const expressionChain = getExpressionChain("user.name && user.name != 'anonymous'");
+            const expressionChain = getExpressionChain(
+                "user.name && user.name != 'anonymous'"
+            );
             expect(expressionChain).toBeDefined();
 
             const paths = extractPathsFromChainedExpression(expressionChain!);
@@ -636,7 +783,9 @@ test.describe("utilities", async () => {
             expect(childrenMap).toBeNull();
         });
         test("should get a ChildrenMap if there are multiple attributes are listed before this attribute", async () => {
-            const childrenMap = getChildrenMap(`<template><my-element foo="" bar="" bat="`);
+            const childrenMap = getChildrenMap(
+                `<template><my-element foo="" bar="" bat="`
+            );
 
             expect(childrenMap).not.toBeNull();
             expect(childrenMap?.attributeName).toEqual("bat");
@@ -648,61 +797,51 @@ test.describe("utilities", async () => {
         test.describe("findDef", async () => {
             test("should resolve from the root of a schema", async () => {
                 expect(
-                    findDef(
-                        {
-                            [refPropertyName]: "#/$defs/MyType"
-                        } as JSONSchema
-                    )
+                    findDef({
+                        [refPropertyName]: "#/$defs/MyType",
+                    } as JSONSchema)
                 ).toEqual("MyType");
             });
             test("should resolve as null from an anyOf array containing a reference to another component", async () => {
                 expect(
-                    findDef(
-                        {
-                            anyOf: [
-                                {
-                                    [refPropertyName]: "https://fast.design/schemas/test-element/c.json"
-                                }
-                            ]
-                        } as JSONSchema
-                    )
+                    findDef({
+                        anyOf: [
+                            {
+                                [refPropertyName]:
+                                    "https://fast.design/schemas/test-element/c.json",
+                            },
+                        ],
+                    } as JSONSchema)
                 ).toEqual(null);
             });
             test("should resolve from an anyOf array containing a reference to a $def", async () => {
                 expect(
-                    findDef(
-                        {
-                            anyOf: [
-                                {
-                                    [refPropertyName]: "#/$defs/MyType"
-                                }
-                            ]
-                        } as JSONSchema
-                    )
+                    findDef({
+                        anyOf: [
+                            {
+                                [refPropertyName]: "#/$defs/MyType",
+                            },
+                        ],
+                    } as JSONSchema)
                 ).toEqual("MyType");
             });
             test("should resolve from an anyOf array containing a reference to another component and a reference to a $def", async () => {
                 expect(
-                    findDef(
-                        {
-                            anyOf: [
-                                {
-                                    [refPropertyName]: "https://fast.design/schemas/test-element/c.json"
-                                },
-                                {
-                                    [refPropertyName]: "#/$defs/MyType"
-                                }
-                            ]
-                        } as JSONSchema
-                    )
+                    findDef({
+                        anyOf: [
+                            {
+                                [refPropertyName]:
+                                    "https://fast.design/schemas/test-element/c.json",
+                            },
+                            {
+                                [refPropertyName]: "#/$defs/MyType",
+                            },
+                        ],
+                    } as JSONSchema)
                 ).toEqual("MyType");
             });
             test("should resolve as null if not found", async () => {
-                expect(
-                    findDef(
-                        {} as JSONSchema
-                    )
-                ).toEqual(null);
+                expect(findDef({} as JSONSchema)).toEqual(null);
             });
         });
     });

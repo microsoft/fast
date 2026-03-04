@@ -26,16 +26,19 @@ test.describe("RequestStorageManager", () => {
     test("should pass in request object to createWindow middleware", () => {
         function createWindowShim(req: any) {
             return {
-                id: req.headers["id"]
+                id: req.headers["id"],
             };
         }
         const request = { headers: { id: "test" } };
-        const storage = RequestStorageManager.createStorage({
-            createWindow: createWindowShim,
-        }, request);
+        const storage = RequestStorageManager.createStorage(
+            {
+                createWindow: createWindowShim,
+            },
+            request
+        );
 
         expect(storage).toBeInstanceOf(Map);
-        expect(storage.get("window")).toStrictEqual({id: "test"});
+        expect(storage.get("window")).toStrictEqual({ id: "test" });
     });
 
     test("can create backing storage with initial values", () => {
@@ -103,6 +106,7 @@ test.describe("RequestStorageManager", () => {
 
         expect(captured).toBe("world");
     });
+    // eslint-disable-next-line max-len
     test("invoking installDOMShim multiple times should not impact the ability to uninstall the shim with a single invocation of uninstall", () => {
         // window is part of perRequestGlobals setup by installDOMShim
         (window as any)["hello"] = "world";
@@ -119,6 +123,7 @@ test.describe("RequestStorageManager", () => {
 
         expect(captured).toBe("world");
     });
+    // eslint-disable-next-line max-len
     test("invoking uninstall multiple times should not impact the ability to reinstall the shim with a single invocation of install", () => {
         // window is part of perRequestGlobals setup by installDOMShim
         (window as any)["hello"] = "world";

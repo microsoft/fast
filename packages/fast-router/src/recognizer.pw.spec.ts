@@ -2052,7 +2052,8 @@ test.describe(DefaultRouteRecognizer.name, () => {
         },
         // #endregion
         // #region complex combinations
-        // TODO(fkleuver): this is not done yet. Plenty of edge cases still to be added (esp. with dynamic vs optional dynamic with star segments, etc)
+        // TODO(fkleuver): this is not done yet. Plenty of edge cases still to be added
+        // (esp. with dynamic vs optional dynamic with star segments, etc)
         {
             routes: [
                 "a",

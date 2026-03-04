@@ -1215,6 +1215,7 @@ test.describe("The repeat", () => {
                 expect(result).toBe(true);
             });
 
+            // eslint-disable-next-line max-len
             test(`updates rendered HTML when a single item is replaced from the end of an array of size ${size} with recycle property set to false`, async ({
                 page,
             }) => {
@@ -1440,6 +1441,7 @@ test.describe("The repeat", () => {
                 expect(result).toBe(true);
             });
 
+            // eslint-disable-next-line max-len
             test(`updates rendered HTML when a single item is spliced from the middle of an array of size ${size} with recycle property set to false`, async ({
                 page,
             }) => {
@@ -1670,6 +1672,7 @@ test.describe("The repeat", () => {
                 expect(result).toBe(true);
             });
 
+            // eslint-disable-next-line max-len
             test(`updates rendered HTML when 2 items are spliced from the middle of an array of size ${size} with recycle property set to false`, async ({
                 page,
             }) => {
@@ -3255,6 +3258,7 @@ test.describe("The repeat", () => {
         }
 
         for (const size of zeroThroughTen) {
+            // eslint-disable-next-line max-len
             test(`updates rendered HTML when a new item is pushed into an array of size ${size} after it has been unbound and rebound`, async ({
                 page,
             }) => {

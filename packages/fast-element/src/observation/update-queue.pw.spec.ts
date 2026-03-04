@@ -98,7 +98,7 @@ test.describe("The UpdateQueue", () => {
                 // @ts-expect-error: Client module.
                 const { Updates } = await import("/main.js");
 
-                let calls: number[] = [];
+                const calls: number[] = [];
 
                 Updates.enqueue(() => {
                     calls.push(0);
@@ -151,12 +151,12 @@ test.describe("The UpdateQueue", () => {
                 const target = 1060;
                 const targetList: number[] = [];
 
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     targetList.push(i);
                 }
 
                 const newList: number[] = [];
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     (function (i) {
                         Updates.enqueue(() => {
                             newList.push(i);
@@ -182,12 +182,12 @@ test.describe("The UpdateQueue", () => {
                 const target = 2060;
                 const targetList: number[] = [];
 
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     targetList.push(i);
                 }
 
                 const newList: number[] = [];
-                for (var i = 0; i < target; i++) {
+                for (let i = 0; i < target; i++) {
                     (function (i) {
                         Updates.enqueue(() => {
                             newList.push(i);
@@ -595,7 +595,7 @@ test.describe("The UpdateQueue", () => {
                 let recurseCount1 = 0;
                 let recurseCount2 = 0;
                 let recurseCount3 = 0;
-                let calls: number[] = [];
+                const calls: number[] = [];
 
                 function go1() {
                     calls.push(recurseCount1 * 3);

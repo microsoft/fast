@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { DI, inject, Registration, singleton } from "./di.js";
 
+/* eslint-disable @typescript-eslint/naming-convention, @typescript-eslint/no-empty-interface */
+
 test.describe("DI.singleton", () => {
     test.describe("registerInRequester", () => {
         test("root", async () => {

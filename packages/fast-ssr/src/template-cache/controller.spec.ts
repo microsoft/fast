@@ -4,16 +4,16 @@ import { expect, test } from "@playwright/test";
 import fastSSR, { templateCacheController } from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 
-
-
 test("should be enabled by default", () => {
-    expect(templateCacheController.disabled).toBe(false)
+    expect(templateCacheController.disabled).toBe(false);
 });
 test.describe("TemplateCacheController", () => {
     let template: ViewTemplate;
     test.beforeEach(() => {
         templateCacheController.enable();
-        template = html`<p></p>`;
+        template = html`
+            <p></p>
+        `;
     });
     test.afterAll(() => {
         templateCacheController.enable();
@@ -23,7 +23,7 @@ test.describe("TemplateCacheController", () => {
         templateCacheController.disable();
         expect(templateCacheController.disabled).toBe(true);
         templateCacheController.enable();
-        expect(templateCacheController.disabled).toBe(false)
+        expect(templateCacheController.disabled).toBe(false);
     });
 
     test("should cache template results after rendering a template", () => {

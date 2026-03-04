@@ -47,7 +47,9 @@ test.describe("f-template", async () => {
         await expect(customElementShow).toHaveText("Not equals 3");
         await expect(customElementHide).not.toHaveText("Not equals 3");
     });
-    test("create a when directive value uses greater than or equals", async ({ page }) => {
+    test("create a when directive value uses greater than or equals", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/when/");
 
         const customElementShow = await page.locator("#ge-true");

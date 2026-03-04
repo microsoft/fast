@@ -380,8 +380,7 @@ test.describe(`The inject function`, () => {
 
     test(`can decorate constructor parameters explicitly`, () => {
         class Foo {
-            public constructor(dep1, dep2, dep3)
-            {
+            public constructor(dep1, dep2, dep3) {
                 return;
             }
         }
@@ -394,8 +393,7 @@ test.describe(`The inject function`, () => {
 
     test(`can decorate constructor parameters implicitly`, () => {
         class Foo {
-            public constructor(dep1, dep2, dep3)
-            {
+            public constructor(dep1, dep2, dep3) {
                 return;
             }
         }
@@ -430,8 +428,8 @@ test.describe(`The inject function`, () => {
             return {
                 dep1: instance.dep1 instanceof Dep1,
                 dep2: instance.dep2 instanceof Dep2,
-                dep3: instance.dep3 instanceof Dep3
-            }
+                dep3: instance.dep3 instanceof Dep3,
+            };
         });
 
         expect(dep1).toBe(true);

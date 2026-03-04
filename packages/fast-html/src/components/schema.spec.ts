@@ -27,7 +27,9 @@ test.describe("Schema", async () => {
         const schemaA = schema.getSchema("a");
 
         expect(schemaA).not.toBe(null);
-        expect(schemaA!.$id).toEqual("https://fast.design/schemas/my-custom-element/a.json");
+        expect(schemaA!.$id).toEqual(
+            "https://fast.design/schemas/my-custom-element/a.json"
+        );
         expect(schemaA!.$schema).toEqual("https://json-schema.org/draft/2019-09/schema");
     });
     test("should add a property and cast the schema as type object if a nested path is given", async () => {
@@ -240,7 +242,7 @@ test.describe("Schema", async () => {
                 type: "repeat",
                 path: "user.posts",
                 currentContext: "post",
-                parentContext: "user"
+                parentContext: "user",
             },
             childrenMap: null,
         });
@@ -286,7 +288,7 @@ test.describe("Schema", async () => {
                 type: "repeat",
                 path: "user.posts",
                 currentContext: "post",
-                parentContext: "user"
+                parentContext: "user",
             },
             childrenMap: null,
         });
@@ -308,7 +310,7 @@ test.describe("Schema", async () => {
                 type: "repeat",
                 path: "post.meta.tags",
                 currentContext: "tag",
-                parentContext: "post"
+                parentContext: "post",
             },
             childrenMap: null,
         });
@@ -331,12 +333,22 @@ test.describe("Schema", async () => {
         expect(schemaA!.$defs?.["post"].properties["c"]).toBeDefined();
         expect(schemaA!.$defs?.["post"].properties["c"].properties["d"]).toBeDefined();
         expect(schemaA!.$defs?.["post"].properties["meta"]).toBeDefined();
-        expect(schemaA!.$defs?.["post"].properties["meta"].properties["tags"]).toBeDefined();
-        expect(schemaA!.$defs?.["post"].properties["meta"].properties["tags"].items).toBeDefined();
-        expect(schemaA!.$defs?.["post"].properties["meta"].properties["tags"].items.$ref).toEqual("#/$defs/tag");
+        expect(
+            schemaA!.$defs?.["post"].properties["meta"].properties["tags"]
+        ).toBeDefined();
+        expect(
+            schemaA!.$defs?.["post"].properties["meta"].properties["tags"].items
+        ).toBeDefined();
+        expect(
+            schemaA!.$defs?.["post"].properties["meta"].properties["tags"].items.$ref
+        ).toEqual("#/$defs/tag");
         expect(schemaA!.$defs?.["tag"]).toBeDefined();
         expect(schemaA!.$defs?.["tag"].$fast_context).toEqual("tags");
-        expect(schemaA!.$defs?.["tag"].$fast_parent_contexts).toEqual([null, "user", "post"]);
+        expect(schemaA!.$defs?.["tag"].$fast_parent_contexts).toEqual([
+            null,
+            "user",
+            "post",
+        ]);
     });
     test("should define an anyOf with a $ref to another schema", async () => {
         const schema = new Schema("my-custom-element");
@@ -358,11 +370,15 @@ test.describe("Schema", async () => {
         const schemaA = schema.getSchema("a");
 
         expect(schemaA).not.toBe(null);
-        expect(schemaA!.$id).toEqual("https://fast.design/schemas/my-custom-element/a.json");
+        expect(schemaA!.$id).toEqual(
+            "https://fast.design/schemas/my-custom-element/a.json"
+        );
         expect(schemaA!.$schema).toEqual("https://json-schema.org/draft/2019-09/schema");
         expect(schemaA!.anyOf).not.toBeUndefined();
         expect(schemaA!.anyOf).toHaveLength(1);
-        expect(schemaA!.anyOf?.[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/b.json");
+        expect(schemaA!.anyOf?.[0].$ref).toEqual(
+            "https://fast.design/schemas/my-custom-element-2/b.json"
+        );
     });
     test("should define an anyOf with a $ref to multiple schemas", async () => {
         const schema = new Schema("my-custom-element");
@@ -397,12 +413,18 @@ test.describe("Schema", async () => {
         const schemaA = schema.getSchema("a");
 
         expect(schemaA).not.toBe(null);
-        expect(schemaA!.$id).toEqual("https://fast.design/schemas/my-custom-element/a.json");
+        expect(schemaA!.$id).toEqual(
+            "https://fast.design/schemas/my-custom-element/a.json"
+        );
         expect(schemaA!.$schema).toEqual("https://json-schema.org/draft/2019-09/schema");
         expect(schemaA!.anyOf).not.toBeUndefined();
         expect(schemaA!.anyOf).toHaveLength(2);
-        expect(schemaA!.anyOf?.[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/b.json");
-        expect(schemaA!.anyOf?.[1].$ref).toEqual("https://fast.design/schemas/my-custom-element-3/c.json");
+        expect(schemaA!.anyOf?.[0].$ref).toEqual(
+            "https://fast.design/schemas/my-custom-element-2/b.json"
+        );
+        expect(schemaA!.anyOf?.[1].$ref).toEqual(
+            "https://fast.design/schemas/my-custom-element-3/c.json"
+        );
     });
     test("should define an anyOf with a $ref to another schema in a nested object", async () => {
         const schema = new Schema("my-custom-element");
@@ -430,7 +452,7 @@ test.describe("Schema", async () => {
             },
             childrenMap: {
                 customElementName: "my-custom-element-2",
-                attributeName: "test"
+                attributeName: "test",
             },
         });
 
@@ -438,7 +460,9 @@ test.describe("Schema", async () => {
 
         expect(schemaA!.properties.b.properties.c).toBeDefined();
         expect(schemaA!.properties.b.properties.c.anyOf).not.toBeUndefined();
-        expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/test.json");
+        expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual(
+            "https://fast.design/schemas/my-custom-element-2/test.json"
+        );
     });
     test("should define an anyOf with a $ref to multiple schemas in a nested object", async () => {
         const schema = new Schema("my-custom-element");
@@ -466,7 +490,7 @@ test.describe("Schema", async () => {
             },
             childrenMap: {
                 customElementName: "my-custom-element-2",
-                attributeName: "test"
+                attributeName: "test",
             },
         });
 
@@ -480,7 +504,7 @@ test.describe("Schema", async () => {
             },
             childrenMap: {
                 customElementName: "my-custom-element-3",
-                attributeName: "test-2"
+                attributeName: "test-2",
             },
         });
 
@@ -488,8 +512,12 @@ test.describe("Schema", async () => {
 
         expect(schemaA!.properties.b.properties.c).toBeDefined();
         expect(schemaA!.properties.b.properties.c.anyOf).not.toBeUndefined();
-        expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual("https://fast.design/schemas/my-custom-element-2/test.json");
-        expect(schemaA!.properties.b.properties.c.anyOf[1].$ref).toEqual("https://fast.design/schemas/my-custom-element-3/test-2.json");
+        expect(schemaA!.properties.b.properties.c.anyOf[0].$ref).toEqual(
+            "https://fast.design/schemas/my-custom-element-2/test.json"
+        );
+        expect(schemaA!.properties.b.properties.c.anyOf[1].$ref).toEqual(
+            "https://fast.design/schemas/my-custom-element-3/test-2.json"
+        );
     });
     test("should define an anyOf with a $ref in a nested object in a context", async () => {
         const schema = new Schema("my-custom-element");
@@ -515,7 +543,7 @@ test.describe("Schema", async () => {
             },
             childrenMap: {
                 customElementName: "my-custom-element-2",
-                attributeName: "c"
+                attributeName: "c",
             },
         });
 
@@ -529,7 +557,14 @@ test.describe("Schema", async () => {
         expect(schemaA!.$defs?.["user"].properties).toBeDefined();
         expect(schemaA!.$defs?.["user"].properties["a"]).toBeDefined();
         expect(schemaA!.$defs?.["user"].properties["a"].properties["b"]).toBeDefined();
-        expect(schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf).toHaveLength(1);
-        expect(schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf[0][refPropertyName]).toEqual("https://fast.design/schemas/my-custom-element-2/c.json");
+        expect(
+            schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf
+        ).toHaveLength(1);
+        // eslint-disable-next-line max-len
+        expect(
+            schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf[0][
+                refPropertyName
+            ]
+        ).toEqual("https://fast.design/schemas/my-custom-element-2/c.json");
     });
 });

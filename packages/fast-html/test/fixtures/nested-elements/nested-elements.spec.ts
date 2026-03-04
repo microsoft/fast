@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Nested Elements Hydration", () => {
     test("should hydrate parent elements before child elements", async ({ page }) => {

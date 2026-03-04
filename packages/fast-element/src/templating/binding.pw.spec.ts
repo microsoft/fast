@@ -3021,9 +3021,7 @@ test.describe("The HTML binding directive", () => {
 
                 function createClassBinding(element: any) {
                     const directive = new HTMLBindingDirective(oneWay(() => ""));
-                    if (":classList") {
-                        HTMLDirective.assignAspect(directive, ":classList");
-                    }
+                    HTMLDirective.assignAspect(directive, ":classList");
 
                     directive.id = nextId();
                     directive.targetNodeId = "r";

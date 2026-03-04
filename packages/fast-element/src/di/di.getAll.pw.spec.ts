@@ -39,6 +39,7 @@ test.describe("Container#.getAll", () => {
                 for (const regInParent of [true, false]) {
                     // eslint-enable
                     test(`@all(IAttrPattern, ${searchAncestors}) + [child ${regInChild}] + [parent ${regInParent}]`, async () => {
+                        // eslint-disable-next-line @typescript-eslint/naming-convention
                         interface IAttrPattern {
                             id: number;
                         }

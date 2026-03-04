@@ -35,9 +35,7 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
         const { regTime, tmplTime, regSeq, tmplSeq } = await page.evaluate(() => {
             const entries = performance.getEntriesByType("mark") as PerformanceMark[];
             const reg = entries.find(m => m.name === "element-register:fast-card");
-            const tmpl = entries.find(m =>
-                m.name === "template-update:fast-card:start"
-            );
+            const tmpl = entries.find(m => m.name === "template-update:fast-card:start");
             return {
                 regTime: reg?.startTime,
                 tmplTime: tmpl?.startTime,
@@ -60,15 +58,10 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
     test("template-update should precede element-define", async ({ page }) => {
         const { templateEnd, defineTime, templateEndSeq, defineSeq } =
             await page.evaluate(() => {
-                const marks =
-                    performance.getEntriesByType("mark") as PerformanceMark[];
+                const marks = performance.getEntriesByType("mark") as PerformanceMark[];
                 const measures = performance.getEntriesByType("measure");
-                const tmpl = measures.find(
-                    m => m.name === "template-update:fast-card"
-                );
-                const def = marks.find(
-                    m => m.name === "element-define:fast-card"
-                );
+                const tmpl = measures.find(m => m.name === "template-update:fast-card");
+                const def = marks.find(m => m.name === "element-define:fast-card");
                 // template-update:start fires before template-update (the
                 // measure), and element-define fires after.  Compare the
                 // start-mark sequence against the define-mark sequence.
@@ -76,14 +69,12 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
                     m => m.name === "template-update:fast-card:start"
                 );
                 return {
-                    templateEnd: tmpl
-                        ? tmpl.startTime + tmpl.duration
-                        : undefined,
+                    templateEnd: tmpl ? tmpl.startTime + tmpl.duration : undefined,
                     defineTime: def?.startTime,
-                    templateEndSeq: (startMark?.detail as any)
-                        ?.sequence as number | undefined,
-                    defineSeq: (def?.detail as any)
-                        ?.sequence as number | undefined,
+                    templateEndSeq: (startMark?.detail as any)?.sequence as
+                        | number
+                        | undefined,
+                    defineSeq: (def?.detail as any)?.sequence as number | undefined,
                 };
             });
 
@@ -97,24 +88,17 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
     });
 
     test("element-define should precede hydration:started", async ({ page }) => {
-        const { defineTime, hsTime, defineSeq, hsSeq } = await page.evaluate(
-            () => {
-                const marks =
-                    performance.getEntriesByType("mark") as PerformanceMark[];
-                const def = marks.find(
-                    m => m.name === "element-define:fast-card"
-                );
-                const hs = marks.find(m => m.name === "hydration:started");
-                return {
-                    defineTime: def?.startTime,
-                    hsTime: hs?.startTime,
-                    defineSeq: (def?.detail as any)
-                        ?.sequence as number | undefined,
-                    hsSeq: (hs?.detail as any)
-                        ?.sequence as number | undefined,
-                };
-            }
-        );
+        const { defineTime, hsTime, defineSeq, hsSeq } = await page.evaluate(() => {
+            const marks = performance.getEntriesByType("mark") as PerformanceMark[];
+            const def = marks.find(m => m.name === "element-define:fast-card");
+            const hs = marks.find(m => m.name === "hydration:started");
+            return {
+                defineTime: def?.startTime,
+                hsTime: hs?.startTime,
+                defineSeq: (def?.detail as any)?.sequence as number | undefined,
+                hsSeq: (hs?.detail as any)?.sequence as number | undefined,
+            };
+        });
 
         expect(defineTime).toBeDefined();
         expect(hsTime).toBeDefined();
@@ -132,9 +116,7 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
             const marks = performance.getEntriesByType("mark");
             const measures = performance.getEntriesByType("measure");
             const hs = marks.find(m => m.name === "hydration:started");
-            const cardMeasures = measures.filter(
-                m => m.name === "hydration:fast-card"
-            );
+            const cardMeasures = measures.filter(m => m.name === "hydration:fast-card");
             const earliest = Math.min(...cardMeasures.map(m => m.startTime));
             return { hydrationStarted: hs?.startTime, firstCardHydration: earliest };
         });
@@ -148,14 +130,10 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
     }) => {
         const { lastCardEnd, completeEnd } = await page.evaluate(() => {
             const measures = performance.getEntriesByType("measure");
-            const cardMeasures = measures.filter(
-                m => m.name === "hydration:fast-card"
-            );
+            const cardMeasures = measures.filter(m => m.name === "hydration:fast-card");
             const complete = measures.find(m => m.name === "hydration:complete");
             return {
-                lastCardEnd: Math.max(
-                    ...cardMeasures.map(m => m.startTime + m.duration)
-                ),
+                lastCardEnd: Math.max(...cardMeasures.map(m => m.startTime + m.duration)),
                 completeEnd: complete
                     ? complete.startTime + complete.duration
                     : undefined,
@@ -169,10 +147,11 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
     test("should create an element-prepared measure for each element", async ({
         page,
     }) => {
-        const count = await page.evaluate(() =>
-            performance
-                .getEntriesByType("measure")
-                .filter(m => m.name.startsWith("element-prepared:fast-card:")).length
+        const count = await page.evaluate(
+            () =>
+                performance
+                    .getEntriesByType("measure")
+                    .filter(m => m.name.startsWith("element-prepared:fast-card:")).length
         );
 
         expect(count).toBe(14);
@@ -243,12 +222,8 @@ test.describe("Performance Metrics via Lifecycle Callbacks", () => {
 
         for (let i = 0; i < count; i++) {
             const card = cards.nth(i);
-            const willHydrate = await card.evaluate(
-                (el: any) => el.willHydrate
-            );
-            const didHydrate = await card.evaluate(
-                (el: any) => el.didHydrate
-            );
+            const willHydrate = await card.evaluate((el: any) => el.willHydrate);
+            const didHydrate = await card.evaluate((el: any) => el.didHydrate);
 
             expect(willHydrate, `card ${i} willHydrate`).toBeTruthy();
             expect(didHydrate, `card ${i} didHydrate`).toBeTruthy();
