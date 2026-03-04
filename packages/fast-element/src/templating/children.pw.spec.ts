@@ -320,7 +320,7 @@ test.describe("The children", () => {
                 const subtreeElement = "foo-bar-baz";
                 const subtreeChildren: HTMLElement[] = [];
 
-                for (let child of children) {
+                for (const child of children) {
                     for (let i = 0; i < 3; ++i) {
                         const subChild = document.createElement("foo-bar-baz");
                         subtreeChildren.push(subChild);
@@ -347,7 +347,7 @@ test.describe("The children", () => {
 
                 const newChildren = createAndAppendChildren(host);
 
-                for (let child of newChildren) {
+                for (const child of newChildren) {
                     for (let i = 0; i < 3; ++i) {
                         const subChild = document.createElement("foo-bar-baz");
                         subtreeChildren.push(subChild);

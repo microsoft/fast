@@ -5,7 +5,6 @@ import { consolidate } from "../test-utilities/consolidate.js";
 import { HTMLBindingDirectiveRenderer } from "./directives.js";
 import { DefaultTemplateRenderer } from "./template-renderer.js";
 
-
 test.describe("HTMLBindingDirective Renderer", () => {
     test("should yield numbers returned from the binding as a string", () => {
         const binding = oneWay(() => 12);
@@ -20,7 +19,7 @@ test.describe("HTMLBindingDirective Renderer", () => {
             ExecutionContext.default
         );
 
-        expect(consolidate(result)).toBe("12")
+        expect(consolidate(result)).toBe("12");
     });
     test("should yield booleans returned from the binding as a string", () => {
         const binding = oneWay(() => true);
@@ -35,6 +34,6 @@ test.describe("HTMLBindingDirective Renderer", () => {
             ExecutionContext.default
         );
 
-        expect(consolidate(result)).toBe("true")
+        expect(consolidate(result)).toBe("true");
     });
 });

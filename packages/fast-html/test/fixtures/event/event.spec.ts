@@ -7,7 +7,7 @@ test.describe("f-template", async () => {
         const customElement = page.locator("test-element");
 
         let message;
-        page.on("console", msg => message = msg.text());
+        page.on("console", msg => (message = msg.text()));
 
         await customElement.locator("button").nth(0).click();
 
@@ -19,7 +19,7 @@ test.describe("f-template", async () => {
         const customElement = page.locator("test-element");
 
         let message;
-        page.on("console", msg => message = msg.text());
+        page.on("console", msg => (message = msg.text()));
 
         await customElement.locator("button").nth(1).click();
 
@@ -31,7 +31,7 @@ test.describe("f-template", async () => {
         const customElement = page.locator("test-element");
 
         let message;
-        page.on("console", msg => message = msg.text());
+        page.on("console", msg => (message = msg.text()));
 
         await customElement.locator("button").nth(2).click();
 

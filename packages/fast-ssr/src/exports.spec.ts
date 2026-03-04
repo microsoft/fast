@@ -1,6 +1,14 @@
 import "./install-dom-shim.js";
 
-import { FASTElement, html, HTMLDirective, ref, RefDirective, StatelessAttachedAttributeDirective, ViewController } from "@microsoft/fast-element";
+import {
+    FASTElement,
+    html,
+    HTMLDirective,
+    ref,
+    RefDirective,
+    StatelessAttachedAttributeDirective,
+    ViewController,
+} from "@microsoft/fast-element";
 import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 import { expect, test } from "@playwright/test";
 import fastSSR from "./exports.js";
@@ -10,8 +18,10 @@ import { consolidate } from "./test-utilities/consolidate.js";
 test.describe("fastSSR default export", () => {
     test("should return a TemplateRenderer configured to create a RenderInfo object using the returned ElementRenderer", () => {
         const { templateRenderer, ElementRenderer } = fastSSR();
-        expect(templateRenderer.createRenderInfo().elementRenderers.includes(ElementRenderer)).toBe(true)
-    })
+        expect(
+            templateRenderer.createRenderInfo().elementRenderers.includes(ElementRenderer)
+        ).toBe(true);
+    });
 
     test("should render FAST elements without the `defer-hydration` attribute by default", () => {
         const { templateRenderer } = fastSSR();
@@ -29,7 +39,7 @@ test.describe("fastSSR default export", () => {
 
         expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(
             `<${name} defer-hydration><template shadowrootmode="open" shadowroot="open"></template></${name}>`
-        )
+        );
     });
     test("should not render FAST elements with the `defer-hydration` attribute when deferHydration is configured to be false", () => {
         const { templateRenderer } = fastSSR({ deferHydration: false });
@@ -38,7 +48,7 @@ test.describe("fastSSR default export", () => {
 
         expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(
             `<${name}><template shadowrootmode="open" shadowroot="open"></template></${name}>`
-        )
+        );
     });
 
     test("should render a custom directive using a registered ViewBehaviorFactoryRenderer", () => {
@@ -56,12 +66,20 @@ test.describe("fastSSR default export", () => {
             *render(behaviorFactory, renderInfo, source, renderer, context) {
                 yield `value='${behaviorFactory.value}'`;
             },
-        }
+        };
 
-        const { templateRenderer } = fastSSR({viewBehaviorFactoryRenderers: [renderer]})
-        expect(consolidate(templateRenderer.render(html`<p ${new Directive("hello-world")}></p>`))).toBe(
-            `<p value='hello-world'></p>`
-        )
+        const { templateRenderer } = fastSSR({
+            viewBehaviorFactoryRenderers: [renderer],
+        });
+        expect(
+            consolidate(
+                templateRenderer.render(
+                    html`
+                        <p ${new Directive("hello-world")}></p>
+                    `
+                )
+            )
+        ).toBe(`<p value='hello-world'></p>`);
     });
     test("should support overriding pre-registered ViewBehaviorFactoryRenderer", () => {
         class Directive extends StatelessAttachedAttributeDirective<string> {
@@ -76,11 +94,19 @@ test.describe("fastSSR default export", () => {
             *render(behaviorFactory, renderInfo, source, renderer, context) {
                 yield `ref='some-ref'`;
             },
-        }
+        };
 
-        const { templateRenderer } = fastSSR({viewBehaviorFactoryRenderers: [renderer]})
-        expect(consolidate(templateRenderer.render(html`<p ${ref("key")}></p>`))).toBe(
-            `<p ref='some-ref'></p>`
-        )
+        const { templateRenderer } = fastSSR({
+            viewBehaviorFactoryRenderers: [renderer],
+        });
+        expect(
+            consolidate(
+                templateRenderer.render(
+                    html`
+                        <p ${ref("key")}></p>
+                    `
+                )
+            )
+        ).toBe(`<p ref='some-ref'></p>`);
     });
 });

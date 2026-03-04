@@ -1,7 +1,3 @@
-# Never lint test files
-*.spec.ts
-!*.pw.spec.ts
-
 # Never lint node_modules
 node_modules
 

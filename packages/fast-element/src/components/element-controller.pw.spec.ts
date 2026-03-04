@@ -1425,9 +1425,33 @@ test.describe("The ElementController", () => {
                 const controller = ElementController.forCustomElement(element);
 
                 const behaviors = [
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
                 ];
                 behaviors.forEach(x => controller.addBehavior(x));
 
@@ -1444,6 +1468,7 @@ test.describe("The ElementController", () => {
             expect(afterConnect).toEqual([true, true, true]);
         });
 
+        // eslint-disable-next-line max-len
         test("should bind a behavior B that is added to the Controller by behavior A, where A is added prior to connection and B is added during A's bind()", async ({
             page,
         }) => {
@@ -1488,6 +1513,7 @@ test.describe("The ElementController", () => {
             expect(childBehaviorBound).toBe(true);
         });
 
+        // eslint-disable-next-line max-len
         test("should disconnect a behavior B that is added to the Controller by behavior A, where A removes B during disconnection", async ({
             page,
         }) => {
@@ -1562,8 +1588,12 @@ test.describe("The ElementController", () => {
 
                 const behavior = {
                     bound: false,
-                    connectedCallback() { this.bound = true; },
-                    disconnectedCallback() { this.bound = false; },
+                    connectedCallback() {
+                        this.bound = true;
+                    },
+                    disconnectedCallback() {
+                        this.bound = false;
+                    },
                 };
 
                 document.body.appendChild(element);
@@ -1616,8 +1646,12 @@ test.describe("The ElementController", () => {
 
                 const behavior = {
                     bound: false,
-                    connectedCallback() { this.bound = true; },
-                    disconnectedCallback() { this.bound = false; },
+                    connectedCallback() {
+                        this.bound = true;
+                    },
+                    disconnectedCallback() {
+                        this.bound = false;
+                    },
                 };
 
                 document.body.appendChild(element);
@@ -1637,6 +1671,7 @@ test.describe("The ElementController", () => {
             expect(results.afterForceRemove).toBe(false);
         });
 
+        // eslint-disable-next-line max-len
         test("should connect behaviors added by stylesheets by .addStyles() during connection and disconnect them during disconnection", async ({
             page,
         }) => {
@@ -1666,8 +1701,12 @@ test.describe("The ElementController", () => {
                     let connectedCalled = false;
                     let disconnectedCalled = false;
                     const behavior = {
-                        connectedCallback() { connectedCalled = true; },
-                        disconnectedCallback() { disconnectedCalled = true; },
+                        connectedCallback() {
+                            connectedCalled = true;
+                        },
+                        disconnectedCallback() {
+                            disconnectedCalled = true;
+                        },
                     };
 
                     controller.addStyles(css``.withBehaviors(behavior));
@@ -1678,7 +1717,10 @@ test.describe("The ElementController", () => {
                     controller.disconnect();
                     const disconnected = disconnectedCalled;
 
-                    return { connectedCalled: connected, disconnectedCalled: disconnected };
+                    return {
+                        connectedCalled: connected,
+                        disconnectedCalled: disconnected,
+                    };
                 }
             );
 
@@ -1686,6 +1728,7 @@ test.describe("The ElementController", () => {
             expect(disconnectedCalled).toBe(true);
         });
 
+        // eslint-disable-next-line max-len
         test("should connect behaviors added by the component's main stylesheet during connection and disconnect them during disconnection", async ({
             page,
         }) => {
@@ -1707,8 +1750,12 @@ test.describe("The ElementController", () => {
                     let connectedCalled = false;
                     let disconnectedCalled = false;
                     const behavior = {
-                        connectedCallback() { connectedCalled = true; },
-                        disconnectedCallback() { disconnectedCalled = true; },
+                        connectedCallback() {
+                            connectedCalled = true;
+                        },
+                        disconnectedCallback() {
+                            disconnectedCalled = true;
+                        },
                     };
 
                     FASTElementDefinition.compose(
@@ -1729,7 +1776,10 @@ test.describe("The ElementController", () => {
                     controller.disconnect();
                     const disconnected = disconnectedCalled;
 
-                    return { connectedCalled: connected, disconnectedCalled: disconnected };
+                    return {
+                        connectedCalled: connected,
+                        disconnectedCalled: disconnected,
+                    };
                 }
             );
 
@@ -1767,8 +1817,12 @@ test.describe("The ElementController", () => {
                 let connectCount = 0;
                 let disconnectCount = 0;
                 const behavior = {
-                    connectedCallback() { connectCount++; },
-                    disconnectedCallback() { disconnectCount++; },
+                    connectedCallback() {
+                        connectCount++;
+                    },
+                    disconnectedCallback() {
+                        disconnectCount++;
+                    },
                 };
 
                 FASTElementDefinition.compose(
@@ -1836,8 +1890,12 @@ test.describe("The ElementController", () => {
                 let addedCalled = false;
                 let removedCalled = false;
                 const behavior = {
-                    addedCallback() { addedCalled = true; },
-                    removedCallback() { removedCalled = true; },
+                    addedCallback() {
+                        addedCalled = true;
+                    },
+                    removedCallback() {
+                        removedCalled = true;
+                    },
                 };
 
                 const styles = css``.withBehaviors(behavior);
@@ -1861,12 +1919,8 @@ test.describe("The ElementController", () => {
 
             const innerHTML = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    html,
-                    uniqueElementName,
-                } = await import("/main.js");
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
 
                 const name = uniqueElementName();
                 const element = document.createElement(name);
@@ -1879,7 +1933,9 @@ test.describe("The ElementController", () => {
                     class TestElement extends FASTElement {
                         static definition = {
                             name,
-                            template: html`Test 2`,
+                            template: html`
+                                Test 2
+                            `,
                         };
                     }
                 ).define();
@@ -1948,9 +2004,7 @@ test.describe("The ElementController", () => {
             Observable.getNotifier(controller).subscribe(
                 {
                     handleChange() {
-                        orderLog.push(
-                            `isConnected set ${controller.isConnected}`
-                        );
+                        orderLog.push(`isConnected set ${controller.isConnected}`);
                     },
                 },
                 "isConnected"
@@ -1995,41 +2049,39 @@ test.describe("The HydratableElementController", () => {
     }) => {
         await page.goto("/");
 
-        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(
-            async () => {
-                // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    ElementController,
-                    HydratableElementController,
-                    needsHydrationAttribute,
-                    deferHydrationAttribute,
-                    uniqueElementName,
-                } = await import("/main.js");
+        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                ElementController,
+                HydratableElementController,
+                needsHydrationAttribute,
+                deferHydrationAttribute,
+                uniqueElementName,
+            } = await import("/main.js");
 
-                HydratableElementController.install();
+            HydratableElementController.install();
 
-                const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
-                ).define();
+            const name = uniqueElementName();
+            FASTElementDefinition.compose(
+                class ControllerTest extends FASTElement {
+                    static definition = { name };
+                }
+            ).define();
 
-                const element = document.createElement(name) as any;
-                element.setAttribute("needs-hydration", "");
-                ElementController.forCustomElement(element);
+            const element = document.createElement(name) as any;
+            element.setAttribute("needs-hydration", "");
+            ElementController.forCustomElement(element);
 
-                const result = {
-                    hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
-                    hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
-                };
+            const result = {
+                hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
+                hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
+            };
 
-                ElementController.setStrategy(ElementController);
-                return result;
-            }
-        );
+            ElementController.setStrategy(ElementController);
+            return result;
+        });
 
         expect(hasDeferHydration).toBe(false);
         expect(hasNeedsHydration).toBe(true);
@@ -2040,48 +2092,46 @@ test.describe("The HydratableElementController", () => {
     }) => {
         await page.goto("/");
 
-        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(
-            async () => {
-                // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    ElementController,
-                    HydratableElementController,
-                    needsHydrationAttribute,
-                    deferHydrationAttribute,
-                    uniqueElementName,
-                } = await import("/main.js");
+        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(async () => {
+            // @ts-expect-error: Client module.
+            const {
+                FASTElement,
+                FASTElementDefinition,
+                ElementController,
+                HydratableElementController,
+                needsHydrationAttribute,
+                deferHydrationAttribute,
+                uniqueElementName,
+            } = await import("/main.js");
 
-                ElementController.setStrategy(HydratableElementController);
+            ElementController.setStrategy(HydratableElementController);
 
-                const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = {
-                            name,
-                            shadowOptions: null,
-                            template: undefined,
-                            templateOptions: "defer-and-hydrate",
-                        };
-                    }
-                ).define();
+            const name = uniqueElementName();
+            FASTElementDefinition.compose(
+                class ControllerTest extends FASTElement {
+                    static definition = {
+                        name,
+                        shadowOptions: null,
+                        template: undefined,
+                        templateOptions: "defer-and-hydrate",
+                    };
+                }
+            ).define();
 
-                const element = document.createElement(name) as any;
-                const controller = ElementController.forCustomElement(element);
-                controller.connect();
+            const element = document.createElement(name) as any;
+            const controller = ElementController.forCustomElement(element);
+            controller.connect();
 
-                controller.shadowOptions = { mode: "open" };
+            controller.shadowOptions = { mode: "open" };
 
-                const result = {
-                    hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
-                    hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
-                };
+            const result = {
+                hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
+                hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
+            };
 
-                ElementController.setStrategy(ElementController);
-                return result;
-            }
-        );
+            ElementController.setStrategy(ElementController);
+            return result;
+        });
 
         expect(hasDeferHydration).toBe(true);
         expect(hasNeedsHydration).toBe(true);

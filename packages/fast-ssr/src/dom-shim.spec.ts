@@ -1,9 +1,9 @@
 import "./install-dom-shim.js";
 import { expect, test } from "@playwright/test";
 import { FASTElement, html } from "@microsoft/fast-element";
+import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 import { createWindow } from "./dom-shim.js";
 import fastSSR from "./exports.js";
-import { uniqueElementName } from "@microsoft/fast-element/testing.js";
 
 test.describe("createWindow", () => {
     test("should create a window with a document property that is an instance of the window's Document constructor", () => {
@@ -15,6 +15,7 @@ test.describe("createWindow", () => {
         const windowOverride = createWindow({ Document: MyDocument });
         expect(windowOverride.document instanceof MyDocument).toBe(true);
     });
+    // eslint-disable-next-line max-len
     test("should create a window with a customElements property that is an instance of the window's CustomElementRegistry constructor", () => {
         const window = createWindow();
 
@@ -36,7 +37,7 @@ test.describe("The DOM shim", () => {
 
         MyComponent.define({
             name,
-            template: html``
+            template: html``,
         });
 
         const { templateRenderer } = fastSSR();

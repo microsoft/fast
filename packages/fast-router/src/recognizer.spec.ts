@@ -1,10 +1,10 @@
+import { expect } from "chai";
 import {
     ConfigurableRoute,
     DefaultRouteRecognizer,
     Endpoint,
     RecognizedRoute,
 } from "./recognizer.js";
-import { expect } from "chai";
 
 describe(DefaultRouteRecognizer.name, function () {
     interface RecognizeSpec {
@@ -989,7 +989,16 @@ describe(DefaultRouteRecognizer.name, function () {
         },
         // d/d + d/s*2 + s/d*2 + s/s*3
         {
-            routes: ["{1}/{2}", "{1}/a", "{1}/aa", "a/{2}", "aa/{2}", "a/a", "a/aa", "aa/a"],
+            routes: [
+                "{1}/{2}",
+                "{1}/a",
+                "{1}/aa",
+                "a/{2}",
+                "aa/{2}",
+                "a/a",
+                "a/aa",
+                "aa/a",
+            ],
             tests: [
                 ["", null, null],
                 ["a", null, null],
@@ -2043,7 +2052,8 @@ describe(DefaultRouteRecognizer.name, function () {
         },
         // #endregion
         // #region complex combinations
-        // TODO(fkleuver): this is not done yet. Plenty of edge cases still to be added (esp. with dynamic vs optional dynamic with star segments, etc)
+        // TODO(fkleuver): this is not done yet. Plenty of edge cases still to be added
+        // (esp. with dynamic vs optional dynamic with star segments, etc)
         {
             routes: [
                 "a",

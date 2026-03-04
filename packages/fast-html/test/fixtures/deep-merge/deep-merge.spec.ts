@@ -13,8 +13,12 @@ test.describe("Deep Merge Test Fixture", () => {
         await expect(page.locator(".users h2")).toContainText("Users (2 total)");
 
         // Check first user details
-        await expect(page.locator(".user-card").first()).toContainText("Alice Johnson (ID: 1)");
-        await expect(page.locator(".user-card").first()).toContainText("alice@example.com");
+        await expect(page.locator(".user-card").first()).toContainText(
+            "Alice Johnson (ID: 1)"
+        );
+        await expect(page.locator(".user-card").first()).toContainText(
+            "alice@example.com"
+        );
         await expect(page.locator(".user-card").first()).toContainText("Age: 28");
         await expect(page.locator(".user-card").first()).toContainText("New York, USA");
         await expect(page.locator(".user-card").first()).toContainText("Theme: dark");
@@ -26,7 +30,9 @@ test.describe("Deep Merge Test Fixture", () => {
 
         // Check that nested properties were updated
         await expect(page.locator(".user-card").first()).toContainText("Age: 29");
-        await expect(page.locator(".user-card").first()).toContainText("San Francisco, USA");
+        await expect(page.locator(".user-card").first()).toContainText(
+            "San Francisco, USA"
+        );
         await expect(page.locator(".user-card").first()).toContainText("Theme: light");
 
         // Verify country wasn't changed (partial merge)
@@ -76,7 +82,6 @@ test.describe("Deep Merge Test Fixture", () => {
 
         await page.click('button:has-text("Update Product Tags")');
 
-
         // Check updated tags
         await expect(firstItem).toContainText("tech");
         await expect(firstItem).toContainText("premium");
@@ -93,7 +98,6 @@ test.describe("Deep Merge Test Fixture", () => {
 
         await page.click('button:has-text("Add New User")');
 
-
         await expect(page.locator(".users h2")).toContainText("Users (3 total)");
         await expect(page.locator(".user-card").nth(2)).toContainText("Charlie Davis");
         await expect(page.locator(".user-card").nth(2)).toContainText("Tokyo, Japan");
@@ -107,13 +111,11 @@ test.describe("Deep Merge Test Fixture", () => {
 
         await page.click('button:has-text("Toggle Details")');
 
-
         // Details should be hidden
         await expect(page.locator(".profile").first()).not.toBeVisible();
         await expect(page.locator(".metadata").first()).not.toBeVisible();
 
         await page.click('button:has-text("Toggle Details")');
-
 
         // Details should be visible again
         await expect(page.locator(".profile").first()).toBeVisible();
@@ -126,11 +128,9 @@ test.describe("Deep Merge Test Fixture", () => {
 
         await page.click('button:has-text("Increment Age")');
 
-
         await expect(page.locator(".user-card").first()).toContainText("Age: 29");
 
         await page.click('button:has-text("Increment Age")');
-
 
         await expect(page.locator(".user-card").first()).toContainText("Age: 30");
     });
@@ -141,7 +141,6 @@ test.describe("Deep Merge Test Fixture", () => {
         await expect(page.locator(".stats")).toContainText("Total Revenue: $425.5");
 
         await page.click('button:has-text("Update Stats")');
-
 
         await expect(page.locator(".stats")).toContainText("Total Orders: 4");
         await expect(page.locator(".stats")).toContainText("Total Revenue: $525.49");
@@ -156,7 +155,6 @@ test.describe("Deep Merge Test Fixture", () => {
         await expect(page.locator(".user-card").first()).toContainText("New York");
 
         await page.click('button:has-text("Test Undefined Merge")');
-
 
         // Age should remain unchanged (undefined skipped)
         await expect(page.locator(".user-card").first()).toContainText("Age: 28");
@@ -203,7 +201,6 @@ test.describe("Deep Merge Test Fixture", () => {
         // After updating, second item should be out of stock
         await page.click('button:has-text("Update Product Tags")');
 
-
         await expect(items.nth(1)).toContainText("✗ Out of Stock");
     });
 
@@ -211,13 +208,14 @@ test.describe("Deep Merge Test Fixture", () => {
         await page.goto("/fixtures/deep-merge/");
         await page.click('button:has-text("Add New User")');
 
-
         const newUser = page.locator(".user-card").nth(2);
         await expect(newUser).toContainText("Charlie Davis");
         await expect(newUser).toContainText("No orders yet");
     });
 
-    test("should preserve object identity for observable arrays when using deepMerge", async ({ page }) => {
+    test("should preserve object identity for observable arrays when using deepMerge", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/deep-merge/");
         // This test verifies that splice is used internally by checking
         // that updates work correctly multiple times (proving the array
@@ -225,13 +223,11 @@ test.describe("Deep Merge Test Fixture", () => {
 
         await page.click('button:has-text("Update Product Tags")');
 
-
         const firstItem = page.locator(".item").first();
         await expect(firstItem).toContainText("Views: 300");
 
         // Update again - if array identity wasn't preserved, this might fail
         await page.click('button:has-text("Update Product Tags")');
-
 
         // Should still work correctly
         await expect(firstItem).toContainText("Views: 300");

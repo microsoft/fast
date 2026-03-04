@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("ObserverMap", async () => {
     test.beforeEach(async ({ page }) => {
@@ -6,7 +6,9 @@ test.describe("ObserverMap", async () => {
         await page.waitForSelector("observer-map-test-element");
     });
 
-    test("should render initial users with deeply nested properties", async ({ page }) => {
+    test("should render initial users with deeply nested properties", async ({
+        page,
+    }) => {
         // Check that initial users are rendered
         await expect(page.locator(".user-card")).toHaveCount(2);
 
@@ -60,17 +62,27 @@ test.describe("ObserverMap", async () => {
 
     test("should update notification settings", async ({ page }) => {
         // Check initial notification settings for Alice
-        await expect(page.locator("text=Email Notifications: true").first()).toBeVisible();
-        await expect(page.locator("text=Push Notifications: false").first()).toBeVisible();
-        await expect(page.locator("text=Notification Frequency: daily").first()).toBeVisible();
+        await expect(
+            page.locator("text=Email Notifications: true").first()
+        ).toBeVisible();
+        await expect(
+            page.locator("text=Push Notifications: false").first()
+        ).toBeVisible();
+        await expect(
+            page.locator("text=Notification Frequency: daily").first()
+        ).toBeVisible();
 
         // Click update notifications button
         await page.locator("button:has-text('Update Notifications')").first().click();
 
         // Settings should be toggled
-        await expect(page.locator("text=Email Notifications: false").first()).toBeVisible();
+        await expect(
+            page.locator("text=Email Notifications: false").first()
+        ).toBeVisible();
         await expect(page.locator("text=Push Notifications: true").first()).toBeVisible();
-        await expect(page.locator("text=Notification Frequency: weekly").first()).toBeVisible();
+        await expect(
+            page.locator("text=Notification Frequency: weekly").first()
+        ).toBeVisible();
     });
 
     test("should add and remove categories in deeply nested arrays", async ({ page }) => {
@@ -160,7 +172,9 @@ test.describe("ObserverMap", async () => {
         await expect(page.locator("text=Total Users: 2")).toBeVisible();
     });
 
-    test("should be able to update nested properties on added users", async ({ page }) => {
+    test("should be able to update nested properties on added users", async ({
+        page,
+    }) => {
         // Initial user count should be 2
         await expect(page.locator(".user-card")).toHaveCount(2);
 
@@ -182,7 +196,9 @@ test.describe("ObserverMap", async () => {
         await expect(userCard3.locator("text=Theme: light")).toBeVisible();
     });
 
-    test("should be able to update nested properties on added users after the items array has been emptied", async ({ page }) => {
+    test("should be able to update nested properties on added users after the items array has been emptied", async ({
+        page,
+    }) => {
         // Initial item count should be 1
         await expect(page.locator(".item")).toHaveCount(1);
 
@@ -202,10 +218,12 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Update an item')").click();
 
         // The item should have updated text
-        await expect(page.locator(".item")).toHaveText('item C')
+        await expect(page.locator(".item")).toHaveText("item C");
     });
 
-    test("should be able to update nested properties on added users after the group array has been emptied", async ({ page }) => {
+    test("should be able to update nested properties on added users after the group array has been emptied", async ({
+        page,
+    }) => {
         // Initial item count should be 1
         await expect(page.locator(".item")).toHaveCount(1);
 
@@ -225,30 +243,36 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Update an item')").click();
 
         // The item should have updated text
-        await expect(page.locator(".item")).toHaveText('item C');
+        await expect(page.locator(".item")).toHaveText("item C");
 
         // Click the update action label
         await page.locator("button:has-text('Update an action label')").click();
 
         // The action label should have updated text
-        await expect(page.locator(".action-label")).toHaveText('action label B');
+        await expect(page.locator(".action-label")).toHaveText("action label B");
     });
 
     test("should update global stats with nested metrics", async ({ page }) => {
         // Check initial engagement stats
-        const initialDaily = await page.locator(".stats .nested-info").nth(1).textContent();
+        const initialDaily = await page
+            .locator(".stats .nested-info")
+            .nth(1)
+            .textContent();
 
         // Update stats
         await page.locator(".stats .controls button").nth(0).click();
 
         await page.evaluate(() => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestAnimationFrame(() => resolve(true));
             });
         });
 
         // Stats should be updated (values should change)
-        const updatedDaily = await page.locator(".stats .nested-info").nth(1).textContent();
+        const updatedDaily = await page
+            .locator(".stats .nested-info")
+            .nth(1)
+            .textContent();
 
         expect(updatedDaily).not.toBe(initialDaily);
     });
@@ -258,7 +282,11 @@ test.describe("ObserverMap", async () => {
         await expect(page.locator("text=⭐ SELECTED").first()).toBeVisible();
 
         // Select Bob (user ID 2)
-        await page.locator(".user-card").nth(1).locator("button:has-text('Select User')").click();
+        await page
+            .locator(".user-card")
+            .nth(1)
+            .locator("button:has-text('Select User')")
+            .click();
 
         // Bob should now show as selected
         const bobCard = page.locator(".user-card").nth(1);
@@ -269,7 +297,9 @@ test.describe("ObserverMap", async () => {
         await expect(aliceCard.locator("text=⭐ SELECTED")).not.toBeVisible();
     });
 
-    test("should update a defined object when a nested property has been defined", async ({ page }) => {
+    test("should update a defined object when a nested property has been defined", async ({
+        page,
+    }) => {
         const undefinedText = await page.locator(".nested-define").textContent();
 
         await expect(undefinedText).toEqual("");
@@ -278,7 +308,7 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Define B')").nth(0).click();
 
         await page.evaluate(() => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestAnimationFrame(() => resolve(true));
             });
         });
@@ -288,7 +318,9 @@ test.describe("ObserverMap", async () => {
         await expect(definedText).toEqual("Hello world");
     });
 
-    test("should update a defined object when a nested property has been updated", async ({ page }) => {
+    test("should update a defined object when a nested property has been updated", async ({
+        page,
+    }) => {
         // Define the object
         await page.locator("button:has-text('Define B')").nth(0).click();
 
@@ -296,7 +328,7 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Update C')").nth(0).click();
 
         await page.evaluate(() => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestAnimationFrame(() => resolve(true));
             });
         });
@@ -306,7 +338,9 @@ test.describe("ObserverMap", async () => {
         await expect(updatedText).toEqual("Hello pluto");
     });
 
-    test("should update an undefined object when a nested property has been defined", async ({ page }) => {
+    test("should update an undefined object when a nested property has been defined", async ({
+        page,
+    }) => {
         const undefinedText = await page.locator(".nested-define-2");
 
         await expect(undefinedText).toHaveCount(0);
@@ -315,7 +349,7 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Define Y')").nth(0).click();
 
         await page.evaluate(() => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestAnimationFrame(() => resolve(true));
             });
         });
@@ -325,7 +359,9 @@ test.describe("ObserverMap", async () => {
         await expect(definedText).toEqual("Z1");
     });
 
-    test("should update an undefined object when a nested property has been updated", async ({ page }) => {
+    test("should update an undefined object when a nested property has been updated", async ({
+        page,
+    }) => {
         // Define the object
         await page.locator("button:has-text('Define Y')").nth(0).click();
 
@@ -333,7 +369,7 @@ test.describe("ObserverMap", async () => {
         await page.locator("button:has-text('Update Z')").nth(0).click();
 
         await page.evaluate(() => {
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
                 requestAnimationFrame(() => resolve(true));
             });
         });
@@ -344,43 +380,63 @@ test.describe("ObserverMap", async () => {
     });
 
     test.describe("defineProperties behavior", async () => {
-        test("should not duplicate accessors for properties with existing @attr decorator", async ({ page }) => {
+        test("should not duplicate accessors for properties with existing @attr decorator", async ({
+            page,
+        }) => {
             const element = page.locator("observer-map-with-observables-test-element");
 
             await element.evaluate(node => {
                 node.setAttribute("attribute", "new value");
             });
 
-            expect(await element.evaluate(node => {
-                return (window as any).Observable.getAccessors(node).filter((accessor: any) => accessor.name === "attribute");
-            })).toEqual([{
-                Owner: undefined,
-                attribute: "some-attribute",
-                callbackName: "attributeChanged",
-                converter: undefined,
-                fieldName: "_attribute",
-                guards: {},
-                hasCallback: true,
-                mode: "reflect",
-                name: "attribute",
-            }]);
+            expect(
+                await element.evaluate(node => {
+                    return (window as any).Observable.getAccessors(node).filter(
+                        (accessor: any) => accessor.name === "attribute"
+                    );
+                })
+            ).toEqual([
+                {
+                    Owner: undefined,
+                    attribute: "some-attribute",
+                    callbackName: "attributeChanged",
+                    converter: undefined,
+                    fieldName: "_attribute",
+                    guards: {},
+                    hasCallback: true,
+                    mode: "reflect",
+                    name: "attribute",
+                },
+            ]);
         });
 
-        test("should not duplicate accessors for properties with existing @observable decorator", async ({ page }) => {
+        test("should not duplicate accessors for properties with existing @observable decorator", async ({
+            page,
+        }) => {
             const element = page.locator("observer-map-with-observables-test-element");
 
             // There should only be one accessor for 'value1'
-            expect(await element.evaluate(node => {
-                return (window as any).Observable.getAccessors(node).filter((accessor: any) => accessor.name === "value1");
-            })).toEqual([{ name: 'value1', field: '_value1', callback: 'value1Changed' }]);
+            expect(
+                await element.evaluate(node => {
+                    return (window as any).Observable.getAccessors(node).filter(
+                        (accessor: any) => accessor.name === "value1"
+                    );
+                })
+            ).toEqual([{ name: "value1", field: "_value1", callback: "value1Changed" }]);
         });
 
-        test("should define observable properties for properties without existing accessors", async ({ page }) => {
+        test("should define observable properties for properties without existing accessors", async ({
+            page,
+        }) => {
             const element = page.locator("observer-map-with-observables-test-element");
 
-            expect(await element.evaluate(node => {
-                return (window as any).Observable.getAccessors(node).filter((accessor: any) => accessor.name === "value2");
-            })).toEqual([{ name: 'value2', field: '_value2', callback: 'value2Changed' }]);
+            expect(
+                await element.evaluate(node => {
+                    return (window as any).Observable.getAccessors(node).filter(
+                        (accessor: any) => accessor.name === "value2"
+                    );
+                })
+            ).toEqual([{ name: "value2", field: "_value2", callback: "value2Changed" }]);
         });
 
         test("should preserve existing changed methods", async ({ page }) => {
@@ -395,11 +451,17 @@ test.describe("ObserverMap", async () => {
 
             const messages = await page.evaluate("window.messages");
 
-            expect(messages).toEqual(expect.arrayContaining(["value1 changed from 42 to 43"]));
+            expect(messages).toEqual(
+                expect.arrayContaining(["value1 changed from 42 to 43"])
+            );
 
-            expect(messages).toEqual(expect.arrayContaining(["value1 changed from 43 to 44"]));
+            expect(messages).toEqual(
+                expect.arrayContaining(["value1 changed from 43 to 44"])
+            );
 
-            expect(messages).toEqual(expect.arrayContaining(["value1 changed from 44 to 45"]));
+            expect(messages).toEqual(
+                expect.arrayContaining(["value1 changed from 44 to 45"])
+            );
         });
     });
 });

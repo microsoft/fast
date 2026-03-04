@@ -10,7 +10,7 @@ test.describe("f-template", () => {
     test("create a slotted directive", async () => {
         await expect(element).toHaveJSProperty("classList.length", 2);
 
-        await element.evaluate((node) => {
+        await element.evaluate(node => {
             const newElement = document.createElement("button");
             newElement.slot = "foo";
             node.append(newElement);

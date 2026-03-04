@@ -257,6 +257,7 @@ test.describe("AdoptedStyleSheetsStrategy", () => {
             expect(afterRemove).toBe(0);
         });
 
+        // eslint-disable-next-line max-len
         test("should apply stylesheets to the parent document of the provided element when the shadowRoot of the element is inaccessible or doesn't exist and the element is in light DOM", async ({
             page,
         }) => {
@@ -287,6 +288,7 @@ test.describe("AdoptedStyleSheetsStrategy", () => {
             expect(afterRemove).toBe(0);
         });
 
+        // eslint-disable-next-line max-len
         test("should apply stylesheets to the host's shadowRoot when the shadowRoot of the element is inaccessible or doesn't exist and the element is in a shadowRoot", async ({
             page,
         }) => {
@@ -552,6 +554,7 @@ test.describe("StyleElementStrategy", () => {
         expect(afterRemove).not.toContain(":host{color:red}");
     });
 
+    // eslint-disable-next-line max-len
     test("should apply stylesheets to the parent document of the provided element when the shadowRoot of the element is inaccessible or doesn't exist and the element is in light DOM", async ({
         page,
     }) => {
@@ -584,6 +587,7 @@ test.describe("StyleElementStrategy", () => {
         expect(afterRemoveStyles).toEqual(0);
     });
 
+    // eslint-disable-next-line max-len
     test("should apply stylesheets to the host's shadowRoot when the shadowRoot of the element is inaccessible or doesn't exist and the element is in a shadowRoot", async ({
         page,
     }) => {

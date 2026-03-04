@@ -9,7 +9,7 @@ function getSheet(element: string): string | null {
     const result = cssSheetRegex.exec(element);
 
     if (result === null) {
-        return null
+        return null;
     } else {
         return result[1];
     }
@@ -44,7 +44,11 @@ test.describe("FASTStyleStyleRenderer", () => {
 
     test("should emit the sheet content into the 'css' attribute the first time a sheet instance is rendered", () => {
         const renderer = new FASTStyleStyleRenderer();
-        const style = css`:host{ color: red; }`;
+        const style = css`
+            :host {
+                color: red;
+            }
+        `;
         styleCache.add(style);
 
         const result = renderer.render(styleCache);
@@ -54,17 +58,30 @@ test.describe("FASTStyleStyleRenderer", () => {
 
     test("should emit the sheet content for embedded ElementStyle instances", () => {
         const renderer = new FASTStyleStyleRenderer();
-        const style = css`:host{ color: red; } ${css`:host { background: blue; }`}`;
+        const style = css`
+            :host {
+                color: red;
+            }
+            ${css`
+                :host {
+                    background: blue;
+                }
+            `}
+        `;
         styleCache.add(style);
         const result = renderer.render(styleCache);
 
-        expect(getSheet(result)).toBe(':host{ color: red; } :host { background: blue; }');
+        expect(getSheet(result)).toBe(":host{ color: red; } :host { background: blue; }");
     });
-
 
     test("should emit the sheet content for embedded strings", () => {
         const renderer = new FASTStyleStyleRenderer();
-        const style = css`:host{ color: red; } ${`:host { background: blue; }`}`;
+        const style = css`
+            :host {
+                color: red;
+            }
+            ${`:host { background: blue; }`}
+        `;
         styleCache.add(style);
         const result = renderer.render(styleCache);
 
