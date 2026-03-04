@@ -1,10 +1,10 @@
+import { expect, test } from "@playwright/test";
 import {
     ConfigurableRoute,
     DefaultRouteRecognizer,
     Endpoint,
     RecognizedRoute,
 } from "./recognizer.js";
-import { expect, test } from "@playwright/test";
 
 test.describe(DefaultRouteRecognizer.name, () => {
     interface RecognizeSpec {
