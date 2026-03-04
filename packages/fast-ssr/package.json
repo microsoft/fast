@@ -68,7 +68,7 @@
       "minor",
       "patch"
     ],
-    "tag": "beta",
+    "tag": "latest",
     "prereleasePrefix": "beta"
   }
 }
