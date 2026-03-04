@@ -6,8 +6,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.json && webpack --mode=production",
-    "start": "webpack serve",
+    "build": "tsc -p tsconfig.json && vite build",
+    "start": "vite",
     "test": "npm run build"
   },
   "author": {
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@genesiscommunitysuccess/cep-fast-plugin": "5.0.3",
-    "@genesiscommunitysuccess/custom-elements-lsp": "5.0.3"
+    "@genesiscommunitysuccess/custom-elements-lsp": "5.0.3",
+    "vite": "^7.3.1"
   }
 }

@@ -27,9 +27,7 @@
     "strict": true,
     "outDir": "dist",
     "rootDir": "src",
-    "types": [
-      "webpack-env"
-    ],
+    "types": [],
     "lib": [
       "dom",
       "esnext"
