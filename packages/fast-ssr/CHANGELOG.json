@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Thu, 05 Mar 2026 00:09:03 GMT",
+      "version": "1.0.0-beta.39",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.39",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "d0aa03d8d69547d58626e1f859b8df6d4d981397",
+            "comment": "Tag SSR prerelease with latest"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Feb 2026 20:49:30 GMT",
       "version": "1.0.0-beta.38",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.38",
