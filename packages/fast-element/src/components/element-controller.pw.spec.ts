@@ -1933,9 +1933,8 @@ test.describe("The ElementController", () => {
                     class TestElement extends FASTElement {
                         static definition = {
                             name,
-                            template: html`
-                                Test 2
-                            `,
+                            // prettier-ignore
+                            template: html`Test 2`,
                         };
                     }
                 ).define();

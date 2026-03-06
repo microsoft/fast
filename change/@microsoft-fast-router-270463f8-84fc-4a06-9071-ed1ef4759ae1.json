@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Enable Prettier and ESLint for spec files",
+  "packageName": "@microsoft/fast-router",
+  "email": "198982749+Copilot@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

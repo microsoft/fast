@@ -71,15 +71,8 @@ test.describe("fastSSR default export", () => {
         const { templateRenderer } = fastSSR({
             viewBehaviorFactoryRenderers: [renderer],
         });
-        expect(
-            consolidate(
-                templateRenderer.render(
-                    html`
-                        <p ${new Directive("hello-world")}></p>
-                    `
-                )
-            )
-        ).toBe(`<p value='hello-world'></p>`);
+        // prettier-ignore
+        expect(consolidate(templateRenderer.render(html`<p ${new Directive("hello-world")}></p>`))).toBe(`<p value='hello-world'></p>`);
     });
     test("should support overriding pre-registered ViewBehaviorFactoryRenderer", () => {
         class Directive extends StatelessAttachedAttributeDirective<string> {
@@ -99,14 +92,7 @@ test.describe("fastSSR default export", () => {
         const { templateRenderer } = fastSSR({
             viewBehaviorFactoryRenderers: [renderer],
         });
-        expect(
-            consolidate(
-                templateRenderer.render(
-                    html`
-                        <p ${ref("key")}></p>
-                    `
-                )
-            )
-        ).toBe(`<p ref='some-ref'></p>`);
+        // prettier-ignore
+        expect(consolidate(templateRenderer.render(html`<p ${ref("key")}></p>`))).toBe(`<p ref='some-ref'></p>`);
     });
 });

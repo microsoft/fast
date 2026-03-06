@@ -120,125 +120,98 @@ test.describe("The html tag template helper", () => {
                 const scenarios = [
                     // string
                     {
-                        template: html`
-                            ${stringValue} end
-                        `,
+                        // prettier-ignore
+                        template: html`${stringValue} end`,
                         result: `${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${stringValue} end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${stringValue} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${stringValue}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${stringValue}`,
                         result: `beginning ${FAKE.interpolation}`,
                     },
                     // number
                     {
-                        template: html`
-                            ${numberValue} end
-                        `,
+                        // prettier-ignore
+                        template: html`${numberValue} end`,
                         result: `${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${numberValue} end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${numberValue} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                     },
                     {
-                        template: html`
-                            beginning ${numberValue}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${numberValue}`,
                         result: `beginning ${FAKE.interpolation}`,
                     },
                     // expression
                     {
-                        template: html`
-                            ${x => x.value} end
-                        `,
+                        // prettier-ignore
+                        template: html`${x => x.value} end`,
                         result: `${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning ${x => x.value} end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${x => x.value} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning ${x => x.value}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${x => x.value}`,
                         result: `beginning ${FAKE.interpolation}`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     // directive
                     {
-                        template: html`
-                            ${new TestDirective()} end
-                        `,
+                        // prettier-ignore
+                        template: html`${new TestDirective()} end`,
                         result: `${FAKE.comment} end`,
                         expectDirectives: [TestDirective],
                     },
                     {
-                        template: html`
-                            beginning ${new TestDirective()} end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${new TestDirective()} end`,
                         result: `beginning ${FAKE.comment} end`,
                         expectDirectives: [TestDirective],
                     },
                     {
-                        template: html`
-                            beginning ${new TestDirective()}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${new TestDirective()}`,
                         result: `beginning ${FAKE.comment}`,
                         expectDirectives: [TestDirective],
                     },
                     // template
                     {
-                        template: html`
-                            ${html`
-                                sub-template
-                            `}
-                            end
-                        `,
+                        // prettier-ignore
+                        template: html`${html`sub-template`} end`,
                         result: `${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${html`
-                                sub-template
-                            `}
-                            end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${html`sub-template`} end`,
                         result: `beginning ${FAKE.interpolation} end`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${html`
-                                sub-template
-                            `}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${html`sub-template`}`,
                         result: `beginning ${FAKE.interpolation}`,
                         expectDirectives: [HTMLBindingDirective],
                     },
                     // mixed back-to-back
                     {
-                        template: html`
-                            ${stringValue}${numberValue}${x =>
-                                x.value}${new TestDirective()}
-                            end
-                        `,
+                        // prettier-ignore
+                        template: html`${stringValue}${numberValue}${
+                            x => x.value}${new TestDirective()} end`,
                         result: `${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -247,12 +220,10 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}${numberValue}${x =>
-                                x.value}${new TestDirective()}
-                            end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${stringValue}${numberValue}${
+                            x => x.value
+                        }${new TestDirective()} end`,
                         result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -261,11 +232,10 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}${numberValue}${x =>
-                                x.value}${new TestDirective()}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${stringValue}${numberValue}${
+                            x => x.value}${new TestDirective()
+                        }`,
                         result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -275,11 +245,10 @@ test.describe("The html tag template helper", () => {
                     },
                     // mixed separated
                     {
-                        template: html`
-                            ${stringValue}separator${numberValue}separator${x =>
-                                x.value}separator${new TestDirective()}
-                            end
-                        `,
+                        // prettier-ignore
+                        template: html`${stringValue}separator${numberValue}separator${
+                            x => x.value
+                        }separator${new TestDirective()} end`,
                         // eslint-disable-next-line max-len
                         result: `${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
                         expectDirectives: [
@@ -289,12 +258,10 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}separator${numberValue}separator${x =>
-                                x.value}separator${new TestDirective()}
-                            end
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${stringValue}separator${numberValue}separator${
+                            x => x.value
+                        }separator${new TestDirective()} end`,
                         // eslint-disable-next-line max-len
                         result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
                         expectDirectives: [
@@ -304,11 +271,10 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`
-                            beginning
-                            ${stringValue}separator${numberValue}separator${x =>
-                                x.value}separator${new TestDirective()}
-                        `,
+                        // prettier-ignore
+                        template: html`beginning ${stringValue}separator${numberValue}separator${
+                            x => x.value
+                        }separator${new TestDirective()}`,
                         // eslint-disable-next-line max-len
                         result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
                         expectDirectives: [
@@ -318,8 +284,6 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                 ];
-
-                const x = scenarios[idx];
 
                 // expectTemplateEquals
                 function expectTemplateEquals(template, expectedHTML) {
