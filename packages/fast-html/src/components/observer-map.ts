@@ -1,5 +1,6 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { assignObservables, deepMerge } from "./utilities.js";
+import { Signal } from "@microsoft/fast-element/binding/signal.js";
+import { assignObservables, deepMerge, getElementSignalName } from "./utilities.js";
 import type { JSONSchema, Schema } from "./schema.js";
 
 /**
@@ -9,6 +10,7 @@ import type { JSONSchema, Schema } from "./schema.js";
 export class ObserverMap {
     private schema: Schema;
     private classPrototype: any;
+    private signaling = new WeakSet();
 
     constructor(classPrototype: any, schema: Schema) {
         this.classPrototype = classPrototype;
@@ -74,8 +76,15 @@ export class ObserverMap {
     ): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const schema = this.schema;
+        const signaling = this.signaling;
 
         function instanceResolverChanged(this: any, prev: any, next: any): void {
+            const isReentrant = signaling.has(this);
+
+            if (!isReentrant) {
+                signaling.add(this);
+            }
+
             const isObjectAssignment = next !== null && typeof next === "object";
             const isManagedArray = Array.isArray(next) && (next as any)?.$fastController;
             const shouldAssignProxy =
@@ -97,6 +106,11 @@ export class ObserverMap {
                 }
             } else if (!isObjectAssignment) {
                 this[propertyName] = next;
+            }
+
+            if (!isReentrant) {
+                signaling.delete(this);
+                Signal.send(getElementSignalName(this));
             }
 
             existingChangedMethod?.call(this, prev, next);

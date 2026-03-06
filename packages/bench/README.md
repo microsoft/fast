@@ -26,7 +26,7 @@ This will:
 2. Start the static server on `http://localhost:5174`
 3. Run all discovered scenarios through Playwright
 4. Print stats tables to the console
-5. Generate an interactive HTML report at `results/index.html`
+5. Generate an interactive HTML report at `results/latest.html`
 
 ### Iteration count
 
@@ -41,13 +41,13 @@ BENCH_ITERATIONS=100 npm run bench
 Pass scenario names as arguments to filter which benchmarks run:
 
 ```bash
-npm run bench -- basic bind-text
+npm run bench -- basic attr-reflect
 ```
 
-Each argument is matched as a substring, so `basic` runs `basic/fe`, `basic/fhtml`, and `basic/fhtml-hydrate`. You can also target a specific variant:
+Each argument is matched as a substring, so `basic` runs `basic/csr` and `basic/hydration`. You can also target a specific variant:
 
 ```bash
-npm run bench -- basic/fe
+npm run bench -- basic/csr
 ```
 
 ## Running from repo root
@@ -71,15 +71,34 @@ src/
     report.js     Report interaction (inlined into output)
     index.html    Dev server landing page
     basic/        Scenario directories...
-    bind-attr/
-    ...
+    attr-reflect/
+    bind-event/
+    dot-syntax/
+    ref-slotted/
+    repeat/
+    when/
+```
+
+Each scenario follows a consistent structure:
+
+```text
+<scenario>/
+  element.ts        Shared element class definition
+  template.html     <f-template> for hydration variants
+  csr/
+    index.html      Client-side rendering entry
+    main.ts         CSR variant script
+  hydration/
+    index.html      SSR + hydration entry (uses <!-- @bench-ssr-render -->)
+    main.ts         Hydration variant script
+    render.ts       SSR HTML generator for Vite build-time rendering
 ```
 
 ## Output
 
-The report at `results/index.html` includes:
+The report at `results/latest.html` (symlinked to the most recent timestamped run) includes:
 
-- **Overlaid line charts** per scenario with all variants (fe, fhtml, fhtml-hydrate) on shared axes
+- **Overlaid line charts** per scenario with all variants (csr, hydration) on shared axes
 - **Hover-to-emphasize** and **click-to-select** variant interaction
 - **Winner table** showing the best value per metric/stat, color-coded by variant
 - **Variant drill-down** — click a variant to see its full stats
@@ -94,8 +113,11 @@ Metrics collected per iteration:
 | Paint | Paint, compositing, layerization |
 | Total (trace) | Sum of the above four |
 | User Measure | Duration of the `bench` performance.measure |
+| FCP | First Contentful Paint (relative to navigation start) |
+| LCP | Largest Contentful Paint (relative to navigation start) |
+| DCL | DOMContentLoaded (relative to navigation start) |
 
-All values are in milliseconds.
+Summary statistics: Min, Median, Mean, Geometric Mean, P95, Max. All values are in milliseconds.
 
 ## Dev server
 
