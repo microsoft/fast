@@ -73,13 +73,10 @@ test.describe("The html tag template helper", () => {
     ];
 
     for (const scenario of interpolationScenarios) {
-        test(`inserts ${scenario.type} values ${scenario.location} of the html`, async ({
-            page,
-        }) => {
+        test(`inserts ${scenario.type} values ${scenario.location}`, async ({ page }) => {
             await page.goto("/");
 
             const result = await page.evaluate(async idx => {
-                // @ts-expect-error: Client module.
                 const {
                     html,
                     ViewTemplate,
@@ -285,6 +282,8 @@ test.describe("The html tag template helper", () => {
                     },
                 ];
 
+                const x = scenarios[idx];
+
                 // expectTemplateEquals
                 function expectTemplateEquals(template, expectedHTML) {
                     if (!(template instanceof ViewTemplate)) return "not a ViewTemplate";
@@ -349,7 +348,6 @@ test.describe("The html tag template helper", () => {
         await page.goto("/");
 
         const result = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
             const {
                 html,
                 ViewTemplate,
