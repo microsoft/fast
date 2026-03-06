@@ -22,6 +22,9 @@ export const METRIC_LABELS: Record<TraceMetricKey, string> = {
     paint: "Paint",
     total: "Total (trace)",
     userMeasure: "User Measure",
+    fcp: "FCP",
+    lcp: "LCP",
+    dcl: "DCL",
 };
 
 export const METRIC_COLORS: Record<TraceMetricKey, string> = {
@@ -31,6 +34,9 @@ export const METRIC_COLORS: Record<TraceMetricKey, string> = {
     paint: "#34a853",
     total: "#8b5cf6",
     userMeasure: "#f97316",
+    fcp: "#14b8a6",
+    lcp: "#ec4899",
+    dcl: "#0ea5e9",
 };
 
 export function escapeXml(s: string): string {
@@ -48,17 +54,35 @@ function fmt(v: number): string {
     return v.toFixed(3);
 }
 
-/** Variant label colors used to distinguish columns in comparison charts. */
-export const VARIANT_COLORS: Record<string, string> = {
-    fe: "#6366f1",
-    fhtml: "#06b6d4",
-    "fhtml-hydrate": "#f59e0b",
-};
+/**
+ * A palette of visually distinct colors assigned to variants by
+ * insertion order. Colors are chosen to maximize contrast between
+ * adjacent entries so that the first two variants in any scenario
+ * are always easy to distinguish.
+ */
+const VARIANT_PALETTE = [
+    "#6366f1", // indigo
+    "#f59e0b", // amber
+    "#06b6d4", // cyan
+    "#ec4899", // pink
+    "#10b981", // emerald
+    "#8b5cf6", // violet
+    "#f97316", // orange
+    "#14b8a6", // teal
+    "#ef4444", // red
+    "#3b82f6", // blue
+];
 
-const DEFAULT_VARIANT_COLOR = "#6b7280";
+let variantColorIndex = 0;
+const variantColorCache = new Map<string, string>();
 
 export function variantColor(variant: string): string {
-    return VARIANT_COLORS[variant] ?? DEFAULT_VARIANT_COLOR;
+    let color = variantColorCache.get(variant);
+    if (!color) {
+        color = VARIANT_PALETTE[variantColorIndex++ % VARIANT_PALETTE.length];
+        variantColorCache.set(variant, color);
+    }
+    return color;
 }
 
 /** A single variant's data for a comparison chart. */
@@ -80,12 +104,11 @@ export function renderSvgChart(
     const metrics = options.metrics;
     const width = options.width ?? 720;
 
-    const margin = { top: 48, right: 32, bottom: 44, left: 72 };
+    const margin = { top: 48, right: 32, bottom: 16, left: 72 };
     const plotWidth = width - margin.left - margin.right;
     const panelHeight = 80;
-    const panelGap = 28;
-    const totalPanelsHeight =
-        metrics.length * panelHeight + (metrics.length - 1) * panelGap;
+    const panelGap = 44;
+    const totalPanelsHeight = metrics.length * (panelHeight + panelGap) - panelGap;
     const height = margin.top + totalPanelsHeight + margin.bottom;
 
     const parts: string[] = [];
@@ -117,7 +140,6 @@ export function renderSvgChart(
         const color = METRIC_COLORS[metric];
         const label = METRIC_LABELS[metric];
         const panelY = margin.top + mi * (panelHeight + panelGap);
-
         // Data range
         let dMin = Infinity;
         let dMax = -Infinity;
@@ -173,17 +195,6 @@ export function renderSvgChart(
             );
         }
 
-        // Area fill
-        const areaPoints: string[] = [];
-        areaPoints.push(`${toX(0)},${panelY + panelHeight}`);
-        for (let i = 0; i < data.length; i++) {
-            areaPoints.push(`${toX(i)},${toY(data[i])}`);
-        }
-        areaPoints.push(`${toX(data.length - 1)},${panelY + panelHeight}`);
-        parts.push(
-            `<polygon points="${areaPoints.join(" ")}" fill="${color}" opacity="0.08"/>`
-        );
-
         // Line
         const linePoints: string[] = [];
         for (let i = 0; i < data.length; i++) {
@@ -232,41 +243,33 @@ export function renderSvgChart(
             )}</text>`
         );
 
+        // Per-panel X-axis
+        const xAxisY = panelY + panelHeight + 2;
+        const xTickCount = Math.min(Math.max(data.length, 2), 10);
+        for (let t = 0; t < xTickCount; t++) {
+            const dataIdx = Math.round((t * (data.length - 1)) / (xTickCount - 1));
+            const x = toX(dataIdx);
+            const iterNum = dataIdx + 1;
+            // Vertical grid line inside panel
+            parts.push(
+                `<line x1="${x}" y1="${panelY}" x2="${x}" y2="${
+                    panelY + panelHeight
+                }" stroke="var(--border)" stroke-width="0.5"/>`
+            );
+            parts.push(
+                `<line x1="${x}" y1="${xAxisY}" x2="${x}" y2="${
+                    xAxisY + 4
+                }" stroke="var(--muted)" stroke-width="1"/>`
+            );
+            parts.push(
+                `<text x="${x}" y="${
+                    xAxisY + 14
+                }" text-anchor="middle" font-size="8" fill="var(--muted)">${iterNum}</text>`
+            );
+        }
+
         parts.push(`</g>`);
     }
-
-    // Shared X-axis
-    const xAxisY = margin.top + totalPanelsHeight + 4;
-    const sampleData = series[metrics[0]];
-    const xTickCount = Math.min(Math.max(sampleData.length, 2), 10);
-    parts.push(`<g>`);
-    for (let t = 0; t < xTickCount; t++) {
-        const dataIdx = Math.round((t * (sampleData.length - 1)) / (xTickCount - 1));
-        const x =
-            margin.left +
-            (sampleData.length > 1
-                ? (dataIdx / (sampleData.length - 1)) * plotWidth
-                : plotWidth / 2);
-        const iterNum = dataIdx + 1;
-        parts.push(
-            `<line x1="${x}" y1="${xAxisY}" x2="${x}" y2="${
-                xAxisY + 4
-            }" stroke="var(--muted)" stroke-width="1"/>`
-        );
-        parts.push(
-            `<text x="${x}" y="${
-                xAxisY + 16
-            }" text-anchor="middle" font-size="9" fill="var(--muted)">${iterNum}</text>`
-        );
-    }
-    parts.push(`</g>`);
-
-    // X-axis label
-    parts.push(
-        `<text x="${width / 2}" y="${
-            height - 6
-        }" text-anchor="middle" font-size="10" fill="var(--muted)">Iteration</text>`
-    );
 
     parts.push(`</svg>`);
 
@@ -288,13 +291,12 @@ export function renderComparisonChart(
     const metrics = options.metrics;
     const width = options.width ?? 720;
 
-    const margin = { top: 48, right: 104, bottom: 44, left: 72 };
+    const margin = { top: 48, right: 104, bottom: 16, left: 72 };
     const plotWidth = width - margin.left - margin.right;
     const panelHeight = 100;
-    const panelGap = 36;
+    const panelGap = 48;
     const legendHeight = 28;
-    const totalPanelsHeight =
-        metrics.length * panelHeight + (metrics.length - 1) * panelGap;
+    const totalPanelsHeight = metrics.length * (panelHeight + panelGap) - panelGap;
     const height = margin.top + legendHeight + totalPanelsHeight + margin.bottom;
 
     const parts: string[] = [];
@@ -406,6 +408,35 @@ export function renderComparisonChart(
                 ` fill="${metricColor}">` +
                 `${escapeXml(label)}</text>`
         );
+        // Per-panel X-axis
+        const sampleData = variants[0].series[metric];
+        const xAxisY = panelY + panelHeight + 2;
+        const xTickCount = Math.min(Math.max(sampleData.length, 2), 10);
+        for (let t = 0; t < xTickCount; t++) {
+            const dataIdx = Math.round((t * (sampleData.length - 1)) / (xTickCount - 1));
+            const x =
+                margin.left +
+                (sampleData.length > 1
+                    ? (dataIdx / (sampleData.length - 1)) * plotWidth
+                    : plotWidth / 2);
+            const iterNum = dataIdx + 1;
+            // Vertical grid line inside panel
+            parts.push(
+                `<line x1="${x}" y1="${panelY}"` +
+                    ` x2="${x}" y2="${panelY + panelHeight}"` +
+                    ` stroke="var(--border)" stroke-width="0.5"/>`
+            );
+            parts.push(
+                `<line x1="${x}" y1="${xAxisY}"` +
+                    ` x2="${x}" y2="${xAxisY + 4}"` +
+                    ` stroke="var(--muted)" stroke-width="1"/>`
+            );
+            parts.push(
+                `<text x="${x}" y="${xAxisY + 14}"` +
+                    ` text-anchor="middle" font-size="8"` +
+                    ` fill="var(--muted)">${iterNum}</text>`
+            );
+        }
     }
 
     // --- Pass 2: Render each variant as a single <g> across
@@ -446,18 +477,6 @@ export function renderComparisonChart(
             const toX = (i: number) =>
                 margin.left +
                 (data.length > 1 ? (i / (data.length - 1)) * plotWidth : plotWidth / 2);
-
-            // Area fill
-            const areaPoints: string[] = [];
-            areaPoints.push(`${toX(0)},${panelY + panelHeight}`);
-            for (let i = 0; i < data.length; i++) {
-                areaPoints.push(`${toX(i)},${toY(data[i])}`);
-            }
-            areaPoints.push(`${toX(data.length - 1)},${panelY + panelHeight}`);
-            parts.push(
-                `<polygon points="${areaPoints.join(" ")}"` +
-                    ` fill="${vc}" opacity="0.07"/>`
-            );
 
             // Line
             const linePoints: string[] = [];
@@ -505,37 +524,6 @@ export function renderComparisonChart(
 
         parts.push(`</g>`);
     }
-
-    // Shared X-axis
-    const xAxisY = contentTop + totalPanelsHeight + 4;
-    const sampleData = variants[0].series[metrics[0]];
-    const xTickCount = Math.min(Math.max(sampleData.length, 2), 10);
-    for (let t = 0; t < xTickCount; t++) {
-        const dataIdx = Math.round((t * (sampleData.length - 1)) / (xTickCount - 1));
-        const x =
-            margin.left +
-            (sampleData.length > 1
-                ? (dataIdx / (sampleData.length - 1)) * plotWidth
-                : plotWidth / 2);
-        const iterNum = dataIdx + 1;
-        parts.push(
-            `<line x1="${x}" y1="${xAxisY}"` +
-                ` x2="${x}" y2="${xAxisY + 4}"` +
-                ` stroke="var(--muted)" stroke-width="1"/>`
-        );
-        parts.push(
-            `<text x="${x}" y="${xAxisY + 16}"` +
-                ` text-anchor="middle" font-size="9"` +
-                ` fill="var(--muted)">${iterNum}</text>`
-        );
-    }
-
-    // X-axis label
-    parts.push(
-        `<text x="${width / 2}" y="${height - 6}"` +
-            ` text-anchor="middle" font-size="10"` +
-            ` fill="var(--muted)">Iteration</text>`
-    );
 
     // Close wrapper group
     parts.push(`</g>`);
