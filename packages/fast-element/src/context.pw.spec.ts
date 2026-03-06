@@ -121,8 +121,6 @@ test.describe("Context", () => {
         });
 
         test(`returns a context that can be used as a decorator`, async ({ page }) => {
-            test.fixme(true, "Decorator doesn’t work in page.evaluate");
-
             await page.goto("/");
 
             const value = "hello world";
@@ -133,9 +131,8 @@ test.describe("Context", () => {
                 const TestContext = Context.create("TestContext");
                 const elementName = uniqueElementName();
 
-                class TestElement extends HTMLElement {
-                    @TestContext test: string;
-                }
+                class TestElement extends HTMLElement {}
+                TestContext(TestElement.prototype, "test");
 
                 customElements.define(elementName, TestElement);
 
@@ -423,8 +420,6 @@ test.describe("Context", () => {
         });
 
         test(`changes how context decorators work`, async ({ page }) => {
-            test.fixme(true, "Decorator doesn’t work in page.evaluate");
-
             const value = "hello world";
             const childTest = await page.evaluate(async value => {
                 // @ts-expect-error: Client module.
@@ -433,9 +428,8 @@ test.describe("Context", () => {
                 const TestContext = Context.create("TestContext");
                 const elementName = uniqueElementName();
 
-                class TestElement extends HTMLElement {
-                    @TestContext test: string;
-                }
+                class TestElement extends HTMLElement {}
+                TestContext(TestElement.prototype, "test");
 
                 customElements.define(elementName, TestElement);
 
