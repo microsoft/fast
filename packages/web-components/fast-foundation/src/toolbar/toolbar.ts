@@ -76,7 +76,7 @@ export class Toolbar extends FoundationElement {
 
     set activeIndex(value: number) {
         if (this.$fastController.isConnected) {
-            this._activeIndex = limit(0, this.focusableElements.length - 1, value);
+            this._activeIndex = limit(0, this.focusableElements?.length > 0 ? this.focusableElements.length - 1 : 0, value);
             Observable.notify(this, "activeIndex");
         }
     }
@@ -94,7 +94,7 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    private focusableElements: HTMLElement[];
+    private focusableElements: HTMLElement[] = [];
 
     /**
      * The orientation of the toolbar.
@@ -157,6 +157,9 @@ export class Toolbar extends FoundationElement {
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
+        if (!this.slottedItems?.length && !this.childItems?.length) {
+            this.reduceFocusableElements();
+        }
     }
 
     /**
@@ -206,7 +209,7 @@ export class Toolbar extends FoundationElement {
         }
 
         const nextIndex = this.activeIndex + incrementer;
-        if (this.focusableElements[nextIndex]) {
+        if (this.focusableElements?.length > 0 && this.focusableElements[nextIndex]) {
             e.preventDefault();
         }
 
@@ -222,7 +225,7 @@ export class Toolbar extends FoundationElement {
     protected get allSlottedItems(): (HTMLElement | Node)[] {
         return [
             ...this.start.assignedElements(),
-            ...this.slottedItems,
+            ...(this.slottedItems ?? []),
             ...this.end.assignedElements(),
         ];
     }
@@ -260,6 +263,7 @@ export class Toolbar extends FoundationElement {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
         if (
+            this.focusableElements?.length > 0 &&
             this.focusableElements[this.activeIndex] &&
             // Don't focus the toolbar element if some event handlers moved
             // the focus on another element in the page.
@@ -313,7 +317,7 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     private setFocusableElements(): void {
-        if (this.$fastController.isConnected && this.focusableElements.length > 0) {
+        if (this.$fastController.isConnected && this.focusableElements?.length > 0) {
             this.focusableElements.forEach((element, index) => {
                 element.tabIndex = this.activeIndex === index ? 0 : -1;
             });
