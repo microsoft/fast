@@ -29,10 +29,7 @@ test.describe("The HydratableElementController", () => {
             element.setAttribute("needs-hydration", "");
             ElementController.forCustomElement(element);
 
-            const result = element.$fastController instanceof HydratableElementController;
-
-            ElementController.setStrategy(ElementController);
-            return result;
+            return element.$fastController instanceof HydratableElementController;
         });
 
         expect(isHydratableController).toBe(true);

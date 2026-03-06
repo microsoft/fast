@@ -87,7 +87,7 @@ test.describe("The ElementController", () => {
                 const element = document.createElement(name);
                 ElementController.forCustomElement(element);
 
-                return element.shadowRoot !== null;
+                return element.shadowRoot instanceof ShadowRoot;
             });
 
             expect(hasShadowRoot).toBe(false);
@@ -117,7 +117,7 @@ test.describe("The ElementController", () => {
                 const element = document.createElement(name);
                 ElementController.forCustomElement(element);
 
-                return element.shadowRoot !== null;
+                return element.shadowRoot instanceof ShadowRoot;
             });
 
             expect(hasShadowRoot).toBe(false);
