@@ -27,7 +27,6 @@
     "strict": true,
     "outDir": "dist",
     "rootDir": "src",
-    "types": [],
     "lib": [
       "dom",
       "esnext"
