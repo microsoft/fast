@@ -37,7 +37,7 @@ const template = html`
             <script>window.__SSR_STATE__ = ${() =>
                 JSON.stringify(TodoList.get(document).all)};
             </script>
-            <script type="module" src="/bundle.js"></script>
+            <script type="module" src="/bundle.js" defer></script>
         </body>
     </html>
 `;
