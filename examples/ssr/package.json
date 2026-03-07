@@ -6,7 +6,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "vite build",
     "watch": "tsc -p tsconfig.json --watch",
     "start": "npm run build && node server.js",
     "test": "npm run build"

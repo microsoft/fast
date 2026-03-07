@@ -12,8 +12,7 @@
         "module": "ESNext",
         "moduleResolution": "bundler",
         "types": [
-            "mocha",
-            "webpack-env"
+            "mocha"
         ],
         "lib": [
             "DOM",
