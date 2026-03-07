@@ -26,8 +26,5 @@
     "@microsoft/fast-element": "^2.10.1",
     "@microsoft/fast-ssr": "^1.0.0-beta.39",
     "@microsoft/fast-todo-app-example": "1.0.0"
-  },
-  "devDependencies": {
-    "vite": "^7.3.1"
   }
 }
