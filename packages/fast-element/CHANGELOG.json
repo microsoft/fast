@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sun, 08 Mar 2026 00:09:02 GMT",
+      "version": "2.10.1",
+      "tag": "@microsoft/fast-element_v2.10.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "37734050ee0b61e9ea58a567882359ed5ab78eb6",
+            "comment": "Update Karma tests to Playwright"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 02 Mar 2026 22:31:57 GMT",
       "version": "2.10.1",
       "tag": "@microsoft/fast-element_v2.10.1",
