@@ -1,5 +1,5 @@
 {
-  "type": "patch",
+  "type": "minor",
   "comment": "feat: export binding abstract class module",
   "packageName": "@microsoft/fast-element",
   "email": "863023+radium-v@users.noreply.github.com",
