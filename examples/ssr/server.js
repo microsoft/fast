@@ -8,18 +8,12 @@ import fastSSR, {
 } from "@microsoft/fast-ssr";
 import express from "express";
 import { DefaultTodoList, app as todoApp, TodoList } from "@microsoft/fast-todo-app-example";
-import {
-    DesignToken,
-    DesignTokenEventResolutionStrategy,
-    DesignTokenStyleTarget,
-} from "@microsoft/fast-foundation";
 
 const app = express();
 const port = 8080;
 const { templateRenderer } = fastSSR();
 
 todoApp.define();
-DesignToken.withStrategy(DesignTokenEventResolutionStrategy);
 
 app.use(RequestStorageManager.middleware());
 app.use(express.static("./www"));
@@ -32,11 +26,6 @@ const template = html`
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <title>SSR Example</title>
             <style>${DeclarativeShadowDOMPolyfill.undefinedElementStyles}</style>
-            <style>
-                :root {
-                    ${x => x.designTokenDefaultStyles}
-                }
-            </style>
         <body>
             <todo-app></todo-app>
             <script>${DeclarativeShadowDOMPolyfill.nonStreamingTemplateUpgrade}</script>
@@ -48,7 +37,7 @@ const template = html`
             <script>window.__SSR_STATE__ = ${() =>
                 JSON.stringify(TodoList.get(document).all)};
             </script>
-            <script src="/bundle.js" defer></script>
+            <script type="module" src="/bundle.js" defer></script>
         </body>
     </html>
 `;
@@ -57,13 +46,9 @@ app.get("/", (req, res) => {
     const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
     TodoList.provide(document, new DefaultTodoList(todoData));
 
-    const styleTarget = new DesignTokenStyleTarget();
-    DesignToken.registerDefaultStyleTarget(styleTarget);
-
     const stream = templateRenderer.render(
         template,
         templateRenderer.createRenderInfo(),
-        { designTokenDefaultStyles: styleTarget.cssText }
     );
 
     for (const part of stream) {
@@ -71,7 +56,6 @@ app.get("/", (req, res) => {
     }
 
     res.end();
-    DesignToken.unregisterDefaultStyleTarget(styleTarget);
 });
 
 app.listen(port, () => {
