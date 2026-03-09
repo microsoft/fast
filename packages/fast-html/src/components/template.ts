@@ -395,9 +395,12 @@ class TemplateElement extends FASTElement {
                     observerMap
                 );
 
-                const repeatTemplate = this.resolveTemplateOrBehavior(strings, values);
-
-                externalValues.push(repeat((x, c) => binding(x, c), repeatTemplate));
+                externalValues.push(
+                    repeat(
+                        (x, c) => binding(x, c),
+                        this.resolveTemplateOrBehavior(strings, values)
+                    )
+                );
 
                 break;
             }
