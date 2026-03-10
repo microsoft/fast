@@ -244,9 +244,10 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
 export const deferHydrationAttribute = "defer-hydration";
 
 // @public
-export interface Disposable {
+interface Disposable_2 {
     dispose(): void;
 }
+export { Disposable_2 as Disposable }
 
 // @public
 export const DOM: Readonly<{
@@ -407,7 +408,7 @@ export interface ExpressionController<TSource = any, TParent = any> {
 }
 
 // @public
-export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any> extends Notifier, ExpressionObserver<TSource, TReturn, TParent>, Disposable {
+export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any> extends Notifier, ExpressionObserver<TSource, TReturn, TParent>, Disposable_2 {
     observe(source: TSource, context?: ExecutionContext): TReturn;
     records(): IterableIterator<ObservationRecord>;
     setMode(isAsync: boolean): void;
@@ -1057,7 +1058,7 @@ export interface ValueConverter {
 }
 
 // @public
-export interface View<TSource = any, TParent = any> extends Disposable {
+export interface View<TSource = any, TParent = any> extends Disposable_2 {
     bind(source: TSource, context?: ExecutionContext<TParent>): void;
     readonly context: ExecutionContext<TParent>;
     readonly isBound: boolean;

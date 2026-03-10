@@ -11,9 +11,7 @@
         "target": "es2015",
         "module": "ESNext",
         "moduleResolution": "bundler",
-        "types": [
-            "mocha"
-        ],
+        "types": [],
         "lib": [
             "DOM",
             "ES2015",
