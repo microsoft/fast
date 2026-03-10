@@ -7,6 +7,19 @@ name: shipping
 
 Use this guide when shipping changes in the FAST monorepo — writing PR descriptions, generating change files, and keeping documentation up to date.
 
+# Guardrails
+
+Do NOT perform any of the following actions autonomously. These require explicit human action:
+
+- **Do not push branches** — no `git push`, `git push --force`, or any remote push operations.
+- **Do not create pull requests** — no GitHub API calls, `gh pr create`, or MCP tools that create PRs.
+- **Do not create or modify GitHub issues** — no `gh issue create`, issue comments, or label changes.
+- **Do not merge or close pull requests** — no `gh pr merge`, `gh pr close`, or equivalent.
+- **Do not publish packages** — no `npm publish`, `beachball publish`, or release operations.
+- **Do not modify branch protection or repository settings**.
+
+You may prepare all of these (e.g., draft a PR description, generate change files, stage commits) but the human must execute the final action.
+
 ## Key references
 
 Read these documents for additional context when needed:
