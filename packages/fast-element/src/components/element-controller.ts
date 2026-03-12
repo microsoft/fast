@@ -978,6 +978,10 @@ export class HydratableElementController<
         this.needsHydration =
             this.needsHydration ?? this.source.hasAttribute(needsHydrationAttribute);
 
+        if (this.needsHydration) {
+            this.addHydratingInstance();
+        }
+
         // If the `defer-hydration` attribute exists on the source,
         // wait for it to be removed before continuing connection behavior.
         if (this.source.hasAttribute(deferHydrationAttribute)) {
