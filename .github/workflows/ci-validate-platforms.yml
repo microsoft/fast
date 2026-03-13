@@ -1,4 +1,4 @@
-name: Validate Platforms/Browsers
+name: Validate PRs On All Platforms/Browsers
 
 on:
   workflow_dispatch:
@@ -65,4 +65,4 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npm run test
+        run: npm run test:all --workspaces --if-present
