@@ -63,7 +63,6 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "8.5.0",
     "@types/express": "^5.0.6",
-    "@types/node": "22.18.11",
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "beachball": "2.63.0",
