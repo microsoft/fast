@@ -16,7 +16,6 @@ images/
 .mocharc.json
 .prettierignore
 api-extractor.json
-karma.conf.js
 rollup.config.js
 tsconfig.json
 
