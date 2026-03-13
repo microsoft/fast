@@ -67,6 +67,7 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
         private async _prepare(): Promise<void> {
             if (this.prepare) {
                 await this.prepare();
+                this.prepare = undefined;
             }
 
             await waitForAncestorHydration(this);
@@ -74,10 +75,9 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
             this.deferHydration = false;
         }
 
-        constructor(...args: any[]) {
-            super(...args);
-
-            void this._prepare();
+        connectedCallback() {
+            this._prepare();
+            super.connectedCallback();
         }
 
         /**
