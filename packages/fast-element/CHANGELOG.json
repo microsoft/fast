@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 13 Mar 2026 18:13:56 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "3ade63edb5abe7b5454e96390aac5ad13fdb4cc7",
+            "comment": "fix: add hydrating instance when needsHydration is true in HydratableElementController"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Mar 2026 00:17:17 GMT",
       "version": "2.10.1",
       "tag": "@microsoft/fast-element_v2.10.1",

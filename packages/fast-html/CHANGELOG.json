@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 13 Mar 2026 18:13:56 GMT",
+      "version": "1.0.0-alpha.39",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.39",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3ade63edb5abe7b5454e96390aac5ad13fdb4cc7",
+            "comment": "fix: move prepare call to connectedCallback"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.10.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Feb 2026 20:49:30 GMT",
       "version": "1.0.0-alpha.38",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.38",

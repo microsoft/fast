@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 17 Feb 2026 20:49:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 13 Mar 2026 18:13:56 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.39
+
+Fri, 13 Mar 2026 18:13:56 GMT
+
+### Changes
+
+- fix: move prepare call to connectedCallback (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.10.2
 
 ## 1.0.0-alpha.38
 
