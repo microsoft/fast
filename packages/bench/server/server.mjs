@@ -24,9 +24,34 @@ if (!existsSync(distDir)) {
 const server = createServer((req, res) => {
     const url = new URL(req.url, `http://localhost:${port}`);
     let pathname = decodeURIComponent(url.pathname);
+    const buildId = url.searchParams.get("buildId");
 
-    // Resolve to a file path within dist
-    let filePath = join(distDir, pathname);
+    // When a buildId query param is present, serve from dist/{buildId}/
+    let baseDir = distDir;
+    if (buildId) {
+        if (/[/\\]|\.\./.test(buildId)) {
+            res.writeHead(400, { "content-type": "text/plain" });
+            res.end("Invalid buildId");
+            return;
+        }
+
+        baseDir = join(distDir, buildId);
+        if (!existsSync(baseDir) || !statSync(baseDir).isDirectory()) {
+            res.writeHead(404, { "content-type": "text/plain" });
+            res.end(`Build "${buildId}" not found`);
+            return;
+        }
+    }
+
+    // Resolve to a file path within the base directory
+    let filePath = join(baseDir, pathname);
+
+    // Ensure the resolved path stays within baseDir
+    if (!resolve(filePath).startsWith(resolve(baseDir))) {
+        res.writeHead(400, { "content-type": "text/plain" });
+        res.end("Bad Request");
+        return;
+    }
 
     // Serve index.html for directory requests
     if (existsSync(filePath) && statSync(filePath).isDirectory()) {
