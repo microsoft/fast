@@ -76,7 +76,7 @@ export class Toolbar extends FoundationElement {
 
     set activeIndex(value: number) {
         if (this.$fastController.isConnected) {
-            this._activeIndex = limit(0, this.focusableElements.length - 1, value);
+            this._activeIndex = limit(0, this.focusableElements.length > 0 ? this.focusableElements.length - 1 : 0, value);
             Observable.notify(this, "activeIndex");
         }
     }
@@ -94,7 +94,7 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    private focusableElements: HTMLElement[];
+    private focusableElements: HTMLElement[] = [];
 
     /**
      * The orientation of the toolbar.
@@ -133,7 +133,7 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     public mouseDownHandler(e: MouseEvent): boolean | void {
-        const activeIndex = this.focusableElements?.findIndex(x =>
+        const activeIndex = this.focusableElements.findIndex(x =>
             x.contains(e.target as HTMLElement)
         );
         if (activeIndex > -1 && this.activeIndex !== activeIndex) {
@@ -206,7 +206,7 @@ export class Toolbar extends FoundationElement {
         }
 
         const nextIndex = this.activeIndex + incrementer;
-        if (this.focusableElements[nextIndex]) {
+        if (this.focusableElements.length > 0 && this.focusableElements[nextIndex]) {
             e.preventDefault();
         }
 
@@ -233,7 +233,7 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
-        const previousFocusedElement = this.focusableElements?.[this.activeIndex];
+        const previousFocusedElement = this.focusableElements[this.activeIndex];
 
         this.focusableElements = this.allSlottedItems.reduce(
             Toolbar.reduceFocusableItems,
@@ -260,6 +260,7 @@ export class Toolbar extends FoundationElement {
         this.activeIndex = activeIndex;
         this.setFocusableElements();
         if (
+            this.focusableElements.length > 0 &&
             this.focusableElements[this.activeIndex] &&
             // Don't focus the toolbar element if some event handlers moved
             // the focus on another element in the page.

@@ -259,4 +259,24 @@ describe("Toolbar", () => {
 
     await disconnect();
   });
+
+  it("should initialize focusableElements as an empty array before connect", async () => {
+    const { element } = await setup();
+
+    const focusableElements = Reflect.get(element as object, "focusableElements");
+    expect(Array.isArray(focusableElements)).to.equal(true);
+    expect(focusableElements.length).to.equal(0);
+  });
+
+  it("should return true and not change focus from keydownHandler before connect", async () => {
+    const { element, document, startButton } = await setup();
+    const initiallyFocusedElement = document.activeElement;
+    const event = new KeyboardEvent("keydown", {
+      key: keyArrowRight,
+    } as KeyboardEventInit);
+
+    expect(element.keydownHandler(event)).to.equal(true);
+    expect(document.activeElement).to.equal(initiallyFocusedElement);
+    expect(document.activeElement).to.not.equal(startButton);
+  });
 });
