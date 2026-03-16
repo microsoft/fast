@@ -52,7 +52,7 @@ jobs:
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: npm run test --project=chromium
+      run: npm run test:playwright --project=chromium
 
     - name: Testing final validation
       run: npm run test:validation
