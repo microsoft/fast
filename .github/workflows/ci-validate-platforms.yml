@@ -65,4 +65,4 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npm run test:playwright --project=*
+        run: npm run test:playwright --project=* -ws --if-present
