@@ -33,7 +33,6 @@
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
     "test:recognizer": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
-    "test-server": "npx vite test/ --clearScreen false",
     "test": "npm run eslint && npm run doc:ci && npm run test:recognizer"
   },
   "dependencies": {
