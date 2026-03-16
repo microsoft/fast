@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix toolbar focus",
-  "packageName": "@ni/fast-foundation",
-  "email": "claudia.micu@emerson.com",
-  "dependentChangeType": "patch"
-}

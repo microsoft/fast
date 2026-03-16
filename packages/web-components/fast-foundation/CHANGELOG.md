@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Fri, 27 Feb 2026 19:14:34 GMT and should not be manually modified. -->
+<!-- This log was last generated on Mon, 16 Mar 2026 14:04:19 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.2.2
+
+Mon, 16 Mar 2026 14:04:19 GMT
+
+### Patches
+
+- Fix toolbar focus ([ni/fast@d85266a](https://github.com/ni/fast/commit/d85266a5d30e46defbffa7281a0927e61e539402))
 
 ## 10.2.1
 
