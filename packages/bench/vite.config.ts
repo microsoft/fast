@@ -11,6 +11,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const benchmarksDir = resolve(__dirname, "src", "scenarios");
 const buildId = process.env.BUILD_ID;
+const base = buildId ? `/${buildId}/` : "/";
 
 function discoverBenchmarkInputs(): Record<string, string> {
     const inputs: Record<string, string> = {
@@ -38,7 +39,7 @@ function discoverBenchmarkInputs(): Record<string, string> {
 
 export default defineConfig({
     root: benchmarksDir,
-    base: buildId ? `/${buildId}/` : "/",
+    base,
     server: {
         hmr: false,
         port: 5173,
@@ -87,12 +88,11 @@ export default defineConfig({
                 }
 
                 // Inject table of contents into the root index page
-                const base = buildId ? `/${buildId}` : "";
                 html = html.replace(
                     "<!--TOC-->",
                     Object.keys(discoverBenchmarkInputs())
                         .filter(key => key !== "main")
-                        .map(key => `<li><a href="${base}/${key}/">${key}</a></li>`)
+                        .map(key => `<li><a href="${base}${key}/">${key}</a></li>`)
                         .join("\n")
                 );
 

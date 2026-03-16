@@ -46,6 +46,13 @@ const server = createServer((req, res) => {
     // Resolve to a file path within the base directory
     let filePath = join(baseDir, pathname);
 
+    // Ensure the resolved path stays within baseDir
+    if (!resolve(filePath).startsWith(resolve(baseDir))) {
+        res.writeHead(400, { "content-type": "text/plain" });
+        res.end("Bad Request");
+        return;
+    }
+
     // Serve index.html for directory requests
     if (existsSync(filePath) && statSync(filePath).isDirectory()) {
         filePath = join(filePath, "index.html");
