@@ -101,9 +101,7 @@ export default defineConfig({
         },
     ],
     build: {
-        outDir: buildId
-            ? resolve(__dirname, "server", "dist", buildId)
-            : resolve(__dirname, "server", "dist"),
+        outDir: resolve(__dirname, "server", "dist", buildId ?? ""),
         emptyOutDir: true,
         rollupOptions: {
             input: discoverBenchmarkInputs(),
