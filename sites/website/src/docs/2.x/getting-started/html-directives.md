@@ -355,3 +355,7 @@ const template = html<MyProgress>`
 :::tip
 Using the `children` directive on the `template` element will provide you with references to all Light DOM child nodes of your custom element, regardless of if or where they are slotted.
 :::
+
+:::note
+If the same attributes are defined by the host directive and the user (in the above example role="progressbar"), then the attribute set by the user will take precedence.
+:::
