@@ -1,4 +1,4 @@
-name: Validate PRs
+name: Validate PRs on Chromium
 
 on:
   workflow_dispatch:
@@ -52,7 +52,7 @@ jobs:
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: npm run test
+      run: npm run test:playwright --project=chromium -ws --if-present
 
     - name: Testing final validation
       run: npm run test:validation
