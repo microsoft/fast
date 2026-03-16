@@ -319,3 +319,43 @@ const template = html<FriendList>`
 ```
 
 In addition to providing a template to render the items with, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are using to render the items.
+
+## Host directives
+
+So far, our bindings and directives have only affected elements within the Shadow DOM of the component. However, sometimes you want to affect the host element itself, based on property state. For example, a progress component might want to write various `aria` attributes to the host, based on the progress state. In order to facilitate scenarios like this, you can use a `template` element as the root of your template, and it will represent the host element. Any attribute or directive you place on the `template` element will be applied to the host itself.
+
+**Example: Host Directive Template**
+
+```ts
+const template = html<MyProgress>`
+  <template (Represents my-progress element)
+      role="progressbar"
+      aria-valuenow=${x => x.value}
+      aria-valuemin=${x => x.min}
+      aria-valuemax=${x => x.max}>
+    (template targeted at Shadow DOM here)
+  </template>
+`;
+```
+
+**Example: DOM with Host Directive Output**
+
+```html
+<my-progress
+    min="0"              (from user)
+    max="100"            (from user)
+    value="50"           (from user)
+    role="progressbar"   (from host directive)
+    aria-valuenow="50"   (from host directive)
+    aria-valuemin="0"    (from host directive)
+    aria-valuemax="100"  (from host directive)>
+</my-progress>
+```
+
+:::tip
+Using the `children` directive on the `template` element will provide you with references to all Light DOM child nodes of your custom element, regardless of if or where they are slotted.
+:::
+
+:::note
+If the same attributes are defined by the host directive and the user (in the above example role="progressbar"), then the attribute set by the user will take precedence.
+:::
