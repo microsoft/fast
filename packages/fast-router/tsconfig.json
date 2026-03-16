@@ -15,8 +15,5 @@
             "ES2015"
         ]
     },
-    "include": ["src"],
-    "exclude": [
-        "src/**/*.pw.spec.ts"
-    ]
+    "include": ["src"]
 }
