@@ -1,4 +1,4 @@
-name: Validate Platforms/Browsers
+name: Validate PRs On All Platforms/Browsers
 
 on:
   workflow_dispatch:
