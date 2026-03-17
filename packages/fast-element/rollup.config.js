@@ -5,6 +5,7 @@ import typescript from "@rollup/plugin-typescript";
 const plugins = [
     typescript({
         compilerOptions: {
+            outDir: "dist",
             declaration: false,
             declarationDir: undefined,
         },
