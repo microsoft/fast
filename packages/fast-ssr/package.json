@@ -28,9 +28,10 @@
     "pretest": "npm run build-server && npm run build",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
-    "test": "playwright test --config=playwright.config.cjs",
-    "test-server": "node server/dist/server.js",
-    "install-playwright-browsers": "npm run playwright install"
+    "test": "npm run test:node && npm run test:playwright",
+    "test:node": "node scripts/run-tests.mjs",
+    "test:playwright": "npm run pretest && playwright test",
+    "test-server": "node server/dist/server.js"
   },
   "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "dist/esm/exports.js",

@@ -1,16 +1,17 @@
 import "./install-dom-shim.js";
-import { expect, test } from "@playwright/test";
+import { deepStrictEqual, notStrictEqual, ok, strictEqual, throws } from "node:assert/strict";
+import { describe, test } from "node:test";
 import { createWindow } from "./dom-shim.js";
 import { RequestStorage, RequestStorageManager } from "./request-storage.js";
 
-const noStorageError = "Storage must be accessed from within a request.";
+const noStorageError = { message: "Storage must be accessed from within a request." };
 
-test.describe("RequestStorageManager", () => {
+describe("RequestStorageManager", () => {
     test("can create basic backing storage", () => {
         const storage = RequestStorageManager.createStorage();
 
-        expect(storage).toBeInstanceOf(Map);
-        expect(storage.get("window")).not.toBeUndefined();
+        ok(storage instanceof Map);
+        notStrictEqual(storage.get("window"), undefined);
     });
 
     test("can create backing storage with a custom window", () => {
@@ -19,8 +20,8 @@ test.describe("RequestStorageManager", () => {
             createWindow: () => w,
         });
 
-        expect(storage).toBeInstanceOf(Map);
-        expect(storage.get("window")).toBe(w);
+        ok(storage instanceof Map);
+        strictEqual(storage.get("window"), w);
     });
 
     test("should pass in request object to createWindow middleware", () => {
@@ -34,8 +35,8 @@ test.describe("RequestStorageManager", () => {
             createWindow: createWindowShim,
         }, request);
 
-        expect(storage).toBeInstanceOf(Map);
-        expect(storage.get("window")).toStrictEqual({id: "test"});
+        ok(storage instanceof Map);
+        deepStrictEqual(storage.get("window"), {id: "test"});
     });
 
     test("can create backing storage with initial values", () => {
@@ -46,8 +47,8 @@ test.describe("RequestStorageManager", () => {
             storage: initialValues,
         });
 
-        expect(storage).toBeInstanceOf(Map);
-        expect(storage.get("hello")).toBe("world");
+        ok(storage instanceof Map);
+        strictEqual(storage.get("hello"), "world");
     });
 
     test("can run a callback with the provided storage", () => {
@@ -63,8 +64,8 @@ test.describe("RequestStorageManager", () => {
             captured = RequestStorage.get("hello");
         });
 
-        expect(captured).toBe("world");
-        expect(() => RequestStorage.get("hello")).toThrow(noStorageError);
+        strictEqual(captured, "world");
+        throws(() => RequestStorage.get("hello"), noStorageError);
     });
 
     test("can get value from global without being in a storage scope", () => {
@@ -72,7 +73,7 @@ test.describe("RequestStorageManager", () => {
         (window as any)["hello"] = "world";
         RequestStorageManager.installDOMShim();
 
-        expect((window as any)["hello"]).toBe("world");
+        strictEqual((window as any)["hello"], "world");
     });
 
     test("can get different value from global in a storage scope", () => {
@@ -86,7 +87,7 @@ test.describe("RequestStorageManager", () => {
             captured = (window as any)["hello"];
         });
 
-        expect(captured).not.toBe("world");
+        notStrictEqual(captured, "world");
     });
 
     test("uninstalling the DOM shim should make previously assigned globals available within callback ", () => {
@@ -101,7 +102,7 @@ test.describe("RequestStorageManager", () => {
             captured = (window as any)["hello"];
         });
 
-        expect(captured).toBe("world");
+        strictEqual(captured, "world");
     });
     test("invoking installDOMShim multiple times should not impact the ability to uninstall the shim with a single invocation of uninstall", () => {
         // window is part of perRequestGlobals setup by installDOMShim
@@ -117,7 +118,7 @@ test.describe("RequestStorageManager", () => {
             captured = (window as any)["hello"];
         });
 
-        expect(captured).toBe("world");
+        strictEqual(captured, "world");
     });
     test("invoking uninstall multiple times should not impact the ability to reinstall the shim with a single invocation of install", () => {
         // window is part of perRequestGlobals setup by installDOMShim
@@ -134,11 +135,11 @@ test.describe("RequestStorageManager", () => {
             captured = (window as any)["hello"];
         });
 
-        expect(captured).not.toBe("world");
+        notStrictEqual(captured, "world");
     });
 });
 
-test.describe("RequestStorage", () => {
+describe("RequestStorage", () => {
     test("provides a DOM container", () => {
         const storage = RequestStorageManager.createStorage();
 
@@ -147,8 +148,8 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.container;
         });
 
-        expect(captured).toBeDefined();
-        expect(() => RequestStorage.container).toThrow(noStorageError);
+        notStrictEqual(captured, undefined);
+        throws(() => RequestStorage.container, noStorageError);
     });
 
     test("can set and get values", () => {
@@ -163,8 +164,8 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.get("hello");
         });
 
-        expect(captured).toBe("world");
-        expect(() => RequestStorage.get("hello")).toThrow(noStorageError);
+        strictEqual(captured, "world");
+        throws(() => RequestStorage.get("hello"), noStorageError);
     });
 
     test("can set and check values", () => {
@@ -179,8 +180,8 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.has("hello");
         });
 
-        expect(captured).toBeTruthy();
-        expect(() => RequestStorage.get("hello")).toThrow(noStorageError);
+        ok(captured);
+        throws(() => RequestStorage.get("hello"), noStorageError);
     });
 
     test("can set and delete values", () => {
@@ -195,7 +196,7 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.has("hello");
         });
 
-        expect(captured).toBeTruthy();
+        ok(captured);
 
         RequestStorageManager.run(storage, () => {
             RequestStorage.delete("hello");
@@ -205,7 +206,7 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.has("hello");
         });
 
-        expect(captured).toBeFalsy();
+        ok(!captured);
     });
 
     test("can clear values", () => {
@@ -221,7 +222,7 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.has("hello") && RequestStorage.has("foo");
         });
 
-        expect(captured).toBeTruthy();
+        ok(captured);
 
         RequestStorageManager.run(storage, () => {
             RequestStorage.clear();
@@ -231,6 +232,6 @@ test.describe("RequestStorage", () => {
             captured = RequestStorage.has("hello") || RequestStorage.has("foo");
         });
 
-        expect(captured).toBeFalsy();
+        ok(!captured);
     });
 });

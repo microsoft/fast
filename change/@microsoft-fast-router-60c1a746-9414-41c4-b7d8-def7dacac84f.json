@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "convert recognizer tests to use Node instead of Playwright",
+  "packageName": "@microsoft/fast-router",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

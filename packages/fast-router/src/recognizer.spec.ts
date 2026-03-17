@@ -1,12 +1,13 @@
+import { deepStrictEqual, strictEqual, throws } from "node:assert/strict";
+import { describe, test } from "node:test";
 import {
     ConfigurableRoute,
     DefaultRouteRecognizer,
     Endpoint,
     RecognizedRoute,
 } from "./recognizer.js";
-import { expect, test } from "@playwright/test";
 
-test.describe(DefaultRouteRecognizer.name, () => {
+describe(DefaultRouteRecognizer.name, () => {
     interface RecognizeSpec {
         routes: string[];
         tests: [string, string | null, Record<string, string | undefined> | null][];
@@ -2180,7 +2181,7 @@ test.describe(DefaultRouteRecognizer.name, () => {
         for (const hasTrailingSlash of [true, false]) {
             for (const reverseAdd of [true, false]) {
                 const desc = `leading=${hasLeadingSlash} trailing=${hasTrailingSlash} reverse=${reverseAdd}`;
-                test.describe(desc, () => {
+                describe(desc, () => {
                     for (const { tests, routes: $routes } of recognizeSpecs) {
                         const routes = reverseAdd ? $routes.slice().reverse() : $routes;
                         for (const [path, match, $params] of tests) {
@@ -2204,7 +2205,7 @@ test.describe(DefaultRouteRecognizer.name, () => {
                                     const actual = await sut.recognize(path);
 
                                     // Assert
-                                    expect(actual).toBe(null);
+                                    strictEqual(actual, null);
                                 });
                             } else {
                                 const input = `${leading}${path}${trailing}`;
@@ -2245,8 +2246,8 @@ test.describe(DefaultRouteRecognizer.name, () => {
                                     const actual2 = await sut.recognize(path);
 
                                     // Assert
-                                    expect(actual1).toEqual(actual2);
-                                    expect(actual1).toEqual(expected);
+                                    deepStrictEqual(actual1, actual2);
+                                    deepStrictEqual(actual1, expected);
                                 });
                             }
                         }
@@ -2274,7 +2275,7 @@ test.describe(DefaultRouteRecognizer.name, () => {
                 err = e;
             }
 
-            expect(() => sut.add({ path: route2 })).toThrow();
+            throws(() => sut.add({ path: route2 }));
         });
     }
 });
