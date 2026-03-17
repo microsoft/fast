@@ -40,7 +40,7 @@
     globalThis.requestIdleCallback = function requestIdleCallback(
         callback: (deadline: IdleDeadline) => void,
         options?: { timeout: number }
-    ): ReturnType<typeof globalThis.requestIdleCallback | typeof setTimeout> {
+    ): number {
         const start = Date.now();
         return setTimeout(() => {
             callback({
@@ -49,7 +49,7 @@
                     : false,
                 timeRemaining: () => 0,
             });
-        }, 1);
+        }, 1) as unknown as number;
     };
 
     /**
