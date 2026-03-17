@@ -30,7 +30,7 @@
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
     "test": "npm run test:node && npm run test:playwright",
     "test:node": "node scripts/run-tests.mjs",
-    "test:playwright": "playwright test",
+    "test:playwright": "npm run pretest && playwright test",
     "test-server": "node server/dist/server.js"
   },
   "description": "A package for rendering FAST Web Components outside the browser.",
