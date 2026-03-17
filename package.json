@@ -39,7 +39,8 @@
     "test:diff:error": "echo \"Untracked files exist, try running npm prepare to identify the culprit.\" && exit 1",
     "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
     "test:validation": "npm run test:diff",
-    "test": "npm run test --workspaces --if-present",
+    "test": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=*",
+    "test:chromium": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=chromium",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "npx prettier . --check",
     "format": "npx prettier . --write"
