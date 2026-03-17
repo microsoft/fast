@@ -1,16 +1,17 @@
 import "./install-dom-shim.js";
 
+import { strictEqual } from "node:assert/strict";
+import { describe, test } from "node:test";
 import { FASTElement, html, HTMLDirective, ref, RefDirective, StatelessAttachedAttributeDirective, ViewController } from "@microsoft/fast-element";
 import { uniqueElementName } from "@microsoft/fast-element/testing.js";
-import { expect, test } from "@playwright/test";
 import fastSSR from "./exports.js";
 import { ViewBehaviorFactoryRenderer } from "./template-renderer/directives.js";
 import { consolidate } from "./test-utilities/consolidate.js";
 
-test.describe("fastSSR default export", () => {
+describe("fastSSR default export", () => {
     test("should return a TemplateRenderer configured to create a RenderInfo object using the returned ElementRenderer", () => {
         const { templateRenderer, ElementRenderer } = fastSSR();
-        expect(templateRenderer.createRenderInfo().elementRenderers.includes(ElementRenderer)).toBe(true)
+        strictEqual(templateRenderer.createRenderInfo().elementRenderers.includes(ElementRenderer), true)
     })
 
     test("should render FAST elements without the `defer-hydration` attribute by default", () => {
@@ -18,7 +19,7 @@ test.describe("fastSSR default export", () => {
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(
+        strictEqual(consolidate(templateRenderer.render(`<${name}></${name}>`)), 
             `<${name}><template shadowrootmode="open" shadowroot="open"></template></${name}>`
         );
     });
@@ -27,7 +28,7 @@ test.describe("fastSSR default export", () => {
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(
+        strictEqual(consolidate(templateRenderer.render(`<${name}></${name}>`)), 
             `<${name} defer-hydration><template shadowrootmode="open" shadowroot="open"></template></${name}>`
         )
     });
@@ -36,7 +37,7 @@ test.describe("fastSSR default export", () => {
         const name = uniqueElementName();
         FASTElement.define(name);
 
-        expect(consolidate(templateRenderer.render(`<${name}></${name}>`))).toBe(
+        strictEqual(consolidate(templateRenderer.render(`<${name}></${name}>`)), 
             `<${name}><template shadowrootmode="open" shadowroot="open"></template></${name}>`
         )
     });
@@ -59,7 +60,7 @@ test.describe("fastSSR default export", () => {
         }
 
         const { templateRenderer } = fastSSR({viewBehaviorFactoryRenderers: [renderer]})
-        expect(consolidate(templateRenderer.render(html`<p ${new Directive("hello-world")}></p>`))).toBe(
+        strictEqual(consolidate(templateRenderer.render(html`<p ${new Directive("hello-world")}></p>`)), 
             `<p value='hello-world'></p>`
         )
     });
@@ -79,7 +80,7 @@ test.describe("fastSSR default export", () => {
         }
 
         const { templateRenderer } = fastSSR({viewBehaviorFactoryRenderers: [renderer]})
-        expect(consolidate(templateRenderer.render(html`<p ${ref("key")}></p>`))).toBe(
+        strictEqual(consolidate(templateRenderer.render(html`<p ${ref("key")}></p>`)), 
             `<p ref='some-ref'></p>`
         )
     });

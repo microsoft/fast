@@ -1,4 +1,4 @@
-name: Validate Platforms/Browsers
+name: Validate PRs On All Platforms/Browsers
 
 on:
   workflow_dispatch:
@@ -38,6 +38,11 @@ jobs:
       - if: ${{ github.event_name == 'pull_request' }}
         run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
 
       - name: Cache multiple paths
         uses: actions/cache@v4
