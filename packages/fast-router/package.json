@@ -32,7 +32,7 @@
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "test:recognizer": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
+    "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
     "test": "npm run eslint && npm run doc:ci && npm run test:recognizer"
   },
   "dependencies": {
