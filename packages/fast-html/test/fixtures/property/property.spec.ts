@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import type { TestElement } from "./main.js";
 
 test.describe("f-template", async () => {
     test("create a property binding", async ({ page }) => {
@@ -14,10 +15,9 @@ test.describe("f-template", async () => {
         // Verify initial content binding
         await expect(span).toHaveText("Hello world");
 
-        // Update the message attribute on the custom element
-        await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element");
-            customElement.item(0)?.setAttribute("message", "Hello pluto");
+        // Update the observable property on the custom element
+        await customElement.evaluate((node: TestElement) => {
+            node.message = "Hello pluto";
         });
 
         // Verify property binding updated after hydration

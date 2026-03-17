@@ -1,9 +1,9 @@
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observable } from "@microsoft/fast-element";
 
-class TestElement extends FASTElement {
-    @attr
-    message: string = "";
+export class TestElement extends FASTElement {
+    @observable
+    message: string = "Hello world";
 }
 RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",
