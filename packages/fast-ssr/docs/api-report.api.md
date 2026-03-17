@@ -16,7 +16,6 @@ import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { FASTElementDefinition } from '@microsoft/fast-element';
 import { HostController } from '@microsoft/fast-element';
-import { TemplateCacheController } from '../template-cache/controller.js';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -162,6 +161,8 @@ export interface StyleRenderer {
     render(styles: Set<string | CSSStyleSheet>): string;
 }
 
+// Warning: (ae-forgotten-export) The symbol "TemplateCacheController" needs to be exported by the entry point exports.d.ts
+//
 // @public (undocumented)
 export const templateCacheController: TemplateCacheController;
 
