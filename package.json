@@ -83,7 +83,7 @@
     "glob": "10.5.0",
     "husky": "4.3.8",
     "ignore-loader": "0.1.2",
-    "jsdom": "16.7.0",
+    "jsdom": "29.0.0",
     "jsdom-global": "3.0.2",
     "karma": "6.4.3",
     "karma-chrome-launcher": "3.2.0",
