@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <test-element>
+            <template shadowrootmode="open">
+                <span data-fe-b-0 title="Hello world"><!--fe-b$$start$$1$$PropBind1$$fe-b-->Hello world<!--fe-b$$end$$1$$PropBind1$$fe-b--></span>
+            </template>
+        </test-element>
+        <f-template name="test-element">
+            <template><span :title="{{message}}">{{message}}</span></template>
+        </f-template>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
