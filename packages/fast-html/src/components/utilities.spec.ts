@@ -60,6 +60,41 @@ test.describe("utilities", async () => {
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(29);
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(30);
         });
+
+        test("skip single-brace content bindings (e.g. CSS braces)", async () => {
+            const innerHTML = "<style>.foo { color: red }</style>";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult).toBeNull();
+        });
+
+        test("skip single-brace non-event attribute bindings", async () => {
+            const innerHTML = "<input type=\"{type}\">";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult).toBeNull();
+        });
+
+        test("find double-brace binding after skipped single-brace content", async () => {
+            const innerHTML = "<style>.foo { color: red }</style><span>{{name}}</span>";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual("content");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.bindingType).toEqual("default");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(40);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(46);
+        });
+
+        test("find event binding after skipped single-brace content", async () => {
+            const innerHTML = "<style>.foo { color: red }</style><button @click=\"{handler()}\">";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual("@");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("client");
+        });
     });
 
     test.describe("templates", async () => {
