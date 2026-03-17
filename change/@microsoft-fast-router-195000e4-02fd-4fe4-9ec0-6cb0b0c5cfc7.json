@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Remove karma/mocha/chai and related unused dependencies",
+  "packageName": "@microsoft/fast-router",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
