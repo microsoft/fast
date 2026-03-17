@@ -10,6 +10,8 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const benchmarksDir = resolve(__dirname, "src", "scenarios");
+const buildId = process.env.BUILD_ID;
+const base = buildId ? `/${buildId}/` : "/";
 
 function discoverBenchmarkInputs(): Record<string, string> {
     const inputs: Record<string, string> = {
@@ -37,6 +39,7 @@ function discoverBenchmarkInputs(): Record<string, string> {
 
 export default defineConfig({
     root: benchmarksDir,
+    base,
     server: {
         hmr: false,
         port: 5173,
@@ -89,7 +92,7 @@ export default defineConfig({
                     "<!--TOC-->",
                     Object.keys(discoverBenchmarkInputs())
                         .filter(key => key !== "main")
-                        .map(key => `<li><a href="/${key}/">${key}</a></li>`)
+                        .map(key => `<li><a href="${base}${key}/">${key}</a></li>`)
                         .join("\n")
                 );
 
@@ -98,7 +101,7 @@ export default defineConfig({
         },
     ],
     build: {
-        outDir: resolve(__dirname, "server", "dist"),
+        outDir: resolve(__dirname, "server", "dist", buildId ?? ""),
         emptyOutDir: true,
         rollupOptions: {
             input: discoverBenchmarkInputs(),
