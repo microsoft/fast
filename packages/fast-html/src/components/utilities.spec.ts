@@ -81,14 +81,14 @@ test.describe("utilities", async () => {
         });
 
         test("find double-brace binding after skipped single-brace content", async () => {
-            const innerHTML = "<style>.foo { color: red }</style><span>{{name}}</span>";
+            const innerHTML = "<style>.foo { color: red } .bar { color: blue }</style><span>{{name}}</span>";
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");
             expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual("content");
             expect((templateResult as ContentDataBindingBehaviorConfig)?.bindingType).toEqual("default");
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(40);
-            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(46);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(61);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(67);
         });
 
         test("find event binding after skipped single-brace content", async () => {
@@ -102,7 +102,7 @@ test.describe("utilities", async () => {
         });
 
         test("find property binding after skipped single-brace content", async () => {
-            const innerHTML = "<style>.foo { color: red }</style><button :value=\"{someValue}\">";
+            const innerHTML = "<style>.foo { color: red } .bar { color: blue }</style><button :value=\"{someValue}\">";
             const templateResult = getNextBehavior(innerHTML);
 
             expect(templateResult?.type).toEqual("dataBinding");

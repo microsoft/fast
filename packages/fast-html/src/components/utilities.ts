@@ -401,58 +401,70 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  * @returns DataBindingBehaviorConfig | DirectiveBehaviorConfig | null - A configuration object or null
  */
 export function getNextBehavior(
-    innerHTML: string
+    innerHTML: string,
+    offset: number = 0
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    let offset = 0;
-    const innerHTMLLength = innerHTML.length;
+    const currentSlice = innerHTML.slice(offset);
+    const dataBindingOpen = currentSlice.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
+    const directiveBindingOpen = currentSlice.indexOf(openTagStart);
+    let nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
-    while (offset < innerHTMLLength) {
-        const remaining = innerHTML.slice(offset);
-        const dataBindingOpen = remaining.indexOf(openClientSideBinding);
-        const directiveBindingOpen = remaining.indexOf(openTagStart);
-
-        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
-            return null;
-        }
-
-        if (
-            directiveBindingOpen !== -1 &&
-            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
-        ) {
-            const result = getNextDirectiveBehavior(remaining);
-            result.openingTagStartIndex += offset;
-            result.openingTagEndIndex += offset;
-            result.closingTagStartIndex += offset;
-            result.closingTagEndIndex += offset;
-            return result;
-        }
-
-        const result = getNextDataBindingBehavior(remaining);
-
-        // Single-brace (client) bindings are only valid for events, properties, and attribute directives.
-        // This prevents CSS/JS curly braces from being misinterpreted as bindings.
-        if (result.bindingType === "client") {
-            const allowed =
-                result.subtype === "attributeDirective" ||
-                (result.subtype === "attribute" &&
-                    (result.aspect === "@" || result.aspect === ":"));
-            if (!allowed) {
-                if (result.closingEndIndex <= 0) {
-                    return null;
-                }
-                offset += result.closingEndIndex;
-                continue;
-            }
-        }
-
-        result.openingStartIndex += offset;
-        result.openingEndIndex += offset;
-        result.closingStartIndex += offset;
-        result.closingEndIndex += offset;
-        return result;
+    if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+        return null;
     }
 
-    return null;
+    if (
+        nextDataBindingBehavior.bindingType === "client" &&
+        !isLegitimateClientSideBinding(nextDataBindingBehavior)
+    ) {
+        return getNextBehavior(
+            innerHTML,
+            nextDataBindingBehavior.closingEndIndex + offset
+        );
+    }
+
+    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
+        const nextDirectiveBehavior = getNextDirectiveBehavior(currentSlice);
+
+        nextDirectiveBehavior.openingTagStartIndex =
+            nextDirectiveBehavior.openingTagStartIndex + offset;
+        nextDirectiveBehavior.openingTagEndIndex =
+            nextDirectiveBehavior.openingTagEndIndex + offset;
+        nextDirectiveBehavior.closingTagStartIndex =
+            nextDirectiveBehavior.closingTagStartIndex + offset;
+        nextDirectiveBehavior.closingTagEndIndex =
+            nextDirectiveBehavior.closingTagEndIndex + offset;
+
+        return nextDirectiveBehavior;
+    }
+
+    nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+
+    nextDataBindingBehavior.openingStartIndex =
+        nextDataBindingBehavior.openingStartIndex + offset;
+    nextDataBindingBehavior.openingEndIndex =
+        nextDataBindingBehavior.openingEndIndex + offset;
+    nextDataBindingBehavior.closingStartIndex =
+        nextDataBindingBehavior.closingStartIndex + offset;
+    nextDataBindingBehavior.closingEndIndex =
+        nextDataBindingBehavior.closingEndIndex + offset;
+
+    return nextDataBindingBehavior;
+}
+
+/**
+ * Determine if this client side binding is legitimate.
+ * Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+ * Checking for this prevents CSS/JS curly braces from being misinterpreted as bindings.
+ * @param result
+ * @returns
+ */
+function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boolean {
+    return (
+        (result.subtype === "attribute" &&
+            (result.aspect === "@" || result.aspect === ":")) ||
+        result.subtype === "attributeDirective"
+    );
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
