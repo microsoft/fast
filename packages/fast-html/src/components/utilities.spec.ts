@@ -68,11 +68,16 @@ test.describe("utilities", async () => {
             expect(templateResult).toBeNull();
         });
 
-        test("skip single-brace non-event attribute bindings", async () => {
-            const innerHTML = "<input type=\"{type}\">";
-            const templateResult = getNextBehavior(innerHTML);
+        test("skip single-brace non-event, non-property attribute bindings", async () => {
+            const innerHTML1 = "<input type=\"{type}\">";
+            const templateResult1 = getNextBehavior(innerHTML1);
 
-            expect(templateResult).toBeNull();
+            expect(templateResult1).toBeNull();
+
+            const innerHTML2 = "<input ?disabled=\"{disabled}\">";
+            const templateResult2 = getNextBehavior(innerHTML2);
+
+            expect(templateResult2).toBeNull();
         });
 
         test("find double-brace binding after skipped single-brace content", async () => {
@@ -93,6 +98,16 @@ test.describe("utilities", async () => {
             expect(templateResult?.type).toEqual("dataBinding");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual("@");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("client");
+        });
+
+        test("find property binding after skipped single-brace content", async () => {
+            const innerHTML = "<style>.foo { color: red }</style><button :value=\"{someValue}\">";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual(":");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("client");
         });
     });
