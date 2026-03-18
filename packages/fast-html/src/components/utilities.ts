@@ -403,18 +403,56 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
 export function getNextBehavior(
     innerHTML: string
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const dataBindingOpen = innerHTML.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
-    const directiveBindingOpen = innerHTML.indexOf(openTagStart);
+    let offset = 0;
+    const innerHTMLLength = innerHTML.length;
 
-    if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
-        return null;
+    while (offset < innerHTMLLength) {
+        const remaining = innerHTML.slice(offset);
+        const dataBindingOpen = remaining.indexOf(openClientSideBinding);
+        const directiveBindingOpen = remaining.indexOf(openTagStart);
+
+        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+            return null;
+        }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            const result = getNextDirectiveBehavior(remaining);
+            result.openingTagStartIndex += offset;
+            result.openingTagEndIndex += offset;
+            result.closingTagStartIndex += offset;
+            result.closingTagEndIndex += offset;
+            return result;
+        }
+
+        const result = getNextDataBindingBehavior(remaining);
+
+        // Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+        // This prevents CSS/JS curly braces from being misinterpreted as bindings.
+        if (result.bindingType === "client") {
+            const allowed =
+                result.subtype === "attributeDirective" ||
+                (result.subtype === "attribute" &&
+                    (result.aspect === "@" || result.aspect === ":"));
+            if (!allowed) {
+                if (result.closingEndIndex <= 0) {
+                    return null;
+                }
+                offset += result.closingEndIndex;
+                continue;
+            }
+        }
+
+        result.openingStartIndex += offset;
+        result.openingEndIndex += offset;
+        result.closingStartIndex += offset;
+        result.closingEndIndex += offset;
+        return result;
     }
 
-    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
-        return getNextDirectiveBehavior(innerHTML);
-    }
-
-    return getNextDataBindingBehavior(innerHTML);
+    return null;
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
