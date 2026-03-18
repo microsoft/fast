@@ -429,13 +429,13 @@ export function getNextBehavior(
 
         const result = getNextDataBindingBehavior(remaining);
 
-        // Single-brace (client) bindings are only valid for events and attribute directives.
+        // Single-brace (client) bindings are only valid for events, properties, and attribute directives.
         // This prevents CSS/JS curly braces from being misinterpreted as bindings.
         if (result.bindingType === "client") {
             const allowed =
                 result.subtype === "attributeDirective" ||
-                (result.subtype === "attribute" && result.aspect === "@");
-
+                (result.subtype === "attribute" &&
+                    (result.aspect === "@" || result.aspect === ":"));
             if (!allowed) {
                 if (result.closingEndIndex <= 0) {
                     return null;
