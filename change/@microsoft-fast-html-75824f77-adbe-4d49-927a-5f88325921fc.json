@@ -1,5 +1,5 @@
 {
-  "type": "none",
+  "type": "prerelease",
   "comment": "fix(fast-html): only process single-brace bindings for event aspect",
   "packageName": "@microsoft/fast-html",
   "email": "7559015+janechu@users.noreply.github.com",
