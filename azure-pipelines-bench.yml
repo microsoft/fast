@@ -8,6 +8,33 @@ resources:
     type: git
     name: fast/FASTPipelineTemplates
     ref: main
+  - repository: 1esPipelines
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
 
 extends:
-  template: FAST.Benchmarks.PipelineTemplate.yml@fastPipelines  # Template reference
+  # The pipeline extends the 1ES PT which will inject different SDL and compliance tasks.
+  # For non-production pipelines, use "Unofficial" as defined below.
+  # For productions pipelines, use "Official".
+  template: v1/1ES.Official.PipelineTemplate.yml@1esPipelines
+  parameters:
+    # Update the pool with your team's 1ES hosted pool.
+    pool:
+      name: OneESPool  # Name of your hosted pool
+      image: HostedPoolLinuxImage  # Name of the image in your pool. If not specified, first image of the pool is used
+      os: linux  # OS of the image. This value cannot be a variable. Allowed values: windows, linux, macOS
+    sdl:
+      sourceAnalysisPool:
+        name: OneESPool  # Name of your hosted pool
+        image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
+        os: windows  # OS of the image. Allowed values: windows, linux, macOS
+    settings:
+      networkIsolationPolicy: Permissive
+    containers:
+      azure_cli_container:
+        image: mcr.microsoft.com/azure-cli:2.84.0-azurelinux3.0-amd64
+    stages:
+    - stage: Stage
+      jobs:
+      - template: FAST.Benchmarks.PipelineTemplate.yml@fastPipelines  # Template reference
