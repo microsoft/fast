@@ -60,6 +60,56 @@ test.describe("utilities", async () => {
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingStartIndex).toEqual(29);
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.closingEndIndex).toEqual(30);
         });
+
+        test("skip single-brace content bindings (e.g. CSS braces)", async () => {
+            const innerHTML = "<style>.foo { color: red }</style>";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult).toBeNull();
+        });
+
+        test("skip single-brace non-event, non-property attribute bindings", async () => {
+            const innerHTML1 = "<input type=\"{type}\">";
+            const templateResult1 = getNextBehavior(innerHTML1);
+
+            expect(templateResult1).toBeNull();
+
+            const innerHTML2 = "<input ?disabled=\"{disabled}\">";
+            const templateResult2 = getNextBehavior(innerHTML2);
+
+            expect(templateResult2).toBeNull();
+        });
+
+        test("find double-brace binding after skipped single-brace content", async () => {
+            const innerHTML = "<style>.foo { color: red } .bar { color: blue }</style><span>{{name}}</span>";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.subtype).toEqual("content");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.bindingType).toEqual("default");
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.openingStartIndex).toEqual(61);
+            expect((templateResult as ContentDataBindingBehaviorConfig)?.closingStartIndex).toEqual(67);
+        });
+
+        test("find event binding after skipped single-brace content", async () => {
+            const innerHTML = "<style>.foo { color: red }</style><button @click=\"{handler()}\">";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual("@");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("client");
+        });
+
+        test("find property binding after skipped single-brace content", async () => {
+            const innerHTML = "<style>.foo { color: red } .bar { color: blue }</style><button :value=\"{someValue}\">";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.subtype).toEqual("attribute");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual(":");
+            expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("client");
+        });
     });
 
     test.describe("templates", async () => {

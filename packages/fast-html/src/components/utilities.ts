@@ -401,20 +401,70 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  * @returns DataBindingBehaviorConfig | DirectiveBehaviorConfig | null - A configuration object or null
  */
 export function getNextBehavior(
-    innerHTML: string
+    innerHTML: string,
+    offset: number = 0
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const dataBindingOpen = innerHTML.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
-    const directiveBindingOpen = innerHTML.indexOf(openTagStart);
+    const currentSlice = innerHTML.slice(offset);
+    const dataBindingOpen = currentSlice.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
+    const directiveBindingOpen = currentSlice.indexOf(openTagStart);
+    let nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
     if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
         return null;
     }
 
-    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
-        return getNextDirectiveBehavior(innerHTML);
+    if (
+        nextDataBindingBehavior.bindingType === "client" &&
+        !isLegitimateClientSideBinding(nextDataBindingBehavior)
+    ) {
+        return getNextBehavior(
+            innerHTML,
+            nextDataBindingBehavior.closingEndIndex + offset
+        );
     }
 
-    return getNextDataBindingBehavior(innerHTML);
+    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
+        const nextDirectiveBehavior = getNextDirectiveBehavior(currentSlice);
+
+        nextDirectiveBehavior.openingTagStartIndex =
+            nextDirectiveBehavior.openingTagStartIndex + offset;
+        nextDirectiveBehavior.openingTagEndIndex =
+            nextDirectiveBehavior.openingTagEndIndex + offset;
+        nextDirectiveBehavior.closingTagStartIndex =
+            nextDirectiveBehavior.closingTagStartIndex + offset;
+        nextDirectiveBehavior.closingTagEndIndex =
+            nextDirectiveBehavior.closingTagEndIndex + offset;
+
+        return nextDirectiveBehavior;
+    }
+
+    nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+
+    nextDataBindingBehavior.openingStartIndex =
+        nextDataBindingBehavior.openingStartIndex + offset;
+    nextDataBindingBehavior.openingEndIndex =
+        nextDataBindingBehavior.openingEndIndex + offset;
+    nextDataBindingBehavior.closingStartIndex =
+        nextDataBindingBehavior.closingStartIndex + offset;
+    nextDataBindingBehavior.closingEndIndex =
+        nextDataBindingBehavior.closingEndIndex + offset;
+
+    return nextDataBindingBehavior;
+}
+
+/**
+ * Determine if this client side binding is legitimate.
+ * Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+ * Checking for this prevents CSS/JS curly braces from being misinterpreted as bindings.
+ * @param result
+ * @returns
+ */
+function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boolean {
+    return (
+        (result.subtype === "attribute" &&
+            (result.aspect === "@" || result.aspect === ":")) ||
+        result.subtype === "attributeDirective"
+    );
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
