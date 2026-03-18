@@ -407,7 +407,7 @@ export function getNextBehavior(
     const currentSlice = innerHTML.slice(offset);
     const dataBindingOpen = currentSlice.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
     const directiveBindingOpen = currentSlice.indexOf(openTagStart);
-    let nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+    const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
     if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
         return null;
@@ -424,32 +424,46 @@ export function getNextBehavior(
     }
 
     if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
-        const nextDirectiveBehavior = getNextDirectiveBehavior(currentSlice);
-
-        nextDirectiveBehavior.openingTagStartIndex =
-            nextDirectiveBehavior.openingTagStartIndex + offset;
-        nextDirectiveBehavior.openingTagEndIndex =
-            nextDirectiveBehavior.openingTagEndIndex + offset;
-        nextDirectiveBehavior.closingTagStartIndex =
-            nextDirectiveBehavior.closingTagStartIndex + offset;
-        nextDirectiveBehavior.closingTagEndIndex =
-            nextDirectiveBehavior.closingTagEndIndex + offset;
-
-        return nextDirectiveBehavior;
+        return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
     }
 
-    nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+    return offsetDataBinding(getNextDataBindingBehavior(currentSlice), offset);
+}
 
-    nextDataBindingBehavior.openingStartIndex =
-        nextDataBindingBehavior.openingStartIndex + offset;
-    nextDataBindingBehavior.openingEndIndex =
-        nextDataBindingBehavior.openingEndIndex + offset;
-    nextDataBindingBehavior.closingStartIndex =
-        nextDataBindingBehavior.closingStartIndex + offset;
-    nextDataBindingBehavior.closingEndIndex =
-        nextDataBindingBehavior.closingEndIndex + offset;
+/**
+ * Apply an offset to a data binding
+ * @param config DataBindingBehaviorConfig
+ * @param offset number
+ * @returns DataBindingBehaviorConfig
+ */
+function offsetDataBinding(
+    config: DataBindingBehaviorConfig,
+    offset: number
+): DataBindingBehaviorConfig {
+    config.openingStartIndex = config.openingStartIndex + offset;
+    config.openingEndIndex = config.openingEndIndex + offset;
+    config.closingStartIndex = config.closingStartIndex + offset;
+    config.closingEndIndex = config.closingEndIndex + offset;
 
-    return nextDataBindingBehavior;
+    return config;
+}
+
+/**
+ * Apply an offset to a directive
+ * @param config TemplateDirectiveBehaviorConfig
+ * @param offset number
+ * @returns TemplateDirectiveBehaviorConfig
+ */
+function offsetDirective(
+    config: TemplateDirectiveBehaviorConfig,
+    offset: number
+): TemplateDirectiveBehaviorConfig {
+    config.openingTagStartIndex = config.openingTagStartIndex + offset;
+    config.openingTagEndIndex = config.openingTagEndIndex + offset;
+    config.closingTagStartIndex = config.closingTagStartIndex + offset;
+    config.closingTagEndIndex = config.closingTagEndIndex + offset;
+
+    return config;
 }
 
 /**
