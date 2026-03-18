@@ -41,9 +41,6 @@ extends:
       jobs:
       - job: HostJob
 
-        variables:
-          npm_config_cache: $(Pipeline.Workspace)/.npm
-
         steps:
           - checkout: self
             persistCredentials: "true"
@@ -57,14 +54,6 @@ extends:
             inputs:
               version: "22.x"
             displayName: "Install Node.js"
-
-          - task: Cache@2
-            inputs:
-              key: 'npm | "$(Agent.OS)" | package-lock.json'
-              restoreKeys: |
-                npm | "$(Agent.OS)"
-              path: $(npm_config_cache)
-            displayName: "Cache npm"
 
           - script: |
               npm ci

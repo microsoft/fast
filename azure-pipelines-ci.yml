@@ -47,7 +47,7 @@ extends:
             displayName: "Install Node.js"
 
           - script: |
-              npm ci
+              npm install
             displayName: "Install package dependencies"
 
           - script: |
