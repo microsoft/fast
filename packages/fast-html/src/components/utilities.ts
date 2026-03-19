@@ -401,20 +401,90 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  * @returns DataBindingBehaviorConfig | DirectiveBehaviorConfig | null - A configuration object or null
  */
 export function getNextBehavior(
-    innerHTML: string
+    innerHTML: string,
+    offset: number = 0
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const dataBindingOpen = innerHTML.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
-    const directiveBindingOpen = innerHTML.indexOf(openTagStart);
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const currentSlice = innerHTML.slice(offset);
+        // client side binding will capture all bindings starting with "{"
+        const dataBindingOpen = currentSlice.indexOf(openClientSideBinding);
+        const directiveBindingOpen = currentSlice.indexOf(openTagStart);
+        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
-    if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
-        return null;
+        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+            return null;
+        }
+
+        if (
+            dataBindingOpen !== -1 &&
+            nextDataBindingBehavior.bindingType === "client" &&
+            !isLegitimateClientSideBinding(nextDataBindingBehavior)
+        ) {
+            offset = nextDataBindingBehavior.closingEndIndex + offset;
+            continue;
+        }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+        }
+
+        return offsetDataBinding(nextDataBindingBehavior, offset);
     }
+}
 
-    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
-        return getNextDirectiveBehavior(innerHTML);
-    }
+/**
+ * Apply an offset to a data binding
+ * @param config DataBindingBehaviorConfig
+ * @param offset number
+ * @returns DataBindingBehaviorConfig
+ */
+function offsetDataBinding(
+    config: DataBindingBehaviorConfig,
+    offset: number
+): DataBindingBehaviorConfig {
+    config.openingStartIndex = config.openingStartIndex + offset;
+    config.openingEndIndex = config.openingEndIndex + offset;
+    config.closingStartIndex = config.closingStartIndex + offset;
+    config.closingEndIndex = config.closingEndIndex + offset;
 
-    return getNextDataBindingBehavior(innerHTML);
+    return config;
+}
+
+/**
+ * Apply an offset to a directive
+ * @param config TemplateDirectiveBehaviorConfig
+ * @param offset number
+ * @returns TemplateDirectiveBehaviorConfig
+ */
+function offsetDirective(
+    config: TemplateDirectiveBehaviorConfig,
+    offset: number
+): TemplateDirectiveBehaviorConfig {
+    config.openingTagStartIndex = config.openingTagStartIndex + offset;
+    config.openingTagEndIndex = config.openingTagEndIndex + offset;
+    config.closingTagStartIndex = config.closingTagStartIndex + offset;
+    config.closingTagEndIndex = config.closingTagEndIndex + offset;
+
+    return config;
+}
+
+/**
+ * Determine if this client side binding is legitimate.
+ * Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+ * Checking for this prevents CSS/JS curly braces from being misinterpreted as bindings.
+ * @param result
+ * @returns
+ */
+function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boolean {
+    return (
+        (result.subtype === "attribute" &&
+            (result.aspect === "@" || result.aspect === ":")) ||
+        result.subtype === "attributeDirective"
+    );
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
