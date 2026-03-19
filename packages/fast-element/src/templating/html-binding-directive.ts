@@ -116,9 +116,8 @@ function updateContent(
     // If the value has a "create" method, then it's a ContentTemplate.
     if (isContentTemplate(value)) {
         // During hydration, if a template is provided but no view boundaries
-        // exist and the target is empty, the server did not render this
-        // content. Skip creating a new view to avoid a hydration mismatch.
-        // Use nodeValue check (cheaper than textContent — no tree walk).
+        // exist and the target text node is empty, the server did not render
+        // this content. Skip creating a new view to avoid a hydration mismatch.
         if (
             isHydratable(controller) &&
             controller.hydrationStage !== HydrationStage.hydrated &&
