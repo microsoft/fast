@@ -404,6 +404,7 @@ export function getNextBehavior(
     innerHTML: string,
     offset: number = 0
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
         const currentSlice = innerHTML.slice(offset);
         // client side binding will capture all bindings starting with "{"
