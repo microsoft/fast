@@ -58,6 +58,10 @@ extends:
             displayName: "Cache npm"
 
           - script: |
+              npm cache clean
+            displayName: "Clean npm cache"
+
+          - script: |
               npm ci
             displayName: "Install package dependencies"
 
