@@ -58,7 +58,7 @@ extends:
             displayName: "Cache npm"
 
           - script: |
-              npm cache clean
+              npm cache clean --force
             displayName: "Clean npm cache"
 
           - script: |
