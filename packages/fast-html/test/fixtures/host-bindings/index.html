@@ -45,7 +45,7 @@
             </template>
         </host-multi-element>
         <f-template name="host-multi-element">
-            <template @click="{handleClick()}" ?disabled="{isDisabled}">
+            <template @click="{handleClick()}" ?disabled="{{isDisabled}}">
                 <span>{{text}}</span>
             </template>
         </f-template>
@@ -85,7 +85,7 @@
         </host-multi-content-element>
         <f-template name="host-multi-content-element">
             <template @click="{handleClick()}">
-                <span first="{first}" second="{second}"></span>
+                <span first="{{first}}" second="{{second}}"></span>
             </template>
         </f-template>
 
@@ -123,7 +123,7 @@
             </template>
         </host-all-types-element>
         <f-template name="host-all-types-element">
-            <template @click="{handleClick()}" ?disabled="{isDisabled}" :title="{hostTitle}" attr="{hostAttr}">
+            <template @click="{handleClick()}" ?disabled="{{isDisabled}}" :title="{hostTitle}" attr="{{hostAttr}}">
                 <span>{{text}}</span>
             </template>
         </f-template>
@@ -136,7 +136,7 @@
             </template>
         </host-perm-attr-first>
         <f-template name="host-perm-attr-first">
-            <template attr="{hostAttr}" :title="{hostTitle}" ?disabled="{isDisabled}" @click="{handleClick()}">
+            <template attr="{{hostAttr}}" :title="{hostTitle}" ?disabled="{{isDisabled}}" @click="{handleClick()}">
                 <span>{{text}}</span>
             </template>
         </f-template>
@@ -149,7 +149,7 @@
             </template>
         </host-perm-bool-first>
         <f-template name="host-perm-bool-first">
-            <template ?disabled="{isDisabled}" @click="{handleClick()}" attr="{hostAttr}" :title="{hostTitle}">
+            <template ?disabled="{{isDisabled}}" @click="{handleClick()}" attr="{{hostAttr}}" :title="{hostTitle}">
                 <span>{{text}}</span>
             </template>
         </f-template>
@@ -162,7 +162,7 @@
             </template>
         </host-perm-prop-first>
         <f-template name="host-perm-prop-first">
-            <template :title="{hostTitle}" attr="{hostAttr}" @click="{handleClick()}" ?disabled="{isDisabled}">
+            <template :title="{hostTitle}" attr="{{hostAttr}}" @click="{handleClick()}" ?disabled="{{isDisabled}}">
                 <span>{{text}}</span>
             </template>
         </f-template>
