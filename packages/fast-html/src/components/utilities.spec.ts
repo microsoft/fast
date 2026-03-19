@@ -110,6 +110,12 @@ test.describe("utilities", async () => {
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.aspect).toEqual(":");
             expect((templateResult as AttributeDataBindingBehaviorConfig)?.bindingType).toEqual("client");
         });
+
+        test("ensure if there are expected missing {} this does not cause parsing issues", async () => {
+            const innerHTML = "<f-when value=\"missing\">";
+
+            expect(getNextBehavior(innerHTML)).toBeTruthy();
+        });
     });
 
     test.describe("templates", async () => {

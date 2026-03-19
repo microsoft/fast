@@ -414,6 +414,7 @@ export function getNextBehavior(
     }
 
     if (
+        dataBindingOpen !== -1 &&
         nextDataBindingBehavior.bindingType === "client" &&
         !isLegitimateClientSideBinding(nextDataBindingBehavior)
     ) {
