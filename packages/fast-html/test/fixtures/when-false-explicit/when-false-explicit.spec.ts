@@ -14,8 +14,6 @@ test.describe("f-when with explicit false property during hydration", async () =
         // After hydration, content should NOT be visible because someprop is false.
         // The server rendered "anything, really" because it had someprop=true,
         // but the client value is false, so the content should be removed.
-        // If the hydration code incorrectly forces true during hydration,
-        // the content will remain visible — a hydration mismatch.
         await expect(element).not.toHaveText("anything, really");
     });
 });

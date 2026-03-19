@@ -963,20 +963,39 @@ export function resolveWhen(
         level,
         schema
     );
+
+    // Raw value resolver for the expression's primary property path.
+    // Used during hydration to distinguish "property doesn't exist on
+    // the client" (undefined, server-only) from "property is explicitly falsy."
+    const rawBinding = !expression.expression.leftIsValue
+        ? pathResolver(
+              expression.expression.left as string,
+              parentContext,
+              level,
+              schema.getSchema(rootPropertyName as string) as JSONSchema
+          )
+        : null;
+
     let hydrationDone = false;
     return (x: boolean, c: any) => {
         const result = binding(x, c);
         if (result) return result;
 
-        // During hydration, trust the server-rendered state. If the condition
-        // evaluates to falsy (e.g. property not defined on the client element),
-        // return true so the inner template is hydrated and its bindings
-        // (event listeners, etc.) are properly attached to the existing DOM.
+        // During hydration, trust the server-rendered state only when the
+        // condition references a property not defined on the client element
+        // (raw value is undefined). Return true so the inner template is
+        // hydrated and its bindings (event listeners, etc.) are properly
+        // attached to the existing DOM.
+        // When the property IS defined but explicitly falsy (e.g. false, 0),
+        // respect the client value to avoid a hydration mismatch.
         if (!hydrationDone) {
             if (c?.hydrationStage === "hydrated") {
                 hydrationDone = true;
-            } else if (c?.hydrationStage) {
-                return true;
+            } else if (c?.hydrationStage && rawBinding) {
+                const rawValue = rawBinding(x, c);
+                if (rawValue === undefined) {
+                    return true;
+                }
             }
         }
         return result;

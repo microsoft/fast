@@ -101,15 +101,6 @@ function updateContent(
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
     if (value === null || value === undefined) {
-        // During hydration, preserve the server-rendered text content
-        // when the binding evaluates to null/undefined (e.g. the property
-        // only exists in server state, not on the client element class).
-        if (
-            isHydratable(controller) &&
-            controller.hydrationStage !== HydrationStage.hydrated
-        ) {
-            return;
-        }
         value = "";
     }
 
