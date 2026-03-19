@@ -404,34 +404,35 @@ export function getNextBehavior(
     innerHTML: string,
     offset: number = 0
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const currentSlice = innerHTML.slice(offset);
-    const dataBindingOpen = currentSlice.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
-    const directiveBindingOpen = currentSlice.indexOf(openTagStart);
-    const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
+    while (true) {
+        const currentSlice = innerHTML.slice(offset);
+        // client side binding will capture all bindings starting with "{"
+        const dataBindingOpen = currentSlice.indexOf(openClientSideBinding);
+        const directiveBindingOpen = currentSlice.indexOf(openTagStart);
+        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
-    if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
-        return null;
+        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+            return null;
+        }
+
+        if (
+            dataBindingOpen !== -1 &&
+            nextDataBindingBehavior.bindingType === "client" &&
+            !isLegitimateClientSideBinding(nextDataBindingBehavior)
+        ) {
+            offset = nextDataBindingBehavior.closingEndIndex + offset;
+            continue;
+        }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+        }
+
+        return offsetDataBinding(nextDataBindingBehavior, offset);
     }
-
-    if (
-        dataBindingOpen !== -1 &&
-        nextDataBindingBehavior.bindingType === "client" &&
-        !isLegitimateClientSideBinding(nextDataBindingBehavior)
-    ) {
-        return getNextBehavior(
-            innerHTML,
-            nextDataBindingBehavior.closingEndIndex + offset
-        );
-    }
-
-    if (
-        directiveBindingOpen !== -1 &&
-        (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
-    ) {
-        return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
-    }
-
-    return offsetDataBinding(nextDataBindingBehavior, offset);
 }
 
 /**
