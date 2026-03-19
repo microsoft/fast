@@ -101,11 +101,33 @@ function updateContent(
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
     if (value === null || value === undefined) {
+        // During hydration, preserve the server-rendered text content
+        // when the binding evaluates to null/undefined (e.g. the property
+        // only exists in server state, not on the client element class).
+        if (
+            isHydratable(controller) &&
+            controller.hydrationStage !== HydrationStage.hydrated
+        ) {
+            return;
+        }
         value = "";
     }
 
     // If the value has a "create" method, then it's a ContentTemplate.
     if (isContentTemplate(value)) {
+        // During hydration, if a template is provided but no view boundaries
+        // exist and the target is empty, the server did not render this
+        // content. Skip creating a new view to avoid a hydration mismatch.
+        // Use nodeValue check (cheaper than textContent — no tree walk).
+        if (
+            isHydratable(controller) &&
+            controller.hydrationStage !== HydrationStage.hydrated &&
+            controller.bindingViewBoundaries[this.targetNodeId] === undefined &&
+            !target.nodeValue
+        ) {
+            return;
+        }
+
         target.textContent = "";
         let view = target.$fastView as ComposableView;
 
