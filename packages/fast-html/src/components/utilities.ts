@@ -424,11 +424,14 @@ export function getNextBehavior(
         );
     }
 
-    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
+    if (
+        directiveBindingOpen !== -1 &&
+        (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+    ) {
         return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
     }
 
-    return offsetDataBinding(getNextDataBindingBehavior(currentSlice), offset);
+    return offsetDataBinding(nextDataBindingBehavior, offset);
 }
 
 /**
