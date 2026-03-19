@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="./main.ts"></script>
+    </head>
+    <body>
+        <!-- Template uses "serverOnly" which is NOT a property on test-element.
+             This simulates <if condition="serverOnly"> where the server state has serverOnly=true
+             but the client class doesn't know about it. -->
+        <f-template name="test-element">
+            <template><f-when value="{{serverOnly}}"><button @click="{handleClick()}">Click me</button></f-when></template>
+        </f-template>
+        <!-- SSR: condition was true, so button is rendered with hydration markers -->
+        <test-element id="when-event-show">
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><button data-fe-b-0>Click me</button><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
+        </test-element>
+    </body>
+</html>

@@ -963,7 +963,17 @@ export function resolveWhen(
         level,
         schema
     );
-    return (x: boolean, c: any) => binding(x, c);
+    return (x: boolean, c: any) => {
+        const result = binding(x, c);
+        // During hydration, trust the server-rendered state. If the condition
+        // evaluates to falsy (e.g. property not defined on the client element),
+        // return true so the inner template is hydrated and its bindings
+        // (event listeners, etc.) are properly attached to the existing DOM.
+        if (!result && c?.hydrationStage && c.hydrationStage !== "hydrated") {
+            return true;
+        }
+        return result;
+    };
 }
 
 type DataType = "array" | "object" | "primitive";

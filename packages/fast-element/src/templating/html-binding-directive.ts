@@ -120,6 +120,15 @@ function updateContent(
             ) {
                 const viewNodes = controller.bindingViewBoundaries[this.targetNodeId];
                 view = value.hydrate(viewNodes.first, viewNodes.last);
+            } else if (
+                isHydratable(controller) &&
+                controller.hydrationStage !== HydrationStage.hydrated &&
+                controller.bindingViewBoundaries[this.targetNodeId] === undefined
+            ) {
+                // During hydration, if a template is provided but no boundaries
+                // exist, the server did not render this content. Skip creating
+                // a new view to avoid a hydration mismatch.
+                return;
             } else {
                 view = value.create();
             }
