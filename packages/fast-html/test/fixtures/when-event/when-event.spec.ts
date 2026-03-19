@@ -20,4 +20,17 @@ test.describe("f-when with event binding", async () => {
         await button.click();
         await expect(customElement).toHaveJSProperty("clickCount", 2);
     });
+
+    test("f-when with false condition should not create content during hydration", async ({ page }) => {
+        await page.goto("/fixtures/when-event/");
+
+        const customElement = page.locator("#when-event-hide");
+
+        // No button should exist (SSR condition was false)
+        const button = customElement.locator("button");
+        await expect(button).toHaveCount(0);
+
+        // Element should hydrate without errors
+        await expect(customElement).toHaveJSProperty("clickCount", 0);
+    });
 });

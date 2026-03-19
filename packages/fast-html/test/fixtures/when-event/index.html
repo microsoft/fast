@@ -16,5 +16,9 @@
         <test-element id="when-event-show">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><button data-fe-b-0>Click me</button><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element>
+        <!-- SSR: condition was false, so no content between markers -->
+        <test-element id="when-event-hide">
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
+        </test-element>
     </body>
 </html>
