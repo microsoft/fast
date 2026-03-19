@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "",
+  "comment": "Address hydration mismatches when a template is provided but no boundaries exist, this will skip creation of a new view.",
   "packageName": "@microsoft/fast-html",
   "email": "hello@mohamedmansour.com",
   "dependentChangeType": "none"
