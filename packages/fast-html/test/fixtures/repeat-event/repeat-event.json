@@ -1,0 +1,7 @@
+{
+    "items": [
+        { "name": "Alpha", "expanded": false },
+        { "name": "Beta", "expanded": false },
+        { "name": "Charlie", "expanded": false }
+    ]
+}
