@@ -538,24 +538,8 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level
                     );
-                    const attributeBinding = (x: any, c: any) => {
-                        const fn = binding(x, c);
-                        // When inside a repeat (level > 0), the method was
-                        // resolved from an ancestor context (e.g. c.parent).
-                        // Bind `this` to that ancestor, not to the repeat
-                        // item `x`, so the handler can access the host
-                        // element's properties.
-                        let owner = x;
-                        if (level > 0) {
-                            let ctx = c;
-                            for (let i = 0; i < level; i++) {
-                                ctx = i < level - 1 ? ctx?.parentContext : ctx?.parent;
-                            }
-                            if (ctx) {
-                                owner = ctx;
-                            }
-                        }
-                        return fn.bind(owner)(
+                    const attributeBinding = (x: any, c: any) =>
+                        binding(x, c).bind(x)(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
                                 ? [
@@ -572,7 +556,6 @@ class TemplateElement extends FASTElement {
                                   ]
                                 : [])
                         );
-                    };
                     values.push(attributeBinding);
                 } else {
                     const propName = innerHTML.slice(
