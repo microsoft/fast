@@ -37,7 +37,7 @@ test.describe("f-template", async () => {
         await page.evaluate(() => {
             document.getElementById("bool-cond")?.setAttribute("active-group", "family");
         });
-        await expect(item).not.toHaveAttribute("data-active", "");
+        await expect(item).not.toHaveAttribute("data-active");
 
         // Change back to "work" → matches again
         await page.evaluate(() => {
