@@ -24,10 +24,10 @@ import {
     bindingResolver,
     ChainedExpression,
     DataBindingBehaviorConfig,
+    getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
-    resolveWhen,
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -323,7 +323,7 @@ class TemplateElement extends FASTElement {
             case "when": {
                 const expressionChain = getExpressionChain(behaviorConfig.value);
 
-                const whenLogic = resolveWhen(
+                const whenLogic = getBooleanBinding(
                     rootPropertyName,
                     expressionChain as ChainedExpression,
                     parentContext,
@@ -557,6 +557,50 @@ class TemplateElement extends FASTElement {
                                 : [])
                         );
                     values.push(attributeBinding);
+                } else if (behaviorConfig.aspect === "?") {
+                    const expression = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex
+                    );
+                    const expressionChain = getExpressionChain(expression);
+
+                    if (expressionChain?.expression.operator) {
+                        values.push(
+                            getBooleanBinding(
+                                rootPropertyName,
+                                expressionChain as ChainedExpression,
+                                parentContext,
+                                level,
+                                schema
+                            )
+                        );
+                    } else {
+                        const propName = innerHTML.slice(
+                            behaviorConfig.openingEndIndex,
+                            behaviorConfig.closingStartIndex
+                        );
+                        const type = "access";
+
+                        rootPropertyName = getRootPropertyName(
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type
+                        );
+
+                        const binding = bindingResolver(
+                            strings.join(""),
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type,
+                            schema,
+                            parentContext,
+                            level
+                        );
+                        const attributeBinding = (x: any, c: any) => binding(x, c);
+                        values.push(attributeBinding);
+                    }
                 } else {
                     const propName = innerHTML.slice(
                         behaviorConfig.openingEndIndex,

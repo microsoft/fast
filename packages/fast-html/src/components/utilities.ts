@@ -1013,13 +1013,14 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
 }
 
 /**
- * Resolves f-when
+ * Resolves boolean logic
+ * used for f-when and boolean attributes
  * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param chainedExpression - The chained expression which includes the expression and the next expression
  * if there is another in the chain
  * @returns - A binding that resolves the chained expression logic
  */
-export function resolveWhen(
+export function getBooleanBinding(
     rootPropertyName: string | null,
     expression: ChainedExpression,
     parentContext: string | null,
