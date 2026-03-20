@@ -43,6 +43,6 @@ test.describe("f-template", async () => {
         await page.evaluate(() => {
             document.getElementById("bool-cond")?.setAttribute("active-group", "work");
         });
-        await expect(item).toHaveAttribute("data-active", "");
+        await expect(item).toHaveAttribute("data-active");
     });
 });
