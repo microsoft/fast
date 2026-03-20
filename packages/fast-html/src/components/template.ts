@@ -559,6 +559,8 @@ class TemplateElement extends FASTElement {
                                       ]
                                     : [])
                             );
+
+                        break;
                     }
                     case "?": {
                         const expression = innerHTML.slice(
@@ -601,6 +603,8 @@ class TemplateElement extends FASTElement {
                             );
                             attributeBinding = (x: any, c: any) => binding(x, c);
                         }
+
+                        break;
                     }
                     default: {
                         const propName = innerHTML.slice(
