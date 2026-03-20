@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat(fast-html): support boolean attributes that have conditions",
+  "packageName": "@microsoft/fast-html",
+  "email": "hello@mohamedmansour.com",
+  "dependentChangeType": "none"
+}
