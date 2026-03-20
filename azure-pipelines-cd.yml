@@ -13,7 +13,7 @@ resources:
   repositories:
   - repository: fastPipelines
     type: git
-    name: fast/FASTPipelineTemplates
+    name: open-source/FASTPipelineTemplates
     ref: main
   - repository: 1esPipelines
     type: git
