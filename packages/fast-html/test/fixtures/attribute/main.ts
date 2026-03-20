@@ -10,6 +10,18 @@ RenderableFASTElement(TestElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+class TestBoolCondition extends FASTElement {
+    @attr({ attribute: "active-group" })
+    activeGroup: string = "";
+
+    @attr({ attribute: "current-group" })
+    currentGroup: string = "";
+}
+RenderableFASTElement(TestBoolCondition).defineAsync({
+    name: "test-bool-condition",
+    templateOptions: "defer-and-hydrate",
+});
+
 TemplateElement.define({
     name: "f-template",
 });

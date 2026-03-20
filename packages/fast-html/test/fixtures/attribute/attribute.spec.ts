@@ -24,4 +24,25 @@ test.describe("f-template", async () => {
         await expect(customElement).toHaveAttribute("type", "radio");
         await expect(customElement.locator("input[type='radio']")).toHaveCount(1);
     });
+    test("boolean attribute with comparison condition", async ({ page }) => {
+        await page.goto("/fixtures/attribute/");
+
+        const element = page.locator("#bool-cond");
+        const item = element.locator(".item");
+
+        // activeGroup == currentGroup ("work" == "work") → data-active present
+        await expect(item).toHaveAttribute("data-active", "");
+
+        // Change activeGroup to "family" → no longer matches → data-active removed
+        await page.evaluate(() => {
+            document.getElementById("bool-cond")?.setAttribute("active-group", "family");
+        });
+        await expect(item).not.toHaveAttribute("data-active", "");
+
+        // Change back to "work" → matches again
+        await page.evaluate(() => {
+            document.getElementById("bool-cond")?.setAttribute("active-group", "work");
+        });
+        await expect(item).toHaveAttribute("data-active", "");
+    });
 });

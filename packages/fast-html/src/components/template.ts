@@ -24,6 +24,7 @@ import {
     bindingResolver,
     ChainedExpression,
     DataBindingBehaviorConfig,
+    expressionResolver,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
@@ -562,27 +563,45 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingEndIndex,
                         behaviorConfig.closingStartIndex
                     );
-                    const type = "access";
 
-                    rootPropertyName = getRootPropertyName(
-                        rootPropertyName,
-                        propName,
-                        parentContext,
-                        type
-                    );
+                    // Check if the value is a comparison expression (e.g., "activeGroup == item")
+                    const expressionChain = getExpressionChain(propName);
+                    if (
+                        expressionChain &&
+                        expressionChain.expression.operator !== "access"
+                    ) {
+                        // Use expressionResolver for conditions in boolean/property attributes
+                        const binding = expressionResolver(
+                            rootPropertyName,
+                            expressionChain,
+                            parentContext,
+                            level,
+                            schema
+                        );
+                        values.push((x: any, c: any) => binding(x, c));
+                    } else {
+                        const type = "access";
 
-                    const binding = bindingResolver(
-                        strings.join(""),
-                        rootPropertyName,
-                        propName,
-                        parentContext,
-                        type,
-                        schema,
-                        parentContext,
-                        level
-                    );
-                    const attributeBinding = (x: any, c: any) => binding(x, c);
-                    values.push(attributeBinding);
+                        rootPropertyName = getRootPropertyName(
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type
+                        );
+
+                        const binding = bindingResolver(
+                            strings.join(""),
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type,
+                            schema,
+                            parentContext,
+                            level
+                        );
+                        const attributeBinding = (x: any, c: any) => binding(x, c);
+                        values.push(attributeBinding);
+                    }
                 }
 
                 await this.resolveInnerHTML(
