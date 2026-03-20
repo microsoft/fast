@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "fix(fast-html): bind event handlers to correct host inside f-repeat",
+  "packageName": "@microsoft/fast-html",
+  "email": "hello@mohamedmansour.com",
+  "dependentChangeType": "none"
+}

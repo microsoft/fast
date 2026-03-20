@@ -433,6 +433,18 @@ export function pathResolver(
     rootSchema: JSONSchema
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
+
+    // Explicit context access via "c." prefix — resolve directly from ExecutionContext
+    if (splitPath[0] === "c") {
+        const contextAccessPath = splitPath.slice(1);
+        return (_accessibleObject: any, context: any) => {
+            return contextAccessPath.reduce(
+                (prev: any, item: string) => prev?.[item],
+                context
+            );
+        };
+    }
+
     let levelCount = level;
     let self = splitPath[0] === contextPath;
     const parentContexts = [];
@@ -505,6 +517,17 @@ export function bindingResolver(
     currentContext: string | null,
     level: number
 ): (accessibleObject: any, context: any) => any {
+    // Explicit context access — resolve from ExecutionContext, skip schema tracking
+    if (path.startsWith("c.")) {
+        const contextAccessPath = path.split(".").slice(1);
+        return (_x: any, context: any) => {
+            return contextAccessPath.reduce(
+                (prev: any, item: string) => prev?.[item],
+                context
+            );
+        };
+    }
+
     rootPropertyName = getRootPropertyName(rootPropertyName, path, currentContext, type);
 
     if (type !== "event" && rootPropertyName !== null) {
