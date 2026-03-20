@@ -24,5 +24,42 @@
                 </ul>
             </template>
         </test-element-repeat-event>
+
+        <!-- f-when with c.parent inside f-repeat -->
+        <f-template name="test-when-in-repeat">
+            <template>
+                <ul>
+                    <f-repeat value="{item in items}">
+                        <li>
+                            <f-when value="{c.parent.showNames}">
+                                <button class="name" @click="{c.parent.handleItemClick(c.event)}">{{item.name}}</button>
+                            </f-when>
+                        </li>
+                    </f-repeat>
+                </ul>
+            </template>
+        </f-template>
+        <test-when-in-repeat>
+            <template shadowrootmode="open">
+                <ul>
+                    <!--fe-b$$start$$0$$WhenRepOuter$$fe-b-->
+                    <!--fe-repeat$$start$$0$$fe-repeat-->
+                    <li>
+                        <!--fe-b$$start$$0$$WhenRepWhen$$fe-b-->
+                        <button class="name" data-fe-b-0><!--fe-b$$start$$1$$WhenRepName$$fe-b-->Alpha<!--fe-b$$end$$1$$WhenRepName$$fe-b--></button>
+                        <!--fe-b$$end$$0$$WhenRepWhen$$fe-b-->
+                    </li>
+                    <!--fe-repeat$$end$$0$$fe-repeat-->
+                    <!--fe-repeat$$start$$1$$fe-repeat-->
+                    <li>
+                        <!--fe-b$$start$$0$$WhenRepWhen$$fe-b-->
+                        <button class="name" data-fe-b-0><!--fe-b$$start$$1$$WhenRepName$$fe-b-->Beta<!--fe-b$$end$$1$$WhenRepName$$fe-b--></button>
+                        <!--fe-b$$end$$0$$WhenRepWhen$$fe-b-->
+                    </li>
+                    <!--fe-repeat$$end$$1$$fe-repeat-->
+                    <!--fe-b$$end$$0$$WhenRepOuter$$fe-b-->
+                </ul>
+            </template>
+        </test-when-in-repeat>
     </body>
 </html>

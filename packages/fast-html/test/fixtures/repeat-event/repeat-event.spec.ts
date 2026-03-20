@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type { TestElementRepeatEvent } from "./main.js";
+import type { TestElementRepeatEvent, TestWhenInRepeat } from "./main.js";
 
 test.describe("f-repeat event binding", async () => {
     test("event handler inside f-repeat should have host element as this", async ({
@@ -30,5 +30,35 @@ test.describe("f-repeat event binding", async () => {
             "clickedItemName",
             "Alpha"
         );
+    });
+
+    test("f-when with c.parent condition inside f-repeat", async ({ page }) => {
+        await page.goto("/fixtures/repeat-event/");
+
+        const el = page.locator("test-when-in-repeat");
+        const buttons = el.locator("button.name");
+
+        // Items pre-rendered, showNames defaults to true
+        await expect(buttons).toHaveCount(2);
+        await expect(buttons.nth(0)).toHaveText("Alpha");
+        await expect(buttons.nth(1)).toHaveText("Beta");
+
+        // Click a button — handler should set clickedItemName on the host
+        await buttons.nth(1).click();
+        await expect(el).toHaveJSProperty("clickedItemName", "Beta");
+
+        // Toggle showNames to false — buttons should disappear
+        await el.evaluate((node: TestWhenInRepeat) => {
+            node.showNames = false;
+        });
+        await expect(buttons).toHaveCount(0);
+
+        // Toggle back — buttons should reappear and still work
+        await el.evaluate((node: TestWhenInRepeat) => {
+            node.showNames = true;
+        });
+        await expect(buttons).toHaveCount(2);
+        await buttons.nth(0).click();
+        await expect(el).toHaveJSProperty("clickedItemName", "Alpha");
     });
 });

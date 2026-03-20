@@ -23,6 +23,7 @@ import {
     AttributeDirective,
     bindingResolver,
     ChainedExpression,
+    contextPrefixDot,
     DataBindingBehaviorConfig,
     getExpressionChain,
     getNextBehavior,
@@ -538,7 +539,7 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level
                     );
-                    const isContextPath = propName.startsWith("c.");
+                    const isContextPath = propName.startsWith(contextPrefixDot);
                     const getOwner = isContextPath
                         ? (_x: any, c: any) => {
                               const ownerPath = propName.split(".").slice(1, -1);

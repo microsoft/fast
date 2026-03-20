@@ -92,6 +92,10 @@ const closeTagStart: string = "</f-";
 
 const attributeDirectivePrefix: string = "f-";
 
+export const contextPrefix: string = "c";
+
+export const contextPrefixDot: string = `${contextPrefix}.`;
+
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
@@ -504,8 +508,8 @@ export function pathResolver(
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
 
-    // Explicit context access via "c." prefix — resolve directly from ExecutionContext
-    if (splitPath[0] === "c") {
+    // Explicit context access via contextPrefix — resolve directly from ExecutionContext
+    if (splitPath[0] === contextPrefix) {
         const contextAccessPath = splitPath.slice(1);
         return (_accessibleObject: any, context: any) => {
             return contextAccessPath.reduce(
@@ -588,13 +592,10 @@ export function bindingResolver(
     level: number
 ): (accessibleObject: any, context: any) => any {
     // Explicit context access — resolve from ExecutionContext, skip schema tracking
-    if (path.startsWith("c.")) {
-        const contextAccessPath = path.split(".").slice(1);
+    if (path.startsWith(contextPrefixDot)) {
+        const segments = path.split(".").slice(1);
         return (_x: any, context: any) => {
-            return contextAccessPath.reduce(
-                (prev: any, item: string) => prev?.[item],
-                context
-            );
+            return segments.reduce((prev: any, item: string) => prev?.[item], context);
         };
     }
 
@@ -634,6 +635,7 @@ export function expressionResolver(
     if (rootPropertyName !== null) {
         const paths = extractPathsFromChainedExpression(expression);
         paths.forEach(path => {
+            if (path.startsWith(contextPrefixDot)) return;
             schema.addPath({
                 pathConfig: {
                     type: "access",
