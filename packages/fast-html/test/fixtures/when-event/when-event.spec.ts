@@ -33,4 +33,20 @@ test.describe("f-when with event binding", async () => {
         // Element should hydrate without errors
         await expect(customElement).toHaveJSProperty("clickCount", 0);
     });
+
+    test("should respect client-side false value even when server rendered content", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/when-event/");
+
+        const element = page.locator("#false-prop");
+
+        // The property is explicitly false on the client element class
+        await expect(element).toHaveJSProperty("someprop", false);
+
+        // After hydration, content should NOT be visible because someprop is false.
+        // The server rendered "anything, really" because it had someprop=true,
+        // but the client value is false, so the content should be removed.
+        await expect(element).not.toHaveText("anything, really");
+    });
 });

@@ -20,5 +20,15 @@
         <test-element id="when-event-hide">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element>
+
+        <!-- test-element-false: someprop is explicitly false on the client,
+             but the server rendered with someprop=true, so SSR content is present.
+             After hydration the client value should win and content should be removed. -->
+        <f-template name="test-element-false">
+            <template><f-when value="{{someprop}}">anything, really</f-when></template>
+        </f-template>
+        <test-element-false id="false-prop">
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->anything, really<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
+        </test-element-false>
     </body>
 </html>
