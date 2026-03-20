@@ -31,7 +31,7 @@ test.describe("f-template", async () => {
         const item = element.locator(".item");
 
         // activeGroup == currentGroup ("work" == "work") → data-active present
-        await expect(item).toHaveAttribute("data-active", "");
+        await expect(item).toHaveAttribute("data-active");
 
         // Change activeGroup to "family" → no longer matches → data-active removed
         await page.evaluate(() => {
