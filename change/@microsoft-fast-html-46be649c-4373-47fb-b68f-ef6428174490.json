@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Split tests to assist in base PR build gate times",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
