@@ -149,6 +149,15 @@ test.describe("utilities", async () => {
             expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagStartIndex).toEqual(33);
             expect((templateResult as TemplateDirectiveBehaviorConfig)?.closingTagEndIndex).toEqual(42);
         });
+        test("should not treat an unknown f- tag as a directive", async () => {
+            const innerHTML = "<f-foo value=\"{{bar}}\">Hello</f-foo>";
+            const templateResult = getNextBehavior(innerHTML);
+
+            expect(templateResult?.type).toEqual("dataBinding");
+            expect(
+                (templateResult as ContentDataBindingBehaviorConfig)?.subtype
+            ).toEqual("attribute");
+        });
     });
 
     test.describe("attributes", async () => {
