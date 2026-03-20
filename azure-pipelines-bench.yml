@@ -6,7 +6,7 @@ resources:
   repositories:
   - repository: fastPipelines
     type: git
-    name: fast/FASTPipelineTemplates
+    name: open-source/FASTPipelineTemplates
     ref: main
 
 extends:
