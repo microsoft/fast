@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 20 Mar 2026 00:07:36 GMT",
+      "version": "1.0.0-beta.39",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.39",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "99a38cb16397c299566bc6f10f910c9e4e3a6f44",
+            "comment": "chore: update tests to use Node.js"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "6df43be90d257a49389c188935400792b7108cc6",
+            "comment": "Split tests to assist in base PR build gate times"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "1dd81b899a21eb28ed7dd15bdf1c558196775c3e",
+            "comment": "chore: update dependencies and configurations"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 05 Mar 2026 00:09:03 GMT",
       "version": "1.0.0-beta.39",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.39",
