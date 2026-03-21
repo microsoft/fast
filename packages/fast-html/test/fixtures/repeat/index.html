@@ -118,5 +118,23 @@
                 </ul>
             </template>
         </f-template>
+
+        <f-template name="test-element-event">
+            <template>
+                <f-repeat value="{{item in list}}">
+                    <button @click="{handleClick()}">Click</button>
+                </f-repeat>
+            </template>
+        </f-template>
+
+        <test-element-event>
+            <template shadowrootmode="open">
+                <!--fe-b$$start$$0$$item-in-list$$fe-b-->
+                <!--fe-repeat$$start$$0$$fe-repeat-->
+                <button data-fe-b-0>Click</button>
+                <!--fe-repeat$$end$$0$$fe-repeat-->
+                <!--fe-b$$end$$0$$item-in-list$$fe-b-->
+            </template>
+        </test-element-event>
     </body>
 </html>
