@@ -58,13 +58,13 @@ RenderableFASTElement(TestElementNoItemRepeatBinding).defineAsync({
 
 export class TestElementEvent extends FASTElement {
     @observable
-    list: Array<string> = [];
+    list: Array<string> = ["A"];
 
     @observable
-    clickedItem: string = "";
+    clickCount: number = 0;
 
     public handleClick = (): void => {
-        this.clickedItem = "clicked";
+        this.clickCount++;
     };
 }
 RenderableFASTElement(TestElementEvent).defineAsync({

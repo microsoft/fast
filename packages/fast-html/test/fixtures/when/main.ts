@@ -102,10 +102,10 @@ export class TestElementEvent extends FASTElement {
     show: boolean = false;
 
     @observable
-    clickedItem: string = "";
+    clickCount: number = 0;
 
     public handleClick = (): void => {
-        this.clickedItem = "clicked";
+        this.clickCount++;
     };
 }
 RenderableFASTElement(TestElementEvent).defineAsync({
