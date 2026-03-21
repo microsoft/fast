@@ -101,4 +101,19 @@ test.describe("f-template", async () => {
         await expect(customElementShow).toHaveText("This and That");
         await expect(customElementHide).not.toHaveText("This and That");
     });
+
+    test("should fire events inside a when directive", async ({ page }) => {
+        await page.goto("/fixtures/when/");
+
+        const elementShow = page.locator("#event-show");
+        await elementShow.locator("button").click();
+        await expect(elementShow).toHaveJSProperty("clickedItem", "clicked");
+
+        const elementHide = page.locator("#event-hide");
+        await page.evaluate(() => {
+            document.getElementById("event-hide")?.setAttribute("show", "");
+        });
+        await elementHide.locator("button").click();
+        await expect(elementHide).toHaveJSProperty("clickedItem", "clicked");
+    });
 });
