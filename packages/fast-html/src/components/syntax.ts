@@ -1,3 +1,6 @@
+/**
+ * Syntax for FAST declarative templates
+ */
 interface Syntax {
     clientSideOpenExpression: string;
     clientSideCloseExpression: string;
@@ -12,6 +15,9 @@ interface Syntax {
     attributeDirectivePrefix: string;
 }
 
+/**
+ * Default syntax for FAST declarative templates
+ */
 export const {
     attributeDirectivePrefix,
     clientSideCloseExpression,
