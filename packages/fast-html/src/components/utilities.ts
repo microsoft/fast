@@ -7,6 +7,19 @@ import {
     refPropertyName,
     Schema,
 } from "./schema.js";
+import {
+    attributeDirectivePrefix,
+    clientSideCloseExpression,
+    clientSideOpenExpression,
+    closeExpression,
+    openExpression,
+    repeatDirectiveClose,
+    repeatDirectiveOpen,
+    unescapedCloseExpression,
+    unescapedOpenExpression,
+    whenDirectiveClose,
+    whenDirectiveOpen,
+} from "./syntax.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 
@@ -72,52 +85,9 @@ interface ObservedTargetsAndProperties {
     rootProperty: string;
 }
 
-interface Syntax {
-    clientSideOpenExpression: string;
-    clientSideCloseExpression: string;
-    openExpression: string;
-    closeExpression: string;
-    unescapedOpenExpression: string;
-    unescapedCloseExpression: string;
-    repeatDirectiveOpen: string;
-    repeatDirectiveClose: string;
-    whenDirectiveOpen: string;
-    whenDirectiveClose: string;
-    attributeDirectivePrefix: string;
-}
-
-const {
-    clientSideOpenExpression,
-    clientSideCloseExpression,
-    openExpression,
-    closeExpression,
-    unescapedOpenExpression,
-    unescapedCloseExpression,
-    repeatDirectiveOpen,
-    repeatDirectiveClose,
-    whenDirectiveOpen,
-    whenDirectiveClose,
-    attributeDirectivePrefix,
-}: Syntax = {
-    clientSideOpenExpression: "{",
-    clientSideCloseExpression: "}",
-    openExpression: "{{",
-    closeExpression: "}}",
-    unescapedOpenExpression: "{{{",
-    unescapedCloseExpression: "}}}",
-    repeatDirectiveOpen: "<f-repeat",
-    repeatDirectiveClose: "</f-repeat>",
-    whenDirectiveOpen: "<f-when",
-    whenDirectiveClose: "</f-when>",
-    attributeDirectivePrefix: "f-",
-};
-
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
-
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
-
 const endInnerHTMLDiv = `}}"></div>`;
-
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 
 const LogicalOperator = {
