@@ -106,5 +106,16 @@
         <test-element-and id="and-false" this-var>
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-and>
+
+        <!-- event -->
+        <f-template name="test-element-event">
+            <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
+        </f-template>
+        <test-element-event id="event-show" show>
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><button data-fe-b-0>Click me</button><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
+        </test-element-event>
+        <test-element-event id="event-hide">
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
+        </test-element-event>
     </body>
 </html>
