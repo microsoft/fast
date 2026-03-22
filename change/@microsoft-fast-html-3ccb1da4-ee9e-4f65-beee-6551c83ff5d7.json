@@ -1,6 +1,6 @@
 {
   "type": "prerelease",
-  "comment": "fix(fast-html): bind event handlers to correct host inside f-repeat",
+  "comment": "feat(fast-html): add $c prefix for execution context access in declarative templates",
   "packageName": "@microsoft/fast-html",
   "email": "hello@mohamedmansour.com",
   "dependentChangeType": "none"
