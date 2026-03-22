@@ -12,8 +12,8 @@ export class TestElementRepeatEvent extends FASTElement {
     @observable
     clickedItemName: string = "";
 
-    // Regular method — `this` depends on the call-site binding.
-    // Inside f-repeat, fast-html must bind `this` to the host element.
+    // Called via $c.parent.handleItemClick — `this` is bound to the host
+    // because the $c.parent path resolves the method owner from the context.
     handleItemClick(e: Event) {
         this.clickedItemName = (e.currentTarget as HTMLButtonElement).textContent!;
     }
