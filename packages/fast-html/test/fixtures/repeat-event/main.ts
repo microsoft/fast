@@ -23,7 +23,7 @@ RenderableFASTElement(TestElementRepeatEvent).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-// Scenario: f-when using c.parent inside f-repeat
+// Scenario: f-when using $c.parent inside f-repeat
 export class TestWhenInRepeat extends FASTElement {
     @observable items: Array<ItemType> = [{ name: "Alpha" }, { name: "Beta" }];
     @observable showNames: boolean = true;

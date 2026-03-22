@@ -11,7 +11,7 @@
                 <ul>
                     <f-repeat value="{{item in items}}">
                         <li>
-                            <button @click="{c.parent.handleItemClick(c.event)}">{{item.name}}</button>
+                            <button @click="{$c.parent.handleItemClick($c.event)}">{{item.name}}</button>
                         </li>
                     </f-repeat>
                 </ul>
@@ -31,8 +31,8 @@
                 <ul>
                     <f-repeat value="{{item in items}}">
                         <li>
-                            <f-when value="{{c.parent.showNames}}">
-                                <button class="name" @click="{c.parent.handleItemClick(c.event)}">{{item.name}}</button>
+                            <f-when value="{{$c.parent.showNames}}">
+                                <button class="name" @click="{$c.parent.handleItemClick(e)}">{{item.name}}</button>
                             </f-when>
                         </li>
                     </f-repeat>

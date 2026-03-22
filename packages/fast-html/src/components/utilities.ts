@@ -92,7 +92,7 @@ const closeTagStart: string = "</f-";
 
 const attributeDirectivePrefix: string = "f-";
 
-export const contextPrefix: string = "c";
+export const contextPrefix: string = "$c";
 
 export const contextPrefixDot: string = `${contextPrefix}.`;
 
