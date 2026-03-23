@@ -30,6 +30,10 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
+    "./binding/binding.js": {
+      "types": "./dist/dts/binding/binding.d.ts",
+      "default": "./dist/esm/binding/binding.js"
+    },
     "./binding/two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
       "default": "./dist/esm/binding/two-way.js"

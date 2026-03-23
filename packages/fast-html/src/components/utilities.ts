@@ -1,3 +1,12 @@
+import type {
+    ExpressionController,
+    ExpressionNotifier,
+    ExpressionObserver,
+    Expression as FASTExpression,
+    Subscriber,
+} from "@microsoft/fast-element";
+import { Binding } from "@microsoft/fast-element/binding/binding.js";
+import { Signal } from "@microsoft/fast-element/binding/signal.js";
 import { Observable } from "@microsoft/fast-element/observable.js";
 import {
     defsPropertyName,
@@ -130,6 +139,164 @@ const Operator = {
 } as const;
 
 type Operator = (typeof Operator)[keyof typeof Operator];
+
+/**
+ * Counter for generating unique signal identifiers.
+ */
+let nextSignalId = 0;
+
+/**
+ * Maps element instances to their unique signal name.
+ */
+const signalNameMap = new WeakMap<object, string>();
+
+/**
+ * Gets or creates a unique signal name for an element instance.
+ * @param instance - The element instance.
+ * @returns A unique signal name string, or empty string for non-object values.
+ */
+export function getElementSignalName(instance: any): string {
+    if (instance === null || instance === undefined || typeof instance !== "object") {
+        return "";
+    }
+
+    let name = signalNameMap.get(instance);
+
+    if (!name) {
+        name = `fh:${nextSignalId++}`;
+        signalNameMap.set(instance, name);
+    }
+
+    return name;
+}
+
+/**
+ * An observer that combines signal-based pub/sub with standard Observable
+ * expression watching. Signal subscriptions handle deep property changes
+ * relayed through proxies, while the Observable expression observer handles
+ * direct property access tracking (e.g., array item properties set up via
+ * Observable.defineProperty).
+ */
+class ObserverMapObserver<TSource = any, TReturn = any, TParent = any>
+    implements ExpressionObserver<TSource, TReturn, TParent>
+{
+    private isNotBound = true;
+    private signals: string[] = [];
+    private innerObserver: ExpressionNotifier<TSource, TReturn>;
+
+    constructor(
+        private readonly dataBinding: ObserverMapBinding,
+        private readonly subscriber: Subscriber
+    ) {
+        // Create a standard Observable expression observer that watches
+        // property access during evaluation, just like oneWay bindings do
+        this.innerObserver = Observable.binding(
+            dataBinding.evaluate,
+            this,
+            true // volatile so it re-watches on every evaluation
+        );
+    }
+
+    bind(controller: ExpressionController<TSource, TParent>): TReturn {
+        if (this.isNotBound) {
+            this.signals = this.dataBinding.getSignals(controller);
+
+            for (const sig of this.signals) {
+                Signal.subscribe(sig, this);
+            }
+
+            controller.onUnbind(this);
+            this.isNotBound = false;
+        }
+
+        return this.innerObserver.bind(controller);
+    }
+
+    unbind(controller: ExpressionController<TSource, TParent>) {
+        this.isNotBound = true;
+
+        for (const sig of this.signals) {
+            Signal.unsubscribe(sig, this);
+        }
+
+        this.signals = [];
+        this.innerObserver.dispose();
+    }
+
+    handleChange() {
+        this.subscriber.handleChange(this.dataBinding.evaluate, this);
+    }
+}
+
+/**
+ * A binding that uses Signal-based pub/sub for change notification.
+ * Extends the Binding base class from fast-element, mirroring the
+ * SignalBinding pattern but supporting multiple signal subscriptions
+ * to handle both element-level and repeat-item-level notifications.
+ */
+class ObserverMapBinding<TSource = any, TReturn = any, TParent = any> extends Binding<
+    TSource,
+    TReturn,
+    TParent
+> {
+    signalsFn: (controller: ExpressionController<TSource, TParent>) => string[];
+
+    constructor(
+        evaluate: FASTExpression<TSource, TReturn, TParent>,
+        signalsFn: (controller: ExpressionController<TSource, TParent>) => string[]
+    ) {
+        super(evaluate);
+        this.signalsFn = signalsFn;
+    }
+
+    getSignals(controller: ExpressionController<TSource, TParent>): string[] {
+        return this.signalsFn(controller);
+    }
+
+    createObserver(
+        subscriber: Subscriber
+    ): ExpressionObserver<TSource, TReturn, TParent> {
+        return new ObserverMapObserver(this, subscriber);
+    }
+}
+
+/**
+ * Creates a signal-aware binding from an expression and nesting level.
+ * At level 0, the binding subscribes only to the element's signal.
+ * At level 1+, it subscribes to both the source's signal (repeat item)
+ * and the element's signal, so it reacts to changes at any level.
+ * @param expression - The binding expression function.
+ * @param level - The nesting depth for signal name resolution.
+ * @returns A Binding instance that reacts to the appropriate signals.
+ */
+export function createSignalBinding(
+    expression: (source: any, context: any) => any,
+    level: number
+): Binding {
+    const signalsFn = (controller: ExpressionController): string[] => {
+        const sourceSignal = getElementSignalName(controller.source);
+
+        if (level === 0) {
+            return [sourceSignal];
+        }
+
+        let ctx = controller.context as any;
+
+        for (let i = level; i > 1; i--) {
+            ctx = ctx.parentContext;
+        }
+
+        const elementSignal = getElementSignalName(ctx.parent);
+
+        if (sourceSignal === elementSignal) {
+            return [sourceSignal];
+        }
+
+        return [sourceSignal, elementSignal];
+    };
+
+    return new ObserverMapBinding(expression, signalsFn);
+}
 
 /**
  * A map of proxied objects
@@ -1149,11 +1316,16 @@ function assignObservablesToArray(
 
                         Object.assign(item, originalItem);
                     }
-
-                    // Notify observers of the target object's root property
-                    Observable.notify(target, rootProperty);
                 }
             });
+
+            // Signal the owning element so content bindings that depend on
+            // array properties (e.g., .length) re-evaluate after splices
+            const signalName = getElementSignalName(target);
+
+            if (signalName) {
+                Signal.send(signalName);
+            }
         },
     });
 
@@ -1446,16 +1618,36 @@ function getTargetsForObject(object: any): ObservedTargetsAndProperties[] {
 }
 
 /**
- * Notify any observables mapped to the object
+ * Notify any signal subscribers mapped to the object.
+ * Uses Signal.send to broadcast changes to all bindings
+ * subscribed to the element's signal channel.
+ * Walks the target chain upward so that nested proxies
+ * ultimately signal the owning element.
  * @param targetObject The object that is mapped to a target and rootProperty
  */
-function notifyObservables(targetObject: any) {
-    getTargetsForObject(targetObject).forEach(
-        (targetItem: ObservedTargetsAndProperties) => {
-            // Trigger notification for property changes
-            Observable.notify(targetItem.target, targetItem.rootProperty);
+function notifyObservables(targetObject: any, visited?: Set<any>) {
+    if (!visited) {
+        visited = new Set();
+    }
+
+    if (visited.has(targetObject)) {
+        return;
+    }
+
+    visited.add(targetObject);
+
+    const targets = getTargetsForObject(targetObject);
+
+    for (const targetItem of targets) {
+        const signalName = getElementSignalName(targetItem.target);
+
+        if (signalName) {
+            Signal.send(signalName);
         }
-    );
+
+        // Walk up: if the target itself has registered targets, notify those too
+        notifyObservables(targetItem.target, visited);
+    }
 }
 
 /**
