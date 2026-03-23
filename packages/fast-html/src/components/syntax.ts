@@ -4,6 +4,7 @@
 interface Syntax {
     clientSideOpenExpression: string;
     clientSideCloseExpression: string;
+    executionContextAccessor: string;
     openExpression: string;
     closeExpression: string;
     unescapedOpenExpression: string;
@@ -23,6 +24,7 @@ export const {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
+    executionContextAccessor,
     openExpression,
     repeatDirectiveClose,
     repeatDirectiveOpen,
@@ -35,6 +37,7 @@ export const {
     clientSideCloseExpression: "}",
     clientSideOpenExpression: "{",
     closeExpression: "}}",
+    executionContextAccessor: "$c",
     openExpression: "{{",
     unescapedCloseExpression: "}}}",
     unescapedOpenExpression: "{{{",
