@@ -13,7 +13,7 @@ import {
     extractPathsFromChainedExpression,
     getChildrenMap,
     findDef,
-    resolveWhen,
+    getBooleanBinding,
 } from "./utilities.js";
 
 test.describe("utilities", async () => {
@@ -522,7 +522,7 @@ test.describe("utilities", async () => {
         });
     });
 
-    test.describe("resolveWhen - default case truthiness evaluation", async () => {
+    test.describe("getBooleanBinding - default case truthiness evaluation", async () => {
         // Helper to create a basic schema for testing
         const createTestSchema = (rootPropertyName: string, propertyName: string) => {
             const schema = new Schema("test-element");
@@ -542,7 +542,7 @@ test.describe("utilities", async () => {
         test("should evaluate boolean true as truthy", async () => {
             const schema = createTestSchema("testData", "boolTrue");
             const expression = getExpressionChain("boolTrue");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ boolTrue: true } as any, null);
             expect(result).toBe(true);
@@ -551,7 +551,7 @@ test.describe("utilities", async () => {
         test("should evaluate boolean false as falsy", async () => {
             const schema = createTestSchema("testData", "boolFalse");
             const expression = getExpressionChain("boolFalse");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ boolFalse: false } as any, null);
             expect(result).toBe(false);
@@ -560,7 +560,7 @@ test.describe("utilities", async () => {
         test("should evaluate number 0 as falsy", async () => {
             const schema = createTestSchema("testData", "numberZero");
             const expression = getExpressionChain("numberZero");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ numberZero: 0 } as any, null);
             expect(result).toBe(false);
@@ -569,7 +569,7 @@ test.describe("utilities", async () => {
         test("should evaluate positive number as truthy", async () => {
             const schema = createTestSchema("testData", "numberPositive");
             const expression = getExpressionChain("numberPositive");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ numberPositive: 42 } as any, null);
             expect(result).toBe(true);
@@ -578,7 +578,7 @@ test.describe("utilities", async () => {
         test("should evaluate negative number as truthy", async () => {
             const schema = createTestSchema("testData", "numberNegative");
             const expression = getExpressionChain("numberNegative");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ numberNegative: -5 } as any, null);
             expect(result).toBe(true);
@@ -587,7 +587,7 @@ test.describe("utilities", async () => {
         test("should evaluate empty string as falsy", async () => {
             const schema = createTestSchema("testData", "stringEmpty");
             const expression = getExpressionChain("stringEmpty");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ stringEmpty: "" } as any, null);
             expect(result).toBe(false);
@@ -596,7 +596,7 @@ test.describe("utilities", async () => {
         test("should evaluate non-empty string as truthy", async () => {
             const schema = createTestSchema("testData", "stringNonEmpty");
             const expression = getExpressionChain("stringNonEmpty");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ stringNonEmpty: "hello" } as any, null);
             expect(result).toBe(true);
@@ -605,7 +605,7 @@ test.describe("utilities", async () => {
         test("should evaluate null as falsy", async () => {
             const schema = createTestSchema("testData", "objectNull");
             const expression = getExpressionChain("objectNull");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ objectNull: null } as any, null);
             expect(result).toBe(false);
@@ -614,7 +614,7 @@ test.describe("utilities", async () => {
         test("should evaluate undefined as falsy", async () => {
             const schema = createTestSchema("testData", "undefinedProp");
             const expression = getExpressionChain("undefinedProp");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ undefinedProp: undefined } as any, null);
             expect(result).toBe(false);
@@ -623,7 +623,7 @@ test.describe("utilities", async () => {
         test("should evaluate non-null object as truthy", async () => {
             const schema = createTestSchema("testData", "objectNonNull");
             const expression = getExpressionChain("objectNonNull");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ objectNonNull: { foo: "bar" } } as any, null);
             expect(result).toBe(true);
@@ -632,7 +632,7 @@ test.describe("utilities", async () => {
         test("should evaluate empty array as truthy", async () => {
             const schema = createTestSchema("testData", "arrayEmpty");
             const expression = getExpressionChain("arrayEmpty");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ arrayEmpty: [] } as any, null);
             expect(result).toBe(true);
@@ -641,7 +641,7 @@ test.describe("utilities", async () => {
         test("should evaluate non-empty array as truthy", async () => {
             const schema = createTestSchema("testData", "arrayNonEmpty");
             const expression = getExpressionChain("arrayNonEmpty");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ arrayNonEmpty: [1, 2, 3] } as any, null);
             expect(result).toBe(true);
@@ -650,7 +650,7 @@ test.describe("utilities", async () => {
         test("should evaluate string with only whitespace as truthy", async () => {
             const schema = createTestSchema("testData", "stringWhitespace");
             const expression = getExpressionChain("stringWhitespace");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ stringWhitespace: "   " } as any, null);
             expect(result).toBe(true);
@@ -659,7 +659,7 @@ test.describe("utilities", async () => {
         test("should evaluate number NaN as truthy", async () => {
             const schema = createTestSchema("testData", "numberNaN");
             const expression = getExpressionChain("numberNaN");
-            const resolver = resolveWhen("testData", expression!, null, 0, schema);
+            const resolver = getBooleanBinding("testData", expression!, null, 0, schema);
 
             const result = resolver({ numberNaN: NaN } as any, null);
             expect(result).toBe(true);
