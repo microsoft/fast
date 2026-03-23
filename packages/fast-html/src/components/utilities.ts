@@ -12,6 +12,7 @@ import {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
+    executionContextAccessor,
     openExpression,
     repeatDirectiveClose,
     repeatDirectiveOpen,
@@ -85,7 +86,8 @@ interface ObservedTargetsAndProperties {
     rootProperty: string;
 }
 
-export const contextPrefixDot: string = `${contextPrefix}.`;
+export const contextPrefixDot: string = `${executionContextAccessor}.`;
+
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;
@@ -504,8 +506,8 @@ export function pathResolver(
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
 
-    // Explicit context access via contextPrefix — resolve directly from ExecutionContext
-    if (splitPath[0] === contextPrefix) {
+    // Explicit context access via executionContextAccessor — resolve directly from ExecutionContext
+    if (splitPath[0] === executionContextAccessor) {
         const contextAccessPath = splitPath.slice(1);
         return (_accessibleObject: any, context: any) => {
             return contextAccessPath.reduce(
