@@ -288,7 +288,7 @@ Directives are treated differently from bindings as they include a template. Thi
 
 Example repeat binding:
 ```html
-<f-repeat value="{item in list}">
+<f-repeat value="{{item in list}}">
     <span>{{item}}</span>
 </f-repeat>
 ```
@@ -337,7 +337,7 @@ The when directive is either present in the DOM or not, and therefore does not n
 
 Example when binding:
 ```html
-<f-when value="{show}">
+<f-when value="{{show}}">
     <span>{{text}}</span>
 </f-when>
 ```
@@ -413,9 +413,9 @@ Should result in:
 
 Example when binding:
 ```html
-<f-when value="{show}">
+<f-when value="{{show}}">
     <span>{{text}}</span>
-    <f-when value="{showInternal}">
+    <f-when value="{{showInternal}}">
         <span>{{internalText}}</span>
     </f-when>
 </f-when>
@@ -449,12 +449,12 @@ Should result in:
 
 Example when binding:
 ```html
-<f-repeat value="{item in items}">
+<f-repeat value="{{item in items}}">
     <div>
         <span>{{item.name}}</span>
-        <f-when value="{!!item.nested}">
+        <f-when value="{{!!item.nested}}">
             <ul>
-                <f-repeat value="{person in item.nested}">
+                <f-repeat value="{{person in item.nested}}">
                     <li>{{person.name}}</li>
                 </f-repeat>
             </ul>
@@ -539,7 +539,7 @@ This example shows the wrapping custom element tag as well as the template compo
 
 Example template of component "nested-component":
 ```html
-<f-when value="{showButton}">
+<f-when value="{{showButton}}">
     <my-button appearance="{{appearance}}">{{text}}</my-button>
 </f-when>
 ```
