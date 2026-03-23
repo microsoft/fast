@@ -37,6 +37,7 @@ The system automatically handles:
 
 The system does not process:
 - **Function bindings**: Event handlers and method calls like `@click="{handleClick()}"`
+- **Context paths**: Bindings using the `$c` prefix (e.g., `$c.parent.showNames`) resolve directly from the `ExecutionContext` and are not part of the data model
 - **Computed expressions**: Complex expressions that evaluate to non-data values
 - **Non-observable constructs**: Any binding assumed to reference functions or non-data objects
 
@@ -190,13 +191,18 @@ Here's how binding paths flow through the system during initial template process
 6. **Observable Definition**: Observer map makes `user` property observable
 7. **Proxy Creation**: When `user` is assigned, proxies are created for deep observation
 
-### Event Handler Exclusion
+### Event Handler and Context Path Exclusion
 
 Event handlers are identified but explicitly excluded from schema processing:
 - **Template Binding**: `@click="{handleClick()}"`
 - **Path Analysis**: Utilities identify this as an event handler
 - **Type Check**: Confirms this is type `"event"`
 - **Schema Registration**: **Skipped** - Event handlers are not added to schemas since they represent function calls
+
+Context paths (`$c` prefix) are also excluded from schema processing:
+- **Template Binding**: `{{$c.parent.showNames}}` or `@click="{$c.parent.handleClick($c.event)}"`
+- **Path Analysis**: Utilities detect the `$c.` prefix
+- **Schema Registration**: **Skipped** - These paths resolve from the `ExecutionContext`, not from observable data properties
 
 ## Dynamic Path Processing Updates
 
