@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sun, 22 Mar 2026 00:03:45 GMT",
+      "version": "1.0.0-alpha.40",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.40",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "04b7303324ba8c6c032f7ee21418c3b4dc1b7029",
+            "comment": "chore: streamline fixture input discovery and clean up HTML test suite"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 20 Mar 2026 00:07:36 GMT",
       "version": "1.0.0-alpha.40",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.40",
