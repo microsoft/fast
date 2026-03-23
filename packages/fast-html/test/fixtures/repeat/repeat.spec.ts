@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type { TestElement, TestElementIntervalUpdates } from "./main.js";
+import type { TestElement, TestElementEvent, TestElementIntervalUpdates } from "./main.js";
 
 test.describe("f-template", async () => {
     test("create a repeat directive", async ({ page }) => {
@@ -129,5 +129,24 @@ test.describe("f-template", async () => {
 
         await expect(listItems).toHaveCount(3);
         await expect(listItems).toContainText(["A", "B", "C"]);
+    });
+
+    test("should fire events inside a repeat directive", async ({ page }) => {
+        await page.goto("/fixtures/repeat/");
+        const element = page.locator("test-element-event");
+        const buttons = element.locator("button");
+
+        // Click the pre-hydrated item's button
+        await expect(buttons).toHaveCount(1);
+        await buttons.nth(0).click();
+        await expect(element).toHaveJSProperty("clickCount", 1);
+
+        // Add a new item and click its button
+        await element.evaluate((node: TestElementEvent) => {
+            node.list = ["A", "B"];
+        });
+        await expect(buttons).toHaveCount(2);
+        await buttons.nth(1).click();
+        await expect(element).toHaveJSProperty("clickCount", 2);
     });
 });
