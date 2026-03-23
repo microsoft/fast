@@ -1,36 +1,37 @@
 import "../install-dom-shim.js";
+import { strictEqual } from "node:assert/strict";
+import { describe, test, after, beforeEach } from "node:test";
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import { expect, test } from "@playwright/test";
 import fastSSR, { templateCacheController } from "../exports.js";
 import { consolidate } from "../test-utilities/consolidate.js";
 
 
 
 test("should be enabled by default", () => {
-    expect(templateCacheController.disabled).toBe(false)
+    strictEqual(templateCacheController.disabled, false)
 });
-test.describe("TemplateCacheController", () => {
+describe("TemplateCacheController", () => {
     let template: ViewTemplate;
-    test.beforeEach(() => {
+    beforeEach(() => {
         templateCacheController.enable();
         template = html`<p></p>`;
     });
-    test.afterAll(() => {
+    after(() => {
         templateCacheController.enable();
     });
 
     test("should support being disabled and re-enabled", () => {
         templateCacheController.disable();
-        expect(templateCacheController.disabled).toBe(true);
+        strictEqual(templateCacheController.disabled, true);
         templateCacheController.enable();
-        expect(templateCacheController.disabled).toBe(false)
+        strictEqual(templateCacheController.disabled, false)
     });
 
     test("should cache template results after rendering a template", () => {
         const { templateRenderer } = fastSSR();
-        expect(templateCacheController.has(template)).toBe(false);
+        strictEqual(templateCacheController.has(template), false);
         consolidate(templateRenderer.render(template));
-        expect(templateCacheController.has(template)).toBe(true);
+        strictEqual(templateCacheController.has(template), true);
     });
 
     test("should not cache template when disabled", () => {
@@ -38,6 +39,6 @@ test.describe("TemplateCacheController", () => {
         const { templateRenderer } = fastSSR();
         consolidate(templateRenderer.render(template));
 
-        expect(templateCacheController.has(template)).toBe(false);
+        strictEqual(templateCacheController.has(template), false);
     });
 });

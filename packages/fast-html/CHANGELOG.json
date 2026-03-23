@@ -2,6 +2,71 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sun, 22 Mar 2026 00:03:45 GMT",
+      "version": "1.0.0-alpha.40",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.40",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "04b7303324ba8c6c032f7ee21418c3b4dc1b7029",
+            "comment": "chore: streamline fixture input discovery and clean up HTML test suite"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 20 Mar 2026 00:07:36 GMT",
+      "version": "1.0.0-alpha.40",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.40",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6df43be90d257a49389c188935400792b7108cc6",
+            "comment": "Split tests to assist in base PR build gate times"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "8f79bdbf1d7c3af827ca807347fc1134bbf45731",
+            "comment": "Remove karma/mocha/chai and related unused dependencies"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f708570f15da56d7f26e514a8d2f749545ef39a6",
+            "comment": "fix(fast-html): only process single-brace bindings for event aspect"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 13 Mar 2026 18:13:56 GMT",
+      "version": "1.0.0-alpha.39",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.39",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3ade63edb5abe7b5454e96390aac5ad13fdb4cc7",
+            "comment": "fix: move prepare call to connectedCallback"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.10.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Feb 2026 20:49:30 GMT",
       "version": "1.0.0-alpha.38",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.38",

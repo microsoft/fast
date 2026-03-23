@@ -6,5 +6,8 @@
     "enabled": true,
     "untrimmedFilePath": "./dist/fast-element.untrimmed.d.ts",
     "betaTrimmedFilePath": "./dist/fast-element.d.ts"
+  },
+  "compiler": {
+    "tsconfigFilePath": "./tsconfig.api-extractor.json"
   }
 }

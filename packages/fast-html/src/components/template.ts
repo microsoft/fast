@@ -24,6 +24,7 @@ import {
     bindingResolver,
     ChainedExpression,
     createSignalBinding,
+    contextPrefixDot,
     DataBindingBehaviorConfig,
     getExpressionChain,
     getNextBehavior,
@@ -557,8 +558,18 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level
                     );
+                    const isContextPath = propName.startsWith(contextPrefixDot);
+                    const getOwner = isContextPath
+                        ? (_x: any, c: any) => {
+                              const ownerPath = propName.split(".").slice(1, -1);
+                              return ownerPath.reduce(
+                                  (prev: any, item: string) => prev?.[item],
+                                  c
+                              );
+                          }
+                        : (x: any, _c: any) => x;
                     const attributeBinding = (x: any, c: any) =>
-                        binding(x, c).bind(x)(
+                        binding(x, c).bind(getOwner(x, c))(
                             ...(arg === "e" ? [c.event] : []),
                             ...(arg !== "e" && arg !== ""
                                 ? [

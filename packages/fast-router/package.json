@@ -32,18 +32,17 @@
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "test:playwright": "playwright test",
-    "test-server": "npx vite test/ --clearScreen false",
-    "test": "npm run eslint && npm run doc:ci && npm run test:playwright"
+    "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
+    "test": "npm run eslint && npm run doc:ci && npm run test:recognizer"
   },
   "dependencies": {
     "tslib": "^2.6.3"
   },
   "devDependencies": {
-    "@microsoft/fast-element": "^2.10.1"
+    "@microsoft/fast-element": "^2.10.2"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.1"
+    "@microsoft/fast-element": "^2.10.2"
   },
   "beachball": {
     "disallowedChangeTypes": [

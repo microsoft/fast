@@ -13,7 +13,7 @@ resources:
   repositories:
   - repository: fastPipelines
     type: git
-    name: fast/FASTPipelineTemplates
+    name: open-source/FASTPipelineTemplates
     ref: main
   - repository: 1esPipelines
     type: git
@@ -36,6 +36,8 @@ extends:
         name: OneESPool  # Name of your hosted pool
         image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
         os: windows  # OS of the image. Allowed values: windows, linux, macOS
+    settings:
+      networkIsolationPolicy: Permissive
     stages:
     - stage: Stage
       jobs:

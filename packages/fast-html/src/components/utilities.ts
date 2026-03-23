@@ -101,6 +101,10 @@ const closeTagStart: string = "</f-";
 
 const attributeDirectivePrefix: string = "f-";
 
+export const contextPrefix: string = "$c";
+
+export const contextPrefixDot: string = `${contextPrefix}.`;
+
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
@@ -568,20 +572,90 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  * @returns DataBindingBehaviorConfig | DirectiveBehaviorConfig | null - A configuration object or null
  */
 export function getNextBehavior(
-    innerHTML: string
+    innerHTML: string,
+    offset: number = 0
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const dataBindingOpen = innerHTML.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
-    const directiveBindingOpen = innerHTML.indexOf(openTagStart);
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const currentSlice = innerHTML.slice(offset);
+        // client side binding will capture all bindings starting with "{"
+        const dataBindingOpen = currentSlice.indexOf(openClientSideBinding);
+        const directiveBindingOpen = currentSlice.indexOf(openTagStart);
+        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
-    if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
-        return null;
+        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+            return null;
+        }
+
+        if (
+            dataBindingOpen !== -1 &&
+            nextDataBindingBehavior.bindingType === "client" &&
+            !isLegitimateClientSideBinding(nextDataBindingBehavior)
+        ) {
+            offset = nextDataBindingBehavior.closingEndIndex + offset;
+            continue;
+        }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+        }
+
+        return offsetDataBinding(nextDataBindingBehavior, offset);
     }
+}
 
-    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
-        return getNextDirectiveBehavior(innerHTML);
-    }
+/**
+ * Apply an offset to a data binding
+ * @param config DataBindingBehaviorConfig
+ * @param offset number
+ * @returns DataBindingBehaviorConfig
+ */
+function offsetDataBinding(
+    config: DataBindingBehaviorConfig,
+    offset: number
+): DataBindingBehaviorConfig {
+    config.openingStartIndex = config.openingStartIndex + offset;
+    config.openingEndIndex = config.openingEndIndex + offset;
+    config.closingStartIndex = config.closingStartIndex + offset;
+    config.closingEndIndex = config.closingEndIndex + offset;
 
-    return getNextDataBindingBehavior(innerHTML);
+    return config;
+}
+
+/**
+ * Apply an offset to a directive
+ * @param config TemplateDirectiveBehaviorConfig
+ * @param offset number
+ * @returns TemplateDirectiveBehaviorConfig
+ */
+function offsetDirective(
+    config: TemplateDirectiveBehaviorConfig,
+    offset: number
+): TemplateDirectiveBehaviorConfig {
+    config.openingTagStartIndex = config.openingTagStartIndex + offset;
+    config.openingTagEndIndex = config.openingTagEndIndex + offset;
+    config.closingTagStartIndex = config.closingTagStartIndex + offset;
+    config.closingTagEndIndex = config.closingTagEndIndex + offset;
+
+    return config;
+}
+
+/**
+ * Determine if this client side binding is legitimate.
+ * Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+ * Checking for this prevents CSS/JS curly braces from being misinterpreted as bindings.
+ * @param result
+ * @returns
+ */
+function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boolean {
+    return (
+        (result.subtype === "attribute" &&
+            (result.aspect === "@" || result.aspect === ":")) ||
+        result.subtype === "attributeDirective"
+    );
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
@@ -600,6 +674,18 @@ export function pathResolver(
     rootSchema: JSONSchema
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
+
+    // Explicit context access via contextPrefix — resolve directly from ExecutionContext
+    if (splitPath[0] === contextPrefix) {
+        const contextAccessPath = splitPath.slice(1);
+        return (_accessibleObject: any, context: any) => {
+            return contextAccessPath.reduce(
+                (prev: any, item: string) => prev?.[item],
+                context
+            );
+        };
+    }
+
     let levelCount = level;
     let self = splitPath[0] === contextPath;
     const parentContexts = [];
@@ -672,6 +758,14 @@ export function bindingResolver(
     currentContext: string | null,
     level: number
 ): (accessibleObject: any, context: any) => any {
+    // Explicit context access — resolve from ExecutionContext, skip schema tracking
+    if (path.startsWith(contextPrefixDot)) {
+        const segments = path.split(".").slice(1);
+        return (_x: any, context: any) => {
+            return segments.reduce((prev: any, item: string) => prev?.[item], context);
+        };
+    }
+
     rootPropertyName = getRootPropertyName(rootPropertyName, path, currentContext, type);
 
     if (type !== "event" && rootPropertyName !== null) {
@@ -708,6 +802,7 @@ export function expressionResolver(
     if (rootPropertyName !== null) {
         const paths = extractPathsFromChainedExpression(expression);
         paths.forEach(path => {
+            if (path.startsWith(contextPrefixDot)) return;
             schema.addPath({
                 pathConfig: {
                     type: "access",

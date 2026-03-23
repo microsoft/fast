@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Mon, 02 Mar 2026 22:31:57 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 13 Mar 2026 18:13:56 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.10.2
+
+Fri, 13 Mar 2026 18:13:56 GMT
+
+### Patches
+
+- fix: add hydrating instance when needsHydration is true in HydratableElementController (863023+radium-v@users.noreply.github.com)
 
 ## 2.10.1
 
