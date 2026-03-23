@@ -10,8 +10,18 @@
                 <input disabled data-fe-b-0 type="checkbox">
             </template>
         </test-element>
+        <test-element-expression active-group="work" current-group="work">
+            <template shadowrootmode="open">
+                <input disabled data-fe-b-0 type="button">
+            </template>
+        </test-element-expression>
         <f-template name="test-element">
             <template><input type="{{type}}" disabled></template>
+        </f-template>
+        <f-template name="test-element-expression">
+            <template>
+                <input ?disabled="{{activeGroup == currentGroup}}" type="button">
+            </template>
         </f-template>
         <script type="module" src="./main.ts"></script>
     </body>
