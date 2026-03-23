@@ -7,6 +7,20 @@ import {
     refPropertyName,
     Schema,
 } from "./schema.js";
+import {
+    attributeDirectivePrefix,
+    clientSideCloseExpression,
+    clientSideOpenExpression,
+    closeExpression,
+    executionContextAccessor,
+    openExpression,
+    repeatDirectiveClose,
+    repeatDirectiveOpen,
+    unescapedCloseExpression,
+    unescapedOpenExpression,
+    whenDirectiveClose,
+    whenDirectiveOpen,
+} from "./syntax.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 
@@ -72,36 +86,11 @@ interface ObservedTargetsAndProperties {
     rootProperty: string;
 }
 
-const openClientSideBinding: string = "{";
-
-const closeClientSideBinding: string = "}";
-
-const openContentBinding: string = "{{";
-
-const closeContentBinding: string = "}}";
-
-const openUnescapedBinding: string = "{{{";
-
-const closeUnescapedBinding: string = "}}}";
-
-const openTagStart: string = "<f-";
-
-const tagEnd: string = ">";
-
-const closeTagStart: string = "</f-";
-
-const attributeDirectivePrefix: string = "f-";
-
-export const contextPrefix: string = "$c";
-
-export const contextPrefixDot: string = `${contextPrefix}.`;
+export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
-
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
-
 const endInnerHTMLDiv = `}}"></div>`;
-
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 
 const LogicalOperator = {
@@ -201,18 +190,20 @@ export function getIndexOfNextMatchingTag(
  * @returns DirectiveBehaviorConfig - A configuration object
  */
 function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
-    const openingTagStartIndex = innerHTML.indexOf(openTagStart);
+    const whenIndex = innerHTML.indexOf(whenDirectiveOpen);
+    const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
+
+    const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
+    const openingTag = isWhen ? whenDirectiveOpen : repeatDirectiveOpen;
+    const closingTag = isWhen ? whenDirectiveClose : repeatDirectiveClose;
+    const directiveTag: TemplateDirective = isWhen ? "when" : "repeat";
+
+    const openingTagStartIndex = isWhen ? whenIndex : repeatIndex;
     const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
     const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
-        openingTagStartSlice.indexOf(`"${tagEnd}`) + openingTagStartIndex + 2;
+        openingTagStartSlice.indexOf(`">`) + openingTagStartIndex + 2;
 
-    const directiveTag = innerHTML
-        .slice(openingTagStartIndex + 3, openingTagEndIndex - 1)
-        .split(" ")[0];
     const directiveValue = getNextDataBindingBehavior(innerHTML);
-
-    const openingTag = `${openTagStart}${directiveTag}`;
-    const closingTag = `${closeTagStart}${directiveTag}${tagEnd}`;
 
     const matchingCloseTagIndex = getIndexOfNextMatchingTag(
         openingTagStartSlice,
@@ -223,7 +214,7 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
 
     return {
         type: "templateDirective",
-        name: directiveTag as TemplateDirective,
+        name: directiveTag,
         value: innerHTML.slice(
             directiveValue.openingEndIndex,
             directiveValue.closingStartIndex
@@ -333,14 +324,14 @@ function getIndexAndBindingTypeOfNextDataBindingBehavior(
     innerHTML: string
 ): NextDataBindingBehaviorConfig {
     // {{{}}} binding
-    const openingUnescapedStartIndex = innerHTML.indexOf(openUnescapedBinding);
-    const closingUnescapedStartIndex = innerHTML.indexOf(closeUnescapedBinding);
+    const openingUnescapedStartIndex = innerHTML.indexOf(unescapedOpenExpression);
+    const closingUnescapedStartIndex = innerHTML.indexOf(unescapedCloseExpression);
     // {{}} binding
-    const openingContentStartIndex = innerHTML.indexOf(openContentBinding);
-    const closingContentStartIndex = innerHTML.indexOf(closeContentBinding);
+    const openingContentStartIndex = innerHTML.indexOf(openExpression);
+    const closingContentStartIndex = innerHTML.indexOf(closeExpression);
     // {} binding
-    const openingClientStartIndex = innerHTML.indexOf(openClientSideBinding);
-    const closingClientStartIndex = innerHTML.indexOf(closeClientSideBinding);
+    const openingClientStartIndex = innerHTML.indexOf(clientSideOpenExpression);
+    const closingClientStartIndex = innerHTML.indexOf(clientSideCloseExpression);
 
     if (
         openingUnescapedStartIndex !== -1 &&
@@ -412,8 +403,15 @@ export function getNextBehavior(
     while (true) {
         const currentSlice = innerHTML.slice(offset);
         // client side binding will capture all bindings starting with "{"
-        const dataBindingOpen = currentSlice.indexOf(openClientSideBinding);
-        const directiveBindingOpen = currentSlice.indexOf(openTagStart);
+        const dataBindingOpen = currentSlice.indexOf(clientSideOpenExpression);
+        const whenDirectiveIndex = currentSlice.indexOf(whenDirectiveOpen);
+        const repeatDirectiveIndex = currentSlice.indexOf(repeatDirectiveOpen);
+        const directiveBindingOpen =
+            whenDirectiveIndex === -1
+                ? repeatDirectiveIndex
+                : repeatDirectiveIndex === -1
+                ? whenDirectiveIndex
+                : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
         const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
         if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
@@ -508,8 +506,8 @@ export function pathResolver(
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
 
-    // Explicit context access via contextPrefix — resolve directly from ExecutionContext
-    if (splitPath[0] === contextPrefix) {
+    // Explicit context access via executionContextAccessor — resolve directly from ExecutionContext
+    if (splitPath[0] === executionContextAccessor) {
         const contextAccessPath = splitPath.slice(1);
         return (_accessibleObject: any, context: any) => {
             return contextAccessPath.reduce(
