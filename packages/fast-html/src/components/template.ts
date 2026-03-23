@@ -23,6 +23,7 @@ import {
     AttributeDirective,
     bindingResolver,
     ChainedExpression,
+    createSignalBinding,
     contextPrefixDot,
     DataBindingBehaviorConfig,
     getExpressionChain,
@@ -345,9 +346,19 @@ class TemplateElement extends FASTElement {
                     observerMap
                 );
 
-                externalValues.push(
-                    when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
-                );
+                const whenTemplate = this.resolveTemplateOrBehavior(strings, values);
+
+                if (observerMap) {
+                    externalValues.push(
+                        createSignalBinding(
+                            (source, context) =>
+                                whenLogic(source, context) ? whenTemplate : null,
+                            level
+                        )
+                    );
+                } else {
+                    externalValues.push(when(whenLogic, whenTemplate));
+                }
 
                 break;
             }
@@ -487,8 +498,16 @@ class TemplateElement extends FASTElement {
                     parentContext,
                     level
                 );
-                const contentBinding = (x: any, c: any) => binding(x, c);
-                values.push(contentBinding);
+
+                if (observerMap) {
+                    values.push(
+                        createSignalBinding((x: any, c: any) => binding(x, c), level)
+                    );
+                } else {
+                    const contentBinding = (x: any, c: any) => binding(x, c);
+                    values.push(contentBinding);
+                }
+
                 await this.resolveInnerHTML(
                     rootPropertyName,
                     innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
@@ -592,8 +611,15 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level
                     );
-                    const attributeBinding = (x: any, c: any) => binding(x, c);
-                    values.push(attributeBinding);
+
+                    if (observerMap) {
+                        values.push(
+                            createSignalBinding((x: any, c: any) => binding(x, c), level)
+                        );
+                    } else {
+                        const attributeBinding = (x: any, c: any) => binding(x, c);
+                        values.push(attributeBinding);
+                    }
                 }
 
                 await this.resolveInnerHTML(

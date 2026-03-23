@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: add signal-based binding support to ObserverMap and TemplateElement",
+  "packageName": "@microsoft/fast-html",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
