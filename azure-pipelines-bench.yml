@@ -1,5 +1,9 @@
-trigger: none
-pr: none
+trigger:
+  branches:
+    include:
+    - main
+pr:
+  - main
 
 # The `resources` specify the location and version of the Pipeline Template.
 resources:
