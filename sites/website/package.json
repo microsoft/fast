@@ -4,9 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "clean:build": "node ../../build/clean.js build",
-    "clean:tmp": "node ../../build/clean.js tmp",
-    "clean": "npm run clean:tmp && npm run clean:build",
+    "clean": "clean build tmp",
     "prebuild": "npm run clean && node scripts/generate-docs.cjs",
     "build": "npm run prebuild && npx @11ty/eleventy --output=build --input=src",
     "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=src --serve",
