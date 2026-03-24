@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix(docs): update f-repeat and f-when syntax to use double curly braces for binding",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
