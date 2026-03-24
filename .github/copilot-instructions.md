@@ -88,7 +88,7 @@ packages/<package>/
 - Import ordering enforced via `organizeImports`.
 - No `I` prefix on interfaces.
 - `any` is permitted (`noExplicitAny: off`).
-- Config: [`biome.json`](../biome.json).
+- Config: [`biome.jsonc`](../biome.jsonc).
 
 ### Naming Conventions
 
