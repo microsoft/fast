@@ -101,4 +101,30 @@ test.describe("f-template", async () => {
         await expect(customElementShow).toHaveText("This and That");
         await expect(customElementHide).not.toHaveText("This and That");
     });
+
+    test("should fire events inside a when directive", async ({ page }) => {
+        await page.goto("/fixtures/when/");
+        const element = page.locator("#event-show");
+        const button = element.locator("button");
+
+        // Click pre-hydrated button
+        await button.click();
+        await expect(element).toHaveJSProperty("clickCount", 1);
+
+        // Remove the when condition
+        await page.evaluate(() => {
+            document.getElementById("event-show")?.removeAttribute("show");
+        });
+        await expect(button).toHaveCount(0);
+
+        // Re-add the when condition
+        await page.evaluate(() => {
+            document.getElementById("event-show")?.setAttribute("show", "");
+        });
+        await expect(button).toHaveCount(1);
+
+        // Click re-added button
+        await button.click();
+        await expect(element).toHaveJSProperty("clickCount", 2);
+    });
 });
