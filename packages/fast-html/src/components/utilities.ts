@@ -194,11 +194,19 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
     const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
 
     const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
-    const openingTag = isWhen ? whenDirectiveOpen : repeatDirectiveOpen;
-    const closingTag = isWhen ? whenDirectiveClose : repeatDirectiveClose;
-    const directiveTag: TemplateDirective = isWhen ? "when" : "repeat";
 
-    const openingTagStartIndex = isWhen ? whenIndex : repeatIndex;
+    let openingTag: string = repeatDirectiveOpen;
+    let closingTag: string = repeatDirectiveClose;
+    let directiveTag: TemplateDirective = "repeat";
+    let openingTagStartIndex: number = repeatIndex;
+
+    if (isWhen) {
+        openingTag = whenDirectiveOpen;
+        closingTag = whenDirectiveClose;
+        directiveTag = "when";
+        openingTagStartIndex = whenIndex;
+    }
+
     const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
     const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
         openingTagStartSlice.indexOf(`">`) + openingTagStartIndex + 2;
