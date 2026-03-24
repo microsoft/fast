@@ -905,11 +905,13 @@ function resolveExpression(
         }
 
         case Operator.EQUALS: {
-            return resolvedLeft === resolvedRight;
+            // biome-ignore lint/suspicious/noDoubleEquals: Breaks prior existing functionality - see when fixture
+            return resolvedLeft == resolvedRight;
         }
 
         case Operator.NOT_EQUALS: {
-            return resolvedLeft !== resolvedRight;
+            // biome-ignore lint/suspicious/noDoubleEquals: Breaks prior existing functionality - see when fixture
+            return resolvedLeft != resolvedRight;
         }
 
         case Operator.GREATER_THAN_OR_EQUALS: {
