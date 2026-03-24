@@ -142,7 +142,7 @@ export function getIndexOfNextMatchingTag(
     openingTagStartSlice: string,
     openingTag: string,
     closingTag: string,
-    openingTagStartIndex: number
+    openingTagStartIndex: number,
 ): number {
     let tagCount = 1;
     let matchingCloseTagIndex = -1;
@@ -217,7 +217,7 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
         openingTagStartSlice,
         openingTag,
         closingTag,
-        openingTagStartIndex
+        openingTagStartIndex,
     );
 
     return {
@@ -225,7 +225,7 @@ function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorC
         name: directiveTag,
         value: innerHTML.slice(
             directiveValue.openingEndIndex,
-            directiveValue.closingStartIndex
+            directiveValue.closingStartIndex,
         ),
         openingTagStartIndex,
         openingTagEndIndex,
@@ -263,7 +263,7 @@ function isAttributeDirective(innerHTML: string, openingStartIndex: number): boo
  */
 function getAttributeDataBindingConfig(
     innerHTML: string,
-    config: BaseDataBindingBehaviorConfig
+    config: BaseDataBindingBehaviorConfig,
 ): AttributeDataBindingBehaviorConfig {
     const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
     const firstCharOfAttribute = splitInnerHTML[splitInnerHTML.length - 1][0];
@@ -289,7 +289,7 @@ function getAttributeDataBindingConfig(
  */
 function getAttributeDirectiveDataBindingConfig(
     innerHTML: string,
-    config: BaseDataBindingBehaviorConfig
+    config: BaseDataBindingBehaviorConfig,
 ): AttributeDirectiveBindingBehaviorConfig {
     const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
     const lastItem = splitInnerHTML[splitInnerHTML.length - 1];
@@ -309,7 +309,7 @@ function getAttributeDirectiveDataBindingConfig(
  * @returns ContentDataBindingBehaviorConfig
  */
 function getContentDataBindingConfig(
-    config: BaseDataBindingBehaviorConfig
+    config: BaseDataBindingBehaviorConfig,
 ): ContentDataBindingBehaviorConfig {
     return {
         ...config,
@@ -329,7 +329,7 @@ interface NextDataBindingBehaviorConfig {
  * @returns NextDataBindingBehaviorConfig containing the binding type and start indices
  */
 function getIndexAndBindingTypeOfNextDataBindingBehavior(
-    innerHTML: string
+    innerHTML: string,
 ): NextDataBindingBehaviorConfig {
     // {{{}}} binding
     const openingUnescapedStartIndex = innerHTML.indexOf(unescapedOpenExpression);
@@ -394,8 +394,8 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
     return isAttributeDirective(innerHTML, openingStartIndex)
         ? getAttributeDirectiveDataBindingConfig(innerHTML, partialConfig)
         : isAttribute(innerHTML, openingStartIndex)
-        ? getAttributeDataBindingConfig(innerHTML, partialConfig)
-        : getContentDataBindingConfig(partialConfig);
+          ? getAttributeDataBindingConfig(innerHTML, partialConfig)
+          : getContentDataBindingConfig(partialConfig);
 }
 
 /**
@@ -405,7 +405,7 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  */
 export function getNextBehavior(
     innerHTML: string,
-    offset: number = 0
+    offset: number = 0,
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
     // eslint-disable-next-line no-constant-condition
     while (true) {
@@ -418,8 +418,8 @@ export function getNextBehavior(
             whenDirectiveIndex === -1
                 ? repeatDirectiveIndex
                 : repeatDirectiveIndex === -1
-                ? whenDirectiveIndex
-                : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
+                  ? whenDirectiveIndex
+                  : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
         const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
         if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
@@ -454,7 +454,7 @@ export function getNextBehavior(
  */
 function offsetDataBinding(
     config: DataBindingBehaviorConfig,
-    offset: number
+    offset: number,
 ): DataBindingBehaviorConfig {
     config.openingStartIndex = config.openingStartIndex + offset;
     config.openingEndIndex = config.openingEndIndex + offset;
@@ -472,7 +472,7 @@ function offsetDataBinding(
  */
 function offsetDirective(
     config: TemplateDirectiveBehaviorConfig,
-    offset: number
+    offset: number,
 ): TemplateDirectiveBehaviorConfig {
     config.openingTagStartIndex = config.openingTagStartIndex + offset;
     config.openingTagEndIndex = config.openingTagEndIndex + offset;
@@ -510,7 +510,7 @@ export function pathResolver(
     path: string,
     contextPath: string | null,
     level: number,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
 
@@ -520,7 +520,7 @@ export function pathResolver(
         return (_accessibleObject: any, context: any) => {
             return contextAccessPath.reduce(
                 (prev: any, item: string) => prev?.[item],
-                context
+                context,
             );
         };
     }
@@ -595,7 +595,7 @@ export function bindingResolver(
     type: PathType,
     schema: Schema,
     currentContext: string | null,
-    level: number
+    level: number,
 ): (accessibleObject: any, context: any) => any {
     // Explicit context access — resolve from ExecutionContext, skip schema tracking
     if (path.startsWith(contextPrefixDot)) {
@@ -626,7 +626,7 @@ export function bindingResolver(
         path,
         currentContext,
         level,
-        schema.getSchema(rootPropertyName as string) as JSONSchema
+        schema.getSchema(rootPropertyName as string) as JSONSchema,
     );
 }
 
@@ -635,7 +635,7 @@ export function expressionResolver(
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
-    schema: Schema
+    schema: Schema,
 ): (accessibleObject: any, context: any) => any {
     // Extract all paths from the expression and add them to the schema
     if (rootPropertyName !== null) {
@@ -662,7 +662,7 @@ export function expressionResolver(
             level,
             parentContext || null,
             expression,
-            schema.getSchema(rootPropertyName as string) as JSONSchema
+            schema.getSchema(rootPropertyName as string) as JSONSchema,
         );
 }
 
@@ -672,7 +672,7 @@ export function expressionResolver(
  * @returns A Set containing all unique paths found in the expression chain
  */
 export function extractPathsFromChainedExpression(
-    chainedExpression: ChainedExpression
+    chainedExpression: ChainedExpression,
 ): Set<string> {
     const paths = new Set<string>();
 
@@ -714,7 +714,7 @@ function isOperandValue(operand: string): {
             value,
             isValue: true,
         };
-    } catch (e) {
+    } catch {
         return {
             value: operand,
             isValue: false,
@@ -744,7 +744,7 @@ export interface ChainedExpression {
  */
 function evaluatePartsInExpressionChain(
     parts: string[],
-    operator: LogicalOperator
+    operator: LogicalOperator,
 ): void | ChainedExpression {
     // Process each part recursively and chain them with ||
     const firstPart = getExpressionChain(parts[0]);
@@ -888,7 +888,7 @@ function resolveExpression(
     level: number,
     contextPath: string | null,
     expression: Expression,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): any {
     const { operator, left, right, rightIsValue } = expression;
 
@@ -905,11 +905,11 @@ function resolveExpression(
         }
 
         case Operator.EQUALS: {
-            return resolvedLeft == resolvedRight;
+            return resolvedLeft === resolvedRight;
         }
 
         case Operator.NOT_EQUALS: {
-            return resolvedLeft != resolvedRight;
+            return resolvedLeft !== resolvedRight;
         }
 
         case Operator.GREATER_THAN_OR_EQUALS: {
@@ -962,7 +962,7 @@ function resolveChainedExpression(
     level: number,
     contextPath: string | null,
     expression: ChainedExpression,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): any {
     const { expression: expr, next } = expression;
     const resolvedLeft = resolveExpression(x, c, level, contextPath, expr, rootSchema);
@@ -974,7 +974,7 @@ function resolveChainedExpression(
             level,
             contextPath,
             next,
-            rootSchema
+            rootSchema,
         );
 
         switch (next.operator) {
@@ -1006,12 +1006,12 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
         if (nextBinding.bindingType === "unescaped") {
             transformedInnerHTML = `${innerHTML.slice(0, index)}${sliceToEvaluate.slice(
                 0,
-                nextBinding.openingStartIndex
+                nextBinding.openingStartIndex,
             )}${startInnerHTMLDiv}${sliceToEvaluate.slice(
                 nextBinding.openingStartIndex + 3,
-                nextBinding.closingStartIndex
+                nextBinding.closingStartIndex,
             )}${endInnerHTMLDiv}${sliceToEvaluate.slice(
-                nextBinding.closingStartIndex + 3
+                nextBinding.closingStartIndex + 3,
             )}`;
 
             return transformInnerHTML(
@@ -1020,23 +1020,23 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
                     startInnerHTMLDivLength +
                     endInnerHTMLDivLength +
                     nextBinding.closingStartIndex -
-                    3
+                    3,
             );
         } else if (nextBinding.bindingType === "client") {
             return transformInnerHTML(
                 transformedInnerHTML,
-                index + nextBinding.closingEndIndex
+                index + nextBinding.closingEndIndex,
             );
         }
 
         return transformInnerHTML(
             transformedInnerHTML,
-            index + nextBinding.closingEndIndex
+            index + nextBinding.closingEndIndex,
         );
     } else if (nextBinding) {
         return transformInnerHTML(
             transformedInnerHTML,
-            index + nextBinding.closingTagEndIndex
+            index + nextBinding.closingTagEndIndex,
         );
     }
 
@@ -1056,14 +1056,14 @@ export function getBooleanBinding(
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
-    schema: Schema
+    schema: Schema,
 ): (x: boolean, c: any) => any {
     const binding = expressionResolver(
         rootPropertyName,
         expression,
         parentContext,
         level,
-        schema
+        schema,
     );
     return (x: boolean, c: any) => binding(x, c);
 }
@@ -1097,7 +1097,7 @@ function getSchemaPropertiesFromAnyOf(anyOf: Array<any>): any | null {
 
             if (Schema.jsonSchemaMap.has(customElement)) {
                 const customElementSchemaMap = Schema.jsonSchemaMap.get(
-                    customElement
+                    customElement,
                 ) as Map<string, JSONSchema>;
                 propertiesFromAnyOf = customElementSchemaMap.get(attributeName);
             }
@@ -1134,7 +1134,7 @@ function assignObservablesToArray(
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
     target: any,
-    rootProperty: string
+    rootProperty: string,
 ): any {
     const data = proxiedData.map((item: any) => {
         const originalItem = Object.assign({}, item);
@@ -1222,7 +1222,7 @@ export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | nul
  */
 function assignSubscribeToObservableArray(
     data: any,
-    updateArrayObservables: () => void
+    updateArrayObservables: () => void,
 ): void {
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
@@ -1247,7 +1247,7 @@ export function assignObservables(
     rootSchema: JSONSchema,
     data: any,
     target: any,
-    rootProperty: string
+    rootProperty: string,
 ): typeof Proxy {
     const dataType = getDataType(data);
     let proxiedData = data;
@@ -1264,7 +1264,7 @@ export function assignObservables(
                     ] as JSONSchemaDefinition,
                     rootSchema,
                     target,
-                    rootProperty
+                    rootProperty,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1278,9 +1278,9 @@ export function assignObservables(
                                 ] as JSONSchemaDefinition,
                                 rootSchema,
                                 target,
-                                rootProperty
-                            )
-                        )
+                                rootProperty,
+                            ),
+                        ),
                     );
                 }
             }
@@ -1293,7 +1293,7 @@ export function assignObservables(
                 rootProperty,
                 proxiedData,
                 schema,
-                rootSchema
+                rootSchema,
             );
             break;
         }
@@ -1313,7 +1313,7 @@ function assignProxyToItemsInArray(
     proxiableItem: any,
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): void {
     const schemaProperties = getSchemaProperties(schema);
 
@@ -1329,7 +1329,7 @@ function assignProxyToItemsInArray(
             key,
             originalItem[key],
             schemaProperties[key],
-            rootSchema
+            rootSchema,
         );
 
         // Then make the property observable
@@ -1370,7 +1370,7 @@ function assignProxyToItemsInObject(
     rootProperty: string,
     data: any,
     schema: JSONSchema | JSONSchemaDefinition,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): any | typeof Proxy {
     const type = getDataType(data);
     const schemaProperties = getSchemaProperties(schema);
@@ -1384,7 +1384,7 @@ function assignProxyToItemsInObject(
                 rootProperty,
                 proxiedData[property],
                 schemaProperties[property],
-                rootSchema
+                rootSchema,
             );
         });
 
@@ -1405,7 +1405,7 @@ function assignProxyToItemsInObject(
                     definition as JSONSchemaDefinition,
                     rootSchema,
                     target,
-                    rootProperty
+                    rootProperty,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1416,8 +1416,8 @@ function assignProxyToItemsInObject(
                             definition as JSONSchemaDefinition,
                             rootSchema,
                             target,
-                            rootProperty
-                        )
+                            rootProperty,
+                        ),
                     );
                 }
             }
@@ -1461,7 +1461,7 @@ function notifyObservables(targetObject: any) {
         (targetItem: ObservedTargetsAndProperties) => {
             // Trigger notification for property changes
             Observable.notify(targetItem.target, targetItem.rootProperty);
-        }
+        },
     );
 }
 
@@ -1479,7 +1479,7 @@ export function assignProxy(
     rootSchema: JSONSchema,
     target: any,
     rootProperty: string,
-    object: any
+    object: any,
 ): typeof Proxy {
     if (!object.$isProxy) {
         // Create a proxy for the object that triggers Observable.notify on mutations
@@ -1496,7 +1496,7 @@ export function assignProxy(
                     rootSchema,
                     value,
                     target,
-                    rootProperty
+                    rootProperty,
                 );
 
                 notifyObservables(proxy);
@@ -1540,7 +1540,7 @@ export function getRootPropertyName(
     rootPropertyName: string | null,
     path: string,
     context: null | string,
-    type: PathType
+    type: PathType,
 ): string | null {
     return (rootPropertyName === null || context === null) && type !== "event"
         ? path.split(".")[0]
@@ -1582,7 +1582,7 @@ function getAttributesCustomElementName(previousString: string): string | null {
         indexOfElementTagStart;
     const elementName = previousString.slice(
         indexOfElementTagStart,
-        indexOfElementTagEnd
+        indexOfElementTagEnd,
     );
 
     if (elementName.includes("-")) {
@@ -1603,7 +1603,7 @@ function getAttributeName(previousString: string): string {
         previousString.slice(indexOfAttributeStart).indexOf("=") + indexOfAttributeStart;
     const attributeName = previousString.slice(
         indexOfAttributeStart,
-        indexOfAttributeEnd
+        indexOfAttributeEnd,
     );
     const potentialAspect = attributeName.charAt(0);
 
@@ -1767,7 +1767,7 @@ export function deepMerge(target: any, source: any): boolean {
         if (Array.isArray(sourceValue)) {
             const isTargetArray = Array.isArray(targetValue);
             const clonedItems = sourceValue.map((item: unknown) =>
-                isPlainObject(item) ? { ...item } : item
+                isPlainObject(item) ? { ...item } : item,
             );
 
             if (isTargetArray) {
