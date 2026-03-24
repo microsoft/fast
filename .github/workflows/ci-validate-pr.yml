@@ -45,7 +45,7 @@ jobs:
     - name: Check for the presence of changed files inside ./change
       run: npm run checkchange
 
-    - name: Testing Prettier format
+    - name: Check Biome formatting
       run: npm run format:check
 
     - name: Build workspaces
