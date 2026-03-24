@@ -1,94 +1,82 @@
 {
-  "name": "@microsoft/fast",
-  "description": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
-  "version": "1.8.0",
-  "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
-  },
-  "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "build",
-    "packages/*",
-    "sites/website",
-    "examples/todo-app",
-    "examples/ssr"
-  ],
-  "engines": {
-    "npm": ">=10.0.0",
-    "node": ">=22.18.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues/new/choose"
-  },
-  "scripts": {
-    "bump": "beachball bump",
-    "build": "npm run build --workspaces --if-present",
-    "change": "beachball change --dependent-change-type none",
-    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'npm run change' to generate a change file\"",
-    "check": "beachball check ",
-    "build:gh-pages": "npm run build -w @microsoft/fast-site",
-    "publish": "beachball publish",
-    "publish-ci": "beachball publish -y --no-publish",
-    "sync": "beachball sync",
-    "test:diff:error": "echo \"Untracked files exist, try running npm prepare to identify the culprit.\" && exit 1",
-    "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
-    "test:validation": "npm run test:diff",
-    "test": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=*",
-    "test:chromium": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=chromium",
-    "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
-    "format:check": "npx prettier . --check",
-    "format": "npx prettier . --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,html}": [
-      "prettier --write"
-    ]
-  },
-  "devDependencies": {
-    "@ast-grep/cli": "0.37.0",
-    "@microsoft/api-extractor": "7.57.7",
-    "@playwright/test": "1.56.1",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-terser": "1.0.0",
-    "@rollup/plugin-typescript": "12.3.0",
-    "@types/express": "^5.0.6",
-    "@typescript-eslint/eslint-plugin": "5.62.0",
-    "@typescript-eslint/parser": "5.62.0",
-    "beachball": "2.63.0",
-    "concurrently": "9.2.1",
-    "eslint": "8.57.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-import": "2.29.1",
-    "esm": "3.2.25",
-    "express": "4.22.1",
-    "glob": "10.5.0",
-    "husky": "4.3.8",
-    "lint-staged": "10.5.4",
-    "prettier": "2.8.8",
-    "rollup": "4.59.0",
-    "rollup-plugin-filesize": "10.0.0",
-    "typescript": "5.3.3",
-    "vite": "7.1.12",
-    "yargs": "17.7.2"
-  },
-  "overrides": {
-    "pacote": "21.3.0",
-    "sucrase": {
-      "glob": "$glob"
+    "name": "@microsoft/fast",
+    "description": "An unopinionated system of components, development tools, and utilities used à la carte or as a suite to build enterprise-grade websites and applications.",
+    "version": "1.8.0",
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
     },
-    "read-package-json": {
-      "glob": "$glob"
+    "license": "MIT",
+    "private": true,
+    "workspaces": [
+        "build",
+        "packages/*",
+        "sites/website",
+        "examples/todo-app",
+        "examples/ssr"
+    ],
+    "engines": {
+        "npm": ">=10.0.0",
+        "node": ">=22.18.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    },
+    "scripts": {
+        "bump": "beachball bump",
+        "build": "npm run build --workspaces --if-present",
+        "change": "beachball change --dependent-change-type none",
+        "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'npm run change' to generate a change file\"",
+        "check": "beachball check ",
+        "build:gh-pages": "npm run build -w @microsoft/fast-site",
+        "publish": "beachball publish",
+        "publish-ci": "beachball publish -y --no-publish",
+        "sync": "beachball sync",
+        "test:diff:error": "echo \"Untracked files exist, try running npm prepare to identify the culprit.\" && exit 1",
+        "test:diff": "git update-index --refresh && git diff-index --quiet HEAD -- || npm run test:diff:error",
+        "test:validation": "npm run test:diff",
+        "test": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=*",
+        "test:chromium": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=chromium",
+        "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
+        "format:check": "biome format --changed --no-errors-on-unmatched .",
+        "format": "biome format --changed --no-errors-on-unmatched --write .",
+        "lint": "biome lint --changed --no-errors-on-unmatched .",
+        "lint:fix": "biome lint --changed --no-errors-on-unmatched --fix .",
+        "biome:check": "biome check --changed --no-errors-on-unmatched .",
+        "biome:fix": "biome check --changed --no-errors-on-unmatched --fix ."
+    },
+    "devDependencies": {
+        "@ast-grep/cli": "0.37.0",
+        "@biomejs/biome": "2.4.8",
+        "@microsoft/api-extractor": "7.57.7",
+        "@playwright/test": "1.56.1",
+        "@rollup/plugin-node-resolve": "16.0.3",
+        "@rollup/plugin-terser": "1.0.0",
+        "@rollup/plugin-typescript": "12.3.0",
+        "@types/express": "^5.0.6",
+        "beachball": "2.63.0",
+        "concurrently": "9.2.1",
+        "esm": "3.2.25",
+        "express": "4.22.1",
+        "glob": "10.5.0",
+        "lefthook": "2.1.4",
+        "rollup": "4.59.0",
+        "rollup-plugin-filesize": "10.0.0",
+        "typescript": "5.3.3",
+        "vite": "7.1.12",
+        "yargs": "17.7.2"
+    },
+    "overrides": {
+        "pacote": "21.3.0",
+        "sucrase": {
+            "glob": "$glob"
+        },
+        "read-package-json": {
+            "glob": "$glob"
+        }
     }
-  }
 }

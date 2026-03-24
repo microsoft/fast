@@ -1,122 +1,120 @@
 {
-  "name": "@microsoft/fast-element",
-  "description": "A library for constructing Web Components",
-  "version": "2.10.2",
-  "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
-  },
-  "homepage": "https://www.fast.design/",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git",
-    "directory": "packages/fast-element"
-  },
-  "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues/new/choose"
-  },
-  "type": "module",
-  "main": "dist/esm/index.js",
-  "types": "dist/dts/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/dts/index.d.ts",
-      "production": "./dist/esm/index.js",
-      "development": "./dist/esm/index.debug.js",
-      "default": "./dist/esm/index.js"
+    "name": "@microsoft/fast-element",
+    "description": "A library for constructing Web Components",
+    "version": "2.10.2",
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
     },
-    "./debug.js": {
-      "types": "./dist/dts/debug.d.ts",
-      "default": "./dist/esm/debug.js"
+    "homepage": "https://www.fast.design/",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git",
+        "directory": "packages/fast-element"
     },
-    "./binding/two-way.js": {
-      "types": "./dist/dts/binding/two-way.d.ts",
-      "default": "./dist/esm/binding/two-way.js"
+    "bugs": {
+        "url": "https://github.com/Microsoft/fast/issues/new/choose"
     },
-    "./binding/signal.js": {
-      "types": "./dist/dts/binding/signal.d.ts",
-      "default": "./dist/esm/binding/signal.js"
+    "type": "module",
+    "main": "dist/esm/index.js",
+    "types": "dist/dts/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/dts/index.d.ts",
+            "production": "./dist/esm/index.js",
+            "development": "./dist/esm/index.debug.js",
+            "default": "./dist/esm/index.js"
+        },
+        "./debug.js": {
+            "types": "./dist/dts/debug.d.ts",
+            "default": "./dist/esm/debug.js"
+        },
+        "./binding/two-way.js": {
+            "types": "./dist/dts/binding/two-way.d.ts",
+            "default": "./dist/esm/binding/two-way.js"
+        },
+        "./binding/signal.js": {
+            "types": "./dist/dts/binding/signal.d.ts",
+            "default": "./dist/esm/binding/signal.js"
+        },
+        "./render.js": {
+            "types": "./dist/dts/templating/render.d.ts",
+            "default": "./dist/esm/templating/render.js"
+        },
+        "./utilities.js": {
+            "types": "./dist/dts/utilities.d.ts",
+            "default": "./dist/esm/utilities.js"
+        },
+        "./state.js": {
+            "types": "./dist/dts/state/exports.d.ts",
+            "default": "./dist/esm/state/exports.js"
+        },
+        "./context.js": {
+            "types": "./dist/dts/context.d.ts",
+            "default": "./dist/esm/context.js"
+        },
+        "./metadata.js": {
+            "types": "./dist/dts/metadata.d.ts",
+            "default": "./dist/esm/metadata.js"
+        },
+        "./testing.js": {
+            "types": "./dist/dts/testing/exports.d.ts",
+            "default": "./dist/esm/testing/exports.js"
+        },
+        "./di.js": {
+            "types": "./dist/dts/di/di.d.ts",
+            "default": "./dist/esm/di/di.js"
+        },
+        "./element-hydration.js": {
+            "types": "./dist/dts/components/hydration.d.ts",
+            "default": "./dist/esm/components/hydration.js"
+        },
+        "./install-element-hydration.js": {
+            "types": "./dist/dts/components/install-hydration.d.ts",
+            "default": "./dist/esm/components/install-hydration.js"
+        },
+        "./install-hydratable-view-templates.js": {
+            "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
+            "default": "./dist/esm/templating/install-hydratable-view-templates.js"
+        },
+        "./pending-task.js": {
+            "types": "./dist/dts/pending-task.d.ts",
+            "default": "./dist/esm/pending-task.js"
+        },
+        "./dom-policy.js": {
+            "types": "./dist/dts/dom-policy.d.ts",
+            "default": "./dist/esm/dom-policy.js"
+        },
+        "./observable.js": {
+            "types": "./dist/dts/observation/observable.d.ts",
+            "default": "./dist/esm/observation/observable.js"
+        },
+        "./package.json": "./package.json"
     },
-    "./render.js": {
-      "types": "./dist/dts/templating/render.d.ts",
-      "default": "./dist/esm/templating/render.js"
-    },
-    "./utilities.js": {
-      "types": "./dist/dts/utilities.d.ts",
-      "default": "./dist/esm/utilities.js"
-    },
-    "./state.js": {
-      "types": "./dist/dts/state/exports.d.ts",
-      "default": "./dist/esm/state/exports.js"
-    },
-    "./context.js": {
-      "types": "./dist/dts/context.d.ts",
-      "default": "./dist/esm/context.js"
-    },
-    "./metadata.js": {
-      "types": "./dist/dts/metadata.d.ts",
-      "default": "./dist/esm/metadata.js"
-    },
-    "./testing.js": {
-      "types": "./dist/dts/testing/exports.d.ts",
-      "default": "./dist/esm/testing/exports.js"
-    },
-    "./di.js": {
-      "types": "./dist/dts/di/di.d.ts",
-      "default": "./dist/esm/di/di.js"
-    },
-    "./element-hydration.js": {
-      "types": "./dist/dts/components/hydration.d.ts",
-      "default": "./dist/esm/components/hydration.js"
-    },
-    "./install-element-hydration.js": {
-      "types": "./dist/dts/components/install-hydration.d.ts",
-      "default": "./dist/esm/components/install-hydration.js"
-    },
-    "./install-hydratable-view-templates.js": {
-      "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
-      "default": "./dist/esm/templating/install-hydratable-view-templates.js"
-    },
-    "./pending-task.js": {
-      "types": "./dist/dts/pending-task.d.ts",
-      "default": "./dist/esm/pending-task.js"
-    },
-    "./dom-policy.js": {
-      "types": "./dist/dts/dom-policy.d.ts",
-      "default": "./dist/esm/dom-policy.js"
-    },
-    "./observable.js": {
-      "types": "./dist/dts/observation/observable.d.ts",
-      "default": "./dist/esm/observation/observable.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "unpkg": "dist/fast-element.min.js",
-  "sideEffects": [
-    "./dist/esm/debug.js",
-    "./dist/esm/polyfills.js",
-    "./dist/esm/components/install-hydration.js",
-    "./dist/esm/templating/install-hydratable-view-templates.js",
-    "./dist/esm/interfaces.js"
-  ],
-  "scripts": {
-    "clean": "clean dist temp test-results",
-    "doc": "api-extractor run --local",
-    "doc:ci": "api-extractor run",
-    "doc:exports": "node ./scripts/run-api-extractor.js",
-    "doc:exports:ci": "node ./scripts/run-api-extractor.js ci",
-    "build": "npm run build:tsc && npm run build:rollup && npm run doc && npm run doc:exports",
-    "build:rollup": "rollup -c",
-    "build:tsc": "tsc -p ./tsconfig.json",
-    "dev": "tsc -p ./tsconfig.json -w",
-    "prepublishOnly": "npm run clean && npm run build",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "eslint": "eslint . --ext .ts",
-    "eslint:fix": "eslint . --ext .ts --fix",
-    "test:playwright": "playwright test",
-    "test-server": "npx vite test/ --clearScreen false",
-    "test": "npm run eslint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
-  }
+    "unpkg": "dist/fast-element.min.js",
+    "sideEffects": [
+        "./dist/esm/debug.js",
+        "./dist/esm/polyfills.js",
+        "./dist/esm/components/install-hydration.js",
+        "./dist/esm/templating/install-hydratable-view-templates.js",
+        "./dist/esm/interfaces.js"
+    ],
+    "scripts": {
+        "clean": "clean dist temp test-results",
+        "doc": "api-extractor run --local",
+        "doc:ci": "api-extractor run",
+        "doc:exports": "node ./scripts/run-api-extractor.js",
+        "doc:exports:ci": "node ./scripts/run-api-extractor.js ci",
+        "build": "npm run build:tsc && npm run build:rollup && npm run doc && npm run doc:exports",
+        "build:rollup": "rollup -c",
+        "build:tsc": "tsc -p ./tsconfig.json",
+        "dev": "tsc -p ./tsconfig.json -w",
+        "prepublishOnly": "npm run clean && npm run build",
+        "lint": "biome lint .",
+        "lint:fix": "biome lint --fix .",
+        "test:playwright": "playwright test",
+        "test-server": "npx vite test/ --clearScreen false",
+        "test": "npm run lint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
+    }
 }
