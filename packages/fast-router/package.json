@@ -1,56 +1,54 @@
 {
-  "name": "@microsoft/fast-router",
-  "description": "A web-components-based router.",
-  "sideEffects": false,
-  "version": "1.0.0-alpha.30",
-  "author": {
-    "name": "Microsoft",
-    "url": "https://discord.gg/FcSNfg4"
-  },
-  "homepage": "https://www.fast.design/",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Microsoft/fast.git",
-    "directory": "packages/fast-router"
-  },
-  "bugs": {
-    "url": "https://github.com/Microsoft/fast/issues/new/choose"
-  },
-  "main": "dist/esm/index.js",
-  "types": "dist/dts/index.d.ts",
-  "type": "module",
-  "unpkg": "dist/fast-router.min.js",
-  "scripts": {
-    "clean:dist": "clean dist",
-    "doc": "api-extractor run --local",
-    "doc:ci": "api-extractor run",
-    "build": "tsc -p ./tsconfig.json && npm run doc",
-    "dev": "tsc -p ./tsconfig.json -w",
-    "prepublishOnly": "npm run clean:dist && npm run build",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "eslint": "eslint . --ext .ts",
-    "eslint:fix": "eslint . --ext .ts --fix",
-    "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
-    "test": "npm run eslint && npm run doc:ci && npm run test:recognizer"
-  },
-  "dependencies": {
-    "tslib": "^2.6.3"
-  },
-  "devDependencies": {
-    "@microsoft/fast-element": "^2.10.2"
-  },
-  "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.2"
-  },
-  "beachball": {
-    "disallowedChangeTypes": [
-      "major",
-      "minor",
-      "patch"
-    ],
-    "tag": "alpha",
-    "prereleasePrefix": "alpha"
-  }
+    "name": "@microsoft/fast-router",
+    "description": "A web-components-based router.",
+    "sideEffects": false,
+    "version": "1.0.0-alpha.30",
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "homepage": "https://www.fast.design/",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git",
+        "directory": "packages/fast-router"
+    },
+    "bugs": {
+        "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    },
+    "main": "dist/esm/index.js",
+    "types": "dist/dts/index.d.ts",
+    "type": "module",
+    "unpkg": "dist/fast-router.min.js",
+    "scripts": {
+        "clean:dist": "clean dist",
+        "doc": "api-extractor run --local",
+        "doc:ci": "api-extractor run",
+        "build": "tsc -p ./tsconfig.json && npm run doc",
+        "dev": "tsc -p ./tsconfig.json -w",
+        "prepublishOnly": "npm run clean:dist && npm run build",
+        "lint": "biome lint .",
+        "lint:fix": "biome lint --fix .",
+        "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
+        "test": "npm run lint && npm run doc:ci && npm run test:recognizer"
+    },
+    "dependencies": {
+        "tslib": "^2.6.3"
+    },
+    "devDependencies": {
+        "@microsoft/fast-element": "^2.10.2"
+    },
+    "peerDependencies": {
+        "@microsoft/fast-element": "^2.10.2"
+    },
+    "beachball": {
+        "disallowedChangeTypes": [
+            "major",
+            "minor",
+            "patch"
+        ],
+        "tag": "alpha",
+        "prereleasePrefix": "alpha"
+    }
 }
