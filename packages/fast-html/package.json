@@ -23,7 +23,7 @@
   "scripts": {
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "npm run build:tsc && npm run doc",
-    "clean": "rimraf dist temp test-results",
+    "clean": "clean dist temp test-results",
     "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
     "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
     "doc:ci": "api-extractor run",

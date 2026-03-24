@@ -22,7 +22,7 @@
   "type": "module",
   "unpkg": "dist/fast-router.min.js",
   "scripts": {
-    "clean:dist": "node ../../build/clean.js dist",
+    "clean:dist": "clean dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "build": "tsc -p ./tsconfig.json && npm run doc",
