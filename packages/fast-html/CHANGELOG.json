@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 24 Mar 2026 00:08:15 GMT",
+      "version": "1.0.0-alpha.41",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.41",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "hello@mohamedmansour.com",
+            "package": "@microsoft/fast-html",
+            "commit": "0d2314e2ae24b872d370f7ec0ed96433fda4c0f3",
+            "comment": "feat(fast-html): add $c prefix for execution context access in declarative templates"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "71d566bec9153aff389662d4314dc303051f62b0",
+            "comment": "fix(docs): update f-repeat and f-when syntax to use double curly braces for binding"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 22 Mar 2026 00:03:45 GMT",
       "version": "1.0.0-alpha.40",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.40",

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 20 Mar 2026 00:07:36 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 24 Mar 2026 00:08:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.41
+
+Tue, 24 Mar 2026 00:08:15 GMT
+
+### Changes
+
+- feat(fast-html): add $c prefix for execution context access in declarative templates (hello@mohamedmansour.com)
 
 ## 1.0.0-alpha.40
 
