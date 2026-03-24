@@ -55,7 +55,9 @@ Run all commands from the monorepo root. Use workspace flags to target a single 
 | Test one package | `npm run test -w @microsoft/fast-element` |
 | Format check | `npm run format:check` |
 | Format fix | `npm run format` |
-| Lint (per-package) | `npm run eslint -w @microsoft/fast-element` |
+| Lint | `npm run lint` |
+| Lint fix | `npm run lint:fix` |
+| Check (lint + format) | `npm run biome:check` |
 | Generate change file | `npm run change` |
 | Check change files | `npm run checkchange` |
 | API docs | `npm run doc -w @microsoft/fast-element` |
@@ -79,19 +81,14 @@ packages/<package>/
 
 ## Code Style
 
-### Formatting (Prettier)
+### Formatting & Linting (Biome)
 
-- 90-character print width, 4-space indent, double quotes, trailing commas (es5).
+- 90-character print width, 4-space indent, double quotes, trailing commas.
 - Single-arg arrow functions omit parens: `x => x + 1`.
-- Config: [`.prettierrc`](../.prettierrc).
-
-### Linting (ESLint)
-
-- 140-character max line length (`max-len` rule — wider than Prettier to allow some flexibility).
-- Import order enforced (`import/order` + `sort-imports`).
-- No `I` prefix on interfaces (`@typescript-eslint/naming-convention`).
-- `any` is permitted (`no-explicit-any: off`).
-- Config: [`.eslintrc.js`](../.eslintrc.js), with per-package overrides.
+- Import ordering enforced via `organizeImports`.
+- No `I` prefix on interfaces.
+- `any` is permitted (`noExplicitAny: off`).
+- Config: [`biome.json`](../biome.json).
 
 ### Naming Conventions
 
@@ -126,9 +123,8 @@ Key constraints (details in [TypeScript skill](./skills/typescript/SKILL.md)):
 | Vite | Test dev server |
 | api-extractor | API documentation + `.d.ts` rollup |
 | beachball | Change files, versioning, publishing |
-| Prettier | Formatting |
-| ESLint | Linting |
-| husky + lint-staged | Pre-commit hooks |
+| Biome | Formatting + Linting |
+| lefthook | Pre-commit hooks (runs `biome:check` and `checkchange` on staged files) |
 
 ## Acceptance Checklist
 
@@ -136,5 +132,6 @@ Before finishing any change, run these commands from the monorepo root and confi
 
 - [ ] `npm run build` — all packages build successfully
 - [ ] `npm run test` — all tests pass
-- [ ] `npm run format:check` — Prettier formatting is correct
+- [ ] `npm run format:check` — Biome formatting is correct
+- [ ] `npm run lint` — Biome linting passes
 - [ ] `npm run checkchange` — beachball change files exist for any `packages/*` changes
