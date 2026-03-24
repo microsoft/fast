@@ -1,33 +1,47 @@
 {
-  "[json]": {
-    "files.insertFinalNewline": false
-  },
-  "[markdown]": {
-    "editor.quickSuggestions": {
-      "other": "off"
+    "[json]": {
+        "files.insertFinalNewline": false
     },
-    "files.insertFinalNewline": false,
-    "files.trimTrailingWhitespace": false
-  },
-  "[typescript]": {
-    "editor.tabSize": 4
-  },
-  "editor.trimAutoWhitespace": true,
-  "eslint.codeActionsOnSave.mode": "problems",
-  "eslint.lintTask.enable": true,
-  "eslint.validate": [
-    "typescript"
-  ],
-  "files.eol": "\n",
-  "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": true,
-  "javascript.format.enable": false,
-  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-  "js/ts.implicitProjectConfig.experimentalDecorators": true,
-  "npm.packageManager": "npm",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.format.enable": false,
-  "typescript.preferences.quoteStyle": "double",
-  "typescript.tsdk": "node_modules/typescript/lib"
+    "[jsonc]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.formatOnType": false,
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.biome": "explicit"
+        }
+    },
+    "[markdown]": {
+        "editor.quickSuggestions": {
+            "other": "off"
+        },
+        "files.insertFinalNewline": false,
+        "files.trimTrailingWhitespace": false
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "biomejs.biome",
+        "editor.formatOnType": false,
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.biome": "explicit"
+        }
+    },
+    "editor.trimAutoWhitespace": true,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "javascript.format.enable": false,
+    "js/ts.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "js/ts.preferences.quoteStyle": "double",
+    "npm.packageManager": "npm",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.format.enable": false,
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
