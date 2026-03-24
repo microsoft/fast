@@ -101,7 +101,7 @@
     "./dist/esm/interfaces.js"
   ],
   "scripts": {
-    "clean:dist": "node ../../build/clean.js dist",
+    "clean": "clean dist temp test-results",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "doc:exports": "node ./scripts/run-api-extractor.js",
@@ -110,7 +110,7 @@
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
-    "prepublishOnly": "npm run clean:dist && npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
     "eslint": "eslint . --ext .ts",
