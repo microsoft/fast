@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "chore: fix publish blocker due to biome",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
