@@ -11,6 +11,7 @@
             "**",
             "!**/CHANGELOG.json",
             "!change/**/*.json",
+            "!**/package.json",
             "!package-lock.json"
         ]
     },
