@@ -1,71 +1,71 @@
 {
-    "name": "@microsoft/fast-html",
-    "version": "1.0.0-alpha.41",
-    "type": "module",
-    "author": {
-        "name": "Microsoft",
-        "url": "https://discord.gg/FcSNfg4"
+  "name": "@microsoft/fast-html",
+  "version": "1.0.0-alpha.41",
+  "type": "module",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/fast-html"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "files": [
+    "./dist",
+    "./rules/*.yml"
+  ],
+  "scripts": {
+    "build:tsc": "tsc -p ./tsconfig.json",
+    "build": "npm run build:tsc && npm run doc",
+    "clean": "clean dist temp test-results",
+    "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
+    "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
+    "doc:ci": "api-extractor run",
+    "doc": "npm run doc:ci -- --local",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --fix .",
+    "install-playwright-browsers": "npm run playwright install",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test-server": "npx vite test/ --clearScreen false",
+    "test:playwright": "playwright test",
+    "test:rules": "sg test --skip-snapshot-tests",
+    "test": "npm run test:playwright && npm run test:rules",
+    "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
+    "watch": "npm run build:tsc -- -w --preserveWatchOutput"
+  },
+  "description": "A package for facilitating rendering FAST Web Components in a non-browser environment.",
+  "exports": {
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "default": "./dist/esm/index.js"
     },
-    "homepage": "https://www.fast.design/",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Microsoft/fast.git",
-        "directory": "packages/fast-html"
+    "./utilities.js": {
+      "types": "./dist/dts/components/utilities.d.ts",
+      "default": "./dist/esm/components/utilities.js"
     },
-    "bugs": {
-        "url": "https://github.com/Microsoft/fast/issues/new/choose"
-    },
-    "files": [
-        "./dist",
-        "./rules/*.yml"
-    ],
-    "scripts": {
-        "build:tsc": "tsc -p ./tsconfig.json",
-        "build": "npm run build:tsc && npm run doc",
-        "clean": "clean dist temp test-results",
-        "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
-        "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
-        "doc:ci": "api-extractor run",
-        "doc": "npm run doc:ci -- --local",
-        "lint": "biome lint .",
-        "lint:fix": "biome lint --fix .",
-        "install-playwright-browsers": "npm run playwright install",
-        "prepublishOnly": "npm run clean && npm run build",
-        "test-server": "npx vite test/ --clearScreen false",
-        "test:playwright": "playwright test",
-        "test:rules": "sg test --skip-snapshot-tests",
-        "test": "npm run test:playwright && npm run test:rules",
-        "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
-        "watch": "npm run build:tsc -- -w --preserveWatchOutput"
-    },
-    "description": "A package for facilitating rendering FAST Web Components in a non-browser environment.",
-    "exports": {
-        ".": {
-            "types": "./dist/dts/index.d.ts",
-            "default": "./dist/esm/index.js"
-        },
-        "./utilities.js": {
-            "types": "./dist/dts/components/utilities.d.ts",
-            "default": "./dist/esm/components/utilities.js"
-        },
-        "./rules/*.yml": "./rules/*.yml",
-        "./package.json": "./package.json"
-    },
-    "sideEffects": [
-        "./dist/esm/index.js"
-    ],
-    "peerDependencies": {
-        "@microsoft/fast-element": "^2.10.2"
-    },
-    "devDependencies": {
-        "@microsoft/fast-element": "^2.10.2"
-    },
-    "beachball": {
-        "disallowedChangeTypes": [
-            "major",
-            "minor",
-            "patch"
-        ]
-    }
+    "./rules/*.yml": "./rules/*.yml",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "./dist/esm/index.js"
+  ],
+  "peerDependencies": {
+    "@microsoft/fast-element": "^2.10.2"
+  },
+  "devDependencies": {
+    "@microsoft/fast-element": "^2.10.2"
+  },
+  "beachball": {
+    "disallowedChangeTypes": [
+      "major",
+      "minor",
+      "patch"
+    ]
+  }
 }
