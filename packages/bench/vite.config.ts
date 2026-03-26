@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { defineConfig } from "vite";
+import { fileURLToPath } from "node:url";
+import { defineConfig, transformWithEsbuild } from "vite";
 import {
     BENCH_TREE_CONFIG,
     buildTree,
@@ -25,7 +25,7 @@ function discoverBenchmarkInputs(): Record<string, string> {
 
         const scenarioDir = resolve(benchmarksDir, scenario.name);
         const variants = readdirSync(scenarioDir, { withFileTypes: true }).filter(d =>
-            d.isDirectory()
+            d.isDirectory(),
         );
 
         for (const variant of variants) {
@@ -59,7 +59,7 @@ export default defineConfig({
                     const templatePath = resolve(
                         dirname(filename),
                         "..",
-                        "template.html"
+                        "template.html",
                     );
                     if (existsSync(templatePath)) {
                         const template = readFileSync(templatePath, "utf-8");
@@ -67,10 +67,56 @@ export default defineConfig({
                     }
                 }
 
+                if (html.includes("<!-- f-template-all -->")) {
+                    // Programmatically combine all scenario template.html files into
+                    // a single <f-template> with one <template name="bench-{scenario}">
+                    // per scenario, enabling the array-of-templates feature.
+                    const scenariosDir = resolve(dirname(filename), "..", "..");
+                    const innerTemplates = readdirSync(scenariosDir, {
+                        withFileTypes: true,
+                    })
+                        .filter(d => d.isDirectory() && d.name !== "all")
+                        .flatMap(d => {
+                            const templatePath = resolve(
+                                scenariosDir,
+                                d.name,
+                                "template.html",
+                            );
+                            if (!existsSync(templatePath)) return [];
+                            const raw = readFileSync(templatePath, "utf-8");
+                            // Rename bench-element → bench-{scenario} for uniqueness
+                            const renamed = raw.replace(
+                                /bench-element/g,
+                                `bench-${d.name}`,
+                            );
+                            // Extract the inner <template name="..."> children from the <f-template>
+                            const match = renamed.match(
+                                /<f-template>([\s\S]*?)<\/f-template>/,
+                            );
+                            return match ? [match[1].trimEnd()] : [];
+                        })
+                        .join("\n");
+                    html = html.replace(
+                        "<!-- f-template-all -->",
+                        `<f-template>\n${innerTemplates}\n</f-template>`,
+                    );
+                }
+
                 if (html.includes("@bench-ssr-render") && existsSync(renderModulePath)) {
-                    const { render } = (await import(
-                        pathToFileURL(renderModulePath).href
-                    )) as { render: (index: number) => string };
+                    // Transpile the TypeScript render module via esbuild, then load it
+                    // via a data: URL so Node's native ESM doesn't reject the .ts extension.
+                    const source = readFileSync(renderModulePath, "utf-8");
+                    const { code } = await transformWithEsbuild(
+                        source,
+                        renderModulePath,
+                        {
+                            format: "esm",
+                        },
+                    );
+                    const dataUrl = `data:text/javascript;charset=utf-8,${encodeURIComponent(code)}`;
+                    const { render } = (await import(dataUrl)) as {
+                        render: (index: number) => string;
+                    };
 
                     html = html.replace(
                         /<!--\s*@bench-ssr-render(?:\s+(\d+))?\s*-->/g,
@@ -83,7 +129,7 @@ export default defineConfig({
                                 : BENCH_TREE_CONFIG;
                             const tree = buildTree(config);
                             return renderTreeToHTMLWith(tree, render);
-                        }
+                        },
                     );
                 }
 
@@ -93,7 +139,7 @@ export default defineConfig({
                     Object.keys(discoverBenchmarkInputs())
                         .filter(key => key !== "main")
                         .map(key => `<li><a href="${base}${key}/">${key}</a></li>`)
-                        .join("\n")
+                        .join("\n"),
                 );
 
                 return html;
