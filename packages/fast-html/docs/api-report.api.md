@@ -29,7 +29,6 @@ export class TemplateElement extends FASTElement {
     connectedCallback(): void;
     // Warning: (ae-forgotten-export) The symbol "ElementOptionsDictionary" needs to be exported by the entry point index.d.ts
     static elementOptions: ElementOptionsDictionary;
-    name?: string;
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
 }
 

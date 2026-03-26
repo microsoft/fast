@@ -49,12 +49,10 @@
         </deferred-parent-element>
 
         <!-- Template definitions -->
-        <f-template name="simple-element">
-            <template>{{message}} World</template>
-        </f-template>
+        <f-template>
+            <template name="simple-element">{{message}} World</template>
 
-        <f-template name="complex-element">
-            <template>
+            <template name="complex-element">
                 <div>
                     <h2>{{title}}</h2>
                     <p>Count: {{count}}</p>
@@ -65,27 +63,19 @@
                     </nested-element>
                 </div>
             </template>
-        </f-template>
 
-        <f-template name="nested-element">
-            <template><span>{{label}}</span></template>
-        </f-template>
+            <template name="nested-element"><span>{{label}}</span></template>
 
-        <f-template name="deferred-element">
-            <template><p>Status: {{status}}</p></template>
-        </f-template>
+            <template name="deferred-element"><p>Status: {{status}}</p></template>
 
-        <f-template name="deferred-parent-element">
-            <template>
+            <template name="deferred-parent-element">
                 <section>
                     <p>{{label}}</p>
                     <deferred-child-element label="{{label}}"></deferred-child-element>
                 </section>
             </template>
-        </f-template>
 
-        <f-template name="deferred-child-element">
-            <template><span>{{label}}</span></template>
+            <template name="deferred-child-element"><span>{{label}}</span></template>
         </f-template>
 
         <script type="module" src="./main.ts"></script>

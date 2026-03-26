@@ -15,11 +15,9 @@
                 <input disabled data-fe-b-0 type="button">
             </template>
         </test-element-expression>
-        <f-template name="test-element">
-            <template><input type="{{type}}" disabled></template>
-        </f-template>
-        <f-template name="test-element-expression">
-            <template>
+        <f-template>
+            <template name="test-element"><input type="{{type}}" disabled></template>
+            <template name="test-element-expression">
                 <input ?disabled="{{activeGroup == currentGroup}}" type="button">
             </template>
         </f-template>

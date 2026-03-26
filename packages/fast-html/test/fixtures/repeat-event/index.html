@@ -6,12 +6,23 @@
         <script type="module" src="./main.ts"></script>
     </head>
     <body>
-        <f-template name="test-element-repeat-event">
-            <template>
+        <f-template>
+            <template name="test-element-repeat-event">
                 <ul>
                     <f-repeat value="{{item in items}}">
                         <li>
                             <button @click="{$c.parent.handleItemClick($c.event)}">{{item.name}}</button>
+                        </li>
+                    </f-repeat>
+                </ul>
+            </template>
+            <template name="test-when-in-repeat">
+                <ul>
+                    <f-repeat value="{{item in items}}">
+                        <li>
+                            <f-when value="{{$c.parent.showNames}}">
+                                <button class="name" @click="{$c.parent.handleItemClick(e)}">{{item.name}}</button>
+                            </f-when>
                         </li>
                     </f-repeat>
                 </ul>
@@ -26,19 +37,6 @@
         </test-element-repeat-event>
 
         <!-- f-when with c.parent inside f-repeat -->
-        <f-template name="test-when-in-repeat">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in items}}">
-                        <li>
-                            <f-when value="{{$c.parent.showNames}}">
-                                <button class="name" @click="{$c.parent.handleItemClick(e)}">{{item.name}}</button>
-                            </f-when>
-                        </li>
-                    </f-repeat>
-                </ul>
-            </template>
-        </f-template>
         <test-when-in-repeat>
             <template shadowrootmode="open">
                 <ul>

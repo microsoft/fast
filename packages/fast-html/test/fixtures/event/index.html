@@ -13,8 +13,8 @@
                 <button data-fe-b-3>modify foo</button>
             </template>
         </test-element>
-        <f-template name="test-element">
-            <template>
+        <f-template>
+            <template name="test-element">
                 <button @click="{handleNoArgsClick()}">No arguments</button>
                 <button @click="{handleEventArgClick(e)}">event argument</button>
                 <button @click="{handleAttributeArgClick(foo)}">attribute argument</button>

@@ -1,8 +1,6 @@
 import {
-    attr,
     children,
     elements,
-    FAST,
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
@@ -16,7 +14,6 @@ import {
     when,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
-import { Message } from "../interfaces.js";
 import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import {
@@ -91,30 +88,14 @@ export interface HydrationLifecycleCallbacks
  */
 class TemplateElement extends FASTElement {
     /**
-     * The name of the custom element this template will be applied to
-     */
-    @attr
-    public name?: string;
-
-    /**
      * A dictionary of custom element options
      */
     public static elementOptions: ElementOptionsDictionary = {};
 
     /**
-     * ObserverMap instance for caching binding paths
-     */
-    private observerMap?: ObserverMap;
-
-    /**
      * Default element options
      */
     private static defaultElementOptions: ElementOptions = {};
-
-    /**
-     * Metadata containing JSON schema for properties on a custom eleemnt
-     */
-    private schema?: Schema;
 
     /**
      * Lifecycle callbacks for hydration events
@@ -183,77 +164,7 @@ class TemplateElement extends FASTElement {
 
     connectedCallback(): void {
         super.connectedCallback();
-        const name = this.name;
-
-        if (typeof name !== "string") {
-            // Multi-template mode: <f-template> with no name attribute contains
-            // multiple <template name="..."> children, each defining an element template
-            // or a shared partial that can be referenced by other templates.
-            this.processMultipleTemplates();
-            return;
-        }
-
-        this.schema = new Schema(name);
-
-        FASTElementDefinition.registerAsync(name).then(async value => {
-            TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
-
-            if (!TemplateElement.elementOptions?.[name]) {
-                TemplateElement.setOptions(name);
-            }
-
-            if (TemplateElement.elementOptions[name]?.observerMap === "all") {
-                this.observerMap = new ObserverMap(
-                    value.prototype,
-                    this.schema as Schema,
-                );
-            }
-
-            const registeredFastElement: FASTElementDefinition | undefined =
-                fastElementRegistry.getByType(value);
-            const template = this.getElementsByTagName("template").item(0);
-
-            if (template) {
-                // Callback: Before template has been evaluated and assigned
-                TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
-
-                const innerHTML = transformInnerHTML(this.innerHTML);
-
-                // Cache paths during template processing (pass undefined if observerMap is not available)
-                const { strings, values } = await this.resolveStringsAndValues(
-                    null,
-                    innerHTML,
-                    false,
-                    null,
-                    0,
-                    this.schema as Schema,
-                    this.observerMap,
-                );
-
-                // Define the root properties cached in the observer map as observable (only if observerMap exists)
-                this.observerMap?.defineProperties();
-
-                if (registeredFastElement) {
-                    // Attach lifecycle callbacks to the definition before assigning template
-                    // This allows the Observable notification to trigger the callbacks
-                    (registeredFastElement as any).lifecycleCallbacks = {
-                        templateDidUpdate:
-                            TemplateElement.lifecycleCallbacks.templateDidUpdate,
-                        elementDidDefine:
-                            TemplateElement.lifecycleCallbacks.elementDidDefine,
-                    };
-
-                    // All new elements will get the updated template
-                    // This assignment triggers the Observable notification → callbacks fire
-                    registeredFastElement.template = this.resolveTemplateOrBehavior(
-                        strings,
-                        values,
-                    );
-                }
-            } else {
-                throw FAST.error(Message.noTemplateProvided, { name: this.name });
-            }
-        });
+        this.processMultipleTemplates();
     }
 
     /**
@@ -274,10 +185,18 @@ class TemplateElement extends FASTElement {
         // Every named template is a potential partial regardless of whether it maps
         // to a custom element.
         const partialRegistry = new Map<string, string>();
+        const hostAttrRegistry = new Map<string, string>();
         for (const tmpl of templateChildren) {
             const tmplName = tmpl.getAttribute("name");
             if (tmplName) {
                 partialRegistry.set(tmplName, tmpl.innerHTML);
+                const hostAttrs = Array.from(tmpl.attributes)
+                    .filter(attr => attr.name !== "name")
+                    .map(attr => ` ${attr.name}="${attr.value}"`)
+                    .join("");
+                if (hostAttrs) {
+                    hostAttrRegistry.set(tmplName, hostAttrs);
+                }
             }
         }
 
@@ -316,7 +235,10 @@ class TemplateElement extends FASTElement {
                     // Wrap in a <template> element so the Compiler's auto-unwrap logic
                     // (fec.tagName === "TEMPLATE") treats it as a proper element template,
                     // matching the behaviour of the single-template <f-template name="..."> path.
-                    const wrappedHTML = `<template>${resolvedContent}</template>`;
+                    // Any host-binding attributes on the <template name="..."> element are
+                    // preserved so event/property/boolean bindings on the host are applied.
+                    const hostAttrs = hostAttrRegistry.get(tmplName) ?? "";
+                    const wrappedHTML = `<template${hostAttrs}>${resolvedContent}</template>`;
                     const innerHTML = transformInnerHTML(wrappedHTML);
 
                     const { strings, values } = await this.resolveStringsAndValues(

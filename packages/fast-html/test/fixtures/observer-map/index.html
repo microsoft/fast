@@ -17,8 +17,8 @@
                     <button data-fe-b-3>Update Value2</button>
                 </template>
             </observer-map-with-observables-test-element>
-            <f-template name="observer-map-test-element">
-                <template>
+            <f-template>
+                <template name="observer-map-test-element">
                     <observer-map-internal-test-element
                         :selecteduserid="{{selectedUserId}}"
                         :totalusers="{{stats.totalUsers}}"
@@ -123,9 +123,7 @@
                         </f-repeat>
                     </div>
                 </template>
-            </f-template>
-            <f-template name="observer-map-internal-test-element">
-                <template>
+            <template name="observer-map-internal-test-element">
                     selected user: {{selecteduserid}} <!-- because this is bound to an attribute property it must be lowercase -->
                     <br>
                     total users: {{totalusers}}
@@ -168,9 +166,7 @@
                     <button @click="{addGroup()}">Add group</button>
                     <button @click="{updateActionLabel()}">Update an action label</button>
                 </template>
-            </f-template>
-            <f-template name="observer-map-with-observables-test-element">
-                <template>
+            <template name="observer-map-with-observables-test-element">
                     Level 3 Value: {{value1}}
                     <button @click="{updateValue1()}">Update Value1</button>
                     <br>

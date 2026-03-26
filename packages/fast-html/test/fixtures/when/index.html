@@ -7,8 +7,28 @@
     </head>
     <body>
         <!-- boolean -->
-        <f-template name="test-element">
-            <template><f-when value="{{show}}">Hello world</f-when></template>
+        <f-template>
+            <template name="test-element"><f-when value="{{show}}">Hello world</f-when></template>
+            <!-- not -->
+            <template name="test-element-not"><f-when value="{{!hide}}">Hello world</f-when></template>
+            <!-- equals -->
+            <template name="test-element-equals"><f-when value="{{varA == 3}}">Equals 3</f-when></template>
+            <!-- not equals -->
+            <template name="test-element-not-equals"><f-when value="{{varA != 3}}">Not equals 3</f-when></template>
+            <!-- greater than or equals -->
+            <template name="test-element-ge"><f-when value="{{varA >= 2}}">Two and Over</f-when></template>
+            <!-- greater than -->
+            <template name="test-element-gt"><f-when value="{{varA > 2}}">Over two</f-when></template>
+            <!-- less than or equals -->
+            <template name="test-element-le"><f-when value="{{varA <= 2}}">Two and Under</f-when></template>
+            <!-- less than -->
+            <template name="test-element-lt"><f-when value="{{varA < 2}}">Under two</f-when></template>
+            <!-- or -->
+            <template name="test-element-or"><f-when value="{{thisVar || thatVar}}">This or That</f-when></template>
+            <!-- and -->
+            <template name="test-element-and"><f-when value="{{thisVar && thatVar}}">This and That</f-when></template>
+            <!-- event -->
+            <template name="test-element-event"><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
         </f-template>
         <test-element id="show" show>
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Hello world<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
@@ -17,9 +37,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element>
         <!-- not -->
-        <f-template name="test-element-not">
-            <template><f-when value="{{!hide}}">Hello world</f-when></template>
-        </f-template>
         <test-element-not id="show-not">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Hello world<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-not>
@@ -27,9 +44,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-not>
         <!-- equals -->
-        <f-template name="test-element-equals">
-            <template><f-when value="{{varA == 3}}">Equals 3</f-when></template>
-        </f-template>
         <test-element-equals id="equals-true" var-a="3">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Equals 3<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-equals>
@@ -37,9 +51,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-equals>
         <!-- not equals -->
-        <f-template name="test-element-not-equals">
-            <template><f-when value="{{varA != 3}}">Not equals 3</f-when></template>
-        </f-template>
         <test-element-not-equals id="not-equals-true" var-a="4">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Not equals 3<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-not-equals>
@@ -47,9 +58,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-not-equals>
         <!-- greater than or equals -->
-        <f-template name="test-element-ge">
-            <template><f-when value="{{varA >= 2}}">Two and Over</f-when></template>
-        </f-template>
         <test-element-ge id="ge-true" var-a="3">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Two and Over<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-ge>
@@ -57,9 +65,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-ge>
         <!-- greater than -->
-        <f-template name="test-element-gt">
-            <template><f-when value="{{varA > 2}}">Over two</f-when></template>
-        </f-template>
         <test-element-gt id="gt-true" var-a="3">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Over two<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-gt>
@@ -67,9 +72,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-gt>
         <!-- less than or equals -->
-        <f-template name="test-element-le">
-            <template><f-when value="{{varA <= 2}}">Two and Under</f-when></template>
-        </f-template>
         <test-element-le id="le-true" var-a="2">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Two and Under<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-le>
@@ -77,9 +79,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-le>
         <!-- less than -->
-        <f-template name="test-element-lt">
-            <template><f-when value="{{varA < 2}}">Under two</f-when></template>
-        </f-template>
         <test-element-lt id="lt-true" var-a="1">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->Under two<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-lt>
@@ -87,9 +86,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-lt>
         <!-- or -->
-        <f-template name="test-element-or">
-            <template><f-when value="{{thisVar || thatVar}}">This or That</f-when></template>
-        </f-template>
         <test-element-or id="or-true" this-var="3">
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->This or That<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-or>
@@ -97,9 +93,6 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-or>
         <!-- and -->
-        <f-template name="test-element-and">
-            <template><f-when value="{{thisVar && thatVar}}">This and That</f-when></template>
-        </f-template>
         <test-element-and id="and-true" this-var that-var>
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b-->This and That<!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-and>
@@ -108,9 +101,6 @@
         </test-element-and>
 
         <!-- event -->
-        <f-template name="test-element-event">
-            <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
-        </f-template>
         <test-element-event id="event-show" show>
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><button data-fe-b-0>Click me</button><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-event>
