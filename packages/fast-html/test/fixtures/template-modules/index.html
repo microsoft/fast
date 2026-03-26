@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+        <script type="module" src="./main.ts"></script>
+    </head>
+    <body>
+        <!--
+            Test case 1: two element templates in a single <f-template> (no name attribute).
+            Elements are rendered client-side (no pre-rendered shadow DOM).
+        -->
+        <tm-simple-a text="Hello from A"></tm-simple-a>
+        <tm-simple-b value="Hello from B"></tm-simple-b>
+
+        <!--
+            Test case 2: element template that references a shared partial via an empty
+            <template name="..."></template> marker.
+        -->
+        <tm-with-partial title="Shared Title" description="Partial Description"></tm-with-partial>
+
+        <!--
+            Test case 3: two element templates that both reference the same shared partial,
+            verifying that the partial is independently inlined into each template without
+            mutating the original partial content.
+        -->
+        <tm-sibling-a title="Sibling A" note="Note from A"></tm-sibling-a>
+        <tm-sibling-b title="Sibling B" note="Note from B"></tm-sibling-b>
+
+        <!--
+            Single <f-template> (no name attribute) describing all element templates and the
+            shared partials they reference.
+        -->
+        <f-template>
+            <!--
+                Shared partial: referenced via <template name="tm-shared-heading"></template>
+                inside element templates. A <template> element with no content is treated as
+                a reference marker; the partial's HTML is inlined in its place.
+            -->
+            <template name="tm-shared-heading">
+                <h2>{{title}}</h2>
+            </template>
+
+            <!-- Element template 1: simple binding, no partial -->
+            <template name="tm-simple-a">
+                <p>{{text}}</p>
+            </template>
+
+            <!-- Element template 2: simple binding, no partial -->
+            <template name="tm-simple-b">
+                <span>{{value}}</span>
+            </template>
+
+            <!--
+                Element template 3: uses the shared partial via an empty
+                <template name="tm-shared-heading"></template> reference marker.
+            -->
+            <template name="tm-with-partial">
+                <template name="tm-shared-heading"></template>
+                <p>{{description}}</p>
+            </template>
+
+            <!-- Element templates 4 & 5: both reference the same shared partial -->
+            <template name="tm-sibling-a">
+                <template name="tm-shared-heading"></template>
+                <small>{{note}}</small>
+            </template>
+
+            <template name="tm-sibling-b">
+                <template name="tm-shared-heading"></template>
+                <em>{{note}}</em>
+            </template>
+        </f-template>
+    </body>
+</html>

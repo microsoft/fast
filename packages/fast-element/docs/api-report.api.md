@@ -1096,7 +1096,9 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     compile(): HTMLTemplateCompilationResult<TSource, TParent>;
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     static create<TSource = any, TParent = any>(strings: string[], values: TemplateValue<TSource, TParent>[], policy?: DOMPolicy): ViewTemplate<TSource, TParent>;
+    static definePartial(name: string, template: ViewTemplate): void;
     readonly factories: Record<string, ViewBehaviorFactory>;
+    static getPartial(name: string): ViewTemplate | undefined;
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
