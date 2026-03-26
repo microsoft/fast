@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: migrate to biome for linting and formatting",
-  "packageName": "@microsoft/fast-html",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

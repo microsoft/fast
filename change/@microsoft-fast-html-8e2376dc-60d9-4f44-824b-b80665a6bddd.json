@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: refactor naming for binding syntax and add a test for tag collisions",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
