@@ -155,7 +155,7 @@ types below.
 |--------------|--------------------------|---------------------------------------------|
 | `"static"`   | plain name               | `attr="literal"`                            |
 | `"bound"`    | plain name               | `attr="{{expression}}"`                     |
-| `"property"` | property name (no `:`  ) | `:prop="{{expression}}"`                    |
+| `"property"` | property name (no `:`  ) | `:prop="{expression}"`                      |
 | `"boolean"`  | attr name (no `?`)       | `?attr="{{expression}}"`                    |
 | `"event"`    | event name (no `@`)      | `@event="{handler(arg)}"`                   |
 | `"ref"`      | `"f-ref"`                | `f-ref="{property}"`                        |

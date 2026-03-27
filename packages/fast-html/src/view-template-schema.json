@@ -168,7 +168,7 @@
         },
         "propertyAttributeValue": {
             "type": "object",
-            "description": "A DOM property binding. Equivalent to :prop=\"{{expression}}\" in declarative template syntax. Use the property name (without ':' prefix) as the key, e.g. 'value', 'innerHTML'.",
+            "description": "A DOM property binding. Equivalent to :prop=\"{expression}\" in declarative template syntax. Use the property name (without ':' prefix) as the key, e.g. 'value', 'innerHTML'.",
             "required": ["type", "expression"],
             "additionalProperties": false,
             "properties": {

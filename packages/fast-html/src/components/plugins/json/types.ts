@@ -134,7 +134,7 @@ export interface BoundAttributeValue {
 }
 
 /**
- * A DOM property binding, equivalent to `:prop="{{expression}}"`.
+ * A DOM property binding, equivalent to `:prop="{expression}"`.
  * Use the property name (without `':'` prefix) as the key, e.g. `'value'`, `'innerHTML'`.
  * @public
  */
