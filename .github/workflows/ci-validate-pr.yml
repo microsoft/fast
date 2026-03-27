@@ -13,7 +13,7 @@ on:
     - features/*
 
 jobs:
-  build_linux:
+  test_js:
     runs-on: ubuntu-latest
     env:
       PLAYWRIGHT_BROWSERS_PATH: 0
