@@ -18,7 +18,20 @@ cd fast/crates/microsoft-fast-build
 cargo test
 ```
 
-This runs both unit tests (embedded in each source module) and integration tests (in `tests/integration_test.rs`). The integration tests include filesystem-based tests that read from `tests/fixtures/`.
+This runs both unit tests (embedded in each source module) and integration tests (in `tests/`). The integration tests include filesystem-based tests that read from `tests/fixtures/`.
+
+### Integration test files
+
+| File | What it covers |
+|------|---------------|
+| `tests/bindings.rs` | `{{}}` and `{{{}}}` content bindings |
+| `tests/f_when.rs` | `<f-when>` expressions, chained operators |
+| `tests/f_repeat.rs` | `<f-repeat>` iteration |
+| `tests/nested_directives.rs` | Mixed/nested `<f-when>` + `<f-repeat>` |
+| `tests/single_brace.rs` | Single-brace passthrough |
+| `tests/errors.rs` | All `RenderError` variants |
+| `tests/custom_elements.rs` | Custom elements and `Locator` |
+| `tests/common/mod.rs` | Shared helpers (`ok`, `err`, `make_locator`, `empty_root`) |
 
 ## Building
 
@@ -41,5 +54,5 @@ cargo build
 | `src/renderer.rs` | Thin entry points that call `render_node` |
 | `src/locator.rs` | `Locator` — maps element names to template content; glob-based filesystem scanner |
 | `src/error.rs` | `RenderError` enum with all variants and `Display` implementation |
-| `tests/integration_test.rs` | Integration tests covering rendering, error handling, and custom elements |
+| `tests/` | Integration tests split by feature area (see above) |
 | `tests/fixtures/` | HTML template files used by integration tests |

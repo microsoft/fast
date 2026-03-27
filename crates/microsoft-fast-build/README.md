@@ -80,6 +80,14 @@ Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event ha
 
 Supported operators: `==`, `!=`, `>=`, `>`, `<=`, `<`, `||`, `&&`, `!`
 
+Operators can be chained — `&&` binds tighter than `||`, matching standard precedence:
+
+```html
+<f-when value="{{isAdmin && !isGuest && status == 'active'}}">Admin</f-when>
+<f-when value="{{a || b || c}}">Any of the above</f-when>
+<f-when value="{{isPublished || isAdmin && canPreview}}">Visible</f-when>
+```
+
 Right-hand operands can be string literals (`'foo'`), boolean literals (`true`/`false`), number literals (`42`), or other state references.
 
 ### Array Iteration — `<f-repeat>`
