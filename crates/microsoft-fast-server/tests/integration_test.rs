@@ -193,6 +193,49 @@ fn test_render_template_with_json_string() {
 }
 
 #[test]
+fn test_single_brace_passthrough() {
+    // Single-brace event bindings must pass through verbatim
+    let result = render_template(
+        r#"<button @click="{handleClick()}">{{label}}</button>"#,
+        r#"{"label": "Click me"}"#,
+    ).unwrap();
+    assert_eq!(result, r#"<button @click="{handleClick()}">Click me</button>"#);
+}
+
+#[test]
+fn test_single_brace_attribute_directive() {
+    // Attribute directives like f-slotted use single braces — pass through untouched
+    let result = render_template(
+        r#"<slot f-slotted="{slottedNodes}"></slot><span>{{text}}</span>"#,
+        r#"{"text": "hello"}"#,
+    ).unwrap();
+    assert_eq!(result, r#"<slot f-slotted="{slottedNodes}"></slot><span>hello</span>"#);
+}
+
+#[test]
+fn test_single_brace_nested_object_arg() {
+    // Nested braces inside a single-brace expression must not consume the `}}`
+    // that belongs to a subsequent `{{binding}}`
+    let result = render_template(
+        r#"<button @click="{handler({key: 'val'})}">{{text}}</button>"#,
+        r#"{"text": "go"}"#,
+    ).unwrap();
+    assert_eq!(result, r#"<button @click="{handler({key: 'val'})}">go</button>"#);
+}
+
+#[test]
+fn test_single_brace_in_repeat() {
+    let result = render_template(
+        r#"<f-repeat value="{{item in items}}"><button @click="{onClick()}">{{item}}</button></f-repeat>"#,
+        r#"{"items": ["a", "b"]}"#,
+    ).unwrap();
+    assert_eq!(
+        result,
+        r#"<button @click="{onClick()}">a</button><button @click="{onClick()}">b</button>"#,
+    );
+}
+
+#[test]
 fn test_array_index_access() {
     let result = render_template("{{list.0}}", r#"{"list": ["first", "second"]}"#).unwrap();
     assert_eq!(result, "first");

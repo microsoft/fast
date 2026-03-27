@@ -1,7 +1,8 @@
 use crate::json::JsonValue;
 use crate::context::resolve_value;
 use crate::expression::evaluate;
-use crate::attribute::{find_str, find_directive, extract_directive_expr, extract_directive_content};
+use crate::attribute::{find_str, find_directive, extract_directive_expr, extract_directive_content,
+                       find_single_brace, skip_single_brace_expr};
 use crate::node::render_node;
 
 /// A template directive found at a given byte position.
@@ -22,20 +23,40 @@ impl Directive {
 }
 
 /// Find the earliest directive in `template` starting from `from`.
+/// Single-brace expressions (`{…}`) are skipped so their `}` characters cannot
+/// accidentally terminate a `{{…}}` binding search.
 pub fn next_directive(template: &str, from: usize) -> Option<Directive> {
-    let triple = find_str(template, "{{{", from).map(Directive::TripleBrace);
-    // Suppress `{{` when it's the start of a `{{{`
-    let double = find_str(template, "{{", from).and_then(|d| {
-        let shadowed = triple.as_ref().map(|t| t.position() == d).unwrap_or(false);
-        if shadowed { None } else { Some(Directive::DoubleBrace(d)) }
-    });
-    let when = find_directive(template, "<f-when", from).map(Directive::When);
-    let repeat = find_directive(template, "<f-repeat", from).map(Directive::Repeat);
+    let mut pos = from;
+    loop {
+        let triple = find_str(template, "{{{", pos).map(Directive::TripleBrace);
+        // Suppress `{{` when it coincides with the start of a `{{{`
+        let double = find_str(template, "{{", pos).and_then(|d| {
+            let shadowed = triple.as_ref().map(|t| t.position() == d).unwrap_or(false);
+            if shadowed { None } else { Some(Directive::DoubleBrace(d)) }
+        });
+        let when   = find_directive(template, "<f-when",   pos).map(Directive::When);
+        let repeat = find_directive(template, "<f-repeat", pos).map(Directive::Repeat);
 
-    [triple, double, when, repeat]
-        .into_iter()
-        .flatten()
-        .min_by_key(|d| d.position())
+        let earliest_pos = [triple.as_ref(), double.as_ref(), when.as_ref(), repeat.as_ref()]
+            .into_iter()
+            .flatten()
+            .map(|d| d.position())
+            .min();
+
+        // If a single { precedes the earliest binding, skip past it so its `}`
+        // cannot be misread as the closing `}}` of a double-brace binding.
+        if let (Some(single), Some(earliest)) = (find_single_brace(template, pos), earliest_pos) {
+            if single < earliest {
+                pos = skip_single_brace_expr(template, single);
+                continue;
+            }
+        }
+
+        return [triple, double, when, repeat]
+            .into_iter()
+            .flatten()
+            .min_by_key(|d| d.position());
+    }
 }
 
 /// Render an `<f-when>` directive.

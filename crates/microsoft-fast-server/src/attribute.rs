@@ -43,6 +43,50 @@ pub fn find_tag_end(template: &str, from: usize) -> Option<usize> {
     None
 }
 
+/// Find the first `{` that is NOT the start of `{{` or `{{{`.
+/// These are FAST client-side bindings that the server renderer must pass through verbatim.
+pub fn find_single_brace(template: &str, from: usize) -> Option<usize> {
+    let bytes = template.as_bytes();
+    let mut i = from;
+    while i < bytes.len() {
+        if bytes[i] == b'{' && (i + 1 >= bytes.len() || bytes[i + 1] != b'{') {
+            return Some(i);
+        }
+        i += 1;
+    }
+    None
+}
+
+/// Return the position after the closing `}` of the single-brace expression starting at `pos`.
+/// Handles nesting (`{outer {inner}}`) and quoted strings so inner `}` characters are not
+/// mistaken for the closing brace.
+pub fn skip_single_brace_expr(template: &str, pos: usize) -> usize {
+    let bytes = template.as_bytes();
+    let mut depth = 0usize;
+    let mut i = pos;
+    let mut in_quote = false;
+    let mut quote_char = b'"';
+    while i < bytes.len() {
+        match bytes[i] {
+            c if in_quote && c == quote_char => in_quote = false,
+            b'"' | b'\'' if !in_quote => {
+                in_quote = true;
+                quote_char = bytes[i];
+            }
+            b'{' if !in_quote => depth += 1,
+            b'}' if !in_quote => {
+                depth -= 1;
+                if depth == 0 {
+                    return i + 1;
+                }
+            }
+            _ => {}
+        }
+        i += 1;
+    }
+    pos + 1 // Unclosed brace — advance past just the `{`
+}
+
 /// Extract the expression from `value="{{...}}"` inside a directive opening tag.
 pub fn extract_directive_expr(template: &str, tag_start: usize) -> Option<String> {
     let tag_end = find_tag_end(template, tag_start)?;
