@@ -1,6 +1,10 @@
 mod json;
 mod context;
 mod expression;
+mod attribute;
+mod content;
+mod directive;
+mod node;
 mod renderer;
 
 pub use json::{JsonValue, JsonError};
