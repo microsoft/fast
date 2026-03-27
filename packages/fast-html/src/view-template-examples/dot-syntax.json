@@ -1,0 +1,32 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "element",
+            "tagName": "div",
+            "children": [
+                {
+                    "type": "element",
+                    "tagName": "span",
+                    "children": [
+                        { "type": "binding", "expression": "user.name" }
+                    ]
+                },
+                {
+                    "type": "element",
+                    "tagName": "span",
+                    "children": [
+                        { "type": "binding", "expression": "user.address.city" }
+                    ]
+                },
+                {
+                    "type": "element",
+                    "tagName": "span",
+                    "children": [
+                        { "type": "binding", "expression": "user.address.geo.lat" }
+                    ]
+                }
+            ]
+        }
+    ]
+}

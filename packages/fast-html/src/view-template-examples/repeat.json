@@ -1,0 +1,25 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "element",
+            "tagName": "ul",
+            "children": [
+                {
+                    "type": "repeat",
+                    "item": "item",
+                    "list": "items",
+                    "children": [
+                        {
+                            "type": "element",
+                            "tagName": "li",
+                            "children": [
+                                { "type": "binding", "expression": "item" }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

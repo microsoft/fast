@@ -1,0 +1,15 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "element",
+            "tagName": "span",
+            "children": [
+                { "type": "binding", "expression": "label" },
+                { "type": "text", "value": " (" },
+                { "type": "binding", "expression": "count" },
+                { "type": "text", "value": ")" }
+            ]
+        }
+    ]
+}

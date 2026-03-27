@@ -1,0 +1,45 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "element",
+            "tagName": "button",
+            "attributes": {
+                "click": { "type": "event", "handler": "handleNoArgsClick" }
+            },
+            "children": [
+                { "type": "text", "value": "No arguments" }
+            ]
+        },
+        {
+            "type": "element",
+            "tagName": "button",
+            "attributes": {
+                "click": { "type": "event", "handler": "handleEventArgClick", "argument": "e" }
+            },
+            "children": [
+                { "type": "text", "value": "event argument" }
+            ]
+        },
+        {
+            "type": "element",
+            "tagName": "button",
+            "attributes": {
+                "click": { "type": "event", "handler": "handleAttributeArgClick", "argument": "foo" }
+            },
+            "children": [
+                { "type": "text", "value": "attribute argument" }
+            ]
+        },
+        {
+            "type": "element",
+            "tagName": "button",
+            "attributes": {
+                "click": { "type": "event", "handler": "handleModifyAttributeClick" }
+            },
+            "children": [
+                { "type": "text", "value": "modify foo" }
+            ]
+        }
+    ]
+}

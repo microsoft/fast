@@ -1,0 +1,22 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "element",
+            "tagName": "h3",
+            "attributes": {
+                "f-ref": { "type": "ref", "property": "heading" }
+            },
+            "children": [
+                { "type": "text", "value": "Title" }
+            ]
+        },
+        {
+            "type": "element",
+            "tagName": "slot",
+            "attributes": {
+                "f-slotted": { "type": "slotted", "property": "slottedItems" }
+            }
+        }
+    ]
+}

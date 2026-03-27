@@ -1,0 +1,31 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "when",
+            "expression": "show",
+            "children": [
+                {
+                    "type": "element",
+                    "tagName": "span",
+                    "children": [
+                        { "type": "text", "value": "Visible" }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "when",
+            "expression": "!show",
+            "children": [
+                {
+                    "type": "element",
+                    "tagName": "span",
+                    "children": [
+                        { "type": "text", "value": "Hidden" }
+                    ]
+                }
+            ]
+        }
+    ]
+}

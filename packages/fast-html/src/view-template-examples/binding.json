@@ -1,0 +1,9 @@
+{
+    "$schema": "../view-template-schema.json",
+    "nodes": [
+        {
+            "type": "binding",
+            "expression": "text"
+        }
+    ]
+}

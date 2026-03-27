@@ -1,0 +1,267 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "https://fast.design/schemas/view-template.json",
+    "title": "FAST View Template",
+    "description": "A JSON schema describing the FAST declarative HTML template structure. Maps to the f-template declarative HTML syntax used in @microsoft/fast-html.",
+    "type": "object",
+    "required": ["nodes"],
+    "additionalProperties": false,
+    "properties": {
+        "nodes": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/node" },
+            "description": "The root-level template nodes"
+        }
+    },
+    "$defs": {
+        "node": {
+            "description": "A template node — one of: static text, content binding, unescaped HTML, HTML element, when-directive, or repeat-directive.",
+            "oneOf": [
+                { "$ref": "#/$defs/textNode" },
+                { "$ref": "#/$defs/bindingNode" },
+                { "$ref": "#/$defs/unescapedHtmlNode" },
+                { "$ref": "#/$defs/elementNode" },
+                { "$ref": "#/$defs/whenNode" },
+                { "$ref": "#/$defs/repeatNode" }
+            ]
+        },
+        "textNode": {
+            "type": "object",
+            "description": "A static text node with no bindings.",
+            "required": ["type", "value"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "text" },
+                "value": {
+                    "type": "string",
+                    "description": "The static text content to render."
+                }
+            }
+        },
+        "bindingNode": {
+            "type": "object",
+            "description": "A content binding node. Equivalent to {{expression}} in declarative template syntax. Renders the resolved value as text content.",
+            "required": ["type", "expression"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "binding" },
+                "expression": {
+                    "type": "string",
+                    "description": "A dot-notation property path to bind, e.g. 'greeting' or 'user.name'. Inside a repeat, prefix with the loop variable: 'item.name' for loop variable 'item'. Use '$c.parent.prop' to access the parent context from inside a repeat."
+                }
+            }
+        },
+        "unescapedHtmlNode": {
+            "type": "object",
+            "description": "An unescaped HTML binding node. Equivalent to {{{expression}}} in declarative template syntax. The resolved string value is injected as raw innerHTML inside a wrapper div.",
+            "required": ["type", "expression"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "unescaped-html" },
+                "expression": {
+                    "type": "string",
+                    "description": "A property path whose value is rendered as unescaped HTML, e.g. 'htmlContent'."
+                }
+            }
+        },
+        "elementNode": {
+            "type": "object",
+            "description": "An HTML element node, including both standard and custom elements.",
+            "required": ["type", "tagName"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "element" },
+                "tagName": {
+                    "type": "string",
+                    "description": "The HTML tag name, e.g. 'div', 'span', 'button', 'slot', 'my-custom-element'."
+                },
+                "attributes": {
+                    "type": "object",
+                    "description": "A map of attribute names to their binding configuration. For event attributes use the event name as key (e.g. 'click'). For property, boolean and bound attributes use the attribute/property name as key (e.g. 'value', 'disabled', 'title'). For directives use 'f-ref', 'f-slotted', or 'f-children' as the key.",
+                    "additionalProperties": { "$ref": "#/$defs/attributeValue" }
+                },
+                "children": {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/node" },
+                    "description": "Child template nodes nested inside this element."
+                }
+            }
+        },
+        "whenNode": {
+            "type": "object",
+            "description": "A conditional directive node. Equivalent to <f-when value=\"{{expression}}\">...</f-when> in declarative template syntax.",
+            "required": ["type", "expression", "children"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "when" },
+                "expression": {
+                    "type": "string",
+                    "description": "A boolean expression evaluated against the component source. Supports: simple property ('show'), negation ('!show'), comparisons ('count > 0', 'status == \"active\"', 'count != 0'), and logical chains ('show && active', 'a || b'). Use '$c.parent.prop' to access parent context inside a repeat."
+                },
+                "children": {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/node" },
+                    "description": "Nodes to render when the expression is truthy."
+                }
+            }
+        },
+        "repeatNode": {
+            "type": "object",
+            "description": "A repeat directive node. Equivalent to <f-repeat value=\"{{item in items}}\">...</f-repeat> in declarative template syntax.",
+            "required": ["type", "item", "list", "children"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "repeat" },
+                "item": {
+                    "type": "string",
+                    "description": "The loop variable name used to reference the current item in child bindings, e.g. 'item'."
+                },
+                "list": {
+                    "type": "string",
+                    "description": "A dot-notation property path to the array to iterate over, e.g. 'items' or 'data.users'."
+                },
+                "children": {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/node" },
+                    "description": "Nodes rendered for each item. In child binding expressions prefix with the loop variable: 'item.name' for loop variable 'item'. To access a host property use '$c.parent.prop'."
+                }
+            }
+        },
+        "attributeValue": {
+            "description": "An attribute value — one of: static string, regular attribute binding, property binding, boolean attribute binding, event binding, ref directive, slotted directive, or children directive.",
+            "oneOf": [
+                { "$ref": "#/$defs/staticAttributeValue" },
+                { "$ref": "#/$defs/boundAttributeValue" },
+                { "$ref": "#/$defs/propertyAttributeValue" },
+                { "$ref": "#/$defs/booleanAttributeValue" },
+                { "$ref": "#/$defs/eventAttributeValue" },
+                { "$ref": "#/$defs/refDirectiveValue" },
+                { "$ref": "#/$defs/slottedDirectiveValue" },
+                { "$ref": "#/$defs/childrenDirectiveValue" }
+            ]
+        },
+        "staticAttributeValue": {
+            "type": "object",
+            "description": "A static (non-bound) attribute value. Rendered as a literal string attribute.",
+            "required": ["type", "value"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "static" },
+                "value": {
+                    "type": "string",
+                    "description": "The literal attribute value."
+                }
+            }
+        },
+        "boundAttributeValue": {
+            "type": "object",
+            "description": "A regular HTML attribute binding. Equivalent to attr=\"{{expression}}\" in declarative template syntax. Use the plain attribute name as the key, e.g. 'title', 'aria-label'.",
+            "required": ["type", "expression"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "bound" },
+                "expression": {
+                    "type": "string",
+                    "description": "A dot-notation property path bound to the attribute value."
+                }
+            }
+        },
+        "propertyAttributeValue": {
+            "type": "object",
+            "description": "A DOM property binding. Equivalent to :prop=\"{{expression}}\" in declarative template syntax. Use the property name (without ':' prefix) as the key, e.g. 'value', 'innerHTML'.",
+            "required": ["type", "expression"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "property" },
+                "expression": {
+                    "type": "string",
+                    "description": "A dot-notation property path bound to the DOM property."
+                }
+            }
+        },
+        "booleanAttributeValue": {
+            "type": "object",
+            "description": "A boolean attribute binding. Equivalent to ?attr=\"{expression}\" in declarative template syntax. Use the attribute name (without '?' prefix) as the key, e.g. 'disabled', 'checked', 'hidden'.",
+            "required": ["type", "expression"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "boolean" },
+                "expression": {
+                    "type": "string",
+                    "description": "A boolean expression. Supports the same syntax as whenNode.expression."
+                }
+            }
+        },
+        "eventAttributeValue": {
+            "type": "object",
+            "description": "An event listener binding. Equivalent to @event=\"{handler(arg)}\" in declarative template syntax. Use the event name (without '@' prefix) as the key, e.g. 'click', 'keyup', 'input'.",
+            "required": ["type", "handler"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "event" },
+                "handler": {
+                    "type": "string",
+                    "description": "The method name on the component source to invoke when the event fires, e.g. 'handleClick'. Use '$c.parent.method' to invoke a method on a parent context (inside a repeat)."
+                },
+                "argument": {
+                    "type": "string",
+                    "description": "Optional argument to pass to the handler. Use empty string (default) for no argument, 'e' to pass the DOM event object, or a property name to pass that property's value.",
+                    "default": ""
+                }
+            }
+        },
+        "refDirectiveValue": {
+            "type": "object",
+            "description": "A ref attribute directive. Equivalent to f-ref=\"{property}\" in declarative template syntax. Assigns a reference to the DOM element onto the named component property. Use 'f-ref' as the attribute key.",
+            "required": ["type", "property"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "ref" },
+                "property": {
+                    "type": "string",
+                    "description": "The component property name to assign the element reference to, e.g. 'heading'."
+                }
+            }
+        },
+        "slottedDirectiveValue": {
+            "type": "object",
+            "description": "A slotted nodes directive. Equivalent to f-slotted=\"{property}\" or f-slotted=\"{property filter elements(...)}\" in declarative template syntax. Observes slotted child nodes and keeps the named property up to date. Use 'f-slotted' as the attribute key.",
+            "required": ["type", "property"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "slotted" },
+                "property": {
+                    "type": "string",
+                    "description": "The component property name to assign the observed slotted nodes to."
+                },
+                "filter": {
+                    "type": "object",
+                    "description": "Optional filter applied to slotted nodes. Omit to include all nodes.",
+                    "required": ["type"],
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": { "const": "elements" },
+                        "selectors": {
+                            "type": "array",
+                            "items": { "type": "string" },
+                            "description": "Optional CSS selectors to further restrict which elements are observed. If omitted or empty, all element nodes are included."
+                        }
+                    }
+                }
+            }
+        },
+        "childrenDirectiveValue": {
+            "type": "object",
+            "description": "A children nodes directive. Equivalent to f-children=\"{property}\" in declarative template syntax. Observes child nodes and keeps the named property up to date. Use 'f-children' as the attribute key.",
+            "required": ["type", "property"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "const": "children" },
+                "property": {
+                    "type": "string",
+                    "description": "The component property name to assign the observed child nodes to."
+                }
+            }
+        }
+    }
+}
