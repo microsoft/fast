@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "microsoft-fast-server"
+name = "microsoft-fast-build"
 version = "0.1.0"

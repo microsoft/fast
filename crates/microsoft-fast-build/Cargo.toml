@@ -1,9 +1,9 @@
 [package]
-name = "microsoft-fast-server"
+name = "microsoft-fast-build"
 version = "0.1.0"
 edition = "2021"
 publish = false
 
 [lib]
-name = "microsoft_fast_server"
+name = "microsoft_fast_build"
 path = "src/lib.rs"

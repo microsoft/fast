@@ -1,4 +1,4 @@
-use microsoft_fast_server::{render_template, render_with_locator, render_template_with_locator, Locator, RenderError, JsonValue};
+use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, Locator, RenderError, JsonValue};
 use std::collections::HashMap;
 
 // ── helpers ──────────────────────────────────────────────────────────────────
