@@ -145,7 +145,7 @@ export interface PropertyAttributeValue {
 }
 
 /**
- * A boolean attribute binding, equivalent to `?attr="{expression}"`.
+ * A boolean attribute binding, equivalent to `?attr="{{expression}}"`.
  * Use the attribute name (without `'?'` prefix) as the key, e.g. `'disabled'`, `'checked'`.
  * @public
  */

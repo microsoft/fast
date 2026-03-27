@@ -181,7 +181,7 @@
         },
         "booleanAttributeValue": {
             "type": "object",
-            "description": "A boolean attribute binding. Equivalent to ?attr=\"{expression}\" in declarative template syntax. Use the attribute name (without '?' prefix) as the key, e.g. 'disabled', 'checked', 'hidden'.",
+            "description": "A boolean attribute binding. Equivalent to ?attr=\"{{expression}}\" in declarative template syntax. Use the attribute name (without '?' prefix) as the key, e.g. 'disabled', 'checked', 'hidden'.",
             "required": ["type", "expression"],
             "additionalProperties": false,
             "properties": {

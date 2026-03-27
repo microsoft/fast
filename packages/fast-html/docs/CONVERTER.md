@@ -156,7 +156,7 @@ types below.
 | `"static"`   | plain name               | `attr="literal"`                            |
 | `"bound"`    | plain name               | `attr="{{expression}}"`                     |
 | `"property"` | property name (no `:`  ) | `:prop="{{expression}}"`                    |
-| `"boolean"`  | attr name (no `?`)       | `?attr="{expression}"`                      |
+| `"boolean"`  | attr name (no `?`)       | `?attr="{{expression}}"`                    |
 | `"event"`    | event name (no `@`)      | `@event="{handler(arg)}"`                   |
 | `"ref"`      | `"f-ref"`                | `f-ref="{property}"`                        |
 | `"slotted"`  | `"f-slotted"`            | `f-slotted="{property [filter elements()]}"`|

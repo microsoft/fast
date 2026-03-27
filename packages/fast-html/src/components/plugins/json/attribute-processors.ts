@@ -10,7 +10,7 @@ import type { AttributeValue } from "./types.js";
  * - `"static"` → literal `attrName="value"`.
  * - `"bound"` → `attrName="{{expression}}"` style attribute binding.
  * - `"property"` → `:attrName="{{expression}}"` property binding.
- * - `"boolean"` → `?attrName="{expression}"` boolean attribute binding.
+ * - `"boolean"` → `?attrName="{{expression}}"` boolean attribute binding.
  * - `"event"` → `@attrName="{handler(arg)}"` event binding.
  * - `"ref"` / `"slotted"` / `"children"` → FAST attribute directive placeholder.
  *
