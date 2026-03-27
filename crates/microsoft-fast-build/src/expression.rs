@@ -216,4 +216,60 @@ mod tests {
         assert!(evaluate("count > 3", &root, &[]));
         assert!(!evaluate("count < 3", &root, &[]));
     }
+
+    #[test]
+    fn test_chained_and() {
+        let root = state(r#"{"isAdmin": true, "isGuest": false, "status": "active"}"#);
+        assert!(evaluate("isAdmin && !isGuest && status == 'active'", &root, &[]));
+    }
+
+    #[test]
+    fn test_chained_and_first_false() {
+        let root = state(r#"{"isAdmin": false, "isGuest": false, "status": "active"}"#);
+        assert!(!evaluate("isAdmin && !isGuest && status == 'active'", &root, &[]));
+    }
+
+    #[test]
+    fn test_chained_and_middle_false() {
+        let root = state(r#"{"isAdmin": true, "isGuest": true, "status": "active"}"#);
+        assert!(!evaluate("isAdmin && !isGuest && status == 'active'", &root, &[]));
+    }
+
+    #[test]
+    fn test_chained_and_last_false() {
+        let root = state(r#"{"isAdmin": true, "isGuest": false, "status": "inactive"}"#);
+        assert!(!evaluate("isAdmin && !isGuest && status == 'active'", &root, &[]));
+    }
+
+    #[test]
+    fn test_chained_or() {
+        let root = state(r#"{"a": false, "b": false, "c": true}"#);
+        assert!(evaluate("a || b || c", &root, &[]));
+    }
+
+    #[test]
+    fn test_chained_or_all_false() {
+        let root = state(r#"{"a": false, "b": false, "c": false}"#);
+        assert!(!evaluate("a || b || c", &root, &[]));
+    }
+
+    #[test]
+    fn test_and_before_or() {
+        // Standard precedence: && binds tighter than ||
+        // "a || b && c" is treated as "a || (b && c)"
+        let root = state(r#"{"a": false, "b": true, "c": true}"#);
+        assert!(evaluate("a || b && c", &root, &[]));
+        let root2 = state(r#"{"a": false, "b": true, "c": false}"#);
+        assert!(!evaluate("a || b && c", &root2, &[]));
+    }
+
+    #[test]
+    fn test_chained_mixed() {
+        // "a && b || c && d" = "(a && b) || (c && d)"
+        let root = state(r#"{"a": false, "b": true, "c": true, "d": true}"#);
+        assert!(evaluate("a && b || c && d", &root, &[]));
+        let root2 = state(r#"{"a": false, "b": true, "c": false, "d": true}"#);
+        assert!(!evaluate("a && b || c && d", &root2, &[]));
+    }
 }
+

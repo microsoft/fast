@@ -80,3 +80,86 @@ fn test_f_when_numeric_comparison() {
         "",
     );
 }
+
+// ── chained expressions ───────────────────────────────────────────────────────
+
+#[test]
+fn test_f_when_chained_and_all_true() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{isAdmin && !isGuest && status == 'active'}}"><span>Welcome</span></f-when>"#,
+            r#"{"isAdmin": true, "isGuest": false, "status": "active"}"#,
+        ),
+        "<span>Welcome</span>",
+    );
+}
+
+#[test]
+fn test_f_when_chained_and_first_false() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{isAdmin && !isGuest && status == 'active'}}"><span>Welcome</span></f-when>"#,
+            r#"{"isAdmin": false, "isGuest": false, "status": "active"}"#,
+        ),
+        "",
+    );
+}
+
+#[test]
+fn test_f_when_chained_and_middle_false() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{isAdmin && !isGuest && status == 'active'}}"><span>Welcome</span></f-when>"#,
+            r#"{"isAdmin": true, "isGuest": true, "status": "active"}"#,
+        ),
+        "",
+    );
+}
+
+#[test]
+fn test_f_when_chained_and_last_false() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{isAdmin && !isGuest && status == 'active'}}"><span>Welcome</span></f-when>"#,
+            r#"{"isAdmin": true, "isGuest": false, "status": "inactive"}"#,
+        ),
+        "",
+    );
+}
+
+#[test]
+fn test_f_when_chained_or() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{a || b || c}}"><span>Any</span></f-when>"#,
+            r#"{"a": false, "b": false, "c": true}"#,
+        ),
+        "<span>Any</span>",
+    );
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{a || b || c}}"><span>Any</span></f-when>"#,
+            r#"{"a": false, "b": false, "c": false}"#,
+        ),
+        "",
+    );
+}
+
+#[test]
+fn test_f_when_and_before_or() {
+    // "a || b && c" = "a || (b && c)" — standard precedence
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{a || b && c}}"><span>Yes</span></f-when>"#,
+            r#"{"a": false, "b": true, "c": true}"#,
+        ),
+        "<span>Yes</span>",
+    );
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{a || b && c}}"><span>Yes</span></f-when>"#,
+            r#"{"a": false, "b": true, "c": false}"#,
+        ),
+        "",
+    );
+}
