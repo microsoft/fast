@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>ViewTemplateConverter Tests</title>
+        <script type="module" src="./main.ts"></script>
+    </head>
+    <body>
+        <!-- basic: slot -->
+        <converter-basic id="basic"><span>slotted</span></converter-basic>
+
+        <!-- binding: text content binding -->
+        <converter-binding id="binding" text="Hello world"></converter-binding>
+
+        <!-- unescaped HTML injection -->
+        <converter-unescaped id="unescaped"></converter-unescaped>
+
+        <!-- attr-reflect: bound + static attributes -->
+        <converter-attr-reflect id="attr-reflect" label="Title" count="42"></converter-attr-reflect>
+
+        <!-- event: four handler scenarios -->
+        <converter-event id="event" foo="bar"></converter-event>
+
+        <!-- when: boolean -->
+        <converter-when-boolean id="when-boolean-show" show></converter-when-boolean>
+        <converter-when-boolean id="when-boolean-hide"></converter-when-boolean>
+
+        <!-- when: negation -->
+        <converter-when-not id="when-not-show"></converter-when-not>
+        <converter-when-not id="when-not-hide" hide></converter-when-not>
+
+        <!-- when: equals (==) -->
+        <converter-when-equals id="when-eq-true" var-a="3"></converter-when-equals>
+        <converter-when-equals id="when-eq-false" var-a="4"></converter-when-equals>
+
+        <!-- when: not equals (!=) -->
+        <converter-when-not-equals id="when-neq-true" var-a="4"></converter-when-not-equals>
+        <converter-when-not-equals id="when-neq-false" var-a="3"></converter-when-not-equals>
+
+        <!-- when: greater than or equal (>=) -->
+        <converter-when-ge id="when-ge-true" var-a="3"></converter-when-ge>
+        <converter-when-ge id="when-ge-false" var-a="0"></converter-when-ge>
+
+        <!-- when: greater than (>) -->
+        <converter-when-gt id="when-gt-true" var-a="3"></converter-when-gt>
+        <converter-when-gt id="when-gt-false" var-a="0"></converter-when-gt>
+
+        <!-- when: less than or equal (<=) -->
+        <converter-when-le id="when-le-true" var-a="2"></converter-when-le>
+        <converter-when-le id="when-le-false" var-a="4"></converter-when-le>
+
+        <!-- when: less than (<) -->
+        <converter-when-lt id="when-lt-true" var-a="1"></converter-when-lt>
+        <converter-when-lt id="when-lt-false" var-a="3"></converter-when-lt>
+
+        <!-- when: logical OR (||) -->
+        <converter-when-or id="when-or-true" this-var></converter-when-or>
+        <converter-when-or id="when-or-false"></converter-when-or>
+
+        <!-- when: logical AND (&&) -->
+        <converter-when-and id="when-and-true" this-var that-var></converter-when-and>
+        <converter-when-and id="when-and-false" this-var></converter-when-and>
+
+        <!-- when: event handler inside when block -->
+        <converter-when-event id="when-event-show" show></converter-when-event>
+        <converter-when-event id="when-event-hide"></converter-when-event>
+
+        <!-- repeat: items + parent context ($c.parent) -->
+        <converter-repeat id="repeat" item-parent="Bat"></converter-repeat>
+
+        <!-- repeat: event handler via $c.parent -->
+        <converter-repeat-event id="repeat-event"></converter-repeat-event>
+
+        <!-- dot-syntax: nested property access -->
+        <converter-dot-syntax id="dot-syntax"></converter-dot-syntax>
+
+        <!-- ref: element reference directive -->
+        <converter-ref id="ref"></converter-ref>
+
+        <!-- slotted: all nodes (no filter) -->
+        <converter-slotted id="slotted"><span>text</span><div>element</div></converter-slotted>
+
+        <!-- slotted: elements() filter -->
+        <converter-slotted-filtered id="slotted-filtered">
+            <span>text</span>
+            <div>element</div>
+        </converter-slotted-filtered>
+    </body>
+</html>

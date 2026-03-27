@@ -49,6 +49,10 @@
       "types": "./dist/dts/components/utilities.d.ts",
       "default": "./dist/esm/components/utilities.js"
     },
+    "./plugins/json.js": {
+      "types": "./dist/dts/components/plugins/json/index.d.ts",
+      "default": "./dist/esm/components/plugins/json/index.js"
+    },
     "./rules/*.yml": "./rules/*.yml",
     "./package.json": "./package.json"
   },

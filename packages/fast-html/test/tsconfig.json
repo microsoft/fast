@@ -4,6 +4,9 @@
         "paths": {
             "@microsoft/fast-html": [
                 "../src"
+            ],
+            "@microsoft/fast-html/plugins/json.js": [
+                "../src/components/plugins/json/index.ts"
             ]
         }
     },
