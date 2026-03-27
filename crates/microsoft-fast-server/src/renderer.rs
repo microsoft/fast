@@ -6,117 +6,123 @@ pub fn render(template: &str, root: &JsonValue) -> String {
     render_node(template, root, &[])
 }
 
+enum Directive {
+    TripleBrace(usize),
+    DoubleBrace(usize),
+    When(usize),
+    Repeat(usize),
+}
+
+impl Directive {
+    fn position(&self) -> usize {
+        match self {
+            Directive::TripleBrace(p) | Directive::DoubleBrace(p)
+            | Directive::When(p) | Directive::Repeat(p) => *p,
+        }
+    }
+}
+
+fn next_directive(template: &str, from: usize) -> Option<Directive> {
+    let triple = find_str(template, "{{{", from).map(Directive::TripleBrace);
+    // Suppress double-brace when it coincides with a triple-brace
+    let double = find_str(template, "{{", from).and_then(|d| {
+        let shadowed = triple.as_ref().map(|t| t.position() == d).unwrap_or(false);
+        if shadowed { None } else { Some(Directive::DoubleBrace(d)) }
+    });
+    let when = find_directive(template, "<f-when", from).map(Directive::When);
+    let repeat = find_directive(template, "<f-repeat", from).map(Directive::Repeat);
+
+    [triple, double, when, repeat]
+        .into_iter()
+        .flatten()
+        .min_by_key(|d| d.position())
+}
+
 fn render_node(template: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> String {
     let mut result = String::new();
     let mut pos = 0;
-    let bytes = template.as_bytes();
 
-    while pos < template.len() {
-        // Find earliest of: {{{, {{, <f-when, <f-repeat
-        let triple = find_str(template, "{{{", pos);
-        let double = find_str(template, "{{", pos);
-        // Prefer triple over double if at same position
-        let brace_pos = match (triple, double) {
-            (Some(t), Some(d)) => if t <= d { Some((t, true)) } else { Some((d, false)) },
-            (Some(t), None) => Some((t, true)),
-            (None, Some(d)) => Some((d, false)),
-            (None, None) => None,
-        };
-        let when_pos = find_directive(template, "<f-when", pos);
-        let repeat_pos = find_directive(template, "<f-repeat", pos);
-
-        // Find earliest position overall
-        let earliest = [
-            brace_pos.map(|(p, _)| p),
-            when_pos,
-            repeat_pos,
-        ]
-        .iter()
-        .filter_map(|&x| x)
-        .min();
-
-        match earliest {
+    loop {
+        let directive = match next_directive(template, pos) {
             None => {
                 result.push_str(&template[pos..]);
                 break;
             }
-            Some(ep) => {
-                result.push_str(&template[pos..ep]);
-                // Determine which one is earliest
-                let is_brace = brace_pos.map(|(p, _)| p == ep).unwrap_or(false);
-                let is_when = when_pos.map(|p| p == ep).unwrap_or(false);
-                let is_repeat = repeat_pos.map(|p| p == ep).unwrap_or(false);
+            Some(d) => d,
+        };
 
-                if is_brace {
-                    let (p, is_triple) = brace_pos.unwrap();
-                    if is_triple {
-                        // {{{ ... }}}
-                        let start = p + 3;
-                        if let Some(end) = find_str(template, "}}}", start) {
-                            let expr = template[start..end].trim();
-                            let val = resolve_value(expr, root, loop_vars);
-                            result.push_str(&val.map(|v| v.to_display_string()).unwrap_or_default());
-                            pos = end + 3;
-                        } else {
-                            result.push_str("{{{");
-                            pos = p + 3;
-                        }
-                    } else {
-                        // {{ ... }}
-                        let start = p + 2;
-                        if let Some(end) = find_str(template, "}}", start) {
-                            let expr = template[start..end].trim();
-                            let val = resolve_value(expr, root, loop_vars);
-                            result.push_str(&html_escape(&val.map(|v| v.to_display_string()).unwrap_or_default()));
-                            pos = end + 2;
-                        } else {
-                            result.push_str("{{");
-                            pos = p + 2;
-                        }
-                    }
-                } else if is_when && (!is_repeat || when_pos.unwrap() <= repeat_pos.unwrap()) {
-                    let tag_start = ep;
-                    if let Some((inner, after)) = extract_directive_content(template, tag_start, "f-when") {
-                        if let Some(expr) = extract_directive_expr(template, tag_start, "f-when") {
-                            if evaluate(&expr, root, loop_vars) {
-                                result.push_str(&render_node(&inner, root, loop_vars));
-                            }
-                        }
-                        pos = after;
-                    } else {
-                        result.push_str("<f-when");
-                        pos = tag_start + 7;
-                    }
-                } else if is_repeat {
-                    let tag_start = ep;
-                    if let Some((inner, after)) = extract_directive_content(template, tag_start, "f-repeat") {
-                        if let Some(expr) = extract_directive_expr(template, tag_start, "f-repeat") {
-                            // Parse "item in list"
-                            if let Some((var_name, list_expr)) = parse_repeat_expr(&expr) {
-                                let list = resolve_value(&list_expr, root, loop_vars);
-                                if let Some(JsonValue::Array(items)) = list {
-                                    for item in &items {
-                                        let mut new_vars = loop_vars.to_vec();
-                                        new_vars.push((var_name.clone(), item.clone()));
-                                        result.push_str(&render_node(&inner, root, &new_vars));
-                                    }
-                                }
-                            }
-                        }
-                        pos = after;
-                    } else {
-                        result.push_str("<f-repeat");
-                        pos = tag_start + 9;
-                    }
-                } else {
-                    // Shouldn't happen, advance
-                    result.push(bytes[pos] as char);
-                    pos += 1;
-                }
-            }
-        }
+        result.push_str(&template[pos..directive.position()]);
+
+        let (chunk, next_pos) = match directive {
+            Directive::TripleBrace(p) => render_triple_brace(template, p, root, loop_vars),
+            Directive::DoubleBrace(p) => render_double_brace(template, p, root, loop_vars),
+            Directive::When(p)        => render_when(template, p, root, loop_vars),
+            Directive::Repeat(p)      => render_repeat(template, p, root, loop_vars),
+        };
+
+        result.push_str(&chunk);
+        pos = next_pos;
     }
+
     result
+}
+
+fn render_triple_brace(template: &str, at: usize, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> (String, usize) {
+    let start = at + 3;
+    let Some(end) = find_str(template, "}}}", start) else {
+        return ("{{{".to_string(), at + 3);
+    };
+    let output = resolve_value(template[start..end].trim(), root, loop_vars)
+        .map(|v| v.to_display_string())
+        .unwrap_or_default();
+    (output, end + 3)
+}
+
+fn render_double_brace(template: &str, at: usize, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> (String, usize) {
+    let start = at + 2;
+    let Some(end) = find_str(template, "}}", start) else {
+        return ("{{".to_string(), at + 2);
+    };
+    let output = resolve_value(template[start..end].trim(), root, loop_vars)
+        .map(|v| html_escape(&v.to_display_string()))
+        .unwrap_or_default();
+    (output, end + 2)
+}
+
+fn render_when(template: &str, at: usize, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> (String, usize) {
+    let Some((inner, after)) = extract_directive_content(template, at, "f-when") else {
+        return ("<f-when".to_string(), at + 7);
+    };
+    let Some(expr) = extract_directive_expr(template, at) else {
+        return (String::new(), after);
+    };
+    let output = if evaluate(&expr, root, loop_vars) {
+        render_node(&inner, root, loop_vars)
+    } else {
+        String::new()
+    };
+    (output, after)
+}
+
+fn render_repeat(template: &str, at: usize, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> (String, usize) {
+    let Some((inner, after)) = extract_directive_content(template, at, "f-repeat") else {
+        return ("<f-repeat".to_string(), at + 9);
+    };
+    let Some(expr) = extract_directive_expr(template, at) else {
+        return (String::new(), after);
+    };
+    let Some((var_name, list_expr)) = parse_repeat_expr(&expr) else {
+        return (String::new(), after);
+    };
+    let Some(JsonValue::Array(items)) = resolve_value(&list_expr, root, loop_vars) else {
+        return (String::new(), after);
+    };
+    let output = items.iter().map(|item| {
+        let mut new_vars = loop_vars.to_vec();
+        new_vars.push((var_name.clone(), item.clone()));
+        render_node(&inner, root, &new_vars)
+    }).collect();
+    (output, after)
 }
 
 fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
@@ -139,7 +145,7 @@ fn find_directive(template: &str, tag: &str, from: usize) -> Option<usize> {
 }
 
 /// Extract the `value="{{...}}"` expression from a directive tag.
-fn extract_directive_expr(template: &str, tag_start: usize, _tag_name: &str) -> Option<String> {
+fn extract_directive_expr(template: &str, tag_start: usize) -> Option<String> {
     let tag_end = find_tag_end(template, tag_start)?;
     let tag_content = &template[tag_start..tag_end];
     let search = "value=\"{{";
