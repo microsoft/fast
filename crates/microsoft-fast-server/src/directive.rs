@@ -1,8 +1,11 @@
 use crate::json::JsonValue;
 use crate::context::resolve_value;
 use crate::expression::evaluate;
-use crate::attribute::{find_str, find_directive, extract_directive_expr, extract_directive_content,
-                       find_single_brace, skip_single_brace_expr};
+use crate::attribute::{
+    find_str, find_directive, extract_directive_expr, extract_directive_content,
+    find_single_brace, skip_single_brace_expr,
+};
+use crate::error::{RenderError, template_context};
 use crate::node::render_node;
 
 /// A template directive found at a given byte position.
@@ -65,19 +68,23 @@ pub fn render_when(
     at: usize,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
-) -> (String, usize) {
-    let Some((inner, after)) = extract_directive_content(template, at, "f-when") else {
-        return ("<f-when".to_string(), at + 7);
-    };
-    let Some(expr) = extract_directive_expr(template, at) else {
-        return (String::new(), after);
-    };
+) -> Result<(String, usize), RenderError> {
+    let (inner, after) = extract_directive_content(template, at, "f-when")
+        .ok_or_else(|| RenderError::UnclosedDirective {
+            tag: "f-when".to_string(),
+            context: template_context(template, at),
+        })?;
+    let expr = extract_directive_expr(template, at)
+        .ok_or_else(|| RenderError::MissingValueAttribute {
+            tag: "f-when".to_string(),
+            context: template_context(template, at),
+        })?;
     let output = if evaluate(&expr, root, loop_vars) {
-        render_node(&inner, root, loop_vars)
+        render_node(&inner, root, loop_vars)?
     } else {
         String::new()
     };
-    (output, after)
+    Ok((output, after))
 }
 
 /// Render an `<f-repeat>` directive.
@@ -86,34 +93,49 @@ pub fn render_repeat(
     at: usize,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
-) -> (String, usize) {
-    let Some((inner, after)) = extract_directive_content(template, at, "f-repeat") else {
-        return ("<f-repeat".to_string(), at + 9);
-    };
-    let Some(expr) = extract_directive_expr(template, at) else {
-        return (String::new(), after);
-    };
-    let Some((var_name, list_expr)) = parse_repeat_expr(&expr) else {
-        return (String::new(), after);
-    };
-    let Some(JsonValue::Array(items)) = resolve_value(&list_expr, root, loop_vars) else {
-        return (String::new(), after);
-    };
-    let output = items
-        .iter()
-        .map(|item| {
-            let mut new_vars = loop_vars.to_vec();
-            new_vars.push((var_name.clone(), item.clone()));
-            render_node(&inner, root, &new_vars)
-        })
-        .collect();
-    (output, after)
+) -> Result<(String, usize), RenderError> {
+    let (inner, after) = extract_directive_content(template, at, "f-repeat")
+        .ok_or_else(|| RenderError::UnclosedDirective {
+            tag: "f-repeat".to_string(),
+            context: template_context(template, at),
+        })?;
+    let expr = extract_directive_expr(template, at)
+        .ok_or_else(|| RenderError::MissingValueAttribute {
+            tag: "f-repeat".to_string(),
+            context: template_context(template, at),
+        })?;
+    let (var_name, list_expr) = parse_repeat_expr(&expr)
+        .ok_or_else(|| RenderError::InvalidRepeatExpression {
+            expr: expr.clone(),
+            context: template_context(template, at),
+        })?;
+    match resolve_value(&list_expr, root, loop_vars) {
+        None => Err(RenderError::MissingState {
+            binding: list_expr,
+            context: template_context(template, at),
+        }),
+        Some(JsonValue::Array(items)) => {
+            let output = items
+                .iter()
+                .map(|item| {
+                    let mut new_vars = loop_vars.to_vec();
+                    new_vars.push((var_name.clone(), item.clone()));
+                    render_node(&inner, root, &new_vars)
+                })
+                .collect::<Result<String, _>>()?;
+            Ok((output, after))
+        }
+        Some(_) => Err(RenderError::NotAnArray {
+            binding: list_expr,
+            context: template_context(template, at),
+        }),
+    }
 }
 
 /// Parse `"item in list"` into `("item", "list")`.
 fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
     let parts: Vec<&str> = expr.trim().splitn(3, ' ').collect();
-    if parts.len() == 3 && parts[1] == "in" {
+    if parts.len() == 3 && parts[1] == "in" && !parts[0].is_empty() && !parts[2].is_empty() {
         Some((parts[0].to_string(), parts[2].to_string()))
     } else {
         None
