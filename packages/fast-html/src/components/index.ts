@@ -11,4 +11,4 @@ export {
     ViewTemplateConverter,
     type TemplateConverterPlugin,
     type TemplateConverterResult,
-} from "./view-template-converter.js";
+} from "./converter.js";

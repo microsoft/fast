@@ -27,11 +27,11 @@
  * ```
  *
  * See `src/view-template-schema.json` for the full JSON schema and
- * `src/view-template-examples/` for usage examples covering binding, events,
+ * `src/fixtures/json/` for usage examples covering binding, events,
  * when, repeat, ref, slotted, and more.
  */
 
-import type { TemplateConverterPlugin, TemplateConverterResult } from "../../view-template-converter.js";
+import type { TemplateConverterPlugin, TemplateConverterResult } from "../../converter.js";
 import { processNodes } from "./node-processors.js";
 import type { ViewTemplateJSON } from "./types.js";
 

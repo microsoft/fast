@@ -183,7 +183,7 @@ For `"event"`, the optional `argument` field controls what is passed to the hand
 
 ### Examples
 
-See `src/view-template-examples/` for JSON files covering each scenario:
+See `src/fixtures/json/` for JSON files covering each scenario:
 
 | File                | Scenario                          |
 |---------------------|-----------------------------------|
