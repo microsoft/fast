@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 00:04:08 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6b0fd6c4a4b0c635d4e5c18d251b28abbf32bab5",
+            "comment": "chore: migrate to biome for linting and formatting"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "11227f6085b9aa2a3048c70427867a1f8d2f6873",
+            "comment": "chore: replace old clean script with new implementation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ea46496f56cd94cb0dae65b7026998c88604aaac",
+            "comment": "chore: fix publish blocker due to biome"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 20 Mar 2026 00:07:36 GMT",
       "version": "2.10.2",
       "tag": "@microsoft/fast-element_v2.10.2",

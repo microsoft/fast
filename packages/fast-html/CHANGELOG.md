@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 24 Mar 2026 00:08:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 26 Mar 2026 00:04:08 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.42
+
+Thu, 26 Mar 2026 00:04:08 GMT
+
+### Changes
+
+- Add expression logic to boolean attribute (7559015+janechu@users.noreply.github.com)
+- fix: refactor naming for binding syntax and add a test for tag collisions (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.41
 
