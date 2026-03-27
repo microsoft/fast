@@ -4,7 +4,10 @@ import { debugMessages } from "./debug.js";
 FAST.addMessages(debugMessages);
 
 export {
-    RenderableFASTElement,
-    TemplateElement,
     ObserverMap,
+    RenderableFASTElement,
+    type TemplateConverterPlugin,
+    type TemplateConverterResult,
+    TemplateElement,
+    ViewTemplateConverter,
 } from "./components/index.js";
