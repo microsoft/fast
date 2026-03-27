@@ -8,6 +8,7 @@ import { Constructable } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { HydrationControllerCallbacks } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export class ObserverMap {
@@ -21,6 +22,17 @@ export class ObserverMap {
 export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
 
 // @public
+export interface TemplateConverterPlugin<TInput> {
+    convert(input: TInput): TemplateConverterResult;
+}
+
+// @public
+export interface TemplateConverterResult {
+    strings: string[];
+    values: any[];
+}
+
+// @public
 export class TemplateElement extends FASTElement {
     constructor();
     // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
@@ -31,6 +43,12 @@ export class TemplateElement extends FASTElement {
     static elementOptions: ElementOptionsDictionary;
     name?: string;
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
+}
+
+// @public
+export class ViewTemplateConverter<TInput, TSource = any> {
+    constructor(plugin: TemplateConverterPlugin<TInput>);
+    create(input: TInput): ViewTemplate<TSource>;
 }
 
 // (No @packageDocumentation comment for this package)
