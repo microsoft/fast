@@ -21,6 +21,10 @@ pub enum RenderError {
     NotAnArray { binding: String, context: String },
     /// The state string passed to `render_template` is not valid JSON.
     JsonParse { message: String },
+    /// Two or more template files resolve to the same element name.
+    DuplicateTemplate { element: String, paths: Vec<String> },
+    /// A template file could not be read from the filesystem.
+    TemplateReadError { path: String, message: String },
 }
 
 impl fmt::Display for RenderError {
@@ -78,6 +82,15 @@ impl fmt::Display for RenderError {
             Self::JsonParse { message } => write!(
                 f,
                 "failed to parse state JSON: {message}"
+            ),
+            Self::DuplicateTemplate { element, paths } => write!(
+                f,
+                "duplicate template: element '<{element}>' is defined in multiple files: {}",
+                paths.join(", ")
+            ),
+            Self::TemplateReadError { path, message } => write!(
+                f,
+                "template read error: could not read '{path}': {message}"
             ),
         }
     }

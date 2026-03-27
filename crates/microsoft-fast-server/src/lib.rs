@@ -7,9 +7,11 @@ mod directive;
 mod node;
 mod renderer;
 mod error;
+mod locator;
 
 pub use json::{JsonValue, JsonError};
 pub use error::RenderError;
+pub use locator::Locator;
 
 /// Render a FAST HTML template with a JSON state string.
 pub fn render_template(template: &str, state: &str) -> Result<String, RenderError> {
@@ -20,4 +22,15 @@ pub fn render_template(template: &str, state: &str) -> Result<String, RenderErro
 /// Render a FAST HTML template with a parsed [`JsonValue`].
 pub fn render(template: &str, state: &JsonValue) -> Result<String, RenderError> {
     renderer::render(template, state)
+}
+
+/// Render a FAST HTML template with a parsed [`JsonValue`] and a [`Locator`] for custom elements.
+pub fn render_with_locator(template: &str, state: &JsonValue, locator: &Locator) -> Result<String, RenderError> {
+    renderer::render_with_locator(template, state, locator)
+}
+
+/// Render a FAST HTML template with a JSON state string and a [`Locator`] for custom elements.
+pub fn render_template_with_locator(template: &str, state: &str, locator: &Locator) -> Result<String, RenderError> {
+    let state_value = json::parse(state).map_err(|e| RenderError::JsonParse { message: e.message })?;
+    renderer::render_with_locator(template, &state_value, locator)
 }

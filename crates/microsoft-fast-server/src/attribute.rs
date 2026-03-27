@@ -132,3 +132,166 @@ pub fn extract_directive_content(
         }
     }
 }
+
+/// Read the tag name from a `<` position. Returns None for closing tags (`</...>`).
+pub fn read_tag_name(template: &str, lt_pos: usize) -> Option<String> {
+    let bytes = template.as_bytes();
+    let mut i = lt_pos;
+
+    if i >= bytes.len() || bytes[i] != b'<' {
+        return None;
+    }
+    i += 1;
+
+    // Closing tags start with `/` — skip them.
+    if i < bytes.len() && bytes[i] == b'/' {
+        return None;
+    }
+
+    // Skip any leading whitespace (unusual but defensive).
+    while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+        i += 1;
+    }
+
+    let name_start = i;
+    while i < bytes.len()
+        && !bytes[i].is_ascii_whitespace()
+        && bytes[i] != b'>'
+        && bytes[i] != b'/'
+    {
+        i += 1;
+    }
+
+    if i == name_start {
+        return None;
+    }
+    Some(template[name_start..i].to_string())
+}
+
+/// Return true if `tag_name` is a custom element (contains a hyphen and is not a FAST directive).
+pub fn is_custom_element(tag_name: &str) -> bool {
+    tag_name.contains('-') && tag_name != "f-when" && tag_name != "f-repeat"
+}
+
+/// Find the position of the next opening tag of a custom element that has a template in `locator`.
+/// Scans `template[from..]` for `<`, reads the next word, and checks both `is_custom_element`
+/// and `locator.has_template`. Skips closing tags and non-custom elements.
+pub fn find_custom_element(
+    template: &str,
+    from: usize,
+    locator: &crate::locator::Locator,
+) -> Option<usize> {
+    let mut i = from;
+    while i < template.len() {
+        match template[i..].find('<') {
+            None => break,
+            Some(rel) => {
+                let lt_pos = i + rel;
+                if let Some(name) = read_tag_name(template, lt_pos) {
+                    if is_custom_element(&name) && locator.has_template(&name) {
+                        return Some(lt_pos);
+                    }
+                }
+                i = lt_pos + 1;
+            }
+        }
+    }
+    None
+}
+
+/// Parse all attributes from an opening tag string (e.g. `<my-button label="Hi" disabled>`).
+/// Returns `(attribute_name, Option<value>)` — `None` value means boolean attribute.
+/// Handles double-quoted, single-quoted, and unquoted values.
+pub fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<String>)> {
+    let mut attrs = Vec::new();
+    let bytes = open_tag.as_bytes();
+    let mut i = 0;
+
+    // Skip `<`
+    if i < bytes.len() && bytes[i] == b'<' {
+        i += 1;
+    }
+
+    // Skip tag name (first word).
+    while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' && bytes[i] != b'/' {
+        i += 1;
+    }
+
+    loop {
+        // Skip whitespace.
+        while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+            i += 1;
+        }
+
+        if i >= bytes.len() || bytes[i] == b'>' || bytes[i] == b'/' {
+            break;
+        }
+
+        // Read attribute name.
+        let name_start = i;
+        while i < bytes.len()
+            && bytes[i] != b'='
+            && !bytes[i].is_ascii_whitespace()
+            && bytes[i] != b'>'
+            && bytes[i] != b'/'
+        {
+            i += 1;
+        }
+        let name = open_tag[name_start..i].to_string();
+
+        if name.is_empty() {
+            // Safety: advance to prevent an infinite loop on unexpected chars.
+            i += 1;
+            continue;
+        }
+
+        // Skip whitespace before potential `=`.
+        while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+            i += 1;
+        }
+
+        if i >= bytes.len() || bytes[i] != b'=' {
+            // Boolean attribute — no value.
+            attrs.push((name, None));
+            continue;
+        }
+
+        // Skip `=`.
+        i += 1;
+
+        // Skip whitespace after `=`.
+        while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+            i += 1;
+        }
+
+        // Read value.
+        let value = if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
+            let quote = bytes[i];
+            i += 1;
+            let value_start = i;
+            while i < bytes.len() && bytes[i] != quote {
+                i += 1;
+            }
+            let val = open_tag[value_start..i].to_string();
+            if i < bytes.len() {
+                i += 1; // skip closing quote
+            }
+            val
+        } else {
+            // Unquoted value.
+            let value_start = i;
+            while i < bytes.len()
+                && !bytes[i].is_ascii_whitespace()
+                && bytes[i] != b'>'
+                && bytes[i] != b'/'
+            {
+                i += 1;
+            }
+            open_tag[value_start..i].to_string()
+        };
+
+        attrs.push((name, Some(value)));
+    }
+
+    attrs
+}
