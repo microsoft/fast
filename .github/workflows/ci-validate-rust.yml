@@ -1,5 +1,8 @@
 name: Validate Rust crates
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
   push:
