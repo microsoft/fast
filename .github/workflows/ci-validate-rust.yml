@@ -9,15 +9,11 @@ on:
     branches:
     - main
     - releases/*
-    paths:
-    - 'crates/**'
   pull_request:
     branches:
     - main
     - releases/*
     - features/*
-    paths:
-    - 'crates/**'
 
 jobs:
   test_rust:
