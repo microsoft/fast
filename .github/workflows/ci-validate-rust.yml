@@ -1,0 +1,35 @@
+name: Validate Rust crates
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+    - releases/*
+    paths:
+    - 'crates/**'
+  pull_request:
+    branches:
+    - main
+    - releases/*
+    - features/*
+    paths:
+    - 'crates/**'
+
+jobs:
+  test_rust:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust stable toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Cache Rust build artifacts
+      uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: crates/microsoft-fast-build
+
+    - name: Run Rust tests
+      run: cargo test --manifest-path crates/microsoft-fast-build/Cargo.toml
