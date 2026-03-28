@@ -4,11 +4,19 @@ A server-side renderer for [FAST](https://www.fast.design/) declarative HTML tem
 
 It takes FAST declarative HTML template syntax and a JSON state object, resolves bindings, evaluates conditionals, iterates repeats, and renders custom elements — producing static HTML ready to be served.
 
-## Adding as a Dependency
+## Installation
+
+Add the crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-microsoft-fast-build = { path = "../path/to/crates/microsoft-fast-build" }
+microsoft-fast-build = "0.1"
+```
+
+Or use `cargo add`:
+
+```sh
+cargo add microsoft-fast-build
 ```
 
 ## Usage
