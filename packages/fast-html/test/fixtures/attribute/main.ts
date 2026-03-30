@@ -1,5 +1,5 @@
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-import { attr, FASTElement } from "@microsoft/fast-element";
 
 class TestElement extends FASTElement {
     @attr
@@ -7,6 +7,15 @@ class TestElement extends FASTElement {
 }
 RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",
+    templateOptions: "defer-and-hydrate",
+});
+
+class TestElementProperty extends FASTElement {
+    @observable
+    isEnabled: boolean = false;
+}
+RenderableFASTElement(TestElementProperty).defineAsync({
+    name: "test-element-property",
     templateOptions: "defer-and-hydrate",
 });
 
