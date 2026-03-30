@@ -24,4 +24,27 @@ test.describe("f-template", async () => {
         await expect(customElement).toHaveAttribute("type", "radio");
         await expect(customElement.locator("input[type='radio']")).toHaveCount(1);
     });
+    test("create a negated boolean attribute binding", async ({ page }) => {
+        await page.goto("/fixtures/attribute/");
+
+        const el = page.locator("bool-negate-element");
+        const input = el.locator("input");
+
+        // isEnabled defaults to true, so !isEnabled = false → disabled absent
+        await expect(input).not.toHaveAttribute("disabled");
+
+        // Set isEnabled to false → !isEnabled = true → disabled present
+        await page.evaluate(() => {
+            const el = document.querySelector("bool-negate-element") as any;
+            el.isEnabled = false;
+        });
+        await expect(input).toHaveAttribute("disabled");
+
+        // Set isEnabled back to true → !isEnabled = false → disabled removed
+        await page.evaluate(() => {
+            const el = document.querySelector("bool-negate-element") as any;
+            el.isEnabled = true;
+        });
+        await expect(input).not.toHaveAttribute("disabled");
+    });
 });
