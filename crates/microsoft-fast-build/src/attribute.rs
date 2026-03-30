@@ -199,6 +199,126 @@ pub fn find_custom_element(
     None
 }
 
+// ── Hydration helpers ────────────────────────────────────────────────────────
+
+/// Count attribute bindings in an opening tag:
+/// - `attr="{{expr}}"` → double-brace binding
+/// - `attr="{expr}"` (single brace, not `{{`) → single-brace client binding
+/// Returns `(double_brace_count, single_brace_count)`.
+pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
+    let attrs = parse_element_attributes(tag);
+    let mut db = 0usize;
+    let mut sb = 0usize;
+    for (_name, value) in attrs {
+        if let Some(v) = value {
+            if v.contains("{{") {
+                db += 1;
+            } else if v.starts_with('{') && v.ends_with('}') {
+                sb += 1;
+            }
+        }
+    }
+    (db, sb)
+}
+
+/// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
+/// single-brace values and all other content unchanged.
+pub fn resolve_attribute_bindings_in_tag(
+    tag: &str,
+    root: &crate::json::JsonValue,
+    loop_vars: &[(String, crate::json::JsonValue)],
+) -> String {
+    use crate::context::resolve_value;
+    use crate::content::html_escape;
+    let mut result = String::new();
+    let mut pos = 0usize;
+    while pos < tag.len() {
+        match find_str(tag, "{{", pos) {
+            None => {
+                result.push_str(&tag[pos..]);
+                break;
+            }
+            Some(dbl) => {
+                result.push_str(&tag[pos..dbl]);
+                let inner_start = dbl + 2;
+                match find_str(tag, "}}", inner_start) {
+                    None => {
+                        result.push_str(&tag[dbl..]);
+                        break;
+                    }
+                    Some(end) => {
+                        let expr = tag[inner_start..end].trim();
+                        let val = resolve_value(expr, root, loop_vars)
+                            .map(|v| html_escape(&v.to_display_string()))
+                            .unwrap_or_default();
+                        result.push_str(&val);
+                        pos = end + 2;
+                    }
+                }
+            }
+        }
+    }
+    result
+}
+
+/// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
+pub fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
+    let marker = format!(" data-fe-c-{}-{}", start_idx, count);
+    let trimmed = tag.trim_end();
+    if trimmed.ends_with("/>") {
+        let base = trimmed[..trimmed.len() - 2].trim_end();
+        format!("{}{} />", base, marker)
+    } else if trimmed.ends_with('>') {
+        format!("{}{}>", &trimmed[..trimmed.len() - 1], marker)
+    } else {
+        format!("{}{}", tag, marker)
+    }
+}
+
+/// Find the next opening HTML tag in `template[from..]`, skipping:
+/// - Closing tags (`</`)
+/// - Comments / declarations (`<!`)
+/// - FAST directive tags (`<f-...`)
+/// - Known custom elements with templates in `locator`
+pub fn find_next_plain_html_tag(
+    template: &str,
+    from: usize,
+    locator: Option<&crate::locator::Locator>,
+) -> Option<usize> {
+    let mut i = from;
+    while i < template.len() {
+        match template[i..].find('<') {
+            None => return None,
+            Some(rel) => {
+                let lt_pos = i + rel;
+                let after = lt_pos + 1;
+                if after >= template.len() {
+                    return None;
+                }
+                match template.as_bytes()[after] {
+                    b'/' | b'!' => { i = lt_pos + 1; continue; }
+                    _ => {}
+                }
+                if let Some(name) = read_tag_name(template, lt_pos) {
+                    if name.starts_with("f-") {
+                        i = lt_pos + 1;
+                        continue;
+                    }
+                    if let Some(loc) = locator {
+                        if is_custom_element(&name) && loc.has_template(&name) {
+                            i = lt_pos + 1;
+                            continue;
+                        }
+                    }
+                    return Some(lt_pos);
+                }
+                i = lt_pos + 1;
+            }
+        }
+    }
+    None
+}
+
 /// Parse all attributes from an opening tag string (e.g. `<my-button label="Hi" disabled>`).
 /// Returns `(attribute_name, Option<value>)` — `None` value means boolean attribute.
 /// Handles double-quoted, single-quoted, and unquoted values.
