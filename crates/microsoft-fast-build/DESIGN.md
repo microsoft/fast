@@ -18,7 +18,10 @@ render_template(template, state_str)
   renderer::render(template, root) ─────────────────────────────────────┐
         │                                                                │
         ▼                                                                │
-  node::render_node(template, root, loop_vars, locator)                 │
+  node::render_node(template, root, loop_vars, locator, hydration?)     │
+        │                                                                │
+        ├─ [hydration mode] scan HTML opening tags for attr bindings     │
+        │        └─ inject data-fe-c-{n}-{count} compact markers        │
         │                                                                │
         ├─ scan forward: next_directive()                                │
         │        │                                                       │
@@ -26,7 +29,7 @@ render_template(template, state_str)
         │        ├─ DoubleBrace  → content::render_double_brace()       │
         │        ├─ When         → directive::render_when()  ───────────┘ (recurse)
         │        ├─ Repeat       → directive::render_repeat() ──────────┘ (recurse per item)
-        │        └─ CustomElement→ directive::render_custom_element() ──┘ (recurse with child state)
+        │        └─ CustomElement→ directive::render_custom_element() ──┘ (recurse with fresh HydrationScope)
         │
         └─ Append literal prefix + resolved chunk → output string
 ```
@@ -39,12 +42,13 @@ render_template(template, state_str)
 |--------|------|
 | `lib.rs` | Public API surface — four `pub fn`s and three `pub use` re-exports |
 | `renderer.rs` | Thin entry points converting the public API into `render_node` calls |
-| `node.rs` | The main rendering loop — scans for the next directive and dispatches |
+| `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
-| `attribute.rs` | Low-level HTML/attribute string parsing utilities |
+| `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
+| `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
@@ -53,20 +57,21 @@ render_template(template, state_str)
 
 ## The rendering loop — `node.rs`
 
-`render_node` is the core of the crate. It is called recursively for nested directives and custom element templates.
+`render_node` is the core of the crate. It is called recursively for nested directives and custom element templates. Its signature:
 
 ```
-fn render_node(template, root, loop_vars, locator) → Result<String>
+fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>) → Result<String>
 ```
 
 The loop works like a cursor:
 
-1. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
-2. If nothing is found, append `template[pos..]` to output and break.
-3. Otherwise, append the literal text from `pos` up to the directive's start.
-4. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`).
-5. Append `chunk` and advance `pos` to `next_pos`.
-6. Repeat.
+1. **Hydration tag scan** (when `hydration` is `Some`): before each directive, scan for any plain HTML opening tags in the literal region that precede the directive position. For each such tag, detect `{{expr}}` and `{expr}` attribute bindings, allocate binding indices, resolve `{{expr}}` values, and inject a compact `data-fe-c-{start}-{count}` attribute. This step advances `pos` past each processed tag so those tags' `{{expr}}` bindings are not re-encountered as content directives.
+2. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
+3. If nothing is found, append `template[pos..]` to output and break.
+4. Otherwise, append the literal text from `pos` up to the directive's start.
+5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe-b$$start$$N$$UUID$$fe-b-->VALUE<!--fe-b$$end$$...-->` markers.
+6. Append `chunk` and advance `pos` to `next_pos`.
+7. Repeat.
 
 All handlers return `Result<(String, usize), RenderError>`. The `usize` is the byte position in the original template that the handler consumed up to — the cursor's next position.
 
@@ -205,17 +210,88 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - Numeric string → `Number(f64)`
    - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
    - Anything else → `String`
-5. **Render the shadow template** by calling `render_node` recursively with the child state as root. The `Locator` is threaded through so nested custom elements are expanded too.
+5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Emit Declarative Shadow DOM**:
+7. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
-     <template shadowrootmode="open">[shadow DOM]</template>
+     <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
      [light DOM children]
    </my-button>
    ```
+   When the element itself has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
 If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
+
+---
+
+## Hydration markers — `hydration.rs`
+
+When rendering a custom element's shadow DOM, the renderer tracks **binding indices** and emits **named markers** so the FAST client runtime can efficiently locate and patch DOM nodes during hydration.
+
+### Scopes
+
+A **template scope** is a `HydrationScope` that carries a single field:
+- `binding_idx: usize` — the next binding index to allocate (increments for each binding in this scope)
+
+Scope boundaries are:
+| Context | Scope |
+|---|---|
+| Custom element shadow template | Fresh `HydrationScope` (binding_idx = 0) |
+| `f-when` truthy body | Child scope via `hy.child()` (binding_idx reset to 0) |
+| `f-repeat` item template | Fresh `HydrationScope` per item (binding_idx reset to 0) |
+
+Scopes carry no numeric ID. Marker names are derived from the binding context (see below) and are therefore self-describing.
+
+### Content binding markers
+
+When `hydration` is `Some`, `render_node` wraps each `{{expr}}` / `{{{expr}}}` result:
+
+```
+<!--fe-b$$start$$N$$<expr>-N$$fe-b-->VALUE<!--fe-b$$end$$N$$<expr>-N$$fe-b-->
+```
+
+`N` is the current `binding_idx` from the scope; `<expr>` is the expression text (e.g. `title`, `item.name`, `$index`). So `{{title}}` at index 0 produces marker name `title-0`, and `{{item.name}}` at index 2 produces `item.name-2`.
+
+### Attribute binding markers (compact format)
+
+Plain HTML opening tags in the literal regions are scanned by `attribute::find_next_plain_html_tag` **before** `next_directive` processes them. For each tag that has `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
+
+1. `count_tag_attribute_bindings` counts both types.
+2. The current `binding_idx` is recorded as `start`, and advanced by the total count.
+3. `resolve_attribute_bindings_in_tag` substitutes `{{expr}}` attribute values with their resolved HTML-escaped values; `{expr}` single-brace values are left unchanged (they are client-side bindings).
+4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
+
+This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
+
+### `f-when` markers
+
+```
+<!--fe-b$$start$$N$$when-N$$fe-b-->
+[inner content in child scope, or empty if falsy]
+<!--fe-b$$end$$N$$when-N$$fe-b-->
+```
+
+`N` is allocated from the outer (parent) scope's `binding_idx`. The marker name is `when-N`.
+
+### `f-repeat` markers
+
+```
+<!--fe-b$$start$$N$$repeat-N$$fe-b-->
+<!--fe-repeat$$start$$0$$fe-repeat-->
+  [item 0 rendered with fresh binding_idx = 0]
+<!--fe-repeat$$end$$0$$fe-repeat-->
+<!--fe-repeat$$start$$1$$fe-repeat-->
+  [item 1 rendered with fresh binding_idx = 0]
+<!--fe-repeat$$end$$1$$fe-repeat-->
+<!--fe-b$$end$$N$$repeat-N$$fe-b-->
+```
+
+The outer markers use `repeat-N` where `N` is the binding index in the parent scope. Each item gets its own fresh `HydrationScope`, so per-item content bindings are named after their expressions (e.g. `item-0`, `item.name-1`).
+
+### `$index` in `f-repeat`
+
+Each iteration pushes `("$index", JsonValue::Number(i as f64))` into `loop_vars`, making `{{$index}}` available in repeat templates in both hydration and non-hydration modes.
 
 ---
 
@@ -290,6 +366,12 @@ A hand-rolled recursive-descent parser. No external crates.
 **Recursive rendering via `render_node`.** Instead of special-casing nesting, `render_when`, `render_repeat`, and `render_custom_element` all call `render_node` recursively on their inner content. This means the full template feature set is available inside any directive or custom element at any depth.
 
 **`Option<&Locator>` threading.** The locator is an optional parameter on all internal functions. Passing `None` disables custom element expansion entirely, preserving backward compatibility for callers that use `render` / `render_template`.
+
+**`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
+
+**Named hydration markers.** Marker names are derived from the binding context: content bindings use `<expr>-<idx>` (e.g. `title-0`, `item.name-2`), f-when uses `when-<idx>`, and f-repeat uses `repeat-<idx>`. This makes markers human-readable and self-describing without a shared ID counter. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`. The scheme differs from the FAST HTML package which uses random alphanumeric UUIDs, but the structure is equivalent.
+
+**Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe-c` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
 **`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` without any silent failures. The one deliberate choice: missing state keys return `RenderError::MissingState` rather than an empty string, so template bugs surface early.
 

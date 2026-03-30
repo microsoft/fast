@@ -4,6 +4,7 @@ mod expression;
 mod attribute;
 mod content;
 mod directive;
+mod hydration;
 mod node;
 mod renderer;
 mod error;
