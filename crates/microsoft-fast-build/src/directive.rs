@@ -5,10 +5,12 @@ use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
+    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
 use crate::locator::Locator;
+use crate::hydration::HydrationScope;
 
 /// A template directive found at a given byte position.
 pub enum Directive {
@@ -74,6 +76,7 @@ pub fn render_when(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
+    hydration: Option<&mut HydrationScope>,
 ) -> Result<(String, usize), RenderError> {
     let (inner, after) = extract_directive_content(template, at, "f-when")
         .ok_or_else(|| RenderError::UnclosedDirective {
@@ -85,11 +88,27 @@ pub fn render_when(
             tag: "f-when".to_string(),
             context: template_context(template, at),
         })?;
-    let output = if evaluate(&expr, root, loop_vars) {
-        render_node(&inner, root, loop_vars, locator)?
+
+    let output = if let Some(hy) = hydration {
+        let idx = hy.next_binding();
+        let name = format!("when-{}", idx);
+        let start = hy.start_marker(idx, &name);
+        let end = hy.end_marker(idx, &name);
+        let inner_content = if evaluate(&expr, root, loop_vars) {
+            let mut child_scope = hy.child();
+            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope))?
+        } else {
+            String::new()
+        };
+        format!("{}{}{}", start, inner_content, end)
     } else {
-        String::new()
+        if evaluate(&expr, root, loop_vars) {
+            render_node(&inner, root, loop_vars, locator, None)?
+        } else {
+            String::new()
+        }
     };
+
     Ok((output, after))
 }
 
@@ -100,6 +119,7 @@ pub fn render_repeat(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
+    hydration: Option<&mut HydrationScope>,
 ) -> Result<(String, usize), RenderError> {
     let (inner, after) = extract_directive_content(template, at, "f-repeat")
         .ok_or_else(|| RenderError::UnclosedDirective {
@@ -122,14 +142,34 @@ pub fn render_repeat(
             context: template_context(template, at),
         }),
         Some(JsonValue::Array(items)) => {
-            let output = items
-                .iter()
-                .map(|item| {
+            let output = if let Some(hy) = hydration {
+                let outer_idx = hy.next_binding();
+                let outer_name = format!("repeat-{}", outer_idx);
+                let outer_start = hy.start_marker(outer_idx, &outer_name);
+                let outer_end = hy.end_marker(outer_idx, &outer_name);
+                let mut items_parts: Vec<String> = Vec::with_capacity(items.len());
+                for (i, item) in items.iter().enumerate() {
                     let mut new_vars = loop_vars.to_vec();
                     new_vars.push((var_name.clone(), item.clone()));
-                    render_node(&inner, root, &new_vars, locator)
-                })
-                .collect::<Result<String, _>>()?;
+                    new_vars.push(("$index".to_string(), JsonValue::Number(i as f64)));
+                    let mut item_scope = HydrationScope::new();
+                    let rendered = render_node(&inner, root, &new_vars, locator, Some(&mut item_scope))?;
+                    items_parts.push(format!(
+                        "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
+                        i, rendered, i
+                    ));
+                }
+                format!("{}{}{}", outer_start, items_parts.concat(), outer_end)
+            } else {
+                items.iter().enumerate()
+                    .map(|(i, item)| {
+                        let mut new_vars = loop_vars.to_vec();
+                        new_vars.push((var_name.clone(), item.clone()));
+                        new_vars.push(("$index".to_string(), JsonValue::Number(i as f64)));
+                        render_node(&inner, root, &new_vars, locator, None)
+                    })
+                    .collect::<Result<String, _>>()?
+            };
             Ok((output, after))
         }
         Some(_) => Err(RenderError::NotAnArray {
@@ -152,15 +192,20 @@ fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 /// Render a custom element by expanding its shadow DOM template.
 ///
 /// Output format:
-///   `<original-open-tag><template shadowrootmode="open">{rendered}</template>{children}</tag-name>`
+///   `<original-open-tag>
+///    <template shadowrootmode="open" shadowroot="open">{rendered}</template>
+///    {children}</{tag-name}>`
 ///
 /// For self-closing elements (`<my-button />`), the element is emitted as non-self-closing.
+/// When `parent_hydration` is Some, attribute bindings on the element tag are counted
+/// and `data-fe-c-{start}-{count}` is added to the opening tag.
 pub fn render_custom_element(
     template: &str,
     at: usize,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     locator: &Locator,
+    parent_hydration: Option<&mut HydrationScope>,
 ) -> Result<(String, usize), RenderError> {
     // Find the end of the opening tag.
     let tag_end = find_tag_end(template, at).ok_or_else(|| RenderError::UnclosedDirective {
@@ -175,23 +220,21 @@ pub fn render_custom_element(
     let before_gt = open_tag_content[..open_tag_content.len() - 1].trim_end();
     let is_self_closing = before_gt.ends_with('/');
 
-    // Build the non-self-closing version of the opening tag.
-    let open_tag = if is_self_closing {
-        let without_slash = before_gt[..before_gt.len() - 1].trim_end();
-        format!("{}>", without_slash)
+    // Build the non-self-closing base (no trailing > yet).
+    let open_tag_base = if is_self_closing {
+        before_gt[..before_gt.len() - 1].trim_end().to_string()
     } else {
-        open_tag_content.to_string()
+        open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
     // Parse attributes and build child state.
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
-    for (attr_name, value) in attrs {
+    for (attr_name, value) in &attrs {
         let json_val = match value {
             None => JsonValue::Bool(true), // boolean attribute
             Some(v) => {
                 if v.starts_with("{{") && v.ends_with("}}") {
-                    // Property binding: resolve the expression from the parent state.
                     let binding = v[2..v.len() - 2].trim();
                     resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null)
                 } else if v == "true" {
@@ -201,17 +244,38 @@ pub fn render_custom_element(
                 } else if let Ok(n) = v.parse::<f64>() {
                     JsonValue::Number(n)
                 } else {
-                    JsonValue::String(v)
+                    JsonValue::String(v.clone())
                 }
             }
         };
-        state_map.insert(attr_name, json_val);
+        state_map.insert(attr_name.clone(), json_val);
     }
     let child_root = JsonValue::Object(state_map);
 
-    // Render the element's shadow DOM template with the child state.
+    // Render the shadow DOM template with a fresh hydration scope.
+    let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, &child_root, &[], Some(locator))?;
+    let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope))?;
+
+    // Count attribute bindings on this element (for the parent scope marker).
+    let (db, sb) = count_tag_attribute_bindings(open_tag_content);
+    let total_attr = db + sb;
+
+    // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
+    let element_open = if let Some(hy) = parent_hydration {
+        if total_attr > 0 {
+            let start_idx = hy.binding_idx;
+            hy.binding_idx += total_attr;
+            // Resolve {{expr}} attribute values.
+            let resolved_base = resolve_attribute_bindings_in_tag(&open_tag_base, root, loop_vars);
+            format!("{} data-fe-c-{}-{}>",
+                resolved_base, start_idx, total_attr)
+        } else {
+            format!("{}>", open_tag_base)
+        }
+    } else {
+        format!("{}>", open_tag_base)
+    };
 
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
@@ -225,8 +289,8 @@ pub fn render_custom_element(
     };
 
     let output = format!(
-        "{}<template shadowrootmode=\"open\">{}</template>{}</{}>",
-        open_tag, rendered, children, tag_name
+        "{}<template shadowrootmode=\"open\" shadowroot=\"open\">{}</template>{}</{}>",
+        element_open, rendered, children, tag_name
     );
 
     Ok((output, after))
