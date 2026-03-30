@@ -192,7 +192,7 @@ fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 /// Render a custom element by expanding its shadow DOM template.
 ///
 /// Output format:
-///   `<original-open-tag defer-hydration needs-hydration>
+///   `<original-open-tag>
 ///    <template shadowrootmode="open" shadowroot="open">{rendered}</template>
 ///    {children}</{tag-name}>`
 ///
@@ -268,13 +268,13 @@ pub fn render_custom_element(
             hy.binding_idx += total_attr;
             // Resolve {{expr}} attribute values.
             let resolved_base = resolve_attribute_bindings_in_tag(&open_tag_base, root, loop_vars);
-            format!("{} data-fe-c-{}-{} defer-hydration needs-hydration>",
+            format!("{} data-fe-c-{}-{}>",
                 resolved_base, start_idx, total_attr)
         } else {
-            format!("{} defer-hydration needs-hydration>", open_tag_base)
+            format!("{}>", open_tag_base)
         }
     } else {
-        format!("{} defer-hydration needs-hydration>", open_tag_base)
+        format!("{}>", open_tag_base)
     };
 
     // Extract the light DOM children (for non-self-closing elements).

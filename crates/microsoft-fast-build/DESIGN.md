@@ -214,7 +214,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
 7. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
-   <my-button label="Hi" defer-hydration needs-hydration>
+   <my-button label="Hi">
      <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
      [light DOM children]
    </my-button>

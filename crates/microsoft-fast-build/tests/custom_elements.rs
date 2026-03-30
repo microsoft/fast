@@ -12,7 +12,7 @@ fn test_custom_element_string_attr() {
         &empty_root(),
         &locator,
     ).unwrap();
-    assert!(result.contains(r#"<my-button label="Click me" defer-hydration needs-hydration>"#), "open tag: {result}");
+    assert!(result.contains(r#"<my-button label="Click me">"#), "open tag: {result}");
     assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
     assert!(result.contains("Click me"), "rendered: {result}");
     assert!(result.contains("</template>"), "close template: {result}");
@@ -65,7 +65,7 @@ fn test_custom_element_self_closing() {
         &empty_root(),
         &locator,
     ).unwrap();
-    assert!(result.starts_with(r#"<my-button label="Hi" defer-hydration needs-hydration>"#), "open tag: {result}");
+    assert!(result.starts_with(r#"<my-button label="Hi">"#), "open tag: {result}");
     assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
     assert!(result.contains("</my-button>"), "close tag: {result}");
 }

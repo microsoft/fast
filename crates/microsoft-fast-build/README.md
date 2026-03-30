@@ -201,7 +201,7 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 <my-button label="Submit">light DOM</my-button>
 
 <!-- Output -->
-<my-button label="Submit" defer-hydration needs-hydration>
+<my-button label="Submit">
   <template shadowrootmode="open" shadowroot="open">
     <button>Submit</button>
   </template>
@@ -209,8 +209,6 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 </my-button>
 ```
 
-- `defer-hydration` — tells FAST not to connect the element to the rendered HTML until initial state has been applied.
-- `needs-hydration` — marks the element as awaiting hydration by the FAST runtime.
 - `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
 
 Custom elements that have no matching template in the locator are passed through verbatim.

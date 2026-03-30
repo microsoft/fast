@@ -33,7 +33,6 @@ fn test_hydration_simple_content_binding() {
     assert!(result.contains(
         "<!--fe-b$$start$$0$$text-0$$fe-b-->Hello world<!--fe-b$$end$$0$$text-0$$fe-b-->"
     ), "content binding markers: {result}");
-    assert!(result.contains("defer-hydration"), "defer-hydration: {result}");
     assert!(result.contains(r#"shadowroot="open""#), "shadowroot: {result}");
 }
 
@@ -364,9 +363,9 @@ fn test_hydration_nested_custom_elements() {
         &locator,
     ).unwrap();
 
-    // Both elements have defer-hydration
-    let defer_count = result.matches("defer-hydration").count();
-    assert_eq!(defer_count, 2, "both elements should have defer-hydration: {result}");
+    // Both elements have their own shadow templates
+    let shadow_count = result.matches(r#"shadowroot="open""#).count();
+    assert_eq!(shadow_count, 2, "both elements should have shadow templates: {result}");
     // child-element has its own shadow scope; {{label}} is binding 0, name = "label-0"
     assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b-->hello<!--fe-b$$end$$0$$label-0$$fe-b-->"),
         "child shadow content binding: {result}");
