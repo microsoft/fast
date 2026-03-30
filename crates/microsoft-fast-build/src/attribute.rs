@@ -230,33 +230,25 @@ pub fn resolve_attribute_bindings_in_tag(
 ) -> String {
     use crate::context::resolve_value;
     use crate::content::html_escape;
-    let mut result = String::new();
-    let mut pos = 0usize;
-    while pos < tag.len() {
-        match find_str(tag, "{{", pos) {
-            None => {
-                result.push_str(&tag[pos..]);
-                break;
-            }
-            Some(dbl) => {
-                result.push_str(&tag[pos..dbl]);
-                let inner_start = dbl + 2;
-                match find_str(tag, "}}", inner_start) {
-                    None => {
-                        result.push_str(&tag[dbl..]);
-                        break;
-                    }
-                    Some(end) => {
-                        let expr = tag[inner_start..end].trim();
-                        let val = resolve_value(expr, root, loop_vars)
-                            .map(|v| html_escape(&v.to_display_string()))
-                            .unwrap_or_default();
-                        result.push_str(&val);
-                        pos = end + 2;
-                    }
-                }
-            }
-        }
+    let mut result = String::with_capacity(tag.len());
+    let mut pos = 0;
+    loop {
+        let dbl = match find_str(tag, "{{", pos) {
+            None => { result.push_str(&tag[pos..]); break; }
+            Some(idx) => idx,
+        };
+        result.push_str(&tag[pos..dbl]);
+        let inner_start = dbl + 2;
+        let end = match find_str(tag, "}}", inner_start) {
+            None => { result.push_str(&tag[dbl..]); break; }
+            Some(idx) => idx,
+        };
+        let expr = tag[inner_start..end].trim();
+        let val = resolve_value(expr, root, loop_vars)
+            .map(|v| html_escape(&v.to_display_string()))
+            .unwrap_or_default();
+        result.push_str(&val);
+        pos = end + 2;
     }
     result
 }
@@ -287,36 +279,32 @@ pub fn find_next_plain_html_tag(
 ) -> Option<usize> {
     let mut i = from;
     while i < template.len() {
-        match template[i..].find('<') {
-            None => return None,
-            Some(rel) => {
-                let lt_pos = i + rel;
-                let after = lt_pos + 1;
-                if after >= template.len() {
-                    return None;
-                }
-                match template.as_bytes()[after] {
-                    b'/' | b'!' => { i = lt_pos + 1; continue; }
-                    _ => {}
-                }
-                if let Some(name) = read_tag_name(template, lt_pos) {
-                    if name.starts_with("f-") {
-                        i = lt_pos + 1;
-                        continue;
-                    }
-                    if let Some(loc) = locator {
-                        if is_custom_element(&name) && loc.has_template(&name) {
-                            i = lt_pos + 1;
-                            continue;
-                        }
-                    }
-                    return Some(lt_pos);
-                }
-                i = lt_pos + 1;
+        let rel = template[i..].find('<')?;
+        let lt_pos = i + rel;
+        let after = lt_pos + 1;
+        if after >= template.len() {
+            return None;
+        }
+        let next_byte = template.as_bytes()[after];
+        if next_byte == b'/' || next_byte == b'!' {
+            i = lt_pos + 1;
+            continue;
+        }
+        if let Some(name) = read_tag_name(template, lt_pos) {
+            if !is_skippable_tag(&name, locator) {
+                return Some(lt_pos);
             }
         }
+        i = lt_pos + 1;
     }
     None
+}
+
+fn is_skippable_tag(name: &str, locator: Option<&crate::locator::Locator>) -> bool {
+    if name.starts_with("f-") {
+        return true;
+    }
+    locator.map_or(false, |loc| is_custom_element(name) && loc.has_template(name))
 }
 
 /// Parse all attributes from an opening tag string (e.g. `<my-button label="Hi" disabled>`).
@@ -384,34 +372,32 @@ pub fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<String>)>
             i += 1;
         }
 
-        // Read value.
-        let value = if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
-            let quote = bytes[i];
-            i += 1;
-            let value_start = i;
-            while i < bytes.len() && bytes[i] != quote {
-                i += 1;
-            }
-            let val = open_tag[value_start..i].to_string();
-            if i < bytes.len() {
-                i += 1; // skip closing quote
-            }
-            val
-        } else {
-            // Unquoted value.
-            let value_start = i;
-            while i < bytes.len()
-                && !bytes[i].is_ascii_whitespace()
-                && bytes[i] != b'>'
-                && bytes[i] != b'/'
-            {
-                i += 1;
-            }
-            open_tag[value_start..i].to_string()
-        };
+        // Read value using helper.
+        let (value, new_i) = parse_attribute_value(open_tag, bytes, i);
+        i = new_i;
 
         attrs.push((name, Some(value)));
     }
 
     attrs
+}
+
+fn parse_attribute_value(open_tag: &str, bytes: &[u8], i: usize) -> (String, usize) {
+    if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
+        let quote = bytes[i];
+        let start = i + 1;
+        let mut end = start;
+        while end < bytes.len() && bytes[end] != quote {
+            end += 1;
+        }
+        let val = open_tag[start..end].to_string();
+        (val, if end < bytes.len() { end + 1 } else { end })
+    } else {
+        let start = i;
+        let mut end = i;
+        while end < bytes.len() && !bytes[end].is_ascii_whitespace() && bytes[end] != b'>' && bytes[end] != b'/' {
+            end += 1;
+        }
+        (open_tag[start..end].to_string(), end)
+    }
 }

@@ -142,34 +142,7 @@ pub fn render_repeat(
             context: template_context(template, at),
         }),
         Some(JsonValue::Array(items)) => {
-            let output = if let Some(hy) = hydration {
-                let outer_idx = hy.next_binding();
-                let outer_name = format!("repeat-{}", outer_idx);
-                let outer_start = hy.start_marker(outer_idx, &outer_name);
-                let outer_end = hy.end_marker(outer_idx, &outer_name);
-                let mut items_parts: Vec<String> = Vec::with_capacity(items.len());
-                for (i, item) in items.iter().enumerate() {
-                    let mut new_vars = loop_vars.to_vec();
-                    new_vars.push((var_name.clone(), item.clone()));
-                    new_vars.push(("$index".to_string(), JsonValue::Number(i as f64)));
-                    let mut item_scope = HydrationScope::new();
-                    let rendered = render_node(&inner, root, &new_vars, locator, Some(&mut item_scope))?;
-                    items_parts.push(format!(
-                        "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
-                        i, rendered, i
-                    ));
-                }
-                format!("{}{}{}", outer_start, items_parts.concat(), outer_end)
-            } else {
-                items.iter().enumerate()
-                    .map(|(i, item)| {
-                        let mut new_vars = loop_vars.to_vec();
-                        new_vars.push((var_name.clone(), item.clone()));
-                        new_vars.push(("$index".to_string(), JsonValue::Number(i as f64)));
-                        render_node(&inner, root, &new_vars, locator, None)
-                    })
-                    .collect::<Result<String, _>>()?
-            };
+            let output = render_repeat_items(&inner, &items, &var_name, root, loop_vars, locator, hydration)?;
             Ok((output, after))
         }
         Some(_) => Err(RenderError::NotAnArray {
@@ -177,6 +150,54 @@ pub fn render_repeat(
             context: template_context(template, at),
         }),
     }
+}
+
+fn render_repeat_items(
+    inner: &str,
+    items: &[JsonValue],
+    var_name: &str,
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+    locator: Option<&Locator>,
+    hydration: Option<&mut HydrationScope>,
+) -> Result<String, RenderError> {
+    match hydration {
+        Some(hy) => {
+            let outer_idx = hy.next_binding();
+            let outer_name = format!("repeat-{}", outer_idx);
+            let outer_start = hy.start_marker(outer_idx, &outer_name);
+            let outer_end = hy.end_marker(outer_idx, &outer_name);
+            let mut parts: Vec<String> = Vec::with_capacity(items.len());
+            for (i, item) in items.iter().enumerate() {
+                let new_vars = build_loop_vars(loop_vars, var_name, item, i);
+                let mut item_scope = HydrationScope::new();
+                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope))?;
+                parts.push(format!(
+                    "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
+                    i, rendered, i
+                ));
+            }
+            Ok(format!("{}{}{}", outer_start, parts.concat(), outer_end))
+        }
+        None => items.iter().enumerate()
+            .map(|(i, item)| {
+                let new_vars = build_loop_vars(loop_vars, var_name, item, i);
+                render_node(inner, root, &new_vars, locator, None)
+            })
+            .collect::<Result<String, _>>(),
+    }
+}
+
+fn build_loop_vars(
+    loop_vars: &[(String, JsonValue)],
+    var_name: &str,
+    item: &JsonValue,
+    index: usize,
+) -> Vec<(String, JsonValue)> {
+    let mut new_vars = loop_vars.to_vec();
+    new_vars.push((var_name.to_string(), item.clone()));
+    new_vars.push(("$index".to_string(), JsonValue::Number(index as f64)));
+    new_vars
 }
 
 /// Parse `"item in list"` into `("item", "list")`.
@@ -231,23 +252,7 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
-        let json_val = match value {
-            None => JsonValue::Bool(true), // boolean attribute
-            Some(v) => {
-                if v.starts_with("{{") && v.ends_with("}}") {
-                    let binding = v[2..v.len() - 2].trim();
-                    resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null)
-                } else if v == "true" {
-                    JsonValue::Bool(true)
-                } else if v == "false" {
-                    JsonValue::Bool(false)
-                } else if let Ok(n) = v.parse::<f64>() {
-                    JsonValue::Number(n)
-                } else {
-                    JsonValue::String(v.clone())
-                }
-            }
-        };
+        let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
         state_map.insert(attr_name.clone(), json_val);
     }
     let child_root = JsonValue::Object(state_map);
@@ -257,25 +262,8 @@ pub fn render_custom_element(
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
     let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope))?;
 
-    // Count attribute bindings on this element (for the parent scope marker).
-    let (db, sb) = count_tag_attribute_bindings(open_tag_content);
-    let total_attr = db + sb;
-
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
-    let element_open = if let Some(hy) = parent_hydration {
-        if total_attr > 0 {
-            let start_idx = hy.binding_idx;
-            hy.binding_idx += total_attr;
-            // Resolve {{expr}} attribute values.
-            let resolved_base = resolve_attribute_bindings_in_tag(&open_tag_base, root, loop_vars);
-            format!("{} data-fe-c-{}-{}>",
-                resolved_base, start_idx, total_attr)
-        } else {
-            format!("{}>", open_tag_base)
-        }
-    } else {
-        format!("{}>", open_tag_base)
-    };
+    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);
 
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
@@ -294,4 +282,39 @@ pub fn render_custom_element(
     );
 
     Ok((output, after))
+}
+
+fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
+    let v = match value {
+        None => return JsonValue::Bool(true),
+        Some(s) => s,
+    };
+    if v.starts_with("{{") && v.ends_with("}}") {
+        let binding = v[2..v.len() - 2].trim();
+        return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+    }
+    if v == "true" { return JsonValue::Bool(true); }
+    if v == "false" { return JsonValue::Bool(false); }
+    if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
+    JsonValue::String(v.clone())
+}
+
+fn build_element_open_tag(
+    open_tag_base: &str,
+    open_tag_content: &str,
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+    parent_hydration: Option<&mut HydrationScope>,
+) -> String {
+    let (db, sb) = count_tag_attribute_bindings(open_tag_content);
+    let total_attr = db + sb;
+    match parent_hydration {
+        Some(hy) if total_attr > 0 => {
+            let start_idx = hy.binding_idx;
+            hy.binding_idx += total_attr;
+            let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
+            format!("{} data-fe-c-{}-{}>", resolved, start_idx, total_attr)
+        }
+        _ => format!("{}>", open_tag_base),
+    }
 }
