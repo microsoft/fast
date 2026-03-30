@@ -18,7 +18,10 @@ render_template(template, state_str)
   renderer::render(template, root) ─────────────────────────────────────┐
         │                                                                │
         ▼                                                                │
-  node::render_node(template, root, loop_vars, locator)                 │
+  node::render_node(template, root, loop_vars, locator, hydration?)     │
+        │                                                                │
+        ├─ [hydration mode] scan HTML opening tags for attr bindings     │
+        │        └─ inject data-fe-c-{n}-{count} compact markers        │
         │                                                                │
         ├─ scan forward: next_directive()                                │
         │        │                                                       │
@@ -26,7 +29,7 @@ render_template(template, state_str)
         │        ├─ DoubleBrace  → content::render_double_brace()       │
         │        ├─ When         → directive::render_when()  ───────────┘ (recurse)
         │        ├─ Repeat       → directive::render_repeat() ──────────┘ (recurse per item)
-        │        └─ CustomElement→ directive::render_custom_element() ──┘ (recurse with child state)
+        │        └─ CustomElement→ directive::render_custom_element() ──┘ (recurse with fresh HydrationScope)
         │
         └─ Append literal prefix + resolved chunk → output string
 ```

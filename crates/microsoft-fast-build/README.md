@@ -108,7 +108,15 @@ Right-hand operands can be string literals (`'foo'`), boolean literals (`true`/`
 </ul>
 ```
 
-Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable. Other bindings fall back to the root state (e.g. `{{title}}` above).
+Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable and `{{$index}}` resolves to the 0-based iteration index. Other bindings fall back to the root state (e.g. `{{title}}` above).
+
+```html
+<f-repeat value="{{row in rows}}">
+  <tr data-index="{{$index}}">
+    <td>{{row.name}}</td>
+  </tr>
+</f-repeat>
+```
 
 ### Nesting
 
@@ -186,24 +194,83 @@ The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves 
 
 ### Output Format
 
-The renderer wraps the rendered template in Declarative Shadow DOM:
+The renderer wraps the rendered template in Declarative Shadow DOM and adds the hydration attributes required by the FAST client runtime:
 
 ```html
 <!-- Input -->
 <my-button label="Submit">light DOM</my-button>
 
 <!-- Output -->
-<my-button label="Submit">
-  <template shadowrootmode="open">
+<my-button label="Submit" defer-hydration needs-hydration>
+  <template shadowrootmode="open" shadowroot="open">
     <button>Submit</button>
   </template>
   light DOM
 </my-button>
 ```
 
+- `defer-hydration` — tells FAST not to connect the element to the rendered HTML until initial state has been applied.
+- `needs-hydration` — marks the element as awaiting hydration by the FAST runtime.
+- `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
+
 Custom elements that have no matching template in the locator are passed through verbatim.
 
 ---
+
+## Hydration Markers
+
+When a custom element's shadow template is rendered, the renderer emits **hydration markers** so the FAST client runtime can efficiently locate and patch DOM nodes without a full diff.
+
+### Content binding markers
+
+Each `{{expr}}` or `{{{expr}}}` text binding is wrapped in HTML comments:
+
+```html
+<!--fe-b$$start$$0$$0000000000$$fe-b-->Hello world<!--fe-b$$end$$0$$0000000000$$fe-b-->
+```
+
+The `0` is the **binding index** (increments per binding within the current template scope) and `0000000000` is the **scope UUID** (a 10-digit identifier unique to each template scope).
+
+### Attribute binding markers (compact format)
+
+Elements with `{{expr}}` attribute values or `{expr}` single-brace event/ref bindings receive a compact marker attribute:
+
+```html
+<!-- Template: <input type="{{type}}" disabled> -->
+<input type="checkbox" disabled data-fe-c-0-1>
+
+<!-- Template: <button @click="{handleClick()}">Label</button> -->
+<button @click="{handleClick()}" data-fe-c-0-1>Label</button>
+
+<!-- Template: <my-el title="{{t}}" @click="{fn()}"> — 2 bindings -->
+<my-el title="Hello" @click="{fn()}" data-fe-c-0-2>
+```
+
+`data-fe-c-{startIndex}-{count}` — `startIndex` is the binding index of the first attribute binding on the element; `count` is the total number of attribute bindings.
+
+### Scope boundaries
+
+Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets its own scope (new UUID, binding index reset to 0). Scopes are numbered in allocation order: the shadow template is scope `0000000000`, its first child scope is `0000000001`, and so on.
+
+### Directive markers
+
+```html
+<!-- f-when (binding index 0 in outer scope) -->
+<!--fe-b$$start$$0$$0000000000$$fe-b-->
+  [inner content or empty if condition is false]
+<!--fe-b$$end$$0$$0000000000$$fe-b-->
+
+<!-- f-repeat (binding index 0 in outer scope), 2 items -->
+<!--fe-b$$start$$0$$0000000000$$fe-b-->
+<!--fe-repeat$$start$$0$$fe-repeat-->
+  [item 0 in its own scope]
+<!--fe-repeat$$end$$0$$fe-repeat-->
+<!--fe-repeat$$start$$1$$fe-repeat-->
+  [item 1 in same item scope UUID, binding index reset to 0]
+<!--fe-repeat$$end$$1$$fe-repeat-->
+<!--fe-b$$end$$0$$0000000000$$fe-b-->
+```
+
 
 ## Error Handling
 
