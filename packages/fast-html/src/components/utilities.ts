@@ -1138,25 +1138,38 @@ function assignObservablesToArray(
     target: any,
     rootProperty: string,
 ): any {
-    const data = proxiedData.map((item: any) => {
-        const originalItem = Object.assign({}, item);
+    const schemaProperties = getSchemaProperties(schema);
 
-        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+    // If the schema has no properties, the array contains primitives (e.g. string[])
+    // — observe the array for changes but skip per-item proxying.
+    const data = schemaProperties
+        ? proxiedData.map((item: any) => {
+              const originalItem = Object.assign({}, item);
 
-        return Object.assign(item, originalItem);
-    });
+              assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+
+              return Object.assign(item, originalItem);
+          })
+        : proxiedData;
 
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
             args.forEach((arg: any) => {
                 if (arg.addedCount > 0) {
-                    for (let i = arg.addedCount - 1; i >= 0; i--) {
-                        const item = subject[arg.index + i];
-                        const originalItem = Object.assign({}, item);
+                    if (schemaProperties) {
+                        for (let i = arg.addedCount - 1; i >= 0; i--) {
+                            const item = subject[arg.index + i];
+                            const originalItem = Object.assign({}, item);
 
-                        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+                            assignProxyToItemsInArray(
+                                item,
+                                originalItem,
+                                schema,
+                                rootSchema,
+                            );
 
-                        Object.assign(item, originalItem);
+                            Object.assign(item, originalItem);
+                        }
                     }
 
                     // Notify observers of the target object's root property
