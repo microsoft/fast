@@ -2,6 +2,120 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 00:04:08 GMT",
+      "version": "1.0.0-alpha.42",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.42",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3ccf4d870ea87104ab70b2a0052d26b47bc51532",
+            "comment": "chore(fast-html): add testing of events inside a repeat and when"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6b0fd6c4a4b0c635d4e5c18d251b28abbf32bab5",
+            "comment": "chore: migrate to biome for linting and formatting"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "11227f6085b9aa2a3048c70427867a1f8d2f6873",
+            "comment": "chore: replace old clean script with new implementation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ea46496f56cd94cb0dae65b7026998c88604aaac",
+            "comment": "chore: fix publish blocker due to biome"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "fbf25c6b815138a6e8eb5fc2f217484c47554534",
+            "comment": "Add expression logic to boolean attribute"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ca63fe8d7b8c512f93c1002ee3a8b50c1bf3d4a5",
+            "comment": "fix: refactor naming for binding syntax and add a test for tag collisions"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 24 Mar 2026 00:08:15 GMT",
+      "version": "1.0.0-alpha.41",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.41",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "hello@mohamedmansour.com",
+            "package": "@microsoft/fast-html",
+            "commit": "0d2314e2ae24b872d370f7ec0ed96433fda4c0f3",
+            "comment": "feat(fast-html): add $c prefix for execution context access in declarative templates"
+          }
+        ],
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "71d566bec9153aff389662d4314dc303051f62b0",
+            "comment": "fix(docs): update f-repeat and f-when syntax to use double curly braces for binding"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 22 Mar 2026 00:03:45 GMT",
+      "version": "1.0.0-alpha.40",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.40",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "04b7303324ba8c6c032f7ee21418c3b4dc1b7029",
+            "comment": "chore: streamline fixture input discovery and clean up HTML test suite"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 20 Mar 2026 00:07:36 GMT",
+      "version": "1.0.0-alpha.40",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.40",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6df43be90d257a49389c188935400792b7108cc6",
+            "comment": "Split tests to assist in base PR build gate times"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "8f79bdbf1d7c3af827ca807347fc1134bbf45731",
+            "comment": "Remove karma/mocha/chai and related unused dependencies"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f708570f15da56d7f26e514a8d2f749545ef39a6",
+            "comment": "fix(fast-html): only process single-brace bindings for event aspect"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 13 Mar 2026 18:13:56 GMT",
       "version": "1.0.0-alpha.39",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.39",

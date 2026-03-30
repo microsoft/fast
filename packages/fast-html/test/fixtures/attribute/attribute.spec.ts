@@ -47,4 +47,19 @@ test.describe("f-template", async () => {
         });
         await expect(input).not.toHaveAttribute("disabled");
     });
+    test("create an attribute binding with an expression", async ({ page }) => {
+        await page.goto("/fixtures/attribute/");
+
+        const customElement = await page.locator("test-element-expression");
+        const customElementInput = await customElement.locator("input");
+
+        await expect(customElementInput).toHaveAttribute("disabled");
+
+        await page.evaluate(() => {
+            const customElement = document.getElementsByTagName("test-element-expression");
+            customElement.item(0)?.setAttribute("active-group", "home");
+        });
+
+        await expect(customElementInput).not.toHaveAttribute("disabled");
+    });
 });

@@ -1,0 +1,15 @@
+[package]
+name = "microsoft-fast-build"
+version = "0.1.0"
+edition = "2021"
+description = "Server-side renderer for FAST declarative HTML templates — resolves bindings, evaluates conditionals, iterates repeats, and expands custom elements into Declarative Shadow DOM."
+license = "MIT"
+readme = "README.md"
+homepage = "https://www.fast.design/"
+repository = "https://github.com/microsoft/fast"
+keywords = ["fast", "ssr", "html", "template", "web-components"]
+categories = ["template-engine", "web-programming"]
+
+[lib]
+name = "microsoft_fast_build"
+path = "src/lib.rs"

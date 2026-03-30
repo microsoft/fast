@@ -1,4 +1,0 @@
-coverage/*
-dist/*
-*.spec.ts
-*.pw.spec.ts

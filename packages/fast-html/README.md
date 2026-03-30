@@ -313,12 +313,35 @@ Where the right operand can be either a reference to a value (string e.g. `{{foo
     <ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul>
     ```
 
-    Should you need to refer to the parent element (not the individual item in the list), you can use the context of a previous repeat, or no context which will resolve to the custom element.
+    Bindings inside `<f-repeat>` without a context prefix resolve to the custom element. For example, `{{title}}` below resolves to the host element's `title` property:
 
-    Example:
     ```html
     <ul><f-repeat value="{{item in list}}"><li>{{item}} - {{title}}</li></f-repeat></ul>
     ```
+
+#### Execution Context Access
+
+In imperative fast-element templates, every binding expression receives both the data source and the execution context: `${(x, c) => c.parent.handleClick(c.event)}`. Declarative `<f-template>` expressions can access the same execution context using the `$c` prefix.
+
+This is particularly useful inside `<f-repeat>`, where `$c.parent` refers to the parent view-model (typically the host element) and `$c.event` provides the DOM event.
+
+Event handler with context access:
+
+```html
+<f-repeat value="{{item in items}}">
+    <button @click="{$c.parent.handleItemClick($c.event)}">{{item.name}}</button>
+</f-repeat>
+```
+
+Conditional rendering using a host property inside a repeat:
+
+```html
+<f-repeat value="{{item in items}}">
+    <f-when value="{{$c.parent.showNames}}">
+        <span>{{item.name}}</span>
+    </f-when>
+</f-repeat>
+```
 
 #### Unescaped HTML
 

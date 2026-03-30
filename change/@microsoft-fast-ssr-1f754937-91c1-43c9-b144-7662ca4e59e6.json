@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: update tests to use Node.js",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

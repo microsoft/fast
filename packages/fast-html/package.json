@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-html",
-  "version": "1.0.0-alpha.39",
+  "version": "1.0.0-alpha.42",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -23,17 +23,15 @@
   "scripts": {
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "npm run build:tsc && npm run doc",
-    "clean": "rimraf dist temp test-results",
+    "clean": "clean dist temp test-results",
     "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
     "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
     "doc:ci": "api-extractor run",
     "doc": "npm run doc:ci -- --local",
-    "eslint:fix": "npm run eslint -- --fix",
-    "eslint": "eslint . --ext .ts",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --fix .",
     "install-playwright-browsers": "npm run playwright install",
     "prepublishOnly": "npm run clean && npm run build",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
     "test-server": "npx vite test/ --clearScreen false",
     "test:playwright": "playwright test",
     "test:rules": "sg test --skip-snapshot-tests",

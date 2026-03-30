@@ -22,18 +22,16 @@
   "type": "module",
   "unpkg": "dist/fast-router.min.js",
   "scripts": {
-    "clean:dist": "node ../../build/clean.js dist",
+    "clean:dist": "clean dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "build": "tsc -p ./tsconfig.json && npm run doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "prepublishOnly": "npm run clean:dist && npm run build",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "eslint": "eslint . --ext .ts",
-    "eslint:fix": "eslint . --ext .ts --fix",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --fix .",
     "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
-    "test": "npm run eslint && npm run doc:ci && npm run test:recognizer"
+    "test": "npm run lint && npm run doc:ci && npm run test:recognizer"
   },
   "dependencies": {
     "tslib": "^2.6.3"

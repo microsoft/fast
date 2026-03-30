@@ -42,42 +42,28 @@
     "test": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=*",
     "test:chromium": "npm run test:node -ws --if-present && npm run test:playwright -ws --if-present -- --project=chromium",
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
-    "format:check": "npx prettier . --check",
-    "format": "npx prettier . --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,html}": [
-      "prettier --write"
-    ]
+    "format:check": "biome format --changed --no-errors-on-unmatched .",
+    "format": "biome format --changed --no-errors-on-unmatched --fix --write .",
+    "lint": "biome lint --changed --no-errors-on-unmatched .",
+    "lint:fix": "biome lint --changed --no-errors-on-unmatched --fix .",
+    "biome:check": "biome check --changed --no-errors-on-unmatched .",
+    "biome:fix": "biome check --changed --no-errors-on-unmatched --fix ."
   },
   "devDependencies": {
     "@ast-grep/cli": "0.37.0",
+    "@biomejs/biome": "2.4.8",
     "@microsoft/api-extractor": "7.57.7",
-    "@octokit/rest": "22.0.0",
     "@playwright/test": "1.56.1",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "1.0.0",
     "@rollup/plugin-typescript": "12.3.0",
     "@types/express": "^5.0.6",
-    "@typescript-eslint/eslint-plugin": "5.62.0",
-    "@typescript-eslint/parser": "5.62.0",
     "beachball": "2.63.0",
     "concurrently": "9.2.1",
-    "eslint": "8.57.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-import": "2.29.1",
     "esm": "3.2.25",
     "express": "4.22.1",
     "glob": "10.5.0",
-    "husky": "4.3.8",
-    "lint-staged": "10.5.4",
-    "prettier": "2.8.8",
-    "rimraf": "6.1.0",
+    "lefthook": "2.1.4",
     "rollup": "4.59.0",
     "rollup-plugin-filesize": "10.0.0",
     "typescript": "5.3.3",

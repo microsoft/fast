@@ -40,6 +40,29 @@
                 </ul>
             </template>
         </test-element>
+        <f-template name="test-element-with-observer-map">
+            <template>
+                <ul>
+                    <f-repeat value="{{item in list}}">
+                        <li>{{item}} - {{item_parent}}</li>
+                    </f-repeat>
+                </ul>
+            </template>
+        </f-template>
+        <test-element-with-observer-map>
+            <template shadowrootmode="open">
+                <ul>
+                    <!--fe-b$$start$$0$$EVAQBRnUUH$$fe-b-->
+                    <!--fe-repeat$$start$$0$$fe-repeat-->
+                    <li><!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->Foo<!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b--> - <!--fe-b$$start$$1$$vEbKKUHmwU$$fe-b-->Bat<!--fe-b$$end$$1$$vEbKKUHmwU$$fe-b--></li>
+                    <!--fe-repeat$$end$$0$$fe-repeat-->
+                    <!--fe-repeat$$start$$1$$fe-repeat-->
+                    <li><!--fe-b$$start$$0$$vEbKKUHmwU$$fe-b-->Bar<!--fe-b$$end$$0$$vEbKKUHmwU$$fe-b--> - <!--fe-b$$start$$1$$vEbKKUHmwU$$fe-b-->Bat<!--fe-b$$end$$1$$vEbKKUHmwU$$fe-b--></li>
+                    <!--fe-repeat$$end$$1$$fe-repeat-->
+                    <!--fe-b$$end$$0$$EVAQBRnUUH$$fe-b-->
+                </ul>
+            </template>
+        </test-element-with-observer-map>
         <test-element-inner-when>
             <template shadowrootmode="open">
                 <ul>
@@ -112,11 +135,29 @@
         <f-template name="test-element-no-item-repeat-binding">
             <template>
                 <ul>
-                    <f-repeat value="{item in list}">
+                    <f-repeat value="{{item in list}}">
                         <li>{{item}}</li>
                     </f-repeat>
                 </ul>
             </template>
         </f-template>
+
+        <f-template name="test-element-event">
+            <template>
+                <f-repeat value="{{item in list}}">
+                    <button @click="{handleClick()}">Click</button>
+                </f-repeat>
+            </template>
+        </f-template>
+
+        <test-element-event>
+            <template shadowrootmode="open">
+                <!--fe-b$$start$$0$$item-in-list$$fe-b-->
+                <!--fe-repeat$$start$$0$$fe-repeat-->
+                <button data-fe-b-0>Click</button>
+                <!--fe-repeat$$end$$0$$fe-repeat-->
+                <!--fe-b$$end$$0$$item-in-list$$fe-b-->
+            </template>
+        </test-element-event>
     </body>
 </html>

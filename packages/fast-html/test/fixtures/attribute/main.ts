@@ -19,6 +19,18 @@ RenderableFASTElement(BoolNegateElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+class TestElementExpression extends FASTElement {
+    @attr({ attribute: "active-group" })
+    activeGroup: string = "";
+
+    @attr({ attribute: "current-group" })
+    currentGroup: string = "";
+}
+RenderableFASTElement(TestElementExpression).defineAsync({
+    name: "test-element-expression",
+    templateOptions: "defer-and-hydrate",
+});
+
 TemplateElement.define({
     name: "f-template",
 });

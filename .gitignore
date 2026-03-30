@@ -16,9 +16,6 @@ typings/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
-
 # dotenv environment variables file
 .env
 
@@ -75,3 +72,6 @@ test-results/
 
 # Pack directory
 publish_artifacts/
+
+# Rust build artifacts
+crates/**/target/

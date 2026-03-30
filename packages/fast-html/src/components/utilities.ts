@@ -7,6 +7,20 @@ import {
     refPropertyName,
     Schema,
 } from "./schema.js";
+import {
+    attributeDirectivePrefix,
+    clientSideCloseExpression,
+    clientSideOpenExpression,
+    closeExpression,
+    executionContextAccessor,
+    openExpression,
+    repeatDirectiveClose,
+    repeatDirectiveOpen,
+    unescapedCloseExpression,
+    unescapedOpenExpression,
+    whenDirectiveClose,
+    whenDirectiveOpen,
+} from "./syntax.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 
@@ -72,32 +86,11 @@ interface ObservedTargetsAndProperties {
     rootProperty: string;
 }
 
-const openClientSideBinding: string = "{";
-
-const closeClientSideBinding: string = "}";
-
-const openContentBinding: string = "{{";
-
-const closeContentBinding: string = "}}";
-
-const openUnescapedBinding: string = "{{{";
-
-const closeUnescapedBinding: string = "}}}";
-
-const openTagStart: string = "<f-";
-
-const tagEnd: string = ">";
-
-const closeTagStart: string = "</f-";
-
-const attributeDirectivePrefix: string = "f-";
+export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
-
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
-
 const endInnerHTMLDiv = `}}"></div>`;
-
 const endInnerHTMLDivLength = endInnerHTMLDiv.length;
 
 const LogicalOperator = {
@@ -149,7 +142,7 @@ export function getIndexOfNextMatchingTag(
     openingTagStartSlice: string,
     openingTag: string,
     closingTag: string,
-    openingTagStartIndex: number
+    openingTagStartIndex: number,
 ): number {
     let tagCount = 1;
     let matchingCloseTagIndex = -1;
@@ -197,32 +190,42 @@ export function getIndexOfNextMatchingTag(
  * @returns DirectiveBehaviorConfig - A configuration object
  */
 function getNextDirectiveBehavior(innerHTML: string): TemplateDirectiveBehaviorConfig {
-    const openingTagStartIndex = innerHTML.indexOf(openTagStart);
+    const whenIndex = innerHTML.indexOf(whenDirectiveOpen);
+    const repeatIndex = innerHTML.indexOf(repeatDirectiveOpen);
+
+    const isWhen = whenIndex !== -1 && (repeatIndex === -1 || whenIndex < repeatIndex);
+
+    let openingTag: string = repeatDirectiveOpen;
+    let closingTag: string = repeatDirectiveClose;
+    let directiveTag: TemplateDirective = "repeat";
+    let openingTagStartIndex: number = repeatIndex;
+
+    if (isWhen) {
+        openingTag = whenDirectiveOpen;
+        closingTag = whenDirectiveClose;
+        directiveTag = "when";
+        openingTagStartIndex = whenIndex;
+    }
+
     const openingTagStartSlice = innerHTML.slice(openingTagStartIndex);
     const openingTagEndIndex = // account for f-when which may include >= or > as operators, but will always include a condition attr
-        openingTagStartSlice.indexOf(`"${tagEnd}`) + openingTagStartIndex + 2;
+        openingTagStartSlice.indexOf(`">`) + openingTagStartIndex + 2;
 
-    const directiveTag = innerHTML
-        .slice(openingTagStartIndex + 3, openingTagEndIndex - 1)
-        .split(" ")[0];
     const directiveValue = getNextDataBindingBehavior(innerHTML);
-
-    const openingTag = `${openTagStart}${directiveTag}`;
-    const closingTag = `${closeTagStart}${directiveTag}${tagEnd}`;
 
     const matchingCloseTagIndex = getIndexOfNextMatchingTag(
         openingTagStartSlice,
         openingTag,
         closingTag,
-        openingTagStartIndex
+        openingTagStartIndex,
     );
 
     return {
         type: "templateDirective",
-        name: directiveTag as TemplateDirective,
+        name: directiveTag,
         value: innerHTML.slice(
             directiveValue.openingEndIndex,
-            directiveValue.closingStartIndex
+            directiveValue.closingStartIndex,
         ),
         openingTagStartIndex,
         openingTagEndIndex,
@@ -260,7 +263,7 @@ function isAttributeDirective(innerHTML: string, openingStartIndex: number): boo
  */
 function getAttributeDataBindingConfig(
     innerHTML: string,
-    config: BaseDataBindingBehaviorConfig
+    config: BaseDataBindingBehaviorConfig,
 ): AttributeDataBindingBehaviorConfig {
     const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
     const firstCharOfAttribute = splitInnerHTML[splitInnerHTML.length - 1][0];
@@ -286,7 +289,7 @@ function getAttributeDataBindingConfig(
  */
 function getAttributeDirectiveDataBindingConfig(
     innerHTML: string,
-    config: BaseDataBindingBehaviorConfig
+    config: BaseDataBindingBehaviorConfig,
 ): AttributeDirectiveBindingBehaviorConfig {
     const splitInnerHTML = innerHTML.slice(0, config.openingStartIndex).split(" ");
     const lastItem = splitInnerHTML[splitInnerHTML.length - 1];
@@ -306,7 +309,7 @@ function getAttributeDirectiveDataBindingConfig(
  * @returns ContentDataBindingBehaviorConfig
  */
 function getContentDataBindingConfig(
-    config: BaseDataBindingBehaviorConfig
+    config: BaseDataBindingBehaviorConfig,
 ): ContentDataBindingBehaviorConfig {
     return {
         ...config,
@@ -326,17 +329,17 @@ interface NextDataBindingBehaviorConfig {
  * @returns NextDataBindingBehaviorConfig containing the binding type and start indices
  */
 function getIndexAndBindingTypeOfNextDataBindingBehavior(
-    innerHTML: string
+    innerHTML: string,
 ): NextDataBindingBehaviorConfig {
     // {{{}}} binding
-    const openingUnescapedStartIndex = innerHTML.indexOf(openUnescapedBinding);
-    const closingUnescapedStartIndex = innerHTML.indexOf(closeUnescapedBinding);
+    const openingUnescapedStartIndex = innerHTML.indexOf(unescapedOpenExpression);
+    const closingUnescapedStartIndex = innerHTML.indexOf(unescapedCloseExpression);
     // {{}} binding
-    const openingContentStartIndex = innerHTML.indexOf(openContentBinding);
-    const closingContentStartIndex = innerHTML.indexOf(closeContentBinding);
+    const openingContentStartIndex = innerHTML.indexOf(openExpression);
+    const closingContentStartIndex = innerHTML.indexOf(closeExpression);
     // {} binding
-    const openingClientStartIndex = innerHTML.indexOf(openClientSideBinding);
-    const closingClientStartIndex = innerHTML.indexOf(closeClientSideBinding);
+    const openingClientStartIndex = innerHTML.indexOf(clientSideOpenExpression);
+    const closingClientStartIndex = innerHTML.indexOf(clientSideCloseExpression);
 
     if (
         openingUnescapedStartIndex !== -1 &&
@@ -391,8 +394,8 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
     return isAttributeDirective(innerHTML, openingStartIndex)
         ? getAttributeDirectiveDataBindingConfig(innerHTML, partialConfig)
         : isAttribute(innerHTML, openingStartIndex)
-        ? getAttributeDataBindingConfig(innerHTML, partialConfig)
-        : getContentDataBindingConfig(partialConfig);
+          ? getAttributeDataBindingConfig(innerHTML, partialConfig)
+          : getContentDataBindingConfig(partialConfig);
 }
 
 /**
@@ -401,20 +404,97 @@ function getNextDataBindingBehavior(innerHTML: string): DataBindingBehaviorConfi
  * @returns DataBindingBehaviorConfig | DirectiveBehaviorConfig | null - A configuration object or null
  */
 export function getNextBehavior(
-    innerHTML: string
+    innerHTML: string,
+    offset: number = 0,
 ): DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig | null {
-    const dataBindingOpen = innerHTML.indexOf(openClientSideBinding); // client side binding will capture all bindings starting with "{"
-    const directiveBindingOpen = innerHTML.indexOf(openTagStart);
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+        const currentSlice = innerHTML.slice(offset);
+        // client side binding will capture all bindings starting with "{"
+        const dataBindingOpen = currentSlice.indexOf(clientSideOpenExpression);
+        const whenDirectiveIndex = currentSlice.indexOf(whenDirectiveOpen);
+        const repeatDirectiveIndex = currentSlice.indexOf(repeatDirectiveOpen);
+        const directiveBindingOpen =
+            whenDirectiveIndex === -1
+                ? repeatDirectiveIndex
+                : repeatDirectiveIndex === -1
+                  ? whenDirectiveIndex
+                  : Math.min(whenDirectiveIndex, repeatDirectiveIndex);
+        const nextDataBindingBehavior = getNextDataBindingBehavior(currentSlice);
 
-    if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
-        return null;
+        if (dataBindingOpen === -1 && directiveBindingOpen === -1) {
+            return null;
+        }
+
+        if (
+            dataBindingOpen !== -1 &&
+            nextDataBindingBehavior.bindingType === "client" &&
+            !isLegitimateClientSideBinding(nextDataBindingBehavior)
+        ) {
+            offset = nextDataBindingBehavior.closingEndIndex + offset;
+            continue;
+        }
+
+        if (
+            directiveBindingOpen !== -1 &&
+            (dataBindingOpen === -1 || dataBindingOpen > directiveBindingOpen)
+        ) {
+            return offsetDirective(getNextDirectiveBehavior(currentSlice), offset);
+        }
+
+        return offsetDataBinding(nextDataBindingBehavior, offset);
     }
+}
 
-    if (directiveBindingOpen !== -1 && dataBindingOpen > directiveBindingOpen) {
-        return getNextDirectiveBehavior(innerHTML);
-    }
+/**
+ * Apply an offset to a data binding
+ * @param config DataBindingBehaviorConfig
+ * @param offset number
+ * @returns DataBindingBehaviorConfig
+ */
+function offsetDataBinding(
+    config: DataBindingBehaviorConfig,
+    offset: number,
+): DataBindingBehaviorConfig {
+    config.openingStartIndex = config.openingStartIndex + offset;
+    config.openingEndIndex = config.openingEndIndex + offset;
+    config.closingStartIndex = config.closingStartIndex + offset;
+    config.closingEndIndex = config.closingEndIndex + offset;
 
-    return getNextDataBindingBehavior(innerHTML);
+    return config;
+}
+
+/**
+ * Apply an offset to a directive
+ * @param config TemplateDirectiveBehaviorConfig
+ * @param offset number
+ * @returns TemplateDirectiveBehaviorConfig
+ */
+function offsetDirective(
+    config: TemplateDirectiveBehaviorConfig,
+    offset: number,
+): TemplateDirectiveBehaviorConfig {
+    config.openingTagStartIndex = config.openingTagStartIndex + offset;
+    config.openingTagEndIndex = config.openingTagEndIndex + offset;
+    config.closingTagStartIndex = config.closingTagStartIndex + offset;
+    config.closingTagEndIndex = config.closingTagEndIndex + offset;
+
+    return config;
+}
+
+/**
+ * Determine if this client side binding is legitimate.
+ * Single-brace (client) bindings are only valid for events, properties, and attribute directives.
+ * Checking for this prevents CSS/JS curly braces from being misinterpreted as bindings.
+ * @param result
+ * @returns
+ */
+function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boolean {
+    return (
+        (result.subtype === "attribute" &&
+            (result.aspect === "@" || result.aspect === ":")) ||
+        result.subtype === "attributeDirective"
+    );
 }
 
 type AccessibleObject = { [key: string]: AccessibleObject };
@@ -430,9 +510,21 @@ export function pathResolver(
     path: string,
     contextPath: string | null,
     level: number,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): (accessibleObject: any, context: any) => any {
     let splitPath: string[] = path.split(".");
+
+    // Explicit context access via executionContextAccessor — resolve directly from ExecutionContext
+    if (splitPath[0] === executionContextAccessor) {
+        const contextAccessPath = splitPath.slice(1);
+        return (_accessibleObject: any, context: any) => {
+            return contextAccessPath.reduce(
+                (prev: any, item: string) => prev?.[item],
+                context,
+            );
+        };
+    }
+
     let levelCount = level;
     let self = splitPath[0] === contextPath;
     const parentContexts = [];
@@ -503,8 +595,16 @@ export function bindingResolver(
     type: PathType,
     schema: Schema,
     currentContext: string | null,
-    level: number
+    level: number,
 ): (accessibleObject: any, context: any) => any {
+    // Explicit context access — resolve from ExecutionContext, skip schema tracking
+    if (path.startsWith(contextPrefixDot)) {
+        const segments = path.split(".").slice(1);
+        return (_x: any, context: any) => {
+            return segments.reduce((prev: any, item: string) => prev?.[item], context);
+        };
+    }
+
     rootPropertyName = getRootPropertyName(rootPropertyName, path, currentContext, type);
 
     if (type !== "event" && rootPropertyName !== null) {
@@ -526,7 +626,7 @@ export function bindingResolver(
         path,
         currentContext,
         level,
-        schema.getSchema(rootPropertyName as string) as JSONSchema
+        schema.getSchema(rootPropertyName as string) as JSONSchema,
     );
 }
 
@@ -535,12 +635,13 @@ export function expressionResolver(
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
-    schema: Schema
+    schema: Schema,
 ): (accessibleObject: any, context: any) => any {
     // Extract all paths from the expression and add them to the schema
     if (rootPropertyName !== null) {
         const paths = extractPathsFromChainedExpression(expression);
         paths.forEach(path => {
+            if (path.startsWith(contextPrefixDot)) return;
             schema.addPath({
                 pathConfig: {
                     type: "access",
@@ -561,7 +662,7 @@ export function expressionResolver(
             level,
             parentContext || null,
             expression,
-            schema.getSchema(rootPropertyName as string) as JSONSchema
+            schema.getSchema(rootPropertyName as string) as JSONSchema,
         );
 }
 
@@ -571,7 +672,7 @@ export function expressionResolver(
  * @returns A Set containing all unique paths found in the expression chain
  */
 export function extractPathsFromChainedExpression(
-    chainedExpression: ChainedExpression
+    chainedExpression: ChainedExpression,
 ): Set<string> {
     const paths = new Set<string>();
 
@@ -613,7 +714,7 @@ function isOperandValue(operand: string): {
             value,
             isValue: true,
         };
-    } catch (e) {
+    } catch {
         return {
             value: operand,
             isValue: false,
@@ -643,7 +744,7 @@ export interface ChainedExpression {
  */
 function evaluatePartsInExpressionChain(
     parts: string[],
-    operator: LogicalOperator
+    operator: LogicalOperator,
 ): void | ChainedExpression {
     // Process each part recursively and chain them with ||
     const firstPart = getExpressionChain(parts[0]);
@@ -787,7 +888,7 @@ function resolveExpression(
     level: number,
     contextPath: string | null,
     expression: Expression,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): any {
     const { operator, left, right, rightIsValue } = expression;
 
@@ -804,10 +905,12 @@ function resolveExpression(
         }
 
         case Operator.EQUALS: {
+            // biome-ignore lint/suspicious/noDoubleEquals: Breaks prior existing functionality - see when fixture
             return resolvedLeft == resolvedRight;
         }
 
         case Operator.NOT_EQUALS: {
+            // biome-ignore lint/suspicious/noDoubleEquals: Breaks prior existing functionality - see when fixture
             return resolvedLeft != resolvedRight;
         }
 
@@ -861,7 +964,7 @@ function resolveChainedExpression(
     level: number,
     contextPath: string | null,
     expression: ChainedExpression,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): any {
     const { expression: expr, next } = expression;
     const resolvedLeft = resolveExpression(x, c, level, contextPath, expr, rootSchema);
@@ -873,7 +976,7 @@ function resolveChainedExpression(
             level,
             contextPath,
             next,
-            rootSchema
+            rootSchema,
         );
 
         switch (next.operator) {
@@ -905,12 +1008,12 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
         if (nextBinding.bindingType === "unescaped") {
             transformedInnerHTML = `${innerHTML.slice(0, index)}${sliceToEvaluate.slice(
                 0,
-                nextBinding.openingStartIndex
+                nextBinding.openingStartIndex,
             )}${startInnerHTMLDiv}${sliceToEvaluate.slice(
                 nextBinding.openingStartIndex + 3,
-                nextBinding.closingStartIndex
+                nextBinding.closingStartIndex,
             )}${endInnerHTMLDiv}${sliceToEvaluate.slice(
-                nextBinding.closingStartIndex + 3
+                nextBinding.closingStartIndex + 3,
             )}`;
 
             return transformInnerHTML(
@@ -919,23 +1022,23 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
                     startInnerHTMLDivLength +
                     endInnerHTMLDivLength +
                     nextBinding.closingStartIndex -
-                    3
+                    3,
             );
         } else if (nextBinding.bindingType === "client") {
             return transformInnerHTML(
                 transformedInnerHTML,
-                index + nextBinding.closingEndIndex
+                index + nextBinding.closingEndIndex,
             );
         }
 
         return transformInnerHTML(
             transformedInnerHTML,
-            index + nextBinding.closingEndIndex
+            index + nextBinding.closingEndIndex,
         );
     } else if (nextBinding) {
         return transformInnerHTML(
             transformedInnerHTML,
-            index + nextBinding.closingTagEndIndex
+            index + nextBinding.closingTagEndIndex,
         );
     }
 
@@ -943,25 +1046,26 @@ export function transformInnerHTML(innerHTML: string, index = 0): string {
 }
 
 /**
- * Resolves f-when
+ * Resolves boolean logic
+ * used for f-when and boolean attributes
  * @param self - Where the first item in the path path refers to the item itself (used by repeat).
  * @param chainedExpression - The chained expression which includes the expression and the next expression
  * if there is another in the chain
  * @returns - A binding that resolves the chained expression logic
  */
-export function resolveWhen(
+export function getBooleanBinding(
     rootPropertyName: string | null,
     expression: ChainedExpression,
     parentContext: string | null,
     level: number,
-    schema: Schema
+    schema: Schema,
 ): (x: boolean, c: any) => any {
     const binding = expressionResolver(
         rootPropertyName,
         expression,
         parentContext,
         level,
-        schema
+        schema,
     );
     return (x: boolean, c: any) => binding(x, c);
 }
@@ -995,7 +1099,7 @@ function getSchemaPropertiesFromAnyOf(anyOf: Array<any>): any | null {
 
             if (Schema.jsonSchemaMap.has(customElement)) {
                 const customElementSchemaMap = Schema.jsonSchemaMap.get(
-                    customElement
+                    customElement,
                 ) as Map<string, JSONSchema>;
                 propertiesFromAnyOf = customElementSchemaMap.get(attributeName);
             }
@@ -1032,27 +1136,40 @@ function assignObservablesToArray(
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
     target: any,
-    rootProperty: string
+    rootProperty: string,
 ): any {
-    const data = proxiedData.map((item: any) => {
-        const originalItem = Object.assign({}, item);
+    const schemaProperties = getSchemaProperties(schema);
 
-        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+    // If the schema has no properties, the array contains primitives (e.g. string[])
+    // — observe the array for changes but skip per-item proxying.
+    const data = schemaProperties
+        ? proxiedData.map((item: any) => {
+              const originalItem = Object.assign({}, item);
 
-        return Object.assign(item, originalItem);
-    });
+              assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+
+              return Object.assign(item, originalItem);
+          })
+        : proxiedData;
 
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
             args.forEach((arg: any) => {
                 if (arg.addedCount > 0) {
-                    for (let i = arg.addedCount - 1; i >= 0; i--) {
-                        const item = subject[arg.index + i];
-                        const originalItem = Object.assign({}, item);
+                    if (schemaProperties) {
+                        for (let i = arg.addedCount - 1; i >= 0; i--) {
+                            const item = subject[arg.index + i];
+                            const originalItem = Object.assign({}, item);
 
-                        assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
+                            assignProxyToItemsInArray(
+                                item,
+                                originalItem,
+                                schema,
+                                rootSchema,
+                            );
 
-                        Object.assign(item, originalItem);
+                            Object.assign(item, originalItem);
+                        }
                     }
 
                     // Notify observers of the target object's root property
@@ -1120,7 +1237,7 @@ export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | nul
  */
 function assignSubscribeToObservableArray(
     data: any,
-    updateArrayObservables: () => void
+    updateArrayObservables: () => void,
 ): void {
     Observable.getNotifier(data).subscribe({
         handleChange(subject, args) {
@@ -1145,7 +1262,7 @@ export function assignObservables(
     rootSchema: JSONSchema,
     data: any,
     target: any,
-    rootProperty: string
+    rootProperty: string,
 ): typeof Proxy {
     const dataType = getDataType(data);
     let proxiedData = data;
@@ -1162,7 +1279,7 @@ export function assignObservables(
                     ] as JSONSchemaDefinition,
                     rootSchema,
                     target,
-                    rootProperty
+                    rootProperty,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1176,9 +1293,9 @@ export function assignObservables(
                                 ] as JSONSchemaDefinition,
                                 rootSchema,
                                 target,
-                                rootProperty
-                            )
-                        )
+                                rootProperty,
+                            ),
+                        ),
                     );
                 }
             }
@@ -1191,7 +1308,7 @@ export function assignObservables(
                 rootProperty,
                 proxiedData,
                 schema,
-                rootSchema
+                rootSchema,
             );
             break;
         }
@@ -1211,7 +1328,7 @@ function assignProxyToItemsInArray(
     proxiableItem: any,
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): void {
     const schemaProperties = getSchemaProperties(schema);
 
@@ -1227,7 +1344,7 @@ function assignProxyToItemsInArray(
             key,
             originalItem[key],
             schemaProperties[key],
-            rootSchema
+            rootSchema,
         );
 
         // Then make the property observable
@@ -1268,7 +1385,7 @@ function assignProxyToItemsInObject(
     rootProperty: string,
     data: any,
     schema: JSONSchema | JSONSchemaDefinition,
-    rootSchema: JSONSchema
+    rootSchema: JSONSchema,
 ): any | typeof Proxy {
     const type = getDataType(data);
     const schemaProperties = getSchemaProperties(schema);
@@ -1282,7 +1399,7 @@ function assignProxyToItemsInObject(
                 rootProperty,
                 proxiedData[property],
                 schemaProperties[property],
-                rootSchema
+                rootSchema,
             );
         });
 
@@ -1303,7 +1420,7 @@ function assignProxyToItemsInObject(
                     definition as JSONSchemaDefinition,
                     rootSchema,
                     target,
-                    rootProperty
+                    rootProperty,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1314,8 +1431,8 @@ function assignProxyToItemsInObject(
                             definition as JSONSchemaDefinition,
                             rootSchema,
                             target,
-                            rootProperty
-                        )
+                            rootProperty,
+                        ),
                     );
                 }
             }
@@ -1359,7 +1476,7 @@ function notifyObservables(targetObject: any) {
         (targetItem: ObservedTargetsAndProperties) => {
             // Trigger notification for property changes
             Observable.notify(targetItem.target, targetItem.rootProperty);
-        }
+        },
     );
 }
 
@@ -1377,7 +1494,7 @@ export function assignProxy(
     rootSchema: JSONSchema,
     target: any,
     rootProperty: string,
-    object: any
+    object: any,
 ): typeof Proxy {
     if (!object.$isProxy) {
         // Create a proxy for the object that triggers Observable.notify on mutations
@@ -1394,7 +1511,7 @@ export function assignProxy(
                     rootSchema,
                     value,
                     target,
-                    rootProperty
+                    rootProperty,
                 );
 
                 notifyObservables(proxy);
@@ -1438,7 +1555,7 @@ export function getRootPropertyName(
     rootPropertyName: string | null,
     path: string,
     context: null | string,
-    type: PathType
+    type: PathType,
 ): string | null {
     return (rootPropertyName === null || context === null) && type !== "event"
         ? path.split(".")[0]
@@ -1480,7 +1597,7 @@ function getAttributesCustomElementName(previousString: string): string | null {
         indexOfElementTagStart;
     const elementName = previousString.slice(
         indexOfElementTagStart,
-        indexOfElementTagEnd
+        indexOfElementTagEnd,
     );
 
     if (elementName.includes("-")) {
@@ -1501,7 +1618,7 @@ function getAttributeName(previousString: string): string {
         previousString.slice(indexOfAttributeStart).indexOf("=") + indexOfAttributeStart;
     const attributeName = previousString.slice(
         indexOfAttributeStart,
-        indexOfAttributeEnd
+        indexOfAttributeEnd,
     );
     const potentialAspect = attributeName.charAt(0);
 
@@ -1665,7 +1782,7 @@ export function deepMerge(target: any, source: any): boolean {
         if (Array.isArray(sourceValue)) {
             const isTargetArray = Array.isArray(targetValue);
             const clonedItems = sourceValue.map((item: unknown) =>
-                isPlainObject(item) ? { ...item } : item
+                isPlainObject(item) ? { ...item } : item,
             );
 
             if (isTargetArray) {

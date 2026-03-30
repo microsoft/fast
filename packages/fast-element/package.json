@@ -101,7 +101,7 @@
     "./dist/esm/interfaces.js"
   ],
   "scripts": {
-    "clean:dist": "node ../../build/clean.js dist",
+    "clean": "clean dist temp test-results",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
     "doc:exports": "node ./scripts/run-api-extractor.js",
@@ -110,13 +110,11 @@
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
-    "prepublishOnly": "npm run clean:dist && npm run build",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.ts\"",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.ts\" --list-different",
-    "eslint": "eslint . --ext .ts",
-    "eslint:fix": "eslint . --ext .ts --fix",
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --fix .",
     "test:playwright": "playwright test",
     "test-server": "npx vite test/ --clearScreen false",
-    "test": "npm run eslint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
+    "test": "npm run lint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
   }
 }

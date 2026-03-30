@@ -23,11 +23,12 @@ import {
     AttributeDirective,
     bindingResolver,
     ChainedExpression,
+    contextPrefixDot,
     DataBindingBehaviorConfig,
+    getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
-    resolveWhen,
     TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -323,7 +324,7 @@ class TemplateElement extends FASTElement {
             case "when": {
                 const expressionChain = getExpressionChain(behaviorConfig.value);
 
-                const whenLogic = resolveWhen(
+                const whenLogic = getBooleanBinding(
                     rootPropertyName,
                     expressionChain as ChainedExpression,
                     parentContext,
@@ -504,86 +505,147 @@ class TemplateElement extends FASTElement {
             }
             case "attribute": {
                 strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                if (behaviorConfig.aspect === "@") {
-                    const bindingHTML = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex
-                    );
-                    const openingParenthesis = bindingHTML.indexOf("(");
-                    const closingParenthesis = bindingHTML.indexOf(")");
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex -
-                            (closingParenthesis - openingParenthesis) -
-                            1
-                    );
-                    const type = "event";
-                    rootPropertyName = getRootPropertyName(
-                        rootPropertyName,
-                        propName,
-                        parentContext,
-                        type
-                    );
-                    const arg = bindingHTML.slice(
-                        openingParenthesis + 1,
-                        closingParenthesis
-                    );
-                    const binding = bindingResolver(
-                        strings.join(""),
-                        rootPropertyName,
-                        propName,
-                        parentContext,
-                        type,
-                        schema,
-                        parentContext,
-                        level
-                    );
-                    const attributeBinding = (x: any, c: any) =>
-                        binding(x, c).bind(x)(
-                            ...(arg === "e" ? [c.event] : []),
-                            ...(arg !== "e" && arg !== ""
-                                ? [
-                                      bindingResolver(
-                                          strings.join(""),
-                                          rootPropertyName,
-                                          arg,
-                                          parentContext,
-                                          type,
-                                          schema,
-                                          parentContext,
-                                          level
-                                      )(x, c),
-                                  ]
-                                : [])
+                let attributeBinding;
+
+                switch (behaviorConfig.aspect) {
+                    case "@": {
+                        const bindingHTML = innerHTML.slice(
+                            behaviorConfig.openingEndIndex,
+                            behaviorConfig.closingStartIndex
                         );
-                    values.push(attributeBinding);
-                } else {
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex
-                    );
-                    const type = "access";
+                        const openingParenthesis = bindingHTML.indexOf("(");
+                        const closingParenthesis = bindingHTML.indexOf(")");
+                        const propName = innerHTML.slice(
+                            behaviorConfig.openingEndIndex,
+                            behaviorConfig.closingStartIndex -
+                                (closingParenthesis - openingParenthesis) -
+                                1
+                        );
+                        const type = "event";
+                        rootPropertyName = getRootPropertyName(
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type
+                        );
+                        const arg = bindingHTML.slice(
+                            openingParenthesis + 1,
+                            closingParenthesis
+                        );
+                        const binding = bindingResolver(
+                            strings.join(""),
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type,
+                            schema,
+                            parentContext,
+                            level
+                        );
+                        const isContextPath = propName.startsWith(contextPrefixDot);
+                        const getOwner = isContextPath
+                            ? (_x: any, c: any) => {
+                                  const ownerPath = propName.split(".").slice(1, -1);
+                                  return ownerPath.reduce(
+                                      (prev: any, item: string) => prev?.[item],
+                                      c
+                                  );
+                              }
+                            : (x: any, _c: any) => x;
+                        attributeBinding = (x: any, c: any) =>
+                            binding(x, c).bind(getOwner(x, c))(
+                                ...(arg === "e" ? [c.event] : []),
+                                ...(arg !== "e" && arg !== ""
+                                    ? [
+                                          bindingResolver(
+                                              strings.join(""),
+                                              rootPropertyName,
+                                              arg,
+                                              parentContext,
+                                              type,
+                                              schema,
+                                              parentContext,
+                                              level
+                                          )(x, c),
+                                      ]
+                                    : [])
+                            );
 
-                    rootPropertyName = getRootPropertyName(
-                        rootPropertyName,
-                        propName,
-                        parentContext,
-                        type
-                    );
+                        break;
+                    }
+                    case "?": {
+                        const expression = innerHTML.slice(
+                            behaviorConfig.openingEndIndex,
+                            behaviorConfig.closingStartIndex
+                        );
+                        const expressionChain = getExpressionChain(expression);
 
-                    const binding = bindingResolver(
-                        strings.join(""),
-                        rootPropertyName,
-                        propName,
-                        parentContext,
-                        type,
-                        schema,
-                        parentContext,
-                        level
-                    );
-                    const attributeBinding = (x: any, c: any) => binding(x, c);
-                    values.push(attributeBinding);
+                        if (expressionChain?.expression.operator) {
+                            attributeBinding = getBooleanBinding(
+                                rootPropertyName,
+                                expressionChain as ChainedExpression,
+                                parentContext,
+                                level,
+                                schema
+                            );
+                        } else {
+                            const propName = innerHTML.slice(
+                                behaviorConfig.openingEndIndex,
+                                behaviorConfig.closingStartIndex
+                            );
+                            const type = "access";
+
+                            rootPropertyName = getRootPropertyName(
+                                rootPropertyName,
+                                propName,
+                                parentContext,
+                                type
+                            );
+
+                            const binding = bindingResolver(
+                                strings.join(""),
+                                rootPropertyName,
+                                propName,
+                                parentContext,
+                                type,
+                                schema,
+                                parentContext,
+                                level
+                            );
+                            attributeBinding = (x: any, c: any) => binding(x, c);
+                        }
+
+                        break;
+                    }
+                    default: {
+                        const propName = innerHTML.slice(
+                            behaviorConfig.openingEndIndex,
+                            behaviorConfig.closingStartIndex
+                        );
+                        const type = "access";
+
+                        rootPropertyName = getRootPropertyName(
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type
+                        );
+
+                        const binding = bindingResolver(
+                            strings.join(""),
+                            rootPropertyName,
+                            propName,
+                            parentContext,
+                            type,
+                            schema,
+                            parentContext,
+                            level
+                        );
+                        attributeBinding = (x: any, c: any) => binding(x, c);
+                    }
                 }
+
+                values.push(attributeBinding);
 
                 await this.resolveInnerHTML(
                     rootPropertyName,
