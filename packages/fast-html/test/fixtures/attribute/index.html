@@ -18,6 +18,15 @@
         <f-template name="test-element">
             <template><input type="{{type}}" disabled></template>
         </f-template>
+
+        <bool-negate-element>
+            <template shadowrootmode="open">
+                <input data-fe-b-0>
+            </template>
+        </bool-negate-element>
+        <f-template name="bool-negate-element">
+            <template><input ?disabled="{{!isEnabled}}"></template>
+        </f-template>
         <f-template name="test-element-expression">
             <template>
                 <input ?disabled="{{activeGroup == currentGroup}}" type="button">
