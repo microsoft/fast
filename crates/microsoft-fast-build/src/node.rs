@@ -75,7 +75,8 @@ pub fn render_node(
                 let (out, end) = render_triple_brace(template, p, root, loop_vars)?;
                 let final_out = if let Some(ref mut hy) = hydration {
                     let idx = hy.next_binding();
-                    format!("{}{}{}", hy.start_marker(idx), out, hy.end_marker(idx))
+                    let name = format!("{}-{}", binding_expr(template, p, "{{{", "}}}"), idx);
+                    format!("{}{}{}", hy.start_marker(idx, &name), out, hy.end_marker(idx, &name))
                 } else {
                     out
                 };
@@ -85,7 +86,8 @@ pub fn render_node(
                 let (out, end) = render_double_brace(template, p, root, loop_vars)?;
                 let final_out = if let Some(ref mut hy) = hydration {
                     let idx = hy.next_binding();
-                    format!("{}{}{}", hy.start_marker(idx), out, hy.end_marker(idx))
+                    let name = format!("{}-{}", binding_expr(template, p, "{{", "}}"), idx);
+                    format!("{}{}{}", hy.start_marker(idx, &name), out, hy.end_marker(idx, &name))
                 } else {
                     out
                 };
@@ -113,4 +115,10 @@ pub fn render_node(
     }
 
     Ok(result)
+}
+
+/// Extract the trimmed expression text from a `{{expr}}` or `{{{expr}}}` binding.
+fn binding_expr<'a>(template: &'a str, at: usize, open: &str, close: &str) -> &'a str {
+    let inner = &template[at + open.len()..];
+    inner.find(close).map(|e| inner[..e].trim()).unwrap_or("")
 }

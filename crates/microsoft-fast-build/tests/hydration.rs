@@ -29,9 +29,9 @@ fn test_hydration_simple_content_binding() {
         &locator,
     ).unwrap();
 
-    // Shadow scope = 0000000000, {{text}} = binding 0
+    // {{text}} = binding 0, name = "text-0"
     assert!(result.contains(
-        "<!--fe-b$$start$$0$$0000000000$$fe-b-->Hello world<!--fe-b$$end$$0$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$0$$text-0$$fe-b-->Hello world<!--fe-b$$end$$0$$text-0$$fe-b-->"
     ), "content binding markers: {result}");
     assert!(result.contains("defer-hydration"), "defer-hydration: {result}");
     assert!(result.contains(r#"shadowroot="open""#), "shadowroot: {result}");
@@ -53,10 +53,10 @@ fn test_hydration_multiple_content_bindings() {
     ).unwrap();
 
     assert!(result.contains(
-        "<!--fe-b$$start$$0$$0000000000$$fe-b-->Hello<!--fe-b$$end$$0$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$0$$a-0$$fe-b-->Hello<!--fe-b$$end$$0$$a-0$$fe-b-->"
     ), "binding 0: {result}");
     assert!(result.contains(
-        "<!--fe-b$$start$$1$$0000000000$$fe-b-->World<!--fe-b$$end$$1$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$1$$b-1$$fe-b-->World<!--fe-b$$end$$1$$b-1$$fe-b-->"
     ), "binding 1: {result}");
 }
 
@@ -130,9 +130,9 @@ fn test_hydration_attr_and_content_binding() {
 
     assert!(result.contains("data-fe-c-0-1"), "attr compact marker: {result}");
     assert!(result.contains(r#"class="foo""#), "resolved class attr: {result}");
-    // Content binding uses index 1 (attr consumed index 0)
+    // Content binding uses index 1 (attr consumed index 0), name = "text-1"
     assert!(result.contains(
-        "<!--fe-b$$start$$1$$0000000000$$fe-b-->bar<!--fe-b$$end$$1$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$1$$text-1$$fe-b-->bar<!--fe-b$$end$$1$$text-1$$fe-b-->"
     ), "content binding at index 1: {result}");
 }
 
@@ -149,9 +149,9 @@ fn test_hydration_f_when_truthy() {
         &locator,
     ).unwrap();
 
-    // Outer when binding: index 0 in scope 0000000000
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000000$$fe-b-->"), "start marker: {result}");
-    assert!(result.contains("<!--fe-b$$end$$0$$0000000000$$fe-b-->"), "end marker: {result}");
+    // Outer when binding: index 0, name = "when-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$when-0$$fe-b-->"), "start marker: {result}");
+    assert!(result.contains("<!--fe-b$$end$$0$$when-0$$fe-b-->"), "end marker: {result}");
     assert!(result.contains("Hello"), "content: {result}");
 }
 
@@ -170,8 +170,8 @@ fn test_hydration_f_when_falsy() {
     let shadow_end = result.find("</template>").expect("no close template");
     let shadow = &result[shadow_start..shadow_end];
 
-    assert!(shadow.contains("<!--fe-b$$start$$0$$0000000000$$fe-b-->"), "start: {shadow}");
-    assert!(shadow.contains("<!--fe-b$$end$$0$$0000000000$$fe-b-->"), "end: {shadow}");
+    assert!(shadow.contains("<!--fe-b$$start$$0$$when-0$$fe-b-->"), "start: {shadow}");
+    assert!(shadow.contains("<!--fe-b$$end$$0$$when-0$$fe-b-->"), "end: {shadow}");
     assert!(!shadow.contains("Hello"), "content must be absent: {shadow}");
 }
 
@@ -193,14 +193,14 @@ fn test_hydration_content_then_when() {
         &locator,
     ).unwrap();
 
-    // binding 0 = {{before}}, binding 1 = f-when, binding 2 = {{after}}
+    // binding 0 = {{before}} → "before-0", binding 1 = f-when → "when-1", binding 2 = {{after}} → "after-2"
     assert!(result.contains(
-        "<!--fe-b$$start$$0$$0000000000$$fe-b-->A<!--fe-b$$end$$0$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$0$$before-0$$fe-b-->A<!--fe-b$$end$$0$$before-0$$fe-b-->"
     ), "before: {result}");
-    assert!(result.contains("<!--fe-b$$start$$1$$0000000000$$fe-b-->"), "when start: {result}");
-    assert!(result.contains("<!--fe-b$$end$$1$$0000000000$$fe-b-->"), "when end: {result}");
+    assert!(result.contains("<!--fe-b$$start$$1$$when-1$$fe-b-->"), "when start: {result}");
+    assert!(result.contains("<!--fe-b$$end$$1$$when-1$$fe-b-->"), "when end: {result}");
     assert!(result.contains(
-        "<!--fe-b$$start$$2$$0000000000$$fe-b-->B<!--fe-b$$end$$2$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$2$$after-2$$fe-b-->B<!--fe-b$$end$$2$$after-2$$fe-b-->"
     ), "after: {result}");
 }
 
@@ -224,18 +224,18 @@ fn test_hydration_f_repeat_basic() {
         &locator,
     ).unwrap();
 
-    // Outer scope 0000000000: f-repeat is binding 0
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000000$$fe-b-->"), "outer start: {result}");
-    assert!(result.contains("<!--fe-b$$end$$0$$0000000000$$fe-b-->"), "outer end: {result}");
+    // Outer scope: f-repeat is binding 0, name = "repeat-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$repeat-0$$fe-b-->"), "outer start: {result}");
+    assert!(result.contains("<!--fe-b$$end$$0$$repeat-0$$fe-b-->"), "outer end: {result}");
     // Item repeat markers
     assert!(result.contains("<!--fe-repeat$$start$$0$$fe-repeat-->"), "item 0 start: {result}");
     assert!(result.contains("<!--fe-repeat$$end$$0$$fe-repeat-->"), "item 0 end: {result}");
     assert!(result.contains("<!--fe-repeat$$start$$1$$fe-repeat-->"), "item 1 start: {result}");
     assert!(result.contains("<!--fe-repeat$$end$$1$$fe-repeat-->"), "item 1 end: {result}");
-    // Item scope 0000000001: {{item}} is binding 0 in each item
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000001$$fe-b-->Foo<!--fe-b$$end$$0$$0000000001$$fe-b-->"),
+    // Per-item scope: {{item}} is binding 0, name = "item-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$item-0$$fe-b-->Foo<!--fe-b$$end$$0$$item-0$$fe-b-->"),
         "foo binding: {result}");
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000001$$fe-b-->Bar<!--fe-b$$end$$0$$0000000001$$fe-b-->"),
+    assert!(result.contains("<!--fe-b$$start$$0$$item-0$$fe-b-->Bar<!--fe-b$$end$$0$$item-0$$fe-b-->"),
         "bar binding: {result}");
 }
 
@@ -257,14 +257,14 @@ fn test_hydration_f_repeat_with_inner_when() {
         &locator,
     ).unwrap();
 
-    // Outer scope: f-repeat is binding 0
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000000$$fe-b-->"), "outer start: {result}");
+    // Outer scope: f-repeat is binding 0, name = "repeat-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$repeat-0$$fe-b-->"), "outer start: {result}");
     // Per-item wrapper
     assert!(result.contains("<!--fe-repeat$$start$$0$$fe-repeat-->"), "item start: {result}");
-    // Item scope (0000000001): f-when is binding 0
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000001$$fe-b-->"), "when start: {result}");
-    // When content scope (0000000002): {{item.text}} is binding 0
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000002$$fe-b-->Foo<!--fe-b$$end$$0$$0000000002$$fe-b-->"),
+    // Item scope: f-when is binding 0, name = "when-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$when-0$$fe-b-->"), "when start: {result}");
+    // When body scope: {{item.text}} is binding 0, name = "item.text-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$item.text-0$$fe-b-->Foo<!--fe-b$$end$$0$$item.text-0$$fe-b-->"),
         "text binding: {result}");
 }
 
@@ -285,7 +285,7 @@ fn test_hydration_f_repeat_empty() {
     let shadow = extract_shadow(&result);
     assert_eq!(
         shadow.trim(),
-        "<!--fe-b$$start$$0$$0000000000$$fe-b--><!--fe-b$$end$$0$$0000000000$$fe-b-->"
+        "<!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-b$$end$$0$$repeat-0$$fe-b-->"
     );
 }
 
@@ -341,11 +341,11 @@ fn test_hydration_repeat_index() {
         &locator,
     ).unwrap();
 
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000001$$fe-b-->0<!--fe-b$$end$$0$$0000000001$$fe-b-->"),
+    assert!(result.contains("<!--fe-b$$start$$0$$$index-0$$fe-b-->0<!--fe-b$$end$$0$$$index-0$$fe-b-->"),
         "index 0: {result}");
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000001$$fe-b-->1<!--fe-b$$end$$0$$0000000001$$fe-b-->"),
+    assert!(result.contains("<!--fe-b$$start$$0$$$index-0$$fe-b-->1<!--fe-b$$end$$0$$$index-0$$fe-b-->"),
         "index 1: {result}");
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000001$$fe-b-->2<!--fe-b$$end$$0$$0000000001$$fe-b-->"),
+    assert!(result.contains("<!--fe-b$$start$$0$$$index-0$$fe-b-->2<!--fe-b$$end$$0$$$index-0$$fe-b-->"),
         "index 2: {result}");
 }
 
@@ -367,8 +367,8 @@ fn test_hydration_nested_custom_elements() {
     // Both elements have defer-hydration
     let defer_count = result.matches("defer-hydration").count();
     assert_eq!(defer_count, 2, "both elements should have defer-hydration: {result}");
-    // child-element has its own shadow scope (fresh gen → scope 0000000000)
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000000$$fe-b-->hello<!--fe-b$$end$$0$$0000000000$$fe-b-->"),
+    // child-element has its own shadow scope; {{label}} is binding 0, name = "label-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b-->hello<!--fe-b$$end$$0$$label-0$$fe-b-->"),
         "child shadow content binding: {result}");
 }
 
@@ -405,8 +405,8 @@ fn test_hydration_triple_brace() {
         &locator,
     ).unwrap();
 
-    assert!(result.contains("<!--fe-b$$start$$0$$0000000000$$fe-b-->"), "start: {result}");
-    assert!(result.contains("<!--fe-b$$end$$0$$0000000000$$fe-b-->"), "end: {result}");
+    assert!(result.contains("<!--fe-b$$start$$0$$html-0$$fe-b-->"), "start: {result}");
+    assert!(result.contains("<!--fe-b$$end$$0$$html-0$$fe-b-->"), "end: {result}");
     assert!(result.contains("bold-content"), "unescaped content: {result}");
 }
 

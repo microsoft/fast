@@ -10,7 +10,7 @@ use crate::attribute::{
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
 use crate::locator::Locator;
-use crate::hydration::{HydrationScope, ScopeGen};
+use crate::hydration::HydrationScope;
 
 /// A template directive found at a given byte position.
 pub enum Directive {
@@ -91,8 +91,9 @@ pub fn render_when(
 
     let output = if let Some(hy) = hydration {
         let idx = hy.next_binding();
-        let start = hy.start_marker(idx);
-        let end = hy.end_marker(idx);
+        let name = format!("when-{}", idx);
+        let start = hy.start_marker(idx, &name);
+        let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
             let mut child_scope = hy.child();
             render_node(&inner, root, loop_vars, locator, Some(&mut child_scope))?
@@ -143,21 +144,15 @@ pub fn render_repeat(
         Some(JsonValue::Array(items)) => {
             let output = if let Some(hy) = hydration {
                 let outer_idx = hy.next_binding();
-                let outer_start = hy.start_marker(outer_idx);
-                let outer_end = hy.end_marker(outer_idx);
-                // Pre-allocate the shared item scope ID (same UUID for all items).
-                let item_scope_id = hy.gen.next();
-                let item_gen = hy.gen.clone();
+                let outer_name = format!("repeat-{}", outer_idx);
+                let outer_start = hy.start_marker(outer_idx, &outer_name);
+                let outer_end = hy.end_marker(outer_idx, &outer_name);
                 let mut items_parts: Vec<String> = Vec::with_capacity(items.len());
                 for (i, item) in items.iter().enumerate() {
                     let mut new_vars = loop_vars.to_vec();
                     new_vars.push((var_name.clone(), item.clone()));
                     new_vars.push(("$index".to_string(), JsonValue::Number(i as f64)));
-                    let mut item_scope = HydrationScope {
-                        binding_idx: 0,
-                        scope_id: item_scope_id,
-                        gen: item_gen.clone(),
-                    };
+                    let mut item_scope = HydrationScope::new();
                     let rendered = render_node(&inner, root, &new_vars, locator, Some(&mut item_scope))?;
                     items_parts.push(format!(
                         "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
@@ -258,8 +253,7 @@ pub fn render_custom_element(
     let child_root = JsonValue::Object(state_map);
 
     // Render the shadow DOM template with a fresh hydration scope.
-    let shadow_gen = ScopeGen::new();
-    let mut shadow_scope = HydrationScope::new(&shadow_gen);
+    let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
     let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope))?;
 
