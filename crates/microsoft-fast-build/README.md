@@ -226,10 +226,10 @@ When a custom element's shadow template is rendered, the renderer emits **hydrat
 Each `{{expr}}` or `{{{expr}}}` text binding is wrapped in HTML comments:
 
 ```html
-<!--fe-b$$start$$0$$0000000000$$fe-b-->Hello world<!--fe-b$$end$$0$$0000000000$$fe-b-->
+<!--fe-b$$start$$0$$title-0$$fe-b-->Hello world<!--fe-b$$end$$0$$title-0$$fe-b-->
 ```
 
-The `0` is the **binding index** (increments per binding within the current template scope) and `0000000000` is the **scope UUID** (a 10-digit identifier unique to each template scope).
+The `0` is the **binding index** (increments per binding within the current template scope) and `title-0` is the **marker name** — formed as `<expression>-<binding index>`. This makes markers human-readable and unique within a scope.
 
 ### Attribute binding markers (compact format)
 
@@ -250,25 +250,25 @@ Elements with `{{expr}}` attribute values or `{expr}` single-brace event/ref bin
 
 ### Scope boundaries
 
-Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets its own scope (new UUID, binding index reset to 0). Scopes are numbered in allocation order: the shadow template is scope `0000000000`, its first child scope is `0000000001`, and so on.
+Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets its own scope with the binding index reset to 0. Scopes don't carry numeric IDs — marker names are self-describing.
 
 ### Directive markers
 
 ```html
-<!-- f-when (binding index 0 in outer scope) -->
-<!--fe-b$$start$$0$$0000000000$$fe-b-->
-  [inner content or empty if condition is false]
-<!--fe-b$$end$$0$$0000000000$$fe-b-->
+<!-- f-when at binding index 0 -->
+<!--fe-b$$start$$0$$when-0$$fe-b-->
+  [inner content, or empty if condition is false]
+<!--fe-b$$end$$0$$when-0$$fe-b-->
 
-<!-- f-repeat (binding index 0 in outer scope), 2 items -->
-<!--fe-b$$start$$0$$0000000000$$fe-b-->
+<!-- f-repeat at binding index 0, 2 items -->
+<!--fe-b$$start$$0$$repeat-0$$fe-b-->
 <!--fe-repeat$$start$$0$$fe-repeat-->
-  [item 0 in its own scope]
+  [item 0 — each binding named by its expression, e.g. item-0]
 <!--fe-repeat$$end$$0$$fe-repeat-->
 <!--fe-repeat$$start$$1$$fe-repeat-->
-  [item 1 in same item scope UUID, binding index reset to 0]
+  [item 1 — binding index reset to 0 per item]
 <!--fe-repeat$$end$$1$$fe-repeat-->
-<!--fe-b$$end$$0$$0000000000$$fe-b-->
+<!--fe-b$$end$$0$$repeat-0$$fe-b-->
 ```
 
 

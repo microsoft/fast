@@ -48,7 +48,7 @@ render_template(template, state_str)
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
-| `hydration.rs` | `ScopeGen` counter and `HydrationScope` — binding index + UUID tracking per template scope |
+| `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
@@ -227,31 +227,31 @@ If a custom element has no matching template, it is left in place by `next_direc
 
 ## Hydration markers — `hydration.rs`
 
-When rendering a custom element's shadow DOM, the renderer tracks **binding indices** and **template scope UUIDs** so the FAST client runtime can efficiently locate and patch DOM nodes during hydration.
+When rendering a custom element's shadow DOM, the renderer tracks **binding indices** and emits **named markers** so the FAST client runtime can efficiently locate and patch DOM nodes during hydration.
 
 ### Scopes
 
-A **template scope** is a `HydrationScope` that carries:
+A **template scope** is a `HydrationScope` that carries a single field:
 - `binding_idx: usize` — the next binding index to allocate (increments for each binding in this scope)
-- `scope_id: usize` — determines the scope's UUID (`format!("{:010}", scope_id)`)
-- `gen: ScopeGen` — a shared `Rc<Cell<usize>>` counter used to allocate new child scope IDs
 
 Scope boundaries are:
 | Context | Scope |
 |---|---|
-| Custom element shadow template | Fresh `ScopeGen`, scope 0 |
-| `f-when` truthy body | Child scope (new ID from shared `gen`) |
-| `f-repeat` item template | Pre-allocated child scope ID (same ID for all items, so all share one UUID); each item renders with `binding_idx` reset to 0 |
+| Custom element shadow template | Fresh `HydrationScope` (binding_idx = 0) |
+| `f-when` truthy body | Child scope via `hy.child()` (binding_idx reset to 0) |
+| `f-repeat` item template | Fresh `HydrationScope` per item (binding_idx reset to 0) |
+
+Scopes carry no numeric ID. Marker names are derived from the binding context (see below) and are therefore self-describing.
 
 ### Content binding markers
 
 When `hydration` is `Some`, `render_node` wraps each `{{expr}}` / `{{{expr}}}` result:
 
 ```
-<!--fe-b$$start$$N$$UUID$$fe-b-->VALUE<!--fe-b$$end$$N$$UUID$$fe-b-->
+<!--fe-b$$start$$N$$<expr>-N$$fe-b-->VALUE<!--fe-b$$end$$N$$<expr>-N$$fe-b-->
 ```
 
-`N` is the next `binding_idx` from the current scope; `UUID` is the scope's 10-digit string.
+`N` is the current `binding_idx` from the scope; `<expr>` is the expression text (e.g. `title`, `item.name`, `$index`). So `{{title}}` at index 0 produces marker name `title-0`, and `{{item.name}}` at index 2 produces `item.name-2`.
 
 ### Attribute binding markers (compact format)
 
@@ -267,25 +267,27 @@ This atomic tag processing ensures that the `{{expr}}` attribute values are neve
 ### `f-when` markers
 
 ```
-<!--fe-b$$start$$N$$OUTER_UUID$$fe-b-->
+<!--fe-b$$start$$N$$when-N$$fe-b-->
 [inner content in child scope, or empty if falsy]
-<!--fe-b$$end$$N$$OUTER_UUID$$fe-b-->
+<!--fe-b$$end$$N$$when-N$$fe-b-->
 ```
 
-`N` is allocated from the outer (parent) scope's `binding_idx`.
+`N` is allocated from the outer (parent) scope's `binding_idx`. The marker name is `when-N`.
 
 ### `f-repeat` markers
 
 ```
-<!--fe-b$$start$$N$$OUTER_UUID$$fe-b-->
+<!--fe-b$$start$$N$$repeat-N$$fe-b-->
 <!--fe-repeat$$start$$0$$fe-repeat-->
-  [item 0 rendered with fresh binding_idx in shared item scope]
+  [item 0 rendered with fresh binding_idx = 0]
 <!--fe-repeat$$end$$0$$fe-repeat-->
 <!--fe-repeat$$start$$1$$fe-repeat-->
-  [item 1 rendered with fresh binding_idx, same scope UUID]
+  [item 1 rendered with fresh binding_idx = 0]
 <!--fe-repeat$$end$$1$$fe-repeat-->
-<!--fe-b$$end$$N$$OUTER_UUID$$fe-b-->
+<!--fe-b$$end$$N$$repeat-N$$fe-b-->
 ```
+
+The outer markers use `repeat-N` where `N` is the binding index in the parent scope. Each item gets its own fresh `HydrationScope`, so per-item content bindings are named after their expressions (e.g. `item-0`, `item.name-1`).
 
 ### `$index` in `f-repeat`
 
@@ -367,9 +369,7 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
 
-**`Rc<Cell<usize>>` for scope ID generation.** The `ScopeGen` type uses `Rc<Cell<usize>>` so the global ID counter can be cloned cheaply into child scopes. All scopes within a single render call share the same counter, guaranteeing unique IDs without requiring `Arc` or `Mutex` (the renderer is single-threaded).
-
-**Deterministic scope UUIDs.** Scope IDs are 10-digit zero-padded integers (`format!("{:010}", scope_id)`). This makes test assertions precise and predictable. The scheme differs from the FAST HTML package which uses random alphanumeric strings, but the structure is equivalent.
+**Named hydration markers.** Marker names are derived from the binding context: content bindings use `<expr>-<idx>` (e.g. `title-0`, `item.name-2`), f-when uses `when-<idx>`, and f-repeat uses `repeat-<idx>`. This makes markers human-readable and self-describing without a shared ID counter. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`. The scheme differs from the FAST HTML package which uses random alphanumeric UUIDs, but the structure is equivalent.
 
 **Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe-c` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
