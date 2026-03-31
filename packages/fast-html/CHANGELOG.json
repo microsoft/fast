@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 31 Mar 2026 00:03:50 GMT",
+      "version": "1.0.0-alpha.43",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.43",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "b300d5aab3532c5067b53ea220a8f7d6f52ecfdf",
+            "comment": "fix(fast-html): update observer maps to not assume arrays of undefined types are objects"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 26 Mar 2026 00:04:08 GMT",
       "version": "1.0.0-alpha.42",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.42",
