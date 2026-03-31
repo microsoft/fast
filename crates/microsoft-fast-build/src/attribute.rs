@@ -199,6 +199,114 @@ pub fn find_custom_element(
     None
 }
 
+// ── Hydration helpers ────────────────────────────────────────────────────────
+
+/// Count attribute bindings in an opening tag:
+/// - `attr="{{expr}}"` → double-brace binding
+/// - `attr="{expr}"` (single brace, not `{{`) → single-brace client binding
+/// Returns `(double_brace_count, single_brace_count)`.
+pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
+    let attrs = parse_element_attributes(tag);
+    let mut db = 0usize;
+    let mut sb = 0usize;
+    for (_name, value) in attrs {
+        if let Some(v) = value {
+            if v.contains("{{") {
+                db += 1;
+            } else if v.starts_with('{') && v.ends_with('}') {
+                sb += 1;
+            }
+        }
+    }
+    (db, sb)
+}
+
+/// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
+/// single-brace values and all other content unchanged.
+pub fn resolve_attribute_bindings_in_tag(
+    tag: &str,
+    root: &crate::json::JsonValue,
+    loop_vars: &[(String, crate::json::JsonValue)],
+) -> String {
+    use crate::context::resolve_value;
+    use crate::content::html_escape;
+    let mut result = String::with_capacity(tag.len());
+    let mut pos = 0;
+    loop {
+        let dbl = match find_str(tag, "{{", pos) {
+            None => { result.push_str(&tag[pos..]); break; }
+            Some(idx) => idx,
+        };
+        result.push_str(&tag[pos..dbl]);
+        let inner_start = dbl + 2;
+        let end = match find_str(tag, "}}", inner_start) {
+            None => { result.push_str(&tag[dbl..]); break; }
+            Some(idx) => idx,
+        };
+        let expr = tag[inner_start..end].trim();
+        let val = resolve_value(expr, root, loop_vars)
+            .map(|v| html_escape(&v.to_display_string()))
+            .unwrap_or_default();
+        result.push_str(&val);
+        pos = end + 2;
+    }
+    result
+}
+
+/// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
+pub fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
+    let marker = format!(" data-fe-c-{}-{}", start_idx, count);
+    let trimmed = tag.trim_end();
+    if trimmed.ends_with("/>") {
+        let base = trimmed[..trimmed.len() - 2].trim_end();
+        format!("{}{} />", base, marker)
+    } else if trimmed.ends_with('>') {
+        format!("{}{}>", &trimmed[..trimmed.len() - 1], marker)
+    } else {
+        format!("{}{}", tag, marker)
+    }
+}
+
+/// Find the next opening HTML tag in `template[from..]`, skipping:
+/// - Closing tags (`</`)
+/// - Comments / declarations (`<!`)
+/// - FAST directive tags (`<f-...`)
+/// - Known custom elements with templates in `locator`
+pub fn find_next_plain_html_tag(
+    template: &str,
+    from: usize,
+    locator: Option<&crate::locator::Locator>,
+) -> Option<usize> {
+    let mut i = from;
+    while i < template.len() {
+        let rel = template[i..].find('<')?;
+        let lt_pos = i + rel;
+        let after = lt_pos + 1;
+        if after >= template.len() {
+            return None;
+        }
+        let next_byte = template.as_bytes()[after];
+        if next_byte == b'/' || next_byte == b'!' {
+            i = lt_pos + 1;
+            continue;
+        }
+        if let Some(name) = read_tag_name(template, lt_pos) {
+            if !is_skippable_tag(&name, locator) {
+                return Some(lt_pos);
+            }
+        }
+        i = lt_pos + 1;
+    }
+    None
+}
+
+fn is_skippable_tag(name: &str, locator: Option<&crate::locator::Locator>) -> bool {
+    if name.starts_with("f-") {
+        return true;
+    }
+    locator.map_or(false, |loc| is_custom_element(name) && loc.has_template(name))
+}
+
 /// Parse all attributes from an opening tag string (e.g. `<my-button label="Hi" disabled>`).
 /// Returns `(attribute_name, Option<value>)` — `None` value means boolean attribute.
 /// Handles double-quoted, single-quoted, and unquoted values.
@@ -264,34 +372,32 @@ pub fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<String>)>
             i += 1;
         }
 
-        // Read value.
-        let value = if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
-            let quote = bytes[i];
-            i += 1;
-            let value_start = i;
-            while i < bytes.len() && bytes[i] != quote {
-                i += 1;
-            }
-            let val = open_tag[value_start..i].to_string();
-            if i < bytes.len() {
-                i += 1; // skip closing quote
-            }
-            val
-        } else {
-            // Unquoted value.
-            let value_start = i;
-            while i < bytes.len()
-                && !bytes[i].is_ascii_whitespace()
-                && bytes[i] != b'>'
-                && bytes[i] != b'/'
-            {
-                i += 1;
-            }
-            open_tag[value_start..i].to_string()
-        };
+        // Read value using helper.
+        let (value, new_i) = parse_attribute_value(open_tag, bytes, i);
+        i = new_i;
 
         attrs.push((name, Some(value)));
     }
 
     attrs
+}
+
+fn parse_attribute_value(open_tag: &str, bytes: &[u8], i: usize) -> (String, usize) {
+    if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
+        let quote = bytes[i];
+        let start = i + 1;
+        let mut end = start;
+        while end < bytes.len() && bytes[end] != quote {
+            end += 1;
+        }
+        let val = open_tag[start..end].to_string();
+        (val, if end < bytes.len() { end + 1 } else { end })
+    } else {
+        let start = i;
+        let mut end = i;
+        while end < bytes.len() && !bytes[end].is_ascii_whitespace() && bytes[end] != b'>' && bytes[end] != b'/' {
+            end += 1;
+        }
+        (open_tag[start..end].to_string(), end)
+    }
 }
