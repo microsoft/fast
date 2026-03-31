@@ -24,6 +24,20 @@ test.describe("f-template", async () => {
         await expect(customElement).toHaveAttribute("type", "radio");
         await expect(customElement.locator("input[type='radio']")).toHaveCount(1);
     });
+    test("create a property to attribute binding", async ({ page }) => {
+        await page.goto("/fixtures/attribute/");
+
+        const customElement = page.locator("test-element-property");
+
+        await expect(customElement.locator("input[disabled]")).toHaveCount(1);
+
+        await page.evaluate(() => {
+            const customElement = document.getElementsByTagName("test-element-property");
+            (customElement.item(0) as any)!.isEnabled = true;
+        });
+
+        await expect(customElement.locator("input[disabled]")).toHaveCount(0);
+    });
     test("create an attribute binding with an expression", async ({ page }) => {
         await page.goto("/fixtures/attribute/");
 
@@ -33,7 +47,9 @@ test.describe("f-template", async () => {
         await expect(customElementInput).toHaveAttribute("disabled");
 
         await page.evaluate(() => {
-            const customElement = document.getElementsByTagName("test-element-expression");
+            const customElement = document.getElementsByTagName(
+                "test-element-expression",
+            );
             customElement.item(0)?.setAttribute("active-group", "home");
         });
 
