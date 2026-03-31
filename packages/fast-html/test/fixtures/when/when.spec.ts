@@ -20,7 +20,7 @@ test.describe("f-template", async () => {
         await expect(customElementShow).not.toHaveText("Hello world");
         await expect(customElementHide).toHaveText("Hello world");
     });
-    test.only("create a when directive for multiple string cases", async ({ page }) => {
+    test("create a when directive for multiple string cases", async ({ page }) => {
         await page.goto("/fixtures/when/");
 
         const customElementWorld = await page.locator("#multiple1");

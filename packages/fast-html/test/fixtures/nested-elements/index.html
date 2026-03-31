@@ -130,6 +130,44 @@
             </template>
         </parent-element>
 
+        <!-- Test case 4: when with repeat and nested when -->
+        <when-repeat-element show-outer>
+            <template shadowrootmode="open">
+                <div class="container">
+                    <h2>Nested When and Repeats</h2>
+                    <!--fe-b$$start$$0$$AbCdEfGhIj$$fe-b-->
+                    <div class="outer-content">
+                        <!--fe-b$$start$$0$$KlMnOpQrSt$$fe-b-->
+                        <!--fe-repeat$$start$$0$$fe-repeat-->
+                        <div class="item">
+                            <!--fe-b$$start$$0$$A$$fe-b-->Item 1<!--fe-b$$end$$0$$A$$fe-b-->
+                            <!--fe-b$$start$$1$$B$$fe-b--><!--fe-b$$end$$1$$B$$fe-b-->
+                            <!--fe-b$$start$$2$$C$$fe-b--><button data-fe-b-0>Disable</button><!--fe-b$$end$$2$$C$$fe-b-->
+                        </div>
+                        <!--fe-repeat$$end$$0$$fe-repeat-->
+                        <!--fe-repeat$$start$$1$$fe-repeat-->
+                        <div class="item">
+                            <!--fe-b$$start$$0$$A$$fe-b-->Item 2<!--fe-b$$end$$0$$A$$fe-b-->
+                            <!--fe-b$$start$$1$$B$$fe-b--><!--fe-b$$end$$1$$B$$fe-b-->
+                            <!--fe-b$$start$$2$$C$$fe-b--><button data-fe-b-0>Disable</button><!--fe-b$$end$$2$$C$$fe-b-->
+                        </div>
+                        <!--fe-repeat$$end$$1$$fe-repeat-->
+                        <!--fe-repeat$$start$$2$$fe-repeat-->
+                        <div class="item">
+                            <!--fe-b$$start$$0$$A$$fe-b--><!--fe-b$$end$$0$$A$$fe-b-->
+                            <!--fe-b$$start$$1$$B$$fe-b--><span>Empty item</span><!--fe-b$$end$$1$$B$$fe-b-->
+                            <!--fe-b$$start$$2$$C$$fe-b--><button data-fe-b-0>Disable</button><!--fe-b$$end$$2$$C$$fe-b-->
+                        </div>
+                        <!--fe-repeat$$end$$2$$fe-repeat-->
+                        <!--fe-b$$end$$0$$KlMnOpQrSt$$fe-b-->
+                        <!--fe-b$$start$$1$$B$$fe-b--><!--fe-b$$end$$1$$B$$fe-b-->
+                    </div>
+                    <!--fe-b$$end$$0$$AbCdEfGhIj$$fe-b-->
+                    <!--fe-b$$start$$1$$AbCdEfGhIj$$fe-b--><!--fe-b$$end$$1$$AbCdEfGhIj$$fe-b-->
+                </div>
+            </template>
+        </when-repeat-element>
+
         <f-template name="child-element">
             <template>
                 <div class="item">
@@ -150,6 +188,32 @@
                             ></child-element>
                         </f-repeat>
                     </div>
+                </div>
+            </template>
+        </f-template>
+        <f-template name="when-repeat-element">
+            <template>
+                <div class="container">
+                    <h2>Nested When and Repeats</h2>
+                    <f-when value="{{showOuter}}">
+                        <div class="outer-content">
+                            <f-repeat value="{{item in items}}">
+                                <div class="item">
+                                    <f-when value="{{isEnabled}}">{{item}}</f-when>
+                                    <f-when value="{{!item && isEnabled}}"><span>Empty item</span></f-when>
+                                    <f-when value="{{isEnabled}}">
+                                        <button @click="{toggleEnable()}">Disable</button>
+                                    </f-when>
+                                </div>
+                            </f-repeat>
+                            <f-when value="{{!isEnabled}}">
+                                <button @click="{toggleEnable()}">Enable</button>
+                            </f-when>
+                        </div>
+                    </f-when>
+                    <f-when value="{{!showOuter}}">
+                        <span>Outer when not rendered</span>
+                    </f-when>
                 </div>
             </template>
         </f-template>
