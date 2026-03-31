@@ -9,25 +9,29 @@ test.describe("AttributeMap", async () => {
     test("should define @attr for a simple leaf property", async ({ page }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const hasFoo = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
+        const hasFooAccessor = await element.evaluate(node => {
+            const desc = Object.getOwnPropertyDescriptor(
                 Object.getPrototypeOf(node),
-            ).some((a: any) => a.name === "foo");
+                "foo",
+            );
+            return typeof desc?.get === "function";
         });
 
-        expect(hasFoo).toBeTruthy();
+        expect(hasFooAccessor).toBeTruthy();
     });
 
     test("should define @attr for a camelCase property", async ({ page }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const hasFooBar = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
+        const hasFooBarAccessor = await element.evaluate(node => {
+            const desc = Object.getOwnPropertyDescriptor(
                 Object.getPrototypeOf(node),
-            ).some((a: any) => a.name === "fooBar");
+                "fooBar",
+            );
+            return typeof desc?.get === "function";
         });
 
-        expect(hasFooBar).toBeTruthy();
+        expect(hasFooBarAccessor).toBeTruthy();
     });
 
     test("should convert camelCase property name to dash-case attribute name", async ({
@@ -35,28 +39,34 @@ test.describe("AttributeMap", async () => {
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const attribute = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
-                Object.getPrototypeOf(node),
-            ).find((a: any) => a.name === "fooBar")?.attribute;
-        });
+        // Setting the dash-case attribute should update the camelCase property
+        await element.evaluate(node => node.setAttribute("foo-bar", "dash-case-test"));
+        const propValue = await element.evaluate(node => (node as any).fooBar);
 
-        expect(attribute).toBe("foo-bar");
+        expect(propValue).toBe("dash-case-test");
     });
 
     test("should not define @attr for event handler methods", async ({ page }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const accessorNames = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
-                Object.getPrototypeOf(node),
-            ).map((a: any) => a.name);
+        // @click="{setFoo()}" etc. produce "event" type bindings — excluded from schema.
+        // Regular methods have a value descriptor, not a getter/setter.
+        const results = await element.evaluate(node => {
+            const proto = Object.getPrototypeOf(node);
+            const isAccessor = (name: string) => {
+                const desc = Object.getOwnPropertyDescriptor(proto, name);
+                return typeof desc?.get === "function";
+            };
+            return {
+                setFoo: isAccessor("setFoo"),
+                setFooBar: isAccessor("setFooBar"),
+                setMultiple: isAccessor("setMultiple"),
+            };
         });
 
-        // @click="{setFoo()}" etc. produce "event" type bindings — excluded from schema
-        expect(accessorNames).not.toContain("setFoo");
-        expect(accessorNames).not.toContain("setFooBar");
-        expect(accessorNames).not.toContain("setMultiple");
+        expect(results.setFoo).toBe(false);
+        expect(results.setFooBar).toBe(false);
+        expect(results.setMultiple).toBe(false);
     });
 
     test("should update template when attribute is set via setAttribute", async ({
@@ -98,13 +108,11 @@ test.describe("AttributeMap", async () => {
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const fooAttrLookup = await element.evaluate(node => {
-            const { fastElementRegistry } = (window as any).__FAST__;
-            const definition = fastElementRegistry.getForInstance(node);
-            return definition?.attributeLookup["foo"]?.name ?? null;
-        });
+        // setAttribute triggers attributeChangedCallback via attributeLookup
+        await element.evaluate(node => node.setAttribute("foo", "lookup-test"));
+        const propValue = await element.evaluate(node => (node as any).foo);
 
-        expect(fooAttrLookup).toBe("foo");
+        expect(propValue).toBe("lookup-test");
     });
 
     test("should update definition attributeLookup with dash-case for camelCase properties", async ({
@@ -112,12 +120,10 @@ test.describe("AttributeMap", async () => {
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const fooBarAttrLookup = await element.evaluate(node => {
-            const { fastElementRegistry } = (window as any).__FAST__;
-            const definition = fastElementRegistry.getForInstance(node);
-            return definition?.attributeLookup["foo-bar"]?.name ?? null;
-        });
+        // setAttribute with dash-case triggers attributeChangedCallback for the camelCase property
+        await element.evaluate(node => node.setAttribute("foo-bar", "lookup-bar-test"));
+        const propValue = await element.evaluate(node => (node as any).fooBar);
 
-        expect(fooBarAttrLookup).toBe("fooBar");
+        expect(propValue).toBe("lookup-bar-test");
     });
 });
