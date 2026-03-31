@@ -47,40 +47,64 @@ test.describe("AttributeMap", async () => {
         expect(fooAccessor?.attribute).toBe("foo");
     });
 
-    test("should render updated value when foo property is set", async ({ page }) => {
-        const fooDiv = page.locator(".foo-value");
+    test("should update template when foo attribute is set via setAttribute", async ({
+        page,
+    }) => {
+        const element = page.locator("attribute-map-test-element");
 
-        await page.locator("button:text-is('Set Foo')").click();
+        await element.evaluate(node => node.setAttribute("foo", "hello-via-attr"));
 
-        await expect(fooDiv).toHaveText("hello");
+        await expect(page.locator(".foo-value")).toHaveText("hello-via-attr");
     });
 
-    test("should render updated value when fooBar property is set", async ({ page }) => {
-        const fooBarDiv = page.locator(".foo-bar-value");
+    test("should update template when foo-bar attribute is set via setAttribute", async ({
+        page,
+    }) => {
+        const element = page.locator("attribute-map-test-element");
 
-        await page.locator("button:text-is('Set FooBar')").click();
+        await element.evaluate(node => node.setAttribute("foo-bar", "world-via-attr"));
 
-        await expect(fooBarDiv).toHaveText("world");
+        await expect(page.locator(".foo-bar-value")).toHaveText("world-via-attr");
     });
 
-    test("should update both properties independently", async ({ page }) => {
-        const fooDiv = page.locator(".foo-value");
-        const fooBarDiv = page.locator(".foo-bar-value");
+    test("should update both properties when set via setAttribute", async ({ page }) => {
+        const element = page.locator("attribute-map-test-element");
 
-        await page.locator("button:text-is('Set Foo')").click();
-        await expect(fooDiv).toHaveText("hello");
+        await element.evaluate(node => {
+            node.setAttribute("foo", "multi-foo");
+            node.setAttribute("foo-bar", "multi-bar");
+        });
 
-        await page.locator("button:text-is('Set FooBar')").click();
-        await expect(fooBarDiv).toHaveText("world");
+        await expect(page.locator(".foo-value")).toHaveText("multi-foo");
+        await expect(page.locator(".foo-bar-value")).toHaveText("multi-bar");
     });
 
-    test("should update both properties when setting multiple", async ({ page }) => {
-        const fooDiv = page.locator(".foo-value");
-        const fooBarDiv = page.locator(".foo-bar-value");
+    test("should reflect foo property value back to foo attribute", async ({ page }) => {
+        const element = page.locator("attribute-map-test-element");
 
-        await page.locator("button:text-is('Set Multiple')").click();
+        await element.evaluate(node => {
+            (node as any).foo = "reflected-value";
+        });
 
-        await expect(fooDiv).toHaveText("updated");
-        await expect(fooBarDiv).toHaveText("also-updated");
+        // FAST reflects attributes asynchronously via Updates.enqueue
+        await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));
+
+        const attrValue = await element.evaluate(node => node.getAttribute("foo"));
+        expect(attrValue).toBe("reflected-value");
+    });
+
+    test("should reflect fooBar property value back to foo-bar attribute", async ({
+        page,
+    }) => {
+        const element = page.locator("attribute-map-test-element");
+
+        await element.evaluate(node => {
+            (node as any).fooBar = "bar-reflected";
+        });
+
+        await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));
+
+        const attrValue = await element.evaluate(node => node.getAttribute("foo-bar"));
+        expect(attrValue).toBe("bar-reflected");
     });
 });

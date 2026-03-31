@@ -53,10 +53,44 @@ test.describe("AttributeMap", async () => {
             ).map((a: any) => a.name);
         });
 
-        // setFoo, setFooBar, setMultiple are methods (event handlers) - not in schema
+        // @click="{setFoo()}" etc. produce "event" type bindings — excluded from schema
         expect(accessorNames).not.toContain("setFoo");
         expect(accessorNames).not.toContain("setFooBar");
         expect(accessorNames).not.toContain("setMultiple");
+    });
+
+    test("should update template when attribute is set via setAttribute", async ({
+        page,
+    }) => {
+        const element = page.locator("attribute-map-test-element");
+
+        await element.evaluate(node => node.setAttribute("foo", "attr-value"));
+
+        await expect(page.locator(".foo-value")).toHaveText("attr-value");
+    });
+
+    test("should update template when dash-case attribute is set via setAttribute", async ({
+        page,
+    }) => {
+        const element = page.locator("attribute-map-test-element");
+
+        await element.evaluate(node => node.setAttribute("foo-bar", "bar-attr-value"));
+
+        await expect(page.locator(".foo-bar-value")).toHaveText("bar-attr-value");
+    });
+
+    test("should reflect property value back to attribute", async ({ page }) => {
+        const element = page.locator("attribute-map-test-element");
+
+        await element.evaluate(node => {
+            (node as any).foo = "reflected";
+        });
+
+        // FAST reflects attributes asynchronously via Updates.enqueue
+        await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));
+
+        const attrValue = await element.evaluate(node => node.getAttribute("foo"));
+        expect(attrValue).toBe("reflected");
     });
 
     test("should update definition attributeLookup for simple properties", async ({
