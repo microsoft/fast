@@ -104,4 +104,18 @@ test.describe("AttributeMap", async () => {
         const attrValue = await element.evaluate(node => node.getAttribute("foo-bar"));
         expect(attrValue).toBe("bar-reflected");
     });
+
+    test("should not overwrite an existing @attr accessor", async ({ page }) => {
+        await page.waitForSelector("attribute-map-existing-attr-test-element");
+        const element = page.locator("attribute-map-existing-attr-test-element");
+
+        // The @attr default value must survive AttributeMap processing
+        const defaultValue = await element.evaluate(node => (node as any).foo);
+        expect(defaultValue).toBe("original");
+
+        // setAttribute must still work via the original @attr definition
+        await element.evaluate(node => node.setAttribute("foo", "updated"));
+        const updatedValue = await element.evaluate(node => (node as any).foo);
+        expect(updatedValue).toBe("updated");
+    });
 });

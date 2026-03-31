@@ -126,4 +126,18 @@ test.describe("AttributeMap", async () => {
 
         expect(propValue).toBe("lookup-bar-test");
     });
+
+    test("should not overwrite an existing @attr accessor", async ({ page }) => {
+        await page.waitForSelector("attribute-map-existing-attr-test-element");
+        const element = page.locator("attribute-map-existing-attr-test-element");
+
+        // The @attr default value must survive AttributeMap processing
+        const defaultValue = await element.evaluate(node => (node as any).foo);
+        expect(defaultValue).toBe("original");
+
+        // setAttribute must still work via the original @attr definition
+        await element.evaluate(node => node.setAttribute("foo", "updated"));
+        const updatedValue = await element.evaluate(node => (node as any).foo);
+        expect(updatedValue).toBe("updated");
+    });
 });
