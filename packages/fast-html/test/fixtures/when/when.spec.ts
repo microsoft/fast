@@ -20,6 +20,34 @@ test.describe("f-template", async () => {
         await expect(customElementShow).not.toHaveText("Hello world");
         await expect(customElementHide).toHaveText("Hello world");
     });
+    test.only("create a when directive for multiple string cases", async ({ page }) => {
+        await page.goto("/fixtures/when/");
+
+        const customElementWorld = await page.locator("#multiple1");
+        const customElementPluto = await page.locator("#multiple2");
+        const customElementMars = await page.locator("#multiple3");
+
+        await expect(customElementWorld).toHaveText("Hello world");
+        await expect(customElementWorld).not.toHaveText("Hello pluto");
+        await expect(customElementWorld).not.toHaveText("Hello mars");
+
+        await expect(customElementPluto).not.toHaveText("Hello world");
+        await expect(customElementPluto).toHaveText("Hello pluto");
+        await expect(customElementPluto).not.toHaveText("Hello mars");
+
+        await expect(customElementMars).not.toHaveText("Hello world");
+        await expect(customElementMars).not.toHaveText("Hello pluto");
+        await expect(customElementMars).toHaveText("Hello mars");
+
+        await page.evaluate(() => {
+            const customElementPluto = document.getElementById("multiple2");
+            customElementPluto?.setAttribute("planet", "mars");
+        });
+
+        await expect(customElementPluto).not.toHaveText("Hello world");
+        await expect(customElementPluto).not.toHaveText("Hello pluto");
+        await expect(customElementPluto).toHaveText("Hello mars");
+    });
     test("create a when directive for a boolean: false", async ({ page }) => {
         await page.goto("/fixtures/when/");
 
@@ -47,7 +75,9 @@ test.describe("f-template", async () => {
         await expect(customElementShow).toHaveText("Not equals 3");
         await expect(customElementHide).not.toHaveText("Not equals 3");
     });
-    test("create a when directive value uses greater than or equals", async ({ page }) => {
+    test("create a when directive value uses greater than or equals", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/when/");
 
         const customElementShow = await page.locator("#ge-true");
