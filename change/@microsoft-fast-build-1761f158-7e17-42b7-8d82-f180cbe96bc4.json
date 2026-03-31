@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Initial addition of npm package for fast CLI",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
