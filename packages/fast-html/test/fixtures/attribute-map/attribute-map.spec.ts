@@ -12,13 +12,14 @@ test.describe("AttributeMap", async () => {
         const element = page.locator("attribute-map-test-element");
 
         const accessors = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
-                Object.getPrototypeOf(node),
-            ).map((a: any) => ({ name: a.name, attribute: a.attribute }));
+            const proto = Object.getPrototypeOf(node);
+            const isAccessor = (name: string) =>
+                typeof Object.getOwnPropertyDescriptor(proto, name)?.get === "function";
+            return { foo: isAccessor("foo"), fooBar: isAccessor("fooBar") };
         });
 
-        expect(accessors.some((a: any) => a.name === "foo")).toBeTruthy();
-        expect(accessors.some((a: any) => a.name === "fooBar")).toBeTruthy();
+        expect(accessors.foo).toBeTruthy();
+        expect(accessors.fooBar).toBeTruthy();
     });
 
     test("should use dash-case attribute name for camelCase property", async ({
@@ -26,25 +27,21 @@ test.describe("AttributeMap", async () => {
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const fooBarAccessor = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
-                Object.getPrototypeOf(node),
-            ).find((a: any) => a.name === "fooBar");
-        });
+        // Setting foo-bar attribute should update the fooBar property
+        await element.evaluate(node => node.setAttribute("foo-bar", "dash-test"));
+        const propValue = await element.evaluate(node => (node as any).fooBar);
 
-        expect(fooBarAccessor?.attribute).toBe("foo-bar");
+        expect(propValue).toBe("dash-test");
     });
 
     test("should use the same name for non-camelCase property", async ({ page }) => {
         const element = page.locator("attribute-map-test-element");
 
-        const fooAccessor = await element.evaluate(node => {
-            return (window as any).Observable.getAccessors(
-                Object.getPrototypeOf(node),
-            ).find((a: any) => a.name === "foo");
-        });
+        // Setting foo attribute should update the foo property
+        await element.evaluate(node => node.setAttribute("foo", "same-name-test"));
+        const propValue = await element.evaluate(node => (node as any).foo);
 
-        expect(fooAccessor?.attribute).toBe("foo");
+        expect(propValue).toBe("same-name-test");
     });
 
     test("should update template when foo attribute is set via setAttribute", async ({
