@@ -13,3 +13,7 @@ categories = ["template-engine", "web-programming"]
 [lib]
 name = "microsoft_fast_build"
 path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2"
