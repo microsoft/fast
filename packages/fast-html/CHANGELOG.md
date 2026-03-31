@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 26 Mar 2026 00:04:08 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 31 Mar 2026 00:03:50 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.43
+
+Tue, 31 Mar 2026 00:03:50 GMT
+
+### Changes
+
+- fix(fast-html): update observer maps to not assume arrays of undefined types are objects (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.42
 
