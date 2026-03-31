@@ -56,6 +56,21 @@ export class AttributeMap {
 
             Observable.defineProperty(this.classPrototype, attrDef);
 
+            // Push to the existing observedAttributes array on the class.
+            // For all f-template-registered elements, registry.define() (which causes
+            // the browser to cache observedAttributes) is called AFTER this method runs.
+            // Mutating the existing array reference ensures the browser observes these
+            // attributes, enabling setAttribute() → attributeChangedCallback() → template update.
+            const existingObservedAttrs: string[] | undefined = (
+                this.classPrototype.constructor as any
+            ).observedAttributes;
+            if (
+                Array.isArray(existingObservedAttrs) &&
+                !existingObservedAttrs.includes(attributeName)
+            ) {
+                existingObservedAttrs.push(attributeName);
+            }
+
             if (this.definition) {
                 (this.definition.attributeLookup as Record<string, AttributeDefinition>)[
                     attributeName
