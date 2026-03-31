@@ -1,4 +1,4 @@
-import { FASTElement, fastElementRegistry, Observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 
 class AttributeMapTestElement extends FASTElement {
@@ -23,6 +23,3 @@ TemplateElement.options({
         attributeMap: "all",
     },
 }).define({ name: "f-template" });
-
-(window as any).Observable = Observable;
-(window as any).__FAST__ = { fastElementRegistry };
