@@ -1,5 +1,14 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+
+class TestElementMultiple extends FASTElement {
+    @attr()
+    planet: string = "";
+}
+RenderableFASTElement(TestElementMultiple).defineAsync({
+    name: "test-element-multiple",
+    templateOptions: "defer-and-hydrate",
+});
 
 class TestElement extends FASTElement {
     @attr({ mode: "boolean" })
