@@ -1,0 +1,25 @@
+import { FASTElement } from "@microsoft/fast-element";
+import { TemplateElement } from "@microsoft/fast-html";
+
+class AttributeMapTestElement extends FASTElement {
+    public setFoo() {
+        (this as any).foo = "hello";
+    }
+
+    public setFooBar() {
+        (this as any).fooBar = "world";
+    }
+
+    public setMultiple() {
+        (this as any).foo = "updated";
+        (this as any).fooBar = "also-updated";
+    }
+}
+
+AttributeMapTestElement.defineAsync({ name: "attribute-map-test-element" });
+
+TemplateElement.options({
+    "attribute-map-test-element": {
+        attributeMap: "all",
+    },
+}).define({ name: "f-template" });
