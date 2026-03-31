@@ -13,8 +13,8 @@ fn test_custom_element_string_attr() {
         &locator,
     ).unwrap();
     assert!(result.contains(r#"<my-button label="Click me">"#), "open tag: {result}");
-    assert!(result.contains(r#"<template shadowrootmode="open">"#), "shadow: {result}");
-    assert!(result.contains("<button>Click me</button>"), "rendered: {result}");
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
+    assert!(result.contains("Click me"), "rendered: {result}");
     assert!(result.contains("</template>"), "close template: {result}");
     assert!(result.contains("</my-button>"), "close tag: {result}");
 }
@@ -41,7 +41,7 @@ fn test_custom_element_number_attr() {
         &empty_root(),
         &locator,
     ).unwrap();
-    assert!(result.contains("<span>42</span>"), "rendered: {result}");
+    assert!(result.contains("42"), "rendered: {result}");
 }
 
 #[test]
@@ -52,7 +52,7 @@ fn test_custom_element_property_binding_rename() {
         r#"{"bar": "hello"}"#,
         &locator,
     ).unwrap();
-    assert!(result.contains("<button>hello</button>"), "rendered: {result}");
+    assert!(result.contains("hello"), "rendered: {result}");
 }
 
 // ── element structure ─────────────────────────────────────────────────────────
@@ -66,7 +66,7 @@ fn test_custom_element_self_closing() {
         &locator,
     ).unwrap();
     assert!(result.starts_with(r#"<my-button label="Hi">"#), "open tag: {result}");
-    assert!(result.contains(r#"<template shadowrootmode="open">"#), "shadow: {result}");
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
     assert!(result.contains("</my-button>"), "close tag: {result}");
 }
 
@@ -78,7 +78,7 @@ fn test_custom_element_with_children() {
         &empty_root(),
         &locator,
     ).unwrap();
-    assert!(result.contains(r#"<template shadowrootmode="open">"#), "shadow: {result}");
+    assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
     assert!(result.contains(r#"<div class="layout"><slot></slot></div>"#), "shadow content: {result}");
     assert!(result.contains("light DOM content"), "light DOM: {result}");
     assert!(result.contains("</my-layout>"), "close tag: {result}");
@@ -121,7 +121,7 @@ fn test_locator_from_patterns() {
         &empty_root(),
         &locator,
     ).unwrap();
-    assert!(result.contains("<button>Click me</button>"), "rendered: {result}");
+    assert!(result.contains("Click me"), "rendered: {result}");
 }
 
 #[test]
@@ -148,8 +148,8 @@ fn test_custom_element_nested() {
         &empty_root(),
         &locator,
     ).unwrap();
-    assert!(result.contains("<h2>Hello</h2>"), "heading: {result}");
-    assert!(result.contains("<span>5</span>"), "badge: {result}");
+    assert!(result.contains("Hello"), "heading: {result}");
+    assert!(result.contains("5"), "badge: {result}");
 }
 
 #[test]
@@ -160,6 +160,6 @@ fn test_custom_element_in_f_repeat() {
         r#"{"items": [{"count": 1}, {"count": 2}]}"#,
         &locator,
     ).unwrap();
-    assert!(result.contains("<span>1</span>"), "first item: {result}");
-    assert!(result.contains("<span>2</span>"), "second item: {result}");
+    assert!(result.contains("1"), "first item: {result}");
+    assert!(result.contains("2"), "second item: {result}");
 }

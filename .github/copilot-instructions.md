@@ -41,6 +41,9 @@ These contain domain-specific guidance. Read when performing related tasks:
 
 - [TypeScript](./skills/typescript/SKILL.md) — compiler constraints, import/export conventions, decorator usage, testing patterns.
 - [Shipping](./skills/shipping/SKILL.md) — pull request format, change file generation, documentation updates.
+- [Pull Request](./skills/fast-pull-request/SKILL.md) — generate a pull request description from the branch diff.
+- [Bug Report](./skills/fast-bug-report/SKILL.md) — generate a bug report issue from conversation context.
+- [Feature Request](./skills/fast-feature-request/SKILL.md) — generate a feature request issue from conversation context.
 
 ## Commands
 
