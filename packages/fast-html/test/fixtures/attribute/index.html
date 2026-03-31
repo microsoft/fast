@@ -10,6 +10,11 @@
                 <input disabled data-fe-b-0 type="checkbox">
             </template>
         </test-element>
+        <test-element-property>
+            <template shadowrootmode="open">
+                <input type="checkbox" data-fe-b-0 disabled>
+            </template>
+        </test-element-property>
         <test-element-expression active-group="work" current-group="work">
             <template shadowrootmode="open">
                 <input disabled data-fe-b-0 type="button">
@@ -17,6 +22,9 @@
         </test-element-expression>
         <f-template name="test-element">
             <template><input type="{{type}}" disabled></template>
+        </f-template>
+        <f-template name="test-element-property">
+            <template><input type="checkbox" ?disabled="{{!isEnabled}}"></template>
         </f-template>
         <f-template name="test-element-expression">
             <template>
