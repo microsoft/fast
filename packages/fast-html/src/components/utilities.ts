@@ -1179,7 +1179,31 @@ function assignObservablesToArray(
         },
     });
 
-    return data;
+    if (schemaProperties !== null) {
+        return data;
+    }
+
+    // For primitive arrays, wrap in a Proxy so that direct index assignment
+    // (e.g. arr[0] = value) triggers FAST's splice-based change tracking and
+    // keeps repeat directives in sync. Object arrays are not wrapped because
+    // their items are individually proxied, and FAST's own push/splice/etc.
+    // already carry splice records — double-wrapping would produce duplicate
+    // splice notifications.
+    return new Proxy(data, {
+        set: (arr: any, prop: string | symbol, value: any) => {
+            const idx = typeof prop === "string" ? Number(prop) : NaN;
+
+            if (typeof prop !== "symbol" && Number.isInteger(idx) && idx >= 0) {
+                // splice() replaces the item in-place and creates the splice
+                // record that FAST's ArrayObserver delivers to repeat directives.
+                Array.prototype.splice.call(arr, idx, 1, value);
+            } else {
+                arr[prop] = value;
+            }
+
+            return true;
+        },
+    });
 }
 
 /**
@@ -1298,6 +1322,17 @@ export function assignObservables(
                         ),
                     );
                 }
+            } else {
+                // Primitive array (items have no schema $ref): wrap in a proxy so that
+                // direct index assignments (e.g. arr[0] = value) use FAST's splice-based
+                // change tracking and keep repeat directives in sync.
+                proxiedData = assignObservablesToArray(
+                    proxiedData,
+                    schema,
+                    rootSchema,
+                    target,
+                    rootProperty,
+                );
             }
 
             break;
