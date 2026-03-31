@@ -21,6 +21,7 @@
   },
   "files": [
     "bin",
+    "get-package-json.js",
     "wasm/microsoft_fast_build.js",
     "wasm/microsoft_fast_build_bg.wasm",
     "wasm/microsoft_fast_build.d.ts",
