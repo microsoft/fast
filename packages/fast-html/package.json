@@ -23,6 +23,7 @@
   "scripts": {
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "npm run build:tsc && npm run doc",
+    "build:fixtures": "node scripts/build-fixtures.js",
     "clean": "clean dist temp test-results",
     "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
     "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
@@ -59,6 +60,7 @@
     "@microsoft/fast-element": "^2.10.2"
   },
   "devDependencies": {
+    "@microsoft/fast-build": "^0.1.0",
     "@microsoft/fast-element": "^2.10.2"
   },
   "beachball": {
