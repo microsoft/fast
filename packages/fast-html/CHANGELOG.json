@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 01 Apr 2026 00:31:37 GMT",
+      "version": "1.0.0-alpha.43",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.43",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3c3d3da48133c92bab9d4a55a9aa1bd2b525da24",
+            "comment": "chore: add tests for multiple whens"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "80dfe06ae0f134716e3de6588db8f976982250a5",
+            "comment": "chore: add test showing property reflection on boolean attribute"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 31 Mar 2026 00:03:50 GMT",
       "version": "1.0.0-alpha.43",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.43",
