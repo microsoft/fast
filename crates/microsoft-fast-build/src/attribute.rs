@@ -223,34 +223,79 @@ pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
 
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
+/// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
+/// either renders the bare attribute name (if true) or omits the attribute (if false).
 pub fn resolve_attribute_bindings_in_tag(
     tag: &str,
     root: &crate::json::JsonValue,
     loop_vars: &[(String, crate::json::JsonValue)],
 ) -> String {
-    use crate::context::resolve_value;
     use crate::content::html_escape;
+    use crate::context::resolve_value;
+    use crate::expression::evaluate;
     let mut result = String::with_capacity(tag.len());
     let mut pos = 0;
     loop {
         let dbl = match find_str(tag, "{{", pos) {
-            None => { result.push_str(&tag[pos..]); break; }
+            None => {
+                result.push_str(&tag[pos..]);
+                break;
+            }
             Some(idx) => idx,
         };
-        result.push_str(&tag[pos..dbl]);
         let inner_start = dbl + 2;
         let end = match find_str(tag, "}}", inner_start) {
-            None => { result.push_str(&tag[dbl..]); break; }
+            None => {
+                result.push_str(&tag[dbl..]);
+                break;
+            }
             Some(idx) => idx,
         };
         let expr = tag[inner_start..end].trim();
-        let val = resolve_value(expr, root, loop_vars)
-            .map(|v| html_escape(&v.to_display_string()))
-            .unwrap_or_default();
-        result.push_str(&val);
-        pos = end + 2;
+
+        // Append literal text up to {{
+        result.push_str(&tag[pos..dbl]);
+
+        // Check whether this {{expr}} is the value of a `?attr` boolean binding.
+        // Pattern: `result` ends with `?name="` after appending the prefix text.
+        if let Some(bool_name) = extract_bool_attr_prefix(&result) {
+            // Remove `?name="` from result (len = '?' + name + '="' = name.len() + 3)
+            let trim_to = result.len() - (bool_name.len() + 3);
+            result.truncate(trim_to);
+            // Render the bare attribute name when the expression is truthy, nothing when falsy.
+            if evaluate(expr, root, loop_vars) {
+                result.push_str(&bool_name);
+            }
+            // Skip past `}}"` (closing `}}` + closing `"`)
+            pos = end + 3;
+        } else {
+            let val = resolve_value(expr, root, loop_vars)
+                .map(|v| html_escape(&v.to_display_string()))
+                .unwrap_or_default();
+            result.push_str(&val);
+            pos = end + 2;
+        }
     }
     result
+}
+
+/// If `result` ends with `?name="` (a FAST boolean attribute prefix), return `name`.
+/// Returns `None` for any other suffix.
+fn extract_bool_attr_prefix(result: &str) -> Option<String> {
+    if !result.ends_with("=\"") {
+        return None;
+    }
+    let before_eq = &result[..result.len() - 2];
+    let name_start = before_eq
+        .rfind(|c: char| c.is_ascii_whitespace())
+        .map(|i| i + 1)
+        .unwrap_or(0);
+    let attr_part = &before_eq[name_start..];
+    if attr_part.starts_with('?') && attr_part.len() > 1 {
+        Some(attr_part[1..].to_string())
+    } else {
+        None
+    }
 }
 
 /// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
