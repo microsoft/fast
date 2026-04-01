@@ -108,18 +108,10 @@ Use `{{{key}}}` for unescaped HTML output.
 </ul>
 ```
 
-## Regenerating the WASM
-
-The compiled WASM is pre-built and committed. To regenerate it after changes to the Rust crate, install [wasm-pack](https://rustwasm.github.io/wasm-pack/) and run:
-
-```sh
-npm run build:wasm -w @microsoft/fast-build
-```
-
 ## Contributing
 
-See [CONTRIBUTING.md](../../CONTRIBUTING.md) in the repository root.
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
-MIT — see [LICENSE](../../LICENSE) for details.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
