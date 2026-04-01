@@ -80,33 +80,7 @@ Each matched `.html` file is registered as a custom element template using its f
 
 ## Template syntax
 
-### Bindings
-
-Use `{{key}}` to interpolate a value from the state:
-
-```html
-<p>{{message}}</p>
-```
-
-Use `{{{key}}}` for unescaped HTML output.
-
-### Conditionals — `<f-when>`
-
-```html
-<f-when value="{{isLoggedIn}}">
-  <p>Welcome back!</p>
-</f-when>
-```
-
-### Repeats — `<f-repeat>`
-
-```html
-<ul>
-  <f-repeat value="{{item in items}}">
-    <li>{{item}}</li>
-  </f-repeat>
-</ul>
-```
+Template syntax follows the FAST declarative HTML format. See the [`@microsoft/fast-html` README](../fast-html/README.md) for full documentation on bindings, conditionals, repeats, and directives.
 
 ## Contributing
 
