@@ -132,7 +132,7 @@
                             <progress></progress>
                         </f-when>
                         <f-when value="{{!showProgress}}">
-                            <button ?disabled="{{enableContinue}}" @click="{handleClick()}">
+                            <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
                                 {{strings.continueButtonText}}
                             </button>
                         </f-when>

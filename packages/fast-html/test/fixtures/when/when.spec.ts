@@ -158,133 +158,134 @@ test.describe("f-template", async () => {
         await expect(element).toHaveJSProperty("clickCount", 2);
     });
 
-    test("nested-when: initial state shows progress and hides error/button/retry", async ({
-        page,
-    }) => {
-        await page.goto("/fixtures/when/");
-        const element = page.locator("#nested-when");
+    test.describe("nested-when", () => {
+        test("initial state shows progress and hides error/button/retry", async ({
+            page,
+        }) => {
+            await page.goto("/fixtures/when/");
+            const element = page.locator("#nested-when");
 
-        await expect(element.locator("progress")).toBeVisible();
-        await expect(element.locator(".error")).toHaveCount(0);
-        await expect(element.locator("button")).toHaveCount(0);
-    });
-
-    test("nested-when: error state shows error div and retry button, hides progress", async ({
-        page,
-    }) => {
-        await page.goto("/fixtures/when/");
-        const element = page.locator("#nested-when");
-
-        await expect(element.locator("progress")).toBeVisible();
-        await expect(element).not.toHaveAttribute("needs-hydration");
-
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).error = true;
+            await expect(element.locator("progress")).toBeVisible();
+            await expect(element.locator(".error")).toHaveCount(0);
+            await expect(element.locator("button")).toHaveCount(0);
         });
 
-        await expect(element.locator(".error")).toBeVisible();
-        await expect(element.locator(".error")).toHaveText("Error occurred");
-        await expect(element.locator("button")).toHaveText("Retry");
-        await expect(element.locator("progress")).toHaveCount(0);
+        test("error state shows error div and retry button, hides progress", async ({
+            page,
+        }) => {
+            await page.goto("/fixtures/when/");
+            const element = page.locator("#nested-when");
 
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).showProgress = false;
+            await expect(element.locator("progress")).toBeVisible();
+            await expect(element).not.toHaveAttribute("needs-hydration");
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).error = true;
+            });
+
+            await expect(element.locator(".error")).toBeVisible();
+            await expect(element.locator(".error")).toHaveText("Error occurred");
+            await expect(element.locator("button")).toHaveText("Retry");
+            await expect(element.locator("progress")).toHaveCount(0);
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).showProgress = false;
+            });
+
+            await expect(element.locator(".error")).toBeVisible();
+            await expect(element.locator("progress")).toHaveCount(0);
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).enableContinue = true;
+            });
+
+            await expect(element.locator(".error")).toBeVisible();
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).error = false;
+            });
+
+            const button = element.locator("button");
+            await expect(button).toBeVisible();
+            await expect(button).toHaveText("Continue");
+            await expect(button).not.toBeDisabled();
+            await button.click();
+            await expect(element).toHaveJSProperty("clickCount", 1);
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).enableContinue = false;
+            });
+            await expect(button).toBeDisabled();
         });
 
-        await expect(element.locator(".error")).toBeVisible();
-        await expect(element.locator("progress")).toHaveCount(0);
+        test("showProgress false shows continue button without disabled", async ({
+            page,
+        }) => {
+            await page.goto("/fixtures/when/");
+            const element = page.locator("#nested-when");
 
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).enableContinue = true;
+            await expect(element.locator("progress")).toBeVisible();
+            await expect(element).not.toHaveAttribute("needs-hydration");
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).showProgress = false;
+            });
+
+            const button = element.locator("button");
+            await expect(button).toBeVisible();
+            await expect(button).toHaveText("Continue");
+            await expect(button).toBeDisabled();
+            await expect(element.locator("progress")).toHaveCount(0);
         });
 
-        await expect(element.locator(".error")).toBeVisible();
+        test("toggling showProgress switches between progress and button", async ({
+            page,
+        }) => {
+            await page.goto("/fixtures/when/");
+            const element = page.locator("#nested-when");
 
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).error = false;
+            await expect(element.locator("progress")).toBeVisible();
+            await expect(element.locator("button")).toHaveCount(0);
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).showProgress = false;
+            });
+
+            await expect(element.locator("progress")).toHaveCount(0);
+            await expect(element.locator("button")).toBeVisible();
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).showProgress = true;
+            });
+
+            await expect(element.locator("progress")).toBeVisible();
+            await expect(element.locator("button")).toHaveCount(0);
         });
 
-        const button = element.locator("button");
-        await expect(button).toBeVisible();
-        await expect(button).toHaveText("Continue");
-        await expect(button).toBeDisabled();
+        test("toggling error switches between error/retry and normal state", async ({
+            page,
+        }) => {
+            await page.goto("/fixtures/when/");
+            const element = page.locator("#nested-when");
 
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).enableContinue = false;
+            await expect(element.locator(".error")).toHaveCount(0);
+            await expect(element.locator("progress")).toBeVisible();
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).error = true;
+            });
+
+            await expect(element.locator(".error")).toBeVisible();
+            await expect(element.locator("progress")).toHaveCount(0);
+            await expect(element.locator("button")).toHaveText("Retry");
+
+            await page.evaluate(() => {
+                (document.getElementById("nested-when") as any).error = false;
+            });
+
+            await expect(element.locator(".error")).toHaveCount(0);
+            await expect(element.locator("progress")).toBeVisible();
+            await expect(element.locator("button")).toHaveCount(0);
         });
-        await expect(button).not.toBeDisabled();
-
-        await button.click();
-        await expect(element).toHaveJSProperty("clickCount", 1);
-    });
-
-    test("nested-when: showProgress false shows continue button without disabled", async ({
-        page,
-    }) => {
-        await page.goto("/fixtures/when/");
-        const element = page.locator("#nested-when");
-
-        await expect(element.locator("progress")).toBeVisible();
-        await expect(element).not.toHaveAttribute("needs-hydration");
-
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).showProgress = false;
-        });
-
-        const button = element.locator("button");
-        await expect(button).toBeVisible();
-        await expect(button).toHaveText("Continue");
-        await expect(button).not.toBeDisabled();
-        await expect(element.locator("progress")).toHaveCount(0);
-    });
-
-    test("nested-when: toggling showProgress switches between progress and button", async ({
-        page,
-    }) => {
-        await page.goto("/fixtures/when/");
-        const element = page.locator("#nested-when");
-
-        await expect(element.locator("progress")).toBeVisible();
-        await expect(element.locator("button")).toHaveCount(0);
-
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).showProgress = false;
-        });
-
-        await expect(element.locator("progress")).toHaveCount(0);
-        await expect(element.locator("button")).toBeVisible();
-
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).showProgress = true;
-        });
-
-        await expect(element.locator("progress")).toBeVisible();
-        await expect(element.locator("button")).toHaveCount(0);
-    });
-
-    test("nested-when: toggling error switches between error/retry and normal state", async ({
-        page,
-    }) => {
-        await page.goto("/fixtures/when/");
-        const element = page.locator("#nested-when");
-
-        await expect(element.locator(".error")).toHaveCount(0);
-        await expect(element.locator("progress")).toBeVisible();
-
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).error = true;
-        });
-
-        await expect(element.locator(".error")).toBeVisible();
-        await expect(element.locator("progress")).toHaveCount(0);
-        await expect(element.locator("button")).toHaveText("Retry");
-
-        await page.evaluate(() => {
-            (document.getElementById("nested-when") as any).error = false;
-        });
-
-        await expect(element.locator(".error")).toHaveCount(0);
-        await expect(element.locator("progress")).toBeVisible();
-        await expect(element.locator("button")).toHaveCount(0);
     });
 });
