@@ -186,6 +186,35 @@ locator.add_template("my-button", "<button>{{label}}</button>");
 
 Glob patterns support `*` (any characters within one path segment), `**` (any number of segments), and `?` (any single character).
 
+### HTML File Format
+
+Template HTML files must wrap their content in an `<f-template>` element with a `name` attribute identifying the custom element, and an inner `<template>` element containing the template markup:
+
+```html
+<f-template name="my-button">
+    <template>
+        <button>{{label}}</button>
+    </template>
+</f-template>
+```
+
+A single file may contain multiple templates:
+
+```html
+<f-template name="my-header">
+    <template>
+        <header><h1>{{title}}</h1></header>
+    </template>
+</f-template>
+<f-template name="my-footer">
+    <template>
+        <footer>{{copyright}}</footer>
+    </template>
+</f-template>
+```
+
+If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored.
+
 ### Rendering with a Locator
 
 ```rust
@@ -311,7 +340,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 | `MissingValueAttribute` | Directive missing `value="{{…}}"` attribute |
 | `InvalidRepeatExpression` | Repeat value not in `item in list` format |
 | `NotAnArray` | `<f-repeat>` binding resolves to a non-array value |
-| `DuplicateTemplate` | Two template files resolve to the same element name |
+| `DuplicateTemplate` | Two or more files contain an `<f-template>` with the same name attribute |
 | `TemplateReadError` | A matched template file could not be read |
 | `JsonParse` | Invalid JSON passed to `render_template` |
 
