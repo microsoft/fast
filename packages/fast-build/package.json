@@ -28,7 +28,7 @@
     "wasm/microsoft_fast_build_bg.wasm.d.ts"
   ],
   "scripts": {
-    "build": "wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm"
+    "build:wasm": "wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm"
   },
   "engines": {
     "node": ">=22.18.0"
