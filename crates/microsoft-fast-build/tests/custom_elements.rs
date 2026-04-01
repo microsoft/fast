@@ -163,3 +163,40 @@ fn test_custom_element_in_f_repeat() {
     assert!(result.contains("1"), "first item: {result}");
     assert!(result.contains("2"), "second item: {result}");
 }
+
+#[test]
+fn test_locator_multiple_templates_in_file() {
+    // multi/multi-components.html contains both my-multi-a and my-multi-b
+    let locator = Locator::from_patterns(&["tests/fixtures/multi/*.html"]).unwrap();
+    assert!(locator.has_template("my-multi-a"), "missing my-multi-a");
+    assert!(locator.has_template("my-multi-b"), "missing my-multi-b");
+
+    let result_a = render_with_locator(
+        r#"<my-multi-a label="Hello"></my-multi-a>"#,
+        &empty_root(),
+        &locator,
+    ).unwrap();
+    assert!(result_a.contains("Hello"), "my-multi-a rendered: {result_a}");
+
+    let result_b = render_template_with_locator(
+        r#"<my-multi-b count="7"></my-multi-b>"#,
+        r#"{}"#,
+        &locator,
+    ).unwrap();
+    assert!(result_b.contains("7"), "my-multi-b rendered: {result_b}");
+}
+
+#[test]
+fn test_locator_nameless_f_template_does_not_register() {
+    // no-name.html has an <f-template> without a name attribute
+    // It should emit a warning to stderr but NOT error and NOT register any template
+    let locator = Locator::from_patterns(&["tests/fixtures/no-name.html"]).unwrap();
+    assert!(!locator.has_template("no-name"), "should not register nameless template");
+}
+
+#[test]
+fn test_locator_name_from_f_template_attribute_not_file_stem() {
+    // my-button.html has <f-template name="my-button"> — name comes from attribute, not stem
+    let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
+    assert!(locator.has_template("my-button"), "should find my-button by name attribute");
+}
