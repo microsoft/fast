@@ -18,10 +18,10 @@ curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 From the repository root:
 
 ```sh
-npm run build:wasm -w @microsoft/fast-build
+npm run build -w @microsoft/fast-build
 ```
 
-This runs `wasm-pack build --target nodejs` on the Rust crate and writes the output to `packages/fast-build/wasm/`. Commit the updated files in `wasm/` alongside any Rust changes.
+This runs `cargo build` on the Rust crate followed by `wasm-pack build --target nodejs`, writing the output to `packages/fast-build/wasm/`. Commit the updated files in `wasm/` alongside any Rust changes.
 
 ### Running the Rust tests
 
