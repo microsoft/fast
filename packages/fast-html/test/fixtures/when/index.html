@@ -120,6 +120,32 @@
             <template shadowrootmode="open"><!--fe-b$$start$$0$$MRl5Rw6tl3$$fe-b--><!--fe-b$$end$$0$$MRl5Rw6tl3$$fe-b--></template>
         </test-element-and>
 
+        <!-- nested when -->
+        <f-template name="nested-when">
+            <template>
+                <f-when value="{{error}}">
+                    <div class="error" role="alert">{{strings.errorMessage}}</div>
+                </f-when>
+                <div class="buttons">
+                    <f-when value="{{!error}}">
+                        <f-when value="{{showProgress}}">
+                            <progress></progress>
+                        </f-when>
+                        <f-when value="{{!showProgress}}">
+                            <button ?disabled="{{enableContinue}}" @click="{handleClick()}">
+                                {{strings.continueButtonText}}
+                            </button>
+                        </f-when>
+                    </f-when>
+                    <f-when value="{{error}}">
+                        <button>{{strings.retryButtonText}}</button>
+                    </f-when>
+                </div>
+            </template>
+        </f-template>
+        <nested-when id="nested-when">
+            <template shadowrootmode="open"><!--fe-b$$start$$0$$nW0x5kp2Qm$$fe-b--><!--fe-b$$end$$0$$nW0x5kp2Qm$$fe-b--><div class="buttons"><!--fe-b$$start$$1$$nW0x5kp2Qm$$fe-b--><!--fe-b$$start$$0$$bX9mL3kR7v$$fe-b--><progress></progress><!--fe-b$$end$$0$$bX9mL3kR7v$$fe-b--><!--fe-b$$start$$1$$bX9mL3kR7v$$fe-b--><!--fe-b$$end$$1$$bX9mL3kR7v$$fe-b--><!--fe-b$$end$$1$$nW0x5kp2Qm$$fe-b--><!--fe-b$$start$$2$$nW0x5kp2Qm$$fe-b--><!--fe-b$$end$$2$$nW0x5kp2Qm$$fe-b--></div></template>
+        </nested-when>
         <!-- event -->
         <f-template name="test-element-event">
             <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
