@@ -9,6 +9,8 @@ mod node;
 mod renderer;
 mod error;
 mod locator;
+#[cfg(target_arch = "wasm32")]
+mod wasm;
 
 pub use json::{JsonValue, JsonError};
 pub use error::RenderError;
