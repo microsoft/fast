@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "pretty": true,
+        "target": "ES2015",
+        "module": "ES2015",
+        "moduleResolution": "bundler",
+        "importHelpers": true,
+        "experimentalDecorators": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "noEmitOnError": true,
+        "strict": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "lib": ["dom", "esnext"]
+    },
+    "include": ["src"]
+}
