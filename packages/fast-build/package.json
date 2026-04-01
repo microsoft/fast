@@ -1,0 +1,36 @@
+{
+  "name": "@microsoft/fast-build",
+  "version": "0.1.0",
+  "description": "CLI and Node.js API for server-side rendering of FAST declarative HTML templates.",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "homepage": "https://www.fast.design/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/fast-build"
+  },
+  "bugs": {
+    "url": "https://github.com/microsoft/fast/issues/new/choose"
+  },
+  "bin": {
+    "fast": "./bin/fast.js"
+  },
+  "files": [
+    "bin",
+    "get-package-json.js",
+    "wasm/microsoft_fast_build.js",
+    "wasm/microsoft_fast_build_bg.wasm",
+    "wasm/microsoft_fast_build.d.ts",
+    "wasm/microsoft_fast_build_bg.wasm.d.ts"
+  ],
+  "scripts": {
+    "build:wasm": "wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}
