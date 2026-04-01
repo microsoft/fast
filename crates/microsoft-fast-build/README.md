@@ -75,6 +75,27 @@ Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event ha
 <slot f-slotted="{slottedNodes}"></slot>
 ```
 
+### Boolean Attribute Bindings — `?attr`
+
+The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a boolean HTML attribute. The renderer evaluates `expr` against the element's state:
+
+- **truthy** → the bare attribute name is emitted (e.g. `disabled`)
+- **falsy** → the attribute is omitted entirely
+
+```html
+<!-- Template -->
+<input type="checkbox" ?disabled="{{!isEnabled}}">
+<input ?disabled="{{activeGroup == currentGroup}}" type="button">
+
+<!-- Rendered — isEnabled: false (so !isEnabled is true) -->
+<input type="checkbox" disabled data-fe-c-0-1>
+
+<!-- Rendered — activeGroup !== currentGroup -->
+<input type="button" data-fe-c-0-1>
+```
+
+The `data-fe-c` compact marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
+
 ### Conditional Rendering — `<f-when>`
 
 ```html
@@ -231,11 +252,17 @@ The `0` is the **binding index** (increments per binding within the current temp
 
 ### Attribute binding markers (compact format)
 
-Elements with `{{expr}}` attribute values or `{expr}` single-brace event/ref bindings receive a compact marker attribute:
+Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, or `{expr}` single-brace event/ref bindings receive a compact marker attribute:
 
 ```html
 <!-- Template: <input type="{{type}}" disabled> -->
 <input type="checkbox" disabled data-fe-c-0-1>
+
+<!-- Template: <input ?disabled="{{!isEnabled}}"> — isEnabled: false → disabled rendered -->
+<input disabled data-fe-c-0-1>
+
+<!-- Template: <input ?disabled="{{show}}"> — show: false → attribute omitted -->
+<input data-fe-c-0-1>
 
 <!-- Template: <button @click="{handleClick()}">Label</button> -->
 <button @click="{handleClick()}" data-fe-c-0-1>Label</button>

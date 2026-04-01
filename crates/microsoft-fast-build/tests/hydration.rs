@@ -409,6 +409,109 @@ fn test_hydration_triple_brace() {
     assert!(result.contains("bold-content"), "unescaped content: {result}");
 }
 
+// ── Boolean attribute bindings (?attr="{{expr}}") ────────────────────────────
+
+/// `?disabled="{{show}}"` with `show: true` → renders `disabled` (no `?`, no value).
+#[test]
+fn test_hydration_bool_attr_true() {
+    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{show}}">"#)]);
+    let root = hand_root(vec![("show", bool_val(true))]);
+    let result = render_with_locator(
+        r#"<test-element show="true"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(shadow.contains("disabled"), "disabled present: {result}");
+    assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
+    assert!(shadow.contains("data-fe-c-0-1"), "compact marker: {result}");
+}
+
+/// `?disabled="{{show}}"` with `show: false` → attribute is omitted entirely.
+#[test]
+fn test_hydration_bool_attr_false() {
+    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{show}}">"#)]);
+    let root = hand_root(vec![("show", bool_val(false))]);
+    let result = render_with_locator(
+        r#"<test-element show="false"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(!shadow.contains("disabled"), "disabled absent: {result}");
+    assert!(shadow.contains("data-fe-c-0-1"), "compact marker: {result}");
+}
+
+/// `?disabled="{{!isEnabled}}"` with `isEnabled: false` → renders `disabled`.
+#[test]
+fn test_hydration_bool_attr_negation_true() {
+    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isEnabled}}">"#)]);
+    let root = hand_root(vec![("isEnabled", bool_val(false))]);
+    let result = render_with_locator(
+        r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(shadow.contains("disabled"), "disabled present: {result}");
+    assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
+}
+
+/// `?disabled="{{!isEnabled}}"` with `isEnabled: true` → attribute is omitted.
+#[test]
+fn test_hydration_bool_attr_negation_false() {
+    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isEnabled}}">"#)]);
+    let root = hand_root(vec![("isEnabled", bool_val(true))]);
+    let result = render_with_locator(
+        r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(!shadow.contains("disabled"), "disabled absent: {result}");
+}
+
+/// `?disabled="{{a == b}}"` with equal values → renders `disabled`.
+#[test]
+fn test_hydration_bool_attr_expression_true() {
+    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activeGroup == currentGroup}}" type="button">"#)]);
+    let root = hand_root(vec![
+        ("activeGroup", str_val("work")),
+        ("currentGroup", str_val("work")),
+    ]);
+    let result = render_with_locator(
+        r#"<test-element activeGroup="{{activeGroup}}" currentGroup="{{currentGroup}}"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(shadow.contains("disabled"), "disabled present: {result}");
+    assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
+}
+
+/// `?disabled="{{a == b}}"` with unequal values → attribute is omitted.
+#[test]
+fn test_hydration_bool_attr_expression_false() {
+    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activeGroup == currentGroup}}" type="button">"#)]);
+    let root = hand_root(vec![
+        ("activeGroup", str_val("work")),
+        ("currentGroup", str_val("home")),
+    ]);
+    let result = render_with_locator(
+        r#"<test-element activeGroup="{{activeGroup}}" currentGroup="{{currentGroup}}"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    let shadow = extract_shadow(&result);
+    assert!(!shadow.contains("disabled"), "disabled absent: {result}");
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /// Extract the first shadow template content from a rendered result string.

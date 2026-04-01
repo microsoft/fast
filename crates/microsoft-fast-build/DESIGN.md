@@ -259,7 +259,10 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
 
 1. `count_tag_attribute_bindings` counts both types.
 2. The current `binding_idx` is recorded as `start`, and advanced by the total count.
-3. `resolve_attribute_bindings_in_tag` substitutes `{{expr}}` attribute values with their resolved HTML-escaped values; `{expr}` single-brace values are left unchanged (they are client-side bindings).
+3. `resolve_attribute_bindings_in_tag` resolves each attribute binding:
+   - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
+   - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped.
+   - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
 4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
