@@ -88,6 +88,63 @@ interface ObservedTargetsAndProperties {
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
+/**
+ * The event object accessor for event handler arguments.
+ * Use $e to pass the event object to an event handler.
+ * @example `@click="{handleClick($e)}"`
+ */
+export const eventArgAccessor: string = "$e";
+
+/**
+ * The type of a parsed event handler argument.
+ */
+export type EventArgType = "event" | "deprecated-event" | "context" | "binding";
+
+/**
+ * A parsed event handler argument descriptor.
+ */
+export interface ParsedEventArg {
+    type: EventArgType;
+    /** The binding path, only present for type "binding". */
+    path?: string;
+}
+
+/**
+ * Parses the arguments string of an event handler binding into an array of
+ * typed argument descriptors.
+ *
+ * Special arguments:
+ * - `$e` — resolves to the DOM event object
+ * - `e` — resolves to the DOM event object (deprecated, use `$e`)
+ * - `$c` — resolves to the full execution context object
+ * - anything else — resolved as a data binding path
+ *
+ * @param argsString - The raw arguments string from between the parentheses,
+ *   e.g. `""`, `"$e"`, `"$c"`, `"$e, $c"`, or `"foo"`.
+ * @returns An array of {@link ParsedEventArg} descriptors.
+ */
+export function parseEventArgs(argsString: string): ParsedEventArg[] {
+    if (argsString === "") return [];
+
+    return argsString.split(",").map(arg => {
+        const trimmed = arg.trim();
+
+        if (trimmed === eventArgAccessor) {
+            return { type: "event" as const };
+        }
+
+        if (trimmed === "e") {
+            return { type: "deprecated-event" as const };
+        }
+
+        if (trimmed === executionContextAccessor) {
+            return { type: "context" as const };
+        }
+
+        return { type: "binding" as const, path: trimmed };
+    });
+}
+
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
 const endInnerHTMLDiv = `}}"></div>`;

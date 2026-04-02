@@ -7,19 +7,21 @@ test.describe("f-template", async () => {
         const customElement = page.locator("test-element");
 
         let message;
-        page.on("console", msg => message = msg.text());
+        page.on("console", msg => (message = msg.text()));
 
         await customElement.locator("button").nth(0).click();
 
         expect(message).toEqual("no args");
     });
-    test("create an event attribute with an event argument", async ({ page }) => {
+    test("create an event attribute with an event argument (deprecated e)", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/event/");
 
         const customElement = page.locator("test-element");
 
         let message;
-        page.on("console", msg => message = msg.text());
+        page.on("console", msg => (message = msg.text()));
 
         await customElement.locator("button").nth(1).click();
 
@@ -31,7 +33,7 @@ test.describe("f-template", async () => {
         const customElement = page.locator("test-element");
 
         let message;
-        page.on("console", msg => message = msg.text());
+        page.on("console", msg => (message = msg.text()));
 
         await customElement.locator("button").nth(2).click();
 
@@ -47,5 +49,43 @@ test.describe("f-template", async () => {
         await customElement.locator("button").nth(3).click();
 
         await expect(customElement).toHaveJSProperty("foo", "modified-by-click");
+    });
+    test("create an event attribute with $e argument", async ({ page }) => {
+        await page.goto("/fixtures/event/");
+
+        const customElement = page.locator("test-element");
+
+        let message;
+        page.on("console", msg => (message = msg.text()));
+
+        await customElement.locator("button").nth(4).click();
+
+        expect(message).toEqual("click");
+    });
+    test("create an event attribute with $c (context) argument", async ({ page }) => {
+        await page.goto("/fixtures/event/");
+
+        const customElement = page.locator("test-element");
+
+        let message;
+        page.on("console", msg => (message = msg.text()));
+
+        await customElement.locator("button").nth(5).click();
+
+        expect(message).toEqual("click");
+    });
+    test("create an event attribute with multiple arguments ($e, $c)", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/event/");
+
+        const customElement = page.locator("test-element");
+
+        let message;
+        page.on("console", msg => (message = msg.text()));
+
+        await customElement.locator("button").nth(6).click();
+
+        expect(message).toEqual("click,click");
     });
 });
