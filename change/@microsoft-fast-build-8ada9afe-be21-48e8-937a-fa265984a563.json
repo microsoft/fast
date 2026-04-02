@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix(fast-build): update CLI and rebuild WASM for f-template name attribute format",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
