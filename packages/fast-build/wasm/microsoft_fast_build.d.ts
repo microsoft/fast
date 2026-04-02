@@ -2,6 +2,14 @@
 /* eslint-disable */
 
 /**
+ * Parse all `<f-template>` elements from an HTML string.
+ * Returns a JSON array of `{"name": string | null, "content": string}` objects,
+ * one per `<f-template>` element found. `name` is `null` when the element has
+ * no `name` attribute.
+ */
+export function parse_f_templates(html: string): string;
+
+/**
  * Render a FAST HTML template with a JSON state string.
  * Returns the rendered HTML or throws a JavaScript error.
  */

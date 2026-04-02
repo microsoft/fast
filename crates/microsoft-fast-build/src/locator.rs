@@ -94,7 +94,7 @@ impl Locator {
 
 /// Parse all `<f-template>` elements from an HTML string.
 /// Returns list of (name, inner_template_content). name is None if missing.
-fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
+pub(crate) fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
     let mut results = Vec::new();
     let mut search_start = 0;
     while let Some(rel) = html[search_start..].find("<f-template") {

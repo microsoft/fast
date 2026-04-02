@@ -73,9 +73,9 @@ Template HTML files are scanned for `<f-template>` elements. Each `<f-template>`
 
 | Function | Role |
 |----------|------|
-| `parseFTemplates(html, filePath)` | Parse all `<f-template>` elements from an HTML string |
-| `extractAttrValue(attrs, attrName)` | Extract a quoted attribute value from an attribute string |
-| `extractTemplateContent(innerHtml)` | Extract trimmed inner content of the first `<template>` element |
+| `parseFTemplates(html, filePath, wasm)` | Calls `wasm.parse_f_templates(html)` and emits warnings for nameless templates |
+
+The `<f-template>` parsing logic lives exclusively in the Rust crate (`locator::parse_f_templates`) and is exposed via the `wasm.parse_f_templates` WASM export. The JS layer only handles warnings and file I/O; it contains no duplicate parsing logic.
 
 ---
 
@@ -108,6 +108,7 @@ Two WASM functions are used:
 |----------|-----------|
 | `wasm.render(entry, state)` | No custom element templates |
 | `wasm.render_with_templates(entry, templatesJson, state)` | At least one template was loaded |
+| `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.
 
