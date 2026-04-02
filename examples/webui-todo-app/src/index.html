@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>FAST Todos</title>
+    </head>
+    <body>
+        <todo-app defer-hydration>
+            <template shadowrootmode="open">
+                <style>
+                    :host {
+                        display: block;
+                        padding: 16px;
+                        max-width: 320px;
+                    }
+                    .todo-list {
+                        list-style-type: none;
+                        padding: 0;
+                    }
+                    .todo {
+                        margin: 8px 0px;
+                        display: flex;
+                    }
+                    .description {
+                        display: inline-block;
+                        align-self: center;
+                        margin: 0px 8px;
+                        flex: 1;
+                    }
+                    .description.done {
+                        text-decoration: line-through;
+                    }
+                </style>
+                <h1>FAST Todos</h1>
+                <todo-form defer-hydration>
+                    <template shadowrootmode="open">
+                        <style>
+                            form {
+                                display: flex;
+                                align-items: center;
+                            }
+                            button {
+                                margin: 4px;
+                            }
+                        </style>
+                        <form>
+                            <input type="text" />
+                            <button type="submit" disabled>Add Todo</button>
+                        </form>
+                    </template>
+                </todo-form>
+                <section>
+                    <label for="filter">Filter:</label>
+                    <select name="filter" title="filter">
+                        <option value="all">All</option>
+                        <option value="active">Active</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </section>
+                <ul class="todo-list">
+                    {{{prerenderedItems}}}
+                </ul>
+            </template>
+        </todo-app>
+        {{{componentTemplates}}}
+        <script type="module" src="/bundle.js"></script>
+    </body>
+</html>
