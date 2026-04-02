@@ -12,6 +12,8 @@ import {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
+    deprecatedEventArgAccessor,
+    eventArgAccessor,
     executionContextAccessor,
     openExpression,
     repeatDirectiveClose,
@@ -88,12 +90,7 @@ interface ObservedTargetsAndProperties {
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
-/**
- * The event object accessor for event handler arguments.
- * Use $e to pass the event object to an event handler.
- * @example `@click="{handleClick($e)}"`
- */
-export const eventArgAccessor: string = "$e";
+export { deprecatedEventArgAccessor, eventArgAccessor };
 
 /**
  * The type of a parsed event handler argument.
@@ -133,7 +130,7 @@ export function parseEventArgs(argsString: string): ParsedEventArg[] {
             return { type: "event" as const };
         }
 
-        if (trimmed === "e") {
+        if (trimmed === deprecatedEventArgAccessor) {
             return { type: "deprecated-event" as const };
         }
 
