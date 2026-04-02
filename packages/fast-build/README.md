@@ -76,7 +76,34 @@ fast build \
   --output=output.html
 ```
 
-Each matched `.html` file is registered as a custom element template using its filename stem as the element name (e.g. `my-button.html` → `<my-button>`).
+Each matched `.html` file is scanned for `<f-template>` elements. The `name` attribute of each `<f-template>` determines the custom element name it registers for:
+
+```html
+<!-- components/my-button.html -->
+<f-template name="my-button">
+    <template>
+        <button>{{label}}</button>
+    </template>
+</f-template>
+```
+
+A single file may contain multiple templates:
+
+```html
+<!-- components/nav-elements.html -->
+<f-template name="nav-header">
+    <template>
+        <header><slot></slot></header>
+    </template>
+</f-template>
+<f-template name="nav-footer">
+    <template>
+        <footer>{{copyright}}</footer>
+    </template>
+</f-template>
+```
+
+An `<f-template>` without a `name` attribute emits a warning to stderr and is skipped.
 
 ## Template syntax
 
