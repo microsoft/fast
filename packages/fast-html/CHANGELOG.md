@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 31 Mar 2026 00:03:50 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 02 Apr 2026 00:03:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.44
+
+Thu, 02 Apr 2026 00:03:44 GMT
+
+### Changes
+
+- feat: support direct array index assignment for primitive arrays in observer map (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.43
 
