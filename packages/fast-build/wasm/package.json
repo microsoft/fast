@@ -1,0 +1,25 @@
+{
+  "name": "microsoft-fast-build",
+  "description": "Server-side renderer for FAST declarative HTML templates — resolves bindings, evaluates conditionals, iterates repeats, and expands custom elements into Declarative Shadow DOM.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/fast"
+  },
+  "files": [
+    "microsoft_fast_build_bg.wasm",
+    "microsoft_fast_build.js",
+    "microsoft_fast_build.d.ts"
+  ],
+  "main": "microsoft_fast_build.js",
+  "homepage": "https://www.fast.design/",
+  "types": "microsoft_fast_build.d.ts",
+  "keywords": [
+    "fast",
+    "ssr",
+    "html",
+    "template",
+    "web-components"
+  ]
+}

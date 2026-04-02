@@ -109,8 +109,79 @@ function staticPrefixDir(pattern) {
 }
 
 /**
+ * Parse all <f-template> elements from an HTML string.
+ * Returns array of { name: string | null, content: string } pairs.
+ * @param {string} html
+ * @returns {{ name: string | null, content: string }[]}
+ */
+function parseFTemplates(html) {
+    const results = [];
+    const TAG = "<f-template";
+    const END_TAG = "</f-template>";
+    let searchStart = 0;
+    while (true) {
+        const rel = html.indexOf(TAG, searchStart);
+        if (rel === -1) break;
+        const afterTag = rel + TAG.length;
+        const nextCh = html[afterTag];
+        if (nextCh && (nextCh === "-" || /[a-zA-Z0-9]/.test(nextCh))) {
+            searchStart = afterTag;
+            continue;
+        }
+        const tagClose = html.indexOf(">", afterTag);
+        if (tagClose === -1) break;
+        const attrs = html.slice(afterTag, tagClose);
+        const name = extractAttrValue(attrs, "name");
+        const innerStart = tagClose + 1;
+        const innerEnd = html.indexOf(END_TAG, innerStart);
+        if (innerEnd === -1) break;
+        const content = extractTemplateContent(html.slice(innerStart, innerEnd));
+        results.push({ name, content });
+        searchStart = innerEnd + END_TAG.length;
+    }
+    return results;
+}
+
+/**
+ * Extract the value of a named attribute from an attribute string.
+ * @param {string} attrs
+ * @param {string} attrName
+ * @returns {string | null}
+ */
+function extractAttrValue(attrs, attrName) {
+    let pos = attrs.indexOf(`${attrName}="`);
+    if (pos !== -1) {
+        const start = pos + attrName.length + 2;
+        const end = attrs.indexOf('"', start);
+        if (end !== -1) return attrs.slice(start, end);
+    }
+    pos = attrs.indexOf(`${attrName}='`);
+    if (pos !== -1) {
+        const start = pos + attrName.length + 2;
+        const end = attrs.indexOf("'", start);
+        if (end !== -1) return attrs.slice(start, end);
+    }
+    return null;
+}
+
+/**
+ * Extract the inner content of the first <template> element found in html.
+ * @param {string} html
+ * @returns {string}
+ */
+function extractTemplateContent(html) {
+    const open = html.indexOf("<template");
+    if (open === -1) return html.trim();
+    const tagEnd = html.indexOf(">", open);
+    if (tagEnd === -1) return html.trim();
+    const close = html.indexOf("</template>", tagEnd + 1);
+    if (close === -1) return html.trim();
+    return html.slice(tagEnd + 1, close).trim();
+}
+
+/**
  * Resolve all HTML files matching a glob pattern.
- * Returns a map of { elementName -> fileContent }.
+ * Parses <f-template name="..."> elements from each file to determine element names.
  * Warns (but does not error) if the base directory does not exist.
  * @param {string} pattern
  * @returns {{ name: string, content: string }[]}
@@ -125,9 +196,17 @@ function resolvePattern(pattern) {
     const results = [];
     for (const file of allFiles) {
         if (globMatch(pattern, file)) {
-            const name = path.basename(file, ".html");
-            const content = fs.readFileSync(file, "utf8");
-            results.push({ name, content });
+            const html = fs.readFileSync(file, "utf8");
+            const templates = parseFTemplates(html);
+            for (const { name, content } of templates) {
+                if (name === null) {
+                    process.stderr.write(
+                        `Warning: <f-template> without a 'name' attribute in '${file}' — skipping.\n`
+                    );
+                    continue;
+                }
+                results.push({ name, content });
+            }
         }
     }
     return results;
