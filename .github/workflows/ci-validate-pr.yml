@@ -48,6 +48,14 @@ jobs:
     - name: Check Biome formatting
       run: npm run format:check
 
+    - name: Install Rust stable toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+
+    - name: Install wasm-pack
+      run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
     - name: Build workspaces
       run: npm run build
 
