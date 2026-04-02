@@ -1,9 +1,15 @@
 import fs from "node:fs";
 import { build, render } from "@microsoft/webui";
 import express from "express";
+import rateLimit from "express-rate-limit";
 
 const app = express();
 const port = 8081;
+
+const todoRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
 
 // Build templates into a binary protocol at startup (build-time compilation)
 const result = build({ appDir: "./src", plugin: "fast" });
@@ -102,7 +108,7 @@ function renderTodoItems(todos) {
 
 app.use(express.static("./www"));
 
-app.get("/", (req, res) => {
+app.get("/", todoRateLimiter, (req, res) => {
     const todoData = JSON.parse(fs.readFileSync("./todo-data.json").toString());
 
     // Render the page template using webui, injecting prerendered todo items and

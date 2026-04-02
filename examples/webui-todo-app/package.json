@@ -26,6 +26,7 @@
     "@microsoft/fast-html": "*",
     "@microsoft/webui": "^0.0.2",
     "express": "4.22.1",
-    "tslib": "^2.6.3"
+    "tslib": "^2.6.3",
+    "express-rate-limit": "^8.3.2"
   }
 }
