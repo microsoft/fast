@@ -75,3 +75,6 @@ publish_artifacts/
 
 # Rust build artifacts
 crates/**/target/
+
+# Generated WASM build output (run `npm run build -w @microsoft/fast-build` to regenerate)
+packages/fast-build/wasm/
