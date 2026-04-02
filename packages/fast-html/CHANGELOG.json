@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 02 Apr 2026 00:03:44 GMT",
+      "version": "1.0.0-alpha.44",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.44",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "96fea8f30a24906ead5a85033efa9bf795a4c053",
+            "comment": "feat: support direct array index assignment for primitive arrays in observer map"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f9db694e684796efb1a678ce0f728c140bda0e70",
+            "comment": "chore: add nested-when fixture with Playwright tests"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Apr 2026 00:31:37 GMT",
       "version": "1.0.0-alpha.43",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.43",
