@@ -109,8 +109,95 @@ function staticPrefixDir(pattern) {
 }
 
 /**
+ * Parse all `<f-template>` elements from an HTML string.
+ * Returns [{name, content}] for templates that have a `name` attribute.
+ * Emits a warning to stderr for any `<f-template>` without a `name`.
+ * @param {string} html
+ * @param {string} filePath - used in warning messages
+ * @returns {{ name: string, content: string }[]}
+ */
+function parseFTemplates(html, filePath) {
+    const results = [];
+    let pos = 0;
+    while (pos < html.length) {
+        const tagStart = html.indexOf("<f-template", pos);
+        if (tagStart === -1) break;
+        const afterTagName = tagStart + "<f-template".length;
+        // Ensure the char after "<f-template" is not alphanumeric or '-'
+        // to avoid matching tags like <f-templatex>.
+        const nextCh = html[afterTagName];
+        if (nextCh && /[a-zA-Z0-9\-]/.test(nextCh)) {
+            pos = afterTagName;
+            continue;
+        }
+        // Find the closing '>' of the opening <f-template ...> tag.
+        const bracketClose = html.indexOf(">", afterTagName);
+        if (bracketClose === -1) break;
+        const attrs = html.slice(afterTagName, bracketClose);
+        const name = extractAttrValue(attrs, "name");
+        // Find the matching </f-template>.
+        const innerStart = bracketClose + 1;
+        const endTag = "</f-template>";
+        const innerEnd = html.indexOf(endTag, innerStart);
+        if (innerEnd === -1) break;
+        const innerHtml = html.slice(innerStart, innerEnd);
+        const content = extractTemplateContent(innerHtml);
+        if (name === null) {
+            process.stderr.write(
+                `Warning: <f-template> without a 'name' attribute in '${filePath}': ${content.trim()}\n`
+            );
+        } else {
+            results.push({ name, content });
+        }
+        pos = innerEnd + endTag.length;
+    }
+    return results;
+}
+
+/**
+ * Extract the value of a named attribute from an attribute string.
+ * Supports both double-quoted (name="value") and single-quoted (name='value') forms.
+ * @param {string} attrs
+ * @param {string} attrName
+ * @returns {string | null}
+ */
+function extractAttrValue(attrs, attrName) {
+    const dqStart = attrs.indexOf(`${attrName}="`);
+    if (dqStart !== -1) {
+        const valStart = dqStart + attrName.length + 2;
+        const valEnd = attrs.indexOf('"', valStart);
+        if (valEnd !== -1) return attrs.slice(valStart, valEnd);
+    }
+    const sqStart = attrs.indexOf(`${attrName}='`);
+    if (sqStart !== -1) {
+        const valStart = sqStart + attrName.length + 2;
+        const valEnd = attrs.indexOf("'", valStart);
+        if (valEnd !== -1) return attrs.slice(valStart, valEnd);
+    }
+    return null;
+}
+
+/**
+ * Extract the trimmed inner content of the first `<template>` element in `html`.
+ * Returns `html.trim()` if no `<template>` element is found.
+ * @param {string} html
+ * @returns {string}
+ */
+function extractTemplateContent(html) {
+    const open = html.indexOf("<template");
+    if (open === -1) return html.trim();
+    const tagEnd = html.indexOf(">", open);
+    if (tagEnd === -1) return html.trim();
+    const contentStart = tagEnd + 1;
+    const close = html.indexOf("</template>", contentStart);
+    if (close === -1) return html.trim();
+    return html.slice(contentStart, close).trim();
+}
+
+/**
  * Resolve all HTML files matching a glob pattern.
- * Returns a map of { elementName -> fileContent }.
+ * Parses `<f-template name="...">` elements from each matched file and
+ * returns one entry per template. A single file may yield multiple entries.
  * Warns (but does not error) if the base directory does not exist.
  * @param {string} pattern
  * @returns {{ name: string, content: string }[]}
@@ -125,9 +212,11 @@ function resolvePattern(pattern) {
     const results = [];
     for (const file of allFiles) {
         if (globMatch(pattern, file)) {
-            const name = path.basename(file, ".html");
-            const content = fs.readFileSync(file, "utf8");
-            results.push({ name, content });
+            const html = fs.readFileSync(file, "utf8");
+            const templates = parseFTemplates(html, file);
+            for (const { name, content } of templates) {
+                results.push({ name, content });
+            }
         }
     }
     return results;
