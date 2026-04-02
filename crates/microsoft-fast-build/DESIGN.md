@@ -52,6 +52,7 @@ render_template(template, state_str)
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -332,6 +333,35 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 - `**` is handled at the segment level: it can consume **zero or more** path segments by trying both "consume none" (advance pattern, keep path) and "consume one" (keep pattern, advance path) via backtracking.
 - `*` is handled at the character level within a single segment: it tries matching 0 through N characters by iterating over all possible split points.
 - `?` matches exactly one character.
+
+---
+
+## WASM bindings — `wasm.rs`
+
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes three functions to JavaScript via `wasm-bindgen`:
+
+| Export | Signature | Description |
+|--------|-----------|-------------|
+| `render` | `(entry: &str, state: &str) → String` | Render a template with no custom elements |
+| `render_with_templates` | `(entry: &str, templates_json: &str, state: &str) → String` | Render with a pre-built `{name: content}` templates map |
+| `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+
+### `parse_f_templates`
+
+Calls `locator::parse_f_templates` (the same function used by `Locator::from_patterns`) and serialises the result to a JSON string:
+
+```json
+[
+  {"name": "my-button", "content": "<button>{{label}}</button>"},
+  {"name": null, "content": "<span>unnamed</span>"}
+]
+```
+
+`name` is `null` when the `<f-template>` element has no `name` attribute. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
+
+### `render_with_templates`
+
+Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_template_with_locator`.
 
 ---
 

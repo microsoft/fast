@@ -20,15 +20,16 @@ fast build [options]
         ▼
   parseArgs(argv)        ← --entry, --state, --output, --templates
         │
-        ├─ resolvePattern(pattern)  ← for each comma-separated --templates glob
+        ├─ wasm = require(WASM_MODULE)         ← load WASM first
+        │
+        ├─ resolvePattern(pattern, wasm)  ← for each comma-separated --templates glob
         │       │
         │       ├─ staticPrefixDir(pattern)  ← determine which dir to walk
         │       ├─ walkHtmlFiles(dir)        ← collect .html files
         │       ├─ globMatch(pattern, file)  ← filter by pattern
-        │       └─ parseFTemplates(html)     ← extract <f-template> elements
+        │       └─ parseFTemplates(html, filePath, wasm)
         │                │
-        │                └─ extractAttrValue(attrs, "name")   ← element name
-        │                   extractTemplateContent(innerHtml) ← shadow template
+        │                └─ wasm.parse_f_templates(html)  ← Rust parses <f-template>
         │
         ├─ fs.readFileSync(entry)   ← entry HTML template
         ├─ fs.readFileSync(state)   ← state JSON
@@ -102,7 +103,7 @@ This means exact file paths like `"./components/my-button.html"` are fully suppo
 
 ## WASM integration
 
-Two WASM functions are used:
+Three WASM functions are used:
 
 | Function | Used when |
 |----------|-----------|
