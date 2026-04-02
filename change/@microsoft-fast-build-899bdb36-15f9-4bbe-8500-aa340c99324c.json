@@ -1,6 +1,6 @@
 {
-  "type": "none",
-  "comment": "Initial addition of npm package for fast CLI",
+  "type": "patch",
+  "comment": "Parse f-template name attribute in JS locator; add DESIGN.md to @microsoft/fast-build",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "none"

@@ -50,8 +50,9 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -259,7 +260,10 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
 
 1. `count_tag_attribute_bindings` counts both types.
 2. The current `binding_idx` is recorded as `start`, and advanced by the total count.
-3. `resolve_attribute_bindings_in_tag` substitutes `{{expr}}` attribute values with their resolved HTML-escaped values; `{expr}` single-brace values are left unchanged (they are client-side bindings).
+3. `resolve_attribute_bindings_in_tag` resolves each attribute binding:
+   - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
+   - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped.
+   - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
 4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
@@ -305,8 +309,21 @@ For each glob pattern:
 1. Find the **static prefix directory** — the longest directory path before any wildcard character (`*`, `?`). This avoids walking the entire filesystem.
 2. Recursively walk that directory collecting all `.html` files (`walk_html_files`).
 3. Normalise path separators to `/` and strip a leading `./`, then test each file path against the glob pattern.
-4. The **element name** is the file's stem (e.g. `my-button` from `my-button.html`).
-5. If two files resolve to the same element name → `RenderError::DuplicateTemplate`.
+4. For each matching file, read its content and call `parse_f_templates` to extract all `<f-template>` elements.
+5. The **element name** is the `name` attribute of each `<f-template>` element (e.g. `name="my-button"`). A single file may declare multiple templates.
+6. `<f-template>` elements missing a `name` attribute emit a warning to stderr and are ignored.
+7. If two `<f-template>` elements across different files share the same name → `RenderError::DuplicateTemplate`.
+
+### `<f-template>` parsing (`parse_f_templates`, `extract_attr_value`, `extract_template_content`)
+
+`parse_f_templates(html)` scans for `<f-template` occurrences using `str::find` in a loop. For each match:
+- Verifies the character after `<f-template` is not alphanumeric or `-` to avoid matching `<f-templateX>`.
+- Extracts the attribute string between `<f-template` and `>`.
+- Calls `extract_attr_value(attrs, "name")` to get the name (supports both `"` and `'` quoting).
+- Extracts the inner HTML between `>` and `</f-template>`.
+- Calls `extract_template_content` on the inner HTML to get the content inside the `<template>` element.
+
+Returns `Vec<(Option<String>, String)>` — pairs of (name, template content).
 
 ### Glob matching
 
@@ -316,6 +333,35 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 - `**` is handled at the segment level: it can consume **zero or more** path segments by trying both "consume none" (advance pattern, keep path) and "consume one" (keep pattern, advance path) via backtracking.
 - `*` is handled at the character level within a single segment: it tries matching 0 through N characters by iterating over all possible split points.
 - `?` matches exactly one character.
+
+---
+
+## WASM bindings — `wasm.rs`
+
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes three functions to JavaScript via `wasm-bindgen`:
+
+| Export | Signature | Description |
+|--------|-----------|-------------|
+| `render` | `(entry: &str, state: &str) → String` | Render a template with no custom elements |
+| `render_with_templates` | `(entry: &str, templates_json: &str, state: &str) → String` | Render with a pre-built `{name: content}` templates map |
+| `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+
+### `parse_f_templates`
+
+Calls `locator::parse_f_templates` (the same function used by `Locator::from_patterns`) and serialises the result to a JSON string:
+
+```json
+[
+  {"name": "my-button", "content": "<button>{{label}}</button>"},
+  {"name": null, "content": "<span>unnamed</span>"}
+]
+```
+
+`name` is `null` when the `<f-template>` element has no `name` attribute. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
+
+### `render_with_templates`
+
+Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_template_with_locator`.
 
 ---
 

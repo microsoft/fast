@@ -75,6 +75,27 @@ Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event ha
 <slot f-slotted="{slottedNodes}"></slot>
 ```
 
+### Boolean Attribute Bindings — `?attr`
+
+The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a boolean HTML attribute. The renderer evaluates `expr` against the element's state:
+
+- **truthy** → the bare attribute name is emitted (e.g. `disabled`)
+- **falsy** → the attribute is omitted entirely
+
+```html
+<!-- Template -->
+<input type="checkbox" ?disabled="{{!isEnabled}}">
+<input ?disabled="{{activeGroup == currentGroup}}" type="button">
+
+<!-- Rendered — isEnabled: false (so !isEnabled is true) -->
+<input type="checkbox" disabled data-fe-c-0-1>
+
+<!-- Rendered — activeGroup !== currentGroup -->
+<input type="button" data-fe-c-0-1>
+```
+
+The `data-fe-c` compact marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
+
 ### Conditional Rendering — `<f-when>`
 
 ```html
@@ -165,6 +186,35 @@ locator.add_template("my-button", "<button>{{label}}</button>");
 
 Glob patterns support `*` (any characters within one path segment), `**` (any number of segments), and `?` (any single character).
 
+### HTML File Format
+
+Template HTML files must wrap their content in an `<f-template>` element with a `name` attribute identifying the custom element, and an inner `<template>` element containing the template markup:
+
+```html
+<f-template name="my-button">
+    <template>
+        <button>{{label}}</button>
+    </template>
+</f-template>
+```
+
+A single file may contain multiple templates:
+
+```html
+<f-template name="my-header">
+    <template>
+        <header><h1>{{title}}</h1></header>
+    </template>
+</f-template>
+<f-template name="my-footer">
+    <template>
+        <footer>{{copyright}}</footer>
+    </template>
+</f-template>
+```
+
+If an `<f-template>` element is missing a `name` attribute, a warning is emitted to stderr and the template is ignored.
+
 ### Rendering with a Locator
 
 ```rust
@@ -231,11 +281,17 @@ The `0` is the **binding index** (increments per binding within the current temp
 
 ### Attribute binding markers (compact format)
 
-Elements with `{{expr}}` attribute values or `{expr}` single-brace event/ref bindings receive a compact marker attribute:
+Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, or `{expr}` single-brace event/ref bindings receive a compact marker attribute:
 
 ```html
 <!-- Template: <input type="{{type}}" disabled> -->
 <input type="checkbox" disabled data-fe-c-0-1>
+
+<!-- Template: <input ?disabled="{{!isEnabled}}"> — isEnabled: false → disabled rendered -->
+<input disabled data-fe-c-0-1>
+
+<!-- Template: <input ?disabled="{{show}}"> — show: false → attribute omitted -->
+<input data-fe-c-0-1>
 
 <!-- Template: <button @click="{handleClick()}">Label</button> -->
 <button @click="{handleClick()}" data-fe-c-0-1>Label</button>
@@ -284,7 +340,7 @@ All render functions return `Result<String, RenderError>`. `RenderError` is an e
 | `MissingValueAttribute` | Directive missing `value="{{…}}"` attribute |
 | `InvalidRepeatExpression` | Repeat value not in `item in list` format |
 | `NotAnArray` | `<f-repeat>` binding resolves to a non-array value |
-| `DuplicateTemplate` | Two template files resolve to the same element name |
+| `DuplicateTemplate` | Two or more files contain an `<f-template>` with the same name attribute |
 | `TemplateReadError` | A matched template file could not be read |
 | `JsonParse` | Invalid JSON passed to `render_template` |
 

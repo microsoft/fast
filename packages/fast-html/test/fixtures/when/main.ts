@@ -122,6 +122,34 @@ RenderableFASTElement(TestElementEvent).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+export class NestedWhenElement extends FASTElement {
+    strings = {
+        errorMessage: "Error occurred",
+        continueButtonText: "Continue",
+        retryButtonText: "Retry",
+    };
+
+    @observable
+    error: boolean = false;
+
+    @observable
+    showProgress: boolean = true;
+
+    @observable
+    enableContinue: boolean = false;
+
+    @observable
+    clickCount: number = 0;
+
+    public handleClick = (): void => {
+        this.clickCount++;
+    };
+}
+RenderableFASTElement(NestedWhenElement).defineAsync({
+    name: "nested-when",
+    templateOptions: "defer-and-hydrate",
+});
+
 TemplateElement.define({
     name: "f-template",
 });

@@ -21,6 +21,43 @@ pub fn render_with_templates(entry: &str, templates_json: &str, state: &str) -> 
         .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
+/// Parse all `<f-template>` elements from an HTML string.
+/// Returns a JSON array of `{"name": string | null, "content": string}` objects,
+/// one per `<f-template>` element found. `name` is `null` when the element has
+/// no `name` attribute.
+#[wasm_bindgen]
+pub fn parse_f_templates(html: &str) -> String {
+    let templates = crate::locator::parse_f_templates(html);
+    let mut parts = Vec::with_capacity(templates.len());
+    for (name_opt, content) in templates {
+        let name_json = match name_opt {
+            Some(n) => format!("\"{}\"", escape_json_str(&n)),
+            None => "null".to_string(),
+        };
+        parts.push(format!(
+            "{{\"name\":{},\"content\":\"{}\"}}",
+            name_json,
+            escape_json_str(&content)
+        ));
+    }
+    format!("[{}]", parts.join(","))
+}
+
+fn escape_json_str(s: &str) -> String {
+    let mut out = String::with_capacity(s.len());
+    for c in s.chars() {
+        match c {
+            '"'  => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            c    => out.push(c),
+        }
+    }
+    out
+}
+
 fn parse_templates_map(templates_json: &str) -> Result<HashMap<String, String>, JsValue> {
     let parsed = json::parse(templates_json)
         .map_err(|e| JsValue::from_str(&format!("Failed to parse templates JSON: {}", e.message)))?;

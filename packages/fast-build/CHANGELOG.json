@@ -1,0 +1,32 @@
+{
+  "name": "@microsoft/fast-build",
+  "entries": [
+    {
+      "date": "Thu, 02 Apr 2026 00:03:44 GMT",
+      "version": "0.1.0",
+      "tag": "@microsoft/fast-build_v0.1.0",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4450aefa1426b7d04aee0d7882503a1158490078",
+            "comment": "Initial addition of npm package for fast CLI"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "591266a686a115165bce5cd6be008f2fc73d42c5",
+            "comment": "fix(fast-build): render ?attr boolean bindings correctly in Rust renderer"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "2bbb8d42cf9befb15bb1cf1ee709dbecb59f03c9",
+            "comment": "docs: add README and CONTRIBUTING.md for @microsoft/fast-build package"
+          }
+        ]
+      }
+    }
+  ]
+}
