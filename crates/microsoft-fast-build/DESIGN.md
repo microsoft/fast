@@ -50,7 +50,7 @@ render_template(template, state_str)
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
 
 ---
@@ -308,8 +308,21 @@ For each glob pattern:
 1. Find the **static prefix directory** — the longest directory path before any wildcard character (`*`, `?`). This avoids walking the entire filesystem.
 2. Recursively walk that directory collecting all `.html` files (`walk_html_files`).
 3. Normalise path separators to `/` and strip a leading `./`, then test each file path against the glob pattern.
-4. The **element name** is the file's stem (e.g. `my-button` from `my-button.html`).
-5. If two files resolve to the same element name → `RenderError::DuplicateTemplate`.
+4. For each matching file, read its content and call `parse_f_templates` to extract all `<f-template>` elements.
+5. The **element name** is the `name` attribute of each `<f-template>` element (e.g. `name="my-button"`). A single file may declare multiple templates.
+6. `<f-template>` elements missing a `name` attribute emit a warning to stderr and are ignored.
+7. If two `<f-template>` elements across different files share the same name → `RenderError::DuplicateTemplate`.
+
+### `<f-template>` parsing (`parse_f_templates`, `extract_attr_value`, `extract_template_content`)
+
+`parse_f_templates(html)` scans for `<f-template` occurrences using `str::find` in a loop. For each match:
+- Verifies the character after `<f-template` is not alphanumeric or `-` to avoid matching `<f-templateX>`.
+- Extracts the attribute string between `<f-template` and `>`.
+- Calls `extract_attr_value(attrs, "name")` to get the name (supports both `"` and `'` quoting).
+- Extracts the inner HTML between `>` and `</f-template>`.
+- Calls `extract_template_content` on the inner HTML to get the content inside the `<template>` element.
+
+Returns `Vec<(Option<String>, String)>` — pairs of (name, template content).
 
 ### Glob matching
 
