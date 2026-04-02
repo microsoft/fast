@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync } from "node:child_process";
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,11 +15,10 @@ const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
 for (const fixtureName of fixtures) {
     const fixtureDir = resolve(__dirname, "../test/fixtures", fixtureName);
-    const templateDir = join(fixtureDir, "templates");
+    const templatesFile = join(fixtureDir, "templates.html");
     const entryFile = join(fixtureDir, "entry.html");
     const stateFile = join(fixtureDir, "state.json");
     const outputFile = join(fixtureDir, "index.html");
-    const templatesGlob = join(templateDir, "*.html");
 
     // Step 1: render shadow DOM via fast-build CLI
     execFileSync(
@@ -27,7 +26,7 @@ for (const fixtureName of fixtures) {
         [
             fastBin,
             "build",
-            `--templates=${templatesGlob}`,
+            `--templates=${templatesFile}`,
             `--entry=${entryFile}`,
             `--state=${stateFile}`,
             `--output=${outputFile}`,
@@ -35,16 +34,8 @@ for (const fixtureName of fixtures) {
         { stdio: "inherit" },
     );
 
-    // Step 2: inject <f-template> declarations from templates/*.html before <script>
-    const fTemplates = readdirSync(templateDir)
-        .filter(f => f.endsWith(".html"))
-        .sort()
-        .map(f => {
-            const name = f.slice(0, -5);
-            const content = readFileSync(join(templateDir, f), "utf8").trim();
-            return `        <f-template name="${name}">\n            <template>${content}</template>\n        </f-template>`;
-        })
-        .join("\n");
+    // Step 2: inject <f-template> declarations from templates.html before <script>
+    const fTemplates = readFileSync(templatesFile, "utf8").trim();
 
     const html = readFileSync(outputFile, "utf8").replace(
         /(\s*)<script type="module"/,
