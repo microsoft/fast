@@ -48,8 +48,8 @@ fast build [options]
 | File | Role |
 |------|------|
 | `bin/fast.js` | CLI entry point — argument parsing, file I/O, template scanning, WASM dispatch |
-| `wasm/microsoft_fast_build.js` | WASM-generated JS bindings for the Rust renderer |
-| `wasm/microsoft_fast_build_bg.wasm` | Compiled Rust renderer binary |
+| `wasm/microsoft_fast_build.js` | WASM-generated JS bindings for the Rust renderer _(generated, not committed)_ |
+| `wasm/microsoft_fast_build_bg.wasm` | Compiled Rust renderer binary _(generated, not committed)_ |
 
 ---
 
