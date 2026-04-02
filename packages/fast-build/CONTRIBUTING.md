@@ -10,7 +10,7 @@ The compiled WebAssembly output is **not committed** to the repository. The `was
 - [`wasm-pack`](https://rustwasm.github.io/wasm-pack/installer/)
 
 ```sh
-curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+cargo install wasm-pack
 ```
 
 ### Steps
