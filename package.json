@@ -13,7 +13,8 @@
     "packages/*",
     "sites/website",
     "examples/todo-app",
-    "examples/ssr"
+    "examples/ssr",
+    "examples/webui-todo-app"
   ],
   "engines": {
     "npm": ">=10.0.0",
