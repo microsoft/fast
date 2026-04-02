@@ -62,6 +62,19 @@ jobs:
       - name: Test Prettier format
         run: npm run format:check
 
+      - name: Install Rust stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Install wasm-pack (Unix)
+        if: runner.os != 'Windows'
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Install wasm-pack (Windows)
+        if: runner.os == 'Windows'
+        run: cargo install wasm-pack --locked
+
       - name: Build workspaces
         run: npm run build
 
