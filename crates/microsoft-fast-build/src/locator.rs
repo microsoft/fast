@@ -298,6 +298,14 @@ mod tests {
     }
 
     #[test]
+    fn test_glob_exact_path() {
+        // An exact path (no wildcards) must match only itself.
+        assert!(glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-button.html"));
+        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-badge.html"));
+        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/duplicate/my-button.html"));
+    }
+
+    #[test]
     fn test_parse_f_templates_basic() {
         let html = r#"<f-template name="my-button">
     <template>
