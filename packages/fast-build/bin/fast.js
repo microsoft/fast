@@ -109,13 +109,40 @@ function staticPrefixDir(pattern) {
 }
 
 /**
- * Resolve all HTML files matching a glob pattern.
- * Returns a map of { elementName -> fileContent }.
- * Warns (but does not error) if the base directory does not exist.
- * @param {string} pattern
+ * Parse all `<f-template>` elements from an HTML string using the WASM module.
+ * Returns [{name, content}] for templates that have a `name` attribute.
+ * Emits a warning to stderr for any `<f-template>` without a `name`.
+ * @param {string} html
+ * @param {string} filePath - used in warning messages
+ * @param {object} wasm - the loaded WASM module
  * @returns {{ name: string, content: string }[]}
  */
-function resolvePattern(pattern) {
+function parseFTemplates(html, filePath, wasm) {
+    /** @type {{ name: string | null, content: string }[]} */
+    const parsed = JSON.parse(wasm.parse_f_templates(html));
+    const results = [];
+    for (const { name, content } of parsed) {
+        if (name === null) {
+            process.stderr.write(
+                `Warning: <f-template> without a 'name' attribute in '${filePath}': ${content.trim()}\n`
+            );
+        } else {
+            results.push({ name, content });
+        }
+    }
+    return results;
+}
+
+/**
+ * Resolve all HTML files matching a glob pattern.
+ * Parses `<f-template name="...">` elements from each matched file and
+ * returns one entry per template. A single file may yield multiple entries.
+ * Warns (but does not error) if the base directory does not exist.
+ * @param {string} pattern
+ * @param {object} wasm - the loaded WASM module
+ * @returns {{ name: string, content: string }[]}
+ */
+function resolvePattern(pattern, wasm) {
     const baseDir = staticPrefixDir(pattern);
     if (!fs.existsSync(baseDir)) {
         return [];
@@ -125,9 +152,11 @@ function resolvePattern(pattern) {
     const results = [];
     for (const file of allFiles) {
         if (globMatch(pattern, file)) {
-            const name = path.basename(file, ".html");
-            const content = fs.readFileSync(file, "utf8");
-            results.push({ name, content });
+            const html = fs.readFileSync(file, "utf8");
+            const templates = parseFTemplates(html, file, wasm);
+            for (const { name, content } of templates) {
+                results.push({ name, content });
+            }
         }
     }
     return results;
@@ -139,6 +168,9 @@ async function runBuild(args) {
     const entry = args["entry"] || "index.html";
     const stateFile = args["state"] || "state.json";
 
+    // Load WASM module first — needed for both template parsing and rendering.
+    const wasm = require(WASM_MODULE);
+
     // Resolve template files
     const templatesMap = {};
     if (!templatesArg) {
@@ -148,7 +180,7 @@ async function runBuild(args) {
     } else {
         const patterns = templatesArg.split(",").map((p) => p.trim());
         for (const pattern of patterns) {
-            const matches = resolvePattern(pattern);
+            const matches = resolvePattern(pattern, wasm);
             if (matches.length === 0) {
                 process.stderr.write(
                     `Warning: No template files found for pattern "${pattern}".\n`
@@ -178,9 +210,6 @@ async function runBuild(args) {
         process.exit(1);
     }
     const stateContent = fs.readFileSync(stateFile, "utf8");
-
-    // Load WASM module
-    const wasm = require(WASM_MODULE);
 
     // Render
     let rendered;
