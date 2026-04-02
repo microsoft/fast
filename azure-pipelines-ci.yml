@@ -65,6 +65,7 @@ extends:
 
           - script: |
               curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+              export PATH="$HOME/.cargo/bin:$PATH"
               echo "##vso[task.prependpath]$HOME/.cargo/bin"
               rustup target add wasm32-unknown-unknown
               curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
