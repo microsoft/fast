@@ -308,13 +308,16 @@ fn build_element_open_tag(
 ) -> String {
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
+    if total_attr == 0 {
+        return format!("{}>", open_tag_base);
+    }
+    let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
     match parent_hydration {
-        Some(hy) if total_attr > 0 => {
+        Some(hy) => {
             let start_idx = hy.binding_idx;
             hy.binding_idx += total_attr;
-            let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
             format!("{} data-fe-c-{}-{}>", resolved, start_idx, total_attr)
         }
-        _ => format!("{}>", open_tag_base),
+        None => format!("{}>", resolved),
     }
 }
