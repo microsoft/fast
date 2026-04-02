@@ -94,7 +94,7 @@ impl Locator {
 
 /// Parse all `<f-template>` elements from an HTML string.
 /// Returns list of (name, inner_template_content). name is None if missing.
-fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
+pub(crate) fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
     let mut results = Vec::new();
     let mut search_start = 0;
     while let Some(rel) = html[search_start..].find("<f-template") {
@@ -295,6 +295,14 @@ mod tests {
     fn test_glob_question_mark() {
         assert!(glob_match("tests/fixtures/my-?.html", "tests/fixtures/my-x.html"));
         assert!(!glob_match("tests/fixtures/my-?.html", "tests/fixtures/my-xy.html"));
+    }
+
+    #[test]
+    fn test_glob_exact_path() {
+        // An exact path (no wildcards) must match only itself.
+        assert!(glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-button.html"));
+        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-badge.html"));
+        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/duplicate/my-button.html"));
     }
 
     #[test]
