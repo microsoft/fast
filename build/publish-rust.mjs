@@ -35,7 +35,7 @@ function parseVersion(version) {
 }
 
 function getCommitsSinceCrateLastTag(crateName, currentVersion) {
-    const tagName = `${crateName}-v${currentVersion}`;
+    const tagName = `${crateName}_v${currentVersion}`;
     let fromRef;
     try {
         execSync(`git -C "${repoRoot}" rev-parse "${tagName}"`, { stdio: "pipe" });
