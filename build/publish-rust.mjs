@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
  * Bumps the Rust crate version based on conventional commits since the last
- * release tag, then packages the crate into publish_artifacts_cargo/.
+ * Beachball-generated release tag, then packages the crate into publish_artifacts_cargo/.
+ *
+ * Beachball tags use the format: {package-name}_v{version}
+ * e.g. microsoft-fast-build_v0.1.0
  *
  * Version bump rules (conventional commits):
  *   BREAKING CHANGE / feat!: / fix!:  → major
@@ -9,7 +12,7 @@
  *   anything else                      → patch
  *
  * Only commits that touch crates/microsoft-fast-build/ are considered.
- * If no such commits exist since the last tag, the script exits without change.
+ * If no such commits exist since the last Beachball tag, the script exits without change.
  */
 import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, globSync } from "node:fs";
@@ -35,6 +38,7 @@ function parseVersion(version) {
 }
 
 function getCommitsSinceCrateLastTag(crateName, currentVersion) {
+    // Beachball generates tags in the format {package-name}_v{version}
     const tagName = `${crateName}_v${currentVersion}`;
     let fromRef;
     try {
