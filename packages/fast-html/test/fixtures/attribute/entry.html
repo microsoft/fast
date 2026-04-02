@@ -5,11 +5,11 @@
         <title></title>
     </head>
     <body>
-        <test-element type="checkbox"></test-element>
+        <test-element type="{{type}}"></test-element>
         <test-element-property></test-element-property>
         <test-element-expression
-            active-group="work"
-            current-group="work"
+            active-group="{{activeGroup}}"
+            current-group="{{currentGroup}}"
         ></test-element-expression>
         <script type="module" src="./main.ts"></script>
     </body>
