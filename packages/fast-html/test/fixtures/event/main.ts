@@ -14,10 +14,6 @@ class TestElement extends FASTElement {
         console.log(e.type);
     };
 
-    public handleAttributeArgClick = (foo: string): void => {
-        console.log(foo);
-    };
-
     public handleModifyAttributeClick = (): void => {
         this.foo = "modified-by-click";
     };

@@ -563,38 +563,16 @@ class TemplateElement extends FASTElement {
                             );
                         }
 
-                        const argResolvers = parsedArgs.map(parsedArg => {
-                            if (
-                                parsedArg.type === "binding" &&
-                                parsedArg.path !== undefined
-                            ) {
-                                return bindingResolver(
-                                    strings.join(""),
-                                    rootPropertyName,
-                                    parsedArg.path,
-                                    parentContext,
-                                    type,
-                                    schema,
-                                    parentContext,
-                                    level,
-                                );
-                            }
-                            return null;
-                        });
-
                         attributeBinding = (x: any, c: any) =>
                             binding(x, c).bind(getOwner(x, c))(
-                                ...parsedArgs.map((parsedArg, i) => {
+                                ...parsedArgs.map(parsedArg => {
                                     if (
                                         parsedArg.type === "event" ||
                                         parsedArg.type === "deprecated-event"
                                     ) {
                                         return c.event;
                                     }
-                                    if (parsedArg.type === "context") {
-                                        return c;
-                                    }
-                                    return argResolvers[i]!(x, c);
+                                    return c;
                                 }),
                             );
 

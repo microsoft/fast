@@ -947,30 +947,16 @@ test.describe("utilities", async () => {
         test("should parse $c as a context argument", async () => {
             expect(parseEventArgs("$c")).toEqual([{ type: "context" }]);
         });
-        test("should parse $c.path as a binding argument", async () => {
-            expect(parseEventArgs("$c.eventDetail")).toEqual([
-                { type: "binding", path: "$c.eventDetail" },
-            ]);
+        test("should omit unrecognised tokens", async () => {
+            expect(parseEventArgs("foo")).toEqual([]);
         });
-        test("should parse a plain property name as a binding argument", async () => {
-            expect(parseEventArgs("foo")).toEqual([{ type: "binding", path: "foo" }]);
+        test("should omit $c.path tokens", async () => {
+            expect(parseEventArgs("$c.eventDetail")).toEqual([]);
         });
         test("should parse multiple arguments: $e, $c", async () => {
             expect(parseEventArgs("$e, $c")).toEqual([
                 { type: "event" },
                 { type: "context" },
-            ]);
-        });
-        test("should parse multiple arguments: $e, foo", async () => {
-            expect(parseEventArgs("$e, foo")).toEqual([
-                { type: "event" },
-                { type: "binding", path: "foo" },
-            ]);
-        });
-        test("should parse multiple arguments: foo, $e", async () => {
-            expect(parseEventArgs("foo, $e")).toEqual([
-                { type: "binding", path: "foo" },
-                { type: "event" },
             ]);
         });
         test("should parse multiple arguments without spaces", async () => {
@@ -984,6 +970,9 @@ test.describe("utilities", async () => {
                 { type: "deprecated-event" },
                 { type: "context" },
             ]);
+        });
+        test("should omit unrecognised tokens in a mixed list", async () => {
+            expect(parseEventArgs("$e, foo")).toEqual([{ type: "event" }]);
         });
     });
 });

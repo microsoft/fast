@@ -95,50 +95,48 @@ export { deprecatedEventArgAccessor, eventArgAccessor };
 /**
  * The type of a parsed event handler argument.
  */
-export type EventArgType = "event" | "deprecated-event" | "context" | "binding";
+export type EventArgType = "event" | "deprecated-event" | "context";
 
 /**
  * A parsed event handler argument descriptor.
  */
 export interface ParsedEventArg {
     type: EventArgType;
-    /** The binding path, only present for type "binding". */
-    path?: string;
 }
 
 /**
  * Parses the arguments string of an event handler binding into an array of
- * typed argument descriptors.
+ * typed argument descriptors. Only the three special tokens are recognised;
+ * unrecognised tokens are omitted.
  *
  * Special arguments:
  * - `$e` — resolves to the DOM event object
  * - `e` — resolves to the DOM event object (deprecated, use `$e`)
  * - `$c` — resolves to the full execution context object
- * - anything else — resolved as a data binding path
  *
  * @param argsString - The raw arguments string from between the parentheses,
- *   e.g. `""`, `"$e"`, `"$c"`, `"$e, $c"`, or `"foo"`.
+ *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
  * @returns An array of {@link ParsedEventArg} descriptors.
  */
 export function parseEventArgs(argsString: string): ParsedEventArg[] {
     if (argsString === "") return [];
 
-    return argsString.split(",").map(arg => {
+    return argsString.split(",").flatMap((arg): ParsedEventArg[] => {
         const trimmed = arg.trim();
 
         if (trimmed === eventArgAccessor) {
-            return { type: "event" as const };
+            return [{ type: "event" }];
         }
 
         if (trimmed === deprecatedEventArgAccessor) {
-            return { type: "deprecated-event" as const };
+            return [{ type: "deprecated-event" }];
         }
 
         if (trimmed === executionContextAccessor) {
-            return { type: "context" as const };
+            return [{ type: "context" }];
         }
 
-        return { type: "binding" as const, path: trimmed };
+        return [];
     });
 }
 
