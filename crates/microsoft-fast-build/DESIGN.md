@@ -335,6 +335,23 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 
 ---
 
+## Node.js CLI — `bin/fast.js`
+
+The `@microsoft/fast-build` npm package ships a Node.js CLI (`bin/fast.js`) that wraps the WASM module. Critically, the CLI **pre-processes template files before passing them to the WASM** — it does not use the Rust `Locator::from_patterns` directly. Instead it reimplements the same logic in JavaScript:
+
+| JS function | Rust equivalent |
+|---|---|
+| `resolvePattern(pattern)` | `Locator::from_patterns` (glob walk + file reading) |
+| `parseFTemplates(html)` | `parse_f_templates(html)` |
+| `extractAttrValue(attrs, name)` | `extract_attr_value(attrs, name)` |
+| `extractTemplateContent(html)` | `extract_template_content(html)` |
+
+`resolvePattern` walks the filesystem, matches files against the glob, and for each match calls `parseFTemplates` to extract `(name, content)` pairs. It then returns `{ name, content }[]` which are merged into the `templatesMap` passed to `wasm.render_with_templates(entry, JSON.stringify(templatesMap), state)`.
+
+**Important:** whenever `locator.rs` parsing logic changes, the equivalent JS functions in `bin/fast.js` must be updated in lockstep, and the WASM must be rebuilt.
+
+---
+
 ## JSON parsing — `json.rs`
 
 A hand-rolled recursive-descent parser. No external crates.
