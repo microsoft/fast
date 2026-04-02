@@ -1,6 +1,30 @@
 /* @ts-self-types="./microsoft_fast_build.d.ts" */
 
 /**
+ * Parse all `<f-template>` elements from an HTML string.
+ * Returns a JSON array of `{"name": string | null, "content": string}` objects,
+ * one per `<f-template>` element found. `name` is `null` when the element has
+ * no `name` attribute.
+ * @param {string} html
+ * @returns {string}
+ */
+function parse_f_templates(html) {
+    let deferred2_0;
+    let deferred2_1;
+    try {
+        const ptr0 = passStringToWasm0(html, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        const ret = wasm.parse_f_templates(ptr0, len0);
+        deferred2_0 = ret[0];
+        deferred2_1 = ret[1];
+        return getStringFromWasm0(ret[0], ret[1]);
+    } finally {
+        wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
+    }
+}
+exports.parse_f_templates = parse_f_templates;
+
+/**
  * Render a FAST HTML template with a JSON state string.
  * Returns the rendered HTML or throws a JavaScript error.
  * @param {string} entry
