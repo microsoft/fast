@@ -3,7 +3,7 @@ import type { ViewBehaviorFactory } from "./html-directive.js";
 /**
  * A unique per-session random marker string used to create placeholder tokens in HTML.
  * Bindings embedded in template literals are replaced with interpolation markers
- * of the form `fast-xxxxxx{id}xxxxxx` so the compiler can later locate them in the
+ * of the form `fast-xxxxxx{id}fast-xxxxxx` so the compiler can later locate them in the
  * parsed DOM and associate each marker with its ViewBehaviorFactory.
  */
 const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;

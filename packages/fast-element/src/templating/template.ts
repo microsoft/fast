@@ -277,14 +277,14 @@ export class ViewTemplate<TSource = any, TParent = any>
      * creates a ViewTemplate.
      *
      * For each interpolated value:
-     * 1. Arrow functions (e.g., `x => x.name`) → wrapped in a one-way HTMLBindingDirective
+     * 1. Functions (binding expressions, e.g., `x => x.name`) → wrapped in a one-way HTMLBindingDirective
      * 2. Binding instances → wrapped in an HTMLBindingDirective
      * 3. HTMLDirective instances → used as-is
      * 4. Static values (strings, numbers) → wrapped in a one-time HTMLBindingDirective
      *
      * Each directive's createHTML() is called with an `add` callback that registers
      * the factory in the factories record under a unique ID and returns that ID.
-     * The directive inserts a placeholder marker (e.g., `fast-abc123{id}abc123`) into
+     * The directive inserts a placeholder marker (e.g., `fast-abc123{0}fast-abc123`) into
      * the HTML string so the compiler can later find and associate it with the factory.
      *
      * Aspect detection happens here too: the `lastAttributeNameRegex` checks whether
