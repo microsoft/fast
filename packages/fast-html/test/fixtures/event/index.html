@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
         <title></title>
     </head>
     <body>
@@ -17,7 +17,9 @@
             <template>
                 <button @click="{handleNoArgsClick()}">No arguments</button>
                 <button @click="{handleEventArgClick(e)}">event argument</button>
-                <button @click="{handleAttributeArgClick(foo)}">attribute argument</button>
+                <button @click="{handleAttributeArgClick(foo)}">
+                    attribute argument
+                </button>
                 <button @click="{handleModifyAttributeClick()}">modify foo</button>
             </template>
         </f-template>

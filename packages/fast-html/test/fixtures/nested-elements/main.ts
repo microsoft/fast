@@ -83,10 +83,6 @@ export class Item extends RenderableElement {
     private static prepareCallCount = 0;
     private static instanceMap = new WeakMap<Item, number>();
 
-    constructor() {
-        super();
-    }
-
     async prepare() {
         // Assign instance number on first prepare() call for this instance
         if (!Item.instanceMap.has(this)) {
@@ -128,22 +124,22 @@ TemplateElement.options({
     .config({
         elementDidDefine(name: string) {
             (window as any).messages.push(
-                `Element did define: ${name} [${performance.now()}]`
+                `Element did define: ${name} [${performance.now()}]`,
             );
         },
         elementDidHydrate(source: HTMLElement) {
             (window as any).messages.push(
-                `Element did hydrate: ${source.localName} [${performance.now()}]`
+                `Element did hydrate: ${source.localName} [${performance.now()}]`,
             );
         },
         elementDidRegister(name: string) {
             (window as any).messages.push(
-                `Element did register: ${name} [${performance.now()}]`
+                `Element did register: ${name} [${performance.now()}]`,
             );
         },
         elementWillHydrate(source: HTMLElement) {
             (window as any).messages.push(
-                `Element will hydrate: ${source.localName} [${performance.now()}]`
+                `Element will hydrate: ${source.localName} [${performance.now()}]`,
             );
         },
         hydrationComplete() {
@@ -151,12 +147,12 @@ TemplateElement.options({
         },
         templateDidUpdate(name: string) {
             (window as any).messages.push(
-                `Template did update: ${name} [${performance.now()}]`
+                `Template did update: ${name} [${performance.now()}]`,
             );
         },
         templateWillUpdate(name: string) {
             (window as any).messages.push(
-                `Template will update: ${name} [${performance.now()}]`
+                `Template will update: ${name} [${performance.now()}]`,
             );
         },
     })

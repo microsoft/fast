@@ -9,6 +9,8 @@ import {
 } from "./schema.js";
 import {
     attributeDirectivePrefix,
+    bindingArgKeyValueSeparator,
+    bindingArgSeparator,
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
@@ -87,6 +89,44 @@ interface ObservedTargetsAndProperties {
 }
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
+
+/**
+ * The result of parsing a binding expression that may include pipe-separated arguments.
+ */
+export interface BindingExpression {
+    /** The property path (the part before any `|` separators). */
+    path: string;
+    /** Key/value modifiers parsed from the pipe-separated arguments, e.g. `{ binding: "none" }`. */
+    modifiers: Record<string, string>;
+}
+
+/**
+ * Parses a raw binding expression into its path and key/value modifiers.
+ *
+ * Syntax: `path|key1:value1|key2:value2`
+ *
+ * - The first segment (before the first `|`) is the property path.
+ * - Each subsequent segment is split on `:` into a key and value.
+ *
+ * @param rawExpression - The raw expression string from inside `{{...}}`.
+ * @returns A {@link BindingExpression} containing the path and any modifiers.
+ */
+export function parseBindingExpression(rawExpression: string): BindingExpression {
+    const parts = rawExpression.split(bindingArgSeparator);
+    const path = parts[0];
+    const modifiers: Record<string, string> = {};
+
+    for (let i = 1; i < parts.length; i++) {
+        const separatorIndex = parts[i].indexOf(bindingArgKeyValueSeparator);
+        if (separatorIndex !== -1) {
+            const key = parts[i].slice(0, separatorIndex);
+            const value = parts[i].slice(separatorIndex + 1);
+            modifiers[key] = value;
+        }
+    }
+
+    return { path, modifiers };
+}
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;

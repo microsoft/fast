@@ -10,14 +10,6 @@ RenderableFASTElement(TestElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-class TestElementUnescaped extends FASTElement {
-    public html = `<p>Hello world</p>`;
-}
-RenderableFASTElement(TestElementUnescaped).defineAsync({
-    name: "test-element-unescaped",
-    templateOptions: "defer-and-hydrate",
-});
-
 TemplateElement.define({
     name: "f-template",
 });

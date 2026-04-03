@@ -10,14 +10,8 @@
                 <!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->Hello world<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b-->
             </template>
         </test-element>
-        <test-element-unescaped>
-            <template shadowrootmode="open">
-                <div><p>Hello world<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b--></p></div>
-            </template>
-        </test-element-unescaped>
-        <f-template name="test-element"> <template>{{ text }}</template> </f-template>
-        <f-template name="test-element-unescaped">
-            <template>{{ {html }}}</template>
+        <f-template name="test-element">
+            <template>{{ text|binding:none }}</template>
         </f-template>
         <script type="module" src="./main.ts"></script>
     </body>
