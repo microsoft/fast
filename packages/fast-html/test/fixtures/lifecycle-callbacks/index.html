@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
         <title>Lifecycle Callbacks Test</title>
     </head>
     <body>
@@ -16,11 +16,13 @@
         <complex-element needs-hydration title="Complex">
             <template shadowrootmode="open">
                 <div>
-                    <h2><!--fe-b$$start$$0$$title$$fe-b-->Complex<!--fe-b$$end$$0$$title$$fe-b--></h2>
-                    <p>Count: <!--fe-b$$start$$1$$count$$fe-b-->0<!--fe-b$$end$$1$$count$$fe-b--></p>
+                    <h2>Complex<!--fe-b$$end$$0$$title$$fe-b--></h2>
+                    <p>
+                        Count: <!--fe-b$$start$$1$$count$$fe-b-->0<!--fe-b$$end$$1$$count$$fe-b-->
+                    </p>
                     <nested-element needs-hydration data-fe-b-2 label="Complex">
                         <template shadowrootmode="open">
-                            <span><!--fe-b$$start$$0$$label$$fe-b-->Complex<!--fe-b$$end$$0$$label$$fe-b--></span>
+                            <span>Complex<!--fe-b$$end$$0$$label$$fe-b--></span>
                         </template>
                     </nested-element>
                 </div>
@@ -30,7 +32,9 @@
         <!-- Deferred element -->
         <deferred-element needs-hydration defer-hydration status="pending">
             <template shadowrootmode="open">
-                <p>Status: <!--fe-b$$start$$0$$status$$fe-b-->pending<!--fe-b$$end$$0$$status$$fe-b--></p>
+                <p>
+                    Status: <!--fe-b$$start$$0$$status$$fe-b-->pending<!--fe-b$$end$$0$$status$$fe-b-->
+                </p>
             </template>
         </deferred-element>
 
@@ -38,10 +42,15 @@
         <deferred-parent-element needs-hydration defer-hydration label="Parent">
             <template shadowrootmode="open">
                 <section>
-                    <p><!--fe-b$$start$$0$$label$$fe-b-->Parent<!--fe-b$$end$$0$$label$$fe-b--></p>
-                    <deferred-child-element needs-hydration defer-hydration label="Child" data-fe-b-1>
+                    <p>Parent<!--fe-b$$end$$0$$label$$fe-b--></p>
+                    <deferred-child-element
+                        needs-hydration
+                        defer-hydration
+                        label="Child"
+                        data-fe-b-1
+                    >
                         <template shadowrootmode="open">
-                            <span><!--fe-b$$start$$0$$label$$fe-b-->Child<!--fe-b$$end$$0$$label$$fe-b--></span>
+                            <span>Child<!--fe-b$$end$$0$$label$$fe-b--></span>
                         </template>
                     </deferred-child-element>
                 </section>
@@ -50,17 +59,17 @@
 
         <!-- Template definitions -->
         <f-template name="simple-element">
-            <template>{{message}} World</template>
+            <template>{{ message }} World</template>
         </f-template>
 
         <f-template name="complex-element">
             <template>
                 <div>
-                    <h2>{{title}}</h2>
-                    <p>Count: {{count}}</p>
+                    <h2>{{ title }}</h2>
+                    <p>Count: {{ count }}</p>
                     <nested-element label="{{title}}">
                         <template shadowrootmode="open">
-                            <span>{{label}}</span>
+                            <span>{{ label }}</span>
                         </template>
                     </nested-element>
                 </div>
@@ -68,24 +77,24 @@
         </f-template>
 
         <f-template name="nested-element">
-            <template><span>{{label}}</span></template>
+            <template><span>{{ label }}</span></template>
         </f-template>
 
         <f-template name="deferred-element">
-            <template><p>Status: {{status}}</p></template>
+            <template><p>Status: {{ status }}</p></template>
         </f-template>
 
         <f-template name="deferred-parent-element">
             <template>
                 <section>
-                    <p>{{label}}</p>
+                    <p>{{ label }}</p>
                     <deferred-child-element label="{{label}}"></deferred-child-element>
                 </section>
             </template>
         </f-template>
 
         <f-template name="deferred-child-element">
-            <template><span>{{label}}</span></template>
+            <template><span>{{ label }}</span></template>
         </f-template>
 
         <script type="module" src="./main.ts"></script>

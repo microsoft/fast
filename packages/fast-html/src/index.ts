@@ -4,7 +4,7 @@ import { debugMessages } from "./debug.js";
 FAST.addMessages(debugMessages);
 
 export {
+    ObserverMap,
     RenderableFASTElement,
     TemplateElement,
-    ObserverMap,
 } from "./components/index.js";

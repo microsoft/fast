@@ -13,6 +13,7 @@ import {
     clientSideOpenExpression,
     closeExpression,
     executionContextAccessor,
+    noneBindingModifier,
     openExpression,
     repeatDirectiveClose,
     repeatDirectiveOpen,
@@ -87,6 +88,24 @@ interface ObservedTargetsAndProperties {
 }
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
+
+/**
+ * Determines if the property name includes the none binding modifier
+ * @param propName - The property name to check
+ * @returns True if the property name includes the none binding modifier
+ */
+export function hasNoneBindingModifier(propName: string): boolean {
+    return propName.endsWith(noneBindingModifier);
+}
+
+/**
+ * Strips the none binding modifier from the property name
+ * @param propName - The property name to strip
+ * @returns The property name without the none binding modifier
+ */
+export function stripNoneBindingModifier(propName: string): string {
+    return propName.slice(0, propName.length - noneBindingModifier.length);
+}
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;

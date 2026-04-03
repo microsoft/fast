@@ -53,7 +53,7 @@ async function waitForAncestorHydration(element: HTMLElement): Promise<void> {
  * @public
  */
 export function RenderableFASTElement<T extends Constructable<FASTElement>>(
-    BaseCtor: T
+    BaseCtor: T,
 ): T {
     const C = class extends BaseCtor {
         deferHydration: boolean = true;
@@ -89,7 +89,7 @@ export function RenderableFASTElement<T extends Constructable<FASTElement>>(
 
     attr({ mode: "boolean", attribute: deferHydrationAttribute })(
         C.prototype,
-        "deferHydration"
+        "deferHydration",
     );
 
     return C;
