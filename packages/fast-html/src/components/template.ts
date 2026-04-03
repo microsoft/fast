@@ -20,6 +20,7 @@ import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
 import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
+import { bindingKey, noneBinding } from "./syntax.js";
 import {
     type AttributeDirective,
     bindingResolver,
@@ -30,8 +31,7 @@ import {
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
-    hasNoneBindingModifier,
-    stripNoneBindingModifier,
+    parseBindingExpression,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -470,14 +470,13 @@ class TemplateElement extends FASTElement {
             case "content": {
                 strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                 const type = "access";
-                const rawPropName = innerHTML.slice(
+                const rawExpression = innerHTML.slice(
                     behaviorConfig.openingEndIndex,
                     behaviorConfig.closingStartIndex,
                 );
-                const isNoneBinding = hasNoneBindingModifier(rawPropName);
-                const propName = isNoneBinding
-                    ? stripNoneBindingModifier(rawPropName)
-                    : rawPropName;
+                const { path: propName, modifiers } =
+                    parseBindingExpression(rawExpression);
+                const isNoneBinding = modifiers[bindingKey] === noneBinding;
                 rootPropertyName = getRootPropertyName(
                     rootPropertyName,
                     propName,
