@@ -90,7 +90,7 @@ interface ObservedTargetsAndProperties {
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
-export { deprecatedEventArgAccessor, eventArgAccessor };
+export { deprecatedEventArgAccessor, eventArgAccessor, executionContextAccessor };
 
 /**
  * The type of a parsed event handler argument.

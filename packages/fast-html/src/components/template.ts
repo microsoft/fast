@@ -25,12 +25,13 @@ import {
     type ChainedExpression,
     contextPrefixDot,
     type DataBindingBehaviorConfig,
+    deprecatedEventArgAccessor,
     eventArgAccessor,
+    executionContextAccessor,
     getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
-    parseEventArgs,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -534,7 +535,6 @@ class TemplateElement extends FASTElement {
                             openingParenthesis + 1,
                             closingParenthesis,
                         );
-                        const parsedArgs = parseEventArgs(argsString);
                         const binding = bindingResolver(
                             strings.join(""),
                             rootPropertyName,
@@ -556,24 +556,45 @@ class TemplateElement extends FASTElement {
                               }
                             : (x: any, _c: any) => x;
 
-                        if (parsedArgs.some(a => a.type === "deprecated-event")) {
+                        const rawArgs =
+                            argsString === ""
+                                ? []
+                                : argsString.split(",").map(a => a.trim());
+
+                        if (rawArgs.includes(deprecatedEventArgAccessor)) {
                             console.warn(
                                 `[fast-html] Using "e" as an event argument is deprecated. ` +
                                     `Use "${eventArgAccessor}" instead.`,
                             );
                         }
 
+                        const argResolvers = rawArgs.map(
+                            (rawArg): ((x: any, c: any) => any) => {
+                                if (
+                                    rawArg === eventArgAccessor ||
+                                    rawArg === deprecatedEventArgAccessor
+                                ) {
+                                    return (_x, c) => c.event;
+                                }
+                                if (rawArg === executionContextAccessor) {
+                                    return (_x, c) => c;
+                                }
+                                return bindingResolver(
+                                    strings.join(""),
+                                    rootPropertyName,
+                                    rawArg,
+                                    parentContext,
+                                    type,
+                                    schema,
+                                    parentContext,
+                                    level,
+                                );
+                            },
+                        );
+
                         attributeBinding = (x: any, c: any) =>
                             binding(x, c).bind(getOwner(x, c))(
-                                ...parsedArgs.map(parsedArg => {
-                                    if (
-                                        parsedArg.type === "event" ||
-                                        parsedArg.type === "deprecated-event"
-                                    ) {
-                                        return c.event;
-                                    }
-                                    return c;
-                                }),
+                                ...argResolvers.map(resolve => resolve(x, c)),
                             );
 
                         break;
