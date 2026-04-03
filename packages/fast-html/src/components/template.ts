@@ -570,25 +570,24 @@ class TemplateElement extends FASTElement {
 
                         const argResolvers = rawArgs.map(
                             (rawArg): ((x: any, c: any) => any) => {
-                                if (
-                                    rawArg === eventArgAccessor ||
-                                    rawArg === deprecatedEventArgAccessor
-                                ) {
-                                    return (_x, c) => c.event;
+                                switch (rawArg) {
+                                    case eventArgAccessor:
+                                    case deprecatedEventArgAccessor:
+                                        return (_x, c) => c.event;
+                                    case executionContextAccessor:
+                                        return (_x, c) => c;
+                                    default:
+                                        return bindingResolver(
+                                            strings.join(""),
+                                            rootPropertyName,
+                                            rawArg,
+                                            parentContext,
+                                            type,
+                                            schema,
+                                            parentContext,
+                                            level,
+                                        );
                                 }
-                                if (rawArg === executionContextAccessor) {
-                                    return (_x, c) => c;
-                                }
-                                return bindingResolver(
-                                    strings.join(""),
-                                    rootPropertyName,
-                                    rawArg,
-                                    parentContext,
-                                    type,
-                                    schema,
-                                    parentContext,
-                                    level,
-                                );
                             },
                         );
 
