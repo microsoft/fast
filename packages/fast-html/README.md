@@ -229,6 +229,17 @@ Browser-only bindings:
 - Event bindings
 - Attribute directives
 
+#### Binding arguments
+
+Content bindings support pipe-separated arguments that modify binding behaviour:
+
+```
+{{path|key1:value1|key2:value2}}
+```
+
+- The **first segment** (before the first `|`) is always the property path.
+- Each **subsequent segment** is a `key:value` pair that configures how the binding behaves.
+
 #### Content binding
 
 ```html
