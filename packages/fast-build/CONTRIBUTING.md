@@ -2,7 +2,7 @@
 
 ## Building the WASM
 
-The compiled WebAssembly output is **not committed** to the repository. The `wasm/` directory is listed in `.gitignore` and must be generated locally before using the package.
+The `wasm/` directory is generated locally and must be built before using the package.
 
 ### Prerequisites
 
@@ -21,7 +21,7 @@ From the repository root:
 npm run build -w @microsoft/fast-build
 ```
 
-This runs `wasm-pack build --target nodejs` on the Rust crate and writes the output to `packages/fast-build/wasm/`. The generated files should **not** be committed.
+This runs `wasm-pack build --target nodejs` on the Rust crate and writes the output to `packages/fast-build/wasm/`.
 
 ### Running the Rust tests
 
