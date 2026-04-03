@@ -4,11 +4,29 @@
 
 ### Machine setup
 
-To work with the FAST [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, and Npm setup on your machine.
+To work with the FAST [monorepo](https://en.wikipedia.org/wiki/Monorepo) you'll need Git, Node.js, Npm, Rust, and wasm-pack set up on your machine.
 
 FAST uses Git as its source control system. If you haven't already installed it, you can download it [here](https://git-scm.com/downloads) or if you prefer a GUI-based approach, try [GitHub Desktop](https://desktop.github.com/).
 
 Once Git is installed, you'll also need Node.js, which FAST uses as its JavaScript runtime, enabling its build and test scripts. Node.js instructions and downloads for your preferred OS can be found [here](https://nodejs.org/en/).
+
+FAST includes a Rust crate (`crates/microsoft-fast-build`) that is compiled to WebAssembly as part of `npm run build`. You'll need the Rust stable toolchain — install it via [rustup](https://rustup.rs/):
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+After installing Rust, add the WebAssembly target:
+
+```shell
+rustup target add wasm32-unknown-unknown
+```
+
+You'll also need [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/), which compiles the Rust crate to WebAssembly:
+
+```shell
+cargo install wasm-pack
+```
 
 ### Cloning the repository
 
