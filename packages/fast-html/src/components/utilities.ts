@@ -12,6 +12,8 @@ import {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
+    deprecatedEventArgAccessor,
+    eventArgAccessor,
     executionContextAccessor,
     openExpression,
     repeatDirectiveClose,
@@ -87,6 +89,51 @@ interface ObservedTargetsAndProperties {
 }
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
+
+export { deprecatedEventArgAccessor, eventArgAccessor, executionContextAccessor };
+
+/**
+ * The type of a parsed event handler argument.
+ */
+export type EventArgType = "event" | "deprecated-event" | "context";
+
+/**
+ * A parsed event handler argument descriptor.
+ */
+export interface ParsedEventArg {
+    type: EventArgType;
+}
+
+/**
+ * Parses the arguments string of an event handler binding into an array of
+ * typed argument descriptors. Only the three special tokens are recognised;
+ * unrecognised tokens are omitted.
+ *
+ * Special arguments:
+ * - `$e` — resolves to the DOM event object
+ * - `e` — resolves to the DOM event object (deprecated, use `$e`)
+ * - `$c` — resolves to the full execution context object
+ *
+ * @param argsString - The raw arguments string from between the parentheses,
+ *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
+ * @returns An array of {@link ParsedEventArg} descriptors.
+ */
+export function parseEventArgs(argsString: string): ParsedEventArg[] {
+    if (argsString === "") return [];
+
+    return argsString.split(",").flatMap((arg): ParsedEventArg[] => {
+        switch (arg.trim()) {
+            case eventArgAccessor:
+                return [{ type: "event" }];
+            case deprecatedEventArgAccessor:
+                return [{ type: "deprecated-event" }];
+            case executionContextAccessor:
+                return [{ type: "context" }];
+            default:
+                return [];
+        }
+    });
+}
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
