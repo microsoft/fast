@@ -45,6 +45,9 @@ jobs:
     - name: Install package dependencies
       run: npm ci
 
+    - name: Install wasm-pack
+      run: cargo install wasm-pack
+
     - name: Build workspaces
       run: npm run build
 
