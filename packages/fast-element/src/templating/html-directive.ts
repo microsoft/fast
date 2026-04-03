@@ -179,7 +179,13 @@ export const HTMLDirective = Object.freeze({
     },
 
     /**
-     *
+     * Determines the DOM aspect type for a directive based on attribute name prefix.
+     * The prefix convention maps to aspect types as follows:
+     *   - No prefix (e.g. "class")  → DOMAspect.attribute
+     *   - ":" prefix (e.g. ":value") → DOMAspect.property (":classList" → DOMAspect.tokenList)
+     *   - "?" prefix (e.g. "?disabled") → DOMAspect.booleanAttribute
+     *   - `@` prefix (e.g. `@click`) → DOMAspect.event
+     *   - Falsy or absent value → DOMAspect.content (see remarks)
      * @param directive - The directive to assign the aspect to.
      * @param value - The value to base the aspect determination on.
      * @remarks

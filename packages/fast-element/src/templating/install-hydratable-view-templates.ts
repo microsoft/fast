@@ -6,6 +6,12 @@ import { HydrationView } from "./view.js";
 // and a hydrate method. Augmenting the hydration features is done by
 // property assignment instead of class extension to better allow the
 // hydration feature to be tree-shaken.
+//
+// When hydrate() is called, it creates a HydrationView that wraps the
+// pre-rendered DOM range (firstChild → lastChild) instead of cloning a
+// compiled DocumentFragment. The HydrationView will then use
+// buildViewBindingTargets() to scan for hydration markers and attach
+// reactive bindings to the existing DOM nodes.
 Object.defineProperties(ViewTemplate.prototype, {
     [Hydratable]: { value: Hydratable, enumerable: false, configurable: false },
     hydrate: {
