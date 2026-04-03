@@ -29,6 +29,10 @@ class TestElement extends FASTElement {
     public handleMultiArgClick = (e: MouseEvent, c: any): void => {
         console.log(`${e.type},${c.event.type}`);
     };
+
+    public handleContextEventArgClick = (e: MouseEvent): void => {
+        console.log(e.type);
+    };
 }
 RenderableFASTElement(TestElement).defineAsync({
     name: "test-element",

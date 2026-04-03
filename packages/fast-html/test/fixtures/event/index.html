@@ -13,6 +13,7 @@
                 <button data-fe-b-3>event argument ($e)</button>
                 <button data-fe-b-4>context argument ($c)</button>
                 <button data-fe-b-5>multiple arguments ($e, $c)</button>
+                <button data-fe-b-6>context event argument ($c.event)</button>
             </template>
         </test-element>
         <f-template name="test-element">
@@ -23,6 +24,7 @@
                 <button @click="{handleDollarEArgClick($e)}">event argument ($e)</button>
                 <button @click="{handleContextArgClick($c)}">context argument ($c)</button>
                 <button @click="{handleMultiArgClick($e, $c)}">multiple arguments ($e, $c)</button>
+                <button @click="{handleContextEventArgClick($c.event)}">context event argument ($c.event)</button>
             </template>
         </f-template>
         <script type="module" src="./main.ts"></script>

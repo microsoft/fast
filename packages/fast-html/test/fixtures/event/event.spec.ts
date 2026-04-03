@@ -76,4 +76,16 @@ test.describe("f-template", async () => {
 
         expect(message).toEqual("click,click");
     });
+    test("create an event attribute with $c.event argument", async ({ page }) => {
+        await page.goto("/fixtures/event/");
+
+        const customElement = page.locator("test-element");
+
+        let message;
+        page.on("console", msg => (message = msg.text()));
+
+        await customElement.locator("button").nth(6).click();
+
+        expect(message).toEqual("click");
+    });
 });
