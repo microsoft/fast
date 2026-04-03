@@ -7,9 +7,9 @@
  * e.g. microsoft-fast-build_v0.1.0
  *
  * Version bump rules (conventional commits):
- *   BREAKING CHANGE / feat!: / fix!:  → major
- *   feat:                              → minor
- *   anything else                      → patch
+ *   BREAKING CHANGE / feat!: / fix!: / refactor!: / chore!:  → major
+ *   feat:                                                      → minor
+ *   anything else                                              → patch
  *
  * Only commits that touch crates/microsoft-fast-build/ are considered.
  * If no such commits exist since the last Beachball tag, the script exits without change.
@@ -37,18 +37,16 @@ function parseVersion(version) {
     return { major, minor, patch };
 }
 
-function getCommitsSinceCrateLastTag(crateName, currentVersion) {
-    // Beachball generates tags in the format {package-name}_v{version}
-    const tagName = `${crateName}_v${currentVersion}`;
-    let fromRef;
-    try {
-        execSync(`git -C "${repoRoot}" rev-parse "${tagName}"`, { stdio: "pipe" });
-        fromRef = tagName;
-    } catch {
-        fromRef = null;
-    }
+function getCommitsSinceCrateLastTag(crateName) {
+    // Beachball generates tags in the format {package-name}_v{version}.
+    // Find the latest matching tag rather than constructing one from the
+    // current Cargo.toml version, which may diverge from the last release.
+    const latestTag = execSync(
+        `git -C "${repoRoot}" tag --list "${crateName}_v*" --sort=-version:refname`,
+        { encoding: "utf-8" }
+    ).trim().split("\n")[0] || null;
 
-    const range = fromRef ? `${fromRef}..HEAD` : "HEAD";
+    const range = latestTag ? `${latestTag}..HEAD` : "HEAD";
     const log = execSync(
         `git -C "${repoRoot}" log ${range} --pretty=format:"%s%n%b" -- crates/microsoft-fast-build/`,
         { encoding: "utf-8" }
@@ -101,7 +99,7 @@ function packageCrate(version) {
 }
 
 const currentVersion = getCurrentVersion();
-const commits = getCommitsSinceCrateLastTag("microsoft-fast-build", currentVersion);
+const commits = getCommitsSinceCrateLastTag("microsoft-fast-build");
 const bump = determineBump(commits);
 
 if (!bump) {
