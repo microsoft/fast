@@ -128,6 +128,10 @@ export function parseEventArgs(argsString: string): ParsedEventArg[] {
             case eventArgAccessor:
                 return { type: "event" };
             case deprecatedEventArgAccessor:
+                console.warn(
+                    `[fast-html] Using "e" as an event argument is deprecated. ` +
+                        `Use "${eventArgAccessor}" instead.`,
+                );
                 return { type: "deprecated-event" };
             case executionContextAccessor:
                 return { type: "context" };
