@@ -12,6 +12,8 @@ import {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
+    deprecatedEventArgAccessor,
+    eventArgAccessor,
     executionContextAccessor,
     openExpression,
     repeatDirectiveClose,
@@ -87,6 +89,57 @@ interface ObservedTargetsAndProperties {
 }
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
+
+export { deprecatedEventArgAccessor, eventArgAccessor, executionContextAccessor };
+
+/**
+ * The type of a parsed event handler argument.
+ */
+export type EventArgType = "event" | "deprecated-event" | "context" | "binding";
+
+/**
+ * A parsed event handler argument descriptor.
+ */
+export interface ParsedEventArg {
+    type: EventArgType;
+    /** The raw argument string, present only when `type` is `"binding"`. */
+    rawArg?: string;
+}
+
+/**
+ * Parses the arguments string of an event handler binding into an array of
+ * typed argument descriptors. Unrecognised tokens are returned as `"binding"`
+ * type with their raw string preserved.
+ *
+ * Special arguments:
+ * - `$e` — resolves to the DOM event object
+ * - `e` — resolves to the DOM event object (deprecated, use `$e`)
+ * - `$c` — resolves to the full execution context object
+ *
+ * @param argsString - The raw arguments string from between the parentheses,
+ *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
+ * @returns An array of {@link ParsedEventArg} descriptors.
+ */
+export function parseEventArgs(argsString: string): ParsedEventArg[] {
+    if (argsString === "") return [];
+
+    return argsString.split(",").map((arg): ParsedEventArg => {
+        switch (arg.trim()) {
+            case eventArgAccessor:
+                return { type: "event" };
+            case deprecatedEventArgAccessor:
+                console.warn(
+                    `[fast-html] Using "e" as an event argument is deprecated. ` +
+                        `Use "${eventArgAccessor}" instead.`,
+                );
+                return { type: "deprecated-event" };
+            case executionContextAccessor:
+                return { type: "context" };
+            default:
+                return { type: "binding", rawArg: arg.trim() };
+        }
+    });
+}
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;

@@ -4,6 +4,7 @@ import {
     type AttributeDataBindingBehaviorConfig,
     type AttributeDirectiveBindingBehaviorConfig,
     type ContentDataBindingBehaviorConfig,
+    eventArgAccessor,
     extractPathsFromChainedExpression,
     findDef,
     getBooleanBinding,
@@ -11,6 +12,7 @@ import {
     getExpressionChain,
     getIndexOfNextMatchingTag,
     getNextBehavior,
+    parseEventArgs,
     pathResolver,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
@@ -929,6 +931,53 @@ test.describe("utilities", async () => {
             test("should resolve as null if not found", async () => {
                 expect(findDef({} as JSONSchema)).toEqual(null);
             });
+        });
+    });
+
+    test.describe("parseEventArgs", async () => {
+        test("should return an empty array for an empty string", async () => {
+            expect(parseEventArgs("")).toEqual([]);
+        });
+        test("should parse $e as an event argument", async () => {
+            expect(parseEventArgs(eventArgAccessor)).toEqual([{ type: "event" }]);
+        });
+        test("should parse e (no $) as a deprecated-event argument", async () => {
+            expect(parseEventArgs("e")).toEqual([{ type: "deprecated-event" }]);
+        });
+        test("should parse $c as a context argument", async () => {
+            expect(parseEventArgs("$c")).toEqual([{ type: "context" }]);
+        });
+        test("should return a binding type for unrecognised tokens", async () => {
+            expect(parseEventArgs("foo")).toEqual([{ type: "binding", rawArg: "foo" }]);
+        });
+        test("should return a binding type for $c.path tokens", async () => {
+            expect(parseEventArgs("$c.eventDetail")).toEqual([
+                { type: "binding", rawArg: "$c.eventDetail" },
+            ]);
+        });
+        test("should parse multiple arguments: $e, $c", async () => {
+            expect(parseEventArgs("$e, $c")).toEqual([
+                { type: "event" },
+                { type: "context" },
+            ]);
+        });
+        test("should parse multiple arguments without spaces", async () => {
+            expect(parseEventArgs("$e,$c")).toEqual([
+                { type: "event" },
+                { type: "context" },
+            ]);
+        });
+        test("should parse e (deprecated) mixed with $c", async () => {
+            expect(parseEventArgs("e, $c")).toEqual([
+                { type: "deprecated-event" },
+                { type: "context" },
+            ]);
+        });
+        test("should return a binding type for unrecognised tokens in a mixed list", async () => {
+            expect(parseEventArgs("$e, foo")).toEqual([
+                { type: "event" },
+                { type: "binding", rawArg: "foo" },
+            ]);
         });
     });
 });
