@@ -72,6 +72,7 @@ test-results/
 
 # Pack directory
 publish_artifacts/
+publish_artifacts_cargo/
 
 # Rust build artifacts
 crates/**/target/
