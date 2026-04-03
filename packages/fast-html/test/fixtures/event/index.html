@@ -8,17 +8,21 @@
         <test-element foo="bar">
             <template shadowrootmode="open">
                 <button data-fe-b-0>No arguments</button>
-                <button data-fe-b-1>event argument</button>
-                <button data-fe-b-2>attribute argument</button>
-                <button data-fe-b-3>modify foo</button>
+                <button data-fe-b-1>event argument (e, deprecated)</button>
+                <button data-fe-b-2>modify foo</button>
+                <button data-fe-b-3>event argument ($e)</button>
+                <button data-fe-b-4>context argument ($c)</button>
+                <button data-fe-b-5>multiple arguments ($e, $c)</button>
             </template>
         </test-element>
         <f-template name="test-element">
             <template>
                 <button @click="{handleNoArgsClick()}">No arguments</button>
-                <button @click="{handleEventArgClick(e)}">event argument</button>
-                <button @click="{handleAttributeArgClick(foo)}">attribute argument</button>
+                <button @click="{handleEventArgClick(e)}">event argument (e, deprecated)</button>
                 <button @click="{handleModifyAttributeClick()}">modify foo</button>
+                <button @click="{handleDollarEArgClick($e)}">event argument ($e)</button>
+                <button @click="{handleContextArgClick($c)}">context argument ($c)</button>
+                <button @click="{handleMultiArgClick($e, $c)}">multiple arguments ($e, $c)</button>
             </template>
         </f-template>
         <script type="module" src="./main.ts"></script>
