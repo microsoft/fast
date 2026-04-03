@@ -2,12 +2,8 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "paths": {
-            "@microsoft/fast-html": [
-                "../src"
-            ]
+            "@microsoft/fast-html": ["../src"]
         }
     },
-    "include": [
-        "**/*.ts"
-    ]
+    "include": ["**/*.ts"]
 }

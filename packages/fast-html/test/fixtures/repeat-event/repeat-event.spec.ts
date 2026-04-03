@@ -26,10 +26,7 @@ test.describe("f-repeat event binding", async () => {
         // set on the host element.
         await buttons.nth(0).click();
 
-        await expect(customElement).toHaveJSProperty(
-            "clickedItemName",
-            "Alpha"
-        );
+        await expect(customElement).toHaveJSProperty("clickedItemName", "Alpha");
     });
 
     test("f-when with c.parent condition inside f-repeat", async ({ page }) => {

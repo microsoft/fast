@@ -229,11 +229,32 @@ Browser-only bindings:
 - Event bindings
 - Attribute directives
 
+#### Binding arguments
+
+Content bindings support pipe-separated arguments that modify binding behaviour:
+
+```
+{{path|key1:value1|key2:value2}}
+```
+
+- The **first segment** (before the first `|`) is always the property path.
+- Each **subsequent segment** is a `key:value` pair that configures how the binding behaves.
+
 #### Content binding
 
 ```html
 {{text}}
 ```
+
+#### Static accessor
+
+A static accessor reads a property value once when the element connects and does not set up any reactive observers. Use `|binding:none` to opt out of reactivity:
+
+```html
+{{text|binding:none}}
+```
+
+This is equivalent to a one-time read of `x.text` — changes to the property after the initial render will not update the DOM.
 
 #### Event binding
 

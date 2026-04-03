@@ -14,6 +14,10 @@ interface Syntax {
     whenDirectiveOpen: string;
     whenDirectiveClose: string;
     attributeDirectivePrefix: string;
+    bindingArgSeparator: string;
+    bindingArgKeyValueSeparator: string;
+    bindingKey: string;
+    noneBinding: string;
 }
 
 /**
@@ -21,10 +25,14 @@ interface Syntax {
  */
 export const {
     attributeDirectivePrefix,
+    bindingArgKeyValueSeparator,
+    bindingArgSeparator,
+    bindingKey,
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
     executionContextAccessor,
+    noneBinding,
     openExpression,
     repeatDirectiveClose,
     repeatDirectiveOpen,
@@ -34,10 +42,14 @@ export const {
     whenDirectiveOpen,
 }: Syntax = {
     attributeDirectivePrefix: "f-",
+    bindingArgKeyValueSeparator: ":",
+    bindingArgSeparator: "|",
+    bindingKey: "binding",
     clientSideCloseExpression: "}",
     clientSideOpenExpression: "{",
     closeExpression: "}}",
     executionContextAccessor: "$c",
+    noneBinding: "none",
     openExpression: "{{",
     unescapedCloseExpression: "}}}",
     unescapedOpenExpression: "{{{",

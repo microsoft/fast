@@ -118,7 +118,7 @@ export class Schema {
         if (config.childrenMap) {
             childRef = this.getSchemaId(
                 config.childrenMap.customElementName,
-                config.childrenMap.attributeName
+                config.childrenMap.attributeName,
             );
 
             if (splitPath.length === 1) {
@@ -137,7 +137,7 @@ export class Schema {
                             schema,
                             splitPath.slice(1),
                             config.pathConfig.currentContext,
-                            childRef
+                            childRef,
                         );
                     } else {
                         if (!schema[defsPropertyName]?.[splitPath[0]]) {
@@ -150,7 +150,7 @@ export class Schema {
                             schema[defsPropertyName][splitPath[0]],
                             splitPath.slice(1),
                             config.pathConfig.currentContext as string,
-                            childRef
+                            childRef,
                         );
                     }
                 }
@@ -162,7 +162,7 @@ export class Schema {
                     schema,
                     splitPath.at(-1) as string, // example items
                     config.pathConfig.currentContext as string, // example item
-                    config.pathConfig.parentContext
+                    config.pathConfig.parentContext,
                 );
 
                 if (splitPath.length > 2) {
@@ -176,7 +176,7 @@ export class Schema {
                             ],
                             splitPath.slice(1, -1),
                             config.pathConfig.parentContext,
-                            childRef
+                            childRef,
                         );
                     }
 
@@ -185,7 +185,7 @@ export class Schema {
                         hasParentContext ? splitPath.slice(2) : splitPath.slice(1),
                         config.pathConfig.currentContext,
                         childRef,
-                        "array"
+                        "array",
                     );
                 } else if (splitPath.length > 1) {
                     let schemaDefinition;
@@ -201,12 +201,12 @@ export class Schema {
                         splitPath.slice(1),
                         config.pathConfig.currentContext,
                         childRef,
-                        "array"
+                        "array",
                     );
                 } else {
                     schema.type = "array";
                     schema[refPropertyName] = this.getDefsPath(
-                        config.pathConfig.currentContext as string
+                        config.pathConfig.currentContext as string,
                     );
                 }
 
@@ -280,7 +280,7 @@ export class Schema {
                 $schema: "https://json-schema.org/draft/2019-09/schema",
                 $id: this.getSchemaId(this.customElementName, propertyName),
                 [defsPropertyName]: {},
-            }
+            },
         );
     }
 
@@ -294,7 +294,7 @@ export class Schema {
         schema: any,
         splitPath: string[],
         context: string,
-        childRef: string | null
+        childRef: string | null,
     ) {
         schema.type = "object";
 
@@ -311,7 +311,7 @@ export class Schema {
                 schema.properties[splitPath[0]],
                 splitPath.slice(1),
                 context,
-                childRef
+                childRef,
             );
         } else if (childRef) {
             if (schema.properties[splitPath[0]].anyOf) {
@@ -336,7 +336,7 @@ export class Schema {
         splitPath: string[],
         context: string | null,
         childRef: string | null,
-        type: string = "object"
+        type: string = "object",
     ): any {
         schema.type = "object";
 
@@ -354,7 +354,7 @@ export class Schema {
                 splitPath.slice(1),
                 context,
                 childRef,
-                type
+                type,
             );
         } else if (type === "array") {
             if (splitPath.length > 1) {
@@ -363,12 +363,12 @@ export class Schema {
                     splitPath.slice(1),
                     context,
                     childRef,
-                    type
+                    type,
                 );
             } else {
                 return this.addArrayToAnObject(
                     schema.properties[splitPath[0]],
-                    context as string
+                    context as string,
                 );
             }
         }
@@ -408,7 +408,7 @@ export class Schema {
         schema: any,
         propertyName: string, // e.g items
         currentContext: string, // e.g. item
-        parentContext: string | null
+        parentContext: string | null,
     ): void {
         if (schema[defsPropertyName][currentContext]) {
             return;
@@ -430,7 +430,7 @@ export class Schema {
     private getParentContexts(
         schema: JSONSchema,
         parentContext: string | null,
-        contexts: Array<string | null> = []
+        contexts: Array<string | null> = [],
     ): Array<string | null> {
         if (parentContext === null) {
             return [null, ...contexts];
@@ -443,7 +443,7 @@ export class Schema {
         return this.getParentContexts(
             schema,
             parentParentContext.at(-1) as string | null,
-            [parentContext, ...contexts]
+            [parentContext, ...contexts],
         );
     }
 }
