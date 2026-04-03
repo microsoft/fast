@@ -28,10 +28,11 @@
     "build": "tsc -p ./tsconfig.json && npm run doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "prepublishOnly": "npm run clean:dist && npm run build",
-    "lint": "biome lint .",
-    "lint:fix": "biome lint --fix .",
+    "lint": "biome-changed",
+    "lint:fix": "biome-changed -- --fix",
     "test:node": "tsc -p ./tsconfig.json && node --test dist/esm/recognizer.spec.js",
-    "test": "npm run lint && npm run doc:ci && npm run test:recognizer"
+    "test": "npm run lint && npm run doc:ci && npm run test:recognizer",
+    "test:ci": "npm run doc:ci && npm run test:recognizer"
   },
   "dependencies": {
     "tslib": "^2.6.3"
