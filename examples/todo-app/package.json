@@ -6,8 +6,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.json && webpack --mode=production",
-    "start": "webpack serve",
+    "build": "tsc -p tsconfig.json && vite build",
+    "start": "vite",
     "test": "npm run build"
   },
   "author": {
@@ -22,7 +22,7 @@
     "directory": "examples/todo-app"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.10.0",
+    "@microsoft/fast-element": "^2.10.2",
     "tslib": "^2.6.3"
   },
   "devDependencies": {

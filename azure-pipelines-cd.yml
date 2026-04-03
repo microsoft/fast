@@ -1,12 +1,19 @@
 trigger: none
 pr: none
 
+schedules:
+- cron: '0 0 * * *'
+  displayName: Daily Release
+  branches:
+    include:
+    - main
+
 # The `resources` specify the location and version of the 1ES PT.
 resources:
   repositories:
   - repository: fastPipelines
     type: git
-    name: fast/FASTPipelineTemplates
+    name: open-source/FASTPipelineTemplates
     ref: main
   - repository: 1esPipelines
     type: git
@@ -29,6 +36,8 @@ extends:
         name: OneESPool  # Name of your hosted pool
         image: HostedPoolWindowsImage  # Name of the image in your pool. If not specified, first image of the pool is used
         os: windows  # OS of the image. Allowed values: windows, linux, macOS
+    settings:
+      networkIsolationPolicy: Permissive
     stages:
     - stage: Stage
       jobs:
@@ -62,6 +71,14 @@ extends:
           - script: |
               npm ci
             displayName: "Install package dependencies"
+
+          - script: |
+              curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+              export PATH="$HOME/.cargo/bin:$PATH"
+              echo "##vso[task.prependpath]$HOME/.cargo/bin"
+              rustup target add wasm32-unknown-unknown
+              cargo install wasm-pack
+            displayName: "Install Rust and wasm-pack"
 
           - script: |
               npm run build

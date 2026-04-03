@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Tue, 17 Feb 2026 20:49:29 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 13 Mar 2026 18:13:56 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.10.2
+
+Fri, 13 Mar 2026 18:13:56 GMT
+
+### Patches
+
+- fix: add hydrating instance when needsHydration is true in HydratableElementController (863023+radium-v@users.noreply.github.com)
+
+## 2.10.1
+
+Mon, 02 Mar 2026 22:31:57 GMT
+
+### Patches
+
+- Moves handleEvent from a class property into a closure in children.ts to remove non-standard observer.target property assignment (email not defined)
 
 ## 2.10.0
 

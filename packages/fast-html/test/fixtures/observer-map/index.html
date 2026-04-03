@@ -7,6 +7,7 @@
     </head>
     <body>
         <div class="container">
+            <observer-map-simple-array-test-element></observer-map-simple-array-test-element>
             <observer-map-test-element></observer-map-test-element>
             <observer-map-with-observables-test-element>
                 <template shadowrootmode="open">
@@ -138,13 +139,13 @@
                             Monthly: {{metrics.engagement.monthly}}
                         </div>
                     </div>
-                    <f-when value="{a}">
+                    <f-when value="{{a}}">
                         <span class="nested-define">{{a.b.c}}</span>
                     </f-when>
                     <button @click="{defineB()}">Define B</button>
                     <button @click="{updateC()}">Update C</button>
                     <br>
-                    <f-when value="{x}">
+                    <f-when value="{{x}}">
                         <span class="nested-define-2">{{x.y.z}}</span>
                     </f-when>
                     <button @click="{defineY()}">Define Y</button>
@@ -176,6 +177,17 @@
                     <br>
                     Level 3 Value Observable: {{value2}}
                     <button @click="{updateValue2()}">Update Value2</button>
+                </template>
+            </f-template>
+            <f-template name="observer-map-simple-array-test-element">
+                <template>
+                    <ul>
+                        <f-repeat value="{{item in items}}">
+                            <li class="simple-item">{{item}}</li>
+                        </f-repeat>
+                    </ul>
+                    <button @click="{updateFirstItem()}">Update First Item</button>
+                    <button @click="{updateSecondItem()}">Update Second Item</button>
                 </template>
             </f-template>
         </div>

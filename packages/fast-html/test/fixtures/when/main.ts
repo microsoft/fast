@@ -1,5 +1,14 @@
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
-import { attr, FASTElement } from "@microsoft/fast-element";
+
+class TestElementMultiple extends FASTElement {
+    @attr()
+    planet: string = "";
+}
+RenderableFASTElement(TestElementMultiple).defineAsync({
+    name: "test-element-multiple",
+    templateOptions: "defer-and-hydrate",
+});
 
 class TestElement extends FASTElement {
     @attr({ mode: "boolean" })
@@ -94,6 +103,50 @@ class TestElementAnd extends FASTElement {
 }
 RenderableFASTElement(TestElementAnd).defineAsync({
     name: "test-element-and",
+    templateOptions: "defer-and-hydrate",
+});
+
+export class TestElementEvent extends FASTElement {
+    @attr({ mode: "boolean" })
+    show: boolean = false;
+
+    @observable
+    clickCount: number = 0;
+
+    public handleClick = (): void => {
+        this.clickCount++;
+    };
+}
+RenderableFASTElement(TestElementEvent).defineAsync({
+    name: "test-element-event",
+    templateOptions: "defer-and-hydrate",
+});
+
+export class NestedWhenElement extends FASTElement {
+    strings = {
+        errorMessage: "Error occurred",
+        continueButtonText: "Continue",
+        retryButtonText: "Retry",
+    };
+
+    @observable
+    error: boolean = false;
+
+    @observable
+    showProgress: boolean = true;
+
+    @observable
+    enableContinue: boolean = false;
+
+    @observable
+    clickCount: number = 0;
+
+    public handleClick = (): void => {
+        this.clickCount++;
+    };
+}
+RenderableFASTElement(NestedWhenElement).defineAsync({
+    name: "nested-when",
     templateOptions: "defer-and-hydrate",
 });
 

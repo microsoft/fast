@@ -1,4 +1,4 @@
-name: Validate Platforms/Browsers
+name: Validate PRs On All Platforms/Browsers
 
 on:
   workflow_dispatch:
@@ -39,6 +39,11 @@ jobs:
         run: |
           git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
       - name: Cache multiple paths
         uses: actions/cache@v4
         env:
@@ -56,6 +61,9 @@ jobs:
 
       - name: Test Prettier format
         run: npm run format:check
+
+      - name: Install wasm-pack
+        run: cargo install wasm-pack
 
       - name: Build workspaces
         run: npm run build

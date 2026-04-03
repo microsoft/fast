@@ -1,12 +1,13 @@
+import { deepStrictEqual, strictEqual, throws } from "node:assert/strict";
+import { describe, test } from "node:test";
 import {
     ConfigurableRoute,
     DefaultRouteRecognizer,
     Endpoint,
     RecognizedRoute,
 } from "./recognizer.js";
-import { expect } from "chai";
 
-describe(DefaultRouteRecognizer.name, function () {
+describe(DefaultRouteRecognizer.name, () => {
     interface RecognizeSpec {
         routes: string[];
         tests: [string, string | null, Record<string, string | undefined> | null][];
@@ -989,7 +990,16 @@ describe(DefaultRouteRecognizer.name, function () {
         },
         // d/d + d/s*2 + s/d*2 + s/s*3
         {
-            routes: ["{1}/{2}", "{1}/a", "{1}/aa", "a/{2}", "aa/{2}", "a/a", "a/aa", "aa/a"],
+            routes: [
+                "{1}/{2}",
+                "{1}/a",
+                "{1}/aa",
+                "a/{2}",
+                "aa/{2}",
+                "a/a",
+                "a/aa",
+                "aa/a",
+            ],
             tests: [
                 ["", null, null],
                 ["a", null, null],
@@ -2170,79 +2180,79 @@ describe(DefaultRouteRecognizer.name, function () {
     for (const hasLeadingSlash of [true, false]) {
         for (const hasTrailingSlash of [true, false]) {
             for (const reverseAdd of [true, false]) {
-                for (const { tests, routes: $routes } of recognizeSpecs) {
-                    const routes = reverseAdd ? $routes.slice().reverse() : $routes;
-                    for (const [path, match, $params] of tests) {
-                        const leading = hasLeadingSlash ? "/" : "";
-                        const trailing = hasTrailingSlash ? "/" : "";
+                const desc = `leading=${hasLeadingSlash} trailing=${hasTrailingSlash} reverse=${reverseAdd}`;
+                describe(desc, () => {
+                    for (const { tests, routes: $routes } of recognizeSpecs) {
+                        const routes = reverseAdd ? $routes.slice().reverse() : $routes;
+                        for (const [path, match, $params] of tests) {
+                            const leading = hasLeadingSlash ? "/" : "";
+                            const trailing = hasTrailingSlash ? "/" : "";
 
-                        let title = `should`;
-                        if (match === null) {
-                            title = `${title} reject '${path}' out of routes: [${routes
-                                .map(x => `'${x}'`)
-                                .join(",")}]`;
+                            let title = `should`;
+                            if (match === null) {
+                                title = `${title} reject '${leading}${path}${trailing}' out of routes: [${routes
+                                    .map(x => `'${x}'`)
+                                    .join(",")}]`;
 
-                            it(title, async function () {
-                                // Arrange
-                                const sut = new DefaultRouteRecognizer();
-                                for (const route of routes) {
-                                    sut.add({ path: route });
-                                }
+                                test(title, async () => {
+                                    // Arrange
+                                    const sut = new DefaultRouteRecognizer();
+                                    for (const route of routes) {
+                                        sut.add({ path: route });
+                                    }
 
-                                // Act
-                                const actual = await sut.recognize(path);
+                                    // Act
+                                    const actual = await sut.recognize(path);
 
-                                // Assert
-                                expect(actual).equal(null);
-                            });
-                        } else {
-                            const input = `${leading}${path}${trailing}`;
-                            title = `${title} recognize '${input}' as '${match}' out of routes: [${routes
-                                .map(x => `'${x}'`)
-                                .join(",")}]`;
+                                    // Assert
+                                    strictEqual(actual, null);
+                                });
+                            } else {
+                                const input = `${leading}${path}${trailing}`;
+                                title = `${title} recognize '${input}' as '${match}' out of routes: [${routes
+                                    .map(x => `'${x}'`)
+                                    .join(",")}]`;
 
-                            it(title, async function () {
-                                // Arrange
-                                const sut = new DefaultRouteRecognizer();
-                                for (const route of routes) {
-                                    sut.add({ path: route });
-                                }
+                                test(title, async () => {
+                                    // Arrange
+                                    const sut = new DefaultRouteRecognizer();
+                                    for (const route of routes) {
+                                        sut.add({ path: route });
+                                    }
 
-                                const params = { ...$params };
-                                const typedParams = { ...params };
-                                const paramNames = Object.keys(params);
-                                const configurableRoute = new ConfigurableRoute(
-                                    match,
-                                    "",
-                                    false
-                                );
-                                const endpoint = new Endpoint(
-                                    configurableRoute,
-                                    paramNames,
-                                    paramNames.map(x => "string"),
-                                    null
-                                );
-                                const expected = new RecognizedRoute(
-                                    endpoint,
-                                    params,
-                                    typedParams,
-                                    {}
-                                );
+                                    const params = { ...$params };
+                                    const typedParams = { ...params };
+                                    const paramNames = Object.keys(params);
+                                    const configurableRoute = new ConfigurableRoute(
+                                        match,
+                                        "",
+                                        false
+                                    );
+                                    const endpoint = new Endpoint(
+                                        configurableRoute,
+                                        paramNames,
+                                        paramNames.map(x => "string"),
+                                        null
+                                    );
+                                    const expected = new RecognizedRoute(
+                                        endpoint,
+                                        params,
+                                        typedParams,
+                                        {}
+                                    );
 
-                                // Act
-                                const actual1 = await sut.recognize(path);
-                                const actual2 = await sut.recognize(path);
+                                    // Act
+                                    const actual1 = await sut.recognize(path);
+                                    const actual2 = await sut.recognize(path);
 
-                                // Assert
-                                expect(actual1).deep.equal(
-                                    actual2,
-                                    `consecutive calls should return the same result`
-                                );
-                                expect(actual1).deep.equal(expected);
-                            });
+                                    // Assert
+                                    deepStrictEqual(actual1, actual2);
+                                    deepStrictEqual(actual1, expected);
+                                });
+                            }
                         }
                     }
-                }
+                });
             }
         }
     }
@@ -2254,7 +2264,7 @@ describe(DefaultRouteRecognizer.name, function () {
         ["{1}", "{2}"],
         ["*1", "*2"],
     ]) {
-        it(`throws on clashing patterns: [${route1},${route2}]`, function () {
+        test(`throws on clashing patterns: [${route1},${route2}]`, async () => {
             const sut = new DefaultRouteRecognizer();
             let err: Error | null = null;
 
@@ -2265,7 +2275,7 @@ describe(DefaultRouteRecognizer.name, function () {
                 err = e;
             }
 
-            expect(() => sut.add({ path: route2 })).throws();
+            throws(() => sut.add({ path: route2 }));
         });
     }
 });

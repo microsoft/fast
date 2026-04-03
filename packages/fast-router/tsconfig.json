@@ -10,10 +10,6 @@
         "module": "NodeNext",
         "importHelpers": true,
         "moduleResolution": "NodeNext",
-        "types": [
-            "mocha",
-            "webpack-env"
-        ],
         "lib": [
             "DOM",
             "ES2015"

@@ -2,6 +2,90 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 00:04:08 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.30",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "6b0fd6c4a4b0c635d4e5c18d251b28abbf32bab5",
+            "comment": "chore: migrate to biome for linting and formatting"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "ea46496f56cd94cb0dae65b7026998c88604aaac",
+            "comment": "chore: fix publish blocker due to biome"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "11227f6085b9aa2a3048c70427867a1f8d2f6873",
+            "comment": "chore: replace old clean script with new implementation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 20 Mar 2026 00:07:36 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.30",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "8f79bdbf1d7c3af827ca807347fc1134bbf45731",
+            "comment": "Remove karma/mocha/chai and related unused dependencies"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "0bfb5ae84efc466ea165833e4390b4b4b169a533",
+            "comment": "convert recognizer tests to use Node instead of Playwright"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "6df43be90d257a49389c188935400792b7108cc6",
+            "comment": "Split tests to assist in base PR build gate times"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 10 Mar 2026 00:17:17 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.30",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "f91c57b5df062d6a1bb46a692070b89e31df384d",
+            "comment": "Remove webpack-env from tsconfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 05 Mar 2026 00:09:03 GMT",
+      "version": "1.0.0-alpha.30",
+      "tag": "@microsoft/fast-router_v1.0.0-alpha.30",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-router",
+            "commit": "92827147e58688b85e6a141a431bd844881f2e85",
+            "comment": "Convert fast-router tests from karma to playwright"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Feb 2026 20:49:30 GMT",
       "version": "1.0.0-alpha.30",
       "tag": "@microsoft/fast-router_v1.0.0-alpha.30",

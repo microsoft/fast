@@ -1,8 +1,58 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 17 Feb 2026 20:49:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 02 Apr 2026 00:03:44 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.44
+
+Thu, 02 Apr 2026 00:03:44 GMT
+
+### Changes
+
+- feat: support direct array index assignment for primitive arrays in observer map (7559015+janechu@users.noreply.github.com)
+
+## 1.0.0-alpha.43
+
+Tue, 31 Mar 2026 00:03:50 GMT
+
+### Changes
+
+- fix(fast-html): update observer maps to not assume arrays of undefined types are objects (7559015+janechu@users.noreply.github.com)
+
+## 1.0.0-alpha.42
+
+Thu, 26 Mar 2026 00:04:08 GMT
+
+### Changes
+
+- Add expression logic to boolean attribute (7559015+janechu@users.noreply.github.com)
+- fix: refactor naming for binding syntax and add a test for tag collisions (7559015+janechu@users.noreply.github.com)
+
+## 1.0.0-alpha.41
+
+Tue, 24 Mar 2026 00:08:15 GMT
+
+### Changes
+
+- feat(fast-html): add $c prefix for execution context access in declarative templates (hello@mohamedmansour.com)
+
+## 1.0.0-alpha.40
+
+Fri, 20 Mar 2026 00:07:36 GMT
+
+### Changes
+
+- fix(fast-html): only process single-brace bindings for event aspect (7559015+janechu@users.noreply.github.com)
+
+## 1.0.0-alpha.39
+
+Fri, 13 Mar 2026 18:13:56 GMT
+
+### Changes
+
+- fix: move prepare call to connectedCallback (863023+radium-v@users.noreply.github.com)
+- Bump @microsoft/fast-element to v2.10.2
 
 ## 1.0.0-alpha.38
 

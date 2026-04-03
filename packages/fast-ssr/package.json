@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-ssr",
-  "version": "1.0.0-beta.38",
+  "version": "1.0.0-beta.39",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -23,14 +23,13 @@
     "doc:ci": "api-extractor run",
     "prepublishOnly": "npm run clean && npm run build",
     "build-server": "tsc -b server",
-    "eslint": "eslint . --ext .ts",
-    "eslint:fix": "eslint . --ext .ts --fix",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --fix .",
     "pretest": "npm run build-server && npm run build",
-    "prettier:diff": "prettier --config ../../.prettierrc \"**/*.{ts,html}\" --list-different",
-    "prettier": "prettier --config ../../.prettierrc --write \"**/*.{ts,html}\"",
-    "test": "playwright test --config=playwright.config.cjs",
-    "test-server": "node server/dist/server.js",
-    "install-playwright-browsers": "npm run playwright install"
+    "test": "npm run test:node && npm run test:playwright",
+    "test:node": "node scripts/run-tests.mjs",
+    "test:playwright": "npm run pretest && playwright test",
+    "test-server": "node server/dist/server.js"
   },
   "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "dist/esm/exports.js",
@@ -56,11 +55,11 @@
     "tslib": "^2.6.3"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.0"
+    "@microsoft/fast-element": "^2.10.2"
   },
   "devDependencies": {
     "@types/parse5": "^5.0.0",
-    "@microsoft/fast-element": "^2.10.0"
+    "@microsoft/fast-element": "^2.10.2"
   },
   "beachball": {
     "disallowedChangeTypes": [
@@ -68,7 +67,7 @@
       "minor",
       "patch"
     ],
-    "tag": "beta",
+    "tag": "latest",
     "prereleasePrefix": "beta"
   }
 }

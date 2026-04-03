@@ -12,6 +12,9 @@
     "lib": [
       "dom",
     ],
+    "types": [
+      "express"
+    ]
   },
   "include": [
     "src"

@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
+import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 class ObserverMapTestElement extends FASTElement {
@@ -197,7 +197,7 @@ class ObserverMapTestElement extends FASTElement {
             // Cycle through frequency options
             const frequencies = ["daily", "weekly", "monthly"];
             const currentIndex = frequencies.indexOf(
-                user.details.preferences.notifications.settings.frequency
+                user.details.preferences.notifications.settings.frequency,
             );
             const nextIndex = (currentIndex + 1) % frequencies.length;
             user.details.preferences.notifications.settings.frequency =
@@ -212,7 +212,7 @@ class ObserverMapTestElement extends FASTElement {
             const category = "sports";
             if (
                 !user.details.preferences.notifications.settings.categories.includes(
-                    category
+                    category,
                 )
             ) {
                 user.details.preferences.notifications.settings.categories.push(category);
@@ -227,12 +227,12 @@ class ObserverMapTestElement extends FASTElement {
             const category = "tech";
             const index =
                 user.details.preferences.notifications.settings.categories.indexOf(
-                    category
+                    category,
                 );
             if (index > -1) {
                 user.details.preferences.notifications.settings.categories.splice(
                     index,
-                    1
+                    1,
                 );
             }
         }
@@ -437,6 +437,22 @@ RenderableFASTElement(ObserverMapWithObservablesTestElement).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+class ObserverMapSimpleArrayTestElement extends FASTElement {
+    public items: string[] = ["foo", "baz"];
+
+    public updateFirstItem() {
+        this.items[0] = "bar";
+    }
+
+    public updateSecondItem() {
+        this.items[1] = "qux";
+    }
+}
+
+ObserverMapSimpleArrayTestElement.defineAsync({
+    name: "observer-map-simple-array-test-element",
+});
+
 // Configure TemplateElement with observerMap enabled for this test
 TemplateElement.options({
     "observer-map-test-element": {
@@ -446,6 +462,9 @@ TemplateElement.options({
         observerMap: "all", // Enable ObserverMap to track all the nested property changes
     },
     "observer-map-with-observables-test-element": {
+        observerMap: "all",
+    },
+    "observer-map-simple-array-test-element": {
         observerMap: "all",
     },
 }).define({

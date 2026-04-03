@@ -16,9 +16,6 @@ typings/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
-
 # dotenv environment variables file
 .env
 
@@ -75,3 +72,9 @@ test-results/
 
 # Pack directory
 publish_artifacts/
+
+# Rust build artifacts
+crates/**/target/
+
+# Generated WASM build output (run `npm run build -w @microsoft/fast-build` to regenerate)
+packages/fast-build/wasm/

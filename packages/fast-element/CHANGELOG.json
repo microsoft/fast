@@ -2,6 +2,120 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 26 Mar 2026 00:04:08 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6b0fd6c4a4b0c635d4e5c18d251b28abbf32bab5",
+            "comment": "chore: migrate to biome for linting and formatting"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "11227f6085b9aa2a3048c70427867a1f8d2f6873",
+            "comment": "chore: replace old clean script with new implementation"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "ea46496f56cd94cb0dae65b7026998c88604aaac",
+            "comment": "chore: fix publish blocker due to biome"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 20 Mar 2026 00:07:36 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "6df43be90d257a49389c188935400792b7108cc6",
+            "comment": "Split tests to assist in base PR build gate times"
+          },
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "1dd81b899a21eb28ed7dd15bdf1c558196775c3e",
+            "comment": "chore: update dependencies and configurations"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "8f79bdbf1d7c3af827ca807347fc1134bbf45731",
+            "comment": "Remove karma/mocha/chai and related unused dependencies"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 13 Mar 2026 18:13:56 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "3ade63edb5abe7b5454e96390aac5ad13fdb4cc7",
+            "comment": "fix: add hydrating instance when needsHydration is true in HydratableElementController"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 10 Mar 2026 00:17:17 GMT",
+      "version": "2.10.1",
+      "tag": "@microsoft/fast-element_v2.10.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "f91c57b5df062d6a1bb46a692070b89e31df384d",
+            "comment": "Remove webpack-env from tsconfig"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 Mar 2026 00:09:02 GMT",
+      "version": "2.10.1",
+      "tag": "@microsoft/fast-element_v2.10.1",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "37734050ee0b61e9ea58a567882359ed5ab78eb6",
+            "comment": "Update Karma tests to Playwright"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 02 Mar 2026 22:31:57 GMT",
+      "version": "2.10.1",
+      "tag": "@microsoft/fast-element_v2.10.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "email not defined",
+            "package": "@microsoft/fast-element",
+            "commit": "c992d2a5311f64272c3aebfb24105f374dd22cb1",
+            "comment": "Moves handleEvent from a class property into a closure in children.ts to remove non-standard observer.target property assignment"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Feb 2026 20:49:29 GMT",
       "version": "2.10.0",
       "tag": "@microsoft/fast-element_v2.10.0",

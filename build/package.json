@@ -1,6 +1,9 @@
 {
-  "name": "@microsoft/fast-build",
+  "name": "@microsoft/fast-build-tools",
   "description": "Build utilities for FAST monorepo",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "bin": {
+    "clean": "clean.mjs"
+  }
 }

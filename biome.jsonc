@@ -1,0 +1,107 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "defaultBranch": "main",
+        "useIgnoreFile": true
+    },
+    "files": {
+        "includes": [
+            "**",
+            "!**/CHANGELOG.json",
+            "!change/**/*.json",
+            "!**/package.json",
+            "!package-lock.json"
+        ]
+    },
+    "html": {
+        "formatter": {
+            "enabled": true
+        },
+        "parser": {
+            "interpolation": true
+        }
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 90
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "complexity": {
+                "noBannedTypes": "off",
+                "noExtraBooleanCast": "off",
+                "noStaticOnlyClass": "off",
+                "noThisInStatic": "off",
+                "noUselessTypeConstraint": "warn",
+                "useArrowFunction": "off",
+                "useLiteralKeys": "off",
+                "useOptionalChain": "off"
+            },
+            "correctness": {
+                "noInnerDeclarations": "off",
+                "noUnusedFunctionParameters": "off",
+                "noUnusedImports": "warn",
+                "noUnusedPrivateClassMembers": "warn",
+                "noUnusedVariables": "warn"
+            },
+            "style": {
+                "noInferrableTypes": "off",
+                "noNonNullAssertion": "off",
+                "useImportType": "error",
+                "useTemplate": "off"
+            },
+            "suspicious": {
+                "noAssignInExpressions": "off",
+                "noConfusingVoidType": "off",
+                "noConstEnum": "off",
+                "noControlCharactersInRegex": "off",
+                "noEmptyBlockStatements": "off",
+                "noEmptyInterface": "off",
+                "noExplicitAny": "off",
+                "noFallthroughSwitchClause": "off",
+                "noImplicitAnyLet": "off",
+                "noPrototypeBuiltins": "off",
+                "noTemplateCurlyInString": "off",
+                "noTsIgnore": "off",
+                "useIterableCallbackReturn": "off"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "double",
+            "trailingCommas": "all",
+            "arrowParentheses": "asNeeded"
+        }
+    },
+    "assist": {
+        "enabled": true,
+        "actions": {
+            "source": {
+                "organizeImports": {
+                    "level": "on",
+                    "options": {
+                        "groups": [
+                            // Node.js builtins
+                            ":NODE:",
+
+                            // Third-party packages (excluding workspace packages)
+                            [":PACKAGE:", "!@microsoft/fast-*", "!@microsoft/fast-*/**"],
+
+                            // Workspace packages (@microsoft/fast-*)
+                            ["@microsoft/fast-*", "@microsoft/fast-*/**"]
+
+                            // Relative imports (unmatched remainder goes last)
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

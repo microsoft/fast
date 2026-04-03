@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-ssr
 
-<!-- This log was last generated on Tue, 17 Feb 2026 20:49:30 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 05 Mar 2026 00:09:03 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-beta.39
+
+Thu, 05 Mar 2026 00:09:03 GMT
+
+### Changes
+
+- Tag SSR prerelease with latest (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-beta.38
 
