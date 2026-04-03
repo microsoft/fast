@@ -36,8 +36,15 @@ for (const fixtureName of fixtures) {
 
     // Step 2: inject <f-template> declarations from templates.html before <script>
     const fTemplates = readFileSync(templatesFile, "utf8").trim();
+    const rawHtml = readFileSync(outputFile, "utf8");
 
-    const html = readFileSync(outputFile, "utf8").replace(
+    if (!rawHtml.includes('<script type="module"')) {
+        throw new Error(
+            `Fixture "${fixtureName}": could not find '<script type="module"' in "${outputFile}". Template injection failed.`,
+        );
+    }
+
+    const html = rawHtml.replace(
         /(\s*)<script type="module"/,
         `\n${fTemplates}\n$1<script type="module"`,
     );
