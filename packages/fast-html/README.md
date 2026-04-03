@@ -243,17 +243,27 @@ Event bindings must include the `()` as well as being preceeded by `@` in keepin
 <button @click="{handleClick()}"></button>
 ```
 
-In addition you may include an event or attribute or observable, events are denoted with `e` as a reserved letter.
+You can pass the DOM event object, the execution context, or both as arguments.
 
-Event:
+**`$e` — DOM event object (preferred):**
 ```html
-<button @click="{handleClick(e)}"></button>
+<button @click="{handleClick($e)}"></button>
 ```
 
-Attribute/Observable:
+**`$c` — execution context:**
 ```html
-<button @click="{handleClick(foo)}"></button>
+<button @click="{handleClick($c)}"></button>
 ```
+
+**Multiple arguments:**
+```html
+<button @click="{handleClick($e, $c)}"></button>
+```
+
+> **Deprecated:** The bare `e` token still works but will emit a console warning. Migrate to `$e`.
+> ```html
+> <button @click="{handleClick(e)}"></button>
+> ```
 
 #### Directives
 
