@@ -955,6 +955,11 @@ test.describe("utilities", async () => {
                 { type: "binding", rawArg: "$c.eventDetail" },
             ]);
         });
+        test("should return a binding type for $c.event", async () => {
+            expect(parseEventArgs("$c.event")).toEqual([
+                { type: "binding", rawArg: "$c.event" },
+            ]);
+        });
         test("should parse multiple arguments: $e, $c", async () => {
             expect(parseEventArgs("$e, $c")).toEqual([
                 { type: "event" },
