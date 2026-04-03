@@ -25,7 +25,7 @@ rustup target add wasm32-unknown-unknown
 You'll also need [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/), which compiles the Rust crate to WebAssembly:
 
 ```shell
-curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+cargo install wasm-pack
 ```
 
 ### Cloning the repository
