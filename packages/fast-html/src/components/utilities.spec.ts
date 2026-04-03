@@ -947,11 +947,13 @@ test.describe("utilities", async () => {
         test("should parse $c as a context argument", async () => {
             expect(parseEventArgs("$c")).toEqual([{ type: "context" }]);
         });
-        test("should omit unrecognised tokens", async () => {
-            expect(parseEventArgs("foo")).toEqual([]);
+        test("should return a binding type for unrecognised tokens", async () => {
+            expect(parseEventArgs("foo")).toEqual([{ type: "binding", rawArg: "foo" }]);
         });
-        test("should omit $c.path tokens", async () => {
-            expect(parseEventArgs("$c.eventDetail")).toEqual([]);
+        test("should return a binding type for $c.path tokens", async () => {
+            expect(parseEventArgs("$c.eventDetail")).toEqual([
+                { type: "binding", rawArg: "$c.eventDetail" },
+            ]);
         });
         test("should parse multiple arguments: $e, $c", async () => {
             expect(parseEventArgs("$e, $c")).toEqual([
@@ -971,8 +973,11 @@ test.describe("utilities", async () => {
                 { type: "context" },
             ]);
         });
-        test("should omit unrecognised tokens in a mixed list", async () => {
-            expect(parseEventArgs("$e, foo")).toEqual([{ type: "event" }]);
+        test("should return a binding type for unrecognised tokens in a mixed list", async () => {
+            expect(parseEventArgs("$e, foo")).toEqual([
+                { type: "event" },
+                { type: "binding", rawArg: "foo" },
+            ]);
         });
     });
 });

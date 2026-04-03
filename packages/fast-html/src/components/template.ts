@@ -25,13 +25,12 @@ import {
     type ChainedExpression,
     contextPrefixDot,
     type DataBindingBehaviorConfig,
-    deprecatedEventArgAccessor,
     eventArgAccessor,
-    executionContextAccessor,
     getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
+    parseEventArgs,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -556,31 +555,28 @@ class TemplateElement extends FASTElement {
                               }
                             : (x: any, _c: any) => x;
 
-                        const rawArgs =
-                            argsString === ""
-                                ? []
-                                : argsString.split(",").map(a => a.trim());
+                        const parsedArgs = parseEventArgs(argsString);
 
-                        if (rawArgs.includes(deprecatedEventArgAccessor)) {
+                        if (parsedArgs.some(a => a.type === "deprecated-event")) {
                             console.warn(
                                 `[fast-html] Using "e" as an event argument is deprecated. ` +
                                     `Use "${eventArgAccessor}" instead.`,
                             );
                         }
 
-                        const argResolvers = rawArgs.map(
-                            (rawArg): ((x: any, c: any) => any) => {
-                                switch (rawArg) {
-                                    case eventArgAccessor:
-                                    case deprecatedEventArgAccessor:
+                        const argResolvers = parsedArgs.map(
+                            (parsedArg): ((x: any, c: any) => any) => {
+                                switch (parsedArg.type) {
+                                    case "event":
+                                    case "deprecated-event":
                                         return (_x, c) => c.event;
-                                    case executionContextAccessor:
+                                    case "context":
                                         return (_x, c) => c;
-                                    default:
+                                    case "binding":
                                         return bindingResolver(
                                             strings.join(""),
                                             rootPropertyName,
-                                            rawArg,
+                                            parsedArg.rawArg!,
                                             parentContext,
                                             type,
                                             schema,
