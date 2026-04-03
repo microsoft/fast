@@ -21,7 +21,7 @@ From the repository root:
 npm run build -w @microsoft/fast-build
 ```
 
-This runs `cargo build` on the Rust crate followed by `wasm-pack build --target nodejs`, writing the output to `packages/fast-build/wasm/`. Commit the updated files in `wasm/` alongside any Rust changes.
+This runs `cargo build` on the Rust crate followed by `wasm-pack build --target nodejs`, writing the output to `packages/fast-build/wasm/`.
 
 ### Running the Rust tests
 
