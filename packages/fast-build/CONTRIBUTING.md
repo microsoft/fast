@@ -1,8 +1,8 @@
 # Contributing to `@microsoft/fast-build`
 
-## Regenerating the WASM
+## Building the WASM
 
-The compiled WebAssembly output is pre-built and committed to the repository under `wasm/`. You only need to regenerate it if you make changes to the Rust crate at `crates/microsoft-fast-build`.
+The `wasm/` directory is generated locally and must be built before using the package.
 
 ### Prerequisites
 
@@ -10,7 +10,7 @@ The compiled WebAssembly output is pre-built and committed to the repository und
 - [`wasm-pack`](https://rustwasm.github.io/wasm-pack/installer/)
 
 ```sh
-curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+cargo install wasm-pack
 ```
 
 ### Steps
@@ -18,10 +18,10 @@ curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 From the repository root:
 
 ```sh
-npm run build:wasm -w @microsoft/fast-build
+npm run build -w @microsoft/fast-build
 ```
 
-This runs `wasm-pack build --target nodejs` on the Rust crate and writes the output to `packages/fast-build/wasm/`. Commit the updated files in `wasm/` alongside any Rust changes.
+This runs `wasm-pack build --target nodejs` on the Rust crate and writes the output to `packages/fast-build/wasm/`.
 
 ### Running the Rust tests
 
