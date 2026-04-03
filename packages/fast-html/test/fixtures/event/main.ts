@@ -1,5 +1,5 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
     @attr
@@ -9,16 +9,29 @@ class TestElement extends FASTElement {
         console.log("no args");
     };
 
+    /** @deprecated Use handleDollarEArgClick with $e instead */
     public handleEventArgClick = (e: MouseEvent): void => {
         console.log(e.type);
     };
 
-    public handleAttributeArgClick = (foo: string): void => {
-        console.log(foo);
-    };
-
     public handleModifyAttributeClick = (): void => {
         this.foo = "modified-by-click";
+    };
+
+    public handleDollarEArgClick = (e: MouseEvent): void => {
+        console.log(e.type);
+    };
+
+    public handleContextArgClick = (c: any): void => {
+        console.log(c.event.type);
+    };
+
+    public handleMultiArgClick = (e: MouseEvent, c: any): void => {
+        console.log(`${e.type},${c.event.type}`);
+    };
+
+    public handleContextEventArgClick = (e: MouseEvent): void => {
+        console.log(e.type);
     };
 }
 RenderableFASTElement(TestElement).defineAsync({
