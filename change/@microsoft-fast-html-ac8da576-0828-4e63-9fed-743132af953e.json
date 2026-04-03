@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat(fast-html): add $e event arg, deprecate e, support multiple event handler args",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
