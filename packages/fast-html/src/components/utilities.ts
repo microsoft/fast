@@ -122,21 +122,16 @@ export function parseEventArgs(argsString: string): ParsedEventArg[] {
     if (argsString === "") return [];
 
     return argsString.split(",").flatMap((arg): ParsedEventArg[] => {
-        const trimmed = arg.trim();
-
-        if (trimmed === eventArgAccessor) {
-            return [{ type: "event" }];
+        switch (arg.trim()) {
+            case eventArgAccessor:
+                return [{ type: "event" }];
+            case deprecatedEventArgAccessor:
+                return [{ type: "deprecated-event" }];
+            case executionContextAccessor:
+                return [{ type: "context" }];
+            default:
+                return [];
         }
-
-        if (trimmed === deprecatedEventArgAccessor) {
-            return [{ type: "deprecated-event" }];
-        }
-
-        if (trimmed === executionContextAccessor) {
-            return [{ type: "context" }];
-        }
-
-        return [];
     });
 }
 
