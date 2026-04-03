@@ -62,6 +62,9 @@ jobs:
       - name: Test Prettier format
         run: npm run format:check
 
+      - name: Install wasm-pack
+        run: cargo install wasm-pack
+
       - name: Build workspaces
         run: npm run build
 
