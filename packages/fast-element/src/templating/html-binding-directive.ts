@@ -91,6 +91,14 @@ function isContentTemplate(value: any): value is ContentTemplate {
     return value.create !== undefined;
 }
 
+/**
+ * Sink function for DOMAspect.content bindings (text content interpolation).
+ * Handles two cases:
+ * - If the value is a ContentTemplate (has a create() method), it composes a child
+ *   view into the DOM, managing view lifecycle (create/reuse/remove/bind).
+ * - If the value is a primitive, it sets target.textContent directly, first removing
+ *   any previously composed view.
+ */
 function updateContent(
     this: HTMLBindingDirective,
     target: ContentTarget,
@@ -175,6 +183,12 @@ interface TokenListState {
     v: number;
 }
 
+/**
+ * Sink function for DOMAspect.tokenList bindings (e.g., :classList).
+ * Uses a versioning scheme to efficiently track which CSS classes were added
+ * in the current update vs. the previous one. Classes from the previous version
+ * that aren't present in the new value are automatically removed.
+ */
 function updateTokenList(
     this: HTMLBindingDirective,
     target: Element,
@@ -221,6 +235,12 @@ function updateTokenList(
     }
 }
 
+/**
+ * Maps each DOMAspect type to its corresponding DOM update ("sink") function.
+ * When a binding value changes, the sink function for the binding's aspect type
+ * is called to push the new value into the DOM. Events are handled separately
+ * via addEventListener in bind(), so the event sink is a no-op.
+ */
 const sinkLookup: Record<DOMAspect, UpdateTarget> = {
     [DOMAspect.attribute]: DOM.setAttribute,
     [DOMAspect.booleanAttribute]: DOM.setBooleanAttribute,
@@ -231,7 +251,18 @@ const sinkLookup: Record<DOMAspect, UpdateTarget> = {
 };
 
 /**
- * A directive that applies bindings.
+ * The central binding directive that bridges data expressions and DOM updates.
+ *
+ * HTMLBindingDirective fulfills three roles simultaneously:
+ * - **HTMLDirective**: Produces placeholder HTML via createHTML() during template authoring.
+ * - **ViewBehaviorFactory**: Creates behaviors (returns itself) during view creation.
+ * - **ViewBehavior / EventListener**: Attaches to a DOM node during bind, manages
+ *   expression observers for reactive updates, and handles DOM events directly.
+ *
+ * The aspectType (set by HTMLDirective.assignAspect during template processing)
+ * determines which DOM "sink" function is used to apply values — e.g.,
+ * setAttribute for attributes, addEventListener for events, textContent for content.
+ *
  * @public
  */
 export class HTMLBindingDirective
@@ -318,7 +349,18 @@ export class HTMLBindingDirective
         return this;
     }
 
-    /** @internal */
+    /**
+     * Attaches this binding to its target DOM node.
+     * - For events: stores the controller reference on the target element and registers
+     *   this directive as the EventListener via addEventListener. The directive's
+     *   handleEvent() method will be called when the event fires.
+     * - For content bindings: registers an unbind handler, then falls through to the
+     *   default path.
+     * - For all non-event bindings: creates (or reuses) an ExpressionObserver, evaluates
+     *   the binding expression, and applies the result to the DOM via the updateTarget
+     *   sink function. The observer will call handleChange() on future data changes.
+     * @internal
+     */
     bind(controller: ViewController): void {
         const target = controller.targets[this.targetNodeId];
         const isHydrating =
@@ -377,7 +419,14 @@ export class HTMLBindingDirective
         }
     }
 
-    /** @internal */
+    /**
+     * Implements the EventListener interface. When a DOM event fires on the target
+     * element, this method retrieves the ViewController stored on the element,
+     * sets the event on the ExecutionContext so `c.event` is available to the
+     * binding expression, and evaluates the expression. If the expression returns
+     * anything other than `true`, the event's default action is prevented.
+     * @internal
+     */
     handleEvent(event: Event): void {
         const controller = event.currentTarget![this.data] as ViewController;
 
@@ -395,7 +444,13 @@ export class HTMLBindingDirective
         }
     }
 
-    /** @internal */
+    /**
+     * Called by the ExpressionObserver when a tracked dependency changes.
+     * Re-evaluates the binding expression via observer.bind() and pushes
+     * the new value to the DOM through the updateTarget sink function.
+     * This is the reactive update path that keeps the DOM in sync with data.
+     * @internal
+     */
     handleChange(binding: Expression, observer: ExpressionObserver): void {
         const target = (observer as any).target;
         const controller = (observer as any).controller;

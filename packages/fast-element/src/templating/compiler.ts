@@ -15,6 +15,12 @@ import { nextId, Parser } from "./markup.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
+/**
+ * Builds a hierarchical node ID by appending the child index to the parent's ID.
+ * For example, the third child of root is "r.2", and its first child is "r.2.0".
+ * These IDs are used as property names on the targets prototype so that each
+ * binding's target DOM node can be lazily resolved via a chain of childNodes lookups.
+ */
 const targetIdFrom = (parentId: string, nodeIndex: number): string =>
     `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
@@ -88,6 +94,13 @@ class CompilationContext<TSource = any, TParent = any>
         return this;
     }
 
+    /**
+     * Registers a lazy getter on the targets prototype that resolves a DOM node
+     * by navigating from its parent's childNodes at the given index. Getters are
+     * chained: accessing targets["r.0.2"] first resolves targets["r.0"] (which
+     * resolves targets["r"]), then returns childNodes[2]. Results are cached so
+     * each node is resolved at most once per view instance.
+     */
     private addTargetDescriptor(
         parentId: string,
         targetId: string,
@@ -128,15 +141,22 @@ class CompilationContext<TSource = any, TParent = any>
         descriptors[targetId] = descriptor;
     }
 
+    /**
+     * Creates a new HTMLView by cloning the compiled DocumentFragment and building
+     * a targets object. The targets prototype contains lazy getters that resolve
+     * each binding's target DOM node via childNodes traversal. Accessing every
+     * registered nodeId eagerly triggers the getter chain so all nodes are resolved
+     * before behaviors are bound.
+     */
     public createView(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
         const fragment = this.fragment.cloneNode(true) as DocumentFragment;
         const targets = Object.create(this.proto);
 
-        targets.r = fragment;
-        targets.h = hostBindingTarget ?? warningHost;
+        targets.r = fragment; // root — the cloned DocumentFragment
+        targets.h = hostBindingTarget ?? warningHost; // host — the custom element
 
         for (const id of this.nodeIds) {
-            targets[id]; // trigger locator
+            targets[id]; // trigger lazy getter to resolve and cache the DOM node
         }
 
         return new HTMLView(fragment, this.factories, targets);
