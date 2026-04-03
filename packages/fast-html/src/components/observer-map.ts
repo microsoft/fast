@@ -1,6 +1,6 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { assignObservables, deepMerge } from "./utilities.js";
 import type { JSONSchema, Schema } from "./schema.js";
+import { assignObservables, deepMerge } from "./utilities.js";
 
 /**
  * ObserverMap provides functionality for caching binding paths, extracting root properties,
@@ -30,7 +30,7 @@ export class ObserverMap {
 
             this.classPrototype[changedMethodName] = this.defineChanged(
                 propertyName,
-                existingChangedMethod
+                existingChangedMethod,
             );
         }
     }
@@ -46,7 +46,7 @@ export class ObserverMap {
         target: any,
         rootProperty: string,
         object: any,
-        schema: Schema
+        schema: Schema,
     ): typeof Proxy {
         let proxiedObject = object;
 
@@ -55,7 +55,7 @@ export class ObserverMap {
             schema.getSchema(rootProperty) as JSONSchema,
             proxiedObject,
             target,
-            rootProperty
+            rootProperty,
         );
 
         return proxiedObject;
@@ -70,7 +70,7 @@ export class ObserverMap {
      */
     private defineChanged = (
         propertyName: string,
-        existingChangedMethod?: (prev: any, next: any) => void
+        existingChangedMethod?: (prev: any, next: any) => void,
     ): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const schema = this.schema;
@@ -92,7 +92,7 @@ export class ObserverMap {
                         this,
                         propertyName,
                         next,
-                        schema
+                        schema,
                     );
                 }
             } else if (!isObjectAssignment) {

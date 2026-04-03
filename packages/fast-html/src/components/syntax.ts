@@ -14,6 +14,7 @@ interface Syntax {
     whenDirectiveOpen: string;
     whenDirectiveClose: string;
     attributeDirectivePrefix: string;
+    noneBindingModifier: string;
 }
 
 /**
@@ -25,6 +26,7 @@ export const {
     clientSideOpenExpression,
     closeExpression,
     executionContextAccessor,
+    noneBindingModifier,
     openExpression,
     repeatDirectiveClose,
     repeatDirectiveOpen,
@@ -38,6 +40,7 @@ export const {
     clientSideOpenExpression: "{",
     closeExpression: "}}",
     executionContextAccessor: "$c",
+    noneBindingModifier: "|binding:none",
     openExpression: "{{",
     unescapedCloseExpression: "}}}",
     unescapedOpenExpression: "{{{",

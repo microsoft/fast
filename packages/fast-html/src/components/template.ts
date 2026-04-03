@@ -7,11 +7,12 @@ import {
     FASTElementDefinition,
     fastElementRegistry,
     HydratableElementController,
-    HydrationControllerCallbacks,
+    type HydrationControllerCallbacks,
+    oneTime,
     ref,
     repeat,
     slotted,
-    TemplateLifecycleCallbacks,
+    type TemplateLifecycleCallbacks,
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
@@ -20,16 +21,18 @@ import { Message } from "../interfaces.js";
 import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import {
-    AttributeDirective,
+    type AttributeDirective,
     bindingResolver,
-    ChainedExpression,
+    type ChainedExpression,
     contextPrefixDot,
-    DataBindingBehaviorConfig,
+    type DataBindingBehaviorConfig,
     getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
-    TemplateDirectiveBehaviorConfig,
+    hasNoneBindingModifier,
+    stripNoneBindingModifier,
+    type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
 
@@ -201,7 +204,7 @@ class TemplateElement extends FASTElement {
             if (TemplateElement.elementOptions[name]?.observerMap === "all") {
                 this.observerMap = new ObserverMap(
                     value.prototype,
-                    this.schema as Schema
+                    this.schema as Schema,
                 );
             }
 
@@ -223,7 +226,7 @@ class TemplateElement extends FASTElement {
                     null,
                     0,
                     this.schema as Schema,
-                    this.observerMap
+                    this.observerMap,
                 );
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
@@ -243,7 +246,7 @@ class TemplateElement extends FASTElement {
                     // This assignment triggers the Observable notification → callbacks fire
                     registeredFastElement.template = this.resolveTemplateOrBehavior(
                         strings,
-                        values
+                        values,
                     );
                 }
             } else {
@@ -265,7 +268,7 @@ class TemplateElement extends FASTElement {
         parentContext: string | null,
         level: number,
         schema: Schema,
-        observerMap?: ObserverMap
+        observerMap?: ObserverMap,
     ): Promise<ResolvedStringsAndValues> {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
@@ -278,7 +281,7 @@ class TemplateElement extends FASTElement {
             parentContext,
             level,
             schema,
-            observerMap
+            observerMap,
         );
 
         (strings as any).raw = strings.map(value => String.raw({ raw: value }));
@@ -296,7 +299,7 @@ class TemplateElement extends FASTElement {
      */
     private resolveTemplateOrBehavior(
         strings: Array<string>,
-        values: Array<any>
+        values: Array<any>,
     ): ViewTemplate<any, any> {
         return ViewTemplate.create(strings, values);
     }
@@ -318,7 +321,7 @@ class TemplateElement extends FASTElement {
         parentContext: string | null,
         level: number,
         schema: Schema,
-        observerMap?: ObserverMap
+        observerMap?: ObserverMap,
     ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when": {
@@ -329,24 +332,24 @@ class TemplateElement extends FASTElement {
                     expressionChain as ChainedExpression,
                     parentContext,
                     level,
-                    schema
+                    schema,
                 );
 
                 const { strings, values } = await this.resolveStringsAndValues(
                     rootPropertyName,
                     innerHTML.slice(
                         behaviorConfig.openingTagEndIndex,
-                        behaviorConfig.closingTagStartIndex
+                        behaviorConfig.closingTagStartIndex,
                     ),
                     self,
                     parentContext,
                     level,
                     schema,
-                    observerMap
+                    observerMap,
                 );
 
                 externalValues.push(
-                    when(whenLogic, this.resolveTemplateOrBehavior(strings, values))
+                    when(whenLogic, this.resolveTemplateOrBehavior(strings, values)),
                 );
 
                 break;
@@ -359,7 +362,7 @@ class TemplateElement extends FASTElement {
                     rootPropertyName,
                     valueAttr[2],
                     parentContext,
-                    behaviorConfig.name
+                    behaviorConfig.name,
                 );
                 const binding = bindingResolver(
                     null,
@@ -369,27 +372,27 @@ class TemplateElement extends FASTElement {
                     behaviorConfig.name,
                     schema,
                     valueAttr[0],
-                    level
+                    level,
                 );
 
                 const { strings, values } = await this.resolveStringsAndValues(
                     rootPropertyName,
                     innerHTML.slice(
                         behaviorConfig.openingTagEndIndex,
-                        behaviorConfig.closingTagStartIndex
+                        behaviorConfig.closingTagStartIndex,
                     ),
                     true,
                     valueAttr[0],
                     updatedLevel,
                     schema,
-                    observerMap
+                    observerMap,
                 );
 
                 externalValues.push(
                     repeat(
                         (x, c) => binding(x, c),
-                        this.resolveTemplateOrBehavior(strings, values)
-                    )
+                        this.resolveTemplateOrBehavior(strings, values),
+                    ),
                 );
 
                 break;
@@ -406,7 +409,7 @@ class TemplateElement extends FASTElement {
     private async resolveAttributeDirective(
         name: AttributeDirective,
         propName: string,
-        externalValues: Array<any>
+        externalValues: Array<any>,
     ) {
         switch (name) {
             case "children": {
@@ -461,21 +464,25 @@ class TemplateElement extends FASTElement {
         parentContext: string | null,
         level: number,
         schema: Schema,
-        observerMap?: ObserverMap
+        observerMap?: ObserverMap,
     ): Promise<void> {
         switch (behaviorConfig.subtype) {
             case "content": {
                 strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
                 const type = "access";
-                const propName = innerHTML.slice(
+                const rawPropName = innerHTML.slice(
                     behaviorConfig.openingEndIndex,
-                    behaviorConfig.closingStartIndex
+                    behaviorConfig.closingStartIndex,
                 );
+                const isNoneBinding = hasNoneBindingModifier(rawPropName);
+                const propName = isNoneBinding
+                    ? stripNoneBindingModifier(rawPropName)
+                    : rawPropName;
                 rootPropertyName = getRootPropertyName(
                     rootPropertyName,
                     propName,
                     parentContext,
-                    type
+                    type,
                 );
                 const binding = bindingResolver(
                     strings.join(""),
@@ -485,10 +492,13 @@ class TemplateElement extends FASTElement {
                     type,
                     schema,
                     parentContext,
-                    level
+                    level,
                 );
-                const contentBinding = (x: any, c: any) => binding(x, c);
-                values.push(contentBinding);
+                values.push(
+                    isNoneBinding
+                        ? oneTime((x: any) => binding(x, null))
+                        : (x: any, c: any) => binding(x, c),
+                );
                 await this.resolveInnerHTML(
                     rootPropertyName,
                     innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
@@ -498,7 +508,7 @@ class TemplateElement extends FASTElement {
                     parentContext,
                     level,
                     schema,
-                    observerMap
+                    observerMap,
                 );
 
                 break;
@@ -511,7 +521,7 @@ class TemplateElement extends FASTElement {
                     case "@": {
                         const bindingHTML = innerHTML.slice(
                             behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex
+                            behaviorConfig.closingStartIndex,
                         );
                         const openingParenthesis = bindingHTML.indexOf("(");
                         const closingParenthesis = bindingHTML.indexOf(")");
@@ -519,18 +529,18 @@ class TemplateElement extends FASTElement {
                             behaviorConfig.openingEndIndex,
                             behaviorConfig.closingStartIndex -
                                 (closingParenthesis - openingParenthesis) -
-                                1
+                                1,
                         );
                         const type = "event";
                         rootPropertyName = getRootPropertyName(
                             rootPropertyName,
                             propName,
                             parentContext,
-                            type
+                            type,
                         );
                         const arg = bindingHTML.slice(
                             openingParenthesis + 1,
-                            closingParenthesis
+                            closingParenthesis,
                         );
                         const binding = bindingResolver(
                             strings.join(""),
@@ -540,7 +550,7 @@ class TemplateElement extends FASTElement {
                             type,
                             schema,
                             parentContext,
-                            level
+                            level,
                         );
                         const isContextPath = propName.startsWith(contextPrefixDot);
                         const getOwner = isContextPath
@@ -548,7 +558,7 @@ class TemplateElement extends FASTElement {
                                   const ownerPath = propName.split(".").slice(1, -1);
                                   return ownerPath.reduce(
                                       (prev: any, item: string) => prev?.[item],
-                                      c
+                                      c,
                                   );
                               }
                             : (x: any, _c: any) => x;
@@ -565,10 +575,10 @@ class TemplateElement extends FASTElement {
                                               type,
                                               schema,
                                               parentContext,
-                                              level
+                                              level,
                                           )(x, c),
                                       ]
-                                    : [])
+                                    : []),
                             );
 
                         break;
@@ -576,7 +586,7 @@ class TemplateElement extends FASTElement {
                     case "?": {
                         const expression = innerHTML.slice(
                             behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex
+                            behaviorConfig.closingStartIndex,
                         );
                         const expressionChain = getExpressionChain(expression);
 
@@ -586,12 +596,12 @@ class TemplateElement extends FASTElement {
                                 expressionChain as ChainedExpression,
                                 parentContext,
                                 level,
-                                schema
+                                schema,
                             );
                         } else {
                             const propName = innerHTML.slice(
                                 behaviorConfig.openingEndIndex,
-                                behaviorConfig.closingStartIndex
+                                behaviorConfig.closingStartIndex,
                             );
                             const type = "access";
 
@@ -599,7 +609,7 @@ class TemplateElement extends FASTElement {
                                 rootPropertyName,
                                 propName,
                                 parentContext,
-                                type
+                                type,
                             );
 
                             const binding = bindingResolver(
@@ -610,7 +620,7 @@ class TemplateElement extends FASTElement {
                                 type,
                                 schema,
                                 parentContext,
-                                level
+                                level,
                             );
                             attributeBinding = (x: any, c: any) => binding(x, c);
                         }
@@ -620,7 +630,7 @@ class TemplateElement extends FASTElement {
                     default: {
                         const propName = innerHTML.slice(
                             behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex
+                            behaviorConfig.closingStartIndex,
                         );
                         const type = "access";
 
@@ -628,7 +638,7 @@ class TemplateElement extends FASTElement {
                             rootPropertyName,
                             propName,
                             parentContext,
-                            type
+                            type,
                         );
 
                         const binding = bindingResolver(
@@ -639,7 +649,7 @@ class TemplateElement extends FASTElement {
                             type,
                             schema,
                             parentContext,
-                            level
+                            level,
                         );
                         attributeBinding = (x: any, c: any) => binding(x, c);
                     }
@@ -656,7 +666,7 @@ class TemplateElement extends FASTElement {
                     parentContext,
                     level,
                     schema,
-                    observerMap
+                    observerMap,
                 );
 
                 break;
@@ -665,17 +675,17 @@ class TemplateElement extends FASTElement {
                 strings.push(
                     innerHTML.slice(
                         0,
-                        behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4
-                    )
+                        behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4,
+                    ),
                 );
                 const propName = innerHTML.slice(
                     behaviorConfig.openingEndIndex,
-                    behaviorConfig.closingStartIndex
+                    behaviorConfig.closingStartIndex,
                 );
                 await this.resolveAttributeDirective(
                     behaviorConfig.name,
                     propName,
-                    values
+                    values,
                 );
                 await this.resolveInnerHTML(
                     rootPropertyName,
@@ -686,7 +696,7 @@ class TemplateElement extends FASTElement {
                     parentContext,
                     level,
                     schema,
-                    observerMap
+                    observerMap,
                 );
 
                 break;
@@ -711,7 +721,7 @@ class TemplateElement extends FASTElement {
         parentContext: string | null,
         level: number,
         schema: Schema,
-        observerMap?: ObserverMap
+        observerMap?: ObserverMap,
     ): Promise<void> {
         const behaviorConfig = getNextBehavior(innerHTML);
 
@@ -730,7 +740,7 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level,
                         schema,
-                        observerMap
+                        observerMap,
                     );
 
                     break;
@@ -746,14 +756,14 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level,
                         schema,
-                        observerMap
+                        observerMap,
                     );
 
                     await this.resolveInnerHTML(
                         rootPropertyName,
                         innerHTML.slice(
                             behaviorConfig.closingTagEndIndex,
-                            innerHTML.length
+                            innerHTML.length,
                         ),
                         strings,
                         values,
@@ -761,7 +771,7 @@ class TemplateElement extends FASTElement {
                         parentContext,
                         level,
                         schema,
-                        observerMap
+                        observerMap,
                     );
 
                     break;

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Nested Elements Hydration", () => {
     test("should hydrate parent elements before child elements", async ({ page }) => {
@@ -7,10 +7,10 @@ test.describe("Nested Elements Hydration", () => {
         const messages = (await page.evaluate("window.messages")) as string[];
 
         const parentDefinitionIndex = messages.findIndex(message =>
-            message.startsWith("Element did define: parent-element")
+            message.startsWith("Element did define: parent-element"),
         );
         const firstChildHydrationIndex = messages.findIndex(message =>
-            message.startsWith("Element will hydrate: child-element")
+            message.startsWith("Element will hydrate: child-element"),
         );
 
         expect(parentDefinitionIndex).toBeGreaterThan(-1);
@@ -18,10 +18,10 @@ test.describe("Nested Elements Hydration", () => {
         expect(parentDefinitionIndex).toBeLessThan(firstChildHydrationIndex);
 
         const childHydrationStarts = messages.filter(message =>
-            message.startsWith("Element will hydrate: child-element")
+            message.startsWith("Element will hydrate: child-element"),
         );
         const childHydrationCompletes = messages.filter(message =>
-            message.startsWith("Element did hydrate: child-element")
+            message.startsWith("Element did hydrate: child-element"),
         );
 
         // Non-zero proves the fixture actually exercised nested hydration.

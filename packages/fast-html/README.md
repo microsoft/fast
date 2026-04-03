@@ -235,6 +235,16 @@ Browser-only bindings:
 {{text}}
 ```
 
+#### Static accessor
+
+A static accessor reads a property value once when the element connects and does not set up any reactive observers. Use `|binding:none` to opt out of reactivity:
+
+```html
+{{text|binding:none}}
+```
+
+This is equivalent to a one-time read of `x.text` — changes to the property after the initial render will not update the DOM.
+
 #### Event binding
 
 Event bindings must include the `()` as well as being preceeded by `@` in keeping with `@microsoft/fast-element` tagged template `html` syntax.
