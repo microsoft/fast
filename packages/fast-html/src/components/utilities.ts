@@ -121,24 +121,24 @@ export interface ParsedEventArg {
  * @returns An array of {@link ParsedEventArg} descriptors.
  */
 export function parseEventArgs(argsString: string): ParsedEventArg[] {
-    if (argsString === "") return [];
+    if (argsString.trim() === "") return [];
 
-    return argsString.split(",").map((arg): ParsedEventArg => {
-        switch (arg.trim()) {
-            case eventArgAccessor:
-                return { type: "event" };
-            case deprecatedEventArgAccessor:
-                console.warn(
-                    `[fast-html] Using "e" as an event argument is deprecated. ` +
-                        `Use "${eventArgAccessor}" instead.`,
-                );
-                return { type: "deprecated-event" };
-            case executionContextAccessor:
-                return { type: "context" };
-            default:
-                return { type: "binding", rawArg: arg.trim() };
-        }
-    });
+    return argsString
+        .split(",")
+        .map(arg => arg.trim())
+        .filter(arg => arg !== "")
+        .map((arg): ParsedEventArg => {
+            switch (arg) {
+                case eventArgAccessor:
+                    return { type: "event" };
+                case deprecatedEventArgAccessor:
+                    return { type: "deprecated-event" };
+                case executionContextAccessor:
+                    return { type: "context" };
+                default:
+                    return { type: "binding", rawArg: arg };
+            }
+        });
 }
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;

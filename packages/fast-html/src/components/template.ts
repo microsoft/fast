@@ -25,6 +25,7 @@ import {
     type ChainedExpression,
     contextPrefixDot,
     type DataBindingBehaviorConfig,
+    eventArgAccessor,
     getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
@@ -555,6 +556,13 @@ class TemplateElement extends FASTElement {
                             : (x: any, _c: any) => x;
 
                         const parsedArgs = parseEventArgs(argsString);
+
+                        if (parsedArgs.some(a => a.type === "deprecated-event")) {
+                            console.warn(
+                                `[fast-html] Using "e" as an event argument is deprecated. ` +
+                                    `Use "${eventArgAccessor}" instead.`,
+                            );
+                        }
 
                         const argResolvers = parsedArgs.map(
                             (parsedArg): ((x: any, c: any) => any) => {

@@ -243,7 +243,7 @@ Event bindings must include the `()` as well as being preceeded by `@` in keepin
 <button @click="{handleClick()}"></button>
 ```
 
-You can pass the DOM event object, the execution context, or both as arguments.
+You can pass the DOM event object, the execution context, or both as arguments. Any other argument is treated as a binding expression and resolved against the current data source.
 
 **`$e` — DOM event object (preferred):**
 ```html
@@ -255,9 +255,19 @@ You can pass the DOM event object, the execution context, or both as arguments.
 <button @click="{handleClick($c)}"></button>
 ```
 
+**`$c.somePath` — a property of the execution context (e.g. `$c.parent`, `$c.event`):**
+```html
+<button @click="{handleClick($c.parent)}"></button>
+```
+
 **Multiple arguments:**
 ```html
 <button @click="{handleClick($e, $c)}"></button>
+```
+
+**Arbitrary binding expressions** — any token that is not `$e`, `$c`, or `e` is resolved as a binding path on the data source:
+```html
+<button @click="{handleClick(user.id)}"></button>
 ```
 
 > **Deprecated:** The bare `e` token still works but will emit a console warning. Migrate to `$e`.
