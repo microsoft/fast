@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 03 Apr 2026 00:07:06 GMT",
+      "version": "0.1.1",
+      "tag": "@microsoft/fast-build_v0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "55ea3a4d4266404c5e5e41625f3e1f8b29c993fe",
+            "comment": "Parse f-template name attribute in JS locator; add DESIGN.md to @microsoft/fast-build"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Apr 2026 00:03:44 GMT",
       "version": "0.1.0",
       "tag": "@microsoft/fast-build_v0.1.0",
