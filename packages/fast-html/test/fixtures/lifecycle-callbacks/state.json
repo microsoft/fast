@@ -1,0 +1,8 @@
+{
+    "simpleMessage": "Hello",
+    "complexTitle": "Complex",
+    "count": 0,
+    "deferredStatus": "pending",
+    "parentLabel": "Parent",
+    "childLabel": "Child"
+}
