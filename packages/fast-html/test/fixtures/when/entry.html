@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <!-- multiple -->
+        <test-element-multiple id="multiple1" planet="earth"></test-element-multiple>
+        <test-element-multiple id="multiple2" planet="pluto"></test-element-multiple>
+        <test-element-multiple id="multiple3" planet="mars"></test-element-multiple>
+        <!-- boolean -->
+        <test-element id="show" show></test-element>
+        <test-element id="hide"></test-element>
+        <!-- not -->
+        <test-element-not id="show-not"></test-element-not>
+        <test-element-not id="hide-not" hide></test-element-not>
+        <!-- equals -->
+        <test-element-equals id="equals-true" var-a="3"></test-element-equals>
+        <test-element-equals id="equals-false" var-a="4"></test-element-equals>
+        <!-- not equals -->
+        <test-element-not-equals id="not-equals-true" var-a="4"></test-element-not-equals>
+        <test-element-not-equals id="not-equals-false" var-a="3"></test-element-not-equals>
+        <!-- greater than or equals -->
+        <test-element-ge id="ge-true" var-a="3"></test-element-ge>
+        <test-element-ge id="ge-false" var-a="0"></test-element-ge>
+        <!-- greater than -->
+        <test-element-gt id="gt-true" var-a="3"></test-element-gt>
+        <test-element-gt id="gt-false" var-a="0"></test-element-gt>
+        <!-- less than or equals -->
+        <test-element-le id="le-true" var-a="2"></test-element-le>
+        <test-element-le id="le-false" var-a="4"></test-element-le>
+        <!-- less than -->
+        <test-element-lt id="lt-true" var-a="1"></test-element-lt>
+        <test-element-lt id="lt-false" var-a="3"></test-element-lt>
+        <!-- or -->
+        <test-element-or id="or-true" this-var="3"></test-element-or>
+        <test-element-or id="or-false"></test-element-or>
+        <!-- and -->
+        <test-element-and id="and-true" this-var that-var></test-element-and>
+        <test-element-and id="and-false" this-var></test-element-and>
+        <!-- nested when -->
+        <nested-when id="nested-when"></nested-when>
+        <!-- event -->
+        <test-element-event id="event-show" show></test-element-event>
+        <test-element-event id="event-hide"></test-element-event>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
