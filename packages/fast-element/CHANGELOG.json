@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sat, 04 Apr 2026 00:22:26 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4371b6c6124feaec26dd51116cb6d777a6507a99",
+            "comment": "Add documentation on FAST templating"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 26 Mar 2026 00:04:08 GMT",
       "version": "2.10.2",
       "tag": "@microsoft/fast-element_v2.10.2",
