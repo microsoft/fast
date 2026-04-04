@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title>Lifecycle Callbacks Test</title>
+    </head>
+    <body>
+        <simple-element needs-hydration message="{{simpleMessage}}"></simple-element>
+        <complex-element needs-hydration title="{{complexTitle}}" count="{{count}}"></complex-element>
+        <deferred-element needs-hydration defer-hydration status="{{deferredStatus}}"></deferred-element>
+        <deferred-parent-element needs-hydration defer-hydration label="{{parentLabel}}"></deferred-parent-element>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
