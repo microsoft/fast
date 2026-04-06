@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: replace direct property access with Reflect.get for lazy getter resolution",
+  "packageName": "@microsoft/fast-element",
+  "email": "863023+radium-v@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
