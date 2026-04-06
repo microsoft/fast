@@ -221,6 +221,35 @@ pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
     (db, sb)
 }
 
+// ── Data attribute helpers ────────────────────────────────────────────────────
+
+/// Convert a kebab-case string to camelCase.
+/// "date-of-birth" → "dateOfBirth", "name" → "name"
+fn kebab_to_camel(s: &str) -> String {
+    let mut result = String::with_capacity(s.len());
+    let mut next_upper = false;
+    for ch in s.chars() {
+        if ch == '-' {
+            next_upper = true;
+        } else if next_upper {
+            result.push(ch.to_ascii_uppercase());
+            next_upper = false;
+        } else {
+            result.push(ch);
+        }
+    }
+    result
+}
+
+/// Convert a `data-kebab-case` HTML attribute name to its full dot-notation
+/// dataset path, following the MDN HTMLElement.dataset naming convention.
+/// Returns `None` for names that do not start with `data-`.
+///
+/// Examples: `"data-date-of-birth"` → `"dataset.dateOfBirth"`, `"data-name"` → `"dataset.name"`
+pub fn data_attr_to_dataset_key(name: &str) -> Option<String> {
+    name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
+}
+
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
 /// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
