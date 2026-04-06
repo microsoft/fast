@@ -5,7 +5,8 @@ use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
-    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
+    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
+    data_attr_to_dataset_key,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -249,11 +250,35 @@ pub fn render_custom_element(
     };
 
     // Parse attributes and build child state.
+    // `data-*` attributes are stored using the full dot-notation path returned by
+    // `data_attr_to_dataset_key` (e.g. `"dataset.dateOfBirth"`), split on the first
+    // `.` to build a nested state object so `{{dataset.X}}` bindings resolve correctly.
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
+        // Skip client-side-only bindings: @event handlers and :property bindings.
+        // Both are resolved entirely by the FAST client runtime and have no meaning
+        // in server-side rendering state.
+        if attr_name.starts_with('@') || attr_name.starts_with(':') {
+            continue;
+        }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        state_map.insert(attr_name.clone(), json_val);
+        // HTML attribute names are case-insensitive; browsers always store them lowercase.
+        // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
+        // stays `selected-user-id`.
+        if let Some(path) = data_attr_to_dataset_key(attr_name) {
+            if let Some((group, prop)) = path.split_once('.') {
+                let group_val = state_map
+                    .entry(group.to_string())
+                    .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
+                if let JsonValue::Object(ref mut map) = group_val {
+                    map.insert(prop.to_string(), json_val);
+                }
+            }
+        } else {
+            let key = attr_name.to_lowercase();
+            state_map.insert(key, json_val);
+        }
     }
     let child_root = JsonValue::Object(state_map);
 
@@ -284,18 +309,31 @@ pub fn render_custom_element(
     Ok((output, after))
 }
 
+fn kebab_to_camel(s: &str) -> String {
+    let mut result = String::new();
+    let mut capitalize_next = false;
+    for c in s.chars() {
+        if c == '-' {
+            capitalize_next = true;
+        } else if capitalize_next {
+            result.extend(c.to_uppercase());
+            capitalize_next = false;
+        } else {
+            result.push(c);
+        }
+    }
+    result
+}
+
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
     let v = match value {
-        None => return JsonValue::Bool(true),
+        None => return JsonValue::Bool(true), // boolean attribute (no value)
         Some(s) => s,
     };
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
         return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
     }
-    if v == "true" { return JsonValue::Bool(true); }
-    if v == "false" { return JsonValue::Bool(false); }
-    if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
     JsonValue::String(v.clone())
 }
 
@@ -309,15 +347,16 @@ fn build_element_open_tag(
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
-        return format!("{}>", open_tag_base);
+        return format!("{}>", strip_client_only_attrs(open_tag_base));
     }
     let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
+    let stripped = strip_client_only_attrs(&resolved);
     match parent_hydration {
         Some(hy) => {
             let start_idx = hy.binding_idx;
             hy.binding_idx += total_attr;
-            format!("{} data-fe-c-{}-{}>", resolved, start_idx, total_attr)
+            format!("{} data-fe-c-{}-{}>", stripped, start_idx, total_attr)
         }
-        None => format!("{}>", resolved),
+        None => format!("{}>", stripped),
     }
 }
