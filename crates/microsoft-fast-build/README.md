@@ -67,7 +67,7 @@ Both functions return `Result<String, RenderError>`. See [Error Handling](#error
 
 ### Single-Brace Passthrough
 
-Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer. `@attr="{expr}"` event binding attributes are **stripped** from the rendered HTML — only the `data-fe-c` hydration marker is kept so the FAST runtime can reconnect the binding.
+Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer. Both `@attr="{expr}"` event bindings and `:attr="..."` property bindings are **stripped** from the rendered HTML — only the `data-fe-c` hydration marker is kept so the FAST runtime can reconnect the binding.
 
 ```html
 <!-- Template -->
@@ -244,14 +244,17 @@ Attributes on a custom element become the state passed to its template:
 | `count="42"` | `{"count": "42"}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 | `selected-user-id="42"` | `{"selected-user-id": "42"}` |
-| `:myProp="{{expr}}"` | `{"myProp": <resolved value>}` |
+| `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
+| `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` |
 | `@click="{handler()}"` | *(skipped — not added to child state)* |
+
+**Attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
 **Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
 
-**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a typed value to a child element's property. The renderer strips the leading `:` and keeps the remaining key exactly as written — casing is preserved.
+**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a typed value to a child element's property. The renderer strips the leading `:` then lowercases the key, so `:myProp` is stored as `myprop`.
 
-**Event bindings (`@` prefix)**: attributes starting with `@` are skipped when building child state and are also stripped from the rendered HTML output. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+**Client-only bindings stripped from HTML**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 The `{{bar}}` binding form resolves `bar` from the _parent_ state and passes the value into the child template under the key `foo`.
 

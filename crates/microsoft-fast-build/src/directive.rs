@@ -5,7 +5,7 @@ use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
-    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_event_attrs,
+    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -257,10 +257,10 @@ pub fn render_custom_element(
             continue;
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        // Strip the leading `:` from property binding names (FAST uses `:propName="{{expr}}"`)
-        // but otherwise keep the key exactly as written — HTML attributes are always lowercase
-        // or kebab-case; property bindings preserve their original casing.
-        let key = attr_name.trim_start_matches(':').to_string();
+        // Strip the leading `:` then lowercase — HTML attribute names are case-insensitive
+        // and browsers always store them lowercase, so `isEnabled` becomes `isenabled`.
+        // Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+        let key = attr_name.trim_start_matches(':').to_lowercase();
         state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);
@@ -314,10 +314,10 @@ fn build_element_open_tag(
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
-        return format!("{}>", strip_event_attrs(open_tag_base));
+        return format!("{}>", strip_client_only_attrs(open_tag_base));
     }
     let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
-    let stripped = strip_event_attrs(&resolved);
+    let stripped = strip_client_only_attrs(&resolved);
     match parent_hydration {
         Some(hy) => {
             let start_idx = hy.binding_idx;

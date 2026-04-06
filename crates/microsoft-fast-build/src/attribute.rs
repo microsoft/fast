@@ -298,14 +298,15 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
     }
 }
 
-/// Remove all `@`-prefixed event binding attributes from an opening tag string,
-/// preserving all other attributes, whitespace, and the closing `>` or `/>` verbatim.
+/// Remove all FAST client-only binding attributes from an opening tag string:
+/// - `@attr="{...}"` event bindings
+/// - `:attr="..."` property bindings
 ///
-/// Event bindings (`@click="{...}"`) are FAST client-side-only constructs with no
-/// meaning in static HTML. The `data-fe-c` hydration binding count is unaffected —
-/// callers use `count_tag_attribute_bindings` on the *original* tag string so the
-/// FAST runtime still allocates the correct number of binding slots.
-pub fn strip_event_attrs(tag: &str) -> String {
+/// These are resolved or reconnected entirely by the FAST client runtime and
+/// have no meaning in static HTML. The `data-fe-c` hydration binding count is
+/// unaffected — callers use `count_tag_attribute_bindings` on the *original*
+/// tag string so the FAST runtime still allocates the correct number of binding slots.
+pub fn strip_client_only_attrs(tag: &str) -> String {
     let bytes = tag.as_bytes();
     let mut result = String::with_capacity(tag.len());
     let mut i = 0;
@@ -343,7 +344,8 @@ pub fn strip_event_attrs(tag: &str) -> String {
         {
             i += 1;
         }
-        let is_event = tag[name_start..i].starts_with('@');
+        let name = &tag[name_start..i];
+        let is_client_only = name.starts_with('@') || name.starts_with(':');
 
         // Advance past the attribute value (if any).
         let val_end = if i < bytes.len() && bytes[i] == b'=' {
@@ -368,10 +370,10 @@ pub fn strip_event_attrs(tag: &str) -> String {
             i // Boolean attribute — no value.
         };
 
-        if !is_event {
+        if !is_client_only {
             result.push_str(&tag[ws_start..val_end]);
         }
-        // For @-prefixed attrs: drop both the preceding whitespace and the attr+value.
+        // For @- and :-prefixed attrs: drop both the preceding whitespace and the attr+value.
     }
 
     result
