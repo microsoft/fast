@@ -258,9 +258,8 @@ pub fn render_custom_element(
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
         // Strip leading `:` from property binding names (FAST uses `:propName="{{expr}}"`)
-        // then normalize to lowercase without hyphens — mirroring how browsers treat
-        // case-insensitive HTML attribute names (the default behaviour).
-        let key = normalize_attr_key(attr_name.trim_start_matches(':'));
+        // then lowercase — mirroring how browsers treat case-insensitive HTML attribute names.
+        let key = attr_name.trim_start_matches(':').to_lowercase();
         state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);
@@ -290,10 +289,6 @@ pub fn render_custom_element(
     );
 
     Ok((output, after))
-}
-
-fn normalize_attr_key(s: &str) -> String {
-    s.to_lowercase()
 }
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
