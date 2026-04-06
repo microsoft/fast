@@ -96,6 +96,42 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 
 The `data-fe-c` compact marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
 
+### Dataset Attribute Bindings — `dataset.propertyName`
+
+FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: camelCase property names (e.g. `dateOfBirth`) correspond to kebab-case `data-*` HTML attributes (e.g. `data-date-of-birth`).
+
+#### Passing `data-*` attributes to custom elements
+
+When a custom element receives `data-*` attributes, the renderer groups them under a nested `"dataset"` key in the child state so that `{{dataset.X}}` bindings in the shadow template resolve naturally:
+
+```html
+<!-- Entry HTML -->
+<test-el data-date-of-birth="{{dob}}"></test-el>
+
+<!-- Shadow template of test-el -->
+<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>
+```
+
+With parent state `{"dob": "1990-01-01"}`, the shadow template receives child state `{"dataset": {"dateOfBirth": "1990-01-01"}}` and renders:
+
+```html
+<div data-date-of-birth="1990-01-01" data-fe-c-0-1></div>
+```
+
+The `data-*` → `dataset.*` mapping uses the same camelCase conversion as the browser: `data-date-of-birth` → `dataset.dateOfBirth`.
+
+#### Using `{{dataset.X}}` bindings
+
+`{{dataset.X}}` is ordinary dot-notation: it reads `state["dataset"]["X"]`. The `dataset` key must be present in state, either from a `data-*` attribute on the enclosing custom element or from a state object you supply directly:
+
+```html
+<!-- Works when state = {"dataset": {"name": "Alice"}} -->
+<span>{{dataset.name}}</span>
+
+<!-- Works in f-when -->
+<f-when value="{{dataset.active}}">Active</f-when>
+```
+
 ### Conditional Rendering — `<f-when>`
 
 ```html
@@ -237,10 +273,22 @@ Attributes on a custom element become the state passed to its template:
 |---|---|
 | `disabled` (boolean, no value) | `{"disabled": true}` |
 | `label="Click me"` | `{"label": "Click me"}` |
-| `count="42"` | `{"count": 42}` |
+| `count="42"` | `{"count": "42"}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
+| `selected-user-id="42"` | `{"selected-user-id": "42"}` |
+| `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
+| `data-date-of-birth="1990-01-01"` | `{"dataset": {"dateOfBirth": "1990-01-01"}}` |
+| `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
+| `:myProp="{{expr}}"` | *(skipped — client-side only)* |
+| `@click="{handler()}"` | *(skipped — client-side only)* |
 
-The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
+**HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
+
+**Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
+
+**`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
+
+**Client-only bindings stripped from HTML and skipped from state**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output and are not added to the child element's rendering scope — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 ### Output Format
 
