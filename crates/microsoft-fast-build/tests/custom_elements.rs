@@ -200,3 +200,98 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
     let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
     assert!(locator.has_template("my-button"), "should find my-button by name attribute");
 }
+
+// ── kebab-case attribute → camelCase in template ──────────────────────────────
+
+#[test]
+fn test_custom_element_kebab_attr_camel_in_template() {
+    let locator = make_locator(&[("my-el", "<span>{{selectedUserId}}</span>")]);
+    let result = render_template_with_locator(
+        r#"<my-el selected-user-id="42"></my-el>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("42"), "camelCase resolved: {result}");
+}
+
+#[test]
+fn test_custom_element_multi_word_kebab_to_camel() {
+    let locator = make_locator(&[("my-el", "<p>{{showDetails}}</p><p>{{enableContinue}}</p>")]);
+    let result = render_template_with_locator(
+        r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("true"), "showDetails: {result}");
+    assert!(result.contains("false"), "enableContinue: {result}");
+}
+
+// ── colon-prefixed property bindings ─────────────────────────────────────────
+
+#[test]
+fn test_custom_element_colon_property_binding() {
+    // `:myprop="{{expr}}"` — the `:` prefix is stripped when building child state
+    let parent_template = r#"<child-el :myprop="{{value}}"></child-el>"#;
+    let child_template = "<span>{{myprop}}</span>";
+    let locator = make_locator(&[("child-el", child_template)]);
+    let result = render_template_with_locator(parent_template, r#"{"value": "hello"}"#, &locator).unwrap();
+    assert!(result.contains("hello"), "colon binding resolved: {result}");
+}
+
+#[test]
+fn test_custom_element_event_binding_skipped() {
+    // `@click="{handler()}"` bindings are skipped — they are client-side only
+    let locator = make_locator(&[("my-btn", "<button>{{label}}</button>")]);
+    let result = render_template_with_locator(
+        r#"<my-btn label="OK" @click="{handleClick()}"></my-btn>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("OK"), "label: {result}");
+    // The @click binding should not appear in element state or cause an error
+}
+
+// ── JSON literals in attribute values ─────────────────────────────────────────
+
+#[test]
+fn test_custom_element_json_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items='["a","b","c"]'></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    // Shadow DOM adds hydration markers so check >text< pattern (matches -->a<-- boundaries)
+    assert!(result.contains(">a<"), "rendered a: {result}");
+    assert!(result.contains(">b<"), "rendered b: {result}");
+    assert!(result.contains(">c<"), "rendered c: {result}");
+}
+
+#[test]
+fn test_custom_element_empty_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items="[]"></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    // Empty repeat — just the surrounding element structure, no spans
+    assert!(!result.contains("<span>"), "no items: {result}");
+}
+
+#[test]
+fn test_custom_element_json_object_attr() {
+    let locator = make_locator(&[("my-card", r#"<div>{{config.title}}</div>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-card config='{"title":"Hello"}'></my-card>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Hello"), "rendered: {result}");
+}
