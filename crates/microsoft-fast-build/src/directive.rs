@@ -252,8 +252,15 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
+        // Skip event handler bindings (@click, @keydown, etc.) — client-side only
+        if attr_name.starts_with('@') {
+            continue;
+        }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        state_map.insert(attr_name.clone(), json_val);
+        // Strip leading `:` from property binding names (FAST uses `:propName="{{expr}}"`)
+        // then lowercase — mirroring how browsers treat case-insensitive HTML attribute names.
+        let key = attr_name.trim_start_matches(':').to_lowercase();
+        state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);
 
