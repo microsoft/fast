@@ -31,6 +31,23 @@ fn test_array_index_second_element() {
     assert_eq!(ok("{{list.1}}", r#"{"list": ["a", "b", "c"]}"#), "b");
 }
 
+// ── array .length ─────────────────────────────────────────────────────────────
+
+#[test]
+fn test_array_length() {
+    assert_eq!(ok("{{items.length}}", r#"{"items": ["a", "b", "c"]}"#), "3");
+}
+
+#[test]
+fn test_array_length_empty() {
+    assert_eq!(ok("{{items.length}}", r#"{"items": []}"#), "0");
+}
+
+#[test]
+fn test_array_length_nested() {
+    assert_eq!(ok("{{user.orders.length}}", r#"{"user": {"orders": [1, 2]}}"#), "2");
+}
+
 // ── dot-notation — two levels ─────────────────────────────────────────────────
 
 #[test]

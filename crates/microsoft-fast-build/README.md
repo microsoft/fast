@@ -67,11 +67,15 @@ Both functions return `Result<String, RenderError>`. See [Error Handling](#error
 
 ### Single-Brace Passthrough
 
-Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer and pass through verbatim.
+Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer. Both `@attr="{expr}"` event bindings and `:attr="..."` property bindings are **stripped** from the rendered HTML — only the `data-fe-c` hydration marker is kept so the FAST runtime can reconnect the binding.
 
 ```html
-<!-- Passes through unchanged -->
+<!-- Template -->
 <button @click="{handleClick()}">{{label}}</button>
+<slot f-slotted="{slottedNodes}"></slot>
+
+<!-- Rendered (event attr stripped, hydration marker kept) -->
+<button data-fe-c-0-1>Submit</button>
 <slot f-slotted="{slottedNodes}"></slot>
 ```
 
@@ -83,14 +87,14 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 - **falsy** → the attribute is omitted entirely
 
 ```html
-<!-- Template -->
-<input type="checkbox" ?disabled="{{!isEnabled}}">
-<input ?disabled="{{activeGroup == currentGroup}}" type="button">
+<!-- Template (state keys match the attribute names used on the element) -->
+<input type="checkbox" ?disabled="{{!is-enabled}}">
+<input ?disabled="{{active-group == current-group}}" type="button">
 
-<!-- Rendered — isEnabled: false (so !isEnabled is true) -->
+<!-- Rendered — is-enabled: false (so !is-enabled is true) -->
 <input type="checkbox" disabled data-fe-c-0-1>
 
-<!-- Rendered — activeGroup !== currentGroup -->
+<!-- Rendered — active-group !== current-group -->
 <input type="button" data-fe-c-0-1>
 ```
 
@@ -237,10 +241,22 @@ Attributes on a custom element become the state passed to its template:
 |---|---|
 | `disabled` (boolean, no value) | `{"disabled": true}` |
 | `label="Click me"` | `{"label": "Click me"}` |
-| `count="42"` | `{"count": 42}` |
+| `count="42"` | `{"count": "42"}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
+| `selected-user-id="42"` | `{"selected-user-id": "42"}` |
+| `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
+| `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` |
+| `@click="{handler()}"` | *(skipped — not added to child state)* |
 
-The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
+**Attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
+
+**Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
+
+**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a typed value to a child element's property. The renderer strips the leading `:` then lowercases the key, so `:myProp` is stored as `myprop`.
+
+**Client-only bindings stripped from HTML**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+
+The `{{bar}}` binding form resolves `bar` from the _parent_ state and passes the value into the child template under the key `foo`.
 
 ### Output Format
 

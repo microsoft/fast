@@ -5,7 +5,7 @@ use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
-    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
+    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -252,8 +252,16 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
+        // Skip event handler bindings (@click, @keydown, etc.) — client-side only
+        if attr_name.starts_with('@') {
+            continue;
+        }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        state_map.insert(attr_name.clone(), json_val);
+        // Strip the leading `:` then lowercase — HTML attribute names are case-insensitive
+        // and browsers always store them lowercase, so `isEnabled` becomes `isenabled`.
+        // Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+        let key = attr_name.trim_start_matches(':').to_lowercase();
+        state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);
 
@@ -286,16 +294,13 @@ pub fn render_custom_element(
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
     let v = match value {
-        None => return JsonValue::Bool(true),
+        None => return JsonValue::Bool(true), // boolean attribute (no value)
         Some(s) => s,
     };
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
         return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
     }
-    if v == "true" { return JsonValue::Bool(true); }
-    if v == "false" { return JsonValue::Bool(false); }
-    if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
     JsonValue::String(v.clone())
 }
 
@@ -309,15 +314,16 @@ fn build_element_open_tag(
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
-        return format!("{}>", open_tag_base);
+        return format!("{}>", strip_client_only_attrs(open_tag_base));
     }
     let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
+    let stripped = strip_client_only_attrs(&resolved);
     match parent_hydration {
         Some(hy) => {
             let start_idx = hy.binding_idx;
             hy.binding_idx += total_attr;
-            format!("{} data-fe-c-{}-{}>", resolved, start_idx, total_attr)
+            format!("{} data-fe-c-{}-{}>", stripped, start_idx, total_attr)
         }
-        None => format!("{}>", resolved),
+        None => format!("{}>", stripped),
     }
 }
