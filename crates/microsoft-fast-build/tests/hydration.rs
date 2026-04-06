@@ -446,13 +446,13 @@ fn test_hydration_bool_attr_false() {
     assert!(shadow.contains("data-fe-c-0-1"), "compact marker: {result}");
 }
 
-/// `?disabled="{{!isenabled}}"` with `isEnabled: false` → renders `disabled`.
+/// `?disabled="{{!isEnabled}}"` with `isEnabled: false` → renders `disabled`.
 #[test]
 fn test_hydration_bool_attr_negation_true() {
-    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isenabled}}">"#)]);
+    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isEnabled}}">"#)]);
     let root = hand_root(vec![("isEnabled", bool_val(false))]);
     let result = render_with_locator(
-        r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
+        r#"<test-element :isEnabled="{{isEnabled}}"></test-element>"#,
         &root,
         &locator,
     ).unwrap();
@@ -462,13 +462,13 @@ fn test_hydration_bool_attr_negation_true() {
     assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
 }
 
-/// `?disabled="{{!isenabled}}"` with `isEnabled: true` → attribute is omitted.
+/// `?disabled="{{!isEnabled}}"` with `isEnabled: true` → attribute is omitted.
 #[test]
 fn test_hydration_bool_attr_negation_false() {
-    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isenabled}}">"#)]);
+    let locator = make_locator(&[("test-element", r#"<input type="checkbox" ?disabled="{{!isEnabled}}">"#)]);
     let root = hand_root(vec![("isEnabled", bool_val(true))]);
     let result = render_with_locator(
-        r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
+        r#"<test-element :isEnabled="{{isEnabled}}"></test-element>"#,
         &root,
         &locator,
     ).unwrap();
@@ -477,16 +477,16 @@ fn test_hydration_bool_attr_negation_false() {
     assert!(!shadow.contains("disabled"), "disabled absent: {result}");
 }
 
-/// `?disabled="{{activegroup == currentgroup}}"` with equal values → renders `disabled`.
+/// `?disabled="{{activeGroup == currentGroup}}"` with equal values → renders `disabled`.
 #[test]
 fn test_hydration_bool_attr_expression_true() {
-    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activegroup == currentgroup}}" type="button">"#)]);
+    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activeGroup == currentGroup}}" type="button">"#)]);
     let root = hand_root(vec![
         ("activeGroup", str_val("work")),
         ("currentGroup", str_val("work")),
     ]);
     let result = render_with_locator(
-        r#"<test-element activeGroup="{{activeGroup}}" currentGroup="{{currentGroup}}"></test-element>"#,
+        r#"<test-element :activeGroup="{{activeGroup}}" :currentGroup="{{currentGroup}}"></test-element>"#,
         &root,
         &locator,
     ).unwrap();
@@ -496,16 +496,16 @@ fn test_hydration_bool_attr_expression_true() {
     assert!(!shadow.contains("?disabled"), "no ?disabled prefix: {result}");
 }
 
-/// `?disabled="{{activegroup == currentgroup}}"` with unequal values → attribute is omitted.
+/// `?disabled="{{activeGroup == currentGroup}}"` with unequal values → attribute is omitted.
 #[test]
 fn test_hydration_bool_attr_expression_false() {
-    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activegroup == currentgroup}}" type="button">"#)]);
+    let locator = make_locator(&[("test-element", r#"<input ?disabled="{{activeGroup == currentGroup}}" type="button">"#)]);
     let root = hand_root(vec![
         ("activeGroup", str_val("work")),
         ("currentGroup", str_val("home")),
     ]);
     let result = render_with_locator(
-        r#"<test-element activeGroup="{{activeGroup}}" currentGroup="{{currentGroup}}"></test-element>"#,
+        r#"<test-element :activeGroup="{{activeGroup}}" :currentGroup="{{currentGroup}}"></test-element>"#,
         &root,
         &locator,
     ).unwrap();

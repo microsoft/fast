@@ -87,14 +87,14 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 - **falsy** → the attribute is omitted entirely
 
 ```html
-<!-- Template (state keys match the attribute names used on the element) -->
-<input type="checkbox" ?disabled="{{!is-enabled}}">
-<input ?disabled="{{active-group == current-group}}" type="button">
+<!-- Shadow template -->
+<input type="checkbox" ?disabled="{{!isEnabled}}">
+<input ?disabled="{{activeGroup == currentGroup}}" type="button">
 
-<!-- Rendered — is-enabled: false (so !is-enabled is true) -->
+<!-- Rendered — isEnabled: false (so !isEnabled is true) -->
 <input type="checkbox" disabled data-fe-c-0-1>
 
-<!-- Rendered — active-group !== current-group -->
+<!-- Rendered — activeGroup !== currentGroup -->
 <input type="button" data-fe-c-0-1>
 ```
 
