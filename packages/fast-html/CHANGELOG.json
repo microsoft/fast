@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sat, 04 Apr 2026 00:22:26 GMT",
+      "version": "1.0.0-alpha.45",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.45",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "8ba12adba40ea9813ece53e8cf1c85485419a4ff",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build attribute fixture"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "9e49537bce8fa621c4a7e5ae19ccf7d3b492110a",
+            "comment": "feat(fast-html): add $e event arg, deprecate e, support multiple event handler args"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.1.2",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Apr 2026 00:03:44 GMT",
       "version": "1.0.0-alpha.44",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.44",

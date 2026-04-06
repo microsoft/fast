@@ -111,10 +111,11 @@
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
     "prepublishOnly": "npm run clean && npm run build",
-    "lint": "biome lint .",
-    "lint:fix": "biome lint --fix .",
+    "lint": "biome-changed",
+    "lint:fix": "biome-changed -- --fix",
     "test:playwright": "playwright test",
     "test-server": "npx vite test/ --clearScreen false",
-    "test": "npm run lint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
+    "test": "npm run lint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright",
+    "test:ci": "npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
   }
 }
