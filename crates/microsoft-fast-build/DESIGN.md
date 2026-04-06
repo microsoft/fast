@@ -206,6 +206,9 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state** from the attributes:
+   - Attributes starting with `@` (event handlers such as `@click`) are **skipped** — they are client-side only.
+   - The leading `:` is stripped from property binding names (e.g. `:myProp="{{expr}}"` → key `myProp`).
+   - Each key is then **normalised to lowercase with hyphens removed** — this is the default behaviour, mirroring how browsers treat case-insensitive HTML attribute names (e.g. `selected-user-id` and `selectedUserId` both become `selecteduserid`).
    - No value (boolean attribute) → `Bool(true)`
    - `"true"` / `"false"` → `Bool`
    - Numeric string → `Number(f64)`
