@@ -248,6 +248,61 @@ pub fn dataset_name_to_data_attr(name: &str) -> Option<String> {
         .map(|camel| format!("data-{}", camel_to_kebab(camel)))
 }
 
+/// Return the index of the first byte after the `<tagname` opener.
+/// Handles the optional leading `<` and stops at whitespace, `>`, or `/`.
+fn advance_past_tag_name(bytes: &[u8]) -> usize {
+    let mut i = if bytes.first() == Some(&b'<') { 1 } else { 0 };
+    while i < bytes.len()
+        && !bytes[i].is_ascii_whitespace()
+        && bytes[i] != b'>'
+        && bytes[i] != b'/'
+    {
+        i += 1;
+    }
+    i
+}
+
+/// Given a raw attribute name from the tag, return the name to write to the output.
+/// Converts `dataset.X` → `data-x` and `?dataset.X` → `?data-x`;
+/// all other names are returned as-is (borrowed slice, no allocation).
+fn convert_dataset_attr_name(name: &str) -> std::borrow::Cow<str> {
+    if let Some(converted) = dataset_name_to_data_attr(name) {
+        return std::borrow::Cow::Owned(converted);
+    }
+    if let Some(inner) = name.strip_prefix('?') {
+        if let Some(converted) = dataset_name_to_data_attr(inner) {
+            return std::borrow::Cow::Owned(format!("?{}", converted));
+        }
+    }
+    std::borrow::Cow::Borrowed(name)
+}
+
+/// Advance `i` past a quoted (`"..."` / `'...'`) or unquoted attribute value.
+/// The caller must position `i` at the first character of the value (after `=`
+/// and any optional whitespace). Returns the new index.
+fn advance_past_attr_value(bytes: &[u8], i: usize) -> usize {
+    let mut i = i;
+    if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
+        let quote = bytes[i];
+        i += 1;
+        while i < bytes.len() && bytes[i] != quote {
+            i += 1;
+        }
+        if i < bytes.len() {
+            i += 1; // closing quote
+        }
+    } else {
+        while i < bytes.len()
+            && !bytes[i].is_ascii_whitespace()
+            && bytes[i] != b'>'
+            && bytes[i] != b'/'
+        {
+            i += 1;
+        }
+    }
+    i
+}
+
 /// In an HTML opening tag string, convert any `dataset.propertyName` (or
 /// `?dataset.propertyName` boolean-binding) attribute names to the corresponding
 /// `data-property-name` (or `?data-property-name`) HTML attribute names.
@@ -262,19 +317,9 @@ pub fn normalize_dataset_attribute_names(tag: &str) -> String {
 
     let bytes = tag.as_bytes();
     let mut result = String::with_capacity(tag.len() + 16);
-    let mut i = 0;
 
     // Copy `<tagname` verbatim.
-    if i < bytes.len() && bytes[i] == b'<' {
-        i += 1;
-    }
-    while i < bytes.len()
-        && !bytes[i].is_ascii_whitespace()
-        && bytes[i] != b'>'
-        && bytes[i] != b'/'
-    {
-        i += 1;
-    }
+    let mut i = advance_past_tag_name(bytes);
     result.push_str(&tag[..i]);
 
     // Process attributes one by one.
@@ -295,7 +340,7 @@ pub fn normalize_dataset_attribute_names(tag: &str) -> String {
             break;
         }
 
-        // Read attribute name (may begin with `?` for boolean bindings).
+        // Attribute name — convert if it is a dataset.X name.
         let name_start = i;
         while i < bytes.len()
             && bytes[i] != b'='
@@ -305,23 +350,9 @@ pub fn normalize_dataset_attribute_names(tag: &str) -> String {
         {
             i += 1;
         }
-        let attr_name = &tag[name_start..i];
+        result.push_str(&convert_dataset_attr_name(&tag[name_start..i]));
 
-        // Convert dataset attribute names; handle the `?dataset.X` boolean-binding form too.
-        if let Some(data_name) = dataset_name_to_data_attr(attr_name) {
-            result.push_str(&data_name);
-        } else if let Some(inner) = attr_name.strip_prefix('?') {
-            if let Some(data_name) = dataset_name_to_data_attr(inner) {
-                result.push('?');
-                result.push_str(&data_name);
-            } else {
-                result.push_str(attr_name);
-            }
-        } else {
-            result.push_str(attr_name);
-        }
-
-        // Copy the value part verbatim (handles `=`, quoted, and unquoted values).
+        // Attribute value — copy verbatim including `=` and surrounding whitespace.
         if i < bytes.len() && bytes[i] == b'=' {
             result.push('=');
             i += 1;
@@ -330,28 +361,9 @@ pub fn normalize_dataset_attribute_names(tag: &str) -> String {
                 i += 1;
             }
             result.push_str(&tag[ws_start..i]);
-            if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
-                let quote = bytes[i];
-                let val_start = i;
-                i += 1;
-                while i < bytes.len() && bytes[i] != quote {
-                    i += 1;
-                }
-                if i < bytes.len() {
-                    i += 1; // closing quote
-                }
-                result.push_str(&tag[val_start..i]);
-            } else {
-                let val_start = i;
-                while i < bytes.len()
-                    && !bytes[i].is_ascii_whitespace()
-                    && bytes[i] != b'>'
-                    && bytes[i] != b'/'
-                {
-                    i += 1;
-                }
-                result.push_str(&tag[val_start..i]);
-            }
+            let val_start = i;
+            i = advance_past_attr_value(bytes, i);
+            result.push_str(&tag[val_start..i]);
         }
     }
 
