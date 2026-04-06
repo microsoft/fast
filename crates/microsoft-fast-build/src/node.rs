@@ -6,7 +6,7 @@ use crate::locator::Locator;
 use crate::hydration::HydrationScope;
 use crate::attribute::{
     find_next_plain_html_tag, count_tag_attribute_bindings,
-    resolve_attribute_bindings_in_tag, strip_event_attrs, inject_compact_marker, find_tag_end,
+    resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_compact_marker, find_tag_end,
 };
 
 /// Recursively render a template fragment against root state and loop variables.
@@ -71,10 +71,10 @@ fn process_hydration_tags(
             let start_idx = hy.binding_idx;
             hy.binding_idx += total;
             let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
-            let stripped = strip_event_attrs(&resolved);
+            let stripped = strip_client_only_attrs(&resolved);
             result.push_str(&inject_compact_marker(&stripped, start_idx, total));
         } else {
-            result.push_str(&strip_event_attrs(tag_str));
+            result.push_str(&strip_client_only_attrs(tag_str));
         }
         pos = tag_end;
     }
