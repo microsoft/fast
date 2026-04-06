@@ -553,6 +553,44 @@ function isLegitimateClientSideBinding(result: DataBindingBehaviorConfig): boole
 type AccessibleObject = { [key: string]: AccessibleObject };
 
 /**
+ * The prefix used to identify dataset bindings in binding expressions.
+ */
+const datasetPrefix = "dataset.";
+
+/**
+ * Convert a camelCase dataset property name to a `data-*` HTML attribute name,
+ * following the MDN naming convention for {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset | HTMLElement.dataset}.
+ *
+ * @param camelCase - The camelCase property name (e.g. `"dateOfBirth"`)
+ * @returns The corresponding `data-*` attribute name (e.g. `"data-date-of-birth"`)
+ *
+ * @example
+ * datasetCamelToAttribute("dateOfBirth")  // "data-date-of-birth"
+ * datasetCamelToAttribute("userId")       // "data-user-id"
+ */
+export function datasetCamelToAttribute(camelCase: string): string {
+    return `data-${camelCase.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`)}`;
+}
+
+/**
+ * Determine whether a binding path targets the dataset DOMStringMap.
+ * @param path - The binding path to test
+ * @returns `true` if the path starts with `"dataset."`
+ */
+function isDatasetPath(path: string): boolean {
+    return path.startsWith(datasetPrefix);
+}
+
+/**
+ * Extract the camelCase property name from a dataset binding path.
+ * @param path - The dataset binding path (e.g. `"dataset.dateOfBirth"`)
+ * @returns The camelCase property name (e.g. `"dateOfBirth"`)
+ */
+function getDatasetPropertyName(path: string): string {
+    return path.slice(datasetPrefix.length);
+}
+
+/**
  * Create a function to resolve a value from an object using a path with dot syntax.
  * e.g. "foo.bar"
  * @param path - The dot syntax path to an objects property.
@@ -658,7 +696,17 @@ export function bindingResolver(
         };
     }
 
-    rootPropertyName = getRootPropertyName(rootPropertyName, path, currentContext, type);
+    // dataset.someProperty follows the HTMLElement.dataset naming convention where
+    // the camelCase property name maps to a data-* attribute. Convert to just the
+    // camelCase property name so schema tracking and Observable binding work correctly.
+    const resolvedPath = isDatasetPath(path) ? getDatasetPropertyName(path) : path;
+
+    rootPropertyName = getRootPropertyName(
+        rootPropertyName,
+        resolvedPath,
+        currentContext,
+        type,
+    );
 
     if (type !== "event" && rootPropertyName !== null) {
         const childrenMap = getChildrenMap(previousString);
@@ -668,7 +716,7 @@ export function bindingResolver(
                 type,
                 currentContext,
                 parentContext,
-                path,
+                path: resolvedPath,
             },
             rootPropertyName,
             childrenMap,
@@ -676,7 +724,7 @@ export function bindingResolver(
     }
 
     return pathResolver(
-        path,
+        resolvedPath,
         currentContext,
         level,
         schema.getSchema(rootPropertyName as string) as JSONSchema,

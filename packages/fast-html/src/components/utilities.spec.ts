@@ -4,6 +4,7 @@ import {
     type AttributeDataBindingBehaviorConfig,
     type AttributeDirectiveBindingBehaviorConfig,
     type ContentDataBindingBehaviorConfig,
+    datasetCamelToAttribute,
     eventArgAccessor,
     extractPathsFromChainedExpression,
     findDef,
@@ -983,6 +984,23 @@ test.describe("utilities", async () => {
                 { type: "event" },
                 { type: "binding", rawArg: "foo" },
             ]);
+        });
+    });
+
+    test.describe("datasetCamelToAttribute", async () => {
+        test("should convert a single-word camelCase property to a data-* attribute", async () => {
+            expect(datasetCamelToAttribute("type")).toEqual("data-type");
+        });
+        test("should convert a two-word camelCase property to a data-* attribute", async () => {
+            expect(datasetCamelToAttribute("dateOfBirth")).toEqual("data-date-of-birth");
+        });
+        test("should convert a multi-word camelCase property to a data-* attribute", async () => {
+            expect(datasetCamelToAttribute("somePropertyName")).toEqual(
+                "data-some-property-name",
+            );
+        });
+        test("should convert a property starting with uppercase to a data-* attribute", async () => {
+            expect(datasetCamelToAttribute("userId")).toEqual("data-user-id");
         });
     });
 });
