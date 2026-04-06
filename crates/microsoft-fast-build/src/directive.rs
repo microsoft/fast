@@ -5,12 +5,8 @@ use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
-<<<<<<< HEAD
-    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
-    data_attr_to_dataset_key,
-=======
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
->>>>>>> 5a9f713af (fix(fast-build): strip property binding attrs from rendered HTML; lowercase attr keys)
+    data_attr_to_dataset_key,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -331,16 +327,13 @@ fn kebab_to_camel(s: &str) -> String {
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
     let v = match value {
-        None => return JsonValue::Bool(true),
+        None => return JsonValue::Bool(true), // boolean attribute (no value)
         Some(s) => s,
     };
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
         return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
     }
-    if v == "true" { return JsonValue::Bool(true); }
-    if v == "false" { return JsonValue::Bool(false); }
-    if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
     JsonValue::String(v.clone())
 }
 
@@ -354,22 +347,16 @@ fn build_element_open_tag(
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
-<<<<<<< HEAD
-        return format!("{}>", open_tag_base);
-    }
-    let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
-=======
         return format!("{}>", strip_client_only_attrs(open_tag_base));
     }
     let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
     let stripped = strip_client_only_attrs(&resolved);
->>>>>>> 5a9f713af (fix(fast-build): strip property binding attrs from rendered HTML; lowercase attr keys)
     match parent_hydration {
         Some(hy) => {
             let start_idx = hy.binding_idx;
             hy.binding_idx += total_attr;
-            format!("{} data-fe-c-{}-{}>", resolved, start_idx, total_attr)
+            format!("{} data-fe-c-{}-{}>", stripped, start_idx, total_attr)
         }
-        None => format!("{}>", resolved),
+        None => format!("{}>", stripped),
     }
 }
