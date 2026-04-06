@@ -252,8 +252,16 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
+        // Skip event handler bindings (@click, @keydown, etc.) — client-side only
+        if attr_name.starts_with('@') {
+            continue;
+        }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        state_map.insert(attr_name.clone(), json_val);
+        // Strip leading `:` from property binding names (FAST uses `:propName="{{expr}}"`)
+        // then normalize to lowercase without hyphens — mirroring how browsers treat
+        // case-insensitive HTML attribute names (the default behaviour).
+        let key = normalize_attr_key(attr_name.trim_start_matches(':'));
+        state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);
 
@@ -282,6 +290,10 @@ pub fn render_custom_element(
     );
 
     Ok((output, after))
+}
+
+fn normalize_attr_key(s: &str) -> String {
+    s.to_lowercase()
 }
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
