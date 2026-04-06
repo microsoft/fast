@@ -257,10 +257,15 @@ pub fn render_custom_element(
             continue;
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        // Strip the leading `:` then lowercase — HTML attribute names are case-insensitive
-        // and browsers always store them lowercase, so `isEnabled` becomes `isenabled`.
-        // Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
-        let key = attr_name.trim_start_matches(':').to_lowercase();
+        // Property bindings (`:prop`) represent JavaScript property names, which are
+        // case-sensitive — preserve the original casing after stripping the leading `:`.
+        // Plain HTML attribute names are case-insensitive and browsers always store them
+        // lowercase, so `isEnabled` becomes `isenabled`; hyphens are preserved.
+        let key = if attr_name.starts_with(':') {
+            attr_name[1..].to_string()
+        } else {
+            attr_name.to_lowercase()
+        };
         state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);

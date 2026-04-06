@@ -207,10 +207,10 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state** from the attributes:
    - Attributes starting with `@` (event handlers such as `@click`) are **skipped** — they are client-side only and do not contribute to child state.
-   - The leading `:` is stripped from property binding names (e.g. `:myProp="{{expr}}"` → key `myProp`).
-   - Each key is **lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase, so `isEnabled` becomes `isenabled`. Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase, so `isEnabled` becomes `isenabled`. Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+   - **Property binding keys (`:attr`) preserve original casing** — JavaScript property names are case-sensitive. `:myProp="{{expr}}"` → key `myProp`. The leading `:` is stripped; the rest is passed through unchanged.
    - No value (boolean attribute) → `Bool(true)`
-   - `"{{binding}}"` → resolve from parent state
+   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type)
    - Anything else → `String` (attribute values are always strings; booleans and numbers must be passed via `{{binding}}` expressions)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).

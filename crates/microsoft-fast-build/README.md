@@ -245,16 +245,16 @@ Attributes on a custom element become the state passed to its template:
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 | `selected-user-id="42"` | `{"selected-user-id": "42"}` |
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
-| `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` |
+| `:myProp="{{expr}}"` | `{"myProp": <resolved value>}` |
 | `@click="{handler()}"` | *(skipped — not added to child state)* |
 
-**Attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
+**HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
 **Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
 
-**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a typed value to a child element's property. The renderer strips the leading `:` then lowercases the key, so `:myProp` is stored as `myprop`.
+**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a typed value to a child element's JS property. The renderer strips the leading `:` and **preserves the original casing** — JavaScript property names are case-sensitive, so `:myProp` is stored as `myProp` in the child scope.
 
-**Client-only bindings stripped from HTML**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+**Client-only bindings stripped from HTML**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output. Their resolved values are still passed into the child element's rendering scope. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 The `{{bar}}` binding form resolves `bar` from the _parent_ state and passes the value into the child template under the key `foo`.
 
@@ -309,11 +309,11 @@ Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, 
 <!-- Template: <input ?disabled="{{show}}"> — show: false → attribute omitted -->
 <input data-fe-c-0-1>
 
-<!-- Template: <button @click="{handleClick()}">Label</button> -->
-<button @click="{handleClick()}" data-fe-c-0-1>Label</button>
+<!-- Template: <button @click="{handleClick()}">Label</button> — @click stripped from HTML -->
+<button data-fe-c-0-1>Label</button>
 
-<!-- Template: <my-el title="{{t}}" @click="{fn()}"> — 2 bindings -->
-<my-el title="Hello" @click="{fn()}" data-fe-c-0-2>
+<!-- Template: <my-el title="{{t}}" @click="{fn()}"> — 2 bindings, @click stripped -->
+<my-el title="Hello" data-fe-c-0-2>
 ```
 
 `data-fe-c-{startIndex}-{count}` — `startIndex` is the binding index of the first attribute binding on the element; `count` is the total number of attribute bindings.
