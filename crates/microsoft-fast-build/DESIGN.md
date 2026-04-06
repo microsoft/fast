@@ -206,14 +206,15 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state** from the attributes:
+   - Attributes starting with `@` (event handlers such as `@click`) are **skipped** — they are client-side only and do not contribute to child state.
+   - The leading `:` is stripped from property binding names (e.g. `:myProp="{{expr}}"` → key `myProp`); casing is preserved.
    - No value (boolean attribute) → `Bool(true)`
-   - `"true"` / `"false"` → `Bool`
-   - Numeric string → `Number(f64)`
-   - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
-   - Anything else → `String`
+   - `"{{binding}}"` → resolve from parent state
+   - Anything else → `String` (attribute values are always strings; booleans and numbers must be passed via `{{binding}}` expressions)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Emit Declarative Shadow DOM** with hydration attributes:
+7. **Strip event binding attributes** (`@attr`) from both the outer element's opening tag and from all tags inside the rendered shadow template. The `data-fe-c` binding count is preserved — event bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+8. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
      <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
