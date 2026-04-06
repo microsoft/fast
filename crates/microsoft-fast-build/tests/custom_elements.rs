@@ -200,3 +200,48 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
     let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
     assert!(locator.has_template("my-button"), "should find my-button by name attribute");
 }
+
+// ── JSON literals in attribute values ─────────────────────────────────────────
+
+#[test]
+fn test_custom_element_json_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items='["a","b","c"]'></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    // Shadow DOM adds hydration markers so check >text< pattern (matches -->a<-- boundaries)
+    assert!(result.contains(">a<"), "rendered a: {result}");
+    assert!(result.contains(">b<"), "rendered b: {result}");
+    assert!(result.contains(">c<"), "rendered c: {result}");
+}
+
+#[test]
+fn test_custom_element_empty_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items="[]"></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    // Empty repeat — just the surrounding element structure, no spans
+    assert!(!result.contains("<span>"), "no items: {result}");
+}
+
+#[test]
+fn test_custom_element_json_object_attr() {
+    let locator = make_locator(&[("my-card", r#"<div>{{config.title}}</div>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-card config='{"title":"Hello"}'></my-card>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Hello"), "rendered: {result}");
+}
