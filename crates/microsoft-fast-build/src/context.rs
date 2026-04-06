@@ -31,8 +31,12 @@ pub fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
                 map.get(part)?.clone()
             }
             JsonValue::Array(ref arr) => {
-                let idx: usize = part.parse().ok()?;
-                arr.get(idx)?.clone()
+                if part == "length" {
+                    JsonValue::Number(arr.len() as f64)
+                } else {
+                    let idx: usize = part.parse().ok()?;
+                    arr.get(idx)?.clone()
+                }
             }
             _ => return None,
         };

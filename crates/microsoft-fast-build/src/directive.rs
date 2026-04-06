@@ -256,6 +256,10 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
+        // Skip event handler bindings (@click, @keydown, etc.) — client-side only
+        if attr_name.starts_with('@') {
+            continue;
+        }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
         if let Some(path) = data_attr_to_dataset_key(attr_name) {
             if let Some((group, prop)) = path.split_once('.') {
@@ -299,6 +303,22 @@ pub fn render_custom_element(
     Ok((output, after))
 }
 
+fn kebab_to_camel(s: &str) -> String {
+    let mut result = String::new();
+    let mut capitalize_next = false;
+    for c in s.chars() {
+        if c == '-' {
+            capitalize_next = true;
+        } else if capitalize_next {
+            result.extend(c.to_uppercase());
+            capitalize_next = false;
+        } else {
+            result.push(c);
+        }
+    }
+    result
+}
+
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
     let v = match value {
         None => return JsonValue::Bool(true),
@@ -311,6 +331,12 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
     if v == "true" { return JsonValue::Bool(true); }
     if v == "false" { return JsonValue::Bool(false); }
     if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
+    // Try parsing JSON array or object literals
+    if v.starts_with('[') || v.starts_with('{') {
+        if let Ok(parsed) = crate::json::parse(v) {
+            return parsed;
+        }
+    }
     JsonValue::String(v.clone())
 }
 
