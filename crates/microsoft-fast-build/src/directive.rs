@@ -250,21 +250,25 @@ pub fn render_custom_element(
     };
 
     // Parse attributes and build child state.
-    // `data-*` attributes are grouped under a nested `"dataset"` key so that
-    // `{{dataset.X}}` bindings in the shadow template resolve correctly.
+    // `data-*` attributes are stored using the full dot-notation path returned by
+    // `data_attr_to_dataset_key` (e.g. `"dataset.dateOfBirth"`), split on the first
+    // `.` to build a nested state object so `{{dataset.X}}` bindings resolve correctly.
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
-    let mut dataset_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        if let Some(dataset_key) = data_attr_to_dataset_key(attr_name) {
-            dataset_map.insert(dataset_key, json_val);
+        if let Some(path) = data_attr_to_dataset_key(attr_name) {
+            if let Some((group, prop)) = path.split_once('.') {
+                let group_val = state_map
+                    .entry(group.to_string())
+                    .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
+                if let JsonValue::Object(ref mut map) = group_val {
+                    map.insert(prop.to_string(), json_val);
+                }
+            }
         } else {
             state_map.insert(attr_name.clone(), json_val);
         }
-    }
-    if !dataset_map.is_empty() {
-        state_map.insert("dataset".to_string(), JsonValue::Object(dataset_map));
     }
     let child_root = JsonValue::Object(state_map);
 

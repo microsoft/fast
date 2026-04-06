@@ -241,13 +241,13 @@ fn kebab_to_camel(s: &str) -> String {
     result
 }
 
-/// Convert a `data-kebab-case` HTML attribute name to the corresponding camelCase
-/// dataset property key, following the MDN HTMLElement.dataset naming convention.
+/// Convert a `data-kebab-case` HTML attribute name to its full dot-notation
+/// dataset path, following the MDN HTMLElement.dataset naming convention.
 /// Returns `None` for names that do not start with `data-`.
 ///
-/// Examples: `"data-date-of-birth"` → `"dateOfBirth"`, `"data-name"` → `"name"`
+/// Examples: `"data-date-of-birth"` → `"dataset.dateOfBirth"`, `"data-name"` → `"dataset.name"`
 pub fn data_attr_to_dataset_key(name: &str) -> Option<String> {
-    name.strip_prefix("data-").map(|rest| kebab_to_camel(rest))
+    name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
 }
 
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`

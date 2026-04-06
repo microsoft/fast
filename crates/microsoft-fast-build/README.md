@@ -278,7 +278,7 @@ Attributes on a custom element become the state passed to its template:
 | `data-date-of-birth="1990-01-01"` | `{"dataset": {"dateOfBirth": "1990-01-01"}}` |
 | `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
 
-`data-*` attributes are always grouped under a nested `"dataset"` key using the standard `data-kebab-case` → `camelCase` conversion, making `{{dataset.X}}` bindings work naturally in shadow templates.
+`data-*` attributes are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
 
 The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
 

@@ -211,7 +211,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - Numeric string → `Number(f64)`
    - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
    - Anything else → `String`
-   - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which converts the kebab-case suffix to camelCase (`data-date-of-birth` → `dataset.dateOfBirth`). This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
+   - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
 7. **Emit Declarative Shadow DOM** with hydration attributes:
@@ -279,7 +279,7 @@ When building child state for a custom element (step 4 of `render_custom_element
 data-date-of-birth="1990-01-01"  →  state["dataset"]["dateOfBirth"] = "1990-01-01"
 ```
 
-`attribute::data_attr_to_dataset_key` performs the name conversion: it strips the `data-` prefix and converts the remaining kebab-case string to camelCase via `kebab_to_camel`. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
+`attribute::data_attr_to_dataset_key` returns the full dot-notation path: `"data-date-of-birth"` → `"dataset.dateOfBirth"`. The caller in `render_custom_element` splits on the first `.` (`"dataset"` / `"dateOfBirth"`) and inserts the value into the nested `"dataset"` map. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
 
 The `dataset.` portion of the binding expression is nothing special to `resolve_value` — it is plain two-level dot-notation that traverses the nested `"dataset"` object built by the attribute mapper.
 
