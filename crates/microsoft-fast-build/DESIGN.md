@@ -266,33 +266,19 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
    - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
 4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
 
-Tags with zero bindings are still passed through `normalize_dataset_attribute_names` so that `dataset.X` attribute names are converted even when the attribute value is a static string.
-
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
 
-### Dataset attribute name normalisation — `attribute::normalize_dataset_attribute_names`
+### Dataset bindings — `context::resolve_value`
 
-FAST templates follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) naming convention: a JavaScript property `element.dataset.dateOfBirth` corresponds to the HTML attribute `data-date-of-birth`.
+FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: a camelCase property (e.g. `dateOfBirth`) corresponds to a kebab-case `data-*` HTML attribute (e.g. `data-date-of-birth`). The property is stored in the element's state as a plain top-level key (`dateOfBirth`), not nested under a `dataset` object.
 
-In server-side templates, attribute names that start with `dataset.` (e.g. `dataset.dateOfBirth`) are converted to their `data-*` equivalents before binding resolution and before the tag is written to the output:
+In templates, the HTML attribute name is written directly as `data-date-of-birth`, and the binding expression uses the `dataset.` prefix to signal that the state key is the camelCase property name:
 
-| Template name | Output name |
-|---|---|
-| `dataset.dateOfBirth` | `data-date-of-birth` |
-| `dataset.createdAt` | `data-created-at` |
-| `?dataset.active` | `?data-active` |
+```html
+<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>
+```
 
-The conversion is implemented in `attribute::normalize_dataset_attribute_names`, which:
-1. Scans the opening tag byte-by-byte, skipping the tag name.
-2. For each attribute name, checks whether it starts with `dataset.` (or `?dataset.` for boolean bindings).
-3. Converts `dataset.X` → `data-<camel-to-kebab(X)>` via `camel_to_kebab`.
-4. Copies attribute values verbatim (no modification of values, even those containing `dataset.`).
-5. Returns the original string unchanged (same allocation) if the tag does not contain `dataset.`.
-
-`normalize_dataset_attribute_names` is called:
-- **Inside `resolve_attribute_bindings_in_tag`** — covers tags with attribute bindings.
-- **In `process_hydration_tags`** (zero-binding branch) — covers static tags inside shadow templates.
-- **In `build_element_open_tag`** (zero-binding branch) — covers custom-element opening tags without bindings.
+`resolve_value` strips the `dataset.` prefix before performing state lookup, so `{{dataset.dateOfBirth}}` resolves `dateOfBirth` from the element's state rather than trying to access a nested `state.dataset.dateOfBirth` path. The `dataset.` prefix is only meaningful inside `{{...}}` expressions; it has no effect on plain attribute names in the template.
 
 ### `f-when` markers
 

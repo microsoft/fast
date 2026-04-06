@@ -98,40 +98,28 @@ The `data-fe-c` compact marker is still emitted so the FAST client runtime knows
 
 ### Dataset Attribute Bindings — `dataset.propertyName`
 
-The `dataset.propertyName` attribute name convention follows the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) naming rules: camelCase property names map to kebab-case `data-*` HTML attributes.
+FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: camelCase property names (e.g. `dateOfBirth`) correspond to kebab-case `data-*` HTML attributes (e.g. `data-date-of-birth`).
 
-The renderer automatically converts any attribute whose name starts with `dataset.` to the corresponding `data-*` attribute name in the output HTML:
-
-| Template attribute name | Output HTML attribute name |
-|---|---|
-| `dataset.dateOfBirth` | `data-date-of-birth` |
-| `dataset.createdAt` | `data-created-at` |
-| `dataset.name` | `data-name` |
+In templates, write the HTML attribute name as `data-*` and use the `dataset.` prefix in the binding expression to reference the camelCase state property:
 
 ```html
-<!-- Template: static dataset attribute -->
-<div dataset.dateOfBirth="1990-01-01"></div>
-
-<!-- Rendered -->
-<div data-date-of-birth="1990-01-01"></div>
-```
-
-```html
-<!-- Template: dataset attribute with a binding -->
-<div dataset.dateOfBirth="{{dateOfBirth}}"></div>
+<!-- Template: data-date-of-birth attribute bound to state.dateOfBirth -->
+<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>
 
 <!-- Rendered (state: {"dateOfBirth": "1990-01-01"}) -->
 <div data-date-of-birth="1990-01-01" data-fe-c-0-1></div>
 ```
 
-The `?dataset.X` boolean-binding form is also supported:
+The `dataset.` prefix is stripped at resolution time: `{{dataset.dateOfBirth}}` reads `dateOfBirth` from the element's state, not a nested `dataset` object. This matches how FAST elements expose dataset properties as first-class observable properties.
+
+The same prefix works in content bindings and conditional expressions:
 
 ```html
-<!-- Template: conditional dataset attribute -->
-<div ?dataset.active="{{isActive}}"></div>
+<!-- Content binding -->
+<span>{{dataset.dateOfBirth}}</span>
 
-<!-- Rendered — isActive: true -->
-<div data-active data-fe-c-0-1></div>
+<!-- Boolean condition -->
+<f-when value="{{dataset.active}}">Active</f-when>
 ```
 
 ### Conditional Rendering — `<f-when>`
