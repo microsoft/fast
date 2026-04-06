@@ -67,11 +67,15 @@ Both functions return `Result<String, RenderError>`. See [Error Handling](#error
 
 ### Single-Brace Passthrough
 
-Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer and pass through verbatim.
+Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer. Both `@attr="{expr}"` event bindings and `:attr="..."` property bindings are **stripped** from the rendered HTML — only the `data-fe-c` hydration marker is kept so the FAST runtime can reconnect the binding.
 
 ```html
-<!-- Passes through unchanged -->
+<!-- Template -->
 <button @click="{handleClick()}">{{label}}</button>
+<slot f-slotted="{slottedNodes}"></slot>
+
+<!-- Rendered (event attr stripped, hydration marker kept) -->
+<button data-fe-c-0-1>Submit</button>
 <slot f-slotted="{slottedNodes}"></slot>
 ```
 
@@ -83,14 +87,14 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 - **falsy** → the attribute is omitted entirely
 
 ```html
-<!-- Template -->
-<input type="checkbox" ?disabled="{{!isEnabled}}">
-<input ?disabled="{{activeGroup == currentGroup}}" type="button">
+<!-- Shadow template -->
+<input type="checkbox" ?disabled="{{!isenabled}}">
+<input ?disabled="{{activegroup == currentgroup}}" type="button">
 
-<!-- Rendered — isEnabled: false (so !isEnabled is true) -->
+<!-- Rendered — isenabled: false (so !isenabled is true) -->
 <input type="checkbox" disabled data-fe-c-0-1>
 
-<!-- Rendered — activeGroup !== currentGroup -->
+<!-- Rendered — activegroup !== currentgroup -->
 <input type="button" data-fe-c-0-1>
 ```
 
@@ -237,10 +241,20 @@ Attributes on a custom element become the state passed to its template:
 |---|---|
 | `disabled` (boolean, no value) | `{"disabled": true}` |
 | `label="Click me"` | `{"label": "Click me"}` |
-| `count="42"` | `{"count": 42}` |
+| `count="42"` | `{"count": "42"}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
+| `selected-user-id="42"` | `{"selected-user-id": "42"}` |
+| `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
+| `:myProp="{{expr}}"` | *(skipped — client-side only)* |
+| `@click="{handler()}"` | *(skipped — client-side only)* |
 
-The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
+**HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
+
+**Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
+
+**Client-only bindings stripped from HTML and skipped from state**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output and are not added to the child element's rendering scope — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+
+The `{{bar}}` binding form resolves `bar` from the _parent_ state and passes the value into the child template under the key `foo`.
 
 ### Output Format
 
@@ -293,11 +307,11 @@ Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, 
 <!-- Template: <input ?disabled="{{show}}"> — show: false → attribute omitted -->
 <input data-fe-c-0-1>
 
-<!-- Template: <button @click="{handleClick()}">Label</button> -->
-<button @click="{handleClick()}" data-fe-c-0-1>Label</button>
+<!-- Template: <button @click="{handleClick()}">Label</button> — @click stripped from HTML -->
+<button data-fe-c-0-1>Label</button>
 
-<!-- Template: <my-el title="{{t}}" @click="{fn()}"> — 2 bindings -->
-<my-el title="Hello" @click="{fn()}" data-fe-c-0-2>
+<!-- Template: <my-el title="{{t}}" @click="{fn()}"> — 2 bindings, @click stripped -->
+<my-el title="Hello" data-fe-c-0-2>
 ```
 
 `data-fe-c-{startIndex}-{count}` — `startIndex` is the binding index of the first attribute binding on the element; `count` is the total number of attribute bindings.
