@@ -293,7 +293,7 @@ pub fn render_custom_element(
 }
 
 fn normalize_attr_key(s: &str) -> String {
-    s.replace('-', "").to_lowercase()
+    s.to_lowercase()
 }
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {

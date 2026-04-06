@@ -208,7 +208,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 4. **Build child state** from the attributes:
    - Attributes starting with `@` (event handlers such as `@click`) are **skipped** — they are client-side only.
    - The leading `:` is stripped from property binding names (e.g. `:myProp="{{expr}}"` → key `myProp`).
-   - Each key is then **normalised to lowercase with hyphens removed** — this is the default behaviour, mirroring how browsers treat case-insensitive HTML attribute names (e.g. `selected-user-id` and `selectedUserId` both become `selecteduserid`).
+   - Each key is then **normalised to lowercase** — this is the default behaviour, mirroring how browsers treat case-insensitive HTML attribute names (e.g. `selectedUserId` becomes `selecteduserid`; hyphenated names such as `selected-user-id` are already lowercase and are kept as-is).
    - No value (boolean attribute) → `Bool(true)`
    - `"true"` / `"false"` → `Bool`
    - Numeric string → `Number(f64)`

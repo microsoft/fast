@@ -239,12 +239,12 @@ Attributes on a custom element become the state passed to its template:
 | `label="Click me"` | `{"label": "Click me"}` |
 | `count="42"` | `{"count": 42}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
-| `selected-user-id="42"` | `{"selecteduserid": "42"}` |
+| `selected-user-id="42"` | `{"selected-user-id": "42"}` |
 | `selectedUserId="42"` | `{"selecteduserid": "42"}` |
 | `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` |
 | `@click="{handler()}"` | *(skipped — client-side only)* |
 
-**Lowercase normalisation (default behaviour)**: all attribute keys are normalised to lowercase with hyphens removed before being stored in child state. This mirrors how browsers treat case-insensitive HTML attribute names, so `selected-user-id`, `selectedUserId`, and `SelectedUserID` all resolve to the same `selecteduserid` key. Templates must reference the lowercase form (e.g. `{{selecteduserid}}`).
+**Lowercase normalisation (default behaviour)**: all attribute keys are normalised to lowercase before being stored in child state. This mirrors how browsers treat case-insensitive HTML attribute names, so `selectedUserId` resolves to `selecteduserid`. Hyphenated names (e.g. `selected-user-id`) are already lowercase and are kept as-is. Templates must reference the lowercase form.
 
 **Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a value to a child element's property. The renderer strips the leading `:` before normalising, so `:selectedUserId="{{expr}}"` is stored as `selecteduserid`.
 
