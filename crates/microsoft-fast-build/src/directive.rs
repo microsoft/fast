@@ -6,6 +6,7 @@ use crate::attribute::{
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
+    normalize_dataset_attribute_names,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -309,7 +310,8 @@ fn build_element_open_tag(
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
-        return format!("{}>", open_tag_base);
+        let base = normalize_dataset_attribute_names(open_tag_base);
+        return format!("{}>", base);
     }
     let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
     match parent_hydration {
