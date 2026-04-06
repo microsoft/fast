@@ -239,8 +239,17 @@ Attributes on a custom element become the state passed to its template:
 | `label="Click me"` | `{"label": "Click me"}` |
 | `count="42"` | `{"count": 42}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
+| `selected-user-id="42"` | `{"selected-user-id": "42", "selectedUserId": "42"}` |
+| `:myProp="{{expr}}"` | `{"myProp": <resolved value>}` |
+| `@click="{handler()}"` | *(skipped — client-side only)* |
 
-The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
+**Kebab-to-camelCase aliasing**: any attribute whose name contains a hyphen is stored under *both* the original kebab-case key and its camelCase equivalent. This lets templates reference attributes using the camelCase convention FAST uses at runtime without requiring duplicate attributes.
+
+**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a value to a child element's property. The renderer strips the leading `:` so the child template can access the value as `{{propName}}`.
+
+**Event bindings (`@` prefix)**: attributes starting with `@` are event handlers and are skipped when building element state — they have no server-side meaning.
+
+The `{{bar}}` binding form is a **property binding with renaming**: it resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
 
 ### Output Format
 
