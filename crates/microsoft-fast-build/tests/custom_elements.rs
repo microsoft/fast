@@ -200,3 +200,59 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
     let locator = Locator::from_patterns(&["tests/fixtures/my-button.html"]).unwrap();
     assert!(locator.has_template("my-button"), "should find my-button by name attribute");
 }
+
+// ── attribute name → lowercase normalisation ──────────────────────────────────
+
+#[test]
+fn test_custom_element_kebab_attr_camel_in_template() {
+    // kebab-case attrs are lowercased but hyphens are preserved by default
+    let locator = make_locator(&[("my-el", "<span>{{selected-user-id}}</span>")]);
+    let result = render_template_with_locator(
+        r#"<my-el selected-user-id="42"></my-el>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("42"), "lowercase resolved: {result}");
+}
+
+#[test]
+fn test_custom_element_multi_word_kebab_to_camel() {
+    let locator = make_locator(&[("my-el", "<p>{{show-details}}</p><p>{{enable-continue}}</p>")]);
+    let result = render_template_with_locator(
+        r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("true"), "show-details: {result}");
+    assert!(result.contains("false"), "enable-continue: {result}");
+}
+
+// ── colon-prefixed property bindings ─────────────────────────────────────────
+
+#[test]
+fn test_custom_element_colon_property_binding_skipped() {
+    // `:prop` bindings are client-side only and are NOT added to the child rendering scope.
+    // They are stripped from the rendered HTML just like @event bindings.
+    let locator = make_locator(&[("my-btn", "<button>{{label}}</button>")]);
+    let result = render_template_with_locator(
+        r#"<my-btn label="OK" :myProp="{{value}}"></my-btn>"#,
+        r#"{"value": "ignored"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("OK"), "label: {result}");
+    assert!(!result.contains(":myProp"), "colon attr stripped: {result}");
+    assert!(!result.contains("ignored"), "prop value not in output: {result}");
+}
+
+#[test]
+fn test_custom_element_event_binding_skipped() {
+    // `@click="{handler()}"` bindings are skipped — they are client-side only
+    let locator = make_locator(&[("my-btn", "<button>{{label}}</button>")]);
+    let result = render_template_with_locator(
+        r#"<my-btn label="OK" @click="{handleClick()}"></my-btn>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("OK"), "label: {result}");
+    // The @click binding should not appear in element state or cause an error
+}
