@@ -1,0 +1,10 @@
+{
+    "error": false,
+    "showProgress": true,
+    "enableContinue": false,
+    "strings": {
+        "errorMessage": "Error occurred",
+        "continueButtonText": "Continue",
+        "retryButtonText": "Retry"
+    }
+}
