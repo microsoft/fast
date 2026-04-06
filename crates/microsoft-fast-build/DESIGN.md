@@ -268,6 +268,18 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
 
+### Dataset bindings — `context::resolve_value`
+
+FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: a camelCase property (e.g. `dateOfBirth`) corresponds to a kebab-case `data-*` HTML attribute (e.g. `data-date-of-birth`). The property is stored in the element's state as a plain top-level key (`dateOfBirth`), not nested under a `dataset` object.
+
+In templates, the HTML attribute name is written directly as `data-date-of-birth`, and the binding expression uses the `dataset.` prefix to signal that the state key is the camelCase property name:
+
+```html
+<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>
+```
+
+`resolve_value` strips the `dataset.` prefix before performing state lookup, so `{{dataset.dateOfBirth}}` resolves `dateOfBirth` from the element's state rather than trying to access a nested `state.dataset.dateOfBirth` path. The `dataset.` prefix is only meaningful inside `{{...}}` expressions; it has no effect on plain attribute names in the template.
+
 ### `f-when` markers
 
 ```

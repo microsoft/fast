@@ -96,6 +96,32 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 
 The `data-fe-c` compact marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
 
+### Dataset Attribute Bindings — `dataset.propertyName`
+
+FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: camelCase property names (e.g. `dateOfBirth`) correspond to kebab-case `data-*` HTML attributes (e.g. `data-date-of-birth`).
+
+In templates, write the HTML attribute name as `data-*` and use the `dataset.` prefix in the binding expression to reference the camelCase state property:
+
+```html
+<!-- Template: data-date-of-birth attribute bound to state.dateOfBirth -->
+<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>
+
+<!-- Rendered (state: {"dateOfBirth": "1990-01-01"}) -->
+<div data-date-of-birth="1990-01-01" data-fe-c-0-1></div>
+```
+
+The `dataset.` prefix is stripped at resolution time: `{{dataset.dateOfBirth}}` reads `dateOfBirth` from the element's state, not a nested `dataset` object. This matches how FAST elements expose dataset properties as first-class observable properties.
+
+The same prefix works in content bindings and conditional expressions:
+
+```html
+<!-- Content binding -->
+<span>{{dataset.dateOfBirth}}</span>
+
+<!-- Boolean condition -->
+<f-when value="{{dataset.active}}">Active</f-when>
+```
+
 ### Conditional Rendering — `<f-when>`
 
 ```html
