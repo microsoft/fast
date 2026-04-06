@@ -296,6 +296,12 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
     if v == "true" { return JsonValue::Bool(true); }
     if v == "false" { return JsonValue::Bool(false); }
     if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
+    // Try parsing JSON array or object literals
+    if v.starts_with('[') || v.starts_with('{') {
+        if let Ok(parsed) = crate::json::parse(v) {
+            return parsed;
+        }
+    }
     JsonValue::String(v.clone())
 }
 
