@@ -260,14 +260,16 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
-        // Skip event handler bindings (@click, @keydown, etc.) — client-side only
-        if attr_name.starts_with('@') {
+        // Skip client-side-only bindings: @event handlers and :property bindings.
+        // Both are resolved entirely by the FAST client runtime and have no meaning
+        // in server-side rendering state.
+        if attr_name.starts_with('@') || attr_name.starts_with(':') {
             continue;
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        // Strip the leading `:` then lowercase — HTML attribute names are case-insensitive
-        // and browsers always store them lowercase, so `isEnabled` becomes `isenabled`.
-        // Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+        // HTML attribute names are case-insensitive; browsers always store them lowercase.
+        // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
+        // stays `selected-user-id`.
         if let Some(path) = data_attr_to_dataset_key(attr_name) {
             if let Some((group, prop)) = path.split_once('.') {
                 let group_val = state_map
@@ -278,7 +280,7 @@ pub fn render_custom_element(
                 }
             }
         } else {
-            let key = attr_name.trim_start_matches(':').to_lowercase();
+            let key = attr_name.to_lowercase();
             state_map.insert(key, json_val);
         }
     }
