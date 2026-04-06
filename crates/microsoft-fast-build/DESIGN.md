@@ -206,14 +206,16 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state** from the attributes:
+   - Attributes starting with `@` (event handlers such as `@click`) are **skipped** — they are client-side only and do not contribute to child state.
+   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase, so `isEnabled` becomes `isenabled`. Hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+   - **Property binding keys (`:attr`) preserve original casing** — JavaScript property names are case-sensitive. `:myProp="{{expr}}"` → key `myProp`. The leading `:` is stripped; the rest is passed through unchanged.
    - No value (boolean attribute) → `Bool(true)`
-   - `"true"` / `"false"` → `Bool`
-   - Numeric string → `Number(f64)`
-   - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
-   - Anything else → `String`
+   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type)
+   - Anything else → `String` (attribute values are always strings; booleans and numbers must be passed via `{{binding}}` expressions)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Emit Declarative Shadow DOM** with hydration attributes:
+7. **Strip client-only binding attributes** (`@attr` event bindings and `:attr` property bindings) from both the outer element's opening tag and from all tags inside the rendered shadow template. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+8. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
      <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
