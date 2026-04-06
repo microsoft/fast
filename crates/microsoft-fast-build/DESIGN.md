@@ -210,6 +210,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - `"true"` / `"false"` → `Bool`
    - Numeric string → `Number(f64)`
    - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
+   - JSON array literal (starts with `[`) → parse as `Array`
+   - JSON object literal (starts with `{`) → parse as `Object`
    - Anything else → `String`
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).

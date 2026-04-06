@@ -238,9 +238,11 @@ Attributes on a custom element become the state passed to its template:
 | `disabled` (boolean, no value) | `{"disabled": true}` |
 | `label="Click me"` | `{"label": "Click me"}` |
 | `count="42"` | `{"count": 42}` |
+| `items="[]"` | `{"items": []}` (parsed as a JSON array) |
+| `config='{"k":"v"}'` | `{"config": {"k": "v"}}` (parsed as a JSON object) |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 
-The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`.
+The last form is a **property binding with renaming**: `foo="{{bar}}"` resolves `bar` from the _parent_ state and passes it into the child template under the key `foo`. JSON array and object literals are parsed using the same hand-rolled parser as state JSON.
 
 ### Output Format
 
