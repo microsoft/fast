@@ -88,13 +88,13 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 
 ```html
 <!-- Shadow template -->
-<input type="checkbox" ?disabled="{{!isEnabled}}">
-<input ?disabled="{{activeGroup == currentGroup}}" type="button">
+<input type="checkbox" ?disabled="{{!isenabled}}">
+<input ?disabled="{{activegroup == currentgroup}}" type="button">
 
-<!-- Rendered — isEnabled: false (so !isEnabled is true) -->
+<!-- Rendered — isenabled: false (so !isenabled is true) -->
 <input type="checkbox" disabled data-fe-c-0-1>
 
-<!-- Rendered — activeGroup !== currentGroup -->
+<!-- Rendered — activegroup !== currentgroup -->
 <input type="button" data-fe-c-0-1>
 ```
 
@@ -245,16 +245,14 @@ Attributes on a custom element become the state passed to its template:
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 | `selected-user-id="42"` | `{"selected-user-id": "42"}` |
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
-| `:myProp="{{expr}}"` | `{"myProp": <resolved value>}` |
-| `@click="{handler()}"` | *(skipped — not added to child state)* |
+| `:myProp="{{expr}}"` | *(skipped — client-side only)* |
+| `@click="{handler()}"` | *(skipped — client-side only)* |
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
 **Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
 
-**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a typed value to a child element's JS property. The renderer strips the leading `:` and **preserves the original casing** — JavaScript property names are case-sensitive, so `:myProp` is stored as `myProp` in the child scope.
-
-**Client-only bindings stripped from HTML**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output. Their resolved values are still passed into the child element's rendering scope. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+**Client-only bindings stripped from HTML and skipped from state**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output and are not added to the child element's rendering scope — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 The `{{bar}}` binding form resolves `bar` from the _parent_ state and passes the value into the child template under the key `foo`.
 
