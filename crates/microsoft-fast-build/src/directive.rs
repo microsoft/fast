@@ -258,15 +258,10 @@ pub fn render_custom_element(
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
         // Strip leading `:` from property binding names (FAST uses `:propName="{{expr}}"`)
-        let key = attr_name.trim_start_matches(':');
-        // Also insert the camelCase version of kebab-case attribute names.
-        // Clone only when inserting both keys; move into the map otherwise.
-        if key.contains('-') {
-            state_map.insert(key.to_string(), json_val.clone());
-            state_map.insert(kebab_to_camel(key), json_val);
-        } else {
-            state_map.insert(key.to_string(), json_val);
-        }
+        // then normalize to lowercase without hyphens — mirroring how browsers treat
+        // case-insensitive HTML attribute names (the default behaviour).
+        let key = normalize_attr_key(attr_name.trim_start_matches(':'));
+        state_map.insert(key, json_val);
     }
     let child_root = JsonValue::Object(state_map);
 
@@ -297,20 +292,8 @@ pub fn render_custom_element(
     Ok((output, after))
 }
 
-fn kebab_to_camel(s: &str) -> String {
-    let mut result = String::new();
-    let mut capitalize_next = false;
-    for c in s.chars() {
-        if c == '-' {
-            capitalize_next = true;
-        } else if capitalize_next {
-            result.extend(c.to_uppercase());
-            capitalize_next = false;
-        } else {
-            result.push(c);
-        }
-    }
-    result
+fn normalize_attr_key(s: &str) -> String {
+    s.replace('-', "").to_lowercase()
 }
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {

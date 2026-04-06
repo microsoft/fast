@@ -208,12 +208,12 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 4. **Build child state** from the attributes:
    - Attributes starting with `@` (event handlers such as `@click`) are **skipped** — they are client-side only.
    - The leading `:` is stripped from property binding names (e.g. `:myProp="{{expr}}"` → key `myProp`).
+   - Each key is then **normalised to lowercase with hyphens removed** — this is the default behaviour, mirroring how browsers treat case-insensitive HTML attribute names (e.g. `selected-user-id` and `selectedUserId` both become `selecteduserid`).
    - No value (boolean attribute) → `Bool(true)`
    - `"true"` / `"false"` → `Bool`
    - Numeric string → `Number(f64)`
    - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
    - Anything else → `String`
-   - For each attribute whose name contains a hyphen, a **camelCase alias** is also inserted alongside the original kebab-case key (e.g. `selected-user-id` → also stored as `selectedUserId`). This lets templates reference properties using the camelCase convention FAST uses at runtime, while the HTML attribute remains kebab-case.
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
 7. **Emit Declarative Shadow DOM** with hydration attributes:

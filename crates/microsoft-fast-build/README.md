@@ -239,13 +239,14 @@ Attributes on a custom element become the state passed to its template:
 | `label="Click me"` | `{"label": "Click me"}` |
 | `count="42"` | `{"count": 42}` |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
-| `selected-user-id="42"` | `{"selected-user-id": "42", "selectedUserId": "42"}` |
-| `:myProp="{{expr}}"` | `{"myProp": <resolved value>}` |
+| `selected-user-id="42"` | `{"selecteduserid": "42"}` |
+| `selectedUserId="42"` | `{"selecteduserid": "42"}` |
+| `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` |
 | `@click="{handler()}"` | *(skipped — client-side only)* |
 
-**Kebab-to-camelCase aliasing**: any attribute whose name contains a hyphen is stored under *both* the original kebab-case key and its camelCase equivalent. This lets templates reference attributes using the camelCase convention FAST uses at runtime without requiring duplicate attributes.
+**Lowercase normalisation (default behaviour)**: all attribute keys are normalised to lowercase with hyphens removed before being stored in child state. This mirrors how browsers treat case-insensitive HTML attribute names, so `selected-user-id`, `selectedUserId`, and `SelectedUserID` all resolve to the same `selecteduserid` key. Templates must reference the lowercase form (e.g. `{{selecteduserid}}`).
 
-**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a value to a child element's property. The renderer strips the leading `:` so the child template can access the value as `{{propName}}`.
+**Property bindings (`:` prefix)**: FAST parent templates use `:propName="{{expr}}"` to bind a value to a child element's property. The renderer strips the leading `:` before normalising, so `:selectedUserId="{{expr}}"` is stored as `selecteduserid`.
 
 **Event bindings (`@` prefix)**: attributes starting with `@` are event handlers and are skipped when building element state — they have no server-side meaning.
 
