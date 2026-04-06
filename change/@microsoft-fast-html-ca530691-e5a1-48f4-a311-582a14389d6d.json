@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "feat(fast-html): convert dataset.X bindings to camelCase property access",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
