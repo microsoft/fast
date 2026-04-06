@@ -231,12 +231,23 @@ fn test_custom_element_multi_word_kebab_to_camel() {
 
 #[test]
 fn test_custom_element_colon_property_binding() {
-    // `:myprop="{{expr}}"` — the `:` prefix is stripped when building child state
+    // `:myprop="{{expr}}"` — `:` prefix stripped, lowercase name preserved as-is in child state
     let parent_template = r#"<child-el :myprop="{{value}}"></child-el>"#;
     let child_template = "<span>{{myprop}}</span>";
     let locator = make_locator(&[("child-el", child_template)]);
     let result = render_template_with_locator(parent_template, r#"{"value": "hello"}"#, &locator).unwrap();
     assert!(result.contains("hello"), "colon binding resolved: {result}");
+}
+
+#[test]
+fn test_custom_element_camel_property_binding() {
+    // `:myProp="{{expr}}"` — property binding keys preserve original casing
+    // (JavaScript property names are case-sensitive, unlike HTML attributes)
+    let parent_template = r#"<child-el :myProp="{{value}}"></child-el>"#;
+    let child_template = "<span>{{myProp}}</span>";
+    let locator = make_locator(&[("child-el", child_template)]);
+    let result = render_template_with_locator(parent_template, r#"{"value": "hello"}"#, &locator).unwrap();
+    assert!(result.contains("hello"), "camelCase property binding resolved: {result}");
 }
 
 #[test]
