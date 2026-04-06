@@ -298,6 +298,43 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
     }
 }
 
+/// Remove all FAST client-only binding attributes from an opening tag string:
+/// - `@attr="{...}"` event bindings
+/// - `:attr="..."` property bindings
+///
+/// These are resolved or reconnected entirely by the FAST client runtime and
+/// have no meaning in static HTML. The `data-fe-c` hydration binding count is
+/// unaffected — callers use `count_tag_attribute_bindings` on the *original*
+/// tag string so the FAST runtime still allocates the correct number of binding slots.
+pub fn strip_client_only_attrs(tag: &str) -> String {
+    let trimmed = tag.trim_end();
+    let is_self_closing = trimmed.ends_with("/>");
+    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
+
+    let tag_name = match read_tag_name(tag, 0) {
+        Some(name) => name,
+        None => return tag.to_string(),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(tag) {
+        if name.starts_with('@') || name.starts_with(':') {
+            continue;
+        }
+        match value {
+            None => { out.push(' '); out.push_str(&name); }
+            Some(v) => out.push_str(&format!(" {}=\"{}\"", name, v)),
+        }
+    }
+
+    if is_self_closing {
+        out.push_str(" />");
+    } else if has_closing_gt {
+        out.push('>');
+    }
+    out
+}
+
 /// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
 pub fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
     let marker = format!(" data-fe-c-{}-{}", start_idx, count);
