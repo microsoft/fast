@@ -205,8 +205,8 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
 
 #[test]
 fn test_custom_element_kebab_attr_camel_in_template() {
-    // kebab-case attrs are normalised to lowercase without hyphens by default
-    let locator = make_locator(&[("my-el", "<span>{{selecteduserid}}</span>")]);
+    // kebab-case attrs are lowercased but hyphens are preserved by default
+    let locator = make_locator(&[("my-el", "<span>{{selected-user-id}}</span>")]);
     let result = render_template_with_locator(
         r#"<my-el selected-user-id="42"></my-el>"#,
         "{}",
@@ -217,14 +217,14 @@ fn test_custom_element_kebab_attr_camel_in_template() {
 
 #[test]
 fn test_custom_element_multi_word_kebab_to_camel() {
-    let locator = make_locator(&[("my-el", "<p>{{showdetails}}</p><p>{{enablecontinue}}</p>")]);
+    let locator = make_locator(&[("my-el", "<p>{{show-details}}</p><p>{{enable-continue}}</p>")]);
     let result = render_template_with_locator(
         r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
         "{}",
         &locator,
     ).unwrap();
-    assert!(result.contains("true"), "showdetails: {result}");
-    assert!(result.contains("false"), "enablecontinue: {result}");
+    assert!(result.contains("true"), "show-details: {result}");
+    assert!(result.contains("false"), "enable-continue: {result}");
 }
 
 // ── colon-prefixed property bindings ─────────────────────────────────────────
