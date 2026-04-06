@@ -44,10 +44,11 @@
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "biome format --changed --no-errors-on-unmatched .",
     "format": "biome format --changed --no-errors-on-unmatched --fix --write .",
-    "lint": "biome lint --changed --no-errors-on-unmatched .",
-    "lint:fix": "biome lint --changed --no-errors-on-unmatched --fix .",
-    "biome:check": "biome check --changed --no-errors-on-unmatched .",
-    "biome:fix": "biome check --changed --no-errors-on-unmatched --fix ."
+    "lint": "biome-changed",
+    "lint:fix": "biome-changed -- --fix",
+    "biome:check": "biome-changed check",
+    "biome:fix": "biome-changed check -- --fix",
+    "biome:ci": "biome ci --changed --no-errors-on-unmatched ."
   },
   "devDependencies": {
     "@ast-grep/cli": "0.37.0",
