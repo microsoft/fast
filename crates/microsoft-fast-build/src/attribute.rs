@@ -221,10 +221,148 @@ pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
     (db, sb)
 }
 
+// ── Dataset attribute helpers ────────────────────────────────────────────────
+
+/// Convert a camelCase string to kebab-case.
+/// "dateOfBirth" → "date-of-birth"
+fn camel_to_kebab(s: &str) -> String {
+    let mut result = String::with_capacity(s.len() + 4);
+    for ch in s.chars() {
+        if ch.is_uppercase() {
+            result.push('-');
+            result.push(ch.to_ascii_lowercase());
+        } else {
+            result.push(ch);
+        }
+    }
+    result
+}
+
+/// Convert a `dataset.propertyName` attribute name to the corresponding
+/// `data-property-name` HTML attribute name, following the MDN HTMLElement.dataset
+/// naming convention. Returns `None` for names that do not start with `dataset.`.
+///
+/// Examples: "dataset.dateOfBirth" → "data-date-of-birth", "dataset.foo" → "data-foo"
+pub fn dataset_name_to_data_attr(name: &str) -> Option<String> {
+    name.strip_prefix("dataset.")
+        .map(|camel| format!("data-{}", camel_to_kebab(camel)))
+}
+
+/// In an HTML opening tag string, convert any `dataset.propertyName` (or
+/// `?dataset.propertyName` boolean-binding) attribute names to the corresponding
+/// `data-property-name` (or `?data-property-name`) HTML attribute names.
+/// All other content — attribute values, other attributes — is copied verbatim.
+///
+/// This is a no-op (returns an owned copy without scanning) when the tag does not
+/// contain the substring `dataset.`.
+pub fn normalize_dataset_attribute_names(tag: &str) -> String {
+    if !tag.contains("dataset.") {
+        return tag.to_string();
+    }
+
+    let bytes = tag.as_bytes();
+    let mut result = String::with_capacity(tag.len() + 16);
+    let mut i = 0;
+
+    // Copy `<tagname` verbatim.
+    if i < bytes.len() && bytes[i] == b'<' {
+        i += 1;
+    }
+    while i < bytes.len()
+        && !bytes[i].is_ascii_whitespace()
+        && bytes[i] != b'>'
+        && bytes[i] != b'/'
+    {
+        i += 1;
+    }
+    result.push_str(&tag[..i]);
+
+    // Process attributes one by one.
+    while i < bytes.len() {
+        // Whitespace between attributes.
+        if bytes[i].is_ascii_whitespace() {
+            let ws_start = i;
+            while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+                i += 1;
+            }
+            result.push_str(&tag[ws_start..i]);
+            continue;
+        }
+
+        // End of tag (`>` or `/>` or trailing `/`).
+        if bytes[i] == b'>' || bytes[i] == b'/' {
+            result.push_str(&tag[i..]);
+            break;
+        }
+
+        // Read attribute name (may begin with `?` for boolean bindings).
+        let name_start = i;
+        while i < bytes.len()
+            && bytes[i] != b'='
+            && !bytes[i].is_ascii_whitespace()
+            && bytes[i] != b'>'
+            && bytes[i] != b'/'
+        {
+            i += 1;
+        }
+        let attr_name = &tag[name_start..i];
+
+        // Convert dataset attribute names; handle the `?dataset.X` boolean-binding form too.
+        if let Some(data_name) = dataset_name_to_data_attr(attr_name) {
+            result.push_str(&data_name);
+        } else if let Some(inner) = attr_name.strip_prefix('?') {
+            if let Some(data_name) = dataset_name_to_data_attr(inner) {
+                result.push('?');
+                result.push_str(&data_name);
+            } else {
+                result.push_str(attr_name);
+            }
+        } else {
+            result.push_str(attr_name);
+        }
+
+        // Copy the value part verbatim (handles `=`, quoted, and unquoted values).
+        if i < bytes.len() && bytes[i] == b'=' {
+            result.push('=');
+            i += 1;
+            let ws_start = i;
+            while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+                i += 1;
+            }
+            result.push_str(&tag[ws_start..i]);
+            if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
+                let quote = bytes[i];
+                let val_start = i;
+                i += 1;
+                while i < bytes.len() && bytes[i] != quote {
+                    i += 1;
+                }
+                if i < bytes.len() {
+                    i += 1; // closing quote
+                }
+                result.push_str(&tag[val_start..i]);
+            } else {
+                let val_start = i;
+                while i < bytes.len()
+                    && !bytes[i].is_ascii_whitespace()
+                    && bytes[i] != b'>'
+                    && bytes[i] != b'/'
+                {
+                    i += 1;
+                }
+                result.push_str(&tag[val_start..i]);
+            }
+        }
+    }
+
+    result
+}
+
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
 /// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
 /// either renders the bare attribute name (if true) or omits the attribute (if false).
+/// Also converts any `dataset.propertyName` attribute names to `data-property-name`.
 pub fn resolve_attribute_bindings_in_tag(
     tag: &str,
     root: &crate::json::JsonValue,
@@ -233,6 +371,8 @@ pub fn resolve_attribute_bindings_in_tag(
     use crate::content::html_escape;
     use crate::context::resolve_value;
     use crate::expression::evaluate;
+    let normalized = normalize_dataset_attribute_names(tag);
+    let tag = normalized.as_str();
     let mut result = String::with_capacity(tag.len());
     let mut pos = 0;
     loop {
