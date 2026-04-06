@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fix: normalise attribute keys to lowercase (strip hyphens) when building custom element state — this is the default behaviour, mirroring how browsers treat case-insensitive HTML attribute names",
+  "comment": "fix: strip @event binding attributes from rendered HTML; attribute values are always strings unless a {{binding}} expression is used; property binding keys preserve their original casing",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "patch"
