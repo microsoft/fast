@@ -201,29 +201,30 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
     assert!(locator.has_template("my-button"), "should find my-button by name attribute");
 }
 
-// ── kebab-case attribute → camelCase in template ──────────────────────────────
+// ── attribute name → lowercase normalisation ──────────────────────────────────
 
 #[test]
 fn test_custom_element_kebab_attr_camel_in_template() {
-    let locator = make_locator(&[("my-el", "<span>{{selectedUserId}}</span>")]);
+    // kebab-case attrs are normalised to lowercase without hyphens by default
+    let locator = make_locator(&[("my-el", "<span>{{selecteduserid}}</span>")]);
     let result = render_template_with_locator(
         r#"<my-el selected-user-id="42"></my-el>"#,
         "{}",
         &locator,
     ).unwrap();
-    assert!(result.contains("42"), "camelCase resolved: {result}");
+    assert!(result.contains("42"), "lowercase resolved: {result}");
 }
 
 #[test]
 fn test_custom_element_multi_word_kebab_to_camel() {
-    let locator = make_locator(&[("my-el", "<p>{{showDetails}}</p><p>{{enableContinue}}</p>")]);
+    let locator = make_locator(&[("my-el", "<p>{{showdetails}}</p><p>{{enablecontinue}}</p>")]);
     let result = render_template_with_locator(
         r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
         "{}",
         &locator,
     ).unwrap();
-    assert!(result.contains("true"), "showDetails: {result}");
-    assert!(result.contains("false"), "enableContinue: {result}");
+    assert!(result.contains("true"), "showdetails: {result}");
+    assert!(result.contains("false"), "enablecontinue: {result}");
 }
 
 // ── colon-prefixed property bindings ─────────────────────────────────────────
