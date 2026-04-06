@@ -259,10 +259,13 @@ pub fn render_custom_element(
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
         // Strip leading `:` from property binding names (FAST uses `:propName="{{expr}}"`)
         let key = attr_name.trim_start_matches(':');
-        state_map.insert(key.to_string(), json_val.clone());
-        // Also insert the camelCase version of kebab-case attribute names
+        // Also insert the camelCase version of kebab-case attribute names.
+        // Clone only when inserting both keys; move into the map otherwise.
         if key.contains('-') {
+            state_map.insert(key.to_string(), json_val.clone());
             state_map.insert(kebab_to_camel(key), json_val);
+        } else {
+            state_map.insert(key.to_string(), json_val);
         }
     }
     let child_root = JsonValue::Object(state_map);
