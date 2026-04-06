@@ -7,92 +7,110 @@ fn state(entries: Vec<(&str, JsonValue)>) -> JsonValue {
     JsonValue::Object(entries.into_iter().map(|(k, v)| (k.to_string(), v)).collect())
 }
 
-fn str_val(s: &str) -> JsonValue {
-    JsonValue::String(s.to_string())
-}
+fn str_val(s: &str) -> JsonValue { JsonValue::String(s.to_string()) }
+fn bool_val(b: bool) -> JsonValue { JsonValue::Bool(b) }
 
-fn empty() -> JsonValue {
-    JsonValue::Object(HashMap::new())
-}
+fn empty() -> JsonValue { JsonValue::Object(HashMap::new()) }
 
-// ── Content bindings ──────────────────────────────────────────────────────────
+// ── Content bindings — dataset.X reads state["dataset"]["X"] ─────────────────
 
-/// `{{dataset.dateOfBirth}}` as a content binding strips the `dataset.` prefix
-/// and resolves the camelCase property name from state.
+/// `{{dataset.name}}` resolves from nested state `{"dataset": {"name": "Alice"}}`.
 #[test]
 fn test_dataset_content_binding() {
     assert_eq!(
-        ok(
-            r#"<p>{{dataset.dateOfBirth}}</p>"#,
-            r#"{"dateOfBirth": "1990-01-01"}"#,
-        ),
-        r#"<p>1990-01-01</p>"#,
+        ok(r#"<p>{{dataset.name}}</p>"#, r#"{"dataset": {"name": "Alice"}}"#),
+        r#"<p>Alice</p>"#,
     );
 }
 
-/// Single-word dataset property: `{{dataset.name}}` reads `state.name`.
-#[test]
-fn test_dataset_content_binding_single_word() {
-    assert_eq!(
-        ok(r#"<span>{{dataset.name}}</span>"#, r#"{"name": "Alice"}"#),
-        r#"<span>Alice</span>"#,
-    );
-}
-
-/// Multi-word camelCase: `{{dataset.createdAt}}` reads `state.createdAt`.
+/// Multi-level camelCase: `{{dataset.dateOfBirth}}` reads `state.dataset.dateOfBirth`.
 #[test]
 fn test_dataset_content_binding_multi_word() {
     assert_eq!(
-        ok(r#"{{dataset.createdAt}}"#, r#"{"createdAt": "2024-01-15"}"#),
-        r#"2024-01-15"#,
+        ok(
+            r#"{{dataset.dateOfBirth}}"#,
+            r#"{"dataset": {"dateOfBirth": "1990-01-01"}}"#,
+        ),
+        "1990-01-01",
     );
 }
 
-// ── Attribute bindings inside custom-element shadows ─────────────────────────
+// ── Custom element: data-* attributes populate the dataset state key ──────────
 
-/// `data-date-of-birth="{{dataset.dateOfBirth}}"` inside a shadow template:
-/// the attribute name is already correct HTML; the binding resolves from
-/// the camelCase state key.
+/// `data-date-of-birth` on a custom element becomes `state.dataset.dateOfBirth`
+/// in the shadow template.
 #[test]
-fn test_dataset_attr_binding_in_shadow() {
+fn test_data_attr_maps_to_dataset_state() {
     let locator = make_locator(&[(
         "test-el",
         r#"<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>"#,
     )]);
-    let root = state(vec![("dateOfBirth", str_val("1990-01-01"))]);
     let result = render_with_locator(
-        r#"<test-el dateOfBirth="1990-01-01"></test-el>"#,
-        &root,
-        &locator,
-    ).unwrap();
-    assert!(result.contains(r#"data-date-of-birth="1990-01-01""#), "attr binding: {result}");
-}
-
-/// Multiple dataset bindings on the same element are each resolved.
-#[test]
-fn test_multiple_dataset_attr_bindings() {
-    let locator = make_locator(&[(
-        "test-el",
-        r#"<div data-first-name="{{dataset.firstName}}" data-last-name="{{dataset.lastName}}"></div>"#,
-    )]);
-    let result = render_with_locator(
-        r#"<test-el firstName="Ada" lastName="Lovelace"></test-el>"#,
+        r#"<test-el data-date-of-birth="1990-01-01"></test-el>"#,
         &empty(),
         &locator,
     ).unwrap();
-    assert!(result.contains(r#"data-first-name="Ada""#), "first-name: {result}");
-    assert!(result.contains(r#"data-last-name="Lovelace""#), "last-name: {result}");
+    assert!(result.contains(r#"data-date-of-birth="1990-01-01""#), "resolved: {result}");
 }
 
-// ── dataset.X inside f-when ───────────────────────────────────────────────────
-
-/// `{{dataset.active}}` used as a boolean condition in `<f-when>`.
+/// `data-date-of-birth="{{dob}}"` — value from parent binding — reaches the
+/// shadow template as `{{dataset.dateOfBirth}}`.
 #[test]
-fn test_dataset_in_f_when() {
+fn test_data_attr_from_parent_binding() {
+    let locator = make_locator(&[(
+        "test-el",
+        r#"<span>{{dataset.dateOfBirth}}</span>"#,
+    )]);
+    let root = state(vec![("dob", str_val("1990-01-01"))]);
+    let result = render_with_locator(
+        r#"<test-el data-date-of-birth="{{dob}}"></test-el>"#,
+        &root,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("1990-01-01"), "content binding: {result}");
+}
+
+/// Multiple `data-*` attributes are all grouped under `dataset`.
+#[test]
+fn test_multiple_data_attrs_in_dataset() {
+    let locator = make_locator(&[(
+        "test-el",
+        r#"<p>{{dataset.firstName}} {{dataset.lastName}}</p>"#,
+    )]);
+    let result = render_with_locator(
+        r#"<test-el data-first-name="Ada" data-last-name="Lovelace"></test-el>"#,
+        &empty(),
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Ada"), "firstName: {result}");
+    assert!(result.contains("Lovelace"), "lastName: {result}");
+}
+
+/// Non-`data-*` attributes are still accessible as top-level state keys.
+#[test]
+fn test_non_data_attrs_remain_top_level() {
+    let locator = make_locator(&[(
+        "test-el",
+        r#"<div class="{{cls}}" data-id="{{dataset.id}}"></div>"#,
+    )]);
+    let result = render_with_locator(
+        r#"<test-el cls="card" data-id="42"></test-el>"#,
+        &empty(),
+        &locator,
+    ).unwrap();
+    assert!(result.contains(r#"class="card""#), "cls: {result}");
+    assert!(result.contains(r#"data-id="42""#), "dataset.id: {result}");
+}
+
+// ── dataset.X in f-when ───────────────────────────────────────────────────────
+
+/// `<f-when value="{{dataset.active}}">` evaluates `state.dataset.active`.
+#[test]
+fn test_dataset_in_f_when_true() {
     assert_eq!(
         ok(
             r#"<f-when value="{{dataset.active}}">yes</f-when>"#,
-            r#"{"active": true}"#,
+            r#"{"dataset": {"active": true}}"#,
         ),
         "yes",
     );
@@ -103,22 +121,8 @@ fn test_dataset_in_f_when_false() {
     assert_eq!(
         ok(
             r#"<f-when value="{{dataset.active}}">yes</f-when>"#,
-            r#"{"active": false}"#,
+            r#"{"dataset": {"active": false}}"#,
         ),
         "",
-    );
-}
-
-// ── dataset.X does not affect non-binding attribute names ─────────────────────
-
-/// A plain `data-date-of-birth` attribute (no binding) is passed through verbatim.
-#[test]
-fn test_plain_data_attr_unchanged() {
-    assert_eq!(
-        ok(
-            r#"<div data-date-of-birth="1990-01-01">{{name}}</div>"#,
-            r#"{"name": "Ada"}"#,
-        ),
-        r#"<div data-date-of-birth="1990-01-01">Ada</div>"#,
     );
 }

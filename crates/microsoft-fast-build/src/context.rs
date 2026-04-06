@@ -3,13 +3,12 @@ use crate::json::JsonValue;
 /// Resolve a binding expression against root state and loop variables.
 /// Loop vars are checked innermost-first (rev); falls back to root state.
 ///
-/// Expressions starting with `dataset.` have the prefix stripped before resolution:
-/// `dataset.dateOfBirth` resolves `dateOfBirth` from state, matching the
-/// MDN `HTMLElement.dataset` convention where the camelCase property name is the
-/// state key and the corresponding HTML attribute is `data-<kebab-case>`.
+/// Dot-notation paths traverse nested objects: `dataset.dateOfBirth` accesses
+/// `state["dataset"]["dateOfBirth"]`. When a custom element receives `data-*`
+/// HTML attributes, the renderer stores them in the child state under a nested
+/// `"dataset"` key so that `{{dataset.X}}` bindings work naturally.
 pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
     let expr = expr.trim();
-    let expr = expr.strip_prefix("dataset.").unwrap_or(expr);
     for (var_name, value) in loop_vars.iter().rev() {
         if var_name == expr {
             return Some(value.clone());

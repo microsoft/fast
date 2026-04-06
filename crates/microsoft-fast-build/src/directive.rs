@@ -6,6 +6,7 @@ use crate::attribute::{
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
+    data_attr_to_dataset_key,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -249,11 +250,21 @@ pub fn render_custom_element(
     };
 
     // Parse attributes and build child state.
+    // `data-*` attributes are grouped under a nested `"dataset"` key so that
+    // `{{dataset.X}}` bindings in the shadow template resolve correctly.
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
+    let mut dataset_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        state_map.insert(attr_name.clone(), json_val);
+        if let Some(dataset_key) = data_attr_to_dataset_key(attr_name) {
+            dataset_map.insert(dataset_key, json_val);
+        } else {
+            state_map.insert(attr_name.clone(), json_val);
+        }
+    }
+    if !dataset_map.is_empty() {
+        state_map.insert("dataset".to_string(), JsonValue::Object(dataset_map));
     }
     let child_root = JsonValue::Object(state_map);
 
