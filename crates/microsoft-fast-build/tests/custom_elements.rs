@@ -204,19 +204,20 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
 // ── attribute name → lowercase normalisation ──────────────────────────────────
 
 #[test]
-fn test_custom_element_kebab_attr_camel_in_template() {
-    // kebab-case attrs are lowercased but hyphens are preserved by default
+fn test_custom_element_kebab_attr_hyphens_preserved() {
+    // kebab-case attr names are lowercased; hyphens are preserved
     let locator = make_locator(&[("my-el", "<span>{{selected-user-id}}</span>")]);
     let result = render_template_with_locator(
         r#"<my-el selected-user-id="42"></my-el>"#,
         "{}",
         &locator,
     ).unwrap();
-    assert!(result.contains("42"), "lowercase resolved: {result}");
+    assert!(result.contains("42"), "kebab attr resolved: {result}");
 }
 
 #[test]
-fn test_custom_element_multi_word_kebab_to_camel() {
+fn test_custom_element_multi_word_kebab_attrs() {
+    // multiple kebab-case attrs are lowercased and passed to the child scope as-is
     let locator = make_locator(&[("my-el", "<p>{{show-details}}</p><p>{{enable-continue}}</p>")]);
     let result = render_template_with_locator(
         r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
