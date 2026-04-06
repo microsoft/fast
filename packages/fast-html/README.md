@@ -372,6 +372,43 @@ Example:
 {{{html}}}
 ```
 
+#### Dataset bindings
+
+[`HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) exposes `data-*` attributes through a camelCase DOMStringMap API. Bindings that start with `dataset.` are automatically converted to their corresponding camelCase property, following the MDN naming convention.
+
+| Binding expression | Resolves to | Corresponding attribute |
+|---|---|---|
+| `{{dataset.dateOfBirth}}` | `element.dateOfBirth` | `data-date-of-birth` |
+| `{{dataset.userId}}` | `element.userId` | `data-user-id` |
+
+For the binding to be reactive, declare the backing property with `@attr` using the `data-*` attribute name:
+
+```ts
+class MyElement extends FASTElement {
+    @attr({ attribute: "data-date-of-birth" })
+    dateOfBirth: string = "";
+}
+```
+
+Then use the `dataset.` path in the template:
+
+```html
+<f-template name="my-element">
+    <template>
+        <span>{{dataset.dateOfBirth}}</span>
+    </template>
+</f-template>
+```
+
+A helper `datasetCamelToAttribute` is exported from the package to perform the camelCase → `data-*` conversion programmatically:
+
+```ts
+import { datasetCamelToAttribute } from "@microsoft/fast-html";
+
+datasetCamelToAttribute("dateOfBirth"); // "data-date-of-birth"
+datasetCamelToAttribute("userId");      // "data-user-id"
+```
+
 ### Writing Components
 
 When writing components with the intention of using the declarative HTML syntax, it is imperative that components are written with styling and rendering of the component to be less reliant on any JavaScript state management. An example of this is relying on `elementInterals` state to style a component.

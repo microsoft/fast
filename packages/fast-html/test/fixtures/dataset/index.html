@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title></title>
+    </head>
+    <body>
+        <test-element data-date-of-birth="1990-01-01"
+            ><template shadowrootmode="open" shadowroot="open"
+                ><span><!--fe-b$$start$$0$$dob-0$$fe-b-->1990-01-01<!--fe-b$$end$$0$$dob-0$$fe-b--></span
+            ></template
+        ></test-element>
+        <f-template name="test-element">
+            <template><span>{{dataset.dateOfBirth}}</span></template>
+        </f-template>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
