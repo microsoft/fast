@@ -307,76 +307,32 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
 /// unaffected — callers use `count_tag_attribute_bindings` on the *original*
 /// tag string so the FAST runtime still allocates the correct number of binding slots.
 pub fn strip_client_only_attrs(tag: &str) -> String {
-    let bytes = tag.as_bytes();
-    let mut result = String::with_capacity(tag.len());
-    let mut i = 0;
+    let trimmed = tag.trim_end();
+    let is_self_closing = trimmed.ends_with("/>");
+    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
 
-    // Copy `<tagname` verbatim.
-    while i < bytes.len()
-        && !bytes[i].is_ascii_whitespace()
-        && bytes[i] != b'>'
-        && bytes[i] != b'/'
-    {
-        result.push(bytes[i] as char);
-        i += 1;
+    let tag_name = match read_tag_name(tag, 0) {
+        Some(name) => name,
+        None => return tag.to_string(),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(tag) {
+        if name.starts_with('@') || name.starts_with(':') {
+            continue;
+        }
+        match value {
+            None => { out.push(' '); out.push_str(&name); }
+            Some(v) => out.push_str(&format!(" {}=\"{}\"", name, v)),
+        }
     }
 
-    loop {
-        // Collect leading whitespace before the next token.
-        let ws_start = i;
-        while i < bytes.len() && bytes[i].is_ascii_whitespace() {
-            i += 1;
-        }
-
-        // End of tag or end of string — flush remaining bytes and stop.
-        if i >= bytes.len() || bytes[i] == b'>' || bytes[i] == b'/' {
-            result.push_str(&tag[ws_start..]);
-            break;
-        }
-
-        // Read the attribute name.
-        let name_start = i;
-        while i < bytes.len()
-            && !bytes[i].is_ascii_whitespace()
-            && bytes[i] != b'='
-            && bytes[i] != b'>'
-            && bytes[i] != b'/'
-        {
-            i += 1;
-        }
-        let name = &tag[name_start..i];
-        let is_client_only = name.starts_with('@') || name.starts_with(':');
-
-        // Advance past the attribute value (if any).
-        let val_end = if i < bytes.len() && bytes[i] == b'=' {
-            i += 1; // skip `=`
-            if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
-                let q = bytes[i];
-                i += 1;
-                while i < bytes.len() && bytes[i] != q {
-                    i += 1;
-                }
-                if i < bytes.len() {
-                    i += 1; // skip closing quote
-                }
-            } else {
-                // Unquoted value.
-                while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' {
-                    i += 1;
-                }
-            }
-            i
-        } else {
-            i // Boolean attribute — no value.
-        };
-
-        if !is_client_only {
-            result.push_str(&tag[ws_start..val_end]);
-        }
-        // For @- and :-prefixed attrs: drop both the preceding whitespace and the attr+value.
+    if is_self_closing {
+        out.push_str(" />");
+    } else if has_closing_gt {
+        out.push('>');
     }
-
-    result
+    out
 }
 
 /// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
