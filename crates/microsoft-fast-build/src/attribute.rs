@@ -327,6 +327,85 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
     }
 }
 
+/// Remove all `@`-prefixed event binding attributes from an opening tag string,
+/// preserving all other attributes, whitespace, and the closing `>` or `/>` verbatim.
+///
+/// Event bindings (`@click="{...}"`) are FAST client-side-only constructs with no
+/// meaning in static HTML. The `data-fe-c` hydration binding count is unaffected —
+/// callers use `count_tag_attribute_bindings` on the *original* tag string so the
+/// FAST runtime still allocates the correct number of binding slots.
+pub fn strip_event_attrs(tag: &str) -> String {
+    let bytes = tag.as_bytes();
+    let mut result = String::with_capacity(tag.len());
+    let mut i = 0;
+
+    // Copy `<tagname` verbatim.
+    while i < bytes.len()
+        && !bytes[i].is_ascii_whitespace()
+        && bytes[i] != b'>'
+        && bytes[i] != b'/'
+    {
+        result.push(bytes[i] as char);
+        i += 1;
+    }
+
+    loop {
+        // Collect leading whitespace before the next token.
+        let ws_start = i;
+        while i < bytes.len() && bytes[i].is_ascii_whitespace() {
+            i += 1;
+        }
+
+        // End of tag or end of string — flush remaining bytes and stop.
+        if i >= bytes.len() || bytes[i] == b'>' || bytes[i] == b'/' {
+            result.push_str(&tag[ws_start..]);
+            break;
+        }
+
+        // Read the attribute name.
+        let name_start = i;
+        while i < bytes.len()
+            && !bytes[i].is_ascii_whitespace()
+            && bytes[i] != b'='
+            && bytes[i] != b'>'
+            && bytes[i] != b'/'
+        {
+            i += 1;
+        }
+        let is_event = tag[name_start..i].starts_with('@');
+
+        // Advance past the attribute value (if any).
+        let val_end = if i < bytes.len() && bytes[i] == b'=' {
+            i += 1; // skip `=`
+            if i < bytes.len() && (bytes[i] == b'"' || bytes[i] == b'\'') {
+                let q = bytes[i];
+                i += 1;
+                while i < bytes.len() && bytes[i] != q {
+                    i += 1;
+                }
+                if i < bytes.len() {
+                    i += 1; // skip closing quote
+                }
+            } else {
+                // Unquoted value.
+                while i < bytes.len() && !bytes[i].is_ascii_whitespace() && bytes[i] != b'>' {
+                    i += 1;
+                }
+            }
+            i
+        } else {
+            i // Boolean attribute — no value.
+        };
+
+        if !is_event {
+            result.push_str(&tag[ws_start..val_end]);
+        }
+        // For @-prefixed attrs: drop both the preceding whitespace and the attr+value.
+    }
+
+    result
+}
+
 /// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
 pub fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
     let marker = format!(" data-fe-c-{}-{}", start_idx, count);
