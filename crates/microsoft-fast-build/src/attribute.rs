@@ -349,7 +349,9 @@ pub fn strip_client_only_attrs(tag: &str) -> String {
     let mut out = format!("<{}", tag_name);
     for (name, value) in parse_element_attributes(tag) {
         if name.starts_with('@') || name.starts_with(':')
-            || name == "f-ref" || name == "f-slotted" || name == "f-children"
+            || name.eq_ignore_ascii_case("f-ref")
+            || name.eq_ignore_ascii_case("f-slotted")
+            || name.eq_ignore_ascii_case("f-children")
         {
             continue;
         }
