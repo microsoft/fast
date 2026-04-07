@@ -327,6 +327,63 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
     }
 }
 
+/// Returns `true` if `value` is a pure `{{expr}}` state-passing binding — the entire
+/// attribute value is a single double-brace expression with no surrounding text.
+///
+/// This distinguishes state-forwarding attributes (`list="{{list}}"`) from attributes
+/// that happen to contain a binding as part of a larger value (`prefix-{{list}}-suffix`).
+pub fn is_state_passing_binding(value: &str) -> bool {
+    let v = value.trim();
+    v.starts_with("{{") && v.ends_with("}}") && v.len() > 4
+}
+
+/// Remove all FAST client-only binding attributes from an opening tag string AND remove
+/// any attribute whose value is a pure `{{...}}` state-passing binding, for use when
+/// rendering entry-level root custom elements.
+///
+/// Entry-level custom elements receive the complete root state directly — attributes
+/// whose sole purpose was to forward state (e.g. `list="{{list}}"`) serve no role in
+/// the static HTML output and should not appear there.
+///
+/// Attributes without a binding value (e.g. `id="main"`, boolean `disabled`) are kept.
+pub fn strip_entry_attrs(tag: &str) -> String {
+    let trimmed = tag.trim_end();
+    let is_self_closing = trimmed.ends_with("/>");
+    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
+
+    let tag_name = match read_tag_name(tag, 0) {
+        Some(name) => name,
+        None => return tag.to_string(),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(tag) {
+        if name.starts_with('@') || name.starts_with(':')
+            || name.eq_ignore_ascii_case("f-ref")
+            || name.eq_ignore_ascii_case("f-slotted")
+            || name.eq_ignore_ascii_case("f-children")
+        {
+            continue;
+        }
+        if let Some(ref v) = value {
+            if is_state_passing_binding(v) {
+                continue;
+            }
+        }
+        match value {
+            None => { out.push(' '); out.push_str(&name); }
+            Some(v) => out.push_str(&format!(" {}=\"{}\"", name, v)),
+        }
+    }
+
+    if is_self_closing {
+        out.push_str(" />");
+    } else if has_closing_gt {
+        out.push('>');
+    }
+    out
+}
+
 /// Remove all FAST client-only binding attributes from an opening tag string:
 /// - `@attr="{...}"` event bindings
 /// - `:attr="..."` property bindings
