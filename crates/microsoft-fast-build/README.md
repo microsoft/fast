@@ -67,12 +67,15 @@ Both functions return `Result<String, RenderError>`. See [Error Handling](#error
 
 ### Single-Brace Passthrough
 
-Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer and pass through verbatim.
+Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer.
+
+In non-hydration rendering they pass through verbatim. When rendering **Declarative Shadow DOM** (inside a custom element's shadow template), client-side attribute directives — `f-ref`, `f-slotted`, `f-children` — are **stripped** from the HTML output, just like `@event` and `:property` bindings. The `data-fe-c` binding count still includes them so the FAST runtime can allocate the correct number of binding slots.
 
 ```html
-<!-- Passes through unchanged -->
-<button @click="{handleClick()}">{{label}}</button>
+<!-- Inside a shadow template — f-slotted, f-ref, f-children are stripped -->
 <slot f-slotted="{slottedNodes}"></slot>
+<video f-ref="{video}"></video>
+<ul f-children="{listItems}"></ul>
 ```
 
 ### Boolean Attribute Bindings — `?attr`
@@ -281,6 +284,9 @@ Attributes on a custom element become the state passed to its template:
 | `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
 | `:myProp="{{expr}}"` | *(skipped — client-side only)* |
 | `@click="{handler()}"` | *(skipped — client-side only)* |
+| `f-ref="{video}"` | *(skipped — client-side only)* |
+| `f-slotted="{nodes}"` | *(skipped — client-side only)* |
+| `f-children="{items}"` | *(skipped — client-side only)* |
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
@@ -288,7 +294,7 @@ Attributes on a custom element become the state passed to its template:
 
 **`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
 
-**Client-only bindings stripped from HTML and skipped from state**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output and are not added to the child element's rendering scope — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+**Client-only bindings stripped from HTML and skipped from state**: `@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives are removed from the rendered HTML output and are not added to the child element's rendering scope — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 ### Output Format
 
@@ -329,7 +335,7 @@ The `0` is the **binding index** (increments per binding within the current temp
 
 ### Attribute binding markers (compact format)
 
-Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, or `{expr}` single-brace event/ref bindings receive a compact marker attribute:
+Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, or `{expr}` single-brace event/directive bindings receive a compact marker attribute. Client-only attributes (`@event`, `:property`, `f-ref`, `f-slotted`, `f-children`) are **stripped** from the HTML output but still counted in the marker:
 
 ```html
 <!-- Template: <input type="{{type}}" disabled> -->
@@ -341,11 +347,14 @@ Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, 
 <!-- Template: <input ?disabled="{{show}}"> — show: false → attribute omitted -->
 <input data-fe-c-0-1>
 
-<!-- Template: <button @click="{handleClick()}">Label</button> -->
-<button @click="{handleClick()}" data-fe-c-0-1>Label</button>
+<!-- Template: <button @click="{handleClick()}">Label</button> — @click stripped -->
+<button data-fe-c-0-1>Label</button>
 
-<!-- Template: <my-el title="{{t}}" @click="{fn()}"> — 2 bindings -->
-<my-el title="Hello" @click="{fn()}" data-fe-c-0-2>
+<!-- Template: <slot f-slotted="{nodes}"></slot> — f-slotted stripped -->
+<slot data-fe-c-0-1></slot>
+
+<!-- Template: <video f-ref="{vid}" class="{{cls}}"> — f-ref stripped, 2 bindings -->
+<video class="my-video" data-fe-c-0-2>
 ```
 
 `data-fe-c-{startIndex}-{count}` — `startIndex` is the binding index of the first attribute binding on the element; `count` is the total number of attribute bindings.

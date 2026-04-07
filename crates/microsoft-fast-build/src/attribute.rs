@@ -330,6 +330,7 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
 /// Remove all FAST client-only binding attributes from an opening tag string:
 /// - `@attr="{...}"` event bindings
 /// - `:attr="..."` property bindings
+/// - `f-ref="{...}"`, `f-slotted="{...}"`, `f-children="{...}"` attribute directives
 ///
 /// These are resolved or reconnected entirely by the FAST client runtime and
 /// have no meaning in static HTML. The `data-fe-c` hydration binding count is
@@ -347,7 +348,9 @@ pub fn strip_client_only_attrs(tag: &str) -> String {
 
     let mut out = format!("<{}", tag_name);
     for (name, value) in parse_element_attributes(tag) {
-        if name.starts_with('@') || name.starts_with(':') {
+        if name.starts_with('@') || name.starts_with(':')
+            || name == "f-ref" || name == "f-slotted" || name == "f-children"
+        {
             continue;
         }
         match value {

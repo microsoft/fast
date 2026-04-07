@@ -92,7 +92,7 @@ It returns a `Directive` enum value carrying the byte position, or `None` if not
 
 ### Single-brace passthrough
 
-FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). These must pass through the server renderer **unchanged**.
+FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). In most rendering contexts these pass through the server renderer **unchanged** — `next_directive` skips over them so their `}` characters do not accidentally close a `{{binding}}`.
 
 The problem is that a single-brace expression may contain `}}` inside it (e.g. `{handler({key: val})}`) which would be misread as the closing delimiter of a `{{binding}}`.
 
@@ -104,6 +104,10 @@ The problem is that a single-brace expression may contain `}}` inside it (e.g. `
 4. Only return a directive when there is no single `{` preceding it.
 
 The skip logic lives in `attribute::find_single_brace` and `attribute::skip_single_brace_expr`. `skip_single_brace_expr` tracks brace depth and skips quoted strings so inner `}` characters are not mistakenly treated as closing braces.
+
+### Attribute directive stripping in Declarative Shadow DOM
+
+Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe-c` compact binding count still includes them so the FAST runtime allocates the correct binding slots.
 
 ---
 
@@ -206,7 +210,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state** from the attributes:
-   - Attributes starting with `@` (event handlers) or `:` (property bindings) are **skipped** — both are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
+   - Attributes starting with `@` (event handlers), `:` (property bindings), or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
    - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
    - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
    - No value (boolean attribute) → `Bool(true)`
@@ -214,7 +218,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - Anything else → `String` (attribute values are always strings; booleans and numbers must be passed via `{{binding}}` expressions)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Strip client-only binding attributes** (`@attr` event bindings and `:attr` property bindings) from both the outer element's opening tag and from all tags inside the rendered shadow template. These are skipped in step 4 (not added to child state) and also removed from the rendered HTML — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+7. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from both the outer element's opening tag and from all tags inside the rendered shadow template. These are skipped in step 4 (not added to child state) and also removed from the rendered HTML — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
 8. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
