@@ -23,8 +23,9 @@ pub fn render_with_templates(entry: &str, templates_json: &str, state: &str) -> 
 
 /// Render the top-level **entry HTML** with custom element templates and a JSON state string.
 /// Custom elements found at the root level of `entry` receive the full root state rather than
-/// building their child state from HTML attributes. `{{binding}}` attributes on root custom
-/// elements are stripped from the rendered output.
+/// building their child state from HTML attributes. For `{{binding}}` attributes on root custom
+/// elements, primitive results (`string`, `number`, and `bool`) are preserved in the rendered
+/// output, while non-primitive values (`array`, `object`, `null`) are stripped.
 ///
 /// `templates_json` is a JSON object mapping element names to their HTML template strings.
 /// Returns the rendered HTML or throws a JavaScript error.

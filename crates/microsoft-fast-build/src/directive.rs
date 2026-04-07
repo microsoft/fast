@@ -410,32 +410,27 @@ fn build_element_open_tag(
 
 /// Build the opening tag for an entry-level root custom element.
 ///
-/// - `{{binding}}` attributes are resolved from root state:
-///   - Primitives (`String`, `Number`, `Bool`) → rendered with the resolved value.
-///   - Non-primitives (`Array`, `Object`, `Null`) → stripped (cannot be represented
-///     as an HTML attribute; state is available via entry-level rendering instead).
+/// - Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are
+///   stripped first via `strip_client_only_attrs` to avoid duplicating the filter list.
+/// - `{{binding}}` attribute values are then resolved from root state:
+///   - `?attr="{{expr}}"` boolean bindings: evaluate `expr` as a boolean; emit the bare
+///     attribute name (without `?`) when truthy, omit it when falsy.
+///   - Primitives (`String`, `Number`, `Bool`) → rendered with the resolved value (HTML-escaped).
+///   - Non-primitives (`Array`, `Object`, `Null`) → stripped.
 /// - Static attributes (no binding syntax) are passed through unchanged.
-/// - Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`)
-///   are stripped as usual.
 fn build_entry_element_open_tag(
     open_tag_base: &str,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
 ) -> String {
-    let tag_name = match read_tag_name(open_tag_base, 0) {
+    let stripped_base = strip_client_only_attrs(open_tag_base);
+    let tag_name = match read_tag_name(&stripped_base, 0) {
         Some(name) => name,
-        None => return format!("{}>", open_tag_base),
+        None => return format!("{}>", stripped_base),
     };
 
     let mut out = format!("<{}", tag_name);
-    for (name, value) in parse_element_attributes(open_tag_base) {
-        if name.starts_with('@') || name.starts_with(':')
-            || name.eq_ignore_ascii_case("f-ref")
-            || name.eq_ignore_ascii_case("f-slotted")
-            || name.eq_ignore_ascii_case("f-children")
-        {
-            continue;
-        }
+    for (name, value) in parse_element_attributes(&stripped_base) {
         match value {
             None => {
                 out.push(' ');
@@ -443,12 +438,20 @@ fn build_entry_element_open_tag(
             }
             Some(ref v) if v.trim().starts_with("{{") && v.trim().ends_with("}}") && v.trim().len() > 4 => {
                 let binding = v.trim()[2..v.trim().len() - 2].trim();
-                let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
-                match resolved {
-                    JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
-                    JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
-                    JsonValue::Bool(b) => out.push_str(&format!(" {}=\"{}\"", name, b)),
-                    _ => {} // Array, Object, Null — strip
+                if name.starts_with('?') {
+                    // ?attr="{{expr}}" — boolean binding: emit bare attr name when truthy
+                    if evaluate(binding, root, loop_vars) {
+                        out.push(' ');
+                        out.push_str(&name[1..]);
+                    }
+                } else {
+                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+                    match resolved {
+                        JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
+                        JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
+                        JsonValue::Bool(b) => out.push_str(&format!(" {}=\"{}\"", name, b)),
+                        _ => {} // Array, Object, Null — strip
+                    }
                 }
             }
             Some(v) => {

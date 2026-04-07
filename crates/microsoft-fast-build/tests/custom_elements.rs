@@ -362,6 +362,31 @@ fn test_root_custom_element_primitive_binding_resolved() {
 }
 
 #[test]
+fn test_root_custom_element_boolean_attr_binding_truthy() {
+    // ?attr="{{expr}}" on a root element should render as the bare attribute name when truthy.
+    let locator = make_locator(&[("my-button", "<button>Click</button>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-button ?disabled="{{show}}"></my-button>"#,
+        r#"{"show":true}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(" disabled"), "boolean attr rendered when true: {result}");
+    assert!(!result.contains("?disabled"), "? prefix stripped: {result}");
+}
+
+#[test]
+fn test_root_custom_element_boolean_attr_binding_falsy() {
+    // ?attr="{{expr}}" on a root element should be omitted when falsy.
+    let locator = make_locator(&[("my-button", "<button>Click</button>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-button ?disabled="{{show}}"></my-button>"#,
+        r#"{"show":false}"#,
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("disabled"), "boolean attr omitted when false: {result}");
+}
+
+#[test]
 fn test_root_custom_element_non_primitive_binding_stripped() {
     // {{binding}} attrs on root custom elements that resolve to an array or object
     // should be stripped — they cannot be represented as an HTML attribute.
