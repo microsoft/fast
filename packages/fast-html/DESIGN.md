@@ -135,12 +135,11 @@ packages/fast-html/
 ## Exports and Public API
 
 ```typescript
-// src/index.ts
-export {
+import {
     RenderableFASTElement,
     TemplateElement,
     ObserverMap,
-} from "./components/index.js";
+} from "@microsoft/fast-html";
 ```
 
 Three primary exports are intended for application code:
