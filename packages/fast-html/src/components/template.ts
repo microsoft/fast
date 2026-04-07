@@ -209,9 +209,9 @@ class TemplateElement extends FASTElement {
 
             const registeredFastElement: FASTElementDefinition | undefined =
                 fastElementRegistry.getByType(value);
-            const template = this.getElementsByTagName("template").item(0);
+            const templates = this.getElementsByTagName("template");
 
-            if (template) {
+            if (templates.length === 1) {
                 // Callback: Before template has been evaluated and assigned
                 TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
 
@@ -248,6 +248,10 @@ class TemplateElement extends FASTElement {
                         values,
                     );
                 }
+            } else if (templates.length > 1) {
+                throw FAST.error(Message.moreThanOneTemplateProvided, {
+                    name: this.name,
+                });
             } else {
                 throw FAST.error(Message.noTemplateProvided, { name: this.name });
             }
