@@ -15,6 +15,12 @@ import { nextId, Parser } from "./markup.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
+/**
+ * Builds a hierarchical node ID by appending the child index to the parent's ID.
+ * For example, the third child of root is "r.2", and its first child is "r.2.0".
+ * These IDs are used as property names on the targets prototype so that each
+ * binding's target DOM node can be lazily resolved via a chain of childNodes lookups.
+ */
 const targetIdFrom = (parentId: string, nodeIndex: number): string =>
     `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
@@ -60,7 +66,7 @@ class CompilationContext<TSource = any, TParent = any>
     constructor(
         public readonly fragment: DocumentFragment,
         public readonly directives: Record<string, ViewBehaviorFactory>,
-        public readonly policy: DOMPolicy
+        public readonly policy: DOMPolicy,
     ) {}
 
     public addFactory(
@@ -68,7 +74,7 @@ class CompilationContext<TSource = any, TParent = any>
         parentId: string,
         nodeId: string,
         targetIndex: number,
-        tagName: string | null
+        tagName: string | null,
     ): void {
         if (!this.nodeIds.has(nodeId)) {
             this.nodeIds.add(nodeId);
@@ -88,10 +94,17 @@ class CompilationContext<TSource = any, TParent = any>
         return this;
     }
 
+    /**
+     * Registers a lazy getter on the targets prototype that resolves a DOM node
+     * by navigating from its parent's childNodes at the given index. Getters are
+     * chained: accessing targets["r.0.2"] first resolves targets["r.0"] (which
+     * resolves targets["r"]), then returns childNodes[2]. Results are cached so
+     * each node is resolved at most once per view instance.
+     */
     private addTargetDescriptor(
         parentId: string,
         targetId: string,
-        targetIndex: number
+        targetIndex: number,
     ): void {
         const descriptors = this.descriptors;
 
@@ -106,7 +119,7 @@ class CompilationContext<TSource = any, TParent = any>
         if (!descriptors[parentId]) {
             const index = parentId.lastIndexOf(".");
             const grandparentId = parentId.substring(0, index);
-            const childIndex = parseInt(parentId.substring(index + 1));
+            const childIndex = parseInt(parentId.substring(index + 1), 10);
             this.addTargetDescriptor(grandparentId, parentId, childIndex);
         }
 
@@ -128,15 +141,22 @@ class CompilationContext<TSource = any, TParent = any>
         descriptors[targetId] = descriptor;
     }
 
+    /**
+     * Creates a new HTMLView by cloning the compiled DocumentFragment and building
+     * a targets object. The targets prototype contains lazy getters that resolve
+     * each binding's target DOM node via childNodes traversal. Accessing every
+     * registered nodeId eagerly triggers the getter chain so all nodes are resolved
+     * before behaviors are bound.
+     */
     public createView(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
         const fragment = this.fragment.cloneNode(true) as DocumentFragment;
         const targets = Object.create(this.proto);
 
-        targets.r = fragment;
-        targets.h = hostBindingTarget ?? warningHost;
+        targets.r = fragment; // root — the cloned DocumentFragment
+        targets.h = hostBindingTarget ?? warningHost; // host — the custom element
 
         for (const id of this.nodeIds) {
-            targets[id]; // trigger locator
+            Reflect.get(targets, id); // trigger lazy getter to resolve and cache the DOM node
         }
 
         return new HTMLView(fragment, this.factories, targets);
@@ -149,7 +169,7 @@ function compileAttributes(
     node: HTMLElement,
     nodeId: string,
     nodeIndex: number,
-    includeBasicValues: boolean = false
+    includeBasicValues: boolean = false,
 ): void {
     const attributes = node.attributes;
     const directives = context.directives;
@@ -163,12 +183,11 @@ function compileAttributes(
         if (parseResult === null) {
             if (includeBasicValues) {
                 result = new HTMLBindingDirective(
-                    oneTime(() => attrValue, context.policy)
+                    oneTime(() => attrValue, context.policy),
                 );
                 HTMLDirective.assignAspect(result as any as Aspected, attr.name);
             }
         } else {
-            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             result = Compiler.aggregate(parseResult, context.policy);
         }
 
@@ -181,7 +200,7 @@ function compileAttributes(
                 parentId,
                 nodeId,
                 nodeIndex,
-                node.tagName
+                node.tagName,
             );
         }
     }
@@ -192,7 +211,7 @@ function compileContent(
     node: Text,
     parentId,
     nodeId,
-    nodeIndex
+    nodeIndex,
 ): NextNode {
     const parseResult = Parser.parse(node.textContent!, context.directives);
     if (parseResult === null) {
@@ -212,7 +231,7 @@ function compileContent(
             nodeId = targetIdFrom(parentId, nodeIndex);
             currentNode = lastNode.parentNode!.insertBefore(
                 document.createTextNode(""),
-                lastNode.nextSibling
+                lastNode.nextSibling,
             );
         }
 
@@ -226,7 +245,7 @@ function compileContent(
                 parentId,
                 nodeId,
                 nodeIndex,
-                null
+                null,
             );
         }
 
@@ -241,13 +260,12 @@ function compileContent(
 function compileChildren(
     context: CompilationContext,
     parent: Node,
-    parentId: string
+    parentId: string,
 ): void {
     let nodeIndex = 0;
     let childNode = parent.firstChild;
 
     while (childNode) {
-        /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         const result = compileNode(context, parentId, childNode, nodeIndex);
         childNode = result.node;
         nodeIndex = result.index;
@@ -258,7 +276,7 @@ function compileNode(
     context: CompilationContext,
     parentId: string,
     node: Node,
-    nodeIndex: number
+    nodeIndex: number,
 ): NextNode {
     const nodeId = targetIdFrom(parentId, nodeIndex);
 
@@ -269,19 +287,20 @@ function compileNode(
             break;
         case 3: // text node
             return compileContent(context, node as Text, parentId, nodeId, nodeIndex);
-        case 8: // comment
+        case 8: {
+            // comment
             const parts = Parser.parse((node as Comment).data, context.directives);
             if (parts !== null) {
                 context.addFactory(
-                    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                     Compiler.aggregate(parts) as CompiledViewBehaviorFactory,
                     parentId,
                     nodeId,
                     nodeIndex,
-                    null
+                    null,
                 );
             }
             break;
+        }
     }
 
     next.index = nodeIndex + 1;
@@ -292,7 +311,7 @@ function compileNode(
 function isMarker(node: Node, directives: Record<string, ViewBehaviorFactory>): boolean {
     return (
         node &&
-        node.nodeType == 8 &&
+        node.nodeType === 8 &&
         Parser.parse((node as Comment).data, directives) !== null
     );
 }
@@ -316,7 +335,7 @@ export type CompilationStrategy = (
     /**
      * The security policy to compile the html with.
      */
-    policy: DOMPolicy
+    policy: DOMPolicy,
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
@@ -341,7 +360,7 @@ export const Compiler = {
     compile<TSource = any, TParent = any>(
         html: string | HTMLTemplateElement,
         factories: Record<string, ViewBehaviorFactory>,
-        policy: DOMPolicy = DOM.policy
+        policy: DOMPolicy = DOM.policy,
     ): TemplateCompilationResult<TSource, TParent> {
         let template: HTMLTemplateElement;
 
@@ -368,7 +387,7 @@ export const Compiler = {
         const context = new CompilationContext<TSource, TParent>(
             fragment,
             factories,
-            policy
+            policy,
         );
         compileAttributes(context, "", template, /* host */ "h", 0, true);
 
@@ -409,7 +428,7 @@ export const Compiler = {
      */
     aggregate(
         parts: (string | ViewBehaviorFactory)[],
-        policy: DOMPolicy = DOM.policy
+        policy: DOMPolicy = DOM.policy,
     ): ViewBehaviorFactory {
         if (parts.length === 1) {
             return parts[0] as ViewBehaviorFactory;
@@ -442,7 +461,7 @@ export const Compiler = {
         };
 
         const directive = new HTMLBindingDirective(
-            oneWay(expression, bindingPolicy ?? policy, isVolatile)
+            oneWay(expression, bindingPolicy ?? policy, isVolatile),
         );
 
         HTMLDirective.assignAspect(directive, sourceAspect!);

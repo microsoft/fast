@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 02 Apr 2026 00:03:44 GMT and should not be manually modified. -->
+<!-- This log was last generated on Sat, 04 Apr 2026 00:22:26 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.45
+
+Sat, 04 Apr 2026 00:22:26 GMT
+
+### Changes
+
+- feat(fast-html): add $e event arg, deprecate e, support multiple event handler args (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.1.2
 
 ## 1.0.0-alpha.44
 

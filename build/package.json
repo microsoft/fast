@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "bin": {
-    "clean": "clean.mjs"
+    "clean": "clean.mjs",
+    "biome-changed": "biome-changed.mjs"
   }
 }

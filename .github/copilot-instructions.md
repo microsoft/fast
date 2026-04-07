@@ -56,14 +56,18 @@ Run all commands from the monorepo root. Use workspace flags to target a single 
 | Build one package | `npm run build -w @microsoft/fast-element` |
 | Test all | `npm run test` |
 | Test one package | `npm run test -w @microsoft/fast-element` |
-| Format check | `npm run format:check` |
-| Format fix | `npm run format` |
 | Lint | `npm run lint` |
 | Lint fix | `npm run lint:fix` |
-| Check (lint + format) | `npm run biome:check` |
+| Format check | `npm run format:check` |
+| Format fix | `npm run format` |
+| Check (lint + format + imports) | `npm run biome:check` |
+| Check fix | `npm run biome:fix` |
+| CI check (read-only) | `npm run biome:ci` |
 | Generate change file | `npm run change` |
 | Check change files | `npm run checkchange` |
 | API docs | `npm run doc -w @microsoft/fast-element` |
+
+All `lint`, `biome:check`, `biome:fix`, and `biome:ci` commands use `biome-changed`, which runs biome only on files with uncommitted git changes. The `format:check` and `format` commands use biome's own `--changed` flag to compare against the default branch.
 
 ## Project Structure
 
@@ -135,6 +139,5 @@ Before finishing any change, run these commands from the monorepo root and confi
 
 - [ ] `npm run build` — all packages build successfully
 - [ ] `npm run test` — all tests pass
-- [ ] `npm run format:check` — Biome formatting is correct
-- [ ] `npm run lint` — Biome linting passes
+- [ ] `npm run biome:check` — Biome linting and formatting pass
 - [ ] `npm run checkchange` — beachball change files exist for any `packages/*` changes

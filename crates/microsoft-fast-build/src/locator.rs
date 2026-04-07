@@ -9,11 +9,11 @@ pub struct Locator {
 impl Locator {
     /// Create a Locator by scanning files matching glob patterns.
     /// Each pattern is a glob like `"./components/**/*.html"`.
-    /// The element name for each file is its stem (e.g. `my-button` from `my-button.html`).
-    /// Errors if two different files resolve to the same element name.
+    /// The element name is read from the `name` attribute of `<f-template>` elements inside each file.
+    /// Errors if two different files contain an `<f-template>` with the same name.
     pub fn from_patterns(patterns: &[&str]) -> Result<Self, RenderError> {
-        // element_name → list of file paths that produce it
-        let mut element_files: HashMap<String, Vec<String>> = HashMap::new();
+        // element_name → list of (file_path, template_content) from all matching files
+        let mut element_entries: HashMap<String, Vec<(String, String)>> = HashMap::new();
 
         for &pattern in patterns {
             let dir_str = static_prefix_dir(pattern);
@@ -33,26 +33,40 @@ impl Locator {
             for file_path in files {
                 let norm_file = normalize_path(&file_path.to_string_lossy());
                 if glob_match(&norm_pattern, &norm_file) {
-                    if let Some(stem) = file_path.file_stem().and_then(|s| s.to_str()) {
-                        element_files
-                            .entry(stem.to_string())
-                            .or_default()
-                            .push(norm_file);
+                    let html = std::fs::read_to_string(&norm_file).map_err(|e| {
+                        RenderError::TemplateReadError {
+                            path: norm_file.clone(),
+                            message: e.to_string(),
+                        }
+                    })?;
+                    for (name_opt, content) in parse_f_templates(&html) {
+                        match name_opt {
+                            Some(name) => {
+                                element_entries
+                                    .entry(name)
+                                    .or_default()
+                                    .push((norm_file.clone(), content));
+                            }
+                            None => {
+                                eprintln!(
+                                    "warning: <f-template> without a 'name' attribute in '{}': {}",
+                                    norm_file,
+                                    content.trim()
+                                );
+                            }
+                        }
                     }
                 }
             }
         }
 
         let mut templates = HashMap::new();
-        for (element, paths) in element_files {
-            if paths.len() > 1 {
+        for (element, entries) in element_entries {
+            if entries.len() > 1 {
+                let paths = entries.into_iter().map(|(p, _)| p).collect();
                 return Err(RenderError::DuplicateTemplate { element, paths });
             }
-            let path = &paths[0];
-            let content = std::fs::read_to_string(path).map_err(|e| RenderError::TemplateReadError {
-                path: path.clone(),
-                message: e.to_string(),
-            })?;
+            let (_, content) = entries.into_iter().next().unwrap();
             templates.insert(element, content);
         }
 
@@ -78,7 +92,85 @@ impl Locator {
     }
 }
 
-/// Normalize path separators to `/` and strip a leading `./`.
+/// Parse all `<f-template>` elements from an HTML string.
+/// Returns list of (name, inner_template_content). name is None if missing.
+pub(crate) fn parse_f_templates(html: &str) -> Vec<(Option<String>, String)> {
+    let mut results = Vec::new();
+    let mut search_start = 0;
+    while let Some(rel) = html[search_start..].find("<f-template") {
+        let tag_start = search_start + rel;
+        let after_tag = tag_start + "<f-template".len();
+        // Ensure next char is not alphanumeric or '-' (avoid matching <f-templateX>)
+        if let Some(next_ch) = html[after_tag..].chars().next() {
+            if next_ch.is_alphanumeric() || next_ch == '-' {
+                search_start = after_tag;
+                continue;
+            }
+        }
+        // Find the closing '>' of the opening <f-template ...> tag
+        let tag_close = match html[after_tag..].find('>') {
+            Some(i) => after_tag + i + 1,
+            None => break,
+        };
+        let attrs = &html[after_tag..tag_close - 1];
+        let name = extract_attr_value(attrs, "name");
+
+        // Find </f-template>
+        let inner_start = tag_close;
+        let end_tag = "</f-template>";
+        let inner_end = match html[inner_start..].find(end_tag) {
+            Some(i) => inner_start + i,
+            None => break,
+        };
+        let inner_html = &html[inner_start..inner_end];
+        let content = extract_template_content(inner_html);
+
+        results.push((name, content));
+        search_start = inner_end + end_tag.len();
+    }
+    results
+}
+
+/// Extract the value of an attribute from an attribute string like ` name="foo" `.
+fn extract_attr_value(attrs: &str, attr_name: &str) -> Option<String> {
+    // Try double-quoted: name="value"
+    let double_pat = format!("{}=\"", attr_name);
+    if let Some(pos) = attrs.find(&double_pat) {
+        let value_start = pos + double_pat.len();
+        if let Some(end) = attrs[value_start..].find('"') {
+            return Some(attrs[value_start..value_start + end].to_string());
+        }
+    }
+    // Try single-quoted: name='value'
+    let single_pat = format!("{}='", attr_name);
+    if let Some(pos) = attrs.find(&single_pat) {
+        let value_start = pos + single_pat.len();
+        if let Some(end) = attrs[value_start..].find('\'') {
+            return Some(attrs[value_start..value_start + end].to_string());
+        }
+    }
+    None
+}
+
+/// Extract the inner content of the first `<template>` element found in `html`.
+/// Returns the trimmed content between `<template ...>` and `</template>`.
+fn extract_template_content(html: &str) -> String {
+    let open = match html.find("<template") {
+        Some(i) => i,
+        None => return html.trim().to_string(),
+    };
+    let tag_end = match html[open..].find('>') {
+        Some(i) => open + i + 1,
+        None => return html.trim().to_string(),
+    };
+    let close = match html[tag_end..].find("</template>") {
+        Some(i) => tag_end + i,
+        None => return html.trim().to_string(),
+    };
+    html[tag_end..close].trim().to_string()
+}
+
+
 fn normalize_path(path: &str) -> String {
     let normalized = path.replace('\\', "/");
     normalized.trim_start_matches("./").to_string()
@@ -203,5 +295,59 @@ mod tests {
     fn test_glob_question_mark() {
         assert!(glob_match("tests/fixtures/my-?.html", "tests/fixtures/my-x.html"));
         assert!(!glob_match("tests/fixtures/my-?.html", "tests/fixtures/my-xy.html"));
+    }
+
+    #[test]
+    fn test_glob_exact_path() {
+        // An exact path (no wildcards) must match only itself.
+        assert!(glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-button.html"));
+        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/my-badge.html"));
+        assert!(!glob_match("tests/fixtures/my-button.html", "tests/fixtures/duplicate/my-button.html"));
+    }
+
+    #[test]
+    fn test_parse_f_templates_basic() {
+        let html = r#"<f-template name="my-button">
+    <template>
+        <button>{{label}}</button>
+    </template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].0, Some("my-button".to_string()));
+        assert_eq!(results[0].1, "<button>{{label}}</button>");
+    }
+
+    #[test]
+    fn test_parse_f_templates_multiple() {
+        let html = r#"<f-template name="my-a">
+    <template><span>A</span></template>
+</f-template>
+<f-template name="my-b">
+    <template><div>B</div></template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 2);
+        assert_eq!(results[0].0, Some("my-a".to_string()));
+        assert_eq!(results[0].1, "<span>A</span>");
+        assert_eq!(results[1].0, Some("my-b".to_string()));
+        assert_eq!(results[1].1, "<div>B</div>");
+    }
+
+    #[test]
+    fn test_parse_f_templates_missing_name_returns_none() {
+        let html = r#"<f-template>
+    <template><span>no name</span></template>
+</f-template>"#;
+        let results = parse_f_templates(html);
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].0, None);
+    }
+
+    #[test]
+    fn test_extract_template_content_basic() {
+        let html = "    <template>\n        <button>click</button>\n    </template>\n";
+        let content = extract_template_content(html);
+        assert_eq!(content, "<button>click</button>");
     }
 }

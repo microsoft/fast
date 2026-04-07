@@ -2,6 +2,11 @@ use crate::json::JsonValue;
 
 /// Resolve a binding expression against root state and loop variables.
 /// Loop vars are checked innermost-first (rev); falls back to root state.
+///
+/// Dot-notation paths traverse nested objects: `dataset.dateOfBirth` accesses
+/// `state["dataset"]["dateOfBirth"]`. When a custom element receives `data-*`
+/// HTML attributes, the renderer stores them in the child state under a nested
+/// `"dataset"` key so that `{{dataset.X}}` bindings work naturally.
 pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
     let expr = expr.trim();
     for (var_name, value) in loop_vars.iter().rev() {
@@ -26,8 +31,12 @@ pub fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
                 map.get(part)?.clone()
             }
             JsonValue::Array(ref arr) => {
-                let idx: usize = part.parse().ok()?;
-                arr.get(idx)?.clone()
+                if part == "length" {
+                    JsonValue::Number(arr.len() as f64)
+                } else {
+                    let idx: usize = part.parse().ok()?;
+                    arr.get(idx)?.clone()
+                }
             }
             _ => return None,
         };

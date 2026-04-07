@@ -79,7 +79,23 @@ function isShadowRoot(node: Node): node is ShadowRoot {
 }
 
 /**
- * Maps {@link CompiledViewBehaviorFactory} ids to the corresponding node targets for the view.
+ * Maps compiled ViewBehaviorFactory IDs to their corresponding DOM nodes in the
+ * server-rendered shadow root. Uses a TreeWalker to scan the existing DOM between
+ * firstNode and lastNode, parsing hydration markers to build the targets map.
+ *
+ * For element nodes: parses `data-fe-b` (or variant) attributes to identify which
+ * factories target each element, then removes the marker attribute.
+ *
+ * For comment nodes: parses content binding markers (`fe-b$$start/end$$`) to find
+ * the DOM range controlled by each content binding. Single text nodes become the
+ * direct target; multi-node ranges are stored in boundaries for structural directives.
+ * Element boundary markers (`fe-eb$$start/end$$`) cause the walker to skip over
+ * nested custom elements that handle their own hydration.
+ *
+ * Host bindings (targetNodeId='h') appear at the start of the factories array but
+ * have no SSR markers — getHydrationIndexOffset() computes how many to skip so that
+ * marker indices align with the correct non-host factories.
+ *
  * @param firstNode - The first node of the view.
  * @param lastNode -  The last node of the view.
  * @param factories - The Compiled View Behavior Factories that belong to the view.
@@ -270,6 +286,11 @@ function skipToElementBoundaryEndMarker(node: Comment, walker: TreeWalker) {
     }
 }
 
+/**
+ * Counts how many factories at the start of the array are host bindings (targetNodeId='h').
+ * Host bindings target the custom element itself and are not represented by SSR markers,
+ * so the marker indices must be offset by this count to align with the correct factory.
+ */
 function getHydrationIndexOffset(factories: CompiledViewBehaviorFactory[]): number {
     let offset = 0;
 

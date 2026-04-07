@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-build",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "CLI and Node.js API for server-side rendering of FAST declarative HTML templates.",
   "author": {
     "name": "Microsoft",
@@ -28,7 +28,7 @@
     "wasm/microsoft_fast_build_bg.wasm.d.ts"
   ],
   "scripts": {
-    "build:wasm": "wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm"
+    "build": "cargo build --manifest-path ../../crates/microsoft-fast-build/Cargo.toml && wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm"
   },
   "engines": {
     "node": ">=22.18.0"

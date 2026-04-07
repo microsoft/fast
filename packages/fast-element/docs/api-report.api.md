@@ -509,15 +509,15 @@ export const html: HTMLTemplateTag;
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective {
     constructor(dataBinding: Binding);
     aspectType: DOMAspect;
-    // @internal (undocumented)
+    // @internal
     bind(controller: ViewController): void;
     createBehavior(): ViewBehavior;
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     dataBinding: Binding;
-    // @internal (undocumented)
+    // @internal
     handleChange(binding: Expression, observer: ExpressionObserver): void;
-    // @internal (undocumented)
+    // @internal
     handleEvent(event: Event): void;
     id: string;
     policy: DOMPolicy;
