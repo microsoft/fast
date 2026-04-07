@@ -332,8 +332,8 @@ fn test_hydration_f_repeat_with_inner_when() {
     assert!(result.contains("<!--fe-repeat$$start$$0$$fe-repeat-->"), "item start: {result}");
     // Item scope: f-when is binding 0, name = "when-0"
     assert!(result.contains("<!--fe-b$$start$$0$$when-0$$fe-b-->"), "when start: {result}");
-    // When body scope: {{item.text}} is binding 0, name = "item.text-0"
-    assert!(result.contains("<!--fe-b$$start$$0$$item.text-0$$fe-b-->Foo<!--fe-b$$end$$0$$item.text-0$$fe-b-->"),
+    // When body scope: {{item.text}} is binding 0 inside when-0, name = "0-item.text-0"
+    assert!(result.contains("<!--fe-b$$start$$0$$0-item.text-0$$fe-b-->Foo<!--fe-b$$end$$0$$0-item.text-0$$fe-b-->"),
         "text binding: {result}");
 }
 

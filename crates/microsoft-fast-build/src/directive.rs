@@ -97,7 +97,7 @@ pub fn render_when(
         let start = hy.start_marker(idx, &name);
         let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = hy.child();
+            let mut child_scope = hy.child(idx);
             render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false)?
         } else {
             String::new()
