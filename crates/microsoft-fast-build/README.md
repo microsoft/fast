@@ -273,6 +273,44 @@ let html = render_template_with_locator(
 )?;
 ```
 
+### Rendering entry HTML (root custom elements receive full state)
+
+When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** and receive the complete root state rather than building their child state from HTML attributes.
+
+This mirrors the FAST runtime behaviour: root-level components access application state (e.g. via `$fastController.context`) rather than per-instance attribute state.
+
+```rust
+use microsoft_fast_build::{render_entry_with_locator, render_entry_template_with_locator, Locator};
+
+let locator = Locator::from_patterns(&["./components/**/*.html"])?;
+
+// Root custom elements (my-header, my-app) receive the full root state.
+// Their templates can reference any key in the state JSON directly.
+let html = render_entry_template_with_locator(
+    r#"{{heading}}<my-header></my-header><my-app></my-app>"#,
+    r#"{"heading": "Hello", "user": "Alice", "items": [{"name": "Item 1"}]}"#,
+    &locator,
+)?;
+// my-header's template can use {{user}}, {{heading}}, etc. directly.
+// my-app's template can use {{items}}, etc. directly.
+```
+
+Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
+
+| Context | Child state source |
+|---|---|
+| Root element in entry HTML (via `render_entry_*`) | Full root state |
+| Nested element inside a shadow template | Attributes on the element tag |
+| Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag |
+
+```html
+<!-- Entry HTML — my-parent receives full root state -->
+<my-parent></my-parent>
+
+<!-- my-parent's template — my-child receives attr-based state -->
+<my-child label="{{heading}}" :items="{{items}}"></my-child>
+```
+
 ### Attribute → State Mapping
 
 Attributes on a custom element become the state passed to its template:

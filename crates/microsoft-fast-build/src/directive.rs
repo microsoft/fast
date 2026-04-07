@@ -97,14 +97,14 @@ pub fn render_when(
         let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
             let mut child_scope = hy.child();
-            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope))?
+            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false)?
         } else {
             String::new()
         };
         format!("{}{}{}", start, inner_content, end)
     } else {
         if evaluate(&expr, root, loop_vars) {
-            render_node(&inner, root, loop_vars, locator, None)?
+            render_node(&inner, root, loop_vars, locator, None, false)?
         } else {
             String::new()
         }
@@ -172,7 +172,7 @@ fn render_repeat_items(
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
                 let mut item_scope = HydrationScope::new();
-                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope))?;
+                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false)?;
                 parts.push(format!(
                     "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
                     i, rendered, i
@@ -183,7 +183,7 @@ fn render_repeat_items(
         None => items.iter().enumerate()
             .map(|(i, item)| {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
-                render_node(inner, root, &new_vars, locator, None)
+                render_node(inner, root, &new_vars, locator, None, false)
             })
             .collect::<Result<String, _>>(),
     }
@@ -228,6 +228,7 @@ pub fn render_custom_element(
     loop_vars: &[(String, JsonValue)],
     locator: &Locator,
     parent_hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> Result<(String, usize), RenderError> {
     // Find the end of the opening tag.
     let tag_end = find_tag_end(template, at).ok_or_else(|| RenderError::UnclosedDirective {
@@ -249,57 +250,78 @@ pub fn render_custom_element(
         open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
-    // Parse attributes and build child state.
-    // `data-*` attributes are stored using the full dot-notation path returned by
-    // `data_attr_to_dataset_key` (e.g. `"dataset.dateOfBirth"`), split on the first
-    // `.` to build a nested state object so `{{dataset.X}}` bindings resolve correctly.
-    let attrs = parse_element_attributes(open_tag_content);
-    let mut state_map = std::collections::HashMap::new();
-    for (attr_name, value) in &attrs {
-        // Skip @event handlers — they are client-side only and have no meaning in SSR state.
-        // Also skip f-ref, f-slotted, and f-children attribute directives — all are resolved
-        // entirely by the FAST client runtime.
-        if attr_name.starts_with('@')
-            || attr_name.eq_ignore_ascii_case("f-ref")
-            || attr_name.eq_ignore_ascii_case("f-slotted")
-            || attr_name.eq_ignore_ascii_case("f-children")
-        {
-            continue;
-        }
-        // :prop bindings are stripped from rendered HTML but their resolved value IS
-        // forwarded to the child element's rendering state. This lets structured data
-        // (arrays, objects) be passed to SSR templates without appearing as visible
-        // attributes in the rendered HTML.
-        if let Some(prop_name) = attr_name.strip_prefix(':') {
-            let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-            let key = prop_name.to_lowercase();
-            state_map.insert(key, json_val);
-            continue;
-        }
-        let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        // HTML attribute names are case-insensitive; browsers always store them lowercase.
-        // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
-        // stays `selected-user-id`.
-        if let Some(path) = data_attr_to_dataset_key(attr_name) {
-            if let Some((group, prop)) = path.split_once('.') {
-                let group_val = state_map
-                    .entry(group.to_string())
-                    .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
-                if let JsonValue::Object(ref mut map) = group_val {
-                    map.insert(prop.to_string(), json_val);
-                }
+    // Build child state.
+    //
+    // **Entry custom elements** — those marked with `is_entry` — receive the **full root
+    // state** as their child rendering state. This mirrors the runtime behaviour: entry
+    // elements receive state from the application (e.g. via `$fastController.context`)
+    // rather than from HTML attributes, so all top-level state keys are available directly
+    // in their templates.
+    //
+    // All other custom elements (`is_entry == false`) receive state built from their HTML
+    // attributes as usual (`:prop` forwarded typed, regular attrs lowercased, `data-*`
+    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies, even
+    // when they are not under a parent hydration scope.
+    //
+    // We avoid cloning `root` for the entry case by using an `Option` that is `None` for
+    // entry elements (falling back to `root` via `unwrap_or`) and `Some(owned)` for
+    // attribute-derived nested state.
+    let nested_child_state = if is_entry {
+        None
+    } else {
+        // Nested element: build child state from the element's HTML attributes.
+        // `data-*` attributes are stored using the full dot-notation path returned by
+        // `data_attr_to_dataset_key` (e.g. `"dataset.dateOfBirth"`), split on the first
+        // `.` to build a nested state object so `{{dataset.X}}` bindings resolve correctly.
+        let attrs = parse_element_attributes(open_tag_content);
+        let mut state_map = std::collections::HashMap::new();
+        for (attr_name, value) in &attrs {
+            // Skip @event handlers — they are client-side only and have no meaning in SSR state.
+            // Also skip f-ref, f-slotted, and f-children attribute directives — all are resolved
+            // entirely by the FAST client runtime.
+            if attr_name.starts_with('@')
+                || attr_name.eq_ignore_ascii_case("f-ref")
+                || attr_name.eq_ignore_ascii_case("f-slotted")
+                || attr_name.eq_ignore_ascii_case("f-children")
+            {
+                continue;
             }
-        } else {
-            let key = attr_name.to_lowercase();
-            state_map.insert(key, json_val);
+            // :prop bindings are stripped from rendered HTML but their resolved value IS
+            // forwarded to the child element's rendering state. This lets structured data
+            // (arrays, objects) be passed to SSR templates without appearing as visible
+            // attributes in the rendered HTML.
+            if let Some(prop_name) = attr_name.strip_prefix(':') {
+                let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+                let key = prop_name.to_lowercase();
+                state_map.insert(key, json_val);
+                continue;
+            }
+            let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+            // HTML attribute names are case-insensitive; browsers always store them lowercase.
+            // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
+            // stays `selected-user-id`.
+            if let Some(path) = data_attr_to_dataset_key(attr_name) {
+                if let Some((group, prop)) = path.split_once('.') {
+                    let group_val = state_map
+                        .entry(group.to_string())
+                        .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
+                    if let JsonValue::Object(ref mut map) = group_val {
+                        map.insert(prop.to_string(), json_val);
+                    }
+                }
+            } else {
+                let key = attr_name.to_lowercase();
+                state_map.insert(key, json_val);
+            }
         }
-    }
-    let child_root = JsonValue::Object(state_map);
+        Some(JsonValue::Object(state_map))
+    };
+    let child_root = nested_child_state.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope))?;
+    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);
