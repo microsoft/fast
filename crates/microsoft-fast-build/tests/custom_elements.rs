@@ -494,3 +494,74 @@ fn test_custom_element_object_from_colon_binding() {
     assert!(!result.contains(":config"), "colon attr not in HTML: {result}");
     assert!(result.contains("Hello"), "rendered: {result}");
 }
+
+// ── entry-level custom element merged state ────────────────────────────────────
+
+#[test]
+fn test_root_element_per_element_attr_available_in_template() {
+    // A per-element static attribute (e.g. planet="earth") should be available as a
+    // template binding key in the entry element's shadow template, even if that key
+    // is not present in the shared root state.json.
+    let locator = make_locator(&[("planet-el", r#"<span>{{planet}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<planet-el planet="earth"></planet-el>"#,
+        r#"{"shared":"yes"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("earth"), "per-element attr available in template: {result}");
+}
+
+#[test]
+fn test_root_element_attr_overrides_root_state_key() {
+    // When an entry element carries a static attribute whose key matches a root state
+    // key, the attribute-derived value should take precedence in the child template.
+    let locator = make_locator(&[("my-el", r#"<span>{{color}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el color="blue"></my-el>"#,
+        r#"{"color":"red"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("blue"), "attr value overrides root state: {result}");
+    assert!(!result.contains("red"), "root state key not used when attr present: {result}");
+}
+
+#[test]
+fn test_root_element_root_state_available_alongside_attr() {
+    // Root state keys that are NOT shadowed by an attribute should still be accessible
+    // in the entry element's template alongside per-element attr values.
+    let locator = make_locator(&[("my-el", r#"<span>{{planet}} {{shared}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el planet="mars"></my-el>"#,
+        r#"{"shared":"context"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("mars"), "per-element attr rendered: {result}");
+    assert!(result.contains("context"), "root state key still accessible: {result}");
+}
+
+#[test]
+fn test_root_element_boolean_attr_available_in_template() {
+    // A boolean (no-value) attribute on an entry element should be available as
+    // true in the child template.
+    let locator = make_locator(&[("my-el", r#"<f-when value="{{show}}"><span>visible</span></f-when>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el show></my-el>"#,
+        r#"{}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("visible"), "boolean attr resolves to true in template: {result}");
+}
+
+#[test]
+fn test_root_elements_with_different_per_element_attrs() {
+    // Multiple root elements in the same entry HTML each have their own attribute
+    // values available in their respective templates.
+    let locator = make_locator(&[("planet-el", r#"<span>{{planet}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<planet-el planet="earth"></planet-el><planet-el planet="mars"></planet-el>"#,
+        r#"{"shared":"yes"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("earth"), "first element attr: {result}");
+    assert!(result.contains("mars"), "second element attr: {result}");
+}
