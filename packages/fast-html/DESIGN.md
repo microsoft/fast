@@ -136,14 +136,10 @@ packages/fast-html/
 
 ```typescript
 // src/index.ts
-export { RenderableFASTElement } from "./components/index.js";
-export { ObserverMap } from "./components/index.js";
 export {
-    ObserverMapOption,
+    RenderableFASTElement,
     TemplateElement,
-    type ElementOptions,
-    type ElementOptionsDictionary,
-    type HydrationLifecycleCallbacks,
+    ObserverMap,
 } from "./components/index.js";
 ```
 
