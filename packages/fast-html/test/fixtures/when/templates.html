@@ -12,35 +12,35 @@
 </f-template>
 <!-- equals -->
 <f-template name="test-element-equals">
-    <template><f-when value="{{varA == 3}}">Equals 3</f-when></template>
+    <template><f-when value="{{vara == 3}}">Equals 3</f-when></template>
 </f-template>
 <!-- not equals -->
 <f-template name="test-element-not-equals">
-    <template><f-when value="{{varA != 3}}">Not equals 3</f-when></template>
+    <template><f-when value="{{vara != 3}}">Not equals 3</f-when></template>
 </f-template>
 <!-- greater than or equals -->
 <f-template name="test-element-ge">
-    <template><f-when value="{{varA >= 2}}">Two and Over</f-when></template>
+    <template><f-when value="{{vara >= 2}}">Two and Over</f-when></template>
 </f-template>
 <!-- greater than -->
 <f-template name="test-element-gt">
-    <template><f-when value="{{varA > 2}}">Over two</f-when></template>
+    <template><f-when value="{{vara > 2}}">Over two</f-when></template>
 </f-template>
 <!-- less than or equals -->
 <f-template name="test-element-le">
-    <template><f-when value="{{varA <= 2}}">Two and Under</f-when></template>
+    <template><f-when value="{{vara <= 2}}">Two and Under</f-when></template>
 </f-template>
 <!-- less than -->
 <f-template name="test-element-lt">
-    <template><f-when value="{{varA < 2}}">Under two</f-when></template>
+    <template><f-when value="{{vara < 2}}">Under two</f-when></template>
 </f-template>
 <!-- or -->
 <f-template name="test-element-or">
-    <template><f-when value="{{thisVar || thatVar}}">This or That</f-when></template>
+    <template><f-when value="{{thisvar || thatvar}}">This or That</f-when></template>
 </f-template>
 <!-- and -->
 <f-template name="test-element-and">
-    <template><f-when value="{{thisVar && thatVar}}">This and That</f-when></template>
+    <template><f-when value="{{thisvar && thatvar}}">This and That</f-when></template>
 </f-template>
 <!-- nested when -->
 <f-template name="nested-when">
@@ -50,11 +50,11 @@
         </f-when>
         <div class="buttons">
             <f-when value="{{!error}}">
-                <f-when value="{{showProgress}}">
+                <f-when value="{{showprogress}}">
                     <progress></progress>
                 </f-when>
-                <f-when value="{{!showProgress}}">
-                    <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
+                <f-when value="{{!showprogress}}">
+                    <button ?disabled="{{!enablecontinue}}" @click="{handleClick()}">
                         {{strings.continueButtonText}}
                     </button>
                 </f-when>
