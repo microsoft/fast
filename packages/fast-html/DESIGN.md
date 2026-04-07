@@ -187,21 +187,21 @@ The high-level data flow from authoring to interactive component:
 
 ```mermaid
 flowchart TD
-    A[Author writes declarative HTML\n&lt;f-template name='my-el'&gt;\n  &lt;template&gt;{{greeting}}&lt;/template&gt;\n&lt;/f-template&gt;] --> B[Server renders hydratable HTML\nwith fe-b comments & data-fe-b attributes]
+    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe-b comments and data-fe-b attributes"]
     B --> C[Browser loads JS bundle]
-    C --> D[MyElement.defineAsync called\n→ partial definition in fastElementRegistry]
-    C --> E[TemplateElement.define called\n→ registers &lt;f-template&gt; custom element]
-    D & E --> F[&lt;f-template&gt; connects to DOM\n→ connectedCallback fires]
-    F --> G[FASTElementDefinition.registerAsync\n→ looks up partial definition]
+    C --> D["MyElement.defineAsync called\n→ partial definition in fastElementRegistry"]
+    C --> E["TemplateElement.define called\n→ registers f-template custom element"]
+    D & E --> F["f-template connects to DOM\n→ connectedCallback fires"]
+    F --> G["FASTElementDefinition.registerAsync\n→ looks up partial definition"]
     G --> H[transformInnerHTML normalises HTML entities]
-    H --> I[resolveStringsAndValues\nparses bindings & directives\nbuilds Schema, builds strings+values arrays]
-    I --> J{observerMap: 'all'?}
-    J -- yes --> K[ObserverMap.defineProperties\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers]
+    H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
+    I --> J{observerMap: all?}
+    J -- yes --> K["ObserverMap.defineProperties\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
     J -- no --> L
-    K --> L[ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate]
-    L --> M[FASTElementDefinition.composeAsync\n→ element fully registered with platform]
-    M --> N[HydratableElementController hydrates\nexisting DOM using fe-b markers]
-    N --> O[Interactive component ✓]
+    K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
+    L --> M["FASTElementDefinition.composeAsync\n→ element fully registered with platform"]
+    M --> N["HydratableElementController hydrates\nexisting DOM using fe-b markers"]
+    N --> O[Interactive component]
 ```
 
 ---
@@ -278,7 +278,7 @@ The `Schema` class accumulates all binding paths discovered during parsing into 
 
 ```mermaid
 flowchart LR
-    A[Template binding\n&quot;{{user.details.age}}&quot;] --> B[bindingResolver]
+    A["Template binding\nuser.details.age"] --> B[bindingResolver]
     B --> C[schema.addPath\ntype:'access'\npath:'user.details.age'\nrootProperty:'user']
     C --> D["Schema.jsonSchemaMap\n{'my-el' => {'user' => JSONSchema}}"]
     D --> E[ObserverMap.defineProperties]
