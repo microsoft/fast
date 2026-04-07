@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Tue, 07 Apr 2026 00:50:48 GMT",
+      "version": "0.2.0",
+      "tag": "@microsoft/fast-build_v0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "c6fb02e71ac5be36f79c4b714b0af387f9ff7177",
+            "comment": "feat: convert dataset.X attribute names to data-X in SSR renderer"
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "766559321393dbbf5f63df92082013ec08265791",
+            "comment": "fix: support .length property access on arrays in template expressions"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "766559321393dbbf5f63df92082013ec08265791",
+            "comment": "fix: strip @event binding attributes from rendered HTML; attribute values are always strings unless a {{binding}} expression is used; property binding keys preserve their original casing"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 04 Apr 2026 00:22:26 GMT",
       "version": "0.1.2",
       "tag": "@microsoft/fast-build_v0.1.2",

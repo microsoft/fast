@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: add biome script to run biome on changed files in packages",
-  "packageName": "@microsoft/fast-ssr",
-  "email": "863023+radium-v@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

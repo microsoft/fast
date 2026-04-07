@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Sat, 04 Apr 2026 00:22:26 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 07 Apr 2026 00:50:48 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.1-0
+
+Tue, 07 Apr 2026 00:50:48 GMT
+
+### Patches (pre-release)
+
+- Bump @microsoft/fast-build to v0.2.0
 
 ## 1.0.0-alpha.45
 

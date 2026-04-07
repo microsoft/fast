@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 07 Apr 2026 00:50:48 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "05ccb88f41eb44ec6cbe263335cc030de99f80a4",
+            "comment": "chore: add biome script to run biome on changed files in packages"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 04 Apr 2026 00:22:26 GMT",
       "version": "2.10.2",
       "tag": "@microsoft/fast-element_v2.10.2",
