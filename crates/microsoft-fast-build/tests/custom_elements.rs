@@ -345,6 +345,72 @@ fn test_nested_custom_element_still_uses_attr_state() {
     );
 }
 
+// ── entry-level custom element attribute stripping ────────────────────────────
+
+#[test]
+fn test_root_custom_element_binding_attrs_stripped() {
+    // Attributes with {{binding}} values on root custom elements should NOT appear
+    // in the rendered HTML — they were only there to pass state, which root elements
+    // receive directly from the full root state.
+    let locator = make_locator(&[("my-el", "<span>{{list}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el list="{{list}}"></my-el>"#,
+        r#"{"list":"hello"}"#,
+        &locator,
+    ).unwrap();
+    assert!(!result.contains(r#"list="hello""#), "resolved binding attr must not appear: {result}");
+    assert!(!result.contains(r#"list="{{list}}""#), "raw binding attr must not appear: {result}");
+    assert!(result.contains("hello"), "template still renders state: {result}");
+}
+
+#[test]
+fn test_root_custom_element_static_attrs_kept() {
+    // Non-binding (static) attributes on root custom elements must be preserved.
+    let locator = make_locator(&[("my-el", "<span>content</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el id="main" class="app"></my-el>"#,
+        r#"{"ignored": true}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(r#"id="main""#), "id attribute kept: {result}");
+    assert!(result.contains(r#"class="app""#), "class attribute kept: {result}");
+}
+
+#[test]
+fn test_root_custom_element_mixed_attrs_stripped_selectively() {
+    // Only {{binding}} attrs are stripped; static attrs on the same element are kept.
+    let locator = make_locator(&[("my-el", "<span>{{name}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el id="root" name="{{name}}"></my-el>"#,
+        r#"{"name":"Alice"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(r#"id="root""#), "static id kept: {result}");
+    assert!(!result.contains(r#"name="Alice""#), "binding attr stripped: {result}");
+    assert!(!result.contains(r#"name="{{name}}""#), "raw binding attr not in output: {result}");
+    assert!(result.contains("Alice"), "template still resolves state: {result}");
+}
+
+#[test]
+fn test_nested_custom_element_binding_attrs_not_stripped() {
+    // Attributes with {{binding}} values on *nested* (non-root) custom elements must
+    // NOT be stripped — they are used for attribute-based child state building and
+    // the resolved value is rendered into the HTML for the FAST runtime.
+    let locator = make_locator(&[
+        ("my-outer", r#"<my-inner label="{{name}}"></my-inner>"#),
+        ("my-inner", "<span>{{label}}</span>"),
+    ]);
+    // Pass name via :name so my-outer's child state has it for its template to use.
+    let result = render_template_with_locator(
+        r#"<my-outer :name="{{name}}"></my-outer>"#,
+        r#"{"name":"Bob"}"#,
+        &locator,
+    ).unwrap();
+    // The inner element is nested (not entry-level), so its resolved attr IS rendered.
+    assert!(result.contains(r#"label="Bob""#), "nested element attr rendered: {result}");
+    assert!(result.contains("Bob"), "inner template renders label: {result}");
+}
+
 #[test]
 fn test_custom_element_repeat_from_colon_binding() {
     // Arrays are passed to child elements via :prop={{binding}} so the typed array
