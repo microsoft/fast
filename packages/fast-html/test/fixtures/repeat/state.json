@@ -1,0 +1,9 @@
+{
+    "list": ["Foo", "Bar"],
+    "item_parent": "Bat",
+    "emptyList": [],
+    "someData": {
+        "list1": [{ "icon": "repeat" }],
+        "list2": [{ "icon": "repeat" }]
+    }
+}
