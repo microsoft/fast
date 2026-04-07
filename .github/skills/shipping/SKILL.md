@@ -30,6 +30,13 @@ Read these documents for additional context when needed:
 - [`beachball.config.js`](../../../beachball.config.js) — Beachball configuration (ignored patterns, publish settings).
 - [`CODE_OF_CONDUCT.md`](../../../CODE_OF_CONDUCT.md) — Community standards.
 
+### Package/Crate references
+
+Read these documents, they are located at the root of the specific package or crate, e.g. `packages/<package>/<file>.md` and relate to the package/crates they are located in. When making changes in the package/crate afterwards update these files if necessary.
+
+- `DESIGN.md` - Explains the code patterns.
+- `README.md` - Explains how a developer/agent would use this package/crate.
+
 # Commit and PR title conventions
 
 Use [conventional commit](https://www.conventionalcommits.org/) format for PR titles and merge commit messages:
