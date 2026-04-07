@@ -66,7 +66,7 @@ fn render_node(template, root, loop_vars, locator, hydration: Option<&mut Hydrat
 
 The `is_entry` flag distinguishes two rendering contexts:
 
-- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) receive the **full root state** as their child rendering context.
+- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) receive the **full root state merged with their own attribute-derived state** as their child rendering context. Root state provides app-level context; per-element attributes overlay on top.
 - **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here receive **attribute-based child state** as usual.
 
 `renderer::render_entry_with_locator` sets `is_entry: true`; `renderer::render_with_locator` sets `is_entry: false`. All recursive calls from `render_when`, `render_repeat_items`, and `render_custom_element` (for shadow templates) always use `is_entry: false`.
@@ -217,8 +217,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state**:
-   - **Root custom elements** (`is_entry: true`) — the child state is the **complete root state** (`root.clone()`). This mirrors the runtime behaviour: root elements receive application state rather than per-instance attribute state. All top-level state keys are available directly in their templates.
-   - **Nested custom elements** (`is_entry: false`) — the child state is built from the element's HTML attributes:
+   - **Root custom elements** (`is_entry: true`) — the child state starts with the **complete root state** as a base, then each HTML attribute on the element is resolved and overlaid on top (attribute-derived values take precedence). This ensures app-level context keys (e.g. `error`, `showProgress`) are available alongside per-element attribute state (e.g. `planet="earth"`, `vara="3"`, boolean `show`).
+   - **Nested custom elements** (`is_entry: false`) — the child state is built entirely from the element's HTML attributes:
      - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
      - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
      - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
@@ -246,7 +246,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    ```
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
-Note: `is_entry` controls both child state and opening-tag attribute handling. Root elements (`is_entry: true`) resolve primitive `{{binding}}` attributes to their values and strip non-primitive ones.
+Note: `is_entry` controls both child state and opening-tag attribute handling. Root elements (`is_entry: true`) merge root state with attribute-derived state for their template, and resolve primitive `{{binding}}` attributes to their values (stripping non-primitive ones) in the rendered HTML.
 
 If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
 
