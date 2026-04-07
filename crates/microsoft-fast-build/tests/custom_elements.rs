@@ -345,22 +345,34 @@ fn test_nested_custom_element_still_uses_attr_state() {
     );
 }
 
-// ── entry-level custom element attribute stripping ────────────────────────────
+// ── entry-level custom element attribute resolution ───────────────────────────
 
 #[test]
-fn test_root_custom_element_binding_attrs_stripped() {
-    // Attributes with {{binding}} values on root custom elements should NOT appear
-    // in the rendered HTML — they were only there to pass state, which root elements
-    // receive directly from the full root state.
-    let locator = make_locator(&[("my-el", "<span>{{list}}</span>")]);
+fn test_root_custom_element_primitive_binding_resolved() {
+    // {{binding}} attrs on root custom elements that resolve to a primitive
+    // (string/number/bool) should appear in the rendered HTML with the resolved value.
+    let locator = make_locator(&[("my-el", "<span>{{text}}</span>")]);
     let result = render_entry_template_with_locator(
-        r#"<my-el list="{{list}}"></my-el>"#,
-        r#"{"list":"hello"}"#,
+        r#"<my-el text="{{text}}"></my-el>"#,
+        r#"{"text":"Hello world"}"#,
         &locator,
     ).unwrap();
-    assert!(!result.contains(r#"list="hello""#), "resolved binding attr must not appear: {result}");
-    assert!(!result.contains(r#"list="{{list}}""#), "raw binding attr must not appear: {result}");
-    assert!(result.contains("hello"), "template still renders state: {result}");
+    assert!(result.contains(r#"text="Hello world""#), "primitive binding resolved: {result}");
+    assert!(result.contains("Hello world"), "template still renders state: {result}");
+}
+
+#[test]
+fn test_root_custom_element_non_primitive_binding_stripped() {
+    // {{binding}} attrs on root custom elements that resolve to an array or object
+    // should be stripped — they cannot be represented as an HTML attribute.
+    let locator = make_locator(&[("my-el", "<span>content</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el list="{{list}}" data="{{data}}"></my-el>"#,
+        r#"{"list":["a","b"],"data":{"key":"val"}}"#,
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("list="), "array binding stripped: {result}");
+    assert!(!result.contains("data="), "object binding stripped: {result}");
 }
 
 #[test]
@@ -377,18 +389,17 @@ fn test_root_custom_element_static_attrs_kept() {
 }
 
 #[test]
-fn test_root_custom_element_mixed_attrs_stripped_selectively() {
-    // Only {{binding}} attrs are stripped; static attrs on the same element are kept.
+fn test_root_custom_element_mixed_attrs() {
+    // Primitive binding → resolved and rendered. Non-primitive → stripped. Static → kept.
     let locator = make_locator(&[("my-el", "<span>{{name}}</span>")]);
     let result = render_entry_template_with_locator(
-        r#"<my-el id="root" name="{{name}}"></my-el>"#,
-        r#"{"name":"Alice"}"#,
+        r#"<my-el id="root" name="{{name}}" items="{{items}}"></my-el>"#,
+        r#"{"name":"Alice","items":["x","y"]}"#,
         &locator,
     ).unwrap();
     assert!(result.contains(r#"id="root""#), "static id kept: {result}");
-    assert!(!result.contains(r#"name="Alice""#), "binding attr stripped: {result}");
-    assert!(!result.contains(r#"name="{{name}}""#), "raw binding attr not in output: {result}");
-    assert!(result.contains("Alice"), "template still resolves state: {result}");
+    assert!(result.contains(r#"name="Alice""#), "primitive binding resolved: {result}");
+    assert!(!result.contains("items="), "array binding stripped: {result}");
 }
 
 #[test]

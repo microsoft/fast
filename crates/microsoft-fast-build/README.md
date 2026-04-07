@@ -295,31 +295,35 @@ let html = render_entry_template_with_locator(
 // my-app's template can use {{items}}, etc. directly.
 ```
 
-#### Attribute stripping on root elements
+#### Attribute handling on root elements
 
-Because root custom elements receive the full root state, any attribute on a root element whose value is a pure `{{binding}}` expression is **stripped from the rendered HTML**. These attributes existed solely to forward state to the element's template; the entry-level rendering mechanism makes them redundant.
+Because root custom elements receive the full root state, `{{binding}}` attributes on root elements are **resolved** rather than forwarded via child state as they would be for nested elements:
 
-Static attributes (e.g. `id="main"`, boolean `disabled`) are preserved.
+- **Primitive bindings** (`string`, `number`, `boolean`) — resolved and rendered with the resolved value. e.g. `text="{{message}}"` → `text="Hello world"`.
+- **Non-primitive bindings** (`array`, `object`, `null`) — stripped. These cannot be represented as HTML attribute values; the state is available directly in the element's template.
+- **Static attributes** (no binding syntax) — passed through unchanged.
 
 ```html
 <!-- Entry HTML source -->
-<my-app list="{{list}}" id="app"></my-app>
+<my-app label="{{title}}" items="{{list}}" id="app"></my-app>
+<!-- title="Hello" (string), list=[...] (array) -->
 
-<!-- Rendered output — {{list}} attr stripped, static id kept -->
-<my-app id="app"><template shadowrootmode="open" shadowroot="open">...</template></my-app>
+<!-- Rendered output -->
+<!-- label="Hello" rendered (primitive), items stripped (array), static id kept -->
+<my-app label="Hello" id="app"><template shadowrootmode="open" shadowroot="open">...</template></my-app>
 ```
 
 Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
 
-| Context | Child state source | `{{binding}}` attrs in HTML |
+| Context | Child state source | `{{binding}}` attrs in rendered HTML |
 |---|---|---|
-| Root element in entry HTML (via `render_entry_*`) | Full root state | Stripped |
+| Root element in entry HTML (via `render_entry_*`) | Full root state | Resolved — primitives kept, non-primitives stripped |
 | Nested element inside a shadow template | Attributes on the element tag | Rendered (resolved) |
 | Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag | Rendered (resolved) |
 
 ```html
-<!-- Entry HTML — my-parent receives full root state; list="{{list}}" is stripped -->
-<my-parent list="{{list}}"></my-parent>
+<!-- Entry HTML — my-parent receives full root state; label="Hello" rendered, list stripped -->
+<my-parent label="{{title}}" list="{{items}}"></my-parent>
 
 <!-- my-parent's template — my-child receives attr-based state; label is rendered -->
 <my-child label="{{heading}}" :items="{{items}}"></my-child>

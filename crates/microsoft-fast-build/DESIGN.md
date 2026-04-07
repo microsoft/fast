@@ -45,7 +45,7 @@ render_template(template, state_str)
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
-| `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags), `strip_entry_attrs` (root element opening tags) |
+| `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
@@ -228,9 +228,14 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - Anything else → `String` (attribute values are always strings; arrays, objects, booleans, and numbers must be passed via `:prop="{{binding}}"` or `prop="{{binding}}"` so the resolved value from parent state is used)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Build the outer opening tag** via `build_element_open_tag`, which strips binding attributes and optionally injects hydration markers. The behaviour differs by context:
-   - **Root custom elements** (`is_entry: true`): `strip_entry_attrs` removes all client-only attrs (`@attr`, `:attr`, attribute directives) **and** any attribute whose value is a pure `{{expr}}` state-passing binding. These `{{binding}}` attrs existed solely to forward state to the element's template; since root elements receive the full root state directly, they serve no purpose in the rendered HTML and should not appear there (they would otherwise render as noise like `list="[Array]"`). Static attributes (e.g. `id="main"`, `disabled`) are preserved. No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
-   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe-c-{start}-{count}` is injected.
+7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
+   - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
+     - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
+     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via entry-level rendering.
+     - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
+     - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
+     - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
+   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe-c-{start}-{count}` is injected.
 8. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
 9. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
@@ -241,7 +246,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    ```
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
-Note: `is_entry` controls both child state and opening-tag attribute stripping. Root elements (`is_entry: true`) skip all `{{binding}}` attributes in the rendered HTML.
+Note: `is_entry` controls both child state and opening-tag attribute handling. Root elements (`is_entry: true`) resolve primitive `{{binding}}` attributes to their values and strip non-primitive ones.
 
 If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
 
