@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: regenerate attribute, binding, event fixtures — strip state-passing binding attrs from root elements",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
