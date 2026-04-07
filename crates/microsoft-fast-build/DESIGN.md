@@ -210,15 +210,16 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
 4. **Build child state** from the attributes:
-   - Attributes starting with `@` (event handlers), `:` (property bindings), or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
+   - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
+   - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
    - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
    - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
    - No value (boolean attribute) → `Bool(true)`
-   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type)
-   - Anything else → `String` (attribute values are always strings; booleans and numbers must be passed via `{{binding}}` expressions)
+   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
+   - Anything else → `String` (attribute values are always strings; arrays, objects, booleans, and numbers must be passed via `:prop="{{binding}}"` or `prop="{{binding}}"` so the resolved value from parent state is used)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from both the outer element's opening tag and from all tags inside the rendered shadow template. These are skipped in step 4 (not added to child state) and also removed from the rendered HTML — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+7. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from both the outer element's opening tag and from all tags inside the rendered shadow template. `@attr` and `f-ref`/`f-slotted`/`f-children` are skipped entirely in step 4. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
 8. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
