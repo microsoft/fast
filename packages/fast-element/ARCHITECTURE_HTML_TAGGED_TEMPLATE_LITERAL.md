@@ -6,9 +6,11 @@ The `html` export from `@microsoft/fast-element` is used to create the template 
 
 Before the template can be used it goes through a step to convert it into a `ViewTemplate` which it does via the `ViewTemplate.create()` method. This is then used during the `compose` step, before `FASTElement` is instantiated.
 
-During the `Compiler.compile()` method(triggered by `ViewTemplate.create()` method), the following happens for each string:
+During the static `ViewTemplate.create()` method (called by the `html` tag), the following happens for each string:
 - Factories with unique IDs are created for each tag template literal argument (or `TemplateValue`) which matches with the corresponding string
 - A binding is created from the `TemplateValue`
+
+The `Compiler.compile()` method is called lazily the first time the template is rendered (via `ViewTemplate.compile()`, which is triggered by `ViewTemplate.create()` instance method or `ViewTemplate.render()`).
 
 A resulting string using a `createHTML()` function is produced using the `HTMLDirective`s executed for each factory. The behavior is augmented by the previous string from the `html` tag template which determines the aspect if one exists, these aspects are the `@`, `:`, or other binding aspect attached to attributes.
 
