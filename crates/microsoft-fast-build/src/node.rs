@@ -11,12 +11,15 @@ use crate::attribute::{
 
 /// Recursively render a template fragment against root state and loop variables.
 /// When `hydration` is `Some`, binding markers and attribute compact markers are emitted.
+/// When `is_entry` is `true`, custom elements found in this fragment are treated as root
+/// elements and receive the full root state; otherwise they receive attr-based child state.
 pub fn render_node(
     template: &str,
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
     mut hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> Result<String, RenderError> {
     let mut result = String::new();
     let mut pos = 0;
@@ -32,6 +35,7 @@ pub fn render_node(
         let (chunk, next_pos) = process_directive(
             dir_chunk, template, root, loop_vars, locator,
             hydration.as_mut().map(|h| &mut **h),
+            is_entry,
         )?;
         result.push_str(&chunk);
         pos = next_pos;
@@ -88,6 +92,7 @@ fn process_directive(
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> Result<(String, usize), RenderError> {
     match dir_chunk {
         Directive::TripleBrace(p) => {
@@ -103,7 +108,7 @@ fn process_directive(
         Directive::When(p) => render_when(template, p, root, loop_vars, locator, hydration),
         Directive::Repeat(p) => render_repeat(template, p, root, loop_vars, locator, hydration),
         Directive::CustomElement(p) => {
-            render_custom_element(template, p, root, loop_vars, locator.unwrap(), hydration)
+            render_custom_element(template, p, root, loop_vars, locator.unwrap(), hydration, is_entry)
         }
     }
 }

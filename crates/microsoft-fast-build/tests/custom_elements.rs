@@ -1,6 +1,6 @@
 mod common;
 use common::{make_locator, empty_root};
-use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, Locator, RenderError};
+use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError};
 
 // ── attribute → state mapping ─────────────────────────────────────────────────
 
@@ -258,7 +258,92 @@ fn test_custom_element_event_binding_skipped() {
     // The @click binding should not appear in element state or cause an error
 }
 
-// ── f-repeat resolves arrays from :prop bindings ─────────────────────────────
+// ── root custom element full-state inheritance ────────────────────────────────
+
+#[test]
+fn test_root_custom_element_receives_full_state() {
+    // A custom element at the entry-HTML level (no parent hydration scope) should
+    // receive the complete root state so its template can access any state key.
+    let locator = make_locator(&[("my-parent", "<span>{{selecteduser}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-parent></my-parent>"#,
+        r#"{"selecteduser":"John","heading":"Hello"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("John"), "root state key resolved: {result}");
+}
+
+#[test]
+fn test_root_custom_element_full_state_with_nested_child() {
+    // Root element gets full state; its template passes a slice of that state to a
+    // nested child via :prop. This mirrors the my-parent-b / my-child scenario.
+    let locator = make_locator(&[
+        (
+            "my-parent-b",
+            r#"<my-child :items="{{items}}"></my-child>"#,
+        ),
+        (
+            "my-child",
+            r#"<f-repeat value="{{item in items}}"><span>{{item.text}}</span></f-repeat>"#,
+        ),
+    ]);
+    let result = render_entry_template_with_locator(
+        r#"<my-parent-b></my-parent-b>"#,
+        r#"{"items":[{"text":"Item 1"},{"text":"Item 2"}]}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Item 1"), "first item rendered: {result}");
+    assert!(result.contains("Item 2"), "second item rendered: {result}");
+}
+
+#[test]
+fn test_root_custom_elements_full_scenario() {
+    // Full scenario from the spec: entry HTML with two root elements and a text
+    // binding. my-parent-a reads selecteduser directly; my-parent-b passes items
+    // to a nested my-child via :items.
+    let locator = make_locator(&[
+        ("my-parent-a", "<span>{{selecteduser}}</span>"),
+        (
+            "my-parent-b",
+            r#"<my-child :items="{{items}}"></my-child>"#,
+        ),
+        (
+            "my-child",
+            r#"<f-repeat value="{{item in items}}"><li>{{item.text}}</li></f-repeat>"#,
+        ),
+    ]);
+    let result = render_entry_template_with_locator(
+        r#"{{heading}}<my-parent-a></my-parent-a><my-parent-b></my-parent-b>"#,
+        r#"{"heading":"Hello world","selecteduser":"John","items":[{"text":"Item 1"},{"text":"Item 2"}]}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Hello world"), "heading binding: {result}");
+    assert!(result.contains("John"), "selecteduser in my-parent-a: {result}");
+    assert!(result.contains("Item 1"), "item 1 in my-child: {result}");
+    assert!(result.contains("Item 2"), "item 2 in my-child: {result}");
+}
+
+#[test]
+fn test_nested_custom_element_still_uses_attr_state() {
+    // Nested elements (inside a shadow template) must still get state from their
+    // HTML attributes, not the root state.
+    let locator = make_locator(&[
+        ("outer-el", r#"<inner-el label="{{innerLabel}}"></inner-el>"#),
+        ("inner-el", "<span>{{label}} {{rootKey}}</span>"),
+    ]);
+    // inner-el's template references {{rootKey}}. Since inner-el is nested (inside outer-el's
+    // shadow), it receives only attr-based state { label: "Nested" }. If rootKey incorrectly
+    // leaked, the render would succeed; it must fail with MissingState.
+    let err = render_entry_template_with_locator(
+        r#"<outer-el></outer-el>"#,
+        r#"{"innerLabel":"Nested","rootKey":"ShouldNotLeak"}"#,
+        &locator,
+    ).expect_err("rootKey should not be available in nested child state");
+    assert!(
+        format!("{err:?}").contains("MissingState"),
+        "expected MissingState when nested child tries to resolve rootKey: {err:?}",
+    );
+}
 
 #[test]
 fn test_custom_element_repeat_from_colon_binding() {
