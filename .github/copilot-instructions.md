@@ -21,6 +21,7 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 | `@microsoft/fast-element` | Stable (v2) | Core Web Component library |
 | `@microsoft/fast-html` | Alpha | Declarative HTML parser |
 | `@microsoft/fast-router` | Alpha | Web Component router |
+| `@microsoft/fast-build` | Prerelease | Declarative HTML server side renderer |
 
 ### Other packages
 
@@ -81,6 +82,8 @@ packages/<package>/
   test/                   # Test harness (Vite dev server, fixtures)
   dist/                   # Build output (ESM + declarations)
   docs/                   # API reports (api-extractor)
+  DESIGN.md               # Code documentation for the package or crate
+  README.md               # README for published package use
 ```
 
 - Source files use **kebab-case**: `element-controller.ts`, `update-queue.ts`.
@@ -132,6 +135,7 @@ Key constraints (details in [TypeScript skill](./skills/typescript/SKILL.md)):
 | beachball | Change files, versioning, publishing |
 | Biome | Formatting + Linting |
 | lefthook | Pre-commit hooks (runs `biome:check` and `checkchange` on staged files) |
+| Rust | Rendering Declarative templates (`fast-build` package and `microsoft-fast-build` crate only) |
 
 ## Acceptance Checklist
 
