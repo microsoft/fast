@@ -72,10 +72,10 @@ Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event ha
 In non-hydration rendering they pass through verbatim. When rendering **Declarative Shadow DOM** (inside a custom element's shadow template), client-side attribute directives — `f-ref`, `f-slotted`, `f-children` — are **stripped** from the HTML output, just like `@event` and `:property` bindings. The `data-fe-c` binding count still includes them so the FAST runtime can allocate the correct number of binding slots.
 
 ```html
-<!-- Inside a shadow template — f-slotted, f-ref, f-children are stripped -->
-<slot f-slotted="{slottedNodes}"></slot>
-<video f-ref="{video}"></video>
-<ul f-children="{listItems}"></ul>
+<!-- Rendered output inside a shadow template — directive attributes are stripped -->
+<slot data-fe-c-0></slot>
+<video data-fe-c-0></video>
+<ul data-fe-c-0></ul>
 ```
 
 ### Boolean Attribute Bindings — `?attr`
