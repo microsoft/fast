@@ -50,11 +50,11 @@
         </f-when>
         <div class="buttons">
             <f-when value="{{!error}}">
-                <f-when value="{{showprogress}}">
+                <f-when value="{{showProgress}}">
                     <progress></progress>
                 </f-when>
-                <f-when value="{{!showprogress}}">
-                    <button ?disabled="{{!enablecontinue}}" @click="{handleClick()}">
+                <f-when value="{{!showProgress}}">
+                    <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
                         {{strings.continueButtonText}}
                     </button>
                 </f-when>

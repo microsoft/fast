@@ -40,7 +40,7 @@
         <test-element-and id="and-true" thisvar thatvar><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b-->This and That<!--fe-b$$end$$0$$when-0$$fe-b--></template></test-element-and>
         <test-element-and id="and-false" thisvar><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b--></template></test-element-and>
         <!-- nested when -->
-        <nested-when id="nested-when" strings="[Object]" error="false" showprogress="true" enablecontinue="false"><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b-->
+        <nested-when id="nested-when" error="false" showprogress="true" enablecontinue="false"><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b-->
         <div class="buttons">
             <!--fe-b$$start$$1$$when-1$$fe-b-->
                 <!--fe-b$$start$$0$$when-0$$fe-b-->
@@ -105,11 +105,11 @@
         </f-when>
         <div class="buttons">
             <f-when value="{{!error}}">
-                <f-when value="{{showprogress}}">
+                <f-when value="{{showProgress}}">
                     <progress></progress>
                 </f-when>
-                <f-when value="{{!showprogress}}">
-                    <button ?disabled="{{!enablecontinue}}" @click="{handleClick()}">
+                <f-when value="{{!showProgress}}">
+                    <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
                         {{strings.continueButtonText}}
                     </button>
                 </f-when>
