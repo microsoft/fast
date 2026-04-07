@@ -231,18 +231,18 @@ fn test_custom_element_multi_word_kebab_attrs() {
 // ── colon-prefixed property bindings ─────────────────────────────────────────
 
 #[test]
-fn test_custom_element_colon_property_binding_skipped() {
-    // `:prop` bindings are client-side only and are NOT added to the child rendering scope.
-    // They are stripped from the rendered HTML just like @event bindings.
-    let locator = make_locator(&[("my-btn", "<button>{{label}}</button>")]);
+fn test_custom_element_colon_property_in_state_not_html() {
+    // `:prop` bindings are NOT rendered as HTML attributes but their resolved value
+    // IS added to the child element's rendering state.
+    let locator = make_locator(&[("my-btn", "<button>{{label}}</button><span>{{myprop}}</span>")]);
     let result = render_template_with_locator(
         r#"<my-btn label="OK" :myProp="{{value}}"></my-btn>"#,
-        r#"{"value": "ignored"}"#,
+        r#"{"value": "passed"}"#,
         &locator,
     ).unwrap();
     assert!(result.contains("OK"), "label: {result}");
-    assert!(!result.contains(":myProp"), "colon attr stripped: {result}");
-    assert!(!result.contains("ignored"), "prop value not in output: {result}");
+    assert!(!result.contains(":myProp"), "colon attr stripped from HTML: {result}");
+    assert!(result.contains("passed"), "prop value in child state: {result}");
 }
 
 #[test]
@@ -258,34 +258,36 @@ fn test_custom_element_event_binding_skipped() {
     // The @click binding should not appear in element state or cause an error
 }
 
-// ── f-repeat resolves arrays from state via binding ───────────────────────────
+// ── f-repeat resolves arrays from :prop bindings ─────────────────────────────
 
 #[test]
-fn test_custom_element_repeat_from_state() {
-    // Arrays are passed to child elements via {{binding}} expressions; f-repeat
-    // resolves the named array directly from the child element's state.
+fn test_custom_element_repeat_from_colon_binding() {
+    // Arrays are passed to child elements via :prop={{binding}} so the typed array
+    // reaches the child state without appearing as a rendered HTML attribute.
+    // f-repeat then resolves the named array from the child element's state.
     let locator = make_locator(&[(
         "item-list",
         r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
     )]);
     let result = render_template_with_locator(
-        r#"<item-list items="{{items}}"></item-list>"#,
+        r#"<item-list :items="{{items}}"></item-list>"#,
         r#"{"items":["a","b","c"]}"#,
         &locator,
     ).unwrap();
+    assert!(!result.contains(":items"), "colon attr not in HTML: {result}");
     assert!(result.contains(">a<"), "rendered a: {result}");
     assert!(result.contains(">b<"), "rendered b: {result}");
     assert!(result.contains(">c<"), "rendered c: {result}");
 }
 
 #[test]
-fn test_custom_element_repeat_empty_array_from_state() {
+fn test_custom_element_repeat_empty_array_from_colon_binding() {
     let locator = make_locator(&[(
         "item-list",
         r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
     )]);
     let result = render_template_with_locator(
-        r#"<item-list items="{{items}}"></item-list>"#,
+        r#"<item-list :items="{{items}}"></item-list>"#,
         r#"{"items":[]}"#,
         &locator,
     ).unwrap();
@@ -293,14 +295,15 @@ fn test_custom_element_repeat_empty_array_from_state() {
 }
 
 #[test]
-fn test_custom_element_object_from_state() {
-    // Object values passed via {{binding}} are resolved from the parent state and
-    // forwarded intact to the child element's rendering scope.
+fn test_custom_element_object_from_colon_binding() {
+    // Object values passed via :prop={{binding}} are resolved from the parent state
+    // and forwarded to the child element's rendering scope without appearing in HTML.
     let locator = make_locator(&[("my-card", r#"<div>{{config.title}}</div>"#)]);
     let result = render_template_with_locator(
-        r#"<my-card config="{{config}}"></my-card>"#,
+        r#"<my-card :config="{{config}}"></my-card>"#,
         r#"{"config":{"title":"Hello"}}"#,
         &locator,
     ).unwrap();
+    assert!(!result.contains(":config"), "colon attr not in HTML: {result}");
     assert!(result.contains("Hello"), "rendered: {result}");
 }
