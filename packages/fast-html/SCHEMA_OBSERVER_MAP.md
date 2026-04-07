@@ -314,10 +314,8 @@ Proxied objects:
 ```html
 <f-template name="user-list">
   <template>
-    <f-repeat>
-      <template value="{{users}}" context="user">
-        <div>{{user.name}} has {{user.posts.length}} posts</div>
-      </template>
+    <f-repeat value="{{user in users}}">
+      <div>{{user.name}} has {{user.posts.length}} posts</div>
     </f-repeat>
   </template>
 </f-template>
@@ -353,15 +351,11 @@ Proxied objects:
 ```html
 <f-template name="complex-data">
   <template>
-    <f-repeat>
-      <template value="{{users}}" context="user">
-        <div>{{user.name}}</div>
-        <f-repeat>
-          <template value="{{user.posts}}" context="post">
-            <div>{{post.title}} - {{post.metadata.views}} views</div>
-          </template>
-        </f-repeat>
-      </template>
+    <f-repeat value="{{user in users}}">
+      <div>{{user.name}}</div>
+      <f-repeat value="{{post in user.posts}}">
+        <div>{{post.title}} - {{post.metadata.views}} views</div>
+      </f-repeat>
     </f-repeat>
   </template>
 </f-template>
