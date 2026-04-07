@@ -2,41 +2,6 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
-      "date": "Tue, 07 Apr 2026 00:50:48 GMT",
-      "version": "1.0.1-0",
-      "tag": "@microsoft/fast-html_v1.0.1-0",
-      "comments": {
-        "none": [
-          {
-            "author": "863023+radium-v@users.noreply.github.com",
-            "package": "@microsoft/fast-html",
-            "commit": "05ccb88f41eb44ec6cbe263335cc030de99f80a4",
-            "comment": "chore: add biome script to run biome on changed files in packages"
-          },
-          {
-            "author": "7559015+janechu@users.noreply.github.com",
-            "package": "@microsoft/fast-html",
-            "commit": "a10aa89e67f8fea65790a2a00e2746d22c267bc9",
-            "comment": "chore(fast-html): use @microsoft/fast-build to build binding fixture"
-          },
-          {
-            "author": "7559015+janechu@users.noreply.github.com",
-            "package": "@microsoft/fast-html",
-            "commit": "d0e8be546a31d23ae451458c65dd74cfad904988",
-            "comment": "chore(fast-html): use @microsoft/fast-build to build event fixture"
-          }
-        ],
-        "prepatch": [
-          {
-            "author": "beachball",
-            "package": "@microsoft/fast-html",
-            "comment": "Bump @microsoft/fast-build to v0.2.0",
-            "commit": "not available"
-          }
-        ]
-      }
-    },
-    {
       "date": "Sat, 04 Apr 2026 00:22:26 GMT",
       "version": "1.0.0-alpha.45",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.45",
