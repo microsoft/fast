@@ -274,21 +274,25 @@ Attributes on a custom element become the state passed to its template:
 | `disabled` (boolean, no value) | `{"disabled": true}` |
 | `label="Click me"` | `{"label": "Click me"}` |
 | `count="42"` | `{"count": "42"}` |
+| `items="{{items}}"` | `{"items": <value of items from parent state>}` (array, object, or any type) |
+| `:items="{{items}}"` | `{"items": <value of items from parent state>}` — same as above but **not rendered as an HTML attribute** |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 | `selected-user-id="42"` | `{"selected-user-id": "42"}` |
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
 | `data-date-of-birth="1990-01-01"` | `{"dataset": {"dateOfBirth": "1990-01-01"}}` |
 | `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
-| `:myProp="{{expr}}"` | *(skipped — client-side only)* |
+| `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` — **not rendered as an HTML attribute** |
 | `@click="{handler()}"` | *(skipped — client-side only)* |
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
-**Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
+**Attribute values are always strings** — except for boolean attributes (no value), which become `true`, and `{{binding}}` expressions, which resolve to whatever type the value holds in the parent state (string, number, boolean, array, or object). A literal string like `count="42"` yields `{"count": "42"}`; use `count="{{count}}"` with `count: 42` in state to get a number.
+
+**Use `:prop="{{binding}}"` to pass arrays and objects without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. This is the recommended way to pass structured data to custom elements for use with `f-repeat` and similar directives.
 
 **`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
 
-**Client-only bindings stripped from HTML and skipped from state**: both `@attr` event bindings and `:attr` property bindings are removed from the rendered HTML output and are not added to the child element's rendering scope — they are resolved entirely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+**`@event` bindings are skipped entirely** — `@click="{handler()}"` and similar event bindings are not added to child state and are removed from the rendered HTML. They are resolved purely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 ### Output Format
 

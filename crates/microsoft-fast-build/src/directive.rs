@@ -256,10 +256,18 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
-        // Skip client-side-only bindings: @event handlers and :property bindings.
-        // Both are resolved entirely by the FAST client runtime and have no meaning
-        // in server-side rendering state.
-        if attr_name.starts_with('@') || attr_name.starts_with(':') {
+        // Skip @event handlers — they are client-side only and have no meaning in SSR state.
+        if attr_name.starts_with('@') {
+            continue;
+        }
+        // :prop bindings are stripped from rendered HTML but their resolved value IS
+        // forwarded to the child element's rendering state. This lets structured data
+        // (arrays, objects) be passed to SSR templates without appearing as visible
+        // attributes in the rendered HTML.
+        if let Some(prop_name) = attr_name.strip_prefix(':') {
+            let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+            let key = prop_name.to_lowercase();
+            state_map.insert(key, json_val);
             continue;
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
