@@ -1,6 +1,7 @@
 use crate::json::JsonValue;
 use crate::context::resolve_value;
 use crate::expression::evaluate;
+use crate::content::html_escape;
 use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
@@ -324,7 +325,7 @@ pub fn render_custom_element(
     let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
-    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);
+    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
 
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
@@ -379,7 +380,17 @@ fn build_element_open_tag(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     parent_hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> String {
+    if is_entry {
+        // Entry-level root custom elements receive the full root state directly.
+        // Resolve {{binding}} attributes: keep primitives (string/number/bool) with
+        // their resolved value, strip non-primitives (array/object/null) since they
+        // cannot be meaningfully represented as an HTML attribute value.
+        // Static attributes (no binding) are passed through unchanged.
+        // No data-fe-c marker is needed — root elements have no parent hydration scope.
+        return build_entry_element_open_tag(open_tag_base, root, loop_vars);
+    }
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
@@ -395,4 +406,56 @@ fn build_element_open_tag(
         }
         None => format!("{}>", stripped),
     }
+}
+
+/// Build the opening tag for an entry-level root custom element.
+///
+/// - `{{binding}}` attributes are resolved from root state:
+///   - Primitives (`String`, `Number`, `Bool`) → rendered with the resolved value.
+///   - Non-primitives (`Array`, `Object`, `Null`) → stripped (cannot be represented
+///     as an HTML attribute; state is available via entry-level rendering instead).
+/// - Static attributes (no binding syntax) are passed through unchanged.
+/// - Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`)
+///   are stripped as usual.
+fn build_entry_element_open_tag(
+    open_tag_base: &str,
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+) -> String {
+    let tag_name = match read_tag_name(open_tag_base, 0) {
+        Some(name) => name,
+        None => return format!("{}>", open_tag_base),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(open_tag_base) {
+        if name.starts_with('@') || name.starts_with(':')
+            || name.eq_ignore_ascii_case("f-ref")
+            || name.eq_ignore_ascii_case("f-slotted")
+            || name.eq_ignore_ascii_case("f-children")
+        {
+            continue;
+        }
+        match value {
+            None => {
+                out.push(' ');
+                out.push_str(&name);
+            }
+            Some(ref v) if v.trim().starts_with("{{") && v.trim().ends_with("}}") && v.trim().len() > 4 => {
+                let binding = v.trim()[2..v.trim().len() - 2].trim();
+                let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+                match resolved {
+                    JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
+                    JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
+                    JsonValue::Bool(b) => out.push_str(&format!(" {}=\"{}\"", name, b)),
+                    _ => {} // Array, Object, Null — strip
+                }
+            }
+            Some(v) => {
+                out.push_str(&format!(" {}=\"{}\"", name, v));
+            }
+        }
+    }
+    out.push('>');
+    out
 }
