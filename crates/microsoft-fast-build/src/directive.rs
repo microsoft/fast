@@ -252,19 +252,22 @@ pub fn render_custom_element(
 
     // Build child state.
     //
-    // **Root custom elements** — those appearing directly in the entry HTML (identified by
-    // `parent_hydration` being `None`, since the entry is always rendered without a parent
-    // hydration scope) — receive the **full root state** as their child rendering state.
-    // This mirrors the runtime behaviour: root elements receive state from the application
-    // (e.g. via `$fastController.context`) rather than from HTML attributes, so all top-level
-    // state keys are available directly in their templates.
+    // **Entry custom elements** — those marked with `is_entry` — receive the **full root
+    // state** as their child rendering state. This mirrors the runtime behaviour: entry
+    // elements receive state from the application (e.g. via `$fastController.context`)
+    // rather than from HTML attributes, so all top-level state keys are available directly
+    // in their templates.
     //
-    // **Nested custom elements** — those appearing inside another element's shadow template
-    // (identified by `parent_hydration` being `Some`) — receive state built from their HTML
-    // attributes as usual (`:prop` forwarded typed, regular attrs lowercased, `data-*` grouped).
-    let child_root = if is_entry {
-        // Root element: inherit the full entry-level state.
-        root.clone()
+    // All other custom elements (`is_entry == false`) receive state built from their HTML
+    // attributes as usual (`:prop` forwarded typed, regular attrs lowercased, `data-*`
+    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies, even
+    // when they are not under a parent hydration scope.
+    //
+    // We avoid cloning `root` for the entry case by using an `Option` that is `None` for
+    // entry elements (falling back to `root` via `unwrap_or`) and `Some(owned)` for
+    // attribute-derived nested state.
+    let nested_child_state = if is_entry {
+        None
     } else {
         // Nested element: build child state from the element's HTML attributes.
         // `data-*` attributes are stored using the full dot-notation path returned by
@@ -311,13 +314,14 @@ pub fn render_custom_element(
                 state_map.insert(key, json_val);
             }
         }
-        JsonValue::Object(state_map)
+        Some(JsonValue::Object(state_map))
     };
+    let child_root = nested_child_state.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
+    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);

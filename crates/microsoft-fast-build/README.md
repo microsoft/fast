@@ -288,7 +288,7 @@ let locator = Locator::from_patterns(&["./components/**/*.html"])?;
 // Their templates can reference any key in the state JSON directly.
 let html = render_entry_template_with_locator(
     r#"{{heading}}<my-header></my-header><my-app></my-app>"#,
-    r#"{"heading": "Hello", "user": "Alice", "items": [...]}"#,
+    r#"{"heading": "Hello", "user": "Alice", "items": [{"name": "Item 1"}]}"#,
     &locator,
 )?;
 // my-header's template can use {{user}}, {{heading}}, etc. directly.
