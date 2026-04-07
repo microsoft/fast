@@ -257,3 +257,50 @@ fn test_custom_element_event_binding_skipped() {
     assert!(result.contains("OK"), "label: {result}");
     // The @click binding should not appear in element state or cause an error
 }
+
+// ── f-repeat resolves arrays from state via binding ───────────────────────────
+
+#[test]
+fn test_custom_element_repeat_from_state() {
+    // Arrays are passed to child elements via {{binding}} expressions; f-repeat
+    // resolves the named array directly from the child element's state.
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items="{{items}}"></item-list>"#,
+        r#"{"items":["a","b","c"]}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(">a<"), "rendered a: {result}");
+    assert!(result.contains(">b<"), "rendered b: {result}");
+    assert!(result.contains(">c<"), "rendered c: {result}");
+}
+
+#[test]
+fn test_custom_element_repeat_empty_array_from_state() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items="{{items}}"></item-list>"#,
+        r#"{"items":[]}"#,
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("<span>"), "no items: {result}");
+}
+
+#[test]
+fn test_custom_element_object_from_state() {
+    // Object values passed via {{binding}} are resolved from the parent state and
+    // forwarded intact to the child element's rendering scope.
+    let locator = make_locator(&[("my-card", r#"<div>{{config.title}}</div>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-card config="{{config}}"></my-card>"#,
+        r#"{"config":{"title":"Hello"}}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Hello"), "rendered: {result}");
+}
