@@ -142,6 +142,7 @@ export class Schema {
                     } else {
                         if (!schema[defsPropertyName]?.[splitPath[0]]) {
                             schema[defsPropertyName] = {
+                                ...schema[defsPropertyName],
                                 [splitPath[0]]: {} as any,
                             };
                         }

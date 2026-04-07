@@ -532,4 +532,50 @@ test.describe("Schema", async () => {
         expect(schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf).toHaveLength(1);
         expect(schemaA!.$defs?.["user"].properties["a"].properties["b"].anyOf[0][refPropertyName]).toEqual("https://fast.design/schemas/my-custom-element-2/c.json");
     });
+    test("should preserve existing $defs when adding a new dotted path inside a repeat context", async () => {
+        // Regression test: Schema.addPath replaced $defs instead of merging
+        // when a dotted path (e.g. "entry.title") with a NEW context name was
+        // used after a prior context already populated $defs, destroying the
+        // first context's $defs entry.
+        // Real-world trigger: history_btr template with multiple repeat
+        // contexts where accessing a dotted path on a later context
+        // overwrites $defs.
+        const schema = new Schema("my-element");
+
+        // First repeat: creates $defs.group
+        schema.addPath({
+            rootPropertyName: "data",
+            pathConfig: {
+                type: "repeat",
+                path: "data.displayedGroups",
+                currentContext: "group",
+                parentContext: null,
+            },
+            childrenMap: null,
+        });
+
+        // Access a dotted path that targets a context NOT yet in $defs.
+        // splitPath = ["entry", "title"], and $defs["entry"] doesn't exist,
+        // so the code creates $defs = { entry: {} }, which SHOULD be
+        // $defs = { ...existing, entry: {} } to preserve "group".
+        schema.addPath({
+            rootPropertyName: "data",
+            pathConfig: {
+                type: "access",
+                path: "entry.title",
+                currentContext: "entry",
+                parentContext: "group",
+            },
+            childrenMap: null,
+        });
+
+        const schemaData = schema.getSchema("data");
+
+        expect(schemaData).toBeDefined();
+        // Both $defs entries must survive — the bug was that "group" was lost
+        expect(schemaData!.$defs?.["group"]).toBeDefined();
+        expect(schemaData!.$defs?.["entry"]).toBeDefined();
+        expect(schemaData!.$defs?.["group"].$fast_context).toEqual("displayedGroups");
+        expect(schemaData!.$defs?.["entry"].properties?.["title"]).toBeDefined();
+    });
 });
