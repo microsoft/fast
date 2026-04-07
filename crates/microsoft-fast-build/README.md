@@ -274,6 +274,7 @@ Attributes on a custom element become the state passed to its template:
 | `disabled` (boolean, no value) | `{"disabled": true}` |
 | `label="Click me"` | `{"label": "Click me"}` |
 | `count="42"` | `{"count": "42"}` |
+| `items="{{items}}"` | `{"items": <value of items from parent state>}` (array, object, or any type) |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 | `selected-user-id="42"` | `{"selected-user-id": "42"}` |
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
@@ -284,7 +285,7 @@ Attributes on a custom element become the state passed to its template:
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
-**Attribute values are always strings** — except for boolean attributes (no value), which become `true`. Booleans and numbers must be passed via `{{binding}}` expressions so the resolved value from parent state (which can be any type) is used.
+**Attribute values are always strings** — except for boolean attributes (no value), which become `true`, and `{{binding}}` expressions, which resolve to whatever type the value holds in the parent state (string, number, boolean, array, or object). This means arrays and objects must be passed via `{{binding}}` so the parent state supplies the typed value. A literal string like `count="42"` yields `{"count": "42"}`; use `count="{{count}}"` with `count: 42` in state to get a number.
 
 **`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
 

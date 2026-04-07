@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: resolve array and object values via {{binding}} expressions for f-repeat support",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
