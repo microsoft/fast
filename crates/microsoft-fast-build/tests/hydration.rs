@@ -113,6 +113,74 @@ fn test_hydration_multiple_event_bindings() {
     assert!(!result.contains("@click"), "event attrs stripped: {result}");
 }
 
+/// `f-slotted="{slottedNodes}"` is a FAST attribute directive — treated as a client-side
+/// single-brace binding. Compact marker present, attribute stripped from rendered HTML.
+#[test]
+fn test_hydration_f_slotted_stripped() {
+    let locator = make_locator(&[("test-element", r#"<slot f-slotted="{slottedNodes}"></slot>"#)]);
+    let result = render_with_locator(
+        r#"<test-element></test-element>"#,
+        &empty(),
+        &locator,
+    ).unwrap();
+
+    assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
+    assert!(!result.contains("f-slotted"), "f-slotted attr stripped: {result}");
+    assert!(result.contains("<slot"), "slot element present: {result}");
+}
+
+/// `f-ref="{video}"` is a FAST attribute directive — treated as a client-side
+/// single-brace binding. Compact marker present, attribute stripped from rendered HTML.
+#[test]
+fn test_hydration_f_ref_stripped() {
+    let locator = make_locator(&[("test-element", r#"<video f-ref="{video}"></video>"#)]);
+    let result = render_with_locator(
+        r#"<test-element></test-element>"#,
+        &empty(),
+        &locator,
+    ).unwrap();
+
+    assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
+    assert!(!result.contains("f-ref"), "f-ref attr stripped: {result}");
+    assert!(result.contains("<video"), "video element present: {result}");
+}
+
+/// `f-children="{listItems}"` is a FAST attribute directive — treated as a client-side
+/// single-brace binding. Compact marker present, attribute stripped from rendered HTML.
+#[test]
+fn test_hydration_f_children_stripped() {
+    let locator = make_locator(&[("test-element", r#"<ul f-children="{listItems}"></ul>"#)]);
+    let result = render_with_locator(
+        r#"<test-element></test-element>"#,
+        &empty(),
+        &locator,
+    ).unwrap();
+
+    assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
+    assert!(!result.contains("f-children"), "f-children attr stripped: {result}");
+    assert!(result.contains("<ul"), "ul element present: {result}");
+}
+
+/// Attribute directives coexist with other bindings — binding indices are correct.
+/// `<slot f-slotted="{nodes}" class="{{cls}}">` has 2 bindings (sb=1, db=1).
+#[test]
+fn test_hydration_f_slotted_with_double_brace_attr() {
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<slot f-slotted="{nodes}" class="{{cls}}"></slot>"#,
+    )]);
+    let root = hand_root(vec![("cls", str_val("active"))]);
+    let result = render_with_locator(
+        r#"<test-element cls="active"></test-element>"#,
+        &root,
+        &locator,
+    ).unwrap();
+
+    assert!(result.contains("data-fe-c-0-2"), "compact marker with count 2: {result}");
+    assert!(!result.contains("f-slotted"), "f-slotted attr stripped: {result}");
+    assert!(result.contains(r#"class="active""#), "resolved class attr: {result}");
+}
+
 /// Mixed: attribute binding + content binding on the same element.
 /// `<span class="{{cls}}">{{text}}</span>`
 /// — attr binding at index 0 (data-fe-c-0-1), content binding at index 1.
@@ -292,7 +360,8 @@ fn test_hydration_f_repeat_empty() {
 
 // ── f-ref / f-slotted (single-brace directive attrs) ─────────────────────────
 
-/// `f-ref="{video}"` — single-brace attribute binding gets a compact marker.
+/// `f-ref="{video}"` — single-brace attribute directive gets a compact marker
+/// and is stripped from the rendered HTML (client-side only).
 #[test]
 fn test_hydration_f_ref_compact() {
     let locator = make_locator(&[("test-element", r#"<video f-ref="{video}"></video>"#)]);
@@ -303,7 +372,7 @@ fn test_hydration_f_ref_compact() {
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
-    assert!(result.contains(r#"f-ref="{video}""#), "f-ref passthrough: {result}");
+    assert!(!result.contains("f-ref"), "f-ref stripped from output: {result}");
 }
 
 /// `f-slotted="{...}"` on multiple elements: incrementing start indices.

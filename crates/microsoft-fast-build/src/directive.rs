@@ -256,10 +256,13 @@ pub fn render_custom_element(
     let attrs = parse_element_attributes(open_tag_content);
     let mut state_map = std::collections::HashMap::new();
     for (attr_name, value) in &attrs {
-        // Skip client-side-only bindings: @event handlers and :property bindings.
-        // Both are resolved entirely by the FAST client runtime and have no meaning
+        // Skip client-side-only bindings: @event handlers, :property bindings,
+        // and f-ref/f-slotted/f-children attribute directives.
+        // All are resolved entirely by the FAST client runtime and have no meaning
         // in server-side rendering state.
-        if attr_name.starts_with('@') || attr_name.starts_with(':') {
+        if attr_name.starts_with('@') || attr_name.starts_with(':')
+            || attr_name == "f-ref" || attr_name == "f-slotted" || attr_name == "f-children"
+        {
             continue;
         }
         let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
