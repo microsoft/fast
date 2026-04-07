@@ -261,7 +261,9 @@ pub fn render_custom_element(
         // All are resolved entirely by the FAST client runtime and have no meaning
         // in server-side rendering state.
         if attr_name.starts_with('@') || attr_name.starts_with(':')
-            || attr_name == "f-ref" || attr_name == "f-slotted" || attr_name == "f-children"
+            || attr_name.eq_ignore_ascii_case("f-ref")
+            || attr_name.eq_ignore_ascii_case("f-slotted")
+            || attr_name.eq_ignore_ascii_case("f-children")
         {
             continue;
         }
