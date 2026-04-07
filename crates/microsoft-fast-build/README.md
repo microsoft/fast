@@ -273,34 +273,40 @@ let html = render_template_with_locator(
 )?;
 ```
 
-### Rendering entry HTML (root custom elements receive full state)
+### Rendering entry HTML (root custom elements receive merged state)
 
-When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** and receive the complete root state rather than building their child state from HTML attributes.
+When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** and receive the complete root state **merged with their own HTML attribute-derived state**. Attribute-derived values take precedence over root state for overlapping keys.
 
-This mirrors the FAST runtime behaviour: root-level components access application state (e.g. via `$fastController.context`) rather than per-instance attribute state.
+This gives root elements access to both app-level context (from the shared root state) and their own per-element attribute values (e.g. `planet="earth"`, `vara="3"`, boolean `show`), without requiring each attribute to be present in the state JSON.
 
 ```rust
 use microsoft_fast_build::{render_entry_with_locator, render_entry_template_with_locator, Locator};
 
 let locator = Locator::from_patterns(&["./components/**/*.html"])?;
 
-// Root custom elements (my-header, my-app) receive the full root state.
-// Their templates can reference any key in the state JSON directly.
+// Root custom elements (my-header, my-app) receive the full root state merged with
+// any per-element attributes. Their templates can reference any key in the state JSON directly.
 let html = render_entry_template_with_locator(
-    r#"{{heading}}<my-header></my-header><my-app></my-app>"#,
+    r#"{{heading}}<my-header></my-header><my-app planet="earth"></my-app>"#,
     r#"{"heading": "Hello", "user": "Alice", "items": [{"name": "Item 1"}]}"#,
     &locator,
 )?;
 // my-header's template can use {{user}}, {{heading}}, etc. directly.
-// my-app's template can use {{items}}, etc. directly.
+// my-app's template can use {{items}}, {{planet}}, etc. directly.
 ```
 
 #### Attribute handling on root elements
 
-Because root custom elements receive the full root state, `{{binding}}` attributes on root elements are **resolved** rather than forwarded via child state as they would be for nested elements:
+Root custom elements receive a **merged child state**: the full root state as a base, with the element's own HTML attributes overlaid on top. This means:
+
+- Per-element attributes (e.g. `planet="earth"`, `vara="3"`, boolean `show`) are available in the template alongside root state keys.
+- `{{binding}}` attributes resolve their value from root state and add it to the child state under the (lowercased) attribute name.
+- Attribute-derived values take precedence over root state keys when the same key appears in both.
+
+`{{binding}}` attributes on root elements are also **resolved in the rendered HTML output** rather than forwarded:
 
 - **Primitive bindings** (`string`, `number`, `boolean`) — resolved and rendered with the resolved value. e.g. `text="{{message}}"` → `text="Hello world"`.
-- **Non-primitive bindings** (`array`, `object`, `null`) — stripped. These cannot be represented as HTML attribute values; the state is available directly in the element's template.
+- **Non-primitive bindings** (`array`, `object`, `null`) — stripped from the HTML output (the state is still available in the element's template via the merged child state).
 - **Static attributes** (no binding syntax) — passed through unchanged.
 
 ```html
@@ -317,15 +323,15 @@ Nested custom elements inside shadow templates continue to use attribute-based c
 
 | Context | Child state source | `{{binding}}` attrs in rendered HTML |
 |---|---|---|
-| Root element in entry HTML (via `render_entry_*`) | Full root state | Resolved — primitives kept, non-primitives stripped |
+| Root element in entry HTML (via `render_entry_*`) | Root state merged with element's own attrs | Resolved — primitives kept, non-primitives stripped |
 | Nested element inside a shadow template | Attributes on the element tag | Rendered (resolved) |
 | Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag | Rendered (resolved) |
 
 ```html
-<!-- Entry HTML — my-parent receives full root state; label="Hello" rendered, list stripped -->
-<my-parent label="{{title}}" list="{{items}}"></my-parent>
+<!-- Entry HTML — my-parent gets root state + its own attrs; label="Hello" rendered, list stripped -->
+<my-parent label="{{title}}" list="{{items}}" planet="earth"></my-parent>
 
-<!-- my-parent's template — my-child receives attr-based state; label is rendered -->
+<!-- my-parent's template — my-child receives attr-based state only; label is rendered -->
 <my-child label="{{heading}}" :items="{{items}}"></my-child>
 ```
 
