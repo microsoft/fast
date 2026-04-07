@@ -30,7 +30,7 @@ RenderableFASTElement(TestElementNot).defineAsync({
 
 class TestElementEquals extends FASTElement {
     @attr({ attribute: "vara" })
-    varA: number = 0;
+    vara: number = 0;
 }
 RenderableFASTElement(TestElementEquals).defineAsync({
     name: "test-element-equals",
@@ -39,7 +39,7 @@ RenderableFASTElement(TestElementEquals).defineAsync({
 
 class TestElementNotEquals extends FASTElement {
     @attr({ attribute: "vara" })
-    varA: number = 0;
+    vara: number = 0;
 }
 RenderableFASTElement(TestElementNotEquals).defineAsync({
     name: "test-element-not-equals",
@@ -48,7 +48,7 @@ RenderableFASTElement(TestElementNotEquals).defineAsync({
 
 class TestElementGe extends FASTElement {
     @attr({ attribute: "vara" })
-    varA: number = 0;
+    vara: number = 0;
 }
 RenderableFASTElement(TestElementGe).defineAsync({
     name: "test-element-ge",
@@ -57,7 +57,7 @@ RenderableFASTElement(TestElementGe).defineAsync({
 
 class TestElementGt extends FASTElement {
     @attr({ attribute: "vara" })
-    varA: number = 0;
+    vara: number = 0;
 }
 RenderableFASTElement(TestElementGt).defineAsync({
     name: "test-element-gt",
@@ -66,7 +66,7 @@ RenderableFASTElement(TestElementGt).defineAsync({
 
 class TestElementLe extends FASTElement {
     @attr({ attribute: "vara" })
-    varA: number = 0;
+    vara: number = 0;
 }
 RenderableFASTElement(TestElementLe).defineAsync({
     name: "test-element-le",
@@ -75,7 +75,7 @@ RenderableFASTElement(TestElementLe).defineAsync({
 
 class TestElementLt extends FASTElement {
     @attr({ attribute: "vara" })
-    varA: number = 0;
+    vara: number = 0;
 }
 RenderableFASTElement(TestElementLt).defineAsync({
     name: "test-element-lt",
@@ -84,10 +84,10 @@ RenderableFASTElement(TestElementLt).defineAsync({
 
 class TestElementOr extends FASTElement {
     @attr({ attribute: "thisvar", mode: "boolean" })
-    thisVar: boolean = false;
+    thisvar: boolean = false;
 
     @attr({ attribute: "thatvar", mode: "boolean" })
-    thatVar: boolean = false;
+    thatvar: boolean = false;
 }
 RenderableFASTElement(TestElementOr).defineAsync({
     name: "test-element-or",
@@ -96,10 +96,10 @@ RenderableFASTElement(TestElementOr).defineAsync({
 
 class TestElementAnd extends FASTElement {
     @attr({ attribute: "thisvar", mode: "boolean" })
-    thisVar: boolean = false;
+    thisvar: boolean = false;
 
     @attr({ attribute: "thatvar", mode: "boolean" })
-    thatVar: boolean = false;
+    thatvar: boolean = false;
 }
 RenderableFASTElement(TestElementAnd).defineAsync({
     name: "test-element-and",
