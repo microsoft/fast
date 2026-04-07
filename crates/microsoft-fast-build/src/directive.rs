@@ -6,7 +6,7 @@ use crate::attribute::{
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
-    data_attr_to_dataset_key,
+    strip_entry_attrs, data_attr_to_dataset_key,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -324,7 +324,7 @@ pub fn render_custom_element(
     let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
-    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);
+    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
 
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
@@ -379,7 +379,15 @@ fn build_element_open_tag(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     parent_hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> String {
+    // Entry-level root custom elements receive the full root state directly — their
+    // `{{binding}}` attributes were only needed for attribute-based state building and
+    // should not appear in the rendered HTML. Skip binding resolution entirely and
+    // return a clean opening tag with only non-binding attributes.
+    if is_entry {
+        return format!("{}>", strip_entry_attrs(open_tag_base));
+    }
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {

@@ -295,19 +295,33 @@ let html = render_entry_template_with_locator(
 // my-app's template can use {{items}}, etc. directly.
 ```
 
-Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
+#### Attribute stripping on root elements
 
-| Context | Child state source |
-|---|---|
-| Root element in entry HTML (via `render_entry_*`) | Full root state |
-| Nested element inside a shadow template | Attributes on the element tag |
-| Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag |
+Because root custom elements receive the full root state, any attribute on a root element whose value is a pure `{{binding}}` expression is **stripped from the rendered HTML**. These attributes existed solely to forward state to the element's template; the entry-level rendering mechanism makes them redundant.
+
+Static attributes (e.g. `id="main"`, boolean `disabled`) are preserved.
 
 ```html
-<!-- Entry HTML — my-parent receives full root state -->
-<my-parent></my-parent>
+<!-- Entry HTML source -->
+<my-app list="{{list}}" id="app"></my-app>
 
-<!-- my-parent's template — my-child receives attr-based state -->
+<!-- Rendered output — {{list}} attr stripped, static id kept -->
+<my-app id="app"><template shadowrootmode="open" shadowroot="open">...</template></my-app>
+```
+
+Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
+
+| Context | Child state source | `{{binding}}` attrs in HTML |
+|---|---|---|
+| Root element in entry HTML (via `render_entry_*`) | Full root state | Stripped |
+| Nested element inside a shadow template | Attributes on the element tag | Rendered (resolved) |
+| Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag | Rendered (resolved) |
+
+```html
+<!-- Entry HTML — my-parent receives full root state; list="{{list}}" is stripped -->
+<my-parent list="{{list}}"></my-parent>
+
+<!-- my-parent's template — my-child receives attr-based state; label is rendered -->
 <my-child label="{{heading}}" :items="{{items}}"></my-child>
 ```
 
