@@ -148,9 +148,9 @@ class ObserverMapTestElement extends FASTElement {
         activeusers: 1,
         metrics: {
             engagement: {
-                daily: 45,
-                weekly: 120,
-                monthly: 500,
+                daily: 100,
+                weekly: 500,
+                monthly: 2000,
             },
             performance: {
                 loadtime: 1.2,

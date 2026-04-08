@@ -18,8 +18,7 @@
             ]
         }
     ],
-    "a": null,
-    "x": null,
+    "a": { "b": { "c": "" } },
     "stats": {
         "totalusers": 2,
         "activeusers": 1,
