@@ -1,8 +1,8 @@
 <f-template name="observer-map-test-element">
     <template>
         <observer-map-internal-test-element
-            :selecteduserid="{{selectedUserId}}"
-            :totalusers="{{stats.totalUsers}}"
+            :selecteduserid="{{selecteduserid}}"
+            :totalusers="{{stats.totalusers}}"
             :metrics="{{stats.metrics}}"
             :a="{{a}}"
             :x="{{x}}"
@@ -11,13 +11,13 @@
         <div class="stats">
             <h2>Global Stats</h2>
             <div class="nested-info">
-                <strong>Total Users:</strong> {{stats.totalUsers}} |
-                <strong>Active Users:</strong> {{stats.activeUsers}}
+                <strong>Total Users:</strong> {{stats.totalusers}} |
+                <strong>Active Users:</strong> {{stats.activeusers}}
             </div>
             <div class="nested-info">
                 <strong>Performance:</strong>
-                Load: {{stats.metrics.performance.loadTime}}s,
-                Render: {{stats.metrics.performance.renderTime}}s
+                Load: {{stats.metrics.performance.loadtime}}s,
+                Render: {{stats.metrics.performance.rendertime}}s
             </div>
             <div class="controls">
                 <button @click="{updateStats()}">Update Stats</button>
@@ -30,7 +30,7 @@
             <f-repeat value="{{user in users}}">
                 <div class="user-card">
                     <h3>{{user.name}} (ID: {{user.id}})
-                        <f-when value="{{user.id == selectedUserId}}">
+                        <f-when value="{{user.id == selecteduserid}}">
                             <span>⭐ SELECTED</span>
                         </f-when>
                     </h3>

@@ -1,13 +1,12 @@
 {
-    "simpleItems": ["Item 1", "Item 2", "Item 3"],
+    "simpleitems": ["Item 1", "Item 2", "Item 3"],
     "value1": 42,
     "value2": 42,
-    "selectedUserId": 1,
     "selecteduserid": 1,
     "totalusers": 2,
     "metrics": {
         "engagement": { "daily": 100, "weekly": 500, "monthly": 2000 },
-        "performance": { "loadTime": 1.2, "renderTime": 0.8 }
+        "performance": { "loadtime": 1.2, "rendertime": 0.8 }
     },
     "groups": [
         {
@@ -22,12 +21,12 @@
     "a": null,
     "x": null,
     "stats": {
-        "totalUsers": 2,
-        "activeUsers": 1,
+        "totalusers": 2,
+        "activeusers": 1,
         "metrics": {
             "performance": {
-                "loadTime": 1.2,
-                "renderTime": 0.8
+                "loadtime": 1.2,
+                "rendertime": 0.8
             },
             "engagement": {
                 "daily": 100,
