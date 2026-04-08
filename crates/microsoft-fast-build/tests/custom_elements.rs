@@ -608,3 +608,17 @@ fn test_custom_element_json_object_attr() {
     ).unwrap();
     assert!(result.contains("Hello"), "rendered: {result}");
 }
+
+#[test]
+fn test_custom_element_invalid_json_attr_falls_back_to_string() {
+    // An attribute value that looks like JSON but is invalid should remain a string,
+    // not cause a parse error or panic.
+    let locator = make_locator(&[("my-el", r#"<span>{{items}}</span>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-el items='["a",]'></my-el>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    // Invalid JSON falls back to the raw string value
+    assert!(result.contains(r#"["a",]"#), "invalid JSON kept as string: {result}");
+}
