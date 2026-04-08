@@ -1,5 +1,5 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 // Test 1: Element with single host event binding and content attribute binding
 class HostEventElement extends FASTElement {
@@ -23,7 +23,7 @@ class HostMultiElement extends FASTElement {
     @attr
     text: string = "World";
 
-    @observable
+    @attr({ mode: "boolean", attribute: "disabled" })
     isDisabled: boolean = true;
 
     public clickCount = 0;
@@ -139,7 +139,7 @@ class HostAllTypesElement extends FASTElement {
     @attr
     text: string = "all types";
 
-    @observable
+    @attr({ mode: "boolean", attribute: "disabled" })
     isDisabled: boolean = true;
 
     @observable
@@ -165,7 +165,7 @@ class HostPermutationBase extends FASTElement {
     @attr
     text: string = "";
 
-    @observable
+    @attr({ mode: "boolean", attribute: "disabled" })
     isDisabled: boolean = true;
 
     @observable
