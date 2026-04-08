@@ -143,7 +143,7 @@ Both return `RenderError::EmptyBinding` for blank expressions, `RenderError::Unc
 2. If the expression is `varname.prop.path`, and `varname` matches a loop variable, apply `get_nested_property` to the loop variable's value with the remaining path.
 3. Fall back to `get_nested_property(root, expr)`.
 
-`get_nested_property` walks a dot-separated path through `JsonValue::Object` and `JsonValue::Array` nodes. Numeric path segments (e.g. `list.0`) are used as array indices.
+`get_nested_property` walks a dot-separated path through `JsonValue::Object` and `JsonValue::Array` nodes. Numeric path segments (e.g. `list.0`) are used as array indices. The special segment `"length"` on an array returns the array length as a number (e.g. `{{items.length}}`).
 
 ### Loop variable scoping
 

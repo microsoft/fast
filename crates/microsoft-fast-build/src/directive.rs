@@ -379,6 +379,12 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
         let binding = v[2..v.len() - 2].trim();
         return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
     }
+    // Try parsing JSON array or object literals passed as attribute values
+    if v.starts_with('[') || v.starts_with('{') {
+        if let Ok(parsed) = crate::json::parse(v) {
+            return parsed;
+        }
+    }
     JsonValue::String(v.clone())
 }
 

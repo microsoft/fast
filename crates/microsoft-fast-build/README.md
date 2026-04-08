@@ -197,13 +197,22 @@ Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable and `{{$in
 </f-when>
 ```
 
-### Property Access and Array Indexing
+### Property Access, Array Indexing, and `.length`
 
-Dot-notation and numeric indices are both supported:
+Dot-notation, numeric indices, and the special `.length` property on arrays are all supported:
 
 ```html
 {{user.address.city}}
 {{list.0.name}}
+{{items.length}}
+```
+
+`{{items.length}}` resolves to the number of elements in the array. It can be used in both content bindings and `<f-when>` expressions:
+
+```html
+<f-when value="{{items.length > 0}}">
+  <p>{{items.length}} items found</p>
+</f-when>
 ```
 
 ---
