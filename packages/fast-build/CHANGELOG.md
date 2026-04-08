@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Tue, 07 Apr 2026 00:50:48 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 08 Apr 2026 00:19:56 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.3.0
+
+Wed, 08 Apr 2026 00:19:56 GMT
+
+### Minor changes
+
+- feat: root custom elements receive full entry-level state via render_entry_with_locator (7559015+janechu@users.noreply.github.com)
+- feat: strip state-passing {{binding}} attributes from root custom element opening tags when rendering entry HTML (7559015+janechu@users.noreply.github.com)
 
 ## 0.2.0
 

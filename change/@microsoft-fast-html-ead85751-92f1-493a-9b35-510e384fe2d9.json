@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix(fast-html): preserve existing $defs when Schema.addPath adds a new context",
-  "packageName": "@microsoft/fast-html",
-  "email": "mcritzjam@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
