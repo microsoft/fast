@@ -225,7 +225,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
      - No value (boolean attribute) → `Bool(true)`
      - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
-     - Anything else → `String` (attribute values are always strings; arrays, objects, booleans, and numbers must be passed via `:prop="{{binding}}"` or `prop="{{binding}}"` so the resolved value from parent state is used)
+     - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
+     - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
 7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
