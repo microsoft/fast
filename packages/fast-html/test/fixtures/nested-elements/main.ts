@@ -47,36 +47,29 @@ export class ItemList extends RenderableElement {
 
     public title!: string;
 
+    // Track which list instance this is (1st, 2nd, or 3rd on the page)
+    private static prepareCallCount = 0;
+    private static instanceMap = new WeakMap<ItemList, number>();
+
     async prepare() {
-        const data = mockDataSources.getListData("list-1");
+        // Assign instance number on first prepare() call for this instance
+        if (!ItemList.instanceMap.has(this)) {
+            ItemList.prepareCallCount++;
+            ItemList.instanceMap.set(this, ItemList.prepareCallCount);
+        }
+
+        const instanceNumber = ItemList.instanceMap.get(this) || 0;
+
+        // Load data based on instance number, not from DOM
+        const listIds = ["list-1", "list-2", "list-3"];
+        const listId = listIds[instanceNumber - 1] || "list-1";
+        const data = mockDataSources.getListData(listId);
+
+        // Set data from fresh source - should match pre-rendered content exactly
         this.title = data.title;
         this.items = data.items;
-        await new Promise(resolve => setTimeout(resolve, 50));
-    }
-}
 
-export class ParentEmptyElement extends RenderableElement {
-    public emptyItems!: Array<{ text: string }>;
-
-    public emptyTitle!: string;
-
-    async prepare() {
-        const data = mockDataSources.getListData("list-2");
-        this.emptyTitle = data.title;
-        this.emptyItems = data.items;
-        await new Promise(resolve => setTimeout(resolve, 50));
-    }
-}
-
-export class ParentSingleElement extends RenderableElement {
-    public singleItem!: Array<{ text: string }>;
-
-    public singleTitle!: string;
-
-    async prepare() {
-        const data = mockDataSources.getListData("list-3");
-        this.singleTitle = data.title;
-        this.singleItem = data.items;
+        // Simulate slight delay for data loading
         await new Promise(resolve => setTimeout(resolve, 50));
     }
 }
@@ -117,16 +110,6 @@ RenderableFASTElement(ItemList).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-RenderableFASTElement(ParentEmptyElement).defineAsync({
-    name: "parent-empty-element",
-    templateOptions: "defer-and-hydrate",
-});
-
-RenderableFASTElement(ParentSingleElement).defineAsync({
-    name: "parent-single-element",
-    templateOptions: "defer-and-hydrate",
-});
-
 RenderableFASTElement(Item).defineAsync({
     name: "child-element",
     templateOptions: "defer-and-hydrate",
@@ -136,12 +119,6 @@ RenderableFASTElement(Item).defineAsync({
 
 TemplateElement.options({
     "parent-element": {
-        observerMap: "all",
-    },
-    "parent-empty-element": {
-        observerMap: "all",
-    },
-    "parent-single-element": {
         observerMap: "all",
     },
     "child-element": {
