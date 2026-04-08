@@ -1,5 +1,10 @@
 # FAST SSR
 
+> ⚠️ **Deprecated**
+>
+> `@microsoft/fast-ssr` is no longer actively maintained and has been deprecated in favor of [`@microsoft/fast-build`](https://www.npmjs.com/package/@microsoft/fast-build) and `@microsoft/webui`.
+> Please migrate to those packages for server-side rendering support going forward.
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-ssr.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-ssr)
 
