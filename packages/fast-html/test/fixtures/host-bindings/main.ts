@@ -1,5 +1,5 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 // Test 1: Element with single host event binding and content attribute binding
 class HostEventElement extends FASTElement {
