@@ -109,6 +109,27 @@ class ObserverMapTestElement extends FASTElement {
 
     public selecteduserid: number = 1;
 
+    public a: any = {};
+
+    public x: any = undefined;
+
+    public groups = [
+        {
+            items: [
+                {
+                    text: "item A",
+                    actions: {
+                        trailing: [
+                            {
+                                label: "action label A",
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+    ];
+
     public stats = {
         totalusers: 2,
         activeusers: 1,
@@ -300,27 +321,12 @@ class ObserverMapInternalTestElement extends FASTElement {
     public totalusers?: number;
 
     @observable
-    public a: any = {};
+    public a: any;
 
     @observable
-    public x: any = undefined;
+    public x: any;
 
-    public groups = [
-        {
-            items: [
-                {
-                    text: "item A",
-                    actions: {
-                        trailing: [
-                            {
-                                label: "action label A",
-                            },
-                        ],
-                    },
-                },
-            ],
-        },
-    ];
+    public groups: any;
 
     public removeAllItems() {
         this.groups[0].items.shift();
