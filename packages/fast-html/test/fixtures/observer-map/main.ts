@@ -107,11 +107,45 @@ class ObserverMapTestElement extends FASTElement {
         },
     ];
 
-    public selectedUserId: number = 1;
+    public selecteduserid: number = 1;
+
+    public simpleitems: string[] = ["Item 1", "Item 2", "Item 3"];
+
+    public value1: number = 42;
+
+    public value2: number = 42;
+
+    public totalusers: number = 2;
+
+    public metrics = {
+        engagement: { daily: 100, weekly: 500, monthly: 2000 },
+        performance: { loadtime: 1.2, rendertime: 0.8 },
+    };
+
+    public a: any = {};
+
+    public x: any = undefined;
+
+    public groups = [
+        {
+            items: [
+                {
+                    text: "item A",
+                    actions: {
+                        trailing: [
+                            {
+                                label: "action label A",
+                            },
+                        ],
+                    },
+                },
+            ],
+        },
+    ];
 
     public stats = {
-        totalUsers: 2,
-        activeUsers: 1,
+        totalusers: 2,
+        activeusers: 1,
         metrics: {
             engagement: {
                 daily: 45,
@@ -119,8 +153,8 @@ class ObserverMapTestElement extends FASTElement {
                 monthly: 500,
             },
             performance: {
-                loadTime: 1.2,
-                renderTime: 0.8,
+                loadtime: 1.2,
+                rendertime: 0.8,
             },
         },
     };
@@ -271,14 +305,14 @@ class ObserverMapTestElement extends FASTElement {
             },
             posts: [],
         });
-        this.stats.totalUsers = this.users.length;
+        this.stats.totalusers = this.users.length;
     };
 
     public removeUser = (userId: number) => {
         const index = this.users.findIndex(u => u.id === userId);
         if (index > -1) {
             this.users.splice(index, 1);
-            this.stats.totalUsers = this.users.length;
+            this.stats.totalusers = this.users.length;
         }
     };
 
@@ -286,12 +320,12 @@ class ObserverMapTestElement extends FASTElement {
         this.stats.metrics.engagement.daily += Math.floor(Math.random() * 10);
         this.stats.metrics.engagement.weekly += Math.floor(Math.random() * 20);
         this.stats.metrics.engagement.monthly += Math.floor(Math.random() * 50);
-        this.stats.metrics.performance.loadTime = Math.random() * 2 + 0.5;
-        this.stats.metrics.performance.renderTime = Math.random() * 1 + 0.3;
+        this.stats.metrics.performance.loadtime = Math.random() * 2 + 0.5;
+        this.stats.metrics.performance.rendertime = Math.random() * 1 + 0.3;
     };
 
     public selectUser = (userId: number) => {
-        this.selectedUserId = userId;
+        this.selecteduserid = userId;
     };
 }
 
@@ -299,25 +333,11 @@ class ObserverMapInternalTestElement extends FASTElement {
     public selecteduserid?: number;
     public totalusers?: number;
 
-    public a: any = {};
-    public x: any = undefined;
+    public a: any;
 
-    public groups = [
-        {
-            items: [
-                {
-                    text: "item A",
-                    actions: {
-                        trailing: [
-                            {
-                                label: "action label A",
-                            },
-                        ],
-                    },
-                },
-            ],
-        },
-    ];
+    public x: any;
+
+    public groups: any;
 
     public removeAllItems() {
         this.groups[0].items.shift();
