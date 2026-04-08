@@ -1,0 +1,66 @@
+<f-template name="test-element">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}} - {{item_parent}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-inner-when">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <f-when value="{{item.show}}">
+                    <li>{{item.text}}</li>
+                </f-when>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-with-observer-map">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}} - {{item_parent}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-no-item-repeat-binding">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-event">
+    <template>
+        <f-repeat value="{{item in list}}">
+            <button @click="{handleClick()}">Click</button>
+        </f-repeat>
+    </template>
+</f-template>
+<f-template name="test-element-interval-updates">
+    <template>
+        <ul>
+            <f-repeat value="{{item in someData.list1}}">
+                <li>
+                    <svg width="20px" height="20px">
+                        <use href="sprites.svg#{{item.icon}}-icon"></use>
+                    </svg>
+                </li>
+            </f-repeat>
+
+            <f-repeat value="{{item in someData.list2}}">
+                <li>
+                    <svg width="20px" height="20px">
+                        <use href="sprites.svg#{{item.icon}}-icon"></use>
+                    </svg>
+                </li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>

@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 08 Apr 2026 00:19:56 GMT",
+      "version": "1.0.0-alpha.46",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.46",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "00a4fe142d57b4fec13a2a0fa413d73631948ec4",
+            "comment": "chore: revert @microsoft/fast-html version bump"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3b3c7a139384f250e3bdba8ffc1813d89ff271c2",
+            "comment": "chore: add DESIGN.md and fix documentation errors"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "53ac856af0596df03fdf40e895899780143a5bce",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build ref fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6c74e692b2b890e1e22b04e0a4f840b7d992116b",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build slotted fixture"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "mcritzjam@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "266ee72851fda3d894c62a3ebbce9bf7916fe58f",
+            "comment": "fix(fast-html): preserve existing $defs when Schema.addPath adds a new context"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.3.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.10.3",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 04 Apr 2026 00:22:26 GMT",
       "version": "1.0.0-alpha.45",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.45",

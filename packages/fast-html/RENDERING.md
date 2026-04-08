@@ -207,13 +207,13 @@ Should result in any of the following formats:
 
 ```html
 <!-- Space-separated format -->
-<h1 data-fe-b="0" greeting="Hello world!"></h1>
+<h1 data-fe-b="0" greeting="Hello"></h1>
 
 <!-- Enumerated format -->
-<h1 data-fe-b-0 greeting="Hello world!"></h1>
+<h1 data-fe-b-0 greeting="Hello"></h1>
 
 <!-- Compact format (not recommended for single bindings, but supported) -->
-<h1 data-fe-c-0-1 greeting="Hello world!"></h1>
+<h1 data-fe-c-0-1 greeting="Hello"></h1>
 ```
 
 ###### Multiple attribute bindings

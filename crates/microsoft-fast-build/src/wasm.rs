@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 use std::collections::HashMap;
-use crate::{json, Locator, render_template, render_template_with_locator};
+use crate::{json, Locator, render_template, render_template_with_locator, render_entry_template_with_locator};
 
 /// Render a FAST HTML template with a JSON state string.
 /// Returns the rendered HTML or throws a JavaScript error.
@@ -18,6 +18,22 @@ pub fn render_with_templates(entry: &str, templates_json: &str, state: &str) -> 
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_templates(templates);
     render_template_with_locator(entry, state, &locator)
+        .map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
+/// Render the top-level **entry HTML** with custom element templates and a JSON state string.
+/// Custom elements found at the root level of `entry` receive the full root state rather than
+/// building their child state from HTML attributes. For `{{binding}}` attributes on root custom
+/// elements, primitive results (`string`, `number`, and `bool`) are preserved in the rendered
+/// output, while non-primitive values (`array`, `object`, `null`) are stripped.
+///
+/// `templates_json` is a JSON object mapping element names to their HTML template strings.
+/// Returns the rendered HTML or throws a JavaScript error.
+#[wasm_bindgen]
+pub fn render_entry_with_templates(entry: &str, templates_json: &str, state: &str) -> Result<String, JsValue> {
+    let templates = parse_templates_map(templates_json)?;
+    let locator = Locator::from_templates(templates);
+    render_entry_template_with_locator(entry, state, &locator)
         .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 

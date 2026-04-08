@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Sat, 04 Apr 2026 00:22:26 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 08 Apr 2026 00:19:56 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.46
+
+Wed, 08 Apr 2026 00:19:56 GMT
+
+### Changes
+
+- fix(fast-html): preserve existing $defs when Schema.addPath adds a new context (mcritzjam@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.3.0
+- Bump @microsoft/fast-element to v2.10.3
 
 ## 1.0.0-alpha.45
 
