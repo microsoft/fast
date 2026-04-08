@@ -22,6 +22,7 @@ const fixtures = [
     "dot-syntax",
     "nested-elements",
     "performance-metrics",
+    "observer-map",
 ];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
