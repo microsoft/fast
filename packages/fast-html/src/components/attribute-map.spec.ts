@@ -20,7 +20,7 @@ test.describe("AttributeMap", async () => {
         expect(hasFooAccessor).toBeTruthy();
     });
 
-    test("should define @attr for a property with dashes removed", async ({ page }) => {
+    test("should define @attr for a foobar property", async ({ page }) => {
         const element = page.locator("attribute-map-test-element");
 
         const hasFoobarAccessor = await element.evaluate(node => {
@@ -34,16 +34,16 @@ test.describe("AttributeMap", async () => {
         expect(hasFoobarAccessor).toBeTruthy();
     });
 
-    test("should remove dashes from attribute name to form property name", async ({
+    test("should define @attr for a foobar property using the same attribute name", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // Setting the dash-case attribute should update the dashes-removed property
-        await element.evaluate(node => node.setAttribute("foo-bar", "dash-case-test"));
+        // Setting the foobar attribute should update the foobar property
+        await element.evaluate(node => node.setAttribute("foobar", "foobar-test"));
         const propValue = await element.evaluate(node => (node as any).foobar);
 
-        expect(propValue).toBe("dash-case-test");
+        expect(propValue).toBe("foobar-test");
     });
 
     test("should not define @attr for event handler methods", async ({ page }) => {
@@ -79,12 +79,12 @@ test.describe("AttributeMap", async () => {
         await expect(page.locator(".foo-value")).toHaveText("attr-value");
     });
 
-    test("should update template when dash-case attribute is set via setAttribute", async ({
+    test("should update template when foobar attribute is set via setAttribute", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        await element.evaluate(node => node.setAttribute("foo-bar", "bar-attr-value"));
+        await element.evaluate(node => node.setAttribute("foobar", "bar-attr-value"));
 
         await expect(page.locator(".foo-bar-value")).toHaveText("bar-attr-value");
     });
@@ -115,13 +115,13 @@ test.describe("AttributeMap", async () => {
         expect(propValue).toBe("lookup-test");
     });
 
-    test("should update definition attributeLookup with dashes removed for dash-case attributes", async ({
+    test("should update definition attributeLookup for foobar property", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // setAttribute with dash-case triggers attributeChangedCallback for the dashes-removed property
-        await element.evaluate(node => node.setAttribute("foo-bar", "lookup-bar-test"));
+        // setAttribute triggers attributeChangedCallback for the foobar property
+        await element.evaluate(node => node.setAttribute("foobar", "lookup-bar-test"));
         const propValue = await element.evaluate(node => (node as any).foobar);
 
         expect(propValue).toBe("lookup-bar-test");

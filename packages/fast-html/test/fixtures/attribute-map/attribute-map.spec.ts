@@ -22,13 +22,13 @@ test.describe("AttributeMap", async () => {
         expect(accessors.foobar).toBeTruthy();
     });
 
-    test("should remove dashes from attribute name to form property name", async ({
+    test("should define @attr using binding name as both attribute and property name", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // Setting foo-bar attribute should update the foobar property
-        await element.evaluate(node => node.setAttribute("foo-bar", "dash-test"));
+        // Setting foobar attribute should update the foobar property
+        await element.evaluate(node => node.setAttribute("foobar", "dash-test"));
         const propValue = await element.evaluate(node => (node as any).foobar);
 
         expect(propValue).toBe("dash-test");
@@ -54,12 +54,12 @@ test.describe("AttributeMap", async () => {
         await expect(page.locator(".foo-value")).toHaveText("hello-via-attr");
     });
 
-    test("should update template when foo-bar attribute is set via setAttribute", async ({
+    test("should update template when foobar attribute is set via setAttribute", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        await element.evaluate(node => node.setAttribute("foo-bar", "world-via-attr"));
+        await element.evaluate(node => node.setAttribute("foobar", "world-via-attr"));
 
         await expect(page.locator(".foo-bar-value")).toHaveText("world-via-attr");
     });
@@ -69,7 +69,7 @@ test.describe("AttributeMap", async () => {
 
         await element.evaluate(node => {
             node.setAttribute("foo", "multi-foo");
-            node.setAttribute("foo-bar", "multi-bar");
+            node.setAttribute("foobar", "multi-bar");
         });
 
         await expect(page.locator(".foo-value")).toHaveText("multi-foo");
@@ -90,7 +90,7 @@ test.describe("AttributeMap", async () => {
         expect(attrValue).toBe("reflected-value");
     });
 
-    test("should reflect foobar property value back to foo-bar attribute", async ({
+    test("should reflect foobar property value back to foobar attribute", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
@@ -101,7 +101,7 @@ test.describe("AttributeMap", async () => {
 
         await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));
 
-        const attrValue = await element.evaluate(node => node.getAttribute("foo-bar"));
+        const attrValue = await element.evaluate(node => node.getAttribute("foobar"));
         expect(attrValue).toBe("bar-reflected");
     });
 

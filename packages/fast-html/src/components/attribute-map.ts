@@ -85,7 +85,10 @@ export class AttributeMap {
     }
 
     /**
-     * Removes dashes from an attribute name to produce a JS property name.
+     * Derives a JS property name from an attribute name by removing all dashes.
+     * Template bindings should not use dashes (e.g. use {{foobar}} not {{foo-bar}}),
+     * but HTML attributes can have dashes (e.g. foo-bar), so this ensures
+     * a valid JS identifier is always produced.
      * e.g. foo-bar → foobar
      */
     private removeDashes(str: string): string {
