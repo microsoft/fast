@@ -1,7 +1,7 @@
 <f-template name="test-element-repeat-event">
     <template>
         <ul>
-            <f-repeat value="{{item in items}}">
+            <f-repeat value="{{item in repeatEventItems}}">
                 <li>
                     <button @click="{$c.parent.handleItemClick($e)}">{{item.name}}</button>
                 </li>
@@ -12,9 +12,9 @@
 <f-template name="test-when-in-repeat">
     <template>
         <ul>
-            <f-repeat value="{{item in items}}">
+            <f-repeat value="{{item in whenRepeatItems}}">
                 <li>
-                    <f-when value="{{$c.parent.showNames}}">
+                    <f-when value="{{showNames}}">
                         <button class="name" @click="{$c.parent.handleItemClick(e)}">{{item.name}}</button>
                     </f-when>
                 </li>
