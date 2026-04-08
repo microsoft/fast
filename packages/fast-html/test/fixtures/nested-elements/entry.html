@@ -7,8 +7,8 @@
     </head>
     <body>
         <parent-element title="{{title}}" items="{{items}}"></parent-element>
-        <parent-element title="Empty List" items="[]"></parent-element>
-        <parent-element title="Single Item" items='[{"text":"Only Item"}]'></parent-element>
+        <parent-element title="Empty List" :items="{{emptyItems}}"></parent-element>
+        <parent-element title="Single Item" :items="{{singleItem}}"></parent-element>
         <script type="module" src="./main.ts"></script>
     </body>
 </html>
