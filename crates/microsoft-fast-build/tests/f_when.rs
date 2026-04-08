@@ -81,6 +81,24 @@ fn test_f_when_numeric_comparison() {
     );
 }
 
+// ── array .length in conditions ───────────────────────────────────────────────
+
+#[test]
+fn test_when_array_length_gt_zero() {
+    assert_eq!(
+        ok(r#"<f-when value="{{items.length > 0}}">has items</f-when>"#, r#"{"items": ["x"]}"#),
+        "has items",
+    );
+}
+
+#[test]
+fn test_when_array_length_zero() {
+    assert_eq!(
+        ok(r#"<f-when value="{{items.length > 0}}">has items</f-when>"#, r#"{"items": []}"#),
+        "",
+    );
+}
+
 // ── chained expressions ───────────────────────────────────────────────────────
 
 #[test]

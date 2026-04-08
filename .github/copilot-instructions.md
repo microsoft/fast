@@ -21,6 +21,7 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 | `@microsoft/fast-element` | Stable (v2) | Core Web Component library |
 | `@microsoft/fast-html` | Alpha | Declarative HTML parser |
 | `@microsoft/fast-router` | Alpha | Web Component router |
+| `@microsoft/fast-build` | Prerelease | Declarative HTML server side renderer |
 
 ### Other packages
 
@@ -56,14 +57,18 @@ Run all commands from the monorepo root. Use workspace flags to target a single 
 | Build one package | `npm run build -w @microsoft/fast-element` |
 | Test all | `npm run test` |
 | Test one package | `npm run test -w @microsoft/fast-element` |
-| Format check | `npm run format:check` |
-| Format fix | `npm run format` |
 | Lint | `npm run lint` |
 | Lint fix | `npm run lint:fix` |
-| Check (lint + format) | `npm run biome:check` |
+| Format check | `npm run format:check` |
+| Format fix | `npm run format` |
+| Check (lint + format + imports) | `npm run biome:check` |
+| Check fix | `npm run biome:fix` |
+| CI check (read-only) | `npm run biome:ci` |
 | Generate change file | `npm run change` |
 | Check change files | `npm run checkchange` |
 | API docs | `npm run doc -w @microsoft/fast-element` |
+
+All `lint`, `biome:check`, `biome:fix`, and `biome:ci` commands use `biome-changed`, which runs biome only on files with uncommitted git changes. The `format:check` and `format` commands use biome's own `--changed` flag to compare against the default branch.
 
 ## Project Structure
 
@@ -77,6 +82,8 @@ packages/<package>/
   test/                   # Test harness (Vite dev server, fixtures)
   dist/                   # Build output (ESM + declarations)
   docs/                   # API reports (api-extractor)
+  DESIGN.md               # Code documentation for the package or crate
+  README.md               # README for published package use
 ```
 
 - Source files use **kebab-case**: `element-controller.ts`, `update-queue.ts`.
@@ -128,6 +135,7 @@ Key constraints (details in [TypeScript skill](./skills/typescript/SKILL.md)):
 | beachball | Change files, versioning, publishing |
 | Biome | Formatting + Linting |
 | lefthook | Pre-commit hooks (runs `biome:check` and `checkchange` on staged files) |
+| Rust | Rendering Declarative templates (`fast-build` package and `microsoft-fast-build` crate only) |
 
 ## Acceptance Checklist
 
@@ -135,6 +143,5 @@ Before finishing any change, run these commands from the monorepo root and confi
 
 - [ ] `npm run build` — all packages build successfully
 - [ ] `npm run test` — all tests pass
-- [ ] `npm run format:check` — Biome formatting is correct
-- [ ] `npm run lint` — Biome linting passes
+- [ ] `npm run biome:check` — Biome linting and formatting pass
 - [ ] `npm run checkchange` — beachball change files exist for any `packages/*` changes

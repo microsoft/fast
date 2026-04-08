@@ -39,7 +39,7 @@ flowchart TD
     A --> B
     C@{ shape: rect, label: "A Custom Element executes the <code>compose</code> step"}
     B --> C
-    D@{ shape: procs, label: "<ul style="text-align: left"><li>Any defined observable decorators are added to the FAST global</li><li>An attribute decorator locates the associated Custom Elements constructor which it uses to push itself to the Custom Elements attribute collection</li></ul>"}
+    D@{ shape: procs, label: "<ul style='text-align: left'><li>Any defined observable decorators are added to the FAST global</li><li>An attribute decorator locates the associated Custom Elements constructor which it uses to push itself to the Custom Elements attribute collection</li></ul>"}
     C --> D
     F@{ shape: rect, label: "An HTML tagged template literal is executed for the FAST Custom Element and applied to the definition" }
     D --> F

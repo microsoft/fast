@@ -12,6 +12,8 @@ import {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
+    deprecatedEventArgAccessor,
+    eventArgAccessor,
     executionContextAccessor,
     openExpression,
     repeatDirectiveClose,
@@ -87,6 +89,57 @@ interface ObservedTargetsAndProperties {
 }
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
+
+export { deprecatedEventArgAccessor, eventArgAccessor, executionContextAccessor };
+
+/**
+ * The type of a parsed event handler argument.
+ */
+export type EventArgType = "event" | "deprecated-event" | "context" | "binding";
+
+/**
+ * A parsed event handler argument descriptor.
+ */
+export interface ParsedEventArg {
+    type: EventArgType;
+    /** The raw argument string, present only when `type` is `"binding"`. */
+    rawArg?: string;
+}
+
+/**
+ * Parses the arguments string of an event handler binding into an array of
+ * typed argument descriptors. Unrecognised tokens are returned as `"binding"`
+ * type with their raw string preserved.
+ *
+ * Special arguments:
+ * - `$e` — resolves to the DOM event object
+ * - `e` — resolves to the DOM event object (deprecated, use `$e`)
+ * - `$c` — resolves to the full execution context object
+ *
+ * @param argsString - The raw arguments string from between the parentheses,
+ *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
+ * @returns An array of {@link ParsedEventArg} descriptors.
+ */
+export function parseEventArgs(argsString: string): ParsedEventArg[] {
+    if (argsString.trim() === "") return [];
+
+    return argsString
+        .split(",")
+        .map(arg => arg.trim())
+        .filter(arg => arg !== "")
+        .map((arg): ParsedEventArg => {
+            switch (arg) {
+                case eventArgAccessor:
+                    return { type: "event" };
+                case deprecatedEventArgAccessor:
+                    return { type: "deprecated-event" };
+                case executionContextAccessor:
+                    return { type: "context" };
+                default:
+                    return { type: "binding", rawArg: arg };
+            }
+        });
+}
 
 const startInnerHTMLDiv = `<div :innerHTML="{{`;
 const startInnerHTMLDivLength = startInnerHTMLDiv.length;
@@ -1179,7 +1232,31 @@ function assignObservablesToArray(
         },
     });
 
-    return data;
+    if (schemaProperties !== null) {
+        return data;
+    }
+
+    // For primitive arrays, wrap in a Proxy so that direct index assignment
+    // (e.g. arr[0] = value) triggers FAST's splice-based change tracking and
+    // keeps repeat directives in sync. Object arrays are not wrapped because
+    // their items are individually proxied, and FAST's own push/splice/etc.
+    // already carry splice records — double-wrapping would produce duplicate
+    // splice notifications.
+    return new Proxy(data, {
+        set: (arr: any, prop: string | symbol, value: any) => {
+            const idx = typeof prop === "string" ? Number(prop) : NaN;
+
+            if (typeof prop !== "symbol" && Number.isInteger(idx) && idx >= 0) {
+                // splice() replaces the item in-place and creates the splice
+                // record that FAST's ArrayObserver delivers to repeat directives.
+                Array.prototype.splice.call(arr, idx, 1, value);
+            } else {
+                arr[prop] = value;
+            }
+
+            return true;
+        },
+    });
 }
 
 /**
@@ -1298,6 +1375,17 @@ export function assignObservables(
                         ),
                     );
                 }
+            } else {
+                // Primitive array (items have no schema $ref): wrap in a proxy so that
+                // direct index assignments (e.g. arr[0] = value) use FAST's splice-based
+                // change tracking and keep repeat directives in sync.
+                proxiedData = assignObservablesToArray(
+                    proxiedData,
+                    schema,
+                    rootSchema,
+                    target,
+                    rootProperty,
+                );
             }
 
             break;

@@ -221,36 +221,152 @@ pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
     (db, sb)
 }
 
+// ── Data attribute helpers ────────────────────────────────────────────────────
+
+/// Convert a kebab-case string to camelCase.
+/// "date-of-birth" → "dateOfBirth", "name" → "name"
+fn kebab_to_camel(s: &str) -> String {
+    let mut result = String::with_capacity(s.len());
+    let mut next_upper = false;
+    for ch in s.chars() {
+        if ch == '-' {
+            next_upper = true;
+        } else if next_upper {
+            result.push(ch.to_ascii_uppercase());
+            next_upper = false;
+        } else {
+            result.push(ch);
+        }
+    }
+    result
+}
+
+/// Convert a `data-kebab-case` HTML attribute name to its full dot-notation
+/// dataset path, following the MDN HTMLElement.dataset naming convention.
+/// Returns `None` for names that do not start with `data-`.
+///
+/// Examples: `"data-date-of-birth"` → `"dataset.dateOfBirth"`, `"data-name"` → `"dataset.name"`
+pub fn data_attr_to_dataset_key(name: &str) -> Option<String> {
+    name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
+}
+
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
+/// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
+/// either renders the bare attribute name (if true) or omits the attribute (if false).
 pub fn resolve_attribute_bindings_in_tag(
     tag: &str,
     root: &crate::json::JsonValue,
     loop_vars: &[(String, crate::json::JsonValue)],
 ) -> String {
-    use crate::context::resolve_value;
     use crate::content::html_escape;
+    use crate::context::resolve_value;
+    use crate::expression::evaluate;
     let mut result = String::with_capacity(tag.len());
     let mut pos = 0;
     loop {
         let dbl = match find_str(tag, "{{", pos) {
-            None => { result.push_str(&tag[pos..]); break; }
+            None => {
+                result.push_str(&tag[pos..]);
+                break;
+            }
             Some(idx) => idx,
         };
-        result.push_str(&tag[pos..dbl]);
         let inner_start = dbl + 2;
         let end = match find_str(tag, "}}", inner_start) {
-            None => { result.push_str(&tag[dbl..]); break; }
+            None => {
+                result.push_str(&tag[dbl..]);
+                break;
+            }
             Some(idx) => idx,
         };
         let expr = tag[inner_start..end].trim();
-        let val = resolve_value(expr, root, loop_vars)
-            .map(|v| html_escape(&v.to_display_string()))
-            .unwrap_or_default();
-        result.push_str(&val);
-        pos = end + 2;
+
+        // Append literal text up to {{
+        result.push_str(&tag[pos..dbl]);
+
+        // Check whether this {{expr}} is the value of a `?attr` boolean binding.
+        // Pattern: `result` ends with `?name="` after appending the prefix text.
+        if let Some(bool_name) = extract_bool_attr_prefix(&result) {
+            // Remove `?name="` from result (len = '?' + name + '="' = name.len() + 3)
+            let trim_to = result.len() - (bool_name.len() + 3);
+            result.truncate(trim_to);
+            // Render the bare attribute name when the expression is truthy, nothing when falsy.
+            if evaluate(expr, root, loop_vars) {
+                result.push_str(&bool_name);
+            }
+            // Skip past `}}"` (closing `}}` + closing `"`)
+            pos = end + 3;
+        } else {
+            let val = resolve_value(expr, root, loop_vars)
+                .map(|v| html_escape(&v.to_display_string()))
+                .unwrap_or_default();
+            result.push_str(&val);
+            pos = end + 2;
+        }
     }
     result
+}
+
+/// If `result` ends with `?name="` (a FAST boolean attribute prefix), return `name`.
+/// Returns `None` for any other suffix.
+fn extract_bool_attr_prefix(result: &str) -> Option<String> {
+    if !result.ends_with("=\"") {
+        return None;
+    }
+    let before_eq = &result[..result.len() - 2];
+    let name_start = before_eq
+        .rfind(|c: char| c.is_ascii_whitespace())
+        .map(|i| i + 1)
+        .unwrap_or(0);
+    let attr_part = &before_eq[name_start..];
+    if attr_part.starts_with('?') && attr_part.len() > 1 {
+        Some(attr_part[1..].to_string())
+    } else {
+        None
+    }
+}
+
+/// Remove all FAST client-only binding attributes from an opening tag string:
+/// - `@attr="{...}"` event bindings
+/// - `:attr="..."` property bindings
+/// - `f-ref="{...}"`, `f-slotted="{...}"`, `f-children="{...}"` attribute directives
+///
+/// These are resolved or reconnected entirely by the FAST client runtime and
+/// have no meaning in static HTML. The `data-fe-c` hydration binding count is
+/// unaffected — callers use `count_tag_attribute_bindings` on the *original*
+/// tag string so the FAST runtime still allocates the correct number of binding slots.
+pub fn strip_client_only_attrs(tag: &str) -> String {
+    let trimmed = tag.trim_end();
+    let is_self_closing = trimmed.ends_with("/>");
+    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
+
+    let tag_name = match read_tag_name(tag, 0) {
+        Some(name) => name,
+        None => return tag.to_string(),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(tag) {
+        if name.starts_with('@') || name.starts_with(':')
+            || name.eq_ignore_ascii_case("f-ref")
+            || name.eq_ignore_ascii_case("f-slotted")
+            || name.eq_ignore_ascii_case("f-children")
+        {
+            continue;
+        }
+        match value {
+            None => { out.push(' '); out.push_str(&name); }
+            Some(v) => out.push_str(&format!(" {}=\"{}\"", name, v)),
+        }
+    }
+
+    if is_self_closing {
+        out.push_str(" />");
+    } else if has_closing_gt {
+        out.push('>');
+    }
+    out
 }
 
 /// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.

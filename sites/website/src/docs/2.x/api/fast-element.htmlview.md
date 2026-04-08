@@ -264,6 +264,10 @@ Appends the view's DOM nodes to the referenced node.
 
 Binds a view's behaviors to its binding source.
 
+On the first call, this iterates through all compiled factories, calling createBehavior() on each to produce a ViewBehavior instance (e.g., an HTMLBindingDirective), and then immediately binds it. This is where event listeners are registered, expression observers are created, and initial DOM values are set.
+
+On subsequent calls with a new source, existing behaviors are re-bound to the new data source, which re-evaluates all binding expressions and updates the DOM accordingly.
+
 
 </td></tr>
 <tr><td>

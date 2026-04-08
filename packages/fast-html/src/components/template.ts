@@ -17,7 +17,6 @@ import {
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
-import { AttributeMap } from "./attribute-map.js";
 import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import {
@@ -26,10 +25,12 @@ import {
     type ChainedExpression,
     contextPrefixDot,
     type DataBindingBehaviorConfig,
+    eventArgAccessor,
     getBooleanBinding,
     getExpressionChain,
     getNextBehavior,
     getRootPropertyName,
+    parseEventArgs,
     type TemplateDirectiveBehaviorConfig,
     transformInnerHTML,
 } from "./utilities.js";
@@ -56,24 +57,10 @@ export type ObserverMapOption =
     (typeof ObserverMapOption)[keyof typeof ObserverMapOption];
 
 /**
- * Values for the attributeMap element option.
- */
-export const AttributeMapOption = {
-    all: "all",
-} as const;
-
-/**
- * Type for the attributeMap element option.
- */
-export type AttributeMapOption =
-    (typeof AttributeMapOption)[keyof typeof AttributeMapOption];
-
-/**
  * Element options the TemplateElement will use to update the registered element
  */
 export interface ElementOptions {
     observerMap?: ObserverMapOption;
-    attributeMap?: AttributeMapOption;
 }
 
 /**
@@ -122,11 +109,6 @@ class TemplateElement extends FASTElement {
     private observerMap?: ObserverMap;
 
     /**
-     * AttributeMap instance for defining @attr properties
-     */
-    private attributeMap?: AttributeMap;
-
-    /**
      * Default element options
      */
     private static defaultElementOptions: ElementOptions = {};
@@ -169,7 +151,6 @@ class TemplateElement extends FASTElement {
             const value = elementOptions[key];
             result[key] = {
                 observerMap: value.observerMap,
-                attributeMap: value.attributeMap,
             };
         }
 
@@ -228,15 +209,6 @@ class TemplateElement extends FASTElement {
 
             const registeredFastElement: FASTElementDefinition | undefined =
                 fastElementRegistry.getByType(value);
-
-            if (TemplateElement.elementOptions[name]?.attributeMap === "all") {
-                this.attributeMap = new AttributeMap(
-                    value.prototype,
-                    this.schema as Schema,
-                    registeredFastElement,
-                );
-            }
-
             const template = this.getElementsByTagName("template").item(0);
 
             if (template) {
@@ -258,9 +230,6 @@ class TemplateElement extends FASTElement {
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
                 this.observerMap?.defineProperties();
-
-                // Define the leaf properties as @attr (only if attributeMap exists)
-                this.attributeMap?.defineProperties();
 
                 if (registeredFastElement) {
                     // Attach lifecycle callbacks to the definition before assigning template
@@ -561,7 +530,7 @@ class TemplateElement extends FASTElement {
                             parentContext,
                             type,
                         );
-                        const arg = bindingHTML.slice(
+                        const argsString = bindingHTML.slice(
                             openingParenthesis + 1,
                             closingParenthesis,
                         );
@@ -585,23 +554,42 @@ class TemplateElement extends FASTElement {
                                   );
                               }
                             : (x: any, _c: any) => x;
+
+                        const parsedArgs = parseEventArgs(argsString);
+
+                        if (parsedArgs.some(a => a.type === "deprecated-event")) {
+                            console.warn(
+                                `[fast-html] Using "e" as an event argument is deprecated. ` +
+                                    `Use "${eventArgAccessor}" instead.`,
+                            );
+                        }
+
+                        const argResolvers = parsedArgs.map(
+                            (parsedArg): ((x: any, c: any) => any) => {
+                                switch (parsedArg.type) {
+                                    case "event":
+                                    case "deprecated-event":
+                                        return (_x, c) => c.event;
+                                    case "context":
+                                        return (_x, c) => c;
+                                    case "binding":
+                                        return bindingResolver(
+                                            strings.join(""),
+                                            rootPropertyName,
+                                            parsedArg.rawArg!,
+                                            parentContext,
+                                            type,
+                                            schema,
+                                            parentContext,
+                                            level,
+                                        );
+                                }
+                            },
+                        );
+
                         attributeBinding = (x: any, c: any) =>
                             binding(x, c).bind(getOwner(x, c))(
-                                ...(arg === "e" ? [c.event] : []),
-                                ...(arg !== "e" && arg !== ""
-                                    ? [
-                                          bindingResolver(
-                                              strings.join(""),
-                                              rootPropertyName,
-                                              arg,
-                                              parentContext,
-                                              type,
-                                              schema,
-                                              parentContext,
-                                              level,
-                                          )(x, c),
-                                      ]
-                                    : []),
+                                ...argResolvers.map(resolve => resolve(x, c)),
                             );
 
                         break;

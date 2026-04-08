@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 08 Apr 2026 00:19:56 GMT",
+      "version": "2.10.3",
+      "tag": "@microsoft/fast-element_v2.10.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "e222ea1a8f0dfce91622f3b8504539c5fed1ddbd",
+            "comment": "fix: replace direct property access with Reflect.get for lazy getter resolution"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "72e9f0d675f7a08de40eff911fefb783d1c43b3a",
+            "comment": "chore: add DESIGN.md and fix architecture doc errors"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 07 Apr 2026 00:50:48 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "863023+radium-v@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "05ccb88f41eb44ec6cbe263335cc030de99f80a4",
+            "comment": "chore: add biome script to run biome on changed files in packages"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 04 Apr 2026 00:22:26 GMT",
+      "version": "2.10.2",
+      "tag": "@microsoft/fast-element_v2.10.2",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "4371b6c6124feaec26dd51116cb6d777a6507a99",
+            "comment": "Add documentation on FAST templating"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 26 Mar 2026 00:04:08 GMT",
       "version": "2.10.2",
       "tag": "@microsoft/fast-element_v2.10.2",

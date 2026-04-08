@@ -1,8 +1,35 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Tue, 31 Mar 2026 00:03:50 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 08 Apr 2026 00:19:56 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.46
+
+Wed, 08 Apr 2026 00:19:56 GMT
+
+### Changes
+
+- fix(fast-html): preserve existing $defs when Schema.addPath adds a new context (mcritzjam@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.3.0
+- Bump @microsoft/fast-element to v2.10.3
+
+## 1.0.0-alpha.45
+
+Sat, 04 Apr 2026 00:22:26 GMT
+
+### Changes
+
+- feat(fast-html): add $e event arg, deprecate e, support multiple event handler args (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.1.2
+
+## 1.0.0-alpha.44
+
+Thu, 02 Apr 2026 00:03:44 GMT
+
+### Changes
+
+- feat: support direct array index assignment for primitive arrays in observer map (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.43
 

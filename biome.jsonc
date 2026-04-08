@@ -16,6 +16,9 @@
         ]
     },
     "html": {
+        "formatter": {
+            "enabled": true
+        },
         "parser": {
             "interpolation": true
         }

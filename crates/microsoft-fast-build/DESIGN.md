@@ -45,13 +45,14 @@ render_template(template, state_str)
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
-| `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers |
+| `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
-| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner |
+| `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -60,8 +61,15 @@ render_template(template, state_str)
 `render_node` is the core of the crate. It is called recursively for nested directives and custom element templates. Its signature:
 
 ```
-fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>) → Result<String>
+fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool) → Result<String>
 ```
+
+The `is_entry` flag distinguishes two rendering contexts:
+
+- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) receive the **full root state merged with their own attribute-derived state** as their child rendering context. Root state provides app-level context; per-element attributes overlay on top.
+- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here receive **attribute-based child state** as usual.
+
+`renderer::render_entry_with_locator` sets `is_entry: true`; `renderer::render_with_locator` sets `is_entry: false`. All recursive calls from `render_when`, `render_repeat_items`, and `render_custom_element` (for shadow templates) always use `is_entry: false`.
 
 The loop works like a cursor:
 
@@ -91,7 +99,7 @@ It returns a `Directive` enum value carrying the byte position, or `None` if not
 
 ### Single-brace passthrough
 
-FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). These must pass through the server renderer **unchanged**.
+FAST uses single-brace expressions (`{handler()}`) for client-side-only bindings (event handlers, attribute directives). In most rendering contexts these pass through the server renderer **unchanged** — `next_directive` skips over them so their `}` characters do not accidentally close a `{{binding}}`.
 
 The problem is that a single-brace expression may contain `}}` inside it (e.g. `{handler({key: val})}`) which would be misread as the closing delimiter of a `{{binding}}`.
 
@@ -103,6 +111,10 @@ The problem is that a single-brace expression may contain `}}` inside it (e.g. `
 4. Only return a directive when there is no single `{` preceding it.
 
 The skip logic lives in `attribute::find_single_brace` and `attribute::skip_single_brace_expr`. `skip_single_brace_expr` tracks brace depth and skips quoted strings so inner `}` characters are not mistakenly treated as closing braces.
+
+### Attribute directive stripping in Declarative Shadow DOM
+
+Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe-c` compact binding count still includes them so the FAST runtime allocates the correct binding slots.
 
 ---
 
@@ -204,22 +216,37 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 1. **Locate the tag boundary** — `find_tag_end` finds the `>` that closes the opening tag, respecting quoted attribute values.
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
-4. **Build child state** from the attributes:
-   - No value (boolean attribute) → `Bool(true)`
-   - `"true"` / `"false"` → `Bool`
-   - Numeric string → `Number(f64)`
-   - `"{{binding}}"` → resolve from parent state (property binding with optional rename)
-   - Anything else → `String`
+4. **Build child state**:
+   - **Root custom elements** (`is_entry: true`) — the child state starts with the **complete root state** as a base, then each HTML attribute on the element is resolved and overlaid on top (attribute-derived values take precedence). This ensures app-level context keys (e.g. `error`, `showProgress`) are available alongside per-element attribute state (e.g. `planet="earth"`, `vara="3"`, boolean `show`).
+   - **Nested custom elements** (`is_entry: false`) — the child state is built entirely from the element's HTML attributes:
+     - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
+     - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
+     - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+     - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
+     - No value (boolean attribute) → `Bool(true)`
+     - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
+     - Anything else → `String` (attribute values are always strings; arrays, objects, booleans, and numbers must be passed via `:prop="{{binding}}"` or `prop="{{binding}}"` so the resolved value from parent state is used)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
-7. **Emit Declarative Shadow DOM** with hydration attributes:
+7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
+   - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
+     - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
+     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via entry-level rendering.
+     - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
+     - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
+     - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
+   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe-c-{start}-{count}` is injected.
+8. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+9. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
      <template shadowrootmode="open" shadowroot="open">[shadow DOM]</template>
      [light DOM children]
    </my-button>
    ```
-   When the element itself has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
+   When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
+
+Note: `is_entry` controls both child state and opening-tag attribute handling. Root elements (`is_entry: true`) merge root state with attribute-derived state for their template, and resolve primitive `{{binding}}` attributes to their values (stripping non-primitive ones) in the rendered HTML.
 
 If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
 
@@ -259,10 +286,27 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
 
 1. `count_tag_attribute_bindings` counts both types.
 2. The current `binding_idx` is recorded as `start`, and advanced by the total count.
-3. `resolve_attribute_bindings_in_tag` substitutes `{{expr}}` attribute values with their resolved HTML-escaped values; `{expr}` single-brace values are left unchanged (they are client-side bindings).
+3. `resolve_attribute_bindings_in_tag` resolves each attribute binding:
+   - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
+   - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped.
+   - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
 4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
+
+### Dataset bindings — `attribute::data_attr_to_dataset_key`
+
+FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: a camelCase property (e.g. `dateOfBirth`) corresponds to a kebab-case `data-*` HTML attribute (e.g. `data-date-of-birth`).
+
+When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose name starts with `data-` is routed into a nested `"dataset"` object rather than a top-level key:
+
+```
+data-date-of-birth="1990-01-01"  →  state["dataset"]["dateOfBirth"] = "1990-01-01"
+```
+
+`attribute::data_attr_to_dataset_key` returns the full dot-notation path: `"data-date-of-birth"` → `"dataset.dateOfBirth"`. The caller in `render_custom_element` splits on the first `.` (`"dataset"` / `"dateOfBirth"`) and inserts the value into the nested `"dataset"` map. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
+
+The `dataset.` portion of the binding expression is nothing special to `resolve_value` — it is plain two-level dot-notation that traverses the nested `"dataset"` object built by the attribute mapper.
 
 ### `f-when` markers
 
@@ -305,8 +349,21 @@ For each glob pattern:
 1. Find the **static prefix directory** — the longest directory path before any wildcard character (`*`, `?`). This avoids walking the entire filesystem.
 2. Recursively walk that directory collecting all `.html` files (`walk_html_files`).
 3. Normalise path separators to `/` and strip a leading `./`, then test each file path against the glob pattern.
-4. The **element name** is the file's stem (e.g. `my-button` from `my-button.html`).
-5. If two files resolve to the same element name → `RenderError::DuplicateTemplate`.
+4. For each matching file, read its content and call `parse_f_templates` to extract all `<f-template>` elements.
+5. The **element name** is the `name` attribute of each `<f-template>` element (e.g. `name="my-button"`). A single file may declare multiple templates.
+6. `<f-template>` elements missing a `name` attribute emit a warning to stderr and are ignored.
+7. If two `<f-template>` elements across different files share the same name → `RenderError::DuplicateTemplate`.
+
+### `<f-template>` parsing (`parse_f_templates`, `extract_attr_value`, `extract_template_content`)
+
+`parse_f_templates(html)` scans for `<f-template` occurrences using `str::find` in a loop. For each match:
+- Verifies the character after `<f-template` is not alphanumeric or `-` to avoid matching `<f-templateX>`.
+- Extracts the attribute string between `<f-template` and `>`.
+- Calls `extract_attr_value(attrs, "name")` to get the name (supports both `"` and `'` quoting).
+- Extracts the inner HTML between `>` and `</f-template>`.
+- Calls `extract_template_content` on the inner HTML to get the content inside the `<template>` element.
+
+Returns `Vec<(Option<String>, String)>` — pairs of (name, template content).
 
 ### Glob matching
 
@@ -316,6 +373,35 @@ Hand-rolled in `glob_match` → `match_segments` → `match_segment` → `match_
 - `**` is handled at the segment level: it can consume **zero or more** path segments by trying both "consume none" (advance pattern, keep path) and "consume one" (keep pattern, advance path) via backtracking.
 - `*` is handled at the character level within a single segment: it tries matching 0 through N characters by iterating over all possible split points.
 - `?` matches exactly one character.
+
+---
+
+## WASM bindings — `wasm.rs`
+
+`wasm.rs` is compiled only for the `wasm32-unknown-unknown` target (`#[cfg(target_arch = "wasm32")]`). It exposes three functions to JavaScript via `wasm-bindgen`:
+
+| Export | Signature | Description |
+|--------|-----------|-------------|
+| `render` | `(entry: &str, state: &str) → String` | Render a template with no custom elements |
+| `render_with_templates` | `(entry: &str, templates_json: &str, state: &str) → String` | Render with a pre-built `{name: content}` templates map |
+| `parse_f_templates` | `(html: &str) → String` | Parse `<f-template>` elements and return a JSON array |
+
+### `parse_f_templates`
+
+Calls `locator::parse_f_templates` (the same function used by `Locator::from_patterns`) and serialises the result to a JSON string:
+
+```json
+[
+  {"name": "my-button", "content": "<button>{{label}}</button>"},
+  {"name": null, "content": "<span>unnamed</span>"}
+]
+```
+
+`name` is `null` when the `<f-template>` element has no `name` attribute. The `@microsoft/fast-build` CLI uses this export to parse HTML files without reimplementing the parsing logic in JavaScript.
+
+### `render_with_templates`
+
+Accepts `templates_json` as a JSON object string mapping element names to raw template strings (the inner content already extracted from `<template>`). Constructs a `Locator::from_templates` map and calls `render_template_with_locator`.
 
 ---
 
