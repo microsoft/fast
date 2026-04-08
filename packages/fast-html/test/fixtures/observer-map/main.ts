@@ -326,6 +326,7 @@ class ObserverMapInternalTestElement extends FASTElement {
     @observable
     public x: any;
 
+    @observable
     public groups: any;
 
     public removeAllItems() {
