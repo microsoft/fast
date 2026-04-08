@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 // Builds test fixtures using @microsoft/fast-build. Add fixture names here
 // incrementally as each one is verified to work with the fast-build CLI.
-const fixtures = ["attribute", "binding", "event", "ref", "slotted", "when"];
+const fixtures = ["attribute", "binding", "event", "ref", "slotted", "when", "repeat"];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
