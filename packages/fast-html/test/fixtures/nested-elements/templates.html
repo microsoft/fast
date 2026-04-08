@@ -21,3 +21,33 @@
         </div>
     </template>
 </f-template>
+<f-template name="parent-empty-element">
+    <template>
+        <div class="list-container">
+            <h2>{{emptyTitle}}</h2>
+            <div class="items">
+                <f-repeat value="{{item in emptyItems}}" positioning="true">
+                    <child-element
+                        text="{{item.text}}"
+                        idx="{{$index}}"
+                    ></child-element>
+                </f-repeat>
+            </div>
+        </div>
+    </template>
+</f-template>
+<f-template name="parent-single-element">
+    <template>
+        <div class="list-container">
+            <h2>{{singleTitle}}</h2>
+            <div class="items">
+                <f-repeat value="{{item in singleItem}}" positioning="true">
+                    <child-element
+                        text="{{item.text}}"
+                        idx="{{$index}}"
+                    ></child-element>
+                </f-repeat>
+            </div>
+        </div>
+    </template>
+</f-template>

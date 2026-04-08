@@ -1,6 +1,8 @@
 {
     "title": "My Items",
     "items": [{ "text": "Item 1" }, { "text": "Item 2" }, { "text": "Item 3" }],
+    "emptyTitle": "Empty List",
     "emptyItems": [],
+    "singleTitle": "Single Item",
     "singleItem": [{ "text": "Only Item" }]
 }
