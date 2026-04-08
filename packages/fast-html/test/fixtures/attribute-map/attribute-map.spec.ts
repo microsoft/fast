@@ -15,21 +15,21 @@ test.describe("AttributeMap", async () => {
             const proto = Object.getPrototypeOf(node);
             const isAccessor = (name: string) =>
                 typeof Object.getOwnPropertyDescriptor(proto, name)?.get === "function";
-            return { foo: isAccessor("foo"), fooBar: isAccessor("fooBar") };
+            return { foo: isAccessor("foo"), foobar: isAccessor("foobar") };
         });
 
         expect(accessors.foo).toBeTruthy();
-        expect(accessors.fooBar).toBeTruthy();
+        expect(accessors.foobar).toBeTruthy();
     });
 
-    test("should use dash-case attribute name for camelCase property", async ({
+    test("should remove dashes from attribute name to form property name", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // Setting foo-bar attribute should update the fooBar property
+        // Setting foo-bar attribute should update the foobar property
         await element.evaluate(node => node.setAttribute("foo-bar", "dash-test"));
-        const propValue = await element.evaluate(node => (node as any).fooBar);
+        const propValue = await element.evaluate(node => (node as any).foobar);
 
         expect(propValue).toBe("dash-test");
     });
@@ -90,13 +90,13 @@ test.describe("AttributeMap", async () => {
         expect(attrValue).toBe("reflected-value");
     });
 
-    test("should reflect fooBar property value back to foo-bar attribute", async ({
+    test("should reflect foobar property value back to foo-bar attribute", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
         await element.evaluate(node => {
-            (node as any).fooBar = "bar-reflected";
+            (node as any).foobar = "bar-reflected";
         });
 
         await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));

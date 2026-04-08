@@ -7,12 +7,12 @@ class AttributeMapTestElement extends FASTElement {
     }
 
     public setFooBar() {
-        (this as any).fooBar = "world";
+        (this as any).foobar = "world";
     }
 
     public setMultiple() {
         (this as any).foo = "updated";
-        (this as any).fooBar = "also-updated";
+        (this as any).foobar = "also-updated";
     }
 }
 

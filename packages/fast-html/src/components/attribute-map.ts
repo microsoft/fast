@@ -7,9 +7,10 @@ import type { Schema } from "./schema.js";
  * a generated JSON schema and defining them as @attr properties on a class prototype.
  *
  * A property is a candidate for @attr when its schema entry has no nested `properties`,
- * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{bar}}".
+ * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{foo-bar}}".
  *
- * camelCase property names are converted to dash-case attribute names (e.g. fooBar → foo-bar).
+ * Dash-case attribute names are converted to property names by removing dashes
+ * (e.g. foo-bar → foobar).
  */
 export class AttributeMap {
     private schema: Schema;
@@ -43,14 +44,15 @@ export class AttributeMap {
             }
 
             // Skip if the property already has an accessor (from @attr or @observable)
-            if (existingAccessors.some(accessor => accessor.name === propertyName)) {
+            const attributeName = propertyName;
+            const jsPropertyName = this.removeDashes(propertyName);
+            if (existingAccessors.some(accessor => accessor.name === jsPropertyName)) {
                 continue;
             }
 
-            const attributeName = this.camelCaseToDashCase(propertyName);
             const attrDef = new AttributeDefinition(
                 this.classPrototype.constructor,
-                propertyName,
+                jsPropertyName,
                 attributeName,
             );
 
@@ -76,17 +78,17 @@ export class AttributeMap {
                     attributeName
                 ] = attrDef;
                 (this.definition.propertyLookup as Record<string, AttributeDefinition>)[
-                    propertyName
+                    jsPropertyName
                 ] = attrDef;
             }
         }
     }
 
     /**
-     * Converts a camelCase string to dash-case.
-     * e.g. fooBar → foo-bar
+     * Removes dashes from an attribute name to produce a JS property name.
+     * e.g. foo-bar → foobar
      */
-    private camelCaseToDashCase(str: string): string {
-        return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+    private removeDashes(str: string): string {
+        return str.replace(/-/g, "");
     }
 }
