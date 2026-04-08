@@ -565,3 +565,46 @@ fn test_root_elements_with_different_per_element_attrs() {
     assert!(result.contains("earth"), "first element attr: {result}");
     assert!(result.contains("mars"), "second element attr: {result}");
 }
+
+// ── JSON literals in attribute values ─────────────────────────────────────────
+
+#[test]
+fn test_custom_element_json_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items='["a","b","c"]'></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains(">a<"), "rendered a: {result}");
+    assert!(result.contains(">b<"), "rendered b: {result}");
+    assert!(result.contains(">c<"), "rendered c: {result}");
+}
+
+#[test]
+fn test_custom_element_empty_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items="[]"></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("<span>"), "no items: {result}");
+}
+
+#[test]
+fn test_custom_element_json_object_attr() {
+    let locator = make_locator(&[("my-card", r#"<div>{{config.title}}</div>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-card config='{"title":"Hello"}'></my-card>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Hello"), "rendered: {result}");
+}
