@@ -89,6 +89,6 @@ export class AttributeMap {
      * e.g. foo-bar → foobar
      */
     private removeDashes(str: string): string {
-        return str.replace(/-/g, "");
+        return str.replaceAll("-", "");
     }
 }
