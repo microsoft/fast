@@ -1,0 +1,9 @@
+{
+    "greeting": "Hello",
+    "text": "World",
+    "isDisabled": true,
+    "first": "first",
+    "second": "second",
+    "hostTitle": "tooltip",
+    "hostAttr": "value"
+}
