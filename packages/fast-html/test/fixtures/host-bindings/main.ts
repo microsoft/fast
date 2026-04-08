@@ -23,7 +23,7 @@ class HostMultiElement extends FASTElement {
     @attr
     text: string = "World";
 
-    @attr({ mode: "boolean", attribute: "disabled" })
+    @observable
     isDisabled: boolean = true;
 
     public clickCount = 0;
@@ -139,7 +139,7 @@ class HostAllTypesElement extends FASTElement {
     @attr
     text: string = "all types";
 
-    @attr({ mode: "boolean", attribute: "disabled" })
+    @observable
     isDisabled: boolean = true;
 
     @observable
@@ -165,7 +165,7 @@ class HostPermutationBase extends FASTElement {
     @attr
     text: string = "";
 
-    @attr({ mode: "boolean", attribute: "disabled" })
+    @observable
     isDisabled: boolean = true;
 
     @observable
