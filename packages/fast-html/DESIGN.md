@@ -89,6 +89,17 @@ An optional layer that uses the `Schema` to automatically:
 
 Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })`.
 
+### `AttributeMap` — automatic `@attr` definitions
+
+An optional layer that uses the `Schema` to automatically register `@attr`-style reactive properties for every **leaf binding** in the template — i.e. simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties, no explicit type, and no child element references.
+
+- The **attribute name** is the binding key exactly as written in the template (e.g. `foo-bar`).
+- The **property name** is derived by removing all dashes (e.g. `foo-bar` → `foobar`).
+- Properties already decorated with `@attr` or `@observable` are left untouched.
+- `FASTElementDefinition.attributeLookup` and `propertyLookup` are patched so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
+
+Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })`.
+
 ### Syntax constants (`syntax.ts`)
 
 All delimiters used by the parser are defined in a single `Syntax` interface and exported as named constants from `syntax.ts`. This makes the syntax pluggable and easy to audit.
@@ -283,6 +294,15 @@ flowchart LR
 ```
 
 For a deep dive into the schema structure, context tracking, and proxy system see [SCHEMA_OBSERVER_MAP.md](./SCHEMA_OBSERVER_MAP.md).
+
+### AttributeMap and leaf bindings
+
+When `attributeMap: "all"` is set, `AttributeMap.defineProperties()` is called after parsing. It iterates `Schema.getRootProperties()` and skips any property whose schema entry contains `properties`, `type`, or `anyOf` — keeping only plain leaf bindings. For each leaf:
+
+1. The schema key (e.g. `foo-bar`) is used as the **attribute name**.
+2. Dashes are removed to form the **JS property name** (e.g. `foobar`).
+3. A new `AttributeDefinition` is registered via `Observable.defineProperty`.
+4. `FASTElementDefinition.attributeLookup` and `propertyLookup` are updated so `attributeChangedCallback` can route attribute changes to the correct property.
 
 ---
 

@@ -56,11 +56,22 @@ export const ObserverMapOption = {
 export type ObserverMapOption =
     (typeof ObserverMapOption)[keyof typeof ObserverMapOption];
 
+export const AttributeMapOption = {
+    all: "all",
+} as const;
+
+/**
+ * Type for the attributeMap element option.
+ */
+export type AttributeMapOption =
+    (typeof AttributeMapOption)[keyof typeof AttributeMapOption];
+
 /**
  * Element options the TemplateElement will use to update the registered element
  */
 export interface ElementOptions {
     observerMap?: ObserverMapOption;
+    attributeMap?: AttributeMapOption;
 }
 
 /**
