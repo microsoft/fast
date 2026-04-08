@@ -6,7 +6,7 @@
     </head>
     <body>
         <div class="container">
-            <observer-map-simple-array-test-element items="[Array]"><template shadowrootmode="open" shadowroot="open"><ul>
+            <observer-map-simple-array-test-element><template shadowrootmode="open" shadowroot="open"><ul>
             <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
                 <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->Item 1<!--fe-b$$end$$0$$item-0$$fe-b--></li>
             <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
@@ -15,16 +15,9 @@
                 <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->Item 3<!--fe-b$$end$$0$$item-0$$fe-b--></li>
             <!--fe-repeat$$end$$2$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
         </ul>
-        <button @click="{updateFirstItem()}" data-fe-c-1-1>Update First Item</button>
-        <button @click="{updateSecondItem()}" data-fe-c-2-1>Update Second Item</button></template></observer-map-simple-array-test-element>
-            <observer-map-test-element users="[Array]" stats="[Object]" selected-user-id="1" a="" x="" groups="[Array]"><template shadowrootmode="open" shadowroot="open"><observer-map-internal-test-element
-            :selecteduserid="1"
-            :totalusers="2"
-            :metrics="[Object]"
-            :a=""
-            :x=""
-            :groups="[Array]"
-         data-fe-c-0-6><template shadowrootmode="open" shadowroot="open">selected user: <!--fe-b$$start$$0$$selecteduserid-0$$fe-b-->1<!--fe-b$$end$$0$$selecteduserid-0$$fe-b--> <!-- because this is bound to an attribute property it must be lowercase -->
+        <button data-fe-c-1-1>Update First Item</button>
+        <button data-fe-c-2-1>Update Second Item</button></template></observer-map-simple-array-test-element>
+            <observer-map-test-element selected-user-id="1"><template shadowrootmode="open" shadowroot="open"><observer-map-internal-test-element data-fe-c-0-6><template shadowrootmode="open" shadowroot="open">selected user: <!--fe-b$$start$$0$$selecteduserid-0$$fe-b-->1<!--fe-b$$end$$0$$selecteduserid-0$$fe-b--> <!-- because this is bound to an attribute property it must be lowercase -->
         <br>
         total users: <!--fe-b$$start$$1$$totalusers-1$$fe-b-->2<!--fe-b$$end$$1$$totalusers-1$$fe-b-->
         <br>
@@ -37,12 +30,12 @@
             </div>
         </div>
         <!--fe-b$$start$$5$$when-5$$fe-b--><!--fe-b$$end$$5$$when-5$$fe-b-->
-        <button @click="{defineB()}" data-fe-c-6-1>Define B</button>
-        <button @click="{updateC()}" data-fe-c-7-1>Update C</button>
+        <button data-fe-c-6-1>Define B</button>
+        <button data-fe-c-7-1>Update C</button>
         <br>
         <!--fe-b$$start$$8$$when-8$$fe-b--><!--fe-b$$end$$8$$when-8$$fe-b-->
-        <button @click="{defineY()}" data-fe-c-9-1>Define Y</button>
-        <button @click="{updateZ()}" data-fe-c-10-1>Update Z</button>
+        <button data-fe-c-9-1>Define Y</button>
+        <button data-fe-c-10-1>Update Z</button>
         <div>
             <!--fe-b$$start$$11$$repeat-11$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
                 <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
@@ -55,12 +48,12 @@
                 <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
             <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$11$$repeat-11$$fe-b-->
         </div>
-        <button @click="{removeAllItems()}" data-fe-c-12-1>Remove all items</button>
-        <button @click="{addAnItem()}" data-fe-c-13-1>Add an item</button>
-        <button @click="{updateAnItem()}" data-fe-c-14-1>Update an item</button>
-        <button @click="{removeGroup()}" data-fe-c-15-1>Remove groups</button>
-        <button @click="{addGroup()}" data-fe-c-16-1>Add group</button>
-        <button @click="{updateActionLabel()}" data-fe-c-17-1>Update an action label</button></template></observer-map-internal-test-element>
+        <button data-fe-c-12-1>Remove all items</button>
+        <button data-fe-c-13-1>Add an item</button>
+        <button data-fe-c-14-1>Update an item</button>
+        <button data-fe-c-15-1>Remove groups</button>
+        <button data-fe-c-16-1>Add group</button>
+        <button data-fe-c-17-1>Update an action label</button></template></observer-map-internal-test-element>
         <div class="stats">
             <h2>Global Stats</h2>
             <div class="nested-info">
@@ -73,8 +66,8 @@
                 Render: <!--fe-b$$start$$9$$stats.metrics.performance.renderTime-9$$fe-b-->0.8<!--fe-b$$end$$9$$stats.metrics.performance.renderTime-9$$fe-b-->s
             </div>
             <div class="controls">
-                <button @click="{updateStats()}" data-fe-c-10-1>Update Stats</button>
-                <button @click="{addNewUser()}" data-fe-c-11-1>Add New User</button>
+                <button data-fe-c-10-1>Update Stats</button>
+                <button data-fe-c-11-1>Add New User</button>
             </div>
         </div>
 
@@ -118,31 +111,31 @@
                     </div>
 
                     <div class="controls">
-                        <button @click="{selectUser(user.id)}" data-fe-c-13-1>Select User</button>
-                        <button @click="{updateUserAge(user.id)}" data-fe-c-14-1>Age +1</button>
-                        <button @click="{toggleUserTheme(user.id)}" data-fe-c-15-1>Toggle Theme</button>
-                        <button @click="{updateUserLocation(user.id)}" data-fe-c-16-1>Change Location</button>
-                        <button @click="{updateNotificationSettings(user.id)}" data-fe-c-17-1>Update Notifications</button>
-                        <button @click="{addNotificationCategory(user.id)}" data-fe-c-18-1>Add Category</button>
-                        <button @click="{removeNotificationCategory(user.id)}" data-fe-c-19-1>Remove Tech Category</button>
-                        <button @click="{removeUser(user.id)}" data-fe-c-20-1>Remove User</button>
+                        <button data-fe-c-13-1>Select User</button>
+                        <button data-fe-c-14-1>Age +1</button>
+                        <button data-fe-c-15-1>Toggle Theme</button>
+                        <button data-fe-c-16-1>Change Location</button>
+                        <button data-fe-c-17-1>Update Notifications</button>
+                        <button data-fe-c-18-1>Add Category</button>
+                        <button data-fe-c-19-1>Remove Tech Category</button>
+                        <button data-fe-c-20-1>Remove User</button>
                     </div>
 
                     <div>
                         <h4>Posts (<!--fe-b$$start$$21$$user.posts.length-21$$fe-b-->0<!--fe-b$$end$$21$$user.posts.length-21$$fe-b--> posts)</h4>
                         <!--fe-b$$start$$22$$repeat-22$$fe-b--><!--fe-b$$end$$22$$repeat-22$$fe-b-->
                         <div class="controls">
-                            <button @click="{addPostToUser(user.id)}" data-fe-c-23-1>Add New Post</button>
+                            <button data-fe-c-23-1>Add New Post</button>
                         </div>
                     </div>
                 </div>
             <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$12$$repeat-12$$fe-b-->
         </div></template></observer-map-test-element>
-            <observer-map-with-observables-test-element value1="42" value2="42"><template shadowrootmode="open" shadowroot="open">Level 3 Value: <!--fe-b$$start$$0$$value1-0$$fe-b-->42<!--fe-b$$end$$0$$value1-0$$fe-b-->
-        <button @click="{updateValue1()}" data-fe-c-1-1>Update Value1</button>
+            <observer-map-with-observables-test-element><template shadowrootmode="open" shadowroot="open">Level 3 Value: <!--fe-b$$start$$0$$value1-0$$fe-b-->42<!--fe-b$$end$$0$$value1-0$$fe-b-->
+        <button data-fe-c-1-1>Update Value1</button>
         <br>
         Level 3 Value Observable: <!--fe-b$$start$$2$$value2-2$$fe-b-->42<!--fe-b$$end$$2$$value2-2$$fe-b-->
-        <button @click="{updateValue2()}" data-fe-c-3-1>Update Value2</button></template></observer-map-with-observables-test-element>
+        <button data-fe-c-3-1>Update Value2</button></template></observer-map-with-observables-test-element>
         </div>
 <f-template name="observer-map-test-element">
     <template>
