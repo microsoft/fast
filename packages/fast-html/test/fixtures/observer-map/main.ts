@@ -299,7 +299,10 @@ class ObserverMapInternalTestElement extends FASTElement {
     public selecteduserid?: number;
     public totalusers?: number;
 
+    @observable
     public a: any = {};
+
+    @observable
     public x: any = undefined;
 
     public groups = [
