@@ -97,7 +97,7 @@ pub fn render_when(
         let start = hy.start_marker(idx, &name);
         let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = hy.child();
+            let mut child_scope = hy.child(idx);
             render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false)?
         } else {
             String::new()
@@ -251,36 +251,32 @@ pub fn render_custom_element(
         open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
-    // Build child state.
+    // Build the child state used to render this element's shadow template.
     //
-    // **Entry custom elements** — those marked with `is_entry` — receive the **full root
-    // state** as their child rendering state. This mirrors the runtime behaviour: entry
-    // elements receive state from the application (e.g. via `$fastController.context`)
-    // rather than from HTML attributes, so all top-level state keys are available directly
-    // in their templates.
+    // **Entry custom elements** (`is_entry == true`) receive the full root state merged
+    // with their own HTML attribute-derived state. The root state provides app-level
+    // context (e.g. `error`, `showProgress`), while per-element attributes (e.g.
+    // `planet="earth"`, `vara="3"`, boolean `show`) overlay on top so templates that
+    // compare against per-element values resolve correctly. Attribute-derived values take
+    // precedence over root state for overlapping keys.
     //
-    // All other custom elements (`is_entry == false`) receive state built from their HTML
-    // attributes as usual (`:prop` forwarded typed, regular attrs lowercased, `data-*`
-    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies, even
-    // when they are not under a parent hydration scope.
-    //
-    // We avoid cloning `root` for the entry case by using an `Option` that is `None` for
-    // entry elements (falling back to `root` via `unwrap_or`) and `Some(owned)` for
-    // attribute-derived nested state.
-    let nested_child_state = if is_entry {
-        None
-    } else {
-        // Nested element: build child state from the element's HTML attributes.
-        // `data-*` attributes are stored using the full dot-notation path returned by
-        // `data_attr_to_dataset_key` (e.g. `"dataset.dateOfBirth"`), split on the first
-        // `.` to build a nested state object so `{{dataset.X}}` bindings resolve correctly.
+    // **Nested custom elements** (`is_entry == false`) receive state built solely from
+    // their HTML attributes (`:prop` forwarded typed, regular attrs lowercased, `data-*`
+    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies.
+    fn build_attr_state(
+        open_tag_content: &str,
+        root: &JsonValue,
+        loop_vars: &[(String, JsonValue)],
+        base: Option<std::collections::HashMap<String, JsonValue>>,
+    ) -> JsonValue {
         let attrs = parse_element_attributes(open_tag_content);
-        let mut state_map = std::collections::HashMap::new();
+        let mut state_map = base.unwrap_or_default();
         for (attr_name, value) in &attrs {
             // Skip @event handlers — they are client-side only and have no meaning in SSR state.
-            // Also skip f-ref, f-slotted, and f-children attribute directives — all are resolved
-            // entirely by the FAST client runtime.
+            // Also skip f-ref, f-slotted, f-children, and ?boolean-binding directives — all are
+            // resolved entirely by the FAST client runtime.
             if attr_name.starts_with('@')
+                || attr_name.starts_with('?')
                 || attr_name.eq_ignore_ascii_case("f-ref")
                 || attr_name.eq_ignore_ascii_case("f-slotted")
                 || attr_name.eq_ignore_ascii_case("f-children")
@@ -315,7 +311,19 @@ pub fn render_custom_element(
                 state_map.insert(key, json_val);
             }
         }
-        Some(JsonValue::Object(state_map))
+        JsonValue::Object(state_map)
+    }
+
+    let nested_child_state = if is_entry {
+        // Start with the full root state, then overlay per-element attribute values.
+        let base = if let JsonValue::Object(ref root_map) = root {
+            root_map.clone()
+        } else {
+            std::collections::HashMap::new()
+        };
+        Some(build_attr_state(open_tag_content, root, loop_vars, Some(base)))
+    } else {
+        Some(build_attr_state(open_tag_content, root, loop_vars, None))
     };
     let child_root = nested_child_state.as_ref().unwrap_or(root);
 
