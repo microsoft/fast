@@ -100,7 +100,7 @@ impl std::error::Error for RenderError {}
 
 /// Extract a short snippet of `template` around `at` for use in error messages.
 /// Includes up to 20 characters before `at` for surrounding context.
-pub fn template_context(template: &str, at: usize) -> String {
+pub(crate) fn template_context(template: &str, at: usize) -> String {
     const PRE: usize = 20;
     const POST: usize = 60;
 
@@ -121,7 +121,7 @@ pub fn template_context(template: &str, at: usize) -> String {
 }
 
 /// Truncate `s` to at most `max` chars, appending `…` if truncated.
-pub fn truncate(s: &str, max: usize) -> String {
+pub(crate) fn truncate(s: &str, max: usize) -> String {
     let mut chars = s.chars();
     let mut out: String = chars.by_ref().take(max).collect();
     if chars.next().is_some() {
