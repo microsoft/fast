@@ -423,7 +423,7 @@ A hand-rolled recursive-descent parser. No external crates.
 
 `parse_string` handles `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, and `\uXXXX` Unicode escapes. Non-ASCII literal characters (e.g. emoji, accented letters) are decoded as multi-byte UTF-8 sequences — the full byte sequence for each code point is consumed before advancing, avoiding the corruption that would result from casting individual bytes to `char`.
 
-`parse_number` handles integer and decimal forms.
+`parse_number` handles integer and decimal forms. All numbers are stored as `f64`. This matches JavaScript `number` semantics but means integers larger than 2^53 lose precision. For typical template state (IDs, counts, display values) this is not a concern; very large integers should be passed as strings.
 
 `JsonValue::to_display_string` converts a value to its display form: integers are formatted without a decimal point (via `as i64`), arrays display as `[Array]`, objects as `[Object]`.
 
