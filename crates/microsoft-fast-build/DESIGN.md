@@ -421,7 +421,7 @@ A hand-rolled recursive-descent parser. No external crates.
 | `n` | `null` |
 | `-` / digit | `parse_number` |
 
-`parse_string` handles `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, and `\uXXXX` Unicode escapes.
+`parse_string` handles `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, and `\uXXXX` Unicode escapes. Non-ASCII literal characters (e.g. emoji, accented letters) are decoded as multi-byte UTF-8 sequences — the full byte sequence for each code point is consumed before advancing, avoiding the corruption that would result from casting individual bytes to `char`.
 
 `parse_number` handles integer and decimal forms.
 
