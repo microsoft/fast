@@ -1,0 +1,65 @@
+{
+    "simpleitems": ["Item 1", "Item 2", "Item 3"],
+    "value1": 42,
+    "value2": 42,
+    "selecteduserid": 1,
+    "totalusers": 2,
+    "metrics": {
+        "engagement": { "daily": 100, "weekly": 500, "monthly": 2000 },
+        "performance": { "loadtime": 1.2, "rendertime": 0.8 }
+    },
+    "groups": [
+        {
+            "items": [
+                {
+                    "text": "item A",
+                    "actions": { "trailing": [{ "label": "action label A" }] }
+                }
+            ]
+        }
+    ],
+    "a": { "b": { "c": "" } },
+    "stats": {
+        "totalusers": 2,
+        "activeusers": 1,
+        "metrics": {
+            "performance": {
+                "loadtime": 1.2,
+                "rendertime": 0.8
+            },
+            "engagement": {
+                "daily": 100,
+                "weekly": 500,
+                "monthly": 2000
+            }
+        }
+    },
+    "users": [
+        {
+            "id": 1,
+            "name": "Alice",
+            "posts": [],
+            "details": {
+                "personal": {
+                    "age": 30,
+                    "location": {
+                        "city": "Seattle",
+                        "country": "USA",
+                        "coordinates": { "lat": 47.6, "lng": -122.3 }
+                    }
+                },
+                "preferences": {
+                    "theme": "dark",
+                    "notifications": {
+                        "email": true,
+                        "push": false,
+                        "settings": {
+                            "frequency": "daily",
+                            "categories": ["news", "updates"]
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
