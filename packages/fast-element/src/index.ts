@@ -23,7 +23,6 @@ export type { ElementControllerStrategy } from "./components/element-controller.
 export {
     ElementController,
     HydratableElementController,
-    type HydrationCompleteContext,
     type HydrationControllerCallbacks,
     needsHydrationAttribute,
     Stages,

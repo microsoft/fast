@@ -627,15 +627,10 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
-export interface HydrationCompleteContext {
-    readonly elements: ReadonlyArray<HTMLElement>;
-}
-
-// @public
 export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> {
     elementDidHydrate?(source: TElement): void;
     elementWillHydrate?(source: TElement): void;
-    hydrationComplete?(context: HydrationCompleteContext): void;
+    hydrationComplete?(sources: ReadonlyArray<TElement>): void;
     hydrationStarted?(): void;
 }
 

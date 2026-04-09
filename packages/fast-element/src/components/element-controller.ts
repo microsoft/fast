@@ -823,17 +823,6 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
 export const needsHydrationAttribute = "needs-hydration";
 
 /**
- * Context passed to the {@link HydrationControllerCallbacks.hydrationComplete} callback.
- * @public
- */
-export interface HydrationCompleteContext {
-    /**
-     * The elements that were hydrated during this hydration pass.
-     */
-    readonly elements: ReadonlyArray<HTMLElement>;
-}
-
-/**
  * Lifecycle callbacks for element hydration events
  * @public
  */
@@ -861,7 +850,7 @@ export interface HydrationControllerCallbacks<
     /**
      * Called after all elements have completed hydration
      */
-    hydrationComplete?(context: HydrationCompleteContext): void;
+    hydrationComplete?(sources: ReadonlyArray<TElement>): void;
 }
 
 /**
@@ -975,13 +964,9 @@ export class HydratableElementController<
 
         // If there are no more hydrating instances, invoke the hydrationComplete callback
         if (HydratableElementController.hydratingInstances?.size === 0) {
-            const context: HydrationCompleteContext = {
-                elements: HydratableElementController.hydratedElements,
-            };
-
             try {
                 HydratableElementController.lifecycleCallbacks.hydrationComplete?.(
-                    context,
+                    HydratableElementController.hydratedElements,
                 );
             } catch {
                 // A lifecycle callback must never prevent post-hydration cleanup.

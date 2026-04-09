@@ -88,7 +88,7 @@ FAST HTML provides lifecycle callbacks that allow you to hook into various stage
 **Hydration Lifecycle Callbacks:**
 - `elementWillHydrate(source: HTMLElement)` - Called before an element begins hydration
 - `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
-- `hydrationComplete(context: HydrationCompleteContext)` - Called after all elements have completed hydration; `context.elements` contains every element that was hydrated
+- `hydrationComplete(sources: ReadonlyArray<HTMLElement>)` - Called after all elements have completed hydration; `sources` contains every element that was hydrated
 
 ##### Configuring Callbacks
 
@@ -96,7 +96,6 @@ Configure lifecycle callbacks using `TemplateElement.config()`:
 
 ```typescript
 import { TemplateElement, type HydrationLifecycleCallbacks } from "@microsoft/fast-html";
-import { type HydrationCompleteContext } from "@microsoft/fast-element";
 
 // You can configure all callbacks at once
 const callbacks: HydrationLifecycleCallbacks = {
@@ -118,8 +117,8 @@ const callbacks: HydrationLifecycleCallbacks = {
     elementDidHydrate(source: HTMLElement) {
         console.log(`Element hydrated: ${source.localName}`);
     },
-    hydrationComplete(context: HydrationCompleteContext) {
-        console.log(`All elements hydrated (${context.elements.length} total)`);
+    hydrationComplete(sources: ReadonlyArray<HTMLElement>) {
+        console.log(`All elements hydrated (${sources.length} total)`);
     }
 };
 
@@ -130,8 +129,8 @@ TemplateElement.config({
     elementDidHydrate(source: HTMLElement) {
         console.log(`${source.localName} is ready`);
     },
-    hydrationComplete(context: HydrationCompleteContext) {
-        console.log(`Page is interactive — ${context.elements.length} element(s) hydrated`);
+    hydrationComplete(sources: ReadonlyArray<HTMLElement>) {
+        console.log(`Page is interactive — ${sources.length} element(s) hydrated`);
     }
 });
 ```
@@ -163,10 +162,10 @@ TemplateElement.config({
             `${name}-hydration-end`
         );
     },
-    hydrationComplete(context) {
+    hydrationComplete(sources) {
         // Report to analytics
         const entries = performance.getEntriesByType('measure');
-        console.log(`Hydration complete for ${context.elements.length} element(s):`, entries);
+        console.log(`Hydration complete for ${sources.length} element(s):`, entries);
     }
 });
 ```
@@ -178,11 +177,11 @@ TemplateElement.config({
         // Show loading indicator
         document.body.classList.add('hydrating');
     },
-    hydrationComplete(context) {
+    hydrationComplete(sources) {
         // Hide loading indicator once all elements are ready
         document.body.classList.remove('hydrating');
         document.body.classList.add('hydrated');
-        console.log(`${context.elements.length} element(s) hydrated`);
+        console.log(`${sources.length} element(s) hydrated`);
     }
 });
 ```
@@ -211,9 +210,9 @@ if (process.env.NODE_ENV === 'development') {
         elementDidHydrate(name) {
             events.push({ callback: 'elementDidHydrate', name, timestamp: Date.now() });
         },
-        hydrationComplete(context) {
+        hydrationComplete(sources) {
             events.push({ callback: 'hydrationComplete', timestamp: Date.now() });
-            console.log(`Hydrated elements: ${context.elements.map(el => el.localName).join(', ')}`);
+            console.log(`Hydrated elements: ${sources.map(el => el.localName).join(', ')}`);
             console.table(events);
         }
     });
