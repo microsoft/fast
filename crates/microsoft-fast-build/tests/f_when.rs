@@ -181,3 +181,61 @@ fn test_f_when_and_before_or() {
         "",
     );
 }
+
+// ── JavaScript truthy/falsy semantics ─────────────────────────────────────────
+
+#[test]
+fn test_f_when_empty_array_is_truthy() {
+    // In JavaScript [] is truthy even though it is empty.
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{items}}"><span>Shown</span></f-when>"#,
+            r#"{"items": []}"#,
+        ),
+        "<span>Shown</span>",
+    );
+}
+
+#[test]
+fn test_f_when_nonempty_array_is_truthy() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{items}}"><span>Shown</span></f-when>"#,
+            r#"{"items": [1, 2, 3]}"#,
+        ),
+        "<span>Shown</span>",
+    );
+}
+
+#[test]
+fn test_f_when_empty_object_is_truthy() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{obj}}"><span>Shown</span></f-when>"#,
+            r#"{"obj": {}}"#,
+        ),
+        "<span>Shown</span>",
+    );
+}
+
+#[test]
+fn test_f_when_empty_string_is_falsy() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{name}}"><span>Shown</span></f-when>"#,
+            r#"{"name": ""}"#,
+        ),
+        "",
+    );
+}
+
+#[test]
+fn test_f_when_zero_is_falsy() {
+    assert_eq!(
+        ok(
+            r#"<f-when value="{{count}}"><span>Shown</span></f-when>"#,
+            r#"{"count": 0}"#,
+        ),
+        "",
+    );
+}
