@@ -195,13 +195,29 @@ fn static_prefix_dir(pattern: &str) -> String {
     base
 }
 
+/// Maximum directory depth walked by `walk_html_files`. This guards against
+/// accidental stack overflows on very deep directory trees and prevents infinite
+/// loops caused by symlink cycles.
+const MAX_DIR_DEPTH: usize = 50;
+
 /// Recursively walk `dir` and collect all `.html` files.
 fn walk_html_files(dir: &Path, result: &mut Vec<std::path::PathBuf>) -> std::io::Result<()> {
+    walk_html_files_inner(dir, result, 0)
+}
+
+fn walk_html_files_inner(dir: &Path, result: &mut Vec<std::path::PathBuf>, depth: usize) -> std::io::Result<()> {
+    if depth > MAX_DIR_DEPTH {
+        return Ok(());
+    }
     for entry in std::fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
+        // Skip symlinks to avoid following cycles into previously-visited dirs.
+        if path.is_symlink() {
+            continue;
+        }
         if path.is_dir() {
-            walk_html_files(&path, result)?;
+            walk_html_files_inner(&path, result, depth + 1)?;
         } else if path.extension().and_then(|s| s.to_str()) == Some("html") {
             result.push(path);
         }
