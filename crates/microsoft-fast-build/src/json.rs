@@ -68,7 +68,7 @@ fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
     if input.is_empty() {
         return Err(JsonError { message: "Unexpected end of input".to_string() });
     }
-    match input.chars().next().unwrap() {
+    match input.chars().next().expect("input is non-empty; checked above") {
         '{' => parse_object(input),
         '[' => parse_array(input),
         '"' => {
