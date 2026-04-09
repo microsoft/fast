@@ -100,20 +100,20 @@ TemplateElement.config({
         if (markName) {
             const measure = performance.measure(
                 `hydration:${source.localName}`,
-                markName
+                markName,
             );
             hydrationMarks.delete(source);
 
             if (source instanceof FastCard) {
                 source.didHydrate = `${(measure.startTime + measure.duration).toPrecision(
-                    4
+                    4,
                 )}ms`;
                 source.hydrationDuration = `${measure.duration.toPrecision(4)}ms`;
             }
         }
     },
 
-    hydrationComplete(): void {
+    hydrationComplete(context): void {
         performance.measure("hydration:complete", "hydration:started");
     },
 }).define({ name: "f-template" });

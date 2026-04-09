@@ -13,7 +13,7 @@ test.describe("Lifecycle Callbacks", async () => {
 
         // Verify callbacks for simple-element were called
         const simpleElementEvents = events.filter(
-            (e: any) => e.name === "simple-element"
+            (e: any) => e.name === "simple-element",
         );
 
         expect(simpleElementEvents.length).toBeGreaterThan(0);
@@ -66,16 +66,16 @@ test.describe("Lifecycle Callbacks", async () => {
         const events = await page.evaluate(() => (window as any).lifecycleEvents);
 
         const willHydrateEvents = events.filter(
-            (e: any) => e.callback === "elementWillHydrate"
+            (e: any) => e.callback === "elementWillHydrate",
         );
         const didHydrateEvents = events.filter(
-            (e: any) => e.callback === "elementDidHydrate"
+            (e: any) => e.callback === "elementDidHydrate",
         );
 
         // Every elementWillHydrate should be followed by elementDidHydrate for the same element
         willHydrateEvents.forEach((willEvent: any) => {
             const correspondingDidEvent = didHydrateEvents.find(
-                (e: any) => e.name === willEvent.name
+                (e: any) => e.name === willEvent.name,
             );
             expect(correspondingDidEvent).toBeDefined();
         });
@@ -88,7 +88,7 @@ test.describe("Lifecycle Callbacks", async () => {
 
         const hydrationComplete = await page.waitForFunction(
             () => (window as any).getHydrationCompleteStatus(),
-            { timeout: 5000 }
+            { timeout: 5000 },
         );
 
         expect(hydrationComplete).toBeTruthy();
@@ -97,7 +97,7 @@ test.describe("Lifecycle Callbacks", async () => {
 
         // Verify hydrationComplete callback was invoked
         const hydrationCompleteEvents = events.filter(
-            (e: any) => e.callback === "hydrationComplete"
+            (e: any) => e.callback === "hydrationComplete",
         );
         expect(hydrationCompleteEvents.length).toBe(1);
 
@@ -111,15 +111,27 @@ test.describe("Lifecycle Callbacks", async () => {
         await expect(nestedElement).not.toHaveAttribute("needs-hydration");
 
         // Verify hydrationComplete was called AFTER all individual element hydrations
-        const lastElementDidHydrateIndex = events.reduce((maxIndex: number, e: any, index: number) => {
-            return e.callback === "elementDidHydrate" ? index : maxIndex;
-        }, -1);
+        const lastElementDidHydrateIndex = events.reduce(
+            (maxIndex: number, e: any, index: number) => {
+                return e.callback === "elementDidHydrate" ? index : maxIndex;
+            },
+            -1,
+        );
 
         const hydrationCompleteIndex = events.findIndex(
-            (e: any) => e.callback === "hydrationComplete"
+            (e: any) => e.callback === "hydrationComplete",
         );
 
         expect(hydrationCompleteIndex).toBeGreaterThan(lastElementDidHydrateIndex);
+
+        // Verify context contains the hydrated elements
+        const context = await page.evaluate(() =>
+            (window as any).getHydrationCompleteContext(),
+        );
+        expect(context).not.toBeNull();
+        expect(context.elementNames).toContain("simple-element");
+        expect(context.elementNames).toContain("complex-element");
+        expect(context.elementNames).toContain("nested-element");
     });
 
     test("should handle complex element with observer map", async ({ page }) => {
@@ -139,7 +151,7 @@ test.describe("Lifecycle Callbacks", async () => {
         // Complex element should have all lifecycle callbacks
         expect(complexEvents.length).toBeGreaterThan(0);
         expect(complexEvents.some((e: any) => e.callback === "elementDidHydrate")).toBe(
-            true
+            true,
         );
     });
 
@@ -159,10 +171,10 @@ test.describe("Lifecycle Callbacks", async () => {
 
         // Both should have hydrated
         expect(complexEvents.some((e: any) => e.callback === "elementDidHydrate")).toBe(
-            true
+            true,
         );
         expect(nestedEvents.some((e: any) => e.callback === "elementDidHydrate")).toBe(
-            true
+            true,
         );
     });
 
@@ -179,10 +191,10 @@ test.describe("Lifecycle Callbacks", async () => {
 
         // Should have hydration callbacks
         expect(deferredEvents.some((e: any) => e.callback === "elementWillHydrate")).toBe(
-            true
+            true,
         );
         expect(deferredEvents.some((e: any) => e.callback === "elementDidHydrate")).toBe(
-            true
+            true,
         );
 
         const deferredElement = await page.locator("deferred-element");
@@ -190,32 +202,32 @@ test.describe("Lifecycle Callbacks", async () => {
         await expect(deferredElement).not.toHaveAttribute("defer-hydration");
     });
 
-        test("should defer child hydration until parent completes", async ({ page }) => {
-            await page.goto("/fixtures/lifecycle-callbacks/");
+    test("should defer child hydration until parent completes", async ({ page }) => {
+        await page.goto("/fixtures/lifecycle-callbacks/");
 
-            await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
-            const events = await page.evaluate(() => (window as any).lifecycleEvents);
+        const events = await page.evaluate(() => (window as any).lifecycleEvents);
 
-            const parentWillHydrateIndex = events.findIndex(
-                (e: any) =>
-                    e.name === "deferred-parent-element" &&
-                    e.callback === "elementWillHydrate"
-            );
+        const parentWillHydrateIndex = events.findIndex(
+            (e: any) =>
+                e.name === "deferred-parent-element" &&
+                e.callback === "elementWillHydrate",
+        );
 
-            const childWillHydrateIndex = events.findIndex(
-                (e: any) =>
-                    e.name === "deferred-child-element" &&
-                    e.callback === "elementWillHydrate"
-            );
+        const childWillHydrateIndex = events.findIndex(
+            (e: any) =>
+                e.name === "deferred-child-element" &&
+                e.callback === "elementWillHydrate",
+        );
 
-            expect(parentWillHydrateIndex).toBeGreaterThan(-1);
-            expect(childWillHydrateIndex).toBeGreaterThan(parentWillHydrateIndex);
+        expect(parentWillHydrateIndex).toBeGreaterThan(-1);
+        expect(childWillHydrateIndex).toBeGreaterThan(parentWillHydrateIndex);
 
-            const childElement = page.locator("deferred-child-element");
-            await expect(childElement).not.toHaveAttribute("needs-hydration");
-            await expect(childElement).not.toHaveAttribute("defer-hydration");
-        });
+        const childElement = page.locator("deferred-child-element");
+        await expect(childElement).not.toHaveAttribute("needs-hydration");
+        await expect(childElement).not.toHaveAttribute("defer-hydration");
+    });
 
     test("should verify template and hydration callbacks are invoked", async ({
         page,
@@ -276,9 +288,7 @@ test.describe("Lifecycle Callbacks", async () => {
         await expect(complexElement).toHaveText(/Complex/);
 
         // Verify elements are interactive after hydration
-        const currentCount = await complexElement.evaluate(
-            (el: any) => el.count
-        );
+        const currentCount = await complexElement.evaluate((el: any) => el.count);
         expect(currentCount).toBe(0);
 
         // Interact with the element
