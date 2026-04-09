@@ -49,7 +49,8 @@
 //! | `error` | [`RenderError`] enum with `Display` impl and helpers |
 //! | `wasm` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) |
 //!
-//! See [`DESIGN.md`](../DESIGN.md) for a deeper explanation of each module.
+//! See the [design document](https://github.com/microsoft/fast/blob/main/crates/microsoft-fast-build/DESIGN.md)
+//! for a deeper explanation of each module.
 
 mod json;
 mod context;
