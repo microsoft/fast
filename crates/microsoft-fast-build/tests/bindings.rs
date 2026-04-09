@@ -126,3 +126,24 @@ fn test_array_index_in_f_repeat_item() {
         "<span>a</span><span>c</span>",
     );
 }
+
+// ── non-ASCII / multi-byte UTF-8 content bindings ─────────────────────────────
+
+#[test]
+fn test_binding_emoji_from_state() {
+    assert_eq!(ok("{{label}}", r#"{"label": "⭐ star"}"#), "⭐ star");
+}
+
+#[test]
+fn test_binding_emoji_literal_in_template() {
+    // Emoji in template literal text (not a binding) must be preserved verbatim.
+    assert_eq!(
+        ok("<span>⭐ {{name}}</span>", r#"{"name": "Alice"}"#),
+        "<span>⭐ Alice</span>",
+    );
+}
+
+#[test]
+fn test_binding_multibyte_chars() {
+    assert_eq!(ok("{{v}}", r#"{"v": "café ✓ 🎉"}"#), "café ✓ 🎉");
+}
