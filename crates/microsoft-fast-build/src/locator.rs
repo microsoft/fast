@@ -179,7 +179,7 @@ fn normalize_path(path: &str) -> String {
 /// Return the static directory prefix before the first wildcard in `pattern`.
 fn static_prefix_dir(pattern: &str) -> String {
     let first_wild = pattern.find(|c: char| c == '*' || c == '?');
-    let base = match first_wild {
+    match first_wild {
         None => match pattern.rfind('/') {
             Some(i) => pattern[..=i].to_string(),
             None => ".".to_string(),
@@ -191,8 +191,7 @@ fn static_prefix_dir(pattern: &str) -> String {
                 None => ".".to_string(),
             }
         }
-    };
-    base
+    }
 }
 
 /// Maximum directory depth walked by `walk_html_files`. This guards against

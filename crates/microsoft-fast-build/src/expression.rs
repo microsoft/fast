@@ -55,12 +55,14 @@ fn find_comparison_op(expr: &str, op: &str) -> Option<usize> {
     let mut i = 0;
     while i + op_bytes.len() <= bytes.len() {
         if &bytes[i..i + op_bytes.len()] == op_bytes {
-            // For single-char < or >, make sure next char isn't = (to avoid matching part of <= or >=)
-            if op_bytes.len() == 1 && (op_bytes[0] == b'>' || op_bytes[0] == b'<') {
-                if bytes.get(i + 1) == Some(&b'=') {
-                    i += 1;
-                    continue;
-                }
+            // For single-char < or >, ensure the next char is not `=` to avoid
+            // matching the first character of `<=` / `>=`.
+            if op_bytes.len() == 1
+                && (op_bytes[0] == b'>' || op_bytes[0] == b'<')
+                && bytes.get(i + 1) == Some(&b'=')
+            {
+                i += 1;
+                continue;
             }
             return Some(i);
         }
