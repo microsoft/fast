@@ -163,6 +163,17 @@ Operators can be chained — `&&` binds tighter than `||`, matching standard pre
 
 Right-hand operands can be string literals (`'foo'`), boolean literals (`true`/`false`), number literals (`42`), or other state references.
 
+When `value` is a bare reference (e.g. `{{items}}`), the value is coerced to a boolean using JavaScript semantics. Because the input state is JSON, users cannot provide `undefined` directly; however, missing state properties or unresolved paths behave like JavaScript `undefined` and are treated as falsy.
+
+| Type | Falsy | Truthy |
+|---|---|---|
+| `null` | always | — |
+| `boolean` | `false` | `true` |
+| `number` | `0`, `NaN` | any other |
+| `string` | `""` | any non-empty |
+| `array` | — | always (even `[]`) |
+| `object` | — | always (even `{}`) |
+
 ### Array Iteration — `<f-repeat>`
 
 ```html
@@ -197,13 +208,22 @@ Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable and `{{$in
 </f-when>
 ```
 
-### Property Access and Array Indexing
+### Property Access, Array Indexing, and `.length`
 
-Dot-notation and numeric indices are both supported:
+Dot-notation, numeric indices, and the special `.length` property on arrays are all supported:
 
 ```html
 {{user.address.city}}
 {{list.0.name}}
+{{items.length}}
+```
+
+`{{items.length}}` resolves to the number of elements in the array. It can be used in both content bindings and `<f-when>` expressions:
+
+```html
+<f-when value="{{items.length > 0}}">
+  <p>{{items.length}} items found</p>
+</f-when>
 ```
 
 ---
@@ -361,9 +381,13 @@ Attributes on a custom element become the state passed to its template:
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
-**Attribute values are always strings** — except for boolean attributes (no value), which become `true`, and `{{binding}}` expressions, which resolve to whatever type the value holds in the parent state (string, number, boolean, array, or object). A literal string like `count="42"` yields `{"count": "42"}`; use `count="{{count}}"` with `count: 42` in state to get a number.
+**Attribute value coercion** — attribute values are resolved in this order:
+- No value (boolean attribute) → `true`
+- `"{{binding}}"` → resolved from parent state (any type: string, number, boolean, array, or object)
+- Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'`)
+- Anything else → `String` (e.g. `count="42"` yields `{"count": "42"}`; use `count="{{count}}"` to get a number)
 
-**Use `:prop="{{binding}}"` to pass arrays and objects without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. This is the recommended way to pass structured data to custom elements for use with `f-repeat` and similar directives.
+**Use `:prop="{{binding}}"` to pass arrays and objects from state without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. Alternatively, JSON array or object literals can be inlined directly as attribute values (e.g. `items='["a","b","c"]'`), which is useful when the data is static and does not come from parent state.
 
 **`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
 
@@ -481,3 +505,9 @@ missing state: '{{title}}' has no matching key in the provided state — templat
 unclosed binding '{{name': no closing '}}' found to end the expression — template: "Hello {{name"
 duplicate template: element '<my-button>' is defined in multiple files: ./a/my-button.html, ./b/my-button.html
 ```
+
+---
+
+## Numeric Precision
+
+The hand-rolled JSON parser stores all numbers as `f64`. This means integers larger than 2^53 (9,007,199,254,740,992) lose precision, as is the case with standard JavaScript `number` values. For typical use cases (IDs, counts, display values) this is not a concern. If your state contains very large integers, represent them as strings and bind with `{{expr}}` accordingly.
