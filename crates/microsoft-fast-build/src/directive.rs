@@ -253,16 +253,24 @@ pub fn render_custom_element(
 
     // Build the child state used to render this element's shadow template.
     //
-    // **Entry custom elements** (`is_entry == true`) receive the full root state merged
-    // with their own HTML attribute-derived state. The root state provides app-level
-    // context (e.g. `error`, `showProgress`), while per-element attributes (e.g.
-    // `planet="earth"`, `vara="3"`, boolean `show`) overlay on top so templates that
-    // compare against per-element values resolve correctly. Attribute-derived values take
-    // precedence over root state for overlapping keys.
+    // `build_attr_state` has two modes controlled by the `base` parameter:
     //
-    // **Nested custom elements** (`is_entry == false`) receive state built solely from
-    // their HTML attributes (`:prop` forwarded typed, regular attrs lowercased, `data-*`
-    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies.
+    // **Entry mode** (`base = Some(root_map)`) — called when `is_entry == true`.
+    //   The child state starts with the full root state as a base so app-level
+    //   keys (e.g. `error`, `showProgress`) are always available. Per-element
+    //   attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
+    //   top, overriding root state for any overlapping key.
+    //
+    // **Nested mode** (`base = None`) — called when `is_entry == false`.
+    //   The child state is built entirely from the element's HTML attributes.
+    //   No root state keys are inherited. This covers elements inside shadow
+    //   templates, `f-when` / `f-repeat` bodies, etc.
+    //
+    // In both modes the attribute processing rules are identical:
+    //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
+    //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
+    //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
+    //   - Anything else → lowercased key, string or resolved `JsonValue` as value
     fn build_attr_state(
         open_tag_content: &str,
         root: &JsonValue,
