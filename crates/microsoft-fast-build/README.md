@@ -503,3 +503,9 @@ missing state: '{{title}}' has no matching key in the provided state — templat
 unclosed binding '{{name': no closing '}}' found to end the expression — template: "Hello {{name"
 duplicate template: element '<my-button>' is defined in multiple files: ./a/my-button.html, ./b/my-button.html
 ```
+
+---
+
+## Numeric Precision
+
+The hand-rolled JSON parser stores all numbers as `f64`. This means integers larger than 2^53 (9,007,199,254,740,992) lose precision, as is the case with standard JavaScript `number` values. For typical use cases (IDs, counts, display values) this is not a concern. If your state contains very large integers, represent them as strings and bind with `{{expr}}` accordingly.
