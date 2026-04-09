@@ -15,9 +15,12 @@ impl JsonValue {
         match self {
             JsonValue::Null => false,
             JsonValue::Bool(b) => *b,
-            JsonValue::Number(n) => *n != 0.0,
+            // NaN is falsy in JavaScript; `n != 0.0` alone returns true for NaN
+            // because NaN is not equal to anything (including itself).
+            JsonValue::Number(n) => *n != 0.0 && !n.is_nan(),
             JsonValue::String(s) => !s.is_empty(),
-            JsonValue::Array(a) => !a.is_empty(),
+            // Arrays are always truthy in JavaScript, even empty ones.
+            JsonValue::Array(_) => true,
             JsonValue::Object(_) => true,
         }
     }
@@ -294,5 +297,65 @@ mod tests {
     #[test]
     fn test_parse_null() {
         assert!(matches!(parse("null").unwrap(), JsonValue::Null));
+    }
+
+    // --- is_truthy tests (JavaScript semantics) ---
+
+    #[test]
+    fn test_is_truthy_null_is_false() {
+        assert!(!JsonValue::Null.is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_false_bool_is_false() {
+        assert!(!JsonValue::Bool(false).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_true_bool_is_true() {
+        assert!(JsonValue::Bool(true).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_zero_is_false() {
+        assert!(!JsonValue::Number(0.0).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nan_is_false() {
+        assert!(!JsonValue::Number(f64::NAN).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nonzero_number_is_true() {
+        assert!(JsonValue::Number(1.0).is_truthy());
+        assert!(JsonValue::Number(-1.0).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_empty_string_is_false() {
+        assert!(!JsonValue::String(String::new()).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nonempty_string_is_true() {
+        assert!(JsonValue::String("hello".to_string()).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_empty_array_is_true() {
+        // In JavaScript, [] is truthy even though it is empty.
+        assert!(JsonValue::Array(vec![]).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nonempty_array_is_true() {
+        assert!(JsonValue::Array(vec![JsonValue::Null]).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_empty_object_is_true() {
+        use std::collections::HashMap;
+        assert!(JsonValue::Object(HashMap::new()).is_truthy());
     }
 }

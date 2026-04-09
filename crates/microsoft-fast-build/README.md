@@ -163,6 +163,17 @@ Operators can be chained — `&&` binds tighter than `||`, matching standard pre
 
 Right-hand operands can be string literals (`'foo'`), boolean literals (`true`/`false`), number literals (`42`), or other state references.
 
+When `value` is a bare reference (e.g. `{{items}}`), the value is coerced to a boolean using JavaScript semantics:
+
+| Type | Falsy | Truthy |
+|---|---|---|
+| `null` / `undefined` | always | — |
+| `boolean` | `false` | `true` |
+| `number` | `0`, `NaN` | any other |
+| `string` | `""` | any non-empty |
+| array | — | always (even `[]`) |
+| object | — | always (even `{}`) |
+
 ### Array Iteration — `<f-repeat>`
 
 ```html
