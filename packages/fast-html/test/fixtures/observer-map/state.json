@@ -5,20 +5,33 @@
     "selecteduserid": 1,
     "totalusers": 2,
     "metrics": {
-        "engagement": { "daily": 100, "weekly": 500, "monthly": 2000 },
-        "performance": { "loadtime": 1.2, "rendertime": 0.8 }
+        "engagement": {
+            "daily": 100,
+            "weekly": 500,
+            "monthly": 2000
+        },
+        "performance": {
+            "loadtime": 1.2,
+            "rendertime": 0.8
+        }
     },
     "groups": [
         {
             "items": [
                 {
                     "text": "item A",
-                    "actions": { "trailing": [{ "label": "action label A" }] }
+                    "actions": {
+                        "trailing": [
+                            {
+                                "label": "action label A"
+                            }
+                        ]
+                    }
                 }
             ]
         }
     ],
-    "a": { "b": { "c": "" } },
+    "a": null,
     "stats": {
         "totalusers": 2,
         "activeusers": 1,
@@ -45,7 +58,10 @@
                     "location": {
                         "city": "Seattle",
                         "country": "USA",
-                        "coordinates": { "lat": 47.6, "lng": -122.3 }
+                        "coordinates": {
+                            "lat": 47.6,
+                            "lng": -122.3
+                        }
                     }
                 },
                 "preferences": {
