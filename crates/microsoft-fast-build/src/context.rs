@@ -22,26 +22,29 @@ pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonVal
 }
 
 /// Access nested property via dot-notation path, supporting numeric array indices.
+///
+/// Walks the JSON tree via references, only cloning the final value. This avoids
+/// cloning the full subtree at the start (original approach) and at every
+/// intermediate step — only the leaf value is cloned once before returning.
 pub fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
     let parts: Vec<&str> = path.split('.').collect();
-    let mut current = value.clone();
-    for part in parts {
+    let mut current: &JsonValue = value;
+    for part in &parts {
         current = match current {
-            JsonValue::Object(ref map) => {
-                map.get(part)?.clone()
-            }
+            JsonValue::Object(ref map) => map.get(*part)?,
             JsonValue::Array(ref arr) => {
-                if part == "length" {
-                    JsonValue::Number(arr.len() as f64)
-                } else {
-                    let idx: usize = part.parse().ok()?;
-                    arr.get(idx)?.clone()
+                if *part == "length" {
+                    // length synthesises a value — return early since there is
+                    // nothing meaningful to traverse further.
+                    return Some(JsonValue::Number(arr.len() as f64));
                 }
+                let idx: usize = part.parse().ok()?;
+                arr.get(idx)?
             }
             _ => return None,
         };
     }
-    Some(current)
+    Some(current.clone())
 }
 
 #[cfg(test)]
