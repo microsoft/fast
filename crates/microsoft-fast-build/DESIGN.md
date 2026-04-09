@@ -143,7 +143,7 @@ Both return `RenderError::EmptyBinding` for blank expressions, `RenderError::Unc
 2. If the expression is `varname.prop.path`, and `varname` matches a loop variable, apply `get_nested_property` to the loop variable's value with the remaining path.
 3. Fall back to `get_nested_property(root, expr)`.
 
-`get_nested_property` walks a dot-separated path through `JsonValue::Object` and `JsonValue::Array` nodes. Numeric path segments (e.g. `list.0`) are used as array indices.
+`get_nested_property` walks a dot-separated path through `JsonValue::Object` and `JsonValue::Array` nodes. Numeric path segments (e.g. `list.0`) are used as array indices. The special segment `"length"` on an array returns the array length as a number (e.g. `{{items.length}}`).
 
 ### Loop variable scoping
 
@@ -225,7 +225,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
      - No value (boolean attribute) → `Bool(true)`
      - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
-     - Anything else → `String` (attribute values are always strings; arrays, objects, booleans, and numbers must be passed via `:prop="{{binding}}"` or `prop="{{binding}}"` so the resolved value from parent state is used)
+     - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
+     - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
 7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
@@ -420,13 +421,26 @@ A hand-rolled recursive-descent parser. No external crates.
 | `n` | `null` |
 | `-` / digit | `parse_number` |
 
-`parse_string` handles `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, and `\uXXXX` Unicode escapes.
+`parse_string` handles `\"`, `\\`, `\/`, `\b`, `\f`, `\n`, `\r`, `\t`, and `\uXXXX` Unicode escapes. Non-ASCII literal characters (e.g. emoji, accented letters) are decoded as multi-byte UTF-8 sequences — the full byte sequence for each code point is consumed before advancing, avoiding the corruption that would result from casting individual bytes to `char`.
 
 `parse_number` handles integer and decimal forms. All numbers are stored as `f64`. This matches JavaScript `number` semantics but means integers larger than 2^53 lose precision. For typical template state (IDs, counts, display values) this is not a concern; very large integers should be passed as strings.
 
 `JsonValue::to_display_string` converts a value to its display form: integers are formatted without a decimal point (via `as i64`), arrays display as `[Array]`, objects as `[Object]`.
 
-`JsonValue::is_truthy` mirrors JavaScript's truthiness rules: `null` and `false` are falsy, `0` and empty strings are falsy, everything else is truthy.
+`JsonValue::is_truthy` mirrors JavaScript's truthiness rules:
+
+| Value | Truthy? | Notes |
+|---|---|---|
+| `null` | ✗ | |
+| `false` | ✗ | |
+| `0` (number) | ✗ | |
+| `NaN` (number) | ✗ | `NaN` is falsy in JavaScript |
+| `""` (empty string) | ✗ | |
+| `true` | ✓ | |
+| Non-zero number | ✓ | |
+| Non-empty string | ✓ | |
+| Array (any) | ✓ | `[]` is truthy in JavaScript, even when empty |
+| Object (any) | ✓ | `{}` is truthy in JavaScript, even when empty |
 
 ---
 

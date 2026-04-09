@@ -1,5 +1,5 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { FASTElement, observable } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 export interface ItemType {
     name: string;
@@ -7,7 +7,7 @@ export interface ItemType {
 
 export class TestElementRepeatEvent extends FASTElement {
     @observable
-    items: Array<ItemType> = [];
+    repeatEventItems: Array<ItemType> = [];
 
     @observable
     clickedItemName: string = "";
@@ -23,9 +23,9 @@ RenderableFASTElement(TestElementRepeatEvent).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-// Scenario: f-when using $c.parent inside f-repeat
+// Scenario: f-when using showNames inside f-repeat
 export class TestWhenInRepeat extends FASTElement {
-    @observable items: Array<ItemType> = [{ name: "Alpha" }, { name: "Beta" }];
+    @observable whenRepeatItems: Array<ItemType> = [{ name: "Alpha" }, { name: "Beta" }];
     @observable showNames: boolean = true;
     @observable clickedItemName: string = "";
 

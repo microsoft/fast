@@ -2,6 +2,69 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 09 Apr 2026 00:05:34 GMT",
+      "version": "1.0.0-alpha.46",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.46",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "145668d372814069e34559aa163f9f2aa909aef1",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build children fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "dc1ca1ee37cb75f44b53330b9f7f9f5546e6effc",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build dot-syntax fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "c68c2be9f0def6e1ac74fa4abc67b1290dcd907a",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build host-bindings fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "087ee6edf0e06ac5fc33467f134eaf65df371f94",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build lifecycle-callbacks fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "329f29af2ed3ef46dc3243cca8c8dc22a45499b7",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build nested-elements fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "a5fb102db67febc0a02d71c8484752a3b8b07dfc",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build performance-metrics fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6eb523be367efc29a54059e3e72208cb1640ca19",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build repeat fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "bd4f8cebca0c0baa4c99cce20758d04be6215c4f",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build repeat-event fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "3a15f54c0baf1d929b3fb91c812fdd62e148bc74",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build when fixture"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 00:19:56 GMT",
       "version": "1.0.0-alpha.46",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.46",
