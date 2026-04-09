@@ -29,14 +29,18 @@ pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonVal
 pub fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
     let parts: Vec<&str> = path.split('.').collect();
     let mut current: &JsonValue = value;
-    for part in &parts {
+    for (i, part) in parts.iter().enumerate() {
         current = match current {
             JsonValue::Object(ref map) => map.get(*part)?,
             JsonValue::Array(ref arr) => {
                 if *part == "length" {
-                    // length synthesises a value — return early since there is
-                    // nothing meaningful to traverse further.
-                    return Some(JsonValue::Number(arr.len() as f64));
+                    // length synthesises a value — only valid as the final
+                    // segment. If more segments follow, the path is invalid.
+                    return if i == parts.len() - 1 {
+                        Some(JsonValue::Number(arr.len() as f64))
+                    } else {
+                        None
+                    };
                 }
                 let idx: usize = part.parse().ok()?;
                 arr.get(idx)?
@@ -122,6 +126,30 @@ mod tests {
     fn test_non_numeric_index_on_array() {
         let root = state(r#"{"items": ["a", "b"]}"#);
         assert_eq!(get_nested_property(&root, "items.foo"), None);
+    }
+
+    #[test]
+    fn test_array_length() {
+        let root = state(r#"{"items": [1, 2, 3]}"#);
+        assert_eq!(get_nested_property(&root, "items.length"), Some(JsonValue::Number(3.0)));
+    }
+
+    #[test]
+    fn test_empty_array_length() {
+        let root = state(r#"{"items": []}"#);
+        assert_eq!(get_nested_property(&root, "items.length"), Some(JsonValue::Number(0.0)));
+    }
+
+    #[test]
+    fn test_array_length_with_trailing_segment_returns_none() {
+        let root = state(r#"{"items": [1, 2]}"#);
+        assert_eq!(get_nested_property(&root, "items.length.foo"), None);
+    }
+
+    #[test]
+    fn test_nested_array_length() {
+        let root = state(r#"{"data": {"list": [10, 20, 30, 40]}}"#);
+        assert_eq!(get_nested_property(&root, "data.list.length"), Some(JsonValue::Number(4.0)));
     }
 
     // ── resolve_value with loop vars ──────────────────────────────────────────
