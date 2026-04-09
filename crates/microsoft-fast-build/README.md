@@ -339,19 +339,19 @@ Root custom elements receive a **merged child state**: the full root state as a 
 <my-app label="Hello" id="app"><template shadowrootmode="open" shadowroot="open">...</template></my-app>
 ```
 
-Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
+Nested custom elements inside shadow templates also inherit the full parent root state — the distinction is:
 
 | Context | Child state source | `{{binding}}` attrs in rendered HTML |
 |---|---|---|
 | Root element in entry HTML (via `render_entry_*`) | Root state merged with element's own attrs | Resolved — primitives kept, non-primitives stripped |
-| Nested element inside a shadow template | Attributes on the element tag | Rendered (resolved) |
-| Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag | Rendered (resolved) |
+| Nested element inside a shadow template | Root state merged with element's own attrs (explicit attrs take precedence) | Rendered (resolved) |
+| Element inside `f-repeat` or `f-when` (at any level) | Root state merged with element's own attrs (explicit attrs take precedence) | Rendered (resolved) |
 
 ```html
 <!-- Entry HTML — my-parent gets root state + its own attrs; label="Hello" rendered, list stripped -->
 <my-parent label="{{title}}" list="{{items}}" planet="earth"></my-parent>
 
-<!-- my-parent's template — my-child receives attr-based state only; label is rendered -->
+<!-- my-parent's template — my-child also inherits root state; :items overrides the inherited value -->
 <my-child label="{{heading}}" :items="{{items}}"></my-child>
 ```
 
@@ -376,6 +376,8 @@ Attributes on a custom element become the state passed to its template:
 | `f-ref="{video}"` | *(skipped — client-side only)* |
 | `f-slotted="{nodes}"` | *(skipped — client-side only)* |
 | `f-children="{items}"` | *(skipped — client-side only)* |
+
+**All child elements inherit the full parent root state** — both root elements (via `render_entry_*`) and nested elements (inside shadow templates, `f-when`, or `f-repeat`) start with the complete parent root state as their base. Explicit attribute bindings overlay on top and take precedence for overlapping keys. This means a nested element's template can reference any root state key directly without requiring it to be forwarded as an explicit binding.
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 

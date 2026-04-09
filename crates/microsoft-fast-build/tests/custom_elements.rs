@@ -324,25 +324,37 @@ fn test_root_custom_elements_full_scenario() {
 }
 
 #[test]
-fn test_nested_custom_element_still_uses_attr_state() {
-    // Nested elements (inside a shadow template) must still get state from their
-    // HTML attributes, not the root state.
+fn test_nested_custom_element_inherits_parent_state() {
+    // Nested elements (inside a shadow template) inherit the full parent root state so
+    // templates can reference root-level keys without requiring explicit attribute forwarding.
     let locator = make_locator(&[
         ("outer-el", r#"<inner-el label="{{innerLabel}}"></inner-el>"#),
         ("inner-el", "<span>{{label}} {{rootKey}}</span>"),
     ]);
-    // inner-el's template references {{rootKey}}. Since inner-el is nested (inside outer-el's
-    // shadow), it receives only attr-based state { label: "Nested" }. If rootKey incorrectly
-    // leaked, the render would succeed; it must fail with MissingState.
-    let err = render_entry_template_with_locator(
+    let result = render_entry_template_with_locator(
         r#"<outer-el></outer-el>"#,
-        r#"{"innerLabel":"Nested","rootKey":"ShouldNotLeak"}"#,
+        r#"{"innerLabel":"Nested","rootKey":"Available"}"#,
         &locator,
-    ).expect_err("rootKey should not be available in nested child state");
-    assert!(
-        format!("{err:?}").contains("MissingState"),
-        "expected MissingState when nested child tries to resolve rootKey: {err:?}",
-    );
+    ).unwrap();
+    assert!(result.contains("Nested"), "explicit attr binding forwarded: {result}");
+    assert!(result.contains("Available"), "root state key inherited by nested element: {result}");
+}
+
+#[test]
+fn test_nested_custom_element_explicit_attr_overrides_parent_state() {
+    // When a nested element carries an explicit attribute binding for a key that also
+    // exists in the parent root state, the explicit binding takes precedence.
+    let locator = make_locator(&[
+        ("outer-el", r#"<inner-el title="Override"></inner-el>"#),
+        ("inner-el", "<span>{{title}}</span>"),
+    ]);
+    let result = render_entry_template_with_locator(
+        r#"<outer-el></outer-el>"#,
+        r#"{"title":"Root"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Override"), "explicit attr takes precedence: {result}");
+    assert!(!result.contains("Root"), "root state value not shown when overridden: {result}");
 }
 
 // ── entry-level custom element attribute resolution ───────────────────────────

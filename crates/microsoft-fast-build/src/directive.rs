@@ -253,16 +253,16 @@ pub fn render_custom_element(
 
     // Build the child state used to render this element's shadow template.
     //
-    // **Entry custom elements** (`is_entry == true`) receive the full root state merged
-    // with their own HTML attribute-derived state. The root state provides app-level
-    // context (e.g. `error`, `showProgress`), while per-element attributes (e.g.
-    // `planet="earth"`, `vara="3"`, boolean `show`) overlay on top so templates that
-    // compare against per-element values resolve correctly. Attribute-derived values take
-    // precedence over root state for overlapping keys.
+    // All custom elements — both entry (`is_entry == true`) and nested (`is_entry == false`)
+    // — receive the **full parent root state merged with their own HTML attribute-derived
+    // state**. The root state provides context keys that are automatically available in
+    // the child template without requiring every key to be forwarded as an explicit
+    // attribute binding. Per-element attributes (`:prop`, `data-*`, plain attrs) are
+    // resolved and overlaid on top so attribute-derived values take precedence over root
+    // state for overlapping keys.
     //
-    // **Nested custom elements** (`is_entry == false`) receive state built solely from
-    // their HTML attributes (`:prop` forwarded typed, regular attrs lowercased, `data-*`
-    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies.
+    // The `is_entry` flag still controls opening-tag attribute rendering behaviour (see
+    // `build_element_open_tag`) but no longer affects state building.
     fn build_attr_state(
         open_tag_content: &str,
         root: &JsonValue,
@@ -314,16 +314,13 @@ pub fn render_custom_element(
         JsonValue::Object(state_map)
     }
 
-    let nested_child_state = if is_entry {
-        // Start with the full root state, then overlay per-element attribute values.
+    let nested_child_state = {
         let base = if let JsonValue::Object(ref root_map) = root {
             root_map.clone()
         } else {
             std::collections::HashMap::new()
         };
         Some(build_attr_state(open_tag_content, root, loop_vars, Some(base)))
-    } else {
-        Some(build_attr_state(open_tag_content, root, loop_vars, None))
     };
     let child_root = nested_child_state.as_ref().unwrap_or(root);
 
