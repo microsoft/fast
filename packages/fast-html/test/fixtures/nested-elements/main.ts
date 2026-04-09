@@ -146,7 +146,7 @@ TemplateElement.options({
                 `Element will hydrate: ${source.localName} [${performance.now()}]`,
             );
         },
-        hydrationComplete() {
+        hydrationComplete(context) {
             (window as any).messages.push(`Hydration complete [${performance.now()}]`);
         },
         templateDidUpdate(name: string) {
