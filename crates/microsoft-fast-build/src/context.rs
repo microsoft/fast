@@ -7,7 +7,7 @@ use crate::json::JsonValue;
 /// `state["dataset"]["dateOfBirth"]`. When a custom element receives `data-*`
 /// HTML attributes, the renderer stores them in the child state under a nested
 /// `"dataset"` key so that `{{dataset.X}}` bindings work naturally.
-pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
+pub(crate) fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
     let expr = expr.trim();
     for (var_name, value) in loop_vars.iter().rev() {
         if var_name == expr {
@@ -22,7 +22,7 @@ pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonVal
 }
 
 /// Access nested property via dot-notation path, supporting numeric array indices.
-pub fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
+fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
     let parts: Vec<&str> = path.split('.').collect();
     let mut current = value.clone();
     for part in parts {
