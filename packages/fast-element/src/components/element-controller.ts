@@ -972,6 +972,8 @@ export class HydratableElementController<
                 // A lifecycle callback must never prevent post-hydration cleanup.
             }
 
+            // Release element references to avoid retaining them on this static field
+            // indefinitely, since HydratableElementController lives for the module lifetime.
             HydratableElementController.hydratedElements = [];
 
             // Reset to the default strategy after hydration is complete
