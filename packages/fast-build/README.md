@@ -1,18 +1,33 @@
-# `@microsoft/fast-build`
+# FAST Build
 
-Server-side renderer for [FAST](https://www.fast.design/) declarative HTML templates, powered by a WebAssembly core with zero runtime npm dependencies.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://badge.fury.io/js/%40microsoft%2Ffast-build.svg)](https://badge.fury.io/js/%40microsoft%2Ffast-build)
+
+The `fast-build` package renders the declarative HTML template syntax of [`@microsoft/fast-element`](https://www.npmjs.com/package/@microsoft/fast-element), primarily for use in testing environments. It is powered by a WebAssembly core with zero runtime npm dependencies.
+
+> **Note:** For production server-side rendering, we recommend using the [`@microsoft/webui`](https://github.com/microsoft/webui) project instead.
 
 ## Installation
 
-```sh
-npm install @microsoft/fast-build
+### From NPM
+
+To install the latest `@microsoft/fast-build` package using `npm`:
+
+```shell
+npm install --save @microsoft/fast-build
+```
+
+Within your JavaScript or TypeScript code, you can then import library APIs like this:
+
+```ts
+import { render } from '@microsoft/fast-build';
 ```
 
 ## CLI usage
 
 Once installed, the `fast` binary is available. Use the `build` subcommand to render an HTML template with a JSON state file:
 
-```sh
+```shell
 fast build [options]
 ```
 
@@ -49,7 +64,7 @@ And a `state.json`:
 
 Run:
 
-```sh
+```shell
 fast build --entry=index.html --state=state.json --output=output.html
 ```
 
@@ -68,7 +83,7 @@ Produces `output.html`:
 
 Pass a glob pattern (or comma-separated list of patterns) to `--templates` to expand custom elements into [Declarative Shadow DOM](https://developer.chrome.com/docs/css-ui/declarative-shadow-dom):
 
-```sh
+```shell
 fast build \
   --templates="./components/**/*.html" \
   --entry=index.html \
@@ -93,11 +108,3 @@ If an `<f-template>` element has no `name` attribute, a warning is printed and i
 ## Template syntax
 
 Template syntax follows the FAST declarative HTML format. See the [`@microsoft/fast-html` README](../fast-html/README.md) for full documentation on bindings, conditionals, repeats, and directives.
-
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
-
-## License
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
