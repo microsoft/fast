@@ -60,7 +60,7 @@ _(Optional)_ Called before an individual element's hydration begins
 </td></tr>
 <tr><td>
 
-[hydrationComplete()?](../fast-element.hydrationcontrollercallbacks.hydrationcomplete/)
+[hydrationComplete(sources)?](../fast-element.hydrationcontrollercallbacks.hydrationcomplete/)
 
 
 </td><td>

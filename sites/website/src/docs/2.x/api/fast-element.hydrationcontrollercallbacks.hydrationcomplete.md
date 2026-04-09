@@ -20,8 +20,43 @@ Called after all elements have completed hydration
 **Signature:**
 
 ```typescript
-hydrationComplete?(): void;
+hydrationComplete?(sources: ReadonlyArray<TElement>): void;
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+sources
+
+
+</td><td>
+
+ReadonlyArray&lt;TElement&gt;
+
+
+</td><td>
+
+
+</td></tr>
+</tbody></table>
+
 **Returns:**
 
 void
