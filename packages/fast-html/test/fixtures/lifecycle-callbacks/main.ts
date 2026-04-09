@@ -1,4 +1,3 @@
-import type { HydrationCompleteContext } from "@microsoft/fast-element";
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
@@ -7,7 +6,7 @@ export const lifecycleEvents: Array<{ callback: string; name?: string }> = [];
 
 // Track hydration complete
 export let hydrationCompleteEmitted = false;
-export let hydrationCompleteContext: HydrationCompleteContext | null = null;
+export let hydratedSources: ReadonlyArray<HTMLElement> | null = null;
 
 // Configure lifecycle callbacks
 TemplateElement.config({
@@ -29,10 +28,10 @@ TemplateElement.config({
     elementDidHydrate(source: HTMLElement): void {
         lifecycleEvents.push({ callback: "elementDidHydrate", name: source.localName });
     },
-    hydrationComplete(context): void {
+    hydrationComplete(sources): void {
         lifecycleEvents.push({ callback: "hydrationComplete" });
         hydrationCompleteEmitted = true;
-        hydrationCompleteContext = context;
+        hydratedSources = sources;
     },
 });
 
@@ -142,6 +141,4 @@ TemplateElement.options({
 (window as any).lifecycleEvents = lifecycleEvents;
 (window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
 (window as any).getHydrationCompleteContext = () =>
-    hydrationCompleteContext
-        ? { elementNames: hydrationCompleteContext.elements.map(el => el.localName) }
-        : null;
+    hydratedSources ? { elementNames: hydratedSources.map(el => el.localName) } : null;
