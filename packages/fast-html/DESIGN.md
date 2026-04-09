@@ -318,7 +318,7 @@ sequenceDiagram
     HEC->>Callbacks: elementWillHydrate('my-el')
     HEC->>HEC: hydrate DOM using fe-b markers
     HEC->>Callbacks: elementDidHydrate('my-el')
-    HEC->>Callbacks: hydrationComplete()
+    HEC->>Callbacks: hydrationComplete(context)
 ```
 
 ### Lifecycle callback reference
@@ -331,7 +331,7 @@ sequenceDiagram
 | `elementDidDefine(name)` | After `composeAsync` completes |
 | `elementWillHydrate(name)` | Before `HydratableElementController` hydrates an instance |
 | `elementDidHydrate(name)` | After an instance is fully hydrated |
-| `hydrationComplete()` | Once, after all elements have completed hydration |
+| `hydrationComplete(context)` | Once, after all elements have completed hydration; `context.elements` lists every hydrated element |
 
 For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 
