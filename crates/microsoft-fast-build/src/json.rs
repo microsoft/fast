@@ -79,22 +79,22 @@ fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
             Ok((JsonValue::String(s), rest))
         }
         't' => {
-            if input.starts_with("true") {
-                Ok((JsonValue::Bool(true), &input[4..]))
+            if let Some(rest) = input.strip_prefix("true") {
+                Ok((JsonValue::Bool(true), rest))
             } else {
                 Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
             }
         }
         'f' => {
-            if input.starts_with("false") {
-                Ok((JsonValue::Bool(false), &input[5..]))
+            if let Some(rest) = input.strip_prefix("false") {
+                Ok((JsonValue::Bool(false), rest))
             } else {
                 Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
             }
         }
         'n' => {
-            if input.starts_with("null") {
-                Ok((JsonValue::Null, &input[4..]))
+            if let Some(rest) = input.strip_prefix("null") {
+                Ok((JsonValue::Null, rest))
             } else {
                 Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
             }
