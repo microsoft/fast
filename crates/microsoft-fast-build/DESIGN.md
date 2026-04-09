@@ -348,7 +348,7 @@ Each iteration pushes `("$index", JsonValue::Number(i as f64))` into `loop_vars`
 
 For each glob pattern:
 1. Find the **static prefix directory** — the longest directory path before any wildcard character (`*`, `?`). This avoids walking the entire filesystem.
-2. Recursively walk that directory collecting all `.html` files (`walk_html_files`).
+2. Recursively walk that directory collecting all `.html` files (`walk_html_files`). The walk is bounded to a maximum depth of 50 directories (`MAX_DIR_DEPTH`) and skips symlinks to prevent infinite loops from symlink cycles.
 3. Normalise path separators to `/` and strip a leading `./`, then test each file path against the glob pattern.
 4. For each matching file, read its content and call `parse_f_templates` to extract all `<f-template>` elements.
 5. The **element name** is the `name` attribute of each `<f-template>` element (e.g. `name="my-button"`). A single file may declare multiple templates.
