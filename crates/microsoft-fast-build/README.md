@@ -230,6 +230,8 @@ locator.add_template("my-button", "<button>{{label}}</button>");
 
 Glob patterns support `*` (any characters within one path segment), `**` (any number of segments), and `?` (any single character).
 
+> **Note:** `Locator::from_patterns` walks the filesystem recursively up to 50 directory levels deep and skips symlinks. Symlinked directories are never followed, guarding against cycles in the directory tree.
+
 ### HTML File Format
 
 Template HTML files must wrap their content in an `<f-template>` element with a `name` attribute identifying the custom element, and an inner `<template>` element containing the template markup:
