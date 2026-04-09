@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "build:tsc": "tsc -p ./tsconfig.json",
-    "build": "npm run build:tsc && npm run doc",
+    "build": "npm run build:tsc && npm run doc && npm run build:fixtures",
     "build:fixtures": "node scripts/build-fixtures.js",
     "clean": "clean dist temp test-results",
     "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
