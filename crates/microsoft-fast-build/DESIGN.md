@@ -427,7 +427,20 @@ A hand-rolled recursive-descent parser. No external crates.
 
 `JsonValue::to_display_string` converts a value to its display form: integers are formatted without a decimal point (via `as i64`), arrays display as `[Array]`, objects as `[Object]`.
 
-`JsonValue::is_truthy` mirrors JavaScript's truthiness rules: `null` and `false` are falsy, `0` and empty strings are falsy, everything else is truthy.
+`JsonValue::is_truthy` mirrors JavaScript's truthiness rules:
+
+| Value | Truthy? | Notes |
+|---|---|---|
+| `null` | ✗ | |
+| `false` | ✗ | |
+| `0` (number) | ✗ | |
+| `NaN` (number) | ✗ | `NaN` is falsy in JavaScript |
+| `""` (empty string) | ✗ | |
+| `true` | ✓ | |
+| Non-zero number | ✓ | |
+| Non-empty string | ✓ | |
+| Array (any) | ✓ | `[]` is truthy in JavaScript, even when empty |
+| Object (any) | ✓ | `{}` is truthy in JavaScript, even when empty |
 
 ---
 
