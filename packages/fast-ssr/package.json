@@ -31,6 +31,7 @@
     "test:playwright": "npm run pretest && playwright test",
     "test-server": "node server/dist/server.js"
   },
+  "deprecated": "This package is deprecated. Please use @microsoft/fast-build and @microsoft/webui instead.",
   "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "dist/esm/exports.js",
   "types": "dist/dts/exports.d.ts",
