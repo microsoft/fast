@@ -205,20 +205,21 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
             b => {
                 // For ASCII bytes, cast directly to char.
                 // For multi-byte UTF-8 sequences (first byte >= 0x80), decode the
-                // full sequence — casting each byte independently corrupts non-ASCII
-                // characters such as emoji (e.g. ⭐ U+2B50 would become â + garbage).
+                // next character from the remaining bytes and advance by its actual
+                // UTF-8 length. This avoids inferring sequence width from lead-byte
+                // ranges that also include continuation or otherwise invalid bytes.
                 if b < 0x80 {
                     s.push(b as char);
                     i += 1;
                 } else {
-                    let seq_len = if b < 0xE0 { 2 } else if b < 0xF0 { 3 } else { 4 };
-                    if i + seq_len > bytes.len() {
-                        return Err(JsonError { message: "Invalid UTF-8 sequence in string".to_string() });
-                    }
-                    let ch_str = std::str::from_utf8(&bytes[i..i + seq_len])
-                        .map_err(|_| JsonError { message: "Invalid UTF-8 sequence in string".to_string() })?;
-                    s.push_str(ch_str);
-                    i += seq_len;
+                    let remaining = std::str::from_utf8(&bytes[i..]).map_err(|_| JsonError {
+                        message: "Invalid UTF-8 sequence in string".to_string(),
+                    })?;
+                    let ch = remaining.chars().next().ok_or_else(|| JsonError {
+                        message: "Invalid UTF-8 sequence in string".to_string(),
+                    })?;
+                    s.push(ch);
+                    i += ch.len_utf8();
                 }
             }
         }
