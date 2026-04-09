@@ -211,12 +211,13 @@ fn walk_html_files_inner(dir: &Path, result: &mut Vec<std::path::PathBuf>, depth
     }
     for entry in std::fs::read_dir(dir)? {
         let entry = entry?;
+        let file_type = entry.file_type()?;
         let path = entry.path();
         // Skip symlinks to avoid following cycles into previously-visited dirs.
-        if path.is_symlink() {
+        if file_type.is_symlink() {
             continue;
         }
-        if path.is_dir() {
+        if file_type.is_dir() {
             walk_html_files_inner(&path, result, depth + 1)?;
         } else if path.extension().and_then(|s| s.to_str()) == Some("html") {
             result.push(path);
