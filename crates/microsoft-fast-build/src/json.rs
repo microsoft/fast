@@ -355,7 +355,6 @@ mod tests {
 
     #[test]
     fn test_is_truthy_empty_object_is_true() {
-        use std::collections::HashMap;
         assert!(JsonValue::Object(HashMap::new()).is_truthy());
     }
 }
