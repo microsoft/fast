@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "chore: add the build fixtures to the build step to ensure changes that affect fixture generation are not checked in",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
