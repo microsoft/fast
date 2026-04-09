@@ -203,8 +203,23 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
                 i += 1;
             }
             b => {
-                s.push(b as char);
-                i += 1;
+                // For ASCII bytes, cast directly to char.
+                // For multi-byte UTF-8 sequences (first byte >= 0x80), decode the
+                // full sequence — casting each byte independently corrupts non-ASCII
+                // characters such as emoji (e.g. ⭐ U+2B50 would become â + garbage).
+                if b < 0x80 {
+                    s.push(b as char);
+                    i += 1;
+                } else {
+                    let seq_len = if b < 0xE0 { 2 } else if b < 0xF0 { 3 } else { 4 };
+                    if i + seq_len > bytes.len() {
+                        return Err(JsonError { message: "Invalid UTF-8 sequence in string".to_string() });
+                    }
+                    let ch_str = std::str::from_utf8(&bytes[i..i + seq_len])
+                        .map_err(|_| JsonError { message: "Invalid UTF-8 sequence in string".to_string() })?;
+                    s.push_str(ch_str);
+                    i += seq_len;
+                }
             }
         }
     }
@@ -275,6 +290,40 @@ mod tests {
             assert_eq!(s, "hello\nworld\t!");
         } else {
             panic!("Expected string");
+        }
+    }
+
+    #[test]
+    fn test_parse_string_with_emoji() {
+        // Multi-byte UTF-8: ⭐ is U+2B50 (3 bytes: 0xE2 0xAD 0x90).
+        // Casting each byte to char independently would produce â + control chars.
+        let v = parse(r#""⭐ SELECTED""#).unwrap();
+        if let JsonValue::String(s) = v {
+            assert_eq!(s, "⭐ SELECTED");
+        } else {
+            panic!("Expected string");
+        }
+    }
+
+    #[test]
+    fn test_parse_string_with_multibyte_chars() {
+        // 2-byte: é (U+00E9), 3-byte: ✓ (U+2713), 4-byte: 🎉 (U+1F389)
+        let v = parse(r#""café ✓ 🎉""#).unwrap();
+        if let JsonValue::String(s) = v {
+            assert_eq!(s, "café ✓ 🎉");
+        } else {
+            panic!("Expected string");
+        }
+    }
+
+    #[test]
+    fn test_parse_string_emoji_in_object() {
+        let v = parse(r#"{"label": "⭐ star", "emoji": "🎉"}"#).unwrap();
+        if let JsonValue::Object(map) = v {
+            assert_eq!(map["label"].to_display_string(), "⭐ star");
+            assert_eq!(map["emoji"].to_display_string(), "🎉");
+        } else {
+            panic!("Expected object");
         }
     }
 
