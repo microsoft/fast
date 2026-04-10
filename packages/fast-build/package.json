@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-build",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CLI and Node.js API for server-side rendering of FAST declarative HTML templates.",
   "author": {
     "name": "Microsoft",

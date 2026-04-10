@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 10 Apr 2026 00:21:15 GMT",
+      "version": "0.3.2",
+      "tag": "@microsoft/fast-build_v0.3.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "b77f386452945ff853c3e3febedbacef96fd24d5",
+            "comment": "docs: update fast-build README to match fast-element style and clarify testing purpose"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Apr 2026 00:05:34 GMT",
       "version": "0.3.1",
       "tag": "@microsoft/fast-build_v0.3.1",

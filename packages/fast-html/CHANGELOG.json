@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 10 Apr 2026 00:21:15 GMT",
+      "version": "1.0.0-alpha.46",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.46",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6af31186f3c87ef47bad4b080487b45e051d3b14",
+            "comment": "chore: add the build fixtures to the build step to ensure changes that affect fixture generation are not checked in"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Apr 2026 00:05:34 GMT",
       "version": "1.0.0-alpha.46",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.46",

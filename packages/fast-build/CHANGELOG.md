@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Thu, 09 Apr 2026 00:05:34 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 10 Apr 2026 00:21:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.3.2
+
+Fri, 10 Apr 2026 00:21:15 GMT
+
+### Patches
+
+- docs: update fast-build README to match fast-element style and clarify testing purpose (7559015+janechu@users.noreply.github.com)
 
 ## 0.3.1
 
