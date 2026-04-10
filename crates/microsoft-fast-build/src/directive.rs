@@ -253,36 +253,28 @@ pub fn render_custom_element(
 
     // Build the child state used to render this element's shadow template.
     //
-    // `build_attr_state` has two modes controlled by the `base` parameter:
+    // The child state always starts with the current root state as a base so
+    // all unbound state keys (e.g. `text`, `error`, `showProgress`) propagate
+    // through to every descendant custom element automatically. Per-element
+    // attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
+    // top, overriding root state for any overlapping key.
     //
-    // **Entry mode** (`base = Some(root_map)`) — called when `is_entry == true`.
-    //   The child state starts with the full root state as a base so app-level
-    //   keys (e.g. `error`, `showProgress`) are always available. Per-element
-    //   attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
-    //   top, overriding root state for any overlapping key.
+    // When the element has no state-relevant attributes, we skip cloning the
+    // root state entirely and pass it through by reference.
     //
-    // **Nested mode** (`base = None`) — called when `is_entry == false`.
-    //   The child state is built entirely from the element's HTML attributes.
-    //   No root state keys are inherited. This covers elements inside shadow
-    //   templates, `f-when` / `f-repeat` bodies, etc.
-    //
-    // In both modes the attribute processing rules are identical:
+    // Attribute processing rules:
     //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
     //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
     //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
     //   - Anything else → lowercased key, string or resolved `JsonValue` as value
     fn build_attr_state(
-        open_tag_content: &str,
+        attrs: &[(String, Option<String>)],
         root: &JsonValue,
         loop_vars: &[(String, JsonValue)],
-        base: Option<std::collections::HashMap<String, JsonValue>>,
+        base: std::collections::HashMap<String, JsonValue>,
     ) -> JsonValue {
-        let attrs = parse_element_attributes(open_tag_content);
-        let mut state_map = base.unwrap_or_default();
-        for (attr_name, value) in &attrs {
-            // Skip @event handlers — they are client-side only and have no meaning in SSR state.
-            // Also skip f-ref, f-slotted, f-children, and ?boolean-binding directives — all are
-            // resolved entirely by the FAST client runtime.
+        let mut state_map = base;
+        for (attr_name, value) in attrs {
             if attr_name.starts_with('@')
                 || attr_name.starts_with('?')
                 || attr_name.eq_ignore_ascii_case("f-ref")
@@ -291,10 +283,6 @@ pub fn render_custom_element(
             {
                 continue;
             }
-            // :prop bindings are stripped from rendered HTML but their resolved value IS
-            // forwarded to the child element's rendering state. This lets structured data
-            // (arrays, objects) be passed to SSR templates without appearing as visible
-            // attributes in the rendered HTML.
             if let Some(prop_name) = attr_name.strip_prefix(':') {
                 let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
                 let key = prop_name.to_lowercase();
@@ -302,9 +290,6 @@ pub fn render_custom_element(
                 continue;
             }
             let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-            // HTML attribute names are case-insensitive; browsers always store them lowercase.
-            // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
-            // stays `selected-user-id`.
             if let Some(path) = data_attr_to_dataset_key(attr_name) {
                 if let Some((group, prop)) = path.split_once('.') {
                     let group_val = state_map
@@ -322,18 +307,34 @@ pub fn render_custom_element(
         JsonValue::Object(state_map)
     }
 
-    let nested_child_state = if is_entry {
-        // Start with the full root state, then overlay per-element attribute values.
+    /// Returns true if any parsed attribute would contribute to child state.
+    fn has_state_relevant_attrs(attrs: &[(String, Option<String>)]) -> bool {
+        attrs.iter().any(|(name, _)| {
+            !name.starts_with('@')
+                && !name.starts_with('?')
+                && !name.eq_ignore_ascii_case("f-ref")
+                && !name.eq_ignore_ascii_case("f-slotted")
+                && !name.eq_ignore_ascii_case("f-children")
+        })
+    }
+
+    // Parse attributes once, then decide whether cloning is necessary.
+    // When the element has no state-relevant attributes, skip the HashMap
+    // clone and reuse `root` directly — avoids O(state-size) work per element
+    // in deep custom-element trees.
+    let attrs = parse_element_attributes(open_tag_content);
+    let child_root_owned;
+    let child_root: &JsonValue = if has_state_relevant_attrs(&attrs) {
         let base = if let JsonValue::Object(ref root_map) = root {
             root_map.clone()
         } else {
             std::collections::HashMap::new()
         };
-        Some(build_attr_state(open_tag_content, root, loop_vars, Some(base)))
+        child_root_owned = build_attr_state(&attrs, root, loop_vars, base);
+        &child_root_owned
     } else {
-        Some(build_attr_state(open_tag_content, root, loop_vars, None))
+        root
     };
-    let child_root = nested_child_state.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
