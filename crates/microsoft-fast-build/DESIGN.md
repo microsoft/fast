@@ -64,10 +64,12 @@ render_template(template, state_str)
 fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool) → Result<String>
 ```
 
-The `is_entry` flag distinguishes two rendering contexts:
+The `is_entry` flag distinguishes two rendering contexts for **opening-tag attribute handling**:
 
-- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) receive the **full root state merged with their own attribute-derived state** as their child rendering context. Root state provides app-level context; per-element attributes overlay on top.
-- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here receive **attribute-based child state** as usual.
+- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) have their opening-tag `{{binding}}` attributes resolved to primitive values (stripping non-primitives). No `data-fe-c` marker is added.
+- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here have their `{{binding}}` attributes resolved and a `data-fe-c` compact marker injected when inside a parent hydration scope.
+
+**Child state** is built the same way regardless of `is_entry`: the current root state is always used as a base, with per-element attributes overlaid on top. This ensures all unbound state keys propagate through to every descendant custom element automatically.
 
 `renderer::render_entry_with_locator` sets `is_entry: true`; `renderer::render_with_locator` sets `is_entry: false`. All recursive calls from `render_when`, `render_repeat_items`, and `render_custom_element` (for shadow templates) always use `is_entry: false`.
 
@@ -216,23 +218,21 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 1. **Locate the tag boundary** — `find_tag_end` finds the `>` that closes the opening tag, respecting quoted attribute values.
 2. **Detect self-closing** — if the character before `>` (ignoring whitespace) is `/`, the element is self-closing. The output always uses non-self-closing form.
 3. **Parse attributes** — `parse_element_attributes` walks the opening tag string and extracts `(name, Option<value>)` pairs.
-4. **Build child state**:
-   - **Root custom elements** (`is_entry: true`) — the child state starts with the **complete root state** as a base, then each HTML attribute on the element is resolved and overlaid on top (attribute-derived values take precedence). This ensures app-level context keys (e.g. `error`, `showProgress`) are available alongside per-element attribute state (e.g. `planet="earth"`, `vara="3"`, boolean `show`).
-   - **Nested custom elements** (`is_entry: false`) — the child state is built entirely from the element's HTML attributes:
-     - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
-     - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
-     - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
-     - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
-     - No value (boolean attribute) → `Bool(true)`
-     - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
-     - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
-     - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
+4. **Build child state** — the child state always starts with the **current root state** as a base, then per-element HTML attributes are resolved and overlaid on top (attribute-derived values take precedence). This ensures all unbound state keys propagate through to every descendant custom element automatically — a child element can reference any state key from its ancestors without requiring explicit attribute bindings. As an optimisation, when the element has no state-relevant attributes (only `@event`, `?bool`, or directive attributes), the root state is passed through by reference without cloning.
+   - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
+   - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
+   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+   - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
+   - No value (boolean attribute) → `Bool(true)`
+   - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
+   - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
+   - Anything else → `String` (plain literal values like `count="42"` are strings; use `count="{{count}}"` to resolve from parent state as a number)
 5. **Render the shadow template** by calling `render_node` recursively with the child state as root and a **fresh `HydrationScope`** (always active). The `Locator` is threaded through so nested custom elements are expanded too.
 6. **Extract light DOM children** via `extract_directive_content` (reuses the same nesting-aware scanner as directives).
 7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
    - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
      - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
-     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via entry-level rendering.
+     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation.
      - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
      - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
@@ -247,7 +247,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    ```
    When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
-Note: `is_entry` controls both child state and opening-tag attribute handling. Root elements (`is_entry: true`) merge root state with attribute-derived state for their template, and resolve primitive `{{binding}}` attributes to their values (stripping non-primitive ones) in the rendered HTML.
+Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
 
 If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
 
@@ -464,6 +464,8 @@ A hand-rolled recursive-descent parser. No external crates.
 **No intermediate representation.** The renderer operates directly on the source template string using byte indices. This avoids the memory allocation and complexity of building an AST or DOM tree.
 
 **Recursive rendering via `render_node`.** Instead of special-casing nesting, `render_when`, `render_repeat`, and `render_custom_element` all call `render_node` recursively on their inner content. This means the full template feature set is available inside any directive or custom element at any depth.
+
+**Automatic state propagation.** Every custom element — whether at the entry level or deeply nested — receives the current root state as a base for its child state. Per-element HTML attributes are overlaid on top, overriding any matching keys. This means unbound state keys automatically propagate through the entire element tree without requiring explicit attribute bindings on every intermediate element. For example, a `{{text}}` binding in a grandchild element resolves from the same state as the root element, unless an ancestor explicitly overrides `text` via an attribute.
 
 **`Option<&Locator>` threading.** The locator is an optional parameter on all internal functions. Passing `None` disables custom element expansion entirely, preserving backward compatibility for callers that use `render` / `render_template`.
 
