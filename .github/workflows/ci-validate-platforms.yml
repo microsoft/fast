@@ -33,7 +33,9 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout Branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - if: ${{ github.event_name == 'pull_request' }}
         run: |
@@ -65,12 +67,23 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
 
+      - name: Detect changed scope
+        id: changed
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          CRATE_CHANGED=$(git diff --name-only origin/main...HEAD -- crates/ | head -1)
+          if [ -n "$CRATE_CHANGED" ]; then
+            echo "since=" >> "$GITHUB_OUTPUT"
+          else
+            echo "since=--since origin/main" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build workspaces
-        run: npm run build
+        run: lage build ${{ steps.changed.outputs.since }}
 
       - name: Install playwright dependencies and browsers
         run: |
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npm run test
+        run: lage test:node test:rules test:playwright ${{ steps.changed.outputs.since }}

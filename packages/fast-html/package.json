@@ -35,6 +35,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "test-server": "npx vite test/ --clearScreen false",
     "test:playwright": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
     "test:rules": "sg test --skip-snapshot-tests",
     "test": "npm run test:playwright && npm run test:rules",
     "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
