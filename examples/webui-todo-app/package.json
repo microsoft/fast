@@ -1,0 +1,35 @@
+{
+    "name": "@microsoft/fast-webui-todo-app-example",
+    "version": "1.0.0",
+    "description": "A Todo app demonstrating FAST declarative HTML with webui prerendering.",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --metafile=dist/meta.json",
+        "start:client": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=esm --sourcemap --watch",
+        "start:server": "webui serve ./src --state ./data/state.json --plugin=fast --servedir ./dist --port 8081 --watch",
+        "start": "npm run build && npm run start:server",
+        "test": "npm run build"
+    },
+    "author": {
+        "name": "Microsoft",
+        "url": "https://discord.gg/FcSNfg4"
+    },
+    "homepage": "https://www.fast.design/",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Microsoft/fast.git",
+        "directory": "examples/webui-todo-app"
+    },
+    "dependencies": {
+        "@microsoft/fast-element": "^2.10.3",
+        "@microsoft/fast-html": "*",
+        "@microsoft/webui": "^0.0.6",
+        "tslib": "^2.6.3"
+    },
+    "devDependencies": {
+        "esbuild": "^0.25.0",
+        "typescript": "^5.8.0"
+    }
+}

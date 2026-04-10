@@ -1,0 +1,23 @@
+{
+    "textdirection": "ltr",
+    "language": "en",
+    "title": "FAST Todos",
+    "remainingCount": 2,
+    "items": [
+        {
+            "id": "1",
+            "title": "Buy groceries",
+            "state": "done"
+        },
+        {
+            "id": "2",
+            "title": "Write documentation",
+            "state": "pending"
+        },
+        {
+            "id": "3",
+            "title": "Ship feature",
+            "state": "pending"
+        }
+    ]
+}
