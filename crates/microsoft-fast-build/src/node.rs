@@ -125,7 +125,7 @@ fn process_directive(
         Directive::When(p) => render_when(template, p, root, loop_vars, locator, hydration),
         Directive::Repeat(p) => render_repeat(template, p, root, loop_vars, locator, hydration),
         Directive::CustomElement(p) => {
-            render_custom_element(template, p, root, loop_vars, locator.unwrap(), hydration, is_entry)
+            render_custom_element(template, p, root, loop_vars, locator.expect("locator is required to render a CustomElement directive"), hydration, is_entry)
         }
     }
 }
