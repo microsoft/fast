@@ -1,5 +1,7 @@
 {
     "error": false,
+    "showprogress": true,
+    "enablecontinue": false,
     "showProgress": true,
     "enableContinue": false,
     "strings": {
