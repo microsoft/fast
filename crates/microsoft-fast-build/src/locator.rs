@@ -66,7 +66,9 @@ impl Locator {
                 let paths = entries.into_iter().map(|(p, _)| p).collect();
                 return Err(RenderError::DuplicateTemplate { element, paths });
             }
-            let (_, content) = entries.into_iter().next().unwrap();
+            let (_, content) = entries.into_iter().next().expect(
+                "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
+            );
             templates.insert(element, content);
         }
 
