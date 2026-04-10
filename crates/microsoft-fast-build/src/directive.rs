@@ -1,11 +1,13 @@
 use crate::json::JsonValue;
 use crate::context::resolve_value;
 use crate::expression::evaluate;
+use crate::content::html_escape;
 use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
-    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag,
+    count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
+    data_attr_to_dataset_key,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -95,15 +97,15 @@ pub fn render_when(
         let start = hy.start_marker(idx, &name);
         let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = hy.child();
-            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope))?
+            let mut child_scope = hy.child(idx);
+            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false)?
         } else {
             String::new()
         };
         format!("{}{}{}", start, inner_content, end)
     } else {
         if evaluate(&expr, root, loop_vars) {
-            render_node(&inner, root, loop_vars, locator, None)?
+            render_node(&inner, root, loop_vars, locator, None, false)?
         } else {
             String::new()
         }
@@ -171,7 +173,7 @@ fn render_repeat_items(
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
                 let mut item_scope = HydrationScope::new();
-                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope))?;
+                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false)?;
                 parts.push(format!(
                     "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
                     i, rendered, i
@@ -182,7 +184,7 @@ fn render_repeat_items(
         None => items.iter().enumerate()
             .map(|(i, item)| {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
-                render_node(inner, root, &new_vars, locator, None)
+                render_node(inner, root, &new_vars, locator, None, false)
             })
             .collect::<Result<String, _>>(),
     }
@@ -227,6 +229,7 @@ pub fn render_custom_element(
     loop_vars: &[(String, JsonValue)],
     locator: &Locator,
     parent_hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> Result<(String, usize), RenderError> {
     // Find the end of the opening tag.
     let tag_end = find_tag_end(template, at).ok_or_else(|| RenderError::UnclosedDirective {
@@ -248,22 +251,97 @@ pub fn render_custom_element(
         open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
-    // Parse attributes and build child state.
-    let attrs = parse_element_attributes(open_tag_content);
-    let mut state_map = std::collections::HashMap::new();
-    for (attr_name, value) in &attrs {
-        let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-        state_map.insert(attr_name.clone(), json_val);
+    // Build the child state used to render this element's shadow template.
+    //
+    // `build_attr_state` has two modes controlled by the `base` parameter:
+    //
+    // **Entry mode** (`base = Some(root_map)`) — called when `is_entry == true`.
+    //   The child state starts with the full root state as a base so app-level
+    //   keys (e.g. `error`, `showProgress`) are always available. Per-element
+    //   attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
+    //   top, overriding root state for any overlapping key.
+    //
+    // **Nested mode** (`base = None`) — called when `is_entry == false`.
+    //   The child state is built entirely from the element's HTML attributes.
+    //   No root state keys are inherited. This covers elements inside shadow
+    //   templates, `f-when` / `f-repeat` bodies, etc.
+    //
+    // In both modes the attribute processing rules are identical:
+    //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
+    //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
+    //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
+    //   - Anything else → lowercased key, string or resolved `JsonValue` as value
+    fn build_attr_state(
+        open_tag_content: &str,
+        root: &JsonValue,
+        loop_vars: &[(String, JsonValue)],
+        base: Option<std::collections::HashMap<String, JsonValue>>,
+    ) -> JsonValue {
+        let attrs = parse_element_attributes(open_tag_content);
+        let mut state_map = base.unwrap_or_default();
+        for (attr_name, value) in &attrs {
+            // Skip @event handlers — they are client-side only and have no meaning in SSR state.
+            // Also skip f-ref, f-slotted, f-children, and ?boolean-binding directives — all are
+            // resolved entirely by the FAST client runtime.
+            if attr_name.starts_with('@')
+                || attr_name.starts_with('?')
+                || attr_name.eq_ignore_ascii_case("f-ref")
+                || attr_name.eq_ignore_ascii_case("f-slotted")
+                || attr_name.eq_ignore_ascii_case("f-children")
+            {
+                continue;
+            }
+            // :prop bindings are stripped from rendered HTML but their resolved value IS
+            // forwarded to the child element's rendering state. This lets structured data
+            // (arrays, objects) be passed to SSR templates without appearing as visible
+            // attributes in the rendered HTML.
+            if let Some(prop_name) = attr_name.strip_prefix(':') {
+                let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+                let key = prop_name.to_lowercase();
+                state_map.insert(key, json_val);
+                continue;
+            }
+            let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
+            // HTML attribute names are case-insensitive; browsers always store them lowercase.
+            // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
+            // stays `selected-user-id`.
+            if let Some(path) = data_attr_to_dataset_key(attr_name) {
+                if let Some((group, prop)) = path.split_once('.') {
+                    let group_val = state_map
+                        .entry(group.to_string())
+                        .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
+                    if let JsonValue::Object(ref mut map) = group_val {
+                        map.insert(prop.to_string(), json_val);
+                    }
+                }
+            } else {
+                let key = attr_name.to_lowercase();
+                state_map.insert(key, json_val);
+            }
+        }
+        JsonValue::Object(state_map)
     }
-    let child_root = JsonValue::Object(state_map);
+
+    let nested_child_state = if is_entry {
+        // Start with the full root state, then overlay per-element attribute values.
+        let base = if let JsonValue::Object(ref root_map) = root {
+            root_map.clone()
+        } else {
+            std::collections::HashMap::new()
+        };
+        Some(build_attr_state(open_tag_content, root, loop_vars, Some(base)))
+    } else {
+        Some(build_attr_state(open_tag_content, root, loop_vars, None))
+    };
+    let child_root = nested_child_state.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope))?;
+    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
-    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);
+    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
 
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
@@ -286,16 +364,24 @@ pub fn render_custom_element(
 
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
     let v = match value {
-        None => return JsonValue::Bool(true),
+        None => return JsonValue::Bool(true), // boolean attribute (no value)
         Some(s) => s,
     };
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
         return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
     }
-    if v == "true" { return JsonValue::Bool(true); }
-    if v == "false" { return JsonValue::Bool(false); }
-    if let Ok(n) = v.parse::<f64>() { return JsonValue::Number(n); }
+    // Try parsing JSON array or object literals passed as attribute values.
+    // Trim whitespace and check matching delimiters before invoking the parser.
+    let trimmed = v.trim();
+    let looks_like_json_literal =
+        (trimmed.starts_with('[') && trimmed.ends_with(']'))
+            || (trimmed.starts_with('{') && trimmed.ends_with('}'));
+    if looks_like_json_literal {
+        if let Ok(parsed) = crate::json::parse(trimmed) {
+            return parsed;
+        }
+    }
     JsonValue::String(v.clone())
 }
 
@@ -305,19 +391,85 @@ fn build_element_open_tag(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     parent_hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> String {
+    if is_entry {
+        // Entry-level root custom elements receive the full root state directly.
+        // Resolve {{binding}} attributes: keep primitives (string/number/bool) with
+        // their resolved value, strip non-primitives (array/object/null) since they
+        // cannot be meaningfully represented as an HTML attribute value.
+        // Static attributes (no binding) are passed through unchanged.
+        // No data-fe-c marker is needed — root elements have no parent hydration scope.
+        return build_entry_element_open_tag(open_tag_base, root, loop_vars);
+    }
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
-        return format!("{}>", open_tag_base);
+        return format!("{}>", strip_client_only_attrs(open_tag_base));
     }
     let resolved = resolve_attribute_bindings_in_tag(open_tag_base, root, loop_vars);
+    let stripped = strip_client_only_attrs(&resolved);
     match parent_hydration {
         Some(hy) => {
             let start_idx = hy.binding_idx;
             hy.binding_idx += total_attr;
-            format!("{} data-fe-c-{}-{}>", resolved, start_idx, total_attr)
+            format!("{} data-fe-c-{}-{}>", stripped, start_idx, total_attr)
         }
-        None => format!("{}>", resolved),
+        None => format!("{}>", stripped),
     }
+}
+
+/// Build the opening tag for an entry-level root custom element.
+///
+/// - Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are
+///   stripped first via `strip_client_only_attrs` to avoid duplicating the filter list.
+/// - `{{binding}}` attribute values are then resolved from root state:
+///   - `?attr="{{expr}}"` boolean bindings: evaluate `expr` as a boolean; emit the bare
+///     attribute name (without `?`) when truthy, omit it when falsy.
+///   - Primitives (`String`, `Number`, `Bool`) → rendered with the resolved value (HTML-escaped).
+///   - Non-primitives (`Array`, `Object`, `Null`) → stripped.
+/// - Static attributes (no binding syntax) are passed through unchanged.
+fn build_entry_element_open_tag(
+    open_tag_base: &str,
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+) -> String {
+    let stripped_base = strip_client_only_attrs(open_tag_base);
+    let tag_name = match read_tag_name(&stripped_base, 0) {
+        Some(name) => name,
+        None => return format!("{}>", stripped_base),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(&stripped_base) {
+        match value {
+            None => {
+                out.push(' ');
+                out.push_str(&name);
+            }
+            Some(ref v) if v.trim().starts_with("{{") && v.trim().ends_with("}}") && v.trim().len() > 4 => {
+                let binding = v.trim()[2..v.trim().len() - 2].trim();
+                if name.starts_with('?') {
+                    // ?attr="{{expr}}" — boolean binding: emit bare attr name when truthy
+                    if evaluate(binding, root, loop_vars) {
+                        out.push(' ');
+                        out.push_str(&name[1..]);
+                    }
+                } else {
+                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+                    match resolved {
+                        JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
+                        JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
+                        JsonValue::Bool(b) => out.push_str(&format!(" {}=\"{}\"", name, b)),
+                        _ => {} // Array, Object, Null — strip
+                    }
+                }
+            }
+            Some(v) => {
+                out.push_str(&format!(" {}=\"{}\"", name, v));
+            }
+        }
+    }
+    out.push('>');
+    out
 }

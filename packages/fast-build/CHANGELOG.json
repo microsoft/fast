@@ -2,6 +2,121 @@
   "name": "@microsoft/fast-build",
   "entries": [
     {
+      "date": "Fri, 10 Apr 2026 00:21:15 GMT",
+      "version": "0.3.2",
+      "tag": "@microsoft/fast-build_v0.3.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "b77f386452945ff853c3e3febedbacef96fd24d5",
+            "comment": "docs: update fast-build README to match fast-element style and clarify testing purpose"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Apr 2026 00:05:34 GMT",
+      "version": "0.3.1",
+      "tag": "@microsoft/fast-build_v0.3.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4329acaf1e56690b2c3eb705f30839fbddcdeabd",
+            "comment": "fix: support .length property access on arrays in template expressions"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "4329acaf1e56690b2c3eb705f30839fbddcdeabd",
+            "comment": "fix: parse JSON array and object literals in HTML attribute values"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Apr 2026 00:19:56 GMT",
+      "version": "0.3.0",
+      "tag": "@microsoft/fast-build_v0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "13c6866b62de26018e1704276cce10a527f71de4",
+            "comment": "feat: root custom elements receive full entry-level state via render_entry_with_locator"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "7aec78ab4dd742891c175e6ce740daf203fce4f9",
+            "comment": "feat: strip state-passing {{binding}} attributes from root custom element opening tags when rendering entry HTML"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 07 Apr 2026 00:50:48 GMT",
+      "version": "0.2.0",
+      "tag": "@microsoft/fast-build_v0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "c6fb02e71ac5be36f79c4b714b0af387f9ff7177",
+            "comment": "feat: convert dataset.X attribute names to data-X in SSR renderer"
+          }
+        ],
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "766559321393dbbf5f63df92082013ec08265791",
+            "comment": "fix: support .length property access on arrays in template expressions"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "766559321393dbbf5f63df92082013ec08265791",
+            "comment": "fix: strip @event binding attributes from rendered HTML; attribute values are always strings unless a {{binding}} expression is used; property binding keys preserve their original casing"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sat, 04 Apr 2026 00:22:26 GMT",
+      "version": "0.1.2",
+      "tag": "@microsoft/fast-build_v0.1.2",
+      "comments": {
+        "patch": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "8ba12adba40ea9813ece53e8cf1c85485419a4ff",
+            "comment": "fix: account for tags without attributes"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "91a55266ee0c84dfb8dfe9b809da3d38aadea63e",
+            "comment": "chore: trigger Rust build before wasm-pack in @microsoft/fast-build"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-build",
+            "commit": "301ff0f8bd9ed385fe98a22ed45cb6e46ad7646d",
+            "comment": "chore: do not commit generated wasm or binary files to repo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 03 Apr 2026 00:07:06 GMT",
       "version": "0.1.1",
       "tag": "@microsoft/fast-build_v0.1.1",

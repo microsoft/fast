@@ -59,8 +59,8 @@ jobs:
       - name: Install package dependencies
         run: npm ci
 
-      - name: Test Prettier format
-        run: npm run format:check
+      - name: Biome CI check
+        run: npm run biome:ci
 
       - name: Install wasm-pack
         run: cargo install wasm-pack

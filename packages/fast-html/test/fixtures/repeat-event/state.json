@@ -1,0 +1,5 @@
+{
+    "repeatEventItems": [],
+    "whenRepeatItems": [{ "name": "Alpha" }, { "name": "Beta" }],
+    "showNames": true
+}

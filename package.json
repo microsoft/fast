@@ -44,15 +44,16 @@
     "watch": "tsc -p ./tsconfig.json -w --preserveWatchOutput",
     "format:check": "biome format --changed --no-errors-on-unmatched .",
     "format": "biome format --changed --no-errors-on-unmatched --fix --write .",
-    "lint": "biome lint --changed --no-errors-on-unmatched .",
-    "lint:fix": "biome lint --changed --no-errors-on-unmatched --fix .",
-    "biome:check": "biome check --changed --no-errors-on-unmatched .",
-    "biome:fix": "biome check --changed --no-errors-on-unmatched --fix ."
+    "lint": "biome-changed",
+    "lint:fix": "biome-changed -- --fix",
+    "biome:check": "biome-changed check",
+    "biome:fix": "biome-changed check -- --fix",
+    "biome:ci": "biome ci --changed --no-errors-on-unmatched ."
   },
   "devDependencies": {
     "@ast-grep/cli": "0.37.0",
     "@biomejs/biome": "2.4.8",
-    "@microsoft/api-extractor": "7.57.7",
+    "@microsoft/api-extractor": "7.58.1",
     "@playwright/test": "1.56.1",
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "1.0.0",
@@ -67,7 +68,7 @@
     "rollup": "4.59.0",
     "rollup-plugin-filesize": "10.0.0",
     "typescript": "5.3.3",
-    "vite": "7.1.12",
+    "vite": "7.3.2",
     "yargs": "17.7.2"
   },
   "overrides": {

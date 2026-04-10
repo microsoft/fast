@@ -1,11 +1,11 @@
 /// Find the first occurrence of `pat` in `s[from..]`, returning the absolute index.
-pub fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
+pub(crate) fn find_str(s: &str, pat: &str, from: usize) -> Option<usize> {
     s[from..].find(pat).map(|i| i + from)
 }
 
 /// Find a directive tag (e.g. `<f-when`, `<f-repeat`), ensuring the character
 /// immediately after the tag name is whitespace or `>` to avoid false matches.
-pub fn find_directive(template: &str, tag: &str, from: usize) -> Option<usize> {
+pub(crate) fn find_directive(template: &str, tag: &str, from: usize) -> Option<usize> {
     let mut pos = from;
     while let Some(idx) = find_str(template, tag, pos) {
         let after = idx + tag.len();
@@ -23,7 +23,7 @@ pub fn find_directive(template: &str, tag: &str, from: usize) -> Option<usize> {
 
 /// Find the position just after the closing `>` of an opening tag, skipping
 /// `>` characters that appear inside quoted attribute values.
-pub fn find_tag_end(template: &str, from: usize) -> Option<usize> {
+pub(crate) fn find_tag_end(template: &str, from: usize) -> Option<usize> {
     let bytes = template.as_bytes();
     let mut i = from;
     let mut in_quote = false;
@@ -45,7 +45,7 @@ pub fn find_tag_end(template: &str, from: usize) -> Option<usize> {
 
 /// Find the first `{` that is NOT the start of `{{` or `{{{`.
 /// These are FAST client-side bindings that the server renderer must pass through verbatim.
-pub fn find_single_brace(template: &str, from: usize) -> Option<usize> {
+pub(crate) fn find_single_brace(template: &str, from: usize) -> Option<usize> {
     let bytes = template.as_bytes();
     let mut i = from;
     while i < bytes.len() {
@@ -60,7 +60,7 @@ pub fn find_single_brace(template: &str, from: usize) -> Option<usize> {
 /// Return the position after the closing `}` of the single-brace expression starting at `pos`.
 /// Handles nesting (`{outer {inner}}`) and quoted strings so inner `}` characters are not
 /// mistaken for the closing brace.
-pub fn skip_single_brace_expr(template: &str, pos: usize) -> usize {
+pub(crate) fn skip_single_brace_expr(template: &str, pos: usize) -> usize {
     let bytes = template.as_bytes();
     let mut depth = 0usize;
     let mut i = pos;
@@ -88,7 +88,7 @@ pub fn skip_single_brace_expr(template: &str, pos: usize) -> usize {
 }
 
 /// Extract the expression from `value="{{...}}"` inside a directive opening tag.
-pub fn extract_directive_expr(template: &str, tag_start: usize) -> Option<String> {
+pub(crate) fn extract_directive_expr(template: &str, tag_start: usize) -> Option<String> {
     let tag_end = find_tag_end(template, tag_start)?;
     let tag_content = &template[tag_start..tag_end];
     let search = "value=\"{{";
@@ -101,7 +101,7 @@ pub fn extract_directive_expr(template: &str, tag_start: usize) -> Option<String
 /// Extract the inner content between an opening directive tag and its matching
 /// closing tag, handling nested directives of the same name.
 /// Returns `(inner_content, position_after_close_tag)`.
-pub fn extract_directive_content(
+pub(crate) fn extract_directive_content(
     template: &str,
     tag_start: usize,
     tag_name: &str,
@@ -134,7 +134,7 @@ pub fn extract_directive_content(
 }
 
 /// Read the tag name from a `<` position. Returns None for closing tags (`</...>`).
-pub fn read_tag_name(template: &str, lt_pos: usize) -> Option<String> {
+pub(crate) fn read_tag_name(template: &str, lt_pos: usize) -> Option<String> {
     let bytes = template.as_bytes();
     let mut i = lt_pos;
 
@@ -169,14 +169,14 @@ pub fn read_tag_name(template: &str, lt_pos: usize) -> Option<String> {
 }
 
 /// Return true if `tag_name` is a custom element (contains a hyphen and is not a FAST directive).
-pub fn is_custom_element(tag_name: &str) -> bool {
+pub(crate) fn is_custom_element(tag_name: &str) -> bool {
     tag_name.contains('-') && tag_name != "f-when" && tag_name != "f-repeat"
 }
 
 /// Find the position of the next opening tag of a custom element that has a template in `locator`.
 /// Scans `template[from..]` for `<`, reads the next word, and checks both `is_custom_element`
 /// and `locator.has_template`. Skips closing tags and non-custom elements.
-pub fn find_custom_element(
+pub(crate) fn find_custom_element(
     template: &str,
     from: usize,
     locator: &crate::locator::Locator,
@@ -205,7 +205,7 @@ pub fn find_custom_element(
 /// - `attr="{{expr}}"` → double-brace binding
 /// - `attr="{expr}"` (single brace, not `{{`) → single-brace client binding
 /// Returns `(double_brace_count, single_brace_count)`.
-pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
+pub(crate) fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
     let attrs = parse_element_attributes(tag);
     let mut db = 0usize;
     let mut sb = 0usize;
@@ -221,11 +221,40 @@ pub fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
     (db, sb)
 }
 
+// ── Data attribute helpers ────────────────────────────────────────────────────
+
+/// Convert a kebab-case string to camelCase.
+/// "date-of-birth" → "dateOfBirth", "name" → "name"
+fn kebab_to_camel(s: &str) -> String {
+    let mut result = String::with_capacity(s.len());
+    let mut next_upper = false;
+    for ch in s.chars() {
+        if ch == '-' {
+            next_upper = true;
+        } else if next_upper {
+            result.push(ch.to_ascii_uppercase());
+            next_upper = false;
+        } else {
+            result.push(ch);
+        }
+    }
+    result
+}
+
+/// Convert a `data-kebab-case` HTML attribute name to its full dot-notation
+/// dataset path, following the MDN HTMLElement.dataset naming convention.
+/// Returns `None` for names that do not start with `data-`.
+///
+/// Examples: `"data-date-of-birth"` → `"dataset.dateOfBirth"`, `"data-name"` → `"dataset.name"`
+pub(crate) fn data_attr_to_dataset_key(name: &str) -> Option<String> {
+    name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
+}
+
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
 /// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
 /// either renders the bare attribute name (if true) or omits the attribute (if false).
-pub fn resolve_attribute_bindings_in_tag(
+pub(crate) fn resolve_attribute_bindings_in_tag(
     tag: &str,
     root: &crate::json::JsonValue,
     loop_vars: &[(String, crate::json::JsonValue)],
@@ -298,8 +327,50 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
     }
 }
 
+/// Remove all FAST client-only binding attributes from an opening tag string:
+/// - `@attr="{...}"` event bindings
+/// - `:attr="..."` property bindings
+/// - `f-ref="{...}"`, `f-slotted="{...}"`, `f-children="{...}"` attribute directives
+///
+/// These are resolved or reconnected entirely by the FAST client runtime and
+/// have no meaning in static HTML. The `data-fe-c` hydration binding count is
+/// unaffected — callers use `count_tag_attribute_bindings` on the *original*
+/// tag string so the FAST runtime still allocates the correct number of binding slots.
+pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
+    let trimmed = tag.trim_end();
+    let is_self_closing = trimmed.ends_with("/>");
+    let has_closing_gt = is_self_closing || trimmed.ends_with('>');
+
+    let tag_name = match read_tag_name(tag, 0) {
+        Some(name) => name,
+        None => return tag.to_string(),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(tag) {
+        if name.starts_with('@') || name.starts_with(':')
+            || name.eq_ignore_ascii_case("f-ref")
+            || name.eq_ignore_ascii_case("f-slotted")
+            || name.eq_ignore_ascii_case("f-children")
+        {
+            continue;
+        }
+        match value {
+            None => { out.push(' '); out.push_str(&name); }
+            Some(v) => out.push_str(&format!(" {}=\"{}\"", name, v)),
+        }
+    }
+
+    if is_self_closing {
+        out.push_str(" />");
+    } else if has_closing_gt {
+        out.push('>');
+    }
+    out
+}
+
 /// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
-pub fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
+pub(crate) fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
     let marker = format!(" data-fe-c-{}-{}", start_idx, count);
     let trimmed = tag.trim_end();
     if trimmed.ends_with("/>") {
@@ -317,7 +388,7 @@ pub fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> Strin
 /// - Comments / declarations (`<!`)
 /// - FAST directive tags (`<f-...`)
 /// - Known custom elements with templates in `locator`
-pub fn find_next_plain_html_tag(
+pub(crate) fn find_next_plain_html_tag(
     template: &str,
     from: usize,
     locator: Option<&crate::locator::Locator>,
@@ -355,7 +426,7 @@ fn is_skippable_tag(name: &str, locator: Option<&crate::locator::Locator>) -> bo
 /// Parse all attributes from an opening tag string (e.g. `<my-button label="Hi" disabled>`).
 /// Returns `(attribute_name, Option<value>)` — `None` value means boolean attribute.
 /// Handles double-quoted, single-quoted, and unquoted values.
-pub fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<String>)> {
+pub(crate) fn parse_element_attributes(open_tag: &str) -> Vec<(String, Option<String>)> {
     let mut attrs = Vec::new();
     let bytes = open_tag.as_bytes();
     let mut i = 0;
