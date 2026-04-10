@@ -57,6 +57,9 @@ Run all commands from the monorepo root. Use workspace flags to target a single 
 | Build one package | `npm run build -w @microsoft/fast-element` |
 | Test all | `npm run test` |
 | Test one package | `npm run test -w @microsoft/fast-element` |
+| Test Chromium only | `npm run test:chromium` |
+| Build/test changed only | `lage build --since origin/main` |
+| Test changed only | `lage test:node test:rules test:chromium --since origin/main` |
 | Lint | `npm run lint` |
 | Lint fix | `npm run lint:fix` |
 | Format check | `npm run format:check` |
@@ -67,6 +70,8 @@ Run all commands from the monorepo root. Use workspace flags to target a single 
 | Generate change file | `npm run change` |
 | Check change files | `npm run checkchange` |
 | API docs | `npm run doc -w @microsoft/fast-element` |
+
+Build and test commands use [Lage](https://microsoft.github.io/lage/) for dependency-aware task execution. Lage respects the package dependency graph and can run incrementally with `--since <ref>` to only build/test changed packages and their dependents. The CI pipelines use `--since` for pull requests to skip unchanged packages.
 
 All `lint`, `biome:check`, `biome:fix`, and `biome:ci` commands use `biome-changed`, which runs biome only on files with uncommitted git changes. The `format:check` and `format` commands use biome's own `--changed` flag to compare against the default branch.
 
@@ -127,6 +132,7 @@ Key constraints (details in [TypeScript skill](./skills/typescript/SKILL.md)):
 | Tool | Purpose |
 |---|---|
 | npm workspaces | Package management |
+| Lage | Task runner — dependency-aware builds and incremental testing |
 | TypeScript | Compilation |
 | Rollup | Bundling (`fast-element` only) |
 | Playwright | Testing |

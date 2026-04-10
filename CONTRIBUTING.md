@@ -55,12 +55,30 @@ After the initial install, you can re-build all workspaces in the future with:
 npm run build
 ```
 
+Build and test commands are powered by [Lage](https://microsoft.github.io/lage/), which respects the package dependency graph. To build or test only packages that have changed since a given ref, use the `--since` flag:
+
+```bash
+lage build --since origin/main
+```
+
 ### Testing
 
 To run all tests for all packages, use the following command:
 
 ```bash
 npm run test
+```
+
+To run only Chromium tests (faster for local development):
+
+```bash
+npm run test:chromium
+```
+
+To run tests only for packages changed since the `main` branch:
+
+```bash
+lage test:node test:rules test:chromium --since origin/main
 ```
 
 This command can also be run from within individual package folders to execute only tests from that package.
