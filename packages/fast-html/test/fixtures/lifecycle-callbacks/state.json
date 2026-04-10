@@ -1,4 +1,8 @@
 {
+    "message": "Hello",
+    "title": "Complex",
+    "status": "pending",
+    "label": "Parent",
     "simpleMessage": "Hello",
     "complexTitle": "Complex",
     "count": 0,

@@ -1,5 +1,7 @@
 {
     "type": "checkbox",
+    "active-group": "work",
+    "current-group": "work",
     "activeGroup": "work",
     "currentGroup": "work"
 }
