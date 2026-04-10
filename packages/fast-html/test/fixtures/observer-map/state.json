@@ -1,0 +1,158 @@
+{
+    "items": ["foo", "baz"],
+    "value1": 42,
+    "value2": 42,
+    "selecteduserid": 1,
+    "totalusers": 2,
+    "metrics": {
+        "engagement": {
+            "daily": 100,
+            "weekly": 500,
+            "monthly": 2000
+        },
+        "performance": {
+            "loadtime": 1.2,
+            "rendertime": 0.8
+        }
+    },
+    "groups": [
+        {
+            "items": [
+                {
+                    "text": "item A",
+                    "actions": {
+                        "trailing": [
+                            {
+                                "label": "action label A"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "a": {
+        "b": {
+            "c": ""
+        }
+    },
+    "stats": {
+        "totalusers": 2,
+        "activeusers": 1,
+        "metrics": {
+            "performance": {
+                "loadtime": 1.2,
+                "rendertime": 0.8
+            },
+            "engagement": {
+                "daily": 100,
+                "weekly": 500,
+                "monthly": 2000
+            }
+        }
+    },
+    "users": [
+        {
+            "id": 1,
+            "name": "Alice Johnson",
+            "details": {
+                "personal": {
+                    "age": 28,
+                    "location": {
+                        "city": "New York",
+                        "country": "USA",
+                        "coordinates": {
+                            "lat": 40.7128,
+                            "lng": -74.006
+                        }
+                    }
+                },
+                "preferences": {
+                    "theme": "dark",
+                    "notifications": {
+                        "email": true,
+                        "push": false,
+                        "settings": {
+                            "frequency": "daily",
+                            "categories": ["tech", "news"]
+                        }
+                    }
+                }
+            },
+            "posts": [
+                {
+                    "id": 101,
+                    "title": "First Post",
+                    "content": "Hello World!",
+                    "metadata": {
+                        "views": 150,
+                        "likes": 25,
+                        "tags": ["introduction", "hello"],
+                        "author": {
+                            "name": "Alice Johnson",
+                            "verified": true
+                        }
+                    }
+                },
+                {
+                    "id": 102,
+                    "title": "Tech Update",
+                    "content": "Latest in technology...",
+                    "metadata": {
+                        "views": 320,
+                        "likes": 45,
+                        "tags": ["tech", "update"],
+                        "author": {
+                            "name": "Alice Johnson",
+                            "verified": true
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Bob Smith",
+            "details": {
+                "personal": {
+                    "age": 35,
+                    "location": {
+                        "city": "London",
+                        "country": "UK",
+                        "coordinates": {
+                            "lat": 51.5074,
+                            "lng": -0.1278
+                        }
+                    }
+                },
+                "preferences": {
+                    "theme": "light",
+                    "notifications": {
+                        "email": false,
+                        "push": true,
+                        "settings": {
+                            "frequency": "weekly",
+                            "categories": ["sports", "music"]
+                        }
+                    }
+                }
+            },
+            "posts": [
+                {
+                    "id": 201,
+                    "title": "Music Review",
+                    "content": "Amazing concert last night...",
+                    "metadata": {
+                        "views": 89,
+                        "likes": 12,
+                        "tags": ["music", "review"],
+                        "author": {
+                            "name": "Bob Smith",
+                            "verified": false
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
