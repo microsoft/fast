@@ -63,14 +63,14 @@ jobs:
         fi
 
     - name: Build workspaces
-      run: lage build ${{ steps.changed.outputs.since }}
+      run: npx lage build ${{ steps.changed.outputs.since }}
 
     - name: Install playwright dependencies and browsers
       run: |
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: lage test:node test:rules test:chromium ${{ steps.changed.outputs.since }}
+      run: npx lage test:node test:rules test:chromium ${{ steps.changed.outputs.since }}
 
     - name: Testing final validation
       run: npm run test:validation
