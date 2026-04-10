@@ -109,19 +109,6 @@ class ObserverMapTestElement extends FASTElement {
 
     public selecteduserid: number = 1;
 
-    public simpleitems: string[] = ["Item 1", "Item 2", "Item 3"];
-
-    public value1: number = 42;
-
-    public value2: number = 42;
-
-    public totalusers: number = 2;
-
-    public metrics = {
-        engagement: { daily: 100, weekly: 500, monthly: 2000 },
-        performance: { loadtime: 1.2, rendertime: 0.8 },
-    };
-
     public stats = {
         totalusers: 2,
         activeusers: 1,
