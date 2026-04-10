@@ -324,25 +324,98 @@ fn test_root_custom_elements_full_scenario() {
 }
 
 #[test]
-fn test_nested_custom_element_still_uses_attr_state() {
-    // Nested elements (inside a shadow template) must still get state from their
-    // HTML attributes, not the root state.
+fn test_nested_custom_element_inherits_parent_state() {
+    // Nested elements (inside a shadow template) inherit the parent element's state
+    // so unbound state keys propagate through the element tree automatically.
     let locator = make_locator(&[
         ("outer-el", r#"<inner-el label="{{innerLabel}}"></inner-el>"#),
         ("inner-el", "<span>{{label}} {{rootKey}}</span>"),
     ]);
-    // inner-el's template references {{rootKey}}. Since inner-el is nested (inside outer-el's
-    // shadow), it receives only attr-based state { label: "Nested" }. If rootKey incorrectly
-    // leaked, the render would succeed; it must fail with MissingState.
-    let err = render_entry_template_with_locator(
+    // inner-el's template references {{rootKey}}. Since state propagates through
+    // all descendant elements, rootKey is available in the nested child state.
+    let result = render_entry_template_with_locator(
         r#"<outer-el></outer-el>"#,
-        r#"{"innerLabel":"Nested","rootKey":"ShouldNotLeak"}"#,
+        r#"{"innerLabel":"Nested","rootKey":"Available"}"#,
         &locator,
-    ).expect_err("rootKey should not be available in nested child state");
-    assert!(
-        format!("{err:?}").contains("MissingState"),
-        "expected MissingState when nested child tries to resolve rootKey: {err:?}",
-    );
+    ).unwrap();
+    assert!(result.contains("Nested"), "label from attr binding: {result}");
+    assert!(result.contains("Available"), "rootKey propagated to nested child: {result}");
+}
+
+// ── state propagation to all descendant child elements ────────────────────────
+
+#[test]
+fn test_unbound_state_propagates_to_child_elements() {
+    // The exact scenario from the spec: my-el and my-child-el both reference
+    // {{text}}, with state.json containing {"text": "Hello world"}.
+    // State should propagate through to all descendant custom elements
+    // even without explicit attribute bindings.
+    let locator = make_locator(&[
+        ("my-el", "{{text}}\n        <my-child-el></my-child-el>"),
+        ("my-child-el", "{{text}}"),
+    ]);
+    let result = render_entry_template_with_locator(
+        "<my-el></my-el>",
+        r#"{"text":"Hello world"}"#,
+        &locator,
+    ).unwrap();
+    // Both my-el and my-child-el should render "Hello world"
+    let hello_count = result.matches("Hello world").count();
+    assert!(hello_count >= 2, "expected 'Hello world' in both elements, found {hello_count}: {result}");
+}
+
+#[test]
+fn test_state_propagates_through_multiple_levels() {
+    // State should flow through three levels of nesting.
+    let locator = make_locator(&[
+        ("level-one", "<span>L1:{{msg}}</span><level-two></level-two>"),
+        ("level-two", "<span>L2:{{msg}}</span><level-three></level-three>"),
+        ("level-three", "<span>L3:{{msg}}</span>"),
+    ]);
+    let result = render_entry_template_with_locator(
+        "<level-one></level-one>",
+        r#"{"msg":"deep"}"#,
+        &locator,
+    ).unwrap();
+    // Hydration markers wrap each binding, so check for the resolved value "deep"
+    // within each level's shadow template.
+    let deep_count = result.matches("deep").count();
+    assert!(deep_count >= 3, "expected 'deep' at least 3 times (all levels), found {deep_count}: {result}");
+    assert!(result.contains("<level-two>"), "level 2 element present: {result}");
+    assert!(result.contains("<level-three>"), "level 3 element present: {result}");
+}
+
+#[test]
+fn test_child_attr_overrides_propagated_state() {
+    // When a child element has an explicit attribute that matches a propagated
+    // state key, the attribute-derived value should take precedence.
+    let locator = make_locator(&[
+        ("parent-el", r#"<child-el color="blue"></child-el>"#),
+        ("child-el", "<span>{{color}}</span>"),
+    ]);
+    let result = render_entry_template_with_locator(
+        "<parent-el></parent-el>",
+        r#"{"color":"red"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("blue"), "attr value overrides propagated state: {result}");
+    assert!(!result.contains("red"), "propagated state key overridden by attr: {result}");
+}
+
+#[test]
+fn test_non_entry_render_also_propagates_state() {
+    // State propagation should work even when using render_template_with_locator
+    // (non-entry mode), so child elements within a shadow template get parent state.
+    let locator = make_locator(&[
+        ("my-wrapper", "<my-inner></my-inner>"),
+        ("my-inner", "<span>{{title}}</span>"),
+    ]);
+    let result = render_template_with_locator(
+        r#"<my-wrapper title="{{title}}"></my-wrapper>"#,
+        r#"{"title":"Propagated"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Propagated"), "state propagates via non-entry rendering: {result}");
 }
 
 // ── entry-level custom element attribute resolution ───────────────────────────

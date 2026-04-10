@@ -295,11 +295,11 @@ let html = render_template_with_locator(
 )?;
 ```
 
-### Rendering entry HTML (root custom elements receive merged state)
+### Rendering entry HTML (root custom elements)
 
-When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** and receive the complete root state **merged with their own HTML attribute-derived state**. Attribute-derived values take precedence over root state for overlapping keys.
+When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** — their opening-tag `{{binding}}` attributes are resolved (primitives kept, non-primitives stripped) rather than forwarded verbatim.
 
-This gives root elements access to both app-level context (from the shared root state) and their own per-element attribute values (e.g. `planet="earth"`, `vara="3"`, boolean `show`), without requiring each attribute to be present in the state JSON.
+All custom elements (root and nested) receive the full root state merged with their HTML attribute-derived state. Attribute-derived values take precedence over root state for overlapping keys. This gives every element access to the complete state tree without requiring explicit attribute bindings.
 
 ```rust
 use microsoft_fast_build::{render_entry_with_locator, render_entry_template_with_locator, Locator};
@@ -317,43 +317,52 @@ let html = render_entry_template_with_locator(
 // my-app's template can use {{items}}, {{planet}}, etc. directly.
 ```
 
-#### Attribute handling on root elements
+### State Propagation
 
-Root custom elements receive a **merged child state**: the full root state as a base, with the element's own HTML attributes overlaid on top. This means:
+All custom elements — whether at the entry level or deeply nested — receive the current root state as a base for their child state. Per-element HTML attributes are overlaid on top, with attribute-derived values taking precedence over any matching root state keys.
 
-- Per-element attributes (e.g. `planet="earth"`, `vara="3"`, boolean `show`) are available in the template alongside root state keys.
-- `{{binding}}` attributes resolve their value from root state and add it to the child state under the (lowercased) attribute name.
-- Attribute-derived values take precedence over root state keys when the same key appears in both.
-
-`{{binding}}` attributes on root elements are also **resolved in the rendered HTML output** rather than forwarded:
-
-- **Primitive bindings** (`string`, `number`, `boolean`) — resolved and rendered with the resolved value. e.g. `text="{{message}}"` → `text="Hello world"`.
-- **Non-primitive bindings** (`array`, `object`, `null`) — stripped from the HTML output (the state is still available in the element's template via the merged child state).
-- **Static attributes** (no binding syntax) — passed through unchanged.
+This means unbound state keys automatically propagate through the entire element tree. A child element can reference any state key from its ancestors without requiring explicit attribute bindings on every intermediate element:
 
 ```html
-<!-- Entry HTML source -->
-<my-app label="{{title}}" items="{{list}}" id="app"></my-app>
-<!-- title="Hello" (string), list=[...] (array) -->
+<!-- state.json: {"text": "Hello world"} -->
 
-<!-- Rendered output -->
-<!-- label="Hello" rendered (primitive), items stripped (array), static id kept -->
-<my-app label="Hello" id="app"><template shadowrootmode="open" shadowroot="open">...</template></my-app>
+<!-- my-el's template -->
+<f-template name="my-el">
+    <template>
+        {{text}}
+        <my-child-el></my-child-el>
+    </template>
+</f-template>
+
+<!-- my-child-el's template — {{text}} resolves automatically from propagated state -->
+<f-template name="my-child-el">
+    <template>
+        {{text}}
+    </template>
+</f-template>
 ```
 
-Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
+Both `my-el` and `my-child-el` render "Hello world" — the state propagates through the element tree without any explicit bindings.
+
+#### Attribute handling on root elements
+
+Root custom elements (rendered via `render_entry_*`) have their opening-tag `{{binding}}` attributes resolved in the rendered HTML output:
+
+- **Primitive bindings** (`string`, `number`, `boolean`) — resolved and rendered with the resolved value. e.g. `text="{{message}}"` → `text="Hello world"`.
+- **Non-primitive bindings** (`array`, `object`, `null`) — stripped from the HTML output (the state is still available in the element's template via state propagation).
+- **Static attributes** (no binding syntax) — passed through unchanged.
 
 | Context | Child state source | `{{binding}}` attrs in rendered HTML |
 |---|---|---|
 | Root element in entry HTML (via `render_entry_*`) | Root state merged with element's own attrs | Resolved — primitives kept, non-primitives stripped |
-| Nested element inside a shadow template | Attributes on the element tag | Rendered (resolved) |
-| Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag | Rendered (resolved) |
+| Nested element inside a shadow template | Parent state merged with element's own attrs | Rendered (resolved) |
+| Element inside `f-repeat` or `f-when` (at any level) | Parent state merged with element's own attrs | Rendered (resolved) |
 
 ```html
 <!-- Entry HTML — my-parent gets root state + its own attrs; label="Hello" rendered, list stripped -->
 <my-parent label="{{title}}" list="{{items}}" planet="earth"></my-parent>
 
-<!-- my-parent's template — my-child receives attr-based state only; label is rendered -->
+<!-- my-parent's template — my-child inherits parent state + gets its own attrs overlaid -->
 <my-child label="{{heading}}" :items="{{items}}"></my-child>
 ```
 
