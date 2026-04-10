@@ -79,11 +79,11 @@ jobs:
           fi
 
       - name: Build workspaces
-        run: lage build ${{ steps.changed.outputs.since }}
+        run: npx lage build ${{ steps.changed.outputs.since }}
 
       - name: Install playwright dependencies and browsers
         run: |
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: lage test:node test:rules test:playwright ${{ steps.changed.outputs.since }}
+        run: npx lage test:node test:rules test:playwright ${{ steps.changed.outputs.since }}
