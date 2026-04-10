@@ -232,7 +232,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 7. **Build the outer opening tag** via `build_element_open_tag`, which handles attribute resolution and optionally injects hydration markers. The behaviour differs by context:
    - **Root custom elements** (`is_entry: true`): handled by `build_entry_element_open_tag`. `{{binding}}` attribute values are resolved from the root state:
      - **Primitives** (`String`, `Number`, `Bool`) — rendered with the resolved value (HTML-escaped). e.g. `text="{{message}}"` → `text="Hello world"`.
-     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation.
+     - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation. Because of this, same-name non-primitive bindings like `list="{{list}}"` are redundant in entry HTML and can be omitted — state propagation provides the value automatically.
      - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
      - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
