@@ -27,5 +27,9 @@
     "@11ty/eleventy-navigation": "^1.0.5",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@microsoft/api-documenter": "7.29.7"
+  },
+  "devDependencies": {
+    "@microsoft/fast-build": "^0.3.2",
+    "@microsoft/fast-element": "^2.10.3"
   }
 }
