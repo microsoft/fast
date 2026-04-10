@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 const fixtures = [
     "attribute",
     "binding",
+    "deep-merge",
     "event",
     "ref",
     "slotted",
