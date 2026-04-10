@@ -8,12 +8,10 @@
         <div class="container">
             <observer-map-simple-array-test-element><template shadowrootmode="open" shadowroot="open"><ul>
             <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->Item 1<!--fe-b$$end$$0$$item-0$$fe-b--></li>
+                <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->foo<!--fe-b$$end$$0$$item-0$$fe-b--></li>
             <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
-                <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->Item 2<!--fe-b$$end$$0$$item-0$$fe-b--></li>
-            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat-->
-                <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->Item 3<!--fe-b$$end$$0$$item-0$$fe-b--></li>
-            <!--fe-repeat$$end$$2$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+                <li class="simple-item"><!--fe-b$$start$$0$$item-0$$fe-b-->baz<!--fe-b$$end$$0$$item-0$$fe-b--></li>
+            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
         </ul>
         <button data-fe-c-1-1>Update First Item</button>
         <button data-fe-c-2-1>Update Second Item</button></template></observer-map-simple-array-test-element>
@@ -29,7 +27,9 @@
                 Monthly: <!--fe-b$$start$$4$$metrics.engagement.monthly-4$$fe-b-->2000<!--fe-b$$end$$4$$metrics.engagement.monthly-4$$fe-b-->
             </div>
         </div>
-        <!--fe-b$$start$$5$$when-5$$fe-b--><!--fe-b$$end$$5$$when-5$$fe-b-->
+        <!--fe-b$$start$$5$$when-5$$fe-b-->
+            <span class="nested-define"><!--fe-b$$start$$0$$5-a.b.c-0$$fe-b--><!--fe-b$$end$$0$$5-a.b.c-0$$fe-b--></span>
+        <!--fe-b$$end$$5$$when-5$$fe-b-->
         <button data-fe-c-6-1>Define B</button>
         <button data-fe-c-7-1>Update C</button>
         <br>
@@ -75,22 +75,22 @@
             <h2>Users List</h2>
             <!--fe-b$$start$$9$$repeat-9$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
                 <div class="user-card">
-                    <h3><!--fe-b$$start$$0$$user.name-0$$fe-b-->Alice<!--fe-b$$end$$0$$user.name-0$$fe-b--> (ID: <!--fe-b$$start$$1$$user.id-1$$fe-b-->1<!--fe-b$$end$$1$$user.id-1$$fe-b-->)
+                    <h3><!--fe-b$$start$$0$$user.name-0$$fe-b-->Alice Johnson<!--fe-b$$end$$0$$user.name-0$$fe-b--> (ID: <!--fe-b$$start$$1$$user.id-1$$fe-b-->1<!--fe-b$$end$$1$$user.id-1$$fe-b-->)
                         <!--fe-b$$start$$2$$when-2$$fe-b-->
                             <span>⭐ SELECTED</span>
                         <!--fe-b$$end$$2$$when-2$$fe-b-->
                     </h3>
 
                     <div class="nested-info">
-                        <strong>Age:</strong> <!--fe-b$$start$$3$$user.details.personal.age-3$$fe-b-->30<!--fe-b$$end$$3$$user.details.personal.age-3$$fe-b--> years old
+                        <strong>Age:</strong> <!--fe-b$$start$$3$$user.details.personal.age-3$$fe-b-->28<!--fe-b$$end$$3$$user.details.personal.age-3$$fe-b--> years old
                     </div>
                     <div class="nested-info">
-                        <strong>Location:</strong> <!--fe-b$$start$$4$$user.details.personal.location.city-4$$fe-b-->Seattle<!--fe-b$$end$$4$$user.details.personal.location.city-4$$fe-b-->, <!--fe-b$$start$$5$$user.details.personal.location.country-5$$fe-b-->USA<!--fe-b$$end$$5$$user.details.personal.location.country-5$$fe-b-->
+                        <strong>Location:</strong> <!--fe-b$$start$$4$$user.details.personal.location.city-4$$fe-b-->New York<!--fe-b$$end$$4$$user.details.personal.location.city-4$$fe-b-->, <!--fe-b$$start$$5$$user.details.personal.location.country-5$$fe-b-->USA<!--fe-b$$end$$5$$user.details.personal.location.country-5$$fe-b-->
                     </div>
                     <div class="nested-info">
                         <strong>Coordinates:</strong>
-                        Lat: <!--fe-b$$start$$6$$user.details.personal.location.coordinates.lat-6$$fe-b-->47.6<!--fe-b$$end$$6$$user.details.personal.location.coordinates.lat-6$$fe-b-->,
-                        Lng: <!--fe-b$$start$$7$$user.details.personal.location.coordinates.lng-7$$fe-b-->-122.3<!--fe-b$$end$$7$$user.details.personal.location.coordinates.lng-7$$fe-b-->
+                        Lat: <!--fe-b$$start$$6$$user.details.personal.location.coordinates.lat-6$$fe-b-->40.7128<!--fe-b$$end$$6$$user.details.personal.location.coordinates.lat-6$$fe-b-->,
+                        Lng: <!--fe-b$$start$$7$$user.details.personal.location.coordinates.lng-7$$fe-b-->-74.006<!--fe-b$$end$$7$$user.details.personal.location.coordinates.lng-7$$fe-b-->
                     </div>
 
                     <div class="nested-info">
@@ -104,9 +104,9 @@
                     <div class="nested-info">
                         <strong>Categories:</strong>
                         <!--fe-b$$start$$12$$repeat-12$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                            <span class="tag"><!--fe-b$$start$$0$$category-0$$fe-b-->news<!--fe-b$$end$$0$$category-0$$fe-b--></span>
+                            <span class="tag"><!--fe-b$$start$$0$$category-0$$fe-b-->tech<!--fe-b$$end$$0$$category-0$$fe-b--></span>
                         <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
-                            <span class="tag"><!--fe-b$$start$$0$$category-0$$fe-b-->updates<!--fe-b$$end$$0$$category-0$$fe-b--></span>
+                            <span class="tag"><!--fe-b$$start$$0$$category-0$$fe-b-->news<!--fe-b$$end$$0$$category-0$$fe-b--></span>
                         <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$12$$repeat-12$$fe-b-->
                     </div>
 
@@ -122,14 +122,141 @@
                     </div>
 
                     <div>
-                        <h4>Posts (<!--fe-b$$start$$21$$user.posts.length-21$$fe-b-->0<!--fe-b$$end$$21$$user.posts.length-21$$fe-b--> posts)</h4>
-                        <!--fe-b$$start$$22$$repeat-22$$fe-b--><!--fe-b$$end$$22$$repeat-22$$fe-b-->
+                        <h4>Posts (<!--fe-b$$start$$21$$user.posts.length-21$$fe-b-->2<!--fe-b$$end$$21$$user.posts.length-21$$fe-b--> posts)</h4>
+                        <!--fe-b$$start$$22$$repeat-22$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                            <div class="post-card">
+                                <div><strong><!--fe-b$$start$$0$$post.title-0$$fe-b-->First Post<!--fe-b$$end$$0$$post.title-0$$fe-b--></strong> (ID: <!--fe-b$$start$$1$$post.id-1$$fe-b-->101<!--fe-b$$end$$1$$post.id-1$$fe-b-->)</div>
+                                <div class="nested-info"><!--fe-b$$start$$2$$post.content-2$$fe-b-->Hello World!<!--fe-b$$end$$2$$post.content-2$$fe-b--></div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> <!--fe-b$$start$$3$$post.metadata.author.name-3$$fe-b-->Alice Johnson<!--fe-b$$end$$3$$post.metadata.author.name-3$$fe-b-->
+                                    <!--fe-b$$start$$4$$when-4$$fe-b-->
+                                        <span>✓ Verified</span>
+                                    <!--fe-b$$end$$4$$when-4$$fe-b-->
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> <!--fe-b$$start$$5$$post.metadata.views-5$$fe-b-->150<!--fe-b$$end$$5$$post.metadata.views-5$$fe-b--> views, <!--fe-b$$start$$6$$post.metadata.likes-6$$fe-b-->25<!--fe-b$$end$$6$$post.metadata.likes-6$$fe-b--> likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <!--fe-b$$start$$7$$repeat-7$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                                        <span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->introduction<!--fe-b$$end$$0$$tag-0$$fe-b--></span>
+                                    <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                                        <span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->hello<!--fe-b$$end$$0$$tag-0$$fe-b--></span>
+                                    <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$7$$repeat-7$$fe-b-->
+                                </div>
+                                <div class="controls">
+                                    <button data-fe-c-8-1>Like Post</button>
+                                </div>
+                            </div>
+                        <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                            <div class="post-card">
+                                <div><strong><!--fe-b$$start$$0$$post.title-0$$fe-b-->Tech Update<!--fe-b$$end$$0$$post.title-0$$fe-b--></strong> (ID: <!--fe-b$$start$$1$$post.id-1$$fe-b-->102<!--fe-b$$end$$1$$post.id-1$$fe-b-->)</div>
+                                <div class="nested-info"><!--fe-b$$start$$2$$post.content-2$$fe-b-->Latest in technology...<!--fe-b$$end$$2$$post.content-2$$fe-b--></div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> <!--fe-b$$start$$3$$post.metadata.author.name-3$$fe-b-->Alice Johnson<!--fe-b$$end$$3$$post.metadata.author.name-3$$fe-b-->
+                                    <!--fe-b$$start$$4$$when-4$$fe-b-->
+                                        <span>✓ Verified</span>
+                                    <!--fe-b$$end$$4$$when-4$$fe-b-->
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> <!--fe-b$$start$$5$$post.metadata.views-5$$fe-b-->320<!--fe-b$$end$$5$$post.metadata.views-5$$fe-b--> views, <!--fe-b$$start$$6$$post.metadata.likes-6$$fe-b-->45<!--fe-b$$end$$6$$post.metadata.likes-6$$fe-b--> likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <!--fe-b$$start$$7$$repeat-7$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                                        <span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->tech<!--fe-b$$end$$0$$tag-0$$fe-b--></span>
+                                    <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                                        <span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->update<!--fe-b$$end$$0$$tag-0$$fe-b--></span>
+                                    <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$7$$repeat-7$$fe-b-->
+                                </div>
+                                <div class="controls">
+                                    <button data-fe-c-8-1>Like Post</button>
+                                </div>
+                            </div>
+                        <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$22$$repeat-22$$fe-b-->
                         <div class="controls">
                             <button data-fe-c-23-1>Add New Post</button>
                         </div>
                     </div>
                 </div>
-            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$9$$repeat-9$$fe-b-->
+            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                <div class="user-card">
+                    <h3><!--fe-b$$start$$0$$user.name-0$$fe-b-->Bob Smith<!--fe-b$$end$$0$$user.name-0$$fe-b--> (ID: <!--fe-b$$start$$1$$user.id-1$$fe-b-->2<!--fe-b$$end$$1$$user.id-1$$fe-b-->)
+                        <!--fe-b$$start$$2$$when-2$$fe-b--><!--fe-b$$end$$2$$when-2$$fe-b-->
+                    </h3>
+
+                    <div class="nested-info">
+                        <strong>Age:</strong> <!--fe-b$$start$$3$$user.details.personal.age-3$$fe-b-->35<!--fe-b$$end$$3$$user.details.personal.age-3$$fe-b--> years old
+                    </div>
+                    <div class="nested-info">
+                        <strong>Location:</strong> <!--fe-b$$start$$4$$user.details.personal.location.city-4$$fe-b-->London<!--fe-b$$end$$4$$user.details.personal.location.city-4$$fe-b-->, <!--fe-b$$start$$5$$user.details.personal.location.country-5$$fe-b-->UK<!--fe-b$$end$$5$$user.details.personal.location.country-5$$fe-b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Coordinates:</strong>
+                        Lat: <!--fe-b$$start$$6$$user.details.personal.location.coordinates.lat-6$$fe-b-->51.5074<!--fe-b$$end$$6$$user.details.personal.location.coordinates.lat-6$$fe-b-->,
+                        Lng: <!--fe-b$$start$$7$$user.details.personal.location.coordinates.lng-7$$fe-b-->-0.1278<!--fe-b$$end$$7$$user.details.personal.location.coordinates.lng-7$$fe-b-->
+                    </div>
+
+                    <div class="nested-info">
+                        <strong>Theme:</strong> <!--fe-b$$start$$8$$user.details.preferences.theme-8$$fe-b-->light<!--fe-b$$end$$8$$user.details.preferences.theme-8$$fe-b--> |
+                        <strong>Email Notifications:</strong> <!--fe-b$$start$$9$$user.details.preferences.notifications.email-9$$fe-b-->false<!--fe-b$$end$$9$$user.details.preferences.notifications.email-9$$fe-b--> |
+                        <strong>Push Notifications:</strong> <!--fe-b$$start$$10$$user.details.preferences.notifications.push-10$$fe-b-->true<!--fe-b$$end$$10$$user.details.preferences.notifications.push-10$$fe-b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Notification Frequency:</strong> <!--fe-b$$start$$11$$user.details.preferences.notifications.settings.frequency-11$$fe-b-->weekly<!--fe-b$$end$$11$$user.details.preferences.notifications.settings.frequency-11$$fe-b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Categories:</strong>
+                        <!--fe-b$$start$$12$$repeat-12$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                            <span class="tag"><!--fe-b$$start$$0$$category-0$$fe-b-->sports<!--fe-b$$end$$0$$category-0$$fe-b--></span>
+                        <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                            <span class="tag"><!--fe-b$$start$$0$$category-0$$fe-b-->music<!--fe-b$$end$$0$$category-0$$fe-b--></span>
+                        <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$12$$repeat-12$$fe-b-->
+                    </div>
+
+                    <div class="controls">
+                        <button data-fe-c-13-1>Select User</button>
+                        <button data-fe-c-14-1>Age +1</button>
+                        <button data-fe-c-15-1>Toggle Theme</button>
+                        <button data-fe-c-16-1>Change Location</button>
+                        <button data-fe-c-17-1>Update Notifications</button>
+                        <button data-fe-c-18-1>Add Category</button>
+                        <button data-fe-c-19-1>Remove Tech Category</button>
+                        <button data-fe-c-20-1>Remove User</button>
+                    </div>
+
+                    <div>
+                        <h4>Posts (<!--fe-b$$start$$21$$user.posts.length-21$$fe-b-->1<!--fe-b$$end$$21$$user.posts.length-21$$fe-b--> posts)</h4>
+                        <!--fe-b$$start$$22$$repeat-22$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                            <div class="post-card">
+                                <div><strong><!--fe-b$$start$$0$$post.title-0$$fe-b-->Music Review<!--fe-b$$end$$0$$post.title-0$$fe-b--></strong> (ID: <!--fe-b$$start$$1$$post.id-1$$fe-b-->201<!--fe-b$$end$$1$$post.id-1$$fe-b-->)</div>
+                                <div class="nested-info"><!--fe-b$$start$$2$$post.content-2$$fe-b-->Amazing concert last night...<!--fe-b$$end$$2$$post.content-2$$fe-b--></div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> <!--fe-b$$start$$3$$post.metadata.author.name-3$$fe-b-->Bob Smith<!--fe-b$$end$$3$$post.metadata.author.name-3$$fe-b-->
+                                    <!--fe-b$$start$$4$$when-4$$fe-b--><!--fe-b$$end$$4$$when-4$$fe-b-->
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> <!--fe-b$$start$$5$$post.metadata.views-5$$fe-b-->89<!--fe-b$$end$$5$$post.metadata.views-5$$fe-b--> views, <!--fe-b$$start$$6$$post.metadata.likes-6$$fe-b-->12<!--fe-b$$end$$6$$post.metadata.likes-6$$fe-b--> likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <!--fe-b$$start$$7$$repeat-7$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                                        <span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->music<!--fe-b$$end$$0$$tag-0$$fe-b--></span>
+                                    <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                                        <span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->review<!--fe-b$$end$$0$$tag-0$$fe-b--></span>
+                                    <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$7$$repeat-7$$fe-b-->
+                                </div>
+                                <div class="controls">
+                                    <button data-fe-c-8-1>Like Post</button>
+                                </div>
+                            </div>
+                        <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$22$$repeat-22$$fe-b-->
+                        <div class="controls">
+                            <button data-fe-c-23-1>Add New Post</button>
+                        </div>
+                    </div>
+                </div>
+            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$9$$repeat-9$$fe-b-->
         </div></template></observer-map-test-element>
             <observer-map-with-observables-test-element><template shadowrootmode="open" shadowroot="open">Level 3 Value: <!--fe-b$$start$$0$$value1-0$$fe-b-->42<!--fe-b$$end$$0$$value1-0$$fe-b-->
         <button data-fe-c-1-1>Update Value1</button>
