@@ -1,0 +1,68 @@
+{
+    "showDetails": true,
+    "stats": {
+        "totalOrders": 3,
+        "totalRevenue": 425.5,
+        "activeUsers": 2
+    },
+    "users": [
+        {
+            "id": 1,
+            "name": "Alice Johnson",
+            "email": "alice@example.com",
+            "profile": {
+                "age": 28,
+                "location": {
+                    "city": "New York",
+                    "country": "USA"
+                },
+                "preferences": {
+                    "theme": "dark",
+                    "notifications": true
+                }
+            },
+            "orders": [
+                {
+                    "id": 101,
+                    "date": "2024-01-15",
+                    "total": 150.5,
+                    "items": [
+                        {
+                            "id": 1001,
+                            "name": "Laptop",
+                            "price": 100.0,
+                            "inStock": true,
+                            "tags": ["electronics", "computers"],
+                            "metadata": { "views": 250, "rating": 4.5 }
+                        },
+                        {
+                            "id": 1002,
+                            "name": "Mouse",
+                            "price": 50.5,
+                            "inStock": true,
+                            "tags": ["electronics", "accessories"],
+                            "metadata": { "views": 180, "rating": 4.0 }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Bob Smith",
+            "email": "bob@example.com",
+            "profile": {
+                "age": 35,
+                "location": {
+                    "city": "London",
+                    "country": "UK"
+                },
+                "preferences": {
+                    "theme": "light",
+                    "notifications": false
+                }
+            },
+            "orders": []
+        }
+    ]
+}
