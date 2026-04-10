@@ -253,20 +253,13 @@ pub fn render_custom_element(
 
     // Build the child state used to render this element's shadow template.
     //
-    // `build_attr_state` has two modes controlled by the `base` parameter:
+    // The child state always starts with the current root state as a base so
+    // all unbound state keys (e.g. `text`, `error`, `showProgress`) propagate
+    // through to every descendant custom element automatically. Per-element
+    // attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
+    // top, overriding root state for any overlapping key.
     //
-    // **Entry mode** (`base = Some(root_map)`) — called when `is_entry == true`.
-    //   The child state starts with the full root state as a base so app-level
-    //   keys (e.g. `error`, `showProgress`) are always available. Per-element
-    //   attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
-    //   top, overriding root state for any overlapping key.
-    //
-    // **Nested mode** (`base = None`) — called when `is_entry == false`.
-    //   The child state is built entirely from the element's HTML attributes.
-    //   No root state keys are inherited. This covers elements inside shadow
-    //   templates, `f-when` / `f-repeat` bodies, etc.
-    //
-    // In both modes the attribute processing rules are identical:
+    // Attribute processing rules:
     //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
     //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
     //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
@@ -275,10 +268,10 @@ pub fn render_custom_element(
         open_tag_content: &str,
         root: &JsonValue,
         loop_vars: &[(String, JsonValue)],
-        base: Option<std::collections::HashMap<String, JsonValue>>,
+        base: std::collections::HashMap<String, JsonValue>,
     ) -> JsonValue {
         let attrs = parse_element_attributes(open_tag_content);
-        let mut state_map = base.unwrap_or_default();
+        let mut state_map = base;
         for (attr_name, value) in &attrs {
             // Skip @event handlers — they are client-side only and have no meaning in SSR state.
             // Also skip f-ref, f-slotted, f-children, and ?boolean-binding directives — all are
@@ -322,23 +315,19 @@ pub fn render_custom_element(
         JsonValue::Object(state_map)
     }
 
-    let nested_child_state = if is_entry {
-        // Start with the full root state, then overlay per-element attribute values.
-        let base = if let JsonValue::Object(ref root_map) = root {
-            root_map.clone()
-        } else {
-            std::collections::HashMap::new()
-        };
-        Some(build_attr_state(open_tag_content, root, loop_vars, Some(base)))
+    // Always start with the current root state as a base, then overlay attributes.
+    // This ensures all unbound state keys propagate to descendant elements.
+    let base = if let JsonValue::Object(ref root_map) = root {
+        root_map.clone()
     } else {
-        Some(build_attr_state(open_tag_content, root, loop_vars, None))
+        std::collections::HashMap::new()
     };
-    let child_root = nested_child_state.as_ref().unwrap_or(root);
+    let child_root = build_attr_state(open_tag_content, root, loop_vars, base);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
+    let rendered = render_node(element_template, &child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
