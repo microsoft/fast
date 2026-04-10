@@ -1,6 +1,6 @@
 {
   "name": "@microsoft/fast-ssr",
-  "version": "1.0.0-beta.39",
+  "version": "1.0.0-beta.40",
   "type": "module",
   "author": {
     "name": "Microsoft",
@@ -31,6 +31,7 @@
     "test:playwright": "npm run pretest && playwright test",
     "test-server": "node server/dist/server.js"
   },
+  "deprecated": "This package is deprecated. Please use @microsoft/fast-build and @microsoft/webui instead.",
   "description": "A package for rendering FAST Web Components outside the browser.",
   "main": "dist/esm/exports.js",
   "types": "dist/dts/exports.d.ts",
@@ -55,11 +56,11 @@
     "tslib": "^2.6.3"
   },
   "peerDependencies": {
-    "@microsoft/fast-element": "^2.10.2"
+    "@microsoft/fast-element": "^2.10.3"
   },
   "devDependencies": {
     "@types/parse5": "^5.0.0",
-    "@microsoft/fast-element": "^2.10.2"
+    "@microsoft/fast-element": "^2.10.3"
   },
   "beachball": {
     "disallowedChangeTypes": [

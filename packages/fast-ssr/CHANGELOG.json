@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-ssr",
   "entries": [
     {
+      "date": "Fri, 10 Apr 2026 00:21:15 GMT",
+      "version": "1.0.0-beta.40",
+      "tag": "@microsoft/fast-ssr_v1.0.0-beta.40",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-ssr",
+            "commit": "84de68790134fe7a2050a9b75ba6d3ae877d64ed",
+            "comment": "chore: deprecate package in favor of @microsoft/fast-build and @microsoft/webui"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 07 Apr 2026 00:50:48 GMT",
       "version": "1.0.0-beta.39",
       "tag": "@microsoft/fast-ssr_v1.0.0-beta.39",

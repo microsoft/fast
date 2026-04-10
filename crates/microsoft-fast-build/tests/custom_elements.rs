@@ -324,25 +324,200 @@ fn test_root_custom_elements_full_scenario() {
 }
 
 #[test]
-fn test_nested_custom_element_still_uses_attr_state() {
-    // Nested elements (inside a shadow template) must still get state from their
-    // HTML attributes, not the root state.
+fn test_nested_custom_element_inherits_parent_state() {
+    // Nested elements (inside a shadow template) inherit the parent element's state
+    // so unbound state keys propagate through the element tree automatically.
     let locator = make_locator(&[
         ("outer-el", r#"<inner-el label="{{innerLabel}}"></inner-el>"#),
         ("inner-el", "<span>{{label}} {{rootKey}}</span>"),
     ]);
-    // inner-el's template references {{rootKey}}. Since inner-el is nested (inside outer-el's
-    // shadow), it receives only attr-based state { label: "Nested" }. If rootKey incorrectly
-    // leaked, the render would succeed; it must fail with MissingState.
-    let err = render_entry_template_with_locator(
+    // inner-el's template references {{rootKey}}. Since state propagates through
+    // all descendant elements, rootKey is available in the nested child state.
+    let result = render_entry_template_with_locator(
         r#"<outer-el></outer-el>"#,
-        r#"{"innerLabel":"Nested","rootKey":"ShouldNotLeak"}"#,
+        r#"{"innerLabel":"Nested","rootKey":"Available"}"#,
         &locator,
-    ).expect_err("rootKey should not be available in nested child state");
-    assert!(
-        format!("{err:?}").contains("MissingState"),
-        "expected MissingState when nested child tries to resolve rootKey: {err:?}",
-    );
+    ).unwrap();
+    assert!(result.contains("Nested"), "label from attr binding: {result}");
+    assert!(result.contains("Available"), "rootKey propagated to nested child: {result}");
+}
+
+// ── state propagation to all descendant child elements ────────────────────────
+
+#[test]
+fn test_unbound_state_propagates_to_child_elements() {
+    // The exact scenario from the spec: my-el and my-child-el both reference
+    // {{text}}, with state.json containing {"text": "Hello world"}.
+    // State should propagate through to all descendant custom elements
+    // even without explicit attribute bindings.
+    let locator = make_locator(&[
+        ("my-el", "{{text}}\n        <my-child-el></my-child-el>"),
+        ("my-child-el", "{{text}}"),
+    ]);
+    let result = render_entry_template_with_locator(
+        "<my-el></my-el>",
+        r#"{"text":"Hello world"}"#,
+        &locator,
+    ).unwrap();
+    // Both my-el and my-child-el should render "Hello world"
+    let hello_count = result.matches("Hello world").count();
+    assert!(hello_count >= 2, "expected 'Hello world' in both elements, found {hello_count}: {result}");
+}
+
+#[test]
+fn test_state_propagates_through_multiple_levels() {
+    // State should flow through three levels of nesting.
+    let locator = make_locator(&[
+        ("level-one", "<span>L1:{{msg}}</span><level-two></level-two>"),
+        ("level-two", "<span>L2:{{msg}}</span><level-three></level-three>"),
+        ("level-three", "<span>L3:{{msg}}</span>"),
+    ]);
+    let result = render_entry_template_with_locator(
+        "<level-one></level-one>",
+        r#"{"msg":"deep"}"#,
+        &locator,
+    ).unwrap();
+    // Hydration markers wrap each binding, so check for the resolved value "deep"
+    // within each level's shadow template.
+    let deep_count = result.matches("deep").count();
+    assert!(deep_count >= 3, "expected 'deep' at least 3 times (all levels), found {deep_count}: {result}");
+    assert!(result.contains("<level-two>"), "level 2 element present: {result}");
+    assert!(result.contains("<level-three>"), "level 3 element present: {result}");
+}
+
+#[test]
+fn test_child_attr_overrides_propagated_state() {
+    // When a child element has an explicit attribute that matches a propagated
+    // state key, the attribute-derived value should take precedence.
+    let locator = make_locator(&[
+        ("parent-el", r#"<child-el color="blue"></child-el>"#),
+        ("child-el", "<span>{{color}}</span>"),
+    ]);
+    let result = render_entry_template_with_locator(
+        "<parent-el></parent-el>",
+        r#"{"color":"red"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("blue"), "attr value overrides propagated state: {result}");
+    assert!(!result.contains("red"), "propagated state key overridden by attr: {result}");
+}
+
+#[test]
+fn test_non_entry_render_also_propagates_state() {
+    // State propagation should work even when using render_template_with_locator
+    // (non-entry mode), so child elements within a shadow template get parent state.
+    let locator = make_locator(&[
+        ("my-wrapper", "<my-inner></my-inner>"),
+        ("my-inner", "<span>{{title}}</span>"),
+    ]);
+    let result = render_template_with_locator(
+        r#"<my-wrapper title="{{title}}"></my-wrapper>"#,
+        r#"{"title":"Propagated"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Propagated"), "state propagates via non-entry rendering: {result}");
+}
+
+// ── entry-level custom element attribute resolution ───────────────────────────
+
+#[test]
+fn test_root_custom_element_primitive_binding_resolved() {
+    // {{binding}} attrs on root custom elements that resolve to a primitive
+    // (string/number/bool) should appear in the rendered HTML with the resolved value.
+    let locator = make_locator(&[("my-el", "<span>{{text}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el text="{{text}}"></my-el>"#,
+        r#"{"text":"Hello world"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(r#"text="Hello world""#), "primitive binding resolved: {result}");
+    assert!(result.contains("Hello world"), "template still renders state: {result}");
+}
+
+#[test]
+fn test_root_custom_element_boolean_attr_binding_truthy() {
+    // ?attr="{{expr}}" on a root element should render as the bare attribute name when truthy.
+    let locator = make_locator(&[("my-button", "<button>Click</button>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-button ?disabled="{{show}}"></my-button>"#,
+        r#"{"show":true}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(" disabled"), "boolean attr rendered when true: {result}");
+    assert!(!result.contains("?disabled"), "? prefix stripped: {result}");
+}
+
+#[test]
+fn test_root_custom_element_boolean_attr_binding_falsy() {
+    // ?attr="{{expr}}" on a root element should be omitted when falsy.
+    let locator = make_locator(&[("my-button", "<button>Click</button>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-button ?disabled="{{show}}"></my-button>"#,
+        r#"{"show":false}"#,
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("disabled"), "boolean attr omitted when false: {result}");
+}
+
+#[test]
+fn test_root_custom_element_non_primitive_binding_stripped() {
+    // {{binding}} attrs on root custom elements that resolve to an array or object
+    // should be stripped — they cannot be represented as an HTML attribute.
+    let locator = make_locator(&[("my-el", "<span>content</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el list="{{list}}" data="{{data}}"></my-el>"#,
+        r#"{"list":["a","b"],"data":{"key":"val"}}"#,
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("list="), "array binding stripped: {result}");
+    assert!(!result.contains("data="), "object binding stripped: {result}");
+}
+
+#[test]
+fn test_root_custom_element_static_attrs_kept() {
+    // Non-binding (static) attributes on root custom elements must be preserved.
+    let locator = make_locator(&[("my-el", "<span>content</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el id="main" class="app"></my-el>"#,
+        r#"{"ignored": true}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(r#"id="main""#), "id attribute kept: {result}");
+    assert!(result.contains(r#"class="app""#), "class attribute kept: {result}");
+}
+
+#[test]
+fn test_root_custom_element_mixed_attrs() {
+    // Primitive binding → resolved and rendered. Non-primitive → stripped. Static → kept.
+    let locator = make_locator(&[("my-el", "<span>{{name}}</span>")]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el id="root" name="{{name}}" items="{{items}}"></my-el>"#,
+        r#"{"name":"Alice","items":["x","y"]}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains(r#"id="root""#), "static id kept: {result}");
+    assert!(result.contains(r#"name="Alice""#), "primitive binding resolved: {result}");
+    assert!(!result.contains("items="), "array binding stripped: {result}");
+}
+
+#[test]
+fn test_nested_custom_element_binding_attrs_not_stripped() {
+    // Attributes with {{binding}} values on *nested* (non-root) custom elements must
+    // NOT be stripped — they are used for attribute-based child state building and
+    // the resolved value is rendered into the HTML for the FAST runtime.
+    let locator = make_locator(&[
+        ("my-outer", r#"<my-inner label="{{name}}"></my-inner>"#),
+        ("my-inner", "<span>{{label}}</span>"),
+    ]);
+    // Pass name via :name so my-outer's child state has it for its template to use.
+    let result = render_template_with_locator(
+        r#"<my-outer :name="{{name}}"></my-outer>"#,
+        r#"{"name":"Bob"}"#,
+        &locator,
+    ).unwrap();
+    // The inner element is nested (not entry-level), so its resolved attr IS rendered.
+    assert!(result.contains(r#"label="Bob""#), "nested element attr rendered: {result}");
+    assert!(result.contains("Bob"), "inner template renders label: {result}");
 }
 
 #[test]
@@ -391,4 +566,132 @@ fn test_custom_element_object_from_colon_binding() {
     ).unwrap();
     assert!(!result.contains(":config"), "colon attr not in HTML: {result}");
     assert!(result.contains("Hello"), "rendered: {result}");
+}
+
+// ── entry-level custom element merged state ────────────────────────────────────
+
+#[test]
+fn test_root_element_per_element_attr_available_in_template() {
+    // A per-element static attribute (e.g. planet="earth") should be available as a
+    // template binding key in the entry element's shadow template, even if that key
+    // is not present in the shared root state.json.
+    let locator = make_locator(&[("planet-el", r#"<span>{{planet}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<planet-el planet="earth"></planet-el>"#,
+        r#"{"shared":"yes"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("earth"), "per-element attr available in template: {result}");
+}
+
+#[test]
+fn test_root_element_attr_overrides_root_state_key() {
+    // When an entry element carries a static attribute whose key matches a root state
+    // key, the attribute-derived value should take precedence in the child template.
+    let locator = make_locator(&[("my-el", r#"<span>{{color}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el color="blue"></my-el>"#,
+        r#"{"color":"red"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("blue"), "attr value overrides root state: {result}");
+    assert!(!result.contains("red"), "root state key not used when attr present: {result}");
+}
+
+#[test]
+fn test_root_element_root_state_available_alongside_attr() {
+    // Root state keys that are NOT shadowed by an attribute should still be accessible
+    // in the entry element's template alongside per-element attr values.
+    let locator = make_locator(&[("my-el", r#"<span>{{planet}} {{shared}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el planet="mars"></my-el>"#,
+        r#"{"shared":"context"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("mars"), "per-element attr rendered: {result}");
+    assert!(result.contains("context"), "root state key still accessible: {result}");
+}
+
+#[test]
+fn test_root_element_boolean_attr_available_in_template() {
+    // A boolean (no-value) attribute on an entry element should be available as
+    // true in the child template.
+    let locator = make_locator(&[("my-el", r#"<f-when value="{{show}}"><span>visible</span></f-when>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<my-el show></my-el>"#,
+        r#"{}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("visible"), "boolean attr resolves to true in template: {result}");
+}
+
+#[test]
+fn test_root_elements_with_different_per_element_attrs() {
+    // Multiple root elements in the same entry HTML each have their own attribute
+    // values available in their respective templates.
+    let locator = make_locator(&[("planet-el", r#"<span>{{planet}}</span>"#)]);
+    let result = render_entry_template_with_locator(
+        r#"<planet-el planet="earth"></planet-el><planet-el planet="mars"></planet-el>"#,
+        r#"{"shared":"yes"}"#,
+        &locator,
+    ).unwrap();
+    assert!(result.contains("earth"), "first element attr: {result}");
+    assert!(result.contains("mars"), "second element attr: {result}");
+}
+
+// ── JSON literals in attribute values ─────────────────────────────────────────
+
+#[test]
+fn test_custom_element_json_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items='["a","b","c"]'></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains(">a<"), "rendered a: {result}");
+    assert!(result.contains(">b<"), "rendered b: {result}");
+    assert!(result.contains(">c<"), "rendered c: {result}");
+}
+
+#[test]
+fn test_custom_element_empty_array_attr() {
+    let locator = make_locator(&[(
+        "item-list",
+        r#"<f-repeat value="{{item in items}}"><span>{{item}}</span></f-repeat>"#,
+    )]);
+    let result = render_template_with_locator(
+        r#"<item-list items="[]"></item-list>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(!result.contains("<span>"), "no items: {result}");
+}
+
+#[test]
+fn test_custom_element_json_object_attr() {
+    let locator = make_locator(&[("my-card", r#"<div>{{config.title}}</div>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-card config='{"title":"Hello"}'></my-card>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    assert!(result.contains("Hello"), "rendered: {result}");
+}
+
+#[test]
+fn test_custom_element_invalid_json_attr_falls_back_to_string() {
+    // An attribute value that looks like JSON but is invalid should remain a string,
+    // not cause a parse error or panic.
+    let locator = make_locator(&[("my-el", r#"<span>{{items}}</span>"#)]);
+    let result = render_template_with_locator(
+        r#"<my-el items='["a",]'></my-el>"#,
+        "{}",
+        &locator,
+    ).unwrap();
+    // Invalid JSON falls back to the raw string value
+    assert!(result.contains(r#"["a",]"#), "invalid JSON kept as string: {result}");
 }

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-ssr
 
-<!-- This log was last generated on Thu, 05 Mar 2026 00:09:03 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 10 Apr 2026 00:21:15 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-beta.40
+
+Fri, 10 Apr 2026 00:21:15 GMT
+
+### Changes
+
+- chore: deprecate package in favor of @microsoft/fast-build and @microsoft/webui (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-beta.39
 

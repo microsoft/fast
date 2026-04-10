@@ -7,7 +7,7 @@ use crate::json::JsonValue;
 /// `state["dataset"]["dateOfBirth"]`. When a custom element receives `data-*`
 /// HTML attributes, the renderer stores them in the child state under a nested
 /// `"dataset"` key so that `{{dataset.X}}` bindings work naturally.
-pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
+pub(crate) fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> Option<JsonValue> {
     let expr = expr.trim();
     for (var_name, value) in loop_vars.iter().rev() {
         if var_name == expr {
@@ -22,26 +22,33 @@ pub fn resolve_value(expr: &str, root: &JsonValue, loop_vars: &[(String, JsonVal
 }
 
 /// Access nested property via dot-notation path, supporting numeric array indices.
-pub fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
+///
+/// Walks the JSON tree via references, only cloning the final value. This avoids
+/// cloning the full subtree at the start (original approach) and at every
+/// intermediate step — only the leaf value is cloned once before returning.
+fn get_nested_property(value: &JsonValue, path: &str) -> Option<JsonValue> {
     let parts: Vec<&str> = path.split('.').collect();
-    let mut current = value.clone();
-    for part in parts {
+    let mut current: &JsonValue = value;
+    for (i, part) in parts.iter().enumerate() {
         current = match current {
-            JsonValue::Object(ref map) => {
-                map.get(part)?.clone()
-            }
+            JsonValue::Object(ref map) => map.get(*part)?,
             JsonValue::Array(ref arr) => {
-                if part == "length" {
-                    JsonValue::Number(arr.len() as f64)
-                } else {
-                    let idx: usize = part.parse().ok()?;
-                    arr.get(idx)?.clone()
+                if *part == "length" {
+                    // length synthesises a value — only valid as the final
+                    // segment. If more segments follow, the path is invalid.
+                    return if i == parts.len() - 1 {
+                        Some(JsonValue::Number(arr.len() as f64))
+                    } else {
+                        None
+                    };
                 }
+                let idx: usize = part.parse().ok()?;
+                arr.get(idx)?
             }
             _ => return None,
         };
     }
-    Some(current)
+    Some(current.clone())
 }
 
 #[cfg(test)]
@@ -119,6 +126,30 @@ mod tests {
     fn test_non_numeric_index_on_array() {
         let root = state(r#"{"items": ["a", "b"]}"#);
         assert_eq!(get_nested_property(&root, "items.foo"), None);
+    }
+
+    #[test]
+    fn test_array_length() {
+        let root = state(r#"{"items": [1, 2, 3]}"#);
+        assert_eq!(get_nested_property(&root, "items.length"), Some(JsonValue::Number(3.0)));
+    }
+
+    #[test]
+    fn test_empty_array_length() {
+        let root = state(r#"{"items": []}"#);
+        assert_eq!(get_nested_property(&root, "items.length"), Some(JsonValue::Number(0.0)));
+    }
+
+    #[test]
+    fn test_array_length_with_trailing_segment_returns_none() {
+        let root = state(r#"{"items": [1, 2]}"#);
+        assert_eq!(get_nested_property(&root, "items.length.foo"), None);
+    }
+
+    #[test]
+    fn test_nested_array_length() {
+        let root = state(r#"{"data": {"list": [10, 20, 30, 40]}}"#);
+        assert_eq!(get_nested_property(&root, "data.list.length"), Some(JsonValue::Number(4.0)));
     }
 
     // ── resolve_value with loop vars ──────────────────────────────────────────

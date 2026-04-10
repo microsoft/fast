@@ -15,9 +15,12 @@ impl JsonValue {
         match self {
             JsonValue::Null => false,
             JsonValue::Bool(b) => *b,
-            JsonValue::Number(n) => *n != 0.0,
+            // NaN is falsy in JavaScript; `n != 0.0` alone returns true for NaN
+            // because NaN is not equal to anything (including itself).
+            JsonValue::Number(n) => *n != 0.0 && !n.is_nan(),
             JsonValue::String(s) => !s.is_empty(),
-            JsonValue::Array(a) => !a.is_empty(),
+            // Arrays are always truthy in JavaScript, even empty ones.
+            JsonValue::Array(_) => true,
             JsonValue::Object(_) => true,
         }
     }
@@ -68,7 +71,7 @@ fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
     if input.is_empty() {
         return Err(JsonError { message: "Unexpected end of input".to_string() });
     }
-    match input.chars().next().unwrap() {
+    match input.chars().next().expect("input is non-empty; checked above") {
         '{' => parse_object(input),
         '[' => parse_array(input),
         '"' => {
@@ -76,22 +79,22 @@ fn parse_value(input: &str) -> Result<(JsonValue, &str), JsonError> {
             Ok((JsonValue::String(s), rest))
         }
         't' => {
-            if input.starts_with("true") {
-                Ok((JsonValue::Bool(true), &input[4..]))
+            if let Some(rest) = input.strip_prefix("true") {
+                Ok((JsonValue::Bool(true), rest))
             } else {
                 Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
             }
         }
         'f' => {
-            if input.starts_with("false") {
-                Ok((JsonValue::Bool(false), &input[5..]))
+            if let Some(rest) = input.strip_prefix("false") {
+                Ok((JsonValue::Bool(false), rest))
             } else {
                 Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
             }
         }
         'n' => {
-            if input.starts_with("null") {
-                Ok((JsonValue::Null, &input[4..]))
+            if let Some(rest) = input.strip_prefix("null") {
+                Ok((JsonValue::Null, rest))
             } else {
                 Err(JsonError { message: format!("Invalid token: {}", &input[..input.len().min(10)]) })
             }
@@ -200,8 +203,24 @@ fn parse_string(input: &str) -> Result<(String, &str), JsonError> {
                 i += 1;
             }
             b => {
-                s.push(b as char);
-                i += 1;
+                // For ASCII bytes, cast directly to char.
+                // For multi-byte UTF-8 sequences (first byte >= 0x80), decode the
+                // next character from the remaining bytes and advance by its actual
+                // UTF-8 length. This avoids inferring sequence width from lead-byte
+                // ranges that also include continuation or otherwise invalid bytes.
+                if b < 0x80 {
+                    s.push(b as char);
+                    i += 1;
+                } else {
+                    let remaining = std::str::from_utf8(&bytes[i..]).map_err(|_| JsonError {
+                        message: "Invalid UTF-8 sequence in string".to_string(),
+                    })?;
+                    let ch = remaining.chars().next().ok_or_else(|| JsonError {
+                        message: "Invalid UTF-8 sequence in string".to_string(),
+                    })?;
+                    s.push(ch);
+                    i += ch.len_utf8();
+                }
             }
         }
     }
@@ -276,6 +295,40 @@ mod tests {
     }
 
     #[test]
+    fn test_parse_string_with_emoji() {
+        // Multi-byte UTF-8: ⭐ is U+2B50 (3 bytes: 0xE2 0xAD 0x90).
+        // Casting each byte to char independently would produce â + control chars.
+        let v = parse(r#""⭐ SELECTED""#).unwrap();
+        if let JsonValue::String(s) = v {
+            assert_eq!(s, "⭐ SELECTED");
+        } else {
+            panic!("Expected string");
+        }
+    }
+
+    #[test]
+    fn test_parse_string_with_multibyte_chars() {
+        // 2-byte: é (U+00E9), 3-byte: ✓ (U+2713), 4-byte: 🎉 (U+1F389)
+        let v = parse(r#""café ✓ 🎉""#).unwrap();
+        if let JsonValue::String(s) = v {
+            assert_eq!(s, "café ✓ 🎉");
+        } else {
+            panic!("Expected string");
+        }
+    }
+
+    #[test]
+    fn test_parse_string_emoji_in_object() {
+        let v = parse(r#"{"label": "⭐ star", "emoji": "🎉"}"#).unwrap();
+        if let JsonValue::Object(map) = v {
+            assert_eq!(map["label"].to_display_string(), "⭐ star");
+            assert_eq!(map["emoji"].to_display_string(), "🎉");
+        } else {
+            panic!("Expected object");
+        }
+    }
+
+    #[test]
     fn test_parse_number() {
         let v = parse("3.14").unwrap();
         if let JsonValue::Number(n) = v {
@@ -294,5 +347,64 @@ mod tests {
     #[test]
     fn test_parse_null() {
         assert!(matches!(parse("null").unwrap(), JsonValue::Null));
+    }
+
+    // --- is_truthy tests (JavaScript semantics) ---
+
+    #[test]
+    fn test_is_truthy_null_is_false() {
+        assert!(!JsonValue::Null.is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_false_bool_is_false() {
+        assert!(!JsonValue::Bool(false).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_true_bool_is_true() {
+        assert!(JsonValue::Bool(true).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_zero_is_false() {
+        assert!(!JsonValue::Number(0.0).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nan_is_false() {
+        assert!(!JsonValue::Number(f64::NAN).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nonzero_number_is_true() {
+        assert!(JsonValue::Number(1.0).is_truthy());
+        assert!(JsonValue::Number(-1.0).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_empty_string_is_false() {
+        assert!(!JsonValue::String(String::new()).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nonempty_string_is_true() {
+        assert!(JsonValue::String("hello".to_string()).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_empty_array_is_true() {
+        // In JavaScript, [] is truthy even though it is empty.
+        assert!(JsonValue::Array(vec![]).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_nonempty_array_is_true() {
+        assert!(JsonValue::Array(vec![JsonValue::Null]).is_truthy());
+    }
+
+    #[test]
+    fn test_is_truthy_empty_object_is_true() {
+        assert!(JsonValue::Object(HashMap::new()).is_truthy());
     }
 }

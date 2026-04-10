@@ -15,7 +15,7 @@ test.describe("f-repeat event binding", async () => {
 
         // Dynamically populate items so the repeat renders buttons
         await customElement.evaluate((node: TestElementRepeatEvent) => {
-            node.items = [{ name: "Alpha" }, { name: "Beta" }];
+            node.repeatEventItems = [{ name: "Alpha" }, { name: "Beta" }];
         });
 
         await expect(buttons).toHaveCount(2);
@@ -26,10 +26,7 @@ test.describe("f-repeat event binding", async () => {
         // set on the host element.
         await buttons.nth(0).click();
 
-        await expect(customElement).toHaveJSProperty(
-            "clickedItemName",
-            "Alpha"
-        );
+        await expect(customElement).toHaveJSProperty("clickedItemName", "Alpha");
     });
 
     test("f-when with c.parent condition inside f-repeat", async ({ page }) => {

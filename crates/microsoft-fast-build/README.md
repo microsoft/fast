@@ -163,6 +163,17 @@ Operators can be chained — `&&` binds tighter than `||`, matching standard pre
 
 Right-hand operands can be string literals (`'foo'`), boolean literals (`true`/`false`), number literals (`42`), or other state references.
 
+When `value` is a bare reference (e.g. `{{items}}`), the value is coerced to a boolean using JavaScript semantics. Because the input state is JSON, users cannot provide `undefined` directly; however, missing state properties or unresolved paths behave like JavaScript `undefined` and are treated as falsy.
+
+| Type | Falsy | Truthy |
+|---|---|---|
+| `null` | always | — |
+| `boolean` | `false` | `true` |
+| `number` | `0`, `NaN` | any other |
+| `string` | `""` | any non-empty |
+| `array` | — | always (even `[]`) |
+| `object` | — | always (even `{}`) |
+
 ### Array Iteration — `<f-repeat>`
 
 ```html
@@ -197,13 +208,22 @@ Inside `<f-repeat>`, `{{item}}` resolves to the current loop variable and `{{$in
 </f-when>
 ```
 
-### Property Access and Array Indexing
+### Property Access, Array Indexing, and `.length`
 
-Dot-notation and numeric indices are both supported:
+Dot-notation, numeric indices, and the special `.length` property on arrays are all supported:
 
 ```html
 {{user.address.city}}
 {{list.0.name}}
+{{items.length}}
+```
+
+`{{items.length}}` resolves to the number of elements in the array. It can be used in both content bindings and `<f-when>` expressions:
+
+```html
+<f-when value="{{items.length > 0}}">
+  <p>{{items.length}} items found</p>
+</f-when>
 ```
 
 ---
@@ -229,6 +249,8 @@ locator.add_template("my-button", "<button>{{label}}</button>");
 ```
 
 Glob patterns support `*` (any characters within one path segment), `**` (any number of segments), and `?` (any single character).
+
+> **Note:** `Locator::from_patterns` walks the filesystem recursively up to 50 directory levels deep and skips symlinks. Symlinked directories are never followed, guarding against cycles in the directory tree.
 
 ### HTML File Format
 
@@ -273,41 +295,74 @@ let html = render_template_with_locator(
 )?;
 ```
 
-### Rendering entry HTML (root custom elements receive full state)
+### Rendering entry HTML (root custom elements)
 
-When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** and receive the complete root state rather than building their child state from HTML attributes.
+When rendering the top-level **entry HTML** of a page, use `render_entry_with_locator` or `render_entry_template_with_locator`. Custom elements found at this level are treated as **root elements** — their opening-tag `{{binding}}` attributes are resolved (primitives kept, non-primitives stripped) rather than forwarded verbatim.
 
-This mirrors the FAST runtime behaviour: root-level components access application state (e.g. via `$fastController.context`) rather than per-instance attribute state.
+All custom elements (root and nested) receive the full root state merged with their HTML attribute-derived state. Attribute-derived values take precedence over root state for overlapping keys. This gives every element access to the complete state tree without requiring explicit attribute bindings.
 
 ```rust
 use microsoft_fast_build::{render_entry_with_locator, render_entry_template_with_locator, Locator};
 
 let locator = Locator::from_patterns(&["./components/**/*.html"])?;
 
-// Root custom elements (my-header, my-app) receive the full root state.
-// Their templates can reference any key in the state JSON directly.
+// Root custom elements (my-header, my-app) receive the full root state merged with
+// any per-element attributes. Their templates can reference any key in the state JSON directly.
 let html = render_entry_template_with_locator(
-    r#"{{heading}}<my-header></my-header><my-app></my-app>"#,
+    r#"{{heading}}<my-header></my-header><my-app planet="earth"></my-app>"#,
     r#"{"heading": "Hello", "user": "Alice", "items": [{"name": "Item 1"}]}"#,
     &locator,
 )?;
 // my-header's template can use {{user}}, {{heading}}, etc. directly.
-// my-app's template can use {{items}}, etc. directly.
+// my-app's template can use {{items}}, {{planet}}, etc. directly.
 ```
 
-Nested custom elements inside shadow templates continue to use attribute-based child state — the distinction is:
+### State Propagation
 
-| Context | Child state source |
-|---|---|
-| Root element in entry HTML (via `render_entry_*`) | Full root state |
-| Nested element inside a shadow template | Attributes on the element tag |
-| Element inside `f-repeat` or `f-when` (at any level) | Attributes on the element tag |
+All custom elements — whether at the entry level or deeply nested — receive the current root state as a base for their child state. Per-element HTML attributes are overlaid on top, with attribute-derived values taking precedence over any matching root state keys.
+
+This means unbound state keys automatically propagate through the entire element tree. A child element can reference any state key from its ancestors without requiring explicit attribute bindings on every intermediate element:
 
 ```html
-<!-- Entry HTML — my-parent receives full root state -->
-<my-parent></my-parent>
+<!-- state.json: {"text": "Hello world"} -->
 
-<!-- my-parent's template — my-child receives attr-based state -->
+<!-- my-el's template -->
+<f-template name="my-el">
+    <template>
+        {{text}}
+        <my-child-el></my-child-el>
+    </template>
+</f-template>
+
+<!-- my-child-el's template — {{text}} resolves automatically from propagated state -->
+<f-template name="my-child-el">
+    <template>
+        {{text}}
+    </template>
+</f-template>
+```
+
+Both `my-el` and `my-child-el` render "Hello world" — the state propagates through the element tree without any explicit bindings.
+
+#### Attribute handling on root elements
+
+Root custom elements (rendered via `render_entry_*`) have their opening-tag `{{binding}}` attributes resolved in the rendered HTML output:
+
+- **Primitive bindings** (`string`, `number`, `boolean`) — resolved and rendered with the resolved value. e.g. `text="{{message}}"` → `text="Hello world"`.
+- **Non-primitive bindings** (`array`, `object`, `null`) — stripped from the HTML output (the state is still available in the element's template via state propagation).
+- **Static attributes** (no binding syntax) — passed through unchanged.
+
+| Context | Child state source | `{{binding}}` attrs in rendered HTML |
+|---|---|---|
+| Root element in entry HTML (via `render_entry_*`) | Root state merged with element's own attrs | Resolved — primitives kept, non-primitives stripped |
+| Nested element inside a shadow template | Parent state merged with element's own attrs | Rendered (resolved) |
+| Element inside `f-repeat` or `f-when` (at any level) | Parent state merged with element's own attrs | Rendered (resolved) |
+
+```html
+<!-- Entry HTML — my-parent gets root state + its own attrs; label="Hello" rendered, list stripped -->
+<my-parent label="{{title}}" list="{{items}}" planet="earth"></my-parent>
+
+<!-- my-parent's template — my-child inherits parent state + gets its own attrs overlaid -->
 <my-child label="{{heading}}" :items="{{items}}"></my-child>
 ```
 
@@ -335,9 +390,13 @@ Attributes on a custom element become the state passed to its template:
 
 **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
 
-**Attribute values are always strings** — except for boolean attributes (no value), which become `true`, and `{{binding}}` expressions, which resolve to whatever type the value holds in the parent state (string, number, boolean, array, or object). A literal string like `count="42"` yields `{"count": "42"}`; use `count="{{count}}"` with `count: 42` in state to get a number.
+**Attribute value coercion** — attribute values are resolved in this order:
+- No value (boolean attribute) → `true`
+- `"{{binding}}"` → resolved from parent state (any type: string, number, boolean, array, or object)
+- Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'`)
+- Anything else → `String` (e.g. `count="42"` yields `{"count": "42"}`; use `count="{{count}}"` to get a number)
 
-**Use `:prop="{{binding}}"` to pass arrays and objects without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. This is the recommended way to pass structured data to custom elements for use with `f-repeat` and similar directives.
+**Use `:prop="{{binding}}"` to pass arrays and objects from state without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. Alternatively, JSON array or object literals can be inlined directly as attribute values (e.g. `items='["a","b","c"]'`), which is useful when the data is static and does not come from parent state.
 
 **`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
 
@@ -455,3 +514,9 @@ missing state: '{{title}}' has no matching key in the provided state — templat
 unclosed binding '{{name': no closing '}}' found to end the expression — template: "Hello {{name"
 duplicate template: element '<my-button>' is defined in multiple files: ./a/my-button.html, ./b/my-button.html
 ```
+
+---
+
+## Numeric Precision
+
+The hand-rolled JSON parser stores all numbers as `f64`. This means integers larger than 2^53 (9,007,199,254,740,992) lose precision, as is the case with standard JavaScript `number` values. For typical use cases (IDs, counts, display values) this is not a concern. If your state contains very large integers, represent them as strings and bind with `{{expr}}` accordingly.

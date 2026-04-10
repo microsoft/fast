@@ -66,7 +66,9 @@ impl Locator {
                 let paths = entries.into_iter().map(|(p, _)| p).collect();
                 return Err(RenderError::DuplicateTemplate { element, paths });
             }
-            let (_, content) = entries.into_iter().next().unwrap();
+            let (_, content) = entries.into_iter().next().expect(
+                "expected exactly one entry for element; duplicates rejected above and entries are only created when a template is added",
+            );
             templates.insert(element, content);
         }
 
@@ -179,7 +181,7 @@ fn normalize_path(path: &str) -> String {
 /// Return the static directory prefix before the first wildcard in `pattern`.
 fn static_prefix_dir(pattern: &str) -> String {
     let first_wild = pattern.find(|c: char| c == '*' || c == '?');
-    let base = match first_wild {
+    match first_wild {
         None => match pattern.rfind('/') {
             Some(i) => pattern[..=i].to_string(),
             None => ".".to_string(),
@@ -191,17 +193,33 @@ fn static_prefix_dir(pattern: &str) -> String {
                 None => ".".to_string(),
             }
         }
-    };
-    base
+    }
 }
+
+/// Maximum directory depth walked by `walk_html_files`. This guards against
+/// accidental stack overflows on very deep directory trees and prevents infinite
+/// loops caused by symlink cycles.
+const MAX_DIR_DEPTH: usize = 50;
 
 /// Recursively walk `dir` and collect all `.html` files.
 fn walk_html_files(dir: &Path, result: &mut Vec<std::path::PathBuf>) -> std::io::Result<()> {
+    walk_html_files_inner(dir, result, 0)
+}
+
+fn walk_html_files_inner(dir: &Path, result: &mut Vec<std::path::PathBuf>, depth: usize) -> std::io::Result<()> {
+    if depth > MAX_DIR_DEPTH {
+        return Ok(());
+    }
     for entry in std::fs::read_dir(dir)? {
         let entry = entry?;
+        let file_type = entry.file_type()?;
         let path = entry.path();
-        if path.is_dir() {
-            walk_html_files(&path, result)?;
+        // Skip symlinks to avoid following cycles into previously-visited dirs.
+        if file_type.is_symlink() {
+            continue;
+        }
+        if file_type.is_dir() {
+            walk_html_files_inner(&path, result, depth + 1)?;
         } else if path.extension().and_then(|s| s.to_str()) == Some("html") {
             result.push(path);
         }

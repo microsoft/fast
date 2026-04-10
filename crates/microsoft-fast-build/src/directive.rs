@@ -1,6 +1,7 @@
 use crate::json::JsonValue;
 use crate::context::resolve_value;
 use crate::expression::evaluate;
+use crate::content::html_escape;
 use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
@@ -96,7 +97,7 @@ pub fn render_when(
         let start = hy.start_marker(idx, &name);
         let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = hy.child();
+            let mut child_scope = hy.child(idx);
             render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false)?
         } else {
             String::new()
@@ -250,46 +251,38 @@ pub fn render_custom_element(
         open_tag_content[..open_tag_content.len() - 1].to_string()
     };
 
-    // Build child state.
+    // Build the child state used to render this element's shadow template.
     //
-    // **Entry custom elements** — those marked with `is_entry` — receive the **full root
-    // state** as their child rendering state. This mirrors the runtime behaviour: entry
-    // elements receive state from the application (e.g. via `$fastController.context`)
-    // rather than from HTML attributes, so all top-level state keys are available directly
-    // in their templates.
+    // The child state always starts with the current root state as a base so
+    // all unbound state keys (e.g. `text`, `error`, `showProgress`) propagate
+    // through to every descendant custom element automatically. Per-element
+    // attributes (e.g. `planet="earth"`, boolean `show`) are then overlaid on
+    // top, overriding root state for any overlapping key.
     //
-    // All other custom elements (`is_entry == false`) receive state built from their HTML
-    // attributes as usual (`:prop` forwarded typed, regular attrs lowercased, `data-*`
-    // grouped). This includes elements rendered inside `f-when`/`f-repeat` bodies, even
-    // when they are not under a parent hydration scope.
+    // When the element has no state-relevant attributes, we skip cloning the
+    // root state entirely and pass it through by reference.
     //
-    // We avoid cloning `root` for the entry case by using an `Option` that is `None` for
-    // entry elements (falling back to `root` via `unwrap_or`) and `Some(owned)` for
-    // attribute-derived nested state.
-    let nested_child_state = if is_entry {
-        None
-    } else {
-        // Nested element: build child state from the element's HTML attributes.
-        // `data-*` attributes are stored using the full dot-notation path returned by
-        // `data_attr_to_dataset_key` (e.g. `"dataset.dateOfBirth"`), split on the first
-        // `.` to build a nested state object so `{{dataset.X}}` bindings resolve correctly.
-        let attrs = parse_element_attributes(open_tag_content);
-        let mut state_map = std::collections::HashMap::new();
-        for (attr_name, value) in &attrs {
-            // Skip @event handlers — they are client-side only and have no meaning in SSR state.
-            // Also skip f-ref, f-slotted, and f-children attribute directives — all are resolved
-            // entirely by the FAST client runtime.
+    // Attribute processing rules:
+    //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
+    //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
+    //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
+    //   - Anything else → lowercased key, string or resolved `JsonValue` as value
+    fn build_attr_state(
+        attrs: &[(String, Option<String>)],
+        root: &JsonValue,
+        loop_vars: &[(String, JsonValue)],
+        base: std::collections::HashMap<String, JsonValue>,
+    ) -> JsonValue {
+        let mut state_map = base;
+        for (attr_name, value) in attrs {
             if attr_name.starts_with('@')
+                || attr_name.starts_with('?')
                 || attr_name.eq_ignore_ascii_case("f-ref")
                 || attr_name.eq_ignore_ascii_case("f-slotted")
                 || attr_name.eq_ignore_ascii_case("f-children")
             {
                 continue;
             }
-            // :prop bindings are stripped from rendered HTML but their resolved value IS
-            // forwarded to the child element's rendering state. This lets structured data
-            // (arrays, objects) be passed to SSR templates without appearing as visible
-            // attributes in the rendered HTML.
             if let Some(prop_name) = attr_name.strip_prefix(':') {
                 let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
                 let key = prop_name.to_lowercase();
@@ -297,9 +290,6 @@ pub fn render_custom_element(
                 continue;
             }
             let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-            // HTML attribute names are case-insensitive; browsers always store them lowercase.
-            // `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id`
-            // stays `selected-user-id`.
             if let Some(path) = data_attr_to_dataset_key(attr_name) {
                 if let Some((group, prop)) = path.split_once('.') {
                     let group_val = state_map
@@ -314,9 +304,37 @@ pub fn render_custom_element(
                 state_map.insert(key, json_val);
             }
         }
-        Some(JsonValue::Object(state_map))
+        JsonValue::Object(state_map)
+    }
+
+    /// Returns true if any parsed attribute would contribute to child state.
+    fn has_state_relevant_attrs(attrs: &[(String, Option<String>)]) -> bool {
+        attrs.iter().any(|(name, _)| {
+            !name.starts_with('@')
+                && !name.starts_with('?')
+                && !name.eq_ignore_ascii_case("f-ref")
+                && !name.eq_ignore_ascii_case("f-slotted")
+                && !name.eq_ignore_ascii_case("f-children")
+        })
+    }
+
+    // Parse attributes once, then decide whether cloning is necessary.
+    // When the element has no state-relevant attributes, skip the HashMap
+    // clone and reuse `root` directly — avoids O(state-size) work per element
+    // in deep custom-element trees.
+    let attrs = parse_element_attributes(open_tag_content);
+    let child_root_owned;
+    let child_root: &JsonValue = if has_state_relevant_attrs(&attrs) {
+        let base = if let JsonValue::Object(ref root_map) = root {
+            root_map.clone()
+        } else {
+            std::collections::HashMap::new()
+        };
+        child_root_owned = build_attr_state(&attrs, root, loop_vars, base);
+        &child_root_owned
+    } else {
+        root
     };
-    let child_root = nested_child_state.as_ref().unwrap_or(root);
 
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
@@ -324,7 +342,7 @@ pub fn render_custom_element(
     let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
-    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration);
+    let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
 
     // Extract the light DOM children (for non-self-closing elements).
     let (children, after) = if is_self_closing {
@@ -345,22 +363,6 @@ pub fn render_custom_element(
     Ok((output, after))
 }
 
-fn kebab_to_camel(s: &str) -> String {
-    let mut result = String::new();
-    let mut capitalize_next = false;
-    for c in s.chars() {
-        if c == '-' {
-            capitalize_next = true;
-        } else if capitalize_next {
-            result.extend(c.to_uppercase());
-            capitalize_next = false;
-        } else {
-            result.push(c);
-        }
-    }
-    result
-}
-
 fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: &[(String, JsonValue)]) -> JsonValue {
     let v = match value {
         None => return JsonValue::Bool(true), // boolean attribute (no value)
@@ -369,6 +371,17 @@ fn attribute_to_json_value(value: Option<&String>, root: &JsonValue, loop_vars: 
     if v.starts_with("{{") && v.ends_with("}}") {
         let binding = v[2..v.len() - 2].trim();
         return resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+    }
+    // Try parsing JSON array or object literals passed as attribute values.
+    // Trim whitespace and check matching delimiters before invoking the parser.
+    let trimmed = v.trim();
+    let looks_like_json_literal =
+        (trimmed.starts_with('[') && trimmed.ends_with(']'))
+            || (trimmed.starts_with('{') && trimmed.ends_with('}'));
+    if looks_like_json_literal {
+        if let Ok(parsed) = crate::json::parse(trimmed) {
+            return parsed;
+        }
     }
     JsonValue::String(v.clone())
 }
@@ -379,7 +392,17 @@ fn build_element_open_tag(
     root: &JsonValue,
     loop_vars: &[(String, JsonValue)],
     parent_hydration: Option<&mut HydrationScope>,
+    is_entry: bool,
 ) -> String {
+    if is_entry {
+        // Entry-level root custom elements receive the full root state directly.
+        // Resolve {{binding}} attributes: keep primitives (string/number/bool) with
+        // their resolved value, strip non-primitives (array/object/null) since they
+        // cannot be meaningfully represented as an HTML attribute value.
+        // Static attributes (no binding) are passed through unchanged.
+        // No data-fe-c marker is needed — root elements have no parent hydration scope.
+        return build_entry_element_open_tag(open_tag_base, root, loop_vars);
+    }
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
     let total_attr = db + sb;
     if total_attr == 0 {
@@ -395,4 +418,59 @@ fn build_element_open_tag(
         }
         None => format!("{}>", stripped),
     }
+}
+
+/// Build the opening tag for an entry-level root custom element.
+///
+/// - Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are
+///   stripped first via `strip_client_only_attrs` to avoid duplicating the filter list.
+/// - `{{binding}}` attribute values are then resolved from root state:
+///   - `?attr="{{expr}}"` boolean bindings: evaluate `expr` as a boolean; emit the bare
+///     attribute name (without `?`) when truthy, omit it when falsy.
+///   - Primitives (`String`, `Number`, `Bool`) → rendered with the resolved value (HTML-escaped).
+///   - Non-primitives (`Array`, `Object`, `Null`) → stripped.
+/// - Static attributes (no binding syntax) are passed through unchanged.
+fn build_entry_element_open_tag(
+    open_tag_base: &str,
+    root: &JsonValue,
+    loop_vars: &[(String, JsonValue)],
+) -> String {
+    let stripped_base = strip_client_only_attrs(open_tag_base);
+    let tag_name = match read_tag_name(&stripped_base, 0) {
+        Some(name) => name,
+        None => return format!("{}>", stripped_base),
+    };
+
+    let mut out = format!("<{}", tag_name);
+    for (name, value) in parse_element_attributes(&stripped_base) {
+        match value {
+            None => {
+                out.push(' ');
+                out.push_str(&name);
+            }
+            Some(ref v) if v.trim().starts_with("{{") && v.trim().ends_with("}}") && v.trim().len() > 4 => {
+                let binding = v.trim()[2..v.trim().len() - 2].trim();
+                if name.starts_with('?') {
+                    // ?attr="{{expr}}" — boolean binding: emit bare attr name when truthy
+                    if evaluate(binding, root, loop_vars) {
+                        out.push(' ');
+                        out.push_str(&name[1..]);
+                    }
+                } else {
+                    let resolved = resolve_value(binding, root, loop_vars).unwrap_or(JsonValue::Null);
+                    match resolved {
+                        JsonValue::String(s) => out.push_str(&format!(" {}=\"{}\"", name, html_escape(&s))),
+                        JsonValue::Number(n) => out.push_str(&format!(" {}=\"{}\"", name, n)),
+                        JsonValue::Bool(b) => out.push_str(&format!(" {}=\"{}\"", name, b)),
+                        _ => {} // Array, Object, Null — strip
+                    }
+                }
+            }
+            Some(v) => {
+                out.push_str(&format!(" {}=\"{}\"", name, v));
+            }
+        }
+    }
+    out.push('>');
+    out
 }
