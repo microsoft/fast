@@ -78,7 +78,7 @@ npm run test:chromium
 To run tests only for packages changed since the `main` branch:
 
 ```bash
-lage test:node test:rules test:chromium --since origin/main
+lage test:node test:chromium --since origin/main
 ```
 
 This command can also be run from within individual package folders to execute only tests from that package.

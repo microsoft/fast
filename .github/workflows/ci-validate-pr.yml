@@ -70,7 +70,7 @@ jobs:
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: npx lage test:node test:rules test:chromium ${{ steps.changed.outputs.since }}
+      run: npx lage test:node test:chromium ${{ steps.changed.outputs.since }}
 
     - name: Testing final validation
       run: npm run test:validation

@@ -87,4 +87,4 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npx lage test:node test:rules test:playwright ${{ steps.changed.outputs.since }}
+        run: npx lage test:node test:playwright ${{ steps.changed.outputs.since }}

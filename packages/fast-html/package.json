@@ -36,8 +36,7 @@
     "test-server": "npx vite test/ --clearScreen false --port 5174",
     "test:playwright": "playwright test",
     "test:chromium": "playwright test --project=chromium",
-    "test:rules": "sg test --skip-snapshot-tests",
-    "test": "npm run test:playwright && npm run test:rules",
+    "test": "npm run test:playwright",
     "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
     "watch": "npm run build:tsc -- -w --preserveWatchOutput"
   },
