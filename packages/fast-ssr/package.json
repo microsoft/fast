@@ -29,6 +29,7 @@
     "test": "npm run test:node && npm run test:playwright",
     "test:node": "node scripts/run-tests.mjs",
     "test:playwright": "npm run pretest && playwright test",
+    "test:chromium": "npm run pretest && playwright test --project=chromium",
     "test-server": "node server/dist/server.js"
   },
   "deprecated": "This package is deprecated. Please use @microsoft/fast-build and @microsoft/webui instead.",

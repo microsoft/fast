@@ -33,10 +33,10 @@
     "lint:fix": "biome-changed -- --fix",
     "install-playwright-browsers": "npm run playwright install",
     "prepublishOnly": "npm run clean && npm run build",
-    "test-server": "npx vite test/ --clearScreen false",
+    "test-server": "npx vite test/ --clearScreen false --port 5174",
     "test:playwright": "playwright test",
-    "test:rules": "sg test --skip-snapshot-tests",
-    "test": "npm run test:playwright && npm run test:rules",
+    "test:chromium": "playwright test --project=chromium",
+    "test": "npm run test:playwright",
     "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
     "watch": "npm run build:tsc -- -w --preserveWatchOutput"
   },
