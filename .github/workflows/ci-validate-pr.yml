@@ -52,14 +52,14 @@ jobs:
       run: cargo install wasm-pack
 
     - name: Build workspaces
-      run: npm run build
+      run: npx lage build ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }}
 
     - name: Install playwright dependencies and browsers
       run: |
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: npm run test:chromium
+      run: npx lage test:node test:chromium ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }}
 
     - name: Testing final validation
       run: npm run test:validation
