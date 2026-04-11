@@ -51,26 +51,15 @@ jobs:
     - name: Install wasm-pack
       run: cargo install wasm-pack
 
-    - name: Detect changed scope
-      id: changed
-      if: ${{ github.event_name == 'pull_request' }}
-      run: |
-        CRATE_CHANGED=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...HEAD -- crates/ | head -1)
-        if [ -n "$CRATE_CHANGED" ]; then
-          echo "since=" >> "$GITHUB_OUTPUT"
-        else
-          echo "since=--since origin/${{ github.event.pull_request.base.ref }}" >> "$GITHUB_OUTPUT"
-        fi
-
     - name: Build workspaces
-      run: npx lage build ${{ steps.changed.outputs.since }}
+      run: npx lage build ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }}
 
     - name: Install playwright dependencies and browsers
       run: |
         npx playwright install --with-deps
 
     - name: Testing unit tests
-      run: npx lage test:node test:chromium ${{ steps.changed.outputs.since }}
+      run: npx lage test:node test:chromium ${{ github.event_name == 'pull_request' && format('--since origin/{0}', github.event.pull_request.base.ref) || '' }}
 
     - name: Testing final validation
       run: npm run test:validation
