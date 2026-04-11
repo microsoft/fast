@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sat, 11 Apr 2026 00:05:48 GMT",
+      "version": "1.0.0-alpha.46",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.46",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ebd20dcd8c53f8c00b790664b3088c785ce9069c",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build deep-merge fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "78a1e459fee644888e276c7b3124c01a1c5062ee",
+            "comment": "Clean up fixture entry.html files by removing redundant attribute bindings"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "51a53db73505dc8f2aa282d38c30c5fdfd99f224",
+            "comment": "chore(fast-html): use @microsoft/fast-build to build observer-map fixture"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 10 Apr 2026 00:21:15 GMT",
       "version": "1.0.0-alpha.46",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.46",
