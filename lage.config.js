@@ -17,10 +17,6 @@ module.exports = {
             dependsOn: ["build"],
             outputs: [],
         },
-        "test:rules": {
-            dependsOn: ["build"],
-            outputs: [],
-        },
     },
     cacheOptions: {
         outputGlob: ["dist/**", "wasm/**"],

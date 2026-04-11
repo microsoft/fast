@@ -59,7 +59,7 @@ Run all commands from the monorepo root. Use workspace flags to target a single 
 | Test one package | `npm run test -w @microsoft/fast-element` |
 | Test Chromium only | `npm run test:chromium` |
 | Build/test changed only | `lage build --since origin/main` |
-| Test changed only | `lage test:node test:rules test:chromium --since origin/main` |
+| Test changed only | `lage test:node test:chromium --since origin/main` |
 | Lint | `npm run lint` |
 | Lint fix | `npm run lint:fix` |
 | Format check | `npm run format:check` |
