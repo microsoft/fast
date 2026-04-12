@@ -1,8 +1,14 @@
-# @microsoft/fast-test-harness
+# FAST Test Harness
 
-Playwright testing harness for FAST Element web components with CSR and SSR support.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-```bash
+The `fast-test-harness` package is a Playwright testing harness for FAST Element web components with CSR and SSR support.
+
+## Installation
+
+To install `fast-test-harness` using `npm`:
+
+```shell
 npm install --save-dev @microsoft/fast-test-harness
 ```
 
