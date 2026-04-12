@@ -207,15 +207,12 @@ await startServer(process.cwd(), "./test", "./test/vite.config.ts");
 
 **`resolveAssetUrl(specifier, root?)`** resolves a specifier to a server-relative URL path for use in `<link>` tags.
 
-**`createWasmRenderer(options?)`** creates an optional renderer backed by `@microsoft/fast-build`'s WASM module. Returns `null` if `fast-build` is not installed.
-
 ## Exports
 
 | Specifier | Contents |
 |-----------|----------|
-| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `readAsset`, `resolveAssetUrl`, `renderFixture`, `renderTemplate`, `createWasmRenderer` |
+| `@microsoft/fast-test-harness` | `test`, `expect`, `CSRFixture`, `SSRFixture`, `readAsset`, `resolveAssetUrl`, `renderFixture`, `renderTemplate` |
 | `@microsoft/fast-test-harness/server.mjs` | `startServer`, `app` |
 | `@microsoft/fast-test-harness/ssr/render.js` | `renderFixture`, `renderTemplate`, `renderPreloadLinks` |
 | `@microsoft/fast-test-harness/ssr/assets.js` | `readAsset`, `resolveAssetUrl` |
-| `@microsoft/fast-test-harness/ssr/wasm-renderer.js` | `createWasmRenderer` |
 | `@microsoft/fast-test-harness/public/*` | Static assets (base CSS) |
