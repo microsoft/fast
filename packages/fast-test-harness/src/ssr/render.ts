@@ -19,8 +19,8 @@ function processDsdTemplate(
     templateValues: Record<string, unknown> = {},
 ): string {
     let processed = dsd.replace(
-        /(\s?)(\??)([a-zA-Z0-9-]+)="{{([a-zA-Z0-9]+)}}"/g,
-        (match, space, isBoolean, attrName, varName) => {
+        /(\s?)(\??)([a-zA-Z][\w-]*)=(['"]?){{([a-zA-Z0-9]+)}}\4/g,
+        (match, space, isBoolean, attrName, quote, varName) => {
             const value = templateValues[varName];
 
             if (value === undefined) {
@@ -31,7 +31,7 @@ function processDsdTemplate(
                 return value ? `${space}${attrName}` : "";
             }
 
-            return `${space}${attrName}="${value}"`;
+            return `${space}${attrName}=${quote}${value}${quote}`;
         },
     );
 
