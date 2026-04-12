@@ -60,6 +60,11 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
 
             const filename = `ssr-${req.body.testId}.html`;
             const filePath = resolve(tempDir, filename);
+
+            if (!filePath.startsWith(tempDir)) {
+                throw new Error("Invalid testId");
+            }
+
             const url = `/${filename}`;
 
             if (pendingGenerations.has(filename)) {
@@ -108,12 +113,15 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
         } catch (e) {
             vite?.ssrFixStacktrace?.(e);
             console.log(e.stack);
-            res.status(500).end(e.stack);
+            res.status(500).end("Internal Server Error");
         }
     });
 
     app.use(express.static(tempDir));
 
+    // This server is a Playwright test harness, not a production service.
+    // It only serves localhost during test runs (local and CI). Rate limiting
+    // is unnecessary.
     app.use("*all", async (req, res, next) => {
         // Only serve the HTML shell for navigation requests, not for
         // module/asset requests that Vite's middleware didn't handle.
@@ -131,7 +139,7 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
         } catch (e) {
             vite?.ssrFixStacktrace?.(e);
             console.log(e.stack);
-            res.status(500).end(e.stack);
+            res.status(500).end("Internal Server Error");
         }
     });
 
