@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "declarationMap": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "ES2022",
+        "useDefineForClassFields": false
+    }
+}
