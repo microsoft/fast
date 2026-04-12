@@ -1,5 +1,5 @@
 import fs from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { dirname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
 
@@ -18,6 +18,7 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
     const tempDir = resolve(root, "temp");
     await fs.rm(tempDir, { recursive: true, force: true });
     await fs.mkdir(tempDir, { recursive: true });
+    const realTempDir = await fs.realpath(tempDir);
 
     const pendingGenerations = new Map();
 
@@ -59,9 +60,9 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
             }
 
             const filename = `ssr-${req.body.testId}.html`;
-            const filePath = resolve(tempDir, filename);
+            const filePath = resolve(realTempDir, filename);
 
-            if (!filePath.startsWith(tempDir)) {
+            if (!filePath.startsWith(realTempDir + sep)) {
                 throw new Error("Invalid testId");
             }
 
