@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,6 +21,8 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
     const realTempDir = await fs.realpath(tempDir);
 
     const pendingGenerations = new Map();
+    let cachedIndexHtml = null;
+    const fixtureCache = new Map();
 
     const { createServer } = await import("vite");
 
@@ -61,8 +62,7 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
             }
 
             const testId = req.body.testId;
-            const hash = createHash("sha1").update(testId).digest("hex").slice(0, 8);
-            const filename = `ssr-${hash}.html`;
+            const filename = `ssr-${testId}.html`;
             const filePath = resolve(realTempDir, filename);
 
             const url = `/${filename}`;
@@ -99,6 +99,9 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
                         () => `${preloadLinks ?? ""}${styleTags}`,
                     );
 
+                fixtureCache.set(url, html);
+
+                // Write to disk for debugging; served from cache above.
                 await fs.writeFile(filePath, html, "utf-8");
             })();
 
@@ -117,7 +120,15 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
         }
     });
 
-    app.use(express.static(tempDir));
+    // Serve SSR fixtures from cache without hitting the filesystem.
+    app.get("/ssr-:id.html", (req, res, next) => {
+        const url = req.path;
+        const cached = fixtureCache.get(url);
+        if (cached) {
+            return res.status(200).set({ "Content-Type": "text/html" }).send(cached);
+        }
+        next();
+    });
 
     // This server is a Playwright test harness, not a production service.
     // It only serves localhost during test runs (local and CI). Rate limiting
@@ -133,9 +144,12 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
         try {
             const url = req.originalUrl.replace(base, "");
 
-            const indexHtml = await fs.readFile(indexPath, "utf-8");
-            const index = await vite.transformIndexHtml(url, indexHtml);
-            res.status(200).set({ "Content-Type": "text/html" }).send(index);
+            if (!cachedIndexHtml) {
+                const indexFile = await fs.readFile(indexPath, "utf-8");
+                cachedIndexHtml = await vite.transformIndexHtml(url, indexFile);
+            }
+
+            res.status(200).set({ "Content-Type": "text/html" }).send(cachedIndexHtml);
         } catch (e) {
             vite?.ssrFixStacktrace?.(e);
             console.log(e.stack);
