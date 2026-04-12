@@ -1,5 +1,6 @@
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
-import { dirname, resolve, sep } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
 
@@ -59,12 +60,10 @@ export async function startServer(cwd = process.cwd(), root, configFile) {
                 req.body.styles = JSON.parse(req.body.styles);
             }
 
-            const filename = `ssr-${req.body.testId}.html`;
+            const testId = req.body.testId;
+            const hash = createHash("sha1").update(testId).digest("hex").slice(0, 8);
+            const filename = `ssr-${hash}.html`;
             const filePath = resolve(realTempDir, filename);
-
-            if (!filePath.startsWith(realTempDir + sep)) {
-                throw new Error("Invalid testId");
-            }
 
             const url = `/${filename}`;
 
