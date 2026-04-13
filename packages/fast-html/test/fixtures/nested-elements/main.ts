@@ -9,22 +9,19 @@ const mockDataSources = {
     getListData(listId: string) {
         const dataSets: Record<
             string,
-            { title: string; items: Array<{ text: string }>; category: string }
+            { title: string; items: Array<{ text: string }> }
         > = {
             "list-1": {
                 title: "My Items",
                 items: [{ text: "Item 1" }, { text: "Item 2" }, { text: "Item 3" }],
-                category: "General",
             },
             "list-2": {
                 title: "Empty List",
                 items: [],
-                category: "General",
             },
             "list-3": {
                 title: "Single Item",
                 items: [{ text: "Only Item" }],
-                category: "General",
             },
         };
         return dataSets[listId] || { title: "Unknown List", items: [] };
@@ -74,7 +71,6 @@ export class ItemList extends RenderableElement {
         // Set data from fresh source - should match pre-rendered content exactly
         this.title = data.title;
         this.items = data.items;
-        this.category = data.category;
 
         // Simulate slight delay for data loading
         await new Promise(resolve => setTimeout(resolve, 50));
