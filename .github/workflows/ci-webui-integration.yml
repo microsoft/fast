@@ -1,0 +1,56 @@
+name: WebUI Integration Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+    - releases/*
+  pull_request:
+    branches:
+    - main
+    - releases/*
+    - features/*
+
+permissions:
+  contents: read
+
+jobs:
+  webui_integration:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 22
+
+    - name: Cache npm modules
+      uses: actions/cache@v4
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install package dependencies
+      run: npm ci
+
+    - name: Install wasm-pack
+      run: cargo install wasm-pack
+
+    - name: Build workspaces
+      run: npm run build
+
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+
+    - name: Run WebUI integration tests
+      run: npm run test:webui-integration -w @microsoft/fast-html
