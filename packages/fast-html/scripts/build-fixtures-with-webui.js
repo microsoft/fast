@@ -1,19 +1,27 @@
 #!/usr/bin/env node
 
 /**
- * WebUI Integration Test for FAST HTML Fixtures
+ * Build FAST HTML fixtures with @microsoft/webui.
  *
- * Validates that @microsoft/webui can build and render the same declarative
- * HTML fixtures used by @microsoft/fast-build. For each fixture directory,
- * this script:
+ * For each fixture directory this script:
  *   1. Extracts <f-template> components from templates.html into individual
  *      component files (webui uses filename-based component discovery).
  *   2. Builds the fixture with `webui build --plugin=fast`.
  *   3. Renders the compiled protocol with the fixture's state.json.
- *   4. Validates the rendered HTML for expected structure and content.
+ *   4. Writes the rendered index.html into temp/integrations/webui/fixtures/
+ *      alongside a copy of main.ts and any extra assets so that Playwright
+ *      tests can run against the webui-rendered output via Vite.
  */
 
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+    copyFileSync,
+    existsSync,
+    mkdirSync,
+    readdirSync,
+    readFileSync,
+    rmSync,
+    writeFileSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build, render } from "@microsoft/webui";
@@ -22,31 +30,39 @@ import { discoverFixtures, extractFTemplates } from "./build-fixtures.utilities.
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixturesDir = resolve(__dirname, "../test/fixtures");
 const fixtures = discoverFixtures(fixturesDir);
+const outBase = resolve(__dirname, "../temp/integrations/webui/fixtures");
+
+// Files produced by the build or only needed for the build step.
+const buildOnlyFiles = new Set([
+    "entry.html",
+    "templates.html",
+    "state.json",
+    "index.html",
+]);
 
 /**
- * Prepare a temporary build directory for a fixture by extracting
- * component templates into individual HTML files and copying the entry.
+ * Build a single fixture with webui and write the rendered output plus
+ * supporting files into the output directory.
  */
-function prepareFixtureBuildDir(fixtureName, tmpBase) {
+function buildFixture(fixtureName) {
     const fixtureDir = join(fixturesDir, fixtureName);
-    const buildDir = join(tmpBase, fixtureName);
-    const outDir = join(buildDir, "out");
+    const buildDir = join(outBase, ".build", fixtureName);
+    const buildOutDir = join(buildDir, "out");
+    const fixtureOutDir = join(outBase, fixtureName);
 
     mkdirSync(buildDir, { recursive: true });
-    mkdirSync(outDir, { recursive: true });
+    mkdirSync(buildOutDir, { recursive: true });
+    mkdirSync(fixtureOutDir, { recursive: true });
 
-    // Read templates.html and extract individual component files
-    const templatesPath = join(fixtureDir, "templates.html");
-    const templatesHtml = readFileSync(templatesPath, "utf8");
+    // Extract individual component HTML files for webui discovery
+    const templatesHtml = readFileSync(join(fixtureDir, "templates.html"), "utf8");
     const templates = extractFTemplates(templatesHtml);
 
     for (const { name, content } of templates) {
         writeFileSync(join(buildDir, `${name}.html`), content);
     }
 
-    // Copy entry.html, removing script lines (not needed for SSR build).
-    // Uses line filtering instead of regex replacement to avoid
-    // incomplete multi-character sanitization issues.
+    // Prepare entry.html without script tags for webui build
     const entryHtml = readFileSync(join(fixtureDir, "entry.html"), "utf8");
     const cleanedEntry = entryHtml
         .split("\n")
@@ -54,148 +70,59 @@ function prepareFixtureBuildDir(fixtureName, tmpBase) {
         .join("\n");
     writeFileSync(join(buildDir, "entry.html"), cleanedEntry);
 
-    // Read state.json
-    const state = JSON.parse(readFileSync(join(fixtureDir, "state.json"), "utf8"));
-
-    return { buildDir, outDir, state, componentCount: templates.length };
-}
-
-/**
- * Validate the rendered HTML output for basic structural correctness.
- * Returns an array of error messages (empty if valid).
- */
-function validateOutput(html) {
-    const errors = [];
-
-    if (!html || html.length === 0) {
-        errors.push("Rendered output is empty");
-        return errors;
-    }
-
-    if (!html.includes("<html")) {
-        errors.push("Missing <html> element");
-    }
-
-    if (!html.includes("<body")) {
-        errors.push("Missing <body> element");
-    }
-
-    // Every fixture should produce at least one component with
-    // declarative shadow DOM
-    if (!html.includes('shadowrootmode="open"')) {
-        errors.push("Missing declarative shadow DOM (shadowrootmode)");
-    }
-
-    // webui with --plugin=fast should inject <f-template> elements
-    // for client-side hydration
-    if (!html.includes("<f-template")) {
-        errors.push("Missing <f-template> declarations for hydration");
-    }
-
-    // Check for webui state injection
-    if (!html.includes("__webui_state")) {
-        errors.push("Missing __webui_state script injection");
-    }
-
-    return errors;
-}
-
-function runFixture(fixtureName, tmpBase) {
-    const { buildDir, outDir, state, componentCount } = prepareFixtureBuildDir(
-        fixtureName,
-        tmpBase,
-    );
-
-    // Build with webui
+    // Build protocol
     const buildResult = build({
         appDir: buildDir,
         entry: "entry.html",
         plugin: "fast",
-        outDir,
+        outDir: buildOutDir,
     });
 
     if (!buildResult.protocol || buildResult.protocol.length === 0) {
-        return {
-            name: fixtureName,
-            pass: false,
-            errors: ["Build produced empty protocol"],
-        };
+        throw new Error(`Build produced empty protocol for "${fixtureName}"`);
     }
 
     // Render with state
-    const html = render(buildResult.protocol, state, {
+    const state = JSON.parse(readFileSync(join(fixtureDir, "state.json"), "utf8"));
+    let html = render(buildResult.protocol, state, {
         plugin: "fast",
         entry: "entry.html",
     });
 
-    // Validate
-    const errors = validateOutput(html);
+    // Inject <script type="module" src="./main.ts"> before </body>
+    html = html.replace(
+        "</body>",
+        '<script type="module" src="./main.ts"></script>\n</body>',
+    );
 
-    return {
-        name: fixtureName,
-        pass: errors.length === 0,
-        errors,
-        stats: {
-            components: componentCount,
-            fragments: buildResult.stats.fragmentCount,
-            protocolBytes: buildResult.stats.protocolSizeBytes,
-            outputChars: html.length,
-        },
-    };
+    writeFileSync(join(fixtureOutDir, "index.html"), html);
+
+    // Copy main.ts and any extra assets (CSS, SVG, etc.) from the
+    // original fixture directory so Vite can serve them.
+    for (const entry of readdirSync(fixtureDir)) {
+        if (buildOnlyFiles.has(entry) || entry.endsWith(".spec.ts")) {
+            continue;
+        }
+        copyFileSync(join(fixtureDir, entry), join(fixtureOutDir, entry));
+    }
+
+    process.stdout.write(`Fixture "${fixtureName}" built successfully.\n`);
 }
 
 function main() {
-    const tmpBase = join(__dirname, "../temp/integrations/webui");
-
-    // Clean up any previous run
-    if (existsSync(tmpBase)) {
-        rmSync(tmpBase, { recursive: true });
+    // Clean previous build output
+    if (existsSync(outBase)) {
+        rmSync(outBase, { recursive: true });
     }
-
-    console.log("WebUI Integration Tests for FAST HTML Fixtures");
-    console.log("=".repeat(50));
-    console.log();
-
-    const results = [];
-    let passed = 0;
-    let failed = 0;
 
     for (const fixtureName of fixtures) {
-        try {
-            const result = runFixture(fixtureName, tmpBase);
-            results.push(result);
-
-            if (result.pass) {
-                passed++;
-                console.log(
-                    `  ✔ ${fixtureName} (${result.stats.components} components, ${result.stats.fragments} fragments)`,
-                );
-            } else {
-                failed++;
-                console.log(`  ✘ ${fixtureName}`);
-                for (const err of result.errors) {
-                    console.log(`    → ${err}`);
-                }
-            }
-        } catch (err) {
-            failed++;
-            results.push({ name: fixtureName, pass: false, errors: [err.message] });
-            console.log(`  ✘ ${fixtureName}`);
-            console.log(`    → ${err.message}`);
-        }
+        buildFixture(fixtureName);
     }
 
-    // Clean up temp directory
-    if (existsSync(tmpBase)) {
-        rmSync(tmpBase, { recursive: true });
-    }
-
-    console.log();
-    console.log("-".repeat(50));
-    console.log(`Results: ${passed} passed, ${failed} failed, ${results.length} total`);
-
-    if (failed > 0) {
-        process.exit(1);
+    // Clean up intermediate build directory
+    const buildTmp = join(outBase, ".build");
+    if (existsSync(buildTmp)) {
+        rmSync(buildTmp, { recursive: true });
     }
 }
 
