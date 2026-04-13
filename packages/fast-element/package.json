@@ -114,6 +114,7 @@
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
     "test:playwright": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
     "test-server": "npx vite test/ --clearScreen false",
     "test": "npm run lint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright",
     "test:ci": "npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
