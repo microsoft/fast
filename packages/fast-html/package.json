@@ -36,7 +36,7 @@
     "test-server": "npx vite test/ --clearScreen false",
     "test:playwright": "playwright test",
     "test:rules": "sg test --skip-snapshot-tests",
-    "test:webui-integration": "node scripts/webui-integration-test.mjs",
+    "test:webui-integration": "node scripts/build-fixtures-with-webui.mjs",
     "test": "npm run test:playwright && npm run test:rules",
     "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
     "watch": "npm run build:tsc -- -w --preserveWatchOutput"
