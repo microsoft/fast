@@ -1,32 +1,27 @@
 #!/usr/bin/env node
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Builds test fixtures using @microsoft/fast-build. Add fixture names here
-// incrementally as each one is verified to work with the fast-build CLI.
-const fixtures = [
-    "attribute",
-    "binding",
-    "deep-merge",
-    "event",
-    "ref",
-    "slotted",
-    "when",
-    "repeat",
-    "repeat-event",
-    "children",
-    "host-bindings",
-    "lifecycle-callbacks",
-    "dot-syntax",
-    "nested-elements",
-    "performance-metrics",
-    "observer-map",
-];
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const fixturesDir = resolve(__dirname, "../test/fixtures");
+
+// Auto-discover fixture directories that contain the required files.
+const fixtures = readdirSync(fixturesDir, { withFileTypes: true })
+    .filter(entry => {
+        if (!entry.isDirectory()) return false;
+        const dir = join(fixturesDir, entry.name);
+        return (
+            existsSync(join(dir, "entry.html")) &&
+            existsSync(join(dir, "templates.html")) &&
+            existsSync(join(dir, "state.json"))
+        );
+    })
+    .map(entry => entry.name)
+    .sort();
+
 const require = createRequire(import.meta.url);
 const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
