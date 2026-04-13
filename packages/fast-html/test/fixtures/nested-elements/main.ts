@@ -111,6 +111,11 @@ export class Item extends RenderableElement {
     }
 }
 
+export class GrandChildItem extends RenderableElement {
+    @attr
+    public category!: string;
+}
+
 RenderableFASTElement(ItemList).defineAsync({
     name: "parent-element",
     templateOptions: "defer-and-hydrate",
@@ -121,6 +126,11 @@ RenderableFASTElement(Item).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+RenderableFASTElement(GrandChildItem).defineAsync({
+    name: "grand-child-element",
+    templateOptions: "defer-and-hydrate",
+});
+
 (window as any).messages = [];
 
 TemplateElement.options({
@@ -128,6 +138,9 @@ TemplateElement.options({
         observerMap: "all",
     },
     "child-element": {
+        observerMap: "all",
+    },
+    "grand-child-element": {
         observerMap: "all",
     },
 })

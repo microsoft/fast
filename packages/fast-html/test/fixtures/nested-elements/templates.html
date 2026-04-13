@@ -1,8 +1,16 @@
+<f-template name="grand-child-element">
+    <template>
+        <span class="category">{{category}}</span>
+    </template>
+</f-template>
 <f-template name="child-element">
     <template>
         <div class="item">
             <span class="index">{{idx}}</span>
             <span class="text">{{text}}</span>
+            <grand-child-element
+                category="{{category}}"
+            ></grand-child-element>
         </div>
     </template>
 </f-template>
@@ -10,7 +18,6 @@
     <template>
         <div class="list-container">
             <h2>{{title}}</h2>
-            <p class="category">{{category}}</p>
             <div class="items">
                 <f-repeat value="{{item in items}}" positioning="true">
                     <child-element

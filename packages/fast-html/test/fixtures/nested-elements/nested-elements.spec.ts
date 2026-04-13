@@ -37,11 +37,7 @@ test.describe("Nested Elements Hydration", () => {
 
         const parentElements = page.locator("parent-element");
         const firstParent = parentElements.nth(0);
-        const categoryLabel = firstParent.locator(".category");
         const childElements = firstParent.locator("child-element");
-
-        // Category is rendered in the parent template above the repeated list
-        await expect(categoryLabel).toHaveText("General");
 
         const childCount = await childElements.count();
         expect(childCount).toBeGreaterThan(0);
@@ -51,16 +47,26 @@ test.describe("Nested Elements Hydration", () => {
             await expect(childElements.nth(i)).toHaveAttribute("category", "General");
         }
 
+        // Grand-child-element renders the category passed from parent → child → grand-child
+        const grandChildren = firstParent.locator("grand-child-element");
+        for (let i = 0; i < childCount; i++) {
+            const categoryText = grandChildren.nth(i).locator(".category");
+            await expect(categoryText).toHaveText("General");
+        }
+
         await firstParent.evaluate((node: ItemList) => {
             node.category = "Updated";
         });
 
-        // Parent template updates
-        await expect(categoryLabel).toHaveText("Updated");
-
         // Child attributes propagate the updated value
         for (let i = 0; i < childCount; i++) {
             await expect(childElements.nth(i)).toHaveAttribute("category", "Updated");
+        }
+
+        // Grand-child-element renders the updated category
+        for (let i = 0; i < childCount; i++) {
+            const categoryText = grandChildren.nth(i).locator(".category");
+            await expect(categoryText).toHaveText("Updated");
         }
     });
 });
