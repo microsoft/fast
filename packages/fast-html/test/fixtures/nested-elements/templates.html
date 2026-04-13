@@ -3,6 +3,7 @@
         <div class="item">
             <span class="index">{{idx}}</span>
             <span class="text">{{text}}</span>
+            <span class="category">{{category}}</span>
         </div>
     </template>
 </f-template>
@@ -15,6 +16,7 @@
                     <child-element
                         text="{{item.text}}"
                         idx="{{$index}}"
+                        category="{{category}}"
                     ></child-element>
                 </f-repeat>
             </div>

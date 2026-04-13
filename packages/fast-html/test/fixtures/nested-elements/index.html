@@ -6,40 +6,44 @@
         <title>Nested Elements Hydration Tests</title>
     </head>
     <body>
-        <parent-element><template shadowrootmode="open" shadowroot="open"><div class="list-container">
+        <parent-element category="General"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
             <h2><!--fe-b$$start$$0$$title-0$$fe-b-->My Items<!--fe-b$$end$$0$$title-0$$fe-b--></h2>
             <div class="items">
                 <!--fe-b$$start$$1$$repeat-1$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                    <child-element text="Item 1" idx="0" data-fe-c-0-2><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Item 1" idx="0" category="General" data-fe-c-0-3><template shadowrootmode="open" shadowroot="open"><div class="item">
             <span class="index"><!--fe-b$$start$$0$$idx-0$$fe-b-->0<!--fe-b$$end$$0$$idx-0$$fe-b--></span>
             <span class="text"><!--fe-b$$start$$1$$text-1$$fe-b-->Item 1<!--fe-b$$end$$1$$text-1$$fe-b--></span>
+            <span class="category"><!--fe-b$$start$$2$$category-2$$fe-b-->General<!--fe-b$$end$$2$$category-2$$fe-b--></span>
         </div></template></child-element>
                 <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
-                    <child-element text="Item 2" idx="1" data-fe-c-0-2><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Item 2" idx="1" category="General" data-fe-c-0-3><template shadowrootmode="open" shadowroot="open"><div class="item">
             <span class="index"><!--fe-b$$start$$0$$idx-0$$fe-b-->1<!--fe-b$$end$$0$$idx-0$$fe-b--></span>
             <span class="text"><!--fe-b$$start$$1$$text-1$$fe-b-->Item 2<!--fe-b$$end$$1$$text-1$$fe-b--></span>
+            <span class="category"><!--fe-b$$start$$2$$category-2$$fe-b-->General<!--fe-b$$end$$2$$category-2$$fe-b--></span>
         </div></template></child-element>
                 <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat-->
-                    <child-element text="Item 3" idx="2" data-fe-c-0-2><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Item 3" idx="2" category="General" data-fe-c-0-3><template shadowrootmode="open" shadowroot="open"><div class="item">
             <span class="index"><!--fe-b$$start$$0$$idx-0$$fe-b-->2<!--fe-b$$end$$0$$idx-0$$fe-b--></span>
             <span class="text"><!--fe-b$$start$$1$$text-1$$fe-b-->Item 3<!--fe-b$$end$$1$$text-1$$fe-b--></span>
+            <span class="category"><!--fe-b$$start$$2$$category-2$$fe-b-->General<!--fe-b$$end$$2$$category-2$$fe-b--></span>
         </div></template></child-element>
                 <!--fe-repeat$$end$$2$$fe-repeat--><!--fe-b$$end$$1$$repeat-1$$fe-b-->
             </div>
         </div></template></parent-element>
-        <parent-element title="Empty List"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
+        <parent-element title="Empty List" category="General"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
             <h2><!--fe-b$$start$$0$$title-0$$fe-b-->Empty List<!--fe-b$$end$$0$$title-0$$fe-b--></h2>
             <div class="items">
                 <!--fe-b$$start$$1$$repeat-1$$fe-b--><!--fe-b$$end$$1$$repeat-1$$fe-b-->
             </div>
         </div></template></parent-element>
-        <parent-element title="Single Item"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
+        <parent-element title="Single Item" category="General"><template shadowrootmode="open" shadowroot="open"><div class="list-container">
             <h2><!--fe-b$$start$$0$$title-0$$fe-b-->Single Item<!--fe-b$$end$$0$$title-0$$fe-b--></h2>
             <div class="items">
                 <!--fe-b$$start$$1$$repeat-1$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                    <child-element text="Only Item" idx="0" data-fe-c-0-2><template shadowrootmode="open" shadowroot="open"><div class="item">
+                    <child-element text="Only Item" idx="0" category="General" data-fe-c-0-3><template shadowrootmode="open" shadowroot="open"><div class="item">
             <span class="index"><!--fe-b$$start$$0$$idx-0$$fe-b-->0<!--fe-b$$end$$0$$idx-0$$fe-b--></span>
             <span class="text"><!--fe-b$$start$$1$$text-1$$fe-b-->Only Item<!--fe-b$$end$$1$$text-1$$fe-b--></span>
+            <span class="category"><!--fe-b$$start$$2$$category-2$$fe-b-->General<!--fe-b$$end$$2$$category-2$$fe-b--></span>
         </div></template></child-element>
                 <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$1$$repeat-1$$fe-b-->
             </div>
@@ -49,6 +53,7 @@
         <div class="item">
             <span class="index">{{idx}}</span>
             <span class="text">{{text}}</span>
+            <span class="category">{{category}}</span>
         </div>
     </template>
 </f-template>
@@ -61,6 +66,7 @@
                     <child-element
                         text="{{item.text}}"
                         idx="{{$index}}"
+                        category="{{category}}"
                     ></child-element>
                 </f-repeat>
             </div>
