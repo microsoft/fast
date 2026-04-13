@@ -33,7 +33,9 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout Branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - if: ${{ github.event_name == 'pull_request' }}
         run: |
@@ -66,11 +68,11 @@ jobs:
         run: cargo install wasm-pack
 
       - name: Build workspaces
-        run: npm run build
+        run: npx lage build ${{ github.event_name == 'pull_request' && '--since origin/main' || '' }}
 
       - name: Install playwright dependencies and browsers
         run: |
           npx playwright install --with-deps
 
       - name: Run tests in all Packages
-        run: npm run test
+        run: npx lage test:node test:playwright ${{ github.event_name == 'pull_request' && '--since origin/main' || '' }}
