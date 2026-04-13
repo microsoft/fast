@@ -431,6 +431,17 @@ Fixtures are auto-discovered by `test/vite.config.ts` — adding a new directory
 
 For fixtures that use SSR-style pre-rendered HTML, `scripts/build-fixtures.js` invokes `@microsoft/fast-build` to generate `index.html` from `entry.html`, `templates.html`, and `state.json`.
 
+### WebUI Integration Tests
+
+A separate integration test suite (`scripts/webui-integration-test.mjs`) validates that `@microsoft/webui` can build and render the same fixture templates that `@microsoft/fast-build` processes. For each fixture, the script:
+
+1. Extracts `<f-template>` elements from `templates.html` into individual component HTML files (webui uses filename-based component discovery).
+2. Builds the fixture using `webui build --plugin=fast`.
+3. Renders the compiled protocol with `state.json` using the webui Node.js API.
+4. Validates the output contains declarative shadow DOM, hydration markers, and `<f-template>` declarations.
+
+Run locally with `npm run test:webui-integration` or via the `ci-webui-integration.yml` GitHub Action on PRs and pushes to `main`.
+
 See [test/fixtures/README.md](./test/fixtures/README.md) for the full fixture authoring guide, and [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) for an example of a complex multi-feature fixture.
 
 ---
