@@ -94,12 +94,14 @@ function prepareFixtureBuildDir(fixtureName, tmpBase) {
         writeFileSync(join(buildDir, `${name}.html`), content);
     }
 
-    // Copy entry.html, stripping <script> tags (not needed for SSR build)
+    // Copy entry.html, removing script lines (not needed for SSR build).
+    // Uses line filtering instead of regex replacement to avoid
+    // incomplete multi-character sanitization issues.
     const entryHtml = readFileSync(join(fixtureDir, "entry.html"), "utf8");
-    const cleanedEntry = entryHtml.replace(
-        /<script\s+type="module"[^>]*>[\s\S]*?<\/script>/g,
-        "",
-    );
+    const cleanedEntry = entryHtml
+        .split("\n")
+        .filter(line => !line.includes("<script"))
+        .join("\n");
     writeFileSync(join(buildDir, "entry.html"), cleanedEntry);
 
     // Read state.json
