@@ -431,6 +431,15 @@ Fixtures are auto-discovered by `test/vite.config.ts` — adding a new directory
 
 For fixtures that use SSR-style pre-rendered HTML, `scripts/build-fixtures.js` invokes `@microsoft/fast-build` to generate `index.html` from `entry.html`, `templates.html`, and `state.json`.
 
+### WebUI Integration Tests
+
+A separate integration test suite validates that `@microsoft/webui` can build and render the same fixture templates that `@microsoft/fast-build` processes. This is split into two steps:
+
+1. **Build** (`npm run build:fixtures:webui`) — runs `scripts/build-fixtures-with-webui.js`, which extracts `<f-template>` elements, builds each fixture with `webui build --plugin=fast`, renders the protocol with `state.json`, and writes the output alongside `main.ts` and assets to `temp/integrations/webui/fixtures/`.
+2. **Test** (`npm run test:webui-integration`) — builds the fixtures, then runs the same Playwright specs against the webui-rendered output served by a Vite dev server on port 5174 (configured in `playwright.webui.config.ts`).
+
+Run locally with `npm run test:webui-integration` or via the `ci-webui-integration.yml` GitHub Action on PRs and pushes to `main`.
+
 See [test/fixtures/README.md](./test/fixtures/README.md) for the full fixture authoring guide, and [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) for an example of a complex multi-feature fixture.
 
 ---
