@@ -13,66 +13,15 @@
  *   4. Validates the rendered HTML for expected structure and content.
  */
 
-import {
-    existsSync,
-    mkdirSync,
-    readdirSync,
-    readFileSync,
-    rmSync,
-    writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build, render } from "@microsoft/webui";
+import { discoverFixtures, extractFTemplates } from "./build-fixtures.utilities.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const fixturesDir = resolve(__dirname, "../test/fixtures");
-
-// Auto-discover fixture directories that contain the required files.
-const fixtures = readdirSync(fixturesDir, { withFileTypes: true })
-    .filter(entry => {
-        if (!entry.isDirectory()) return false;
-        const dir = join(fixturesDir, entry.name);
-        return (
-            existsSync(join(dir, "entry.html")) &&
-            existsSync(join(dir, "templates.html")) &&
-            existsSync(join(dir, "state.json"))
-        );
-    })
-    .map(entry => entry.name)
-    .sort();
-
-/**
- * Extract <f-template name="X"> elements from an HTML string.
- * Returns an array of { name, content } objects where content
- * is the inner HTML of the <template> child. When the <template>
- * element carries host-binding attributes (e.g. @click, ?disabled),
- * those are preserved by wrapping the content in a <template> tag.
- */
-function extractFTemplates(html) {
-    const results = [];
-    const regex =
-        /<f-template\s+name="([^"]+)">\s*<template([^>]*)>([\s\S]*?)<\/template>\s*<\/f-template>/g;
-    let match;
-    while ((match = regex.exec(html)) !== null) {
-        const name = match[1];
-        const attrs = match[2].trim();
-        const inner = match[3].trim();
-
-        // If the <template> has host-binding attributes, preserve them
-        // by wrapping the content in a <template> element.
-        if (attrs.length > 0) {
-            results.push({
-                name,
-                content: `<template ${attrs}>${inner}</template>`,
-            });
-        } else {
-            results.push({ name, content: inner });
-        }
-    }
-    return results;
-}
+const fixtures = discoverFixtures(fixturesDir);
 
 /**
  * Prepare a temporary build directory for a fixture by extracting
@@ -115,7 +64,7 @@ function prepareFixtureBuildDir(fixtureName, tmpBase) {
  * Validate the rendered HTML output for basic structural correctness.
  * Returns an array of error messages (empty if valid).
  */
-function validateOutput(html, fixtureName) {
+function validateOutput(html) {
     const errors = [];
 
     if (!html || html.length === 0) {
@@ -151,7 +100,7 @@ function validateOutput(html, fixtureName) {
     return errors;
 }
 
-async function runFixture(fixtureName, tmpBase) {
+function runFixture(fixtureName, tmpBase) {
     const { buildDir, outDir, state, componentCount } = prepareFixtureBuildDir(
         fixtureName,
         tmpBase,
@@ -180,7 +129,7 @@ async function runFixture(fixtureName, tmpBase) {
     });
 
     // Validate
-    const errors = validateOutput(html, fixtureName);
+    const errors = validateOutput(html);
 
     return {
         name: fixtureName,
@@ -195,7 +144,7 @@ async function runFixture(fixtureName, tmpBase) {
     };
 }
 
-async function main() {
+function main() {
     const tmpBase = join(__dirname, "../temp/integrations/webui");
 
     // Clean up any previous run
@@ -213,7 +162,7 @@ async function main() {
 
     for (const fixtureName of fixtures) {
         try {
-            const result = await runFixture(fixtureName, tmpBase);
+            const result = runFixture(fixtureName, tmpBase);
             results.push(result);
 
             if (result.pass) {
@@ -250,7 +199,4 @@ async function main() {
     }
 }
 
-main().catch(err => {
-    console.error(`Fatal error: ${err.message}`);
-    process.exit(1);
-});
+main();
