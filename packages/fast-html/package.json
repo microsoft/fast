@@ -36,6 +36,8 @@
     "test-server": "npx vite test/ --clearScreen false --port 5174",
     "test:playwright": "playwright test",
     "test:chromium": "playwright test --project=chromium",
+    "test:rules": "sg test --skip-snapshot-tests",
+    "test:webui-integration": "node scripts/webui-integration-test.mjs",
     "test": "npm run test:playwright",
     "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
     "watch": "npm run build:tsc -- -w --preserveWatchOutput"
@@ -61,7 +63,8 @@
   },
   "devDependencies": {
     "@microsoft/fast-build": "^0.3.2",
-    "@microsoft/fast-element": "^2.10.3"
+    "@microsoft/fast-element": "^2.10.3",
+    "@microsoft/webui": "^0.0.7"
   },
   "beachball": {
     "disallowedChangeTypes": [
