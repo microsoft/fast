@@ -12,6 +12,9 @@ on:
     - releases/*
     - features/*
 
+permissions:
+  contents: read
+
 jobs:
   webui_integration:
     runs-on: ubuntu-latest
