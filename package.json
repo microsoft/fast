@@ -64,7 +64,7 @@
     "esm": "3.2.25",
     "express": "4.22.1",
     "glob": "10.5.0",
-    "lage": "^2.15.8",
+    "lage": "2.15.8",
     "lefthook": "2.1.4",
     "rollup": "4.59.0",
     "rollup-plugin-filesize": "10.0.0",
