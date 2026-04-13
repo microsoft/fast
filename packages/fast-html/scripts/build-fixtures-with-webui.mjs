@@ -13,7 +13,14 @@
  *   4. Validates the rendered HTML for expected structure and content.
  */
 
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+    existsSync,
+    mkdirSync,
+    readdirSync,
+    readFileSync,
+    rmSync,
+    writeFileSync,
+} from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build, render } from "@microsoft/webui";
@@ -22,25 +29,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const fixturesDir = resolve(__dirname, "../test/fixtures");
 
-// Fixtures to test — mirrors the list in build-fixtures.js
-const fixtures = [
-    "attribute",
-    "binding",
-    "deep-merge",
-    "event",
-    "ref",
-    "slotted",
-    "when",
-    "repeat",
-    "repeat-event",
-    "children",
-    "host-bindings",
-    "lifecycle-callbacks",
-    "dot-syntax",
-    "nested-elements",
-    "performance-metrics",
-    "observer-map",
-];
+// Auto-discover fixture directories that contain the required files.
+const fixtures = readdirSync(fixturesDir, { withFileTypes: true })
+    .filter(entry => {
+        if (!entry.isDirectory()) return false;
+        const dir = join(fixturesDir, entry.name);
+        return (
+            existsSync(join(dir, "entry.html")) &&
+            existsSync(join(dir, "templates.html")) &&
+            existsSync(join(dir, "state.json"))
+        );
+    })
+    .map(entry => entry.name)
+    .sort();
 
 /**
  * Extract <f-template name="X"> elements from an HTML string.
