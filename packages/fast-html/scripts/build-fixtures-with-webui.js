@@ -25,7 +25,11 @@ import {
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { build, render } from "@microsoft/webui";
-import { discoverFixtures, extractFTemplates } from "./build-fixtures.utilities.js";
+import {
+    convertToWebuiSyntax,
+    discoverFixtures,
+    extractFTemplates,
+} from "./build-fixtures.utilities.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixturesDir = resolve(__dirname, "../test/fixtures");
@@ -54,12 +58,13 @@ function buildFixture(fixtureName) {
     mkdirSync(buildOutDir, { recursive: true });
     mkdirSync(fixtureOutDir, { recursive: true });
 
-    // Extract individual component HTML files for webui discovery
+    // Extract individual component HTML files for webui discovery,
+    // converting FAST directives to webui syntax.
     const templatesHtml = readFileSync(join(fixtureDir, "templates.html"), "utf8");
     const templates = extractFTemplates(templatesHtml);
 
     for (const { name, content } of templates) {
-        writeFileSync(join(buildDir, `${name}.html`), content);
+        writeFileSync(join(buildDir, `${name}.html`), convertToWebuiSyntax(content));
     }
 
     // Prepare entry.html without script tags for webui build

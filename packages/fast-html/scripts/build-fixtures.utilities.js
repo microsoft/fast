@@ -52,3 +52,28 @@ export function extractFTemplates(html) {
     }
     return results;
 }
+
+/**
+ * Convert FAST template directives to webui syntax.
+ *
+ * - `<f-when value="{{expr}}">` → `<if condition="expr">`
+ * - `</f-when>` → `</if>`
+ * - `<f-repeat value="{{item in list}}" ...>` → `<for each="item in list" ...>`
+ * - `</f-repeat>` → `</for>`
+ *
+ * @param {string} html - Template HTML using FAST directive syntax.
+ * @returns {string} Template HTML using webui directive syntax.
+ */
+export function convertToWebuiSyntax(html) {
+    return html
+        .replace(
+            /<f-when\s+value="{{([\s\S]*?)}}"\s*>/g,
+            (_, expr) => `<if condition="${expr.trim()}">`,
+        )
+        .replace(/<\/f-when>/g, "</if>")
+        .replace(
+            /<f-repeat\s+value="{{([\s\S]*?)}}"([^>]*)>/g,
+            (_, expr, rest) => `<for each="${expr.trim()}"${rest}>`,
+        )
+        .replace(/<\/f-repeat>/g, "</for>");
+}
