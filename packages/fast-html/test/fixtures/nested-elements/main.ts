@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
@@ -47,6 +47,9 @@ export class ItemList extends RenderableElement {
 
     public title!: string;
 
+    @attr
+    public category!: string;
+
     // Track which list instance this is (1st, 2nd, or 3rd on the page)
     private static prepareCallCount = 0;
     private static instanceMap = new WeakMap<ItemList, number>();
@@ -79,13 +82,12 @@ export class Item extends RenderableElement {
 
     public idx!: number;
 
+    @attr
+    public category!: string;
+
     // Track which item instance this is globally
     private static prepareCallCount = 0;
     private static instanceMap = new WeakMap<Item, number>();
-
-    constructor() {
-        super();
-    }
 
     async prepare() {
         // Assign instance number on first prepare() call for this instance
@@ -105,6 +107,11 @@ export class Item extends RenderableElement {
     }
 }
 
+export class GrandChildItem extends RenderableElement {
+    @attr
+    public category!: string;
+}
+
 RenderableFASTElement(ItemList).defineAsync({
     name: "parent-element",
     templateOptions: "defer-and-hydrate",
@@ -115,6 +122,11 @@ RenderableFASTElement(Item).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+RenderableFASTElement(GrandChildItem).defineAsync({
+    name: "grand-child-element",
+    templateOptions: "defer-and-hydrate",
+});
+
 (window as any).messages = [];
 
 TemplateElement.options({
@@ -122,6 +134,9 @@ TemplateElement.options({
         observerMap: "all",
     },
     "child-element": {
+        observerMap: "all",
+    },
+    "grand-child-element": {
         observerMap: "all",
     },
 })

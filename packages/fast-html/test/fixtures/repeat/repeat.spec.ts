@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import type {
     TestElement,
+    TestElementEmptyArray,
     TestElementEvent,
     TestElementIntervalUpdates,
 } from "./main.js";
@@ -186,5 +187,29 @@ test.describe("f-template", async () => {
         await expect(buttons).toHaveCount(2);
         await buttons.nth(1).click();
         await expect(element).toHaveJSProperty("clickCount", 2);
+    });
+
+    test("repeat directive with an empty array should render no items", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/repeat/");
+
+        const element = page.locator("test-element-empty-array");
+        const listItems = element.locator("li");
+
+        await expect(listItems).toHaveCount(0);
+
+        await element.evaluate((node: TestElementEmptyArray) => {
+            node.list = ["A", "B", "C"];
+        });
+
+        await expect(listItems).toHaveCount(3);
+        await expect(listItems).toContainText(["A", "B", "C"]);
+
+        await element.evaluate((node: TestElementEmptyArray) => {
+            node.list = [];
+        });
+
+        await expect(listItems).toHaveCount(0);
     });
 });
