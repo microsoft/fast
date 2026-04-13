@@ -37,23 +37,30 @@ test.describe("Nested Elements Hydration", () => {
 
         const parentElements = page.locator("parent-element");
         const firstParent = parentElements.nth(0);
+        const categoryLabel = firstParent.locator(".category");
         const childElements = firstParent.locator("child-element");
+
+        // Category is rendered in the parent template above the repeated list
+        await expect(categoryLabel).toHaveText("General");
 
         const childCount = await childElements.count();
         expect(childCount).toBeGreaterThan(0);
 
+        // Each child receives the parent's category as an attribute
         for (let i = 0; i < childCount; i++) {
-            const categoryText = childElements.nth(i).locator(".category");
-            await expect(categoryText).toHaveText("General");
+            await expect(childElements.nth(i)).toHaveAttribute("category", "General");
         }
 
         await firstParent.evaluate((node: ItemList) => {
             node.category = "Updated";
         });
 
+        // Parent template updates
+        await expect(categoryLabel).toHaveText("Updated");
+
+        // Child attributes propagate the updated value
         for (let i = 0; i < childCount; i++) {
-            const categoryText = childElements.nth(i).locator(".category");
-            await expect(categoryText).toHaveText("Updated");
+            await expect(childElements.nth(i)).toHaveAttribute("category", "Updated");
         }
     });
 });
