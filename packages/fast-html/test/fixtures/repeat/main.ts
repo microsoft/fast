@@ -1,4 +1,4 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
@@ -6,6 +6,7 @@ export class TestElement extends FASTElement {
     @observable
     list: Array<string> = ["Foo", "Bar"];
 
+    @attr
     item_parent: string = "Bat";
 }
 RenderableFASTElement(TestElement).defineAsync({
@@ -56,6 +57,15 @@ RenderableFASTElement(TestElementNoItemRepeatBinding).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+export class TestElementEmptyArray extends FASTElement {
+    @observable
+    list: Array<string> = [];
+}
+RenderableFASTElement(TestElementEmptyArray).defineAsync({
+    name: "test-element-empty-array",
+    templateOptions: "defer-and-hydrate",
+});
+
 export class TestElementEvent extends FASTElement {
     @observable
     list: Array<string> = ["A"];
@@ -75,6 +85,7 @@ RenderableFASTElement(TestElementEvent).defineAsync({
 export class TestElementWithObserverMap extends FASTElement {
     list: Array<string> = ["Foo", "Bar"];
 
+    @attr
     item_parent: string = "Bat";
 }
 RenderableFASTElement(TestElementWithObserverMap).defineAsync({
