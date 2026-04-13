@@ -195,7 +195,7 @@ async function runFixture(fixtureName, tmpBase) {
 }
 
 async function main() {
-    const tmpBase = join(__dirname, "../.webui-integration-tmp");
+    const tmpBase = join(__dirname, "../temp/integrations/webui");
 
     // Clean up any previous run
     if (existsSync(tmpBase)) {
