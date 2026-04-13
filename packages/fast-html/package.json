@@ -24,6 +24,7 @@
     "build:tsc": "tsc -p ./tsconfig.json",
     "build": "npm run build:tsc && npm run doc && npm run build:fixtures",
     "build:fixtures": "node scripts/build-fixtures.js",
+    "build:fixtures:webui": "node scripts/build-fixtures-with-webui.js",
     "clean": "clean dist temp test-results",
     "dev:full": "concurrently -k -n fast-element,fast-html,server \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npm:test-server\"",
     "dev": "concurrently -k -n tsc,server \"npm run watch\" \"npm run test-server\"",
@@ -36,7 +37,8 @@
     "test-server": "npx vite test/ --clearScreen false",
     "test:playwright": "playwright test",
     "test:rules": "sg test --skip-snapshot-tests",
-    "test:webui-integration": "node scripts/build-fixtures-with-webui.js",
+    "test-server:webui": "vite temp/integrations/webui --clearScreen false --port 5174 --strictPort",
+    "test:webui-integration": "npm run build:fixtures:webui && npm exec -- playwright test --config=playwright.webui.config.ts",
     "test": "npm run test:playwright && npm run test:rules",
     "test:ui": "concurrently -k -n fast-element,fast-html,playwright \"npm run dev --workspace=@microsoft/fast-element\" \"npm:watch\" \"npx playwright test --ui\"",
     "watch": "npm run build:tsc -- -w --preserveWatchOutput"

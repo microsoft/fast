@@ -410,10 +410,15 @@ This project has been heavily inspired by [Handlebars](https://handlebarsjs.com/
 
 ## WebUI Integration Testing
 
-The fixture tests in `test/fixtures/` are also validated against [`@microsoft/webui`](https://github.com/microsoft/webui) to ensure cross-renderer compatibility. The integration test script builds each fixture's templates with `webui build --plugin=fast` and renders the compiled protocol with the fixture's state data.
+The fixture tests in `test/fixtures/` are also validated against [`@microsoft/webui`](https://github.com/microsoft/webui) to ensure cross-renderer compatibility. The build step renders each fixture's templates with `webui build --plugin=fast`, then the existing Playwright specs run against the webui-rendered output.
 
 ```shell
+# Build fixtures with webui and run Playwright tests
 npm run test:webui-integration -w @microsoft/fast-html
+
+# Or run the steps separately
+npm run build:fixtures:webui -w @microsoft/fast-html
+npm exec -w @microsoft/fast-html -- playwright test --config=playwright.webui.config.ts
 ```
 
 This is also run automatically in CI via the `ci-webui-integration.yml` GitHub Action on pull requests and pushes to `main`.
