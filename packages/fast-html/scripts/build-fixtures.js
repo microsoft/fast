@@ -4,29 +4,12 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-
-// Builds test fixtures using @microsoft/fast-build. Add fixture names here
-// incrementally as each one is verified to work with the fast-build CLI.
-const fixtures = [
-    "attribute",
-    "binding",
-    "deep-merge",
-    "event",
-    "ref",
-    "slotted",
-    "when",
-    "repeat",
-    "repeat-event",
-    "children",
-    "host-bindings",
-    "lifecycle-callbacks",
-    "dot-syntax",
-    "nested-elements",
-    "performance-metrics",
-    "observer-map",
-];
+import { discoverFixtures } from "./build-fixtures.utilities.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const fixturesDir = resolve(__dirname, "../test/fixtures");
+const fixtures = discoverFixtures(fixturesDir);
+
 const require = createRequire(import.meta.url);
 const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
