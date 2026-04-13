@@ -407,3 +407,13 @@ If your template includes JavaScript specific logic that does not conform to tho
 ## Acknowledgements
 
 This project has been heavily inspired by [Handlebars](https://handlebarsjs.com/) and [Vue.js](https://vuejs.org/).
+
+## WebUI Integration Testing
+
+The fixture tests in `test/fixtures/` are also validated against [`@microsoft/webui`](https://github.com/microsoft/webui) to ensure cross-renderer compatibility. The integration test script builds each fixture's templates with `webui build --plugin=fast` and renders the compiled protocol with the fixture's state data.
+
+```shell
+npm run test:webui-integration -w @microsoft/fast-html
+```
+
+This is also run automatically in CI via the `ci-webui-integration.yml` GitHub Action on pull requests and pushes to `main`.
