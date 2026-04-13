@@ -433,7 +433,7 @@ For fixtures that use SSR-style pre-rendered HTML, `scripts/build-fixtures.js` i
 
 ### WebUI Integration Tests
 
-A separate integration test suite (`scripts/build-fixtures-with-webui.mjs`) validates that `@microsoft/webui` can build and render the same fixture templates that `@microsoft/fast-build` processes. For each fixture, the script:
+A separate integration test suite (`scripts/build-fixtures-with-webui.js`) validates that `@microsoft/webui` can build and render the same fixture templates that `@microsoft/fast-build` processes. For each fixture, the script:
 
 1. Extracts `<f-template>` elements from `templates.html` into individual component HTML files (webui uses filename-based component discovery).
 2. Builds the fixture using `webui build --plugin=fast`.
