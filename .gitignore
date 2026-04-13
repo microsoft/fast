@@ -78,3 +78,6 @@ crates/**/target/
 
 # Generated WASM build output (run `npm run build -w @microsoft/fast-build` to regenerate)
 packages/fast-build/wasm/
+
+# WebUI integration test temporary files
+.webui-integration-tmp/
