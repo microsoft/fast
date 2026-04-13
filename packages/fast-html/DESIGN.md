@@ -433,12 +433,10 @@ For fixtures that use SSR-style pre-rendered HTML, `scripts/build-fixtures.js` i
 
 ### WebUI Integration Tests
 
-A separate integration test suite (`scripts/build-fixtures-with-webui.js`) validates that `@microsoft/webui` can build and render the same fixture templates that `@microsoft/fast-build` processes. For each fixture, the script:
+A separate integration test suite validates that `@microsoft/webui` can build and render the same fixture templates that `@microsoft/fast-build` processes. This is split into two steps:
 
-1. Extracts `<f-template>` elements from `templates.html` into individual component HTML files (webui uses filename-based component discovery).
-2. Builds the fixture using `webui build --plugin=fast`.
-3. Renders the compiled protocol with `state.json` using the webui Node.js API.
-4. Validates the output contains declarative shadow DOM, hydration markers, and `<f-template>` declarations.
+1. **Build** (`npm run build:fixtures:webui`) — runs `scripts/build-fixtures-with-webui.js`, which extracts `<f-template>` elements, builds each fixture with `webui build --plugin=fast`, renders the protocol with `state.json`, and writes the output alongside `main.ts` and assets to `temp/integrations/webui/fixtures/`.
+2. **Test** (`npm run test:webui-integration`) — builds the fixtures, then runs the same Playwright specs against the webui-rendered output served by a Vite dev server on port 5174 (configured in `playwright.webui.config.ts`).
 
 Run locally with `npm run test:webui-integration` or via the `ci-webui-integration.yml` GitHub Action on PRs and pushes to `main`.
 
