@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 14 Apr 2026 00:15:09 GMT",
+      "version": "2.10.3",
+      "tag": "@microsoft/fast-element_v2.10.3",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-element",
+            "commit": "e8ce63d65a17c94baf03f271b9fa269b7f27d3e1",
+            "comment": "Add test:chromium script for Chromium-only Playwright test runs"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Apr 2026 00:19:56 GMT",
       "version": "2.10.3",
       "tag": "@microsoft/fast-element_v2.10.3",
