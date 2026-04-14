@@ -1,5 +1,6 @@
 use crate::json::JsonValue;
 use crate::error::RenderError;
+use crate::config::RenderConfig;
 use crate::content::{render_triple_brace, render_double_brace};
 use crate::directive::{Directive, next_directive, render_when, render_repeat, render_custom_element};
 use crate::locator::Locator;
@@ -20,6 +21,7 @@ pub fn render_node(
     locator: Option<&Locator>,
     mut hydration: Option<&mut HydrationScope>,
     is_entry: bool,
+    config: &RenderConfig,
 ) -> Result<String, RenderError> {
     let mut result = String::new();
     let mut pos = 0;
@@ -36,6 +38,7 @@ pub fn render_node(
             dir_chunk, template, root, loop_vars, locator,
             hydration.as_mut().map(|h| &mut **h),
             is_entry,
+            config,
         )?;
         result.push_str(&chunk);
         pos = next_pos;
@@ -110,6 +113,7 @@ fn process_directive(
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
     is_entry: bool,
+    config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
     match dir_chunk {
         Directive::TripleBrace(p) => {
@@ -122,10 +126,10 @@ fn process_directive(
             let final_out = wrap_content_binding(out, template, p, "{{", "}}", hydration);
             Ok((final_out, end))
         }
-        Directive::When(p) => render_when(template, p, root, loop_vars, locator, hydration),
-        Directive::Repeat(p) => render_repeat(template, p, root, loop_vars, locator, hydration),
+        Directive::When(p) => render_when(template, p, root, loop_vars, locator, hydration, config),
+        Directive::Repeat(p) => render_repeat(template, p, root, loop_vars, locator, hydration, config),
         Directive::CustomElement(p) => {
-            render_custom_element(template, p, root, loop_vars, locator.expect("locator is required to render a CustomElement directive"), hydration, is_entry)
+            render_custom_element(template, p, root, loop_vars, locator.expect("locator is required to render a CustomElement directive"), hydration, is_entry, config)
         }
     }
 }
