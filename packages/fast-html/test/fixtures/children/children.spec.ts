@@ -4,7 +4,11 @@ test.describe("f-template", async () => {
     test("create a children directive", async ({ page }) => {
         test.slow();
 
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/children/");
+        await hydrationCompleted;
 
         const element = page.locator("test-element");
         const listItems = element.locator("li");

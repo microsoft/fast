@@ -1,5 +1,5 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
     @attr
@@ -18,6 +18,10 @@ RenderableFASTElement(TestElementUnescaped).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-TemplateElement.define({
+TemplateElement.config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
+    },
+}).define({
     name: "f-template",
 });
