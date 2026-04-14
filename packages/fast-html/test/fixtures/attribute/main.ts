@@ -31,6 +31,13 @@ RenderableFASTElement(TestElementExpression).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-TemplateElement.define({
+let hydrationCompleteEmitted = false;
+(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
+
+TemplateElement.config({
+    hydrationComplete() {
+        hydrationCompleteEmitted = true;
+    },
+}).define({
     name: "f-template",
 });
