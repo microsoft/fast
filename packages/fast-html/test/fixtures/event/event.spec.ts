@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("f-template", async () => {
     test("create an event attribute without arguments", async ({ page }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -17,6 +18,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -29,6 +31,7 @@ test.describe("f-template", async () => {
     });
     test("should properly bind events with `this`", async ({ page }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -40,6 +43,7 @@ test.describe("f-template", async () => {
     });
     test("create an event attribute with $e argument", async ({ page }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -52,6 +56,7 @@ test.describe("f-template", async () => {
     });
     test("create an event attribute with $c (context) argument", async ({ page }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -66,6 +71,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -78,6 +84,7 @@ test.describe("f-template", async () => {
     });
     test("create an event attribute with $c.event argument", async ({ page }) => {
         await page.goto("/fixtures/event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 

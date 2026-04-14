@@ -6,6 +6,7 @@ test.describe("f-repeat event binding", async () => {
         page,
     }) => {
         await page.goto("/fixtures/repeat-event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element-repeat-event");
         const buttons = customElement.locator("button");
@@ -31,6 +32,7 @@ test.describe("f-repeat event binding", async () => {
 
     test("f-when with c.parent condition inside f-repeat", async ({ page }) => {
         await page.goto("/fixtures/repeat-event/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const el = page.locator("test-when-in-repeat");
         const buttons = el.locator("button.name");

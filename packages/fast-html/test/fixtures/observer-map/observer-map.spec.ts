@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("ObserverMap", async () => {
     test.beforeEach(async ({ page }) => {
         await page.goto("/fixtures/observer-map/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
         await page.waitForSelector("observer-map-test-element");
     });
 

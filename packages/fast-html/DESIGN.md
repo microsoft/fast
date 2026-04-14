@@ -440,6 +440,10 @@ A separate integration test suite validates that `@microsoft/webui` can build an
 
 Run locally with `npm run test:webui-integration` or via the `ci-webui-integration.yml` GitHub Action on PRs and pushes to `main`.
 
+### Hydration readiness
+
+Every fixture must wait for hydration to complete before running assertions. Each `main.ts` registers a `hydrationComplete()` callback via `TemplateElement.config()` that sets a global flag, and each spec file calls `page.waitForFunction()` after `page.goto()` to block until the flag is set. See [test/fixtures/README.md](./test/fixtures/README.md) for the implementation pattern.
+
 See [test/fixtures/README.md](./test/fixtures/README.md) for the full fixture authoring guide, and [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) for an example of a complex multi-feature fixture.
 
 ---

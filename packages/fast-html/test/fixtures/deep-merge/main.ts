@@ -1,6 +1,6 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "../../../src/index.js";
 import { deepMerge } from "../../../src/components/utilities.js";
+import { RenderableFASTElement, TemplateElement } from "../../../src/index.js";
 
 interface Product {
     id: number;
@@ -348,13 +348,22 @@ class DeepMergeTestElement extends FASTElement {
     }
 }
 
+let hydrationCompleteEmitted = false;
+(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
+
 TemplateElement.options({
     "deep-merge-test-element": {
         observerMap: "all",
     },
-}).define({
-    name: "f-template",
-});
+})
+    .config({
+        hydrationComplete() {
+            hydrationCompleteEmitted = true;
+        },
+    })
+    .define({
+        name: "f-template",
+    });
 
 RenderableFASTElement(DeepMergeTestElement).defineAsync({
     name: "deep-merge-test-element",
