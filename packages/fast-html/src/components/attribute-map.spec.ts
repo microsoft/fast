@@ -20,13 +20,13 @@ test.describe("AttributeMap", async () => {
         expect(hasFooAccessor).toBeTruthy();
     });
 
-    test("should define @attr for a camelCase property", async ({ page }) => {
+    test("should define @attr for a dash-case property", async ({ page }) => {
         const element = page.locator("attribute-map-test-element");
 
         const hasFooBarAccessor = await element.evaluate(node => {
             const desc = Object.getOwnPropertyDescriptor(
                 Object.getPrototypeOf(node),
-                "fooBar",
+                "foo-bar",
             );
             return typeof desc?.get === "function";
         });
@@ -34,14 +34,14 @@ test.describe("AttributeMap", async () => {
         expect(hasFooBarAccessor).toBeTruthy();
     });
 
-    test("should convert camelCase property name to dash-case attribute name", async ({
+    test("should use binding key as-is for both attribute and property name", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // Setting the dash-case attribute should update the camelCase property
+        // Setting the foo-bar attribute should update the foo-bar property (no conversion)
         await element.evaluate(node => node.setAttribute("foo-bar", "dash-case-test"));
-        const propValue = await element.evaluate(node => (node as any).fooBar);
+        const propValue = await element.evaluate(node => (node as any)["foo-bar"]);
 
         expect(propValue).toBe("dash-case-test");
     });
@@ -115,14 +115,14 @@ test.describe("AttributeMap", async () => {
         expect(propValue).toBe("lookup-test");
     });
 
-    test("should update definition attributeLookup with dash-case for camelCase properties", async ({
+    test("should update definition attributeLookup for dash-case properties", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // setAttribute with dash-case triggers attributeChangedCallback for the camelCase property
+        // setAttribute with foo-bar triggers attributeChangedCallback for the foo-bar property
         await element.evaluate(node => node.setAttribute("foo-bar", "lookup-bar-test"));
-        const propValue = await element.evaluate(node => (node as any).fooBar);
+        const propValue = await element.evaluate(node => (node as any)["foo-bar"]);
 
         expect(propValue).toBe("lookup-bar-test");
     });
