@@ -1,6 +1,6 @@
 mod common;
 use common::{make_locator, empty_root};
-use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError, RenderConfig};
+use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError};
 
 // ── attribute → state mapping ─────────────────────────────────────────────────
 
@@ -11,7 +11,7 @@ fn test_custom_element_string_attr() {
         r#"<my-button label="Click me"></my-button>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"<my-button label="Click me">"#), "open tag: {result}");
     assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
@@ -30,7 +30,7 @@ fn test_custom_element_boolean_attr() {
         r#"<my-button disabled></my-button>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("<button disabled></button>"), "rendered: {result}");
 }
@@ -42,7 +42,7 @@ fn test_custom_element_number_attr() {
         r#"<my-badge count="42"></my-badge>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("42"), "rendered: {result}");
 }
@@ -54,7 +54,7 @@ fn test_custom_element_property_binding_rename() {
         r#"<my-button foo="{{bar}}"></my-button>"#,
         r#"{"bar": "hello"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("hello"), "rendered: {result}");
 }
@@ -68,7 +68,7 @@ fn test_custom_element_self_closing() {
         r#"<my-button label="Hi" />"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.starts_with(r#"<my-button label="Hi">"#), "open tag: {result}");
     assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
@@ -82,7 +82,7 @@ fn test_custom_element_with_children() {
         r#"<my-layout>light DOM content</my-layout>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"<template shadowrootmode="open" shadowroot="open">"#), "shadow: {result}");
     assert!(result.contains(r#"<div class="layout"><slot></slot></div>"#), "shadow content: {result}");
@@ -99,7 +99,7 @@ fn test_custom_element_no_template_passthrough() {
         r#"<unknown-element foo="bar">content</unknown-element>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert_eq!(result, r#"<unknown-element foo="bar">content</unknown-element>"#);
 }
@@ -109,7 +109,7 @@ fn test_custom_element_no_locator_passthrough() {
     let result = render_template(
         r#"<my-button label="Click me">content</my-button>"#,
         r#"{}"#,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert_eq!(result, r#"<my-button label="Click me">content</my-button>"#);
 }
@@ -128,7 +128,7 @@ fn test_locator_from_patterns() {
         r#"<my-button label="Click me"></my-button>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Click me"), "rendered: {result}");
 }
@@ -156,7 +156,7 @@ fn test_custom_element_nested() {
         r#"<my-card title="Hello"></my-card>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Hello"), "heading: {result}");
     assert!(result.contains("5"), "badge: {result}");
@@ -169,7 +169,7 @@ fn test_custom_element_in_f_repeat() {
         r#"<f-repeat value="{{item in items}}"><my-badge count="{{item.count}}"></my-badge></f-repeat>"#,
         r#"{"items": [{"count": 1}, {"count": 2}]}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("1"), "first item: {result}");
     assert!(result.contains("2"), "second item: {result}");
@@ -186,7 +186,7 @@ fn test_locator_multiple_templates_in_file() {
         r#"<my-multi-a label="Hello"></my-multi-a>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result_a.contains("Hello"), "my-multi-a rendered: {result_a}");
 
@@ -194,7 +194,7 @@ fn test_locator_multiple_templates_in_file() {
         r#"<my-multi-b count="7"></my-multi-b>"#,
         r#"{}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result_b.contains("7"), "my-multi-b rendered: {result_b}");
 }
@@ -224,7 +224,7 @@ fn test_custom_element_kebab_attr_hyphens_preserved() {
         r#"<my-el selected-user-id="42"></my-el>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("42"), "kebab attr resolved: {result}");
 }
@@ -237,7 +237,7 @@ fn test_custom_element_multi_word_kebab_attrs() {
         r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("true"), "show-details: {result}");
     assert!(result.contains("false"), "enable-continue: {result}");
@@ -254,7 +254,7 @@ fn test_custom_element_colon_property_in_state_not_html() {
         r#"<my-btn label="OK" :myProp="{{value}}"></my-btn>"#,
         r#"{"value": "passed"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("OK"), "label: {result}");
     assert!(!result.contains(":myProp"), "colon attr stripped from HTML: {result}");
@@ -269,7 +269,7 @@ fn test_custom_element_event_binding_skipped() {
         r#"<my-btn label="OK" @click="{handleClick()}"></my-btn>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("OK"), "label: {result}");
     // The @click binding should not appear in element state or cause an error
@@ -286,7 +286,7 @@ fn test_root_custom_element_receives_full_state() {
         r#"<my-parent></my-parent>"#,
         r#"{"selecteduser":"John","heading":"Hello"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("John"), "root state key resolved: {result}");
 }
@@ -309,7 +309,7 @@ fn test_root_custom_element_full_state_with_nested_child() {
         r#"<my-parent-b></my-parent-b>"#,
         r#"{"items":[{"text":"Item 1"},{"text":"Item 2"}]}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Item 1"), "first item rendered: {result}");
     assert!(result.contains("Item 2"), "second item rendered: {result}");
@@ -335,7 +335,7 @@ fn test_root_custom_elements_full_scenario() {
         r#"{{heading}}<my-parent-a></my-parent-a><my-parent-b></my-parent-b>"#,
         r#"{"heading":"Hello world","selecteduser":"John","items":[{"text":"Item 1"},{"text":"Item 2"}]}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Hello world"), "heading binding: {result}");
     assert!(result.contains("John"), "selecteduser in my-parent-a: {result}");
@@ -357,7 +357,7 @@ fn test_nested_custom_element_inherits_parent_state() {
         r#"<outer-el></outer-el>"#,
         r#"{"innerLabel":"Nested","rootKey":"Available"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Nested"), "label from attr binding: {result}");
     assert!(result.contains("Available"), "rootKey propagated to nested child: {result}");
@@ -379,7 +379,7 @@ fn test_unbound_state_propagates_to_child_elements() {
         "<my-el></my-el>",
         r#"{"text":"Hello world"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     // Both my-el and my-child-el should render "Hello world"
     let hello_count = result.matches("Hello world").count();
@@ -398,7 +398,7 @@ fn test_state_propagates_through_multiple_levels() {
         "<level-one></level-one>",
         r#"{"msg":"deep"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     // Hydration markers wrap each binding, so check for the resolved value "deep"
     // within each level's shadow template.
@@ -420,7 +420,7 @@ fn test_child_attr_overrides_propagated_state() {
         "<parent-el></parent-el>",
         r#"{"color":"red"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("blue"), "attr value overrides propagated state: {result}");
     assert!(!result.contains("red"), "propagated state key overridden by attr: {result}");
@@ -438,7 +438,7 @@ fn test_non_entry_render_also_propagates_state() {
         r#"<my-wrapper title="{{title}}"></my-wrapper>"#,
         r#"{"title":"Propagated"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Propagated"), "state propagates via non-entry rendering: {result}");
 }
@@ -454,7 +454,7 @@ fn test_root_custom_element_primitive_binding_resolved() {
         r#"<my-el text="{{text}}"></my-el>"#,
         r#"{"text":"Hello world"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"text="Hello world""#), "primitive binding resolved: {result}");
     assert!(result.contains("Hello world"), "template still renders state: {result}");
@@ -468,7 +468,7 @@ fn test_root_custom_element_boolean_attr_binding_truthy() {
         r#"<my-button ?disabled="{{show}}"></my-button>"#,
         r#"{"show":true}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(" disabled"), "boolean attr rendered when true: {result}");
     assert!(!result.contains("?disabled"), "? prefix stripped: {result}");
@@ -482,7 +482,7 @@ fn test_root_custom_element_boolean_attr_binding_falsy() {
         r#"<my-button ?disabled="{{show}}"></my-button>"#,
         r#"{"show":false}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(!result.contains("disabled"), "boolean attr omitted when false: {result}");
 }
@@ -496,7 +496,7 @@ fn test_root_custom_element_non_primitive_binding_stripped() {
         r#"<my-el list="{{list}}" data="{{data}}"></my-el>"#,
         r#"{"list":["a","b"],"data":{"key":"val"}}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(!result.contains("list="), "array binding stripped: {result}");
     assert!(!result.contains("data="), "object binding stripped: {result}");
@@ -510,7 +510,7 @@ fn test_root_custom_element_static_attrs_kept() {
         r#"<my-el id="main" class="app"></my-el>"#,
         r#"{"ignored": true}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"id="main""#), "id attribute kept: {result}");
     assert!(result.contains(r#"class="app""#), "class attribute kept: {result}");
@@ -524,7 +524,7 @@ fn test_root_custom_element_mixed_attrs() {
         r#"<my-el id="root" name="{{name}}" items="{{items}}"></my-el>"#,
         r#"{"name":"Alice","items":["x","y"]}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"id="root""#), "static id kept: {result}");
     assert!(result.contains(r#"name="Alice""#), "primitive binding resolved: {result}");
@@ -545,7 +545,7 @@ fn test_nested_custom_element_binding_attrs_not_stripped() {
         r#"<my-outer :name="{{name}}"></my-outer>"#,
         r#"{"name":"Bob"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     // The inner element is nested (not entry-level), so its resolved attr IS rendered.
     assert!(result.contains(r#"label="Bob""#), "nested element attr rendered: {result}");
@@ -565,7 +565,7 @@ fn test_custom_element_repeat_from_colon_binding() {
         r#"<item-list :items="{{items}}"></item-list>"#,
         r#"{"items":["a","b","c"]}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(!result.contains(":items"), "colon attr not in HTML: {result}");
     assert!(result.contains(">a<"), "rendered a: {result}");
@@ -583,7 +583,7 @@ fn test_custom_element_repeat_empty_array_from_colon_binding() {
         r#"<item-list :items="{{items}}"></item-list>"#,
         r#"{"items":[]}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(!result.contains("<span>"), "no items: {result}");
 }
@@ -597,7 +597,7 @@ fn test_custom_element_object_from_colon_binding() {
         r#"<my-card :config="{{config}}"></my-card>"#,
         r#"{"config":{"title":"Hello"}}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(!result.contains(":config"), "colon attr not in HTML: {result}");
     assert!(result.contains("Hello"), "rendered: {result}");
@@ -615,7 +615,7 @@ fn test_root_element_per_element_attr_available_in_template() {
         r#"<planet-el planet="earth"></planet-el>"#,
         r#"{"shared":"yes"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("earth"), "per-element attr available in template: {result}");
 }
@@ -629,7 +629,7 @@ fn test_root_element_attr_overrides_root_state_key() {
         r#"<my-el color="blue"></my-el>"#,
         r#"{"color":"red"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("blue"), "attr value overrides root state: {result}");
     assert!(!result.contains("red"), "root state key not used when attr present: {result}");
@@ -644,7 +644,7 @@ fn test_root_element_root_state_available_alongside_attr() {
         r#"<my-el planet="mars"></my-el>"#,
         r#"{"shared":"context"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("mars"), "per-element attr rendered: {result}");
     assert!(result.contains("context"), "root state key still accessible: {result}");
@@ -659,7 +659,7 @@ fn test_root_element_boolean_attr_available_in_template() {
         r#"<my-el show></my-el>"#,
         r#"{}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("visible"), "boolean attr resolves to true in template: {result}");
 }
@@ -673,7 +673,7 @@ fn test_root_elements_with_different_per_element_attrs() {
         r#"<planet-el planet="earth"></planet-el><planet-el planet="mars"></planet-el>"#,
         r#"{"shared":"yes"}"#,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("earth"), "first element attr: {result}");
     assert!(result.contains("mars"), "second element attr: {result}");
@@ -691,7 +691,7 @@ fn test_custom_element_json_array_attr() {
         r#"<item-list items='["a","b","c"]'></item-list>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(">a<"), "rendered a: {result}");
     assert!(result.contains(">b<"), "rendered b: {result}");
@@ -708,7 +708,7 @@ fn test_custom_element_empty_array_attr() {
         r#"<item-list items="[]"></item-list>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(!result.contains("<span>"), "no items: {result}");
 }
@@ -720,7 +720,7 @@ fn test_custom_element_json_object_attr() {
         r#"<my-card config='{"title":"Hello"}'></my-card>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Hello"), "rendered: {result}");
 }
@@ -734,7 +734,7 @@ fn test_custom_element_invalid_json_attr_falls_back_to_string() {
         r#"<my-el items='["a",]'></my-el>"#,
         "{}",
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     // Invalid JSON falls back to the raw string value
     assert!(result.contains(r#"["a",]"#), "invalid JSON kept as string: {result}");

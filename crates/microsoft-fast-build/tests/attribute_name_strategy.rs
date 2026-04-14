@@ -25,7 +25,7 @@ fn test_camelcase_dashed_attribute() {
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
-        &camel_config(),
+        Some(&camel_config()),
     ).unwrap();
     assert!(result.contains("hello"), "dashed attr should be camelCased: {result}");
 }
@@ -37,7 +37,7 @@ fn test_camelcase_multi_dashed_attribute() {
         r#"<my-el my-custom-prop="world"></my-el>"#,
         &empty_root(),
         &locator,
-        &camel_config(),
+        Some(&camel_config()),
     ).unwrap();
     assert!(result.contains("world"), "multi-dashed attr should be camelCased: {result}");
 }
@@ -49,7 +49,7 @@ fn test_camelcase_no_dash_unchanged() {
         r#"<my-el disabled></my-el>"#,
         &empty_root(),
         &locator,
-        &camel_config(),
+        Some(&camel_config()),
     ).unwrap();
     assert!(result.contains("true"), "no-dash attr should stay as-is: {result}");
 }
@@ -63,7 +63,7 @@ fn test_camelcase_aria_uses_lookup() {
         r#"<my-el aria-disabled="true"></my-el>"#,
         &empty_root(),
         &locator,
-        &camel_config(),
+        Some(&camel_config()),
     ).unwrap();
     assert!(result.contains("true"), "aria-* should use lookup table: {result}");
 }
@@ -75,7 +75,7 @@ fn test_camelcase_html_attr_uses_lookup() {
         r#"<my-el tabindex="5"></my-el>"#,
         &empty_root(),
         &locator,
-        &camel_config(),
+        Some(&camel_config()),
     ).unwrap();
     assert!(result.contains("5"), "HTML lookup attrs should use lookup table: {result}");
 }
@@ -87,7 +87,7 @@ fn test_camelcase_data_attr_uses_dataset() {
         r#"<my-el data-date-of-birth="1990"></my-el>"#,
         &empty_root(),
         &locator,
-        &camel_config(),
+        Some(&camel_config()),
     ).unwrap();
     assert!(result.contains("1990"), "data-* should use dataset grouping: {result}");
 }
@@ -101,7 +101,7 @@ fn test_none_strategy_dashed_attr_stays_dashed() {
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
-        &none_config(),
+        Some(&none_config()),
     ).unwrap();
     assert!(result.contains("hello"), "none strategy should not convert: {result}");
 }
@@ -113,7 +113,7 @@ fn test_none_strategy_multi_dashed_attr_preserved() {
         r#"<my-el selected-user-id="42"></my-el>"#,
         &empty_root(),
         &locator,
-        &none_config(),
+        Some(&none_config()),
     ).unwrap();
     assert!(result.contains("42"), "none strategy should preserve dashes: {result}");
 }
@@ -127,13 +127,13 @@ fn test_default_config_matches_none() {
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     let result_none = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
-        &none_config(),
+        Some(&none_config()),
     ).unwrap();
     assert_eq!(result_default, result_none, "default should match none strategy");
 }
@@ -151,7 +151,7 @@ fn test_camelcase_with_binding_attr() {
         r#"<my-el my-prop="{{source}}"></my-el>"#,
         &root_val,
         &locator,
-        &config,
+        Some(&config),
     ).unwrap();
     assert!(result.contains("resolved"), "binding should resolve and key should be camelCased: {result}");
 }
@@ -166,7 +166,7 @@ fn test_camelcase_template_api() {
         r#"<my-el foo-bar="hello"></my-el>"#,
         r#"{}"#,
         &locator,
-        &config,
+        Some(&config),
     ).unwrap();
     assert!(result.contains("hello"), "template API with config should work: {result}");
 }
@@ -181,7 +181,7 @@ fn test_camelcase_entry_level() {
         r#"<my-el foo-bar="static"></my-el>"#,
         &empty_root(),
         &locator,
-        &config,
+        Some(&config),
     ).unwrap();
     // Entry-level builds child state from attrs with camelCase, so foo-bar → fooBar = "static"
     assert!(result.contains("static"), "entry-level should use camelCase config for child state: {result}");
@@ -200,7 +200,7 @@ fn test_camelcase_nested_custom_elements() {
         r#"<my-outer outer-prop="hello"></my-outer>"#,
         r#"{}"#,
         &locator,
-        &config,
+        Some(&config),
     ).unwrap();
     assert!(result.contains("hello"), "camelCase should work through nested elements: {result}");
 }
@@ -218,7 +218,7 @@ fn test_camelcase_colon_prop_stays_lowercased() {
         r#"<my-el :myProp="{{source}}"></my-el>"#,
         &root_val,
         &locator,
-        &config,
+        Some(&config),
     ).unwrap();
     assert!(result.contains("val"), ":prop should be lowercased, not camelCased: {result}");
 }
@@ -236,7 +236,7 @@ fn test_camelcase_attr_overrides_root_state() {
         r#"<my-el foo-bar="from attr"></my-el>"#,
         &root_val,
         &locator,
-        &config,
+        Some(&config),
     ).unwrap();
     assert!(result.contains("from attr"), "attr should override root state: {result}");
 }

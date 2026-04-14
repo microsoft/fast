@@ -1,6 +1,6 @@
 mod common;
 use common::make_locator;
-use microsoft_fast_build::{render_with_locator, JsonValue, RenderConfig};
+use microsoft_fast_build::{render_with_locator, JsonValue};
 use std::collections::HashMap;
 
 fn state(entries: Vec<(&str, JsonValue)>) -> JsonValue {
@@ -25,7 +25,7 @@ fn test_aria_attr_to_camel_case() {
         r#"<test-el aria-disabled="true"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"disabled="true""#), "ariaDisabled resolved: {result}");
 }
@@ -41,7 +41,7 @@ fn test_aria_label() {
         r#"<test-el aria-label="Close dialog"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Close dialog"), "ariaLabel resolved: {result}");
 }
@@ -58,7 +58,7 @@ fn test_aria_attr_from_parent_binding() {
         r#"<test-el aria-label="{{label}}"></test-el>"#,
         &root,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Submit form"), "ariaLabel binding: {result}");
 }
@@ -75,7 +75,7 @@ fn test_aria_multi_word_attr() {
         r#"<test-el aria-valuenow="50"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"role="50""#), "ariaValueNow resolved: {result}");
 }
@@ -91,7 +91,7 @@ fn test_multiple_aria_attrs() {
         r#"<test-el aria-label="Close" aria-disabled="true"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Close"), "ariaLabel: {result}");
     assert!(result.contains("true"), "ariaDisabled: {result}");
@@ -109,7 +109,7 @@ fn test_aria_attr_in_f_when() {
         r#"<test-el aria-hidden="{{hidden}}"></test-el>"#,
         &root,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("hidden"), "f-when truthy: {result}");
 }
@@ -125,7 +125,7 @@ fn test_aria_and_non_aria_attrs_coexist() {
         r#"<test-el label="Click me" aria-label="Action button"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Click me"), "label: {result}");
     assert!(result.contains("Action button"), "ariaLabel: {result}");
@@ -144,7 +144,7 @@ fn test_aria_attr_uppercase_normalized() {
         r#"<test-el ARIA-LABEL="Uppercased"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Uppercased"), "ARIA-LABEL normalized: {result}");
 }
@@ -160,7 +160,7 @@ fn test_aria_attr_mixed_case_normalized() {
         r#"<test-el Aria-Disabled="true"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("true"), "Aria-Disabled normalized: {result}");
 }
