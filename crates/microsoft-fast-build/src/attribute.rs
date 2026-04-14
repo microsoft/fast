@@ -250,6 +250,75 @@ pub(crate) fn data_attr_to_dataset_key(name: &str) -> Option<String> {
     name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
 }
 
+/// Convert an `aria-*` HTML attribute name to its camelCase `Element.aria*`
+/// property name using a static lookup table. Returns `None` for names that
+/// do not start with `aria-` or are not recognised ARIA attributes.
+///
+/// The mapping follows the [ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria)
+/// convention on `Element`. A lookup table is used instead of algorithmic
+/// conversion because ARIA attribute names do not place dashes at word
+/// boundaries (e.g. `aria-valuenow` → `ariaValueNow`).
+///
+/// Examples: `"aria-disabled"` → `"ariaDisabled"`, `"aria-valuenow"` → `"ariaValueNow"`
+pub(crate) fn aria_attr_to_property_key(name: &str) -> Option<&'static str> {
+    match name {
+        "aria-activedescendant" => Some("ariaActiveDescendant"),
+        "aria-atomic" => Some("ariaAtomic"),
+        "aria-autocomplete" => Some("ariaAutoComplete"),
+        "aria-braillelabel" => Some("ariaBrailleLabel"),
+        "aria-brailleroledescription" => Some("ariaBrailleRoleDescription"),
+        "aria-busy" => Some("ariaBusy"),
+        "aria-checked" => Some("ariaChecked"),
+        "aria-colcount" => Some("ariaColCount"),
+        "aria-colindex" => Some("ariaColIndex"),
+        "aria-colindextext" => Some("ariaColIndexText"),
+        "aria-colspan" => Some("ariaColSpan"),
+        "aria-controls" => Some("ariaControls"),
+        "aria-current" => Some("ariaCurrent"),
+        "aria-describedby" => Some("ariaDescribedBy"),
+        "aria-description" => Some("ariaDescription"),
+        "aria-details" => Some("ariaDetails"),
+        "aria-disabled" => Some("ariaDisabled"),
+        "aria-dropeffect" => Some("ariaDropEffect"),
+        "aria-errormessage" => Some("ariaErrorMessage"),
+        "aria-expanded" => Some("ariaExpanded"),
+        "aria-flowto" => Some("ariaFlowTo"),
+        "aria-grabbed" => Some("ariaGrabbed"),
+        "aria-haspopup" => Some("ariaHasPopup"),
+        "aria-hidden" => Some("ariaHidden"),
+        "aria-invalid" => Some("ariaInvalid"),
+        "aria-keyshortcuts" => Some("ariaKeyShortcuts"),
+        "aria-label" => Some("ariaLabel"),
+        "aria-labelledby" => Some("ariaLabelledBy"),
+        "aria-level" => Some("ariaLevel"),
+        "aria-live" => Some("ariaLive"),
+        "aria-modal" => Some("ariaModal"),
+        "aria-multiline" => Some("ariaMultiLine"),
+        "aria-multiselectable" => Some("ariaMultiSelectable"),
+        "aria-orientation" => Some("ariaOrientation"),
+        "aria-owns" => Some("ariaOwns"),
+        "aria-placeholder" => Some("ariaPlaceholder"),
+        "aria-posinset" => Some("ariaPosInSet"),
+        "aria-pressed" => Some("ariaPressed"),
+        "aria-readonly" => Some("ariaReadOnly"),
+        "aria-relevant" => Some("ariaRelevant"),
+        "aria-required" => Some("ariaRequired"),
+        "aria-roledescription" => Some("ariaRoleDescription"),
+        "aria-rowcount" => Some("ariaRowCount"),
+        "aria-rowindex" => Some("ariaRowIndex"),
+        "aria-rowindextext" => Some("ariaRowIndexText"),
+        "aria-rowspan" => Some("ariaRowSpan"),
+        "aria-selected" => Some("ariaSelected"),
+        "aria-setsize" => Some("ariaSetSize"),
+        "aria-sort" => Some("ariaSort"),
+        "aria-valuemax" => Some("ariaValueMax"),
+        "aria-valuemin" => Some("ariaValueMin"),
+        "aria-valuenow" => Some("ariaValueNow"),
+        "aria-valuetext" => Some("ariaValueText"),
+        _ => None,
+    }
+}
+
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
 /// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
