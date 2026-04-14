@@ -24,6 +24,7 @@ const fixtures = [
     "nested-elements",
     "performance-metrics",
     "observer-map",
+    "errors",
 ];
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
