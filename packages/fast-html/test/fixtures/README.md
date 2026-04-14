@@ -22,3 +22,5 @@ The `entry.html` file defines the root custom elements that the server-side rend
 - **Rename bindings should be avoided.** Prefer naming state properties to match the attribute name the element expects. When a rename such as `foo="{{bar}}"` is removed, ensure `state.json` includes a property named `foo` with the contents of `bar` so the value is available via state propagation.
 - **Property bindings (`:attr`) for renames are acceptable** when multiple instances of the same element in a fixture need different values for the same property (e.g., `:items="{{emptyItems}}"` and `:items="{{singleItem}}"` on separate elements).
 - **Primitive same-name bindings are fine.** Attributes like `type="{{type}}"` where the value is a string, number, or boolean are rendered onto the opening tag and may be needed for `@attr`-based element initialization.
+
+For a complete guide on creating fixtures — including how to write each file, component patterns, and spec examples — see [WRITING_FIXTURES.md](./WRITING_FIXTURES.md).
