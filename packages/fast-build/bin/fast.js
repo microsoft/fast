@@ -167,9 +167,9 @@ async function runBuild(args) {
     const output = args["output"] || "output.html";
     const entry = args["entry"] || "index.html";
     const stateFile = args["state"] || "state.json";
-    const attributeNameStrategy = args["attribute-name-strategy"] || "none";
+    const attributeNameStrategy = args["attribute-name-strategy"];
 
-    if (attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
+    if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
         process.stderr.write(
             `Error: Invalid --attribute-name-strategy "${attributeNameStrategy}". Expected "none" or "camelCase".\n`
         );
@@ -222,9 +222,13 @@ async function runBuild(args) {
     // Render
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
-        rendered = wasm.render_entry_with_templates_and_config(
-            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy
-        );
+        if (attributeNameStrategy) {
+            rendered = wasm.render_entry_with_templates_and_config(
+                entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy
+            );
+        } else {
+            rendered = wasm.render_entry_with_templates(entryContent, JSON.stringify(templatesMap), stateContent);
+        }
     } else {
         rendered = wasm.render(entryContent, stateContent);
     }
