@@ -65,6 +65,10 @@
         </div>
     </template>
 </f-template>
+<!-- when false with repeat -->
+<f-template name="test-element-when-false-repeat">
+    <template><f-when value="{{show}}"><ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></f-when></template>
+</f-template>
 <!-- event -->
 <f-template name="test-element-event">
     <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
