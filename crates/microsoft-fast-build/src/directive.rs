@@ -7,7 +7,6 @@ use crate::attribute::{
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
-    data_attr_to_dataset_key,
 };
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
@@ -265,7 +264,6 @@ pub fn render_custom_element(
     // Attribute processing rules:
     //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
     //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
-    //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
     //   - Anything else → lowercased key, string or resolved `JsonValue` as value
     fn build_attr_state(
         attrs: &[(String, Option<String>)],
@@ -290,19 +288,8 @@ pub fn render_custom_element(
                 continue;
             }
             let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-            if let Some(path) = data_attr_to_dataset_key(attr_name) {
-                if let Some((group, prop)) = path.split_once('.') {
-                    let group_val = state_map
-                        .entry(group.to_string())
-                        .or_insert_with(|| JsonValue::Object(std::collections::HashMap::new()));
-                    if let JsonValue::Object(ref mut map) = group_val {
-                        map.insert(prop.to_string(), json_val);
-                    }
-                }
-            } else {
-                let key = attr_name.to_lowercase();
-                state_map.insert(key, json_val);
-            }
+            let key = attr_name.to_lowercase();
+            state_map.insert(key, json_val);
         }
         JsonValue::Object(state_map)
     }

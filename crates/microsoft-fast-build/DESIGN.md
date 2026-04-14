@@ -221,8 +221,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 4. **Build child state** — the child state always starts with the **current root state** as a base, then per-element HTML attributes are resolved and overlaid on top (attribute-derived values take precedence). This ensures all unbound state keys propagate through to every descendant custom element automatically — a child element can reference any state key from its ancestors without requiring explicit attribute bindings. As an optimisation, when the element has no state-relevant attributes (only `@event`, `?bool`, or directive attributes), the root state is passed through by reference without cloning.
    - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
    - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
-   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
-   - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
+   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`. `data-*` attributes follow the same rule — `data-date-of-birth` stays `data-date-of-birth` with no camelCase conversion.
    - No value (boolean attribute) → `Bool(true)`
    - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
    - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
@@ -295,19 +294,15 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
 
-### Dataset bindings — `attribute::data_attr_to_dataset_key`
+### `data-*` attributes
 
-FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: a camelCase property (e.g. `dateOfBirth`) corresponds to a kebab-case `data-*` HTML attribute (e.g. `data-date-of-birth`).
-
-When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose name starts with `data-` is routed into a nested `"dataset"` object rather than a top-level key:
+`data-*` attributes are treated the same as any other HTML attribute — the full attribute name is lowercased and used as a flat top-level state key with hyphens preserved. No camelCase conversion or `dataset` nesting is performed.
 
 ```
-data-date-of-birth="1990-01-01"  →  state["dataset"]["dateOfBirth"] = "1990-01-01"
+data-date-of-birth="1990-01-01"  →  state["data-date-of-birth"] = "1990-01-01"
 ```
 
-`attribute::data_attr_to_dataset_key` returns the full dot-notation path: `"data-date-of-birth"` → `"dataset.dateOfBirth"`. The caller in `render_custom_element` splits on the first `.` (`"dataset"` / `"dateOfBirth"`) and inserts the value into the nested `"dataset"` map. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
-
-The `dataset.` portion of the binding expression is nothing special to `resolve_value` — it is plain two-level dot-notation that traverses the nested `"dataset"` object built by the attribute mapper.
+Shadow templates reference these values directly: `{{data-date-of-birth}}`.
 
 ### `f-when` markers
 
