@@ -6,11 +6,23 @@ import { join } from "node:path";
  */
 
 /**
+ * Convert a `fast-build.config.json` object into CLI arguments.
+ * Each key-value pair becomes `--key=value`.
+ * @param {Record<string, string>} config
+ * @returns {string[]}
+ */
+function configToArgs(config) {
+    return Object.entries(config).map(([key, value]) => `--${key}=${value}`);
+}
+
+/**
  * Auto-discover fixture directories that contain the required build files
  * (entry.html, templates.html, and state.json).
  *
  * If a fixture directory contains a `fast-build.config.json` file, its
- * `"args"` array is included as extra CLI arguments for that fixture.
+ * key-value pairs are converted to CLI arguments for that fixture.
+ * For example, `{ "attribute-name-strategy": "camelCase" }` becomes
+ * `--attribute-name-strategy=camelCase`.
  *
  * @param {string} fixturesDir - Absolute path to the fixtures directory.
  * @returns {FixtureEntry[]} Sorted array of fixture entries.
@@ -31,7 +43,7 @@ export function discoverFixtures(fixturesDir) {
             const configPath = join(dir, "fast-build.config.json");
             if (existsSync(configPath)) {
                 const config = JSON.parse(readFileSync(configPath, "utf8"));
-                return { name: entry.name, args: config.args || [] };
+                return { name: entry.name, args: configToArgs(config) };
             }
             return { name: entry.name };
         })
