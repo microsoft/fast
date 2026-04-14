@@ -7,6 +7,9 @@ import { fileURLToPath } from "node:url";
 
 // Builds test fixtures using @microsoft/fast-build. Add fixture names here
 // incrementally as each one is verified to work with the fast-build CLI.
+//
+// Each entry can be a string (fixture name) or an object with `name` and
+// additional CLI `args` to pass through to the fast-build CLI.
 const fixtures = [
     "attribute",
     "binding",
@@ -24,13 +27,19 @@ const fixtures = [
     "nested-elements",
     "performance-metrics",
     "observer-map",
+    { name: "camel-case-attribute", args: ["--attribute-name-strategy=camelCase"] },
 ];
+
+// Pass-through CLI arguments (forwarded to every fast-build invocation).
+const passthroughArgs = process.argv.slice(2);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
-for (const fixtureName of fixtures) {
+for (const fixture of fixtures) {
+    const fixtureName = typeof fixture === "string" ? fixture : fixture.name;
+    const fixtureArgs = typeof fixture === "string" ? [] : fixture.args || [];
     const fixtureDir = resolve(__dirname, "../test/fixtures", fixtureName);
     const templatesFile = join(fixtureDir, "templates.html");
     const entryFile = join(fixtureDir, "entry.html");
@@ -47,6 +56,8 @@ for (const fixtureName of fixtures) {
             `--entry=${entryFile}`,
             `--state=${stateFile}`,
             `--output=${outputFile}`,
+            ...fixtureArgs,
+            ...passthroughArgs,
         ],
         { stdio: "inherit" },
     );
