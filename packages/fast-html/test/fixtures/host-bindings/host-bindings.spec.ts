@@ -2,10 +2,11 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Host Bindings Hydration", async () => {
     test.describe("should restart marker indexes inside the template after host bindings", () => {
-        test("single host event binding with content text binding", async ({
-            page,
-        }) => {
+        test("single host event binding with content text binding", async ({ page }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-event-element");
 
@@ -32,6 +33,9 @@ test.describe("Host Bindings Hydration", async () => {
             page,
         }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-multi-element");
 
@@ -59,6 +63,9 @@ test.describe("Host Bindings Hydration", async () => {
             page,
         }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-static-element");
 
@@ -89,6 +96,9 @@ test.describe("Host Bindings Hydration", async () => {
 
         test("multiple host events with content text binding", async ({ page }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-events-element");
 
@@ -105,7 +115,7 @@ test.describe("Host Bindings Hydration", async () => {
             // Verify mouseenter event binding also works
             await element.hover();
             expect(messages.some(m => m.includes("host-events mouseenter: 1"))).toBe(
-                true
+                true,
             );
 
             // KEY TEST: Verify updating content binding works (proves correct offset with 2 host events)
@@ -121,6 +131,9 @@ test.describe("Host Bindings Hydration", async () => {
             page,
         }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-multi-content-element");
             const span = element.locator("span");
@@ -136,7 +149,7 @@ test.describe("Host Bindings Hydration", async () => {
             await element.click();
 
             expect(messages.some(m => m.includes("host-multi-content clicked: 1"))).toBe(
-                true
+                true,
             );
 
             // KEY TEST: Update both attribute bindings to prove indexes 0,1 are correct
@@ -151,6 +164,9 @@ test.describe("Host Bindings Hydration", async () => {
 
         test("host event with content text binding in element", async ({ page }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-text-binding-element");
             const span = element.locator("span");
@@ -165,7 +181,7 @@ test.describe("Host Bindings Hydration", async () => {
             await element.click();
 
             expect(messages.some(m => m.includes("host-text-binding clicked: 1"))).toBe(
-                true
+                true,
             );
 
             // KEY TEST: Verify updating text binding works (proves correct index offset)
@@ -180,6 +196,9 @@ test.describe("Host Bindings Hydration", async () => {
     test.describe("should restart marker indexes after host bindings of different types", () => {
         test("host property binding with content text binding", async ({ page }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-property-element");
             const span = element.locator("span");
@@ -203,6 +222,9 @@ test.describe("Host Bindings Hydration", async () => {
             page,
         }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             const element = page.locator("host-all-types-element");
             const span = element.locator("span");
@@ -223,7 +245,7 @@ test.describe("Host Bindings Hydration", async () => {
             await element.click({ force: true }); // force because element is disabled
 
             expect(messages.some(m => m.includes("host-all-types clicked: 1"))).toBe(
-                true
+                true,
             );
 
             // KEY TEST: Verify updating content binding works regardless of host binding types/order
@@ -258,6 +280,9 @@ test.describe("Host Bindings Hydration", async () => {
         for (const { name, selector, initialText } of permutations) {
             test(`host binding permutation: ${name}`, async ({ page }) => {
                 await page.goto("/fixtures/host-bindings/");
+                await page.waitForFunction(() =>
+                    (window as any).getHydrationCompleteStatus(),
+                );
 
                 const element = page.locator(selector);
                 const span = element.locator("span");
@@ -277,9 +302,9 @@ test.describe("Host Bindings Hydration", async () => {
 
                 await element.click({ force: true }); // force because element is disabled
 
-                expect(
-                    messages.some(m => m.includes(`${selector} clicked: 1`))
-                ).toBe(true);
+                expect(messages.some(m => m.includes(`${selector} clicked: 1`))).toBe(
+                    true,
+                );
 
                 // KEY TEST: Verify updating content binding works regardless of host binding order
                 await element.evaluate((el: any) => {
@@ -296,6 +321,9 @@ test.describe("Host Bindings Hydration", async () => {
             page,
         }) => {
             await page.goto("/fixtures/host-bindings/");
+            await page.waitForFunction(() =>
+                (window as any).getHydrationCompleteStatus(),
+            );
 
             // Test across multiple elements to verify the fix works consistently
             const elements = [
@@ -328,7 +356,7 @@ test.describe("Host Bindings Hydration", async () => {
                     (el: any, data: { prop: string; expected: string }) => {
                         el[data.prop] = data.expected;
                     },
-                    { prop, expected }
+                    { prop, expected },
                 );
 
                 // Verify the binding updated correctly

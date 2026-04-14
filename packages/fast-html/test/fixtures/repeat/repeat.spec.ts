@@ -11,6 +11,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const customElementListItems = customElement.locator("li");
@@ -33,6 +34,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element-with-observer-map");
         const customElementListItems = customElement.locator("li");
@@ -53,6 +55,7 @@ test.describe("f-template", async () => {
     });
     test("create a repeat directive with an inner when", async ({ page }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element-inner-when");
         const customElementListItems = customElement.locator("li");
@@ -65,6 +68,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const element = page.locator("test-element-interval-updates");
 
@@ -102,6 +106,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const element = page.locator("test-element-interval-updates");
 
@@ -138,6 +143,7 @@ test.describe("f-template", async () => {
 
     test("repeat directive with no item binding should not error", async ({ page }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const element = page.locator("test-element-no-item-repeat-binding");
         const listItems = element.locator("li");
@@ -172,6 +178,7 @@ test.describe("f-template", async () => {
 
     test("should fire events inside a repeat directive", async ({ page }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
         const element = page.locator("test-element-event");
         const buttons = element.locator("button");
 
@@ -193,6 +200,7 @@ test.describe("f-template", async () => {
         page,
     }) => {
         await page.goto("/fixtures/repeat/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const element = page.locator("test-element-empty-array");
         const listItems = element.locator("li");

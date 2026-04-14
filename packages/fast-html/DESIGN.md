@@ -431,6 +431,10 @@ Fixtures are auto-discovered by `test/vite.config.ts` — adding a new directory
 
 For fixtures that use SSR-style pre-rendered HTML, `scripts/build-fixtures.js` invokes `@microsoft/fast-build` to generate `index.html` from `entry.html`, `templates.html`, and `state.json`.
 
+### Hydration readiness
+
+Every fixture must wait for hydration to complete before running assertions. Each `main.ts` registers a `hydrationComplete()` callback via `TemplateElement.config()` that sets a global flag, and each spec file calls `page.waitForFunction()` after `page.goto()` to block until the flag is set. See [test/fixtures/README.md](./test/fixtures/README.md) for the implementation pattern.
+
 See [test/fixtures/README.md](./test/fixtures/README.md) for the full fixture authoring guide, and [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) for an example of a complex multi-feature fixture.
 
 ---
