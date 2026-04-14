@@ -17,6 +17,7 @@ import {
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
+import { AttributeMap } from "./attribute-map.js";
 import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import {
@@ -57,10 +58,24 @@ export type ObserverMapOption =
     (typeof ObserverMapOption)[keyof typeof ObserverMapOption];
 
 /**
+ * Values for the attributeMap element option.
+ */
+export const AttributeMapOption = {
+    all: "all",
+} as const;
+
+/**
+ * Type for the attributeMap element option.
+ */
+export type AttributeMapOption =
+    (typeof AttributeMapOption)[keyof typeof AttributeMapOption];
+
+/**
  * Element options the TemplateElement will use to update the registered element
  */
 export interface ElementOptions {
     observerMap?: ObserverMapOption;
+    attributeMap?: AttributeMapOption;
 }
 
 /**
@@ -109,6 +124,11 @@ class TemplateElement extends FASTElement {
     private observerMap?: ObserverMap;
 
     /**
+     * AttributeMap instance for defining @attr properties
+     */
+    private attributeMap?: AttributeMap;
+
+    /**
      * Default element options
      */
     private static defaultElementOptions: ElementOptions = {};
@@ -151,6 +171,7 @@ class TemplateElement extends FASTElement {
             const value = elementOptions[key];
             result[key] = {
                 observerMap: value.observerMap,
+                attributeMap: value.attributeMap,
             };
         }
 
@@ -209,6 +230,15 @@ class TemplateElement extends FASTElement {
 
             const registeredFastElement: FASTElementDefinition | undefined =
                 fastElementRegistry.getByType(value);
+
+            if (TemplateElement.elementOptions[name]?.attributeMap === "all") {
+                this.attributeMap = new AttributeMap(
+                    value.prototype,
+                    this.schema as Schema,
+                    registeredFastElement,
+                );
+            }
+
             const template = this.getElementsByTagName("template").item(0);
 
             if (template) {
@@ -230,6 +260,9 @@ class TemplateElement extends FASTElement {
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
                 this.observerMap?.defineProperties();
+
+                // Define the leaf properties as @attr (only if attributeMap exists)
+                this.attributeMap?.defineProperties();
 
                 if (registeredFastElement) {
                     // Attach lifecycle callbacks to the definition before assigning template
