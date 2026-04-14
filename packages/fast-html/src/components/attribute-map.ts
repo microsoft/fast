@@ -7,9 +7,12 @@ import type { Schema } from "./schema.js";
  * a generated JSON schema and defining them as @attr properties on a class prototype.
  *
  * A property is a candidate for @attr when its schema entry has no nested `properties`,
- * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{bar}}".
+ * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{foo-bar}}".
  *
- * camelCase property names are converted to dash-case attribute names (e.g. fooBar → foo-bar).
+ * Attribute names are **not** normalized — the binding key as written in the template
+ * is used as both the attribute name and the property name. Because HTML attributes are
+ * case-insensitive, binding keys should be lowercase (optionally dash-separated).
+ * For example, {{foo-bar}} results in attribute `foo-bar` and property `foo-bar`.
  */
 export class AttributeMap {
     private schema: Schema;
@@ -47,11 +50,10 @@ export class AttributeMap {
                 continue;
             }
 
-            const attributeName = this.camelCaseToDashCase(propertyName);
             const attrDef = new AttributeDefinition(
                 this.classPrototype.constructor,
                 propertyName,
-                attributeName,
+                propertyName,
             );
 
             Observable.defineProperty(this.classPrototype, attrDef);
@@ -66,27 +68,19 @@ export class AttributeMap {
             ).observedAttributes;
             if (
                 Array.isArray(existingObservedAttrs) &&
-                !existingObservedAttrs.includes(attributeName)
+                !existingObservedAttrs.includes(propertyName)
             ) {
-                existingObservedAttrs.push(attributeName);
+                existingObservedAttrs.push(propertyName);
             }
 
             if (this.definition) {
                 (this.definition.attributeLookup as Record<string, AttributeDefinition>)[
-                    attributeName
+                    propertyName
                 ] = attrDef;
                 (this.definition.propertyLookup as Record<string, AttributeDefinition>)[
                     propertyName
                 ] = attrDef;
             }
         }
-    }
-
-    /**
-     * Converts a camelCase string to dash-case.
-     * e.g. fooBar → foo-bar
-     */
-    private camelCaseToDashCase(str: string): string {
-        return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
     }
 }
