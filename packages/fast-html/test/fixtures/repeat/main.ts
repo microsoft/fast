@@ -93,9 +93,6 @@ RenderableFASTElement(TestElementWithObserverMap).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-let hydrationCompleteEmitted = false;
-(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
-
 TemplateElement.options({
     "test-element-interval-updates": {
         observerMap: "all",
@@ -106,7 +103,7 @@ TemplateElement.options({
 })
     .config({
         hydrationComplete() {
-            hydrationCompleteEmitted = true;
+            (window as any).hydrationCompleted = true;
         },
     })
     .define({

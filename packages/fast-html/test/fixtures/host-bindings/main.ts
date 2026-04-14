@@ -212,12 +212,9 @@ RenderableFASTElement(HostPermPropFirst).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
-let hydrationCompleteEmitted = false;
-(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
-
 TemplateElement.config({
     hydrationComplete() {
-        hydrationCompleteEmitted = true;
+        (window as any).hydrationCompleted = true;
     },
 }).define({
     name: "f-template",

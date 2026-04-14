@@ -2,8 +2,11 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Deep Merge Test Fixture", () => {
     test("should render initial state correctly", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         // Check stats
         await expect(page.locator(".stats")).toContainText("Total Orders: 3");
@@ -26,8 +29,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should update user profile via deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         await page.click('button:has-text("Update User Profile")');
 
         // Check that nested properties were updated
@@ -42,8 +48,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should replace orders array via deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         // Initially has 2 orders
         await expect(page.locator(".user-card").first()).toContainText("Orders (2)");
 
@@ -56,8 +65,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should remove array items via deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         // First order initially has 2 items
         const firstOrder = page.locator(".order").first();
         const itemsCount = await firstOrder.locator(".item").count();
@@ -77,8 +89,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should update nested array tags via deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         const firstItem = page.locator(".item").first();
 
         // Check initial tags
@@ -98,8 +113,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should add new user to array", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         await expect(page.locator(".users h2")).toContainText("Users (2 total)");
 
         await page.click('button:has-text("Add New User")');
@@ -110,8 +128,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should toggle conditional rendering", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         // Details should be visible initially
         await expect(page.locator(".profile").first()).toBeVisible();
         await expect(page.locator(".metadata").first()).toBeVisible();
@@ -130,8 +151,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should increment age directly", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         await expect(page.locator(".user-card").first()).toContainText("Age: 28");
 
         await page.click('button:has-text("Increment Age")');
@@ -144,8 +168,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should update stats via deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         await expect(page.locator(".stats")).toContainText("Total Orders: 3");
         await expect(page.locator(".stats")).toContainText("Total Revenue: $425.5");
 
@@ -159,8 +186,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should handle undefined values in deepMerge", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         await expect(page.locator(".user-card").first()).toContainText("Age: 28");
         await expect(page.locator(".user-card").first()).toContainText("New York");
 
@@ -174,8 +204,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should display nested repeats correctly", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         // Check nested structure: users -> orders -> items -> tags
         const firstUser = page.locator(".user-card").first();
         const firstOrder = firstUser.locator(".order").first();
@@ -191,8 +224,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should handle conditional with comparison operators", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         const secondUser = page.locator(".user-card").nth(1);
 
         // Bob has 1 order
@@ -204,8 +240,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should display in-stock and out-of-stock items correctly", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         const items = page.locator(".item");
 
         // First two items should be in stock
@@ -218,8 +257,11 @@ test.describe("Deep Merge Test Fixture", () => {
     });
 
     test("should handle empty orders array", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         await page.click('button:has-text("Add New User")');
 
         const newUser = page.locator(".user-card").nth(2);
@@ -230,8 +272,11 @@ test.describe("Deep Merge Test Fixture", () => {
     test("should preserve object identity for observable arrays when using deepMerge", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deep-merge/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         // This test verifies that splice is used internally by checking
         // that updates work correctly multiple times (proving the array
         // reference is maintained)

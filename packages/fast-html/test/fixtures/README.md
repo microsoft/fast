@@ -18,15 +18,12 @@ Fixtures are auto-discovered by the Vite config in `../vite.config.ts`. To add a
 
 Each fixture's `main.ts` must track when hydration completes so that Playwright tests can wait for the element to be fully interactive before asserting. The standard pattern is:
 
-1. **In `main.ts`**, declare a boolean flag and expose a global getter, then set the flag inside the `hydrationComplete()` lifecycle callback:
+1. **In `main.ts`**, set a global flag inside the `hydrationComplete()` lifecycle callback:
 
     ```ts
-    let hydrationCompleteEmitted = false;
-    (window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
-
     TemplateElement.config({
         hydrationComplete() {
-            hydrationCompleteEmitted = true;
+            (window as any).hydrationCompleted = true;
         },
     }).define({
         name: "f-template",
@@ -35,16 +32,17 @@ Each fixture's `main.ts` must track when hydration completes so that Playwright 
 
     If the fixture already uses `.options()` or `.config()`, chain `.config()` after `.options()` and include `hydrationComplete` in the callback object.
 
-2. **In the spec file**, wait for the flag immediately after navigation:
+2. **In the spec file**, create the wait **before** navigation so the listener is registered before the page starts loading:
 
     ```ts
-    await page.goto("/fixtures/<fixture-name>/");
-    await page.waitForFunction(() =>
-        (window as any).getHydrationCompleteStatus(),
+    const hydrationCompleted = page.waitForFunction(
+        () => (window as any).hydrationCompleted === true,
     );
+    await page.goto("/fixtures/<fixture-name>/");
+    await hydrationCompleted;
     ```
 
-    Place this after every `page.goto()` call — including inside `test.beforeEach` hooks — to prevent assertions from running before hydration finishes.
+    Place this around every `page.goto()` call — including inside `test.beforeEach` hooks — to prevent assertions from running before hydration finishes.
 
 ## Entry HTML attribute guidelines
 
