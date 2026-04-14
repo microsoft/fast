@@ -3,7 +3,10 @@ trigger:
     include:
     - main
 pr:
-  - main
+  branches:
+    include:
+    - main
+  drafts: false
 
 # The `resources` specify the location and version of the Pipeline Template.
 resources:
