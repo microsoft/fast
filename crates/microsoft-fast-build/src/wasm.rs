@@ -98,7 +98,7 @@ fn parse_templates_map(templates_json: &str) -> Result<HashMap<String, String>, 
 
 fn parse_attribute_name_strategy(strategy: &str) -> Result<AttributeNameStrategy, JsValue> {
     match strategy {
-        "none" => Ok(AttributeNameStrategy::None),
+        "" | "none" => Ok(AttributeNameStrategy::None),
         "camelCase" => Ok(AttributeNameStrategy::CamelCase),
         _ => Err(JsValue::from_str(&format!(
             "Invalid attribute-name-strategy '{}': expected 'none' or 'camelCase'",
