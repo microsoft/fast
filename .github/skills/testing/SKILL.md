@@ -41,6 +41,8 @@ For `@microsoft/fast-html`, these additional scripts are available:
 | Start Vite dev server only | `npm run test-server -w @microsoft/fast-html` |
 | Dev mode (watch + server) | `npm run dev -w @microsoft/fast-html` |
 | Rebuild fixtures | `npm run build:fixtures -w @microsoft/fast-html` |
+| Build fixtures with webui | `npm run build:fixtures:webui -w @microsoft/fast-html` |
+| Run webui integration tests | `npm run test:webui-integration -w @microsoft/fast-html` |
 
 **Playwright UI mode** (`test:ui`) starts a visual test runner where you can select and debug individual tests, view traces, and inspect DOM snapshots.
 
@@ -80,6 +82,8 @@ The workflow builds all packages, installs Playwright Chromium, and runs:
 ```bash
 npm run test:webui-integration -w @microsoft/fast-html
 ```
+
+This builds each fixture with `webui build --plugin=fast`, renders the protocol with the fixture's `state.json`, and runs the same Playwright specs against the webui-rendered output.
 
 To trigger WebUI integration tests for your changes:
 

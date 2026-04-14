@@ -28,7 +28,7 @@ test/fixtures/<feature>/
 4. Write your Playwright tests in `<feature>.spec.ts`.
 5. Run `npm run test:chromium -w @microsoft/fast-html` to verify everything works.
 
-Fixtures are auto-discovered by the Vite config in `../vite.config.ts` — adding a new directory with the required files is enough to make it available.
+Fixtures are auto-discovered by scanning for directories that contain `entry.html`, `templates.html`, and `state.json`. Both the build script and the Vite config pick up new fixtures automatically — no registration step is needed.
 
 ---
 
@@ -224,9 +224,24 @@ After editing `entry.html`, `templates.html`, or `state.json`, you **must** rege
 npm run build:fixtures -w @microsoft/fast-html
 ```
 
-This invokes `@microsoft/fast-build` for each fixture with the `--templates`, `--entry`, `--state`, and `--output` flags, then injects the `<f-template>` declarations from `templates.html` before the `<script>` tag in the generated output.
+This invokes `@microsoft/fast-build` for each auto-discovered fixture with the `--templates`, `--entry`, `--state`, and `--output` flags, then injects the `<f-template>` declarations from `templates.html` before the `<script>` tag in the generated output. Fixtures are discovered automatically by scanning for directories that contain `entry.html`, `templates.html`, and `state.json`.
 
 > **Tip:** If you're iterating on a fixture, use `npm run dev -w @microsoft/fast-html` to start the Vite dev server with file watching. But remember to run `build:fixtures` before committing — the Vite dev server uses the generated `index.html`.
+
+### WebUI integration
+
+The same fixtures are also validated against `@microsoft/webui` to ensure cross-renderer compatibility. To build and test fixtures with webui:
+
+```bash
+# Build fixtures with webui and run Playwright tests
+npm run test:webui-integration -w @microsoft/fast-html
+
+# Or run the steps separately
+npm run build:fixtures:webui -w @microsoft/fast-html
+npm exec -w @microsoft/fast-html -- playwright test --config=playwright.webui.config.ts
+```
+
+The webui build step (`scripts/build-fixtures-with-webui.js`) extracts `<f-template>` elements, builds each fixture with `webui build --plugin=fast`, renders the output with `state.json`, and writes the result to `temp/integrations/webui/fixtures/`. The existing Playwright specs then run against this output.
 
 ---
 

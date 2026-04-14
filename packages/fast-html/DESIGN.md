@@ -451,7 +451,7 @@ test/fixtures/<feature>/
 └── templates.html       # Declarative <f-template> definitions
 ```
 
-Fixtures are auto-discovered by `test/vite.config.ts` — adding a new directory is enough for Vite to serve it. However, `index.html` is only generated for fixtures registered in `scripts/build-fixtures.js`.
+Fixtures are auto-discovered by scanning for directories that contain `entry.html`, `templates.html`, and `state.json`. Both the build script and the Vite config pick up new fixtures automatically — no registration step is needed.
 
 For fixtures that use SSR-style pre-rendered HTML, `scripts/build-fixtures.js` invokes `@microsoft/fast-build` to generate `index.html` from `entry.html`, `templates.html`, and `state.json`.
 
