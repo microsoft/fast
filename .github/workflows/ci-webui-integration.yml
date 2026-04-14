@@ -4,13 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - main
-    - releases/*
-  pull_request:
-    branches:
-    - main
-    - releases/*
-    - features/*
+    - webui/*
 
 permissions:
   contents: read
