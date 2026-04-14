@@ -104,40 +104,24 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 
 The `data-fe-c` compact marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
 
-### Dataset Attribute Bindings — `dataset.propertyName`
+### `data-*` Attributes
 
-FAST elements follow the [MDN `HTMLElement.dataset`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset) convention: camelCase property names (e.g. `dateOfBirth`) correspond to kebab-case `data-*` HTML attributes (e.g. `data-date-of-birth`).
+`data-*` attributes are treated the same as any other HTML attribute — the full attribute name is lowercased and used as a flat top-level state key with hyphens preserved. No camelCase conversion or `dataset` nesting is performed.
 
 #### Passing `data-*` attributes to custom elements
-
-When a custom element receives `data-*` attributes, the renderer groups them under a nested `"dataset"` key in the child state so that `{{dataset.X}}` bindings in the shadow template resolve naturally:
 
 ```html
 <!-- Entry HTML -->
 <test-el data-date-of-birth="{{dob}}"></test-el>
 
 <!-- Shadow template of test-el -->
-<div data-date-of-birth="{{dataset.dateOfBirth}}"></div>
+<div data-date-of-birth="{{data-date-of-birth}}"></div>
 ```
 
-With parent state `{"dob": "1990-01-01"}`, the shadow template receives child state `{"dataset": {"dateOfBirth": "1990-01-01"}}` and renders:
+With parent state `{"dob": "1990-01-01"}`, the shadow template receives child state `{"data-date-of-birth": "1990-01-01"}` and renders:
 
 ```html
 <div data-date-of-birth="1990-01-01" data-fe-c-0-1></div>
-```
-
-The `data-*` → `dataset.*` mapping uses the same camelCase conversion as the browser: `data-date-of-birth` → `dataset.dateOfBirth`.
-
-#### Using `{{dataset.X}}` bindings
-
-`{{dataset.X}}` is ordinary dot-notation: it reads `state["dataset"]["X"]`. The `dataset` key must be present in state, either from a `data-*` attribute on the enclosing custom element or from a state object you supply directly:
-
-```html
-<!-- Works when state = {"dataset": {"name": "Alice"}} -->
-<span>{{dataset.name}}</span>
-
-<!-- Works in f-when -->
-<f-when value="{{dataset.active}}">Active</f-when>
 ```
 
 ### Conditional Rendering — `<f-when>`
@@ -380,8 +364,8 @@ Attributes on a custom element become the state passed to its template:
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
 | `selected-user-id="42"` | `{"selected-user-id": "42"}` |
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
-| `data-date-of-birth="1990-01-01"` | `{"dataset": {"dateOfBirth": "1990-01-01"}}` |
-| `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
+| `data-date-of-birth="1990-01-01"` | `{"data-date-of-birth": "1990-01-01"}` |
+| `data-date-of-birth="{{dob}}"` | `{"data-date-of-birth": <value of dob from parent state>}` |
 | `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` — **not rendered as an HTML attribute** |
 | `@click="{handler()}"` | *(skipped — client-side only)* |
 | `f-ref="{video}"` | *(skipped — client-side only)* |
@@ -398,7 +382,7 @@ Attributes on a custom element become the state passed to its template:
 
 **Use `:prop="{{binding}}"` to pass arrays and objects from state without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. Alternatively, JSON array or object literals can be inlined directly as attribute values (e.g. `items='["a","b","c"]'`), which is useful when the data is static and does not come from parent state.
 
-**`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
+**`data-*` attributes** are treated the same as any other attribute — the full name is lowercased with hyphens preserved. `data-date-of-birth` stays `data-date-of-birth` in the child state. No camelCase conversion or `dataset` nesting is performed.
 
 **`@event` bindings and `f-ref`/`f-slotted`/`f-children` directives are skipped entirely** — not added to child state and removed from rendered HTML. They are resolved purely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
