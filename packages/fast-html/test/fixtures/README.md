@@ -14,6 +14,36 @@ Each fixture contains the following contents:
 
 Fixtures are auto-discovered by the Vite config in `../vite.config.ts`. To add a new fixture, create a new directory with the files above — no other changes are needed.
 
+## Hydration readiness
+
+Each fixture's `main.ts` must track when hydration completes so that Playwright tests can wait for the element to be fully interactive before asserting. The standard pattern is:
+
+1. **In `main.ts`**, set a global flag inside the `hydrationComplete()` lifecycle callback:
+
+    ```ts
+    TemplateElement.config({
+        hydrationComplete() {
+            (window as any).hydrationCompleted = true;
+        },
+    }).define({
+        name: "f-template",
+    });
+    ```
+
+    If the fixture already uses `.options()` or `.config()`, chain `.config()` after `.options()` and include `hydrationComplete` in the callback object.
+
+2. **In the spec file**, create the wait **before** navigation so the listener is registered before the page starts loading:
+
+    ```ts
+    const hydrationCompleted = page.waitForFunction(
+        () => (window as any).hydrationCompleted === true,
+    );
+    await page.goto("/fixtures/<fixture-name>/");
+    await hydrationCompleted;
+    ```
+
+    Place this around every `page.goto()` call — including inside `test.beforeEach` hooks — to prevent assertions from running before hydration finishes.
+
 ## Entry HTML attribute guidelines
 
 The `entry.html` file defines the root custom elements that the server-side renderer processes. When writing attribute bindings on root elements, follow these conventions:
