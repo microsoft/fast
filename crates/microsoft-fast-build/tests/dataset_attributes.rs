@@ -1,6 +1,6 @@
 mod common;
 use common::{ok, make_locator};
-use microsoft_fast_build::{render_with_locator, JsonValue, RenderConfig};
+use microsoft_fast_build::{render_with_locator, JsonValue};
 use std::collections::HashMap;
 
 fn state(entries: Vec<(&str, JsonValue)>) -> JsonValue {
@@ -49,7 +49,7 @@ fn test_data_attr_maps_to_dataset_state() {
         r#"<test-el data-date-of-birth="1990-01-01"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"data-date-of-birth="1990-01-01""#), "resolved: {result}");
 }
@@ -67,7 +67,7 @@ fn test_data_attr_from_parent_binding() {
         r#"<test-el data-date-of-birth="{{dob}}"></test-el>"#,
         &root,
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("1990-01-01"), "content binding: {result}");
 }
@@ -83,7 +83,7 @@ fn test_multiple_data_attrs_in_dataset() {
         r#"<test-el data-first-name="Ada" data-last-name="Lovelace"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains("Ada"), "firstName: {result}");
     assert!(result.contains("Lovelace"), "lastName: {result}");
@@ -100,7 +100,7 @@ fn test_non_data_attrs_remain_top_level() {
         r#"<test-el cls="card" data-id="42"></test-el>"#,
         &empty(),
         &locator,
-        &RenderConfig::default(),
+        None,
     ).unwrap();
     assert!(result.contains(r#"class="card""#), "cls: {result}");
     assert!(result.contains(r#"data-id="42""#), "dataset.id: {result}");

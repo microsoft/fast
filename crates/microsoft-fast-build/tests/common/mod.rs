@@ -1,13 +1,13 @@
-use microsoft_fast_build::{render_template, Locator, JsonValue, RenderError, RenderConfig};
+use microsoft_fast_build::{render_template, Locator, JsonValue, RenderError};
 use std::collections::HashMap;
 
 pub fn ok(template: &str, state: &str) -> String {
-    render_template(template, state, &RenderConfig::default())
+    render_template(template, state, None)
         .unwrap_or_else(|e| panic!("unexpected error: {e}"))
 }
 
 pub fn err(template: &str, state: &str) -> RenderError {
-    render_template(template, state, &RenderConfig::default())
+    render_template(template, state, None)
         .expect_err("expected an error but rendering succeeded")
 }
 
