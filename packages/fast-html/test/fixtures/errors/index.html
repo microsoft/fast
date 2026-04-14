@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title>Errors</title>
+    </head>
+    <body>
+        <test-element-no-template></test-element-no-template>
+        <test-element-multiple-templates></test-element-multiple-templates>
+        <f-template name="test-element-no-template">
+            <span>No template element provided</span>
+        </f-template>
+        <f-template name="test-element-multiple-templates">
+            <template><span>First template</span></template>
+            <template><span>Second template</span></template>
+        </f-template>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
