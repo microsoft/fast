@@ -140,6 +140,42 @@ The `data-*` → `dataset.*` mapping uses the same camelCase conversion as the b
 <f-when value="{{dataset.active}}">Active</f-when>
 ```
 
+### ARIA Attribute Bindings — `ariaPropertyName`
+
+ARIA attributes follow the [Element ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention: camelCase property names (e.g. `ariaDisabled`) correspond to `aria-*` HTML attributes (e.g. `aria-disabled`).
+
+#### Passing `aria-*` attributes to custom elements
+
+When a custom element receives `aria-*` attributes, the renderer converts them to their camelCase property name and stores them as top-level state keys using a static lookup table:
+
+```html
+<!-- Entry HTML -->
+<test-el aria-label="Close dialog" aria-disabled="true"></test-el>
+
+<!-- Shadow template of test-el -->
+<button aria-label="{{ariaLabel}}" aria-disabled="{{ariaDisabled}}">×</button>
+```
+
+The shadow template receives child state `{"ariaLabel": "Close dialog", "ariaDisabled": "true"}`.
+
+A lookup table is used instead of algorithmic conversion because ARIA attribute names do not place dashes at word boundaries — for example, `aria-valuenow` (not `aria-value-now`) maps to `ariaValueNow`.
+
+### HTML Attribute-to-Property Mappings
+
+Some HTML attributes have DOM property names that differ from their attribute names (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`). When a custom element receives these attributes, the renderer converts them to their camelCase property name:
+
+```html
+<!-- Entry HTML -->
+<test-el tabindex="0" readonly="true"></test-el>
+
+<!-- Shadow template of test-el -->
+<input tabindex="{{tabIndex}}" readonly="{{readOnly}}">
+```
+
+The shadow template receives child state `{"tabIndex": "0", "readOnly": "true"}`.
+
+Only attributes where the property name differs are in the lookup table. Attributes like `disabled`, `title`, and `hidden` whose attribute and property names are identical pass through as-is.
+
 ### Conditional Rendering — `<f-when>`
 
 ```html
@@ -382,6 +418,11 @@ Attributes on a custom element become the state passed to its template:
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
 | `data-date-of-birth="1990-01-01"` | `{"dataset": {"dateOfBirth": "1990-01-01"}}` |
 | `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
+| `aria-disabled="true"` | `{"ariaDisabled": "true"}` |
+| `aria-label="{{label}}"` | `{"ariaLabel": <value of label from parent state>}` |
+| `tabindex="0"` | `{"tabIndex": "0"}` |
+| `readonly="true"` | `{"readOnly": "true"}` |
+| `contenteditable="true"` | `{"contentEditable": "true"}` |
 | `:myProp="{{expr}}"` | `{"myprop": <resolved value>}` — **not rendered as an HTML attribute** |
 | `@click="{handler()}"` | *(skipped — client-side only)* |
 | `f-ref="{video}"` | *(skipped — client-side only)* |
@@ -399,6 +440,10 @@ Attributes on a custom element become the state passed to its template:
 **Use `:prop="{{binding}}"` to pass arrays and objects from state without polluting HTML attributes** — the `:` prefix causes the attribute to be stripped from the rendered HTML while still forwarding the resolved value (which can be an array or object) into the child element's rendering state. Alternatively, JSON array or object literals can be inlined directly as attribute values (e.g. `items='["a","b","c"]'`), which is useful when the data is static and does not come from parent state.
 
 **`data-*` attributes** are always grouped under a nested `"dataset"` key. `data_attr_to_dataset_key` returns the full dot-notation path (e.g. `"dataset.dateOfBirth"`), which is split on `.` when building the nested state, making `{{dataset.X}}` bindings work naturally in shadow templates.
+
+**`aria-*` attributes** are converted to their camelCase ARIA property name (e.g. `aria-disabled` → `ariaDisabled`, `aria-valuenow` → `ariaValueNow`) using a static lookup table, following the [Element ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention. Unrecognised `aria-*` attributes fall through to the default lowercased-key path.
+
+**HTML attributes with mismatched property names** (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`, `contenteditable` → `contentEditable`) are converted to their camelCase DOM property name using a static lookup table. Only attributes where the property name differs are included — attributes like `disabled`, `title`, and `hidden` pass through as-is.
 
 **`@event` bindings and `f-ref`/`f-slotted`/`f-children` directives are skipped entirely** — not added to child state and removed from rendered HTML. They are resolved purely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
