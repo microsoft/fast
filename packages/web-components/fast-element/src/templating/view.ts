@@ -81,10 +81,6 @@ export interface SyntheticView extends View {
     dispose(): void;
 }
 
-// A singleton Range instance used to efficiently remove ranges of DOM nodes.
-// See the implementation of HTMLView below for further details.
-const range = document.createRange();
-
 /**
  * The standard View implementation, which also implements ElementView and SyntheticView.
  * @public
@@ -251,7 +247,7 @@ export class HTMLView implements ElementView, SyntheticView {
     }
 
     /**
-     * Efficiently disposes of a contiguous range of synthetic view instances.
+     * Disposes of a contiguous range of synthetic view instances.
      * @param views - A contiguous range of views to be disposed.
      */
     public static disposeContiguousBatch(views: SyntheticView[]): void {
@@ -259,18 +255,9 @@ export class HTMLView implements ElementView, SyntheticView {
             return;
         }
 
-        range.setStartBefore(views[0].firstChild);
-        range.setEndAfter(views[views.length - 1].lastChild);
-        range.deleteContents();
-
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            const view = views[i] as any;
-            const behaviors = view.behaviors as Behavior[];
-            const oldSource = view.source;
-
-            for (let j = 0, jj = behaviors.length; j < jj; ++j) {
-                behaviors[j].unbind(oldSource);
-            }
+            const view = views[i];
+            view.dispose();
         }
     }
 }
