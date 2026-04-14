@@ -222,13 +222,9 @@ async function runBuild(args) {
     // Render
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
-        if (attributeNameStrategy !== "none") {
-            rendered = wasm.render_entry_with_templates_and_config(
-                entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy
-            );
-        } else {
-            rendered = wasm.render_entry_with_templates(entryContent, JSON.stringify(templatesMap), stateContent);
-        }
+        rendered = wasm.render_entry_with_templates_and_config(
+            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy
+        );
     } else {
         rendered = wasm.render(entryContent, stateContent);
     }
