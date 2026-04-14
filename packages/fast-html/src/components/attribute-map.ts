@@ -27,7 +27,9 @@ export class AttributeMap {
 
     public defineProperties(): void {
         const propertyNames = this.schema.getRootProperties();
-        const existingAccessors = Observable.getAccessors(this.classPrototype);
+        const existingAccessorNames = new Set(
+            Observable.getAccessors(this.classPrototype).map(a => a.name),
+        );
 
         for (const propertyName of propertyNames) {
             const propertySchema = this.schema.getSchema(propertyName);
@@ -46,7 +48,7 @@ export class AttributeMap {
             }
 
             // Skip if the property already has an accessor (from @attr or @observable)
-            if (existingAccessors.some(accessor => accessor.name === propertyName)) {
+            if (existingAccessorNames.has(propertyName)) {
                 continue;
             }
 
@@ -58,11 +60,13 @@ export class AttributeMap {
 
             Observable.defineProperty(this.classPrototype, attrDef);
 
-            // Push to the existing observedAttributes array on the class.
-            // For all f-template-registered elements, registry.define() (which causes
-            // the browser to cache observedAttributes) is called AFTER this method runs.
-            // Mutating the existing array reference ensures the browser observes these
-            // attributes, enabling setAttribute() → attributeChangedCallback() → template update.
+            // Mutate the existing observedAttributes array on the class.
+            // FAST's FASTElementDefinition sets observedAttributes via
+            // Reflect.defineProperty with a concrete array value (non-configurable,
+            // non-writable), so the descriptor cannot be replaced. However, the
+            // array itself is mutable, and pushing into it works because
+            // registry.define() — which causes the browser to snapshot
+            // observedAttributes — is called AFTER this method runs.
             const existingObservedAttrs: string[] | undefined = (
                 this.classPrototype.constructor as any
             ).observedAttributes;
@@ -80,6 +84,18 @@ export class AttributeMap {
                 (this.definition.propertyLookup as Record<string, AttributeDefinition>)[
                     propertyName
                 ] = attrDef;
+
+                const attrs = (this.definition as any).attributes;
+                if (
+                    Array.isArray(attrs) &&
+                    !attrs.some(
+                        (existing: AttributeDefinition) =>
+                            existing.name === attrDef.name ||
+                            existing.attribute === attrDef.attribute,
+                    )
+                ) {
+                    attrs.push(attrDef);
+                }
             }
         }
     }

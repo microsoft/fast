@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("AttributeMap", async () => {
+test.describe("AttributeMap", () => {
     test.beforeEach(async ({ page }) => {
         await page.goto("/fixtures/attribute-map/");
         await page.waitForSelector("attribute-map-test-element");
