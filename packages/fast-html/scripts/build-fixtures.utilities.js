@@ -1,11 +1,31 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+
+/**
+ * @typedef {{ name: string, args?: string[] }} FixtureEntry
+ */
+
+/**
+ * Convert a `fast-build.config.json` object into CLI arguments.
+ * Each key-value pair becomes `--key=value`.
+ * @param {Record<string, string>} config
+ * @returns {string[]}
+ */
+function configToArgs(config) {
+    return Object.entries(config).map(([key, value]) => `--${key}=${value}`);
+}
 
 /**
  * Auto-discover fixture directories that contain the required build files
  * (entry.html, templates.html, and state.json).
+ *
+ * If a fixture directory contains a `fast-build.config.json` file, its
+ * key-value pairs are converted to CLI arguments for that fixture.
+ * For example, `{ "attribute-name-strategy": "camelCase" }` becomes
+ * `--attribute-name-strategy=camelCase`.
+ *
  * @param {string} fixturesDir - Absolute path to the fixtures directory.
- * @returns {string[]} Sorted array of fixture directory names.
+ * @returns {FixtureEntry[]} Sorted array of fixture entries.
  */
 export function discoverFixtures(fixturesDir) {
     return readdirSync(fixturesDir, { withFileTypes: true })
@@ -18,8 +38,16 @@ export function discoverFixtures(fixturesDir) {
                 existsSync(join(dir, "state.json"))
             );
         })
-        .map(entry => entry.name)
-        .sort();
+        .map(entry => {
+            const dir = join(fixturesDir, entry.name);
+            const configPath = join(dir, "fast-build.config.json");
+            if (existsSync(configPath)) {
+                const config = JSON.parse(readFileSync(configPath, "utf8"));
+                return { name: entry.name, args: configToArgs(config) };
+            }
+            return { name: entry.name };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**

@@ -225,7 +225,7 @@ pub(crate) fn count_tag_attribute_bindings(tag: &str) -> (usize, usize) {
 
 /// Convert a kebab-case string to camelCase.
 /// "date-of-birth" → "dateOfBirth", "name" → "name"
-fn kebab_to_camel(s: &str) -> String {
+pub(crate) fn kebab_to_camel(s: &str) -> String {
     let mut result = String::with_capacity(s.len());
     let mut next_upper = false;
     for ch in s.chars() {
