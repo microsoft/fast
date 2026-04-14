@@ -1,11 +1,19 @@
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+
+/**
+ * @typedef {{ name: string, args?: string[] }} FixtureEntry
+ */
 
 /**
  * Auto-discover fixture directories that contain the required build files
  * (entry.html, templates.html, and state.json).
+ *
+ * If a fixture directory contains a `fast-build.config.json` file, its
+ * `"args"` array is included as extra CLI arguments for that fixture.
+ *
  * @param {string} fixturesDir - Absolute path to the fixtures directory.
- * @returns {string[]} Sorted array of fixture directory names.
+ * @returns {FixtureEntry[]} Sorted array of fixture entries.
  */
 export function discoverFixtures(fixturesDir) {
     return readdirSync(fixturesDir, { withFileTypes: true })
@@ -18,8 +26,16 @@ export function discoverFixtures(fixturesDir) {
                 existsSync(join(dir, "state.json"))
             );
         })
-        .map(entry => entry.name)
-        .sort();
+        .map(entry => {
+            const dir = join(fixturesDir, entry.name);
+            const configPath = join(dir, "fast-build.config.json");
+            if (existsSync(configPath)) {
+                const config = JSON.parse(readFileSync(configPath, "utf8"));
+                return { name: entry.name, args: config.args || [] };
+            }
+            return { name: entry.name };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /**
