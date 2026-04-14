@@ -9,6 +9,7 @@ use crate::attribute::{
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
     data_attr_to_dataset_key,
 };
+use crate::attribute_lookup::{aria_attr_to_property_key, html_attr_to_property_key};
 use crate::error::{RenderError, template_context};
 use crate::node::render_node;
 use crate::locator::Locator;
@@ -266,6 +267,8 @@ pub fn render_custom_element(
     //   - `@event`, `?bool`, `f-ref`, `f-slotted`, `f-children` → skipped entirely
     //   - `:prop="{{expr}}"` → resolved and added to state under `prop`; not rendered
     //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
+    //   - `aria-*` → camelCase property name via lookup table (ARIA reflection)
+    //   - HTML attrs with mismatched property names → camelCase via lookup table
     //   - Anything else → lowercased key, string or resolved `JsonValue` as value
     fn build_attr_state(
         attrs: &[(String, Option<String>)],
@@ -290,7 +293,8 @@ pub fn render_custom_element(
                 continue;
             }
             let json_val = attribute_to_json_value(value.as_ref(), root, loop_vars);
-            if let Some(path) = data_attr_to_dataset_key(attr_name) {
+            let lowered = attr_name.to_lowercase();
+            if let Some(path) = data_attr_to_dataset_key(&lowered) {
                 if let Some((group, prop)) = path.split_once('.') {
                     let group_val = state_map
                         .entry(group.to_string())
@@ -299,9 +303,12 @@ pub fn render_custom_element(
                         map.insert(prop.to_string(), json_val);
                     }
                 }
+            } else if let Some(key) = aria_attr_to_property_key(&lowered) {
+                state_map.insert(key.to_string(), json_val);
+            } else if let Some(key) = html_attr_to_property_key(&lowered) {
+                state_map.insert(key.to_string(), json_val);
             } else {
-                let key = attr_name.to_lowercase();
-                state_map.insert(key, json_val);
+                state_map.insert(lowered, json_val);
             }
         }
         JsonValue::Object(state_map)
