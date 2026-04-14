@@ -230,7 +230,7 @@ TemplateElement.options({
     "my-element": {
         attributeMap: "all",
     },
-});
+}).define({ name: "f-template" });
 ```
 
 With the template:
