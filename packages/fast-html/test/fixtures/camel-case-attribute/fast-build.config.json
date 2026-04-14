@@ -1,0 +1,3 @@
+{
+    "args": ["--attribute-name-strategy=camelCase"]
+}
