@@ -217,6 +217,35 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
+#### `attributeMap`
+
+When `attributeMap: "all"` is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties.
+
+The **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
+
+Properties already decorated with `@attr` or `@observable` on the class are left untouched.
+
+```typescript
+TemplateElement.options({
+    "my-element": {
+        attributeMap: "all",
+    },
+}).define({ name: "f-template" });
+```
+
+With the template:
+
+```html
+<f-template name="my-element">
+    <template>
+        <p>{{greeting}}</p>
+        <p>{{first-name}}</p>
+    </template>
+</f-template>
+```
+
+This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically.
+
 ### Syntax
 
 All bindings use a handlebars-like syntax.
