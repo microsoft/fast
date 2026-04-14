@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("f-template", async () => {
     test("create a non-binding attribute", async ({ page }) => {
         await page.goto("/fixtures/attribute/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const customElementInput = customElement.locator("input");
@@ -10,6 +11,7 @@ test.describe("f-template", async () => {
     });
     test("create an attribute binding", async ({ page }) => {
         await page.goto("/fixtures/attribute/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -26,6 +28,7 @@ test.describe("f-template", async () => {
     });
     test("create a property to attribute binding", async ({ page }) => {
         await page.goto("/fixtures/attribute/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element-property");
 
@@ -40,6 +43,7 @@ test.describe("f-template", async () => {
     });
     test("create an attribute binding with an expression", async ({ page }) => {
         await page.goto("/fixtures/attribute/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = await page.locator("test-element-expression");
         const customElementInput = await customElement.locator("input");
