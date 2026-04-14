@@ -106,6 +106,18 @@ RenderableFASTElement(TestElementAnd).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+export class TestElementWhenFalseRepeat extends FASTElement {
+    @attr({ mode: "boolean" })
+    show: boolean = false;
+
+    @observable
+    list: Array<string> = ["Alpha", "Beta", "Gamma"];
+}
+RenderableFASTElement(TestElementWhenFalseRepeat).defineAsync({
+    name: "test-element-when-false-repeat",
+    templateOptions: "defer-and-hydrate",
+});
+
 export class TestElementEvent extends FASTElement {
     @attr({ mode: "boolean" })
     show: boolean = false;

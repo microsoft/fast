@@ -50,6 +50,8 @@
             <!--fe-b$$end$$1$$when-1$$fe-b-->
             <!--fe-b$$start$$2$$when-2$$fe-b--><!--fe-b$$end$$2$$when-2$$fe-b-->
         </div></template></nested-when>
+        <!-- when false with repeat -->
+        <test-element-when-false-repeat id="when-false-repeat"><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b--></template></test-element-when-false-repeat>
         <!-- event -->
         <test-element-event id="event-show" show><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b--><button data-fe-c-0-1>Click me</button><!--fe-b$$end$$0$$when-0$$fe-b--></template></test-element-event>
         <test-element-event id="event-hide"><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b--></template></test-element-event>
@@ -119,6 +121,10 @@
             </f-when>
         </div>
     </template>
+</f-template>
+<!-- when false with repeat -->
+<f-template name="test-element-when-false-repeat">
+    <template><f-when value="{{show}}"><ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></f-when></template>
 </f-template>
 <!-- event -->
 <f-template name="test-element-event">
