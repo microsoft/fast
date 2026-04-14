@@ -34,6 +34,7 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 ### Example projects
 
 - `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns.
+- `examples/webui-todo-app/` — A To-Do app demonstrating FAST declarative HTML with `@microsoft/webui` prerendering and hydration.
 - `examples/ssr/` — Server-side rendering example using `@microsoft/fast-ssr`.
 
 ## Skills

@@ -1,0 +1,11 @@
+<template shadowrootmode="open" @click="{onClick(e)}">
+    <div class="item">
+        <button type="button" class="toggle" data-action="toggle" title="Toggle complete">
+            <if condition="state == 'done'"> <span class="check">&#10003;</span> </if>
+        </button>
+        <span class="title">{{ title }}</span>
+        <button type="button" class="delete" data-action="delete" title="Delete">
+            &times;
+        </button>
+    </div>
+</template>

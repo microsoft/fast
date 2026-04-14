@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html dir="{{textdirection}}" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{{ title }}</title>
+        <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 32px;
+            background: #f8f9fa;
+            color: #212529;
+        }
+        </style>
+    </head>
+
+    <body>
+        <todo-app title="{{title}}"></todo-app>
+
+        <script type="module" src="/index.js"></script>
+    </body>
+</html>
