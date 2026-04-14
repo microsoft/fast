@@ -1,9 +1,9 @@
 mod common;
 use common::{make_locator, empty_root};
 use microsoft_fast_build::{
-    render_with_locator, render_with_locator_and_config,
-    render_template_with_locator_and_config,
-    render_entry_with_locator_and_config,
+    render_with_locator,
+    render_template_with_locator,
+    render_entry_with_locator,
     RenderConfig, AttributeNameStrategy, JsonValue,
 };
 use std::collections::HashMap;
@@ -21,7 +21,7 @@ fn none_config() -> RenderConfig {
 #[test]
 fn test_camelcase_dashed_attribute() {
     let locator = make_locator(&[("my-el", "<span>{{fooBar}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
@@ -33,7 +33,7 @@ fn test_camelcase_dashed_attribute() {
 #[test]
 fn test_camelcase_multi_dashed_attribute() {
     let locator = make_locator(&[("my-el", "<span>{{myCustomProp}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el my-custom-prop="world"></my-el>"#,
         &empty_root(),
         &locator,
@@ -45,7 +45,7 @@ fn test_camelcase_multi_dashed_attribute() {
 #[test]
 fn test_camelcase_no_dash_unchanged() {
     let locator = make_locator(&[("my-el", "<span>{{disabled}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el disabled></my-el>"#,
         &empty_root(),
         &locator,
@@ -59,7 +59,7 @@ fn test_camelcase_no_dash_unchanged() {
 #[test]
 fn test_camelcase_aria_uses_lookup() {
     let locator = make_locator(&[("my-el", "<span>{{ariaDisabled}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el aria-disabled="true"></my-el>"#,
         &empty_root(),
         &locator,
@@ -71,7 +71,7 @@ fn test_camelcase_aria_uses_lookup() {
 #[test]
 fn test_camelcase_html_attr_uses_lookup() {
     let locator = make_locator(&[("my-el", "<span>{{tabIndex}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el tabindex="5"></my-el>"#,
         &empty_root(),
         &locator,
@@ -83,7 +83,7 @@ fn test_camelcase_html_attr_uses_lookup() {
 #[test]
 fn test_camelcase_data_attr_uses_dataset() {
     let locator = make_locator(&[("my-el", "<span>{{dataset.dateOfBirth}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el data-date-of-birth="1990"></my-el>"#,
         &empty_root(),
         &locator,
@@ -97,7 +97,7 @@ fn test_camelcase_data_attr_uses_dataset() {
 #[test]
 fn test_none_strategy_dashed_attr_stays_dashed() {
     let locator = make_locator(&[("my-el", "<span>{{foo-bar}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
@@ -109,7 +109,7 @@ fn test_none_strategy_dashed_attr_stays_dashed() {
 #[test]
 fn test_none_strategy_multi_dashed_attr_preserved() {
     let locator = make_locator(&[("my-el", "<span>{{selected-user-id}}</span>")]);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el selected-user-id="42"></my-el>"#,
         &empty_root(),
         &locator,
@@ -127,8 +127,9 @@ fn test_default_config_matches_none() {
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
-    let result_none = render_with_locator_and_config(
+    let result_none = render_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         &empty_root(),
         &locator,
@@ -146,7 +147,7 @@ fn test_camelcase_with_binding_attr() {
     let mut root = HashMap::new();
     root.insert("source".to_string(), JsonValue::String("resolved".into()));
     let root_val = JsonValue::Object(root);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el my-prop="{{source}}"></my-el>"#,
         &root_val,
         &locator,
@@ -161,7 +162,7 @@ fn test_camelcase_with_binding_attr() {
 fn test_camelcase_template_api() {
     let locator = make_locator(&[("my-el", "<span>{{fooBar}}</span>")]);
     let config = camel_config();
-    let result = render_template_with_locator_and_config(
+    let result = render_template_with_locator(
         r#"<my-el foo-bar="hello"></my-el>"#,
         r#"{}"#,
         &locator,
@@ -176,7 +177,7 @@ fn test_camelcase_template_api() {
 fn test_camelcase_entry_level() {
     let locator = make_locator(&[("my-el", "<span>{{fooBar}}</span>")]);
     let config = camel_config();
-    let result = render_entry_with_locator_and_config(
+    let result = render_entry_with_locator(
         r#"<my-el foo-bar="static"></my-el>"#,
         &empty_root(),
         &locator,
@@ -195,7 +196,7 @@ fn test_camelcase_nested_custom_elements() {
         ("my-inner", "<span>{{innerProp}}</span>"),
     ]);
     let config = camel_config();
-    let result = render_template_with_locator_and_config(
+    let result = render_template_with_locator(
         r#"<my-outer outer-prop="hello"></my-outer>"#,
         r#"{}"#,
         &locator,
@@ -213,7 +214,7 @@ fn test_camelcase_colon_prop_stays_lowercased() {
     let mut root = HashMap::new();
     root.insert("source".to_string(), JsonValue::String("val".into()));
     let root_val = JsonValue::Object(root);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el :myProp="{{source}}"></my-el>"#,
         &root_val,
         &locator,
@@ -231,7 +232,7 @@ fn test_camelcase_attr_overrides_root_state() {
     let mut root = HashMap::new();
     root.insert("fooBar".to_string(), JsonValue::String("from root".into()));
     let root_val = JsonValue::Object(root);
-    let result = render_with_locator_and_config(
+    let result = render_with_locator(
         r#"<my-el foo-bar="from attr"></my-el>"#,
         &root_val,
         &locator,

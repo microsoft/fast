@@ -1,6 +1,6 @@
 mod common;
 use common::make_locator;
-use microsoft_fast_build::{render_with_locator, JsonValue};
+use microsoft_fast_build::{render_with_locator, JsonValue, RenderConfig};
 use std::collections::HashMap;
 
 fn hand_root(entries: Vec<(&str, JsonValue)>) -> JsonValue {
@@ -27,6 +27,7 @@ fn test_hydration_simple_content_binding() {
         r#"<test-element text="Hello world"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // {{text}} = binding 0, name = "text-0"
@@ -49,6 +50,7 @@ fn test_hydration_multiple_content_bindings() {
         r#"<test-element a="Hello" b="World"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains(
@@ -71,6 +73,7 @@ fn test_hydration_attribute_binding_compact() {
         r#"<test-element type="checkbox"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
@@ -87,6 +90,7 @@ fn test_hydration_event_binding_compact() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
@@ -106,6 +110,7 @@ fn test_hydration_multiple_event_bindings() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "first button: {result}");
@@ -122,6 +127,7 @@ fn test_hydration_f_slotted_stripped() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
@@ -138,6 +144,7 @@ fn test_hydration_f_ref_stripped() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
@@ -154,6 +161,7 @@ fn test_hydration_f_children_stripped() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
@@ -174,6 +182,7 @@ fn test_hydration_f_slotted_with_double_brace_attr() {
         r#"<test-element cls="active"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-2"), "compact marker with count 2: {result}");
@@ -195,6 +204,7 @@ fn test_hydration_attr_and_content_binding() {
         r#"<test-element cls="foo" text="bar"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "attr compact marker: {result}");
@@ -216,6 +226,7 @@ fn test_hydration_f_when_truthy() {
         r#"<test-element show="true"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // Outer when binding: index 0, name = "when-0"
@@ -233,6 +244,7 @@ fn test_hydration_f_when_falsy() {
         r#"<test-element show="{{show}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow_start = result.find(r#"shadowroot="open">"#).expect("no shadow template");
@@ -260,6 +272,7 @@ fn test_hydration_content_then_when() {
         r#"<test-element before="A" show="true" after="B"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // binding 0 = {{before}} → "before-0", binding 1 = f-when → "when-1", binding 2 = {{after}} → "after-2"
@@ -291,6 +304,7 @@ fn test_hydration_f_repeat_basic() {
         r#"<test-element list="{{list}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // Outer scope: f-repeat is binding 0, name = "repeat-0"
@@ -324,6 +338,7 @@ fn test_hydration_f_repeat_with_inner_when() {
         r#"<test-element list="{{list}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // Outer scope: f-repeat is binding 0, name = "repeat-0"
@@ -349,6 +364,7 @@ fn test_hydration_f_repeat_empty() {
         r#"<test-element list="{{list}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
@@ -369,6 +385,7 @@ fn test_hydration_f_ref_compact() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "compact marker: {result}");
@@ -386,6 +403,7 @@ fn test_hydration_f_slotted_compact() {
         r#"<test-element></test-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("data-fe-c-0-1"), "first slot: {result}");
@@ -409,6 +427,7 @@ fn test_hydration_repeat_index() {
         r#"<test-element list="{{list}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("<!--fe-b$$start$$0$$$index-0$$fe-b-->0<!--fe-b$$end$$0$$$index-0$$fe-b-->"),
@@ -432,6 +451,7 @@ fn test_hydration_nested_custom_elements() {
         r#"<parent-element></parent-element>"#,
         &empty(),
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // Both elements have their own shadow templates
@@ -455,6 +475,7 @@ fn test_hydration_nested_element_attr_binding() {
         r#"<parent-element title="Hi"></parent-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     // child-element has attr binding for label="{{title}}" → data-fe-c-0-1
@@ -473,6 +494,7 @@ fn test_hydration_triple_brace() {
         r#"<test-element html="bold-content"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     assert!(result.contains("<!--fe-b$$start$$0$$html-0$$fe-b-->"), "start: {result}");
@@ -491,6 +513,7 @@ fn test_hydration_bool_attr_true() {
         r#"<test-element show="true"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
@@ -508,6 +531,7 @@ fn test_hydration_bool_attr_false() {
         r#"<test-element show="{{show}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
@@ -524,6 +548,7 @@ fn test_hydration_bool_attr_negation_true() {
         r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
@@ -540,6 +565,7 @@ fn test_hydration_bool_attr_negation_false() {
         r#"<test-element isEnabled="{{isEnabled}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
@@ -558,6 +584,7 @@ fn test_hydration_bool_attr_expression_true() {
         r#"<test-element activeGroup="{{activeGroup}}" currentGroup="{{currentGroup}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
@@ -577,6 +604,7 @@ fn test_hydration_bool_attr_expression_false() {
         r#"<test-element activeGroup="{{activeGroup}}" currentGroup="{{currentGroup}}"></test-element>"#,
         &root,
         &locator,
+        &RenderConfig::default(),
     ).unwrap();
 
     let shadow = extract_shadow(&result);
