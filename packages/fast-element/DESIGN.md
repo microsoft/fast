@@ -127,6 +127,12 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 
 This gives FAST automatic, fine-grained dependency tracking without explicit declarations.
 
+##### Observer disposal on unbind
+
+Every expression observer registers for disposal when its controller unbinds (via `controller.onUnbind(this)`). When the view is unbound — for example, when a parent `when` directive tears down a child element — the observer's `dispose()` method unsubscribes from all tracked property notifiers, preventing stale notifications from reaching expressions that would evaluate against a null source.
+
+> **Defence-in-depth**: `HTMLBindingDirective.handleChange` and `RenderBehavior.handleChange` also check `controller.isBound` before re-evaluating, providing a secondary guard against any notification that arrives after the view has been unbound.
+
 ---
 
 ### Bindings
@@ -364,15 +370,21 @@ flowchart TD
     ENQ["Updates.enqueue(binding task)"]
     RAF["requestAnimationFrame fires\nUpdates.process()"]
     EVAL["ExpressionNotifier re-evaluates expression"]
+    GUARD{"Controller still bound?"}
     DOM["DOM aspect updated\n(attribute / property / content / event)"]
+    DROP["Notification dropped\n(stale observer)"]
 
     SET --> NOTIFY
     NOTIFY --> SUBS
     SUBS --> ENQ
     ENQ --> RAF
     RAF --> EVAL
-    EVAL --> DOM
+    EVAL --> GUARD
+    GUARD -->|yes| DOM
+    GUARD -->|no| DROP
 ```
+
+> **Observer disposal on unbind**: All expression observers register for disposal when their controller unbinds. When a view is unbound (e.g., after a parent `when` directive tears down a child element), the observer's `dispose()` method unsubscribes from all tracked property notifiers, eliminating stale subscriptions at the source. The `isBound` guard shown above acts as a secondary defence in `HTMLBindingDirective.handleChange` and `RenderBehavior.handleChange` for any edge case where a notification is already queued before disposal completes.
 
 ---
 

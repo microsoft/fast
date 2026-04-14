@@ -24,7 +24,7 @@ type UpdateTarget = (
     target: Node,
     aspect: string,
     value: any,
-    controller: ViewController
+    controller: ViewController,
 ) => void;
 
 /**
@@ -104,7 +104,7 @@ function updateContent(
     target: ContentTarget,
     aspect: string,
     value: any,
-    controller: ViewController
+    controller: ViewController,
 ): void {
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
@@ -193,7 +193,7 @@ function updateTokenList(
     this: HTMLBindingDirective,
     target: Element,
     aspect: string,
-    value: any
+    value: any,
 ): void {
     const lookup = `${this.id}-t`;
     const state: TokenListState =
@@ -342,7 +342,7 @@ export class HTMLBindingDirective
                 this.targetTagName,
                 this.aspectType,
                 this.targetAspect,
-                sink
+                sink,
             );
         }
 
@@ -374,13 +374,13 @@ export class HTMLBindingDirective
                 target.addEventListener(
                     this.targetAspect,
                     this,
-                    this.dataBinding.options
+                    this.dataBinding.options,
                 );
                 break;
             case DOMAspect.content:
                 controller.onUnbind(this);
             // intentional fall through
-            default:
+            default: {
                 const observer =
                     target[this.data] ??
                     (target[this.data] = this.dataBinding.createObserver(this, this));
@@ -402,9 +402,10 @@ export class HTMLBindingDirective
                     target,
                     this.targetAspect,
                     observer.bind(controller),
-                    controller
+                    controller,
                 );
                 break;
+            }
         }
     }
 
@@ -434,7 +435,7 @@ export class HTMLBindingDirective
             ExecutionContext.setEvent(event);
             const result = this.dataBinding.evaluate(
                 controller.source,
-                controller.context
+                controller.context,
             );
             ExecutionContext.setEvent(null);
 
@@ -449,16 +450,27 @@ export class HTMLBindingDirective
      * Re-evaluates the binding expression via observer.bind() and pushes
      * the new value to the DOM through the updateTarget sink function.
      * This is the reactive update path that keeps the DOM in sync with data.
+     *
+     * Guards against stale notifications: when a view is unbound (e.g., after
+     * a parent `when` directive tears down a child element), observers are
+     * disposed to unsubscribe from tracked properties. This guard provides
+     * additional defence against any notification already queued before
+     * disposal completed.
      * @internal
      */
     handleChange(binding: Expression, observer: ExpressionObserver): void {
-        const target = (observer as any).target;
         const controller = (observer as any).controller;
+
+        if (!controller.isBound) {
+            return;
+        }
+
+        const target = (observer as any).target;
         this.updateTarget!(
             target,
             this.targetAspect,
             observer.bind(controller),
-            controller
+            controller,
         );
     }
 }

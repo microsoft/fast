@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: dispose coupled-lifetime observers on view unbind to eliminate stale subscriptions",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
