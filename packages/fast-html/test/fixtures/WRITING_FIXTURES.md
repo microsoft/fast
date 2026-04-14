@@ -24,12 +24,11 @@ test/fixtures/<feature>/
 
 1. Create a new directory under `test/fixtures/` with a descriptive kebab-case name (e.g., `my-feature/`).
 2. Add the five required files described below.
-3. Register the fixture in `scripts/build-fixtures.js` by adding the directory name to the `fixtures` array.
-4. Run `npm run build:fixtures -w @microsoft/fast-html` to generate `index.html`.
-5. Write your Playwright tests in `<feature>.spec.ts`.
-6. Run `npm run test:chromium -w @microsoft/fast-html` to verify everything works.
+3. Run `npm run build:fixtures -w @microsoft/fast-html` to generate `index.html`.
+4. Write your Playwright tests in `<feature>.spec.ts`.
+5. Run `npm run test:chromium -w @microsoft/fast-html` to verify everything works.
 
-Fixtures are auto-discovered by the Vite config in `../vite.config.ts` — Vite will serve any directory that has an `index.html`. However, the `index.html` is only generated for fixtures listed in `scripts/build-fixtures.js`, so **you must add your fixture name to that file**.
+Fixtures are auto-discovered by the Vite config in `../vite.config.ts` — adding a new directory with the required files is enough to make it available.
 
 ---
 
@@ -225,11 +224,7 @@ After editing `entry.html`, `templates.html`, or `state.json`, you **must** rege
 npm run build:fixtures -w @microsoft/fast-html
 ```
 
-This runs `scripts/build-fixtures.js`, which:
-
-1. Invokes `@microsoft/fast-build` for each registered fixture with the `--templates`, `--entry`, `--state`, and `--output` flags.
-2. Injects the `<f-template>` declarations from `templates.html` before the `<script>` tag in the generated output.
-3. Writes the final pre-rendered HTML to `index.html`.
+This invokes `@microsoft/fast-build` for each fixture with the `--templates`, `--entry`, `--state`, and `--output` flags, then injects the `<f-template>` declarations from `templates.html` before the `<script>` tag in the generated output.
 
 > **Tip:** If you're iterating on a fixture, use `npm run dev -w @microsoft/fast-html` to start the Vite dev server with file watching. But remember to run `build:fixtures` before committing — the Vite dev server uses the generated `index.html`.
 
@@ -238,7 +233,6 @@ This runs `scripts/build-fixtures.js`, which:
 ## Checklist for new fixtures
 
 - [ ] Created fixture directory with all required files
-- [ ] Added fixture name to `scripts/build-fixtures.js` `fixtures` array
 - [ ] Ran `npm run build:fixtures -w @microsoft/fast-html` to generate `index.html`
 - [ ] Wrote Playwright tests in `<feature>.spec.ts`
 - [ ] Tests pass locally with `npm run test:chromium -w @microsoft/fast-html`
