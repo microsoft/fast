@@ -3,8 +3,11 @@ import { expect, type Locator, test } from "@playwright/test";
 test.describe("f-template", () => {
     let element: Locator;
     test.beforeEach(async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/slotted/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         element = page.locator("test-element");
     });
 

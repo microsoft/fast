@@ -454,9 +454,6 @@ ObserverMapSimpleArrayTestElement.defineAsync({
     name: "observer-map-simple-array-test-element",
 });
 
-let hydrationCompleteEmitted = false;
-(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
-
 // Configure TemplateElement with observerMap enabled for this test
 TemplateElement.options({
     "observer-map-test-element": {
@@ -474,7 +471,7 @@ TemplateElement.options({
 })
     .config({
         hydrationComplete() {
-            hydrationCompleteEmitted = true;
+            (window as any).hydrationCompleted = true;
         },
     })
     .define({

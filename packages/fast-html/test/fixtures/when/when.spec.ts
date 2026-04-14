@@ -2,8 +2,11 @@ import { expect, test } from "@playwright/test";
 
 test.describe("f-template", async () => {
     test("create a when directive for a boolean: true", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#show");
         const customElementHide = await page.locator("#hide");
@@ -22,8 +25,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).toHaveText("Hello world");
     });
     test("create a when directive for multiple string cases", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementWorld = await page.locator("#multiple1");
         const customElementPluto = await page.locator("#multiple2");
@@ -51,8 +57,11 @@ test.describe("f-template", async () => {
         await expect(customElementPluto).toHaveText("Hello mars");
     });
     test("create a when directive for a boolean: false", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#show-not");
         const customElementHide = await page.locator("#hide-not");
@@ -61,8 +70,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("Hello world");
     });
     test("create a when directive value uses equals", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#equals-true");
         const customElementHide = await page.locator("#equals-false");
@@ -71,8 +83,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("Equals 3");
     });
     test("create a when directive value uses not equals", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#not-equals-true");
         const customElementHide = await page.locator("#not-equals-false");
@@ -83,8 +98,11 @@ test.describe("f-template", async () => {
     test("create a when directive value uses greater than or equals", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#ge-true");
         const customElementHide = await page.locator("#ge-false");
@@ -93,8 +111,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("Two and Over");
     });
     test("create a when directive value uses greater than", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#gt-true");
         const customElementHide = await page.locator("#gt-false");
@@ -103,8 +124,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("Over two");
     });
     test("create a when directive value uses less than or equals", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#le-true");
         const customElementHide = await page.locator("#le-false");
@@ -113,8 +137,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("Two and Under");
     });
     test("create a when directive value uses less than", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#lt-true");
         const customElementHide = await page.locator("#lt-false");
@@ -123,8 +150,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("Under two");
     });
     test("create a when directive value uses or", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#or-true");
         const customElementHide = await page.locator("#or-false");
@@ -133,8 +163,11 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("This or That");
     });
     test("create a when directive value uses and", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElementShow = await page.locator("#and-true");
         const customElementHide = await page.locator("#and-false");
@@ -188,8 +221,11 @@ test.describe("f-template", async () => {
     });
 
     test("should fire events inside a when directive", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/when/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
         const element = page.locator("#event-show");
         const button = element.locator("button");
 
@@ -218,10 +254,11 @@ test.describe("f-template", async () => {
         test("initial state shows progress and hides error/button/retry", async ({
             page,
         }) => {
-            await page.goto("/fixtures/when/");
-            await page.waitForFunction(() =>
-                (window as any).getHydrationCompleteStatus(),
+            const hydrationCompleted = page.waitForFunction(
+                () => (window as any).hydrationCompleted === true,
             );
+            await page.goto("/fixtures/when/");
+            await hydrationCompleted;
             const element = page.locator("#nested-when");
 
             await expect(element.locator("progress")).toBeVisible();
@@ -232,10 +269,11 @@ test.describe("f-template", async () => {
         test("error state shows error div and retry button, hides progress", async ({
             page,
         }) => {
-            await page.goto("/fixtures/when/");
-            await page.waitForFunction(() =>
-                (window as any).getHydrationCompleteStatus(),
+            const hydrationCompleted = page.waitForFunction(
+                () => (window as any).hydrationCompleted === true,
             );
+            await page.goto("/fixtures/when/");
+            await hydrationCompleted;
             const element = page.locator("#nested-when");
 
             await expect(element.locator("progress")).toBeVisible();
@@ -283,10 +321,11 @@ test.describe("f-template", async () => {
         test("showProgress false shows continue button without disabled", async ({
             page,
         }) => {
-            await page.goto("/fixtures/when/");
-            await page.waitForFunction(() =>
-                (window as any).getHydrationCompleteStatus(),
+            const hydrationCompleted = page.waitForFunction(
+                () => (window as any).hydrationCompleted === true,
             );
+            await page.goto("/fixtures/when/");
+            await hydrationCompleted;
             const element = page.locator("#nested-when");
 
             await expect(element.locator("progress")).toBeVisible();
@@ -306,10 +345,11 @@ test.describe("f-template", async () => {
         test("toggling showProgress switches between progress and button", async ({
             page,
         }) => {
-            await page.goto("/fixtures/when/");
-            await page.waitForFunction(() =>
-                (window as any).getHydrationCompleteStatus(),
+            const hydrationCompleted = page.waitForFunction(
+                () => (window as any).hydrationCompleted === true,
             );
+            await page.goto("/fixtures/when/");
+            await hydrationCompleted;
             const element = page.locator("#nested-when");
 
             await expect(element.locator("progress")).toBeVisible();
@@ -333,10 +373,11 @@ test.describe("f-template", async () => {
         test("toggling error switches between error/retry and normal state", async ({
             page,
         }) => {
-            await page.goto("/fixtures/when/");
-            await page.waitForFunction(() =>
-                (window as any).getHydrationCompleteStatus(),
+            const hydrationCompleted = page.waitForFunction(
+                () => (window as any).hydrationCompleted === true,
             );
+            await page.goto("/fixtures/when/");
+            await hydrationCompleted;
             const element = page.locator("#nested-when");
 
             await expect(element.locator(".error")).toHaveCount(0);

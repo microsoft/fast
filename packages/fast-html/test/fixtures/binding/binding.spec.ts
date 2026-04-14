@@ -2,8 +2,11 @@ import { expect, test } from "@playwright/test";
 
 test.describe("f-template", async () => {
     test("create a binding", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/binding/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElement = page.locator("test-element");
 
@@ -19,8 +22,11 @@ test.describe("f-template", async () => {
         await expect(customElement).toHaveText("Hello pluto");
     });
     test("create an unescaped binding", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/binding/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const customElement = page.locator("test-element-unescaped");
 

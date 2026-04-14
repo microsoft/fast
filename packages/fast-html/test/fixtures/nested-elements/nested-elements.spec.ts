@@ -3,8 +3,11 @@ import type { ItemList } from "./main.js";
 
 test.describe("Nested Elements Hydration", () => {
     test("should hydrate parent elements before child elements", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/nested-elements/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const messages = (await page.evaluate("window.messages")) as string[];
 
@@ -34,8 +37,11 @@ test.describe("Nested Elements Hydration", () => {
     });
 
     test("should pass parent attribute to child elements", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/nested-elements/");
-        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
+        await hydrationCompleted;
 
         const parentElements = page.locator("parent-element");
         const firstParent = parentElements.nth(0);

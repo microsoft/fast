@@ -348,9 +348,6 @@ class DeepMergeTestElement extends FASTElement {
     }
 }
 
-let hydrationCompleteEmitted = false;
-(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
-
 TemplateElement.options({
     "deep-merge-test-element": {
         observerMap: "all",
@@ -358,7 +355,7 @@ TemplateElement.options({
 })
     .config({
         hydrationComplete() {
-            hydrationCompleteEmitted = true;
+            (window as any).hydrationCompleted = true;
         },
     })
     .define({
