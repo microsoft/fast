@@ -41,6 +41,7 @@
 //! | `directive` | `Directive` enum, `next_directive` scanner, directive renderers |
 //! | `content` | `{{expr}}` / `{{{expr}}}` binding renderers and `html_escape` |
 //! | `attribute` | Low-level HTML/attribute string parsing utilities |
+//! | `attribute_lookup` | Static lookup tables mapping ARIA and HTML attribute names to DOM property names |
 //! | `context` | State resolution: dot-path traversal, loop-variable scoping |
 //! | `expression` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 //! | `hydration` | `HydrationScope` — binding index tracking and marker generation |
@@ -56,6 +57,7 @@ mod json;
 mod context;
 mod expression;
 mod attribute;
+mod attribute_lookup;
 mod content;
 mod directive;
 mod hydration;

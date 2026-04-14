@@ -46,6 +46,7 @@ render_template(template, state_str)
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
+| `attribute_lookup.rs` | Static lookup tables mapping ARIA and HTML attribute names to their DOM property names |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
@@ -223,6 +224,8 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
    - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
    - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
+   - `aria-*` attributes (e.g. `aria-disabled`) are **converted to their camelCase ARIA property name** using the `attribute_lookup::aria_attr_to_property_key` lookup table (`aria-disabled` → `ariaDisabled`, `aria-valuenow` → `ariaValueNow`). This follows the [ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention on `Element`. A static lookup table is used instead of algorithmic conversion because ARIA attribute names do not place dashes at word boundaries (e.g. `aria-valuenow`, not `aria-value-now`). Templates reference the camelCase form: `{{ariaDisabled}}`.
+   - HTML attributes whose property name differs from the attribute name (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`) are **converted to their camelCase DOM property name** using the `attribute_lookup::html_attr_to_property_key` lookup table. Attributes whose names already match (e.g. `disabled`, `title`) are not in the table and pass through as-is.
    - No value (boolean attribute) → `Bool(true)`
    - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
    - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
@@ -308,6 +311,33 @@ data-date-of-birth="1990-01-01"  →  state["dataset"]["dateOfBirth"] = "1990-01
 `attribute::data_attr_to_dataset_key` returns the full dot-notation path: `"data-date-of-birth"` → `"dataset.dateOfBirth"`. The caller in `render_custom_element` splits on the first `.` (`"dataset"` / `"dateOfBirth"`) and inserts the value into the nested `"dataset"` map. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
 
 The `dataset.` portion of the binding expression is nothing special to `resolve_value` — it is plain two-level dot-notation that traverses the nested `"dataset"` object built by the attribute mapper.
+
+### ARIA attribute bindings — `attribute_lookup::aria_attr_to_property_key`
+
+ARIA attributes follow the [Element ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention: a camelCase property (e.g. `ariaDisabled`) corresponds to an `aria-*` HTML attribute (e.g. `aria-disabled`).
+
+When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose name matches a known ARIA attribute is converted to its camelCase property name and stored as a top-level state key:
+
+```
+aria-disabled="true"    →  state["ariaDisabled"] = "true"
+aria-valuenow="50"      →  state["ariaValueNow"] = "50"
+```
+
+`attribute_lookup::aria_attr_to_property_key` uses a static lookup table (a `match` block) rather than algorithmic conversion. This is necessary because ARIA attribute names do not use dashes at word boundaries — for example, `aria-valuenow` (not `aria-value-now`) maps to `ariaValueNow`. The lookup table covers all ARIA attributes defined in the [WAI-ARIA specification](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes). Unrecognised `aria-*` attributes fall through to the default lowercased-key path.
+
+### HTML attribute-to-property mappings — `attribute_lookup::html_attr_to_property_key`
+
+Some HTML attributes have DOM property names that differ from their attribute names (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`, `contenteditable` → `contentEditable`).
+
+When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose lowercased name matches the lookup table is stored under its camelCase property name instead:
+
+```
+tabindex="0"             →  state["tabIndex"] = "0"
+readonly="true"          →  state["readOnly"] = "true"
+contenteditable="true"   →  state["contentEditable"] = "true"
+```
+
+`attribute_lookup::html_attr_to_property_key` uses the same static lookup table approach as the ARIA table. Only attributes where the property name differs from the attribute name are included — attributes like `disabled`, `title`, and `hidden` whose names match exactly are not in the table and pass through as-is.
 
 ### `f-when` markers
 
