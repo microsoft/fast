@@ -2,6 +2,21 @@
   "name": "@ni/fast-element",
   "entries": [
     {
+      "date": "Tue, 14 Apr 2026 15:27:53 GMT",
+      "version": "10.1.1",
+      "tag": "@ni/fast-element_v10.1.1",
+      "comments": {
+        "patch": [
+          {
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "package": "@ni/fast-element",
+            "commit": "a210d98c71958b77eeeae1a65f116aad41efac19",
+            "comment": "Update `disposeContiguousBatch` implementation to work around range `deleteContents` bug in Firefox"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 Feb 2026 23:58:32 GMT",
       "version": "10.1.0",
       "tag": "@ni/fast-element_v10.1.0",

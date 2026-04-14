@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Update `disposeContiguousBatch` implementation to work around range `deleteContents` bug in Firefox",
-  "packageName": "@ni/fast-element",
-  "email": "20542556+mollykreis@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

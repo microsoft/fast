@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-element
 
-<!-- This log was last generated on Tue, 03 Feb 2026 23:58:32 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 14 Apr 2026 15:27:53 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.1.1
+
+Tue, 14 Apr 2026 15:27:53 GMT
+
+### Patches
+
+- Update `disposeContiguousBatch` implementation to work around range `deleteContents` bug in Firefox ([ni/fast@a210d98](https://github.com/ni/fast/commit/a210d98c71958b77eeeae1a65f116aad41efac19))
 
 ## 10.1.0
 

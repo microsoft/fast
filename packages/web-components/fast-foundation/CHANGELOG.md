@@ -1,8 +1,16 @@
 # Change Log - @ni/fast-foundation
 
-<!-- This log was last generated on Mon, 16 Mar 2026 14:04:19 GMT and should not be manually modified. -->
+<!-- This log was last generated on Tue, 14 Apr 2026 15:27:53 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 10.2.3
+
+Tue, 14 Apr 2026 15:27:53 GMT
+
+### Patches
+
+- Bump @ni/fast-element to v10.1.1
 
 ## 10.2.2
 

@@ -2,6 +2,21 @@
   "name": "@ni/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 14 Apr 2026 15:27:53 GMT",
+      "version": "10.2.3",
+      "tag": "@ni/fast-foundation_v10.2.3",
+      "comments": {
+        "patch": [
+          {
+            "author": "beachball",
+            "package": "@ni/fast-foundation",
+            "comment": "Bump @ni/fast-element to v10.1.1",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 16 Mar 2026 14:04:19 GMT",
       "version": "10.2.2",
       "tag": "@ni/fast-foundation_v10.2.2",
