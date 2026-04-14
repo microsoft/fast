@@ -5,6 +5,7 @@ test.describe("f-template", async () => {
         test.slow();
 
         await page.goto("/fixtures/children/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const element = page.locator("test-element");
         const listItems = element.locator("li");

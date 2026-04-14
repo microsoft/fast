@@ -454,6 +454,9 @@ ObserverMapSimpleArrayTestElement.defineAsync({
     name: "observer-map-simple-array-test-element",
 });
 
+let hydrationCompleteEmitted = false;
+(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
+
 // Configure TemplateElement with observerMap enabled for this test
 TemplateElement.options({
     "observer-map-test-element": {
@@ -468,8 +471,14 @@ TemplateElement.options({
     "observer-map-simple-array-test-element": {
         observerMap: "all",
     },
-}).define({
-    name: "f-template",
-});
+})
+    .config({
+        hydrationComplete() {
+            hydrationCompleteEmitted = true;
+        },
+    })
+    .define({
+        name: "f-template",
+    });
 
 (window as any).Observable = Observable;

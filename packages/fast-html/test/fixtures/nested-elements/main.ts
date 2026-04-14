@@ -128,6 +128,9 @@ RenderableFASTElement(GrandChildItem).defineAsync({
 });
 
 (window as any).messages = [];
+(window as any).hydrationCompleteEmitted = false;
+(window as any).getHydrationCompleteStatus = () =>
+    (window as any).hydrationCompleteEmitted;
 
 TemplateElement.options({
     "parent-element": {
@@ -163,6 +166,7 @@ TemplateElement.options({
         },
         hydrationComplete() {
             (window as any).messages.push(`Hydration complete [${performance.now()}]`);
+            (window as any).hydrationCompleteEmitted = true;
         },
         templateDidUpdate(name: string) {
             (window as any).messages.push(

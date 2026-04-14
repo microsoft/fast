@@ -1,8 +1,11 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("f-template dot-syntax bindings", async () => {
-    test("create a object property reference using dot syntax in a binding", async ({ page }) => {
+    test("create a object property reference using dot syntax in a binding", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -11,6 +14,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should display initial property values correctly", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -22,6 +26,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should update object.b when 'Set b' button is clicked", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setBButton = customElement.locator("button").nth(0);
@@ -37,8 +42,11 @@ test.describe("f-template dot-syntax bindings", async () => {
         await expect(bSpan).toHaveText("Hello");
     });
 
-    test("should update object.a.b1 when 'Set a.b1' button is clicked", async ({ page }) => {
+    test("should update object.a.b1 when 'Set a.b1' button is clicked", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setAB1Button = customElement.locator("button").nth(1);
@@ -54,8 +62,11 @@ test.describe("f-template dot-syntax bindings", async () => {
         await expect(ab1Span).toHaveText("World");
     });
 
-    test("should update object.a.b2.c when 'Set a.b2.c' button is clicked", async ({ page }) => {
+    test("should update object.a.b2.c when 'Set a.b2.c' button is clicked", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setAB2CButton = customElement.locator("button").nth(2);
@@ -70,6 +81,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should handle multiple property updates independently", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setBButton = customElement.locator("button").nth(0);
@@ -93,6 +105,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should maintain property values after multiple clicks", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setBButton = customElement.locator("button").nth(0);
@@ -111,6 +124,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should update nested properties correctly", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setAB1Button = customElement.locator("button").nth(1);
@@ -133,6 +147,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should have correct button labels", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -144,6 +159,7 @@ test.describe("f-template dot-syntax bindings", async () => {
 
     test("should reflect property changes in DOM immediately", async ({ page }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
         const setBButton = customElement.locator("button").nth(0);
@@ -156,8 +172,11 @@ test.describe("f-template dot-syntax bindings", async () => {
         await expect(bSpan).toHaveText("Hello", { timeout: 1000 });
     });
 
-    test("should observe changes to repeated items with missing nested properties", async ({ page }) => {
+    test("should observe changes to repeated items with missing nested properties", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -176,8 +195,11 @@ test.describe("f-template dot-syntax bindings", async () => {
         await expect(customElement.locator("div").nth(2)).toHaveText("Item 3");
     });
 
-    test("should add new repeated items when nested properties are set", async ({ page }) => {
+    test("should add new repeated items when nested properties are set", async ({
+        page,
+    }) => {
         await page.goto("/fixtures/dot-syntax/");
+        await page.waitForFunction(() => (window as any).getHydrationCompleteStatus());
 
         const customElement = page.locator("test-element");
 
@@ -197,6 +219,5 @@ test.describe("f-template dot-syntax bindings", async () => {
         });
 
         await expect(divs).toHaveCount(2);
-
     });
 });

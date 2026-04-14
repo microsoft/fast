@@ -39,10 +39,19 @@ RenderableFASTElement(TestWhenInRepeat).defineAsync({
     templateOptions: "defer-and-hydrate",
 });
 
+let hydrationCompleteEmitted = false;
+(window as any).getHydrationCompleteStatus = () => hydrationCompleteEmitted;
+
 TemplateElement.options({
     "test-when-in-repeat": {
         observerMap: "all",
     },
-}).define({
-    name: "f-template",
-});
+})
+    .config({
+        hydrationComplete() {
+            hydrationCompleteEmitted = true;
+        },
+    })
+    .define({
+        name: "f-template",
+    });
