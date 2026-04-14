@@ -83,7 +83,7 @@ test.describe("The render", () => {
 
                 const data = directive.dataBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
 
                 return data === source;
@@ -132,7 +132,7 @@ test.describe("The render", () => {
 
                 const data = directive.dataBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
 
                 return data === source.child;
@@ -182,7 +182,7 @@ test.describe("The render", () => {
 
                 const data = directive.dataBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
 
                 return data === node;
@@ -232,7 +232,7 @@ test.describe("The render", () => {
 
                 const data = directive.dataBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
 
                 return data === obj;
@@ -289,7 +289,7 @@ test.describe("The render", () => {
                 const directive = render(x => x.child, childEditTemplate);
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === childEditTemplate;
             });
@@ -336,7 +336,7 @@ test.describe("The render", () => {
                 const directive = render();
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === parentTemplate;
             });
@@ -383,7 +383,7 @@ test.describe("The render", () => {
                 const directive = render(x => x.child);
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === childTemplate;
             });
@@ -437,7 +437,7 @@ test.describe("The render", () => {
                 const directive = render(() => node);
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template instanceof NodeTemplate && template.node === node;
             });
@@ -492,11 +492,11 @@ test.describe("The render", () => {
                 const source = new TestParent();
                 const directive = render(
                     x => x.child,
-                    () => "edit"
+                    () => "edit",
                 );
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === childEditTemplate;
             });
@@ -549,11 +549,11 @@ test.describe("The render", () => {
                 const node = document.createElement("div");
                 const directive = render(
                     x => x.child,
-                    () => node
+                    () => node,
                 );
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template instanceof NodeTemplate && template.node === node;
             });
@@ -608,11 +608,11 @@ test.describe("The render", () => {
                 const source = new TestParent();
                 const directive = render(
                     x => x.child,
-                    () => childEditTemplate
+                    () => childEditTemplate,
                 );
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === childEditTemplate;
             });
@@ -675,7 +675,7 @@ test.describe("The render", () => {
                 const directive = render(() => node, "edit");
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template instanceof NodeTemplate && template.node === node;
             });
@@ -731,7 +731,7 @@ test.describe("The render", () => {
                 const directive = render(x => x.child, "edit");
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === childEditTemplate;
             });
@@ -931,7 +931,7 @@ test.describe("The render", () => {
                         typeMatch: instruction.type === TestClass,
                         isViewTemplate: template instanceof ViewTemplate,
                         includesContent: template.html.includes(
-                            `${content}</${tagName}>`
+                            `${content}</${tagName}>`,
                         ),
                     };
                 }, operation);
@@ -981,7 +981,7 @@ test.describe("The render", () => {
                         typeMatch: instruction.type === TestClass,
                         isViewTemplate: template instanceof ViewTemplate,
                         includesContent: template.html.includes(
-                            `${content}</${tagName}>`
+                            `${content}</${tagName}>`,
                         ),
                         includesFoo: template.html.includes(`foo="`),
                         includesBaz: template.html.includes(`baz="`),
@@ -1094,7 +1094,7 @@ test.describe("The render", () => {
                         typeMatch: instruction.type === TestClass,
                         isViewTemplate: template instanceof ViewTemplate,
                         includesContent: template.html.includes(
-                            `${content}</${tagName}>`
+                            `${content}</${tagName}>`,
                         ),
                     };
                 }, operation);
@@ -1136,7 +1136,7 @@ test.describe("The render", () => {
                         typeMatch: instruction.type === TestClass,
                         isViewTemplate: template instanceof ViewTemplate,
                         includesContent: template.html.includes(
-                            `${content}</${tagName}>`
+                            `${content}</${tagName}>`,
                         ),
                         includesFoo: template.html.includes(`foo="`),
                         includesBaz: template.html.includes(`baz="`),
@@ -1585,7 +1585,7 @@ test.describe("The render", () => {
 
                 const directive = render(
                     x => x.child,
-                    x => x.template
+                    x => x.template,
                 );
                 directive.targetNodeId = "r";
 
@@ -1673,7 +1673,7 @@ test.describe("The render", () => {
 
                 const directive = render(
                     x => x.child,
-                    x => x.template
+                    x => x.template,
                 );
                 directive.targetNodeId = "r";
 
@@ -1704,6 +1704,7 @@ test.describe("The render", () => {
                 };
 
                 behavior.bind(controller);
+                controller.isBound = true;
 
                 const before = removeWhitespace(toHTML(parentNode));
 
@@ -1761,7 +1762,7 @@ test.describe("The render", () => {
 
                 const directive = render(
                     x => x.child,
-                    x => x.template
+                    x => x.template,
                 );
                 directive.targetNodeId = "r";
 
@@ -1792,6 +1793,7 @@ test.describe("The render", () => {
                 };
 
                 behavior.bind(controller);
+                controller.isBound = true;
                 const inserted = node.previousSibling;
 
                 const before = removeWhitespace(toHTML(parentNode));
@@ -1849,7 +1851,7 @@ test.describe("The render", () => {
 
                 const directive = render(
                     x => x.child,
-                    x => x.template
+                    x => x.template,
                 );
                 directive.targetNodeId = "r";
 
@@ -1935,7 +1937,7 @@ test.describe("The render", () => {
 
                 const directive = render(
                     x => x.child,
-                    x => x.template
+                    x => x.template,
                 );
                 directive.targetNodeId = "r";
 
@@ -2035,7 +2037,7 @@ test.describe("The render", () => {
 
                 const template = RenderInstruction.createElementTemplate(
                     "button",
-                    templateAttributeOptions
+                    templateAttributeOptions,
                 );
 
                 const targetNode = document.createElement("div");
@@ -2071,7 +2073,7 @@ test.describe("The render", () => {
 
                 const template = RenderInstruction.createElementTemplate(
                     "button",
-                    templateStaticViewOptions
+                    templateStaticViewOptions,
                 );
                 const targetNode = document.createElement("div");
                 const view = template.create();

@@ -565,7 +565,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "knownValue");
 
                 const directive = new HTMLBindingDirective(
-                    oneWay((x: any) => x.computedValue)
+                    oneWay((x: any) => x.computedValue),
                 );
                 directive.id = nextId();
                 directive.targetNodeId = "r";
@@ -634,7 +634,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "knownValue");
 
                 const directive = new HTMLBindingDirective(
-                    oneWay((x: any) => x.computedValue)
+                    oneWay((x: any) => x.computedValue),
                 );
                 directive.id = nextId();
                 directive.targetNodeId = "r";
@@ -706,7 +706,7 @@ test.describe("The HTML binding directive", () => {
                 const template = html`
                     ${(x: any) =>
                         html`<${html.partial(x.knownValue)}>Hi there!</${html.partial(
-                            x.knownValue
+                            x.knownValue,
                         )}>`}
                 `;
                 const model = new Model(template);
@@ -813,7 +813,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "knownValue");
 
                     const directive = new HTMLBindingDirective(
-                        oneWay((x: any) => x.value)
+                        oneWay((x: any) => x.value),
                     );
                     directive.id = nextId();
                     directive.targetNodeId = "r";
@@ -987,7 +987,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        oneWay((x: any) => x.value)
+                        oneWay((x: any) => x.value),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1052,7 +1052,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            oneWay((x: any) => x.value)
+                            oneWay((x: any) => x.value),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1127,7 +1127,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            oneWay((x: any) => x.value)
+                            oneWay((x: any) => x.value),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1167,7 +1167,7 @@ test.describe("The HTML binding directive", () => {
 
                         return { initialValue, afterUnbindValue };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -1202,7 +1202,7 @@ test.describe("The HTML binding directive", () => {
 
                         const policy = createTrackableDOMPolicy();
                         const directive = new HTMLBindingDirective(
-                            oneWay((x: any) => x.value, policy)
+                            oneWay((x: any) => x.value, policy),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1238,7 +1238,7 @@ test.describe("The HTML binding directive", () => {
                             policyUsed: policy.used,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(nodeValue).toBe(modelValue);
@@ -1270,7 +1270,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        oneWay((x: any) => x.value)
+                        oneWay((x: any) => x.value),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1358,7 +1358,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        oneTime((x: any) => x.value)
+                        oneTime((x: any) => x.value),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1424,7 +1424,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            oneTime((x: any) => x.value)
+                            oneTime((x: any) => x.value),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1463,7 +1463,7 @@ test.describe("The HTML binding directive", () => {
 
                         return { initialValue, afterUpdateValue };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -1497,7 +1497,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            oneTime((x: any) => x.value)
+                            oneTime((x: any) => x.value),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1537,7 +1537,7 @@ test.describe("The HTML binding directive", () => {
 
                         return { initialValue, afterUnbindValue };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -1572,7 +1572,7 @@ test.describe("The HTML binding directive", () => {
 
                         const policy = createTrackableDOMPolicy();
                         const directive = new HTMLBindingDirective(
-                            oneTime((x: any) => x.value, policy)
+                            oneTime((x: any) => x.value, policy),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1608,7 +1608,7 @@ test.describe("The HTML binding directive", () => {
                             policyUsed: policy.used,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(nodeValue).toBe(modelValue);
@@ -1640,7 +1640,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        oneTime((x: any) => x.value)
+                        oneTime((x: any) => x.value),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1728,7 +1728,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        signal((x: any) => x.value, "test-signal")
+                        signal((x: any) => x.value, "test-signal"),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1800,7 +1800,7 @@ test.describe("The HTML binding directive", () => {
 
                     const signalName = "test-signal";
                     const directive = new HTMLBindingDirective(
-                        signal((x: any) => x.value, signalName)
+                        signal((x: any) => x.value, signalName),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1884,7 +1884,7 @@ test.describe("The HTML binding directive", () => {
 
                         const signalName = "test-signal";
                         const directive = new HTMLBindingDirective(
-                            signal((x: any) => x.value, signalName)
+                            signal((x: any) => x.value, signalName),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1925,7 +1925,7 @@ test.describe("The HTML binding directive", () => {
 
                         return { initialValue, afterUnbindValue };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -1960,7 +1960,7 @@ test.describe("The HTML binding directive", () => {
 
                         const policy = createTrackableDOMPolicy();
                         const directive = new HTMLBindingDirective(
-                            signal((x: any) => x.value, "test-signal", policy)
+                            signal((x: any) => x.value, "test-signal", policy),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -1996,7 +1996,7 @@ test.describe("The HTML binding directive", () => {
                             policyUsed: policy.used,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(nodeValue).toBe(modelValue);
@@ -2028,7 +2028,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        signal((x: any) => x.value, "test-signal")
+                        signal((x: any) => x.value, "test-signal"),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2116,7 +2116,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        twoWay((x: any) => x.value, {})
+                        twoWay((x: any) => x.value, {}),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2182,7 +2182,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            twoWay((x: any) => x.value, {})
+                            twoWay((x: any) => x.value, {}),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2257,7 +2257,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            twoWay((x: any) => x.value, {})
+                            twoWay((x: any) => x.value, {}),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2294,7 +2294,7 @@ test.describe("The HTML binding directive", () => {
                                 DOM.setBooleanAttribute(
                                     n,
                                     scenario.sourceAspect.slice(1),
-                                    val
+                                    val,
                                 );
                             } else if (scenario.sourceAspect.startsWith(":")) {
                                 n[scenario.sourceAspect.slice(1)] = val;
@@ -2314,7 +2314,7 @@ test.describe("The HTML binding directive", () => {
                             modelValueAfterEvent: model.value,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -2349,7 +2349,7 @@ test.describe("The HTML binding directive", () => {
 
                         const fromView = (_value: any) => "fixed value";
                         const directive = new HTMLBindingDirective(
-                            twoWay((x: any) => x.value, { fromView })
+                            twoWay((x: any) => x.value, { fromView }),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2386,7 +2386,7 @@ test.describe("The HTML binding directive", () => {
                                 DOM.setBooleanAttribute(
                                     n,
                                     scenario.sourceAspect.slice(1),
-                                    val
+                                    val,
                                 );
                             } else if (scenario.sourceAspect.startsWith(":")) {
                                 n[scenario.sourceAspect.slice(1)] = val;
@@ -2406,7 +2406,7 @@ test.describe("The HTML binding directive", () => {
                             modelValueAfterEvent: model.value,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -2441,7 +2441,7 @@ test.describe("The HTML binding directive", () => {
 
                         const changeEvent = "foo";
                         const directive = new HTMLBindingDirective(
-                            twoWay((x: any) => x.value, { changeEvent })
+                            twoWay((x: any) => x.value, { changeEvent }),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2478,7 +2478,7 @@ test.describe("The HTML binding directive", () => {
                                 DOM.setBooleanAttribute(
                                     n,
                                     scenario.sourceAspect.slice(1),
-                                    val
+                                    val,
                                 );
                             } else if (scenario.sourceAspect.startsWith(":")) {
                                 n[scenario.sourceAspect.slice(1)] = val;
@@ -2498,7 +2498,7 @@ test.describe("The HTML binding directive", () => {
                             modelValueAfterEvent: model.value,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -2532,7 +2532,7 @@ test.describe("The HTML binding directive", () => {
                         Observable.defineProperty(Model.prototype, "value");
 
                         const directive = new HTMLBindingDirective(
-                            twoWay((x: any) => x.value, {})
+                            twoWay((x: any) => x.value, {}),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2572,7 +2572,7 @@ test.describe("The HTML binding directive", () => {
 
                         return { initialValue, afterUnbindValue };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(initialValue).toBe(aspectScenario.originalValue);
@@ -2607,7 +2607,7 @@ test.describe("The HTML binding directive", () => {
 
                         const policy = createTrackableDOMPolicy();
                         const directive = new HTMLBindingDirective(
-                            twoWay((x: any) => x.value, {}, policy)
+                            twoWay((x: any) => x.value, {}, policy),
                         );
                         if (scenario.sourceAspect) {
                             HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2643,7 +2643,7 @@ test.describe("The HTML binding directive", () => {
                             policyUsed: policy.used,
                         };
                     },
-                    aspectScenario
+                    aspectScenario,
                 );
 
                 expect(nodeValue).toBe(modelValue);
@@ -2675,7 +2675,7 @@ test.describe("The HTML binding directive", () => {
                     Observable.defineProperty(Model.prototype, "value");
 
                     const directive = new HTMLBindingDirective(
-                        twoWay((x: any) => x.value, {})
+                        twoWay((x: any) => x.value, {}),
                     );
                     if (scenario.sourceAspect) {
                         HTMLDirective.assignAspect(directive, scenario.sourceAspect);
@@ -2737,7 +2737,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "value");
 
                 const directive = new HTMLBindingDirective(
-                    listener((x: any) => x.invokeAction(), {})
+                    listener((x: any) => x.invokeAction(), {}),
                 );
                 HTMLDirective.assignAspect(directive, "@my-event");
 
@@ -2789,7 +2789,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "value");
 
                 const directive = new HTMLBindingDirective(
-                    listener((x: any) => x.invokeAction(), {})
+                    listener((x: any) => x.invokeAction(), {}),
                 );
                 HTMLDirective.assignAspect(directive, "@my-event");
 
@@ -2855,7 +2855,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "value");
 
                 const directive = new HTMLBindingDirective(
-                    listener((x: any) => x.invokeAction(), { once: true })
+                    listener((x: any) => x.invokeAction(), { once: true }),
                 );
                 HTMLDirective.assignAspect(directive, "@my-event");
 
@@ -2917,7 +2917,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "value");
 
                 const directive = new HTMLBindingDirective(
-                    listener((x: any) => x.invokeAction(), {})
+                    listener((x: any) => x.invokeAction(), {}),
                 );
                 HTMLDirective.assignAspect(directive, "@my-event");
 
@@ -2981,7 +2981,7 @@ test.describe("The HTML binding directive", () => {
                 Observable.defineProperty(Model.prototype, "value");
 
                 const directive = new HTMLBindingDirective(
-                    listener((x: any) => x.invokeAction(), {})
+                    listener((x: any) => x.invokeAction(), {}),
                 );
                 HTMLDirective.assignAspect(directive, "@my-event");
 
@@ -3041,7 +3041,7 @@ test.describe("The HTML binding directive", () => {
                         target,
                         directive.targetAspect,
                         value,
-                        Fake.viewController()
+                        Fake.viewController(),
                     );
                 }
 
@@ -3152,6 +3152,159 @@ test.describe("The HTML binding directive", () => {
             });
 
             expect(didNotThrow).toBe(true);
+        });
+    });
+
+    test.describe("when a parent 'when' directive tears down and recreates a child with a property binding", () => {
+        test("should not crash when bindings evaluate after the child view is unbound", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, when, Observable, Updates } = await import(
+                    "/main.js"
+                );
+
+                class ChildElement7422a extends FASTElement {
+                    data: any;
+                }
+                Observable.defineProperty(ChildElement7422a.prototype, "data");
+                ChildElement7422a.define({
+                    name: "test-child-7422a",
+                    template: html<ChildElement7422a>`
+                        <span>${x => x.data?.label ?? ""}</span>
+                    `,
+                });
+
+                class ParentElement7422a extends FASTElement {
+                    currentData: any;
+                }
+                Observable.defineProperty(ParentElement7422a.prototype, "currentData");
+                ParentElement7422a.define({
+                    name: "test-parent-7422a",
+                    template: html<ParentElement7422a>`
+                        ${when(
+                            x => x.currentData,
+                            html<ParentElement7422a>`
+                                <test-child-7422a
+                                    :data="${x => x.currentData}"
+                                ></test-child-7422a>
+                            `,
+                        )}
+                    `,
+                });
+
+                const parent = document.createElement("test-parent-7422a") as any;
+                document.body.appendChild(parent);
+                await Updates.next();
+
+                try {
+                    // Step 1: Show child with initial data.
+                    parent.currentData = { label: "A" };
+                    await Updates.next();
+
+                    // Step 2: Toggle off — tears down the child.
+                    parent.currentData = undefined;
+                    await Updates.next();
+
+                    // Step 3: Toggle on — rebuilds the child
+                    // (reuses cached view with same template).
+                    parent.currentData = { label: "A" };
+                    await Updates.next();
+
+                    // Step 4: Cycle data.
+                    parent.currentData = { label: "B" };
+                    await Updates.next();
+
+                    // Step 5: Toggle off — this is where the crash occurred.
+                    parent.currentData = undefined;
+                    await Updates.next();
+
+                    // Step 6: Toggle on again to confirm full cycle works.
+                    parent.currentData = { label: "C" };
+                    await Updates.next();
+
+                    return { success: true };
+                } catch (e: any) {
+                    return { success: false, error: e.message };
+                } finally {
+                    document.body.removeChild(parent);
+                }
+            });
+
+            expect(result.success).toBe(true);
+        });
+
+        test("should correctly render after toggling the when directive multiple times", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, when, Observable, Updates } = await import(
+                    "/main.js"
+                );
+
+                class ChildElement7422b extends FASTElement {
+                    data: any;
+                }
+                Observable.defineProperty(ChildElement7422b.prototype, "data");
+                ChildElement7422b.define({
+                    name: "test-child-7422b",
+                    template: html<ChildElement7422b>`
+                        <span>${x => x.data?.label ?? ""}</span>
+                    `,
+                });
+
+                class ParentElement7422b extends FASTElement {
+                    currentData: any;
+                }
+                Observable.defineProperty(ParentElement7422b.prototype, "currentData");
+                ParentElement7422b.define({
+                    name: "test-parent-7422b",
+                    template: html<ParentElement7422b>`
+                        ${when(
+                            x => x.currentData,
+                            html<ParentElement7422b>`
+                                <test-child-7422b
+                                    :data="${x => x.currentData}"
+                                ></test-child-7422b>
+                            `,
+                        )}
+                    `,
+                });
+
+                const parent = document.createElement("test-parent-7422b") as any;
+                document.body.appendChild(parent);
+                await Updates.next();
+
+                // Toggle on.
+                parent.currentData = { label: "First" };
+                await Updates.next();
+
+                const shadowRoot = parent.shadowRoot!;
+                const child1 = shadowRoot.querySelector("test-child-7422b");
+                const label1 = child1?.shadowRoot
+                    ?.querySelector("span")
+                    ?.textContent?.trim();
+
+                // Toggle off and back on with new data.
+                parent.currentData = undefined;
+                await Updates.next();
+                parent.currentData = { label: "Second" };
+                await Updates.next();
+
+                const child2 = shadowRoot.querySelector("test-child-7422b");
+                const label2 = child2?.shadowRoot
+                    ?.querySelector("span")
+                    ?.textContent?.trim();
+
+                document.body.removeChild(parent);
+
+                return { label1, label2 };
+            });
+
+            expect(result.label1).toBe("First");
+            expect(result.label2).toBe("Second");
         });
     });
 });

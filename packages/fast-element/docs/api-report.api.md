@@ -797,7 +797,7 @@ export function render<TSource = any, TItem = any, TParent = any>(value?: Expres
 export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
     constructor(directive: RenderDirective);
     bind(controller: ViewController): void;
-    // @internal (undocumented)
+    // @internal
     handleChange(source: any, observer: ExpressionObserver): void;
     unbind(controller: ViewController): void;
 }
