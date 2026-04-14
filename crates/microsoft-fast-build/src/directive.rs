@@ -2,12 +2,13 @@ use crate::json::JsonValue;
 use crate::context::resolve_value;
 use crate::expression::evaluate;
 use crate::content::html_escape;
+use crate::config::{RenderConfig, AttributeNameStrategy};
 use crate::attribute::{
     find_str, find_directive, extract_directive_expr, extract_directive_content,
     find_single_brace, skip_single_brace_expr, find_tag_end, read_tag_name,
     parse_element_attributes, find_custom_element,
     count_tag_attribute_bindings, resolve_attribute_bindings_in_tag, strip_client_only_attrs,
-    data_attr_to_dataset_key,
+    data_attr_to_dataset_key, kebab_to_camel,
 };
 use crate::attribute_lookup::{aria_attr_to_property_key, html_attr_to_property_key};
 use crate::error::{RenderError, template_context};
@@ -80,6 +81,7 @@ pub fn render_when(
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
+    config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
     let (inner, after) = extract_directive_content(template, at, "f-when")
         .ok_or_else(|| RenderError::UnclosedDirective {
@@ -99,14 +101,14 @@ pub fn render_when(
         let end = hy.end_marker(idx, &name);
         let inner_content = if evaluate(&expr, root, loop_vars) {
             let mut child_scope = hy.child(idx);
-            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false)?
+            render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false, config)?
         } else {
             String::new()
         };
         format!("{}{}{}", start, inner_content, end)
     } else {
         if evaluate(&expr, root, loop_vars) {
-            render_node(&inner, root, loop_vars, locator, None, false)?
+            render_node(&inner, root, loop_vars, locator, None, false, config)?
         } else {
             String::new()
         }
@@ -123,6 +125,7 @@ pub fn render_repeat(
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
+    config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
     let (inner, after) = extract_directive_content(template, at, "f-repeat")
         .ok_or_else(|| RenderError::UnclosedDirective {
@@ -145,7 +148,7 @@ pub fn render_repeat(
             context: template_context(template, at),
         }),
         Some(JsonValue::Array(items)) => {
-            let output = render_repeat_items(&inner, &items, &var_name, root, loop_vars, locator, hydration)?;
+            let output = render_repeat_items(&inner, &items, &var_name, root, loop_vars, locator, hydration, config)?;
             Ok((output, after))
         }
         Some(_) => Err(RenderError::NotAnArray {
@@ -163,6 +166,7 @@ fn render_repeat_items(
     loop_vars: &[(String, JsonValue)],
     locator: Option<&Locator>,
     hydration: Option<&mut HydrationScope>,
+    config: &RenderConfig,
 ) -> Result<String, RenderError> {
     match hydration {
         Some(hy) => {
@@ -174,7 +178,7 @@ fn render_repeat_items(
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
                 let mut item_scope = HydrationScope::new();
-                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false)?;
+                let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false, config)?;
                 parts.push(format!(
                     "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
                     i, rendered, i
@@ -185,7 +189,7 @@ fn render_repeat_items(
         None => items.iter().enumerate()
             .map(|(i, item)| {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
-                render_node(inner, root, &new_vars, locator, None, false)
+                render_node(inner, root, &new_vars, locator, None, false, config)
             })
             .collect::<Result<String, _>>(),
     }
@@ -231,6 +235,7 @@ pub fn render_custom_element(
     locator: &Locator,
     parent_hydration: Option<&mut HydrationScope>,
     is_entry: bool,
+    config: &RenderConfig,
 ) -> Result<(String, usize), RenderError> {
     // Find the end of the opening tag.
     let tag_end = find_tag_end(template, at).ok_or_else(|| RenderError::UnclosedDirective {
@@ -269,12 +274,13 @@ pub fn render_custom_element(
     //   - `data-kebab-name` → grouped under `dataset.camelName` (MDN dataset convention)
     //   - `aria-*` → camelCase property name via lookup table (ARIA reflection)
     //   - HTML attrs with mismatched property names → camelCase via lookup table
-    //   - Anything else → lowercased key, string or resolved `JsonValue` as value
+    //   - Anything else → lowercased key (or camelCase when `attribute_name_strategy` is `CamelCase`)
     fn build_attr_state(
         attrs: &[(String, Option<String>)],
         root: &JsonValue,
         loop_vars: &[(String, JsonValue)],
         base: std::collections::HashMap<String, JsonValue>,
+        strategy: AttributeNameStrategy,
     ) -> JsonValue {
         let mut state_map = base;
         for (attr_name, value) in attrs {
@@ -307,6 +313,8 @@ pub fn render_custom_element(
                 state_map.insert(key.to_string(), json_val);
             } else if let Some(key) = html_attr_to_property_key(&lowered) {
                 state_map.insert(key.to_string(), json_val);
+            } else if strategy == AttributeNameStrategy::CamelCase && lowered.contains('-') {
+                state_map.insert(kebab_to_camel(&lowered), json_val);
             } else {
                 state_map.insert(lowered, json_val);
             }
@@ -337,7 +345,7 @@ pub fn render_custom_element(
         } else {
             std::collections::HashMap::new()
         };
-        child_root_owned = build_attr_state(&attrs, root, loop_vars, base);
+        child_root_owned = build_attr_state(&attrs, root, loop_vars, base, config.attribute_name_strategy);
         &child_root_owned
     } else {
         root
@@ -346,7 +354,7 @@ pub fn render_custom_element(
     // Render the shadow DOM template with a fresh hydration scope.
     let mut shadow_scope = HydrationScope::new();
     let element_template = locator.get_template(&tag_name).unwrap_or_default();
-    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false)?;
+    let rendered = render_node(element_template, child_root, &[], Some(locator), Some(&mut shadow_scope), false, config)?;
 
     // Build the final opening tag, resolving {{expr}} attrs and injecting hydration attrs.
     let element_open = build_element_open_tag(&open_tag_base, open_tag_content, root, loop_vars, parent_hydration, is_entry);
