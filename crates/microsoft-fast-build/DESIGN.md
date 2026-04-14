@@ -223,6 +223,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
    - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
    - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
    - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
+   - `aria-*` attributes (e.g. `aria-disabled`) are **converted to their camelCase ARIA property name** using the `attribute::aria_attr_to_property_key` helper (`aria-disabled` → `ariaDisabled`). This follows the [ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#aria) convention on `Element`. Templates reference the camelCase form: `{{ariaDisabled}}`.
    - No value (boolean attribute) → `Bool(true)`
    - `"{{binding}}"` → resolve from parent state (can be any `JsonValue` type, including arrays and objects)
    - Value starting with `[` or `{` → parsed as a JSON array or object literal (e.g. `items='["a","b","c"]'` or `config='{"key":"val"}'`). If parsing fails the value falls back to `String`.
@@ -308,6 +309,19 @@ data-date-of-birth="1990-01-01"  →  state["dataset"]["dateOfBirth"] = "1990-01
 `attribute::data_attr_to_dataset_key` returns the full dot-notation path: `"data-date-of-birth"` → `"dataset.dateOfBirth"`. The caller in `render_custom_element` splits on the first `.` (`"dataset"` / `"dateOfBirth"`) and inserts the value into the nested `"dataset"` map. Shadow templates can then use `{{dataset.dateOfBirth}}` which resolves via ordinary dot-notation (`state["dataset"]["dateOfBirth"]`).
 
 The `dataset.` portion of the binding expression is nothing special to `resolve_value` — it is plain two-level dot-notation that traverses the nested `"dataset"` object built by the attribute mapper.
+
+### ARIA attribute bindings — `attribute::aria_attr_to_property_key`
+
+ARIA attributes follow the [Element ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#aria) convention: a camelCase property (e.g. `ariaDisabled`) corresponds to a kebab-case `aria-*` HTML attribute (e.g. `aria-disabled`).
+
+When building child state for a custom element (step 4 of `render_custom_element`), any attribute whose name starts with `aria-` is converted to its camelCase property name and stored as a top-level state key:
+
+```
+aria-disabled="true"  →  state["ariaDisabled"] = "true"
+aria-label="Close"    →  state["ariaLabel"] = "Close"
+```
+
+`attribute::aria_attr_to_property_key` returns the camelCase key: `"aria-disabled"` → `"ariaDisabled"`. Shadow templates reference the camelCase form: `{{ariaDisabled}}`.
 
 ### `f-when` markers
 
