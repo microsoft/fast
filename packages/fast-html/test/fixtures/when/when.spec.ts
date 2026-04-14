@@ -132,6 +132,50 @@ test.describe("f-template", async () => {
         await expect(customElementHide).not.toHaveText("This and That");
     });
 
+    test("when false with repeat: initially hidden, shows items when toggled to true, and items can be updated", async ({
+        page,
+    }) => {
+        await page.goto("/fixtures/when/");
+        const element = page.locator("#when-false-repeat");
+        const listItems = element.locator("li");
+
+        // Initially the when condition is false, so no list items should be visible
+        await expect(listItems).toHaveCount(0);
+        await expect(element.locator("ul")).toHaveCount(0);
+
+        // Flip the when condition to true
+        await page.evaluate(() => {
+            document.getElementById("when-false-repeat")?.setAttribute("show", "");
+        });
+
+        // Now the repeated items should be visible
+        await expect(listItems).toHaveCount(3);
+        await expect(listItems).toContainText(["Alpha", "Beta", "Gamma"]);
+
+        // Update the list to verify repeat reactivity inside when
+        await page.evaluate(() => {
+            (document.getElementById("when-false-repeat") as any).list = ["One", "Two"];
+        });
+
+        await expect(listItems).toHaveCount(2);
+        await expect(listItems).toContainText(["One", "Two"]);
+
+        // Toggle when back to false
+        await page.evaluate(() => {
+            document.getElementById("when-false-repeat")?.removeAttribute("show");
+        });
+
+        await expect(listItems).toHaveCount(0);
+
+        // Toggle when back to true again to verify items persist
+        await page.evaluate(() => {
+            document.getElementById("when-false-repeat")?.setAttribute("show", "");
+        });
+
+        await expect(listItems).toHaveCount(2);
+        await expect(listItems).toContainText(["One", "Two"]);
+    });
+
     test("should fire events inside a when directive", async ({ page }) => {
         await page.goto("/fixtures/when/");
         const element = page.locator("#event-show");
