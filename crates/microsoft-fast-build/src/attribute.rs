@@ -250,6 +250,29 @@ pub(crate) fn data_attr_to_dataset_key(name: &str) -> Option<String> {
     name.strip_prefix("data-").map(|rest| format!("dataset.{}", kebab_to_camel(rest)))
 }
 
+/// Convert an `aria-*` HTML attribute name to its camelCase property name,
+/// following the ARIA reflection convention on `Element`.
+/// Returns `None` for names that do not start with `aria-`.
+///
+/// Examples: `"aria-disabled"` → `"ariaDisabled"`, `"aria-label"` → `"ariaLabel"`
+pub(crate) fn aria_attr_to_property_key(name: &str) -> Option<String> {
+    name.strip_prefix("aria-").map(|rest| format!("aria{}", kebab_to_camel(&capitalize_first(rest))))
+}
+
+/// Capitalize the first character of a string.
+fn capitalize_first(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        None => String::new(),
+        Some(c) => {
+            let mut result = String::with_capacity(s.len());
+            result.push(c.to_ascii_uppercase());
+            result.extend(chars);
+            result
+        }
+    }
+}
+
 /// Resolve `{{expr}}` in attribute values of an opening tag, leaving `{expr}`
 /// single-brace values and all other content unchanged.
 /// Handles `?attr="{{expr}}"` boolean bindings: evaluates `expr` as a boolean and
