@@ -92,37 +92,9 @@ This file defines the declarative `<f-template>` elements that describe each cus
 </f-template>
 ```
 
-### Template syntax reference
+### Template syntax
 
-| Syntax | Purpose | Example |
-|---|---|---|
-| `{{prop}}` | Text/attribute binding | `<span>{{greeting}}</span>` |
-| `{{!prop}}` | Negated boolean | `?disabled="{{!isEnabled}}"` |
-| `{{a == b}}` | Comparison expression | `?hidden="{{count == 0}}"` |
-| `?attr="{{expr}}"` | Boolean attribute | `?disabled="{{!isEnabled}}"` |
-| `:prop="{{expr}}"` | Property binding | `:items="{{list}}"` |
-| `@event="{handler()}"` | Event binding | `@click="{handleClick()}"` |
-| `@event="{handler($e)}"` | Event with event object | `@click="{handleClick($e)}"` |
-| `<f-when value="{{expr}}">` | Conditional rendering | See below |
-| `<f-repeat value="{{item in list}}">` | List rendering | See below |
-
-#### Conditional rendering (`f-when`)
-
-```html
-<f-when value="{{show}}">
-    <span>Visible when show is truthy</span>
-</f-when>
-```
-
-#### List rendering (`f-repeat`)
-
-```html
-<f-repeat value="{{item in list}}">
-    <li>{{item}}</li>
-</f-repeat>
-```
-
-The iteration variable (`item`) is scoped to the repeat block. Parent properties remain accessible by name.
+For a full reference of binding syntax, event bindings, directives (`f-when`, `f-repeat`), and execution context access, see the [Syntax section of the fast-html README](../../README.md#syntax).
 
 Multiple `<f-template>` elements can be defined in a single `templates.html` — one per custom element used in the fixture.
 
