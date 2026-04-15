@@ -1,71 +1,71 @@
 {
-    "name": "@microsoft/fast-test-harness",
-    "private": true,
-    "version": "0.0.1",
-    "author": {
-        "name": "Microsoft",
-        "url": "https://discord.gg/FcSNfg4"
+  "name": "@microsoft/fast-test-harness",
+  "private": true,
+  "version": "0.0.1",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "description": "Playwright testing harness for FAST web components",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git",
+    "directory": "packages/fast-test-harness"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "type": "module",
+  "bin": {
+    "fast-test-harness": "./start.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/dts/index.d.ts",
+      "test": "./src/index.ts",
+      "default": "./dist/esm/index.js"
     },
-    "description": "Playwright testing harness for FAST web components",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Microsoft/fast.git",
-        "directory": "packages/fast-test-harness"
+    "./vite.config.mjs": {
+      "default": "./vite.config.mjs"
     },
-    "bugs": {
-        "url": "https://github.com/Microsoft/fast/issues/new/choose"
+    "./ssr/*.js": {
+      "types": "./dist/dts/ssr/*.d.ts",
+      "test": "./src/ssr/*.ts",
+      "default": "./dist/esm/ssr/*.js"
     },
-    "type": "module",
-    "bin": {
-        "fast-test-harness": "./start.mjs"
+    "./playwright.config.ts": "./playwright.config.ts",
+    "./public/*": "./public/*",
+    "./server.mjs": "./server.mjs",
+    "./start.mjs": "./start.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@microsoft/fast-html": "*",
+    "@microsoft/fast-build": "*"
+  },
+  "peerDependencies": {
+    "@microsoft/fast-build": ">=0.3.0",
+    "@microsoft/fast-html": ">=1.0.0-alpha.47 <1.0.0",
+    "@playwright/test": ">=1.40.0",
+    "vite": ">=7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@microsoft/fast-build": {
+      "optional": true
     },
-    "exports": {
-        ".": {
-            "types": "./dist/dts/index.d.ts",
-            "test": "./src/index.ts",
-            "default": "./dist/esm/index.js"
-        },
-        "./vite.config.mjs": {
-            "default": "./vite.config.mjs"
-        },
-        "./ssr/*.js": {
-            "types": "./dist/dts/ssr/*.d.ts",
-            "test": "./src/ssr/*.ts",
-            "default": "./dist/esm/ssr/*.js"
-        },
-        "./playwright.config.ts": "./playwright.config.ts",
-        "./public/*": "./public/*",
-        "./server.mjs": "./server.mjs",
-        "./start.mjs": "./start.mjs",
-        "./package.json": "./package.json"
-    },
-    "scripts": {
-        "build": "npm run build:tsc",
-        "build:tsc": "tsc -p tsconfig.build.json"
-    },
-    "dependencies": {
-        "express": "5.2.1"
-    },
-    "devDependencies": {
-        "@microsoft/fast-html": "*",
-        "@microsoft/fast-build": "*"
-    },
-    "peerDependencies": {
-        "@microsoft/fast-build": ">=0.3.0",
-        "@microsoft/fast-html": ">= 1.0.0-alpha.46 || ^1.0.0",
-        "@playwright/test": ">=1.40.0",
-        "vite": ">=7.0.0"
-    },
-    "peerDependenciesMeta": {
-        "@microsoft/fast-build": {
-            "optional": true
-        },
-        "@microsoft/fast-html": {
-            "optional": true
-        }
-    },
-    "engines": {
-        "node": ">=22.18.0"
+    "@microsoft/fast-html": {
+      "optional": true
     }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
 }
