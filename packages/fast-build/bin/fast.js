@@ -6,6 +6,14 @@ const fs = require("fs");
 const path = require("path");
 
 const WASM_MODULE = path.join(__dirname, "../wasm/microsoft_fast_build.js");
+const DEFAULT_CONFIG_FILENAME = "fast-build.config.json";
+const ALLOWED_CONFIG_KEYS = new Set([
+    "entry",
+    "state",
+    "output",
+    "templates",
+    "attribute-name-strategy",
+]);
 
 /**
  * Parse CLI arguments of the form --key="value" or --key=value.
@@ -21,6 +29,106 @@ function parseArgs(argv) {
         }
     }
     return args;
+}
+
+/**
+ * Load and validate a fast-build config file.
+ *
+ * - If `configPath` is provided, the file must exist (error if missing).
+ * - If `configPath` is not provided, looks for `fast-build.config.json` in CWD.
+ *   Returns an empty object if the default file does not exist.
+ *
+ * File paths in the returned config are resolved relative to the config
+ * file's directory so that the caller can use them directly.
+ *
+ * @param {string | undefined} configPath - Explicit path from --config, if any.
+ * @returns {{ config: Record<string, string>, configDir: string | null }}
+ */
+function loadConfig(configPath) {
+    /** @type {string} */
+    let resolvedPath;
+    /** @type {boolean} */
+    let isExplicit;
+
+    if (configPath !== undefined) {
+        resolvedPath = path.resolve(configPath);
+        isExplicit = true;
+    } else {
+        resolvedPath = path.resolve(DEFAULT_CONFIG_FILENAME);
+        isExplicit = false;
+    }
+
+    if (!fs.existsSync(resolvedPath)) {
+        if (isExplicit) {
+            process.stderr.write(
+                `Error: Config file "${configPath}" not found.\n`
+            );
+            process.exit(1);
+        }
+        return { config: {}, configDir: null };
+    }
+
+    let raw;
+    try {
+        raw = JSON.parse(fs.readFileSync(resolvedPath, "utf8"));
+    } catch (e) {
+        process.stderr.write(
+            `Error: Failed to parse config file "${resolvedPath}": ${e.message}\n`
+        );
+        process.exit(1);
+    }
+
+    if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+        process.stderr.write(
+            `Error: Config file "${resolvedPath}" must contain a JSON object.\n`
+        );
+        process.exit(1);
+    }
+
+    for (const key of Object.keys(raw)) {
+        if (!ALLOWED_CONFIG_KEYS.has(key)) {
+            process.stderr.write(
+                `Error: Unknown key "${key}" in config file "${resolvedPath}". Allowed keys: ${[...ALLOWED_CONFIG_KEYS].join(", ")}.\n`
+            );
+            process.exit(1);
+        }
+        if (typeof raw[key] !== "string") {
+            process.stderr.write(
+                `Error: Value for "${key}" in config file "${resolvedPath}" must be a string.\n`
+            );
+            process.exit(1);
+        }
+    }
+
+    const configDir = path.dirname(resolvedPath);
+    return { config: raw, configDir };
+}
+
+/**
+ * Resolve a file path value, preferring the CLI arg over the config value.
+ * Config-derived paths are resolved relative to the config file's directory.
+ * CLI-derived paths are resolved relative to CWD (the default behaviour).
+ *
+ * @param {Record<string, string>} args - Parsed CLI arguments.
+ * @param {Record<string, string>} config - Parsed config file values.
+ * @param {string | null} configDir - Directory of the config file, or null.
+ * @param {string} key - The option key.
+ * @param {string} [defaultValue] - Fallback when neither source provides a value.
+ * @returns {string | undefined}
+ */
+function resolveOption(args, config, configDir, key, defaultValue) {
+    if (Object.prototype.hasOwnProperty.call(args, key)) {
+        return args[key];
+    }
+    if (Object.prototype.hasOwnProperty.call(config, key)) {
+        const value = config[key];
+        const isFilePath = key === "entry" || key === "state" || key === "output" || key === "templates";
+        if (isFilePath && configDir !== null) {
+            return path.resolve(configDir, value);
+        }
+        return value;
+    }
+    return defaultValue;
 }
 
 /**
@@ -163,10 +271,15 @@ function resolvePattern(pattern, wasm) {
 }
 
 async function runBuild(args) {
-    const templatesArg = args["templates"];
-    const output = args["output"] || "output.html";
-    const entry = args["entry"] || "index.html";
-    const stateFile = args["state"] || "state.json";
+    const { config, configDir } = loadConfig(
+        Object.prototype.hasOwnProperty.call(args, "config") ? args["config"] : undefined
+    );
+
+    const templatesArg = resolveOption(args, config, configDir, "templates");
+    const output = resolveOption(args, config, configDir, "output", "output.html");
+    const entry = resolveOption(args, config, configDir, "entry", "index.html");
+    const stateFile = resolveOption(args, config, configDir, "state", "state.json");
+    const attributeNameStrategy = resolveOption(args, config, configDir, "attribute-name-strategy");
 
     // Load WASM module first — needed for both template parsing and rendering.
     const wasm = require(WASM_MODULE);
@@ -234,7 +347,13 @@ async function main() {
             '                         Separate multiple patterns with commas.\n' +
             '  --output="output.html" Output file path (default: output.html)\n' +
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
-            '  --state="state.json"   State JSON file (default: state.json)\n'
+            '  --state="state.json"   State JSON file (default: state.json)\n' +
+            '  --config="<path>"      Path to a fast-build config JSON file.\n' +
+            '                         Defaults to "fast-build.config.json" in the\n' +
+            '                         current directory if it exists. File paths in\n' +
+            '                         the config are resolved relative to the config\n' +
+            '                         file\'s directory. CLI arguments take precedence\n' +
+            '                         over config file values.\n'
         );
         return;
     }
