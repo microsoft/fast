@@ -486,8 +486,10 @@ stateDiagram-v2
         buildViewBindingTargets() scans DOM
         Markers parsed, targets resolved
         Behaviors created and bound
-        Attribute bindings skip DOM update
-        (server already set correct values)
+        Non-content bindings skip DOM update
+        (server already rendered correct values)
+        Content template bindings still hydrate
+        views but skip primitive text updates
     end note
 
     hydrating --> hydrated: All behaviors bound
@@ -500,14 +502,23 @@ stateDiagram-v2
     hydrated --> hydrated: rebind with new source
 ```
 
-During the `hydrating` stage, attribute and boolean-attribute bindings **skip their initial DOM update** (the server already rendered the correct value). This avoids unnecessary DOM writes during hydration:
+During the `hydrating` stage, bindings **skip their initial DOM update** to trust the server-rendered content. This avoids unnecessary DOM writes and prevents overwriting correct SSR output. The specific behavior depends on the aspect type:
+
+- **Attribute, boolean-attribute, property, and tokenList bindings**: The observer is bound to set up dependency tracking, but `updateTarget` is not called. For tokenList bindings, the version state is seeded from the evaluated binding value so that class removals work correctly on the first post-hydration change.
+- **Content bindings**: The `updateContent` sink is still called because `ContentTemplate` values require view hierarchy setup (the `HydrationView` creation path). However, for primitive text values during hydration, the `textContent` write is skipped since the text is already in the DOM.
+- **Event bindings**: Attached normally (events are not rendered content).
+
+After hydration completes (stage transitions to `hydrated`), all subsequent reactive changes trigger DOM updates through the normal `handleChange` path. Components created after hydration (without the `needs-hydration` attribute) use the standard binding path with immediate DOM updates.
 
 ```typescript
 // In HTMLBindingDirective.bind(), during hydration:
-if (isHydrating && (this.aspectType === DOMAspect.attribute ||
-                    this.aspectType === DOMAspect.booleanAttribute)) {
-    observer.bind(controller);  // Set up observation only
-    break;                      // Skip updateTarget — server value is current
+if (isHydrating && this.aspectType !== DOMAspect.content) {
+    const value = observer.bind(controller);  // Set up observation only
+
+    // Seed tokenList state so class removals work on first change
+    if (this.aspectType === DOMAspect.tokenList) { /* ... */ }
+
+    break;  // Skip updateTarget — trust server-rendered content
 }
 ```
 

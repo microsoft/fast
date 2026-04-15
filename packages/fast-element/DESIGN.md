@@ -429,7 +429,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 2. `FASTElement.define` → `FASTElementDefinition.compose(...).define()` registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
 4. On `connectedCallback`, the controller renders the template (`ViewTemplate.render`) into the shadow root. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
-5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
+5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically. During hydration, bindings trust the server-rendered DOM: attribute, boolean-attribute, property, and tokenList bindings skip their initial DOM update, while content template bindings hydrate their view hierarchy without creating new nodes. See [TEMPLATE-BINDINGS.md](./src/templating/TEMPLATE-BINDINGS.md) for details.
 6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. The next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
 
