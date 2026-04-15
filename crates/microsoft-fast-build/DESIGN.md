@@ -54,7 +54,7 @@ render_template(template, state_str)
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_with_templates_and_config`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -281,19 +281,19 @@ This means the strategy only affects "plain" custom element attributes like `sel
 
 ### API
 
-The config is passed via `_and_config` API variants:
+All render functions accept `config: Option<&RenderConfig>` as their last parameter. Pass `None` for defaults, or `Some(&config)` for custom configuration:
 
-- `render_with_locator_and_config(template, state, locator, config)`
-- `render_template_with_locator_and_config(template, state_str, locator, config)`
-- `render_entry_with_locator_and_config(template, state, locator, config)`
-- `render_entry_template_with_locator_and_config(template, state_str, locator, config)`
+- `render(template, state, config)`
+- `render_template(template, state_str, config)`
+- `render_with_locator(template, state, locator, config)`
+- `render_template_with_locator(template, state_str, locator, config)`
+- `render_entry_with_locator(template, state, locator, config)`
+- `render_entry_template_with_locator(template, state_str, locator, config)`
 
-The existing API functions (`render_with_locator`, etc.) continue to use the default `"none"` strategy for full backward compatibility.
+In WASM, `render_with_templates` and `render_entry_with_templates` accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
 
-In WASM, the config-aware functions accept an `attribute_name_strategy` string parameter (`"none"` or `"camelCase"`):
-
-- `render_with_templates_and_config(entry, templates_json, state, attribute_name_strategy)`
-- `render_entry_with_templates_and_config(entry, templates_json, state, attribute_name_strategy)`
+- `render_with_templates(entry, templates_json, state, attribute_name_strategy)`
+- `render_entry_with_templates(entry, templates_json, state, attribute_name_strategy)`
 
 ---
 

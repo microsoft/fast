@@ -35,8 +35,7 @@ fast build [options]
         ├─ fs.readFileSync(state)   ← state JSON
         │
         ▼
-  wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state)
-        │    or wasm.render_entry_with_templates_and_config(…, strategy)
+  wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state, strategy)
         ▼
   fs.writeFileSync(output, rendered)
 ```
@@ -108,8 +107,7 @@ Three WASM functions are used:
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state)` | No custom element templates |
-| `wasm.render_entry_with_templates(entry, templatesJson, state)` | At least one template was loaded (default strategy) |
-| `wasm.render_entry_with_templates_and_config(entry, templatesJson, state, strategy)` | At least one template was loaded with a non-default `attribute-name-strategy` |
+| `wasm.render_entry_with_templates(entry, templatesJson, state, strategy)` | At least one template was loaded. `strategy` is `"none"` or `"camelCase"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.

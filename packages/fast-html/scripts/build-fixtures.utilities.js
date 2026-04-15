@@ -42,7 +42,16 @@ export function discoverFixtures(fixturesDir) {
             const dir = join(fixturesDir, entry.name);
             const configPath = join(dir, "fast-build.config.json");
             if (existsSync(configPath)) {
-                const config = JSON.parse(readFileSync(configPath, "utf8"));
+                let config;
+                try {
+                    config = JSON.parse(readFileSync(configPath, "utf8"));
+                } catch (error) {
+                    const message =
+                        error instanceof Error ? error.message : String(error);
+                    throw new Error(
+                        `Failed to parse fast-build.config.json for fixture "${entry.name}" at "${configPath}": ${message}`,
+                    );
+                }
                 return { name: entry.name, args: configToArgs(config) };
             }
             return { name: entry.name };
