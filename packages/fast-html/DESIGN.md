@@ -113,6 +113,7 @@ All delimiters used by the parser are defined in a single `Syntax` interface and
 | `whenDirectiveOpen` / `whenDirectiveClose` | `<f-when` / `</f-when>` | When directive |
 | `attributeDirectivePrefix` | `f-` | Attribute directive prefix |
 | `eventArgAccessor` | `$e` | DOM event argument |
+| `deprecatedEventArgAccessor` | `e` | Deprecated DOM event argument (emits a deduplicated warning once per component) |
 | `executionContextAccessor` | `$c` | Execution context argument |
 
 ---

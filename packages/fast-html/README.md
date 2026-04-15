@@ -299,7 +299,7 @@ You can pass the DOM event object, the execution context, or both as arguments. 
 <button @click="{handleClick(user.id)}"></button>
 ```
 
-> **Deprecated:** The bare `e` token still works but will emit a console warning. Migrate to `$e`.
+> **Deprecated:** The bare `e` token still works but will emit a console warning once per component. The warning includes the component name to help locate usage. Migrate to `$e`.
 > ```html
 > <button @click="{handleClick(e)}"></button>
 > ```

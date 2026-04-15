@@ -16,6 +16,13 @@ test.describe("f-template", async () => {
     test("create an event attribute with an event argument (deprecated e)", async ({
         page,
     }) => {
+        const warnings: string[] = [];
+        page.on("console", msg => {
+            if (msg.type() === "warning") {
+                warnings.push(msg.text());
+            }
+        });
+
         await page.goto("/fixtures/event/");
 
         const customElement = page.locator("test-element");
@@ -26,6 +33,11 @@ test.describe("f-template", async () => {
         await customElement.locator("button").nth(1).click();
 
         expect(message).toEqual("click");
+
+        // The deprecation warning should include the component name
+        const deprecationWarnings = warnings.filter(w => w.includes("deprecated"));
+        expect(deprecationWarnings).toHaveLength(1);
+        expect(deprecationWarnings[0]).toContain('"test-element"');
     });
     test("should properly bind events with `this`", async ({ page }) => {
         await page.goto("/fixtures/event/");
