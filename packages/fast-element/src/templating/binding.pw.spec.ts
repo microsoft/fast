@@ -3156,86 +3156,64 @@ test.describe("The HTML binding directive", () => {
     });
 
     test.describe("when a parent 'when' directive tears down and recreates a child with a property binding", () => {
-        test("should not crash when bindings evaluate after the child view is unbound", async ({
-            page,
-        }) => {
+        test("should render the child with initial data", async ({ page }) => {
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
                 const { FASTElement, html, when, Observable, Updates } = await import(
                     "/main.js"
                 );
 
-                class ChildElement7422a extends FASTElement {
+                class WhenChildA extends FASTElement {
                     data: any;
                 }
-                Observable.defineProperty(ChildElement7422a.prototype, "data");
-                ChildElement7422a.define({
-                    name: "test-child-7422a",
-                    template: html<ChildElement7422a>`
+                Observable.defineProperty(WhenChildA.prototype, "data");
+                WhenChildA.define({
+                    name: "when-child-a",
+                    template: html<WhenChildA>`
                         <span>${x => x.data?.label ?? ""}</span>
                     `,
                 });
 
-                class ParentElement7422a extends FASTElement {
+                class WhenParentA extends FASTElement {
                     currentData: any;
                 }
-                Observable.defineProperty(ParentElement7422a.prototype, "currentData");
-                ParentElement7422a.define({
-                    name: "test-parent-7422a",
-                    template: html<ParentElement7422a>`
+                Observable.defineProperty(WhenParentA.prototype, "currentData");
+                WhenParentA.define({
+                    name: "when-parent-a",
+                    template: html<WhenParentA>`
                         ${when(
                             x => x.currentData,
-                            html<ParentElement7422a>`
-                                <test-child-7422a
+                            html<WhenParentA>`
+                                <when-child-a
                                     :data="${x => x.currentData}"
-                                ></test-child-7422a>
+                                ></when-child-a>
                             `,
                         )}
                     `,
                 });
 
-                const parent = document.createElement("test-parent-7422a") as any;
+                const parent = document.createElement("when-parent-a") as any;
                 document.body.appendChild(parent);
                 await Updates.next();
 
-                try {
-                    // Step 1: Show child with initial data.
-                    parent.currentData = { label: "A" };
-                    await Updates.next();
+                parent.currentData = { label: "A" };
+                await Updates.next();
 
-                    // Step 2: Toggle off — tears down the child.
-                    parent.currentData = undefined;
-                    await Updates.next();
+                const child = parent.shadowRoot?.querySelector("when-child-a");
+                const label = child?.shadowRoot
+                    ?.querySelector("span")
+                    ?.textContent?.trim();
+                const hasChild = !!child;
 
-                    // Step 3: Toggle on — rebuilds the child
-                    // (reuses cached view with same template).
-                    parent.currentData = { label: "A" };
-                    await Updates.next();
-
-                    // Step 4: Cycle data.
-                    parent.currentData = { label: "B" };
-                    await Updates.next();
-
-                    // Step 5: Toggle off — this is where the crash occurred.
-                    parent.currentData = undefined;
-                    await Updates.next();
-
-                    // Step 6: Toggle on again to confirm full cycle works.
-                    parent.currentData = { label: "C" };
-                    await Updates.next();
-
-                    return { success: true };
-                } catch (e: any) {
-                    return { success: false, error: e.message };
-                } finally {
-                    document.body.removeChild(parent);
-                }
+                document.body.removeChild(parent);
+                return { hasChild, label };
             });
 
-            expect(result.success).toBe(true);
+            expect(result.hasChild).toBe(true);
+            expect(result.label).toBe("A");
         });
 
-        test("should correctly render after toggling the when directive multiple times", async ({
+        test("should remove the child when the condition becomes falsy", async ({
             page,
         }) => {
             const result = await page.evaluate(async () => {
@@ -3244,67 +3222,320 @@ test.describe("The HTML binding directive", () => {
                     "/main.js"
                 );
 
-                class ChildElement7422b extends FASTElement {
+                class WhenChildB extends FASTElement {
                     data: any;
                 }
-                Observable.defineProperty(ChildElement7422b.prototype, "data");
-                ChildElement7422b.define({
-                    name: "test-child-7422b",
-                    template: html<ChildElement7422b>`
+                Observable.defineProperty(WhenChildB.prototype, "data");
+                WhenChildB.define({
+                    name: "when-child-b",
+                    template: html<WhenChildB>`
                         <span>${x => x.data?.label ?? ""}</span>
                     `,
                 });
 
-                class ParentElement7422b extends FASTElement {
+                class WhenParentB extends FASTElement {
                     currentData: any;
                 }
-                Observable.defineProperty(ParentElement7422b.prototype, "currentData");
-                ParentElement7422b.define({
-                    name: "test-parent-7422b",
-                    template: html<ParentElement7422b>`
+                Observable.defineProperty(WhenParentB.prototype, "currentData");
+                WhenParentB.define({
+                    name: "when-parent-b",
+                    template: html<WhenParentB>`
                         ${when(
                             x => x.currentData,
-                            html<ParentElement7422b>`
-                                <test-child-7422b
+                            html<WhenParentB>`
+                                <when-child-b
                                     :data="${x => x.currentData}"
-                                ></test-child-7422b>
+                                ></when-child-b>
                             `,
                         )}
                     `,
                 });
 
-                const parent = document.createElement("test-parent-7422b") as any;
+                const parent = document.createElement("when-parent-b") as any;
                 document.body.appendChild(parent);
                 await Updates.next();
 
-                // Toggle on.
+                parent.currentData = { label: "A" };
+                await Updates.next();
+
+                parent.currentData = undefined;
+                await Updates.next();
+
+                const child = parent.shadowRoot?.querySelector("when-child-b");
+
+                document.body.removeChild(parent);
+                return { hasChild: !!child };
+            });
+
+            expect(result.hasChild).toBe(false);
+        });
+
+        test("should re-render the child after toggling the condition off and on", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, when, Observable, Updates } = await import(
+                    "/main.js"
+                );
+
+                class WhenChildC extends FASTElement {
+                    data: any;
+                }
+                Observable.defineProperty(WhenChildC.prototype, "data");
+                WhenChildC.define({
+                    name: "when-child-c",
+                    template: html<WhenChildC>`
+                        <span>${x => x.data?.label ?? ""}</span>
+                    `,
+                });
+
+                class WhenParentC extends FASTElement {
+                    currentData: any;
+                }
+                Observable.defineProperty(WhenParentC.prototype, "currentData");
+                WhenParentC.define({
+                    name: "when-parent-c",
+                    template: html<WhenParentC>`
+                        ${when(
+                            x => x.currentData,
+                            html<WhenParentC>`
+                                <when-child-c
+                                    :data="${x => x.currentData}"
+                                ></when-child-c>
+                            `,
+                        )}
+                    `,
+                });
+
+                const parent = document.createElement("when-parent-c") as any;
+                document.body.appendChild(parent);
+                await Updates.next();
+
                 parent.currentData = { label: "First" };
                 await Updates.next();
 
-                const shadowRoot = parent.shadowRoot!;
-                const child1 = shadowRoot.querySelector("test-child-7422b");
-                const label1 = child1?.shadowRoot
-                    ?.querySelector("span")
-                    ?.textContent?.trim();
-
-                // Toggle off and back on with new data.
                 parent.currentData = undefined;
                 await Updates.next();
+
                 parent.currentData = { label: "Second" };
                 await Updates.next();
 
-                const child2 = shadowRoot.querySelector("test-child-7422b");
-                const label2 = child2?.shadowRoot
+                const child = parent.shadowRoot?.querySelector("when-child-c");
+                const label = child?.shadowRoot
                     ?.querySelector("span")
                     ?.textContent?.trim();
 
                 document.body.removeChild(parent);
-
-                return { label1, label2 };
+                return { hasChild: !!child, label };
             });
 
-            expect(result.label1).toBe("First");
-            expect(result.label2).toBe("Second");
+            expect(result.hasChild).toBe(true);
+            expect(result.label).toBe("Second");
+        });
+
+        test("should update the child data without crashing after a toggle cycle", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, when, Observable, Updates } = await import(
+                    "/main.js"
+                );
+
+                class WhenChildD extends FASTElement {
+                    data: any;
+                }
+                Observable.defineProperty(WhenChildD.prototype, "data");
+                WhenChildD.define({
+                    name: "when-child-d",
+                    template: html<WhenChildD>`
+                        <span>${x => x.data?.label ?? ""}</span>
+                    `,
+                });
+
+                class WhenParentD extends FASTElement {
+                    currentData: any;
+                }
+                Observable.defineProperty(WhenParentD.prototype, "currentData");
+                WhenParentD.define({
+                    name: "when-parent-d",
+                    template: html<WhenParentD>`
+                        ${when(
+                            x => x.currentData,
+                            html<WhenParentD>`
+                                <when-child-d
+                                    :data="${x => x.currentData}"
+                                ></when-child-d>
+                            `,
+                        )}
+                    `,
+                });
+
+                const parent = document.createElement("when-parent-d") as any;
+                document.body.appendChild(parent);
+                await Updates.next();
+
+                // Show child → tear down → rebuild.
+                parent.currentData = { label: "A" };
+                await Updates.next();
+                parent.currentData = undefined;
+                await Updates.next();
+                parent.currentData = { label: "A" };
+                await Updates.next();
+
+                // Cycle data on the rebuilt child.
+                parent.currentData = { label: "B" };
+                await Updates.next();
+
+                const child = parent.shadowRoot?.querySelector("when-child-d");
+                const label = child?.shadowRoot
+                    ?.querySelector("span")
+                    ?.textContent?.trim();
+
+                document.body.removeChild(parent);
+                return { hasChild: !!child, label };
+            });
+
+            expect(result.hasChild).toBe(true);
+            expect(result.label).toBe("B");
+        });
+
+        test("should not crash when tearing down after a data cycle on a rebuilt child", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, when, Observable, Updates } = await import(
+                    "/main.js"
+                );
+
+                class WhenChildE extends FASTElement {
+                    data: any;
+                }
+                Observable.defineProperty(WhenChildE.prototype, "data");
+                WhenChildE.define({
+                    name: "when-child-e",
+                    template: html<WhenChildE>`
+                        <span>${x => x.data?.label ?? ""}</span>
+                    `,
+                });
+
+                class WhenParentE extends FASTElement {
+                    currentData: any;
+                }
+                Observable.defineProperty(WhenParentE.prototype, "currentData");
+                WhenParentE.define({
+                    name: "when-parent-e",
+                    template: html<WhenParentE>`
+                        ${when(
+                            x => x.currentData,
+                            html<WhenParentE>`
+                                <when-child-e
+                                    :data="${x => x.currentData}"
+                                ></when-child-e>
+                            `,
+                        )}
+                    `,
+                });
+
+                const parent = document.createElement("when-parent-e") as any;
+                document.body.appendChild(parent);
+                await Updates.next();
+
+                // Show → tear down → rebuild → cycle data.
+                parent.currentData = { label: "A" };
+                await Updates.next();
+                parent.currentData = undefined;
+                await Updates.next();
+                parent.currentData = { label: "A" };
+                await Updates.next();
+                parent.currentData = { label: "B" };
+                await Updates.next();
+
+                // Tear down again — this is where the crash occurred
+                // before the fix, because the child's stale expression
+                // notifier would fire with a null source.
+                parent.currentData = undefined;
+                await Updates.next();
+
+                const child = parent.shadowRoot?.querySelector("when-child-e");
+
+                document.body.removeChild(parent);
+                return { hasChild: !!child };
+            });
+
+            expect(result.hasChild).toBe(false);
+        });
+
+        test("should render correctly after a full teardown-rebuild-teardown-rebuild cycle", async ({
+            page,
+        }) => {
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, when, Observable, Updates } = await import(
+                    "/main.js"
+                );
+
+                class WhenChildF extends FASTElement {
+                    data: any;
+                }
+                Observable.defineProperty(WhenChildF.prototype, "data");
+                WhenChildF.define({
+                    name: "when-child-f",
+                    template: html<WhenChildF>`
+                        <span>${x => x.data?.label ?? ""}</span>
+                    `,
+                });
+
+                class WhenParentF extends FASTElement {
+                    currentData: any;
+                }
+                Observable.defineProperty(WhenParentF.prototype, "currentData");
+                WhenParentF.define({
+                    name: "when-parent-f",
+                    template: html<WhenParentF>`
+                        ${when(
+                            x => x.currentData,
+                            html<WhenParentF>`
+                                <when-child-f
+                                    :data="${x => x.currentData}"
+                                ></when-child-f>
+                            `,
+                        )}
+                    `,
+                });
+
+                const parent = document.createElement("when-parent-f") as any;
+                document.body.appendChild(parent);
+                await Updates.next();
+
+                // Full cycle: show → tear down → rebuild → data change
+                // → tear down → rebuild with new data.
+                parent.currentData = { label: "A" };
+                await Updates.next();
+                parent.currentData = undefined;
+                await Updates.next();
+                parent.currentData = { label: "A" };
+                await Updates.next();
+                parent.currentData = { label: "B" };
+                await Updates.next();
+                parent.currentData = undefined;
+                await Updates.next();
+                parent.currentData = { label: "C" };
+                await Updates.next();
+
+                const child = parent.shadowRoot?.querySelector("when-child-f");
+                const label = child?.shadowRoot
+                    ?.querySelector("span")
+                    ?.textContent?.trim();
+
+                document.body.removeChild(parent);
+                return { hasChild: !!child, label };
+            });
+
+            expect(result.hasChild).toBe(true);
+            expect(result.label).toBe("C");
         });
     });
 });
