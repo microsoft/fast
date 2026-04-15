@@ -39,6 +39,7 @@ fast build [options]
 | `--state="<path>"` | `state.json` | JSON file containing the template state |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
+| `--config="<path>"` | `fast-build.config.json` | Path to a JSON configuration file. If omitted, `fast-build.config.json` in the current directory is used when present. CLI arguments take precedence over config values. See [Configuration file](#configuration-file). |
 
 ### Example
 
@@ -104,6 +105,31 @@ Template files must use the following format:
 ```
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file.
+
+### Configuration file
+
+Instead of passing every option on the command line, you can place a `fast-build.config.json` file alongside your project files:
+
+```json
+{
+    "entry": "index.html",
+    "state": "state.json",
+    "output": "output.html",
+    "templates": "./components/**/*.html"
+}
+```
+
+The CLI automatically loads `fast-build.config.json` from the current directory when it exists. To use a different file, pass `--config`:
+
+```shell
+fast build --config=configs/my-build.json
+```
+
+**Precedence:** CLI arguments always override config file values. For example, `--output=other.html` will override the `output` value in the config file.
+
+**Path resolution:** File paths in the config file (`entry`, `state`, `output`, `templates`) are resolved relative to the config file's directory, not the current working directory. This ensures the config works correctly regardless of where the CLI is invoked.
+
+All keys are optional. Only the following keys are allowed: `entry`, `state`, `output`, `templates`, `attribute-name-strategy`. Unknown keys or non-string values produce an error.
 
 ## Template syntax
 
