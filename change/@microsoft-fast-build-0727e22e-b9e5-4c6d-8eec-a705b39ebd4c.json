@@ -3,5 +3,5 @@
   "comment": "feat: add --config option for loading build options from a JSON configuration file",
   "packageName": "@microsoft/fast-build",
   "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "none"
 }
