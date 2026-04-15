@@ -6,6 +6,9 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { discoverFixtures } from "./build-fixtures.utilities.js";
 
+// Pass-through CLI arguments (forwarded to every fast-build invocation).
+const passthroughArgs = process.argv.slice(2);
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const fixturesDir = resolve(__dirname, "../test/fixtures");
 const fixtures = discoverFixtures(fixturesDir);
@@ -13,7 +16,9 @@ const fixtures = discoverFixtures(fixturesDir);
 const require = createRequire(import.meta.url);
 const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
-for (const fixtureName of fixtures) {
+for (const fixture of fixtures) {
+    const fixtureName = fixture.name;
+    const fixtureArgs = fixture.args || [];
     const fixtureDir = resolve(__dirname, "../test/fixtures", fixtureName);
     const templatesFile = join(fixtureDir, "templates.html");
     const entryFile = join(fixtureDir, "entry.html");
@@ -30,6 +35,8 @@ for (const fixtureName of fixtures) {
             `--entry=${entryFile}`,
             `--state=${stateFile}`,
             `--output=${outputFile}`,
+            ...fixtureArgs,
+            ...passthroughArgs,
         ],
         { stdio: "inherit" },
     );

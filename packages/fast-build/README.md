@@ -39,6 +39,7 @@ fast build [options]
 | `--state="<path>"` | `state.json` | JSON file containing the template state |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
+| `--attribute-name-strategy="<strategy>"` | `none` | Strategy for mapping HTML attribute names to state property names on custom elements. `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). See [Attribute name strategy](#attribute-name-strategy). |
 
 ### Example
 
@@ -104,6 +105,29 @@ Template files must use the following format:
 ```
 
 If an `<f-template>` element has no `name` attribute, a warning is printed and it is ignored. Exact file paths (no wildcards) are also accepted as patterns, making it possible to register a single template file.
+
+### Attribute name strategy
+
+The `--attribute-name-strategy` option controls how HTML attribute names on custom elements are mapped to state property names in their shadow templates.
+
+| Strategy | Behaviour | Template binding |
+|---|---|---|
+| `none` (default) | Attribute names lowercased as-is, dashes preserved | `foo-bar` → `{{foo-bar}}` |
+| `camelCase` | Dashed attribute names converted to camelCase | `foo-bar` → `{{fooBar}}` |
+
+The `camelCase` strategy only affects "plain" custom element attributes. It does **not** change:
+- `data-*` attributes (always use `dataset.*` grouping)
+- `aria-*` attributes (always use ARIA reflection lookup)
+- HTML global attributes with known property names (e.g. `tabindex` → `tabIndex`)
+
+```shell
+fast build \
+  --templates="./components/**/*.html" \
+  --attribute-name-strategy=camelCase \
+  --entry=index.html \
+  --state=state.json \
+  --output=output.html
+```
 
 ## Template syntax
 
