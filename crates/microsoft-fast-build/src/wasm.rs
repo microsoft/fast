@@ -1,23 +1,27 @@
 use wasm_bindgen::prelude::*;
 use std::collections::HashMap;
 use crate::{json, Locator, render_template, render_template_with_locator, render_entry_template_with_locator};
+use crate::config::{RenderConfig, AttributeNameStrategy};
 
 /// Render a FAST HTML template with a JSON state string.
 /// Returns the rendered HTML or throws a JavaScript error.
 #[wasm_bindgen]
 pub fn render(entry: &str, state: &str) -> Result<String, JsValue> {
-    render_template(entry, state).map_err(|e| JsValue::from_str(&e.to_string()))
+    render_template(entry, state, None).map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
 /// Render a FAST HTML template with custom element templates and a JSON state string.
 /// `templates_json` is a JSON object mapping element names to their HTML template strings,
 /// e.g. `{"my-button": "<template>...</template>"}`.
+/// `attribute_name_strategy` controls attribute-to-property mapping: `"none"` (default)
+/// or `"camelCase"`. Pass an empty string for the default.
 /// Returns the rendered HTML or throws a JavaScript error.
 #[wasm_bindgen]
-pub fn render_with_templates(entry: &str, templates_json: &str, state: &str) -> Result<String, JsValue> {
+pub fn render_with_templates(entry: &str, templates_json: &str, state: &str, attribute_name_strategy: &str) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_templates(templates);
-    render_template_with_locator(entry, state, &locator)
+    let config = build_config(attribute_name_strategy)?;
+    render_template_with_locator(entry, state, &locator, config.as_ref())
         .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
@@ -28,12 +32,15 @@ pub fn render_with_templates(entry: &str, templates_json: &str, state: &str) -> 
 /// output, while non-primitive values (`array`, `object`, `null`) are stripped.
 ///
 /// `templates_json` is a JSON object mapping element names to their HTML template strings.
+/// `attribute_name_strategy` controls attribute-to-property mapping: `"none"` (default)
+/// or `"camelCase"`. Pass an empty string for the default.
 /// Returns the rendered HTML or throws a JavaScript error.
 #[wasm_bindgen]
-pub fn render_entry_with_templates(entry: &str, templates_json: &str, state: &str) -> Result<String, JsValue> {
+pub fn render_entry_with_templates(entry: &str, templates_json: &str, state: &str, attribute_name_strategy: &str) -> Result<String, JsValue> {
     let templates = parse_templates_map(templates_json)?;
     let locator = Locator::from_templates(templates);
-    render_entry_template_with_locator(entry, state, &locator)
+    let config = build_config(attribute_name_strategy)?;
+    render_entry_template_with_locator(entry, state, &locator, config.as_ref())
         .map_err(|e| JsValue::from_str(&e.to_string()))
 }
 
@@ -91,5 +98,20 @@ fn parse_templates_map(templates_json: &str) -> Result<HashMap<String, String>, 
             Ok(map)
         }
         _ => Err(JsValue::from_str("Templates must be a JSON object")),
+    }
+}
+
+/// Build an `Option<RenderConfig>` from the strategy string.
+/// Returns `None` for `""` or `"none"` (use defaults), `Some(config)` otherwise.
+fn build_config(strategy: &str) -> Result<Option<RenderConfig>, JsValue> {
+    match strategy {
+        "" | "none" => Ok(None),
+        "camelCase" => Ok(Some(
+            RenderConfig::new().with_attribute_name_strategy(AttributeNameStrategy::CamelCase),
+        )),
+        _ => Err(JsValue::from_str(&format!(
+            "Invalid attribute-name-strategy '{}': expected 'none' or 'camelCase'",
+            strategy
+        ))),
     }
 }

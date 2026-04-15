@@ -1,0 +1,33 @@
+import { attr, FASTElement } from "@microsoft/fast-element";
+import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+
+class TestCamelCase extends FASTElement {
+    @attr({ attribute: "foo-bar" })
+    fooBar: string = "";
+}
+RenderableFASTElement(TestCamelCase).defineAsync({
+    name: "test-camel-case",
+    templateOptions: "defer-and-hydrate",
+});
+
+class TestCamelCaseMulti extends FASTElement {
+    @attr({ attribute: "my-custom-prop" })
+    myCustomProp: string = "";
+}
+RenderableFASTElement(TestCamelCaseMulti).defineAsync({
+    name: "test-camel-case-multi",
+    templateOptions: "defer-and-hydrate",
+});
+
+class TestCamelCaseNoDash extends FASTElement {
+    @attr
+    label: string = "";
+}
+RenderableFASTElement(TestCamelCaseNoDash).defineAsync({
+    name: "test-camel-case-no-dash",
+    templateOptions: "defer-and-hydrate",
+});
+
+TemplateElement.define({
+    name: "f-template",
+});
