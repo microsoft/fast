@@ -414,7 +414,7 @@ Attributes on a custom element become the state passed to its template:
 | `items="{{items}}"` | `{"items": <value of items from parent state>}` (array, object, or any type) |
 | `:items="{{items}}"` | `{"items": <value of items from parent state>}` — same as above but **not rendered as an HTML attribute** |
 | `foo="{{bar}}"` | `{"foo": <value of bar from parent state>}` |
-| `selected-user-id="42"` | `{"selected-user-id": "42"}` |
+| `selected-user-id="42"` | `{"selected-user-id": "42"}` (or `{"selectedUserId": "42"}` with `camelCase` strategy) |
 | `isEnabled="{{isEnabled}}"` | `{"isenabled": <resolved value>}` |
 | `data-date-of-birth="1990-01-01"` | `{"dataset": {"dateOfBirth": "1990-01-01"}}` |
 | `data-date-of-birth="{{dob}}"` | `{"dataset": {"dateOfBirth": <value of dob from parent state>}}` |
@@ -429,7 +429,7 @@ Attributes on a custom element become the state passed to its template:
 | `f-slotted="{nodes}"` | *(skipped — client-side only)* |
 | `f-children="{items}"` | *(skipped — client-side only)* |
 
-**HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form.
+**HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved so `selected-user-id` stays `selected-user-id`. Templates must reference the lowercase form. When the `attribute-name-strategy` configuration is set to `"camelCase"`, dashed attribute names that are not handled by specialized lookup tables (`data-*`, `aria-*`, HTML global attributes) are converted to camelCase instead: `selected-user-id` becomes `selectedUserId`, matching `{{selectedUserId}}` in the template. See the [Configuration](#configuration) section for details.
 
 **Attribute value coercion** — attribute values are resolved in this order:
 - No value (boolean attribute) → `true`
@@ -467,6 +467,58 @@ The renderer wraps the rendered template in Declarative Shadow DOM and adds the 
 - `shadowroot="open"` — legacy declarative shadow DOM attribute for broader browser compatibility.
 
 Custom elements that have no matching template in the locator are passed through verbatim.
+
+---
+
+## Configuration
+
+The `RenderConfig` struct provides configuration options that control rendering behaviour. Use the `_and_config` API variants to pass a config.
+
+### `attribute-name-strategy`
+
+Controls how HTML attribute names are mapped to state property names when building child state for custom elements.
+
+| Strategy | Behaviour | Example |
+|---|---|---|
+| `"none"` (default) | Attribute names are lowercased as-is. Dashes preserved. | `foo-bar` → `{{foo-bar}}` |
+| `"camelCase"` | Dashed attribute names are converted to camelCase. | `foo-bar` → `{{fooBar}}` |
+
+The `camelCase` strategy only applies to "plain" attributes. It does **not** affect:
+- `data-*` attributes (always use `dataset.*` grouping)
+- `aria-*` attributes (always use ARIA reflection lookup)
+- HTML global attributes with known property names (e.g. `tabindex` → `tabIndex`)
+- `:prop` property bindings (always lowercased)
+
+#### Rust API
+
+```rust
+use microsoft_fast_build::{RenderConfig, AttributeNameStrategy, render_template_with_locator_and_config};
+
+let config = RenderConfig::new()
+    .with_attribute_name_strategy(AttributeNameStrategy::CamelCase);
+
+let result = render_template_with_locator_and_config(
+    r#"<my-el foo-bar="hello"></my-el>"#,
+    r#"{}"#,
+    &locator,
+    &config,
+)?;
+// In my-el's template, use {{fooBar}} instead of {{foo-bar}}
+```
+
+#### WASM / JavaScript API
+
+```javascript
+// With config
+const html = render_with_templates_and_config(
+    entry,
+    templatesJson,
+    stateJson,
+    "camelCase"  // or "none"
+);
+```
+
+The existing API functions (`render_with_locator`, `render_with_templates`, etc.) always use the `"none"` strategy for full backward compatibility.
 
 ---
 

@@ -19,6 +19,7 @@ fn test_tabindex_to_tab_index() {
         r#"<test-el tabindex="0"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains(r#"tabindex="0""#), "tabIndex resolved: {result}");
 }
@@ -35,6 +36,7 @@ fn test_readonly_to_read_only() {
         r#"<test-el readonly="true"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains("true"), "readOnly resolved: {result}");
 }
@@ -51,6 +53,7 @@ fn test_contenteditable_to_content_editable() {
         r#"<test-el contenteditable="true"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains(r#"contenteditable="true""#), "contentEditable resolved: {result}");
 }
@@ -67,6 +70,7 @@ fn test_colspan_to_col_span() {
         r#"<test-el colspan="2"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains(r#"colspan="2""#), "colSpan resolved: {result}");
 }
@@ -83,6 +87,7 @@ fn test_maxlength_to_max_length() {
         r#"<test-el maxlength="100"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains(r#"maxlength="100""#), "maxLength resolved: {result}");
 }
@@ -102,6 +107,7 @@ fn test_html_attr_from_parent_binding() {
         r#"<test-el tabindex="{{idx}}"></test-el>"#,
         &root,
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains(r#"tabindex="-1""#), "tabIndex binding: {result}");
 }
@@ -118,6 +124,7 @@ fn test_disabled_stays_disabled() {
         r#"<test-el disabled="true"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains("true"), "disabled stays as-is: {result}");
 }
@@ -132,6 +139,7 @@ fn test_title_stays_title() {
         r#"<test-el title="Hello"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains("Hello"), "title stays as-is: {result}");
 }
@@ -148,6 +156,7 @@ fn test_html_aria_and_regular_attrs_coexist() {
         r#"<test-el tabindex="0" aria-label="Action" label="Click"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains("Click"), "label: {result}");
     assert!(result.contains("Action"), "ariaLabel: {result}");
@@ -167,6 +176,7 @@ fn test_html_attr_uppercase_normalized() {
         r#"<test-el TABINDEX="0"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains(r#"tabindex="0""#), "TABINDEX normalized: {result}");
 }
@@ -182,6 +192,7 @@ fn test_html_attr_mixed_case_normalized() {
         r#"<test-el ReadOnly="true"></test-el>"#,
         &empty(),
         &locator,
+        None,
     ).unwrap();
     assert!(result.contains("true"), "ReadOnly normalized: {result}");
 }
