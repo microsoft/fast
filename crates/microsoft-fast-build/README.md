@@ -472,7 +472,7 @@ Custom elements that have no matching template in the locator are passed through
 
 ## Configuration
 
-The `RenderConfig` struct provides configuration options that control rendering behaviour. Use the `_and_config` API variants to pass a config.
+The `RenderConfig` struct provides configuration options that control rendering behaviour. Pass `Some(&config)` to any render function, or `None` for defaults.
 
 ### `attribute-name-strategy`
 
@@ -492,16 +492,16 @@ The `camelCase` strategy only applies to "plain" attributes. It does **not** aff
 #### Rust API
 
 ```rust
-use microsoft_fast_build::{RenderConfig, AttributeNameStrategy, render_template_with_locator_and_config};
+use microsoft_fast_build::{RenderConfig, AttributeNameStrategy, render_template_with_locator};
 
 let config = RenderConfig::new()
     .with_attribute_name_strategy(AttributeNameStrategy::CamelCase);
 
-let result = render_template_with_locator_and_config(
+let result = render_template_with_locator(
     r#"<my-el foo-bar="hello"></my-el>"#,
     r#"{}"#,
     &locator,
-    &config,
+    Some(&config),
 )?;
 // In my-el's template, use {{fooBar}} instead of {{foo-bar}}
 ```
@@ -509,8 +509,7 @@ let result = render_template_with_locator_and_config(
 #### WASM / JavaScript API
 
 ```javascript
-// With config
-const html = render_with_templates_and_config(
+const html = render_entry_with_templates(
     entry,
     templatesJson,
     stateJson,
@@ -518,7 +517,7 @@ const html = render_with_templates_and_config(
 );
 ```
 
-The existing API functions (`render_with_locator`, `render_with_templates`, etc.) always use the `"none"` strategy for full backward compatibility.
+Passing `"none"` or `""` as the strategy uses the default behaviour.
 
 ---
 
