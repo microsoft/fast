@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <test-camel-case foo-bar="hello"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$fooBar-0$$fe-b-->hello<!--fe-b$$end$$0$$fooBar-0$$fe-b--></span></template></test-camel-case>
+        <test-camel-case-multi my-custom-prop="world"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$myCustomProp-0$$fe-b-->world<!--fe-b$$end$$0$$myCustomProp-0$$fe-b--></span></template></test-camel-case-multi>
+        <test-camel-case-no-dash label="simple"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$label-0$$fe-b-->simple<!--fe-b$$end$$0$$label-0$$fe-b--></span></template></test-camel-case-no-dash>
+<f-template name="test-camel-case">
+    <template> <span>{{fooBar}}</span> </template>
+</f-template>
+<f-template name="test-camel-case-multi">
+    <template> <span>{{myCustomProp}}</span> </template>
+</f-template>
+<f-template name="test-camel-case-no-dash">
+    <template> <span>{{label}}</span> </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
