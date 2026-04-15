@@ -136,6 +136,13 @@ export interface HydrationLifecycleCallbacks
 }
 
 /**
+ * Tracks component names that have already emitted a deprecation warning
+ * for the legacy "e" event argument, so the warning fires at most once per
+ * unique component name.
+ */
+const warnedDeprecatedE = new Set<string>();
+
+/**
  * The <f-template> custom element that will provide view logic to the element
  */
 class TemplateElement extends FASTElement {
@@ -627,10 +634,15 @@ class TemplateElement extends FASTElement {
                         const parsedArgs = parseEventArgs(argsString);
 
                         if (parsedArgs.some(a => a.type === "deprecated-event")) {
-                            console.warn(
-                                `[fast-html] Using "e" as an event argument is deprecated. ` +
-                                    `Use "${eventArgAccessor}" instead.`,
-                            );
+                            const componentName = this.name ?? "unknown";
+                            if (!warnedDeprecatedE.has(componentName)) {
+                                warnedDeprecatedE.add(componentName);
+                                console.warn(
+                                    `[fast-html] Using "e" as an event argument is deprecated` +
+                                        ` in component "${componentName}".` +
+                                        ` Use "${eventArgAccessor}" instead.`,
+                                );
+                            }
                         }
 
                         const argResolvers = parsedArgs.map(
