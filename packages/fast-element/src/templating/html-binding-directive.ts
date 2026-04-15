@@ -24,7 +24,7 @@ type UpdateTarget = (
     target: Node,
     aspect: string,
     value: any,
-    controller: ViewController
+    controller: ViewController,
 ) => void;
 
 /**
@@ -104,7 +104,7 @@ function updateContent(
     target: ContentTarget,
     aspect: string,
     value: any,
-    controller: ViewController
+    controller: ViewController,
 ): void {
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
@@ -174,6 +174,15 @@ function updateContent(
             }
         }
 
+        // During hydration, trust the server-rendered text content.
+        if (
+            isHydratable(controller) &&
+            controller.hydrationStage &&
+            controller.hydrationStage !== HydrationStage.hydrated
+        ) {
+            return;
+        }
+
         target.textContent = value;
     }
 }
@@ -193,7 +202,7 @@ function updateTokenList(
     this: HTMLBindingDirective,
     target: Element,
     aspect: string,
-    value: any
+    value: any,
 ): void {
     const lookup = `${this.id}-t`;
     const state: TokenListState =
@@ -342,7 +351,7 @@ export class HTMLBindingDirective
                 this.targetTagName,
                 this.aspectType,
                 this.targetAspect,
-                sink
+                sink,
             );
         }
 
@@ -359,6 +368,11 @@ export class HTMLBindingDirective
      * - For all non-event bindings: creates (or reuses) an ExpressionObserver, evaluates
      *   the binding expression, and applies the result to the DOM via the updateTarget
      *   sink function. The observer will call handleChange() on future data changes.
+     * - During hydration: non-content bindings skip the initial DOM update to trust
+     *   server-rendered content. The observer is still bound to set up dependency
+     *   tracking so reactive changes post-hydration update normally. Content bindings
+     *   still call updateTarget since ContentTemplate values need view hierarchy
+     *   setup, but primitive text content writes are skipped.
      * @internal
      */
     bind(controller: ViewController): void {
@@ -374,13 +388,13 @@ export class HTMLBindingDirective
                 target.addEventListener(
                     this.targetAspect,
                     this,
-                    this.dataBinding.options
+                    this.dataBinding.options,
                 );
                 break;
             case DOMAspect.content:
                 controller.onUnbind(this);
             // intentional fall through
-            default:
+            default: {
                 const observer =
                     target[this.data] ??
                     (target[this.data] = this.dataBinding.createObserver(this, this));
@@ -388,13 +402,28 @@ export class HTMLBindingDirective
                 (observer as any).target = target;
                 (observer as any).controller = controller;
 
-                if (
-                    isHydrating &&
-                    (this.aspectType === DOMAspect.attribute ||
-                        this.aspectType === DOMAspect.booleanAttribute)
-                ) {
-                    observer.bind(controller);
-                    // Skip updating target during bind for attributes
+                if (isHydrating && this.aspectType !== DOMAspect.content) {
+                    const value = observer.bind(controller);
+
+                    // For tokenList bindings, seed the version state from
+                    // the binding value so class removals work on the first
+                    // post-hydration update.
+                    if (this.aspectType === DOMAspect.tokenList) {
+                        const lookup = `${this.id}-t`;
+                        const cv = Object.create(null);
+                        if (value !== null && value !== undefined && value.length) {
+                            const names = (value as string).split(/\s+/);
+                            for (let i = 0, ii = names.length; i < ii; ++i) {
+                                if (names[i] !== "") {
+                                    cv[names[i]] = 0;
+                                }
+                            }
+                        }
+                        target[lookup] = { v: 1, cv };
+                    }
+
+                    // Skip updating target during hydration — trust
+                    // the server-rendered content.
                     break;
                 }
 
@@ -402,9 +431,10 @@ export class HTMLBindingDirective
                     target,
                     this.targetAspect,
                     observer.bind(controller),
-                    controller
+                    controller,
                 );
                 break;
+            }
         }
     }
 
@@ -434,7 +464,7 @@ export class HTMLBindingDirective
             ExecutionContext.setEvent(event);
             const result = this.dataBinding.evaluate(
                 controller.source,
-                controller.context
+                controller.context,
             );
             ExecutionContext.setEvent(null);
 
@@ -458,7 +488,7 @@ export class HTMLBindingDirective
             target,
             this.targetAspect,
             observer.bind(controller),
-            controller
+            controller,
         );
     }
 }
