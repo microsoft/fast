@@ -11,14 +11,11 @@ test.describe("deprecated event argument warning", async () => {
             }
         });
 
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deprecated-event-warning/");
-
-        // Wait for both components to finish template processing
-        await page.locator("test-alpha").waitFor();
-        await page.locator("test-beta").waitFor();
-
-        // Allow template processing to complete
-        await page.waitForTimeout(500);
+        await hydrationCompleted;
 
         const deprecationWarnings = warnings.filter(w => w.includes("deprecated"));
 
@@ -45,10 +42,11 @@ test.describe("deprecated event argument warning", async () => {
             }
         });
 
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/deprecated-event-warning/");
-
-        await page.locator("test-alpha").waitFor();
-        await page.waitForTimeout(500);
+        await hydrationCompleted;
 
         const alphaWarning = warnings.find(w => w.includes("test-alpha"));
 

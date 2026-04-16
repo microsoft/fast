@@ -175,7 +175,8 @@ class TemplateElement extends FASTElement {
      * Set during template processing; checked after evaluation to emit a
      * single warning per template.
      */
-    private _hasDeprecatedE = false;
+    // TODO: remove per https://github.com/microsoft/fast/issues/7314
+    private _hasDeprecatedEventSyntax = false;
 
     /**
      * Lifecycle callbacks for hydration events
@@ -297,7 +298,7 @@ class TemplateElement extends FASTElement {
                     this.observerMap,
                 );
 
-                if (this._hasDeprecatedE) {
+                if (this._hasDeprecatedEventSyntax) {
                     console.warn(
                         `[fast-html] Using "e" as an event argument is deprecated` +
                             ` in component "${name}".` +
@@ -642,7 +643,7 @@ class TemplateElement extends FASTElement {
                         const parsedArgs = parseEventArgs(argsString);
 
                         if (parsedArgs.some(a => a.type === "deprecated-event")) {
-                            this._hasDeprecatedE = true;
+                            this._hasDeprecatedEventSyntax = true;
                         }
 
                         const argResolvers = parsedArgs.map(
