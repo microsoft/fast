@@ -23,7 +23,6 @@ import {
     whenDirectiveClose,
     whenDirectiveOpen,
 } from "./syntax.js";
-import type { ObserverMapPathEntry } from "./template.js";
 
 type BehaviorType = "dataBinding" | "templateDirective";
 
@@ -1179,81 +1178,21 @@ function getSchemaProperties(schema: any): any | null {
 }
 
 /**
- * Resolves the config entry for a child property within a parent config node.
- * When the parent is `true`/`undefined`, all children are observed.
- * When the parent is `false`, all children are skipped.
- * When the parent is an object node, the child inherits `$observe` when not listed.
+ * Checks whether a schema node (or any of its descendants) has observation enabled.
+ * Returns false only when the node and ALL its descendants are stamped with `$observe: false`.
  */
-function getChildConfigEntry(
-    parentConfig: ObserverMapPathEntry | undefined,
-    propertyName: string,
-): ObserverMapPathEntry | undefined {
-    if (parentConfig === undefined || parentConfig === true) {
-        return undefined; // inherit: observe all
-    }
-
-    if (parentConfig === false) {
-        return false; // inherit: skip all
-    }
-
-    // ObserverMapPathNode
-    if (propertyName in parentConfig) {
-        return parentConfig[propertyName];
-    }
-
-    // Child inherits the node's $observe value
-    return parentConfig.$observe ?? undefined;
-}
-
-/**
- * Determines whether a config entry indicates the current path should be observed.
- * `undefined` means "inherit from parent" and defaults to observed.
- */
-function shouldObserveAtPath(configEntry: ObserverMapPathEntry | undefined): boolean {
-    if (configEntry === undefined || configEntry === true) {
+function hasObservedSchemaDescendant(schema: any): boolean {
+    if (schema?.$observe !== false) {
         return true;
     }
 
-    if (configEntry === false) {
+    const props = getSchemaProperties(schema);
+
+    if (!props) {
         return false;
     }
 
-    // ObserverMapPathNode: $observe defaults to true when unspecified
-    return configEntry.$observe !== false;
-}
-
-/**
- * Determines whether a config entry has any observed path in its subtree.
- * Used to decide whether to recurse into an object even if the current level is skipped.
- */
-function hasObservedDescendant(configEntry: ObserverMapPathEntry | undefined): boolean {
-    if (configEntry === undefined || configEntry === true) {
-        return true;
-    }
-
-    if (configEntry === false) {
-        return false;
-    }
-
-    // ObserverMapPathNode
-    if (configEntry.$observe === true) {
-        return true;
-    }
-
-    for (const key of Object.keys(configEntry)) {
-        if (key === "$observe") {
-            continue;
-        }
-
-        const child = configEntry[key];
-
-        if (child !== undefined && hasObservedDescendant(child)) {
-            return true;
-        }
-    }
-
-    // A node with $observe unset (defaults to true) and no children entries: observed
-    return configEntry.$observe !== false;
+    return Object.keys(props).some(k => hasObservedSchemaDescendant(props[k]));
 }
 
 /**
@@ -1263,7 +1202,6 @@ function hasObservedDescendant(configEntry: ObserverMapPathEntry | undefined): b
  * @param rootSchema - The root schema for the entire data structure
  * @param target - The target element
  * @param rootProperty - The root property name
- * @param configEntry - Optional path config entry controlling observation granularity
  * @returns The array with observable properties and change notifications
  */
 function assignObservablesToArray(
@@ -1272,7 +1210,6 @@ function assignObservablesToArray(
     rootSchema: JSONSchema,
     target: any,
     rootProperty: string,
-    configEntry?: ObserverMapPathEntry,
 ): any {
     const schemaProperties = getSchemaProperties(schema);
 
@@ -1282,13 +1219,7 @@ function assignObservablesToArray(
         ? proxiedData.map((item: any) => {
               const originalItem = Object.assign({}, item);
 
-              assignProxyToItemsInArray(
-                  item,
-                  originalItem,
-                  schema,
-                  rootSchema,
-                  configEntry,
-              );
+              assignProxyToItemsInArray(item, originalItem, schema, rootSchema);
 
               return Object.assign(item, originalItem);
           })
@@ -1308,7 +1239,6 @@ function assignObservablesToArray(
                                 originalItem,
                                 schema,
                                 rootSchema,
-                                configEntry,
                             );
 
                             Object.assign(item, originalItem);
@@ -1422,7 +1352,6 @@ function assignSubscribeToObservableArray(
  * @param data - The data
  * @param target - The target custom element
  * @param rootProperty - The root property
- * @param configEntry - Optional path config entry controlling observation granularity
  * @returns
  */
 export function assignObservables(
@@ -1431,7 +1360,6 @@ export function assignObservables(
     data: any,
     target: any,
     rootProperty: string,
-    configEntry?: ObserverMapPathEntry,
 ): typeof Proxy {
     const dataType = getDataType(data);
     let proxiedData = data;
@@ -1449,7 +1377,6 @@ export function assignObservables(
                     rootSchema,
                     target,
                     rootProperty,
-                    configEntry,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1464,7 +1391,6 @@ export function assignObservables(
                                 rootSchema,
                                 target,
                                 rootProperty,
-                                configEntry,
                             ),
                         ),
                     );
@@ -1479,7 +1405,6 @@ export function assignObservables(
                     rootSchema,
                     target,
                     rootProperty,
-                    configEntry,
                 );
             }
 
@@ -1492,7 +1417,6 @@ export function assignObservables(
                 proxiedData,
                 schema,
                 rootSchema,
-                configEntry,
             );
             break;
         }
@@ -1507,24 +1431,26 @@ export function assignObservables(
  * @param originalItem - The original array item
  * @param schema - The schema mapping to the items in the array
  * @param rootSchema - The root schema assigned to the root property
- * @param configEntry - Optional path config entry controlling observation granularity
  */
 function assignProxyToItemsInArray(
     proxiableItem: any,
     originalItem: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
-    configEntry?: ObserverMapPathEntry,
 ): void {
     const schemaProperties = getSchemaProperties(schema);
 
     getObjectProperties(proxiableItem, schemaProperties).forEach(key => {
-        const childConfig = getChildConfigEntry(configEntry, key);
+        const childSchema = schemaProperties[key];
 
-        // Skip this property if config excludes it entirely
-        if (childConfig === false && !hasObservedDescendant(childConfig)) {
+        // Skip properties excluded by $observe: false that have no observed descendants
+        if (
+            childSchema?.$observe === false &&
+            !hasObservedSchemaDescendant(childSchema)
+        ) {
             return;
         }
+
         // Initialize the property as undefined if it doesn't exist
         if (!(key in originalItem)) {
             originalItem[key] = undefined;
@@ -1537,7 +1463,6 @@ function assignProxyToItemsInArray(
             originalItem[key],
             schemaProperties[key],
             rootSchema,
-            childConfig,
         );
 
         // Then make the property observable
@@ -1571,7 +1496,6 @@ function getObjectProperties(data: any, schemaProperties: any): string[] {
  * @param data - The data to proxy
  * @param schema - The schema for the data
  * @param rootSchema - The root schema for the root property
- * @param configEntry - Optional path config entry controlling observation granularity
  * @returns a Proxy
  */
 function assignProxyToItemsInObject(
@@ -1580,7 +1504,6 @@ function assignProxyToItemsInObject(
     data: any,
     schema: JSONSchema | JSONSchemaDefinition,
     rootSchema: JSONSchema,
-    configEntry?: ObserverMapPathEntry,
 ): any | typeof Proxy {
     const type = getDataType(data);
     const schemaProperties = getSchemaProperties(schema);
@@ -1589,17 +1512,12 @@ function assignProxyToItemsInObject(
     if (type === "object" && schemaProperties) {
         // navigate through all items in the object
         getObjectProperties(proxiedData, schemaProperties).forEach(property => {
-            const childConfig = getChildConfigEntry(configEntry, property);
+            const childSchema = schemaProperties[property];
 
-            // Skip properties that are excluded by config with no observed descendants
-            if (childConfig === false) {
-                return;
-            }
-
+            // Skip properties excluded by $observe: false that have no observed descendants
             if (
-                typeof childConfig === "object" &&
-                childConfig !== null &&
-                !hasObservedDescendant(childConfig)
+                childSchema?.$observe === false &&
+                !hasObservedSchemaDescendant(childSchema)
             ) {
                 return;
             }
@@ -1610,20 +1528,18 @@ function assignProxyToItemsInObject(
                 proxiedData[property],
                 schemaProperties[property],
                 rootSchema,
-                childConfig,
             );
         });
 
-        // Assign a Proxy if this level is observed OR has observed descendants
-        // (descendants need the proxy's set trap to intercept their mutations)
-        if (shouldObserveAtPath(configEntry) || hasObservedDescendant(configEntry)) {
+        // Assign a Proxy if this level is observed or has any observed child properties
+        // (children need the proxy's set trap to intercept their mutations)
+        if (schema.$observe !== false || hasObservedSchemaDescendant(schema)) {
             proxiedData = assignProxy(
                 schema,
                 rootSchema,
                 target,
                 rootProperty,
                 proxiedData,
-                configEntry,
             );
 
             // Add this target to the object's target list
@@ -1642,7 +1558,6 @@ function assignProxyToItemsInObject(
                     rootSchema,
                     target,
                     rootProperty,
-                    configEntry,
                 );
 
                 if (!observedArraysMap.has(proxiedData)) {
@@ -1654,7 +1569,6 @@ function assignProxyToItemsInObject(
                             rootSchema,
                             target,
                             rootProperty,
-                            configEntry,
                         ),
                     );
                 }
@@ -1710,7 +1624,6 @@ function notifyObservables(targetObject: any) {
  * @param target - The target custom element
  * @param rootProperty - The root property
  * @param object - The object to assign the proxy to
- * @param configEntry - Optional path config entry controlling observation granularity
  * @returns Proxy object
  */
 export function assignProxy(
@@ -1719,9 +1632,10 @@ export function assignProxy(
     target: any,
     rootProperty: string,
     object: any,
-    configEntry?: ObserverMapPathEntry,
 ): typeof Proxy {
     if (!object.$isProxy) {
+        const schemaProperties = getSchemaProperties(schema);
+
         // Create a proxy for the object that triggers Observable.notify on mutations
         const proxy = new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
@@ -1732,10 +1646,9 @@ export function assignProxy(
                 }
 
                 const propName = typeof prop === "string" ? prop : String(prop);
-                const childConfig = getChildConfigEntry(configEntry, propName);
 
-                // If this property is excluded by config, assign without proxying or notifying
-                if (childConfig === false) {
+                // If the schema marks this property as not observed, assign without proxying or notifying
+                if (schemaProperties?.[propName]?.$observe === false) {
                     obj[prop] = value;
                     return true;
                 }
@@ -1746,7 +1659,6 @@ export function assignProxy(
                     value,
                     target,
                     rootProperty,
-                    childConfig,
                 );
 
                 notifyObservables(proxy);
@@ -1763,12 +1675,11 @@ export function assignProxy(
             deleteProperty: (obj: any, prop: string | symbol) => {
                 if (prop in obj) {
                     const propName = typeof prop === "string" ? prop : String(prop);
-                    const childConfig = getChildConfigEntry(configEntry, propName);
 
                     delete obj[prop];
 
-                    // Only notify if this property is not excluded by config
-                    if (childConfig !== false) {
+                    // Only notify if the schema does not mark this property as excluded
+                    if (schemaProperties?.[propName]?.$observe !== false) {
                         notifyObservables(proxy);
                     }
 
