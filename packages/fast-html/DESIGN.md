@@ -87,7 +87,7 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })`.
+Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent; no configuration keys are defined at this time.
 
 ### `AttributeMap` — automatic `@attr` definitions
 
@@ -98,7 +98,7 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` and `propertyLookup` are patched so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })`.
+Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent; no configuration keys are defined at this time.
 
 ### Syntax constants (`syntax.ts`)
 
@@ -201,7 +201,7 @@ flowchart TD
     F --> G["FASTElementDefinition.registerAsync\n→ looks up partial definition"]
     G --> H[transformInnerHTML normalises HTML entities]
     H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
-    I --> J{observerMap: all?}
+    I --> J{observerMap enabled?}
     J -- yes --> K["ObserverMap.defineProperties\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
     J -- no --> L
     K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
