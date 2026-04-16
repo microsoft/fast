@@ -14,6 +14,11 @@ interface JSONSchemaCommon {
     items?: any;
     anyOf?: Array<any>;
     $ref?: string;
+    /**
+     * Stamped by `applyConfigToSchema` when an `ObserverMapConfig` excludes
+     * this path. When `false`, the proxy system skips observation for this
+     * node and (if all descendants are also `false`) its subtree.
+     */
     $observe?: boolean;
 }
 
