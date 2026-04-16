@@ -39,6 +39,7 @@ const outBase = resolve(__dirname, "../temp/integrations/webui/fixtures");
 // Files produced by the build or only needed for the build step.
 const buildOnlyFiles = new Set([
     "entry.html",
+    "fast-build.config.json",
     "templates.html",
     "state.json",
     "index.html",
