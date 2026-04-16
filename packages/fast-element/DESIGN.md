@@ -371,8 +371,12 @@ flowchart TD
     SUBS --> ENQ
     ENQ --> RAF
     RAF --> EVAL
-    EVAL --> DOM
+    EVAL --> GUARD{"Controller still bound?"}
+    GUARD -->|yes| DOM
+    GUARD -->|no| DROP["Notification dropped\n(stale observer)"]
 ```
+
+> **Stale notification guard**: When a view is unbound (e.g., after a parent `when` directive tears down a child element), the coupled source lifetime optimisation may leave expression observers subscribed to the child element's properties. If a property change fires while the view is inactive, `HTMLBindingDirective.handleChange` and `RenderBehavior.handleChange` check `controller.isBound` and skip the update to prevent evaluating expressions against a null source.
 
 ---
 

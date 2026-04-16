@@ -58,7 +58,7 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
         this.dataBindingObserver = directive.dataBinding.createObserver(this, directive);
         this.templateBindingObserver = directive.templateBinding.createObserver(
             this,
-            directive
+            directive,
         );
     }
 
@@ -104,8 +104,20 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
     }
 
-    /** @internal */
+    /**
+     * Handles changes from data or template binding observers.
+     * Guards against stale notifications that may arrive after the
+     * controller's view has been unbound (e.g., when a parent `when`
+     * directive tears down and later recreates a child element).
+     * @internal
+     */
     public handleChange(source: any, observer: ExpressionObserver): void {
+        // https://github.com/microsoft/fast/issues/7444
+        // This guard will be reconsidered in the next major version.
+        if (!this.controller!.isBound) {
+            return;
+        }
+
         if (observer === this.dataBindingObserver) {
             this.data = this.dataBindingObserver.bind(this.controller!);
         }
@@ -183,7 +195,7 @@ export class RenderDirective<TSource = any>
     public constructor(
         public readonly dataBinding: Binding<TSource>,
         public readonly templateBinding: Binding<TSource, ContentTemplate>,
-        public readonly templateBindingDependsOnData: boolean
+        public readonly templateBindingDependsOnData: boolean,
     ) {}
 
     /**
@@ -260,7 +272,7 @@ export type TemplateRenderOptions = CommonRenderOptions & {
  */
 export type BaseElementRenderOptions<
     TSource = any,
-    TParent = any
+    TParent = any,
 > = CommonRenderOptions & {
     /**
      * Attributes to use when creating the element template.
@@ -313,7 +325,7 @@ export type ElementCreateOptions<TSource = any, TParent = any> = Omit<
  */
 export type ElementConstructorRenderOptions<
     TSource = any,
-    TParent = any
+    TParent = any,
 > = BaseElementRenderOptions<TSource, TParent> & {
     /**
      * The element to use when rendering.
@@ -366,7 +378,7 @@ function instructionToTemplate(def: RenderInstruction | undefined) {
 
 function createElementTemplate<TSource = any, TParent = any>(
     tagName: string,
-    options?: ElementCreateOptions
+    options?: ElementCreateOptions,
 ): ViewTemplate<TSource, TParent> {
     const markup: Array<string> = [];
     const values: Array<TemplateValue<TSource, TParent>> = [];
@@ -428,7 +440,7 @@ function create(options: any): RenderInstruction {
 
         if (!tagName) {
             const def = FASTElementDefinition.getByType(
-                (options as ElementConstructorRenderOptions).element
+                (options as ElementConstructorRenderOptions).element,
             );
 
             if (def) {
@@ -468,7 +480,7 @@ function register(optionsOrInstruction: any): RenderInstruction {
     if (lookup === void 0) {
         typeToInstructionLookup.set(
             optionsOrInstruction.type,
-            (lookup = Object.create(null) as {})
+            (lookup = Object.create(null) as {}),
         );
     }
 
@@ -572,7 +584,7 @@ export function renderWith(options: Omit<TagNameRenderOptions, "type">): ClassDe
  * @public
  */
 export function renderWith(
-    options: Omit<ElementConstructorRenderOptions, "type">
+    options: Omit<ElementConstructorRenderOptions, "type">,
 ): ClassDecorator;
 /**
  * Decorates a type with render instruction metadata.
@@ -588,7 +600,7 @@ export function renderWith(options: Omit<TemplateRenderOptions, "type">): ClassD
  */
 export function renderWith(
     element: Constructable<FASTElement>,
-    name?: string
+    name?: string,
 ): ClassDecorator;
 /**
  * Decorates a type with render instruction metadata.
@@ -665,7 +677,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
         | ContentTemplate
         | string
         | Expression<TSource, ContentTemplate | string | Node, TParent>
-        | Binding<TSource, ContentTemplate | string | Node, TParent>
+        | Binding<TSource, ContentTemplate | string | Node, TParent>,
 ): CaptureType<TSource, TParent> {
     let dataBinding: Binding<TSource>;
 
@@ -696,7 +708,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
 
                 if (isString(result)) {
                     result = instructionToTemplate(
-                        getForInstance(dataBinding.evaluate(s, c), result)
+                        getForInstance(dataBinding.evaluate(s, c), result),
                     );
                 } else if (result instanceof Node) {
                     result = (result as any).$fastTemplate ?? new NodeTemplate(result);
@@ -705,7 +717,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
                 return result;
             },
             void 0,
-            true
+            true,
         );
     } else if (isString(template)) {
         templateBindingDependsOnData = true;
@@ -726,7 +738,7 @@ export function render<TSource = any, TItem = any, TParent = any>(
 
             if (isString(result)) {
                 result = instructionToTemplate(
-                    getForInstance(dataBinding.evaluate(s, c), result)
+                    getForInstance(dataBinding.evaluate(s, c), result),
                 );
             } else if (result instanceof Node) {
                 result = (result as any).$fastTemplate ?? new NodeTemplate(result);
@@ -743,6 +755,6 @@ export function render<TSource = any, TItem = any, TParent = any>(
     return new RenderDirective<TSource>(
         dataBinding,
         templateBinding,
-        templateBindingDependsOnData
+        templateBindingDependsOnData,
     );
 }
