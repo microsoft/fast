@@ -7,12 +7,26 @@ import { join } from "node:path";
 
 /**
  * Convert a `fast-build.config.json` object into CLI arguments.
- * Each key-value pair becomes `--key=value`.
+ * Each key-value pair becomes `--key=value`. Validates that config is
+ * a plain object with string values.
  * @param {Record<string, string>} config
+ * @param {string} fixtureName - used in error messages
  * @returns {string[]}
  */
-function configToArgs(config) {
-    return Object.entries(config).map(([key, value]) => `--${key}=${value}`);
+function configToArgs(config, fixtureName) {
+    if (typeof config !== "object" || config === null || Array.isArray(config)) {
+        throw new Error(
+            `fast-build.config.json for fixture "${fixtureName}" must be a JSON object, got ${Array.isArray(config) ? "array" : typeof config}`,
+        );
+    }
+    return Object.entries(config).map(([key, value]) => {
+        if (typeof value !== "string") {
+            throw new Error(
+                `fast-build.config.json for fixture "${fixtureName}": value for "${key}" must be a string, got ${typeof value}`,
+            );
+        }
+        return `--${key}=${value}`;
+    });
 }
 
 /**
@@ -52,7 +66,7 @@ export function discoverFixtures(fixturesDir) {
                         `Failed to parse fast-build.config.json for fixture "${entry.name}" at "${configPath}": ${message}`,
                     );
                 }
-                return { name: entry.name, args: configToArgs(config) };
+                return { name: entry.name, args: configToArgs(config, entry.name) };
             }
             return { name: entry.name };
         })
