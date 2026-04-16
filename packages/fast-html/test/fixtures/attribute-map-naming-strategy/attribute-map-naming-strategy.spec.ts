@@ -74,6 +74,18 @@ test.describe("AttributeMap with attribute-name-strategy: camelCase", () => {
         await expect(page.locator(".my-custom-prop-value")).toHaveText("world");
     });
 
+    test("should update template when camelCase property is set directly", async ({
+        page,
+    }) => {
+        const element = page.locator("naming-strategy-test");
+
+        await element.evaluate(node => {
+            (node as any).fooBar = "property-set";
+        });
+
+        await expect(page.locator(".foo-bar-value")).toHaveText("property-set");
+    });
+
     test("non-dashed attribute name is unaffected by camelCase strategy", async ({
         page,
     }) => {
@@ -85,5 +97,12 @@ test.describe("AttributeMap with attribute-name-strategy: camelCase", () => {
 
         expect(propValue).toBe("no-dash-test");
         await expect(page.locator(".label-value")).toHaveText("no-dash-test");
+    });
+
+    test("non-dashed attribute renders initial value from entry HTML", async ({
+        page,
+    }) => {
+        await page.waitForSelector("naming-strategy-no-dash-test");
+        await expect(page.locator(".label-value")).toHaveText("simple");
     });
 });
