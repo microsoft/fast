@@ -1178,10 +1178,30 @@ function getSchemaProperties(schema: any): any | null {
 }
 
 /**
+ * Checks whether a schema node (or any of its descendants) has observation enabled.
+ * Returns false only when the node and ALL its descendants are stamped with `$observe: false`.
+ */
+function hasObservedSchemaDescendant(schema: any): boolean {
+    if (schema?.$observe !== false) {
+        return true;
+    }
+
+    const props = getSchemaProperties(schema);
+
+    if (!props) {
+        return false;
+    }
+
+    return Object.keys(props).some(k => hasObservedSchemaDescendant(props[k]));
+}
+
+/**
  * Assigns Observable properties to items in an array and sets up change notifications
  * @param proxiedData - The array data to make observable
  * @param schema - The schema defining the structure of array items
  * @param rootSchema - The root schema for the entire data structure
+ * @param target - The target element
+ * @param rootProperty - The root property name
  * @returns The array with observable properties and change notifications
  */
 function assignObservablesToArray(
@@ -1421,6 +1441,16 @@ function assignProxyToItemsInArray(
     const schemaProperties = getSchemaProperties(schema);
 
     getObjectProperties(proxiableItem, schemaProperties).forEach(key => {
+        const childSchema = schemaProperties[key];
+
+        // Skip properties excluded by $observe: false that have no observed descendants
+        if (
+            childSchema?.$observe === false &&
+            !hasObservedSchemaDescendant(childSchema)
+        ) {
+            return;
+        }
+
         // Initialize the property as undefined if it doesn't exist
         if (!(key in originalItem)) {
             originalItem[key] = undefined;
@@ -1482,6 +1512,16 @@ function assignProxyToItemsInObject(
     if (type === "object" && schemaProperties) {
         // navigate through all items in the object
         getObjectProperties(proxiedData, schemaProperties).forEach(property => {
+            const childSchema = schemaProperties[property];
+
+            // Skip properties excluded by $observe: false that have no observed descendants
+            if (
+                childSchema?.$observe === false &&
+                !hasObservedSchemaDescendant(childSchema)
+            ) {
+                return;
+            }
+
             proxiedData[property] = assignProxyToItemsInObject(
                 target,
                 rootProperty,
@@ -1491,11 +1531,20 @@ function assignProxyToItemsInObject(
             );
         });
 
-        // assign a Proxy to the object
-        proxiedData = assignProxy(schema, rootSchema, target, rootProperty, proxiedData);
+        // Assign a Proxy if this level is observed or has any observed child properties
+        // (children need the proxy's set trap to intercept their mutations)
+        if (schema.$observe !== false || hasObservedSchemaDescendant(schema)) {
+            proxiedData = assignProxy(
+                schema,
+                rootSchema,
+                target,
+                rootProperty,
+                proxiedData,
+            );
 
-        // Add this target to the object's target list
-        addTargetToObject(proxiedData, target, rootProperty);
+            // Add this target to the object's target list
+            addTargetToObject(proxiedData, target, rootProperty);
+        }
     } else if (type === "array") {
         const context = findDef((schema as JSONSchema).items);
 
@@ -1585,12 +1634,27 @@ export function assignProxy(
     object: any,
 ): typeof Proxy {
     if (!object.$isProxy) {
+        const schemaProperties = getSchemaProperties(schema);
+
         // Create a proxy for the object that triggers Observable.notify on mutations
         const proxy = new Proxy(object, {
             set: (obj: any, prop: string | symbol, value: any) => {
                 const currentValue = obj[prop];
 
                 if (deepEqual(currentValue, value)) {
+                    return true;
+                }
+
+                const propName = typeof prop === "string" ? prop : String(prop);
+                const childSchema = schemaProperties?.[propName];
+
+                // If the schema excludes this property and it has no observed descendants,
+                // assign without proxying or notifying
+                if (
+                    childSchema?.$observe === false &&
+                    !hasObservedSchemaDescendant(childSchema)
+                ) {
+                    obj[prop] = value;
                     return true;
                 }
 
@@ -1615,7 +1679,18 @@ export function assignProxy(
             },
             deleteProperty: (obj: any, prop: string | symbol) => {
                 if (prop in obj) {
+                    const propName = typeof prop === "string" ? prop : String(prop);
+                    const childSchema = schemaProperties?.[propName];
+
                     delete obj[prop];
+
+                    // Only suppress notification if excluded AND no observed descendants
+                    if (
+                        childSchema?.$observe === false &&
+                        !hasObservedSchemaDescendant(childSchema)
+                    ) {
+                        return true;
+                    }
 
                     notifyObservables(proxy);
 
