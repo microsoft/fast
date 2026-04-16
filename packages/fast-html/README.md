@@ -219,9 +219,9 @@ if (process.env.NODE_ENV === 'development') {
 
 #### `attributeMap`
 
-When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent; passing a configuration object is supported for future extensibility.
+When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"none"` attribute name strategy.
 
-The **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
+By default, the **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
 
 Properties already decorated with `@attr` or `@observable` on the class are left untouched.
 
@@ -245,6 +245,38 @@ With the template:
 ```
 
 This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically.
+
+##### `attribute-name-strategy`
+
+The `attribute-name-strategy` configuration option controls how template binding keys map to HTML attribute names. This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+
+| Strategy | Behaviour | Example |
+|---|---|---|
+| `"none"` (default) | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
+| `"camelCase"` | Binding key is the camelCase property; attribute name derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+
+```typescript
+TemplateElement.options({
+    "my-element": {
+        attributeMap: {
+            "attribute-name-strategy": "camelCase",
+        },
+    },
+}).define({ name: "f-template" });
+```
+
+With the template:
+
+```html
+<f-template name="my-element">
+    <template>
+        <p>{{greeting}}</p>
+        <p>{{firstName}}</p>
+    </template>
+</f-template>
+```
+
+This registers `greeting` (attribute `greeting`, property `greeting`) and `firstName` (attribute `first-name`, property `firstName`) as `@attr` properties. `setAttribute("first-name", "Jane")` triggers a re-render, and the property is accessible as `element.firstName`.
 
 ### Syntax
 
