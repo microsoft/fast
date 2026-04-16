@@ -110,10 +110,6 @@ export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
 function isMapOptionEnabled(
     option: ObserverMapOption | AttributeMapOption | undefined,
 ): boolean {
-    if (option === undefined || option === null) {
-        return false;
-    }
-
     if (option === "all") {
         return true;
     }
