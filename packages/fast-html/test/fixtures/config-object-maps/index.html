@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <config-observer-map-test-element id="observer-test"><template shadowrootmode="open" shadowroot="open"><div class="message"><!--fe-b$$start$$0$$data.message-0$$fe-b-->hello<!--fe-b$$end$$0$$data.message-0$$fe-b--></div>
+        <div class="nested-value"><!--fe-b$$start$$1$$data.nested.value-1$$fe-b-->42<!--fe-b$$end$$1$$data.nested.value-1$$fe-b--></div></template></config-observer-map-test-element>
+        <config-attribute-map-test-element id="attribute-test"><template shadowrootmode="open" shadowroot="open"><span class="label-value"><!--fe-b$$start$$0$$label-0$$fe-b--><!--fe-b$$end$$0$$label-0$$fe-b--></span>
+        <button type="button" data-fe-c-1-1>Set Label</button></template></config-attribute-map-test-element>
+<f-template name="config-observer-map-test-element">
+    <template>
+        <div class="message">{{data.message}}</div>
+        <div class="nested-value">{{data.nested.value}}</div>
+    </template>
+</f-template>
+<f-template name="config-attribute-map-test-element">
+    <template>
+        <span class="label-value">{{label}}</span>
+        <button type="button" @click="{setLabel()}">Set Label</button>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

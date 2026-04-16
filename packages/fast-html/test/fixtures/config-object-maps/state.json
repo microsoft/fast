@@ -1,0 +1,9 @@
+{
+    "data": {
+        "message": "hello",
+        "nested": {
+            "value": 42
+        }
+    },
+    "label": ""
+}
