@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Wed, 15 Apr 2026 00:15:59 GMT and should not be manually modified. -->
+<!-- This log was last generated on Thu, 16 Apr 2026 00:17:05 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.48
+
+Thu, 16 Apr 2026 00:17:05 GMT
+
+### Changes
+
+- fix(fast-html): add errors fixture for f-template error cases (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.47
 

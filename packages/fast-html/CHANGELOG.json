@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 16 Apr 2026 00:17:05 GMT",
+      "version": "1.0.0-alpha.48",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.48",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "a47edb2a74ffc9b8488a89af3b7d7dba9bffec25",
+            "comment": "fix(fast-html): add errors fixture for f-template error cases"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Apr 2026 00:15:59 GMT",
       "version": "1.0.0-alpha.47",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.47",
