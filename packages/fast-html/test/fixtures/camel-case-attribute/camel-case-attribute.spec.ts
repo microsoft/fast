@@ -1,8 +1,12 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("camelCase attribute-name-strategy", async () => {
+test.describe("camelCase attribute-name-strategy", () => {
     test("renders dashed attribute as camelCase property", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/camel-case-attribute/");
+        await hydrationCompleted;
 
         const element = page.locator("test-camel-case");
         await expect(element).toHaveText("hello");
@@ -10,7 +14,11 @@ test.describe("camelCase attribute-name-strategy", async () => {
     });
 
     test("updates camelCase property via attribute change", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/camel-case-attribute/");
+        await hydrationCompleted;
 
         const element = page.locator("test-camel-case");
         await expect(element).toHaveText("hello");
@@ -25,7 +33,11 @@ test.describe("camelCase attribute-name-strategy", async () => {
     });
 
     test("renders multi-dashed attribute as camelCase", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/camel-case-attribute/");
+        await hydrationCompleted;
 
         const element = page.locator("test-camel-case-multi");
         await expect(element).toHaveText("world");
@@ -33,7 +45,11 @@ test.describe("camelCase attribute-name-strategy", async () => {
     });
 
     test("non-dashed attribute is unaffected", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/camel-case-attribute/");
+        await hydrationCompleted;
 
         const element = page.locator("test-camel-case-no-dash");
         await expect(element).toHaveText("simple");
