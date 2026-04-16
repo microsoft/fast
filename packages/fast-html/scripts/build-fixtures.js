@@ -4,50 +4,28 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { discoverFixtures } from "./build-fixtures.utilities.js";
 
-// Builds test fixtures using @microsoft/fast-build. Add fixture names here
-// incrementally as each one is verified to work with the fast-build CLI.
-const fixtures = [
-    "attribute",
-    "binding",
-    "deep-merge",
-    "event",
-    "ref",
-    "slotted",
-    "when",
-    "repeat",
-    "repeat-event",
-    "children",
-    "host-bindings",
-    "lifecycle-callbacks",
-    "dot-syntax",
-    "nested-elements",
-    "performance-metrics",
-    "observer-map",
-];
+// Pass-through CLI arguments (forwarded to every fast-build invocation).
+const passthroughArgs = process.argv.slice(2);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const fixturesDir = resolve(__dirname, "../test/fixtures");
+const fixtures = discoverFixtures(fixturesDir);
+
 const require = createRequire(import.meta.url);
 const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
 for (const fixtureName of fixtures) {
     const fixtureDir = resolve(__dirname, "../test/fixtures", fixtureName);
+    const configFile = join(fixtureDir, "fast-build.config.json");
     const templatesFile = join(fixtureDir, "templates.html");
-    const entryFile = join(fixtureDir, "entry.html");
-    const stateFile = join(fixtureDir, "state.json");
     const outputFile = join(fixtureDir, "index.html");
 
-    // Step 1: render shadow DOM via fast-build CLI
+    // Step 1: render shadow DOM via fast-build CLI using config file
     execFileSync(
         process.execPath,
-        [
-            fastBin,
-            "build",
-            `--templates=${templatesFile}`,
-            `--entry=${entryFile}`,
-            `--state=${stateFile}`,
-            `--output=${outputFile}`,
-        ],
+        [fastBin, "build", `--config=${configFile}`, ...passthroughArgs],
         { stdio: "inherit" },
     );
 

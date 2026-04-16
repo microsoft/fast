@@ -5,7 +5,11 @@ test.describe("f-repeat event binding", async () => {
     test("event handler inside f-repeat should have host element as this", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat-event/");
+        await hydrationCompleted;
 
         const customElement = page.locator("test-element-repeat-event");
         const buttons = customElement.locator("button");
@@ -30,7 +34,11 @@ test.describe("f-repeat event binding", async () => {
     });
 
     test("f-when with c.parent condition inside f-repeat", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat-event/");
+        await hydrationCompleted;
 
         const el = page.locator("test-when-in-repeat");
         const buttons = el.locator("button.name");

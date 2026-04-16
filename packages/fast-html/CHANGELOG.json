@@ -2,6 +2,56 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Thu, 16 Apr 2026 00:17:05 GMT",
+      "version": "1.0.0-alpha.48",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.48",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "a47edb2a74ffc9b8488a89af3b7d7dba9bffec25",
+            "comment": "fix(fast-html): add errors fixture for f-template error cases"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Apr 2026 00:15:59 GMT",
+      "version": "1.0.0-alpha.47",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.47",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "1ea9e5e7780200cd90b199898074c50d6ac38119",
+            "comment": "chore: add WebUI integration test pipeline for FAST HTML fixtures"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "dd4afe8fb8159381774edcdd9d430fc13bdba9f6",
+            "comment": "chore: add empty array repeat fixture and parent-to-child attribute passing"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f3cb104552a15d22421cb12b4e6cc86aa638990e",
+            "comment": "chore: add when-false-with-repeat fixture to when tests"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "27f65b94f1594b511fabf2f2a04151378bd78fb9",
+            "comment": "Add AttributeMap class for automatic @attr definitions on leaf template bindings"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Apr 2026 00:15:09 GMT",
       "version": "1.0.0-alpha.46",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.46",

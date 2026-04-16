@@ -163,6 +163,7 @@ TemplateElement.options({
         },
         hydrationComplete() {
             (window as any).messages.push(`Hydration complete [${performance.now()}]`);
+            (window as any).hydrationCompleted = true;
         },
         templateDidUpdate(name: string) {
             (window as any).messages.push(

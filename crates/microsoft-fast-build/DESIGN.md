@@ -40,20 +40,21 @@ render_template(template, state_str)
 
 | Module | Role |
 |--------|------|
-| `lib.rs` | Public API surface — four `pub fn`s and three `pub use` re-exports |
+| `lib.rs` | Public API surface — render functions, `pub use` re-exports, and config types |
 | `renderer.rs` | Thin entry points converting the public API into `render_node` calls |
 | `node.rs` | The main rendering loop — scans for directives, handles attribute bindings in hydration mode |
 | `directive.rs` | `Directive` enum, `next_directive` scanner, and all directive renderers |
 | `content.rs` | `{{expr}}` and `{{{expr}}}` binding renderers, `html_escape` |
 | `attribute.rs` | Low-level HTML/attribute string parsing utilities + hydration attribute helpers; `strip_client_only_attrs` (shadow-DOM tags and nested element opening tags) |
 | `attribute_lookup.rs` | Static lookup tables mapping ARIA and HTML attribute names to their DOM property names |
+| `config.rs` | `RenderConfig` struct and `AttributeNameStrategy` enum — rendering configuration options |
 | `context.rs` | State value resolution: dot-path access, loop-variable scoping |
 | `expression.rs` | Boolean expression evaluator for `<f-when value="{{…}}">` |
 | `hydration.rs` | `HydrationScope` — binding index tracking and named marker generation per template scope |
 | `json.rs` | Hand-rolled JSON parser producing `JsonValue` |
 | `locator.rs` | `Locator` struct — maps element names to template strings; glob scanner; `<f-template>` parser |
 | `error.rs` | `RenderError` enum with `Display` impl and helpers |
-| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, and `parse_f_templates` to JavaScript |
+| `wasm.rs` | WASM bindings (`#[cfg(target_arch = "wasm32")]`) — exposes `render`, `render_with_templates`, `render_entry_with_templates`, and `parse_f_templates` to JavaScript |
 
 ---
 
@@ -62,7 +63,7 @@ render_template(template, state_str)
 `render_node` is the core of the crate. It is called recursively for nested directives and custom element templates. Its signature:
 
 ```
-fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool) → Result<String>
+fn render_node(template, root, loop_vars, locator, hydration: Option<&mut HydrationScope>, is_entry: bool, config: &RenderConfig) → Result<String>
 ```
 
 The `is_entry` flag distinguishes two rendering contexts for **opening-tag attribute handling**:
@@ -222,7 +223,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 4. **Build child state** — the child state always starts with the **current root state** as a base, then per-element HTML attributes are resolved and overlaid on top (attribute-derived values take precedence). This ensures all unbound state keys propagate through to every descendant custom element automatically — a child element can reference any state key from its ancestors without requiring explicit attribute bindings. As an optimisation, when the element has no state-relevant attributes (only `@event`, `?bool`, or directive attributes), the root state is passed through by reference without cloning.
    - Attributes starting with `@` (event handlers) or named `f-ref`, `f-slotted`, `f-children` (attribute directives) are **skipped** — all are resolved entirely by the FAST client runtime and have no meaning in server-side rendering state.
    - Attributes starting with `:` (property bindings) are **stripped from rendered HTML** but their resolved value **is added to the child state** under the lowercased property name (without the `:` prefix). This lets structured data (arrays, objects) be passed to the SSR template without appearing as a visible HTML attribute.
-   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`.
+   - **HTML attribute keys are lowercased** — HTML attribute names are case-insensitive and browsers always store them lowercase. `isEnabled` becomes `isenabled`; hyphens are preserved: `selected-user-id` stays `selected-user-id`. When the `attribute-name-strategy` is set to `"camelCase"`, dashed attribute names that are not handled by specialized lookup tables are converted to camelCase instead: `selected-user-id` becomes `selectedUserId`.
    - `data-*` attributes (e.g. `data-date-of-birth`) are **grouped under a nested `"dataset"` key** using the `attribute::data_attr_to_dataset_key` helper, which returns the full dot-notation path (`data-date-of-birth` → `"dataset.dateOfBirth"`). The caller splits on `.` and inserts into the nested map. This means `{{dataset.dateOfBirth}}` in the shadow template resolves via ordinary dot-notation.
    - `aria-*` attributes (e.g. `aria-disabled`) are **converted to their camelCase ARIA property name** using the `attribute_lookup::aria_attr_to_property_key` lookup table (`aria-disabled` → `ariaDisabled`, `aria-valuenow` → `ariaValueNow`). This follows the [ARIA reflection](https://developer.mozilla.org/en-US/docs/Web/API/Element#instance_properties_included_from_aria) convention on `Element`. A static lookup table is used instead of algorithmic conversion because ARIA attribute names do not place dashes at word boundaries (e.g. `aria-valuenow`, not `aria-value-now`). Templates reference the camelCase form: `{{ariaDisabled}}`.
    - HTML attributes whose property name differs from the attribute name (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`) are **converted to their camelCase DOM property name** using the `attribute_lookup::html_attr_to_property_key` lookup table. Attributes whose names already match (e.g. `disabled`, `title`) are not in the table and pass through as-is.
@@ -253,6 +254,46 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
 Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
 
 If a custom element has no matching template, it is left in place by `next_directive` (which only returns `CustomElement` for tags in the locator).
+
+---
+
+## Configuration — `config.rs`
+
+The `RenderConfig` struct holds configuration options that affect rendering behaviour. It is threaded through the rendering pipeline from the public API entry points down to `render_node` and the directive renderers.
+
+### `attribute-name-strategy`
+
+Controls how HTML attribute names are mapped to state property names when building child state for custom elements. Two strategies are available:
+
+| Strategy | Behaviour | Example |
+|----------|-----------|---------|
+| `"none"` (default) | Attribute names are lowercased as-is. Dashes are preserved. | `foo-bar` → `foo-bar` → `{{foo-bar}}` |
+| `"camelCase"` | Dashed attribute names are converted to camelCase. | `foo-bar` → `fooBar` → `{{fooBar}}` |
+
+The `camelCase` strategy only applies to attributes that are **not** already handled by a specialized conversion:
+
+- `data-*` attributes always use the `dataset.*` grouping with camelCase (MDN convention), regardless of the strategy.
+- `aria-*` attributes always use the ARIA reflection lookup table (e.g. `aria-valuenow` → `ariaValueNow`), regardless of the strategy.
+- HTML global attributes with known property name differences (e.g. `tabindex` → `tabIndex`) always use the lookup table, regardless of the strategy.
+- `:prop` property bindings are always lowercased, regardless of the strategy.
+
+This means the strategy only affects "plain" custom element attributes like `selected-user-id`, `show-details`, or `foo-bar`.
+
+### API
+
+All render functions accept `config: Option<&RenderConfig>` as their last parameter. Pass `None` for defaults, or `Some(&config)` for custom configuration:
+
+- `render(template, state, config)`
+- `render_template(template, state_str, config)`
+- `render_with_locator(template, state, locator, config)`
+- `render_template_with_locator(template, state_str, locator, config)`
+- `render_entry_with_locator(template, state, locator, config)`
+- `render_entry_template_with_locator(template, state_str, locator, config)`
+
+In WASM, `render_with_templates` and `render_entry_with_templates` accept an `attribute_name_strategy` string parameter (`""`, `"none"`, or `"camelCase"`):
+
+- `render_with_templates(entry, templates_json, state, attribute_name_strategy)`
+- `render_entry_with_templates(entry, templates_json, state, attribute_name_strategy)`
 
 ---
 

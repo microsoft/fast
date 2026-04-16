@@ -10,7 +10,11 @@ test.describe("f-template", async () => {
     test("create a repeat directive over an array of strings with an observable decorator", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const customElement = page.locator("test-element");
         const customElementListItems = customElement.locator("li");
@@ -32,7 +36,11 @@ test.describe("f-template", async () => {
     test("create a repeat directive over an array of strings with observer map", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const customElement = page.locator("test-element-with-observer-map");
         const customElementListItems = customElement.locator("li");
@@ -52,7 +60,11 @@ test.describe("f-template", async () => {
         ]);
     });
     test("create a repeat directive with an inner when", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const customElement = page.locator("test-element-inner-when");
         const customElementListItems = customElement.locator("li");
@@ -64,7 +76,11 @@ test.describe("f-template", async () => {
     test("should NOT trigger updates when data is deeply merged with same values", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const element = page.locator("test-element-interval-updates");
 
@@ -101,7 +117,11 @@ test.describe("f-template", async () => {
     test("should trigger updates when data is deeply merged with different values", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const element = page.locator("test-element-interval-updates");
 
@@ -137,7 +157,11 @@ test.describe("f-template", async () => {
     });
 
     test("repeat directive with no item binding should not error", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const element = page.locator("test-element-no-item-repeat-binding");
         const listItems = element.locator("li");
@@ -171,7 +195,11 @@ test.describe("f-template", async () => {
     });
 
     test("should fire events inside a repeat directive", async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
         const element = page.locator("test-element-event");
         const buttons = element.locator("button");
 
@@ -192,7 +220,11 @@ test.describe("f-template", async () => {
     test("repeat directive with an empty array should render no items", async ({
         page,
     }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/repeat/");
+        await hydrationCompleted;
 
         const element = page.locator("test-element-empty-array");
         const listItems = element.locator("li");

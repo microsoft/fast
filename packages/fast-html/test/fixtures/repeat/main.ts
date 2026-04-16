@@ -100,6 +100,12 @@ TemplateElement.options({
     "test-element-with-observer-map": {
         observerMap: "all",
     },
-}).define({
-    name: "f-template",
-});
+})
+    .config({
+        hydrationComplete() {
+            (window as any).hydrationCompleted = true;
+        },
+    })
+    .define({
+        name: "f-template",
+    });

@@ -2,7 +2,11 @@ import { expect, test } from "@playwright/test";
 
 test.describe("ObserverMap", async () => {
     test.beforeEach(async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/observer-map/");
+        await hydrationCompleted;
         await page.waitForSelector("observer-map-test-element");
     });
 
