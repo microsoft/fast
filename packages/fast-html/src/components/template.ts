@@ -56,7 +56,7 @@ export const ObserverMapOption = {
  * No configuration keys are defined at this time; passing an empty
  * object (`{}`) is equivalent to `"all"`.
  */
-export type ObserverMapConfig = Record<string, never>;
+export interface ObserverMapConfig {}
 
 /**
  * Type for the observerMap element option.
@@ -78,7 +78,7 @@ export const AttributeMapOption = {
  * No configuration keys are defined at this time; passing an empty
  * object (`{}`) is equivalent to `"all"`.
  */
-export type AttributeMapConfig = Record<string, never>;
+export interface AttributeMapConfig {}
 
 /**
  * Type for the attributeMap element option.

@@ -10,7 +10,8 @@ import { HydrationControllerCallbacks } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 
 // @public
-export type AttributeMapConfig = Record<string, never>;
+export interface AttributeMapConfig {
+}
 
 // @public
 export class ObserverMap {
@@ -21,7 +22,8 @@ export class ObserverMap {
 }
 
 // @public
-export type ObserverMapConfig = Record<string, never>;
+export interface ObserverMapConfig {
+}
 
 // @public
 export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
