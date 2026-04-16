@@ -75,10 +75,23 @@ export const AttributeMapOption = {
 
 /**
  * Configuration object for the attributeMap element option.
- * No configuration keys are defined at this time; passing an empty
- * object (`{}`) is equivalent to `"all"`.
+ * Passing an empty object (`{}`) is equivalent to `"all"`.
  */
-export interface AttributeMapConfig {}
+export interface AttributeMapConfig {
+    /**
+     * Strategy for mapping template binding keys to HTML attribute names.
+     *
+     * - `"none"` (default): the binding key is used as-is for both the
+     *   property name and the attribute name (e.g. `{{foo-bar}}` →
+     *   property `foo-bar`, attribute `foo-bar`).
+     * - `"camelCase"`: the binding key is treated as a camelCase property
+     *   name and the attribute name is derived by converting it to
+     *   kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute
+     *   `foo-bar`). This matches the build-time `attribute-name-strategy`
+     *   option in `@microsoft/fast-build`.
+     */
+    "attribute-name-strategy"?: "none" | "camelCase";
+}
 
 /**
  * Type for the attributeMap element option.
@@ -264,10 +277,15 @@ class TemplateElement extends FASTElement {
                 fastElementRegistry.getByType(value);
 
             if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.attributeMap)) {
+                const mapOption = TemplateElement.elementOptions[name]?.attributeMap;
+                const mapConfig: AttributeMapConfig | undefined =
+                    typeof mapOption === "object" ? mapOption : undefined;
+
                 this.attributeMap = new AttributeMap(
                     value.prototype,
                     this.schema as Schema,
                     registeredFastElement,
+                    mapConfig,
                 );
             }
 

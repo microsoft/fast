@@ -11,6 +11,7 @@ import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 
 // @public
 export interface AttributeMapConfig {
+    "attribute-name-strategy"?: "none" | "camelCase";
 }
 
 // @public
