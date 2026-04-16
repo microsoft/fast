@@ -93,12 +93,13 @@ Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` 
 
 An optional layer that uses the `Schema` to automatically register `@attr`-style reactive properties for every **leaf binding** in the template — i.e. simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties, no explicit type, and no child element references.
 
-- The **attribute name** and **property name** are both the binding key exactly as written in the template (e.g. `{{foo-bar}}` → attribute `foo-bar`, property `foo-bar`). No normalization is applied.
-- Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated).
+- By default (`attribute-name-strategy: "none"`), the **attribute name** and **property name** are both the binding key exactly as written in the template (e.g. `{{foo-bar}}` → attribute `foo-bar`, property `foo-bar`). No normalization is applied.
+- When `attribute-name-strategy` is `"camelCase"`, the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute `foo-bar`). This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+- Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated) when using the `"none"` strategy.
 - Properties already decorated with `@attr` or `@observable` are left untouched.
-- `FASTElementDefinition.attributeLookup` and `propertyLookup` are patched so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
+- `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent; no configuration keys are defined at this time.
+Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent and use the default `"none"` strategy. To use the `"camelCase"` strategy, pass `TemplateElement.options({ "my-element": { attributeMap: { "attribute-name-strategy": "camelCase" } } })`.
 
 ### Syntax constants (`syntax.ts`)
 
@@ -298,13 +299,16 @@ For a deep dive into the schema structure, context tracking, and proxy system se
 
 ### AttributeMap and leaf bindings
 
-When `attributeMap: "all"` is set, `AttributeMap.defineProperties()` is called after parsing. It iterates `Schema.getRootProperties()` and skips any property whose schema entry contains `properties`, `type`, or `anyOf` — keeping only plain leaf bindings. For each leaf:
+When `attributeMap` is enabled (via `"all"`, `{}`, or a configuration object), `AttributeMap.defineProperties()` is called after parsing. It iterates `Schema.getRootProperties()` and skips any property whose schema entry contains `properties`, `type`, or `anyOf` — keeping only plain leaf bindings. For each leaf:
 
-1. The schema key (e.g. `foo-bar`) is used as both the **attribute name** and the **JS property name** — no conversion is applied.
-2. A new `AttributeDefinition` is registered via `Observable.defineProperty`.
-3. `FASTElementDefinition.attributeLookup` and `propertyLookup` are updated so `attributeChangedCallback` can route attribute changes to the correct property.
+1. The schema key is used as the **JS property name**.
+2. The **HTML attribute name** depends on the `attribute-name-strategy`:
+   - `"none"` (default): the attribute name equals the property name (e.g. `foo-bar` → `foo-bar`).
+   - `"camelCase"`: the attribute name is derived by converting the camelCase property name to kebab-case (e.g. `fooBar` → `foo-bar`).
+3. A new `AttributeDefinition` is registered via `Observable.defineProperty`.
+4. `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` can route attribute changes to the correct property.
 
-Because property names may contain dashes, they must be accessed via bracket notation (e.g. `element["foo-bar"]`).
+When using the `"none"` strategy, property names may contain dashes and must be accessed via bracket notation (e.g. `element["foo-bar"]`). When using `"camelCase"`, property names are standard JS identifiers (e.g. `element.fooBar`).
 
 ---
 

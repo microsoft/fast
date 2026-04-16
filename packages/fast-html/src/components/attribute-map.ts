@@ -1,6 +1,18 @@
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { AttributeDefinition, Observable } from "@microsoft/fast-element";
 import type { Schema } from "./schema.js";
+import type { AttributeMapConfig } from "./template.js";
+
+/**
+ * Converts a camelCase string to kebab-case.
+ *
+ * @example camelToKebab("fooBar")       // "foo-bar"
+ * @example camelToKebab("myCustomProp") // "my-custom-prop"
+ * @example camelToKebab("label")        // "label"
+ */
+function camelToKebab(str: string): string {
+    return str.replace(/[A-Z]/g, m => `-${m.toLowerCase()}`);
+}
 
 /**
  * AttributeMap provides functionality for detecting simple (leaf) properties in
@@ -9,20 +21,33 @@ import type { Schema } from "./schema.js";
  * A property is a candidate for @attr when its schema entry has no nested `properties`,
  * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{foo-bar}}".
  *
- * Attribute names are **not** normalized — the binding key as written in the template
- * is used as both the attribute name and the property name. Because HTML attributes are
- * case-insensitive, binding keys should be lowercase (optionally dash-separated).
- * For example, {{foo-bar}} results in attribute `foo-bar` and property `foo-bar`.
+ * When `attribute-name-strategy` is `"none"` (the default), the binding key is used
+ * as both the attribute name and property name — no normalization is applied.
+ *
+ * When `attribute-name-strategy` is `"camelCase"`, the binding key is treated as a
+ * camelCase property name and the HTML attribute name is derived by converting it to
+ * kebab-case (e.g. property `fooBar` → attribute `foo-bar`). This matches the
+ * build-time `attribute-name-strategy` option in `@microsoft/fast-build`.
+ *
+ * Properties already decorated with `@attr` or `@observable` on the class are left
+ * untouched.
  */
 export class AttributeMap {
     private schema: Schema;
     private classPrototype: any;
     private definition: FASTElementDefinition | undefined;
+    private config: AttributeMapConfig | undefined;
 
-    constructor(classPrototype: any, schema: Schema, definition?: FASTElementDefinition) {
+    constructor(
+        classPrototype: any,
+        schema: Schema,
+        definition?: FASTElementDefinition,
+        config?: AttributeMapConfig,
+    ) {
         this.classPrototype = classPrototype;
         this.schema = schema;
         this.definition = definition;
+        this.config = config;
     }
 
     public defineProperties(): void {
@@ -30,6 +55,7 @@ export class AttributeMap {
         const existingAccessorNames = new Set(
             Observable.getAccessors(this.classPrototype).map(a => a.name),
         );
+        const strategy = this.config?.["attribute-name-strategy"] ?? "none";
 
         for (const propertyName of propertyNames) {
             const propertySchema = this.schema.getSchema(propertyName);
@@ -52,10 +78,16 @@ export class AttributeMap {
                 continue;
             }
 
+            // Derive the HTML attribute name from the property name.
+            // With "camelCase" strategy, convert camelCase to kebab-case
+            // (e.g. fooBar → foo-bar). With "none", use the property name as-is.
+            const attributeName =
+                strategy === "camelCase" ? camelToKebab(propertyName) : propertyName;
+
             const attrDef = new AttributeDefinition(
                 this.classPrototype.constructor,
                 propertyName,
-                propertyName,
+                attributeName,
             );
 
             Observable.defineProperty(this.classPrototype, attrDef);
@@ -72,14 +104,14 @@ export class AttributeMap {
             ).observedAttributes;
             if (
                 Array.isArray(existingObservedAttrs) &&
-                !existingObservedAttrs.includes(propertyName)
+                !existingObservedAttrs.includes(attributeName)
             ) {
-                existingObservedAttrs.push(propertyName);
+                existingObservedAttrs.push(attributeName);
             }
 
             if (this.definition) {
                 (this.definition.attributeLookup as Record<string, AttributeDefinition>)[
-                    propertyName
+                    attributeName
                 ] = attrDef;
                 (this.definition.propertyLookup as Record<string, AttributeDefinition>)[
                     propertyName
