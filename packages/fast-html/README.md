@@ -219,7 +219,7 @@ if (process.env.NODE_ENV === 'development') {
 
 #### `attributeMap`
 
-When `attributeMap: "all"` is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties.
+When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent; passing a configuration object is supported for future extensibility.
 
 The **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
 
