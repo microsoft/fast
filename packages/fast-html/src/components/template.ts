@@ -136,13 +136,6 @@ export interface HydrationLifecycleCallbacks
 }
 
 /**
- * Tracks component names that have already emitted a deprecation warning
- * for the legacy "e" event argument, so the warning fires at most once per
- * unique component name.
- */
-const warnedDeprecatedE = new Set<string>();
-
-/**
  * The <f-template> custom element that will provide view logic to the element
  */
 class TemplateElement extends FASTElement {
@@ -176,6 +169,13 @@ class TemplateElement extends FASTElement {
      * Metadata containing JSON schema for properties on a custom eleemnt
      */
     private schema?: Schema;
+
+    /**
+     * Whether the template contains deprecated "e" event argument usage.
+     * Set during template processing; checked after evaluation to emit a
+     * single warning per template.
+     */
+    private _hasDeprecatedE = false;
 
     /**
      * Lifecycle callbacks for hydration events
@@ -296,6 +296,14 @@ class TemplateElement extends FASTElement {
                     this.schema as Schema,
                     this.observerMap,
                 );
+
+                if (this._hasDeprecatedE) {
+                    console.warn(
+                        `[fast-html] Using "e" as an event argument is deprecated` +
+                            ` in component "${name}".` +
+                            ` Use "${eventArgAccessor}" instead.`,
+                    );
+                }
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
                 this.observerMap?.defineProperties();
@@ -634,15 +642,7 @@ class TemplateElement extends FASTElement {
                         const parsedArgs = parseEventArgs(argsString);
 
                         if (parsedArgs.some(a => a.type === "deprecated-event")) {
-                            const componentName = this.name ?? "unknown";
-                            if (!warnedDeprecatedE.has(componentName)) {
-                                warnedDeprecatedE.add(componentName);
-                                console.warn(
-                                    `[fast-html] Using "e" as an event argument is deprecated` +
-                                        ` in component "${componentName}".` +
-                                        ` Use "${eventArgAccessor}" instead.`,
-                                );
-                            }
+                            this._hasDeprecatedE = true;
                         }
 
                         const argResolvers = parsedArgs.map(
