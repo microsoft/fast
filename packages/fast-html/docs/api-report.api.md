@@ -10,11 +10,19 @@ import { HydrationControllerCallbacks } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 
 // @public
+export interface AttributeMapConfig {
+}
+
+// @public
 export class ObserverMap {
     // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
     constructor(classPrototype: any, schema: Schema);
     // (undocumented)
     defineProperties(): void;
+}
+
+// @public
+export interface ObserverMapConfig {
 }
 
 // @public

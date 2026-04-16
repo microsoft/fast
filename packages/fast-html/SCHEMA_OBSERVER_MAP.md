@@ -165,7 +165,17 @@ TemplateElement.options({
 });
 ```
 
-**Note**: Currently, `"all"` is the only available option, which enables Observer Map observation for all root properties discovered in the template. This API design allows for future updates that could specify which specific properties to allow the Observer Map to apply observation to, providing more granular control over the observation behavior.
+A configuration object can also be passed instead of `"all"`:
+
+```typescript
+TemplateElement.options({
+  "my-custom-element": {
+    observerMap: {}
+  }
+});
+```
+
+**Note**: Both `"all"` and `{}` are equivalent — they enable Observer Map observation for all root properties discovered in the template. The configuration object form is supported for future extensibility, allowing more granular control over observation behavior.
 
 ## Initial Path Processing Flow
 
