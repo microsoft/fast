@@ -352,7 +352,11 @@ When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.de
 - `true` in the config → no stamp needed (observed is the default).
 - Config paths not in the schema are silently ignored.
 
-The proxy system then checks `schema.$observe` at each decision point — no separate config tree is threaded through function calls. Schema nodes without `$observe` (or with `$observe: true`) are observed normally.
+**Convention: stamp-only-when-excluding.** The `$observe` flag is only ever set to `false` — it is never explicitly set to `true`. Absence of `$observe` (i.e. `undefined`) means the node is observed. This means:
+
+- When `observerMap: "all"` or `observerMap: {}` is used, `applyConfigToSchema` is never called and no schema nodes are mutated — zero overhead for the common case.
+- The proxy system uses `isSchemaExcluded(schema)` (checks `$observe === false` with no observed descendants) as the single predicate for all skip/suppress decisions.
+- Schema nodes without `$observe` are always treated as observed.
 
 ### AttributeMap and leaf bindings
 
