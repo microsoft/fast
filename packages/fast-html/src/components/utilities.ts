@@ -1196,6 +1196,15 @@ function hasObservedSchemaDescendant(schema: any): boolean {
 }
 
 /**
+ * Checks whether a schema node is fully excluded from observation.
+ * A node is excluded when it is stamped `$observe: false` AND none of
+ * its descendants are observed (no re-included leaves beneath it).
+ */
+function isSchemaExcluded(schema: any): boolean {
+    return schema?.$observe === false && !hasObservedSchemaDescendant(schema);
+}
+
+/**
  * Assigns Observable properties to items in an array and sets up change notifications
  * @param proxiedData - The array data to make observable
  * @param schema - The schema defining the structure of array items
@@ -1443,11 +1452,8 @@ function assignProxyToItemsInArray(
     getObjectProperties(proxiableItem, schemaProperties).forEach(key => {
         const childSchema = schemaProperties[key];
 
-        // Skip properties excluded by $observe: false that have no observed descendants
-        if (
-            childSchema?.$observe === false &&
-            !hasObservedSchemaDescendant(childSchema)
-        ) {
+        // Skip properties fully excluded from observation
+        if (isSchemaExcluded(childSchema)) {
             return;
         }
 
@@ -1514,11 +1520,8 @@ function assignProxyToItemsInObject(
         getObjectProperties(proxiedData, schemaProperties).forEach(property => {
             const childSchema = schemaProperties[property];
 
-            // Skip properties excluded by $observe: false that have no observed descendants
-            if (
-                childSchema?.$observe === false &&
-                !hasObservedSchemaDescendant(childSchema)
-            ) {
+            // Skip properties fully excluded from observation
+            if (isSchemaExcluded(childSchema)) {
                 return;
             }
 
@@ -1531,9 +1534,8 @@ function assignProxyToItemsInObject(
             );
         });
 
-        // Assign a Proxy if this level is observed or has any observed child properties
-        // (children need the proxy's set trap to intercept their mutations)
-        if (schema.$observe !== false || hasObservedSchemaDescendant(schema)) {
+        // Assign a Proxy unless this level is fully excluded from observation
+        if (!isSchemaExcluded(schema)) {
             proxiedData = assignProxy(
                 schema,
                 rootSchema,
@@ -1648,12 +1650,8 @@ export function assignProxy(
                 const propName = typeof prop === "string" ? prop : String(prop);
                 const childSchema = schemaProperties?.[propName];
 
-                // If the schema excludes this property and it has no observed descendants,
-                // assign without proxying or notifying
-                if (
-                    childSchema?.$observe === false &&
-                    !hasObservedSchemaDescendant(childSchema)
-                ) {
+                // If the property is fully excluded, assign without proxying or notifying
+                if (isSchemaExcluded(childSchema)) {
                     obj[prop] = value;
                     return true;
                 }
@@ -1684,11 +1682,8 @@ export function assignProxy(
 
                     delete obj[prop];
 
-                    // Only suppress notification if excluded AND no observed descendants
-                    if (
-                        childSchema?.$observe === false &&
-                        !hasObservedSchemaDescendant(childSchema)
-                    ) {
+                    // Only suppress notification if fully excluded
+                    if (isSchemaExcluded(childSchema)) {
                         return true;
                     }
 
