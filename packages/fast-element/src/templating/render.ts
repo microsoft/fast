@@ -112,6 +112,8 @@ export class RenderBehavior<TSource = any> implements ViewBehavior, Subscriber {
      * @internal
      */
     public handleChange(source: any, observer: ExpressionObserver): void {
+        // https://github.com/microsoft/fast/issues/7444
+        // This guard will be reconsidered in the next major version.
         if (!this.controller!.isBound) {
             return;
         }

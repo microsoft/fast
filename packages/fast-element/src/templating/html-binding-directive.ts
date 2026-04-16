@@ -461,6 +461,8 @@ export class HTMLBindingDirective
     handleChange(binding: Expression, observer: ExpressionObserver): void {
         const controller = (observer as any).controller;
 
+        // https://github.com/microsoft/fast/issues/7444
+        // This guard will be reconsidered in the next major version.
         if (!controller.isBound) {
             return;
         }
