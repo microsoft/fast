@@ -16,28 +16,16 @@ const fixtures = discoverFixtures(fixturesDir);
 const require = createRequire(import.meta.url);
 const fastBin = require.resolve("@microsoft/fast-build/bin/fast.js");
 
-for (const fixture of fixtures) {
-    const fixtureName = fixture.name;
-    const fixtureArgs = fixture.args || [];
+for (const fixtureName of fixtures) {
     const fixtureDir = resolve(__dirname, "../test/fixtures", fixtureName);
+    const configFile = join(fixtureDir, "fast-build.config.json");
     const templatesFile = join(fixtureDir, "templates.html");
-    const entryFile = join(fixtureDir, "entry.html");
-    const stateFile = join(fixtureDir, "state.json");
     const outputFile = join(fixtureDir, "index.html");
 
-    // Step 1: render shadow DOM via fast-build CLI
+    // Step 1: render shadow DOM via fast-build CLI using config file
     execFileSync(
         process.execPath,
-        [
-            fastBin,
-            "build",
-            `--templates=${templatesFile}`,
-            `--entry=${entryFile}`,
-            `--state=${stateFile}`,
-            `--output=${outputFile}`,
-            ...fixtureArgs,
-            ...passthroughArgs,
-        ],
+        [fastBin, "build", `--config=${configFile}`, ...passthroughArgs],
         { stdio: "inherit" },
     );
 

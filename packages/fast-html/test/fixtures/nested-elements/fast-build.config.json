@@ -2,6 +2,5 @@
     "entry": "entry.html",
     "state": "state.json",
     "output": "index.html",
-    "templates": "templates.html",
-    "attribute-name-strategy": "camelCase"
+    "templates": "templates.html"
 }
