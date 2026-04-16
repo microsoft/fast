@@ -60,7 +60,7 @@ fn test_deeply_nested_in_f_repeat() {
 fn test_deeply_nested_missing_intermediate_returns_error() {
     use microsoft_fast_build::render_template;
     use microsoft_fast_build::RenderError;
-    let e = render_template("{{a.b.c.d}}", r#"{"a": {"b": {}}}"#)
+    let e = render_template("{{a.b.c.d}}", r#"{"a": {"b": {}}}"#, None)
         .expect_err("expected MissingState");
     assert!(matches!(e, RenderError::MissingState { .. }), "wrong variant: {e}");
 }
@@ -82,6 +82,7 @@ fn test_multiple_root_custom_elements() {
         "<my-header></my-header><my-footer></my-footer>",
         &root,
         &locator,
+        None,
     ).expect("render multiple root custom elements");
     let home_index = result.find("Home").expect("header content 'Home' must be present");
     let copyright_index = result.find("2025").expect("footer content '2025' must be present");
@@ -101,6 +102,7 @@ fn test_multiple_root_custom_elements_with_text_between() {
         "<my-a></my-a> separator <my-b></my-b>",
         &empty_root(),
         &locator,
+        None,
     ).expect("render multiple root elements with text between");
 
     let a_index = result.find("<span>A</span>");
@@ -136,6 +138,7 @@ fn test_root_element_attr_overrides_root_state() {
         r#"<my-el color="red"></my-el>"#,
         &root,
         &locator,
+        None,
     ).expect("render element with attr override");
     // Per-element attribute value ("red") must win over root state ("blue").
     assert!(result.contains("red"), "attr override: {result}");
@@ -154,6 +157,7 @@ fn test_root_element_accesses_root_state_keys() {
         "<my-el></my-el>",
         &root,
         &locator,
+        None,
     ).expect("render element accessing root state");
     assert!(result.contains("Alice"), "root state accessible: {result}");
 }
@@ -171,6 +175,7 @@ fn test_root_element_binding_attr_resolves_from_root_state() {
         r#"<my-el label="{{title}}"></my-el>"#,
         &root,
         &locator,
+        None,
     ).expect("render element with binding attr forwarded from root state");
     assert!(result.contains("Hello"), "binding resolved into child state: {result}");
 }
@@ -212,6 +217,7 @@ fn test_unknown_custom_element_passes_through() {
         r#"<my-unknown label="Hi"></my-unknown>"#,
         &empty_root(),
         &locator,
+        None,
     ).expect("render unknown custom element passes through");
     // No template → element is left verbatim.
     assert_eq!(result, r#"<my-unknown label="Hi"></my-unknown>"#);
@@ -245,7 +251,7 @@ fn test_nested_custom_element_inside_shadow() {
         ("my-outer", r#"<div><my-inner label="nested"></my-inner></div>"#),
         ("my-inner", "<span>{{label}}</span>"),
     ]);
-    let result = render_with_locator("<my-outer></my-outer>", &empty_root(), &locator)
+    let result = render_with_locator("<my-outer></my-outer>", &empty_root(), &locator, None)
         .expect("render nested custom element inside shadow");
     assert!(result.contains("nested"), "inner rendered: {result}");
     assert!(
@@ -261,6 +267,6 @@ fn test_render_with_json_value_directly() {
     let mut map = HashMap::new();
     map.insert("greeting".to_string(), JsonValue::String("Hi".to_string()));
     let state = JsonValue::Object(map);
-    let result = render("<p>{{greeting}}</p>", &state).expect("render with JsonValue directly");
+    let result = render("<p>{{greeting}}</p>", &state, None).expect("render with JsonValue directly");
     assert_eq!(result, "<p>Hi</p>");
 }
