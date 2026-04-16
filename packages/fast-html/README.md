@@ -217,6 +217,53 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
+#### `observerMap`
+
+When `observerMap: "all"` (or `observerMap: {}`) is configured for an element, `@microsoft/fast-html` automatically sets up deep reactive observation for all root properties discovered in the template. Both `"all"` and `{}` are equivalent.
+
+For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
+
+```typescript
+TemplateElement.options({
+    "user-profile": {
+        observerMap: {
+            properties: {
+                user: {
+                    name: true,          // user.name — observed
+                    details: {
+                        age: true,       // user.details.age — observed
+                        history: false,  // user.details.history — NOT observed
+                    },
+                },
+                // root properties not listed here are skipped
+            },
+        },
+    },
+}).define({ name: "f-template" });
+```
+
+Each path entry can be:
+- **`true`** — observe this path and all descendants.
+- **`false`** — skip this path and all descendants.
+- **An object** with an optional `$observe` boolean and child property overrides.
+
+Use `$observe: false` on a node to skip it by default, then re-include specific children:
+
+```typescript
+observerMap: {
+    properties: {
+        analytics: {
+            charts: {
+                $observe: false,       // charts NOT observed by default
+                activeChart: true,     // ...except activeChart IS observed
+            },
+        },
+    },
+}
+```
+
+When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+
 #### `attributeMap`
 
 When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"none"` attribute name strategy.
