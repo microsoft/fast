@@ -171,6 +171,14 @@ class TemplateElement extends FASTElement {
     private schema?: Schema;
 
     /**
+     * Whether the template contains deprecated "e" event argument usage.
+     * Set during template processing; checked after evaluation to emit a
+     * single warning per template.
+     */
+    // TODO: remove per https://github.com/microsoft/fast/issues/7314
+    private _hasDeprecatedEventSyntax = false;
+
+    /**
      * Lifecycle callbacks for hydration events
      */
     private static lifecycleCallbacks: HydrationLifecycleCallbacks = {};
@@ -289,6 +297,14 @@ class TemplateElement extends FASTElement {
                     this.schema as Schema,
                     this.observerMap,
                 );
+
+                if (this._hasDeprecatedEventSyntax) {
+                    console.warn(
+                        `[fast-html] Using "e" as an event argument is deprecated` +
+                            ` in component "${name}".` +
+                            ` Use "${eventArgAccessor}" instead.`,
+                    );
+                }
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
                 this.observerMap?.defineProperties();
@@ -627,10 +643,7 @@ class TemplateElement extends FASTElement {
                         const parsedArgs = parseEventArgs(argsString);
 
                         if (parsedArgs.some(a => a.type === "deprecated-event")) {
-                            console.warn(
-                                `[fast-html] Using "e" as an event argument is deprecated. ` +
-                                    `Use "${eventArgAccessor}" instead.`,
-                            );
+                            this._hasDeprecatedEventSyntax = true;
                         }
 
                         const argResolvers = parsedArgs.map(
