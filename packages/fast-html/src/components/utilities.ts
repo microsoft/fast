@@ -1646,9 +1646,14 @@ export function assignProxy(
                 }
 
                 const propName = typeof prop === "string" ? prop : String(prop);
+                const childSchema = schemaProperties?.[propName];
 
-                // If the schema marks this property as not observed, assign without proxying or notifying
-                if (schemaProperties?.[propName]?.$observe === false) {
+                // If the schema excludes this property and it has no observed descendants,
+                // assign without proxying or notifying
+                if (
+                    childSchema?.$observe === false &&
+                    !hasObservedSchemaDescendant(childSchema)
+                ) {
                     obj[prop] = value;
                     return true;
                 }
@@ -1675,13 +1680,19 @@ export function assignProxy(
             deleteProperty: (obj: any, prop: string | symbol) => {
                 if (prop in obj) {
                     const propName = typeof prop === "string" ? prop : String(prop);
+                    const childSchema = schemaProperties?.[propName];
 
                     delete obj[prop];
 
-                    // Only notify if the schema does not mark this property as excluded
-                    if (schemaProperties?.[propName]?.$observe !== false) {
-                        notifyObservables(proxy);
+                    // Only suppress notification if excluded AND no observed descendants
+                    if (
+                        childSchema?.$observe === false &&
+                        !hasObservedSchemaDescendant(childSchema)
+                    ) {
+                        return true;
                     }
+
+                    notifyObservables(proxy);
 
                     return true;
                 }
