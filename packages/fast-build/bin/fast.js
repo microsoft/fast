@@ -167,6 +167,14 @@ async function runBuild(args) {
     const output = args["output"] || "output.html";
     const entry = args["entry"] || "index.html";
     const stateFile = args["state"] || "state.json";
+    const attributeNameStrategy = args["attribute-name-strategy"];
+
+    if (attributeNameStrategy && attributeNameStrategy !== "none" && attributeNameStrategy !== "camelCase") {
+        process.stderr.write(
+            `Error: Invalid --attribute-name-strategy "${attributeNameStrategy}". Expected "none" or "camelCase".\n`
+        );
+        process.exit(1);
+    }
 
     // Load WASM module first — needed for both template parsing and rendering.
     const wasm = require(WASM_MODULE);
@@ -214,7 +222,9 @@ async function runBuild(args) {
     // Render
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
-        rendered = wasm.render_entry_with_templates(entryContent, JSON.stringify(templatesMap), stateContent);
+        rendered = wasm.render_entry_with_templates(
+            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy || "none"
+        );
     } else {
         rendered = wasm.render(entryContent, stateContent);
     }
@@ -234,7 +244,10 @@ async function main() {
             '                         Separate multiple patterns with commas.\n' +
             '  --output="output.html" Output file path (default: output.html)\n' +
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
-            '  --state="state.json"   State JSON file (default: state.json)\n'
+            '  --state="state.json"   State JSON file (default: state.json)\n' +
+            '  --attribute-name-strategy="none"\n' +
+            '                         Strategy for mapping attribute names to property names.\n' +
+            '                         "none" (default) or "camelCase".\n'
         );
         return;
     }
