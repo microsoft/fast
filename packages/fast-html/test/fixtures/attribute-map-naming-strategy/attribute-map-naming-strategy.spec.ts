@@ -69,9 +69,11 @@ test.describe("AttributeMap with attribute-name-strategy: camelCase", () => {
         expect(attrValue).toBe("reflected-value");
     });
 
-    test("should render initial attribute values from entry HTML", async ({ page }) => {
-        await expect(page.locator(".foo-bar-value")).toHaveText("hello");
-        await expect(page.locator(".my-custom-prop-value")).toHaveText("world");
+    test("should render initial attribute values from state defaults", async ({
+        page,
+    }) => {
+        await expect(page.locator(".foo-bar-value")).toHaveText("default-foo");
+        await expect(page.locator(".my-custom-prop-value")).toHaveText("default-prop");
     });
 
     test("should update template when camelCase property is set directly", async ({
@@ -99,10 +101,10 @@ test.describe("AttributeMap with attribute-name-strategy: camelCase", () => {
         await expect(page.locator(".label-value")).toHaveText("no-dash-test");
     });
 
-    test("non-dashed attribute renders initial value from entry HTML", async ({
+    test("non-dashed attribute renders initial value from state defaults", async ({
         page,
     }) => {
         await page.waitForSelector("naming-strategy-no-dash-test");
-        await expect(page.locator(".label-value")).toHaveText("simple");
+        await expect(page.locator(".label-value")).toHaveText("default-label");
     });
 });
