@@ -18,7 +18,7 @@ This document describes the internal architecture of the `@microsoft/fast-build`
 fast build [options]
         │
         ▼
-  parseArgs(argv)        ← --entry, --state, --output, --templates
+  parseArgs(argv)        ← --entry, --state, --output, --templates, --attribute-name-strategy
         │
         ├─ wasm = require(WASM_MODULE)         ← load WASM first
         │
@@ -35,8 +35,7 @@ fast build [options]
         ├─ fs.readFileSync(state)   ← state JSON
         │
         ▼
-  wasm.render_with_templates(entry, JSON.stringify(templatesMap), state)
-        │
+  wasm.render_entry_with_templates(entry, JSON.stringify(templatesMap), state, strategy)
         ▼
   fs.writeFileSync(output, rendered)
 ```
@@ -108,7 +107,7 @@ Three WASM functions are used:
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state)` | No custom element templates |
-| `wasm.render_with_templates(entry, templatesJson, state)` | At least one template was loaded |
+| `wasm.render_entry_with_templates(entry, templatesJson, state, strategy)` | At least one template was loaded. `strategy` is `"none"` or `"camelCase"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.
@@ -124,6 +123,7 @@ See the [`microsoft-fast-build` DESIGN.md](../../crates/microsoft-fast-build/DES
 | `--entry` file not found | Print error to stderr; exit code 1 |
 | `--state` file not found | Print error to stderr; exit code 1 |
 | `--templates` not provided | Warning to stderr; rendering continues without custom elements |
+| `--attribute-name-strategy` invalid value | Print error to stderr; exit code 1 |
 | Pattern matches no files | Warning to stderr; pattern is skipped |
 | `<f-template>` without `name` | Warning to stderr; template is skipped |
 | Duplicate template name across files | Warning to stderr; later entry overwrites earlier |
