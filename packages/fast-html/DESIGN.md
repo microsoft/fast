@@ -87,7 +87,43 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent; no configuration keys are defined at this time.
+Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent and observe all root properties.
+
+#### Path-level observation control
+
+The `ObserverMapConfig` interface accepts an optional `properties` key that maps root property names to a recursive path tree controlling observation granularity:
+
+```typescript
+TemplateElement.options({
+    "my-element": {
+        observerMap: {
+            properties: {
+                user: {
+                    name: true,          // user.name — observed
+                    details: {
+                        age: true,       // user.details.age — observed
+                        history: false,  // user.details.history — NOT observed
+                    },
+                },
+                // root properties not listed here are skipped
+            },
+        },
+    },
+});
+```
+
+Each path entry can be:
+- **`true`** — observe this path and all descendants (unless overridden deeper).
+- **`false`** — skip this path and all descendants (unless overridden deeper).
+- **`ObserverMapPathNode`** — an object with an optional `$observe` boolean and child property overrides, allowing alternating opt-in/opt-out to arbitrary depth.
+
+When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+
+The resolution algorithm walks the schema and configuration tree in parallel:
+1. If `properties` is present and a root property is not listed, it is skipped.
+2. `true`/`false` booleans apply to the entire subtree.
+3. `$observe` on a node object controls the current level; children inherit when unspecified.
+4. Paths in the config but not in the schema are silently ignored (forward-compatible).
 
 ### `AttributeMap` — automatic `@attr` definitions
 
@@ -150,6 +186,9 @@ import {
     RenderableFASTElement,
     TemplateElement,
     ObserverMap,
+    type ObserverMapConfig,
+    type ObserverMapPathEntry,
+    type ObserverMapPathNode,
 } from "@microsoft/fast-html";
 ```
 
@@ -160,6 +199,14 @@ Three primary exports are intended for application code:
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
 | `RenderableFASTElement(Base)` | Mixin applied to your `FASTElement` subclass for hydration support. |
 | `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
+
+Additionally, the following types are exported for use in `observerMap` configuration:
+
+| Type | Purpose |
+|---|---|
+| `ObserverMapConfig` | Configuration object for the `observerMap` option; accepts optional `properties` key. |
+| `ObserverMapPathEntry` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
+| `ObserverMapPathNode` | Object node with optional `$observe` and child property overrides. |
 
 ---
 
