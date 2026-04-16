@@ -1,6 +1,39 @@
 import { Observable } from "@microsoft/fast-element/observable.js";
-import { assignObservables, deepMerge } from "./utilities.js";
 import type { JSONSchema, Schema } from "./schema.js";
+import type { ObserverMapConfig, ObserverMapPathEntry } from "./template.js";
+import { assignObservables, deepMerge } from "./utilities.js";
+
+/**
+ * Determines whether a config entry (or any of its descendants) enables observation.
+ * Used to decide whether a root property needs an observable accessor and change handler.
+ */
+function hasObservedPath(entry: ObserverMapPathEntry): boolean {
+    if (typeof entry === "boolean") {
+        return entry;
+    }
+
+    // ObserverMapPathNode
+    if (entry.$observe === true) {
+        return true;
+    }
+
+    for (const key of Object.keys(entry)) {
+        if (key === "$observe") {
+            continue;
+        }
+
+        const child = entry[key];
+
+        if (child !== undefined && hasObservedPath(child)) {
+            return true;
+        }
+    }
+
+    // A node with no explicit $observe and no observed children:
+    // at the root level the default $observe is true, so a node like `{ }` (no children)
+    // is observed. But a node with `$observe: false` and no observed children is not.
+    return entry.$observe !== false;
+}
 
 /**
  * ObserverMap provides functionality for caching binding paths, extracting root properties,
@@ -9,17 +42,43 @@ import type { JSONSchema, Schema } from "./schema.js";
 export class ObserverMap {
     private schema: Schema;
     private classPrototype: any;
+    private config: ObserverMapConfig | undefined;
 
-    constructor(classPrototype: any, schema: Schema) {
+    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig) {
         this.classPrototype = classPrototype;
         this.schema = schema;
+        this.config = config;
     }
 
     public defineProperties(): void {
         const propertyNames = this.schema.getRootProperties();
         const existingAccessors = Observable.getAccessors(this.classPrototype);
+        const configProperties = this.config?.properties;
 
         for (const propertyName of propertyNames) {
+            // When `properties` is present, skip root properties not listed in the config
+            if (configProperties && !(propertyName in configProperties)) {
+                continue;
+            }
+
+            // Resolve the config entry for this root property
+            const configEntry: ObserverMapPathEntry | undefined =
+                configProperties?.[propertyName];
+
+            // Skip root properties explicitly set to `false` with no observed descendants
+            if (configEntry === false) {
+                continue;
+            }
+
+            // Skip ObserverMapPathNode entries with no observed descendants
+            if (
+                typeof configEntry === "object" &&
+                configEntry !== null &&
+                !hasObservedPath(configEntry)
+            ) {
+                continue;
+            }
+
             // Skip if property already has an accessor (from `@attr` or `@observable` decorator)
             if (!existingAccessors.some(accessor => accessor.name === propertyName)) {
                 Observable.defineProperty(this.classPrototype, propertyName);
@@ -30,7 +89,8 @@ export class ObserverMap {
 
             this.classPrototype[changedMethodName] = this.defineChanged(
                 propertyName,
-                existingChangedMethod
+                configEntry,
+                existingChangedMethod,
             );
         }
     }
@@ -40,13 +100,16 @@ export class ObserverMap {
      * @param target - The target instance that owns the root property
      * @param rootProperty - The name of the root property for notification purposes
      * @param object - The object to wrap with a proxy
+     * @param schema - The schema for the element
+     * @param configEntry - The path config entry for this root property
      * @returns A proxy that triggers notifications on property mutations
      */
     private getAndAssignObservables(
         target: any,
         rootProperty: string,
         object: any,
-        schema: Schema
+        schema: Schema,
+        configEntry: ObserverMapPathEntry | undefined,
     ): typeof Proxy {
         let proxiedObject = object;
 
@@ -55,7 +118,8 @@ export class ObserverMap {
             schema.getSchema(rootProperty) as JSONSchema,
             proxiedObject,
             target,
-            rootProperty
+            rootProperty,
+            configEntry,
         );
 
         return proxiedObject;
@@ -65,12 +129,14 @@ export class ObserverMap {
      * Creates a property change handler function for observable properties
      * This handler is called when an observable property transitions from undefined to a defined value
      * @param propertyName - The name of the property for which to create the change handler
+     * @param configEntry - The path config entry for this root property
      * @param existingChangedMethod - Optional existing changed method to call after the instance resolver logic
      * @returns A function that handles property changes and sets up proxies for object values
      */
     private defineChanged = (
         propertyName: string,
-        existingChangedMethod?: (prev: any, next: any) => void
+        configEntry: ObserverMapPathEntry | undefined,
+        existingChangedMethod?: (prev: any, next: any) => void,
     ): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
         const schema = this.schema;
@@ -92,7 +158,8 @@ export class ObserverMap {
                         this,
                         propertyName,
                         next,
-                        schema
+                        schema,
+                        configEntry,
                     );
                 }
             } else if (!isObjectAssignment) {
