@@ -52,10 +52,19 @@ export const ObserverMapOption = {
 } as const;
 
 /**
+ * Configuration object for the observerMap element option.
+ * No configuration keys are defined at this time; passing an empty
+ * object (`{}`) is equivalent to `"all"`.
+ */
+export interface ObserverMapConfig {}
+
+/**
  * Type for the observerMap element option.
+ * Accepts `"all"` or a configuration object.
  */
 export type ObserverMapOption =
-    (typeof ObserverMapOption)[keyof typeof ObserverMapOption];
+    | (typeof ObserverMapOption)[keyof typeof ObserverMapOption]
+    | ObserverMapConfig;
 
 /**
  * Values for the attributeMap element option.
@@ -65,10 +74,19 @@ export const AttributeMapOption = {
 } as const;
 
 /**
+ * Configuration object for the attributeMap element option.
+ * No configuration keys are defined at this time; passing an empty
+ * object (`{}`) is equivalent to `"all"`.
+ */
+export interface AttributeMapConfig {}
+
+/**
  * Type for the attributeMap element option.
+ * Accepts `"all"` or a configuration object.
  */
 export type AttributeMapOption =
-    (typeof AttributeMapOption)[keyof typeof AttributeMapOption];
+    | (typeof AttributeMapOption)[keyof typeof AttributeMapOption]
+    | AttributeMapConfig;
 
 /**
  * Element options the TemplateElement will use to update the registered element
@@ -83,6 +101,20 @@ export interface ElementOptions {
  */
 export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
     [key: string]: ElementOptionsType;
+}
+
+/**
+ * Checks whether a map option (observerMap or attributeMap) is enabled.
+ * An option is enabled when it is `"all"` or a plain configuration object.
+ */
+function isMapOptionEnabled(
+    option: ObserverMapOption | AttributeMapOption | undefined,
+): boolean {
+    if (option === "all") {
+        return true;
+    }
+
+    return typeof option === "object" && !Array.isArray(option);
 }
 
 /**
@@ -221,7 +253,7 @@ class TemplateElement extends FASTElement {
                 TemplateElement.setOptions(name);
             }
 
-            if (TemplateElement.elementOptions[name]?.observerMap === "all") {
+            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.observerMap)) {
                 this.observerMap = new ObserverMap(
                     value.prototype,
                     this.schema as Schema,
@@ -231,7 +263,7 @@ class TemplateElement extends FASTElement {
             const registeredFastElement: FASTElementDefinition | undefined =
                 fastElementRegistry.getByType(value);
 
-            if (TemplateElement.elementOptions[name]?.attributeMap === "all") {
+            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.attributeMap)) {
                 this.attributeMap = new AttributeMap(
                     value.prototype,
                     this.schema as Schema,
