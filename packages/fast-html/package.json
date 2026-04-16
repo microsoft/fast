@@ -66,7 +66,7 @@
   "devDependencies": {
     "@microsoft/fast-build": "^0.3.2",
     "@microsoft/fast-element": "^2.10.3",
-    "@microsoft/webui": "0.0.8"
+    "@microsoft/webui": "0.0.9"
   },
   "beachball": {
     "disallowedChangeTypes": [
