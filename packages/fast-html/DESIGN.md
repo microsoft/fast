@@ -251,7 +251,7 @@ flowchart TD
     G --> H[transformInnerHTML normalises HTML entities]
     H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
     I --> J{observerMap enabled?}
-    J -- yes --> K["ObserverMap.defineProperties\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
+    J -- yes --> K["ObserverMap.defineProperties\n→ applyConfigToSchema stamps $observe on schema nodes\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
     J -- no --> L
     K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
     L --> M["FASTElementDefinition.composeAsync\n→ element fully registered with platform"]
@@ -337,12 +337,24 @@ flowchart LR
     B --> C[schema.addPath\ntype:'access'\npath:'user.details.age'\nrootProperty:'user']
     C --> D["Schema.jsonSchemaMap\n{'my-el' => {'user' => JSONSchema}}"]
     D --> E[ObserverMap.defineProperties]
-    E --> F[Observable.defineProperty on prototype\nfor 'user']
-    E --> G[install instanceResolverChanged handler]
-    G --> H[when user= is set:\nassignObservables → Proxy wraps user\ndeep mutations → Observable.notify]
+    E --> E1["applyConfigToSchema\nstamps $observe: false on excluded schema nodes"]
+    E1 --> F[Observable.defineProperty on prototype\nfor 'user']
+    E1 --> G[install instanceResolverChanged handler]
+    G --> H["when user= is set:\nassignObservables checks schema.$observe\n→ Proxy wraps observed paths only\ndeep mutations → Observable.notify"]
 ```
 
 For a deep dive into the schema structure, context tracking, and proxy system see [SCHEMA_OBSERVER_MAP.md](./SCHEMA_OBSERVER_MAP.md).
+
+### `$observe` flag on schema nodes
+
+When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.defineProperties()` calls `applyConfigToSchema()` to stamp `$observe: false` on excluded schema nodes **before** the proxy system runs. This is a one-time pre-processing pass that walks the config and schema trees in parallel:
+
+- `false` in the config → `$observe: false` is stamped recursively on the node and all its descendants.
+- `$observe: false` on a config node → the schema node is stamped, and unlisted children inherit the stamp.
+- `true` in the config → no stamp needed (observed is the default).
+- Config paths not in the schema are silently ignored.
+
+The proxy system then checks `schema.$observe` at each decision point — no separate config tree is threaded through function calls. Schema nodes without `$observe` (or with `$observe: true`) are observed normally.
 
 ### AttributeMap and leaf bindings
 
