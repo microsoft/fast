@@ -36,6 +36,83 @@ function hasObservedPath(entry: ObserverMapPathEntry): boolean {
 }
 
 /**
+ * Stamps `$observe` flags onto schema nodes based on the config tree.
+ * After this one-time pass the proxy system can check `schema.$observe`
+ * instead of needing a separate config parameter threaded through every call.
+ *
+ * @param schema - A schema node (must have `properties` to recurse)
+ * @param entry  - The corresponding config path entry
+ * @param inherited - The inherited `$observe` value from the parent
+ */
+function applyConfigToSchema(
+    schema: any,
+    entry: ObserverMapPathEntry,
+    inherited: boolean = true,
+): void {
+    if (entry === false) {
+        stampObserveFalse(schema);
+        return;
+    }
+
+    if (entry === true) {
+        // Explicitly observed — no stamp needed (default is observed)
+        return;
+    }
+
+    // ObserverMapPathNode
+    const nodeObserve = entry.$observe ?? inherited;
+
+    if (!nodeObserve) {
+        schema.$observe = false;
+    }
+
+    if (!schema?.properties) {
+        return;
+    }
+
+    for (const key of Object.keys(entry)) {
+        if (key === "$observe") {
+            continue;
+        }
+
+        const childEntry = entry[key];
+        const childSchema = schema.properties[key];
+
+        // Paths in config but not in schema are silently ignored
+        if (childEntry !== undefined && childSchema) {
+            applyConfigToSchema(childSchema, childEntry, nodeObserve);
+        }
+    }
+
+    // For properties in the schema that are NOT listed in the config,
+    // they inherit the parent's $observe value
+    if (!nodeObserve) {
+        for (const key of Object.keys(schema.properties)) {
+            if (!(key in entry) && schema.properties[key]) {
+                stampObserveFalse(schema.properties[key]);
+            }
+        }
+    }
+}
+
+/**
+ * Recursively stamps `$observe: false` on a schema node and all its descendants.
+ */
+function stampObserveFalse(schema: any): void {
+    if (!schema) {
+        return;
+    }
+
+    schema.$observe = false;
+
+    if (schema.properties) {
+        for (const key of Object.keys(schema.properties)) {
+            stampObserveFalse(schema.properties[key]);
+        }
+    }
+}
+
+/**
  * ObserverMap provides functionality for caching binding paths, extracting root properties,
  * and defining observable properties on class prototypes
  */
@@ -79,6 +156,14 @@ export class ObserverMap {
                 continue;
             }
 
+            // Stamp $observe flags onto the schema so the proxy system
+            // can check schema nodes directly without a separate config tree
+            const rootSchema = this.schema.getSchema(propertyName);
+
+            if (configEntry && rootSchema) {
+                applyConfigToSchema(rootSchema, configEntry);
+            }
+
             // Skip if property already has an accessor (from `@attr` or `@observable` decorator)
             if (!existingAccessors.some(accessor => accessor.name === propertyName)) {
                 Observable.defineProperty(this.classPrototype, propertyName);
@@ -89,7 +174,6 @@ export class ObserverMap {
 
             this.classPrototype[changedMethodName] = this.defineChanged(
                 propertyName,
-                configEntry,
                 existingChangedMethod,
             );
         }
@@ -101,7 +185,6 @@ export class ObserverMap {
      * @param rootProperty - The name of the root property for notification purposes
      * @param object - The object to wrap with a proxy
      * @param schema - The schema for the element
-     * @param configEntry - The path config entry for this root property
      * @returns A proxy that triggers notifications on property mutations
      */
     private getAndAssignObservables(
@@ -109,7 +192,6 @@ export class ObserverMap {
         rootProperty: string,
         object: any,
         schema: Schema,
-        configEntry: ObserverMapPathEntry | undefined,
     ): typeof Proxy {
         let proxiedObject = object;
 
@@ -119,7 +201,6 @@ export class ObserverMap {
             proxiedObject,
             target,
             rootProperty,
-            configEntry,
         );
 
         return proxiedObject;
@@ -129,13 +210,11 @@ export class ObserverMap {
      * Creates a property change handler function for observable properties
      * This handler is called when an observable property transitions from undefined to a defined value
      * @param propertyName - The name of the property for which to create the change handler
-     * @param configEntry - The path config entry for this root property
      * @param existingChangedMethod - Optional existing changed method to call after the instance resolver logic
      * @returns A function that handles property changes and sets up proxies for object values
      */
     private defineChanged = (
         propertyName: string,
-        configEntry: ObserverMapPathEntry | undefined,
         existingChangedMethod?: (prev: any, next: any) => void,
     ): ((prev: any, next: any) => void) => {
         const getAndAssignObservablesAlias = this.getAndAssignObservables;
@@ -159,7 +238,6 @@ export class ObserverMap {
                         propertyName,
                         next,
                         schema,
-                        configEntry,
                     );
                 }
             } else if (!isObjectAssignment) {
