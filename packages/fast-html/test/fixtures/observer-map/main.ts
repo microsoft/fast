@@ -468,8 +468,14 @@ TemplateElement.options({
     "observer-map-simple-array-test-element": {
         observerMap: "all",
     },
-}).define({
-    name: "f-template",
-});
+})
+    .config({
+        hydrationComplete() {
+            (window as any).hydrationCompleted = true;
+        },
+    })
+    .define({
+        name: "f-template",
+    });
 
 (window as any).Observable = Observable;

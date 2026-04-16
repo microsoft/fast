@@ -3,14 +3,18 @@ import { expect, type Locator, test } from "@playwright/test";
 test.describe("f-template", () => {
     let element: Locator;
     test.beforeEach(async ({ page }) => {
+        const hydrationCompleted = page.waitForFunction(
+            () => (window as any).hydrationCompleted === true,
+        );
         await page.goto("/fixtures/slotted/");
+        await hydrationCompleted;
         element = page.locator("test-element");
     });
 
     test("create a slotted directive", async () => {
         await expect(element).toHaveJSProperty("classList.length", 2);
 
-        await element.evaluate((node) => {
+        await element.evaluate(node => {
             const newElement = document.createElement("button");
             newElement.slot = "foo";
             node.append(newElement);
