@@ -28,7 +28,8 @@
     "wasm/microsoft_fast_build_bg.wasm.d.ts"
   ],
   "scripts": {
-    "build": "cargo build --manifest-path ../../crates/microsoft-fast-build/Cargo.toml && wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm"
+    "build": "cargo build --manifest-path ../../crates/microsoft-fast-build/Cargo.toml && wasm-pack build --target nodejs ../../crates/microsoft-fast-build --out-dir ../../packages/fast-build/wasm",
+    "test:node": "node --test test/config.test.js"
   },
   "engines": {
     "node": ">=22.18.0"
