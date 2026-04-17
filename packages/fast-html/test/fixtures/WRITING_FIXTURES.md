@@ -145,6 +145,10 @@ The component definition file registers custom elements and configures the templ
 2. Wrap classes with `RenderableFASTElement()` for server-rendered fixtures that need hydration.
 3. Call `TemplateElement.define()` to register the `<f-template>` custom element.
 
+### Import paths
+
+> **Important:** All imports in `main.ts` must use package names (e.g., `@microsoft/fast-element`, `@microsoft/fast-html`), **not** relative paths. Relative imports will break the WebUI integration tests because fixtures are copied to a different directory structure during the integration build. The same applies to any other paths referenced in `main.ts`.
+
 ### Basic pattern
 
 ```typescript
