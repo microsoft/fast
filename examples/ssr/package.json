@@ -23,7 +23,7 @@
     "directory": "examples/ssr"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.10.3",
+    "@microsoft/fast-element": "^2.10.4",
     "@microsoft/fast-ssr": "^1.0.0-beta.40",
     "@microsoft/fast-todo-app-example": "1.0.0"
   }

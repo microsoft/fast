@@ -2,6 +2,77 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Fri, 17 Apr 2026 00:26:37 GMT",
+      "version": "1.0.0-alpha.49",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.49",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "cdafe02a6da743c7af4ee71d26245b477bd2c438",
+            "comment": "chore: add camel-case-attribute fixture and per-fixture fast-build config support"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f7503f9a349d9fe5026bde03b8ca929c810bb9d4",
+            "comment": "chore: update @microsoft/webui dependency to 0.0.9"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "6d0928fe3b0f1e37e0476de9f69974c845dd9fa7",
+            "comment": "chore: add fixture authoring guide and testing skill"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "ca9b4f9bc5f9401f9bb9484f82f0eecd7e666e01",
+            "comment": "refactor: use fast-build.config.json files for fixture builds instead of CLI arguments"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "620538a8f3ca11fe372a000d09fee8016e6c8efa",
+            "comment": "Ensure hydrationComplete is awaited in all fixture tests to fix flaky test failures"
+          }
+        ],
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "55bb879e703768545d7b8282ab72439d29625153",
+            "comment": "feat: ObserverMap and AttributeMap now accept a configuration object ({}) in addition to \"all\""
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "9fc5031015ac130da74f98b6da4f6192cd9abe74",
+            "comment": "feat: add attribute-name-strategy option to AttributeMap configuration"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "2594122a68371f10db63d4dc3acc9b53d01f6c2e",
+            "comment": "fix: deduplicate deprecated \"e\" event argument warning and include component name"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-build to v0.4.0",
+            "commit": "not available"
+          },
+          {
+            "author": "beachball",
+            "package": "@microsoft/fast-html",
+            "comment": "Bump @microsoft/fast-element to v2.10.4",
+            "commit": "not available"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 16 Apr 2026 00:17:05 GMT",
       "version": "1.0.0-alpha.48",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.48",

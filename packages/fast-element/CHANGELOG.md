@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-<!-- This log was last generated on Wed, 08 Apr 2026 00:19:56 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 2.10.4
+
+Fri, 17 Apr 2026 00:26:37 GMT
+
+### Patches
+
+- fix: guard binding updates against stale notifications after view unbind (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.3
 

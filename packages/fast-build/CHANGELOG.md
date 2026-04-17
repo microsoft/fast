@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-build
 
-<!-- This log was last generated on Fri, 10 Apr 2026 00:21:15 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 0.4.0
+
+Fri, 17 Apr 2026 00:26:37 GMT
+
+### Minor changes
+
+- feat: add --config option for loading build options from a JSON configuration file (7559015+janechu@users.noreply.github.com)
+- feat: add attribute-name-strategy configuration option to the CLI and WASM renderer (7559015+janechu@users.noreply.github.com)
 
 ## 0.3.2
 
