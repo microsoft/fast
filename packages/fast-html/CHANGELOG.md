@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Thu, 16 Apr 2026 00:17:05 GMT and should not be manually modified. -->
+<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.49
+
+Fri, 17 Apr 2026 00:26:37 GMT
+
+### Changes
+
+- feat: ObserverMap and AttributeMap now accept a configuration object ({}) in addition to "all" (7559015+janechu@users.noreply.github.com)
+- feat: add attribute-name-strategy option to AttributeMap configuration (7559015+janechu@users.noreply.github.com)
+- fix: deduplicate deprecated "e" event argument warning and include component name (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-build to v0.4.0
+- Bump @microsoft/fast-element to v2.10.4
 
 ## 1.0.0-alpha.48
 

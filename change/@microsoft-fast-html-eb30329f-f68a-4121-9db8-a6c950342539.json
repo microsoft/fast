@@ -1,7 +1,0 @@
-{
-  "type": "prerelease",
-  "comment": "fix: deduplicate deprecated \"e\" event argument warning and include component name",
-  "packageName": "@microsoft/fast-html",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}

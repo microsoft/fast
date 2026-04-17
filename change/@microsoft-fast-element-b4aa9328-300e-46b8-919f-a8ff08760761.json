@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: guard binding updates against stale notifications after view unbind",
-  "packageName": "@microsoft/fast-element",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
