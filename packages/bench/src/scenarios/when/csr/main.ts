@@ -1,23 +1,9 @@
-import { html, when } from "@microsoft/fast-element";
 import { runBenchmark } from "../../harness.js";
-import { BenchElement } from "../element.js";
+import { BenchElement, template } from "../element.js";
 
 BenchElement.define({
-    name: "bench-element",
-    template: html<BenchElement>`
-        ${when(
-            x => x.show,
-            html`
-                <span>Visible</span>
-            `
-        )}
-        ${when(
-            x => !x.show,
-            html`
-                <span>Hidden</span>
-            `
-        )}
-    `,
+    name: "when-bench-element",
+    template,
 });
 
-runBenchmark(() => document.createElement("bench-element"));
+runBenchmark(() => document.createElement("when-bench-element"));

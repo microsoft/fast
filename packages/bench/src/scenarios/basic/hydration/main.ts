@@ -3,7 +3,7 @@ import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
 BenchElement.defineAsync({
-    name: "bench-element",
+    name: "basic-bench-element",
 });
 
 performance.mark("bench-start");
