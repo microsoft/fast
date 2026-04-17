@@ -1,6 +1,6 @@
 export function render(): string {
     return /* html */ `
-        <bench-element needs-hydration>
+        <dot-syntax-bench-element needs-hydration>
             <template shadowrootmode="open">
                 <div>
                     <span><!--fe-b$$start$$0$$t0$$fe-b-->Jane<!--fe-b$$end$$0$$t0$$fe-b--></span>
@@ -8,6 +8,6 @@ export function render(): string {
                     <span><!--fe-b$$start$$2$$t0$$fe-b-->47.6<!--fe-b$$end$$2$$t0$$fe-b--></span>
                 </div>
             </template>
-        </bench-element>
+        </dot-syntax-bench-element>
     `;
 }

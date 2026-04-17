@@ -2,7 +2,7 @@ import { runBenchmark } from "../../harness.js";
 import { BenchElement, template } from "../element.js";
 
 BenchElement.define({
-    name: "attr-reflect-bench-element",
+    name: "all-bench-element",
     template,
 });
 
@@ -10,9 +10,7 @@ let id = 0;
 
 runBenchmark(() => {
     const count = ++id;
-    const el = document.createElement("attr-reflect-bench-element") as BenchElement;
-    el.label = `item-${count}`;
+    const el = document.createElement("all-bench-element") as BenchElement;
     el.count = count;
-    el.active = true;
     return el;
 });

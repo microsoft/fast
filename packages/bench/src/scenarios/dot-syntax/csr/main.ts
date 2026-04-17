@@ -3,14 +3,14 @@ import { runBenchmark } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
 BenchElement.defineAsync({
-    name: "bench-element",
+    name: "dot-syntax-bench-element",
     templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.options({
-    "bench-element": { observerMap: "all" },
+    "dot-syntax-bench-element": { observerMap: "all" },
 }).define({ name: "f-template" });
 
-await customElements.whenDefined("bench-element");
+await customElements.whenDefined("dot-syntax-bench-element");
 
-runBenchmark(() => document.createElement("bench-element"));
+runBenchmark(() => document.createElement("dot-syntax-bench-element"));

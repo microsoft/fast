@@ -1,19 +1,9 @@
-import { html, repeat } from "@microsoft/fast-element";
 import { runBenchmark } from "../../harness.js";
-import { BenchElement } from "../element.js";
+import { BenchElement, template } from "../element.js";
 
 BenchElement.define({
-    name: "bench-element",
-    template: html<BenchElement>`
-        <ul>
-            ${repeat(
-                x => x.items,
-                html<string>`
-                    <li>${x => x}</li>
-                `
-            )}
-        </ul>
-    `,
+    name: "repeat-bench-element",
+    template,
 });
 
-runBenchmark(() => document.createElement("bench-element"), 100);
+runBenchmark(() => document.createElement("repeat-bench-element"), 100);
