@@ -483,3 +483,5 @@ npm exec -w @microsoft/fast-html -- playwright test --config=playwright.webui.co
 ```
 
 This is also run automatically in CI via the `ci-webui-integration.yml` GitHub Action on pull requests and pushes to `main`.
+
+Some tests are conditionally skipped during webui integration runs due to known rendering differences between `fast-build` and `webui`. The `playwright.webui.config.ts` sets `FAST_WEBUI_INTEGRATION=true`, and affected tests use `test.skip()` with a descriptive reason. See the WebUI Integration Tests section in [DESIGN.md](./DESIGN.md) for the full list.
