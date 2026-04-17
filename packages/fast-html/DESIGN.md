@@ -470,6 +470,12 @@ A separate integration test suite validates that `@microsoft/webui` can build an
 
 Run locally with `npm run test:webui-integration` or via the `ci-webui-integration.yml` GitHub Action on PRs and pushes to `main`.
 
+#### Skipped tests
+
+Some tests are conditionally skipped when running under the webui integration config. The `playwright.webui.config.ts` sets `process.env.FAST_WEBUI_INTEGRATION = "true"`, and individual tests check this variable with `test.skip()` to opt out of cases that exercise known differences between `fast-build` and `webui` rendering:
+
+- **`errors.spec.ts` — "throws an error when no template element is present"**: webui does not render `<f-template>` elements that lack a `<template>` child, so the expected error is never thrown.
+
 ### Hydration readiness
 
 Every fixture must wait for hydration to complete before running assertions. Each `main.ts` registers a `hydrationComplete()` callback via `TemplateElement.config()` that sets a global flag, and each spec file calls `page.waitForFunction()` after `page.goto()` to block until the flag is set. See [test/fixtures/README.md](./test/fixtures/README.md) for the implementation pattern.
