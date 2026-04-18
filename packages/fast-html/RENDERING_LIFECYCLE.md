@@ -14,7 +14,7 @@ The FAST Element rendering lifecycle involves a coordinated process between two 
 Given a DOM which includes an `f-template` and a component:
 
 ```html
-<my-component defer-hydration needs-hydration text="Hello World">
+<my-component text="Hello World">
     <template shadowrootmode="open">
         <h1><!--fe-b$$start$$0$$abc123$$fe-b-->Hello World<!--fe-b$$end$$0$$abc123$$fe-b--></h1>
     </template>
@@ -81,10 +81,12 @@ Once the template is attached to the partial definition, the element completes i
 
 ### Phase 5: Element Instantiation and Hydration
 
-When custom elements are instantiated in the DOM: the following occurs:
+When custom elements are instantiated in the DOM, the following occurs:
 
 1. **Element Creation**: The platform creates instances of the custom element
-2. **Hydration**: Elements with `needs-hydration` attribute will now be hydrated, or this process may be delayed with the `defer-hydration` attribute which the developer can remove once they determine that the initial state has been provided to the custom element
+2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR and sets `isPrerendered = true`
+3. **Template-Pending Guard**: If `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives.
+4. **Hydration**: Once the template is available, `ElementController` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using `fe-b` markers
 
 The DOM after hydration should look like this:
 

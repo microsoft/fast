@@ -22,10 +22,10 @@ npm install --save @microsoft/fast-html
 In your JS bundle you will need to include the `@microsoft/fast-html` package:
 
 ```typescript
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { MyCustomElement } from "./my-custom-element";
 
-RenderableFASTElement(MyCustomElement).defineAsync({
+MyCustomElement.defineAsync({
     name: "my-custom-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -35,7 +35,7 @@ TemplateElement.define({
 });
 ```
 
-This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component.
+This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component. Components extend `FASTElement` directly and use `defineAsync()` for deferred template attachment.
 
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 
@@ -55,22 +55,15 @@ Example:
 
 One of the benefits of FAST declarative HTML templates is that the server can be stack agnostic as JavaScript does not need to be interpreted. By default `@microsoft/fast-html` will expect hydratable content and uses comments and datasets for tracking the binding logic. For more information on what that markup should look like, as well as an example of how initial state may be applied, read our [documentation](./RENDERING.md) to understand what markup should be generated for a hydratable experience. For the sake of brevity hydratable markup will be excluded from the README.
 
-#### Using the RenderableFASTElement
+#### Prerendered Content Detection
 
-The use of `RenderableFASTElement` as a mixin for your custom element will automatically remove the `defer-hydration` attribute signalling for hydration to begin, and if you need to add state before hydration should occur you can make use of the `prepare` method.
+When an element connects and already has an existing shadow root (from SSR or declarative shadow DOM), `ElementController` automatically sets `isPrerendered` to `true`. Connection gating is handled by the template-pending guard in `ElementController.connect()` — when `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
 
-Example:
+You can check the prerendered state on an element instance:
+
 ```typescript
-class MyCustomElement extends FASTElement {
-    private prepare(): Promise<void> {
-        // Get initial state
-    }
-}
-
-RenderableFASTElement(MyCustomElement).defineAsync({
-    name: "my-custom-element",
-    templateOptions: "defer-and-hydrate",
-});
+const el = document.querySelector("my-custom-element");
+console.log(el.$fastController.isPrerendered); // true if prerendered
 ```
 
 #### Lifecycle Callbacks

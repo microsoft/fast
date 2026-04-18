@@ -28,7 +28,7 @@ This document is intended for contributors who want to understand the internal a
 
 ```html
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
-<my-component defer-hydration needs-hydration greeting="Hello">
+<my-component greeting="Hello">
     <template shadowrootmode="open">
         <!--fe-b$$start$$0$$abc123$$fe-b-->Hello<!--fe-b$$end$$0$$abc123$$fe-b-->
     </template>
@@ -62,14 +62,6 @@ This document is intended for contributors who want to understand the internal a
 1. Looks up the element definition registered via `defineAsync()`.
 2. Parses the inner `<template>` tag, converting declarative bindings into FAST `ViewTemplate` strings and values.
 3. Assigns the compiled `ViewTemplate` to the element definition.
-
-### `RenderableFASTElement` — hydration mixin
-
-A mixin function that extends any `FASTElement` subclass with hydration-aware logic:
-
-- Adds a `deferHydration` boolean attribute (`defer-hydration`).
-- Waits for any ancestor `defer-hydration` attributes to be removed before allowing its own hydration to begin.
-- Exposes an optional `prepare()` hook that developers can use to fetch initial state before hydration.
 
 ### `Schema` — JSON schema builder
 
@@ -129,7 +121,7 @@ packages/fast-html/
 │   ├── debug.ts               # Human-readable debug messages registered with FAST
 │   └── components/
 │       ├── index.ts           # Component barrel
-│       ├── element.ts         # RenderableFASTElement mixin
+│       ├── element.ts         # Element utilities
 │       ├── template.ts        # TemplateElement (<f-template>), ObserverMapOption, ElementOptions
 │       ├── schema.ts          # Schema class — JSON schema builder
 │       ├── observer-map.ts    # ObserverMap class — auto observable/proxy setup
@@ -149,18 +141,16 @@ packages/fast-html/
 
 ```typescript
 import {
-    RenderableFASTElement,
     TemplateElement,
     ObserverMap,
 } from "@microsoft/fast-html";
 ```
 
-Three primary exports are intended for application code:
+Two primary exports are intended for application code:
 
 | Export | Purpose |
 |---|---|
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
-| `RenderableFASTElement(Base)` | Mixin applied to your `FASTElement` subclass for hydration support. |
 | `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
 
 ---
@@ -208,7 +198,7 @@ flowchart TD
     J -- no --> L
     K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
     L --> M["FASTElementDefinition.composeAsync\n→ element fully registered with platform"]
-    M --> N["HydratableElementController hydrates\nexisting DOM using fe-b markers"]
+    M --> N["ElementController detects existing shadow root\nisPrerendered = true\nhydrates existing DOM using fe-b markers\nvia template.hydrate()"]
     N --> O[Interactive component]
 ```
 
@@ -319,7 +309,7 @@ sequenceDiagram
     participant App as Application JS
     participant FER as fastElementRegistry
     participant TE as TemplateElement (f-template)
-    participant HEC as HydratableElementController
+    participant EC as ElementController
     participant Callbacks as HydrationLifecycleCallbacks
 
     App->>FER: MyElement.defineAsync({name:'my-el', ...})
@@ -340,11 +330,13 @@ sequenceDiagram
     FER->>FER: composeAsync() → platform registry
     FER->>Callbacks: elementDidDefine('my-el')
 
-    DOM->>HEC: element instance connected with needs-hydration
-    HEC->>Callbacks: elementWillHydrate('my-el')
-    HEC->>HEC: hydrate DOM using fe-b markers
-    HEC->>Callbacks: elementDidHydrate('my-el')
-    HEC->>Callbacks: hydrationComplete()
+    DOM->>EC: element instance connects with existing shadow root
+    EC->>EC: isPrerendered = true (existing shadow root detected)
+    EC->>EC: template-pending guard: wait if no template yet
+    EC->>Callbacks: elementWillHydrate('my-el')
+    EC->>EC: template.hydrate() — maps existing DOM to binding targets
+    EC->>Callbacks: elementDidHydrate('my-el')
+    EC->>Callbacks: hydrationComplete()
 ```
 
 ### Lifecycle callback reference
@@ -355,7 +347,7 @@ sequenceDiagram
 | `templateWillUpdate(name)` | Just before template HTML is parsed |
 | `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
 | `elementDidDefine(name)` | After `composeAsync` completes |
-| `elementWillHydrate(name)` | Before `HydratableElementController` hydrates an instance |
+| `elementWillHydrate(name)` | Before `ElementController` hydrates a prerendered instance |
 | `elementDidHydrate(name)` | After an instance is fully hydrated |
 | `hydrationComplete()` | Once, after all elements have completed hydration |
 
@@ -369,11 +361,11 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 
 | fast-element primitive | How fast-html uses it |
 |---|---|
-| `FASTElement` | Base class for both `TemplateElement` and user components |
+| `FASTElement` | Base class for both `TemplateElement` and user components (components extend `FASTElement` directly) |
 | `FASTElementDefinition.registerAsync()` | Deferred element registration — element waits for its template |
 | `fastElementRegistry.getByType()` | Looks up a partial definition to attach the compiled template |
 | `ViewTemplate.create(strings, values)` | Compiles the resolved strings/values arrays into a `ViewTemplate` |
-| `HydratableElementController` | Hydrates server-rendered DOM using `fe-b` comment/dataset markers |
+| `ElementController` | Automatically detects prerendered content (`isPrerendered`) and hydrates server-rendered DOM using `fe-b` comment/dataset markers via `template.hydrate()` |
 | `Observable.defineProperty()` | Defines observable root properties on element prototypes (ObserverMap) |
 | `Observable.getNotifier()` | Triggers change notifications from proxy handlers |
 | `when(expr, template)` | FAST directive used for `<f-when>` |
@@ -381,9 +373,6 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 | `slotted(options)` | FAST directive used for `f-slotted` |
 | `children(prop)` | FAST directive used for `f-children` |
 | `ref(prop)` | FAST directive used for `f-ref` |
-| `attr({...})` | Applies the `defer-hydration` boolean attribute on `RenderableFASTElement` |
-| `deferHydrationAttribute` | The `defer-hydration` attribute name constant |
-| `composedParent()` | Traverses the composed tree to find ancestor elements still deferring hydration |
 
 ### defineAsync vs define
 
@@ -395,9 +384,11 @@ Standard `FASTElement.define()` requires a template at definition time. `defineA
 
 When `templateOptions: "defer-and-hydrate"` is used, the server must render:
 
-1. The custom element tag with `defer-hydration needs-hydration` attributes.
+1. The custom element tag with its attributes and initial state.
 2. A `<template shadowrootmode="open">` containing pre-rendered HTML annotated with FAST's hydration markers.
 3. An `<f-template>` element somewhere in the page that carries the template definition.
+
+Connection gating is handled by the template-pending guard in `ElementController.connect()`. When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
 
 ### Hydration marker formats
 

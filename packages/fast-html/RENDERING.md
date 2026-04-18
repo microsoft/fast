@@ -74,15 +74,7 @@ export class MyComponent extends FASTElement {
     @attr
     text: string = "";
 
-    @attr({
-        attribute: "defer-hydration",
-        mode: "boolean"
-    })
-    deferHydration?: boolean;
-
     service!: IInitialStateService;
-
-    public initialState = false;
 
     connectedCallback() {
         super.connectedCallback();
@@ -90,20 +82,10 @@ export class MyComponent extends FASTElement {
         this.loadItemFromInitialState();
     }
 
-    checkInitialState() {
-        if (this.initialState) {
-            this.deferHydration = false;
-        }
-    }
-
     loadItemFromInitialState(): void {
         const initialState = this.initialStateService.init(["text"]);
 
         this.text = initialState.text;
-
-        this.initialState = true;
-
-        this.checkInitialState();
     }
 }
 
@@ -113,13 +95,11 @@ MyComponent.defineAsync({
 });
 ```
 
-Notice that there is a `defer-hydration` attribute that gets removed once initial state has been applied. This allows us to ensure that the initial state has been applied before we connect the component to the rendered HTML.
-
-Depending on your application structure it might be more maintainable to create an abstract class that extends `FASTElement` to re-use the service logic and the removal of `defer-hydration`.
+When the element connects, `ElementController` automatically detects the existing shadow root from SSR and sets `isPrerendered = true`. The template-pending guard in `ElementController.connect()` ensures the element waits for its template before hydrating. The `defer-hydration` and `needs-hydration` attributes are no longer needed — connection gating is handled internally by the template-pending guard.
 
 ## Hydration Comments and Datasets
 
-When hydrating the HTML, FAST uses the `HydratableElementController` which will take over from the `ElementController` to use hydration "markers" such as comments and dataset attributes to rationalize bindings with existing HTML. By default the `@microsoft/fast-html` package will assume that component hydration will occur so rendering hydratable markup is required.
+When hydrating the HTML, FAST uses `ElementController` which detects an existing shadow root (from SSR or declarative shadow DOM) and sets `isPrerendered = true`. It then uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using hydration "markers" such as comments and dataset attributes. By default the `@microsoft/fast-html` package will assume that component hydration will occur so rendering hydratable markup is required.
 
 ### Bindings
 
@@ -147,14 +127,12 @@ Examples shown below mostly skip the wrapping custom element and the internal te
 Typically along with the content from the examples below, the rendering should include:
 
 ```html
-<my-component defer-hydration needs-hydration>
+<my-component>
     <template shadowrootmode="open" shadowroot="open">
         <!-- hydratable content -->
     </template>
 </my-component>
 ```
-
-The `needs-hydration` attribute is controlled by the hydration logic once `defer-hydration` has been removed, there is no need to modify it manually but it must be included to indicate that this component has not yet been hydrated.
 
 **Simple content example**
 
@@ -562,10 +540,10 @@ Combined with state:
 
 Should result in:
 ```html
-<nested-components defer-hydration needs-hydration>
+<nested-components>
     <template shadowrootmode="open" shadowroot="open">
         <!--fe-b$$start$$0$$3oGiwLq7Ct$$fe-b-->
-        <my-button data-fe-b-0 appearance="fancy" defer-hydration needs-hydration>
+        <my-button data-fe-b-0 appearance="fancy">
             <template shadowrootmode="open" shadowroot="open">
                 <button class="default" data-fe-b-0>
                     <slot></slot>
