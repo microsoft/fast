@@ -219,13 +219,11 @@ class TemplateElement extends FASTElement {
 
     /**
      * Pending template count for tracking hydration completion.
+     * Incremented when a TemplateElement connects, decremented after
+     * its template has been fully processed and assigned. When the
+     * count reaches zero, hydrationComplete is fired.
      */
     private static _pendingTemplates: number = 0;
-
-    /**
-     * An idle callback ID used to track hydration completion
-     */
-    private static _idleCallbackId: number | null = null;
 
     /**
      * Configure lifecycle callbacks for hydration events.
@@ -259,33 +257,6 @@ class TemplateElement extends FASTElement {
         TemplateElement.elementOptions = result;
 
         return this;
-    }
-
-    /**
-     * Schedules a check for hydration completion using an idle callback.
-     */
-    private static scheduleHydrationCheck(): void {
-        if (TemplateElement._idleCallbackId !== null) {
-            cancelIdleCallback(TemplateElement._idleCallbackId);
-        }
-
-        TemplateElement._idleCallbackId = requestIdleCallback(
-            (deadline: IdleDeadline) => {
-                if (deadline.didTimeout) {
-                    TemplateElement.scheduleHydrationCheck();
-                    return;
-                }
-
-                if (TemplateElement._pendingTemplates === 0) {
-                    try {
-                        TemplateElement.lifecycleCallbacks.hydrationComplete?.();
-                    } catch {
-                        // A lifecycle callback must never prevent post-hydration cleanup.
-                    }
-                }
-            },
-            { timeout: 50 },
-        );
     }
 
     constructor() {
@@ -413,9 +384,28 @@ class TemplateElement extends FASTElement {
                     );
                 }
 
-                // Track hydration completion
+                // Track hydration completion — fire callback when the
+                // last pending template has been processed. Use a
+                // microtask to ensure all synchronous work from the
+                // template assignment (Observable notifications,
+                // element connections, lifecycle callbacks) has settled.
                 TemplateElement._pendingTemplates--;
-                TemplateElement.scheduleHydrationCheck();
+
+                if (TemplateElement._pendingTemplates === 0) {
+                    // Double microtask to run after any callbacks
+                    // triggered by the template assignment.
+                    queueMicrotask(() => {
+                        queueMicrotask(() => {
+                            if (TemplateElement._pendingTemplates === 0) {
+                                try {
+                                    TemplateElement.lifecycleCallbacks.hydrationComplete?.();
+                                } catch {
+                                    // A lifecycle callback must never prevent post-hydration cleanup.
+                                }
+                            }
+                        });
+                    });
+                }
             } else if (templates.length > 1) {
                 throw FAST.error(Message.moreThanOneTemplateProvided, {
                     name: this.name,
