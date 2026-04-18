@@ -2,6 +2,39 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Sat, 18 Apr 2026 00:05:00 GMT",
+      "version": "1.0.0-alpha.49",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.49",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "23d42475d5acf1ca12ec13fb9f4bc0d287d20389",
+            "comment": "chore: add a note about import paths"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "4134b54eea9a659989f1212330839cb5de57284a",
+            "comment": "chore: add explicit isEnabled state for boolean attribute binding fixture"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "bc2aebd38f11843d3e9fa2d1be04b21d1fa527a8",
+            "comment": "chore: skip no-template error test for webui integration"
+          },
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "b84b28b62d0a0164ae558c504a829c0728729c3c",
+            "comment": "chore: update fixture from a relative path to target package exports"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 17 Apr 2026 00:26:37 GMT",
       "version": "1.0.0-alpha.49",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.49",
