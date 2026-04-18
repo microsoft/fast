@@ -273,18 +273,15 @@ export class ViewTemplate<TSource = any, TParent = any>
         const view = this.create(hostBindingTarget);
 
         if (isPrerendered) {
-            (view as any).isPrerendered = true;
-        }
-
-        view.bind(source);
-
-        if (isPrerendered) {
-            (view as any).isPrerendered = false;
-        }
-
-        // Skip appendTo when content is prerendered — the shadow root
-        // already contains the correct DOM nodes.
-        if (!isPrerendered) {
+            // Prerendered path: the shadow root already contains the
+            // correct DOM nodes, so flag the view during bind to skip
+            // attribute updates, then clear the flag afterward.
+            view.isPrerendered = true;
+            view.bind(source);
+            view.isPrerendered = false;
+        } else {
+            // Client-side render path: bind, then append to the host.
+            view.bind(source);
             view.appendTo(host);
         }
 
