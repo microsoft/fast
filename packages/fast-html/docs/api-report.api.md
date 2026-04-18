@@ -4,9 +4,7 @@
 
 ```ts
 
-import { Constructable } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { HydrationControllerCallbacks } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 
 // @public
@@ -25,9 +23,6 @@ export class ObserverMap {
 // @public
 export interface ObserverMapConfig {
 }
-
-// @public
-export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
 
 // @public
 export class TemplateElement extends FASTElement {

@@ -1,5 +1,5 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
     @attr
@@ -34,7 +34,7 @@ class TestElement extends FASTElement {
         console.log(e.type);
     };
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });

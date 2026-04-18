@@ -23,6 +23,15 @@ export interface ViewController<TSource = any, TParent = any>
      * The parts of the view that are targeted by view behaviors.
      */
     readonly targets: ViewBehaviorTargets;
+
+    /**
+     * When true, the content has been prerendered (via SSR or declarative
+     * shadow DOM) and directives should skip pushing values to the DOM
+     * during bind() because the DOM already contains the correct content.
+     * This flag is only set during the initial bind when an existing
+     * shadow root is detected, and is cleared immediately after.
+     */
+    readonly isPrerendered?: boolean;
 }
 
 /**

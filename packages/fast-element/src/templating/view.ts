@@ -241,6 +241,12 @@ export class HTMLView<TSource = any, TParent = any>
     readonly sourceLifetime: SourceLifetime = SourceLifetime.unknown;
 
     /**
+     * When true, the content has been prerendered and directives should
+     * skip pushing values to the DOM during bind().
+     */
+    public isPrerendered = false;
+
+    /**
      * The execution context the view is running within.
      */
     public context: ExecutionContext<TParent> = this;

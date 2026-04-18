@@ -8,14 +8,12 @@ export {
 } from "../src/components/attributes.js";
 export {
     ElementController,
-    HydratableElementController,
     AdoptedStyleSheetsStrategy,
     StyleElementStrategy,
-    needsHydrationAttribute,
-    deferHydrationAttribute,
 } from "../src/components/element-controller.js";
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { HydrationMarkup } from "../src/components/hydration.js";
+export { deferHydrationAttribute, isHydratable } from "../src/components/hydration.js";
 export { Context } from "../src/context.js";
 export {
     Container,

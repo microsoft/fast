@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class TestAlpha extends FASTElement {
     public handleClick = (e: MouseEvent): void => {
@@ -9,7 +9,7 @@ class TestAlpha extends FASTElement {
         console.log(`alpha-other:${e.type}`);
     };
 }
-RenderableFASTElement(TestAlpha).defineAsync({
+TestAlpha.defineAsync({
     name: "test-alpha",
     templateOptions: "defer-and-hydrate",
 });
@@ -19,7 +19,7 @@ class TestBeta extends FASTElement {
         console.log(`beta-click:${e.type}`);
     };
 }
-RenderableFASTElement(TestBeta).defineAsync({
+TestBeta.defineAsync({
     name: "test-beta",
     templateOptions: "defer-and-hydrate",
 });

@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 // Test 1: Element with single host event binding and content attribute binding
 class HostEventElement extends FASTElement {
@@ -13,7 +13,7 @@ class HostEventElement extends FASTElement {
         console.log(`host-event clicked: ${this.clickCount}`);
     };
 }
-RenderableFASTElement(HostEventElement).defineAsync({
+HostEventElement.defineAsync({
     name: "host-event-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -33,7 +33,7 @@ class HostMultiElement extends FASTElement {
         console.log(`host-multi clicked: ${this.clickCount}`);
     };
 }
-RenderableFASTElement(HostMultiElement).defineAsync({
+HostMultiElement.defineAsync({
     name: "host-multi-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -53,7 +53,7 @@ class HostStaticElement extends FASTElement {
         console.log(`host-static clicked: ${this.clickCount}`);
     };
 }
-RenderableFASTElement(HostStaticElement).defineAsync({
+HostStaticElement.defineAsync({
     name: "host-static-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -76,7 +76,7 @@ class HostEventsElement extends FASTElement {
         console.log(`host-events mouseenter: ${this.mouseEnterCount}`);
     };
 }
-RenderableFASTElement(HostEventsElement).defineAsync({
+HostEventsElement.defineAsync({
     name: "host-events-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -97,7 +97,7 @@ class HostMultiContentElement extends FASTElement {
         console.log(`host-multi-content clicked: ${this.clickCount}`);
     };
 }
-RenderableFASTElement(HostMultiContentElement).defineAsync({
+HostMultiContentElement.defineAsync({
     name: "host-multi-content-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -114,7 +114,7 @@ class HostTextBindingElement extends FASTElement {
         console.log(`host-text-binding clicked: ${this.clickCount}`);
     };
 }
-RenderableFASTElement(HostTextBindingElement).defineAsync({
+HostTextBindingElement.defineAsync({
     name: "host-text-binding-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -129,7 +129,7 @@ class HostPropertyElement extends FASTElement {
 
     public clickCount = 0;
 }
-RenderableFASTElement(HostPropertyElement).defineAsync({
+HostPropertyElement.defineAsync({
     name: "host-property-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -155,7 +155,7 @@ class HostAllTypesElement extends FASTElement {
         console.log(`host-all-types clicked: ${this.clickCount}`);
     };
 }
-RenderableFASTElement(HostAllTypesElement).defineAsync({
+HostAllTypesElement.defineAsync({
     name: "host-all-types-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -187,7 +187,7 @@ class HostPermAttrFirst extends HostPermutationBase {
     @attr
     override text: string = "perm attr first";
 }
-RenderableFASTElement(HostPermAttrFirst).defineAsync({
+HostPermAttrFirst.defineAsync({
     name: "host-perm-attr-first",
     templateOptions: "defer-and-hydrate",
 });
@@ -197,7 +197,7 @@ class HostPermBoolFirst extends HostPermutationBase {
     @attr
     override text: string = "perm bool first";
 }
-RenderableFASTElement(HostPermBoolFirst).defineAsync({
+HostPermBoolFirst.defineAsync({
     name: "host-perm-bool-first",
     templateOptions: "defer-and-hydrate",
 });
@@ -207,7 +207,7 @@ class HostPermPropFirst extends HostPermutationBase {
     @attr
     override text: string = "perm prop first";
 }
-RenderableFASTElement(HostPermPropFirst).defineAsync({
+HostPermPropFirst.defineAsync({
     name: "host-perm-prop-first",
     templateOptions: "defer-and-hydrate",
 });

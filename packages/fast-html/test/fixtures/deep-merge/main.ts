@@ -1,5 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 interface Product {
@@ -362,7 +362,7 @@ TemplateElement.options({
         name: "f-template",
     });
 
-RenderableFASTElement(DeepMergeTestElement).defineAsync({
+DeepMergeTestElement.defineAsync({
     name: "deep-merge-test-element",
     templateOptions: "defer-and-hydrate",
 });

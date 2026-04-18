@@ -298,6 +298,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     protected hasExistingShadowRoot: boolean;
     get isBound(): boolean;
     get isConnected(): boolean;
+    readonly isPrerendered: boolean;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     protected needsInitialization: boolean;
@@ -363,7 +364,7 @@ export interface ElementView<TSource = any, TParent = any> extends View<TSource,
 // @public
 export interface ElementViewTemplate<TSource = any, TParent = any> {
     create(hostBindingTarget: Element): ElementView<TSource, TParent>;
-    render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element, isPrerendered?: boolean): ElementView<TSource, TParent>;
 }
 
 // @public
@@ -575,6 +576,7 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     firstChild: Node;
     insertBefore(node: Node): void;
     isBound: boolean;
+    isPrerendered: boolean;
     lastChild: Node;
     // (undocumented)
     onUnbind(behavior: {
@@ -586,18 +588,6 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
     unbind(): void;
-}
-
-// @beta
-export class HydratableElementController<TElement extends HTMLElement = HTMLElement> extends ElementController<TElement> {
-    static config(callbacks: HydrationControllerCallbacks): typeof HydratableElementController;
-    connect(): void;
-    disconnect(): void;
-    static install(): void;
-    static lifecycleCallbacks: HydrationControllerCallbacks;
-    protected needsHydration?: boolean;
-    get shadowOptions(): ShadowRootOptions | undefined;
-    set shadowOptions(value: ShadowRootOptions | undefined);
 }
 
 // @public (undocumented)
@@ -624,14 +614,6 @@ export class HydrationBindingError extends Error {
     readonly factory: ViewBehaviorFactory;
     readonly fragment: DocumentFragment;
     readonly templateString: string;
-}
-
-// @public
-export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> {
-    elementDidHydrate?(source: TElement): void;
-    elementWillHydrate?(source: TElement): void;
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
 }
 
 // @public
@@ -678,9 +660,6 @@ export const Markup: Readonly<{
     attribute: (id: string) => string;
     comment: (id: string) => string;
 }>;
-
-// @public
-export const needsHydrationAttribute = "needs-hydration";
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
@@ -1086,6 +1065,7 @@ export type ViewBehaviorTargets = {
 
 // @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
+    readonly isPrerendered?: boolean;
     readonly targets: ViewBehaviorTargets;
 }
 
@@ -1099,7 +1079,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType<TSource, TParent>;
-    render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element, isPrerendered?: boolean): HTMLView<TSource, TParent>;
     withPolicy(policy: DOMPolicy): this;
 }
 

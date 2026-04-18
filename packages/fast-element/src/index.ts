@@ -145,10 +145,7 @@ export type {
 } from "./components/attributes.js";
 export {
     ElementController,
-    HydratableElementController,
-    needsHydrationAttribute,
     Stages,
-    type HydrationControllerCallbacks,
 } from "./components/element-controller.js";
 export type { ElementControllerStrategy } from "./components/element-controller.js";
 export {

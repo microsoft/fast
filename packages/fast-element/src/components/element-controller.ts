@@ -13,19 +13,13 @@ import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import { UnobservableMutationObserver } from "../utilities.js";
 import {
     FASTElementDefinition,
     type ShadowRootOptions,
     TemplateOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
-import { deferHydrationAttribute, HydrationMarkup, isHydratable } from "./hydration.js";
-
-/**
- * @deprecated Use the export from ./hydration.js instead.
- */
-export { deferHydrationAttribute } from "./hydration.js";
+import { isHydratable } from "./hydration.js";
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -88,6 +82,15 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * Indicates whether the element has an existing shadow root (e.g. from declarative shadow DOM).
      */
     protected hasExistingShadowRoot = false;
+
+    /**
+     * Indicates whether the component's content was prerendered
+     * (via SSR or declarative shadow DOM). This is true when an
+     * existing shadow root was detected at initialization and
+     * remains true for the lifetime of the controller, allowing
+     * component authors to query it at any point.
+     */
+    public readonly isPrerendered: boolean = false;
 
     /**
      * The template used to render the component.
@@ -441,6 +444,16 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
+        // If no template is available yet (defineAsync flow),
+        // wait — the observable subscription on "template" in
+        // forCustomElement() will call connect() when it arrives.
+        if (
+            !this.template &&
+            this.definition.templateOptions === TemplateOptions.deferAndHydrate
+        ) {
+            return;
+        }
+
         this.stage = Stages.connecting;
 
         this.bindObservables();
@@ -544,6 +557,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         oldValue: string | null,
         newValue: string | null
     ): void {
+        // When content is prerendered and the element hasn't connected yet,
+        // attribute values in the markup are already correct — skip
+        // processing during the initial upgrade burst of callbacks.
+        if (this.isPrerendered && this.needsInitialization) {
+            return;
+        }
+
         const attrDef = this.definition.attributeLookup[name];
 
         if (attrDef !== void 0) {
@@ -592,19 +612,71 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             this.view.dispose();
             (this as Mutable<this>).view = null;
         } else if (!this.needsInitialization || this.hasExistingShadowRoot) {
-            this.hasExistingShadowRoot = false;
-
-            // If there was previous custom rendering, we need to clear out the host.
-            for (let child = host.firstChild; child !== null; child = host.firstChild) {
-                host.removeChild(child);
+            // When we have an existing shadow root AND the content is
+            // prerendered, we do NOT clear the existing children.
+            if (!this.hasExistingShadowRoot || !this.needsInitialization) {
+                for (
+                    let child = host.firstChild;
+                    child !== null;
+                    child = host.firstChild
+                ) {
+                    host.removeChild(child);
+                }
             }
         }
 
         if (template) {
-            // If a new template was provided, render it.
-            (this as Mutable<this>).view = template.render(element, host, element);
-            (this.view as any as Mutable<ViewController>).sourceLifetime =
-                SourceLifetime.coupled;
+            // Detect prerendered content when an existing shadow root was
+            // found — this means the content was server-rendered (SSR)
+            // or provided via declarative shadow DOM (DSD).
+            if (this.hasExistingShadowRoot && this.needsInitialization) {
+                (this as Mutable<this>).isPrerendered = true;
+            }
+
+            if (this.isPrerendered && isHydratable(template)) {
+                // Use hydration path: create a HydrationView that maps
+                // existing DOM nodes to binding targets via markers.
+                const firstChild = host.firstChild!;
+                const lastChild = host.lastChild!;
+
+                (this as Mutable<this>).view = template.hydrate(
+                    firstChild,
+                    lastChild,
+                    element
+                );
+
+                // Set isPrerendered on the view so directives skip
+                // pushing values to the DOM during initial bind.
+                (this.view as any).isPrerendered = true;
+                this.view!.bind(this.source);
+                (this.view as any).isPrerendered = false;
+
+                (this.view as any as Mutable<ViewController>).sourceLifetime =
+                    SourceLifetime.coupled;
+                this.hasExistingShadowRoot = false;
+            } else {
+                // When template is not hydratable, clear existing content
+                // and render normally even if content was prerendered.
+                if (this.hasExistingShadowRoot) {
+                    for (
+                        let child = host.firstChild;
+                        child !== null;
+                        child = host.firstChild
+                    ) {
+                        host.removeChild(child);
+                    }
+
+                    this.hasExistingShadowRoot = false;
+                }
+
+                (this as Mutable<this>).view = template.render(
+                    element,
+                    host,
+                    element
+                );
+                (this.view as any as Mutable<ViewController>).sourceLifetime =
+                    SourceLifetime.coupled;
+            }
         }
     }
 
@@ -814,326 +886,4 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
     ElementStyles.setDefaultStrategy(AdoptedStyleSheetsStrategy);
 } else {
     ElementStyles.setDefaultStrategy(StyleElementStrategy);
-}
-
-/**
- * The attribute used to indicate that an element needs hydration.
- * @public
- */
-export const needsHydrationAttribute = "needs-hydration";
-
-/**
- * Lifecycle callbacks for element hydration events
- * @public
- */
-export interface HydrationControllerCallbacks<
-    TElement extends HTMLElement = HTMLElement
-> {
-    /**
-     * Called once when the first element enters the hydration pipeline.
-     * This is the earliest point at which we know a component has been
-     * async-defined with `defer-and-hydrate`, a template is pending via
-     * `<f-template>`, and the element has `needs-hydration`.
-     */
-    hydrationStarted?(): void;
-
-    /**
-     * Called before an individual element's hydration begins
-     */
-    elementWillHydrate?(source: TElement): void;
-
-    /**
-     * Called after an individual element's hydration has finished
-     */
-    elementDidHydrate?(source: TElement): void;
-
-    /**
-     * Called after all elements have completed hydration
-     */
-    hydrationComplete?(): void;
-}
-
-/**
- * An ElementController capable of hydrating FAST elements from
- * Declarative Shadow DOM.
- *
- * @beta
- */
-export class HydratableElementController<
-    TElement extends HTMLElement = HTMLElement
-> extends ElementController<TElement> {
-    /**
-     * Controls whether the controller will hydrate during the connect() method.
-     * Initialized during the first connect() call to true when the `needs-hydration`
-     * attribute is present on the element.
-     */
-    protected needsHydration?: boolean;
-    private static hydrationObserver = new UnobservableMutationObserver(
-        HydratableElementController.hydrationObserverHandler
-    );
-
-    /**
-     * {@inheritdoc ElementController.shadowOptions}
-     */
-    public get shadowOptions(): ShadowRootOptions | undefined {
-        return super.shadowOptions;
-    }
-
-    public set shadowOptions(value: ShadowRootOptions | undefined) {
-        super.shadowOptions = value;
-        if (
-            (this.hasExistingShadowRoot || (value !== void 0 && !this.template)) &&
-            this.definition.templateOptions === TemplateOptions.deferAndHydrate
-        ) {
-            this.source.toggleAttribute(deferHydrationAttribute, true);
-            this.source.toggleAttribute(needsHydrationAttribute, true);
-        }
-    }
-
-    /**
-     * Lifecycle callbacks for hydration events
-     */
-    public static lifecycleCallbacks: HydrationControllerCallbacks = {};
-
-    /**
-     * Whether the hydrationStarted callback has already been invoked.
-     */
-    private static hydrationStarted: boolean = false;
-
-    /**
-     * An idle callback ID used to track hydration completion
-     */
-    private static idleCallbackId: number | null = null;
-
-    /**
-     * Adds the current element instance to the hydrating instances map
-     */
-    private addHydratingInstance() {
-        if (!HydratableElementController.hydratingInstances) {
-            return;
-        }
-
-        const name = this.definition.name;
-        let instances = HydratableElementController.hydratingInstances.get(name);
-
-        if (!instances) {
-            instances = new Set<FASTElement>();
-            HydratableElementController.hydratingInstances.set(name, instances);
-        }
-
-        instances.add(this.source);
-    }
-
-    /**
-     * Configure lifecycle callbacks for hydration events
-     */
-    public static config(callbacks: HydrationControllerCallbacks) {
-        HydratableElementController.lifecycleCallbacks = callbacks;
-        return this;
-    }
-
-    private static hydrationObserverHandler(records: MutationRecord[]) {
-        for (const record of records) {
-            if (!(record.target as HTMLElement).hasAttribute(deferHydrationAttribute)) {
-                HydratableElementController.hydrationObserver.unobserve(record.target);
-                (record.target as any).$fastController.connect();
-            }
-        }
-    }
-
-    /**
-     * Checks to see if hydration is complete and if so, invokes the hydrationComplete callback.
-     * Then resets the ElementController strategy to the default so that future elements
-     * don't use the HydratableElementController.
-     *
-     * @param deadline - the idle deadline object
-     */
-    private static checkHydrationComplete(deadline: IdleDeadline) {
-        if (deadline.didTimeout) {
-            HydratableElementController.idleCallbackId = requestIdleCallback(
-                HydratableElementController.checkHydrationComplete,
-                { timeout: 50 }
-            );
-            return;
-        }
-
-        // If there are no more hydrating instances, invoke the hydrationComplete callback
-        if (HydratableElementController.hydratingInstances?.size === 0) {
-            try {
-                HydratableElementController.lifecycleCallbacks.hydrationComplete?.();
-            } catch {
-                // A lifecycle callback must never prevent post-hydration cleanup.
-            }
-
-            // Reset to the default strategy after hydration is complete
-            ElementController.setStrategy(ElementController);
-        }
-    }
-
-    /**
-     * Runs connected lifecycle behavior on the associated element.
-     */
-    public connect() {
-        // Initialize needsHydration on first connect
-        this.needsHydration =
-            this.needsHydration ?? this.source.hasAttribute(needsHydrationAttribute);
-
-        if (this.needsHydration) {
-            this.addHydratingInstance();
-        }
-
-        // If the `defer-hydration` attribute exists on the source,
-        // wait for it to be removed before continuing connection behavior.
-        if (this.source.hasAttribute(deferHydrationAttribute)) {
-            this.addHydratingInstance();
-            HydratableElementController.hydrationObserver.observe(this.source, {
-                attributeFilter: [deferHydrationAttribute],
-            });
-
-            return;
-        }
-
-        // If the controller does not need to be hydrated, defer connection behavior
-        // to the base-class. This case handles element re-connection and initial connection
-        // of elements that did not get declarative shadow-dom emitted, as well as if an extending
-        // class
-        if (!this.needsHydration) {
-            super.connect();
-            this.removeHydratingInstance();
-            return;
-        }
-
-        if (this.stage !== Stages.disconnected) {
-            return;
-        }
-
-        if (!HydratableElementController.hydrationStarted) {
-            HydratableElementController.hydrationStarted = true;
-
-            try {
-                HydratableElementController.lifecycleCallbacks.hydrationStarted?.();
-            } catch {
-                // A lifecycle callback must never prevent hydration.
-            }
-        }
-
-        try {
-            HydratableElementController.lifecycleCallbacks.elementWillHydrate?.(
-                this.source
-            );
-        } catch {
-            // A lifecycle callback must never prevent hydration.
-        }
-
-        this.stage = Stages.connecting;
-
-        this.bindObservables();
-        this.connectBehaviors();
-
-        if (this.template) {
-            if (isHydratable(this.template)) {
-                const element = this.source;
-                const host = getShadowRoot(element) ?? element;
-
-                let firstChild = host.firstChild!;
-                let lastChild = host.lastChild!;
-
-                if (element.shadowRoot === null) {
-                    // handle element boundary markers when shadowRoot is not present
-                    if (HydrationMarkup.isElementBoundaryStartMarker(firstChild)) {
-                        (firstChild as Comment).data = "";
-                        firstChild = firstChild.nextSibling!;
-                    }
-
-                    if (HydrationMarkup.isElementBoundaryEndMarker(lastChild!)) {
-                        (lastChild as Comment).data = "";
-                        lastChild = lastChild.previousSibling!;
-                    }
-                }
-
-                (this as Mutable<this>).view = this.template.hydrate(
-                    firstChild,
-                    lastChild,
-                    element
-                );
-                this.view?.bind(this.source);
-            } else {
-                this.renderTemplate(this.template);
-            }
-        }
-
-        this.addStyles(this.mainStyles);
-
-        this.stage = Stages.connected;
-        this.source.removeAttribute(needsHydrationAttribute);
-        this.needsInitialization = this.needsHydration = false;
-        this.removeHydratingInstance();
-        Observable.notify(this, isConnectedPropertyName);
-    }
-
-    /**
-     * A map of element instances by the name of the custom element they are
-     * associated with. The key is the custom element name, and the value is the
-     * instances of hydratable elements which currently need to be hydrated.
-     *
-     * When all of the instances in the set have been hydrated, the set is
-     * cleared and removed from the map. If the map is empty, the
-     * hydrationComplete callback is invoked.
-     */
-    private static hydratingInstances?: Map<string, Set<HTMLElement>> = new Map();
-
-    /**
-     * Removes the current element instance from the hydrating instances map
-     */
-    private removeHydratingInstance() {
-        if (!HydratableElementController.hydratingInstances) {
-            return;
-        }
-
-        try {
-            HydratableElementController.lifecycleCallbacks.elementDidHydrate?.(
-                this.source
-            );
-        } catch {
-            // A lifecycle callback must never prevent hydration.
-        }
-
-        const name = this.definition.name;
-        const instances = HydratableElementController.hydratingInstances.get(name);
-
-        if (instances) {
-            instances.delete(this.source);
-
-            if (!instances.size) {
-                HydratableElementController.hydratingInstances.delete(name);
-            }
-
-            if (HydratableElementController.idleCallbackId) {
-                cancelIdleCallback(HydratableElementController.idleCallbackId);
-            }
-
-            HydratableElementController.idleCallbackId = requestIdleCallback(
-                HydratableElementController.checkHydrationComplete,
-                { timeout: 50 }
-            );
-        }
-    }
-
-    /**
-     * Unregisters the hydration observer when the element is disconnected.
-     */
-    public disconnect() {
-        super.disconnect();
-        HydratableElementController.hydrationObserver.unobserve(this.source);
-    }
-
-    /**
-     * Sets the ElementController strategy to HydratableElementController.
-     * @remarks
-     * This method is typically called during application startup to enable
-     * hydration support for FAST elements.
-     */
-    public static install() {
-        ElementController.setStrategy(HydratableElementController);
-    }
 }

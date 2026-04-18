@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 // Track lifecycle callbacks for testing
 export const lifecycleEvents: Array<{ callback: string; name?: string }> = [];
@@ -18,12 +18,6 @@ TemplateElement.config({
     elementDidDefine(name: string): void {
         lifecycleEvents.push({ callback: "elementDidDefine", name });
     },
-    elementWillHydrate(source: HTMLElement): void {
-        lifecycleEvents.push({ callback: "elementWillHydrate", name: source.localName });
-    },
-    elementDidHydrate(source: HTMLElement): void {
-        lifecycleEvents.push({ callback: "elementDidHydrate", name: source.localName });
-    },
     hydrationComplete(): void {
         lifecycleEvents.push({ callback: "hydrationComplete" });
         (window as any).hydrationCompleted = true;
@@ -36,7 +30,7 @@ class SimpleElement extends FASTElement {
     message: string = "Hello";
 }
 
-RenderableFASTElement(SimpleElement).defineAsync({
+SimpleElement.defineAsync({
     name: "simple-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -61,7 +55,7 @@ class ComplexElement extends FASTElement {
     }
 }
 
-RenderableFASTElement(ComplexElement).defineAsync({
+ComplexElement.defineAsync({
     name: "complex-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -72,7 +66,7 @@ class NestedElement extends FASTElement {
     label: string = "Nested";
 }
 
-RenderableFASTElement(NestedElement).defineAsync({
+NestedElement.defineAsync({
     name: "nested-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -82,14 +76,16 @@ class DeferredElement extends FASTElement {
     @attr
     status: string = "pending";
 
-    async prepare() {
+    connectedCallback() {
+        super.connectedCallback();
         // Simulate async work
-        await new Promise(resolve => setTimeout(resolve, 100));
-        this.status = "ready";
+        setTimeout(() => {
+            this.status = "ready";
+        }, 100);
     }
 }
 
-RenderableFASTElement(DeferredElement).defineAsync({
+DeferredElement.defineAsync({
     name: "deferred-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -99,12 +95,12 @@ class DeferredParentElement extends FASTElement {
     @attr
     label: string = "Parent";
 
-    async prepare() {
-        await new Promise(resolve => setTimeout(resolve, 150));
+    connectedCallback() {
+        super.connectedCallback();
     }
 }
 
-RenderableFASTElement(DeferredParentElement).defineAsync({
+DeferredParentElement.defineAsync({
     name: "deferred-parent-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -113,12 +109,12 @@ class DeferredChildElement extends FASTElement {
     @attr
     label: string = "Child";
 
-    async prepare() {
-        await new Promise(resolve => setTimeout(resolve, 0));
+    connectedCallback() {
+        super.connectedCallback();
     }
 }
 
-RenderableFASTElement(DeferredChildElement).defineAsync({
+DeferredChildElement.defineAsync({
     name: "deferred-child-element",
     templateOptions: "defer-and-hydrate",
 });

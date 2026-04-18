@@ -6,8 +6,6 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
-    HydratableElementController,
-    type HydrationControllerCallbacks,
     ref,
     repeat,
     slotted,
@@ -131,12 +129,10 @@ function isMapOptionEnabled(
 }
 
 /**
- * Lifecycle callbacks for template and hydration events.
- * Combines template lifecycle callbacks with hydration callbacks and adds template-processing events.
+ * Lifecycle callbacks for template events.
+ * Combines template lifecycle callbacks with template-processing events.
  */
-export interface HydrationLifecycleCallbacks
-    extends HydrationControllerCallbacks,
-        TemplateLifecycleCallbacks {
+export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
     /**
      * Called after the JS class definition has been registered
      */
@@ -146,6 +142,26 @@ export interface HydrationLifecycleCallbacks
      * Called before the template has been evaluated and assigned
      */
     templateWillUpdate?(name: string): void;
+
+    /**
+     * Called once when the first element enters the hydration pipeline.
+     */
+    hydrationStarted?(): void;
+
+    /**
+     * Called before an individual element's hydration begins
+     */
+    elementWillHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after an individual element's hydration has finished
+     */
+    elementDidHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after all elements have completed hydration
+     */
+    hydrationComplete?(): void;
 }
 
 /**
@@ -197,6 +213,21 @@ class TemplateElement extends FASTElement {
     private static lifecycleCallbacks: HydrationLifecycleCallbacks = {};
 
     /**
+     * Whether the hydrationStarted callback has already been invoked.
+     */
+    private static _hydrationStarted: boolean = false;
+
+    /**
+     * Pending template count for tracking hydration completion.
+     */
+    private static _pendingTemplates: number = 0;
+
+    /**
+     * An idle callback ID used to track hydration completion
+     */
+    private static _idleCallbackId: number | null = null;
+
+    /**
      * Configure lifecycle callbacks for hydration events.
      *
      * @param callbacks - Lifecycle callbacks to configure.
@@ -204,9 +235,6 @@ class TemplateElement extends FASTElement {
      */
     public static config(callbacks: HydrationLifecycleCallbacks) {
         TemplateElement.lifecycleCallbacks = callbacks;
-
-        // Pass the hydration-specific callbacks to HydratableElementController
-        HydratableElementController.config({ ...callbacks });
 
         return this;
     }
@@ -230,9 +258,34 @@ class TemplateElement extends FASTElement {
 
         TemplateElement.elementOptions = result;
 
-        HydratableElementController.install();
-
         return this;
+    }
+
+    /**
+     * Schedules a check for hydration completion using an idle callback.
+     */
+    private static scheduleHydrationCheck(): void {
+        if (TemplateElement._idleCallbackId !== null) {
+            cancelIdleCallback(TemplateElement._idleCallbackId);
+        }
+
+        TemplateElement._idleCallbackId = requestIdleCallback(
+            (deadline: IdleDeadline) => {
+                if (deadline.didTimeout) {
+                    TemplateElement.scheduleHydrationCheck();
+                    return;
+                }
+
+                if (TemplateElement._pendingTemplates === 0) {
+                    try {
+                        TemplateElement.lifecycleCallbacks.hydrationComplete?.();
+                    } catch {
+                        // A lifecycle callback must never prevent post-hydration cleanup.
+                    }
+                }
+            },
+            { timeout: 50 },
+        );
     }
 
     constructor() {
@@ -266,6 +319,18 @@ class TemplateElement extends FASTElement {
         }
 
         this.schema = new Schema(name);
+
+        // Track pending templates for hydration completion
+        TemplateElement._pendingTemplates++;
+
+        if (!TemplateElement._hydrationStarted) {
+            TemplateElement._hydrationStarted = true;
+            try {
+                TemplateElement.lifecycleCallbacks.hydrationStarted?.();
+            } catch {
+                // A lifecycle callback must never prevent hydration.
+            }
+        }
 
         FASTElementDefinition.registerAsync(name).then(async value => {
             TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
@@ -347,6 +412,10 @@ class TemplateElement extends FASTElement {
                         values,
                     );
                 }
+
+                // Track hydration completion
+                TemplateElement._pendingTemplates--;
+                TemplateElement.scheduleHydrationCheck();
             } else if (templates.length > 1) {
                 throw FAST.error(Message.moreThanOneTemplateProvided, {
                     name: this.name,
