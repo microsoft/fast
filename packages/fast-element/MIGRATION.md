@@ -1,0 +1,38 @@
+# Migrating from previous versions
+
+## Prerendered Content Optimization (v2 → v3)
+
+### Removed exports
+
+| Export | Replacement |
+|---|---|
+| `HydratableElementController` | `ElementController` (prerendered path built in) |
+| `HydrationControllerCallbacks` | Use `TemplateElement.config()` in `@microsoft/fast-html` |
+| `needsHydrationAttribute` | `ElementController.isPrerendered` |
+| `deferHydrationAttribute` | Template-pending guard in `ElementController.connect()` |
+
+### Removed side-effect imports
+
+| Import | Replacement |
+|---|---|
+| `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
+
+The `install-hydratable-view-templates.js` side-effect import is still available and still required by `@microsoft/fast-html` for hydration marker support.
+
+### Changed behavior
+
+- **`attributeChangedCallback` during upgrade**: When `isPrerendered` is true and the element has not yet connected, attribute change callbacks are suppressed. After connection, all attribute changes are processed normally.
+- **`connect()` with `defineAsync()`**: When `templateOptions` is `"defer-and-hydrate"` and no template is available, `connect()` returns early automatically. The `Observable` subscription on `"template"` retriggers connection when the template arrives. No `defer-hydration` attribute is needed.
+- **Binding evaluation with existing shadow root**: When an existing shadow root is detected, `attribute` and `booleanAttribute` bindings skip their initial DOM update. All other binding types (event, content, property, tokenList) run normally.
+
+### New APIs
+
+- **`ElementController.isPrerendered`** (`readonly boolean`): Indicates whether the component's content was prerendered. Set once during initial `renderTemplate()` when an existing shadow root is detected. Remains `true` for the lifetime of the controller.
+- **`ViewController.isPrerendered`** (`readonly boolean | undefined`): Available to directives during `bind()` to check whether the current view is in prerendered mode.
+
+### Migration steps
+
+1. Remove `HydratableElementController.install()` calls.
+2. Remove `import "@microsoft/fast-element/install-hydration.js"` side-effect imports.
+3. Replace `element.$fastController instanceof HydratableElementController` checks with `element.$fastController.isPrerendered`.
+4. Remove `defer-hydration` and `needs-hydration` attributes from server-rendered markup.
