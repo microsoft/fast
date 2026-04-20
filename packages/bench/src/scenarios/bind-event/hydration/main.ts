@@ -3,7 +3,7 @@ import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
 RenderableFASTElement(BenchElement).defineAsync({
-    name: "bench-element",
+    name: "bind-event-bench-element",
     templateOptions: "defer-and-hydrate",
 });
 

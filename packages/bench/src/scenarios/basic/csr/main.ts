@@ -1,16 +1,13 @@
-import { html } from "@microsoft/fast-element";
 import { runBenchmark } from "../../harness.js";
-import { BenchElement } from "../element.js";
+import { BenchElement, template } from "../element.js";
 
 BenchElement.define({
-    name: "bench-element",
-    template: html`
-        <slot></slot>
-    `,
+    name: "basic-bench-element",
+    template,
 });
 
 runBenchmark(() => {
-    const el = document.createElement("bench-element");
+    const el = document.createElement("basic-bench-element");
     el.innerHTML = "hello";
     return el;
 });

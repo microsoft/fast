@@ -1,17 +1,40 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
+import { render as attrReflectRender } from "./src/scenarios/attr-reflect/hydration/render.ts";
+import { render as basicRender } from "./src/scenarios/basic/hydration/render.ts";
+import { render as bindEventRender } from "./src/scenarios/bind-event/hydration/render.ts";
+import { render as dotSyntaxRender } from "./src/scenarios/dot-syntax/hydration/render.ts";
+import { render as refSlottedRender } from "./src/scenarios/ref-slotted/hydration/render.ts";
+import { render as repeatRender } from "./src/scenarios/repeat/hydration/render.ts";
 import {
     BENCH_TREE_CONFIG,
     buildTree,
     renderTreeToHTMLWith,
 } from "./src/scenarios/tree.js";
+import { render as whenRender } from "./src/scenarios/when/hydration/render.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const benchmarksDir = resolve(__dirname, "src", "scenarios");
 const buildId = process.env.BUILD_ID;
 const base = buildId ? `/${buildId}/` : "/";
+
+const scenarioRenders: Record<string, (index: number) => string> = {
+    "attr-reflect": attrReflectRender,
+    basic: basicRender,
+    "bind-event": bindEventRender,
+    "dot-syntax": dotSyntaxRender,
+    "ref-slotted": refSlottedRender,
+    repeat: repeatRender,
+    when: whenRender,
+};
+
+function allRender(index: number): string {
+    return Object.values(scenarioRenders)
+        .map(render => render(index))
+        .join("");
+}
 
 function discoverBenchmarkInputs(): Record<string, string> {
     const inputs: Record<string, string> = {
@@ -25,7 +48,7 @@ function discoverBenchmarkInputs(): Record<string, string> {
 
         const scenarioDir = resolve(benchmarksDir, scenario.name);
         const variants = readdirSync(scenarioDir, { withFileTypes: true }).filter(d =>
-            d.isDirectory()
+            d.isDirectory(),
         );
 
         for (const variant of variants) {
@@ -49,17 +72,34 @@ export default defineConfig({
             name: "html-transform",
             enforce: "pre",
             async transformIndexHtml(html, { filename }) {
-                // Render-function driven SSR: builds a deterministic
-                // tree (~1 000 nodes) and calls the scenario's render()
-                // function discovered next to the index.html being processed.
-                // <!-- @bench-ssr-render -->
-                const renderModulePath = resolve(dirname(filename), "render.ts");
+                if (html.includes("<!-- f-template-all -->")) {
+                    const allTemplates: string[] = [];
+                    for (const entry of readdirSync(benchmarksDir, {
+                        withFileTypes: true,
+                    })) {
+                        if (!entry.isDirectory() || entry.name === "all") {
+                            continue;
+                        }
+                        const tplPath = resolve(
+                            benchmarksDir,
+                            entry.name,
+                            "template.html",
+                        );
+                        if (existsSync(tplPath)) {
+                            allTemplates.push(readFileSync(tplPath, "utf-8"));
+                        }
+                    }
+                    html = html.replace(
+                        "<!-- f-template-all -->",
+                        allTemplates.join("\n"),
+                    );
+                }
 
                 if (html.includes("<!-- f-template -->")) {
                     const templatePath = resolve(
                         dirname(filename),
                         "..",
-                        "template.html"
+                        "template.html",
                     );
                     if (existsSync(templatePath)) {
                         const template = readFileSync(templatePath, "utf-8");
@@ -67,10 +107,11 @@ export default defineConfig({
                     }
                 }
 
-                if (html.includes("@bench-ssr-render") && existsSync(renderModulePath)) {
-                    const { render } = (await import(
-                        pathToFileURL(renderModulePath).href
-                    )) as { render: (index: number) => string };
+                if (html.includes("@bench-ssr-render")) {
+                    const scenarioName = resolve(dirname(filename), "..")
+                        .split("/")
+                        .pop()!;
+                    const render = scenarioRenders[scenarioName] ?? allRender;
 
                     html = html.replace(
                         /<!--\s*@bench-ssr-render(?:\s+(\d+))?\s*-->/g,
@@ -83,7 +124,7 @@ export default defineConfig({
                                 : BENCH_TREE_CONFIG;
                             const tree = buildTree(config);
                             return renderTreeToHTMLWith(tree, render);
-                        }
+                        },
                     );
                 }
 
@@ -93,7 +134,7 @@ export default defineConfig({
                     Object.keys(discoverBenchmarkInputs())
                         .filter(key => key !== "main")
                         .map(key => `<li><a href="${base}${key}/">${key}</a></li>`)
-                        .join("\n")
+                        .join("\n"),
                 );
 
                 return html;

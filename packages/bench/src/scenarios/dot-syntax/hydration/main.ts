@@ -3,7 +3,7 @@ import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
 RenderableFASTElement(BenchElement).defineAsync({
-    name: "bench-element",
+    name: "dot-syntax-bench-element",
     templateOptions: "defer-and-hydrate",
 });
 
@@ -16,6 +16,6 @@ TemplateElement.config({
     },
 })
     .options({
-        "bench-element": { observerMap: "all" },
+        "dot-syntax-bench-element": { observerMap: "all" },
     })
     .define({ name: "f-template" });
