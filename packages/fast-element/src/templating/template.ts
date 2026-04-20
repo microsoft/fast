@@ -276,9 +276,10 @@ export class ViewTemplate<TSource = any, TParent = any>
             // Prerendered path: the shadow root already contains the
             // correct DOM nodes, so flag the view during bind to skip
             // attribute updates, then clear the flag afterward.
-            view.isPrerendered = true;
+            view.isPrerendered = Promise.resolve(true);
+            view._skipAttrUpdates = true;
             view.bind(source);
-            view.isPrerendered = false;
+            view._skipAttrUpdates = false;
         } else {
             // Client-side render path: bind, then append to the host.
             view.bind(source);

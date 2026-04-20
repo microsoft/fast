@@ -393,7 +393,7 @@ export class HTMLBindingDirective
                 // so structural directives, host properties, and class lists
                 // are properly initialized.
                 if (
-                    controller.isPrerendered &&
+                    controller._skipAttrUpdates &&
                     (this.aspectType === DOMAspect.attribute ||
                         this.aspectType === DOMAspect.booleanAttribute)
                 ) {

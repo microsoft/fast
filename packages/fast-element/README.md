@@ -72,4 +72,4 @@ this.$fastController.isPrerendered.then(prerendered => {
 });
 ```
 
-Directives check the synchronous `ViewController.isPrerendered` flag (on the view, not the controller) during `bind()` to skip redundant work on already-correct server-rendered content.
+Custom directives can also await `controller.isPrerendered` (a `Promise<boolean>` on the `ViewController` interface) to determine whether the view's content was prerendered.

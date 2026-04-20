@@ -676,11 +676,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         const realHandler = this.onAttributeChangedCallback;
         this.onAttributeChangedCallback = noopAttributeHandler;
 
-        // Set isPrerendered on the view so directives skip
-        // attribute/booleanAttribute DOM updates during bind.
-        (this.view as any).isPrerendered = true;
+        // Flag the view so directives skip attribute/booleanAttribute
+        // DOM updates during bind, and set the public promise.
+        (this.view as any)._skipAttrUpdates = true;
+        (this.view as any).isPrerendered = Promise.resolve(true);
         this.view!.bind(this.source);
-        (this.view as any).isPrerendered = false;
+        (this.view as any)._skipAttrUpdates = false;
 
         // Restore the real handler — all future attribute changes
         // flow through the standard path with zero overhead.

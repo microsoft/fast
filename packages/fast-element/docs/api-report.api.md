@@ -576,13 +576,15 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     firstChild: Node;
     insertBefore(node: Node): void;
     isBound: boolean;
-    isPrerendered: boolean;
+    isPrerendered: Promise<boolean>;
     lastChild: Node;
     // (undocumented)
     onUnbind(behavior: {
         unbind(controller: ViewController<TSource, TParent>): void;
     }): void;
     remove(): void;
+    // @internal
+    _skipAttrUpdates: boolean;
     source: TSource | null;
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
@@ -1065,7 +1067,9 @@ export type ViewBehaviorTargets = {
 
 // @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
-    readonly isPrerendered?: boolean;
+    readonly isPrerendered?: Promise<boolean>;
+    // @internal
+    readonly _skipAttrUpdates?: boolean;
     readonly targets: ViewBehaviorTargets;
 }
 

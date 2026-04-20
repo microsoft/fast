@@ -25,13 +25,19 @@ export interface ViewController<TSource = any, TParent = any>
     readonly targets: ViewBehaviorTargets;
 
     /**
-     * When true, the content has been prerendered (via SSR or declarative
-     * shadow DOM) and directives should skip pushing values to the DOM
-     * during bind() because the DOM already contains the correct content.
-     * This flag is only set during the initial bind when an existing
-     * shadow root is detected, and is cleared immediately after.
+     * When true, directives skip attribute/booleanAttribute DOM
+     * updates during bind(). This is an internal flag set only
+     * during the prerendered bind window.
+     * @internal
      */
-    readonly isPrerendered?: boolean;
+    readonly _skipAttrUpdates?: boolean;
+
+    /**
+     * A promise that resolves with `true` after prerendered content
+     * has been hydrated, or `false` when the view is client-side
+     * rendered.
+     */
+    readonly isPrerendered?: Promise<boolean>;
 }
 
 /**

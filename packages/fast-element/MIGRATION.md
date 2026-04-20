@@ -28,7 +28,7 @@ The `install-hydratable-view-templates.js` side-effect import is still available
 ### New APIs
 
 - **`ElementController.isPrerendered`** (`Promise<boolean>`): Resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. Component authors can await this to know when the element is fully interactive.
-- **`ViewController.isPrerendered`** (`readonly boolean | undefined`): Synchronous flag available to directives during `bind()` to check whether the current view is in prerendered mode.
+- **`ViewController.isPrerendered`** (`Promise<boolean> | undefined`): Available to custom directives. Resolves to `true` when the view's content was prerendered, `false` otherwise.
 
 ### Migration steps
 
