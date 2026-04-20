@@ -7,6 +7,7 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
+    Observable,
     ref,
     repeat,
     slotted,
@@ -956,4 +957,45 @@ class TemplateElement extends FASTElement {
     }
 }
 
-export { TemplateElement };
+/**
+ * A currying function that defines the {@link TemplateElement} custom element
+ * (if not already defined) and returns a function that resolves a
+ * {@link @microsoft/fast-element#ViewTemplate} for a given component name.
+ *
+ * @example
+ * ```ts
+ * const template: Promise<ViewTemplate> = declarativeTemplate()({ name: "my-component" });
+ * ```
+ *
+ * @public
+ */
+function declarativeTemplate(): (config: { name: string }) => Promise<ViewTemplate> {
+    if (!customElements.get("f-template")) {
+        TemplateElement.define({ name: "f-template" });
+    }
+
+    return (config: { name: string }): Promise<ViewTemplate> => {
+        return FASTElementDefinition.registerAsync(config.name).then(type => {
+            const definition = fastElementRegistry.getByType(type);
+
+            if (definition?.template) {
+                return definition.template as ViewTemplate;
+            }
+
+            return new Promise<ViewTemplate>(resolve => {
+                const notifier = Observable.getNotifier(definition);
+                const subscriber = {
+                    handleChange() {
+                        if (definition?.template) {
+                            notifier.unsubscribe(subscriber, "template");
+                            resolve(definition.template as ViewTemplate);
+                        }
+                    },
+                };
+                notifier.subscribe(subscriber, "template");
+            });
+        });
+    };
+}
+
+export { declarativeTemplate, TemplateElement };

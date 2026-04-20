@@ -37,6 +37,24 @@ TemplateElement.define({
 
 This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component. Components use `defineAsync()` for deferred template attachment.
 
+#### `declarativeTemplate` helper
+
+The `declarativeTemplate` currying function provides a convenient way to define the `<f-template>` custom element and obtain a `Promise<ViewTemplate>` for a given component. It defines the `TemplateElement` using `TemplateElement.define({ name: "f-template" })` if it has not already been defined, and returns a function that resolves a `ViewTemplate` when the component's declarative template has been processed.
+
+```typescript
+import { declarativeTemplate } from "@microsoft/fast-html";
+import { MyCustomElement } from "./my-custom-element";
+
+MyCustomElement.defineAsync({
+    name: "my-custom-element",
+    templateOptions: "defer-and-hydrate",
+});
+
+const template: Promise<ViewTemplate> = declarativeTemplate()({ name: "my-custom-element" });
+```
+
+The returned promise resolves once the `<f-template name="my-custom-element">` element is connected to the DOM and its template has been compiled into a `ViewTemplate`.
+
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 
 Example:

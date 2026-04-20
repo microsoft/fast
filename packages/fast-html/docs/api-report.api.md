@@ -6,11 +6,17 @@
 
 import { FASTElement } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
+
+// @public
+export function declarativeTemplate(): (config: {
+    name: string;
+}) => Promise<ViewTemplate>;
 
 // @public
 export class ObserverMap {

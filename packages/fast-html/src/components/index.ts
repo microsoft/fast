@@ -3,6 +3,7 @@ export { ObserverMap } from "./observer-map.js";
 export {
     type AttributeMapConfig,
     AttributeMapOption,
+    declarativeTemplate,
     type ElementOptions,
     type ElementOptionsDictionary,
     type HydrationLifecycleCallbacks,
