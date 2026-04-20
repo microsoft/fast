@@ -181,38 +181,6 @@ Indicates whether or not the custom element has been connected to the document.
 </td></tr>
 <tr><td>
 
-[isPrerendered](../fast-element.elementcontroller.isprerendered/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-Promise&lt;boolean&gt;
-
-
-</td><td>
-
-A promise that resolves with `true` after prerendered content has been hydrated, or `false` immediately when the component is client-side rendered. Component authors can await this to know when the element is fully interactive:
-
-```typescript
-connectedCallback() {
-    super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
-}
-```
-
-
-</td></tr>
-<tr><td>
-
 [mainStyles](../fast-element.elementcontroller.mainstyles/)
 
 
@@ -434,22 +402,6 @@ Adds styles to this element. Providing an HTMLStyleElement will attach the eleme
 </td><td>
 
 Binds any observables that were set before upgrade.
-
-
-</td></tr>
-<tr><td>
-
-[configHydration(callbacks)](../fast-element.elementcontroller.confighydration/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-Configure lifecycle callbacks for element hydration tracking.
 
 
 </td></tr>

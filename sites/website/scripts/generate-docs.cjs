@@ -7,8 +7,8 @@ const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
-const markdownAPIDir = path.resolve(projectRoot, "src/docs/2.x/api");
-const currentVersion = "2x";
+const markdownAPIDir = path.resolve(projectRoot, "src/docs/3.x/api");
+const currentVersion = "3x";
 
 const packages = [
     {
