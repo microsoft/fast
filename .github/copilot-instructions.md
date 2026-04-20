@@ -27,8 +27,8 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 
 | Package | Status | Purpose |
 |---|---|---|
-| `@microsoft/fast-bench` | Private (not published as a package) | Benchmarking utilities |
 | `sites/website` | Private (not published as a package) | Documentation website source |
+| `sites/benchmarks` | Private (not published as a package) | Benchmarking utilities |
 | `@microsoft/fast-ssr` | Alpha (not actively maintained) | Server-side rendering utilities |
 
 ### Example projects
