@@ -147,10 +147,11 @@ export {
     ElementController,
     Stages,
 } from "./components/element-controller.js";
-export type {
-    ElementControllerStrategy,
-    ElementHydrationCallbacks,
-} from "./components/element-controller.js";
+export type { ElementControllerStrategy } from "./components/element-controller.js";
+export {
+    HydrationTracker,
+    type ElementHydrationCallbacks,
+} from "./components/hydration-tracker.js";
 export {
     FASTElementDefinition,
     fastElementRegistry,

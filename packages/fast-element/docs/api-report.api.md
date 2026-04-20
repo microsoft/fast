@@ -628,6 +628,14 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
+export class HydrationTracker {
+    constructor(callbacks: ElementHydrationCallbacks);
+    add(element: HTMLElement): void;
+    notifyWillHydrate(element: HTMLElement): void;
+    remove(element: HTMLElement): void;
+}
+
+// @public
 export class InlineTemplateDirective implements HTMLDirective {
     constructor(html: string, factories?: Record<string, ViewBehaviorFactory>);
     createHTML(add: AddViewBehaviorFactory): string;
