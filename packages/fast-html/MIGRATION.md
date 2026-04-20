@@ -1,12 +1,12 @@
 # Migrating from previous versions
 
-## Prerendered Content Optimization (v1-alpha → v2)
+## Prerendered Content Optimization (v1-alpha → v1)
 
 ### Removed exports
 
 | Export | Replacement |
 |---|---|
-| `RenderableFASTElement` | Extend `FASTElement` directly |
+| `RenderableFASTElement` | Extend `FASTElement` |
 
 ### Removed concepts
 

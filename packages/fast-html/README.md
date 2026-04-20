@@ -35,7 +35,7 @@ TemplateElement.define({
 });
 ```
 
-This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component. Components extend `FASTElement` directly and use `defineAsync()` for deferred template attachment.
+This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component. Components use `defineAsync()` for deferred template attachment.
 
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 
