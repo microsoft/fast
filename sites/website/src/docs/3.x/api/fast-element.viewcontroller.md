@@ -49,6 +49,27 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[isPrerendered?](../fast-element.viewcontroller.isprerendered/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Promise&lt;boolean&gt;
+
+
+</td><td>
+
+_(Optional)_ A promise that resolves with `true` after prerendered content has been hydrated, or `false` when the view is client-side rendered.
+
+
+</td></tr>
+<tr><td>
+
 [targets](../fast-element.viewcontroller.targets/)
 
 

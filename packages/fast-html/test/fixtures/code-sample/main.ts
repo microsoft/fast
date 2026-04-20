@@ -1,11 +1,11 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class CodeDisplay extends FASTElement {
     @observable
     greeting: string = "Hello";
 }
-RenderableFASTElement(CodeDisplay).defineAsync({
+CodeDisplay.defineAsync({
     name: "code-display",
     templateOptions: "defer-and-hydrate",
 });

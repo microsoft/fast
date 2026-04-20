@@ -363,10 +363,6 @@ export class HTMLBindingDirective
      */
     bind(controller: ViewController): void {
         const target = controller.targets[this.targetNodeId];
-        const isHydrating =
-            isHydratable(controller) &&
-            controller.hydrationStage &&
-            controller.hydrationStage !== HydrationStage.hydrated;
 
         switch (this.aspectType) {
             case DOMAspect.event:
@@ -388,20 +384,26 @@ export class HTMLBindingDirective
                 (observer as any).target = target;
                 (observer as any).controller = controller;
 
+                // Evaluate to establish dependency tracking
+                const value = observer.bind(controller);
+
+                // Skip DOM update for attribute bindings when prerendered —
+                // the server has already rendered the correct attribute values.
+                // Content, property, and tokenList bindings must still run
+                // so structural directives, host properties, and class lists
+                // are properly initialized.
                 if (
-                    isHydrating &&
+                    controller._skipAttrUpdates &&
                     (this.aspectType === DOMAspect.attribute ||
                         this.aspectType === DOMAspect.booleanAttribute)
                 ) {
-                    observer.bind(controller);
-                    // Skip updating target during bind for attributes
                     break;
                 }
 
                 this.updateTarget!(
                     target,
                     this.targetAspect,
-                    observer.bind(controller),
+                    value,
                     controller,
                 );
                 break;

@@ -7,7 +7,7 @@ const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
-const majorVersion = process.argv[2] || "2";
+const majorVersion = process.argv[2] || "3";
 const currentVersion = `${majorVersion}x`;
 const versionDir = `${majorVersion}.x`;
 const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);

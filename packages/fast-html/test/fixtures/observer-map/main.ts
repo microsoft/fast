@@ -5,7 +5,7 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 class ObserverMapTestElement extends FASTElement {
@@ -584,7 +584,7 @@ ObserverMapTestElement.defineAsync({
     name: "observer-map-test-element",
 });
 
-RenderableFASTElement(ObserverMapWithObservablesTestElement).defineAsync({
+ObserverMapWithObservablesTestElement.defineAsync({
     name: "observer-map-with-observables-test-element",
     templateOptions: "defer-and-hydrate",
 });

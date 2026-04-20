@@ -1,5 +1,5 @@
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 export interface ItemType {
     name: string;
@@ -18,7 +18,7 @@ export class TestElementRepeatEvent extends FASTElement {
         this.clickedItemName = (e.currentTarget as HTMLButtonElement).textContent!;
     }
 }
-RenderableFASTElement(TestElementRepeatEvent).defineAsync({
+TestElementRepeatEvent.defineAsync({
     name: "test-element-repeat-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -34,7 +34,7 @@ export class TestWhenInRepeat extends FASTElement {
         console.log(`Clicked item: ${this.clickedItemName}`);
     }
 }
-RenderableFASTElement(TestWhenInRepeat).defineAsync({
+TestWhenInRepeat.defineAsync({
     name: "test-when-in-repeat",
     templateOptions: "defer-and-hydrate",
 });

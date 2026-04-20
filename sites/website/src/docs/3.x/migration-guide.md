@@ -13,148 +13,139 @@ keywords:
   - web components
 ---
 
-# Migrating from 1.x to 2.x
+# Migrating from 2.x to 3.x
 
 ## Breaking Changes
 
-### `cssPartial`
+### `HydratableElementController` removed
 
-The `cssPartial` export no longer exists, in its place use `css.partial`.
-
-1.x Example:
-```ts
-import { cssPartial } from "@microsoft/fast-element";
-
-cssPartial`
-:host {
-  color: red;
-}`;
-```
+The `HydratableElementController` class has been removed. Its functionality is now built into `ElementController` via automatic prerendered content detection. When a component connects with an existing shadow root (from SSR or declarative shadow DOM), the system automatically hydrates the existing DOM.
 
 2.x Example:
 ```ts
-import { css } from "@microsoft/fast-element";
+import { HydratableElementController } from "@microsoft/fast-element";
 
-css.partial`
-:host {
-  color: red;
-}`;
+HydratableElementController.install();
 ```
 
-### `CSSDirective`
+3.x: No replacement needed — prerendered content detection is automatic.
 
-The `CSSDirective` has been updated to need to be defined. Additionally it cannot be extended from and must use `implements`.
+### `needsHydrationAttribute` and `deferHydrationAttribute` removed
 
-1.x Example:
-```ts
-import { CSSDirective } from "@microsoft/fast-element"
+These attributes are no longer needed in server-rendered markup.
 
-class MyCSSDirective extends CSSDirective {
-    createCSS() {
-      return "color: red;"
-    }
-}
-
-export const myCssDirective = new MyCSSDirective();
+2.x Markup:
+```html
+<my-component defer-hydration needs-hydration text="Hello">
+    <template shadowrootmode="open">...</template>
+</my-component>
 ```
+
+3.x Markup:
+```html
+<my-component text="Hello">
+    <template shadowrootmode="open">...</template>
+</my-component>
+```
+
+### `HydrationControllerCallbacks` replaced by `ElementHydrationCallbacks`
 
 2.x Example:
 ```ts
-import { CSSDirective } from "@microsoft/fast-element"
+import { HydratableElementController } from "@microsoft/fast-element";
 
-class MyCSSDirective implements CSSDirective {
-    createCSS() {
-      return "color: red;"
-    }
-}
-
-CSSDirective.define(MyCSSDirective);
-
-export const myCssDirective = new MyCSSDirective();
-```
-
-### `CSSDirective` with behaviors
-
-Behaviors have been extracted from `CSSDirective` so that they can be used in a modular fashion. The API has also been updated to be more intuitive and re-use methods that are common for web components (see `connectedCallback` in the 2.x example below).
-
-1.x Example:
-```ts
-import { CSSDirective } from "@microsoft/fast-element"
-
-class MyCSSDirective extends CSSDirective {
-  public cssProperty: string = "background";
-
-  createCSS() {
-    return `display: block; color: red;`
-  }
-
-  createBehavior() {
-    var that = this;
-
-    return {
-      bind(el) {
-        el.style.setProperty(that.cssProperty, "yellow")
-      },
-      unbind(el) {
-        el.style.removeProperty(that.cssProperty);
-      }
-    }
-  }
-}
-
-export const myCssDirective = new MyCSSDirective();
-```
-
-2.x Example:
-```ts
-import { css, CSSDirective, AddBehavior, HostBehavior } from "@microsoft/fast-element"
-
-const cssProperty: string = "background";
-
-const myCssBehavior: HostBehavior = {
-  connectedCallback: (controller) => {
-    controller.addStyles(css`:host {${cssProperty}: yellow }`)
-  },
-  disconnectedCallback: (controller) => {
-    controller.removeStyles(css`:host {${cssProperty}: yellow }`)
-  }
-}
-
-class MyCSSDirective implements CSSDirective {
-  createCSS(add: AddBehavior) {
-    add(myCssBehavior);
-    return `display: block; color: red;`
-  }
-}
-
-CSSDirective.define(MyCSSDirective);
-
-export const myCssDirective = new MyCSSDirective();
-```
-
-## Suggested Changes
-
-While some of the APIs remain available, we suggest going forward that certain patterns be updated.
-
-### `@customElement`
-
-We prefer using `FASTElement` and its `.define()` method over the `@customElement` decorator (which is still used under the hood). We believe this more closely matches with how you define custom elements using the native `customElements.define()`.
-
-1.x Example:
-```ts
-import { FASTElement, customElement } from '@microsoft/fast-element';
-
-@customElement('my-component')
-export class MyComponent extends FASTElement {}
-```
-
-2.x Example:
-```ts
-import { FASTElement } from "@microsoft/fast-element";
-
-class MyComponent extends FASTElement {}
-
-MyComponent.define({
-  name: "my-component"
+HydratableElementController.config({
+    hydrationComplete() { /* ... */ }
 });
 ```
+
+3.x Example:
+```ts
+import { ElementController } from "@microsoft/fast-element";
+
+ElementController.configHydration({
+    hydrationStarted() { /* ... */ },
+    elementWillHydrate(source: HTMLElement) { /* ... */ },
+    elementDidHydrate(source: HTMLElement) { /* ... */ },
+    hydrationComplete() { /* ... */ }
+});
+```
+
+Note: `elementWillHydrate` and `elementDidHydrate` now receive the `HTMLElement` instance instead of a string name.
+
+### `isPrerendered` is a `Promise<boolean>`
+
+The `isPrerendered` property on `ElementController` and `ViewController` is a `Promise<boolean>` that resolves after hydration completes (or immediately with `false` for client-side rendered components).
+
+```ts
+connectedCallback() {
+    super.connectedCallback();
+    this.$fastController.isPrerendered.then(prerendered => {
+        if (!prerendered) {
+            this.fetchData();
+        }
+    });
+}
+```
+
+### `RenderableFASTElement` removed (`@microsoft/fast-html`)
+
+The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `defineAsync()` directly.
+
+2.x Example:
+```ts
+import { RenderableFASTElement } from "@microsoft/fast-html";
+
+RenderableFASTElement(MyComponent).defineAsync({
+    name: "my-component",
+    templateOptions: "defer-and-hydrate",
+});
+```
+
+3.x Example:
+```ts
+MyComponent.defineAsync({
+    name: "my-component",
+    templateOptions: "defer-and-hydrate",
+});
+```
+
+### `prepare()` lifecycle hook removed (`@microsoft/fast-html`)
+
+The `prepare()` hook is no longer available. Move initialization logic to `connectedCallback`:
+
+2.x Example:
+```ts
+class MyComponent extends FASTElement {
+    async prepare() {
+        this.data = await fetchData();
+    }
+}
+```
+
+3.x Example:
+```ts
+class MyComponent extends FASTElement {
+    connectedCallback() {
+        super.connectedCallback();
+        this.loadData();
+    }
+    async loadData() {
+        this.data = await fetchData();
+    }
+}
+```
+
+### `ViewTemplate.render()` signature unchanged
+
+The `isPrerendered` parameter that was briefly added to `ViewTemplate.render()` has been removed. The prerendered path is handled entirely by `ElementController.renderPrerendered()`.
+
+## New Exports
+
+| Export | Package | Description |
+|---|---|---|
+| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves after hydration |
+| `ElementController.configHydration()` | `fast-element` | Registers hydration lifecycle callbacks |
+| `HydrationTracker` | `fast-element` | Standalone hydration lifecycle tracker class |
+| `ElementHydrationCallbacks` | `fast-element` | Type for hydration lifecycle callbacks |
+| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — available to custom directives |

@@ -121,22 +121,22 @@ The standard View implementation, which also implements ElementView and Syntheti
 </td></tr>
 <tr><td>
 
-[HydratableElementController](../fast-element.hydratableelementcontroller/)
-
-
-</td><td>
-
-**_(BETA)_** An ElementController capable of hydrating FAST elements from Declarative Shadow DOM.
-
-
-</td></tr>
-<tr><td>
-
 [HydrationBindingError](../fast-element.hydrationbindingerror/)
 
 
 </td><td>
 
+
+
+</td></tr>
+<tr><td>
+
+[HydrationTracker](../fast-element.hydrationtracker/)
+
+
+</td><td>
+
+Tracks prerendered elements through the hydration lifecycle and fires callbacks at each stage. Each element is added before its hydration bind and removed after. When the last element finishes and no new elements arrive, `hydrationComplete` is fired.
 
 
 </td></tr>
@@ -789,6 +789,17 @@ A type that instantiates an ElementController
 </td></tr>
 <tr><td>
 
+[ElementHydrationCallbacks](../fast-element.elementhydrationcallbacks/)
+
+
+</td><td>
+
+Lifecycle callbacks for element hydration events.
+
+
+</td></tr>
+<tr><td>
+
 [ElementView](../fast-element.elementview/)
 
 
@@ -937,17 +948,6 @@ The result of a template compilation operation.
 
 </td><td>
 
-
-
-</td></tr>
-<tr><td>
-
-[HydrationControllerCallbacks](../fast-element.hydrationcontrollercallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for element hydration events
 
 
 </td></tr>
@@ -1403,17 +1403,6 @@ Instructs the template engine to apply behavior to a node.
 </td><td>
 
 Common APIs related to markup generation.
-
-
-</td></tr>
-<tr><td>
-
-[needsHydrationAttribute](../fast-element.needshydrationattribute/)
-
-
-</td><td>
-
-The attribute used to indicate that an element needs hydration.
 
 
 </td></tr>

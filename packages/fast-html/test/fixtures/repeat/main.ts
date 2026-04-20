@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 export class TestElement extends FASTElement {
@@ -9,7 +9,7 @@ export class TestElement extends FASTElement {
     @attr
     item_parent: string = "Bat";
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -27,7 +27,7 @@ export class TestElementInnerWhen extends FASTElement {
         },
     ];
 }
-RenderableFASTElement(TestElementInnerWhen).defineAsync({
+TestElementInnerWhen.defineAsync({
     name: "test-element-inner-when",
     templateOptions: "defer-and-hydrate",
 });
@@ -43,7 +43,7 @@ export class TestElementIntervalUpdates extends FASTElement {
     }
 }
 
-RenderableFASTElement(TestElementIntervalUpdates).defineAsync({
+TestElementIntervalUpdates.defineAsync({
     name: "test-element-interval-updates",
     templateOptions: "defer-and-hydrate",
 });
@@ -52,7 +52,7 @@ export class TestElementNoItemRepeatBinding extends FASTElement {
     @observable
     list: Array<string> = [];
 }
-RenderableFASTElement(TestElementNoItemRepeatBinding).defineAsync({
+TestElementNoItemRepeatBinding.defineAsync({
     name: "test-element-no-item-repeat-binding",
     templateOptions: "defer-and-hydrate",
 });
@@ -61,7 +61,7 @@ export class TestElementEmptyArray extends FASTElement {
     @observable
     list: Array<string> = [];
 }
-RenderableFASTElement(TestElementEmptyArray).defineAsync({
+TestElementEmptyArray.defineAsync({
     name: "test-element-empty-array",
     templateOptions: "defer-and-hydrate",
 });
@@ -77,7 +77,7 @@ export class TestElementEvent extends FASTElement {
         this.clickCount++;
     };
 }
-RenderableFASTElement(TestElementEvent).defineAsync({
+TestElementEvent.defineAsync({
     name: "test-element-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -88,7 +88,7 @@ export class TestElementWithObserverMap extends FASTElement {
     @attr
     item_parent: string = "Bat";
 }
-RenderableFASTElement(TestElementWithObserverMap).defineAsync({
+TestElementWithObserverMap.defineAsync({
     name: "test-element-with-observer-map",
     templateOptions: "defer-and-hydrate",
 });

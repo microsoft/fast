@@ -142,6 +142,25 @@ Indicates whether the controller is bound.
 </td></tr>
 <tr><td>
 
+[isPrerendered](../fast-element.htmlview.isprerendered/)
+
+
+</td><td>
+
+
+</td><td>
+
+Promise&lt;boolean&gt;
+
+
+</td><td>
+
+A promise that resolves with `true` after prerendered content has been hydrated, or `false` when the view is client-side rendered. Resolves once the first bind completes.
+
+
+</td></tr>
+<tr><td>
+
 [lastChild](../fast-element.htmlview.lastchild/)
 
 
