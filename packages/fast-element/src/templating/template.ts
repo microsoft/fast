@@ -39,8 +39,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element,
-        isPrerendered?: boolean
+        hostBindingTarget?: Element
     ): ElementView<TSource, TParent>;
 }
 
@@ -261,31 +260,15 @@ export class ViewTemplate<TSource = any, TParent = any>
      * @param host - The Element where the template will be rendered.
      * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
      * host that the template is being attached to.
-     * @param isPrerendered - When true, the content has been prerendered and
-     * the view should skip pushing binding values to the DOM.
      */
     public render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element,
-        isPrerendered?: boolean
+        hostBindingTarget?: Element
     ): HTMLView<TSource, TParent> {
         const view = this.create(hostBindingTarget);
-
-        if (isPrerendered) {
-            // Prerendered path: the shadow root already contains the
-            // correct DOM nodes, so flag the view during bind to skip
-            // attribute updates, then clear the flag afterward.
-            view.isPrerendered = Promise.resolve(true);
-            view._skipAttrUpdates = true;
-            view.bind(source);
-            view._skipAttrUpdates = false;
-        } else {
-            // Client-side render path: bind, then append to the host.
-            view.bind(source);
-            view.appendTo(host);
-        }
-
+        view.bind(source);
+        view.appendTo(host);
         return view;
     }
 

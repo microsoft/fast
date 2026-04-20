@@ -364,7 +364,7 @@ export interface ElementView<TSource = any, TParent = any> extends View<TSource,
 // @public
 export interface ElementViewTemplate<TSource = any, TParent = any> {
     create(hostBindingTarget: Element): ElementView<TSource, TParent>;
-    render(source: TSource, host: Node, hostBindingTarget?: Element, isPrerendered?: boolean): ElementView<TSource, TParent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
 }
 
 // @public
@@ -1083,7 +1083,7 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     inline(): CaptureType<TSource, TParent>;
-    render(source: TSource, host: Node, hostBindingTarget?: Element, isPrerendered?: boolean): HTMLView<TSource, TParent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     withPolicy(policy: DOMPolicy): this;
 }
 
