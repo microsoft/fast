@@ -91,11 +91,13 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 - Extends `PropertyChangeNotifier` so the element itself participates in the observable system.
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
-- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. Internally tracks prerendered state via a private `_isPrerendered` boolean. Directives check the synchronous `ViewController.isPrerendered` on the view during `bind()` to skip redundant work on already-correct server-rendered content.
+- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. Directives check the synchronous `ViewController.isPrerendered` on the view during `bind()` to skip redundant work on already-correct server-rendered content.
 - On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the template into the shadow root, and applies styles. When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early; an Observable subscription on `"template"` retriggers `connect()` when the template arrives (template-pending guard).
-- On `connect()` with prerendered content: when `isPrerendered` is `true` and the template is hydratable, `renderTemplate()` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets instead of cloning new DOM.
+- Rendering is split into two modular paths via `renderPrerendered()` and `renderClientSide()`:
+  - **Prerendered**: `renderPrerendered()` swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, then restores the standard handler. After this point, all future attribute changes flow through the real handler with zero overhead.
+  - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
-- `onAttributeChangedCallback()` skips processing during initial upgrade when `isPrerendered && needsInitialization`, since server-rendered attribute values are already correct.
+- `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
 `FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` and registered globally via `fastElementRegistry`.

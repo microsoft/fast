@@ -11,7 +11,10 @@ import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
 import type { ViewController } from "../templating/html-directive.js";
-import type { ElementViewTemplate } from "../templating/template.js";
+import type {
+    ElementViewTemplate,
+    HydratableElementViewTemplate,
+} from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import {
     FASTElementDefinition,
@@ -20,6 +23,12 @@ import {
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { isHydratable } from "./hydration.js";
+
+/**
+ * No-op handler used during prerendered bind to discard the
+ * upgrade-time burst of attributeChangedCallbacks.
+ */
+function noopAttributeHandler() {}
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -84,13 +93,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     protected hasExistingShadowRoot = false;
 
     /**
-     * Indicates whether the component's content was prerendered
-     * (via SSR or declarative shadow DOM).
-     */
-    private _isPrerendered: boolean = false;
-
-    /**
-     * Resolves the _isPrerendered promise.
+     * Resolves the isPrerendered promise.
      */
     private _resolvePrerendered!: (value: boolean) => void;
 
@@ -582,13 +585,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         oldValue: string | null,
         newValue: string | null
     ): void {
-        // When content is prerendered and the element hasn't connected yet,
-        // attribute values in the markup are already correct — skip
-        // processing during the initial upgrade burst of callbacks.
-        if (this._isPrerendered && this.needsInitialization) {
-            return;
-        }
-
         const attrDef = this.definition.attributeLookup[name];
 
         if (attrDef !== void 0) {
@@ -626,19 +622,13 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * If `null` is provided, any existing view will be removed.
      */
     protected renderTemplate(template: ElementViewTemplate | null | undefined): void {
-        // When getting the host to render to, we start by looking
-        // up the shadow root. If there isn't one, then that means
-        // we're doing a Light DOM render to the element's direct children.
         const element = this.source;
         const host = getShadowRoot(element) ?? element;
 
         if (this.view !== null) {
-            // If there's already a view, we need to unbind and remove through dispose.
             this.view.dispose();
             (this as Mutable<this>).view = null;
         } else if (!this.needsInitialization || this.hasExistingShadowRoot) {
-            // When we have an existing shadow root AND the content is
-            // prerendered, we do NOT clear the existing children.
             if (!this.hasExistingShadowRoot || !this.needsInitialization) {
                 for (
                     let child = host.firstChild;
@@ -651,60 +641,80 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         if (template) {
-            // Detect prerendered content when an existing shadow root was
-            // found — this means the content was server-rendered (SSR)
-            // or provided via declarative shadow DOM (DSD).
-            if (this.hasExistingShadowRoot && this.needsInitialization) {
-                this._isPrerendered = true;
-            }
+            const isPrerendered =
+                this.hasExistingShadowRoot && this.needsInitialization;
 
-            if (this._isPrerendered && isHydratable(template)) {
-                // Use hydration path: create a HydrationView that maps
-                // existing DOM nodes to binding targets via markers.
-                const firstChild = host.firstChild!;
-                const lastChild = host.lastChild!;
-
-                (this as Mutable<this>).view = template.hydrate(
-                    firstChild,
-                    lastChild,
-                    element
-                );
-
-                // Set isPrerendered on the view so directives skip
-                // pushing values to the DOM during initial bind.
-                (this.view as any).isPrerendered = true;
-                this.view!.bind(this.source);
-                (this.view as any).isPrerendered = false;
-
-                (this.view as any as Mutable<ViewController>).sourceLifetime =
-                    SourceLifetime.coupled;
-                this.hasExistingShadowRoot = false;
+            if (isPrerendered && isHydratable(template)) {
+                this.renderPrerendered(template, element, host);
             } else {
-                // When template is not hydratable, clear existing content
-                // and render normally even if content was prerendered.
-                if (this.hasExistingShadowRoot) {
-                    for (
-                        let child = host.firstChild;
-                        child !== null;
-                        child = host.firstChild
-                    ) {
-                        host.removeChild(child);
-                    }
-
-                    this.hasExistingShadowRoot = false;
-                }
-
-                (this as Mutable<this>).view = template.render(
-                    element,
-                    host,
-                    element
-                );
-                (this.view as any as Mutable<ViewController>).sourceLifetime =
-                    SourceLifetime.coupled;
+                this.renderClientSide(template, element, host);
             }
 
-            this._resolvePrerendered(this._isPrerendered);
+            this._resolvePrerendered(isPrerendered);
         }
+    }
+
+    /**
+     * Hydration path: maps existing DOM nodes to binding targets,
+     * swaps onAttributeChangedCallback to a no-op during bind, then
+     * restores it and resolves the isPrerendered promise.
+     */
+    private renderPrerendered(
+        template: ElementViewTemplate,
+        element: TElement,
+        host: Node
+    ): void {
+        const firstChild = host.firstChild!;
+        const lastChild = host.lastChild!;
+
+        (this as Mutable<this>).view = (
+            template as HydratableElementViewTemplate
+        ).hydrate(firstChild, lastChild, element);
+
+        // Swap to a no-op so the upgrade-time burst of
+        // attributeChangedCallbacks is silently discarded.
+        const realHandler = this.onAttributeChangedCallback;
+        this.onAttributeChangedCallback = noopAttributeHandler;
+
+        // Set isPrerendered on the view so directives skip
+        // attribute/booleanAttribute DOM updates during bind.
+        (this.view as any).isPrerendered = true;
+        this.view!.bind(this.source);
+        (this.view as any).isPrerendered = false;
+
+        // Restore the real handler — all future attribute changes
+        // flow through the standard path with zero overhead.
+        this.onAttributeChangedCallback = realHandler;
+
+        (this.view as any as Mutable<ViewController>).sourceLifetime =
+            SourceLifetime.coupled;
+        this.hasExistingShadowRoot = false;
+    }
+
+    /**
+     * Standard client-side render: clears any stale content, clones the
+     * compiled fragment, binds, and appends to the host.
+     */
+    private renderClientSide(
+        template: ElementViewTemplate,
+        element: TElement,
+        host: Node
+    ): void {
+        if (this.hasExistingShadowRoot) {
+            for (
+                let child = host.firstChild;
+                child !== null;
+                child = host.firstChild
+            ) {
+                host.removeChild(child);
+            }
+
+            this.hasExistingShadowRoot = false;
+        }
+
+        (this as Mutable<this>).view = template.render(element, host, element);
+        (this.view as any as Mutable<ViewController>).sourceLifetime =
+            SourceLifetime.coupled;
     }
 
     /**
