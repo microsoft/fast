@@ -7,7 +7,7 @@
 | Export | Replacement |
 |---|---|
 | `HydratableElementController` | `ElementController` (prerendered path built in) |
-| `HydrationControllerCallbacks` | Use `TemplateElement.config()` in `@microsoft/fast-html` |
+| `HydrationControllerCallbacks` | `ElementHydrationCallbacks` via `ElementController.configHydration()` |
 | `needsHydrationAttribute` | `ElementController.isPrerendered` |
 | `deferHydrationAttribute` | Template-pending guard in `ElementController.connect()` |
 

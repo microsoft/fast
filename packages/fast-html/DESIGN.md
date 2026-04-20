@@ -333,9 +333,10 @@ sequenceDiagram
     DOM->>EC: element instance connects with existing shadow root
     EC->>EC: isPrerendered = true (existing shadow root detected)
     EC->>EC: template-pending guard: wait if no template yet
-    EC->>Callbacks: elementWillHydrate('my-el')
+    EC->>Callbacks: hydrationStarted()
+    EC->>Callbacks: elementWillHydrate(element)
     EC->>EC: template.hydrate() — maps existing DOM to binding targets
-    EC->>Callbacks: elementDidHydrate('my-el')
+    EC->>Callbacks: elementDidHydrate(element)
     EC->>Callbacks: hydrationComplete()
 ```
 
@@ -347,9 +348,10 @@ sequenceDiagram
 | `templateWillUpdate(name)` | Just before template HTML is parsed |
 | `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
 | `elementDidDefine(name)` | After `composeAsync` completes |
-| `elementWillHydrate(name)` | Before `ElementController` hydrates a prerendered instance |
-| `elementDidHydrate(name)` | After an instance is fully hydrated |
-| `hydrationComplete()` | Once, after all elements have completed hydration |
+| `hydrationStarted()` | Once, when the first prerendered element begins hydrating |
+| `elementWillHydrate(source)` | Before `ElementController` hydrates a prerendered instance |
+| `elementDidHydrate(source)` | After an instance is fully hydrated |
+| `hydrationComplete()` | Once, after all prerendered elements have completed hydration |
 
 For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 
