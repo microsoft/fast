@@ -91,8 +91,14 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 - Extends `PropertyChangeNotifier` so the element itself participates in the observable system.
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
-- On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the template into the shadow root, and applies styles.
+- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. The `ViewController` interface also exposes `isPrerendered` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
+- On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the template into the shadow root, and applies styles. When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early; an Observable subscription on `"template"` retriggers `connect()` when the template arrives (template-pending guard).
+- Rendering is split into two modular paths via `renderPrerendered()` and `renderClientSide()`:
+  - **Prerendered**: `renderPrerendered()` registers the element in the static hydration tracker, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, then restores the standard handler and removes the element from the tracker. After this point, all future attribute changes flow through the real handler with zero overhead.
+  - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
+- **Static hydration tracking**: `ElementController` delegates element-level hydration tracking to a `HydrationTracker` instance (in `hydration-tracker.ts`). `configHydration()` creates the tracker with the provided callbacks. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires per-element callbacks (`hydrationStarted`, `elementWillHydrate`, `elementDidHydrate`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
+- `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
 `FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` and registered globally via `fastElementRegistry`.
@@ -319,14 +325,25 @@ flowchart TD
     CTOR[constructor] --> EC[ElementController.forCustomElement creates or locates the controller]
     EC --> ATTACH[Controller captures element + definition, sets $fastController]
 
-    CONN[connectedCallback] --> STAGE[stage = connecting]
-    STAGE --> OBS[Restore pre-upgrade observable values]
+    CONN[connectedCallback] --> TGUARD{templateOptions = defer-and-hydrate\nAND no template yet?}
+    TGUARD -->|yes| WAIT[Return early — Observable subscription\non 'template' retriggers connect]
+    TGUARD -->|no| STAGE[stage = connecting]
+    STAGE --> PRERENDER{Existing shadow root\nfrom SSR/DSD?}
+    PRERENDER -->|yes| SETFLAG[isPrerendered = true]
+    PRERENDER -->|no| NORMAL[isPrerendered = false]
+    SETFLAG --> OBS[Restore pre-upgrade observable values]
+    NORMAL --> OBS
     OBS --> BEHAV[Connect HostBehaviors]
-    BEHAV --> RENDER[renderTemplate → ViewTemplate.render → HTMLView.appendTo shadow root]
-    RENDER --> STYLES[Apply ElementStyles to shadow root]
+    BEHAV --> RENDER{isPrerendered AND\ntemplate is hydratable?}
+    RENDER -->|yes| HYDRATE[template.hydrate → HydrationView\nmaps existing DOM to binding targets]
+    RENDER -->|no| CLONE[ViewTemplate.render → HTMLView.appendTo shadow root]
+    HYDRATE --> STYLES[Apply ElementStyles to shadow root]
+    CLONE --> STYLES
     STYLES --> DONE[stage = connected]
 
-    ATTR[attributeChangedCallback] --> ACD[AttributeDefinition.onAttributeChangedCallback]
+    ATTR[attributeChangedCallback] --> ATTRGUARD{isPrerendered AND\nneedsInitialization?}
+    ATTRGUARD -->|yes| SKIP[Skip — server-rendered values already correct]
+    ATTRGUARD -->|no| ACD[AttributeDefinition.onAttributeChangedCallback]
     ACD --> ENQ[Updates.enqueue – reflect new value via Observable accessor]
 
     DISC[disconnectedCallback] --> DBEHAV[Disconnect HostBehaviors]
@@ -432,7 +449,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 1. Developer writes a class extending `FASTElement`, decorates properties with `@observable` / `@attr`, and calls `FASTElement.define({ name, template, styles })`.
 2. `FASTElement.define` → `FASTElementDefinition.compose(...).define()` registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
-4. On `connectedCallback`, the controller renders the template (`ViewTemplate.render`) into the shadow root. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
+4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content), `renderPrerendered()` uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
 6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. The next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
@@ -483,8 +500,7 @@ src/
 │   ├── fast-element.ts    # FASTElement, @customElement
 │   ├── element-controller.ts  # ElementController, Stages
 │   ├── fast-definitions.ts    # FASTElementDefinition, TemplateOptions
-│   ├── attributes.ts          # AttributeDefinition, @attr, converters
-│   └── hydration.ts           # SSR hydration helpers
+│   └── attributes.ts          # AttributeDefinition, @attr, converters
 ├── di/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
 ├── context.ts             # Context, FASTContext, Context protocol

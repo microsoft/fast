@@ -1,8 +1,6 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
-
-const RenderableElement = RenderableFASTElement(FASTElement);
 
 // Mock data sources - simulating fetched data
 const mockDataSources = {
@@ -42,7 +40,7 @@ const mockDataSources = {
     },
 };
 
-export class ItemList extends RenderableElement {
+export class ItemList extends FASTElement {
     public items!: Array<{ text: string }>;
 
     public title!: string;
@@ -51,14 +49,15 @@ export class ItemList extends RenderableElement {
     public category!: string;
 
     // Track which list instance this is (1st, 2nd, or 3rd on the page)
-    private static prepareCallCount = 0;
+    private static connectedCallCount = 0;
     private static instanceMap = new WeakMap<ItemList, number>();
 
-    async prepare() {
-        // Assign instance number on first prepare() call for this instance
+    connectedCallback() {
+        super.connectedCallback();
+
         if (!ItemList.instanceMap.has(this)) {
-            ItemList.prepareCallCount++;
-            ItemList.instanceMap.set(this, ItemList.prepareCallCount);
+            ItemList.connectedCallCount++;
+            ItemList.instanceMap.set(this, ItemList.connectedCallCount);
         }
 
         const instanceNumber = ItemList.instanceMap.get(this) || 0;
@@ -71,13 +70,10 @@ export class ItemList extends RenderableElement {
         // Set data from fresh source - should match pre-rendered content exactly
         this.title = data.title;
         this.items = data.items;
-
-        // Simulate slight delay for data loading
-        await new Promise(resolve => setTimeout(resolve, 50));
     }
 }
 
-export class Item extends RenderableElement {
+export class Item extends FASTElement {
     public text!: string;
 
     public idx!: number;
@@ -86,19 +82,20 @@ export class Item extends RenderableElement {
     public category!: string;
 
     // Track which item instance this is globally
-    private static prepareCallCount = 0;
+    private static connectedCallCount = 0;
     private static instanceMap = new WeakMap<Item, number>();
 
-    async prepare() {
-        // Assign instance number on first prepare() call for this instance
+    connectedCallback() {
+        super.connectedCallback();
+
         if (!Item.instanceMap.has(this)) {
-            Item.prepareCallCount++;
-            Item.instanceMap.set(this, Item.prepareCallCount);
+            Item.connectedCallCount++;
+            Item.instanceMap.set(this, Item.connectedCallCount);
         }
 
         const instanceNumber = Item.instanceMap.get(this) || 0;
 
-        // Simulate async data loading - fetch fresh data from data source
+        // Fetch fresh data from data source
         const itemIds = ["item-1", "item-2", "item-3", "item-4"];
         const itemId = itemIds[instanceNumber - 1] || "item-1";
         const data = mockDataSources.getItemById(itemId);
@@ -107,22 +104,22 @@ export class Item extends RenderableElement {
     }
 }
 
-export class GrandChildItem extends RenderableElement {
+export class GrandChildItem extends FASTElement {
     @attr
     public category!: string;
 }
 
-RenderableFASTElement(ItemList).defineAsync({
+ItemList.defineAsync({
     name: "parent-element",
     templateOptions: "defer-and-hydrate",
 });
 
-RenderableFASTElement(Item).defineAsync({
+Item.defineAsync({
     name: "child-element",
     templateOptions: "defer-and-hydrate",
 });
 
-RenderableFASTElement(GrandChildItem).defineAsync({
+GrandChildItem.defineAsync({
     name: "grand-child-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -146,19 +143,9 @@ TemplateElement.options({
                 `Element did define: ${name} [${performance.now()}]`,
             );
         },
-        elementDidHydrate(source: HTMLElement) {
-            (window as any).messages.push(
-                `Element did hydrate: ${source.localName} [${performance.now()}]`,
-            );
-        },
         elementDidRegister(name: string) {
             (window as any).messages.push(
                 `Element did register: ${name} [${performance.now()}]`,
-            );
-        },
-        elementWillHydrate(source: HTMLElement) {
-            (window as any).messages.push(
-                `Element will hydrate: ${source.localName} [${performance.now()}]`,
             );
         },
         hydrationComplete() {

@@ -23,6 +23,21 @@ export interface ViewController<TSource = any, TParent = any>
      * The parts of the view that are targeted by view behaviors.
      */
     readonly targets: ViewBehaviorTargets;
+
+    /**
+     * When true, directives skip attribute/booleanAttribute DOM
+     * updates during bind(). This is an internal flag set only
+     * during the prerendered bind window.
+     * @internal
+     */
+    readonly _skipAttrUpdates?: boolean;
+
+    /**
+     * A promise that resolves with `true` after prerendered content
+     * has been hydrated, or `false` when the view is client-side
+     * rendered.
+     */
+    readonly isPrerendered?: Promise<boolean>;
 }
 
 /**

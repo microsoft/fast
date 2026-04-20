@@ -1,13 +1,12 @@
 import {
     attr,
     children,
+    ElementController,
     elements,
     FAST,
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
-    HydratableElementController,
-    type HydrationControllerCallbacks,
     ref,
     repeat,
     slotted,
@@ -131,12 +130,10 @@ function isMapOptionEnabled(
 }
 
 /**
- * Lifecycle callbacks for template and hydration events.
- * Combines template lifecycle callbacks with hydration callbacks and adds template-processing events.
+ * Lifecycle callbacks for template events.
+ * Combines template lifecycle callbacks with template-processing events.
  */
-export interface HydrationLifecycleCallbacks
-    extends HydrationControllerCallbacks,
-        TemplateLifecycleCallbacks {
+export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
     /**
      * Called after the JS class definition has been registered
      */
@@ -146,6 +143,26 @@ export interface HydrationLifecycleCallbacks
      * Called before the template has been evaluated and assigned
      */
     templateWillUpdate?(name: string): void;
+
+    /**
+     * Called once when the first element enters the hydration pipeline.
+     */
+    hydrationStarted?(): void;
+
+    /**
+     * Called before an individual element's hydration begins
+     */
+    elementWillHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after an individual element's hydration has finished
+     */
+    elementDidHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after all elements have completed hydration
+     */
+    hydrationComplete?(): void;
 }
 
 /**
@@ -205,8 +222,14 @@ class TemplateElement extends FASTElement {
     public static config(callbacks: HydrationLifecycleCallbacks) {
         TemplateElement.lifecycleCallbacks = callbacks;
 
-        // Pass the hydration-specific callbacks to HydratableElementController
-        HydratableElementController.config({ ...callbacks });
+        // Forward hydration callbacks to ElementController for
+        // element-level hydration tracking.
+        ElementController.configHydration({
+            hydrationStarted: callbacks.hydrationStarted,
+            elementWillHydrate: callbacks.elementWillHydrate,
+            elementDidHydrate: callbacks.elementDidHydrate,
+            hydrationComplete: callbacks.hydrationComplete,
+        });
 
         return this;
     }
@@ -229,8 +252,6 @@ class TemplateElement extends FASTElement {
         }
 
         TemplateElement.elementOptions = result;
-
-        HydratableElementController.install();
 
         return this;
     }

@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Replace HydratableElementController with automatic prerendered content optimization. When a component connects with an existing shadow root, bindings skip attribute/booleanAttribute DOM updates during initial render while still setting up event listeners, observers, and dependency tracking. Added isPrerendered flag to ElementController and ViewController. Added template-pending guard for defineAsync flow.",
+  "packageName": "@microsoft/fast-element",
+  "email": "janechu@microsoft.com",
+  "dependentChangeType": "patch"
+}

@@ -7,6 +7,5 @@ export {
     type AttributeMapConfig,
     ObserverMap,
     type ObserverMapConfig,
-    RenderableFASTElement,
     TemplateElement,
 } from "./components/index.js";

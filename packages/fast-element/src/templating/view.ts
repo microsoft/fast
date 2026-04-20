@@ -241,6 +241,21 @@ export class HTMLView<TSource = any, TParent = any>
     readonly sourceLifetime: SourceLifetime = SourceLifetime.unknown;
 
     /**
+     * When true, directives skip attribute/booleanAttribute DOM
+     * updates during bind(). Set only during the prerendered bind
+     * window and cleared immediately after.
+     * @internal
+     */
+    public _skipAttrUpdates = false;
+
+    /**
+     * A promise that resolves with `true` after prerendered content
+     * has been hydrated, or `false` when the view is client-side
+     * rendered. Resolves once the first bind completes.
+     */
+    public isPrerendered: Promise<boolean> = Promise.resolve(false);
+
+    /**
      * The execution context the view is running within.
      */
     public context: ExecutionContext<TParent> = this;

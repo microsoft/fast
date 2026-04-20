@@ -1,11 +1,11 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
     @attr
     type: string = "radio";
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -14,7 +14,7 @@ class TestElementProperty extends FASTElement {
     @observable
     isEnabled: boolean = false;
 }
-RenderableFASTElement(TestElementProperty).defineAsync({
+TestElementProperty.defineAsync({
     name: "test-element-property",
     templateOptions: "defer-and-hydrate",
 });
@@ -26,7 +26,7 @@ class TestElementExpression extends FASTElement {
     @attr({ attribute: "current-group" })
     currentGroup: string = "";
 }
-RenderableFASTElement(TestElementExpression).defineAsync({
+TestElementExpression.defineAsync({
     name: "test-element-expression",
     templateOptions: "defer-and-hydrate",
 });

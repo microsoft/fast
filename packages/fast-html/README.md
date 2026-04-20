@@ -22,10 +22,10 @@ npm install --save @microsoft/fast-html
 In your JS bundle you will need to include the `@microsoft/fast-html` package:
 
 ```typescript
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { MyCustomElement } from "./my-custom-element";
 
-RenderableFASTElement(MyCustomElement).defineAsync({
+MyCustomElement.defineAsync({
     name: "my-custom-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -35,7 +35,7 @@ TemplateElement.define({
 });
 ```
 
-This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component.
+This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component. Components use `defineAsync()` for deferred template attachment.
 
 The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
 
@@ -55,22 +55,15 @@ Example:
 
 One of the benefits of FAST declarative HTML templates is that the server can be stack agnostic as JavaScript does not need to be interpreted. By default `@microsoft/fast-html` will expect hydratable content and uses comments and datasets for tracking the binding logic. For more information on what that markup should look like, as well as an example of how initial state may be applied, read our [documentation](./RENDERING.md) to understand what markup should be generated for a hydratable experience. For the sake of brevity hydratable markup will be excluded from the README.
 
-#### Using the RenderableFASTElement
+#### Prerendered Content Detection
 
-The use of `RenderableFASTElement` as a mixin for your custom element will automatically remove the `defer-hydration` attribute signalling for hydration to begin, and if you need to add state before hydration should occur you can make use of the `prepare` method.
+When an element connects and already has an existing shadow root (from SSR or declarative shadow DOM), `ElementController` automatically detects prerendered content. Connection gating is handled by the template-pending guard in `ElementController.connect()` — when `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
 
-Example:
+The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves after hydration completes:
+
 ```typescript
-class MyCustomElement extends FASTElement {
-    private prepare(): Promise<void> {
-        // Get initial state
-    }
-}
-
-RenderableFASTElement(MyCustomElement).defineAsync({
-    name: "my-custom-element",
-    templateOptions: "defer-and-hydrate",
-});
+const el = document.querySelector("my-custom-element");
+const wasPrerendered = await el.$fastController.isPrerendered; // true if prerendered
 ```
 
 #### Lifecycle Callbacks
@@ -86,9 +79,12 @@ FAST HTML provides lifecycle callbacks that allow you to hook into various stage
 - `elementDidDefine(name: string)` - Called after the custom element has been defined
 
 **Hydration Lifecycle Callbacks:**
-- `elementWillHydrate(name: string)` - Called before an element begins hydration
-- `elementDidHydrate(name: string)` - Called after an element completes hydration
-- `hydrationComplete()` - Called after all elements have completed hydration
+- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
+- `elementWillHydrate(source: HTMLElement)` - Called before an element begins hydration
+- `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
+- `hydrationComplete()` - Called after all prerendered elements have completed hydration
+
+Hydration callbacks are tracked at the element level by `ElementController` — `hydrationComplete` fires only after every prerendered element has finished binding.
 
 ##### Configuring Callbacks
 
@@ -111,11 +107,11 @@ const callbacks: HydrationLifecycleCallbacks = {
     elementDidDefine(name: string) {
         console.log(`Element defined: ${name}`);
     },
-    elementWillHydrate(name: string) {
-        console.log(`Element will hydrate: ${name}`);
+    elementWillHydrate(source: HTMLElement) {
+        console.log(`Element will hydrate: ${source.localName}`);
     },
-    elementDidHydrate(name: string) {
-        console.log(`Element hydrated: ${name}`);
+    elementDidHydrate(source: HTMLElement) {
+        console.log(`Element hydrated: ${source.localName}`);
     },
     hydrationComplete() {
         console.log('All elements hydrated');
@@ -126,8 +122,8 @@ TemplateElement.config(callbacks);
 
 // Or configure only the callbacks you need
 TemplateElement.config({
-    elementDidHydrate(name: string) {
-        console.log(`${name} is ready`);
+    elementDidHydrate(source: HTMLElement) {
+        console.log(`${source.localName} is ready`);
     },
     hydrationComplete() {
         console.log('Page is interactive');
@@ -141,8 +137,8 @@ The lifecycle callbacks occur in the following general sequence:
 
 1. **Registration Phase**: `elementDidRegister` is called when the element class is registered
 2. **Template Phase**: `templateWillUpdate` → (template processing) → `templateDidUpdate` → `elementDidDefine`
-3. **Hydration Phase**: `elementWillHydrate` → (hydration) → `elementDidHydrate`
-4. **Completion**: `hydrationComplete` is called after all elements finish hydrating
+3. **Hydration Phase**: `hydrationStarted` → `elementWillHydrate` → (hydration) → `elementDidHydrate`
+4. **Completion**: `hydrationComplete` is called after all prerendered elements finish hydrating
 
 **Note:** Template processing is asynchronous and happens independently for each element. The template and hydration phases can be interleaved when multiple elements are being processed simultaneously.
 
@@ -151,19 +147,18 @@ The lifecycle callbacks occur in the following general sequence:
 **Performance Monitoring:**
 ```typescript
 TemplateElement.config({
-    elementWillHydrate(name: string) {
-        performance.mark(`${name}-hydration-start`);
+    elementWillHydrate(source: HTMLElement) {
+        performance.mark(`${source.localName}-hydration-start`);
     },
-    elementDidHydrate(name: string) {
-        performance.mark(`${name}-hydration-end`);
+    elementDidHydrate(source: HTMLElement) {
+        performance.mark(`${source.localName}-hydration-end`);
         performance.measure(
-            `${name}-hydration`,
-            `${name}-hydration-start`,
-            `${name}-hydration-end`
+            `${source.localName}-hydration`,
+            `${source.localName}-hydration-start`,
+            `${source.localName}-hydration-end`
         );
     },
     hydrationComplete() {
-        // Report to analytics
         const entries = performance.getEntriesByType('measure');
         console.log('Hydration metrics:', entries);
     }
@@ -173,12 +168,10 @@ TemplateElement.config({
 **Loading State Management:**
 ```typescript
 TemplateElement.config({
-    elementWillHydrate(name: string) {
-        // Show loading indicator
+    hydrationStarted() {
         document.body.classList.add('hydrating');
     },
     hydrationComplete() {
-        // Hide loading indicator once all elements are ready
         document.body.classList.remove('hydrating');
         document.body.classList.add('hydrated');
     }
@@ -203,11 +196,11 @@ if (process.env.NODE_ENV === 'development') {
         elementDidDefine(name) {
             events.push({ callback: 'elementDidDefine', name, timestamp: Date.now() });
         },
-        elementWillHydrate(name) {
-            events.push({ callback: 'elementWillHydrate', name, timestamp: Date.now() });
+        elementWillHydrate(source) {
+            events.push({ callback: 'elementWillHydrate', name: source.localName, timestamp: Date.now() });
         },
-        elementDidHydrate(name) {
-            events.push({ callback: 'elementDidHydrate', name, timestamp: Date.now() });
+        elementDidHydrate(source) {
+            events.push({ callback: 'elementDidHydrate', name: source.localName, timestamp: Date.now() });
         },
         hydrationComplete() {
             events.push({ callback: 'hydrationComplete', timestamp: Date.now() });
