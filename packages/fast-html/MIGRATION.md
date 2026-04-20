@@ -72,13 +72,15 @@
    </my-component>
    ```
 
-4. Check `$fastController.isPrerendered` to detect prerendered components:
+4. Await `$fastController.isPrerendered` to detect prerendered components:
 
    ```typescript
    connectedCallback() {
        super.connectedCallback();
-       if (this.$fastController.isPrerendered) {
-           // Component was server-rendered — skip client-side data fetch
-       }
+       this.$fastController.isPrerendered.then(prerendered => {
+           if (!prerendered) {
+               this.fetchData();
+           }
+       });
    }
    ```

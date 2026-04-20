@@ -298,7 +298,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     protected hasExistingShadowRoot: boolean;
     get isBound(): boolean;
     get isConnected(): boolean;
-    readonly isPrerendered: boolean;
+    readonly isPrerendered: Promise<boolean>;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     protected needsInitialization: boolean;

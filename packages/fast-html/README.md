@@ -57,13 +57,13 @@ One of the benefits of FAST declarative HTML templates is that the server can be
 
 #### Prerendered Content Detection
 
-When an element connects and already has an existing shadow root (from SSR or declarative shadow DOM), `ElementController` automatically sets `isPrerendered` to `true`. Connection gating is handled by the template-pending guard in `ElementController.connect()` — when `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
+When an element connects and already has an existing shadow root (from SSR or declarative shadow DOM), `ElementController` automatically detects prerendered content. Connection gating is handled by the template-pending guard in `ElementController.connect()` — when `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
 
-You can check the prerendered state on an element instance:
+The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves after hydration completes:
 
 ```typescript
 const el = document.querySelector("my-custom-element");
-console.log(el.$fastController.isPrerendered); // true if prerendered
+const wasPrerendered = await el.$fastController.isPrerendered; // true if prerendered
 ```
 
 #### Lifecycle Callbacks

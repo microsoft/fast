@@ -27,12 +27,12 @@ The `install-hydratable-view-templates.js` side-effect import is still available
 
 ### New APIs
 
-- **`ElementController.isPrerendered`** (`readonly boolean`): Indicates whether the component's content was prerendered. Set once during initial `renderTemplate()` when an existing shadow root is detected. Remains `true` for the lifetime of the controller.
-- **`ViewController.isPrerendered`** (`readonly boolean | undefined`): Available to directives during `bind()` to check whether the current view is in prerendered mode.
+- **`ElementController.isPrerendered`** (`Promise<boolean>`): Resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. Component authors can await this to know when the element is fully interactive.
+- **`ViewController.isPrerendered`** (`readonly boolean | undefined`): Synchronous flag available to directives during `bind()` to check whether the current view is in prerendered mode.
 
 ### Migration steps
 
 1. Remove `HydratableElementController.install()` calls.
 2. Remove `import "@microsoft/fast-element/install-hydration.js"` side-effect imports.
-3. Replace `element.$fastController instanceof HydratableElementController` checks with `element.$fastController.isPrerendered`.
+3. Replace `element.$fastController instanceof HydratableElementController` checks with `await element.$fastController.isPrerendered`.
 4. Remove `defer-hydration` and `needs-hydration` attributes from server-rendered markup.

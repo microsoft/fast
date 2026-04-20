@@ -85,12 +85,37 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
     /**
      * Indicates whether the component's content was prerendered
-     * (via SSR or declarative shadow DOM). This is true when an
-     * existing shadow root was detected at initialization and
-     * remains true for the lifetime of the controller, allowing
-     * component authors to query it at any point.
+     * (via SSR or declarative shadow DOM).
      */
-    public readonly isPrerendered: boolean = false;
+    private _isPrerendered: boolean = false;
+
+    /**
+     * Resolves the _isPrerendered promise.
+     */
+    private _resolvePrerendered!: (value: boolean) => void;
+
+    /**
+     * A promise that resolves with `true` after prerendered content has
+     * been hydrated, or `false` immediately when the component is
+     * client-side rendered. Component authors can await this to know
+     * when the element is fully interactive:
+     *
+     * ```typescript
+     * connectedCallback() {
+     *     super.connectedCallback();
+     *     this.$fastController.isPrerendered.then(prerendered => {
+     *         if (!prerendered) {
+     *             this.fetchData();
+     *         }
+     *     });
+     * }
+     * ```
+     */
+    public readonly isPrerendered: Promise<boolean> = new Promise<boolean>(
+        resolve => {
+            this._resolvePrerendered = resolve;
+        }
+    );
 
     /**
      * The template used to render the component.
@@ -560,7 +585,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         // When content is prerendered and the element hasn't connected yet,
         // attribute values in the markup are already correct — skip
         // processing during the initial upgrade burst of callbacks.
-        if (this.isPrerendered && this.needsInitialization) {
+        if (this._isPrerendered && this.needsInitialization) {
             return;
         }
 
@@ -630,10 +655,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             // found — this means the content was server-rendered (SSR)
             // or provided via declarative shadow DOM (DSD).
             if (this.hasExistingShadowRoot && this.needsInitialization) {
-                (this as Mutable<this>).isPrerendered = true;
+                this._isPrerendered = true;
             }
 
-            if (this.isPrerendered && isHydratable(template)) {
+            if (this._isPrerendered && isHydratable(template)) {
                 // Use hydration path: create a HydrationView that maps
                 // existing DOM nodes to binding targets via markers.
                 const firstChild = host.firstChild!;
@@ -677,6 +702,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 (this.view as any as Mutable<ViewController>).sourceLifetime =
                     SourceLifetime.coupled;
             }
+
+            this._resolvePrerendered(this._isPrerendered);
         }
     }
 

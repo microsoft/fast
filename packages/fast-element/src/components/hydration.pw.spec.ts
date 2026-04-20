@@ -31,7 +31,7 @@ test.describe("The prerendered content optimization", () => {
             await new Promise(resolve => requestAnimationFrame(resolve));
 
             return {
-                isPrerendered: element.$fastController.isPrerendered,
+                isPrerendered: await element.$fastController.isPrerendered,
                 shadowContent: element.shadowRoot?.innerHTML ?? "",
             };
         });
@@ -79,7 +79,7 @@ test.describe("The prerendered content optimization", () => {
 
             return {
                 hasShadowRootBefore,
-                isPrerendered: element.$fastController.isPrerendered,
+                isPrerendered: await element.$fastController.isPrerendered,
             };
         });
 
@@ -170,7 +170,7 @@ test.describe("The prerendered content optimization", () => {
             await new Promise(resolve => requestAnimationFrame(resolve));
 
             return {
-                isPrerendered: element.$fastController.isPrerendered,
+                isPrerendered: await element.$fastController.isPrerendered,
                 shadowContent: element.shadowRoot?.textContent ?? "",
             };
         });
