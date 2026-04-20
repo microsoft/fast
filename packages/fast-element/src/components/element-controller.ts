@@ -55,6 +55,21 @@ export interface ElementControllerStrategy {
 }
 
 /**
+ * Lifecycle callbacks for element hydration events.
+ * @public
+ */
+export interface ElementHydrationCallbacks {
+    /** Called once when the first prerendered element begins hydrating. */
+    hydrationStarted?(): void;
+    /** Called before an individual element's hydration begins. */
+    elementWillHydrate?(source: HTMLElement): void;
+    /** Called after an individual element's hydration has finished. */
+    elementDidHydrate?(source: HTMLElement): void;
+    /** Called after all prerendered elements have completed hydration. */
+    hydrationComplete?(): void;
+}
+
+/**
  * The various lifecycle stages of an ElementController.
  * @public
  */
@@ -664,6 +679,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         element: TElement,
         host: Node
     ): void {
+        ElementController.addHydratingElement(element);
+        ElementController.notifyWillHydrate(element);
+
         const firstChild = host.firstChild!;
         const lastChild = host.lastChild!;
 
@@ -690,6 +708,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         (this.view as any as Mutable<ViewController>).sourceLifetime =
             SourceLifetime.coupled;
         this.hasExistingShadowRoot = false;
+
+        ElementController.removeHydratingElement(element);
     }
 
     /**
@@ -776,6 +796,113 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public static setStrategy(strategy: ElementControllerStrategy) {
         elementControllerStrategy = strategy;
+    }
+
+    // --- Static hydration tracking ---
+
+    /**
+     * Elements currently pending hydration. When all elements finish
+     * binding, `hydrationCallbacks.hydrationComplete()` is invoked.
+     */
+    private static hydratingElements: Set<HTMLElement> | null = null;
+
+    /**
+     * Lifecycle callbacks for hydration events.
+     */
+    private static hydrationCallbacks: ElementHydrationCallbacks = {};
+
+    /**
+     * Whether hydrationStarted has already been invoked.
+     */
+    private static _hydrationStarted = false;
+
+    /**
+     * Configure lifecycle callbacks for element hydration tracking.
+     * @param callbacks - Lifecycle callbacks to configure.
+     */
+    public static configHydration(callbacks: ElementHydrationCallbacks): void {
+        ElementController.hydrationCallbacks = callbacks;
+        ElementController.hydratingElements = new Set();
+        ElementController._hydrationStarted = false;
+    }
+
+    /**
+     * Registers an element as pending hydration.
+     * @internal
+     */
+    private static addHydratingElement(element: HTMLElement): void {
+        if (!ElementController.hydratingElements) {
+            return;
+        }
+
+        if (!ElementController._hydrationStarted) {
+            ElementController._hydrationStarted = true;
+            try {
+                ElementController.hydrationCallbacks.hydrationStarted?.();
+            } catch {
+                // A lifecycle callback must never prevent hydration.
+            }
+        }
+
+        ElementController.hydratingElements.add(element);
+    }
+
+    /**
+     * Fires the elementWillHydrate callback for an element.
+     * @internal
+     */
+    private static notifyWillHydrate(element: HTMLElement): void {
+        try {
+            ElementController.hydrationCallbacks.elementWillHydrate?.(element);
+        } catch {
+            // A lifecycle callback must never prevent hydration.
+        }
+    }
+
+    /**
+     * Timer ID for debounced hydration completion check.
+     */
+    private static _hydrationCheckTimer: ReturnType<typeof setTimeout> | null =
+        null;
+
+    /**
+     * Removes an element from the pending hydration set and schedules
+     * a debounced check for hydration completion.
+     * @internal
+     */
+    private static removeHydratingElement(element: HTMLElement): void {
+        if (!ElementController.hydratingElements) {
+            return;
+        }
+
+        try {
+            ElementController.hydrationCallbacks.elementDidHydrate?.(element);
+        } catch {
+            // A lifecycle callback must never prevent hydration.
+        }
+
+        ElementController.hydratingElements.delete(element);
+
+        // Debounce: reset on every removal so we wait until no new
+        // elements have been added or removed before declaring complete.
+        if (ElementController._hydrationCheckTimer !== null) {
+            clearTimeout(ElementController._hydrationCheckTimer);
+        }
+
+        ElementController._hydrationCheckTimer = setTimeout(() => {
+            ElementController._hydrationCheckTimer = null;
+
+            if (
+                ElementController.hydratingElements &&
+                ElementController.hydratingElements.size === 0
+            ) {
+                try {
+                    ElementController.hydrationCallbacks.hydrationComplete?.();
+                } catch {
+                    // A lifecycle callback must never prevent post-hydration cleanup.
+                }
+            }
+        }, 0);
     }
 }
 

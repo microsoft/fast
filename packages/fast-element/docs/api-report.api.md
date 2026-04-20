@@ -287,6 +287,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
     protected bindObservables(): void;
+    static configHydration(callbacks: ElementHydrationCallbacks): void;
     connect(): void;
     protected connectBehaviors(): void;
     get context(): ExecutionContext;
@@ -324,6 +325,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
 export interface ElementControllerStrategy {
     // (undocumented)
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
+}
+
+// @public
+export interface ElementHydrationCallbacks {
+    elementDidHydrate?(source: HTMLElement): void;
+    elementWillHydrate?(source: HTMLElement): void;
+    hydrationComplete?(): void;
+    hydrationStarted?(): void;
 }
 
 // @public
