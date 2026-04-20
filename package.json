@@ -11,9 +11,8 @@
   "workspaces": [
     "build",
     "packages/*",
-    "sites/website",
-    "examples/todo-app",
-    "examples/ssr"
+    "sites/*",
+    "examples/*"
   ],
   "engines": {
     "npm": ">=10.0.0",

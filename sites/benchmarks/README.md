@@ -14,7 +14,7 @@ npm install
 
 ## Running benchmarks
 
-From this folder (`packages/bench`):
+From this folder (`sites/benchmarks`):
 
 ```bash
 npm run bench
