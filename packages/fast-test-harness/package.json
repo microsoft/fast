@@ -26,8 +26,10 @@
       "test": "./src/index.ts",
       "default": "./dist/esm/index.js"
     },
-    "./vite.config.mjs": {
-      "default": "./vite.config.mjs"
+    "./build/*.js": {
+      "types": "./dist/dts/build/*.d.ts",
+      "test": "./src/build/*.ts",
+      "default": "./dist/esm/build/*.js"
     },
     "./ssr/*.js": {
       "types": "./dist/dts/ssr/*.d.ts",
@@ -38,18 +40,27 @@
     "./public/*": "./public/*",
     "./server.mjs": "./server.mjs",
     "./start.mjs": "./start.mjs",
+    "./vite.config.mjs": "./vite.config.mjs",
     "./package.json": "./package.json"
   },
   "scripts": {
     "build": "npm run build:tsc",
     "build:tsc": "tsc -p tsconfig.build.json"
   },
+  "files": [
+    "dist",
+    "playwright.config.ts",
+    "public",
+    "server.mjs",
+    "start.mjs",
+    "vite.config.mjs"
+  ],
   "dependencies": {
-    "express": "5.2.1"
+    "@microsoft/fast-build": ">=0.3.0",
+    "cheerio": "1.2.0"
   },
   "devDependencies": {
-    "@microsoft/fast-html": "*",
-    "@microsoft/fast-build": "*"
+    "@microsoft/fast-html": "*"
   },
   "peerDependencies": {
     "@microsoft/fast-build": ">=0.4.0 <1.0.0",
@@ -58,9 +69,6 @@
     "vite": ">=7.0.0"
   },
   "peerDependenciesMeta": {
-    "@microsoft/fast-build": {
-      "optional": true
-    },
     "@microsoft/fast-html": {
       "optional": true
     }
