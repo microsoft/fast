@@ -4,7 +4,7 @@ import { TemplateElement } from "@microsoft/fast-html";
 class TestElement extends FASTElement {
     public video: HTMLVideoElement | null = null;
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });

@@ -323,7 +323,7 @@ class TemplateElement extends FASTElement {
 
         this.schema = new Schema(name);
 
-        FASTElementDefinition.registerAsync(name).then(async value => {
+        FASTElementDefinition.register(name).then(async value => {
             TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
 
             if (!TemplateElement.elementOptions?.[name]) {

@@ -362,7 +362,7 @@ TemplateElement.options({
         name: "f-template",
     });
 
-DeepMergeTestElement.defineAsync({
+DeepMergeTestElement.define({
     name: "deep-merge-test-element",
     templateOptions: "defer-and-hydrate",
 });
