@@ -253,8 +253,49 @@ async function buildAPIMarkdown() {
     }
 }
 
+async function buildSizesPage() {
+    const sizesSource = path.resolve(
+        getPackageJsonDir("@microsoft/fast-element"),
+        "SIZES.md",
+    );
+
+    if (!fs.existsSync(sizesSource)) {
+        console.warn("SIZES.md not found, skipping export sizes page.");
+        return;
+    }
+
+    const sizesContent = fs.readFileSync(sizesSource, "utf-8");
+    // Strip the heading from SIZES.md since we add our own via frontmatter
+    const body = sizesContent.replace(/^# .*\n*/m, "");
+
+    const frontmatter = [
+        "---",
+        "id: export-sizes",
+        "title: Export Sizes",
+        "layout: 2x",
+        "eleventyNavigation:",
+        "  key: export-sizes2x",
+        "  parent: resources2x",
+        "  title: Export Sizes",
+        "navigationOptions:",
+        "  activeKey: export-sizes2x",
+        "description: Bundle sizes for @microsoft/fast-element exports.",
+        "keywords:",
+        "  - export size",
+        "  - bundle size",
+        "---",
+        "",
+        "# Export Sizes",
+        "",
+    ].join("\n");
+
+    const dest = path.resolve(projectRoot, "src/docs/2.x/resources/export-sizes.md");
+    await safeWrite(dest, frontmatter + body);
+    console.log("Export sizes page generated.");
+}
+
 async function main() {
-    await Promise.all([buildAPIMarkdown()]);
+    await Promise.all([buildAPIMarkdown(), buildSizesPage()]);
 }
 
 main();
