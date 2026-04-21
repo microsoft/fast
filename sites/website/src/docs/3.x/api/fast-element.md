@@ -1731,6 +1731,17 @@ The signature of an arrow function capable of being evaluated against source dat
 </td></tr>
 <tr><td>
 
+[FASTElementExtension](../fast-element.fastelementextension/)
+
+
+</td><td>
+
+A callback that receives a FASTElementDefinition during element registration. Extensions are invoked before the element is registered with the platform, allowing plugins to inspect or act on the resolved definition.
+
+
+</td></tr>
+<tr><td>
+
 [HTMLTemplateTag](../fast-element.htmltemplatetag/)
 
 
