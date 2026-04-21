@@ -2,6 +2,7 @@ import { type Constructable, isFunction } from "../interfaces.js";
 import { ElementController } from "./element-controller.js";
 import {
     FASTElementDefinition,
+    type FASTElementExtension,
     type PartialFASTElementDefinition,
 } from "./fast-definitions.js";
 
@@ -27,7 +28,7 @@ export interface FASTElement extends HTMLElement {
     $emit(
         type: string,
         detail?: any,
-        options?: Omit<CustomEventInit, "detail">
+        options?: Omit<CustomEventInit, "detail">,
     ): boolean | void;
 
     /**
@@ -58,13 +59,13 @@ export interface FASTElement extends HTMLElement {
     attributeChangedCallback(
         name: string,
         oldValue: string | null,
-        newValue: string | null
+        newValue: string | null,
     ): void;
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
 function createFASTElement<T extends typeof HTMLElement>(
-    BaseType: T
+    BaseType: T,
 ): { new (): InstanceType<T> & FASTElement } {
     const type = class extends (BaseType as any) {
         public readonly $fastController!: ElementController;
@@ -78,7 +79,7 @@ function createFASTElement<T extends typeof HTMLElement>(
         public $emit(
             type: string,
             detail?: any,
-            options?: Omit<CustomEventInit, "detail">
+            options?: Omit<CustomEventInit, "detail">,
         ): boolean | void {
             return this.$fastController.emit(type, detail, options);
         }
@@ -94,7 +95,7 @@ function createFASTElement<T extends typeof HTMLElement>(
         public attributeChangedCallback(
             name: string,
             oldValue: string | null,
-            newValue: string | null
+            newValue: string | null,
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
@@ -107,15 +108,15 @@ function createFASTElement<T extends typeof HTMLElement>(
 
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition
+    nameOrDef: string | PartialFASTElementDefinition,
 ): FASTElementDefinition<TType>;
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): FASTElementDefinition<TType>;
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
 ): FASTElementDefinition<TType> {
     if (isFunction(type)) {
         return FASTElementDefinition.compose(type, nameOrDef);
@@ -125,30 +126,41 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
 }
 
 function defineAsync<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition
+    nameOrDef: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<FASTElementDefinition<TType>>;
 function defineAsync<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<FASTElementDefinition<TType>>;
 function defineAsync<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition | FASTElementExtension[],
+    extensions?: FASTElementExtension[],
 ): Promise<TType> {
+    if (Array.isArray(nameOrDef)) {
+        extensions = nameOrDef;
+        nameOrDef = undefined;
+    }
+
     if (isFunction(type)) {
         return new Promise<FASTElementDefinition<TType>>(resolve => {
-            FASTElementDefinition.composeAsync(type, nameOrDef).then(value => {
+            FASTElementDefinition.composeAsync(
+                type,
+                nameOrDef as string | PartialFASTElementDefinition | undefined,
+            ).then(value => {
                 resolve(value);
             });
         }).then(value => {
-            return value.define().type;
+            return value.define(value.registry, extensions).type;
         });
     }
 
@@ -157,27 +169,38 @@ function defineAsync<
             resolve(value);
         });
     }).then(value => {
-        return value.define().type;
+        return value.define(value.registry, extensions).type;
     });
 }
 
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition
+    nameOrDef: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): TType;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): TType;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition
+    nameOrDef?: string | PartialFASTElementDefinition | FASTElementExtension[],
+    extensions?: FASTElementExtension[],
 ): TType {
-    if (isFunction(type)) {
-        return FASTElementDefinition.compose(type, nameOrDef).define().type;
+    if (Array.isArray(nameOrDef)) {
+        extensions = nameOrDef;
+        nameOrDef = undefined;
     }
 
-    return FASTElementDefinition.compose(this, type).define().type;
+    if (isFunction(type)) {
+        return FASTElementDefinition.compose(
+            type,
+            nameOrDef as string | PartialFASTElementDefinition | undefined,
+        ).define(undefined, extensions).type;
+    }
+
+    return FASTElementDefinition.compose(this, type).define(undefined, extensions).type;
 }
 
 function from<TBase extends typeof HTMLElement>(BaseType: TBase) {
