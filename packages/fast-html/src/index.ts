@@ -5,6 +5,7 @@ FAST.addMessages(debugMessages);
 
 export {
     type AttributeMapConfig,
+    declarativeTemplate,
     ObserverMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,

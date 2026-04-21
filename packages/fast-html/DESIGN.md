@@ -129,6 +129,19 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 
 Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent and use the default `"none"` strategy. To use the `"camelCase"` strategy, pass `TemplateElement.options({ "my-element": { attributeMap: { "attribute-name-strategy": "camelCase" } } })`.
 
+### `declarativeTemplate` — currying helper
+
+A convenience function that encapsulates the common setup of defining the `<f-template>` element and obtaining a `Promise<ViewTemplate>` for a given component.
+
+The outer call (`declarativeTemplate()`) defines `TemplateElement` as `<f-template>` if it has not already been registered via `customElements.get("f-template")`. It returns a function that accepts `{ name: string }` — the custom element name whose template is desired.
+
+The inner function:
+
+1. Calls `FASTElementDefinition.registerAsync(name)` to wait for the component class to be registered.
+2. Looks up the `FASTElementDefinition` via `fastElementRegistry.getByType(type)`.
+3. If `definition.template` already exists (fast path), returns it immediately.
+4. Otherwise, subscribes to the observable `"template"` property on the definition via `Observable.getNotifier(definition)` and resolves when the template is assigned by `TemplateElement.connectedCallback`. The subscriber unsubscribes after resolving to avoid leaking.
+
 ### Syntax constants (`syntax.ts`)
 
 All delimiters used by the parser are defined in a single `Syntax` interface and exported as named constants from `syntax.ts`. This makes the syntax pluggable and easy to audit.
@@ -177,6 +190,7 @@ packages/fast-html/
 
 ```typescript
 import {
+    declarativeTemplate,
     TemplateElement,
     ObserverMap,
     type ObserverMapConfig,
@@ -185,10 +199,11 @@ import {
 } from "@microsoft/fast-html";
 ```
 
-Two primary exports are intended for application code:
+Three primary exports are intended for application code:
 
 | Export | Purpose |
 |---|---|
+| `declarativeTemplate` | Currying function that defines `<f-template>` and returns a `Promise<ViewTemplate>` for a given component name. |
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
 | `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
 
