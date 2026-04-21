@@ -1,11 +1,11 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class TestElementMultiple extends FASTElement {
     @attr()
     planet: string = "";
 }
-RenderableFASTElement(TestElementMultiple).defineAsync({
+TestElementMultiple.defineAsync({
     name: "test-element-multiple",
     templateOptions: "defer-and-hydrate",
 });
@@ -14,7 +14,7 @@ class TestElement extends FASTElement {
     @attr({ mode: "boolean" })
     show: boolean = false;
 }
-RenderableFASTElement(TestElement).defineAsync({
+TestElement.defineAsync({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -23,7 +23,7 @@ class TestElementNot extends FASTElement {
     @attr({ mode: "boolean" })
     hide: boolean = false;
 }
-RenderableFASTElement(TestElementNot).defineAsync({
+TestElementNot.defineAsync({
     name: "test-element-not",
     templateOptions: "defer-and-hydrate",
 });
@@ -32,7 +32,7 @@ class TestElementEquals extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-RenderableFASTElement(TestElementEquals).defineAsync({
+TestElementEquals.defineAsync({
     name: "test-element-equals",
     templateOptions: "defer-and-hydrate",
 });
@@ -41,7 +41,7 @@ class TestElementNotEquals extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-RenderableFASTElement(TestElementNotEquals).defineAsync({
+TestElementNotEquals.defineAsync({
     name: "test-element-not-equals",
     templateOptions: "defer-and-hydrate",
 });
@@ -50,7 +50,7 @@ class TestElementGe extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-RenderableFASTElement(TestElementGe).defineAsync({
+TestElementGe.defineAsync({
     name: "test-element-ge",
     templateOptions: "defer-and-hydrate",
 });
@@ -59,7 +59,7 @@ class TestElementGt extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-RenderableFASTElement(TestElementGt).defineAsync({
+TestElementGt.defineAsync({
     name: "test-element-gt",
     templateOptions: "defer-and-hydrate",
 });
@@ -68,7 +68,7 @@ class TestElementLe extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-RenderableFASTElement(TestElementLe).defineAsync({
+TestElementLe.defineAsync({
     name: "test-element-le",
     templateOptions: "defer-and-hydrate",
 });
@@ -77,7 +77,7 @@ class TestElementLt extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-RenderableFASTElement(TestElementLt).defineAsync({
+TestElementLt.defineAsync({
     name: "test-element-lt",
     templateOptions: "defer-and-hydrate",
 });
@@ -89,7 +89,7 @@ class TestElementOr extends FASTElement {
     @attr({ attribute: "thatvar", mode: "boolean" })
     thatvar: boolean = false;
 }
-RenderableFASTElement(TestElementOr).defineAsync({
+TestElementOr.defineAsync({
     name: "test-element-or",
     templateOptions: "defer-and-hydrate",
 });
@@ -101,7 +101,7 @@ class TestElementAnd extends FASTElement {
     @attr({ attribute: "thatvar", mode: "boolean" })
     thatvar: boolean = false;
 }
-RenderableFASTElement(TestElementAnd).defineAsync({
+TestElementAnd.defineAsync({
     name: "test-element-and",
     templateOptions: "defer-and-hydrate",
 });
@@ -113,7 +113,7 @@ export class TestElementWhenFalseRepeat extends FASTElement {
     @observable
     list: Array<string> = ["Alpha", "Beta", "Gamma"];
 }
-RenderableFASTElement(TestElementWhenFalseRepeat).defineAsync({
+TestElementWhenFalseRepeat.defineAsync({
     name: "test-element-when-false-repeat",
     templateOptions: "defer-and-hydrate",
 });
@@ -129,7 +129,7 @@ export class TestElementEvent extends FASTElement {
         this.clickCount++;
     };
 }
-RenderableFASTElement(TestElementEvent).defineAsync({
+TestElementEvent.defineAsync({
     name: "test-element-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -157,7 +157,7 @@ export class NestedWhenElement extends FASTElement {
         this.clickCount++;
     };
 }
-RenderableFASTElement(NestedWhenElement).defineAsync({
+NestedWhenElement.defineAsync({
     name: "nested-when",
     templateOptions: "defer-and-hydrate",
 });

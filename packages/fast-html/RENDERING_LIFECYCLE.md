@@ -14,7 +14,7 @@ The FAST Element rendering lifecycle involves a coordinated process between two 
 Given a DOM which includes an `f-template` and a component:
 
 ```html
-<my-component defer-hydration needs-hydration text="Hello World">
+<my-component text="Hello World">
     <template shadowrootmode="open">
         <h1><!--fe-b$$start$$0$$abc123$$fe-b-->Hello World<!--fe-b$$end$$0$$abc123$$fe-b--></h1>
     </template>
@@ -81,10 +81,12 @@ Once the template is attached to the partial definition, the element completes i
 
 ### Phase 5: Element Instantiation and Hydration
 
-When custom elements are instantiated in the DOM: the following occurs:
+When custom elements are instantiated in the DOM, the following occurs:
 
 1. **Element Creation**: The platform creates instances of the custom element
-2. **Hydration**: Elements with `needs-hydration` attribute will now be hydrated, or this process may be delayed with the `defer-hydration` attribute which the developer can remove once they determine that the initial state has been provided to the custom element
+2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR and sets `isPrerendered = true`
+3. **Template-Pending Guard**: If `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives.
+4. **Hydration**: Once the template is available, `ElementController` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using `fe-b` markers
 
 The DOM after hydration should look like this:
 
@@ -148,9 +150,12 @@ The lifecycle callbacks are organized into three categories:
 - `elementDidDefine(name: string)` - Called after the custom element has been fully defined with the platform
 
 **Hydration Callbacks:**
-- `elementWillHydrate(name: string)` - Called before an element begins hydration
-- `elementDidHydrate(name: string)` - Called after an element completes hydration
-- `hydrationComplete()` - Called once after all elements have completed hydration
+- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
+- `elementWillHydrate(source: HTMLElement)` - Called before an element begins hydration
+- `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
+- `hydrationComplete()` - Called once after all prerendered elements have completed hydration
+
+Hydration callbacks are tracked at the element level by `ElementController`. The `hydrationComplete` callback fires only after every prerendered element has finished binding.
 
 ### Callback Execution Order
 
@@ -166,13 +171,14 @@ Template Processing Phase (asynchronous):
   4. templateDidUpdate(name)
   5. elementDidDefine(name)
   
-Hydration Phase:
-  6. elementWillHydrate(name)
-  7. [Hydration occurs]
-  8. elementDidHydrate(name)
+Hydration Phase (per element):
+  6. hydrationStarted()           [once, on first element]
+  7. elementWillHydrate(source)
+  8. [Hydration occurs]
+  9. elementDidHydrate(source)
   
 Completion (called once for all elements):
-  9. hydrationComplete()
+  10. hydrationComplete()
 ```
 
 **Important:** Template processing is asynchronous and happens independently for each element. When multiple elements are being processed, the template and hydration callbacks can be interleaved across different elements.
@@ -197,11 +203,11 @@ TemplateElement.config({
     elementDidDefine(name) {
         console.log(`${name} fully defined`);
     },
-    elementWillHydrate(name) {
-        console.log(`${name} starting hydration`);
+    elementWillHydrate(source) {
+        console.log(`${source.localName} starting hydration`);
     },
-    elementDidHydrate(name) {
-        console.log(`${name} hydrated`);
+    elementDidHydrate(source) {
+        console.log(`${source.localName} hydrated`);
     },
     hydrationComplete() {
         console.log('All elements hydrated');
@@ -218,12 +224,12 @@ TemplateElement.define({
 **Performance Monitoring:**
 ```typescript
 TemplateElement.config({
-    elementWillHydrate(name) {
-        performance.mark(`${name}-hydration-start`);
+    elementWillHydrate(source) {
+        performance.mark(`${source.localName}-hydration-start`);
     },
-    elementDidHydrate(name) {
-        performance.mark(`${name}-hydration-end`);
-        performance.measure(`${name}-hydration`, `${name}-hydration-start`, `${name}-hydration-end`);
+    elementDidHydrate(source) {
+        performance.mark(`${source.localName}-hydration-end`);
+        performance.measure(`${source.localName}-hydration`, `${source.localName}-hydration-start`, `${source.localName}-hydration-end`);
     },
     hydrationComplete() {
         const measures = performance.getEntriesByType('measure');
@@ -235,7 +241,7 @@ TemplateElement.config({
 **Loading State Management:**
 ```typescript
 TemplateElement.config({
-    elementWillHydrate() {
+    hydrationStarted() {
         document.body.classList.add('hydrating');
     },
     hydrationComplete() {

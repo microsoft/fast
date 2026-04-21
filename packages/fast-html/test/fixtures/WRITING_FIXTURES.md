@@ -142,7 +142,7 @@ Multiple `<f-template>` elements can be defined in a single `templates.html` —
 The component definition file registers custom elements and configures the template system. Every fixture must:
 
 1. Define element classes extending `FASTElement`.
-2. Wrap classes with `RenderableFASTElement()` for server-rendered fixtures that need hydration.
+2. Call `defineAsync()` on the element class for server-rendered fixtures that need hydration.
 3. Call `TemplateElement.define()` to register the `<f-template>` custom element.
 
 ### Import paths
@@ -153,13 +153,13 @@ The component definition file registers custom elements and configures the templ
 
 ```typescript
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 
 class MyElement extends FASTElement {
     @attr
     greeting: string = "Hello";
 }
-RenderableFASTElement(MyElement).defineAsync({
+MyElement.defineAsync({
     name: "my-element",
     templateOptions: "defer-and-hydrate",
 });

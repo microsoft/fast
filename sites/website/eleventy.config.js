@@ -41,7 +41,7 @@ export default function(eleventyConfig) {
    * Filters
    */
   eleventyConfig.addFilter("version", function(value) {
-    const version = "2.x";
+    const version = "3.x";
 
     if (typeof value === "string") {
         const splitUrl = value.split("/");
