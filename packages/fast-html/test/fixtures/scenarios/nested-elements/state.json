@@ -1,0 +1,10 @@
+{
+    "title": "My Items",
+    "items": [{ "text": "Item 1" }, { "text": "Item 2" }, { "text": "Item 3" }],
+    "emptyItems": [],
+    "singleItem": [{ "text": "Only Item" }],
+    "category": "General",
+    "repeatEventItems": [],
+    "whenRepeatItems": [{ "name": "Alpha" }, { "name": "Beta" }],
+    "showNames": true
+}

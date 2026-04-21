@@ -5,28 +5,43 @@ import { join } from "node:path";
  * Auto-discover fixture directories that contain the required build files
  * (entry.html, templates.html, state.json, and fast-build.config.json).
  *
+ * Fixtures are organized in category subdirectories (e.g., bindings/attribute,
+ * directives/repeat). The function scans two levels deep: category directories
+ * at the top level, and fixture directories within each category.
+ *
  * Each fixture directory must contain a `fast-build.config.json` that
  * configures the `@microsoft/fast-build` CLI. At minimum the config
  * should specify `entry`, `state`, `output`, and `templates`. Fixture-
  * specific options such as `attribute-name-strategy` can also be included.
  *
  * @param {string} fixturesDir - Absolute path to the fixtures directory.
- * @returns {string[]} Sorted array of fixture directory names.
+ * @returns {string[]} Sorted array of fixture paths relative to fixturesDir
+ *   (e.g., "bindings/attribute", "directives/repeat").
  */
 export function discoverFixtures(fixturesDir) {
-    return readdirSync(fixturesDir, { withFileTypes: true })
-        .filter(entry => {
-            if (!entry.isDirectory()) return false;
-            const dir = join(fixturesDir, entry.name);
-            return (
+    const fixtures = [];
+
+    for (const category of readdirSync(fixturesDir, { withFileTypes: true })) {
+        if (!category.isDirectory()) continue;
+
+        const categoryDir = join(fixturesDir, category.name);
+
+        for (const fixture of readdirSync(categoryDir, { withFileTypes: true })) {
+            if (!fixture.isDirectory()) continue;
+
+            const dir = join(categoryDir, fixture.name);
+            if (
                 existsSync(join(dir, "entry.html")) &&
                 existsSync(join(dir, "templates.html")) &&
                 existsSync(join(dir, "state.json")) &&
                 existsSync(join(dir, "fast-build.config.json"))
-            );
-        })
-        .map(entry => entry.name)
-        .sort((a, b) => a.localeCompare(b));
+            ) {
+                fixtures.push(`${category.name}/${fixture.name}`);
+            }
+        }
+    }
+
+    return fixtures.sort((a, b) => a.localeCompare(b));
 }
 
 /**
