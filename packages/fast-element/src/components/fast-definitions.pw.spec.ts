@@ -358,7 +358,7 @@ test.describe("FASTElementDefinition", () => {
 
                 await FASTElementDefinition.compose(FASTElement, elName);
 
-                const registeredEl = await FASTElementDefinition.registerAsync(elName);
+                const registeredEl = await FASTElementDefinition.register(elName);
 
                 return Reflect.getPrototypeOf(registeredEl) === FASTElement;
             });
