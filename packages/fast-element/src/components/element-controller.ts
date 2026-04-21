@@ -23,10 +23,7 @@ import {
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { isHydratable } from "./hydration.js";
-import {
-    HydrationTracker,
-    type ElementHydrationCallbacks,
-} from "./hydration-tracker.js";
+import { type ElementHydrationCallbacks, HydrationTracker } from "./hydration-tracker.js";
 
 /**
  * No-op handler used during prerendered bind to discard the
@@ -118,11 +115,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * }
      * ```
      */
-    public readonly isPrerendered: Promise<boolean> = new Promise<boolean>(
-        resolve => {
-            this._resolvePrerendered = resolve;
-        }
-    );
+    public readonly isPrerendered: Promise<boolean> = new Promise<boolean>(resolve => {
+        this._resolvePrerendered = resolve;
+    });
 
     /**
      * The template used to render the component.
@@ -444,7 +439,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * @param styles - the styles to remove.
      */
     public removeStyles(
-        styles: ElementStyles | HTMLStyleElement | null | undefined
+        styles: ElementStyles | HTMLStyleElement | null | undefined,
     ): void {
         if (!styles) {
             return;
@@ -476,7 +471,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        // If no template is available yet (defineAsync flow),
+        // If no template is available yet (deferred-hydration flow),
         // wait — the observable subscription on "template" in
         // forCustomElement() will call connect() when it arrives.
         if (
@@ -587,7 +582,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     public onAttributeChangedCallback(
         name: string,
         oldValue: string | null,
-        newValue: string | null
+        newValue: string | null,
     ): void {
         const attrDef = this.definition.attributeLookup[name];
 
@@ -607,11 +602,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     public emit(
         type: string,
         detail?: any,
-        options?: Omit<CustomEventInit, "detail">
+        options?: Omit<CustomEventInit, "detail">,
     ): void | boolean {
         if (this.stage === Stages.connected) {
             return this.source.dispatchEvent(
-                new CustomEvent(type, { detail, ...defaultEventOptions, ...options })
+                new CustomEvent(type, { detail, ...defaultEventOptions, ...options }),
             );
         }
 
@@ -645,8 +640,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         if (template) {
-            const isPrerendered =
-                this.hasExistingShadowRoot && this.needsInitialization;
+            const isPrerendered = this.hasExistingShadowRoot && this.needsInitialization;
 
             if (isPrerendered && isHydratable(template)) {
                 this.renderPrerendered(template, element, host);
@@ -666,7 +660,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private renderPrerendered(
         template: ElementViewTemplate,
         element: TElement,
-        host: Node
+        host: Node,
     ): void {
         const tracker = ElementController.hydrationTracker;
         tracker?.add(element);
@@ -709,14 +703,10 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private renderClientSide(
         template: ElementViewTemplate,
         element: TElement,
-        host: Node
+        host: Node,
     ): void {
         if (this.hasExistingShadowRoot) {
-            for (
-                let child = host.firstChild;
-                child !== null;
-                child = host.firstChild
-            ) {
+            for (let child = host.firstChild; child !== null; child = host.firstChild) {
                 host.removeChild(child);
             }
 
@@ -739,7 +729,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      */
     public static forCustomElement(
         element: HTMLElement,
-        override: boolean = false
+        override: boolean = false,
     ): ElementController {
         const controller: ElementController = (element as any).$fastController;
 
@@ -760,7 +750,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                     (element as FASTElement).$fastController.connect();
                 },
             },
-            "template"
+            "template",
         );
 
         Observable.getNotifier(definition).subscribe(
@@ -770,12 +760,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                     (element as FASTElement).$fastController.connect();
                 },
             },
-            "shadowOptions"
+            "shadowOptions",
         );
 
         return ((element as any).$fastController = new elementControllerStrategy(
             element,
-            definition
+            definition,
         ));
     }
 
@@ -901,7 +891,7 @@ export class StyleElementStrategy implements StyleStrategy {
     public removeStylesFrom(target: StyleTarget): void {
         target = usableStyleTarget(normalizeStyleTarget(target));
         const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
-            `.${this.styleClass}`
+            `.${this.styleClass}`,
         );
 
         for (let i = 0, ii = styles.length; i < ii; ++i) {
@@ -915,10 +905,10 @@ let addAdoptedStyleSheets = (target: Required<StyleTarget>, sheets: CSSStyleShee
 };
 let removeAdoptedStyleSheets = (
     target: Required<StyleTarget>,
-    sheets: CSSStyleSheet[]
+    sheets: CSSStyleSheet[],
 ) => {
     target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-        (x: CSSStyleSheet) => sheets.indexOf(x) === -1
+        (x: CSSStyleSheet) => sheets.indexOf(x) === -1,
     );
 };
 if (ElementStyles.supportsAdoptedStyleSheets) {
@@ -941,7 +931,7 @@ if (ElementStyles.supportsAdoptedStyleSheets) {
                 }
             }
         };
-    } catch (e) {
+    } catch (_e) {
         // Do nothing if an error is thrown, the default
         // case handles FrozenArray.
     }

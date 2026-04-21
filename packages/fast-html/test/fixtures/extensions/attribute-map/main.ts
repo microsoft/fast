@@ -16,15 +16,19 @@ class AttributeMapTestElement extends FASTElement {
     }
 }
 
-AttributeMapTestElement.defineAsync({ name: "attribute-map-test-element" });
+AttributeMapTestElement.define({
+    name: "attribute-map-test-element",
+    templateOptions: "defer-and-hydrate",
+});
 
 class AttributeMapWithExistingAttrElement extends FASTElement {
     @attr
     foo: string = "original";
 }
 
-AttributeMapWithExistingAttrElement.defineAsync({
+AttributeMapWithExistingAttrElement.define({
     name: "attribute-map-existing-attr-test-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.options({

@@ -14,7 +14,7 @@ export class TodoApp extends FASTElement {
 // this so that we can control the startup timing of
 // the app. See the main.ts file for further
 // explanation.
-export const app = TodoApp.compose({
+export const app = await TodoApp.compose({
     name: "todo-app",
     template,
     styles,

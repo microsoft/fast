@@ -5,7 +5,7 @@ class TestElement extends FASTElement {
     @attr
     type: string = "radio";
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -14,7 +14,7 @@ class TestElementProperty extends FASTElement {
     @observable
     isEnabled: boolean = false;
 }
-TestElementProperty.defineAsync({
+TestElementProperty.define({
     name: "test-element-property",
     templateOptions: "defer-and-hydrate",
 });
@@ -26,7 +26,7 @@ class TestElementExpression extends FASTElement {
     @attr({ attribute: "current-group" })
     currentGroup: string = "";
 }
-TestElementExpression.defineAsync({
+TestElementExpression.define({
     name: "test-element-expression",
     templateOptions: "defer-and-hydrate",
 });
