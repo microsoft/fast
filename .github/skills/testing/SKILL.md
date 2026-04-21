@@ -102,7 +102,7 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 ### Test file conventions
 
 - Test files use the `*.spec.ts` suffix (specifically `*.pw.spec.ts` for package `src/` tests).
-- Fixture tests live inside their fixture directory: `test/fixtures/<feature>/<feature>.spec.ts`.
+- Fixture tests live inside their fixture directory: `test/fixtures/<category>/<feature>/<feature>.spec.ts`.
 - Source-level tests are co-located next to the code they test: `src/<feature>/<feature>.pw.spec.ts`.
 
 ### Writing fixture tests for fast-html
@@ -120,7 +120,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("my-feature", async () => {
     test("renders correctly", async ({ page }) => {
-        await page.goto("/fixtures/my-feature/");
+        await page.goto("/fixtures/bindings/my-feature/");
 
         const element = page.locator("my-element");
         await expect(element).toHaveText("Hello");

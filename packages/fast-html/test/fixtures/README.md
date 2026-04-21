@@ -1,9 +1,19 @@
 # Fixtures
 
+Fixtures are organized into category subdirectories:
+
+| Category | Description |
+|---|---|
+| [`bindings/`](./bindings/README.md) | Various binding types (attribute, content, event, dot-syntax, host). |
+| [`scenarios/`](./scenarios/README.md) | Complex scenarios with edge cases involving multiple features. |
+| [`directives/`](./directives/README.md) | Attribute and element directives (`f-repeat`, `f-when`, `f-ref`, etc.). |
+| [`extensions/`](./extensions/README.md) | Additional functionality that augments the core behavior (attribute maps, observer maps). |
+| [`ecosystem/`](./ecosystem/README.md) | Other ecosystem APIs (errors, lifecycle, performance). |
+
 Each fixture contains the following contents:
 
 ```
-<fixture-name>/
+<category>/<fixture-name>/
 ├── <fixture-name>.spec.ts - Playwright tests
 ├── entry.html - Entry template with root custom elements (input to build-fixtures.js)
 ├── fast-build.config.json - Build configuration for @microsoft/fast-build
@@ -13,7 +23,7 @@ Each fixture contains the following contents:
 └── templates.html - Declarative f-template definitions
 ```
 
-Fixtures are auto-discovered by the Vite config in `../vite.config.ts`. To add a new fixture, create a new directory with the files above — no other changes are needed.
+Fixtures are auto-discovered by the Vite config in `../vite.config.ts`. To add a new fixture, create a new directory within the appropriate category with the files above — no other changes are needed.
 
 ## Hydration readiness
 

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("AttributeMap", () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto("/fixtures/attribute-map/");
+        await page.goto("/fixtures/extensions/attribute-map/");
         await page.waitForSelector("attribute-map-test-element");
     });
 

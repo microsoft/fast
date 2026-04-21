@@ -11,12 +11,21 @@ function discoverFixtureInputs(): Record<string, string> {
         index: join(__dirname, "index.html"),
     };
 
-    for (const entry of readdirSync(fixturesDir, { withFileTypes: true })) {
-        if (!entry.isDirectory()) {
+    for (const category of readdirSync(fixturesDir, { withFileTypes: true })) {
+        if (!category.isDirectory()) {
             continue;
         }
 
-        inputs[entry.name] = join(fixturesDir, entry.name, "index.html");
+        const categoryDir = join(fixturesDir, category.name);
+
+        for (const fixture of readdirSync(categoryDir, { withFileTypes: true })) {
+            if (!fixture.isDirectory()) {
+                continue;
+            }
+
+            const key = `${category.name}/${fixture.name}`;
+            inputs[key] = join(categoryDir, fixture.name, "index.html");
+        }
     }
 
     return inputs;
