@@ -12,3 +12,4 @@ export {
     type ObserverMapPathNode,
     TemplateElement,
 } from "./template.js";
+export { TemplateParser } from "./template-parser.js";
