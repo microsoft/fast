@@ -267,7 +267,7 @@ sequenceDiagram
     TE->>TE: new Schema(name)
     TE->>TE: FASTElementDefinition.registerAsync(name)
     TE->>U: transformInnerHTML(this.innerHTML)
-    TE->>TE: resolveStringsAndValues(innerHTML, ctx)
+    TE->>TE: resolveStringsAndValues(innerHTML, context)
     loop getNextBehavior(innerHTML)
         TE->>U: getNextBehavior()
         U-->>TE: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
