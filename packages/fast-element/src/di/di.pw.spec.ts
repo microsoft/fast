@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
-    Container,
+    type Container,
     ContainerImpl,
     DI,
     FactoryImpl,
@@ -44,7 +44,7 @@ test.describe(`The DI object`, () => {
 
                 DI.installAsContextRequestStrategy();
                 DI.getOrCreateDOMContainer().register(
-                    Registration.instance(TestContext, value)
+                    Registration.instance(TestContext, value),
                 );
 
                 let capture;
@@ -84,7 +84,7 @@ test.describe(`The DI object`, () => {
 
                 DI.installAsContextRequestStrategy();
                 DI.getOrCreateDOMContainer().register(
-                    Registration.instance(TestContext, value)
+                    Registration.instance(TestContext, value),
                 );
 
                 return {
@@ -118,7 +118,7 @@ test.describe(`The DI object`, () => {
 
                 DI.installAsContextRequestStrategy();
                 DI.getOrCreateDOMContainer().register(
-                    Registration.instance(TestContext, value)
+                    Registration.instance(TestContext, value),
                 );
 
                 Context.defineProperty(child, "test", TestContext);
@@ -160,7 +160,7 @@ test.describe(`The DI object`, () => {
 
                 DI.installAsContextRequestStrategy();
                 DI.getOrCreateDOMContainer().register(
-                    Registration.instance(TestContext, value)
+                    Registration.instance(TestContext, value),
                 );
 
                 return {
@@ -210,13 +210,13 @@ test.describe(`The DI object`, () => {
                 const { DI, FASTElement, html, ref } = await import("/main.js");
                 console.log(document);
                 class TestChild extends FASTElement {} // ???
-                TestChild.define({
+                await TestChild.define({
                     name: "test-child",
                 });
                 class TestParent extends FASTElement {
                     public child!: TestChild;
                 }
-                TestParent.define({
+                await TestParent.define({
                     name: "test-parent",
                     template: html`
                         <test-child ${ref("child")}></test-child>
@@ -380,8 +380,7 @@ test.describe(`The inject function`, () => {
 
     test(`can decorate constructor parameters explicitly`, () => {
         class Foo {
-            public constructor(dep1, dep2, dep3)
-            {
+            public constructor(dep1, dep2, dep3) {
                 return;
             }
         }
@@ -394,8 +393,7 @@ test.describe(`The inject function`, () => {
 
     test(`can decorate constructor parameters implicitly`, () => {
         class Foo {
-            public constructor(dep1, dep2, dep3)
-            {
+            public constructor(dep1, dep2, dep3) {
                 return;
             }
         }
@@ -430,8 +428,8 @@ test.describe(`The inject function`, () => {
             return {
                 dep1: instance.dep1 instanceof Dep1,
                 dep2: instance.dep2 instanceof Dep2,
-                dep3: instance.dep3 instanceof Dep3
-            }
+                dep3: instance.dep3 instanceof Dep3,
+            };
         });
 
         expect(dep1).toBe(true);
@@ -640,7 +638,7 @@ test.describe(`The Factory class`, () => {
                         ++i
                     ) {
                         expect(actual.args[DI.getDependencies(Foo).length + i]).toBe(
-                            dynamicDeps![i]
+                            dynamicDeps![i],
                         );
                     }
                 });
@@ -893,7 +891,7 @@ test.describe(`The Container class`, () => {
             const key = {};
             sut.registerResolver(
                 key,
-                new ResolverImpl(key, ResolverStrategy.instance, {})
+                new ResolverImpl(key, ResolverStrategy.instance, {}),
             );
             expect(sut.has(key as any, false)).toBe(true);
         });

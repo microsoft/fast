@@ -5,7 +5,7 @@ class TestCamelCase extends FASTElement {
     @attr({ attribute: "foo-bar" })
     fooBar: string = "";
 }
-TestCamelCase.defineAsync({
+TestCamelCase.define({
     name: "test-camel-case",
     templateOptions: "defer-and-hydrate",
 });
@@ -14,7 +14,7 @@ class TestCamelCaseMulti extends FASTElement {
     @attr({ attribute: "my-custom-prop" })
     myCustomProp: string = "";
 }
-TestCamelCaseMulti.defineAsync({
+TestCamelCaseMulti.define({
     name: "test-camel-case-multi",
     templateOptions: "defer-and-hydrate",
 });
@@ -23,7 +23,7 @@ class TestCamelCaseNoDash extends FASTElement {
     @attr
     label: string = "";
 }
-TestCamelCaseNoDash.defineAsync({
+TestCamelCaseNoDash.define({
     name: "test-camel-case-no-dash",
     templateOptions: "defer-and-hydrate",
 });
