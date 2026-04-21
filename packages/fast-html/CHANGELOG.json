@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Tue, 21 Apr 2026 00:05:17 GMT",
+      "version": "1.0.0-alpha.49",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.49",
+      "comments": {
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "713e4f5274ce8561268e8348da21968be0350a99",
+            "comment": "chore: update webui to 0.0.10"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sat, 18 Apr 2026 00:05:00 GMT",
       "version": "1.0.0-alpha.49",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.49",
