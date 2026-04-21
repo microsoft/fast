@@ -207,6 +207,6 @@ export const FASTElement: {
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
     return function (type: Constructable<HTMLElement>) {
-        return define(type, nameOrDef);
+        define(type, nameOrDef);
     };
 }
