@@ -244,7 +244,7 @@ flowchart TD
     C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
     C --> E["TemplateElement.define called\n→ registers f-template custom element"]
     D & E --> F["f-template connects to DOM\n→ connectedCallback fires"]
-    F --> G["FASTElementDefinition.registerAsync\n→ looks up partial definition"]
+    F --> G["FASTElementDefinition.register\n→ looks up partial definition"]
     G --> H[transformInnerHTML normalises HTML entities]
     H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
     I --> J{observerMap enabled?}
@@ -280,7 +280,7 @@ sequenceDiagram
 
     DOM->>TE: connectedCallback()
     TE->>TE: new Schema(name)
-    TE->>TE: FASTElementDefinition.registerAsync(name)
+    TE->>TE: FASTElementDefinition.register(name)
     TE->>U: transformInnerHTML(this.innerHTML)
     TE->>TP: parser.parse(innerHTML, schema)
     loop getNextBehavior(innerHTML)
@@ -441,7 +441,7 @@ sequenceDiagram
     App->>TE: TemplateElement.options({'my-el':{observerMap:'all'}})
 
     DOM->>TE: f-template connected to DOM
-    TE->>FER: FASTElementDefinition.registerAsync('my-el')
+    TE->>FER: FASTElementDefinition.register('my-el')
     FER-->>TE: resolves with MyElement class
     TE->>Callbacks: elementDidRegister('my-el')
     TE->>Callbacks: templateWillUpdate('my-el')
@@ -465,7 +465,7 @@ sequenceDiagram
 
 | Callback | When |
 |---|---|
-| `elementDidRegister(name)` | `FASTElementDefinition.registerAsync` resolves |
+| `elementDidRegister(name)` | `FASTElementDefinition.register` resolves |
 | `templateWillUpdate(name)` | Just before template HTML is parsed |
 | `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
 | `elementDidDefine(name)` | After `compose` completes |
@@ -485,7 +485,7 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 | fast-element primitive | How fast-html uses it |
 |---|---|
 | `FASTElement` | Base class for both `TemplateElement` and user components (components extend `FASTElement` directly) |
-| `FASTElementDefinition.registerAsync()` | Deferred element registration — element waits for its template |
+| `FASTElementDefinition.register()` | Deferred element registration — element waits for its template |
 | `fastElementRegistry.getByType()` | Looks up a partial definition to attach the compiled template |
 | `ViewTemplate.create(strings, values)` | Compiles the resolved strings/values arrays into a `ViewTemplate` |
 | `ElementController` | Automatically detects prerendered content (`isPrerendered`) and hydrates server-rendered DOM using `fe-b` comment/dataset markers via `template.hydrate()` |
@@ -499,7 +499,7 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 
 ### Deferred template attachment via define
 
-Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a template is provided at definition time. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the `Promise` resolves after a `<f-template>` supplies one via `registerAsync()`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
+Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a template is provided at definition time. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the `Promise` resolves after a `<f-template>` supplies one via `register()`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
 
 ---
 

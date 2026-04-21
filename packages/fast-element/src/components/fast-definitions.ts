@@ -322,7 +322,7 @@ export class FASTElementDefinition<
      * @param name - The name of the defined custom element.
      * @alpha
      */
-    public static registerAsync = async (name: string): Promise<Function> => {
+    public static register = async (name: string): Promise<Function> => {
         return new Promise(resolve => {
             if (FASTElementDefinition.isRegistered[name]) {
                 resolve(FASTElementDefinition.isRegistered[name]);

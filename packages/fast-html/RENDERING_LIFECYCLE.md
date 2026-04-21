@@ -68,7 +68,7 @@ When an `f-template` element is connected to the DOM, it initiates the template 
 The lifecycle flow during this phase:
 
 1. **Template Element Connection**: The `f-template` element's `connectedCallback()` is invoked
-2. **Async Registration Lookup**: Uses `FASTElementDefinition.registerAsync(this.name)` to find the partial element definition
+2. **Async Registration Lookup**: Uses `FASTElementDefinition.register(this.name)` to find the partial element definition
 3. **Template Processing**: Processes the HTML template, resolving data bindings, directives, and other template features into the `ViewTemplate` model which is also used by the `@microsoft/fast-element` `html` tag template
 4. **Template Attachment**: Attaches the processed template to the partial element definition via `registeredFastElement.template = resolvedTemplate`
 
@@ -105,14 +105,14 @@ The DOM after hydration should look like this:
 The `fastElementRegistry` serves as the central coordination point between the two packages:
 
 - Stores partial element definitions created by `define()`
-- Provides lookup mechanism via `registerAsync()` for template attachment
+- Provides lookup mechanism via `register()` for template attachment
 - Maintains the registry of all FAST element definitions
 
 ### Observable Pattern
 
 Both packages use the Observable pattern for coordination:
 
-- `FASTElementDefinition.registerAsync()` uses `Observable.getNotifier()` to notify when elements are registered
+- `FASTElementDefinition.register()` uses `Observable.getNotifier()` to notify when elements are registered
 - Template attachment triggers observable notifications to complete the lifecycle
 
 ## Error Handling
