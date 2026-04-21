@@ -90,13 +90,13 @@ connectedCallback() {
 
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
-The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `defineAsync()` directly.
+The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `define()` directly.
 
 2.x Example:
 ```ts
 import { RenderableFASTElement } from "@microsoft/fast-html";
 
-RenderableFASTElement(MyComponent).defineAsync({
+RenderableFASTElement(MyComponent).define({
     name: "my-component",
     templateOptions: "defer-and-hydrate",
 });
@@ -104,7 +104,7 @@ RenderableFASTElement(MyComponent).defineAsync({
 
 3.x Example:
 ```ts
-MyComponent.defineAsync({
+MyComponent.define({
     name: "my-component",
     templateOptions: "defer-and-hydrate",
 });
