@@ -18,7 +18,7 @@ export class TestElementRepeatEvent extends FASTElement {
         this.clickedItemName = (e.currentTarget as HTMLButtonElement).textContent!;
     }
 }
-TestElementRepeatEvent.defineAsync({
+TestElementRepeatEvent.define({
     name: "test-element-repeat-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -34,7 +34,7 @@ export class TestWhenInRepeat extends FASTElement {
         console.log(`Clicked item: ${this.clickedItemName}`);
     }
 }
-TestWhenInRepeat.defineAsync({
+TestWhenInRepeat.define({
     name: "test-when-in-repeat",
     templateOptions: "defer-and-hydrate",
 });

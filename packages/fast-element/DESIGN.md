@@ -101,7 +101,7 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
-`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` and registered globally via `fastElementRegistry`.
+`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or deferring when `templateOptions` is `"defer-and-hydrate"` and no template is provided. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
 
 ---
 
