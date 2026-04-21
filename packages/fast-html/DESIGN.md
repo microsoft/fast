@@ -60,8 +60,12 @@ This document is intended for contributors who want to understand the internal a
 `<f-template>` is a custom element (class `TemplateElement`) that acts as the bridge between a declarative HTML template and the FAST element registry. When connected to the DOM it:
 
 1. Looks up the element definition registered via `defineAsync()`.
-2. Parses the inner `<template>` tag, converting declarative bindings into FAST `ViewTemplate` strings and values.
+2. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which converts declarative bindings into FAST `ViewTemplate` strings and values.
 3. Assigns the compiled `ViewTemplate` to the element definition.
+
+### `TemplateParser` — declarative HTML parser
+
+A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parsing pipeline is fully synchronous — no promises are allocated during template resolution. A `StringsAccumulator` tracks the running concatenation of preceding HTML, eliminating repeated O(N) `join("")` calls at each binding site.
 
 ### `Schema` — JSON schema builder
 
@@ -158,7 +162,8 @@ packages/fast-html/
 │   └── components/
 │       ├── index.ts           # Component barrel
 │       ├── element.ts         # Element utilities
-│       ├── template.ts        # TemplateElement (<f-template>), ObserverMapOption, ElementOptions
+│       ├── template.ts        # TemplateElement (<f-template>), lifecycle orchestration, options
+│       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
 │       ├── schema.ts          # Schema class — JSON schema builder
 │       ├── observer-map.ts    # ObserverMap class — auto observable/proxy setup
 │       ├── utilities.ts       # Parsing engine, binding resolvers, proxy system
@@ -178,6 +183,7 @@ packages/fast-html/
 ```typescript
 import {
     TemplateElement,
+    TemplateParser,
     ObserverMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
@@ -185,11 +191,12 @@ import {
 } from "@microsoft/fast-html";
 ```
 
-Two primary exports are intended for application code:
+Three primary exports are intended for application code:
 
 | Export | Purpose |
 |---|---|
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
+| `TemplateParser` | Standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
 | `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
 
 Additionally, the following types are exported for use in `observerMap` configuration:
@@ -253,12 +260,20 @@ flowchart TD
 
 ## Template Parsing Pipeline
 
-`TemplateElement.connectedCallback()` drives the pipeline via two cooperating private methods:
+`TemplateElement.connectedCallback()` orchestrates the pipeline by creating a `TemplateParser` instance and delegating all parsing logic to it. The recursive parsing context is encapsulated in a `TemplateResolutionContext` object internal to the parser, keeping method signatures lean.
+
+### Architecture
+
+The parsing pipeline is split across two classes:
+
+- **`TemplateElement`** (`template.ts`) — Custom element lifecycle: registration, options, callbacks, `ObserverMap`/`AttributeMap` wiring, and template assignment. ~120 lines.
+- **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser: converts declarative HTML into `strings`/`values` arrays for `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running previous-string in O(1) per binding site instead of O(N) `join("")` calls. Independently testable without DOM.
 
 ```mermaid
 sequenceDiagram
     participant DOM
     participant TE as TemplateElement
+    participant TP as TemplateParser
     participant U as utilities.ts
     participant S as Schema
     participant OM as ObserverMap
@@ -267,26 +282,69 @@ sequenceDiagram
     TE->>TE: new Schema(name)
     TE->>TE: FASTElementDefinition.registerAsync(name)
     TE->>U: transformInnerHTML(this.innerHTML)
-    TE->>TE: resolveStringsAndValues(innerHTML, ...)
+    TE->>TP: parser.parse(innerHTML, schema)
     loop getNextBehavior(innerHTML)
-        TE->>U: getNextBehavior()
-        U-->>TE: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
-        alt data binding
-            TE->>TE: resolveDataBinding()
-            TE->>U: bindingResolver()
+        TP->>U: getNextBehavior()
+        U-->>TP: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
+        alt content binding
+            TP->>TP: resolveContentBinding()
+            TP->>TP: resolveAccessBinding()
+            TP->>U: bindingResolver()
             U->>S: schema.addPath()
-            U-->>TE: (x,c) => value function
-        else templateDirective (when / repeat)
-            TE->>TE: resolveTemplateDirective()
-            note over TE: recurses into resolveStringsAndValues
+            U-->>TP: (x,c) => value function
+        else attribute binding
+            TP->>TP: resolveAttributeBinding()
+            alt event (@)
+                TP->>TP: resolveEventBinding()
+            else boolean (?)
+                TP->>U: getBooleanBinding() or resolveAccessBinding()
+            else default
+                TP->>TP: resolveAccessBinding()
+            end
         else attributeDirective (slotted / children / ref)
-            TE->>TE: resolveAttributeDirective()
+            TP->>TP: resolveAttributeDirectiveBinding()
+        else templateDirective (when / repeat)
+            TP->>TP: resolveTemplateDirective()
+            note over TP: recurses into resolveStringsAndValues
         end
     end
+    TP-->>TE: { strings, values }
     TE->>OM: observerMap.defineProperties()
-    TE->>TE: ViewTemplate.create(strings, values)
+    TE->>TP: parser.createTemplate(strings, values)
     TE->>DOM: registeredFastElement.template = viewTemplate
 ```
+
+### TemplateParser method decomposition
+
+| Method | Visibility | Role |
+|---|---|---|
+| `parse()` | public | Entry point: parses declarative HTML into `{ strings, values }`. |
+| `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values. |
+| `hasDeprecatedEventSyntax` | public | Getter indicating whether the last parse encountered deprecated `e` event syntax. |
+| `resolveStringsAndValues()` | private | Creates `strings`/`values` arrays and delegates to `resolveInnerHTML()`. |
+| `resolveInnerHTML()` | private | Recursive HTML parser that dispatches to data binding or template directive handlers. |
+| `resolveDataBinding()` | private | Thin dispatcher that routes to `resolveContentBinding()`, `resolveAttributeBinding()`, or `resolveAttributeDirectiveBinding()`. |
+| `resolveContentBinding()` | private | Handles `{{expression}}` in text content. |
+| `resolveAttributeBinding()` | private | Handles `{{expression}}` in HTML attributes; dispatches to `resolveEventBinding()` or `resolveAccessBinding()` based on aspect. |
+| `resolveAttributeDirectiveBinding()` | private | Handles `f-children`, `f-slotted`, `f-ref` directives. |
+| `resolveAccessBinding()` | private | Shared helper for access-type bindings (content, boolean-attribute fallback, default attribute). |
+| `resolveEventBinding()` | private | Handles event bindings (`@event`), including arg parsing and owner resolution. |
+| `resolveTemplateDirective()` | private | Handles `<f-when>` and `<f-repeat>` directives. |
+| `resolveAttributeDirective()` | private | Creates FAST `children()`, `slotted()`, or `ref()` directives. |
+
+### TemplateResolutionContext
+
+The `TemplateResolutionContext` interface (internal to `TemplateParser`) groups the stable fields that flow through the recursive parsing pipeline:
+
+```typescript
+interface TemplateResolutionContext {
+    parentContext: string | null;  // Current repeat item alias (e.g. "item")
+    level: number;          // Nesting depth for repeat directives
+    schema: Schema;         // JSON schema builder for property tracking
+}
+```
+
+`rootPropertyName` is intentionally kept separate because it is selectively mutated per branch and must not leak across sibling binding resolutions.
 
 ### Key parsing functions (utilities.ts)
 
