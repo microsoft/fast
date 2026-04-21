@@ -19,18 +19,18 @@
 
 ### Migration steps
 
-1. Replace `RenderableFASTElement(MyComponent).defineAsync({...})` with `MyComponent.defineAsync({...})`.
+1. Replace `RenderableFASTElement(MyComponent).defineAsync({...})` with `MyComponent.define({...})`.
 
    ```typescript
    // Before
    import { RenderableFASTElement } from "@microsoft/fast-html";
-   RenderableFASTElement(MyComponent).defineAsync({
+   RenderableFASTElement(MyComponent).define({
        name: "my-component",
        templateOptions: "defer-and-hydrate",
    });
 
    // After
-   MyComponent.defineAsync({
+   MyComponent.define({
        name: "my-component",
        templateOptions: "defer-and-hydrate",
    });

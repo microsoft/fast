@@ -5,7 +5,7 @@ class TestElement extends FASTElement {
     @attr
     text: string = "Hello";
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -13,7 +13,7 @@ TestElement.defineAsync({
 class TestElementUnescaped extends FASTElement {
     public html = `<p>Hello world</p>`;
 }
-TestElementUnescaped.defineAsync({
+TestElementUnescaped.define({
     name: "test-element-unescaped",
     templateOptions: "defer-and-hydrate",
 });
