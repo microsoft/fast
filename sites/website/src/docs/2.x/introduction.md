@@ -33,6 +33,6 @@ FAST is a collection of technologies built on Web Components and modern Web Stan
 - Style composition
 - Elements refs, template directives, and much more.
 
-The entire `@microsoft/fast-element` library, without tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads as small as 4.5k.
+The entire `@microsoft/fast-element` library, without tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads. See the [Package Sizes](/docs/2.x/resources/package-sizes/) page for detailed per-export bundle sizes.
 
 One of FAST's driving principles is "strive to adopt open, web standards-based approaches as much as possible." To that end, FAST is built directly on the W3C Web Component standards mentioned above, and does not create its own component model. This allows components built with FAST to function the same as built-in, native HTML elements. You do not need a framework to use FAST components, but you can use them in combination with any framework or library of your choice.

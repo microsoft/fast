@@ -180,9 +180,7 @@ If the breaking change is significant or requires multiple PRs, open a [discussi
 
 # Documentation
 
-Keep the website documentation in `sites/website/src/docs/` updated when making changes that affect public APIs, behavior, or usage patterns. The documentation is organized by version:
-
-- `sites/website/src/docs/2.x/` — Current version documentation (getting started, guides, advanced topics, API reference).
+After any changes ensure that the documentation is up to date, this includes the files DESIGN.md and README.md files for any packages/crates that have been modified. If your changes update or add to the public API, update the sites/website/src/docs/ files. Only update the latest version, these are denoted by major versions in their folder names inside the docs folder, 1.x, 2.x, etc., find the latest version of the docs and modify them if necessary.
 
 When adding or modifying exported APIs, run the website prebuild script to regenerate API documentation from the api-extractor output:
 
