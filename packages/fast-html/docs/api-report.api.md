@@ -6,6 +6,7 @@
 
 import { FASTElement } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export interface AttributeMapConfig {
@@ -49,6 +50,14 @@ export class TemplateElement extends FASTElement {
     static elementOptions: ElementOptionsDictionary;
     name?: string;
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
+}
+
+// @public
+export class TemplateParser {
+    createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
+    get hasDeprecatedEventSyntax(): boolean;
+    // Warning: (ae-forgotten-export) The symbol "ResolvedStringsAndValues" needs to be exported by the entry point index.d.ts
+    parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }
 
 // (No @packageDocumentation comment for this package)

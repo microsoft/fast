@@ -10,4 +10,5 @@ export {
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
     TemplateElement,
+    TemplateParser,
 } from "./components/index.js";

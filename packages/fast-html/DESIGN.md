@@ -338,11 +338,9 @@ The `TemplateResolutionContext` interface (internal to `TemplateParser`) groups 
 
 ```typescript
 interface TemplateResolutionContext {
-    self: boolean;          // Whether bindings refer to the element itself
     parentContext: string | null;  // Current repeat item alias (e.g. "item")
     level: number;          // Nesting depth for repeat directives
     schema: Schema;         // JSON schema builder for property tracking
-    observerMap?: ObserverMap;  // Optional auto-observable layer
 }
 ```
 

@@ -7,7 +7,6 @@ import {
     ViewTemplate,
     when,
 } from "@microsoft/fast-element";
-import type { ObserverMap } from "./observer-map.js";
 import type { Schema } from "./schema.js";
 import {
     type AttributeDirective,
@@ -41,11 +40,9 @@ export interface ResolvedStringsAndValues {
  * selectively mutated per branch and must not leak across siblings.
  */
 interface TemplateResolutionContext {
-    self: boolean;
     parentContext: string | null;
     level: number;
     schema: Schema;
-    observerMap?: ObserverMap;
 }
 
 /**
@@ -103,22 +100,15 @@ export class TemplateParser {
      * Parse declarative HTML into strings and values for ViewTemplate creation.
      * @param innerHTML - The transformed innerHTML to parse.
      * @param schema - The Schema instance for property tracking.
-     * @param observerMap - Optional ObserverMap for caching binding paths.
      * @returns The resolved strings and values.
      */
-    public parse(
-        innerHTML: string,
-        schema: Schema,
-        observerMap?: ObserverMap,
-    ): ResolvedStringsAndValues {
+    public parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues {
         this._hasDeprecatedEventSyntax = false;
 
         return this.resolveStringsAndValues(null, innerHTML, {
-            self: false,
             parentContext: null,
             level: 0,
             schema,
-            observerMap,
         });
     }
 
@@ -223,11 +213,9 @@ export class TemplateParser {
                 );
 
                 const repeatContext: TemplateResolutionContext = {
-                    self: true,
                     parentContext: valueAttr[0],
                     level: updatedLevel,
                     schema: context.schema,
-                    observerMap: context.observerMap,
                 };
 
                 const { strings, values } = this.resolveStringsAndValues(

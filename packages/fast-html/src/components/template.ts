@@ -298,6 +298,8 @@ class TemplateElement extends FASTElement {
                 TemplateElement.setOptions(name);
             }
 
+            const schema = this.schema!;
+
             if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.observerMap)) {
                 const observerMapOption =
                     TemplateElement.elementOptions[name]?.observerMap;
@@ -308,7 +310,7 @@ class TemplateElement extends FASTElement {
 
                 this.observerMap = new ObserverMap(
                     value.prototype,
-                    this.schema as Schema,
+                    schema,
                     observerMapConfig,
                 );
             }
@@ -323,7 +325,7 @@ class TemplateElement extends FASTElement {
 
                 this.attributeMap = new AttributeMap(
                     value.prototype,
-                    this.schema as Schema,
+                    schema,
                     registeredFastElement,
                     mapConfig,
                 );
@@ -338,11 +340,7 @@ class TemplateElement extends FASTElement {
                 const innerHTML = transformInnerHTML(this.innerHTML);
                 const parser = new TemplateParser();
 
-                const { strings, values } = parser.parse(
-                    innerHTML,
-                    this.schema as Schema,
-                    this.observerMap,
-                );
+                const { strings, values } = parser.parse(innerHTML, schema);
 
                 if (parser.hasDeprecatedEventSyntax) {
                     console.warn(
