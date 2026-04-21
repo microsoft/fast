@@ -594,7 +594,7 @@ Some tests are conditionally skipped when running under the webui integration co
 
 Every fixture must wait for hydration to complete before running assertions. Each `main.ts` registers a `hydrationComplete()` callback via `TemplateElement.config()` that sets a global flag, and each spec file calls `page.waitForFunction()` after `page.goto()` to block until the flag is set. See [test/fixtures/README.md](./test/fixtures/README.md) for the implementation pattern.
 
-See [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) for the complete fixture authoring guide, [test/fixtures/README.md](./test/fixtures/README.md) for a quick reference, and [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) for an example of a complex multi-feature fixture.
+See [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) for the complete fixture authoring guide, [test/fixtures/README.md](./test/fixtures/README.md) for a quick reference, and [test/fixtures/extensions/observer-map-deep-merge/README.md](./test/fixtures/extensions/observer-map-deep-merge/README.md) for an example of a complex multi-feature fixture.
 
 ---
 
@@ -609,4 +609,4 @@ See [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) for
 | [rules/README.md](./rules/README.md) | ast-grep conversion rules for migrating `html` tagged templates |
 | [test/fixtures/README.md](./test/fixtures/README.md) | Quick reference for fixture structure |
 | [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) | Complete guide to writing new Playwright fixture tests |
-| [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |
+| [test/fixtures/extensions/observer-map-deep-merge/README.md](./test/fixtures/extensions/observer-map-deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |

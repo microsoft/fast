@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "refactor: categorize fast-html fixture files into organized subdirectories",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
