@@ -3,6 +3,7 @@ import { Observable } from "../observation/observable.js";
 import { ElementController } from "./element-controller.js";
 import {
     FASTElementDefinition,
+    type FASTElementExtension,
     type PartialFASTElementDefinition,
     TemplateOptions,
 } from "./fast-definitions.js";
@@ -129,14 +130,17 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
     nameOrDef: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
     nameOrDef?: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
     nameOrDef?: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<TType> {
     const composePromise = isFunction(type)
         ? FASTElementDefinition.compose(type, nameOrDef)
@@ -150,14 +154,14 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
                     handleChange: () => {
                         notifier.unsubscribe(subscriber, "template");
                         def.lifecycleCallbacks?.templateDidUpdate?.(def.name);
-                        resolve(def.define().type);
+                        resolve(def.define(undefined, extensions).type);
                     },
                 };
                 notifier.subscribe(subscriber, "template");
             });
         }
 
-        return def.define().type;
+        return def.define(undefined, extensions).type;
     });
 }
 
