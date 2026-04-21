@@ -453,7 +453,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
-    define(registry?: CustomElementRegistry): this;
+    define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -474,6 +474,9 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     templateOptions?: TemplateOptions;
     readonly type: TType;
 }
+
+// @public
+export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
 //
