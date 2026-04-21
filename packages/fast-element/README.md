@@ -73,3 +73,30 @@ this.$fastController.isPrerendered.then(prerendered => {
 ```
 
 Custom directives can also await `controller.isPrerendered` (a `Promise<boolean>` on the `ViewController` interface) to determine whether the view's content was prerendered.
+
+## Define Extensions
+
+`FASTElement.define()` accepts an optional second argument — an array of extension callbacks that are invoked with the resolved element definition before the element is registered with the platform. This enables a plugin pattern where reusable behaviors can hook into element registration.
+
+```typescript
+import { FASTElement } from "@microsoft/fast-element";
+import type { FASTElementExtension } from "@microsoft/fast-element";
+
+function logger(): FASTElementExtension {
+    return definition => {
+        console.log(`Defining element: ${definition.name}`);
+    };
+}
+
+class MyComponent extends FASTElement {
+    // component code
+}
+
+// Method style
+MyComponent.define({ name: "my-component", template, styles }, [logger()]);
+
+// Static style
+FASTElement.define(MyComponent, { name: "my-component" }, [logger()]);
+```
+
+Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.
