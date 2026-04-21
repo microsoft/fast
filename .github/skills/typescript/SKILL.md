@@ -30,14 +30,15 @@ The barrel `index.ts` explicitly lists every re-export grouped by subsystem — 
 
 Elements extend `FASTElement`. Do **not** use the `@customElement` decorator.
 
-Use `define()` for immediate registration:
+Use `define()` for registration. `define()` returns a `Promise` that resolves
+immediately when a template is provided:
 
 ```ts
 export class MyElement extends FASTElement {
     @observable items: string[] = [];
 }
 
-MyElement.define({
+await MyElement.define({
     name: "my-element",
     template,
     styles,
@@ -45,11 +46,12 @@ MyElement.define({
 ```
 
 Use `compose()` when registration should be deferred — downstream libraries like Fluent
-Web Components use this pattern with a design-system registry:
+Web Components use this pattern with a design-system registry. `compose()` returns a
+`Promise<FASTElementDefinition>` that always resolves immediately:
 
 ```ts
 // my-element.definition.ts
-export const definition = MyElement.compose({
+export const definition = await MyElement.compose({
     name: "my-element",
     template,
     styles,
