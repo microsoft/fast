@@ -9,5 +9,7 @@ export {
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
+    type ResolvedStringsAndValues,
     TemplateElement,
+    TemplateParser,
 } from "./components/index.js";
