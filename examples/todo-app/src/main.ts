@@ -11,4 +11,4 @@ import { DefaultTodoList, TodoList } from "./todo-list.js";
 TodoList.provide(document, new DefaultTodoList());
 
 // Define the todo-app custom element
-app.then(a => a.define());
+app.define();
