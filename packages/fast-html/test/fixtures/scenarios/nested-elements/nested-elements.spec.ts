@@ -1,9 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type {
-    ItemList,
-    TestElementRepeatEvent,
-    TestWhenInRepeat,
-} from "./main.js";
+import type { ItemList, TestElementRepeatEvent, TestWhenInRepeat } from "./main.js";
 
 test.describe("Nested Elements Hydration", () => {
     test("should render nested elements correctly", async ({ page }) => {
