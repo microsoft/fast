@@ -13,7 +13,7 @@ class FastCard extends FASTElement {
     }
 }
 
-FastCard.defineAsync({
+FastCard.define({
     name: "fast-card",
     templateOptions: "defer-and-hydrate",
 });
