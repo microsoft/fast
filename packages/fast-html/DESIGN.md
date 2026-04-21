@@ -83,29 +83,38 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent and observe all root properties.
+Enabled via the `observerMap` extension factory from `@microsoft/fast-element`, passed in the extensions array of `.define()`:
+
+```typescript
+import { observerMap } from "@microsoft/fast-element";
+
+// Observe all root properties (auto-detect schema from template)
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    observerMap(),
+]);
+```
 
 #### Path-level observation control
 
 The `ObserverMapConfig` interface accepts an optional `properties` key that maps root property names to a recursive path tree controlling observation granularity:
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        observerMap: {
-            properties: {
-                user: {
-                    name: true,          // user.name — observed
-                    details: {
-                        age: true,       // user.details.age — observed
-                        history: false,  // user.details.history — NOT observed
-                    },
+import { observerMap } from "@microsoft/fast-element";
+
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    observerMap({
+        properties: {
+            user: {
+                name: true,          // user.name — observed
+                details: {
+                    age: true,       // user.details.age — observed
+                    history: false,  // user.details.history — NOT observed
                 },
-                // root properties not listed here are skipped
             },
+            // root properties not listed here are skipped
         },
-    },
-});
+    }),
+]);
 ```
 
 Each path entry can be:
@@ -113,7 +122,7 @@ Each path entry can be:
 - **`false`** — skip this path and all descendants (unless overridden deeper).
 - **`ObserverMapPathNode`** — an object with an optional `$observe` boolean and child property overrides, allowing alternating opt-in/opt-out to arbitrary depth.
 
-When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+When `properties` is omitted (`observerMap()` with no config), all root properties are observed. When `properties` is present but empty (`observerMap({ properties: {} })`), no root properties are observed.
 
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
@@ -131,7 +140,21 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent and use the default `"none"` strategy. To use the `"camelCase"` strategy, pass `TemplateElement.options({ "my-element": { attributeMap: { "attribute-name-strategy": "camelCase" } } })`.
+Enabled via the `attributeMap` extension factory from `@microsoft/fast-element`, passed in the extensions array of `.define()`:
+
+```typescript
+import { attributeMap } from "@microsoft/fast-element";
+
+// Map all leaf properties as attributes (default "none" strategy)
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    attributeMap(),
+]);
+
+// Use the "camelCase" strategy
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    attributeMap({ attributeNameStrategy: "camelCase" }),
+]);
+```
 
 ### Syntax constants (`syntax.ts`)
 
@@ -438,7 +461,7 @@ sequenceDiagram
 
     App->>TE: TemplateElement.define({name:'f-template'})
     App->>TE: TemplateElement.config(callbacks)
-    App->>TE: TemplateElement.options({'my-el':{observerMap:'all'}})
+    App->>TE: MyElement.define({...}, [observerMap()])
 
     DOM->>TE: f-template connected to DOM
     TE->>FER: FASTElementDefinition.register('my-el')

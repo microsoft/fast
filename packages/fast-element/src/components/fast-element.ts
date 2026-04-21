@@ -151,8 +151,9 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
         ? FASTElementDefinition.compose(
               type,
               nameOrDef as string | PartialFASTElementDefinition | undefined,
+              extensions,
           )
-        : FASTElementDefinition.compose(this, type);
+        : FASTElementDefinition.compose(this, type, extensions);
 
     return composePromise.then(def => {
         if (def.templateOptions === TemplateOptions.deferAndHydrate && !def.template) {
@@ -162,14 +163,14 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
                     handleChange: () => {
                         notifier.unsubscribe(subscriber, "template");
                         def.lifecycleCallbacks?.templateDidUpdate?.(def.name);
-                        resolve(def.define(undefined, extensions).type);
+                        resolve(def.define().type);
                     },
                 };
                 notifier.subscribe(subscriber, "template");
             });
         }
 
-        return def.define(undefined, extensions).type;
+        return def.define().type;
     });
 }
 

@@ -300,17 +300,26 @@ export class FASTElementDefinition<
      * @param type - The type this definition is being created for.
      * @param nameOrDef - The name of the element to define or a config object
      * that describes the element to define.
+     * @param extensions - Optional extension callbacks to run synchronously
+     * after definition construction and before the returned Promise resolves.
      */
     public static compose<
         TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
     >(
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition,
+        extensions?: FASTElementExtension[],
     ): Promise<FASTElementDefinition<TType>> {
         const definition =
             fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)
                 ? new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
                 : new FASTElementDefinition<TType>(type, nameOrDef);
+
+        if (extensions) {
+            for (const extension of extensions) {
+                extension(definition);
+            }
+        }
 
         return Promise.resolve(definition);
     }

@@ -389,6 +389,17 @@ Decorator: Specifies an HTML attribute.
 </td></tr>
 <tr><td>
 
+[attributeMap(config)](../fast-element.attributemap/)
+
+
+</td><td>
+
+Creates a [FASTElementExtension](../fast-element.fastelementextension/) that registers attribute-map configuration for a custom element. The configuration is stored in a pending registry and consumed by `TemplateElement` during template parsing.
+
+
+</td></tr>
+<tr><td>
+
 [children(propertyOrOptions)](../fast-element.children/)
 
 
@@ -527,6 +538,17 @@ Normalizes the input value into a binding.
 </td><td>
 
 Decorator: Defines an observable property on the target.
+
+
+</td></tr>
+<tr><td>
+
+[observerMap(config)](../fast-element.observermap/)
+
+
+</td><td>
+
+Creates a [FASTElementExtension](../fast-element.fastelementextension/) that registers observer-map configuration for a custom element. The configuration is stored in a pending registry and consumed by `TemplateElement` during template parsing.
 
 
 </td></tr>
@@ -674,6 +696,17 @@ An observer for arrays.
 </td><td>
 
 Represents something that applies to a specific aspect of the DOM.
+
+
+</td></tr>
+<tr><td>
+
+[AttributeMapConfig](../fast-element.attributemapconfig/)
+
+
+</td><td>
+
+Configuration object for the [attributeMap()](../fast-element.attributemap/) extension. Passing no config (`attributeMap()`<!-- -->) is equivalent to `"all"`<!-- -->.
 
 
 </td></tr>
@@ -992,6 +1025,32 @@ Provides change notifications for an observed subject.
 </td><td>
 
 A record of observable property access.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapConfig](../fast-element.observermapconfig/)
+
+
+</td><td>
+
+Configuration object for the [observerMap()](../fast-element.observermap/) extension. When `properties` is omitted (i.e. `observerMap()`<!-- -->), behaves like `"all"` — every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapPathNode](../fast-element.observermappathnode/)
+
+
+</td><td>
+
+A node object in the observer-map path tree.
+
+`$observe` controls whether this node itself is observed. When omitted the value is inherited from the nearest ancestor that explicitly sets `$observe`<!-- -->. At the root level the default is `true`<!-- -->.
+
+Child property overrides are keyed by property name.
 
 
 </td></tr>
@@ -1748,6 +1807,19 @@ A callback that receives a FASTElementDefinition during element registration. Ex
 </td><td>
 
 Transforms a template literal string into a ViewTemplate.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapPathEntry](../fast-element.observermappathentry/)
+
+
+</td><td>
+
+A node in the observer-map path tree.
+
+- `true` → observe this path and all descendants (unless overridden by children). - `false` → do NOT observe this path or its descendants (unless overridden by children). - `ObserverMapPathNode` → configure child paths individually; the node itself is observed if `$observe` is true (default when parent is observed).
 
 
 </td></tr>

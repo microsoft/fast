@@ -44,6 +44,19 @@ export {
 } from "./components/hydration-tracker.js";
 // DOM
 export { DOM, DOMAspect, type DOMPolicy, type DOMSink } from "./dom.js";
+// Extensions
+export {
+    type AttributeMapConfig,
+    attributeMap,
+    pendingAttributeMaps,
+} from "./extensions/attribute-map.js";
+export {
+    type ObserverMapConfig,
+    type ObserverMapPathEntry,
+    type ObserverMapPathNode,
+    observerMap,
+    pendingObserverMaps,
+} from "./extensions/observer-map.js";
 export type {
     Callable,
     Class,

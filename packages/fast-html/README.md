@@ -212,27 +212,36 @@ if (process.env.NODE_ENV === 'development') {
 
 #### `observerMap`
 
-When `observerMap: "all"` (or `observerMap: {}`) is configured for an element, `@microsoft/fast-html` automatically sets up deep reactive observation for all root properties discovered in the template. Both `"all"` and `{}` are equivalent.
+The `observerMap` extension factory registers deep reactive observation for all root properties discovered in the template. Import it from `@microsoft/fast-element` and pass it in the extensions array (second argument) of `.define()`:
+
+```typescript
+import { observerMap } from "@microsoft/fast-element";
+
+// Observe all root properties (auto-detect schema from template)
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    observerMap(),
+]);
+```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
 
 ```typescript
-TemplateElement.options({
-    "user-profile": {
-        observerMap: {
-            properties: {
-                user: {
-                    name: true,          // user.name — observed
-                    details: {
-                        age: true,       // user.details.age — observed
-                        history: false,  // user.details.history — NOT observed
-                    },
+import { observerMap } from "@microsoft/fast-element";
+
+MyElement.define({ name: "user-profile", templateOptions: "defer-and-hydrate" }, [
+    observerMap({
+        properties: {
+            user: {
+                name: true,          // user.name — observed
+                details: {
+                    age: true,       // user.details.age — observed
+                    history: false,  // user.details.history — NOT observed
                 },
-                // root properties not listed here are skipped
             },
+            // root properties not listed here are skipped
         },
-    },
-}).define({ name: "f-template" });
+    }),
+]);
 ```
 
 Each path entry can be:
@@ -243,34 +252,38 @@ Each path entry can be:
 Use `$observe: false` on a node to skip it by default, then re-include specific children:
 
 ```typescript
-observerMap: {
-    properties: {
-        analytics: {
-            charts: {
-                $observe: false,       // charts NOT observed by default
-                activeChart: true,     // ...except activeChart IS observed
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    observerMap({
+        properties: {
+            analytics: {
+                charts: {
+                    $observe: false,       // charts NOT observed by default
+                    activeChart: true,     // ...except activeChart IS observed
+                },
             },
         },
-    },
-}
+    }),
+]);
 ```
 
-When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+When no config is passed (`observerMap()`), all root properties are observed. When `properties` is present but empty (`observerMap({ properties: {} })`), no root properties are observed.
+
+An explicit schema can be passed via `observerMap({ schema: mySchema })` when the schema is known ahead of time.
 
 #### `attributeMap`
 
-When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"none"` attribute name strategy.
+The `attributeMap` extension factory automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Import it from `@microsoft/fast-element` and pass it in the extensions array (second argument) of `.define()`.
 
 By default, the **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
 
 Properties already decorated with `@attr` or `@observable` on the class are left untouched.
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        attributeMap: "all",
-    },
-}).define({ name: "f-template" });
+import { attributeMap } from "@microsoft/fast-element";
+
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    attributeMap(),
+]);
 ```
 
 With the template:
@@ -286,9 +299,9 @@ With the template:
 
 This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically.
 
-##### `attribute-name-strategy`
+##### `attributeNameStrategy`
 
-The `attribute-name-strategy` configuration option controls how template binding keys map to HTML attribute names. This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+The `attributeNameStrategy` configuration option controls how template binding keys map to HTML attribute names. This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
 
 | Strategy | Behaviour | Example |
 |---|---|---|
@@ -296,13 +309,11 @@ The `attribute-name-strategy` configuration option controls how template binding
 | `"camelCase"` | Binding key is the camelCase property; attribute name derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        attributeMap: {
-            "attribute-name-strategy": "camelCase",
-        },
-    },
-}).define({ name: "f-template" });
+import { attributeMap } from "@microsoft/fast-element";
+
+MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+    attributeMap({ attributeNameStrategy: "camelCase" }),
+]);
 ```
 
 With the template:
