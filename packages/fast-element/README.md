@@ -52,3 +52,7 @@ For simplicity, examples throughout the documentation will assume the library ha
 :::tip
 Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::
+
+## Package Sizes
+
+Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Package Sizes](https://www.fast.design/docs/2.x/resources/package-sizes/) documentation page for the latest numbers.
