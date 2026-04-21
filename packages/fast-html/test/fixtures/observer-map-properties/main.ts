@@ -61,7 +61,7 @@ class SelectiveObsElement extends FASTElement {
     };
 }
 
-SelectiveObsElement.defineAsync({
+SelectiveObsElement.define({
     name: "selective-obs-element",
 });
 
@@ -83,7 +83,7 @@ class AllObsElement extends FASTElement {
     };
 }
 
-AllObsElement.defineAsync({
+AllObsElement.define({
     name: "all-obs-element",
 });
 
@@ -105,7 +105,7 @@ class EmptyPropsElement extends FASTElement {
     };
 }
 
-EmptyPropsElement.defineAsync({
+EmptyPropsElement.define({
     name: "empty-props-element",
 });
 
@@ -124,7 +124,7 @@ class ArraySelectiveElement extends FASTElement {
     };
 }
 
-ArraySelectiveElement.defineAsync({
+ArraySelectiveElement.define({
     name: "array-selective-element",
 });
 

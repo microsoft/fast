@@ -3,13 +3,13 @@ import { TemplateElement } from "@microsoft/fast-html";
 
 class NamingStrategyTestElement extends FASTElement {}
 
-NamingStrategyTestElement.defineAsync({
+NamingStrategyTestElement.define({
     name: "naming-strategy-test",
 });
 
 class NamingStrategyNoDashTestElement extends FASTElement {}
 
-NamingStrategyNoDashTestElement.defineAsync({
+NamingStrategyNoDashTestElement.define({
     name: "naming-strategy-no-dash-test",
 });
 

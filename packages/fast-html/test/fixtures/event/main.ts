@@ -34,7 +34,7 @@ class TestElement extends FASTElement {
         console.log(e.type);
     };
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });

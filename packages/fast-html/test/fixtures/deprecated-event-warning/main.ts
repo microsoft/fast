@@ -9,7 +9,7 @@ class TestAlpha extends FASTElement {
         console.log(`alpha-other:${e.type}`);
     };
 }
-TestAlpha.defineAsync({
+TestAlpha.define({
     name: "test-alpha",
     templateOptions: "defer-and-hydrate",
 });
@@ -19,7 +19,7 @@ class TestBeta extends FASTElement {
         console.log(`beta-click:${e.type}`);
     };
 }
-TestBeta.defineAsync({
+TestBeta.define({
     name: "test-beta",
     templateOptions: "defer-and-hydrate",
 });
