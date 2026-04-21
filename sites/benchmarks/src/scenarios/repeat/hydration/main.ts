@@ -1,8 +1,8 @@
-import { RenderableFASTElement, TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-html";
 import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
-RenderableFASTElement(BenchElement).define({
+BenchElement.define({
     name: "repeat-bench-element",
     templateOptions: "defer-and-hydrate",
 });
