@@ -1,5 +1,5 @@
 import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-html";
+import { observerMap, TemplateElement } from "@microsoft/fast-html";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -454,28 +454,18 @@ ObserverMapSimpleArrayTestElement.defineAsync({
     name: "observer-map-simple-array-test-element",
 });
 
-// Configure TemplateElement with observerMap enabled for this test
-TemplateElement.options({
-    "observer-map-test-element": {
-        observerMap: "all", // Enable ObserverMap to track all the nested property changes
+// Configure observerMap for each element
+observerMap()("observer-map-test-element");
+observerMap()("observer-map-internal-test-element");
+observerMap()("observer-map-with-observables-test-element");
+observerMap()("observer-map-simple-array-test-element");
+
+TemplateElement.config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
     },
-    "observer-map-internal-test-element": {
-        observerMap: "all", // Enable ObserverMap to track all the nested property changes
-    },
-    "observer-map-with-observables-test-element": {
-        observerMap: "all",
-    },
-    "observer-map-simple-array-test-element": {
-        observerMap: "all",
-    },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).define({
+    name: "f-template",
+});
 
 (window as any).Observable = Observable;

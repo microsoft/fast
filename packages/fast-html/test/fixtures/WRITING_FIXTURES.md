@@ -207,14 +207,14 @@ await customElement.evaluate((node: TestElement) => {
 
 ### Using ObserverMap
 
-For fixtures that test deeply nested property reactivity, configure `TemplateElement` with `observerMap` options:
+For fixtures that test deeply nested property reactivity, register the `observerMap` currying function for each element:
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        observerMap: "all",
-    },
-}).define({
+import { observerMap, TemplateElement } from "@microsoft/fast-html";
+
+observerMap()("my-element");
+
+TemplateElement.define({
     name: "f-template",
 });
 ```

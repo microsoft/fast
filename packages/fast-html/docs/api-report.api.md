@@ -5,8 +5,12 @@
 ```ts
 
 import { FASTElement } from '@microsoft/fast-element';
+import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
+
+// @public
+export function attributeMap(options?: AttributeMapOptions): (nameOrDef: string | PartialFASTElementDefinition) => void;
 
 // @public
 export interface AttributeMapConfig {
@@ -14,18 +18,33 @@ export interface AttributeMapConfig {
 }
 
 // @public
-export class ObserverMap {
+export interface AttributeMapOptions {
+    config?: AttributeMapConfig;
     // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
+    schema?: Schema;
+}
+
+// @public
+export class ObserverMap {
     constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
     // (undocumented)
     defineProperties(): void;
 }
 
 // @public
+export function observerMap(options?: ObserverMapOptions): (nameOrDef: string | PartialFASTElementDefinition) => void;
+
+// @public
 export interface ObserverMapConfig {
     properties?: {
         [rootProperty: string]: ObserverMapPathEntry;
     };
+}
+
+// @public
+export interface ObserverMapOptions {
+    config?: ObserverMapConfig;
+    schema?: Schema;
 }
 
 // @public
@@ -49,15 +68,11 @@ export interface ResolvedStringsAndValues {
 
 // @public
 export class TemplateElement extends FASTElement {
-    constructor();
     // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
     static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;
-    // Warning: (ae-forgotten-export) The symbol "ElementOptionsDictionary" needs to be exported by the entry point index.d.ts
-    static elementOptions: ElementOptionsDictionary;
     name?: string;
-    static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
 }
 
 // @public

@@ -5,6 +5,7 @@ import {
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
+    type PartialFASTElementDefinition,
     type TemplateLifecycleCallbacks,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
@@ -14,13 +15,6 @@ import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
 import { eventArgAccessor, transformInnerHTML } from "./utilities.js";
-
-/**
- * Values for the observerMap element option.
- */
-export const ObserverMapOption = {
-    all: "all",
-} as const;
 
 /**
  * A node in the observer-map path tree.
@@ -65,21 +59,6 @@ export interface ObserverMapConfig {
 }
 
 /**
- * Type for the observerMap element option.
- * Accepts `"all"` or a configuration object.
- */
-export type ObserverMapOption =
-    | (typeof ObserverMapOption)[keyof typeof ObserverMapOption]
-    | ObserverMapConfig;
-
-/**
- * Values for the attributeMap element option.
- */
-export const AttributeMapOption = {
-    all: "all",
-} as const;
-
-/**
  * Configuration object for the attributeMap element option.
  * Passing an empty object (`{}`) is equivalent to `"all"`.
  */
@@ -100,40 +79,141 @@ export interface AttributeMapConfig {
 }
 
 /**
- * Type for the attributeMap element option.
- * Accepts `"all"` or a configuration object.
+ * Options for the {@link observerMap} currying function.
  */
-export type AttributeMapOption =
-    | (typeof AttributeMapOption)[keyof typeof AttributeMapOption]
-    | AttributeMapConfig;
-
-/**
- * Element options the TemplateElement will use to update the registered element
- */
-export interface ElementOptions {
-    observerMap?: ObserverMapOption;
-    attributeMap?: AttributeMapOption;
+export interface ObserverMapOptions {
+    /**
+     * An explicit schema instance. When provided the observer map
+     * will use this schema instead of waiting for one to be parsed
+     * from the template. An error is thrown when no schema is
+     * available and none was explicitly passed.
+     */
+    schema?: Schema;
+    /**
+     * Configuration for per-property observation control.
+     */
+    config?: ObserverMapConfig;
 }
 
 /**
- * A dictionary of element options the TemplateElement will use to update the registered element
+ * Options for the {@link attributeMap} currying function.
  */
-export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
-    [key: string]: ElementOptionsType;
+export interface AttributeMapOptions {
+    /**
+     * An explicit schema instance. When provided the attribute map
+     * will use this schema instead of waiting for one to be parsed
+     * from the template.
+     */
+    schema?: Schema;
+    /**
+     * Configuration for attribute name strategy.
+     */
+    config?: AttributeMapConfig;
 }
 
 /**
- * Checks whether a map option (observerMap or attributeMap) is enabled.
- * An option is enabled when it is `"all"` or a plain configuration object.
+ * Stored pending observer-map configuration for a named element.
+ * @internal
  */
-function isMapOptionEnabled(
-    option: ObserverMapOption | AttributeMapOption | undefined,
-): boolean {
-    if (option === "all") {
-        return true;
-    }
+interface PendingObserverMap {
+    schema?: Schema;
+    config?: ObserverMapConfig;
+}
 
-    return typeof option === "object" && !Array.isArray(option);
+/**
+ * Stored pending attribute-map configuration for a named element.
+ * @internal
+ */
+interface PendingAttributeMap {
+    schema?: Schema;
+    config?: AttributeMapConfig;
+}
+
+/**
+ * Registry of pending observer-map configurations keyed by element name.
+ * Consumed during {@link TemplateElement} connected callback.
+ */
+const pendingObserverMaps: Map<string, PendingObserverMap> = new Map();
+
+/**
+ * Registry of pending attribute-map configurations keyed by element name.
+ * Consumed during {@link TemplateElement} connected callback.
+ */
+const pendingAttributeMaps: Map<string, PendingAttributeMap> = new Map();
+
+/**
+ * Resolves a custom element name from a `string | PartialFASTElementDefinition`.
+ */
+function resolveElementName(nameOrDef: string | PartialFASTElementDefinition): string {
+    return typeof nameOrDef === "string" ? nameOrDef : nameOrDef.name;
+}
+
+/**
+ * Creates a curried function that registers observer-map configuration
+ * for a custom element. The returned function accepts the element name
+ * or a `PartialFASTElementDefinition` and stores the configuration for
+ * consumption during template parsing.
+ *
+ * @param options - Optional schema and configuration for observation.
+ * @returns A function that accepts `string | PartialFASTElementDefinition`
+ *   and registers the pending observer-map configuration.
+ *
+ * @example
+ * ```ts
+ * // Observe all root properties (auto-detect schema from template)
+ * observerMap()("my-element");
+ *
+ * // Explicit schema and selective property observation
+ * observerMap({ schema: mySchema, config: { properties: { user: true } } })("my-element");
+ *
+ * // Using a PartialFASTElementDefinition
+ * observerMap()({ name: "my-element" });
+ * ```
+ */
+export function observerMap(
+    options?: ObserverMapOptions,
+): (nameOrDef: string | PartialFASTElementDefinition) => void {
+    return (nameOrDef: string | PartialFASTElementDefinition): void => {
+        const name = resolveElementName(nameOrDef);
+        pendingObserverMaps.set(name, {
+            schema: options?.schema,
+            config: options?.config,
+        });
+    };
+}
+
+/**
+ * Creates a curried function that registers attribute-map configuration
+ * for a custom element. The returned function accepts the element name
+ * or a `PartialFASTElementDefinition` and stores the configuration for
+ * consumption during template parsing.
+ *
+ * @param options - Optional schema and configuration for attribute mapping.
+ * @returns A function that accepts `string | PartialFASTElementDefinition`
+ *   and registers the pending attribute-map configuration.
+ *
+ * @example
+ * ```ts
+ * // Map all leaf properties as attributes (default strategy)
+ * attributeMap()("my-element");
+ *
+ * // Use camelCase naming strategy
+ * attributeMap({ config: { "attribute-name-strategy": "camelCase" } })("my-element");
+ *
+ * // Using a PartialFASTElementDefinition
+ * attributeMap()({ name: "my-element" });
+ * ```
+ */
+export function attributeMap(
+    options?: AttributeMapOptions,
+): (nameOrDef: string | PartialFASTElementDefinition) => void {
+    return (nameOrDef: string | PartialFASTElementDefinition): void => {
+        const name = resolveElementName(nameOrDef);
+        pendingAttributeMaps.set(name, {
+            schema: options?.schema,
+            config: options?.config,
+        });
+    };
 }
 
 /**
@@ -176,8 +256,12 @@ export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks 
  * The <f-template> custom element that will provide view logic to the element.
  *
  * Acts as the bridge between declarative HTML templates and the FAST element
- * registry. Lifecycle orchestration (registration, options, callbacks) lives
+ * registry. Lifecycle orchestration (registration, callbacks) lives
  * here; template parsing is delegated to {@link TemplateParser}.
+ *
+ * Observer-map and attribute-map configurations are registered via the
+ * standalone {@link observerMap} and {@link attributeMap} currying functions
+ * and consumed automatically during template parsing.
  */
 class TemplateElement extends FASTElement {
     /**
@@ -185,11 +269,6 @@ class TemplateElement extends FASTElement {
      */
     @attr
     public name?: string;
-
-    /**
-     * A dictionary of custom element options
-     */
-    public static elementOptions: ElementOptionsDictionary = {};
 
     /**
      * ObserverMap instance for caching binding paths
@@ -200,11 +279,6 @@ class TemplateElement extends FASTElement {
      * AttributeMap instance for defining @attr properties
      */
     private attributeMap?: AttributeMap;
-
-    /**
-     * Default element options
-     */
-    private static defaultElementOptions: ElementOptions = {};
 
     /**
      * Metadata containing JSON schema for properties on a custom element
@@ -237,50 +311,6 @@ class TemplateElement extends FASTElement {
         return this;
     }
 
-    /**
-     * Set options for custom elements.
-     *
-     * @param elementOptions - A dictionary of custom element options
-     * @returns The TemplateElement class.
-     */
-    public static options(elementOptions: ElementOptionsDictionary = {}) {
-        const result: ElementOptionsDictionary = {};
-
-        for (const key in elementOptions) {
-            const value = elementOptions[key];
-            result[key] = {
-                observerMap: value.observerMap,
-                attributeMap: value.attributeMap,
-            };
-        }
-
-        TemplateElement.elementOptions = result;
-
-        return this;
-    }
-
-    constructor() {
-        super();
-
-        // Ensure elementOptions is initialized if it's empty
-        if (
-            !TemplateElement.elementOptions ||
-            Object.keys(TemplateElement.elementOptions).length === 0
-        ) {
-            TemplateElement.options();
-        }
-    }
-
-    /**
-     * Set options for a custom element
-     * @param name - The name of the custom element to set options for.
-     */
-    private static setOptions(name: string): void {
-        if (!TemplateElement.elementOptions[name]) {
-            TemplateElement.elementOptions[name] = TemplateElement.defaultElementOptions;
-        }
-    }
-
     connectedCallback(): void {
         super.connectedCallback();
         const name = this.name;
@@ -294,40 +324,31 @@ class TemplateElement extends FASTElement {
         FASTElementDefinition.registerAsync(name).then(async value => {
             TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
 
-            if (!TemplateElement.elementOptions?.[name]) {
-                TemplateElement.setOptions(name);
-            }
+            const pendingObserver = pendingObserverMaps.get(name);
+            const pendingAttribute = pendingAttributeMaps.get(name);
 
-            const schema = this.schema!;
+            // Use the explicitly provided schema or fall back to the
+            // template-parsed schema (populated below during parsing).
+            const schema = pendingObserver?.schema ?? this.schema!;
 
-            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.observerMap)) {
-                const observerMapOption =
-                    TemplateElement.elementOptions[name]?.observerMap;
-                const observerMapConfig =
-                    typeof observerMapOption === "object" && observerMapOption !== null
-                        ? observerMapOption
-                        : undefined;
-
+            if (pendingObserver) {
                 this.observerMap = new ObserverMap(
                     value.prototype,
                     schema,
-                    observerMapConfig,
+                    pendingObserver.config,
                 );
             }
 
             const registeredFastElement: FASTElementDefinition | undefined =
                 fastElementRegistry.getByType(value);
 
-            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.attributeMap)) {
-                const mapOption = TemplateElement.elementOptions[name]?.attributeMap;
-                const mapConfig: AttributeMapConfig | undefined =
-                    typeof mapOption === "object" ? mapOption : undefined;
-
+            if (pendingAttribute) {
+                const attrSchema = pendingAttribute.schema ?? this.schema!;
                 this.attributeMap = new AttributeMap(
                     value.prototype,
-                    schema,
+                    attrSchema,
                     registeredFastElement,
-                    mapConfig,
+                    pendingAttribute.config,
                 );
             }
 
