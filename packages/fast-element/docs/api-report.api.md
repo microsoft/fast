@@ -235,7 +235,7 @@ export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateSt
 export type CSSValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | ComposableStyles | CSSDirective;
 
 // @public
-export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
+export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => Promise<Constructable<HTMLElement>>;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -445,7 +445,6 @@ export const FASTElement: {
     new (): FASTElement;
     define: typeof define;
     compose: typeof compose;
-    defineAsync: typeof defineAsync;
     from: typeof from;
 };
 
@@ -453,9 +452,7 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
-    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
-    // @alpha
-    static composeAsync<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -466,7 +463,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @alpha
-    static registerAsync: (name: string) => Promise<Function>;
+    static register: (name: string) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
@@ -1112,10 +1109,9 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:63:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:64:5 - (ae-forgotten-export) The symbol "defineAsync" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:65:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

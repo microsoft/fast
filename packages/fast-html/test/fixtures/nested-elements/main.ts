@@ -109,17 +109,17 @@ export class GrandChildItem extends FASTElement {
     public category!: string;
 }
 
-ItemList.defineAsync({
+ItemList.define({
     name: "parent-element",
     templateOptions: "defer-and-hydrate",
 });
 
-Item.defineAsync({
+Item.define({
     name: "child-element",
     templateOptions: "defer-and-hydrate",
 });
 
-GrandChildItem.defineAsync({
+GrandChildItem.define({
     name: "grand-child-element",
     templateOptions: "defer-and-hydrate",
 });
