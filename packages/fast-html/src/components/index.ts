@@ -8,5 +8,7 @@ export {
     type HydrationLifecycleCallbacks,
     type ObserverMapConfig,
     ObserverMapOption,
+    type ObserverMapPathEntry,
+    type ObserverMapPathNode,
     TemplateElement,
 } from "./template.js";

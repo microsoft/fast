@@ -7,5 +7,7 @@ export {
     type AttributeMapConfig,
     ObserverMap,
     type ObserverMapConfig,
+    type ObserverMapPathEntry,
+    type ObserverMapPathNode,
     TemplateElement,
 } from "./components/index.js";

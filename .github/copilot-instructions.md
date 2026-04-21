@@ -16,25 +16,26 @@ FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-st
 
 ## Packages
 
+Each package includes a DESIGN.md file, read that to gain a general understanding of the code for that package.
+
 | Package | Status | Purpose |
 |---|---|---|
 | `@microsoft/fast-element` | Stable (v2) | Core Web Component library |
 | `@microsoft/fast-html` | Alpha | Declarative HTML parser |
 | `@microsoft/fast-router` | Alpha | Web Component router |
 | `@microsoft/fast-build` | Prerelease | Declarative HTML server side renderer |
+| `@microsoft/fast-test-harness` | Prerelease | Testing utilities for FASTElement components |
 
-### Other packages
+### Sites
 
 | Package | Status | Purpose |
 |---|---|---|
 | `sites/website` | Private (not published as a package) | Documentation website source |
-| `sites/benchmarks` | Private (not published as a package) | Benchmarking utilities |
-| `@microsoft/fast-ssr` | Alpha (not actively maintained) | Server-side rendering utilities |
+| `sites/benchmarks` | Private (not published as a package) | Benchmarking site |
 
 ### Example projects
 
 - `examples/todo-app/` — A simple To-Do app demonstrating FAST usage patterns.
-- `examples/ssr/` — Server-side rendering example using `@microsoft/fast-ssr`.
 
 ## Skills
 
@@ -93,7 +94,8 @@ packages/<package>/
 ```
 
 - Source files use **kebab-case**: `element-controller.ts`, `update-queue.ts`.
-- Test files use `*.pw.spec.ts` suffix, co-located next to the source they test.
+- Playwright test files use `*.pw.spec.ts` suffix, co-located next to the source they test.
+- Node test files use `*.spec.ts` suffix.
 
 ## Code Style
 
@@ -152,3 +154,5 @@ Before finishing any change, run these commands from the monorepo root and confi
 - [ ] `npm run test` — all tests pass
 - [ ] `npm run biome:check` — Biome linting and formatting pass
 - [ ] `npm run checkchange` — beachball change files exist for any `packages/*` changes
+
+Read the [shipping skill](./skills/shipping/SKILL.md) and ensure you have updated everything outlined in that file.

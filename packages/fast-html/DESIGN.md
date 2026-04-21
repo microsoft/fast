@@ -79,7 +79,43 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent; no configuration keys are defined at this time.
+Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent and observe all root properties.
+
+#### Path-level observation control
+
+The `ObserverMapConfig` interface accepts an optional `properties` key that maps root property names to a recursive path tree controlling observation granularity:
+
+```typescript
+TemplateElement.options({
+    "my-element": {
+        observerMap: {
+            properties: {
+                user: {
+                    name: true,          // user.name — observed
+                    details: {
+                        age: true,       // user.details.age — observed
+                        history: false,  // user.details.history — NOT observed
+                    },
+                },
+                // root properties not listed here are skipped
+            },
+        },
+    },
+});
+```
+
+Each path entry can be:
+- **`true`** — observe this path and all descendants (unless overridden deeper).
+- **`false`** — skip this path and all descendants (unless overridden deeper).
+- **`ObserverMapPathNode`** — an object with an optional `$observe` boolean and child property overrides, allowing alternating opt-in/opt-out to arbitrary depth.
+
+When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+
+The resolution algorithm walks the schema and configuration tree in parallel:
+1. If `properties` is present and a root property is not listed, it is skipped.
+2. `true`/`false` booleans apply to the entire subtree.
+3. `$observe` on a node object controls the current level; children inherit when unspecified.
+4. Paths in the config but not in the schema are silently ignored (forward-compatible).
 
 ### `AttributeMap` — automatic `@attr` definitions
 
@@ -143,6 +179,9 @@ packages/fast-html/
 import {
     TemplateElement,
     ObserverMap,
+    type ObserverMapConfig,
+    type ObserverMapPathEntry,
+    type ObserverMapPathNode,
 } from "@microsoft/fast-html";
 ```
 
@@ -152,6 +191,14 @@ Two primary exports are intended for application code:
 |---|---|
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
 | `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
+
+Additionally, the following types are exported for use in `observerMap` configuration:
+
+| Type | Purpose |
+|---|---|
+| `ObserverMapConfig` | Configuration object for the `observerMap` option; accepts optional `properties` key. |
+| `ObserverMapPathEntry` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
+| `ObserverMapPathNode` | Object node with optional `$observe` and child property overrides. |
 
 ---
 
@@ -194,7 +241,7 @@ flowchart TD
     G --> H[transformInnerHTML normalises HTML entities]
     H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
     I --> J{observerMap enabled?}
-    J -- yes --> K["ObserverMap.defineProperties\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
+    J -- yes --> K["ObserverMap.defineProperties\n→ applyConfigToSchema stamps $observe on schema nodes\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
     J -- no --> L
     K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
     L --> M["FASTElementDefinition.composeAsync\n→ element fully registered with platform"]
@@ -280,12 +327,28 @@ flowchart LR
     B --> C[schema.addPath\ntype:'access'\npath:'user.details.age'\nrootProperty:'user']
     C --> D["Schema.jsonSchemaMap\n{'my-el' => {'user' => JSONSchema}}"]
     D --> E[ObserverMap.defineProperties]
-    E --> F[Observable.defineProperty on prototype\nfor 'user']
-    E --> G[install instanceResolverChanged handler]
-    G --> H[when user= is set:\nassignObservables → Proxy wraps user\ndeep mutations → Observable.notify]
+    E --> E1["applyConfigToSchema\nstamps $observe: false on excluded schema nodes"]
+    E1 --> F[Observable.defineProperty on prototype\nfor 'user']
+    E1 --> G[install instanceResolverChanged handler]
+    G --> H["when user= is set:\nassignObservables checks schema.$observe\n→ Proxy wraps observed paths only\ndeep mutations → Observable.notify"]
 ```
 
 For a deep dive into the schema structure, context tracking, and proxy system see [SCHEMA_OBSERVER_MAP.md](./SCHEMA_OBSERVER_MAP.md).
+
+### `$observe` flag on schema nodes
+
+When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.defineProperties()` calls `applyConfigToSchema()` to stamp `$observe: false` on excluded schema nodes **before** the proxy system runs. This is a one-time pre-processing pass that walks the config and schema trees in parallel:
+
+- `false` in the config → `$observe: false` is stamped recursively on the node and all its descendants.
+- `$observe: false` on a config node → the schema node is stamped, and unlisted children inherit the stamp.
+- `true` in the config → no stamp needed (observed is the default).
+- Config paths not in the schema are silently ignored.
+
+**Convention: stamp-only-when-excluding.** The `$observe` flag is only ever set to `false` — it is never explicitly set to `true`. Absence of `$observe` (i.e. `undefined`) means the node is observed. This means:
+
+- When `observerMap: "all"` or `observerMap: {}` is used, `applyConfigToSchema` is never called and no schema nodes are mutated — zero overhead for the common case.
+- The proxy system uses `isSchemaExcluded(schema)` (checks `$observe === false` with no observed descendants) as the single predicate for all skip/suppress decisions.
+- Schema nodes without `$observe` are always treated as observed.
 
 ### AttributeMap and leaf bindings
 

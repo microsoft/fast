@@ -15,13 +15,27 @@ export interface AttributeMapConfig {
 // @public
 export class ObserverMap {
     // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
-    constructor(classPrototype: any, schema: Schema);
+    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
     // (undocumented)
     defineProperties(): void;
 }
 
 // @public
 export interface ObserverMapConfig {
+    properties?: {
+        [rootProperty: string]: ObserverMapPathEntry;
+    };
+}
+
+// @public
+export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
+
+// @public
+export interface ObserverMapPathNode {
+    // (undocumented)
+    $observe?: boolean;
+    // (undocumented)
+    [propertyName: string]: ObserverMapPathEntry | undefined;
 }
 
 // @public
