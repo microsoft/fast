@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-html";
+import { attributeMap, observerMap, TemplateElement } from "@microsoft/fast-html";
 
 class ConfigObserverMapTestElement extends FASTElement {
     public data: any = {
@@ -34,12 +34,8 @@ ConfigAttributeMapTestElement.define({
     templateOptions: "defer-and-hydrate",
 });
 
-// Use configuration objects ({}) instead of "all" — should behave identically
-TemplateElement.options({
-    "config-observer-map-test-element": {
-        observerMap: {},
-    },
-    "config-attribute-map-test-element": {
-        attributeMap: {},
-    },
-}).define({ name: "f-template" });
+// Use currying functions without config — should behave like "all"
+observerMap()("config-observer-map-test-element");
+attributeMap()("config-attribute-map-test-element");
+
+TemplateElement.define({ name: "f-template" });

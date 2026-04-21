@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-html";
+import { observerMap, TemplateElement } from "@microsoft/fast-html";
 
 class SelectiveObsElement extends FASTElement {
     public user = {
@@ -132,42 +132,33 @@ ArraySelectiveElement.define({
     templateOptions: "defer-and-hydrate",
 });
 
-TemplateElement.options({
-    "selective-obs-element": {
-        observerMap: {
-            properties: {
-                user: {
-                    name: true,
-                    age: true,
-                    history: false,
-                    location: true,
+observerMap({
+    config: {
+        properties: {
+            user: {
+                name: true,
+                age: true,
+                history: false,
+                location: true,
+            },
+            // settings is NOT listed → skipped
+            analytics: {
+                charts: {
+                    $observe: false,
+                    activeChart: true,
                 },
-                // settings is NOT listed → skipped
-                analytics: {
-                    charts: {
-                        $observe: false,
-                        activeChart: true,
-                    },
-                    summary: true,
-                },
+                summary: true,
             },
         },
     },
-    "all-obs-element": {
-        observerMap: {},
-    },
-    "empty-props-element": {
-        observerMap: {
-            properties: {},
-        },
-    },
-    "array-selective-element": {
-        observerMap: {
-            properties: {
-                items: true,
-            },
-        },
-    },
-}).define({
+})("selective-obs-element");
+
+observerMap()("all-obs-element");
+
+observerMap({ config: { properties: {} } })("empty-props-element");
+
+observerMap({ config: { properties: { items: true } } })("array-selective-element");
+
+TemplateElement.define({
     name: "f-template",
 });

@@ -1,4 +1,4 @@
-import { TemplateElement } from "@microsoft/fast-html";
+import { observerMap, TemplateElement } from "@microsoft/fast-html";
 import { runBenchmark } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
@@ -7,9 +7,9 @@ BenchElement.define({
     templateOptions: "defer-and-hydrate",
 });
 
-TemplateElement.options({
-    "dot-syntax-bench-element": { observerMap: "all" },
-}).define({ name: "f-template" });
+observerMap()("dot-syntax-bench-element");
+
+TemplateElement.define({ name: "f-template" });
 
 await customElements.whenDefined("dot-syntax-bench-element");
 

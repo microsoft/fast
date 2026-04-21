@@ -212,27 +212,34 @@ if (process.env.NODE_ENV === 'development') {
 
 #### `observerMap`
 
-When `observerMap: "all"` (or `observerMap: {}`) is configured for an element, `@microsoft/fast-html` automatically sets up deep reactive observation for all root properties discovered in the template. Both `"all"` and `{}` are equivalent.
+The `observerMap` currying function registers deep reactive observation for all root properties discovered in the template:
+
+```typescript
+import { observerMap } from "@microsoft/fast-html";
+
+// Observe all root properties (auto-detect schema from template)
+observerMap()("my-element");
+```
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
 
 ```typescript
-TemplateElement.options({
-    "user-profile": {
-        observerMap: {
-            properties: {
-                user: {
-                    name: true,          // user.name — observed
-                    details: {
-                        age: true,       // user.details.age — observed
-                        history: false,  // user.details.history — NOT observed
-                    },
+import { observerMap } from "@microsoft/fast-html";
+
+observerMap({
+    config: {
+        properties: {
+            user: {
+                name: true,          // user.name — observed
+                details: {
+                    age: true,       // user.details.age — observed
+                    history: false,  // user.details.history — NOT observed
                 },
-                // root properties not listed here are skipped
             },
+            // root properties not listed here are skipped
         },
     },
-}).define({ name: "f-template" });
+})("user-profile");
 ```
 
 Each path entry can be:
@@ -243,34 +250,36 @@ Each path entry can be:
 Use `$observe: false` on a node to skip it by default, then re-include specific children:
 
 ```typescript
-observerMap: {
-    properties: {
-        analytics: {
-            charts: {
-                $observe: false,       // charts NOT observed by default
-                activeChart: true,     // ...except activeChart IS observed
+observerMap({
+    config: {
+        properties: {
+            analytics: {
+                charts: {
+                    $observe: false,       // charts NOT observed by default
+                    activeChart: true,     // ...except activeChart IS observed
+                },
             },
         },
     },
-}
+})("my-element");
 ```
 
-When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+When no config is passed (`observerMap()`), all root properties are observed. When `properties` is present but empty (`observerMap({ config: { properties: {} } })`), no root properties are observed.
+
+An explicit schema can be passed via `observerMap({ schema: mySchema })("my-element")` when the schema is known ahead of time.
 
 #### `attributeMap`
 
-When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"none"` attribute name strategy.
+The `attributeMap` currying function automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties.
 
 By default, the **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
 
 Properties already decorated with `@attr` or `@observable` on the class are left untouched.
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        attributeMap: "all",
-    },
-}).define({ name: "f-template" });
+import { attributeMap } from "@microsoft/fast-html";
+
+attributeMap()("my-element");
 ```
 
 With the template:
@@ -296,13 +305,9 @@ The `attribute-name-strategy` configuration option controls how template binding
 | `"camelCase"` | Binding key is the camelCase property; attribute name derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        attributeMap: {
-            "attribute-name-strategy": "camelCase",
-        },
-    },
-}).define({ name: "f-template" });
+import { attributeMap } from "@microsoft/fast-html";
+
+attributeMap({ config: { "attribute-name-strategy": "camelCase" } })("my-element");
 ```
 
 With the template:

@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-html";
+import { observerMap, TemplateElement } from "@microsoft/fast-html";
 
 // Track lifecycle callbacks for testing
 export const lifecycleEvents: Array<{ callback: string; name?: string }> = [];
@@ -120,11 +120,9 @@ DeferredChildElement.define({
 });
 
 // Define templates
-TemplateElement.options({
-    "complex-element": {
-        observerMap: "all",
-    },
-}).define({
+observerMap()("complex-element");
+
+TemplateElement.define({
     name: "f-template",
 });
 

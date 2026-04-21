@@ -1,5 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-html";
+import { observerMap, TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 export class TestElement extends FASTElement {
@@ -93,19 +93,13 @@ TestElementWithObserverMap.define({
     templateOptions: "defer-and-hydrate",
 });
 
-TemplateElement.options({
-    "test-element-interval-updates": {
-        observerMap: "all",
+observerMap()("test-element-interval-updates");
+observerMap()("test-element-with-observer-map");
+
+TemplateElement.config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
     },
-    "test-element-with-observer-map": {
-        observerMap: "all",
-    },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).define({
+    name: "f-template",
+});
