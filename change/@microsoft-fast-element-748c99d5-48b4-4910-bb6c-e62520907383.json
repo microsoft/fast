@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add extensions array argument to FASTElement.define() and FASTElementDefinition.define()",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

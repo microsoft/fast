@@ -20,7 +20,7 @@ Defines a custom element based on this definition.
 **Signature:**
 
 ```typescript
-define(registry?: CustomElementRegistry): this;
+define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
 ```
 
 ## Parameters
@@ -54,6 +54,22 @@ CustomElementRegistry
 </td><td>
 
 _(Optional)_ The element registry to define the element in.
+
+
+</td></tr>
+<tr><td>
+
+extensions
+
+
+</td><td>
+
+[FASTElementExtension](../fast-element.fastelementextension/)<!-- -->\[\]
+
+
+</td><td>
+
+_(Optional)_ An optional array of extension callbacks to invoke with this definition before platform registration.
 
 
 </td></tr>

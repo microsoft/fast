@@ -439,7 +439,7 @@ Creates an instance of FASTElementDefinition.
 </td></tr>
 <tr><td>
 
-[define(registry)](../fast-element.fastelementdefinition.define/)
+[define(registry, extensions)](../fast-element.fastelementdefinition.define/)
 
 
 </td><td>

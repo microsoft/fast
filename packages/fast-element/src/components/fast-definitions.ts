@@ -64,6 +64,14 @@ export interface TemplateLifecycleCallbacks {
 }
 
 /**
+ * A callback that receives a FASTElementDefinition during element registration.
+ * Extensions are invoked before the element is registered with the platform,
+ * allowing plugins to inspect or act on the resolved definition.
+ * @public
+ */
+export type FASTElementExtension = (definition: FASTElementDefinition) => void;
+
+/**
  * Represents metadata configuration for a custom element.
  * @public
  */
@@ -261,13 +269,24 @@ export class FASTElementDefinition<
     /**
      * Defines a custom element based on this definition.
      * @param registry - The element registry to define the element in.
+     * @param extensions - An optional array of extension callbacks to invoke
+     * with this definition before platform registration.
      * @remarks
      * This operation is idempotent per registry.
      */
-    public define(registry: CustomElementRegistry = this.registry): this {
+    public define(
+        registry: CustomElementRegistry = this.registry,
+        extensions?: FASTElementExtension[],
+    ): this {
         const type = this.type;
 
         if (!registry.get(this.name)) {
+            if (extensions) {
+                for (const extension of extensions) {
+                    extension(this);
+                }
+            }
+
             this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
             this.lifecycleCallbacks?.elementDidDefine?.(this.name);
@@ -334,6 +353,7 @@ export class FASTElementDefinition<
             );
         });
     };
+ 
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

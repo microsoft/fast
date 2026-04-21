@@ -103,6 +103,26 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 
 `FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or deferring when `templateOptions` is `"defer-and-hydrate"` and no template is provided. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
 
+#### Extensions
+
+`FASTElement.define()` and `FASTElementDefinition.define()` accept an optional array of **extension callbacks** (`FASTElementExtension`). Each extension is a function that receives the resolved `FASTElementDefinition` and is invoked **before** the element is registered with the platform via `customElements.define()`. This allows plugins to inspect or act on the definition metadata (name, template, styles, attributes) before any existing DOM elements are upgraded.
+
+```typescript
+type FASTElementExtension = (definition: FASTElementDefinition) => void;
+```
+
+Extensions are typically produced by factory functions:
+
+```typescript
+function myPlugin() {
+    return (definition: FASTElementDefinition) => {
+        console.log(`Registering: ${definition.name}`);
+    };
+}
+
+MyComponent.define({ name: "my-component" }, [myPlugin()]);
+```
+
 ---
 
 ### Observables & Notifiers
