@@ -22,7 +22,7 @@ The `install-hydratable-view-templates.js` side-effect import is still available
 ### Changed behavior
 
 - **`attributeChangedCallback` during upgrade**: When `isPrerendered` is true and the element has not yet connected, attribute change callbacks are suppressed. After connection, all attribute changes are processed normally.
-- **`connect()` with `defineAsync()`**: When `templateOptions` is `"defer-and-hydrate"` and no template is available, `connect()` returns early automatically. The `Observable` subscription on `"template"` retriggers connection when the template arrives. No `defer-hydration` attribute is needed.
+- **`connect()` with deferred template**: When `templateOptions` is `"defer-and-hydrate"` and no template is available, `connect()` returns early automatically. The `Observable` subscription on `"template"` retriggers connection when the template arrives. No `defer-hydration` attribute is needed.
 - **Binding evaluation with existing shadow root**: When an existing shadow root is detected, `attribute` and `booleanAttribute` bindings skip their initial DOM update. All other binding types (event, content, property, tokenList) run normally.
 
 ### New APIs
@@ -36,3 +36,68 @@ The `install-hydratable-view-templates.js` side-effect import is still available
 2. Remove `import "@microsoft/fast-element/install-hydration.js"` side-effect imports.
 3. Replace `element.$fastController instanceof HydratableElementController` checks with `await element.$fastController.isPrerendered`.
 4. Remove `defer-hydration` and `needs-hydration` attributes from server-rendered markup.
+
+## Async define/compose/register API (v3)
+
+### Removed APIs
+
+| Removed | Replacement |
+|---|---|
+| `FASTElement.defineAsync()` | `FASTElement.define()` (now returns `Promise<TType>`) |
+| `FASTElementDefinition.composeAsync()` | `FASTElementDefinition.compose()` (now returns `Promise<FASTElementDefinition>`) |
+| `FASTElementDefinition.registerAsync()` | `FASTElementDefinition.register()` (same `Promise<Function>` return type) |
+
+### Changed behavior
+
+- **`FASTElement.define()`** now returns `Promise<TType>`. When a template is provided at definition time, the Promise resolves immediately. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the Promise resolves after a template is supplied (e.g. via `<f-template>`).
+- **`FASTElement.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
+- **`FASTElementDefinition.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
+- **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
+
+### Migration steps
+
+1. Replace `defineAsync()` calls with `define()`:
+
+   ```typescript
+   // Before
+   MyElement.defineAsync({
+       name: "my-element",
+       templateOptions: "defer-and-hydrate",
+   });
+
+   // After
+   MyElement.define({
+       name: "my-element",
+       templateOptions: "defer-and-hydrate",
+   });
+   ```
+
+2. Replace `composeAsync()` calls with `compose()` and add `await`:
+
+   ```typescript
+   // Before
+   const def = await FASTElementDefinition.composeAsync(MyElement, name);
+
+   // After
+   const def = await FASTElementDefinition.compose(MyElement, name);
+   ```
+
+3. Replace `registerAsync()` calls with `register()`:
+
+   ```typescript
+   // Before
+   const el = await FASTElementDefinition.registerAsync(name);
+
+   // After
+   const el = await FASTElementDefinition.register(name);
+   ```
+
+4. Add `await` to `compose()` calls that chain `.define()`:
+
+   ```typescript
+   // Before
+   FASTElementDefinition.compose(MyElement, options).define();
+
+   // After
+   (await FASTElementDefinition.compose(MyElement, options)).define();
+   ```

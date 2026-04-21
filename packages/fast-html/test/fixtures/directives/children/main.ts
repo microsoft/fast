@@ -8,7 +8,7 @@ class TestElement extends FASTElement {
     @observable
     list: Array<string> = ["Foo", "Bar"];
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });

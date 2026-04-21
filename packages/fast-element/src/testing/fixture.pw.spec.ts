@@ -21,16 +21,18 @@ test.describe("The fixture helper", () => {
 
             attr(MyElement.prototype, "value");
 
-            FASTElementDefinition.compose(
-                class extends MyElement {
-                    static definition = {
-                        name,
-                        template: html`
+            (
+                await FASTElementDefinition.compose(
+                    class extends MyElement {
+                        static definition = {
+                            name,
+                            template: html`
                             ${(x: any) => x.value}
                             <slot></slot>
                         `,
-                    };
-                }
+                        };
+                    },
+                )
             ).define();
 
             const { element } = await fixture(name);
@@ -60,16 +62,18 @@ test.describe("The fixture helper", () => {
 
             attr(MyElement.prototype, "value");
 
-            FASTElementDefinition.compose(
-                class extends MyElement {
-                    static definition = {
-                        name,
-                        template: html`
+            (
+                await FASTElementDefinition.compose(
+                    class extends MyElement {
+                        static definition = {
+                            name,
+                            template: html`
                             ${(x: any) => x.value}
                             <slot></slot>
                         `,
-                    };
-                }
+                        };
+                    },
+                )
             ).define();
 
             const tag = html.partial(name);
@@ -109,16 +113,18 @@ test.describe("The fixture helper", () => {
 
             attr(MyElement.prototype, "value");
 
-            FASTElementDefinition.compose(
-                class extends MyElement {
-                    static definition = {
-                        name,
-                        template: html`
+            (
+                await FASTElementDefinition.compose(
+                    class extends MyElement {
+                        static definition = {
+                            name,
+                            template: html`
                             ${(x: any) => x.value}
                             <slot></slot>
                         `,
-                    };
-                }
+                        };
+                    },
+                )
             ).define();
 
             const { element, connect } = await fixture(name);
@@ -156,16 +162,18 @@ test.describe("The fixture helper", () => {
 
                 attr(MyElement.prototype, "value");
 
-                FASTElementDefinition.compose(
-                    class extends MyElement {
-                        static definition = {
-                            name,
-                            template: html`
+                (
+                    await FASTElementDefinition.compose(
+                        class extends MyElement {
+                            static definition = {
+                                name,
+                                template: html`
                                 ${(x: any) => x.value}
                                 <slot></slot>
                             `,
-                        };
-                    }
+                            };
+                        },
+                    )
                 ).define();
 
                 const { element, connect, disconnect } = await fixture(name);
@@ -178,7 +186,7 @@ test.describe("The fixture helper", () => {
                 const afterDisconnect = element.isConnected;
 
                 return { beforeConnect, afterConnect, afterDisconnect };
-            }
+            },
         );
 
         expect(beforeConnect).toBe(false);
@@ -208,16 +216,18 @@ test.describe("The fixture helper", () => {
 
             attr(MyElement.prototype, "value");
 
-            FASTElementDefinition.compose(
-                class extends MyElement {
-                    static definition = {
-                        name,
-                        template: html`
+            (
+                await FASTElementDefinition.compose(
+                    class extends MyElement {
+                        static definition = {
+                            name,
+                            template: html`
                             ${(x: any) => x.value}
                             <slot></slot>
                         `,
-                    };
-                }
+                        };
+                    },
+                )
             ).define();
 
             class MyModel {
@@ -231,7 +241,7 @@ test.describe("The fixture helper", () => {
                 html`
                     <${tag} value=${(x: any) => x.value}></${tag}>
                 `,
-                { source }
+                { source },
             )) as { element: any; disconnect: () => Promise<void> };
 
             const initialMatch = element.value === source.value;

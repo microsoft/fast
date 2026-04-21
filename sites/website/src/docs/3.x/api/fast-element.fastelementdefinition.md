@@ -262,7 +262,7 @@ A map enabling lookup of attribute by associated property name.
 </td></tr>
 <tr><td>
 
-[registerAsync](../fast-element.fastelementdefinition.registerasync/)
+[register](../fast-element.fastelementdefinition.register/)
 
 
 </td><td>

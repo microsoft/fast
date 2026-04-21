@@ -9,7 +9,7 @@ export class TestElement extends FASTElement {
     @attr
     item_parent: string = "Bat";
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -27,7 +27,7 @@ export class TestElementInnerWhen extends FASTElement {
         },
     ];
 }
-TestElementInnerWhen.defineAsync({
+TestElementInnerWhen.define({
     name: "test-element-inner-when",
     templateOptions: "defer-and-hydrate",
 });
@@ -43,7 +43,7 @@ export class TestElementIntervalUpdates extends FASTElement {
     }
 }
 
-TestElementIntervalUpdates.defineAsync({
+TestElementIntervalUpdates.define({
     name: "test-element-interval-updates",
     templateOptions: "defer-and-hydrate",
 });
@@ -52,7 +52,7 @@ export class TestElementNoItemRepeatBinding extends FASTElement {
     @observable
     list: Array<string> = [];
 }
-TestElementNoItemRepeatBinding.defineAsync({
+TestElementNoItemRepeatBinding.define({
     name: "test-element-no-item-repeat-binding",
     templateOptions: "defer-and-hydrate",
 });
@@ -61,7 +61,7 @@ export class TestElementEmptyArray extends FASTElement {
     @observable
     list: Array<string> = [];
 }
-TestElementEmptyArray.defineAsync({
+TestElementEmptyArray.define({
     name: "test-element-empty-array",
     templateOptions: "defer-and-hydrate",
 });
@@ -77,7 +77,7 @@ export class TestElementEvent extends FASTElement {
         this.clickCount++;
     };
 }
-TestElementEvent.defineAsync({
+TestElementEvent.define({
     name: "test-element-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -88,7 +88,7 @@ export class TestElementWithObserverMap extends FASTElement {
     @attr
     item_parent: string = "Bat";
 }
-TestElementWithObserverMap.defineAsync({
+TestElementWithObserverMap.define({
     name: "test-element-with-observer-map",
     templateOptions: "defer-and-hydrate",
 });

@@ -7,7 +7,7 @@ This document describes the interaction between `@microsoft/fast-element` and `@
 The FAST Element rendering lifecycle involves a coordinated process between two main packages:
 
 - **`@microsoft/fast-element`**: Provides the core `FASTElement` base class and element definition system
-- **`@microsoft/fast-html`**: Provides the `f-template` custom element that processes HTML templates and attaches them to FAST elements as a `ViewTemplate` in lieu of an `html` template created during `FASTElement.define()`. When using `f-template` the `FASTElement.defineAsync()` method must be used instead.
+- **`@microsoft/fast-html`**: Provides the `f-template` custom element that processes HTML templates and attaches them to FAST elements as a `ViewTemplate` in lieu of an `html` template created during `FASTElement.define()`. When using `f-template` the `FASTElement.define()` method is called with `templateOptions: "defer-and-hydrate"` to defer template attachment.
 
 ## Lifecycle Phases
 
@@ -31,7 +31,7 @@ The following phases will then be kicked off once the JavaScript is parsed.
 
 ### Phase 1: Partial Element Registration
 
-Custom elements begin their lifecycle by registering as partial definitions with the FAST Element Registry using the `defineAsync()` method. This allows the element to be registered before its template is available.
+Custom elements begin their lifecycle by registering as partial definitions with the FAST Element Registry using the `define()` method with `templateOptions: "defer-and-hydrate"`. This allows the element to be registered before its template is available.
 
 ```typescript
 // Custom element class definition
@@ -40,7 +40,7 @@ class MyComponent extends FASTElement {
 }
 
 // Register as partial definition - element is registered but incomplete
-MyComponent.defineAsync({
+MyComponent.define({
     name: "my-component",
 });
 ```
@@ -68,7 +68,7 @@ When an `f-template` element is connected to the DOM, it initiates the template 
 The lifecycle flow during this phase:
 
 1. **Template Element Connection**: The `f-template` element's `connectedCallback()` is invoked
-2. **Async Registration Lookup**: Uses `FASTElementDefinition.registerAsync(this.name)` to find the partial element definition
+2. **Async Registration Lookup**: Uses `FASTElementDefinition.register(this.name)` to find the partial element definition
 3. **Template Processing**: Processes the HTML template, resolving data bindings, directives, and other template features into the `ViewTemplate` model which is also used by the `@microsoft/fast-element` `html` tag template
 4. **Template Attachment**: Attaches the processed template to the partial element definition via `registeredFastElement.template = resolvedTemplate`
 
@@ -76,7 +76,7 @@ The lifecycle flow during this phase:
 
 Once the template is attached to the partial definition, the element completes its composition:
 
-1. **`composeAsync()` Execution**: The element definition internally completes its composition process
+1. **`compose()` Execution**: The element definition internally completes its composition process
 2. **Platform Registration**: The completed element definition is fully registered with the platform's custom element registry
 
 ### Phase 5: Element Instantiation and Hydration
@@ -104,15 +104,15 @@ The DOM after hydration should look like this:
 
 The `fastElementRegistry` serves as the central coordination point between the two packages:
 
-- Stores partial element definitions created by `defineAsync()`
-- Provides lookup mechanism via `registerAsync()` for template attachment
+- Stores partial element definitions created by `define()`
+- Provides lookup mechanism via `register()` for template attachment
 - Maintains the registry of all FAST element definitions
 
 ### Observable Pattern
 
 Both packages use the Observable pattern for coordination:
 
-- `FASTElementDefinition.registerAsync()` uses `Observable.getNotifier()` to notify when elements are registered
+- `FASTElementDefinition.register()` uses `Observable.getNotifier()` to notify when elements are registered
 - Template attachment triggers observable notifications to complete the lifecycle
 
 ## Error Handling

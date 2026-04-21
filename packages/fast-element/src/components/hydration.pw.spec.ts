@@ -8,21 +8,19 @@ test.describe("The prerendered content optimization", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const {
-                FASTElement,
-                FASTElementDefinition,
-                html,
-                uniqueElementName,
-            } = await import("/main.js");
+            const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                await import("/main.js");
 
             const name = uniqueElementName();
-            FASTElementDefinition.compose(
-                class TestElement extends FASTElement {
-                    static definition = {
-                        name,
-                        template: html`<span>hello</span>`,
-                    };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class TestElement extends FASTElement {
+                        static definition = {
+                            name,
+                            template: html`<span>hello</span>`,
+                        };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name) as any;
@@ -47,12 +45,8 @@ test.describe("The prerendered content optimization", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const {
-                FASTElement,
-                FASTElementDefinition,
-                html,
-                uniqueElementName,
-            } = await import("/main.js");
+            const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                await import("/main.js");
 
             const name = uniqueElementName();
 
@@ -60,19 +54,21 @@ test.describe("The prerendered content optimization", () => {
             const container = document.createElement("div");
             document.body.appendChild(container);
             (container as any).setHTMLUnsafe(
-                `<${name}><template shadowrootmode="open"><span>prerendered</span></template></${name}>`
+                `<${name}><template shadowrootmode="open"><span>prerendered</span></template></${name}>`,
             );
             const element = container.firstElementChild as any;
             const hasShadowRootBefore = !!element.shadowRoot;
 
             // Now define — triggers upgrade with existing shadow root
-            FASTElementDefinition.compose(
-                class TestElement extends FASTElement {
-                    static definition = {
-                        name,
-                        template: html`<span>hello</span>`,
-                    };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class TestElement extends FASTElement {
+                        static definition = {
+                            name,
+                            template: html`<span>hello</span>`,
+                        };
+                    },
+                )
             ).define();
 
             await new Promise(resolve => requestAnimationFrame(resolve));
@@ -94,12 +90,8 @@ test.describe("The prerendered content optimization", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const {
-                FASTElement,
-                FASTElementDefinition,
-                html,
-                uniqueElementName,
-            } = await import("/main.js");
+            const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                await import("/main.js");
 
             const name = uniqueElementName();
 
@@ -110,7 +102,7 @@ test.describe("The prerendered content optimization", () => {
                 };
             }
 
-            const definition = FASTElementDefinition.compose(TestElement);
+            const definition = await FASTElementDefinition.compose(TestElement);
             definition.define();
 
             const element = document.createElement(name) as any;
@@ -161,7 +153,7 @@ test.describe("The prerendered content optimization", () => {
             (TestElement as any).label = undefined;
             (observable as any)(TestElement.prototype, "label");
 
-            FASTElementDefinition.compose(TestElement).define();
+            (await FASTElementDefinition.compose(TestElement)).define();
 
             const element = document.createElement(name) as any;
             element.label = "CSR rendered";

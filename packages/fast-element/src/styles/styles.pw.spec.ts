@@ -67,14 +67,14 @@ test.describe("AdoptedStyleSheetsStrategy", () => {
 
                 const afterAddLength = target.adoptedStyleSheets.length;
                 const containsAfterAdd = target.adoptedStyleSheets.includes(
-                    strategy.sheets[0]
+                    strategy.sheets[0],
                 );
 
                 strategy.removeStylesFrom(target);
 
                 const afterRemoveLength = target.adoptedStyleSheets.length;
                 const containsAfterRemove = target.adoptedStyleSheets.includes(
-                    strategy.sheets[0]
+                    strategy.sheets[0],
                 );
 
                 return {
@@ -228,7 +228,7 @@ test.describe("AdoptedStyleSheetsStrategy", () => {
                     }
                 }
 
-                MyElement.define({
+                await MyElement.define({
                     name,
                     template: html`
                         <p ${ref("pChild")}></p>
@@ -332,7 +332,7 @@ test.describe("StyleElementStrategy", () => {
 
                 const styles = [``];
                 const elementStyles = new ElementStyles(styles).withStrategy(
-                    StyleElementStrategy
+                    StyleElementStrategy,
                 );
                 document.body.innerHTML = "";
 
@@ -346,7 +346,7 @@ test.describe("StyleElementStrategy", () => {
                 const afterRemoveLength = document.body.childNodes.length;
 
                 return { afterAddIsStyleElement, afterRemoveLength };
-            }
+            },
         );
 
         expect(afterAddIsStyleElement).toBe(true);
@@ -378,7 +378,7 @@ test.describe("StyleElementStrategy", () => {
                 const afterRemoveLength = shadowRoot.childNodes.length;
 
                 return { afterAddIsStyleElement, afterRemoveLength };
-            }
+            },
         );
 
         expect(afterAddIsStyleElement).toBe(true);
@@ -522,7 +522,7 @@ test.describe("StyleElementStrategy", () => {
                 }
             }
 
-            MyElement.define({
+            await MyElement.define({
                 name,
                 template: html`
                     <p ${ref("pChild")}></p>
@@ -676,7 +676,7 @@ test.describe("ElementStyles", () => {
                     css1Index: styles.styles.indexOf(css1),
                     containsCss2: styles.styles.includes(css2),
                 };
-            }
+            },
         );
 
         expect(containsCss1).toBe(true);
@@ -715,7 +715,7 @@ test.describe("ElementStyles", () => {
                     firstIndex: styles.styles.indexOf(existingStyles1),
                     containsSecond: styles.styles.includes(existingStyles2),
                 };
-            }
+            },
         );
 
         expect(containsFirst).toBe(true);
@@ -739,7 +739,7 @@ test.describe("ElementStyles", () => {
                     css1Index: styles.styles.indexOf(css1),
                     containsExisting: styles.styles.includes(existingStyles2),
                 };
-            }
+            },
         );
 
         expect(containsCss1).toBe(true);
@@ -779,7 +779,7 @@ test.describe("ElementStyles", () => {
                     firstIndex: styles.styles.indexOf(styleSheet1),
                     containsSecond: styles.styles.includes(styleSheet2),
                 };
-            }
+            },
         );
 
         expect(containsFirst).toBe(true);
@@ -905,7 +905,7 @@ test.describe("css", () => {
             test("when the result is a CSSStyleSheet", async ({ page }) => {
                 test.skip(
                     !supportsAdoptedStyleSheets,
-                    "Adopted stylesheets not supported"
+                    "Adopted stylesheets not supported",
                 );
 
                 const includesSheet = await page.evaluate(async () => {
@@ -983,13 +983,13 @@ test.describe("css", () => {
                         }
                     `;
                     const bindings = styles.behaviors!.filter(
-                        (x: any) => x instanceof CSSBindingDirective
+                        (x: any) => x instanceof CSSBindingDirective,
                     );
 
                     const b = bindings[0] as any;
                     const result = b.dataBinding.evaluate(
                         new Model("red"),
-                        ExecutionContext.default
+                        ExecutionContext.default,
                     );
 
                     return {
@@ -1034,13 +1034,13 @@ test.describe("css", () => {
                         }
                     `;
                     const bindings = styles.behaviors!.filter(
-                        (x: any) => x instanceof CSSBindingDirective
+                        (x: any) => x instanceof CSSBindingDirective,
                     );
 
                     const b = bindings[0] as any;
                     const result = b.dataBinding.evaluate(
                         new Model("red"),
-                        ExecutionContext.default
+                        ExecutionContext.default,
                     );
 
                     return {

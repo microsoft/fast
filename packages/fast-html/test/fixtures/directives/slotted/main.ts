@@ -15,7 +15,7 @@ class TestElement extends FASTElement {
     @observable
     slottedBarNodes: Node[] = [];
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });

@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Remove defineAsync and composeAsync — define() and compose() now return Promises",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

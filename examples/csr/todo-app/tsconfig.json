@@ -13,8 +13,8 @@
             }
         ],
         "pretty": true,
-        "target": "ES2015",
-        "module": "ES2015",
+        "target": "ES2022",
+        "module": "ES2022",
         "moduleResolution": "bundler",
         "importHelpers": true,
         "experimentalDecorators": true,

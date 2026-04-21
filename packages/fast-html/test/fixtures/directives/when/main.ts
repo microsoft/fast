@@ -5,7 +5,7 @@ class TestElementMultiple extends FASTElement {
     @attr()
     planet: string = "";
 }
-TestElementMultiple.defineAsync({
+TestElementMultiple.define({
     name: "test-element-multiple",
     templateOptions: "defer-and-hydrate",
 });
@@ -14,7 +14,7 @@ class TestElement extends FASTElement {
     @attr({ mode: "boolean" })
     show: boolean = false;
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -23,7 +23,7 @@ class TestElementNot extends FASTElement {
     @attr({ mode: "boolean" })
     hide: boolean = false;
 }
-TestElementNot.defineAsync({
+TestElementNot.define({
     name: "test-element-not",
     templateOptions: "defer-and-hydrate",
 });
@@ -32,7 +32,7 @@ class TestElementEquals extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-TestElementEquals.defineAsync({
+TestElementEquals.define({
     name: "test-element-equals",
     templateOptions: "defer-and-hydrate",
 });
@@ -41,7 +41,7 @@ class TestElementNotEquals extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-TestElementNotEquals.defineAsync({
+TestElementNotEquals.define({
     name: "test-element-not-equals",
     templateOptions: "defer-and-hydrate",
 });
@@ -50,7 +50,7 @@ class TestElementGe extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-TestElementGe.defineAsync({
+TestElementGe.define({
     name: "test-element-ge",
     templateOptions: "defer-and-hydrate",
 });
@@ -59,7 +59,7 @@ class TestElementGt extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-TestElementGt.defineAsync({
+TestElementGt.define({
     name: "test-element-gt",
     templateOptions: "defer-and-hydrate",
 });
@@ -68,7 +68,7 @@ class TestElementLe extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-TestElementLe.defineAsync({
+TestElementLe.define({
     name: "test-element-le",
     templateOptions: "defer-and-hydrate",
 });
@@ -77,7 +77,7 @@ class TestElementLt extends FASTElement {
     @attr({ attribute: "vara" })
     vara: number = 0;
 }
-TestElementLt.defineAsync({
+TestElementLt.define({
     name: "test-element-lt",
     templateOptions: "defer-and-hydrate",
 });
@@ -89,7 +89,7 @@ class TestElementOr extends FASTElement {
     @attr({ attribute: "thatvar", mode: "boolean" })
     thatvar: boolean = false;
 }
-TestElementOr.defineAsync({
+TestElementOr.define({
     name: "test-element-or",
     templateOptions: "defer-and-hydrate",
 });
@@ -101,7 +101,7 @@ class TestElementAnd extends FASTElement {
     @attr({ attribute: "thatvar", mode: "boolean" })
     thatvar: boolean = false;
 }
-TestElementAnd.defineAsync({
+TestElementAnd.define({
     name: "test-element-and",
     templateOptions: "defer-and-hydrate",
 });
@@ -113,7 +113,7 @@ export class TestElementWhenFalseRepeat extends FASTElement {
     @observable
     list: Array<string> = ["Alpha", "Beta", "Gamma"];
 }
-TestElementWhenFalseRepeat.defineAsync({
+TestElementWhenFalseRepeat.define({
     name: "test-element-when-false-repeat",
     templateOptions: "defer-and-hydrate",
 });
@@ -129,7 +129,7 @@ export class TestElementEvent extends FASTElement {
         this.clickCount++;
     };
 }
-TestElementEvent.defineAsync({
+TestElementEvent.define({
     name: "test-element-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -157,7 +157,7 @@ export class NestedWhenElement extends FASTElement {
         this.clickCount++;
     };
 }
-NestedWhenElement.defineAsync({
+NestedWhenElement.define({
     name: "nested-when",
     templateOptions: "defer-and-hydrate",
 });

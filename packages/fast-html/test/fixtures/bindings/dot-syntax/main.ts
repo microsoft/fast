@@ -42,7 +42,7 @@ class TestElement extends FASTElement {
         this.object.a.b2.c = "Pluto";
     };
 }
-TestElement.defineAsync({
+TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
 });
