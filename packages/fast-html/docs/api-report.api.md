@@ -40,6 +40,14 @@ export interface ObserverMapPathNode {
 }
 
 // @public
+export interface ResolvedStringsAndValues {
+    // (undocumented)
+    strings: Array<string>;
+    // (undocumented)
+    values: Array<any>;
+}
+
+// @public
 export class TemplateElement extends FASTElement {
     constructor();
     // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
@@ -56,7 +64,6 @@ export class TemplateElement extends FASTElement {
 export class TemplateParser {
     createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
     get hasDeprecatedEventSyntax(): boolean;
-    // Warning: (ae-forgotten-export) The symbol "ResolvedStringsAndValues" needs to be exported by the entry point index.d.ts
     parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }
 
