@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "clean build tmp",
-    "prebuild": "npm run clean && node scripts/generate-docs.cjs",
+    "prebuild": "npm run clean && node scripts/generate-docs.cjs 2",
     "build": "npm run prebuild && npx @11ty/eleventy --output=build --input=src",
     "start": "npm run prebuild && npx @11ty/eleventy --output=build --input=src --serve",
     "help": "npx @11ty/eleventy --help"
