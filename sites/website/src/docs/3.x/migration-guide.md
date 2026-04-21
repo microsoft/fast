@@ -96,7 +96,7 @@ The `RenderableFASTElement` mixin has been removed. Components extend `FASTEleme
 ```ts
 import { RenderableFASTElement } from "@microsoft/fast-html";
 
-RenderableFASTElement(MyComponent).define({
+RenderableFASTElement(MyComponent).defineAsync({
     name: "my-component",
     templateOptions: "defer-and-hydrate",
 });
