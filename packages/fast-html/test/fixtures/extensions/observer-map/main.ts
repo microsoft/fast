@@ -427,10 +427,12 @@ class ObserverMapWithObservablesTestElement extends FASTElement {
 
 ObserverMapInternalTestElement.define({
     name: "observer-map-internal-test-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 ObserverMapTestElement.define({
     name: "observer-map-test-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 ObserverMapWithObservablesTestElement.define({
@@ -452,6 +454,7 @@ class ObserverMapSimpleArrayTestElement extends FASTElement {
 
 ObserverMapSimpleArrayTestElement.define({
     name: "observer-map-simple-array-test-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 // Configure TemplateElement with observerMap enabled for this test

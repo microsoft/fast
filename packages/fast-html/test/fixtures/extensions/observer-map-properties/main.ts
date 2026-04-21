@@ -63,6 +63,7 @@ class SelectiveObsElement extends FASTElement {
 
 SelectiveObsElement.define({
     name: "selective-obs-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 class AllObsElement extends FASTElement {
@@ -85,6 +86,7 @@ class AllObsElement extends FASTElement {
 
 AllObsElement.define({
     name: "all-obs-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 class EmptyPropsElement extends FASTElement {
@@ -107,6 +109,7 @@ class EmptyPropsElement extends FASTElement {
 
 EmptyPropsElement.define({
     name: "empty-props-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 class ArraySelectiveElement extends FASTElement {
@@ -126,6 +129,7 @@ class ArraySelectiveElement extends FASTElement {
 
 ArraySelectiveElement.define({
     name: "array-selective-element",
+    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.options({
