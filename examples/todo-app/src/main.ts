@@ -1,5 +1,5 @@
-import { DefaultTodoList, TodoList } from "./todo-list.js";
 import { app } from "./todo-app.js";
+import { DefaultTodoList, TodoList } from "./todo-list.js";
 
 // Before we allow the app to be defined, we want to
 // make sure that our context data is configured. This
@@ -11,4 +11,4 @@ import { app } from "./todo-app.js";
 TodoList.provide(document, new DefaultTodoList());
 
 // Define the todo-app custom element
-app.define();
+app.then(a => a.define());
