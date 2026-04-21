@@ -1004,14 +1004,15 @@ test.describe("The template compiler", () => {
 
             const result = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { customElement, FASTElement, html, css, uniqueElementName } =
-                    await import("/main.js");
+                const { FASTElement, html, css, uniqueElementName } = await import(
+                    "/main.js"
+                );
 
                 const name = uniqueElementName();
                 const tag = html.partial(name);
 
                 const TestElement = class extends FASTElement {};
-                await customElement({
+                await FASTElement.define(TestElement, {
                     name,
                     template: html`
                         <div></div>
@@ -1021,7 +1022,7 @@ test.describe("The template compiler", () => {
                             display: "block";
                         }
                     `,
-                })(TestElement);
+                });
 
                 const viewTemplate = html`<${tag}></${tag}>`;
 
