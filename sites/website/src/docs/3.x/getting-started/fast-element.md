@@ -281,6 +281,32 @@ HelloWorld.compose({
 }).define(FooRegistry);
 ```
 
+### Define Extensions
+
+`define()` accepts an optional second argument — an array of extension callbacks. Each extension is a function that receives the resolved `FASTElementDefinition` and is called **before** the element is registered with `customElements.define()`. This enables a plugin pattern for hooking into element registration.
+
+```ts
+import type { FASTElementExtension } from "@microsoft/fast-element";
+
+function myPlugin(): FASTElementExtension {
+    return definition => {
+        console.log(`Defining: ${definition.name}`);
+    };
+}
+
+MyComponent.define({
+  name: "my-component",
+  template,
+  styles,
+}, [myPlugin()]);
+```
+
+Extensions can also be used with the static call style:
+
+```ts
+FASTElement.define(MyComponent, { name: "my-component" }, [myPlugin()]);
+```
+
 ## Lifecycle
 
 All Web Components support a series of lifecycle events that you can tap into to execute custom code at specific points in time. `FASTElement` implements several of these callbacks automatically in order to enable features of its templating engine. However, you can override them to provide your own code. Here's an example of how you would execute custom code when your element is inserted into the DOM.
