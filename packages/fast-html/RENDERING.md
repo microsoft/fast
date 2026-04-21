@@ -89,7 +89,7 @@ export class MyComponent extends FASTElement {
     }
 }
 
-MyComponent.defineAsync({
+MyComponent.define({
     name: "my-component",
     templateOptions: "defer-and-hydrate",
 });

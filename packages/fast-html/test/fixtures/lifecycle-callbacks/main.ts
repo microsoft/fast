@@ -30,7 +30,7 @@ class SimpleElement extends FASTElement {
     message: string = "Hello";
 }
 
-SimpleElement.defineAsync({
+SimpleElement.define({
     name: "simple-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -55,7 +55,7 @@ class ComplexElement extends FASTElement {
     }
 }
 
-ComplexElement.defineAsync({
+ComplexElement.define({
     name: "complex-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -66,7 +66,7 @@ class NestedElement extends FASTElement {
     label: string = "Nested";
 }
 
-NestedElement.defineAsync({
+NestedElement.define({
     name: "nested-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -85,7 +85,7 @@ class DeferredElement extends FASTElement {
     }
 }
 
-DeferredElement.defineAsync({
+DeferredElement.define({
     name: "deferred-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -100,7 +100,7 @@ class DeferredParentElement extends FASTElement {
     }
 }
 
-DeferredParentElement.defineAsync({
+DeferredParentElement.define({
     name: "deferred-parent-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -114,7 +114,7 @@ class DeferredChildElement extends FASTElement {
     }
 }
 
-DeferredChildElement.defineAsync({
+DeferredChildElement.define({
     name: "deferred-child-element",
     templateOptions: "defer-and-hydrate",
 });

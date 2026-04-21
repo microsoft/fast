@@ -108,7 +108,7 @@ test.describe("The template compiler", () => {
                         },
                         {
                             html: `<div>start ${I(0)} end</div><a href="${I(1)}">${I(
-                                2
+                                2,
                             )}</a> ${I(3)} end`,
                             directives: () => [B(), B(), B(), B()],
                         },
@@ -274,7 +274,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<div>start ${I(0)} end</div><a href="${I(
-                                        1
+                                        1,
                                     )}">${I(2)}</a> ${I(3)} end`,
                                     directives: () => [B(), B(), B(), B()],
                                     fragment: "<div>start   end</div><a> </a>   end",
@@ -289,7 +289,7 @@ test.describe("The template compiler", () => {
                             const { fragment, factories } = compile(
                                 s.html,
                                 directives,
-                                pol.provided
+                                pol.provided,
                             );
 
                             const htmlResult = toHTML(fragment);
@@ -332,7 +332,7 @@ test.describe("The template compiler", () => {
                                 policiesMatch,
                             };
                         },
-                        [sIdx, pIdx] as [number, number]
+                        [sIdx, pIdx] as [number, number],
                     );
 
                     expect(result.htmlResult).toBe(result.expectedFragment);
@@ -516,7 +516,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<a href="beginning ${I(0)}${I(
-                                        1
+                                        1,
                                     )} end">Link</a>`,
                                     directives: () => [B(), B()],
                                     fragment: `<a>Link</a>`,
@@ -539,7 +539,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<a href="${I(0)}separator${I(
-                                        1
+                                        1,
                                     )} end">Link</a>`,
                                     directives: () => [B(), B()],
                                     fragment: `<a>Link</a>`,
@@ -548,7 +548,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<a href="beginning ${I(0)}separator${I(
-                                        1
+                                        1,
                                     )} end">Link</a>`,
                                     directives: () => [B(), B()],
                                     fragment: `<a>Link</a>`,
@@ -557,7 +557,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<a href="beginning ${I(0)}separator${I(
-                                        1
+                                        1,
                                     )}">Link</a>`,
                                     directives: () => [B(), B()],
                                     fragment: `<a>Link</a>`,
@@ -573,7 +573,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<a href="${I(0)}">Link</a><a href="${I(
-                                        1
+                                        1,
                                     )}">Link</a>`,
                                     directives: () => [B(), B()],
                                     fragment: `<a>Link</a><a>Link</a>`,
@@ -582,9 +582,9 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `\n          <a href="${I(0)}" target="${I(
-                                        1
+                                        1,
                                     )}">Link</a>\n          <a href="${I(2)}" target="${I(
-                                        3
+                                        3,
                                     )}">Link</a>\n        `,
                                     directives: () => [B(), B(), B(), B()],
                                     fragment: `\n          <a>Link</a>\n          <a>Link</a>\n        `,
@@ -599,7 +599,7 @@ test.describe("The template compiler", () => {
                             const { fragment, factories } = compile(
                                 s.html,
                                 directives,
-                                pol.provided
+                                pol.provided,
                             );
 
                             const htmlResult = toHTML(fragment);
@@ -639,7 +639,7 @@ test.describe("The template compiler", () => {
                                 policiesMatch,
                             };
                         },
-                        [sIdx, pIdx] as [number, number]
+                        [sIdx, pIdx] as [number, number],
                     );
 
                     expect(result.htmlResult).toBe(result.expectedFragment);
@@ -703,7 +703,7 @@ test.describe("The template compiler", () => {
                     const pol = policies[pi];
                     const comment = `<!--This is a comment-->`;
                     const html = `\n                    ${comment}\n                    <a href="${I(
-                        0
+                        0,
                     )}">Link</a>\n                `;
 
                     const { fragment, factories } = compile(html, [B()], pol.provided);
@@ -821,7 +821,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="beginning ${I(
-                                        0
+                                        0,
                                     )} end"></template>`,
                                     directives: () => [B()],
                                     fragment: ``,
@@ -844,7 +844,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="${I(0)}${I(
-                                        1
+                                        1,
                                     )} end"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -853,7 +853,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="beginning ${I(0)}${I(
-                                        1
+                                        1,
                                     )} end"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -862,7 +862,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="start ${I(0)}${I(
-                                        1
+                                        1,
                                     )}"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -871,7 +871,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="${I(0)}separator${I(
-                                        1
+                                        1,
                                     )}"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -880,7 +880,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="${I(0)}separator${I(
-                                        1
+                                        1,
                                     )} end"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -889,7 +889,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="beginning ${I(0)}separator${I(
-                                        1
+                                        1,
                                     )} end"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -898,7 +898,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="beginning ${I(0)}separator${I(
-                                        1
+                                        1,
                                     )}"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -907,7 +907,7 @@ test.describe("The template compiler", () => {
                                 },
                                 {
                                     html: `<template class="${I(0)}" role="${I(
-                                        1
+                                        1,
                                     )}"></template>`,
                                     directives: () => [B(), B()],
                                     fragment: ``,
@@ -922,7 +922,7 @@ test.describe("The template compiler", () => {
                             const { fragment, factories } = compile(
                                 s.html,
                                 directives,
-                                pol.provided
+                                pol.provided,
                             );
 
                             const htmlResult = toHTML(fragment);
@@ -962,7 +962,7 @@ test.describe("The template compiler", () => {
                                 policiesMatch,
                             };
                         },
-                        [sIdx, pIdx] as [number, number]
+                        [sIdx, pIdx] as [number, number],
                     );
 
                     expect(result.htmlResult).toBe(result.expectedFragment);
@@ -999,7 +999,7 @@ test.describe("The template compiler", () => {
         test("handles templates with adoptedStyleSheets", async ({ page }) => {
             test.skip(
                 !supportsAdoptedStyleSheets,
-                "Browser does not support adoptedStyleSheets"
+                "Browser does not support adoptedStyleSheets",
             );
 
             const result = await page.evaluate(async () => {
@@ -1011,7 +1011,7 @@ test.describe("The template compiler", () => {
                 const tag = html.partial(name);
 
                 const TestElement = class extends FASTElement {};
-                customElement({
+                await FASTElement.define(TestElement, {
                     name,
                     template: html`
                         <div></div>
@@ -1021,7 +1021,7 @@ test.describe("The template compiler", () => {
                             display: "block";
                         }
                     `,
-                })(TestElement);
+                });
 
                 const viewTemplate = html`<${tag}></${tag}>`;
 
