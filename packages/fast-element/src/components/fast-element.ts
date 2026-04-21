@@ -139,11 +139,19 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition,
+    nameOrDef?: string | PartialFASTElementDefinition | FASTElementExtension[],
     extensions?: FASTElementExtension[],
 ): Promise<TType> {
+    if (Array.isArray(nameOrDef)) {
+        extensions = nameOrDef;
+        nameOrDef = undefined;
+    }
+
     const composePromise = isFunction(type)
-        ? FASTElementDefinition.compose(type, nameOrDef)
+        ? FASTElementDefinition.compose(
+              type,
+              nameOrDef as string | PartialFASTElementDefinition | undefined,
+          )
         : FASTElementDefinition.compose(this, type);
 
     return composePromise.then(def => {
