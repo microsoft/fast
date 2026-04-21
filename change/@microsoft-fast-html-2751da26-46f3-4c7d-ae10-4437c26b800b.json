@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "feat: add properties path tree to ObserverMapConfig in fast-html",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
