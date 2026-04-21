@@ -18,7 +18,7 @@ class ConfigObserverMapTestElement extends FASTElement {
     }
 }
 
-ConfigObserverMapTestElement.defineAsync({
+ConfigObserverMapTestElement.define({
     name: "config-observer-map-test-element",
 });
 
@@ -28,7 +28,7 @@ class ConfigAttributeMapTestElement extends FASTElement {
     }
 }
 
-ConfigAttributeMapTestElement.defineAsync({
+ConfigAttributeMapTestElement.define({
     name: "config-attribute-map-test-element",
 });
 
