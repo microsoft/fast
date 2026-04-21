@@ -45,7 +45,7 @@ test.describe("FASTElement", () => {
                     extensionCalls.push(def.name);
                 };
 
-                TestElement.define({ name: elName }, [extension]);
+                await TestElement.define({ name: elName }, [extension]);
 
                 return {
                     callCount: extensionCalls.length,
@@ -76,7 +76,7 @@ test.describe("FASTElement", () => {
                     extensionCalls.push(def.name);
                 };
 
-                FASTElement.define(TestElement, { name: elName }, [extension]);
+                await FASTElement.define(TestElement, { name: elName }, [extension]);
 
                 return {
                     callCount: extensionCalls.length,
@@ -100,7 +100,7 @@ test.describe("FASTElement", () => {
 
                 class TestElement extends FASTElement {}
 
-                TestElement.define({ name: uniqueElementName() }, [
+                await TestElement.define({ name: uniqueElementName() }, [
                     () => calls.push(1),
                     () => calls.push(2),
                     () => calls.push(3),
@@ -125,7 +125,7 @@ test.describe("FASTElement", () => {
 
                 const elName = uniqueElementName();
 
-                TestElement.define({ name: elName }, [
+                await TestElement.define({ name: elName }, [
                     () => {
                         wasDefinedDuringExtension =
                             customElements.get(elName) !== undefined;
@@ -151,7 +151,7 @@ test.describe("FASTElement", () => {
                 class TestElement extends FASTElement {}
 
                 const elName = uniqueElementName();
-                TestElement.define({ name: elName }, []);
+                await TestElement.define({ name: elName }, []);
 
                 return customElements.get(elName) !== undefined;
             });
@@ -172,7 +172,7 @@ test.describe("FASTElement", () => {
                 class TestElement extends FASTElement {}
 
                 const elName = uniqueElementName();
-                TestElement.define({ name: elName }, [
+                await TestElement.define({ name: elName }, [
                     def => {
                         receivedDef = def;
                     },
@@ -208,7 +208,7 @@ test.describe("FASTElement", () => {
                 class TestElement extends FASTElement {}
 
                 const elName = uniqueElementName();
-                TestElement.define({ name: elName }, [myPlugin()]);
+                await TestElement.define({ name: elName }, [myPlugin()]);
 
                 return {
                     callCount: calls.length,
