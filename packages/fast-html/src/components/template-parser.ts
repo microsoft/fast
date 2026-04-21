@@ -49,6 +49,29 @@ interface TemplateResolutionContext {
 }
 
 /**
+ * Tracks string segments accumulated during template parsing and maintains
+ * a running concatenation so that `bindingResolver` can receive the full
+ * preceding HTML without an O(N) `join("")` at every binding site.
+ */
+class StringsAccumulator {
+    readonly segments: any[] = [];
+    private _previousString = "";
+
+    push(segment: string): void {
+        this.segments.push(segment);
+        this._previousString += segment;
+    }
+
+    /**
+     * The full concatenation of all segments pushed so far.
+     * Used by `bindingResolver` to detect child-element attribute bindings.
+     */
+    get previousString(): string {
+        return this._previousString;
+    }
+}
+
+/**
  * Converts declarative HTML template markup into the `strings` and `values`
  * arrays that `ViewTemplate.create()` consumes.
  *
@@ -56,6 +79,9 @@ interface TemplateResolutionContext {
  * parsing state lives on the call stack or in the `TemplateResolutionContext`.
  * The only per-parse state is `_hasDeprecatedEventSyntax`, which is reset at
  * the start of each `parse()` call.
+ *
+ * The parsing pipeline is fully synchronous — no promises are allocated
+ * during template resolution.
  */
 export class TemplateParser {
     /**
@@ -80,11 +106,11 @@ export class TemplateParser {
      * @param observerMap - Optional ObserverMap for caching binding paths.
      * @returns The resolved strings and values.
      */
-    public async parse(
+    public parse(
         innerHTML: string,
         schema: Schema,
         observerMap?: ObserverMap,
-    ): Promise<ResolvedStringsAndValues> {
+    ): ResolvedStringsAndValues {
         this._hasDeprecatedEventSyntax = false;
 
         return this.resolveStringsAndValues(null, innerHTML, {
@@ -114,25 +140,21 @@ export class TemplateParser {
      * @param innerHTML - The innerHTML.
      * @param context - The template resolution context.
      */
-    private async resolveStringsAndValues(
+    private resolveStringsAndValues(
         rootPropertyName: string | null,
         innerHTML: string,
         context: TemplateResolutionContext,
-    ): Promise<ResolvedStringsAndValues> {
-        const strings: any[] = [];
+    ): ResolvedStringsAndValues {
+        const strings = new StringsAccumulator();
         const values: any[] = [];
-        await this.resolveInnerHTML(
-            rootPropertyName,
-            innerHTML,
-            strings,
-            values,
-            context,
+        this.resolveInnerHTML(rootPropertyName, innerHTML, strings, values, context);
+
+        (strings.segments as any).raw = strings.segments.map(value =>
+            String.raw({ raw: value }),
         );
 
-        (strings as any).raw = strings.map(value => String.raw({ raw: value }));
-
         return {
-            strings,
+            strings: strings.segments,
             values,
         };
     }
@@ -145,13 +167,13 @@ export class TemplateParser {
      * @param innerHTML - The innerHTML.
      * @param context - The template resolution context.
      */
-    private async resolveTemplateDirective(
+    private resolveTemplateDirective(
         rootPropertyName: string | null,
         behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string,
         context: TemplateResolutionContext,
-    ): Promise<void> {
+    ): void {
         switch (behaviorConfig.name) {
             case "when": {
                 const expressionChain = getExpressionChain(behaviorConfig.value);
@@ -164,7 +186,7 @@ export class TemplateParser {
                     context.schema,
                 );
 
-                const { strings, values } = await this.resolveStringsAndValues(
+                const { strings, values } = this.resolveStringsAndValues(
                     rootPropertyName,
                     innerHTML.slice(
                         behaviorConfig.openingTagEndIndex,
@@ -208,7 +230,7 @@ export class TemplateParser {
                     observerMap: context.observerMap,
                 };
 
-                const { strings, values } = await this.resolveStringsAndValues(
+                const { strings, values } = this.resolveStringsAndValues(
                     rootPropertyName,
                     innerHTML.slice(
                         behaviorConfig.openingTagEndIndex,
@@ -236,7 +258,7 @@ export class TemplateParser {
         name: AttributeDirective,
         propName: string,
         externalValues: Array<any>,
-    ) {
+    ): void {
         switch (name) {
             case "children": {
                 externalValues.push(children(propName));
@@ -315,7 +337,7 @@ export class TemplateParser {
         rootPropertyName: string | null,
         innerHTML: string,
         behaviorConfig: DataBindingBehaviorConfig,
-        strings: Array<string>,
+        strings: StringsAccumulator,
         context: TemplateResolutionContext,
     ): {
         binding: (x: any, c: any) => any;
@@ -341,8 +363,9 @@ export class TemplateParser {
             type,
         );
         const argsString = bindingHTML.slice(openingParenthesis + 1, closingParenthesis);
+        const previousString = strings.previousString;
         const resolved = bindingResolver(
-            strings.join(""),
+            previousString,
             rootPropertyName,
             propName,
             context.parentContext,
@@ -374,7 +397,7 @@ export class TemplateParser {
                     return (_x, c) => c;
                 case "binding":
                     return bindingResolver(
-                        strings.join(""),
+                        previousString,
                         rootPropertyName,
                         parsedArg.rawArg!,
                         context.parentContext,
@@ -398,14 +421,14 @@ export class TemplateParser {
     /**
      * Resolve a content data binding (`{{expression}}` in text content).
      */
-    private async resolveContentBinding(
+    private resolveContentBinding(
         rootPropertyName: string | null,
         innerHTML: string,
-        strings: Array<string>,
+        strings: StringsAccumulator,
         values: Array<any>,
         behaviorConfig: DataBindingBehaviorConfig,
         context: TemplateResolutionContext,
-    ): Promise<void> {
+    ): void {
         strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
         const propName = innerHTML.slice(
             behaviorConfig.openingEndIndex,
@@ -414,12 +437,12 @@ export class TemplateParser {
         const result = this.resolveAccessBinding(
             rootPropertyName,
             propName,
-            strings.join(""),
+            strings.previousString,
             context,
         );
         rootPropertyName = result.rootPropertyName;
         values.push(result.binding);
-        await this.resolveInnerHTML(
+        this.resolveInnerHTML(
             rootPropertyName,
             innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
             strings,
@@ -432,14 +455,14 @@ export class TemplateParser {
      * Resolve an attribute data binding (`{{expression}}` in an HTML attribute).
      * Dispatches to event, expression, or access binding handlers based on aspect.
      */
-    private async resolveAttributeBinding(
+    private resolveAttributeBinding(
         rootPropertyName: string | null,
         innerHTML: string,
-        strings: Array<string>,
+        strings: StringsAccumulator,
         values: Array<any>,
         behaviorConfig: DataBindingBehaviorConfig,
         context: TemplateResolutionContext,
-    ): Promise<void> {
+    ): void {
         strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
         let attributeBinding;
 
@@ -460,11 +483,11 @@ export class TemplateParser {
                 break;
             }
             case "?": {
-                const expression = innerHTML.slice(
+                const propName = innerHTML.slice(
                     behaviorConfig.openingEndIndex,
                     behaviorConfig.closingStartIndex,
                 );
-                const expressionChain = getExpressionChain(expression);
+                const expressionChain = getExpressionChain(propName);
 
                 if (expressionChain?.expression.operator) {
                     attributeBinding = getBooleanBinding(
@@ -475,14 +498,10 @@ export class TemplateParser {
                         context.schema,
                     );
                 } else {
-                    const propName = innerHTML.slice(
-                        behaviorConfig.openingEndIndex,
-                        behaviorConfig.closingStartIndex,
-                    );
                     const result = this.resolveAccessBinding(
                         rootPropertyName,
                         propName,
-                        strings.join(""),
+                        strings.previousString,
                         context,
                     );
                     attributeBinding = result.binding;
@@ -499,7 +518,7 @@ export class TemplateParser {
                 const result = this.resolveAccessBinding(
                     rootPropertyName,
                     propName,
-                    strings.join(""),
+                    strings.previousString,
                     context,
                 );
                 attributeBinding = result.binding;
@@ -509,7 +528,7 @@ export class TemplateParser {
 
         values.push(attributeBinding);
 
-        await this.resolveInnerHTML(
+        this.resolveInnerHTML(
             rootPropertyName,
             innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
             strings,
@@ -521,14 +540,14 @@ export class TemplateParser {
     /**
      * Resolve an attribute directive binding (`f-children`, `f-slotted`, `f-ref`).
      */
-    private async resolveAttributeDirectiveBinding(
+    private resolveAttributeDirectiveBinding(
         rootPropertyName: string | null,
         innerHTML: string,
-        strings: Array<string>,
+        strings: StringsAccumulator,
         values: Array<any>,
         behaviorConfig: AttributeDirectiveBindingBehaviorConfig,
         context: TemplateResolutionContext,
-    ): Promise<void> {
+    ): void {
         strings.push(
             innerHTML.slice(
                 0,
@@ -540,7 +559,7 @@ export class TemplateParser {
             behaviorConfig.closingStartIndex,
         );
         this.resolveAttributeDirective(behaviorConfig.name, propName, values);
-        await this.resolveInnerHTML(
+        this.resolveInnerHTML(
             rootPropertyName,
             innerHTML.slice(behaviorConfig.closingEndIndex + 1, innerHTML.length),
             strings,
@@ -553,17 +572,17 @@ export class TemplateParser {
      * Dispatcher for data binding resolution. Routes to the appropriate handler
      * based on the binding subtype.
      */
-    private async resolveDataBinding(
+    private resolveDataBinding(
         rootPropertyName: string | null,
         innerHTML: string,
-        strings: Array<string>,
+        strings: StringsAccumulator,
         values: Array<any>,
         behaviorConfig: DataBindingBehaviorConfig,
         context: TemplateResolutionContext,
-    ): Promise<void> {
+    ): void {
         switch (behaviorConfig.subtype) {
             case "content":
-                return this.resolveContentBinding(
+                this.resolveContentBinding(
                     rootPropertyName,
                     innerHTML,
                     strings,
@@ -571,8 +590,9 @@ export class TemplateParser {
                     behaviorConfig,
                     context,
                 );
+                break;
             case "attribute":
-                return this.resolveAttributeBinding(
+                this.resolveAttributeBinding(
                     rootPropertyName,
                     innerHTML,
                     strings,
@@ -580,8 +600,9 @@ export class TemplateParser {
                     behaviorConfig,
                     context,
                 );
+                break;
             case "attributeDirective":
-                return this.resolveAttributeDirectiveBinding(
+                this.resolveAttributeDirectiveBinding(
                     rootPropertyName,
                     innerHTML,
                     strings,
@@ -589,6 +610,7 @@ export class TemplateParser {
                     behaviorConfig,
                     context,
                 );
+                break;
         }
     }
 
@@ -597,17 +619,17 @@ export class TemplateParser {
      * in the HTML and dispatches to the appropriate handler.
      * @param rootPropertyName - The root property name for schema registration.
      * @param innerHTML - The innerHTML to parse.
-     * @param strings - The strings array (accumulates literal HTML segments).
+     * @param strings - Accumulator for literal HTML segments and running previous-string.
      * @param values - The values array (accumulates binding functions and directives).
      * @param context - The template resolution context.
      */
-    private async resolveInnerHTML(
+    private resolveInnerHTML(
         rootPropertyName: string | null,
         innerHTML: string,
-        strings: Array<string>,
+        strings: StringsAccumulator,
         values: Array<any>,
         context: TemplateResolutionContext,
-    ): Promise<void> {
+    ): void {
         const behaviorConfig = getNextBehavior(innerHTML);
 
         if (behaviorConfig === null) {
@@ -615,7 +637,7 @@ export class TemplateParser {
         } else {
             switch (behaviorConfig.type) {
                 case "dataBinding": {
-                    await this.resolveDataBinding(
+                    this.resolveDataBinding(
                         rootPropertyName,
                         innerHTML,
                         strings,
@@ -628,7 +650,7 @@ export class TemplateParser {
                 }
                 case "templateDirective": {
                     strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));
-                    await this.resolveTemplateDirective(
+                    this.resolveTemplateDirective(
                         rootPropertyName,
                         behaviorConfig,
                         values,
@@ -636,7 +658,7 @@ export class TemplateParser {
                         context,
                     );
 
-                    await this.resolveInnerHTML(
+                    this.resolveInnerHTML(
                         rootPropertyName,
                         innerHTML.slice(
                             behaviorConfig.closingTagEndIndex,

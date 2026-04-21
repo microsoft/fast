@@ -338,7 +338,7 @@ class TemplateElement extends FASTElement {
                 const innerHTML = transformInnerHTML(this.innerHTML);
                 const parser = new TemplateParser();
 
-                const { strings, values } = await parser.parse(
+                const { strings, values } = parser.parse(
                     innerHTML,
                     this.schema as Schema,
                     this.observerMap,

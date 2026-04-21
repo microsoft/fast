@@ -65,7 +65,7 @@ This document is intended for contributors who want to understand the internal a
 
 ### `TemplateParser` — declarative HTML parser
 
-A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parser is stateless across invocations — all mutable parsing state lives on the call stack or in an internal `TemplateResolutionContext`.
+A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parsing pipeline is fully synchronous — no promises are allocated during template resolution. A `StringsAccumulator` tracks the running concatenation of preceding HTML, eliminating repeated O(N) `join("")` calls at each binding site.
 
 ### `Schema` — JSON schema builder
 
@@ -267,7 +267,7 @@ flowchart TD
 The parsing pipeline is split across two classes:
 
 - **`TemplateElement`** (`template.ts`) — Custom element lifecycle: registration, options, callbacks, `ObserverMap`/`AttributeMap` wiring, and template assignment. ~120 lines.
-- **`TemplateParser`** (`template-parser.ts`) — Stateless template parser: converts declarative HTML into `strings`/`values` arrays for `ViewTemplate.create()`. Independently testable without DOM.
+- **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser: converts declarative HTML into `strings`/`values` arrays for `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running previous-string in O(1) per binding site instead of O(N) `join("")` calls. Independently testable without DOM.
 
 ```mermaid
 sequenceDiagram
