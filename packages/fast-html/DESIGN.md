@@ -253,7 +253,7 @@ flowchart TD
 
 ## Template Parsing Pipeline
 
-`TemplateElement.connectedCallback()` drives the pipeline via two cooperating private methods:
+`TemplateElement.connectedCallback()` drives the pipeline through a set of focused private methods. The recursive parsing context is encapsulated in a `TemplateResolutionContext` object, keeping method signatures lean.
 
 ```mermaid
 sequenceDiagram
@@ -267,26 +267,67 @@ sequenceDiagram
     TE->>TE: new Schema(name)
     TE->>TE: FASTElementDefinition.registerAsync(name)
     TE->>U: transformInnerHTML(this.innerHTML)
-    TE->>TE: resolveStringsAndValues(innerHTML, ...)
+    TE->>TE: resolveStringsAndValues(innerHTML, ctx)
     loop getNextBehavior(innerHTML)
         TE->>U: getNextBehavior()
         U-->>TE: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
-        alt data binding
-            TE->>TE: resolveDataBinding()
+        alt content binding
+            TE->>TE: resolveContentBinding()
+            TE->>TE: resolveAccessBinding()
             TE->>U: bindingResolver()
             U->>S: schema.addPath()
             U-->>TE: (x,c) => value function
+        else attribute binding
+            TE->>TE: resolveAttributeBinding()
+            alt event (@)
+                TE->>TE: resolveEventBinding()
+            else boolean (?)
+                TE->>U: getBooleanBinding() or resolveAccessBinding()
+            else default
+                TE->>TE: resolveAccessBinding()
+            end
+        else attributeDirective (slotted / children / ref)
+            TE->>TE: resolveAttributeDirectiveBinding()
         else templateDirective (when / repeat)
             TE->>TE: resolveTemplateDirective()
             note over TE: recurses into resolveStringsAndValues
-        else attributeDirective (slotted / children / ref)
-            TE->>TE: resolveAttributeDirective()
         end
     end
     TE->>OM: observerMap.defineProperties()
     TE->>TE: ViewTemplate.create(strings, values)
     TE->>DOM: registeredFastElement.template = viewTemplate
 ```
+
+### TemplateElement method decomposition
+
+| Method | Role |
+|---|---|
+| `resolveStringsAndValues()` | Entry point: creates `strings`/`values` arrays and delegates to `resolveInnerHTML()`. |
+| `resolveInnerHTML()` | Recursive HTML parser that dispatches to data binding or template directive handlers. |
+| `resolveDataBinding()` | Thin dispatcher that routes to `resolveContentBinding()`, `resolveAttributeBinding()`, or `resolveAttributeDirectiveBinding()`. |
+| `resolveContentBinding()` | Handles `{{expression}}` in text content. |
+| `resolveAttributeBinding()` | Handles `{{expression}}` in HTML attributes; dispatches to `resolveEventBinding()` or `resolveAccessBinding()` based on aspect. |
+| `resolveAttributeDirectiveBinding()` | Handles `f-children`, `f-slotted`, `f-ref` directives. |
+| `resolveAccessBinding()` | Shared helper for access-type bindings (content, boolean-attribute fallback, default attribute). |
+| `resolveEventBinding()` | Handles event bindings (`@event`), including arg parsing and owner resolution. |
+| `resolveTemplateDirective()` | Handles `<f-when>` and `<f-repeat>` directives. |
+| `resolveAttributeDirective()` | Creates FAST `children()`, `slotted()`, or `ref()` directives. |
+
+### TemplateResolutionContext
+
+The `TemplateResolutionContext` interface groups the stable fields that flow through the recursive parsing pipeline:
+
+```typescript
+interface TemplateResolutionContext {
+    self: boolean;          // Whether bindings refer to the element itself
+    parentContext: string | null;  // Current repeat item alias (e.g. "item")
+    level: number;          // Nesting depth for repeat directives
+    schema: Schema;         // JSON schema builder for property tracking
+    observerMap?: ObserverMap;  // Optional auto-observable layer
+}
+```
+
+`rootPropertyName` is intentionally kept separate because it is selectively mutated per branch and must not leak across sibling binding resolutions.
 
 ### Key parsing functions (utilities.ts)
 

@@ -21,6 +21,7 @@ import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import {
     type AttributeDirective,
+    type AttributeDirectiveBindingBehaviorConfig,
     bindingResolver,
     type ChainedExpression,
     contextPrefixDot,
@@ -41,6 +42,22 @@ import {
 interface ResolvedStringsAndValues {
     strings: Array<string>;
     values: Array<any>;
+}
+
+/**
+ * Encapsulates the stable context fields that flow through the recursive
+ * template resolution pipeline. Keeps method signatures lean and makes it
+ * easy to add new context without touching every call site.
+ *
+ * `rootPropertyName` is intentionally **excluded** because it is
+ * selectively mutated per branch and must not leak across siblings.
+ */
+interface TemplateResolutionContext {
+    self: boolean;
+    parentContext: string | null;
+    level: number;
+    schema: Schema;
+    observerMap?: ObserverMap;
 }
 
 /**
@@ -231,7 +248,7 @@ class TemplateElement extends FASTElement {
     private static defaultElementOptions: ElementOptions = {};
 
     /**
-     * Metadata containing JSON schema for properties on a custom eleemnt
+     * Metadata containing JSON schema for properties on a custom element
      */
     private schema?: Schema;
 
@@ -373,11 +390,13 @@ class TemplateElement extends FASTElement {
                 const { strings, values } = await this.resolveStringsAndValues(
                     null,
                     innerHTML,
-                    false,
-                    null,
-                    0,
-                    this.schema as Schema,
-                    this.observerMap,
+                    {
+                        self: false,
+                        parentContext: null,
+                        level: 0,
+                        schema: this.schema as Schema,
+                        observerMap: this.observerMap,
+                    },
                 );
 
                 if (this._hasDeprecatedEventSyntax) {
@@ -423,32 +442,18 @@ class TemplateElement extends FASTElement {
 
     /**
      * Resolve strings and values from an innerHTML string
+     * @param rootPropertyName - The root property name for schema registration.
      * @param innerHTML - The innerHTML.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
+     * @param ctx - The template resolution context.
      */
     private async resolveStringsAndValues(
         rootPropertyName: string | null,
         innerHTML: string,
-        self: boolean = false,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
+        ctx: TemplateResolutionContext,
     ): Promise<ResolvedStringsAndValues> {
         const strings: any[] = [];
         const values: any[] = []; // these can be bindings, directives, etc.
-        await this.resolveInnerHTML(
-            rootPropertyName,
-            innerHTML,
-            strings,
-            values,
-            self,
-            parentContext,
-            level,
-            schema,
-            observerMap,
-        );
+        await this.resolveInnerHTML(rootPropertyName, innerHTML, strings, values, ctx);
 
         (strings as any).raw = strings.map(value => String.raw({ raw: value }));
 
@@ -476,18 +481,20 @@ class TemplateElement extends FASTElement {
      * @param externalValues - The interpreted values from the parent.
      * @param innerHTML - The innerHTML.
      * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
+    /**
+     * Resolve a template directive (when/repeat).
+     * @param rootPropertyName - The root property name for schema registration.
+     * @param behaviorConfig - The directive behavior configuration object.
+     * @param externalValues - The interpreted values from the parent.
+     * @param innerHTML - The innerHTML.
+     * @param ctx - The template resolution context.
      */
     private async resolveTemplateDirective(
         rootPropertyName: string | null,
         behaviorConfig: TemplateDirectiveBehaviorConfig,
         externalValues: Array<any>,
         innerHTML: string,
-        self: boolean = false,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
+        ctx: TemplateResolutionContext,
     ): Promise<void> {
         switch (behaviorConfig.name) {
             case "when": {
@@ -496,9 +503,9 @@ class TemplateElement extends FASTElement {
                 const whenLogic = getBooleanBinding(
                     rootPropertyName,
                     expressionChain as ChainedExpression,
-                    parentContext,
-                    level,
-                    schema,
+                    ctx.parentContext,
+                    ctx.level,
+                    ctx.schema,
                 );
 
                 const { strings, values } = await this.resolveStringsAndValues(
@@ -507,11 +514,7 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingTagEndIndex,
                         behaviorConfig.closingTagStartIndex,
                     ),
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
+                    ctx,
                 );
 
                 externalValues.push(
@@ -522,24 +525,32 @@ class TemplateElement extends FASTElement {
             }
             case "repeat": {
                 const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
-                const updatedLevel = level + 1;
+                const updatedLevel = ctx.level + 1;
 
                 rootPropertyName = getRootPropertyName(
                     rootPropertyName,
                     valueAttr[2],
-                    parentContext,
+                    ctx.parentContext,
                     behaviorConfig.name,
                 );
                 const binding = bindingResolver(
                     null,
                     rootPropertyName,
                     valueAttr[2],
-                    parentContext,
+                    ctx.parentContext,
                     behaviorConfig.name,
-                    schema,
+                    ctx.schema,
                     valueAttr[0],
-                    level,
+                    ctx.level,
                 );
+
+                const repeatCtx: TemplateResolutionContext = {
+                    self: true,
+                    parentContext: valueAttr[0],
+                    level: updatedLevel,
+                    schema: ctx.schema,
+                    observerMap: ctx.observerMap,
+                };
 
                 const { strings, values } = await this.resolveStringsAndValues(
                     rootPropertyName,
@@ -547,11 +558,7 @@ class TemplateElement extends FASTElement {
                         behaviorConfig.openingTagEndIndex,
                         behaviorConfig.closingTagStartIndex,
                     ),
-                    true,
-                    valueAttr[0],
-                    updatedLevel,
-                    schema,
-                    observerMap,
+                    repeatCtx,
                 );
 
                 externalValues.push(
@@ -612,291 +619,341 @@ class TemplateElement extends FASTElement {
     }
 
     /**
-     * Resolver of a data binding
-     * @param innerHTML - The innerHTML.
-     * @param strings - The strings array.
-     * @param values - The interpreted values.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param behaviorConfig - The binding behavior configuration object.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
+     * Resolve an access binding — shared by content bindings, boolean-attribute
+     * fallback, and default attribute bindings.
+     * @returns An object with the resolved binding function and the updated rootPropertyName.
+     */
+    private resolveAccessBinding(
+        rootPropertyName: string | null,
+        propName: string,
+        previousStrings: string,
+        ctx: TemplateResolutionContext,
+    ): {
+        binding: (x: any, c: any) => any;
+        rootPropertyName: string | null;
+    } {
+        rootPropertyName = getRootPropertyName(
+            rootPropertyName,
+            propName,
+            ctx.parentContext,
+            "access",
+        );
+        const resolved = bindingResolver(
+            previousStrings,
+            rootPropertyName,
+            propName,
+            ctx.parentContext,
+            "access",
+            ctx.schema,
+            ctx.parentContext,
+            ctx.level,
+        );
+        return {
+            binding: (x: any, c: any) => resolved(x, c),
+            rootPropertyName,
+        };
+    }
+
+    /**
+     * Resolve an event binding (the "@" aspect).
+     * @returns An object with the event binding function and the updated rootPropertyName.
+     */
+    private resolveEventBinding(
+        rootPropertyName: string | null,
+        innerHTML: string,
+        behaviorConfig: DataBindingBehaviorConfig,
+        strings: Array<string>,
+        ctx: TemplateResolutionContext,
+    ): {
+        binding: (x: any, c: any) => any;
+        rootPropertyName: string | null;
+    } {
+        const bindingHTML = innerHTML.slice(
+            behaviorConfig.openingEndIndex,
+            behaviorConfig.closingStartIndex,
+        );
+        const openingParenthesis = bindingHTML.indexOf("(");
+        const closingParenthesis = bindingHTML.indexOf(")");
+        const propName = innerHTML.slice(
+            behaviorConfig.openingEndIndex,
+            behaviorConfig.closingStartIndex -
+                (closingParenthesis - openingParenthesis) -
+                1,
+        );
+        const type = "event";
+        rootPropertyName = getRootPropertyName(
+            rootPropertyName,
+            propName,
+            ctx.parentContext,
+            type,
+        );
+        const argsString = bindingHTML.slice(openingParenthesis + 1, closingParenthesis);
+        const resolved = bindingResolver(
+            strings.join(""),
+            rootPropertyName,
+            propName,
+            ctx.parentContext,
+            type,
+            ctx.schema,
+            ctx.parentContext,
+            ctx.level,
+        );
+        const isContextPath = propName.startsWith(contextPrefixDot);
+        const getOwner = isContextPath
+            ? (_x: any, c: any) => {
+                  const ownerPath = propName.split(".").slice(1, -1);
+                  return ownerPath.reduce((prev: any, item: string) => prev?.[item], c);
+              }
+            : (x: any, _c: any) => x;
+
+        const parsedArgs = parseEventArgs(argsString);
+
+        if (parsedArgs.some(a => a.type === "deprecated-event")) {
+            this._hasDeprecatedEventSyntax = true;
+        }
+
+        const argResolvers = parsedArgs.map((parsedArg): ((x: any, c: any) => any) => {
+            switch (parsedArg.type) {
+                case "event":
+                case "deprecated-event":
+                    return (_x, c) => c.event;
+                case "context":
+                    return (_x, c) => c;
+                case "binding":
+                    return bindingResolver(
+                        strings.join(""),
+                        rootPropertyName,
+                        parsedArg.rawArg!,
+                        ctx.parentContext,
+                        type,
+                        ctx.schema,
+                        ctx.parentContext,
+                        ctx.level,
+                    );
+            }
+        });
+
+        return {
+            binding: (x: any, c: any) =>
+                resolved(x, c).bind(getOwner(x, c))(
+                    ...argResolvers.map(resolve => resolve(x, c)),
+                ),
+            rootPropertyName,
+        };
+    }
+
+    /**
+     * Resolve a content data binding (`{{expression}}` in text content).
+     */
+    private async resolveContentBinding(
+        rootPropertyName: string | null,
+        innerHTML: string,
+        strings: Array<string>,
+        values: Array<any>,
+        behaviorConfig: DataBindingBehaviorConfig,
+        ctx: TemplateResolutionContext,
+    ): Promise<void> {
+        strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
+        const propName = innerHTML.slice(
+            behaviorConfig.openingEndIndex,
+            behaviorConfig.closingStartIndex,
+        );
+        const result = this.resolveAccessBinding(
+            rootPropertyName,
+            propName,
+            strings.join(""),
+            ctx,
+        );
+        rootPropertyName = result.rootPropertyName;
+        values.push(result.binding);
+        await this.resolveInnerHTML(
+            rootPropertyName,
+            innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+            strings,
+            values,
+            ctx,
+        );
+    }
+
+    /**
+     * Resolve an attribute data binding (`{{expression}}` in an HTML attribute).
+     * Dispatches to event, expression, or access binding handlers based on aspect.
+     */
+    private async resolveAttributeBinding(
+        rootPropertyName: string | null,
+        innerHTML: string,
+        strings: Array<string>,
+        values: Array<any>,
+        behaviorConfig: DataBindingBehaviorConfig,
+        ctx: TemplateResolutionContext,
+    ): Promise<void> {
+        strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
+        let attributeBinding;
+
+        const aspect =
+            behaviorConfig.subtype === "attribute" ? behaviorConfig.aspect : null;
+
+        switch (aspect) {
+            case "@": {
+                const result = this.resolveEventBinding(
+                    rootPropertyName,
+                    innerHTML,
+                    behaviorConfig,
+                    strings,
+                    ctx,
+                );
+                attributeBinding = result.binding;
+                rootPropertyName = result.rootPropertyName;
+                break;
+            }
+            case "?": {
+                const expression = innerHTML.slice(
+                    behaviorConfig.openingEndIndex,
+                    behaviorConfig.closingStartIndex,
+                );
+                const expressionChain = getExpressionChain(expression);
+
+                if (expressionChain?.expression.operator) {
+                    attributeBinding = getBooleanBinding(
+                        rootPropertyName,
+                        expressionChain as ChainedExpression,
+                        ctx.parentContext,
+                        ctx.level,
+                        ctx.schema,
+                    );
+                } else {
+                    const propName = innerHTML.slice(
+                        behaviorConfig.openingEndIndex,
+                        behaviorConfig.closingStartIndex,
+                    );
+                    const result = this.resolveAccessBinding(
+                        rootPropertyName,
+                        propName,
+                        strings.join(""),
+                        ctx,
+                    );
+                    attributeBinding = result.binding;
+                    rootPropertyName = result.rootPropertyName;
+                }
+
+                break;
+            }
+            default: {
+                const propName = innerHTML.slice(
+                    behaviorConfig.openingEndIndex,
+                    behaviorConfig.closingStartIndex,
+                );
+                const result = this.resolveAccessBinding(
+                    rootPropertyName,
+                    propName,
+                    strings.join(""),
+                    ctx,
+                );
+                attributeBinding = result.binding;
+                rootPropertyName = result.rootPropertyName;
+            }
+        }
+
+        values.push(attributeBinding);
+
+        await this.resolveInnerHTML(
+            rootPropertyName,
+            innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+            strings,
+            values,
+            ctx,
+        );
+    }
+
+    /**
+     * Resolve an attribute directive binding (`f-children`, `f-slotted`, `f-ref`).
+     */
+    private async resolveAttributeDirectiveBinding(
+        rootPropertyName: string | null,
+        innerHTML: string,
+        strings: Array<string>,
+        values: Array<any>,
+        behaviorConfig: AttributeDirectiveBindingBehaviorConfig,
+        ctx: TemplateResolutionContext,
+    ): Promise<void> {
+        strings.push(
+            innerHTML.slice(
+                0,
+                behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4,
+            ),
+        );
+        const propName = innerHTML.slice(
+            behaviorConfig.openingEndIndex,
+            behaviorConfig.closingStartIndex,
+        );
+        await this.resolveAttributeDirective(behaviorConfig.name, propName, values);
+        await this.resolveInnerHTML(
+            rootPropertyName,
+            innerHTML.slice(behaviorConfig.closingEndIndex + 1, innerHTML.length),
+            strings,
+            values,
+            ctx,
+        );
+    }
+
+    /**
+     * Dispatcher for data binding resolution. Routes to the appropriate handler
+     * based on the binding subtype.
      */
     private async resolveDataBinding(
         rootPropertyName: string | null,
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
-        self: boolean = false,
         behaviorConfig: DataBindingBehaviorConfig,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
+        ctx: TemplateResolutionContext,
     ): Promise<void> {
         switch (behaviorConfig.subtype) {
-            case "content": {
-                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                const type = "access";
-                const propName = innerHTML.slice(
-                    behaviorConfig.openingEndIndex,
-                    behaviorConfig.closingStartIndex,
-                );
-                rootPropertyName = getRootPropertyName(
+            case "content":
+                return this.resolveContentBinding(
                     rootPropertyName,
-                    propName,
-                    parentContext,
-                    type,
-                );
-                const binding = bindingResolver(
-                    strings.join(""),
-                    rootPropertyName,
-                    propName,
-                    parentContext,
-                    type,
-                    schema,
-                    parentContext,
-                    level,
-                );
-                const contentBinding = (x: any, c: any) => binding(x, c);
-                values.push(contentBinding);
-                await this.resolveInnerHTML(
-                    rootPropertyName,
-                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+                    innerHTML,
                     strings,
                     values,
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
+                    behaviorConfig,
+                    ctx,
                 );
-
-                break;
-            }
-            case "attribute": {
-                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                let attributeBinding;
-
-                switch (behaviorConfig.aspect) {
-                    case "@": {
-                        const bindingHTML = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex,
-                        );
-                        const openingParenthesis = bindingHTML.indexOf("(");
-                        const closingParenthesis = bindingHTML.indexOf(")");
-                        const propName = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex -
-                                (closingParenthesis - openingParenthesis) -
-                                1,
-                        );
-                        const type = "event";
-                        rootPropertyName = getRootPropertyName(
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                        );
-                        const argsString = bindingHTML.slice(
-                            openingParenthesis + 1,
-                            closingParenthesis,
-                        );
-                        const binding = bindingResolver(
-                            strings.join(""),
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                            schema,
-                            parentContext,
-                            level,
-                        );
-                        const isContextPath = propName.startsWith(contextPrefixDot);
-                        const getOwner = isContextPath
-                            ? (_x: any, c: any) => {
-                                  const ownerPath = propName.split(".").slice(1, -1);
-                                  return ownerPath.reduce(
-                                      (prev: any, item: string) => prev?.[item],
-                                      c,
-                                  );
-                              }
-                            : (x: any, _c: any) => x;
-
-                        const parsedArgs = parseEventArgs(argsString);
-
-                        if (parsedArgs.some(a => a.type === "deprecated-event")) {
-                            this._hasDeprecatedEventSyntax = true;
-                        }
-
-                        const argResolvers = parsedArgs.map(
-                            (parsedArg): ((x: any, c: any) => any) => {
-                                switch (parsedArg.type) {
-                                    case "event":
-                                    case "deprecated-event":
-                                        return (_x, c) => c.event;
-                                    case "context":
-                                        return (_x, c) => c;
-                                    case "binding":
-                                        return bindingResolver(
-                                            strings.join(""),
-                                            rootPropertyName,
-                                            parsedArg.rawArg!,
-                                            parentContext,
-                                            type,
-                                            schema,
-                                            parentContext,
-                                            level,
-                                        );
-                                }
-                            },
-                        );
-
-                        attributeBinding = (x: any, c: any) =>
-                            binding(x, c).bind(getOwner(x, c))(
-                                ...argResolvers.map(resolve => resolve(x, c)),
-                            );
-
-                        break;
-                    }
-                    case "?": {
-                        const expression = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex,
-                        );
-                        const expressionChain = getExpressionChain(expression);
-
-                        if (expressionChain?.expression.operator) {
-                            attributeBinding = getBooleanBinding(
-                                rootPropertyName,
-                                expressionChain as ChainedExpression,
-                                parentContext,
-                                level,
-                                schema,
-                            );
-                        } else {
-                            const propName = innerHTML.slice(
-                                behaviorConfig.openingEndIndex,
-                                behaviorConfig.closingStartIndex,
-                            );
-                            const type = "access";
-
-                            rootPropertyName = getRootPropertyName(
-                                rootPropertyName,
-                                propName,
-                                parentContext,
-                                type,
-                            );
-
-                            const binding = bindingResolver(
-                                strings.join(""),
-                                rootPropertyName,
-                                propName,
-                                parentContext,
-                                type,
-                                schema,
-                                parentContext,
-                                level,
-                            );
-                            attributeBinding = (x: any, c: any) => binding(x, c);
-                        }
-
-                        break;
-                    }
-                    default: {
-                        const propName = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex,
-                        );
-                        const type = "access";
-
-                        rootPropertyName = getRootPropertyName(
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                        );
-
-                        const binding = bindingResolver(
-                            strings.join(""),
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                            schema,
-                            parentContext,
-                            level,
-                        );
-                        attributeBinding = (x: any, c: any) => binding(x, c);
-                    }
-                }
-
-                values.push(attributeBinding);
-
-                await this.resolveInnerHTML(
+            case "attribute":
+                return this.resolveAttributeBinding(
                     rootPropertyName,
-                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
+                    innerHTML,
                     strings,
                     values,
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
+                    behaviorConfig,
+                    ctx,
                 );
-
-                break;
-            }
-            case "attributeDirective": {
-                strings.push(
-                    innerHTML.slice(
-                        0,
-                        behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4,
-                    ),
-                );
-                const propName = innerHTML.slice(
-                    behaviorConfig.openingEndIndex,
-                    behaviorConfig.closingStartIndex,
-                );
-                await this.resolveAttributeDirective(
-                    behaviorConfig.name,
-                    propName,
-                    values,
-                );
-                await this.resolveInnerHTML(
+            case "attributeDirective":
+                return this.resolveAttributeDirectiveBinding(
                     rootPropertyName,
-                    innerHTML.slice(behaviorConfig.closingEndIndex + 1, innerHTML.length),
+                    innerHTML,
                     strings,
                     values,
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
+                    behaviorConfig,
+                    ctx,
                 );
-
-                break;
-            }
         }
     }
 
     /**
-     * Resolver of the innerHTML string
-     * @param innerHTML - The innerHTML.
-     * @param strings - The strings array.
-     * @param values - The interpreted values.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
+     * Resolver of the innerHTML string. Finds the next binding or directive
+     * in the HTML and dispatches to the appropriate handler.
+     * @param rootPropertyName - The root property name for schema registration.
+     * @param innerHTML - The innerHTML to parse.
+     * @param strings - The strings array (accumulates literal HTML segments).
+     * @param values - The values array (accumulates binding functions and directives).
+     * @param ctx - The template resolution context.
      */
     private async resolveInnerHTML(
         rootPropertyName: string | null,
         innerHTML: string,
         strings: Array<string>,
         values: Array<any>,
-        self: boolean = false,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
+        ctx: TemplateResolutionContext,
     ): Promise<void> {
         const behaviorConfig = getNextBehavior(innerHTML);
 
@@ -910,12 +967,8 @@ class TemplateElement extends FASTElement {
                         innerHTML,
                         strings,
                         values,
-                        self,
                         behaviorConfig,
-                        parentContext,
-                        level,
-                        schema,
-                        observerMap,
+                        ctx,
                     );
 
                     break;
@@ -927,11 +980,7 @@ class TemplateElement extends FASTElement {
                         behaviorConfig,
                         values,
                         innerHTML,
-                        self,
-                        parentContext,
-                        level,
-                        schema,
-                        observerMap,
+                        ctx,
                     );
 
                     await this.resolveInnerHTML(
@@ -942,11 +991,7 @@ class TemplateElement extends FASTElement {
                         ),
                         strings,
                         values,
-                        self,
-                        parentContext,
-                        level,
-                        schema,
-                        observerMap,
+                        ctx,
                     );
 
                     break;
