@@ -123,7 +123,7 @@ setTheme(lightTheme);
 </html>
 ```
 
-**`entry-client.ts`** registers components for DSD hydration using `defineAsync`:
+**`entry-client.ts`** registers components for DSD hydration using `define`:
 
 ```ts
 import { TemplateElement } from "@microsoft/fast-html";

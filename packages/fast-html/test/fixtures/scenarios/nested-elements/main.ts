@@ -126,7 +126,7 @@ export class TestElementRepeatEvent extends FASTElement {
         this.clickedItemName = (e.currentTarget as HTMLButtonElement).textContent!;
     }
 }
-TestElementRepeatEvent.defineAsync({
+TestElementRepeatEvent.define({
     name: "test-element-repeat-event",
     templateOptions: "defer-and-hydrate",
 });
@@ -143,22 +143,22 @@ export class TestWhenInRepeat extends FASTElement {
         this.clickedItemName = (e.currentTarget as HTMLButtonElement).textContent!;
     }
 }
-TestWhenInRepeat.defineAsync({
+TestWhenInRepeat.define({
     name: "test-when-in-repeat",
     templateOptions: "defer-and-hydrate",
 });
 
-ItemList.defineAsync({
+ItemList.define({
     name: "parent-element",
     templateOptions: "defer-and-hydrate",
 });
 
-Item.defineAsync({
+Item.define({
     name: "child-element",
     templateOptions: "defer-and-hydrate",
 });
 
-GrandChildItem.defineAsync({
+GrandChildItem.define({
     name: "grand-child-element",
     templateOptions: "defer-and-hydrate",
 });
