@@ -3,6 +3,7 @@ import { Observable } from "../observation/observable.js";
 import { ElementController } from "./element-controller.js";
 import {
     FASTElementDefinition,
+    type FASTElementExtension,
     type PartialFASTElementDefinition,
     TemplateOptions,
 } from "./fast-definitions.js";
@@ -129,17 +130,25 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
     nameOrDef: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
     nameOrDef?: string | PartialFASTElementDefinition,
+    extensions?: FASTElementExtension[],
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition,
+    nameOrDef?: string | PartialFASTElementDefinition | FASTElementExtension[],
+    extensions?: FASTElementExtension[],
 ): Promise<TType> {
+    if (Array.isArray(nameOrDef)) {
+        extensions = nameOrDef;
+        nameOrDef = undefined;
+    }
+
     const composePromise = isFunction(type)
-        ? FASTElementDefinition.compose(type, nameOrDef)
+        ? FASTElementDefinition.compose(type, nameOrDef as string | PartialFASTElementDefinition | undefined)
         : FASTElementDefinition.compose(this, type);
 
     return composePromise.then(def => {
@@ -150,16 +159,17 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
                     handleChange: () => {
                         notifier.unsubscribe(subscriber, "template");
                         def.lifecycleCallbacks?.templateDidUpdate?.(def.name);
-                        resolve(def.define().type);
+                        resolve(def.define(undefined, extensions).type);
                     },
                 };
                 notifier.subscribe(subscriber, "template");
             });
         }
 
-        return def.define().type;
+        return def.define(undefined, extensions).type;
     });
 }
+
 
 function from<TBase extends typeof HTMLElement>(BaseType: TBase) {
     return createFASTElement(BaseType);
