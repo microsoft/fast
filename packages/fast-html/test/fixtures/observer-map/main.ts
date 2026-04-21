@@ -425,15 +425,15 @@ class ObserverMapWithObservablesTestElement extends FASTElement {
     }
 }
 
-ObserverMapInternalTestElement.defineAsync({
+ObserverMapInternalTestElement.define({
     name: "observer-map-internal-test-element",
 });
 
-ObserverMapTestElement.defineAsync({
+ObserverMapTestElement.define({
     name: "observer-map-test-element",
 });
 
-ObserverMapWithObservablesTestElement.defineAsync({
+ObserverMapWithObservablesTestElement.define({
     name: "observer-map-with-observables-test-element",
     templateOptions: "defer-and-hydrate",
 });
@@ -450,7 +450,7 @@ class ObserverMapSimpleArrayTestElement extends FASTElement {
     }
 }
 
-ObserverMapSimpleArrayTestElement.defineAsync({
+ObserverMapSimpleArrayTestElement.define({
     name: "observer-map-simple-array-test-element",
 });
 

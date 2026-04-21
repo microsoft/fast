@@ -16,7 +16,7 @@ test.describe("FASTElementDefinition", () => {
                     styles,
                 };
 
-                const def = FASTElementDefinition.compose(MyElement, options);
+                const def = await FASTElementDefinition.compose(MyElement, options);
 
                 return {
                     containsStyles: def.styles?.styles?.includes(styles) ?? false,
@@ -41,14 +41,14 @@ test.describe("FASTElementDefinition", () => {
                         name: "test-element",
                         styles: [css1, css2],
                     };
-                    const def = FASTElementDefinition.compose(MyElement, options);
+                    const def = await FASTElementDefinition.compose(MyElement, options);
 
                     return {
                         containsCss1: def.styles?.styles?.includes(css1) ?? false,
                         css1Index: def.styles?.styles?.indexOf(css1) ?? -1,
                         containsCss2: def.styles?.styles?.includes(css2) ?? false,
                     };
-                }
+                },
             );
 
             expect(containsCss1).toBe(true);
@@ -70,7 +70,7 @@ test.describe("FASTElementDefinition", () => {
                     name: "test-element",
                     styles,
                 };
-                const def = FASTElementDefinition.compose(MyElement, options);
+                const def = await FASTElementDefinition.compose(MyElement, options);
 
                 return def.styles === styles;
             });
@@ -97,7 +97,7 @@ test.describe("FASTElementDefinition", () => {
                         name: "test-element",
                         styles: [existingStyles1, existingStyles2],
                     };
-                    const def = FASTElementDefinition.compose(MyElement, options);
+                    const def = await FASTElementDefinition.compose(MyElement, options);
 
                     return {
                         containsStyles1:
@@ -110,40 +110,6 @@ test.describe("FASTElementDefinition", () => {
 
             expect(containsStyles1).toBe(true);
             expect(styles1Index).toBe(0);
-            expect(containsStyles2).toBe(true);
-        });
-
-        test("can accept mixed strings and ElementStyles", async ({ page }) => {
-            await page.goto("/");
-
-            const { containsCss1, css1Index, containsStyles2 } = await page.evaluate(
-                async () => {
-                    // @ts-expect-error: Client module.
-                    const { FASTElementDefinition, ElementStyles } = await import(
-                        "/main.js"
-                    );
-
-                    class MyElement extends HTMLElement {}
-                    const css1 = ".class { color: red; }";
-                    const css2 = ".class2 { color: red; }";
-                    const existingStyles2 = new ElementStyles([css2]);
-                    const options = {
-                        name: "test-element",
-                        styles: [css1, existingStyles2],
-                    };
-                    const def = FASTElementDefinition.compose(MyElement, options);
-
-                    return {
-                        containsCss1: def.styles?.styles?.includes(css1) ?? false,
-                        css1Index: def.styles?.styles?.indexOf(css1) ?? -1,
-                        containsStyles2:
-                            def.styles?.styles?.includes(existingStyles2) ?? false,
-                    };
-                }
-            );
-
-            expect(containsCss1).toBe(true);
-            expect(css1Index).toBe(0);
             expect(containsStyles2).toBe(true);
         });
 
@@ -170,7 +136,7 @@ test.describe("FASTElementDefinition", () => {
                         name: "test-element",
                         styles,
                     };
-                    const def = FASTElementDefinition.compose(MyElement, options);
+                    const def = await FASTElementDefinition.compose(MyElement, options);
 
                     return {
                         supportsAdoptedStyleSheets: true,
@@ -211,7 +177,7 @@ test.describe("FASTElementDefinition", () => {
                     name: "test-element",
                     styles: [styleSheet1, styleSheet2],
                 };
-                const def = FASTElementDefinition.compose(MyElement, options);
+                const def = await FASTElementDefinition.compose(MyElement, options);
 
                 return {
                     supportsAdoptedStyleSheets: true,
@@ -264,7 +230,7 @@ test.describe("FASTElementDefinition", () => {
                     name: "test-element",
                     styles: [css1, existingStyles2, styleSheet3],
                 };
-                const def = FASTElementDefinition.compose(MyElement, options);
+                const def = await FASTElementDefinition.compose(MyElement, options);
 
                 return {
                     supportsAdoptedStyleSheets: true,
@@ -298,7 +264,10 @@ test.describe("FASTElementDefinition", () => {
                 );
 
                 class MyElement extends HTMLElement {}
-                const def = FASTElementDefinition.compose(MyElement, uniqueElementName());
+                const def = await FASTElementDefinition.compose(
+                    MyElement,
+                    uniqueElementName(),
+                );
 
                 const beforeDefine = def.isDefined;
                 def.define();
@@ -322,21 +291,21 @@ test.describe("FASTElementDefinition", () => {
                     const { FASTElement, FASTElementDefinition, uniqueElementName } =
                         await import("/main.js");
 
-                    const def1 = FASTElementDefinition.compose(
+                    const def1 = await FASTElementDefinition.compose(
                         FASTElement,
-                        uniqueElementName()
+                        uniqueElementName(),
                     );
 
-                    const def2 = FASTElementDefinition.compose(
+                    const def2 = await FASTElementDefinition.compose(
                         FASTElement,
-                        uniqueElementName()
+                        uniqueElementName(),
                     );
 
                     return {
                         def1NotFASTElement: def1.type !== FASTElement,
                         def2NotFASTElement: def2.type !== FASTElement,
                     };
-                }
+                },
             );
 
             expect(def1NotFASTElement).toBe(true);
@@ -353,14 +322,14 @@ test.describe("FASTElementDefinition", () => {
                 const { FASTElement, FASTElementDefinition, uniqueElementName } =
                     await import("/main.js");
 
-                const def1 = FASTElementDefinition.compose(
+                const def1 = await FASTElementDefinition.compose(
                     FASTElement,
-                    uniqueElementName()
+                    uniqueElementName(),
                 );
 
-                const def2 = FASTElementDefinition.compose(
+                const def2 = await FASTElementDefinition.compose(
                     FASTElement,
-                    uniqueElementName()
+                    uniqueElementName(),
                 );
 
                 return {
@@ -387,18 +356,18 @@ test.describe("FASTElementDefinition", () => {
 
                 const elName = uniqueElementName();
 
-                await FASTElementDefinition.composeAsync(FASTElement, elName);
+                await FASTElementDefinition.compose(FASTElement, elName);
 
                 const registeredEl = await FASTElementDefinition.registerAsync(elName);
 
-                return Reflect.getPrototypeOf(registeredEl) === HTMLElement;
+                return Reflect.getPrototypeOf(registeredEl) === FASTElement;
             });
 
             expect(extendsHTMLElement).toBe(true);
         });
     });
 
-    test.describe("compose async", () => {
+    test.describe("compose", () => {
         test("composes a new element when a new template is defined and shadow options have been added", async ({
             page,
         }) => {
@@ -409,9 +378,9 @@ test.describe("FASTElementDefinition", () => {
                 const { FASTElement, FASTElementDefinition, uniqueElementName } =
                     await import("/main.js");
 
-                const def1 = await FASTElementDefinition.composeAsync(
+                const def1 = await FASTElementDefinition.compose(
                     FASTElement,
-                    uniqueElementName()
+                    uniqueElementName(),
                 );
 
                 return Reflect.getPrototypeOf(def1.type) === FASTElement;

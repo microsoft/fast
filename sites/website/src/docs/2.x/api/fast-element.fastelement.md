@@ -24,7 +24,6 @@ FASTElement: {
     new (): FASTElement;
     define: typeof define;
     compose: typeof compose;
-    defineAsync: typeof defineAsync;
     from: typeof from;
 }
 ```

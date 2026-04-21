@@ -59,7 +59,7 @@ This document is intended for contributors who want to understand the internal a
 
 `<f-template>` is a custom element (class `TemplateElement`) that acts as the bridge between a declarative HTML template and the FAST element registry. When connected to the DOM it:
 
-1. Looks up the element definition registered via `defineAsync()`.
+1. Looks up the element definition registered via `define()`.
 2. Parses the inner `<template>` tag, converting declarative bindings into FAST `ViewTemplate` strings and values.
 3. Assigns the compiled `ViewTemplate` to the element definition.
 
@@ -234,7 +234,7 @@ The high-level data flow from authoring to interactive component:
 flowchart TD
     A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe-b comments and data-fe-b attributes"]
     B --> C[Browser loads JS bundle]
-    C --> D["MyElement.defineAsync called\n→ partial definition in fastElementRegistry"]
+    C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
     C --> E["TemplateElement.define called\n→ registers f-template custom element"]
     D & E --> F["f-template connects to DOM\n→ connectedCallback fires"]
     F --> G["FASTElementDefinition.registerAsync\n→ looks up partial definition"]
@@ -244,7 +244,7 @@ flowchart TD
     J -- yes --> K["ObserverMap.defineProperties\n→ applyConfigToSchema stamps $observe on schema nodes\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
     J -- no --> L
     K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
-    L --> M["FASTElementDefinition.composeAsync\n→ element fully registered with platform"]
+    L --> M["FASTElementDefinition.compose\n→ element fully registered with platform"]
     M --> N["ElementController detects existing shadow root\nisPrerendered = true\nhydrates existing DOM using fe-b markers\nvia template.hydrate()"]
     N --> O[Interactive component]
 ```
@@ -375,7 +375,7 @@ sequenceDiagram
     participant EC as ElementController
     participant Callbacks as HydrationLifecycleCallbacks
 
-    App->>FER: MyElement.defineAsync({name:'my-el', ...})
+    App->>FER: MyElement.define({name:'my-el', ...})
     note over FER: partial definition stored
 
     App->>TE: TemplateElement.define({name:'f-template'})
@@ -390,7 +390,7 @@ sequenceDiagram
     TE->>TE: parse template → ViewTemplate
     TE->>FER: registeredFastElement.template = viewTemplate
     TE->>Callbacks: templateDidUpdate('my-el')
-    FER->>FER: composeAsync() → platform registry
+    FER->>FER: compose() → platform registry
     FER->>Callbacks: elementDidDefine('my-el')
 
     DOM->>EC: element instance connects with existing shadow root
@@ -410,7 +410,7 @@ sequenceDiagram
 | `elementDidRegister(name)` | `FASTElementDefinition.registerAsync` resolves |
 | `templateWillUpdate(name)` | Just before template HTML is parsed |
 | `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
-| `elementDidDefine(name)` | After `composeAsync` completes |
+| `elementDidDefine(name)` | After `compose` completes |
 | `hydrationStarted()` | Once, when the first prerendered element begins hydrating |
 | `elementWillHydrate(source)` | Before `ElementController` hydrates a prerendered instance |
 | `elementDidHydrate(source)` | After an instance is fully hydrated |
@@ -439,9 +439,9 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 | `children(prop)` | FAST directive used for `f-children` |
 | `ref(prop)` | FAST directive used for `f-ref` |
 
-### defineAsync vs define
+### Deferred template attachment via define
 
-Standard `FASTElement.define()` requires a template at definition time. `defineAsync()` allows the definition to be created without a template; the element waits in a partial state until a `<f-template>` supplies one via `registerAsync()`.
+Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a template is provided at definition time. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the `Promise` resolves after a `<f-template>` supplies one via `registerAsync()`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
 
 ---
 
