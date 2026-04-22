@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { findDef } from "@microsoft/fast-element/extensions/utilities.js";
 import { type JSONSchema, refPropertyName, Schema } from "./schema.js";
 import {
     type AttributeDataBindingBehaviorConfig,
@@ -6,7 +7,6 @@ import {
     type ContentDataBindingBehaviorConfig,
     eventArgAccessor,
     extractPathsFromChainedExpression,
-    findDef,
     getBooleanBinding,
     getChildrenMap,
     getExpressionChain,

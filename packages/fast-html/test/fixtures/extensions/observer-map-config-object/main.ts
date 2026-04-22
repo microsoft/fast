@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { attributeMap, FASTElement, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 
 class ConfigObserverMapTestElement extends FASTElement {
@@ -21,7 +21,7 @@ class ConfigObserverMapTestElement extends FASTElement {
 ConfigObserverMapTestElement.define({
     name: "config-observer-map-test-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 class ConfigAttributeMapTestElement extends FASTElement {
     public setLabel() {
@@ -32,14 +32,6 @@ class ConfigAttributeMapTestElement extends FASTElement {
 ConfigAttributeMapTestElement.define({
     name: "config-attribute-map-test-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [attributeMap()]);
 
-// Use configuration objects ({}) instead of "all" — should behave identically
-TemplateElement.options({
-    "config-observer-map-test-element": {
-        observerMap: {},
-    },
-    "config-attribute-map-test-element": {
-        attributeMap: {},
-    },
-}).define({ name: "f-template" });
+TemplateElement.define({ name: "f-template" });

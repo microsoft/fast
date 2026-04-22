@@ -155,27 +155,33 @@ The Schema and Observer Map classes integrate seamlessly with the f-template sys
 
 ### Configuration
 
-Observer Map functionality is enabled through template element options:
+Observer Map functionality is enabled through the `observerMap` extension factory from `@microsoft/fast-element`, passed in the extensions array of `.define()`:
 
 ```typescript
-TemplateElement.options({
-  "my-custom-element": {
-    observerMap: "all"
-  }
-});
+import { observerMap } from "@microsoft/fast-element";
+
+// Observe all root properties
+MyElement.define({ name: "my-custom-element", templateOptions: "defer-and-hydrate" }, [
+    observerMap(),
+]);
 ```
 
-A configuration object can also be passed instead of `"all"`:
+A configuration object can also be passed for finer control:
 
 ```typescript
-TemplateElement.options({
-  "my-custom-element": {
-    observerMap: {}
-  }
-});
+import { observerMap } from "@microsoft/fast-element";
+
+MyElement.define({ name: "my-custom-element", templateOptions: "defer-and-hydrate" }, [
+    observerMap({
+        properties: {
+            user: true,
+            settings: false,
+        },
+    }),
+]);
 ```
 
-**Note**: Both `"all"` and `{}` are equivalent — they enable Observer Map observation for all root properties discovered in the template. The configuration object form is supported for future extensibility, allowing more granular control over observation behavior.
+**Note**: Calling `observerMap()` with no options observes all root properties discovered in the template. The configuration object form allows granular control over which properties are observed.
 
 ## Initial Path Processing Flow
 
