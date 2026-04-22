@@ -1,12 +1,9 @@
 const items = Array.from({ length: 20 }, (_, i) => `Item ${i}`);
 const listItems = items
-    .map(
-        (item, i) =>
-            `<!--fe-repeat$$start$$${i}$$fe-repeat--><li><!--fe-b$$start$$0$$ri$$fe-b-->${item}<!--fe-b$$end$$0$$ri$$fe-b--></li><!--fe-repeat$$end$$${i}$$fe-repeat-->`,
-    )
+    .map((item, i) => `<!--f:r--><li><!--f:b-->${item}<!--f:/b--></li><!--f:/r-->`)
     .join("");
 
-const shadowContent = `<ul><!--fe-b$$start$$0$$rp$$fe-b-->${listItems}<!--fe-b$$end$$0$$rp$$fe-b--></ul>`;
+const shadowContent = `<ul><!--f:b-->${listItems}<!--f:/b--></ul>`;
 
 export function render(): string {
     return /* html */ `
