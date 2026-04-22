@@ -63,7 +63,7 @@ export type Mutable<T> = {
 export type ParameterDecorator = (
     target: Object,
     propertyKey: string | undefined,
-    parameterIndex: number
+    parameterIndex: number,
 ) => void;
 
 /**
@@ -71,11 +71,6 @@ export type ParameterDecorator = (
  * @public
  */
 export interface FASTGlobal {
-    /**
-     * The list of loaded versions.
-     */
-    readonly versions: string[];
-
     /**
      * Gets a kernel value.
      * @param id - The id to get the value for.
@@ -119,7 +114,7 @@ try {
         const currentScript = scripts[scripts.length - 1];
         kernelMode = currentScript.getAttribute(kernelAttr);
     }
-} catch (e) {
+} catch {
     kernelMode = "isolate";
 }
 
@@ -153,7 +148,7 @@ switch (kernelMode) {
             elementRegistry: 4.2,
         });
         break;
-    default:
+    default: {
         // fully isolate the kernel from all other FAST instances
         const postfix = `-${Math.random().toString(36).substring(2, 8)}`;
         KernelServiceId = Object.freeze({
@@ -163,6 +158,7 @@ switch (kernelMode) {
             elementRegistry: `4.2${postfix}`,
         });
         break;
+    }
 }
 
 export { KernelServiceId };
