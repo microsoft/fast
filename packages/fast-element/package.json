@@ -90,6 +90,22 @@
       "types": "./dist/dts/observation/observable.d.ts",
       "default": "./dist/esm/observation/observable.js"
     },
+    "./extensions/observer-map.js": {
+      "types": "./dist/dts/extensions/observer-map.d.ts",
+      "default": "./dist/esm/extensions/observer-map.js"
+    },
+    "./extensions/attribute-map.js": {
+      "types": "./dist/dts/extensions/attribute-map.d.ts",
+      "default": "./dist/esm/extensions/attribute-map.js"
+    },
+    "./extensions/schema.js": {
+      "types": "./dist/dts/extensions/schema.d.ts",
+      "default": "./dist/esm/extensions/schema.js"
+    },
+    "./extensions/utilities.js": {
+      "types": "./dist/dts/extensions/utilities.d.ts",
+      "default": "./dist/esm/extensions/utilities.js"
+    },
     "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",

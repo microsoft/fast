@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 
 class SelectiveObsElement extends FASTElement {
@@ -64,7 +64,23 @@ class SelectiveObsElement extends FASTElement {
 SelectiveObsElement.define({
     name: "selective-obs-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap({
+    properties: {
+        user: {
+            name: true,
+            age: true,
+            history: false,
+            location: true,
+        },
+        analytics: {
+            charts: {
+                $observe: false,
+                activeChart: true,
+            },
+            summary: true,
+        },
+    },
+})]);
 
 class AllObsElement extends FASTElement {
     public user = {
@@ -87,7 +103,7 @@ class AllObsElement extends FASTElement {
 AllObsElement.define({
     name: "all-obs-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 class EmptyPropsElement extends FASTElement {
     public user = {
@@ -110,7 +126,7 @@ class EmptyPropsElement extends FASTElement {
 EmptyPropsElement.define({
     name: "empty-props-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap({ properties: {} })]);
 
 class ArraySelectiveElement extends FASTElement {
     public items: any[] = [
@@ -130,44 +146,8 @@ class ArraySelectiveElement extends FASTElement {
 ArraySelectiveElement.define({
     name: "array-selective-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap({ properties: { items: true } })]);
 
-TemplateElement.options({
-    "selective-obs-element": {
-        observerMap: {
-            properties: {
-                user: {
-                    name: true,
-                    age: true,
-                    history: false,
-                    location: true,
-                },
-                // settings is NOT listed → skipped
-                analytics: {
-                    charts: {
-                        $observe: false,
-                        activeChart: true,
-                    },
-                    summary: true,
-                },
-            },
-        },
-    },
-    "all-obs-element": {
-        observerMap: {},
-    },
-    "empty-props-element": {
-        observerMap: {
-            properties: {},
-        },
-    },
-    "array-selective-element": {
-        observerMap: {
-            properties: {
-                items: true,
-            },
-        },
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });

@@ -423,7 +423,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[compose(type, nameOrDef)](../fast-element.fastelementdefinition.compose/)
+[compose(type, nameOrDef, extensions)](../fast-element.fastelementdefinition.compose/)
 
 
 </td><td>

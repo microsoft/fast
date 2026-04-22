@@ -1,6 +1,5 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, deepMerge, FASTElement, observable, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
-import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 // Mock data sources - simulating fetched data
 const mockDataSources = {
@@ -146,65 +145,50 @@ export class TestWhenInRepeat extends FASTElement {
 TestWhenInRepeat.define({
     name: "test-when-in-repeat",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 ItemList.define({
     name: "parent-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 Item.define({
     name: "child-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 GrandChildItem.define({
     name: "grand-child-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 (window as any).messages = [];
 
-TemplateElement.options({
-    "parent-element": {
-        observerMap: "all",
+TemplateElement.config({
+    elementDidDefine(name: string) {
+        (window as any).messages.push(
+            `Element did define: ${name} [${performance.now()}]`,
+        );
     },
-    "child-element": {
-        observerMap: "all",
+    elementDidRegister(name: string) {
+        (window as any).messages.push(
+            `Element did register: ${name} [${performance.now()}]`,
+        );
     },
-    "grand-child-element": {
-        observerMap: "all",
+    hydrationComplete() {
+        (window as any).messages.push(`Hydration complete [${performance.now()}]`);
+        (window as any).hydrationCompleted = true;
     },
-    "test-when-in-repeat": {
-        observerMap: "all",
+    templateDidUpdate(name: string) {
+        (window as any).messages.push(
+            `Template did update: ${name} [${performance.now()}]`,
+        );
     },
-})
-    .config({
-        elementDidDefine(name: string) {
-            (window as any).messages.push(
-                `Element did define: ${name} [${performance.now()}]`,
-            );
-        },
-        elementDidRegister(name: string) {
-            (window as any).messages.push(
-                `Element did register: ${name} [${performance.now()}]`,
-            );
-        },
-        hydrationComplete() {
-            (window as any).messages.push(`Hydration complete [${performance.now()}]`);
-            (window as any).hydrationCompleted = true;
-        },
-        templateDidUpdate(name: string) {
-            (window as any).messages.push(
-                `Template did update: ${name} [${performance.now()}]`,
-            );
-        },
-        templateWillUpdate(name: string) {
-            (window as any).messages.push(
-                `Template will update: ${name} [${performance.now()}]`,
-            );
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+    templateWillUpdate(name: string) {
+        (window as any).messages.push(
+            `Template will update: ${name} [${performance.now()}]`,
+        );
+    },
+}).define({
+    name: "f-template",
+});
