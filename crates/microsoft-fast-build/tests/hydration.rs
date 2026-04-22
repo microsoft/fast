@@ -383,6 +383,92 @@ fn test_hydration_f_repeat_empty() {
     );
 }
 
+/// f-repeat with a single item: exactly one start/end pair.
+#[test]
+fn test_hydration_f_repeat_single_item() {
+    let locator = make_locator(&[(
+        "test-element",
+        "<ul><f-repeat value=\"{{item in list}}\"><li>{{item}}</li></f-repeat></ul>",
+    )]);
+    let root = hand_root(vec![(
+        "list",
+        arr_val(vec![str_val("Only")]),
+    )]);
+    let result = render_with_locator(
+        r#"<test-element list="{{list}}"></test-element>"#,
+        &root,
+        &locator,
+        None,
+    ).unwrap();
+
+    assert_eq!(
+        result.matches("<!--fe:r-->").count(),
+        1,
+        "expected one item start marker: {result}"
+    );
+    assert_eq!(
+        result.matches("<!--fe:/r-->").count(),
+        1,
+        "expected one item end marker: {result}"
+    );
+    assert!(result.contains("<!--fe:b-->Only<!--fe:/b-->"),
+        "item binding: {result}");
+}
+
+/// f-repeat with many items: marker counts match item count.
+#[test]
+fn test_hydration_f_repeat_many_items() {
+    let locator = make_locator(&[(
+        "test-element",
+        "<f-repeat value=\"{{item in list}}\"><span>{{item}}</span></f-repeat>",
+    )]);
+    let items: Vec<_> = (0..5).map(|i| str_val(&format!("Item{i}"))).collect();
+    let root = hand_root(vec![("list", arr_val(items))]);
+    let result = render_with_locator(
+        r#"<test-element list="{{list}}"></test-element>"#,
+        &root,
+        &locator,
+        None,
+    ).unwrap();
+
+    assert_eq!(
+        result.matches("<!--fe:r-->").count(),
+        5,
+        "expected five item start markers: {result}"
+    );
+    assert_eq!(
+        result.matches("<!--fe:/r-->").count(),
+        5,
+        "expected five item end markers: {result}"
+    );
+    for i in 0..5 {
+        assert!(result.contains(&format!("<!--fe:b-->Item{i}<!--fe:/b-->")),
+            "item {i} binding: {result}");
+    }
+}
+
+/// Multiple attribute bindings on one element: data-fe count reflects total.
+#[test]
+fn test_hydration_multiple_attr_bindings() {
+    let locator = make_locator(&[(
+        "test-element",
+        r#"<div class="{{cls}}" id="{{id}}" title="{{tip}}">text</div>"#,
+    )]);
+    let root = hand_root(vec![
+        ("cls", str_val("foo")),
+        ("id", str_val("bar")),
+        ("tip", str_val("baz")),
+    ]);
+    let result = render_with_locator(
+        r#"<test-element cls="{{cls}}" id="{{id}}" tip="{{tip}}"></test-element>"#,
+        &root,
+        &locator,
+        None,
+    ).unwrap();
+
+    assert!(result.contains(r#"data-fe="3""#), "three bindings: {result}");
+}
+
 // ── f-ref / f-slotted (single-brace directive attrs) ─────────────────────────
 
 /// `f-ref="{video}"` — single-brace attribute directive gets a compact marker
