@@ -113,8 +113,11 @@ fn test_hydration_multiple_event_bindings() {
         None,
     ).unwrap();
 
-    assert!(result.contains(r#"data-fe="1""#), "first button: {result}");
-    assert!(result.contains(r#"data-fe="1""#), "second button: {result}");
+    assert_eq!(
+        result.matches(r#"data-fe="1""#).count(),
+        2,
+        "expected both buttons to receive hydration markers: {result}"
+    );
     assert!(!result.contains("@click"), "event attrs stripped: {result}");
 }
 
@@ -310,11 +313,17 @@ fn test_hydration_f_repeat_basic() {
     // Outer scope: f-repeat wrapped in content binding markers
     assert!(result.contains("<!--fe:b-->"), "outer start: {result}");
     assert!(result.contains("<!--fe:/b-->"), "outer end: {result}");
-    // Item repeat markers (data-free)
-    assert!(result.contains("<!--fe:r-->"), "item 0 start: {result}");
-    assert!(result.contains("<!--fe:/r-->"), "item 0 end: {result}");
-    assert!(result.contains("<!--fe:r-->"), "item 1 start: {result}");
-    assert!(result.contains("<!--fe:/r-->"), "item 1 end: {result}");
+    // Item repeat markers (data-free): one start/end pair per repeated item.
+    assert_eq!(
+        result.matches("<!--fe:r-->").count(),
+        2,
+        "expected two item start markers: {result}"
+    );
+    assert_eq!(
+        result.matches("<!--fe:/r-->").count(),
+        2,
+        "expected two item end markers: {result}"
+    );
     // Per-item scope: {{item}} content binding
     assert!(result.contains("<!--fe:b-->Foo<!--fe:/b-->"),
         "foo binding: {result}");

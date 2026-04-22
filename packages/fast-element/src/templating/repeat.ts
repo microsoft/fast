@@ -407,6 +407,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         const itemCount = this.items.length;
+        const serializer = new XMLSerializer();
         this.views = new Array(itemCount);
 
         let current = this.location.previousSibling;
@@ -453,12 +454,38 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 start = start.previousSibling;
             }
             if (!start) {
-                throw new Error(
+                throw new HydrationRepeatError(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
                     }": start should never be null.`,
+                    {
+                        index: itemIndex,
+                        hydrationStage: "hydrateViews",
+                        itemsLength: itemCount,
+                        viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
+                        rootNodeContent: serializer.serializeToString(
+                            this.location.getRootNode() as any,
+                        ),
+                    },
                 );
             }
+        }
+
+        if (itemIndex >= 0) {
+            throw new HydrationRepeatError(
+                `Error when hydrating inside "${
+                    (this.location.getRootNode() as ShadowRoot).host.nodeName
+                }": expected ${itemCount} repeat items but only found ${itemCount - itemIndex - 1}.`,
+                {
+                    index: itemIndex,
+                    hydrationStage: "hydrateViews",
+                    itemsLength: itemCount,
+                    viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
+                    rootNodeContent: serializer.serializeToString(
+                        this.location.getRootNode() as any,
+                    ),
+                },
+            );
         }
     }
 }
