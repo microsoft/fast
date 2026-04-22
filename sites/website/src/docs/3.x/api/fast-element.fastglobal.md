@@ -23,52 +23,6 @@ The FAST global.
 export interface FASTGlobal 
 ```
 
-## Properties
-
-<table><thead><tr><th>
-
-Property
-
-
-</th><th>
-
-Modifiers
-
-
-</th><th>
-
-Type
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[versions](../fast-element.fastglobal.versions/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-string\[\]
-
-
-</td><td>
-
-The list of loaded versions.
-
-
-</td></tr>
-</tbody></table>
-
 ## Methods
 
 <table><thead><tr><th>

@@ -1,5 +1,22 @@
 # Migrating from previous versions
 
+## FASTGlobal version tracking (v2 → v3)
+
+### Removed API
+
+| Removed | Replacement |
+|---|---|
+| `FAST.versions` | No replacement. Multiple FAST versions on the same page are unsupported in v3. |
+
+### Changed behavior
+
+- **`FASTGlobal` bootstrap**: v3 removes any pre-existing `versions` property from `globalThis.FAST` during startup.
+
+### Migration steps
+
+1. Remove any runtime checks that read `FAST.versions`.
+2. Fix duplicate FAST installs in your bundler or dependency graph instead of relying on version tracking at runtime.
+
 ## Prerendered Content Optimization (v2 → v3)
 
 ### Removed exports

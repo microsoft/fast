@@ -21,6 +21,9 @@ if (globalThis.FAST === void 0) {
  */
 export const FAST: FASTGlobal = globalThis.FAST;
 
+// v3 does not expose version tracking on the FAST global.
+Reflect.deleteProperty(FAST, "versions");
+
 if (FAST.getById === void 0) {
     const storage = Object.create(null);
 
@@ -80,7 +83,7 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
  * @internal
  */
 export function createTypeRegistry<
-    TDefinition extends TypeDefinition
+    TDefinition extends TypeDefinition,
 >(): TypeRegistry<TDefinition> {
     const typeToDefinition = new Map<Function, TDefinition>();
 
