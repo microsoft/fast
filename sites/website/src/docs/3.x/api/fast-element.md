@@ -40,6 +40,25 @@ An implementation of [Accessor](../fast-element.accessor/) that supports reactiv
 </td></tr>
 <tr><td>
 
+[AttributeMap](../fast-element.attributemap/)
+
+
+</td><td>
+
+AttributeMap provides functionality for detecting simple (leaf) properties in a generated JSON schema and defining them as @<!-- -->attr properties on a class prototype.
+
+A property is a candidate for @<!-- -->attr when its schema entry has no nested `properties`<!-- -->, no `type`<!-- -->, and no `anyOf` — i.e. it is a plain binding like {<!-- -->{<!-- -->foo<!-- -->}<!-- -->} or id="<!-- -->{<!-- -->{<!-- -->foo-bar<!-- -->}<!-- -->}<!-- -->".
+
+When `attributeNameStrategy` is `"none"` (the default), the binding key is used as both the attribute name and property name — no normalization is applied.
+
+When `attributeNameStrategy` is `"camelCase"`<!-- -->, the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. property `fooBar` → attribute `foo-bar`<!-- -->). This matches the build-time `attribute-name-strategy` option in `@microsoft/fast-build`<!-- -->.
+
+Properties already decorated with `\@attr` or `\@observable` on the class are left untouched.
+
+
+</td></tr>
+<tr><td>
+
 [ChildrenDirective](../fast-element.childrendirective/)
 
 
@@ -153,6 +172,17 @@ Inlines a template into another template.
 </td></tr>
 <tr><td>
 
+[ObserverMap](../fast-element.observermap/)
+
+
+</td><td>
+
+ObserverMap provides functionality for caching binding paths, extracting root properties, and defining observable properties on class prototypes
+
+
+</td></tr>
+<tr><td>
+
 [PropertyChangeNotifier](../fast-element.propertychangenotifier/)
 
 
@@ -214,6 +244,17 @@ A behavior that renders a template for each item in an array.
 </td><td>
 
 A directive that configures list rendering.
+
+
+</td></tr>
+<tr><td>
+
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+A constructed JSON schema from a template
 
 
 </td></tr>
@@ -367,6 +408,28 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[assignObservables(schema, rootSchema, data, target, rootProperty)](../fast-element.assignobservables/)
+
+
+</td><td>
+
+Assign observables to data
+
+
+</td></tr>
+<tr><td>
+
+[assignProxy(schema, rootSchema, target, rootProperty, object)](../fast-element.assignproxy/)
+
+
+</td><td>
+
+Assign a proxy to an object
+
+
+</td></tr>
+<tr><td>
+
 [attr(config)](../fast-element.attr/)
 
 
@@ -384,6 +447,17 @@ Decorator: Specifies an HTML attribute.
 </td><td>
 
 Decorator: Specifies an HTML attribute.
+
+
+</td></tr>
+<tr><td>
+
+[attributeMap(config)](../fast-element.attributemap/)
+
+
+</td><td>
+
+Creates a [FASTElementExtension](../fast-element.fastelementextension/) that registers attribute-map configuration for a custom element. The configuration is stored in a pending registry and consumed by `TemplateElement` during template parsing.
 
 
 </td></tr>
@@ -422,12 +496,45 @@ Decorator: Defines a platform custom element based on `FASTElement`<!-- -->.
 </td></tr>
 <tr><td>
 
+[deepEqual(obj1, obj2)](../fast-element.deepequal/)
+
+
+</td><td>
+
+Deeply compares two objects for equality.
+
+
+</td></tr>
+<tr><td>
+
+[deepMerge(target, source)](../fast-element.deepmerge/)
+
+
+</td><td>
+
+Deeply merges the source object into the target object.
+
+
+</td></tr>
+<tr><td>
+
 [elements(selector)](../fast-element.elements/)
 
 
 </td><td>
 
 Creates a function that can be used to filter a Node array, selecting only elements.
+
+
+</td></tr>
+<tr><td>
+
+[findDef(schema)](../fast-element.finddef/)
+
+
+</td><td>
+
+Find a definition This may exist as a $ref at the root or as a $ref in any anyOf or not at all if the Observer Map has not been enabled on a child component
 
 
 </td></tr>
@@ -488,6 +595,17 @@ Decorator: Defines an HTMLDirective.
 </td></tr>
 <tr><td>
 
+[isPlainObject(value)](../fast-element.isplainobject/)
+
+
+</td><td>
+
+Checks if a value is a plain object (not an array, null, or other type).
+
+
+</td></tr>
+<tr><td>
+
 [lengthOf(array)](../fast-element.lengthof/)
 
 
@@ -527,6 +645,17 @@ Normalizes the input value into a binding.
 </td><td>
 
 Decorator: Defines an observable property on the target.
+
+
+</td></tr>
+<tr><td>
+
+[observerMap(config)](../fast-element.observermap/)
+
+
+</td><td>
+
+Creates a [FASTElementExtension](../fast-element.fastelementextension/) that registers observer-map configuration for a custom element. The configuration is stored in a pending registry and consumed by `TemplateElement` during template parsing.
 
 
 </td></tr>
@@ -646,6 +775,15 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[AccessCachedPath](../fast-element.accesscachedpath/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [Accessor](../fast-element.accessor/)
 
 
@@ -679,12 +817,32 @@ Represents something that applies to a specific aspect of the DOM.
 </td></tr>
 <tr><td>
 
+[AttributeMapConfig](../fast-element.attributemapconfig/)
+
+
+</td><td>
+
+Configuration object for the [attributeMap()](../fast-element.attributemap/) extension. Passing no config (`attributeMap()`<!-- -->) is equivalent to `"all"`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [BindingDirective](../fast-element.bindingdirective/)
 
 
 </td><td>
 
 The directive from which a binding originates.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPathCommon](../fast-element.cachedpathcommon/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -707,6 +865,15 @@ A marker interface used to capture types when interpolating Directive helpers in
 </td><td>
 
 The options used to configure child list observation.
+
+
+</td></tr>
+<tr><td>
+
+[ChildrenMap](../fast-element.childrenmap/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -751,6 +918,15 @@ Directive for use in [css](../fast-element.css/)<!-- -->.
 </td><td>
 
 Defines metadata for a CSSDirective.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultCachedPath](../fast-element.defaultcachedpath/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -817,6 +993,15 @@ A View representing DOM nodes specifically for rendering the view of a custom el
 </td><td>
 
 A template capable of creating views specifically for rendering custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[EventCachedPath](../fast-element.eventcachedpath/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -953,6 +1138,24 @@ The result of a template compilation operation.
 </td></tr>
 <tr><td>
 
+[JSONSchema](../fast-element.jsonschema/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchemaDefinition](../fast-element.jsonschemadefinition/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [LengthObserver](../fast-element.lengthobserver/)
 
 
@@ -997,6 +1200,32 @@ A record of observable property access.
 </td></tr>
 <tr><td>
 
+[ObserverMapConfig](../fast-element.observermapconfig/)
+
+
+</td><td>
+
+Configuration object for the [observerMap()](../fast-element.observermap/) extension. When `properties` is omitted (i.e. `observerMap()`<!-- -->), behaves like `"all"` — every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapPathNode](../fast-element.observermappathnode/)
+
+
+</td><td>
+
+A node object in the observer-map path tree.
+
+`$observe` controls whether this node itself is observed. When omitted the value is inherited from the nearest ancestor that explicitly sets `$observe`<!-- -->. At the root level the default is `true`<!-- -->.
+
+Child property overrides are keyed by property name.
+
+
+</td></tr>
+<tr><td>
+
 [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
 
 
@@ -1014,6 +1243,24 @@ Represents metadata configuration for a custom element.
 </td><td>
 
 Represents metadata configuration for an HTMLDirective.
+
+
+</td></tr>
+<tr><td>
+
+[RegisterPathConfig](../fast-element.registerpathconfig/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[RepeatCachedPath](../fast-element.repeatcachedpath/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -1309,6 +1556,15 @@ Instructs the css engine to provide dynamic styles or associate behaviors with s
 </td></tr>
 <tr><td>
 
+[defsPropertyName](../fast-element.defspropertyname/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
 [DOM](../fast-element.dom/)
 
 
@@ -1359,6 +1615,24 @@ Provides additional contextual information available to behaviors and expression
 </td><td>
 
 The FAST global.
+
+
+</td></tr>
+<tr><td>
+
+[fastContextMetaData](../fast-element.fastcontextmetadata/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[fastContextsMetaData](../fast-element.fastcontextsmetadata/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -1447,6 +1721,15 @@ Common Observable APIs.
 </td><td>
 
 Common APIs related to content parsing.
+
+
+</td></tr>
+<tr><td>
+
+[refPropertyName](../fast-element.refpropertyname/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -1561,6 +1844,24 @@ Metadata used to configure a custom attribute's behavior.
 </td><td>
 
 The mode that specifies the runtime behavior of the attribute.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPath](../fast-element.cachedpath/)
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[CachedPathMap](../fast-element.cachedpathmap/)
+
+
+</td><td>
 
 
 </td></tr>
@@ -1748,6 +2049,19 @@ A callback that receives a FASTElementDefinition during element registration. Ex
 </td><td>
 
 Transforms a template literal string into a ViewTemplate.
+
+
+</td></tr>
+<tr><td>
+
+[ObserverMapPathEntry](../fast-element.observermappathentry/)
+
+
+</td><td>
+
+A node in the observer-map path tree.
+
+- `true` → observe this path and all descendants (unless overridden by children). - `false` → do NOT observe this path or its descendants (unless overridden by children). - `ObserverMapPathNode` → configure child paths individually; the node itself is observed if `$observe` is true (default when parent is observed).
 
 
 </td></tr>
