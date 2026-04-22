@@ -1,7 +1,7 @@
 import type { Binding, BindingDirective } from "../binding/binding.js";
 import { normalizeBinding } from "../binding/normalize.js";
-import { HydrationMarkup, isHydratable } from "../components/hydration.js";
-import { ArrayObserver, Sort, Splice } from "../observation/arrays.js";
+import { isHydratable } from "../components/hydration.js";
+import { ArrayObserver, type Sort, type Splice } from "../observation/arrays.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     type Expression,
@@ -23,7 +23,12 @@ import type {
     SyntheticViewTemplate,
     ViewTemplate,
 } from "./template.js";
-import { HTMLView, HydrationStage, HydrationView, type SyntheticView } from "./view.js";
+import {
+    HTMLView,
+    HydrationStage,
+    type HydrationView,
+    type SyntheticView,
+} from "./view.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -50,7 +55,7 @@ function bindWithoutPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    controller: ViewController
+    controller: ViewController,
 ): void {
     view.context.parent = controller.source;
     view.context.parentContext = controller.context;
@@ -61,7 +66,7 @@ function bindWithPositioning(
     view: SyntheticView,
     items: readonly any[],
     index: number,
-    controller: ViewController
+    controller: ViewController,
 ): void {
     view.context.parent = controller.source;
     view.context.parentContext = controller.context;
@@ -87,7 +92,7 @@ export class HydrationRepeatError extends Error {
             viewsState: string[];
             viewTemplateString?: string;
             rootNodeContent: string;
-        }
+        },
     ) {
         super(message);
     }
@@ -123,7 +128,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         this.itemsBindingObserver = directive.dataBinding.createObserver(this, directive);
         this.templateBindingObserver = directive.templateBinding.createObserver(
             this,
-            directive
+            directive,
         );
 
         if (directive.options.positioning) {
@@ -219,7 +224,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
             for (let j = 0, jj = sortedItems.length; j < jj; ++j) {
                 const sortedIndex: number = sortedItems.find(
-                    value => sortedItems[j] === unsortedItems[value]
+                    value => sortedItems[j] === unsortedItems[value],
                 ) as number;
 
                 if (sortedIndex !== j) {
@@ -346,12 +351,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                                 itemsLength,
                                 viewsState: views.map(v => (v ? "hydrated" : "empty")),
                                 viewTemplateString: serializer.serializeToString(
-                                    (template.create() as any).fragment
+                                    (template.create() as any).fragment,
                                 ),
                                 rootNodeContent: serializer.serializeToString(
-                                    this.location.getRootNode() as any
+                                    this.location.getRootNode() as any,
                                 ),
-                            }
+                            },
                         );
                     }
                     bindView(view, items, i, controller);
@@ -387,9 +392,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                         hydrationStage: (this.controller as HydrationView).hydrationStage,
                         viewsState: views.map(v => (v ? "hydrated" : "empty")),
                         rootNodeContent: serializer.serializeToString(
-                            this.location.getRootNode() as any
+                            this.location.getRootNode() as any,
                         ),
-                    }
+                    },
                 );
             }
             view.unbind();
@@ -401,63 +406,48 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             return;
         }
 
-        this.views = new Array(this.items.length);
+        const itemCount = this.items.length;
+        this.views = new Array(itemCount);
+
         let current = this.location.previousSibling;
+        let itemIndex = itemCount - 1; // items render in order; walk backward
 
-        while (current !== null) {
-            if (!isCommentNode(current)) {
+        while (current !== null && itemIndex >= 0) {
+            if (!isCommentNode(current) || current.data !== "f:/r") {
                 current = current.previousSibling;
                 continue;
             }
-            const index = HydrationMarkup.parseRepeatEndMarker(current.data);
-            if (index === null) {
-                current = current.previousSibling;
-                continue;
-            }
+
+            // Found repeat end marker
             current.data = "";
-            // end of repeat is the previousSibling of end comment
             const end = current.previousSibling;
-
             if (!end) {
                 throw new Error(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
-                    }": end should never be null.`
+                    }": end should never be null.`,
                 );
             }
 
-            // find start marker
+            // Find matching start marker via balanced counting
             let start: Node | null = end;
-            // How many unmatched end markers we've encountered
-            let unmatchedEndMarkers = 0;
+            let depth = 0;
             while (start !== null) {
                 if (isCommentNode(start)) {
-                    if (HydrationMarkup.isRepeatViewEndMarker(start.data)) {
-                        unmatchedEndMarkers++;
-                    } else if (HydrationMarkup.isRepeatViewStartMarker(start.data)) {
-                        if (unmatchedEndMarkers) {
-                            unmatchedEndMarkers--;
-                        } else {
-                            if (
-                                HydrationMarkup.parseRepeatStartMarker(start.data) !==
-                                index
-                            ) {
-                                throw new Error(
-                                    `Error when hydrating inside "${
-                                        (this.location.getRootNode() as ShadowRoot).host
-                                            .nodeName
-                                    }": Mismatched start and end markers.`
-                                );
-                            }
+                    if (start.data === "f:/r") {
+                        depth++;
+                    } else if (start.data === "f:r") {
+                        if (depth === 0) {
                             start.data = "";
                             current = start.previousSibling;
-                            // start of repeat content is the nextSibling of start comment
                             start = start.nextSibling!;
                             const view = template.hydrate(start, end);
-                            this.views[index] = view;
-                            this.bindView(view, this.items, index, this.controller);
+                            this.views[itemIndex] = view;
+                            this.bindView(view, this.items, itemIndex, this.controller);
+                            itemIndex--;
                             break;
                         }
+                        depth--;
                     }
                 }
                 start = start.previousSibling;
@@ -466,7 +456,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 throw new Error(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
-                    }": start should never be null.`
+                    }": start should never be null.`,
                 );
             }
         }
@@ -502,7 +492,7 @@ export class RepeatDirective<TSource = any>
     public constructor(
         public readonly dataBinding: Binding<TSource>,
         public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
-        public readonly options: RepeatOptions
+        public readonly options: RepeatOptions,
     ) {
         ArrayObserver.enable();
     }
@@ -529,7 +519,7 @@ HTMLDirective.define(RepeatDirective);
 export function repeat<
     TSource = any,
     TArray extends ReadonlyArray<any> = ReadonlyArray<any>,
-    TParent = any
+    TParent = any,
 >(
     items:
         | Expression<TSource, TArray, TParent>
@@ -539,7 +529,7 @@ export function repeat<
         | Expression<TSource, ViewTemplate<any, TSource>>
         | Binding<TSource, ViewTemplate<any, TSource>>
         | ViewTemplate<any, TSource>,
-    options: RepeatOptions = defaultRepeatOptions
+    options: RepeatOptions = defaultRepeatOptions,
 ): CaptureType<TSource, TParent> {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
