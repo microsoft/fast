@@ -1,5 +1,20 @@
-# Export Sizes
+---
+id: export-sizes
+title: Export Sizes
+layout: 3x
+eleventyNavigation:
+  key: export-sizes3x
+  parent: resources3x
+  title: Export Sizes
+navigationOptions:
+  activeKey: export-sizes3x
+description: Bundle sizes for @microsoft/fast-element exports.
+keywords:
+  - export size
+  - bundle size
+---
 
+# Export Sizes
 Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
