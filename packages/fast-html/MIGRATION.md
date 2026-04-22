@@ -84,3 +84,39 @@
        });
    }
    ```
+
+## Modularize Schema, ObserverMap, and AttributeMap
+
+### Import changes
+
+Configuration types have moved from `template.ts` to their owning modules. If you import types directly from internal paths, update your imports:
+
+| Before | After |
+|---|---|
+| `import type { ObserverMapConfig } from "./template.js"` | `import type { ObserverMapConfig } from "./observer-map.js"` |
+| `import type { AttributeMapConfig } from "./template.js"` | `import type { AttributeMapConfig } from "./attribute-map.js"` |
+
+Imports from the package barrel (`@microsoft/fast-html`) are unaffected.
+
+### Schema changes
+
+`Schema.jsonSchemaMap` (static property) has been replaced by:
+- An instance-level `schemaMap` on each `Schema` instance (private)
+- A module-level `schemaRegistry` export for cross-element lookups
+
+| Before | After |
+|---|---|
+| `Schema.jsonSchemaMap.get('my-element')` | `import { schemaRegistry } from "@microsoft/fast-html"; schemaRegistry.get('my-element')` |
+
+### New public exports
+
+The following are now part of the public API:
+
+| Export | Purpose |
+|---|---|
+| `Schema` | JSON schema builder class |
+| `schemaRegistry` | Module-level registry for cross-element schema lookups |
+| `AttributeMap` | Automatic `@attr` property registration |
+| `AttributeMapOption` | Constant for the `"all"` option value |
+| `JSONSchema` | JSON Schema type interface |
+| `CachedPathMap` | Schema registry map type |

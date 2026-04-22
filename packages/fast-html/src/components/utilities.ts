@@ -5,7 +5,8 @@ import {
     type JSONSchema,
     type JSONSchemaDefinition,
     refPropertyName,
-    Schema,
+    type Schema,
+    schemaRegistry,
 } from "./schema.js";
 import {
     attributeDirectivePrefix,
@@ -1150,10 +1151,11 @@ function getSchemaPropertiesFromAnyOf(anyOf: Array<any>): any | null {
             const customElement = splitRef.slice(-2)[0];
             const attributeName = splitRef.slice(-1)[0].slice(0, -5);
 
-            if (Schema.jsonSchemaMap.has(customElement)) {
-                const customElementSchemaMap = Schema.jsonSchemaMap.get(
-                    customElement,
-                ) as Map<string, JSONSchema>;
+            if (schemaRegistry.has(customElement)) {
+                const customElementSchemaMap = schemaRegistry.get(customElement) as Map<
+                    string,
+                    JSONSchema
+                >;
                 propertiesFromAnyOf = customElementSchemaMap.get(attributeName);
             }
         }
