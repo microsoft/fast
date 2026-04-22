@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "Update hydration markers to use simplified data-free format. Rebuilt all test fixtures with new WASM binary. Breaking change: SSR output format changed.",
-  "packageName": "@microsoft/fast-html",
-  "email": "janechu@microsoft.com",
-  "dependentChangeType": "patch"
-}
