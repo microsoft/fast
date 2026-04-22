@@ -21,7 +21,7 @@ render_template(template, state_str)
   node::render_node(template, root, loop_vars, locator, hydration?)     │
         │                                                                │
         ├─ [hydration mode] scan HTML opening tags for attr bindings     │
-        │        └─ inject data-fe-c-{n}-{count} compact markers        │
+        │        └─ inject data-fe="N" attribute markers                 │
         │                                                                │
         ├─ scan forward: next_directive()                                │
         │        │                                                       │
@@ -68,8 +68,8 @@ fn render_node(template, root, loop_vars, locator, hydration: Option<&mut Hydrat
 
 The `is_entry` flag distinguishes two rendering contexts for **opening-tag attribute handling**:
 
-- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) have their opening-tag `{{binding}}` attributes resolved to primitive values (stripping non-primitives). No `data-fe-c` marker is added.
-- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here have their `{{binding}}` attributes resolved and a `data-fe-c` compact marker injected when inside a parent hydration scope.
+- **`is_entry: true`** — the template is the top-level entry HTML. Custom elements found at this level (root custom elements) have their opening-tag `{{binding}}` attributes resolved to primitive values (stripping non-primitives). No `data-fe` marker is added.
+- **`is_entry: false`** — the template is a shadow template, a directive body, or a repeat item. Custom elements found here have their `{{binding}}` attributes resolved and a `data-fe` marker injected when inside a parent hydration scope.
 
 **Child state** is built the same way regardless of `is_entry`: the current root state is always used as a base, with per-element attributes overlaid on top. This ensures all unbound state keys propagate through to every descendant custom element automatically.
 
@@ -77,11 +77,11 @@ The `is_entry` flag distinguishes two rendering contexts for **opening-tag attri
 
 The loop works like a cursor:
 
-1. **Hydration tag scan** (when `hydration` is `Some`): before each directive, scan for any plain HTML opening tags in the literal region that precede the directive position. For each such tag, detect `{{expr}}` and `{expr}` attribute bindings, allocate binding indices, resolve `{{expr}}` values, and inject a compact `data-fe-c-{start}-{count}` attribute. This step advances `pos` past each processed tag so those tags' `{{expr}}` bindings are not re-encountered as content directives.
+1. **Hydration tag scan** (when `hydration` is `Some`): before each directive, scan for any plain HTML opening tags in the literal region that precede the directive position. For each such tag, detect `{{expr}}` and `{expr}` attribute bindings, allocate binding indices, resolve `{{expr}}` values, and inject a `data-fe="N"` attribute. This step advances `pos` past each processed tag so those tags' `{{expr}}` bindings are not re-encountered as content directives.
 2. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
 3. If nothing is found, append `template[pos..]` to output and break.
 4. Otherwise, append the literal text from `pos` up to the directive's start.
-5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe-b$$start$$N$$UUID$$fe-b-->VALUE<!--fe-b$$end$$...-->` markers.
+5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe:b-->VALUE<!--fe:/b-->` markers.
 6. Append `chunk` and advance `pos` to `next_pos`.
 7. Repeat.
 
@@ -118,7 +118,7 @@ The skip logic lives in `attribute::find_single_brace` and `attribute::skip_sing
 
 ### Attribute directive stripping in Declarative Shadow DOM
 
-Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe-c` compact binding count still includes them so the FAST runtime allocates the correct binding slots.
+Attribute directives — `f-ref="{expr}"`, `f-slotted="{expr}"`, `f-children="{expr}"` — use single-brace syntax and are **client-side only**. When rendering a custom element's shadow DOM template (where hydration is always active), `attribute::strip_client_only_attrs` removes these attributes from the output HTML, exactly as it removes `@event` and `:property` bindings. The `data-fe` binding count still includes them so the FAST runtime allocates the correct binding slots.
 
 ---
 
@@ -239,9 +239,9 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      - **Non-primitives** (`Array`, `Object`, `Null`) — stripped. Arrays and objects cannot be meaningfully represented as HTML attribute values; the state is available directly in the element's template via state propagation. Because of this, same-name non-primitive bindings like `list="{{list}}"` are redundant in entry HTML and can be omitted — state propagation provides the value automatically.
      - **Static attributes** (no binding syntax, e.g. `id="main"`) — passed through unchanged.
      - **Client-only attrs** (`@event`, `:prop`, attribute directives) — stripped as usual.
-     - No `data-fe-c` marker is added — root elements at entry level have no parent hydration scope.
-   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe-c-{start}-{count}` is injected.
-8. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe-c` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
+     - No `data-fe` marker is added — root elements at entry level have no parent hydration scope.
+   - **Nested custom elements** (`is_entry: false`): `strip_client_only_attrs` removes client-only attrs after binding resolution. If the element carries `{{expr}}` or `{expr}` attribute bindings and is inside a parent hydration scope, those bindings are counted and `data-fe="N"` is injected.
+8. **Strip client-only binding attributes** (`@attr` event bindings, `:attr` property bindings, and `f-ref`/`f-slotted`/`f-children` attribute directives) from all tags inside the rendered shadow template. `:attr` bindings contribute to child state in step 4 but are still removed from the rendered HTML — they are resolved by the FAST client runtime. The `data-fe` binding count is preserved — these bindings are still counted so the FAST client runtime allocates the correct number of binding slots.
 9. **Emit Declarative Shadow DOM** with hydration attributes:
    ```html
    <my-button label="Hi">
@@ -249,7 +249,7 @@ A custom element is any opening tag whose name contains a hyphen, excluding `f-w
      [light DOM children]
    </my-button>
    ```
-   When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe-c-{start}-{count}` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
+   When a nested element has attribute bindings (`{{expr}}` or `{expr}` values) and is being rendered inside another element's shadow (i.e., `parent_hydration` is `Some`), those bindings are counted, `data-fe="N"` is added to the element's opening tag, and the binding indices are allocated from the parent scope.
 
 Note: `is_entry` controls only opening-tag attribute handling. Child state is always built using the current root state as a base with per-element attributes overlaid on top, regardless of the `is_entry` flag.
 
@@ -313,19 +313,19 @@ Scope boundaries are:
 | `f-when` truthy body | Child scope via `hy.child()` (binding_idx reset to 0) |
 | `f-repeat` item template | Fresh `HydrationScope` per item (binding_idx reset to 0) |
 
-Scopes carry no numeric ID. Marker names are derived from the binding context (see below) and are therefore self-describing.
+Scopes carry no numeric ID. Markers are data-free sequential strings matched by string equality; pairing uses balanced depth counting.
 
 ### Content binding markers
 
 When `hydration` is `Some`, `render_node` wraps each `{{expr}}` / `{{{expr}}}` result:
 
 ```
-<!--fe-b$$start$$N$$<expr>-N$$fe-b-->VALUE<!--fe-b$$end$$N$$<expr>-N$$fe-b-->
+<!--fe:b-->VALUE<!--fe:/b-->
 ```
 
-`N` is the current `binding_idx` from the scope; `<expr>` is the expression text (e.g. `title`, `item.name`, `$index`). So `{{title}}` at index 0 produces marker name `title-0`, and `{{item.name}}` at index 2 produces `item.name-2`.
+Markers carry no binding index or expression name. They are paired by balanced depth counting — each `<!--fe:b-->` increments a counter and each `<!--fe:/b-->` decrements it; when the counter returns to zero the pair is complete.
 
-### Attribute binding markers (compact format)
+### Attribute binding markers
 
 Plain HTML opening tags in the literal regions are scanned by `attribute::find_next_plain_html_tag` **before** `next_directive` processes them. For each tag that has `{{expr}}` (double-brace) or `{expr}` (single-brace) attribute values:
 
@@ -335,7 +335,7 @@ Plain HTML opening tags in the literal regions are scanned by `attribute::find_n
    - `?attr="{{expr}}"` — **boolean binding**: `expr` is evaluated as a boolean. If truthy, the bare attribute name (without `?`) is emitted; if falsy, the attribute is omitted entirely. The `extract_bool_attr_prefix` helper detects this pattern by checking whether the output accumulated so far ends with `?name="`.
    - `attr="{{expr}}"` — **value binding**: `expr` is resolved to a string and HTML-escaped.
    - `attr="{expr}"` — **single-brace binding**: left unchanged (client-side only).
-4. `inject_compact_marker` inserts `data-fe-c-{start}-{count}` before the closing `>` of the tag.
+4. `inject_marker` inserts `data-fe="N"` (where `N` is the binding count) before the closing `>` of the tag.
 
 This atomic tag processing ensures that the `{{expr}}` attribute values are never seen as content directives by the main loop — `pos` advances past the entire tag before the directive scanner runs again.
 
@@ -383,27 +383,27 @@ contenteditable="true"   →  state["contentEditable"] = "true"
 ### `f-when` markers
 
 ```
-<!--fe-b$$start$$N$$when-N$$fe-b-->
+<!--fe:b-->
 [inner content in child scope, or empty if falsy]
-<!--fe-b$$end$$N$$when-N$$fe-b-->
+<!--fe:/b-->
 ```
 
-`N` is allocated from the outer (parent) scope's `binding_idx`. The marker name is `when-N`.
+The binding index `N` is allocated from the outer (parent) scope's `binding_idx`. The markers are data-free and paired by balanced depth counting.
 
 ### `f-repeat` markers
 
 ```
-<!--fe-b$$start$$N$$repeat-N$$fe-b-->
-<!--fe-repeat$$start$$0$$fe-repeat-->
+<!--fe:b-->
+<!--fe:r-->
   [item 0 rendered with fresh binding_idx = 0]
-<!--fe-repeat$$end$$0$$fe-repeat-->
-<!--fe-repeat$$start$$1$$fe-repeat-->
+<!--fe:/r-->
+<!--fe:r-->
   [item 1 rendered with fresh binding_idx = 0]
-<!--fe-repeat$$end$$1$$fe-repeat-->
-<!--fe-b$$end$$N$$repeat-N$$fe-b-->
+<!--fe:/r-->
+<!--fe:/b-->
 ```
 
-The outer markers use `repeat-N` where `N` is the binding index in the parent scope. Each item gets its own fresh `HydrationScope`, so per-item content bindings are named after their expressions (e.g. `item-0`, `item.name-1`).
+The outer `<!--fe:b-->` / `<!--fe:/b-->` markers wrap the entire repeat directive. Each item is wrapped in `<!--fe:r-->` / `<!--fe:/r-->` markers. All markers are data-free; pairing uses balanced depth counting. Each item gets its own fresh `HydrationScope`, so per-item content bindings restart at index 0.
 
 ### `$index` in `f-repeat`
 
@@ -542,9 +542,9 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
 
-**Named hydration markers.** Marker names are derived from the binding context: content bindings use `<expr>-<idx>` (e.g. `title-0`, `item.name-2`), f-when uses `when-<idx>`, and f-repeat uses `repeat-<idx>`. This makes markers human-readable and self-describing without a shared ID counter. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`. The scheme differs from the FAST HTML package which uses random alphanumeric UUIDs, but the structure is equivalent.
+**Named hydration markers.** Markers are data-free fixed strings (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`) matched by string equality — no regex parsing required. Pairing uses balanced depth counting rather than ID matching. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`.
 
-**Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe-c` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
+**Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
 **`Result` throughout.** All render functions return `Result<_, RenderError>`. Errors propagate via `?` without any silent failures. The one deliberate choice: missing state keys return `RenderError::MissingState` rather than an empty string, so template bugs surface early.
 
