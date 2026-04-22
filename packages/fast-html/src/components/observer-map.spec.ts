@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { ObserverMap } from "./observer-map.js";
+import { ObserverMap } from "@microsoft/fast-element/extensions/observer-map.js";
 import { defsPropertyName, type JSONSchema, Schema } from "./schema.js";
 
 const testElementName = "test-class";

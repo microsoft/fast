@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "refactor: move observerMap/attributeMap to fast-element as FASTElementExtension factories",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
