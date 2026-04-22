@@ -307,9 +307,9 @@ The attribute marker format is:
 Text/template content bindings are wrapped in paired data-free comment nodes (matched by string equality, paired by balanced depth counting):
 
 ```html
-<!--f:b-->
+<!--fe:b-->
 Hello, World!
-<!--f:/b-->
+<!--fe:/b-->
 ```
 
 #### Repeat Directive Markers
@@ -317,12 +317,12 @@ Hello, World!
 Each repeated item is bracketed by data-free repeat markers:
 
 ```html
-<!--f:r-->
+<!--fe:r-->
 <li>First item</li>
-<!--f:/r-->
-<!--f:r-->
+<!--fe:/r-->
+<!--fe:r-->
 <li>Second item</li>
-<!--f:/r-->
+<!--fe:/r-->
 ```
 
 #### Element Boundary Markers
@@ -330,11 +330,11 @@ Each repeated item is bracketed by data-free repeat markers:
 Nested custom elements that also need hydration are demarcated so the parent's walker can skip over them:
 
 ```html
-<!--f:e-->
+<!--fe:e-->
 <child-element>
   <template shadowrootmode="open">...child shadow DOM...</template>
 </child-element>
-<!--f:/e-->
+<!--fe:/e-->
 ```
 
 ### Hydration Binding Flow
@@ -359,14 +359,14 @@ flowchart TD
     M --> N["Map factory indices to this element via targetFactory()"]
     N --> O["Remove data-fe marker attribute"]
 
-    L -->|Comment: content marker| P["Match f:b start marker by string equality"]
-    P --> Q["Walk siblings to find matching f:/b end marker\nusing balanced depth counting"]
+    L -->|Comment: content marker| P["Match fe:b start marker by string equality"]
+    P --> Q["Walk siblings to find matching fe:/b end marker\nusing balanced depth counting"]
     Q --> R{"Content between markers?"}
     R -->|Single text node| S["Target factory to text node directly"]
     R -->|Multiple nodes / template| T["Store boundaries in ViewBehaviorBoundaries"]
     T --> U["Insert dummy text node as target for future string updates"]
     R -->|Empty null/false binding| U
-    L -->|Comment: element boundary| V["Skip to matching f:/e end marker\nusing balanced depth counting"]
+    L -->|Comment: element boundary| V["Skip to matching fe:/e end marker\nusing balanced depth counting"]
     L -->|Other| W["Continue walking"]
     J --> X["Return { targets, boundaries }"]
     X --> Y["Create behaviors from factories"]

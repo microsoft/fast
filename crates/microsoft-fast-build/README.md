@@ -530,7 +530,7 @@ When a custom element's shadow template is rendered, the renderer emits **hydrat
 Each `{{expr}}` or `{{{expr}}}` text binding is wrapped in data-free HTML comment markers:
 
 ```html
-<!--f:b-->Hello world<!--f:/b-->
+<!--fe:b-->Hello world<!--fe:/b-->
 ```
 
 Markers carry no binding index or expression name. They are matched by string equality and paired using balanced depth counting.
@@ -569,19 +569,19 @@ Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets
 
 ```html
 <!-- f-when -->
-<!--f:b-->
+<!--fe:b-->
   [inner content, or empty if condition is false]
-<!--f:/b-->
+<!--fe:/b-->
 
 <!-- f-repeat with 2 items -->
-<!--f:b-->
-<!--f:r-->
+<!--fe:b-->
+<!--fe:r-->
   [item 0 — binding index reset to 0 per item]
-<!--f:/r-->
-<!--f:r-->
+<!--fe:/r-->
+<!--fe:r-->
   [item 1 — binding index reset to 0 per item]
-<!--f:/r-->
-<!--f:/b-->
+<!--fe:/r-->
+<!--fe:/b-->
 ```
 
 

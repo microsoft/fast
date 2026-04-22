@@ -90,8 +90,8 @@ function isShadowRoot(node: Node): node is ShadowRoot {
  * For element nodes: parses `data-fe="N"` to determine the count of attribute
  * binding factories, then consumes N factories sequentially.
  *
- * For comment nodes: `f:b` markers consume the next factory for content bindings,
- * using balanced depth counting for nested marker pairing. `f:e` markers cause
+ * For comment nodes: `fe:b` markers consume the next factory for content bindings,
+ * using balanced depth counting for nested marker pairing. `fe:e` markers cause
  * the walker to skip nested custom element subtrees.
  *
  * Host bindings (targetNodeId='h') appear at the start of the factories array but
@@ -158,10 +158,10 @@ export function buildViewBindingTargets(
 
             case Node.COMMENT_NODE: {
                 const data = (node as Comment).data;
-                if (data === "f:e") {
+                if (data === "fe:e") {
                     // Element boundary — skip subtree
                     skipToElementBoundaryEnd(walker);
-                } else if (data === "f:b") {
+                } else if (data === "fe:b") {
                     // Content binding — consume next factory
                     const factory = factories[factoryPointer++];
                     targetContentBinding(
@@ -199,9 +199,9 @@ function targetContentBinding(
     let depth = 0;
     while (current !== null) {
         if (isComment(current)) {
-            if (current.data === "f:b") {
+            if (current.data === "fe:b") {
                 depth++;
-            } else if (current.data === "f:/b") {
+            } else if (current.data === "fe:/b") {
                 if (depth === 0) break;
                 depth--;
             }
@@ -251,8 +251,8 @@ function skipToElementBoundaryEnd(walker: TreeWalker) {
     let current = walker.nextSibling();
     while (current !== null) {
         if (isComment(current)) {
-            if (current.data === "f:e") depth++;
-            else if (current.data === "f:/e") {
+            if (current.data === "fe:e") depth++;
+            else if (current.data === "fe:/e") {
                 if (depth === 0) break;
                 depth--;
             }
