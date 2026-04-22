@@ -522,7 +522,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 
         // Overflow check: detect extra repeat markers beyond items.length,
         // bounded to this directive's scan range.
-        if (current !== null && current !== scanStop) {
+        // Skip when itemCount is 0 — an empty repeat has no markers to overflow,
+        // and the scan would cross into unrelated sibling content.
+        if (itemCount > 0 && current !== null && current !== scanStop) {
             let remaining: Node | null = current;
             while (remaining !== null && remaining !== scanStop) {
                 if (isCommentNode(remaining) && remaining.data === "fe:/r") {
