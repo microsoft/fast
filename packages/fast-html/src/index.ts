@@ -4,7 +4,6 @@ import { debugMessages } from "./debug.js";
 FAST.addMessages(debugMessages);
 
 export {
-    ObserverMap,
     type ResolvedStringsAndValues,
     TemplateElement,
     TemplateParser,
