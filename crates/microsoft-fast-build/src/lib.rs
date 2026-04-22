@@ -20,7 +20,7 @@
 //!   node::render_node(template, root, loop_vars, locator, hydration?)     │
 //!         │                                                                │
 //!         ├─ [hydration] scan literal HTML tags for attr bindings         │
-//!         │      └─ inject data-fe-c-{n}-{count} compact markers         │
+//!         │      └─ inject data-fe="N" count markers                    │
 //!         │                                                                │
 //!         ├─ directive::next_directive() → earliest position              │
 //!         │      ├─ TripleBrace  → content::render_triple_brace()        │
