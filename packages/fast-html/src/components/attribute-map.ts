@@ -21,13 +21,13 @@ function camelToKebab(str: string): string {
  * A property is a candidate for @attr when its schema entry has no nested `properties`,
  * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{foo-bar}}".
  *
- * When `attribute-name-strategy` is `"none"` (the default), the binding key is used
- * as both the attribute name and property name — no normalization is applied.
- *
- * When `attribute-name-strategy` is `"camelCase"`, the binding key is treated as a
+ * When `attribute-name-strategy` is `"camelCase"` (the default), the binding key is treated as a
  * camelCase property name and the HTML attribute name is derived by converting it to
  * kebab-case (e.g. property `fooBar` → attribute `foo-bar`). This matches the
  * build-time `attribute-name-strategy` option in `@microsoft/fast-build`.
+ *
+ * When `attribute-name-strategy` is `"none"`, the binding key is used
+ * as both the attribute name and property name — no normalization is applied.
  *
  * Properties already decorated with `@attr` or `@observable` on the class are left
  * untouched.
@@ -55,7 +55,7 @@ export class AttributeMap {
         const existingAccessorNames = new Set(
             Observable.getAccessors(this.classPrototype).map(a => a.name),
         );
-        const strategy = this.config?.["attribute-name-strategy"] ?? "none";
+        const strategy = this.config?.["attribute-name-strategy"] ?? "camelCase";
 
         for (const propertyName of propertyNames) {
             const propertySchema = this.schema.getSchema(propertyName);

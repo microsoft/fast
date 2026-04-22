@@ -127,15 +127,14 @@ The resolution algorithm walks the schema and configuration tree in parallel:
 
 ### `AttributeMap` — automatic `@attr` definitions
 
-An optional layer that uses the `Schema` to automatically register `@attr`-style reactive properties for every **leaf binding** in the template — i.e. simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties, no explicit type, and no child element references.
+An optional layer that uses the `Schema` to automatically register `@attr`-style reactive properties for every **leaf binding** in the template — i.e. simple expressions like `{{foo}}` or `id="{{fooBar}}"` that have no nested properties, no explicit type, and no child element references.
 
-- By default (`attribute-name-strategy: "none"`), the **attribute name** and **property name** are both the binding key exactly as written in the template (e.g. `{{foo-bar}}` → attribute `foo-bar`, property `foo-bar`). No normalization is applied.
-- When `attribute-name-strategy` is `"camelCase"`, the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute `foo-bar`). This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
-- Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated) when using the `"none"` strategy.
+- By default (`attribute-name-strategy: "camelCase"`), the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute `foo-bar`). This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+- When `attribute-name-strategy` is `"none"`, the **attribute name** and **property name** are both the binding key exactly as written in the template (e.g. `{{foo-bar}}` → attribute `foo-bar`, property `foo-bar`). No normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated) when using the `"none"` strategy.
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent and use the default `"none"` strategy. To use the `"camelCase"` strategy, pass `TemplateElement.options({ "my-element": { attributeMap: { "attribute-name-strategy": "camelCase" } } })`.
+Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent and use the default `"camelCase"` strategy. To use the `"none"` strategy, pass `TemplateElement.options({ "my-element": { attributeMap: { "attribute-name-strategy": "none" } } })`.
 
 ### Syntax constants (`syntax.ts`)
 
@@ -366,8 +365,8 @@ When `attributeMap` is enabled (via `"all"`, `{}`, or a configuration object), `
 
 1. The schema key is used as the **JS property name**.
 2. The **HTML attribute name** depends on the `attribute-name-strategy`:
-   - `"none"` (default): the attribute name equals the property name (e.g. `foo-bar` → `foo-bar`).
-   - `"camelCase"`: the attribute name is derived by converting the camelCase property name to kebab-case (e.g. `fooBar` → `foo-bar`).
+   - `"camelCase"` (default): the attribute name is derived by converting the camelCase property name to kebab-case (e.g. `fooBar` → `foo-bar`).
+   - `"none"`: the attribute name equals the property name (e.g. `foo-bar` → `foo-bar`).
 3. A new `AttributeDefinition` is registered via `Observable.defineProperty`.
 4. `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` can route attribute changes to the correct property.
 

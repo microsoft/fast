@@ -266,9 +266,9 @@ When `properties` is omitted, all root properties are observed (backward compati
 
 #### `attributeMap`
 
-When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"none"` attribute name strategy.
+When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an element, `@microsoft/fast-html` automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{fooBar}}"` that have no nested properties. Both `"all"` and `{}` are equivalent and use the default `"camelCase"` attribute name strategy.
 
-By default, the **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
+By default, the binding key is treated as a **camelCase property name** and the HTML attribute name is derived by converting it to kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute `foo-bar`). This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
 
 Properties already decorated with `@attr` or `@observable` on the class are left untouched.
 
@@ -286,12 +286,12 @@ With the template:
 <f-template name="my-element">
     <template>
         <p>{{greeting}}</p>
-        <p>{{first-name}}</p>
+        <p>{{firstName}}</p>
     </template>
 </f-template>
 ```
 
-This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically.
+This registers `greeting` (attribute `greeting`, property `greeting`) and `firstName` (attribute `first-name`, property `firstName`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically, and the property is accessible as `element.firstName`.
 
 ##### `attribute-name-strategy`
 
@@ -299,14 +299,14 @@ The `attribute-name-strategy` configuration option controls how template binding
 
 | Strategy | Behaviour | Example |
 |---|---|---|
-| `"none"` (default) | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
-| `"camelCase"` | Binding key is the camelCase property; attribute name derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+| `"camelCase"` (default) | Binding key is the camelCase property; attribute name derived as kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+| `"none"` | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
 
 ```typescript
 TemplateElement.options({
     "my-element": {
         attributeMap: {
-            "attribute-name-strategy": "camelCase",
+            "attribute-name-strategy": "none",
         },
     },
 }).define({ name: "f-template" });
@@ -318,12 +318,12 @@ With the template:
 <f-template name="my-element">
     <template>
         <p>{{greeting}}</p>
-        <p>{{firstName}}</p>
+        <p>{{first-name}}</p>
     </template>
 </f-template>
 ```
 
-This registers `greeting` (attribute `greeting`, property `greeting`) and `firstName` (attribute `first-name`, property `firstName`) as `@attr` properties. `setAttribute("first-name", "Jane")` triggers a re-render, and the property is accessible as `element.firstName`.
+This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties. `setAttribute("first-name", "Jane")` triggers a re-render, and the property must be accessed via bracket notation as `element["first-name"]`.
 
 ### Syntax
 

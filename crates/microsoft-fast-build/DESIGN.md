@@ -267,8 +267,8 @@ Controls how HTML attribute names are mapped to state property names when buildi
 
 | Strategy | Behaviour | Example |
 |----------|-----------|---------|
-| `"none"` (default) | Attribute names are lowercased as-is. Dashes are preserved. | `foo-bar` → `foo-bar` → `{{foo-bar}}` |
-| `"camelCase"` | Dashed attribute names are converted to camelCase. | `foo-bar` → `fooBar` → `{{fooBar}}` |
+| `"camelCase"` (default) | Dashed attribute names are converted to camelCase. | `foo-bar` → `fooBar` → `{{fooBar}}` |
+| `"none"` | Attribute names are lowercased as-is. Dashes are preserved. | `foo-bar` → `foo-bar` → `{{foo-bar}}` |
 
 The `camelCase` strategy only applies to attributes that are **not** already handled by a specialized conversion:
 

@@ -6,7 +6,7 @@
     </head>
     <body>
         <attribute-map-test-element id="test-element"><template shadowrootmode="open" shadowroot="open"><div class="foo-value"><!--fe-b$$start$$0$$foo-0$$fe-b--><!--fe-b$$end$$0$$foo-0$$fe-b--></div>
-        <div class="foo-bar-value"><!--fe-b$$start$$1$$foo-bar-1$$fe-b--><!--fe-b$$end$$1$$foo-bar-1$$fe-b--></div>
+        <div class="foo-bar-value"><!--fe-b$$start$$1$$fooBar-1$$fe-b--><!--fe-b$$end$$1$$fooBar-1$$fe-b--></div>
         <button type="button" data-fe-c-2-1>Set Foo</button>
         <button type="button" data-fe-c-3-1>Set FooBar</button>
         <button type="button" data-fe-c-4-1>Set Multiple</button></template></attribute-map-test-element>
@@ -14,7 +14,7 @@
 <f-template name="attribute-map-test-element">
     <template>
         <div class="foo-value">{{foo}}</div>
-        <div class="foo-bar-value">{{foo-bar}}</div>
+        <div class="foo-bar-value">{{fooBar}}</div>
         <button type="button" @click="{setFoo()}">Set Foo</button>
         <button type="button" @click="{setFooBar()}">Set FooBar</button>
         <button type="button" @click="{setMultiple()}">Set Multiple</button>
