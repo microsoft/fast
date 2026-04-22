@@ -6,52 +6,52 @@
     </head>
     <body>
         <test-element item_parent="Bat"><template shadowrootmode="open" shadowroot="open"><ul>
-            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                <li><!--fe-b$$start$$0$$item-0$$fe-b-->Foo<!--fe-b$$end$$0$$item-0$$fe-b--> - <!--fe-b$$start$$1$$item_parent-1$$fe-b-->Bat<!--fe-b$$end$$1$$item_parent-1$$fe-b--></li>
-            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
-                <li><!--fe-b$$start$$0$$item-0$$fe-b-->Bar<!--fe-b$$end$$0$$item-0$$fe-b--> - <!--fe-b$$start$$1$$item_parent-1$$fe-b-->Bat<!--fe-b$$end$$1$$item_parent-1$$fe-b--></li>
-            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+            <!--fe:b--><!--fe:r-->
+                <li><!--fe:b-->Foo<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:r-->
+                <li><!--fe:b-->Bar<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:/b-->
         </ul></template></test-element>
         <test-element-with-observer-map item_parent="Bat"><template shadowrootmode="open" shadowroot="open"><ul>
-            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                <li><!--fe-b$$start$$0$$item-0$$fe-b-->Foo<!--fe-b$$end$$0$$item-0$$fe-b--> - <!--fe-b$$start$$1$$item_parent-1$$fe-b-->Bat<!--fe-b$$end$$1$$item_parent-1$$fe-b--></li>
-            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
-                <li><!--fe-b$$start$$0$$item-0$$fe-b-->Bar<!--fe-b$$end$$0$$item-0$$fe-b--> - <!--fe-b$$start$$1$$item_parent-1$$fe-b-->Bat<!--fe-b$$end$$1$$item_parent-1$$fe-b--></li>
-            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+            <!--fe:b--><!--fe:r-->
+                <li><!--fe:b-->Foo<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:r-->
+                <li><!--fe:b-->Bar<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:/b-->
         </ul></template></test-element-with-observer-map>
         <test-element-inner-when><template shadowrootmode="open" shadowroot="open"><ul>
-            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-                <!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b-->
-            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
-                <!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b-->
-            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+            <!--fe:b--><!--fe:r-->
+                <!--fe:b--><!--fe:/b-->
+            <!--fe:/r--><!--fe:r-->
+                <!--fe:b--><!--fe:/b-->
+            <!--fe:/r--><!--fe:/b-->
         </ul></template></test-element-inner-when>
         <test-element-interval-updates><template shadowrootmode="open" shadowroot="open"><ul>
-            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+            <!--fe:b--><!--fe:r-->
                 <li>
                     <svg width="20px" height="20px">
-                        <use href="sprites.svg#repeat-icon" data-fe-c-0-1></use>
+                        <use href="sprites.svg#repeat-icon" data-fe="1"></use>
                     </svg>
                 </li>
-            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+            <!--fe:/r--><!--fe:/b-->
 
-            <!--fe-b$$start$$1$$repeat-1$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+            <!--fe:b--><!--fe:r-->
                 <li>
                     <svg width="20px" height="20px">
-                        <use href="sprites.svg#repeat-icon" data-fe-c-0-1></use>
+                        <use href="sprites.svg#repeat-icon" data-fe="1"></use>
                     </svg>
                 </li>
-            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$1$$repeat-1$$fe-b-->
+            <!--fe:/r--><!--fe:/b-->
         </ul></template></test-element-interval-updates>
         <test-element-no-item-repeat-binding><template shadowrootmode="open" shadowroot="open"><ul>
-            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+            <!--fe:b--><!--fe:/b-->
         </ul></template></test-element-no-item-repeat-binding>
         <test-element-empty-array><template shadowrootmode="open" shadowroot="open"><ul>
-            <!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-b$$end$$0$$repeat-0$$fe-b-->
+            <!--fe:b--><!--fe:/b-->
         </ul></template></test-element-empty-array>
-        <test-element-event><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
-            <button data-fe-c-0-1>Click</button>
-        <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$repeat-0$$fe-b--></template></test-element-event>
+        <test-element-event><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:r-->
+            <button data-fe="1">Click</button>
+        <!--fe:/r--><!--fe:/b--></template></test-element-event>
 <f-template name="test-element">
     <template>
         <ul>
