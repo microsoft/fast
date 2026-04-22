@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { ObserverMap } from "./observer-map.js";
-import { defsPropertyName, type JSONSchema, Schema } from "./schema.js";
+import { defsPropertyName, type JSONSchema, Schema, schemaRegistry } from "./schema.js";
 
 const testElementName = "test-class";
 
@@ -24,10 +24,7 @@ test.describe("ObserverMap", async () => {
     });
 
     test("proxies direct object assignments", async () => {
-        const schemaMap = Schema.jsonSchemaMap.get(testElementName) as Map<
-            string,
-            JSONSchema
-        >;
+        const schemaMap = schemaRegistry.get(testElementName) as Map<string, JSONSchema>;
         schemaMap.set("someData", {
             $schema: "https://json-schema.org/draft/2019-09/schema",
             $id: `https://fast.design/schemas/${testElementName}/someData.json`,
@@ -59,10 +56,7 @@ test.describe("ObserverMap", async () => {
                 public excluded: any;
             }
 
-            const schemaMap = Schema.jsonSchemaMap.get(testName) as Map<
-                string,
-                JSONSchema
-            >;
+            const schemaMap = schemaRegistry.get(testName) as Map<string, JSONSchema>;
             schemaMap.set("included", {
                 $schema: "https://json-schema.org/draft/2019-09/schema",
                 $id: `https://fast.design/schemas/${testName}/included.json`,
@@ -102,10 +96,7 @@ test.describe("ObserverMap", async () => {
                 public skipped: any;
             }
 
-            const schemaMap = Schema.jsonSchemaMap.get(testName) as Map<
-                string,
-                JSONSchema
-            >;
+            const schemaMap = schemaRegistry.get(testName) as Map<string, JSONSchema>;
             schemaMap.set("skipped", {
                 $schema: "https://json-schema.org/draft/2019-09/schema",
                 $id: `https://fast.design/schemas/${testName}/skipped.json`,
@@ -133,10 +124,7 @@ test.describe("ObserverMap", async () => {
                 public data: any;
             }
 
-            const schemaMap = Schema.jsonSchemaMap.get(testName) as Map<
-                string,
-                JSONSchema
-            >;
+            const schemaMap = schemaRegistry.get(testName) as Map<string, JSONSchema>;
             schemaMap.set("data", {
                 $schema: "https://json-schema.org/draft/2019-09/schema",
                 $id: `https://fast.design/schemas/${testName}/data.json`,
@@ -163,10 +151,7 @@ test.describe("ObserverMap", async () => {
                 public data: any;
             }
 
-            const schemaMap = Schema.jsonSchemaMap.get(testName) as Map<
-                string,
-                JSONSchema
-            >;
+            const schemaMap = schemaRegistry.get(testName) as Map<string, JSONSchema>;
             schemaMap.set("data", {
                 $schema: "https://json-schema.org/draft/2019-09/schema",
                 $id: `https://fast.design/schemas/${testName}/data.json`,

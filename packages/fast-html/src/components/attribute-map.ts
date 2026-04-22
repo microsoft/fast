@@ -1,7 +1,41 @@
 import type { FASTElementDefinition } from "@microsoft/fast-element";
 import { AttributeDefinition, Observable } from "@microsoft/fast-element";
 import type { Schema } from "./schema.js";
-import type { AttributeMapConfig } from "./template.js";
+
+/**
+ * Values for the attributeMap element option.
+ */
+export const AttributeMapOption = {
+    all: "all",
+} as const;
+
+/**
+ * Configuration object for the attributeMap element option.
+ * Passing an empty object (`{}`) is equivalent to `"all"`.
+ */
+export interface AttributeMapConfig {
+    /**
+     * Strategy for mapping template binding keys to HTML attribute names.
+     *
+     * - `"none"` (default): the binding key is used as-is for both the
+     *   property name and the attribute name (e.g. `{{foo-bar}}` →
+     *   property `foo-bar`, attribute `foo-bar`).
+     * - `"camelCase"`: the binding key is treated as a camelCase property
+     *   name and the attribute name is derived by converting it to
+     *   kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute
+     *   `foo-bar`). This matches the build-time `attribute-name-strategy`
+     *   option in `@microsoft/fast-build`.
+     */
+    "attribute-name-strategy"?: "none" | "camelCase";
+}
+
+/**
+ * Type for the attributeMap element option.
+ * Accepts `"all"` or a configuration object.
+ */
+export type AttributeMapOption =
+    | (typeof AttributeMapOption)[keyof typeof AttributeMapOption]
+    | AttributeMapConfig;
 
 /**
  * Converts a camelCase string to kebab-case.

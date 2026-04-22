@@ -81,6 +81,13 @@ export const defsPropertyName = "$defs";
 export const refPropertyName = "$ref";
 
 /**
+ * Module-level registry that maps custom element names to their schema maps.
+ * Used for cross-element `$ref` resolution (e.g. nested element schemas).
+ * Each Schema instance registers itself here on construction.
+ */
+export const schemaRegistry: CachedPathMap = new Map();
+
+/**
  * A constructed JSON schema from a template
  */
 export class Schema {
@@ -90,13 +97,14 @@ export class Schema {
     private customElementName: string;
 
     /**
-     * A JSON schema describing each root schema
+     * Instance-level JSON schema map describing each root property
      */
-    public static jsonSchemaMap: CachedPathMap = new Map();
+    private schemaMap: Map<string, JSONSchema>;
 
     constructor(name: string) {
         this.customElementName = name;
-        Schema.jsonSchemaMap.set(this.customElementName, new Map());
+        this.schemaMap = new Map();
+        schemaRegistry.set(name, this.schemaMap);
     }
 
     /**
@@ -105,20 +113,13 @@ export class Schema {
      */
     public addPath(config: RegisterPathConfig) {
         const splitPath = this.getSplitPath(config.pathConfig.path);
-        let schema: JSONSchema | undefined = (
-            Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>
-        ).get(config.rootPropertyName);
+        let schema: JSONSchema | undefined = this.schemaMap.get(config.rootPropertyName);
         let childRef: string | null = null;
 
         // Create a root level property JSON
         if (!schema) {
             this.addNewSchema(config.rootPropertyName);
-            schema = (
-                Schema.jsonSchemaMap.get(this.customElementName) as Map<
-                    string,
-                    JSONSchema
-                >
-            ).get(config.rootPropertyName) as JSONSchema;
+            schema = this.schemaMap.get(config.rootPropertyName) as JSONSchema;
         }
 
         if (config.childrenMap) {
@@ -228,14 +229,7 @@ export class Schema {
      * @returns The JSON schema for the root property
      */
     public getSchema(rootPropertyName: string): JSONSchema | null {
-        return (
-            (
-                Schema.jsonSchemaMap.get(this.customElementName) as Map<
-                    string,
-                    JSONSchema
-                >
-            ).get(rootPropertyName) ?? null
-        );
+        return this.schemaMap.get(rootPropertyName) ?? null;
     }
 
     /**
@@ -243,9 +237,7 @@ export class Schema {
      * @returns IterableIterator<string>
      */
     public getRootProperties(): IterableIterator<string> {
-        return (
-            Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>
-        ).keys();
+        return this.schemaMap.keys();
     }
 
     /**
@@ -281,14 +273,11 @@ export class Schema {
      * @param propertyName The name of the property to assign this JSON schema to
      */
     private addNewSchema(propertyName: string): void {
-        (Schema.jsonSchemaMap.get(this.customElementName) as Map<string, JSONSchema>).set(
-            propertyName,
-            {
-                $schema: "https://json-schema.org/draft/2019-09/schema",
-                $id: this.getSchemaId(this.customElementName, propertyName),
-                [defsPropertyName]: {},
-            },
-        );
+        this.schemaMap.set(propertyName, {
+            $schema: "https://json-schema.org/draft/2019-09/schema",
+            $id: this.getSchemaId(this.customElementName, propertyName),
+            [defsPropertyName]: {},
+        });
     }
 
     /**
