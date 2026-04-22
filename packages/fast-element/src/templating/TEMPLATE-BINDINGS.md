@@ -515,8 +515,8 @@ When the server-rendered DOM doesn't match the client template, hydration throws
 
 | Error | Cause | Contains |
 |---|---|---|
-| `HydrationTargetElementError` | `data-fe` references a factory index that doesn't exist | Factory list, element node, template string |
+| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied while consuming factories sequentially, or more content binding markers exist than factories | Factory list, element node, template string |
 | `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets | Factory, cloned fragment, template string, available target IDs |
-| `HydrationRepeatError` | Repeat markers are mismatched or missing | Hydration stage, items length, view states |
+| `HydrationRepeatError` | Repeat hydration cannot match items while scanning backward through repeat markers with depth counting | Hydration stage, items length, view states |
 
 These errors typically indicate a mismatch between the server-rendered HTML and the client-side template definition.
