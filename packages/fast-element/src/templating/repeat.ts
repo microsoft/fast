@@ -407,27 +407,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         const itemCount = this.items.length;
-        let serializer: XMLSerializer | null = null;
-        const getSerializer = (): XMLSerializer =>
-            serializer ?? (serializer = new XMLSerializer());
         this.views = Array.from({ length: itemCount }, () => null as any);
-
-        // Determine the scan boundary for this repeat directive.
-        // Use the content binding boundaries (from the parent's fe:b/fe:/b
-        // markers) to avoid scanning into sibling repeat blocks.
-        // Set scanStop to the node BEFORE the boundary's first node so the
-        // boundary node itself is still eligible for matching as a start marker.
-        const boundaries =
-            isHydratable(this.controller) &&
-            this.controller.bindingViewBoundaries[this.directive.targetNodeId];
-        const scanStop: Node | null = boundaries
-            ? (boundaries.first.previousSibling ?? null)
-            : null;
 
         let current = this.location.previousSibling;
         let itemIndex = itemCount - 1; // items render in order; walk backward
 
-        while (current !== null && current !== scanStop && itemIndex >= 0) {
+        while (current !== null && itemIndex >= 0) {
             if (!isCommentNode(current) || current.data !== "fe:/r") {
                 current = current.previousSibling;
                 continue;
@@ -437,26 +422,17 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             current.data = "";
             const end = current.previousSibling;
             if (!end) {
-                throw new HydrationRepeatError(
+                throw new Error(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
                     }": end should never be null.`,
-                    {
-                        index: itemIndex,
-                        hydrationStage: "hydrateViews",
-                        itemsLength: itemCount,
-                        viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                        rootNodeContent: getSerializer().serializeToString(
-                            this.location.getRootNode() as any,
-                        ),
-                    },
                 );
             }
 
             // Find matching start marker via balanced counting
             let start: Node | null = end;
             let depth = 0;
-            while (start !== null && start !== scanStop) {
+            while (start !== null) {
                 if (isCommentNode(start)) {
                     if (start.data === "fe:/r") {
                         depth++;
@@ -485,65 +461,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 }
                 start = start.previousSibling;
             }
-            if (!start || start === scanStop) {
-                throw new HydrationRepeatError(
+            if (!start) {
+                throw new Error(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
-                    }": start should never be null.`,
-                    {
-                        index: itemIndex,
-                        hydrationStage: "hydrateViews",
-                        itemsLength: itemCount,
-                        viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                        rootNodeContent: getSerializer().serializeToString(
-                            this.location.getRootNode() as any,
-                        ),
-                    },
+                    }": repeat start marker not found.`,
                 );
-            }
-        }
-
-        if (itemIndex >= 0) {
-            throw new HydrationRepeatError(
-                `Error when hydrating inside "${
-                    (this.location.getRootNode() as ShadowRoot).host.nodeName
-                }": expected ${itemCount} repeat items but only found ${itemCount - itemIndex - 1}.`,
-                {
-                    index: itemIndex,
-                    hydrationStage: "hydrateViews",
-                    itemsLength: itemCount,
-                    viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                    rootNodeContent: getSerializer().serializeToString(
-                        this.location.getRootNode() as any,
-                    ),
-                },
-            );
-        }
-
-        // Overflow check: detect extra repeat markers beyond items.length,
-        // bounded to this directive's scan range.
-        // Skip when itemCount is 0 — an empty repeat has no markers to overflow,
-        // and the scan would cross into unrelated sibling content.
-        if (itemCount > 0 && current !== null && current !== scanStop) {
-            let remaining: Node | null = current;
-            while (remaining !== null && remaining !== scanStop) {
-                if (isCommentNode(remaining) && remaining.data === "fe:/r") {
-                    throw new HydrationRepeatError(
-                        `Error when hydrating inside "${
-                            (this.location.getRootNode() as ShadowRoot).host.nodeName
-                        }": found more repeat items in the DOM than expected ${itemCount}.`,
-                        {
-                            index: -1,
-                            hydrationStage: "hydrateViews",
-                            itemsLength: itemCount,
-                            viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                            rootNodeContent: getSerializer().serializeToString(
-                                this.location.getRootNode() as any,
-                            ),
-                        },
-                    );
-                }
-                remaining = remaining.previousSibling;
             }
         }
     }
