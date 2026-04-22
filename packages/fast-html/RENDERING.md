@@ -105,19 +105,12 @@ When hydrating the HTML, FAST uses `ElementController` which detects an existing
 
 #### Content Bindings
 
-Content binding markers are represented using HTML comments. These comments are used to indicate where dynamic content exists in the template.
+Content binding markers are represented using HTML comments. These comments are used to indicate where dynamic content exists in the template. Markers carry no embedded data — they are fixed strings matched by string equality (not regex).
 
-A content binding syntax can be broken into parts:
-- `fe-b` - declares this as a FASTElement Binding.
-- `start|end` - indicates the start or end of the binding.
-- `number` - the number in order in the template of bindings, these increment for every binding.
-- `UUID` - a unique string identifying the binding.
-- `fe-b` - closes the binding comment.
+* Start binding: `<!--f:b-->`
+* End binding: `<!--f:/b-->`
 
-Bindings use `$$` as a separator string between the parts.
-
-* Start binding: `<!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->`
-* End binding: `<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b-->`
+Binding pairs are matched using balanced depth counting: each start marker increments a depth counter and each end marker decrements it. When the counter returns to zero the pair is complete.
 
 ##### Content Binding Marker Examples
 
@@ -150,20 +143,12 @@ When combined with state such as:
 
 Should result in:
 ```html
-<h1><!--fe-b$$start$$0$$ZJEYduCZlM$$fe-b-->Hello world<!--fe-b$$end$$0$$ZJEYduCZlM$$fe-b--></h1>
+<h1><!--f:b-->Hello world<!--f:/b--></h1>
 ```
 
 #### Attribute Bindings
 
-Attribute bindings are tracked using dataset attributes. Three formats are supported:
-
-**Space-separated format**: A single attribute `data-fe-b` with space-separated binding numbers (e.g., `data-fe-b="0 1 2"`).
-
-**Enumerated format**: Individual attributes for each binding (e.g., `data-fe-b-0`, `data-fe-b-1`, `data-fe-b-2`). This format is preferred when the rendering system streams output inline, as it allows generated output to be inserted immediately without needing to count or combine binding instances.
-
-**Compact format**: Attributes shaped like `data-fe-c-{index}-{count}` (e.g., `data-fe-c-4-3`). This format encodes a start index and count for consecutive bindings, reducing attribute noise for elements with many attribute bindings.
-
-All formats are functionally equivalent and fully supported by the hydration system.
+Attribute bindings are tracked using a single dataset attribute: `data-fe="N"` where `N` is the number of attribute bindings on the element.
 
 ##### Examples
 
@@ -181,17 +166,10 @@ When combined with state such as:
 }
 ```
 
-Should result in any of the following formats:
+Should result in:
 
 ```html
-<!-- Space-separated format -->
-<h1 data-fe-b="0" greeting="Hello"></h1>
-
-<!-- Enumerated format -->
-<h1 data-fe-b-0 greeting="Hello"></h1>
-
-<!-- Compact format (not recommended for single bindings, but supported) -->
-<h1 data-fe-c-0-1 greeting="Hello"></h1>
+<h1 data-fe="1" greeting="Hello"></h1>
 ```
 
 ###### Multiple attribute bindings
@@ -210,17 +188,10 @@ When combined with state such as:
 }
 ```
 
-Should result in any of the following formats:
+Should result in:
 
 ```html
-<!-- Space-separated format -->
-<h1 data-fe-b="0 1 2" greeting="Hello" subtitle="world" punctuation="!"></h1>
-
-<!-- Enumerated format -->
-<h1 data-fe-b-0 data-fe-b-1 data-fe-b-2 greeting="Hello" subtitle="world" punctuation="!"></h1>
-
-<!-- Compact format -->
-<h1 data-fe-c-0-3 greeting="Hello" subtitle="world" punctuation="!"></h1>
+<h1 data-fe="3" greeting="Hello" subtitle="world" punctuation="!"></h1>
 ```
 
 **Mixed attribute and content example**
@@ -236,25 +207,10 @@ Multiple attributes and content bindings such as:
 
 Should result in:
 ```html
-<!-- Space-separated format -->
-<div data-fe-b="0 1 2" show appearance="large" punctuation="!">
-    <h1><!--fe-b$$start$$3$$UniqueID1$$fe-b-->Hello<!--fe-b$$end$$3$$UniqueID1$$fe-b--></h1>
-    <span><!--fe-b$$start$$4$$UniqueID2$$fe-b-->world<!--fe-b$$end$$4$$UniqueID2$$fe-b--></span>
-    <span><!--fe-b$$start$$5$$UniqueID3$$fe-b-->!<!--fe-b$$end$$5$$UniqueID3$$fe-b--></span>
-</div>
-
-<!-- Enumerated format -->
-<div data-fe-b-0 data-fe-b-1 data-fe-b-2 show appearance="large" punctuation="!">
-    <h1><!--fe-b$$start$$3$$UniqueID1$$fe-b-->Hello<!--fe-b$$end$$3$$UniqueID1$$fe-b--></h1>
-    <span><!--fe-b$$start$$4$$UniqueID2$$fe-b-->world<!--fe-b$$end$$4$$UniqueID2$$fe-b--></span>
-    <span><!--fe-b$$start$$5$$UniqueID3$$fe-b-->!<!--fe-b$$end$$5$$UniqueID3$$fe-b--></span>
-</div>
-
-<!-- Compact format -->
-<div data-fe-c-0-3 show appearance="large" punctuation="!">
-    <h1><!--fe-b$$start$$3$$UniqueID1$$fe-b-->Hello<!--fe-b$$end$$3$$UniqueID1$$fe-b--></h1>
-    <span><!--fe-b$$start$$4$$UniqueID2$$fe-b-->world<!--fe-b$$end$$4$$UniqueID2$$fe-b--></span>
-    <span><!--fe-b$$start$$5$$UniqueID3$$fe-b-->!<!--fe-b$$end$$5$$UniqueID3$$fe-b--></span>
+<div data-fe="3" show appearance="large" punctuation="!">
+    <h1><!--f:b-->Hello<!--f:/b--></h1>
+    <span><!--f:b-->world<!--f:/b--></span>
+    <span><!--f:b-->!<!--f:/b--></span>
 </div>
 ```
 
@@ -282,31 +238,31 @@ Combined with state:
 
 Should result in:
 ```html
-<!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
-<!--fe-repeat$$start$$0$$fe-repeat-->
+<!--f:b-->
+<!--f:r-->
 <span>
-    <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->Bob<!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+    <!--f:b-->Bob<!--f:/b-->
 </span>
-<!--fe-repeat$$end$$0$$fe-repeat-->
-<!--fe-repeat$$start$$1$$fe-repeat-->
+<!--f:/r-->
+<!--f:r-->
 <span>
-    <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->Alice<!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+    <!--f:b-->Alice<!--f:/b-->
 </span>
-<!--fe-repeat$$end$$1$$fe-repeat-->
-<!--fe-repeat$$start$$2$$fe-repeat-->
+<!--f:/r-->
+<!--f:r-->
 <span>
-    <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->Sue<!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+    <!--f:b-->Sue<!--f:/b-->
 </span>
-<!--fe-repeat$$end$$2$$fe-repeat-->
-<!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+<!--f:/r-->
+<!--f:/b-->
 ```
 
-You may notice that the same UUID was used within the repeat markers, this is because they are templates and each UUID only needs to be unique to that template. The same is true for the binding number. Additionally, a binding wraps the repeat markers, even if the array is empty, this binding must be rendered.
+Note that the repeat markers are data-free — they carry no index or ID. Pairing uses balanced depth counting. Additionally, a binding wraps the repeat markers; even if the array is empty, this binding must be rendered.
 
 Example result of an empty array:
 ```html
-<!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
-<!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+<!--f:b-->
+<!--f:/b-->
 ```
 
 #### When
@@ -330,11 +286,11 @@ Combined with state:
 
 Should result in:
 ```html
-<!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
+<!--f:b-->
 <span>
-    <!--fe-b$$start$$0$$BJtvnvqlxr$$fe-b-->Hello world<!--fe-b$$end$$0$$BJtvnvqlxr$$fe-b-->
+    <!--f:b-->Hello world<!--f:/b-->
 </span>
-<!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+<!--f:/b-->
 ```
 
 If the when is evaluated to `falsy` then we can safely leave the binding markers only.
@@ -349,8 +305,8 @@ Example state:
 
 Should result in:
 ```html
-<!--fe-b$$start$$0$$t01oHhokPY$$fe-b-->
-<!--fe-b$$end$$0$$t01oHhokPY$$fe-b-->
+<!--f:b-->
+<!--f:/b-->
 ```
 
 ### Client Side Bindings
@@ -368,7 +324,7 @@ Example event binding:
 
 Should result in:
 ```html
-<button data-fe-b-0>Button</button>
+<button data-fe="1">Button</button>
 ```
 
 #### Attribute Directives
@@ -382,7 +338,7 @@ Example `f-ref` binding:
 
 Should result in:
 ```html
-<button data-fe-b-0>Button</button>
+<button data-fe="1">Button</button>
 ```
 
 #### More Examples
@@ -411,16 +367,16 @@ Combined with state:
 
 Should result in:
 ```html
-<!--fe-b$$start$$0$$jrvV0wUQrP$$fe-b-->
+<!--f:b-->
 <span>
-    <!--fe-b$$start$$0$$CdUO4vHUmG$$fe-b-->Hello world<!--fe-b$$end$$0$$CdUO4vHUmG$$fe-b-->
+    <!--f:b-->Hello world<!--f:/b-->
 </span>
-    <!--fe-b$$start$$1$$CdUO4vHUmG$$fe-b-->
+    <!--f:b-->
     <span>
-        <!--fe-b$$start$$0$$dF9tRRuOjZ$$fe-b-->Hello pluto<!--fe-b$$end$$0$$dF9tRRuOjZ$$fe-b-->
+        <!--f:b-->Hello pluto<!--f:/b-->
     </span>
-    <!--fe-b$$end$$1$$CdUO4vHUmG$$fe-b-->
-<!--fe-b$$end$$0$$jrvV0wUQrP$$fe-b-->
+    <!--f:/b-->
+<!--f:/b-->
 ```
 
 ##### Nested Repeats
@@ -471,44 +427,44 @@ Combined with state:
 
 Should result in:
 ```html
-<!--fe-b$$start$$0$$kk4YD4Dgs4$$fe-b-->
-    <!--fe-repeat$$start$$0$$fe-repeat-->
+<!--f:b-->
+    <!--f:r-->
     <div>
-        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Bob<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
-        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b--><!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+        <span><!--f:b-->Bob<!--f:/b--></span>
+        <!--f:b--><!--f:/b-->
     </div>
-    <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+    <!--f:/r--><!--f:r-->
     <div>
-        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Alice<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
-        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b--><!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+        <span><!--f:b-->Alice<!--f:/b--></span>
+        <!--f:b--><!--f:/b-->
     </div>
-    <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat-->
+    <!--f:/r--><!--f:r-->
     <div>
-        <span><!--fe-b$$start$$0$$gNrHXYDXTx$$fe-b-->Sue<!--fe-b$$end$$0$$gNrHXYDXTx$$fe-b--></span>
-        <!--fe-b$$start$$1$$gNrHXYDXTx$$fe-b-->
+        <span><!--f:b-->Sue<!--f:/b--></span>
+        <!--f:b-->
             <ul>
-                <!--fe-b$$start$$0$$ZfcR5fBAPc$$fe-b-->
-                <!--fe-repeat$$start$$0$$fe-repeat-->
+                <!--f:b-->
+                <!--f:r-->
                 <li>
-                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Amy<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                    <!--f:b-->Amy<!--f:/b-->
                 </li>
-                <!--fe-repeat$$end$$0$$fe-repeat-->
-                <!--fe-repeat$$start$$1$$fe-repeat-->
+                <!--f:/r-->
+                <!--f:r-->
                 <li>
-                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Clarice<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                    <!--f:b-->Clarice<!--f:/b-->
                 </li>
-                <!--fe-repeat$$end$$1$$fe-repeat-->
-                <!--fe-repeat$$start$$2$$fe-repeat-->
+                <!--f:/r-->
+                <!--f:r-->
                 <li>
-                    <!--fe-b$$start$$0$$gLPEVysLM5$$fe-b-->Lawrence<!--fe-b$$end$$0$$gLPEVysLM5$$fe-b-->
+                    <!--f:b-->Lawrence<!--f:/b-->
                 </li>
-                <!--fe-repeat$$end$$2$$fe-repeat-->
-                <!--fe-b$$end$$0$$ZfcR5fBAPc$$fe-b-->
+                <!--f:/r-->
+                <!--f:/b-->
             </ul>
-        <!--fe-b$$end$$1$$gNrHXYDXTx$$fe-b-->
+        <!--f:/b-->
     </div>
-    <!--fe-repeat$$end$$2$$fe-repeat-->
-<!--fe-b$$end$$0$$kk4YD4Dgs4$$fe-b-->
+    <!--f:/r-->
+<!--f:/b-->
 ```
 
 ##### Nested components with `<slot>`
@@ -542,16 +498,16 @@ Should result in:
 ```html
 <nested-components>
     <template shadowrootmode="open" shadowroot="open">
-        <!--fe-b$$start$$0$$3oGiwLq7Ct$$fe-b-->
-        <my-button data-fe-b-0 appearance="fancy">
+        <!--f:b-->
+        <my-button data-fe="1" appearance="fancy">
             <template shadowrootmode="open" shadowroot="open">
-                <button class="default" data-fe-b-0>
+                <button class="default" data-fe="1">
                     <slot></slot>
                 </button>
             </template>
-            <!--fe-b$$start$$1$$SUBjh6rowl$$fe-b-->Hello world<!--fe-b$$end$$1$$SUBjh6rowl$$fe-b-->
+            <!--f:b-->Hello world<!--f:/b-->
         </my-button>
-        <!--fe-b$$end$$0$$3oGiwLq7Ct$$fe-b-->
+        <!--f:/b-->
     </template>
 </nested-components>
 ```

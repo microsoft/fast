@@ -69,7 +69,7 @@ Both functions return `Result<String, RenderError>`. See [Error Handling](#error
 
 Single-brace expressions (`{expr}`) are FAST client-side-only bindings (event handlers, attribute directives). They are **never** interpreted by the server renderer.
 
-In non-hydration rendering they pass through verbatim. When rendering **Declarative Shadow DOM** (inside a custom element's shadow template), client-side attribute directives — `f-ref`, `f-slotted`, `f-children` — are **stripped** from the HTML output, just like `@event` and `:property` bindings. The `data-fe-c` binding count still includes them so the FAST runtime can allocate the correct number of binding slots.
+In non-hydration rendering they pass through verbatim. When rendering **Declarative Shadow DOM** (inside a custom element's shadow template), client-side attribute directives — `f-ref`, `f-slotted`, `f-children` — are **stripped** from the HTML output, just like `@event` and `:property` bindings. The `data-fe` binding count still includes them so the FAST runtime can allocate the correct number of binding slots.
 
 ```html
 <!-- Template source -->
@@ -78,9 +78,9 @@ In non-hydration rendering they pass through verbatim. When rendering **Declarat
 <ul f-children="{listItems}"></ul>
 
 <!-- Rendered output inside a shadow template — directive attributes are stripped -->
-<slot data-fe-c-0-1></slot>
-<video data-fe-c-0-1></video>
-<ul data-fe-c-0-1></ul>
+<slot data-fe="1"></slot>
+<video data-fe="1"></video>
+<ul data-fe="1"></ul>
 ```
 
 ### Boolean Attribute Bindings — `?attr`
@@ -96,13 +96,13 @@ The `?attr="{{expr}}"` syntax is a FAST convention for conditionally rendering a
 <input ?disabled="{{activeGroup == currentGroup}}" type="button">
 
 <!-- Rendered — isEnabled: false (so !isEnabled is true) -->
-<input type="checkbox" disabled data-fe-c-0-1>
+<input type="checkbox" disabled data-fe="1">
 
 <!-- Rendered — activeGroup !== currentGroup -->
-<input type="button" data-fe-c-0-1>
+<input type="button" data-fe="1">
 ```
 
-The `data-fe-c` compact marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
+The `data-fe` marker is still emitted so the FAST client runtime knows to reconnect the binding during hydration.
 
 ### Dataset Attribute Bindings — `dataset.propertyName`
 
@@ -123,7 +123,7 @@ When a custom element receives `data-*` attributes, the renderer groups them und
 With parent state `{"dob": "1990-01-01"}`, the shadow template receives child state `{"dataset": {"dateOfBirth": "1990-01-01"}}` and renders:
 
 ```html
-<div data-date-of-birth="1990-01-01" data-fe-c-0-1></div>
+<div data-date-of-birth="1990-01-01" data-fe="1"></div>
 ```
 
 The `data-*` → `dataset.*` mapping uses the same camelCase conversion as the browser: `data-date-of-birth` → `dataset.dateOfBirth`.
@@ -445,7 +445,7 @@ Attributes on a custom element become the state passed to its template:
 
 **HTML attributes with mismatched property names** (e.g. `tabindex` → `tabIndex`, `readonly` → `readOnly`, `contenteditable` → `contentEditable`) are converted to their camelCase DOM property name using a static lookup table. Only attributes where the property name differs are included — attributes like `disabled`, `title`, and `hidden` pass through as-is.
 
-**`@event` bindings and `f-ref`/`f-slotted`/`f-children` directives are skipped entirely** — not added to child state and removed from rendered HTML. They are resolved purely by the FAST client runtime. The `data-fe-c` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
+**`@event` bindings and `f-ref`/`f-slotted`/`f-children` directives are skipped entirely** — not added to child state and removed from rendered HTML. They are resolved purely by the FAST client runtime. The `data-fe` binding count still includes them so the FAST runtime allocates the correct number of binding slots.
 
 ### Output Format
 
@@ -527,61 +527,61 @@ When a custom element's shadow template is rendered, the renderer emits **hydrat
 
 ### Content binding markers
 
-Each `{{expr}}` or `{{{expr}}}` text binding is wrapped in HTML comments:
+Each `{{expr}}` or `{{{expr}}}` text binding is wrapped in data-free HTML comment markers:
 
 ```html
-<!--fe-b$$start$$0$$title-0$$fe-b-->Hello world<!--fe-b$$end$$0$$title-0$$fe-b-->
+<!--f:b-->Hello world<!--f:/b-->
 ```
 
-The `0` is the **binding index** (increments per binding within the current template scope) and `title-0` is the **marker name** — formed as `<expression>-<binding index>`. This makes markers human-readable and unique within a scope.
+Markers carry no binding index or expression name. They are matched by string equality and paired using balanced depth counting.
 
-### Attribute binding markers (compact format)
+### Attribute binding markers
 
-Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, or `{expr}` single-brace event/directive bindings receive a compact marker attribute. Client-only attributes (`@event`, `:property`, `f-ref`, `f-slotted`, `f-children`) are **stripped** from the HTML output but still counted in the marker:
+Elements with `{{expr}}` attribute values, `?attr="{{expr}}"` boolean bindings, or `{expr}` single-brace event/directive bindings receive a `data-fe="N"` marker attribute where `N` is the binding count. Client-only attributes (`@event`, `:property`, `f-ref`, `f-slotted`, `f-children`) are **stripped** from the HTML output but still counted in the marker:
 
 ```html
 <!-- Template: <input type="{{type}}" disabled> -->
-<input type="checkbox" disabled data-fe-c-0-1>
+<input type="checkbox" disabled data-fe="1">
 
 <!-- Template: <input ?disabled="{{!isEnabled}}"> — isEnabled: false → disabled rendered -->
-<input disabled data-fe-c-0-1>
+<input disabled data-fe="1">
 
 <!-- Template: <input ?disabled="{{show}}"> — show: false → attribute omitted -->
-<input data-fe-c-0-1>
+<input data-fe="1">
 
 <!-- Template: <button @click="{handleClick()}">Label</button> — @click stripped -->
-<button data-fe-c-0-1>Label</button>
+<button data-fe="1">Label</button>
 
 <!-- Template: <slot f-slotted="{nodes}"></slot> — f-slotted stripped -->
-<slot data-fe-c-0-1></slot>
+<slot data-fe="1"></slot>
 
 <!-- Template: <video f-ref="{vid}" class="{{cls}}"> — f-ref stripped, 2 bindings -->
-<video class="my-video" data-fe-c-0-2>
+<video class="my-video" data-fe="2">
 ```
 
-`data-fe-c-{startIndex}-{count}` — `startIndex` is the binding index of the first attribute binding on the element; `count` is the total number of attribute bindings.
+`data-fe="N"` — `N` is the total number of attribute bindings on the element.
 
 ### Scope boundaries
 
-Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets its own scope with the binding index reset to 0. Scopes don't carry numeric IDs — marker names are self-describing.
+Each custom element shadow, `<f-when>` body, and `<f-repeat>` item template gets its own scope with the binding index reset to 0. Scopes don't carry numeric IDs — markers are data-free and paired by balanced depth counting.
 
 ### Directive markers
 
 ```html
-<!-- f-when at binding index 0 -->
-<!--fe-b$$start$$0$$when-0$$fe-b-->
+<!-- f-when -->
+<!--f:b-->
   [inner content, or empty if condition is false]
-<!--fe-b$$end$$0$$when-0$$fe-b-->
+<!--f:/b-->
 
-<!-- f-repeat at binding index 0, 2 items -->
-<!--fe-b$$start$$0$$repeat-0$$fe-b-->
-<!--fe-repeat$$start$$0$$fe-repeat-->
-  [item 0 — each binding named by its expression, e.g. item-0]
-<!--fe-repeat$$end$$0$$fe-repeat-->
-<!--fe-repeat$$start$$1$$fe-repeat-->
+<!-- f-repeat with 2 items -->
+<!--f:b-->
+<!--f:r-->
+  [item 0 — binding index reset to 0 per item]
+<!--f:/r-->
+<!--f:r-->
   [item 1 — binding index reset to 0 per item]
-<!--fe-repeat$$end$$1$$fe-repeat-->
-<!--fe-b$$end$$0$$repeat-0$$fe-b-->
+<!--f:/r-->
+<!--f:/b-->
 ```
 
 

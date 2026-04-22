@@ -95,12 +95,11 @@ pub fn render_when(
         })?;
 
     let output = if let Some(hy) = hydration {
-        let idx = hy.next_binding();
-        let name = format!("when-{}", idx);
-        let start = hy.start_marker(idx, &name);
-        let end = hy.end_marker(idx, &name);
+        hy.next_binding();
+        let start = hy.content_start_marker();
+        let end = hy.content_end_marker();
         let inner_content = if evaluate(&expr, root, loop_vars) {
-            let mut child_scope = hy.child(idx);
+            let mut child_scope = HydrationScope::new();
             render_node(&inner, root, loop_vars, locator, Some(&mut child_scope), false, config)?
         } else {
             String::new()
@@ -170,18 +169,17 @@ fn render_repeat_items(
 ) -> Result<String, RenderError> {
     match hydration {
         Some(hy) => {
-            let outer_idx = hy.next_binding();
-            let outer_name = format!("repeat-{}", outer_idx);
-            let outer_start = hy.start_marker(outer_idx, &outer_name);
-            let outer_end = hy.end_marker(outer_idx, &outer_name);
+            hy.next_binding();
+            let outer_start = hy.content_start_marker();
+            let outer_end = hy.content_end_marker();
             let mut parts: Vec<String> = Vec::with_capacity(items.len());
             for (i, item) in items.iter().enumerate() {
                 let new_vars = build_loop_vars(loop_vars, var_name, item, i);
                 let mut item_scope = HydrationScope::new();
                 let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false, config)?;
                 parts.push(format!(
-                    "<!--fe-repeat$$start$${}$$fe-repeat-->{}<!--fe-repeat$$end$${}$$fe-repeat-->",
-                    i, rendered, i
+                    "<!--f:r-->{}<!--f:/r-->",
+                    rendered
                 ));
             }
             Ok(format!("{}{}{}", outer_start, parts.concat(), outer_end))
@@ -226,7 +224,7 @@ fn parse_repeat_expr(expr: &str) -> Option<(String, String)> {
 ///
 /// For self-closing elements (`<my-button />`), the element is emitted as non-self-closing.
 /// When `parent_hydration` is Some, attribute bindings on the element tag are counted
-/// and `data-fe-c-{start}-{count}` is added to the opening tag.
+/// and `data-fe="N"` is added to the opening tag.
 pub fn render_custom_element(
     template: &str,
     at: usize,
@@ -415,7 +413,7 @@ fn build_element_open_tag(
         // their resolved value, strip non-primitives (array/object/null) since they
         // cannot be meaningfully represented as an HTML attribute value.
         // Static attributes (no binding) are passed through unchanged.
-        // No data-fe-c marker is needed — root elements have no parent hydration scope.
+        // No data-fe marker is needed — root elements have no parent hydration scope.
         return build_entry_element_open_tag(open_tag_base, root, loop_vars);
     }
     let (db, sb) = count_tag_attribute_bindings(open_tag_content);
@@ -427,9 +425,8 @@ fn build_element_open_tag(
     let stripped = strip_client_only_attrs(&resolved);
     match parent_hydration {
         Some(hy) => {
-            let start_idx = hy.binding_idx;
             hy.binding_idx += total_attr;
-            format!("{} data-fe-c-{}-{}>", stripped, start_idx, total_attr)
+            format!("{} data-fe=\"{}\">", stripped, total_attr)
         }
         None => format!("{}>", stripped),
     }
