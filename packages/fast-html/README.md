@@ -268,8 +268,6 @@ MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
 
 When no config is passed (`observerMap()`), all root properties are observed. When `properties` is present but empty (`observerMap({ properties: {} })`), no root properties are observed.
 
-An explicit schema can be passed via `observerMap({ schema: mySchema })` when the schema is known ahead of time.
-
 #### `attributeMap`
 
 The `attributeMap` extension factory automatically creates reactive `@attr` properties for every **leaf binding** in the template — simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. Import it from `@microsoft/fast-element` and pass it in the extensions array (second argument) of `.define()`.
