@@ -5,7 +5,7 @@
         <title></title>
     </head>
     <body>
-        <test-element><template shadowrootmode="open" shadowroot="open"><ul data-fe-c-0-1><!--fe-b$$start$$1$$repeat-1$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><li><!--fe-b$$start$$0$$item-0$$fe-b-->Foo<!--fe-b$$end$$0$$item-0$$fe-b--></li><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat--><li><!--fe-b$$start$$0$$item-0$$fe-b-->Bar<!--fe-b$$end$$0$$item-0$$fe-b--></li><!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$1$$repeat-1$$fe-b--></ul></template></test-element>
+        <test-element><template shadowrootmode="open" shadowroot="open"><ul data-fe="1"><!--fe:b--><!--fe:r--><li><!--fe:b-->Foo<!--fe:/b--></li><!--fe:/r--><!--fe:r--><li><!--fe:b-->Bar<!--fe:/b--></li><!--fe:/r--><!--fe:/b--></ul></template></test-element>
 <f-template name="test-element">
     <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
 </f-template>
