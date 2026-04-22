@@ -37,17 +37,8 @@ function parseTemplates(html: string): Record<string, string> {
  * Returns the rendered HTML fragment (the custom element with its
  * injected declarative shadow DOM).
  */
-function wasmRender(
-    entry: string,
-    templatesMap: Record<string, string>,
-    state: string,
-): string {
-    return wasm.render_entry_with_templates(
-        entry,
-        JSON.stringify(templatesMap),
-        state,
-        "none",
-    );
+function wasmRender(entry: string, templatesJson: string, state: string): string {
+    return wasm.render_entry_with_templates(entry, templatesJson, state, "none");
 }
 
 // Pre-load and cache entry/state/templates per scenario so the per-node
@@ -56,6 +47,8 @@ interface ScenarioCache {
     entry: string;
     state: string;
     templates: Record<string, string>;
+    /** Pre-stringified templates JSON for WASM calls. */
+    templatesJson: string;
     /** Pre-rendered HTML for scenarios with static state. */
     cachedHtml?: string;
 }
@@ -71,7 +64,12 @@ function loadScenario(name: string): ScenarioCache {
     const templateHtml = readFileSync(resolve(scenarioDir, "template.html"), "utf8");
     const templates = parseTemplates(templateHtml);
 
-    const cache: ScenarioCache = { entry, state, templates };
+    const cache: ScenarioCache = {
+        entry,
+        state,
+        templates,
+        templatesJson: JSON.stringify(templates),
+    };
     scenarioCaches[name] = cache;
     return cache;
 }
@@ -79,7 +77,7 @@ function loadScenario(name: string): ScenarioCache {
 function renderCached(name: string): string {
     const cache = loadScenario(name);
     if (!cache.cachedHtml) {
-        cache.cachedHtml = wasmRender(cache.entry, cache.templates, cache.state);
+        cache.cachedHtml = wasmRender(cache.entry, cache.templatesJson, cache.state);
     }
     return cache.cachedHtml;
 }
@@ -91,7 +89,7 @@ const scenarioRenders: Record<string, (index: number) => string> = {
         const cache = loadScenario("attr-reflect");
         const count = `${index + 1}`;
         const state = JSON.stringify({ label: `item-${count}`, count });
-        return wasmRender(cache.entry, cache.templates, state);
+        return wasmRender(cache.entry, cache.templatesJson, state);
     },
     basic: () => renderCached("basic"),
     "bind-event": () => renderCached("bind-event"),
