@@ -46,17 +46,43 @@ export {
 export { DOM, DOMAspect, type DOMPolicy, type DOMSink } from "./dom.js";
 // Extensions
 export {
+    AttributeMap,
     type AttributeMapConfig,
     attributeMap,
-    pendingAttributeMaps,
 } from "./extensions/attribute-map.js";
 export {
+    ObserverMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
     observerMap,
-    pendingObserverMaps,
 } from "./extensions/observer-map.js";
+export {
+    type AccessCachedPath,
+    type CachedPath,
+    type CachedPathCommon,
+    type CachedPathMap,
+    type ChildrenMap,
+    type DefaultCachedPath,
+    type EventCachedPath,
+    type JSONSchema,
+    type JSONSchemaDefinition,
+    type RegisterPathConfig,
+    type RepeatCachedPath,
+    Schema,
+    defsPropertyName,
+    fastContextMetaData,
+    fastContextsMetaData,
+    refPropertyName,
+} from "./extensions/schema.js";
+export {
+    assignObservables,
+    assignProxy,
+    deepEqual,
+    deepMerge,
+    findDef,
+    isPlainObject,
+} from "./extensions/utilities.js";
 export type {
     Callable,
     Class,
