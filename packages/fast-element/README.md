@@ -53,6 +53,14 @@ For simplicity, examples throughout the documentation will assume the library ha
 Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::
 
+## Browser Requirements
+
+FAST Element v3 assumes a modern runtime with native `globalThis`. The package
+still installs its `requestIdleCallback` / `cancelIdleCallback` fallback
+internally, but it no longer patches `globalThis` for older engines. If you
+need to support an environment without `globalThis`, load that polyfill before
+importing `@microsoft/fast-element`.
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
@@ -104,4 +112,3 @@ FASTElement.define(MyComponent, { name: "my-component" }, [logger()]);
 ```
 
 Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.
-

@@ -1,5 +1,21 @@
 # Migrating from previous versions
 
+## Native `globalThis` requirement (v2 → v3)
+
+### Changed behavior
+
+- **Native `globalThis` required**: `@microsoft/fast-element` no longer installs
+  a `globalThis` polyfill as a side effect. The package only keeps the
+  `requestIdleCallback` / `cancelIdleCallback` fallback for environments that
+  still lack those APIs.
+
+### Migration steps
+
+1. Verify that the browsers and JS runtimes you support provide native
+   `globalThis`.
+2. If you still target an older runtime without `globalThis`, load that
+   polyfill before importing `@microsoft/fast-element`.
+
 ## Prerendered Content Optimization (v2 → v3)
 
 ### Removed exports
