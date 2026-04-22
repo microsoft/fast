@@ -490,7 +490,6 @@ export interface FASTGlobal {
     getById<T>(id: string | number): T | null;
     // (undocumented)
     getById<T>(id: string | number, initialize: () => T): T;
-    readonly versions: string[];
     warn(code: number, values?: Record<string, any>): void;
 }
 
