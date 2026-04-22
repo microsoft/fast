@@ -276,12 +276,15 @@ function skipToElementBoundaryEnd(
     let current = walker.nextSibling();
     while (current !== null) {
         if (isComment(current)) {
-            if (current.data === "fe:e") depth++;
-            else if (current.data === "fe:/e") {
+            if (current.data === "fe:e") {
+                current.data = "";
+                depth++;
+            } else if (current.data === "fe:/e") {
                 if (depth === 0) {
                     current.data = "";
                     return;
                 }
+                current.data = "";
                 depth--;
             }
         }

@@ -24,17 +24,17 @@
         </style>
     </head>
     <body>
-        <host-event-element><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->Hello<!--fe:/b--></span></template></host-event-element>
-        <host-multi-element disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-multi-element>
-        <host-static-element id="static-host"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->first<!--fe:/b--> <!--fe:b-->second<!--fe:/b--></span></template></host-static-element>
-        <host-events-element text="content text"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->content text<!--fe:/b--></template></host-events-element>
-        <host-multi-content-element first="a" second="b"><template shadowrootmode="open" shadowroot="open"><span first="a" second="b" data-fe="2"></span></template></host-multi-content-element>
-        <host-text-binding-element text="text content"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->text content<!--fe:/b--></span></template></host-text-binding-element>
-        <host-property-element text="property test"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->property test<!--fe:/b--></span></template></host-property-element>
-        <host-all-types-element text="all types" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->all types<!--fe:/b--></span></template></host-all-types-element>
-        <host-perm-attr-first text="perm attr first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm attr first<!--fe:/b--></span></template></host-perm-attr-first>
-        <host-perm-bool-first text="perm bool first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm bool first<!--fe:/b--></span></template></host-perm-bool-first>
-        <host-perm-prop-first text="perm prop first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm prop first<!--fe:/b--></span></template></host-perm-prop-first>
+        <host-event-element><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$greeting-0$$fe-b-->Hello<!--fe-b$$end$$0$$greeting-0$$fe-b--></span></template></host-event-element>
+        <host-multi-element disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->World<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-multi-element>
+        <host-static-element id="static-host"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$first-0$$fe-b-->first<!--fe-b$$end$$0$$first-0$$fe-b--> <!--fe-b$$start$$1$$second-1$$fe-b-->second<!--fe-b$$end$$1$$second-1$$fe-b--></span></template></host-static-element>
+        <host-events-element text="content text"><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$text-0$$fe-b-->content text<!--fe-b$$end$$0$$text-0$$fe-b--></template></host-events-element>
+        <host-multi-content-element first="a" second="b"><template shadowrootmode="open" shadowroot="open"><span first="a" second="b" data-fe-c-0-2></span></template></host-multi-content-element>
+        <host-text-binding-element text="text content"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->text content<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-text-binding-element>
+        <host-property-element text="property test"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->property test<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-property-element>
+        <host-all-types-element text="all types" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->all types<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-all-types-element>
+        <host-perm-attr-first text="perm attr first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->perm attr first<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-perm-attr-first>
+        <host-perm-bool-first text="perm bool first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->perm bool first<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-perm-bool-first>
+        <host-perm-prop-first text="perm prop first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$text-0$$fe-b-->perm prop first<!--fe-b$$end$$0$$text-0$$fe-b--></span></template></host-perm-prop-first>
 <f-template name="host-event-element">
     <template @click="{handleClick()}">
         <span>{{greeting}}</span>
