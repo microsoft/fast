@@ -30,7 +30,7 @@ This document is intended for contributors who want to understand the internal a
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
 <my-component greeting="Hello">
     <template shadowrootmode="open">
-        <!--fe-b$$start$$0$$abc123$$fe-b-->Hello<!--fe-b$$end$$0$$abc123$$fe-b-->
+        <!--f:b-->Hello<!--f:/b-->
     </template>
 </my-component>
 
@@ -239,7 +239,7 @@ The high-level data flow from authoring to interactive component:
 
 ```mermaid
 flowchart TD
-    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe-b comments and data-fe-b attributes"]
+    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith f:b comments and data-fe attributes"]
     B --> C[Browser loads JS bundle]
     C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
     C --> E["TemplateElement.define called\n→ registers f-template custom element"]
@@ -515,26 +515,24 @@ Connection gating is handled by the template-pending guard in `ElementController
 
 ### Hydration marker formats
 
-**Content bindings** use HTML comments:
+**Content bindings** use HTML comments (data-free, matched by string equality):
 
 ```
-<!--fe-b$$start$$<index>$$<uuid>$$fe-b-->
-<!--fe-b$$end$$<index>$$<uuid>$$fe-b-->
+<!--f:b-->
+<!--f:/b-->
 ```
 
-**Attribute bindings** use `data-fe-b` dataset attributes (three equivalent formats — all supported):
+**Attribute bindings** use a single `data-fe` dataset attribute with binding count:
 
 ```html
-<!-- space-separated -->  <el data-fe-b="0 1 2">
-<!-- enumerated     -->  <el data-fe-b-0 data-fe-b-1 data-fe-b-2>
-<!-- compact        -->  <el data-fe-c-0-3>
+<el data-fe="3">
 ```
 
 **Repeat directives** wrap each item in comment pairs:
 ```
-<!--fe-repeat$$start$$<item-index>$$fe-repeat-->
+<!--f:r-->
 ...item DOM...
-<!--fe-repeat$$end$$<item-index>$$fe-repeat-->
+<!--f:/r-->
 ```
 
 For detailed examples see [RENDERING.md](./RENDERING.md).
