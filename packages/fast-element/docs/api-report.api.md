@@ -4,6 +4,16 @@
 
 ```ts
 
+// Warning: (ae-forgotten-export) The symbol "CachedPathCommon" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export interface AccessCachedPath extends CachedPathCommon {
+    // Warning: (ae-forgotten-export) The symbol "AccessCachedPathType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    type: AccessCachedPathType;
+}
+
 // @public
 export interface Accessor {
     getValue(source: any): any;
@@ -43,6 +53,12 @@ export interface Aspected {
 }
 
 // @public
+export function assignObservables(schema: JSONSchema | JSONSchemaDefinition, rootSchema: JSONSchema, data: any, target: any, rootProperty: string): typeof Proxy;
+
+// @public
+export function assignProxy(schema: JSONSchema | JSONSchemaDefinition, rootSchema: JSONSchema, target: any, rootProperty: string, object: any): typeof Proxy;
+
+// @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
 
 // @public
@@ -75,6 +91,13 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
+}
+
+// @public
+export class AttributeMap {
+    constructor(classPrototype: any, schema: Schema, definition?: FASTElementDefinition, config?: AttributeMapConfig);
+    // (undocumented)
+    defineProperties(): void;
 }
 
 // @public
@@ -114,6 +137,12 @@ export interface BindingDirective {
 // @public
 export const booleanConverter: ValueConverter;
 
+// @public (undocumented)
+export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
+
+// @public (undocumented)
+export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
+
 // @public
 export type Callable = typeof Function.prototype.call | {
     call(): void;
@@ -140,6 +169,14 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 
 // @public
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
+
+// @public (undocumented)
+export interface ChildrenMap {
+    // (undocumented)
+    attributeName: string;
+    // (undocumented)
+    customElementName: string;
+}
 
 // @public
 export type Class<T, C = {}> = C & Constructable<T> & {
@@ -248,8 +285,25 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
+// @public
+export function deepEqual(obj1: any, obj2: any): boolean;
+
+// @public
+export function deepMerge(target: any, source: any): boolean;
+
+// @public (undocumented)
+export interface DefaultCachedPath extends CachedPathCommon {
+    // Warning: (ae-forgotten-export) The symbol "DefaultCachedPathType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    type: DefaultCachedPathType;
+}
+
 // @beta
 export const deferHydrationAttribute = "defer-hydration";
+
+// @public (undocumented)
+export const defsPropertyName = "$defs";
 
 // @public
 export interface Disposable {
@@ -387,6 +441,14 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 // @public
 export const emptyArray: readonly never[];
 
+// @public (undocumented)
+export interface EventCachedPath extends CachedPathCommon {
+    // Warning: (ae-forgotten-export) The symbol "EventCachedPathType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    type: EventCachedPathType;
+}
+
 // @public
 export interface ExecutionContext<TParent = any> {
     readonly event: Event;
@@ -438,6 +500,16 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
 
 // @public
 export const FAST: FASTGlobal;
+
+// Warning: (ae-forgotten-export) The symbol "FastContextMetaData" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const fastContextMetaData: FastContextMetaData;
+
+// Warning: (ae-forgotten-export) The symbol "FastContextsMetaData" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export const fastContextsMetaData: FastContextsMetaData;
 
 // @public
 export interface FASTElement extends HTMLElement {
@@ -501,6 +573,9 @@ export interface FASTGlobal {
     readonly versions: string[];
     warn(code: number, values?: Record<string, any>): void;
 }
+
+// @public
+export function findDef(schema: JSONSchema | JSONSchemaDefinition): string | null;
 
 // @public
 export interface HostBehavior<TSource = any> {
@@ -671,6 +746,29 @@ export function isHydratable<TSource = any, TParent = any>(template: ElementView
 export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
 
 // @public
+export function isPlainObject(value: any): value is Record<string, any>;
+
+// Warning: (ae-forgotten-export) The symbol "JSONSchemaCommon" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export interface JSONSchema extends JSONSchemaCommon {
+    // (undocumented)
+    $defs?: Record<string, JSONSchemaDefinition>;
+    // (undocumented)
+    $id: string;
+    // (undocumented)
+    $schema: string;
+}
+
+// @public (undocumented)
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
+    // (undocumented)
+    $fast_context: string;
+    // (undocumented)
+    $fast_parent_contexts: Array<string>;
+}
+
+// @public
 export interface LengthObserver extends Subscriber {
     length: number;
 }
@@ -746,6 +844,13 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void;
 export interface ObservationRecord {
     propertyName: string;
     propertySource: any;
+}
+
+// @public
+export class ObserverMap {
+    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
+    // (undocumented)
+    defineProperties(): void;
 }
 
 // @public
@@ -827,6 +932,9 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     targetNodeId: string;
 }
 
+// @public (undocumented)
+export const refPropertyName = "$ref";
+
 // @public
 export function render<TSource = any, TItem = any, TParent = any>(value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {}, template?: ContentTemplate | string | Expression<TSource, ContentTemplate | string | Node, TParent> | Binding<TSource, ContentTemplate | string | Node, TParent>): CaptureType<TSource, TParent>;
 
@@ -866,6 +974,14 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     views: SyntheticView[];
 }
 
+// @public (undocumented)
+export interface RepeatCachedPath extends CachedPathCommon {
+    // Warning: (ae-forgotten-export) The symbol "RepeatCachedPathType" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    type: RepeatCachedPathType;
+}
+
 // @public
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
@@ -884,6 +1000,16 @@ export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehavi
 export interface RepeatOptions {
     positioning?: boolean;
     recycle?: boolean;
+}
+
+// @public
+export class Schema {
+    constructor(name: string);
+    // Warning: (ae-forgotten-export) The symbol "RegisterPathConfig" needs to be exported by the entry point index.d.ts
+    addPath(config: RegisterPathConfig): void;
+    getRootProperties(): IterableIterator<string>;
+    getSchema(rootPropertyName: string): JSONSchema | null;
+    static jsonSchemaMap: CachedPathMap;
 }
 
 // @public
