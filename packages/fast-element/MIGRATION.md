@@ -8,10 +8,6 @@
 |---|---|
 | `FAST.versions` | No replacement. Multiple FAST versions on the same page are unsupported in v3. |
 
-### Changed behavior
-
-- **`FASTGlobal` bootstrap**: v3 removes any pre-existing `versions` property from `globalThis.FAST` during startup.
-
 ### Migration steps
 
 1. Remove any runtime checks that read `FAST.versions`.
