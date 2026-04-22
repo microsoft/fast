@@ -7,10 +7,8 @@ const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js
 // sites/website
 const projectRoot = path.resolve(__dirname, "../");
 const tempAPIDir = path.resolve(projectRoot, "tmp");
-const majorVersion = process.argv[2] || "2";
-const currentVersion = `${majorVersion}x`;
-const versionDir = `${majorVersion}.x`;
-const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
+const markdownAPIDir = path.resolve(projectRoot, "src/docs/3.x/api");
+const currentVersion = "3x";
 
 const packages = [
     {
@@ -255,49 +253,8 @@ async function buildAPIMarkdown() {
     }
 }
 
-async function buildSizesPage() {
-    const sizesSource = path.resolve(
-        getPackageJsonDir("@microsoft/fast-element"),
-        "SIZES.md",
-    );
-
-    if (!fs.existsSync(sizesSource)) {
-        console.warn("SIZES.md not found, skipping export sizes page.");
-        return;
-    }
-
-    const sizesContent = fs.readFileSync(sizesSource, "utf-8");
-    // Strip the heading from SIZES.md since we add our own via frontmatter
-    const body = sizesContent.replace(/^# .*\n*/m, "");
-
-    const frontmatter = [
-        "---",
-        "id: export-sizes",
-        "title: Export Sizes",
-        `layout: ${currentVersion}`,
-        "eleventyNavigation:",
-        `  key: export-sizes${currentVersion}`,
-        `  parent: resources${currentVersion}`,
-        "  title: Export Sizes",
-        "navigationOptions:",
-        `  activeKey: export-sizes${currentVersion}`,
-        "description: Bundle sizes for @microsoft/fast-element exports.",
-        "keywords:",
-        "  - export size",
-        "  - bundle size",
-        "---",
-        "",
-        "# Export Sizes",
-        "",
-    ].join("\n");
-
-    const dest = path.resolve(projectRoot, `src/docs/${versionDir}/resources/export-sizes.md`);
-    await safeWrite(dest, frontmatter + body);
-    console.log("Export sizes page generated.");
-}
-
 async function main() {
-    await Promise.all([buildAPIMarkdown(), buildSizesPage()]);
+    await Promise.all([buildAPIMarkdown()]);
 }
 
 main();

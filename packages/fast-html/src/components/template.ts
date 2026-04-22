@@ -1,48 +1,19 @@
 import {
     attr,
-    children,
-    elements,
+    ElementController,
     FAST,
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
-    HydratableElementController,
-    type HydrationControllerCallbacks,
-    ref,
-    repeat,
-    slotted,
     type TemplateLifecycleCallbacks,
-    ViewTemplate,
-    when,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
 import { AttributeMap } from "./attribute-map.js";
 import { ObserverMap } from "./observer-map.js";
 import { Schema } from "./schema.js";
-import {
-    type AttributeDirective,
-    bindingResolver,
-    type ChainedExpression,
-    contextPrefixDot,
-    type DataBindingBehaviorConfig,
-    eventArgAccessor,
-    getBooleanBinding,
-    getExpressionChain,
-    getNextBehavior,
-    getRootPropertyName,
-    parseEventArgs,
-    type TemplateDirectiveBehaviorConfig,
-    transformInnerHTML,
-} from "./utilities.js";
-
-/**
- * The return type for {@link TemplateElement.resolveStringsAndValues}.
- */
-interface ResolvedStringsAndValues {
-    strings: Array<string>;
-    values: Array<any>;
-}
+import { TemplateParser } from "./template-parser.js";
+import { eventArgAccessor, transformInnerHTML } from "./utilities.js";
 
 /**
  * Values for the observerMap element option.
@@ -166,12 +137,10 @@ function isMapOptionEnabled(
 }
 
 /**
- * Lifecycle callbacks for template and hydration events.
- * Combines template lifecycle callbacks with hydration callbacks and adds template-processing events.
+ * Lifecycle callbacks for template events.
+ * Combines template lifecycle callbacks with template-processing events.
  */
-export interface HydrationLifecycleCallbacks
-    extends HydrationControllerCallbacks,
-        TemplateLifecycleCallbacks {
+export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
     /**
      * Called after the JS class definition has been registered
      */
@@ -181,10 +150,34 @@ export interface HydrationLifecycleCallbacks
      * Called before the template has been evaluated and assigned
      */
     templateWillUpdate?(name: string): void;
+
+    /**
+     * Called once when the first element enters the hydration pipeline.
+     */
+    hydrationStarted?(): void;
+
+    /**
+     * Called before an individual element's hydration begins
+     */
+    elementWillHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after an individual element's hydration has finished
+     */
+    elementDidHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after all elements have completed hydration
+     */
+    hydrationComplete?(): void;
 }
 
 /**
- * The <f-template> custom element that will provide view logic to the element
+ * The <f-template> custom element that will provide view logic to the element.
+ *
+ * Acts as the bridge between declarative HTML templates and the FAST element
+ * registry. Lifecycle orchestration (registration, options, callbacks) lives
+ * here; template parsing is delegated to {@link TemplateParser}.
  */
 class TemplateElement extends FASTElement {
     /**
@@ -214,17 +207,9 @@ class TemplateElement extends FASTElement {
     private static defaultElementOptions: ElementOptions = {};
 
     /**
-     * Metadata containing JSON schema for properties on a custom eleemnt
+     * Metadata containing JSON schema for properties on a custom element
      */
     private schema?: Schema;
-
-    /**
-     * Whether the template contains deprecated "e" event argument usage.
-     * Set during template processing; checked after evaluation to emit a
-     * single warning per template.
-     */
-    // TODO: remove per https://github.com/microsoft/fast/issues/7314
-    private _hasDeprecatedEventSyntax = false;
 
     /**
      * Lifecycle callbacks for hydration events
@@ -240,8 +225,14 @@ class TemplateElement extends FASTElement {
     public static config(callbacks: HydrationLifecycleCallbacks) {
         TemplateElement.lifecycleCallbacks = callbacks;
 
-        // Pass the hydration-specific callbacks to HydratableElementController
-        HydratableElementController.config({ ...callbacks });
+        // Forward hydration callbacks to ElementController for
+        // element-level hydration tracking.
+        ElementController.configHydration({
+            hydrationStarted: callbacks.hydrationStarted,
+            elementWillHydrate: callbacks.elementWillHydrate,
+            elementDidHydrate: callbacks.elementDidHydrate,
+            hydrationComplete: callbacks.hydrationComplete,
+        });
 
         return this;
     }
@@ -264,8 +255,6 @@ class TemplateElement extends FASTElement {
         }
 
         TemplateElement.elementOptions = result;
-
-        HydratableElementController.install();
 
         return this;
     }
@@ -302,12 +291,14 @@ class TemplateElement extends FASTElement {
 
         this.schema = new Schema(name);
 
-        FASTElementDefinition.registerAsync(name).then(async value => {
+        FASTElementDefinition.register(name).then(async value => {
             TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
 
             if (!TemplateElement.elementOptions?.[name]) {
                 TemplateElement.setOptions(name);
             }
+
+            const schema = this.schema!;
 
             if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.observerMap)) {
                 const observerMapOption =
@@ -319,7 +310,7 @@ class TemplateElement extends FASTElement {
 
                 this.observerMap = new ObserverMap(
                     value.prototype,
-                    this.schema as Schema,
+                    schema,
                     observerMapConfig,
                 );
             }
@@ -334,7 +325,7 @@ class TemplateElement extends FASTElement {
 
                 this.attributeMap = new AttributeMap(
                     value.prototype,
-                    this.schema as Schema,
+                    schema,
                     registeredFastElement,
                     mapConfig,
                 );
@@ -347,19 +338,11 @@ class TemplateElement extends FASTElement {
                 TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
 
                 const innerHTML = transformInnerHTML(this.innerHTML);
+                const parser = new TemplateParser();
 
-                // Cache paths during template processing (pass undefined if observerMap is not available)
-                const { strings, values } = await this.resolveStringsAndValues(
-                    null,
-                    innerHTML,
-                    false,
-                    null,
-                    0,
-                    this.schema as Schema,
-                    this.observerMap,
-                );
+                const { strings, values } = parser.parse(innerHTML, schema);
 
-                if (this._hasDeprecatedEventSyntax) {
+                if (parser.hasDeprecatedEventSyntax) {
                     console.warn(
                         `[fast-html] Using "e" as an event argument is deprecated` +
                             ` in component "${name}".` +
@@ -385,7 +368,7 @@ class TemplateElement extends FASTElement {
 
                     // All new elements will get the updated template
                     // This assignment triggers the Observable notification → callbacks fire
-                    registeredFastElement.template = this.resolveTemplateOrBehavior(
+                    registeredFastElement.template = parser.createTemplate(
                         strings,
                         values,
                     );
@@ -398,540 +381,6 @@ class TemplateElement extends FASTElement {
                 throw FAST.error(Message.noTemplateProvided, { name: this.name });
             }
         });
-    }
-
-    /**
-     * Resolve strings and values from an innerHTML string
-     * @param innerHTML - The innerHTML.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
-     */
-    private async resolveStringsAndValues(
-        rootPropertyName: string | null,
-        innerHTML: string,
-        self: boolean = false,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
-    ): Promise<ResolvedStringsAndValues> {
-        const strings: any[] = [];
-        const values: any[] = []; // these can be bindings, directives, etc.
-        await this.resolveInnerHTML(
-            rootPropertyName,
-            innerHTML,
-            strings,
-            values,
-            self,
-            parentContext,
-            level,
-            schema,
-            observerMap,
-        );
-
-        (strings as any).raw = strings.map(value => String.raw({ raw: value }));
-
-        return {
-            strings,
-            values,
-        };
-    }
-
-    /**
-     * Resolve a template or behavior
-     * @param strings - The strings array.
-     * @param values - The interpreted values.
-     */
-    private resolveTemplateOrBehavior(
-        strings: Array<string>,
-        values: Array<any>,
-    ): ViewTemplate<any, any> {
-        return ViewTemplate.create(strings, values);
-    }
-
-    /**
-     * Resolve a template directive
-     * @param behaviorConfig - The directive behavior configuration object.
-     * @param externalValues - The interpreted values from the parent.
-     * @param innerHTML - The innerHTML.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
-     */
-    private async resolveTemplateDirective(
-        rootPropertyName: string | null,
-        behaviorConfig: TemplateDirectiveBehaviorConfig,
-        externalValues: Array<any>,
-        innerHTML: string,
-        self: boolean = false,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
-    ): Promise<void> {
-        switch (behaviorConfig.name) {
-            case "when": {
-                const expressionChain = getExpressionChain(behaviorConfig.value);
-
-                const whenLogic = getBooleanBinding(
-                    rootPropertyName,
-                    expressionChain as ChainedExpression,
-                    parentContext,
-                    level,
-                    schema,
-                );
-
-                const { strings, values } = await this.resolveStringsAndValues(
-                    rootPropertyName,
-                    innerHTML.slice(
-                        behaviorConfig.openingTagEndIndex,
-                        behaviorConfig.closingTagStartIndex,
-                    ),
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
-                );
-
-                externalValues.push(
-                    when(whenLogic, this.resolveTemplateOrBehavior(strings, values)),
-                );
-
-                break;
-            }
-            case "repeat": {
-                const valueAttr = behaviorConfig.value.split(" "); // syntax {{x in y}}
-                const updatedLevel = level + 1;
-
-                rootPropertyName = getRootPropertyName(
-                    rootPropertyName,
-                    valueAttr[2],
-                    parentContext,
-                    behaviorConfig.name,
-                );
-                const binding = bindingResolver(
-                    null,
-                    rootPropertyName,
-                    valueAttr[2],
-                    parentContext,
-                    behaviorConfig.name,
-                    schema,
-                    valueAttr[0],
-                    level,
-                );
-
-                const { strings, values } = await this.resolveStringsAndValues(
-                    rootPropertyName,
-                    innerHTML.slice(
-                        behaviorConfig.openingTagEndIndex,
-                        behaviorConfig.closingTagStartIndex,
-                    ),
-                    true,
-                    valueAttr[0],
-                    updatedLevel,
-                    schema,
-                    observerMap,
-                );
-
-                externalValues.push(
-                    repeat(
-                        (x, c) => binding(x, c),
-                        this.resolveTemplateOrBehavior(strings, values),
-                    ),
-                );
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Resolve a template directive
-     * @param name - The name of the directive.
-     * @param propName - The property name to pass to the directive.
-     * @param externalValues - The interpreted values from the parent.
-     */
-    private async resolveAttributeDirective(
-        name: AttributeDirective,
-        propName: string,
-        externalValues: Array<any>,
-    ) {
-        switch (name) {
-            case "children": {
-                externalValues.push(children(propName));
-
-                break;
-            }
-            case "slotted": {
-                const parts = propName.trim().split(" filter ");
-                const slottedOption = {
-                    property: parts[0],
-                };
-
-                if (parts[1]) {
-                    if (parts[1].startsWith("elements(")) {
-                        let params = parts[1].replace("elements(", "");
-                        params = params.substring(0, params.lastIndexOf(")"));
-                        Object.assign(slottedOption, {
-                            filter: elements(params || undefined),
-                        });
-                    }
-                }
-
-                externalValues.push(slotted(slottedOption));
-
-                break;
-            }
-            case "ref": {
-                externalValues.push(ref(propName));
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Resolver of a data binding
-     * @param innerHTML - The innerHTML.
-     * @param strings - The strings array.
-     * @param values - The interpreted values.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param behaviorConfig - The binding behavior configuration object.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
-     */
-    private async resolveDataBinding(
-        rootPropertyName: string | null,
-        innerHTML: string,
-        strings: Array<string>,
-        values: Array<any>,
-        self: boolean = false,
-        behaviorConfig: DataBindingBehaviorConfig,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
-    ): Promise<void> {
-        switch (behaviorConfig.subtype) {
-            case "content": {
-                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                const type = "access";
-                const propName = innerHTML.slice(
-                    behaviorConfig.openingEndIndex,
-                    behaviorConfig.closingStartIndex,
-                );
-                rootPropertyName = getRootPropertyName(
-                    rootPropertyName,
-                    propName,
-                    parentContext,
-                    type,
-                );
-                const binding = bindingResolver(
-                    strings.join(""),
-                    rootPropertyName,
-                    propName,
-                    parentContext,
-                    type,
-                    schema,
-                    parentContext,
-                    level,
-                );
-                const contentBinding = (x: any, c: any) => binding(x, c);
-                values.push(contentBinding);
-                await this.resolveInnerHTML(
-                    rootPropertyName,
-                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
-                    strings,
-                    values,
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
-                );
-
-                break;
-            }
-            case "attribute": {
-                strings.push(innerHTML.slice(0, behaviorConfig.openingStartIndex));
-                let attributeBinding;
-
-                switch (behaviorConfig.aspect) {
-                    case "@": {
-                        const bindingHTML = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex,
-                        );
-                        const openingParenthesis = bindingHTML.indexOf("(");
-                        const closingParenthesis = bindingHTML.indexOf(")");
-                        const propName = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex -
-                                (closingParenthesis - openingParenthesis) -
-                                1,
-                        );
-                        const type = "event";
-                        rootPropertyName = getRootPropertyName(
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                        );
-                        const argsString = bindingHTML.slice(
-                            openingParenthesis + 1,
-                            closingParenthesis,
-                        );
-                        const binding = bindingResolver(
-                            strings.join(""),
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                            schema,
-                            parentContext,
-                            level,
-                        );
-                        const isContextPath = propName.startsWith(contextPrefixDot);
-                        const getOwner = isContextPath
-                            ? (_x: any, c: any) => {
-                                  const ownerPath = propName.split(".").slice(1, -1);
-                                  return ownerPath.reduce(
-                                      (prev: any, item: string) => prev?.[item],
-                                      c,
-                                  );
-                              }
-                            : (x: any, _c: any) => x;
-
-                        const parsedArgs = parseEventArgs(argsString);
-
-                        if (parsedArgs.some(a => a.type === "deprecated-event")) {
-                            this._hasDeprecatedEventSyntax = true;
-                        }
-
-                        const argResolvers = parsedArgs.map(
-                            (parsedArg): ((x: any, c: any) => any) => {
-                                switch (parsedArg.type) {
-                                    case "event":
-                                    case "deprecated-event":
-                                        return (_x, c) => c.event;
-                                    case "context":
-                                        return (_x, c) => c;
-                                    case "binding":
-                                        return bindingResolver(
-                                            strings.join(""),
-                                            rootPropertyName,
-                                            parsedArg.rawArg!,
-                                            parentContext,
-                                            type,
-                                            schema,
-                                            parentContext,
-                                            level,
-                                        );
-                                }
-                            },
-                        );
-
-                        attributeBinding = (x: any, c: any) =>
-                            binding(x, c).bind(getOwner(x, c))(
-                                ...argResolvers.map(resolve => resolve(x, c)),
-                            );
-
-                        break;
-                    }
-                    case "?": {
-                        const expression = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex,
-                        );
-                        const expressionChain = getExpressionChain(expression);
-
-                        if (expressionChain?.expression.operator) {
-                            attributeBinding = getBooleanBinding(
-                                rootPropertyName,
-                                expressionChain as ChainedExpression,
-                                parentContext,
-                                level,
-                                schema,
-                            );
-                        } else {
-                            const propName = innerHTML.slice(
-                                behaviorConfig.openingEndIndex,
-                                behaviorConfig.closingStartIndex,
-                            );
-                            const type = "access";
-
-                            rootPropertyName = getRootPropertyName(
-                                rootPropertyName,
-                                propName,
-                                parentContext,
-                                type,
-                            );
-
-                            const binding = bindingResolver(
-                                strings.join(""),
-                                rootPropertyName,
-                                propName,
-                                parentContext,
-                                type,
-                                schema,
-                                parentContext,
-                                level,
-                            );
-                            attributeBinding = (x: any, c: any) => binding(x, c);
-                        }
-
-                        break;
-                    }
-                    default: {
-                        const propName = innerHTML.slice(
-                            behaviorConfig.openingEndIndex,
-                            behaviorConfig.closingStartIndex,
-                        );
-                        const type = "access";
-
-                        rootPropertyName = getRootPropertyName(
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                        );
-
-                        const binding = bindingResolver(
-                            strings.join(""),
-                            rootPropertyName,
-                            propName,
-                            parentContext,
-                            type,
-                            schema,
-                            parentContext,
-                            level,
-                        );
-                        attributeBinding = (x: any, c: any) => binding(x, c);
-                    }
-                }
-
-                values.push(attributeBinding);
-
-                await this.resolveInnerHTML(
-                    rootPropertyName,
-                    innerHTML.slice(behaviorConfig.closingEndIndex, innerHTML.length),
-                    strings,
-                    values,
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
-                );
-
-                break;
-            }
-            case "attributeDirective": {
-                strings.push(
-                    innerHTML.slice(
-                        0,
-                        behaviorConfig.openingStartIndex - behaviorConfig.name.length - 4,
-                    ),
-                );
-                const propName = innerHTML.slice(
-                    behaviorConfig.openingEndIndex,
-                    behaviorConfig.closingStartIndex,
-                );
-                await this.resolveAttributeDirective(
-                    behaviorConfig.name,
-                    propName,
-                    values,
-                );
-                await this.resolveInnerHTML(
-                    rootPropertyName,
-                    innerHTML.slice(behaviorConfig.closingEndIndex + 1, innerHTML.length),
-                    strings,
-                    values,
-                    self,
-                    parentContext,
-                    level,
-                    schema,
-                    observerMap,
-                );
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Resolver of the innerHTML string
-     * @param innerHTML - The innerHTML.
-     * @param strings - The strings array.
-     * @param values - The interpreted values.
-     * @param self - Indicates that this should refer to itself instead of a property when creating bindings.
-     * @param observerMap - ObserverMap instance for caching binding paths (optional).
-     */
-    private async resolveInnerHTML(
-        rootPropertyName: string | null,
-        innerHTML: string,
-        strings: Array<string>,
-        values: Array<any>,
-        self: boolean = false,
-        parentContext: string | null,
-        level: number,
-        schema: Schema,
-        observerMap?: ObserverMap,
-    ): Promise<void> {
-        const behaviorConfig = getNextBehavior(innerHTML);
-
-        if (behaviorConfig === null) {
-            strings.push(innerHTML);
-        } else {
-            switch (behaviorConfig.type) {
-                case "dataBinding": {
-                    await this.resolveDataBinding(
-                        rootPropertyName,
-                        innerHTML,
-                        strings,
-                        values,
-                        self,
-                        behaviorConfig,
-                        parentContext,
-                        level,
-                        schema,
-                        observerMap,
-                    );
-
-                    break;
-                }
-                case "templateDirective": {
-                    strings.push(innerHTML.slice(0, behaviorConfig.openingTagStartIndex));
-                    await this.resolveTemplateDirective(
-                        rootPropertyName,
-                        behaviorConfig,
-                        values,
-                        innerHTML,
-                        self,
-                        parentContext,
-                        level,
-                        schema,
-                        observerMap,
-                    );
-
-                    await this.resolveInnerHTML(
-                        rootPropertyName,
-                        innerHTML.slice(
-                            behaviorConfig.closingTagEndIndex,
-                            innerHTML.length,
-                        ),
-                        strings,
-                        values,
-                        self,
-                        parentContext,
-                        level,
-                        schema,
-                        observerMap,
-                    );
-
-                    break;
-                }
-            }
-        }
     }
 }
 

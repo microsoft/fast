@@ -4,10 +4,9 @@
 
 ```ts
 
-import { Constructable } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
-import { HydrationControllerCallbacks } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
+import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
 export interface AttributeMapConfig {
@@ -41,7 +40,12 @@ export interface ObserverMapPathNode {
 }
 
 // @public
-export function RenderableFASTElement<T extends Constructable<FASTElement>>(BaseCtor: T): T;
+export interface ResolvedStringsAndValues {
+    // (undocumented)
+    strings: Array<string>;
+    // (undocumented)
+    values: Array<any>;
+}
 
 // @public
 export class TemplateElement extends FASTElement {
@@ -54,6 +58,13 @@ export class TemplateElement extends FASTElement {
     static elementOptions: ElementOptionsDictionary;
     name?: string;
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
+}
+
+// @public
+export class TemplateParser {
+    createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
+    get hasDeprecatedEventSyntax(): boolean;
+    parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }
 
 // (No @packageDocumentation comment for this package)

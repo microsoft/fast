@@ -9,7 +9,6 @@ export {
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
-    RenderableFASTElement,
     type ResolvedStringsAndValues,
     TemplateElement,
     TemplateParser,
