@@ -335,7 +335,7 @@ async function runBuild(args) {
     let rendered;
     if (Object.keys(templatesMap).length > 0) {
         rendered = wasm.render_entry_with_templates(
-            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy || "none"
+            entryContent, JSON.stringify(templatesMap), stateContent, attributeNameStrategy || ""
         );
     } else {
         rendered = wasm.render(entryContent, stateContent);
@@ -357,9 +357,9 @@ async function main() {
             '  --output="output.html" Output file path (default: output.html)\n' +
             '  --entry="index.html"   Entry HTML template file (default: index.html)\n' +
             '  --state="state.json"   State JSON file (default: state.json)\n' +
-            '  --attribute-name-strategy="none"\n' +
+            '  --attribute-name-strategy="camelCase"\n' +
             '                         Strategy for mapping attribute names to property names.\n' +
-            '                         "none" (default) or "camelCase".\n' +
+            '                         "camelCase" (default) or "none".\n' +
             '  --config="<path>"      Path to a fast-build config JSON file.\n' +
             '                         Defaults to "fast-build.config.json" in the\n' +
             '                         current directory if it exists. File paths in\n' +

@@ -148,7 +148,7 @@ Three WASM functions are used:
 | Function | Used when |
 |----------|-----------|
 | `wasm.render(entry, state)` | No custom element templates |
-| `wasm.render_entry_with_templates(entry, templatesJson, state, strategy)` | At least one template was loaded. `strategy` is `"none"` or `"camelCase"`. |
+| `wasm.render_entry_with_templates(entry, templatesJson, state, strategy)` | At least one template was loaded. `strategy` is `"camelCase"` or `"none"`. |
 | `wasm.parse_f_templates(html)` | Parsing `<f-template>` elements from each matched HTML file |
 
 `templatesJson` is a JSON-stringified object mapping element names to their raw inner template strings (the content extracted from `<template>` inside `<f-template>`). The WASM renderer uses this map to resolve custom element tags and inject Declarative Shadow DOM.

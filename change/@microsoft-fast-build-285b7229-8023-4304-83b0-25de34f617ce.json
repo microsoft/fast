@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: change default attribute-name-strategy from none to camelCase",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

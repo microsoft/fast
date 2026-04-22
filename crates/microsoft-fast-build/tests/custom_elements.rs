@@ -1,6 +1,6 @@
 mod common;
 use common::{make_locator, empty_root};
-use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError};
+use microsoft_fast_build::{render_template, render_with_locator, render_template_with_locator, render_entry_template_with_locator, Locator, RenderError, RenderConfig, AttributeNameStrategy};
 
 // ── attribute → state mapping ─────────────────────────────────────────────────
 
@@ -218,26 +218,28 @@ fn test_locator_name_from_f_template_attribute_not_file_stem() {
 
 #[test]
 fn test_custom_element_kebab_attr_hyphens_preserved() {
-    // kebab-case attr names are lowercased; hyphens are preserved
+    // kebab-case attr names are lowercased; with explicit none strategy, hyphens are preserved
     let locator = make_locator(&[("my-el", "<span>{{selected-user-id}}</span>")]);
+    let none_config = RenderConfig::new().with_attribute_name_strategy(AttributeNameStrategy::None);
     let result = render_template_with_locator(
         r#"<my-el selected-user-id="42"></my-el>"#,
         "{}",
         &locator,
-        None,
+        Some(&none_config),
     ).unwrap();
     assert!(result.contains("42"), "kebab attr resolved: {result}");
 }
 
 #[test]
 fn test_custom_element_multi_word_kebab_attrs() {
-    // multiple kebab-case attrs are lowercased and passed to the child scope as-is
+    // multiple kebab-case attrs are lowercased; with explicit none strategy, passed to the child scope as-is
     let locator = make_locator(&[("my-el", "<p>{{show-details}}</p><p>{{enable-continue}}</p>")]);
+    let none_config = RenderConfig::new().with_attribute_name_strategy(AttributeNameStrategy::None);
     let result = render_template_with_locator(
         r#"<my-el show-details="true" enable-continue="false"></my-el>"#,
         "{}",
         &locator,
-        None,
+        Some(&none_config),
     ).unwrap();
     assert!(result.contains("true"), "show-details: {result}");
     assert!(result.contains("false"), "enable-continue: {result}");

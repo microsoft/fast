@@ -39,7 +39,7 @@ fast build [options]
 | `--state="<path>"` | `state.json` | JSON file containing the template state |
 | `--output="<path>"` | `output.html` | Where to write the rendered HTML |
 | `--templates="<glob>"` | _(none)_ | Glob pattern(s) for custom element template HTML files. Separate multiple patterns with commas. A warning is printed if not provided or if no files match a pattern. |
-| `--attribute-name-strategy="<strategy>"` | `none` | Strategy for mapping HTML attribute names to state property names on custom elements. `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). See [Attribute name strategy](#attribute-name-strategy). |
+| `--attribute-name-strategy="<strategy>"` | `camelCase` | Strategy for mapping HTML attribute names to state property names on custom elements. `"camelCase"` converts dashes to camelCase (e.g. `foo-bar` → `fooBar`). `"none"` preserves dashes (e.g. `foo-bar` → `foo-bar`). See [Attribute name strategy](#attribute-name-strategy). |
 | `--config="<path>"` | `fast-build.config.json` | Path to a JSON configuration file. If omitted, `fast-build.config.json` in the current directory is used when present. CLI arguments take precedence over config values. See [Configuration file](#configuration-file). |
 
 ### Example
@@ -113,8 +113,8 @@ The `--attribute-name-strategy` option controls how HTML attribute names on cust
 
 | Strategy | Behaviour | Template binding |
 |---|---|---|
-| `none` (default) | Attribute names lowercased as-is, dashes preserved | `foo-bar` → `{{foo-bar}}` |
-| `camelCase` | Dashed attribute names converted to camelCase | `foo-bar` → `{{fooBar}}` |
+| `camelCase` (default) | Dashed attribute names converted to camelCase | `foo-bar` → `{{fooBar}}` |
+| `none` | Attribute names lowercased as-is, dashes preserved | `foo-bar` → `{{foo-bar}}` |
 
 The `camelCase` strategy only affects "plain" custom element attributes. It does **not** change:
 - `data-*` attributes (always use `dataset.*` grouping)
