@@ -544,3 +544,9 @@ src/
 | [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) | Updates queue, attribute and observable change batching |
 | [src/templating/TEMPLATE-BINDINGS.md](./src/templating/TEMPLATE-BINDINGS.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
 | [docs/fast-element-2-changes.md](./docs/fast-element-2-changes.md) | Breaking changes from v1 to v2 |
+
+---
+
+## Bundle Size Reporting
+
+The build generates a `SIZES.md` file that records minified, gzip, and brotli sizes for the CDN rollup bundle and each individually tree-shaken export. Sizes are measured using `esbuild` for per-export bundles and from the Rollup minified output for the CDN rollup bundle. Compression sizes use Node.js `node:zlib`. The documentation site copies this file into the resources section during its prebuild step.

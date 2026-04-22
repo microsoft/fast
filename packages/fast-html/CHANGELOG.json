@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-html",
   "entries": [
     {
+      "date": "Wed, 22 Apr 2026 00:29:57 GMT",
+      "version": "1.0.0-alpha.50",
+      "tag": "@microsoft/fast-html_v1.0.0-alpha.50",
+      "comments": {
+        "prerelease": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "0eb81e0d25fc8d42a032cdba9d6b3d7eac1b5dd2",
+            "comment": "feat: add properties path tree to ObserverMapConfig in fast-html"
+          }
+        ],
+        "none": [
+          {
+            "author": "7559015+janechu@users.noreply.github.com",
+            "package": "@microsoft/fast-html",
+            "commit": "f28432a100e1ee2e2bcd0c6dcd6e61953f777854",
+            "comment": "chore: remove @microsoft/fast-ssr"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 21 Apr 2026 00:05:17 GMT",
       "version": "1.0.0-alpha.49",
       "tag": "@microsoft/fast-html_v1.0.0-alpha.49",

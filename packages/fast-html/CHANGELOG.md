@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-html
 
-<!-- This log was last generated on Fri, 17 Apr 2026 00:26:37 GMT and should not be manually modified. -->
+<!-- This log was last generated on Wed, 22 Apr 2026 00:29:57 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## 1.0.0-alpha.50
+
+Wed, 22 Apr 2026 00:29:57 GMT
+
+### Changes
+
+- feat: add properties path tree to ObserverMapConfig in fast-html (7559015+janechu@users.noreply.github.com)
 
 ## 1.0.0-alpha.49
 
