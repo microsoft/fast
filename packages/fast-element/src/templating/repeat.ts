@@ -407,12 +407,14 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         const itemCount = this.items.length;
-        this.views = Array.from({ length: itemCount }, () => null as any);
+        this.views = new Array(itemCount);
 
-        let current = this.location.previousSibling;
-        let itemIndex = itemCount - 1; // items render in order; walk backward
+        // First pass: collect all repeat marker pairs by walking backward.
+        // Each entry is { start: Node, end: Node } for the item content range.
+        const itemRanges: { start: Node; end: Node }[] = [];
+        let current: Node | null = this.location.previousSibling;
 
-        while (current !== null && itemIndex >= 0) {
+        while (current !== null) {
             if (!isCommentNode(current) || current.data !== "fe:/r") {
                 current = current.previousSibling;
                 continue;
@@ -443,17 +445,10 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                             current = startMarker.previousSibling;
                             const itemStart = startMarker.nextSibling!;
 
-                            // Empty item: start and end markers are adjacent
-                            // with no content between them. end === startMarker
-                            // because previousSibling of the end marker IS the
-                            // start marker. Use the cleared end marker comment
-                            // as both first and last for a valid single-node range.
+                            // Empty item: start and end markers are adjacent.
                             const itemEnd = end === startMarker ? itemStart : end;
 
-                            const view = template.hydrate(itemStart, itemEnd);
-                            this.views[itemIndex] = view;
-                            this.bindView(view, this.items, itemIndex, this.controller);
-                            itemIndex--;
+                            itemRanges.push({ start: itemStart, end: itemEnd });
                             break;
                         }
                         depth--;
@@ -468,6 +463,18 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                     }": repeat start marker not found.`,
                 );
             }
+        }
+
+        // Ranges were collected backward (last item first).
+        // Reverse so index 0 = first SSR item.
+        itemRanges.reverse();
+
+        // Hydrate each SSR item at its correct index (0-based from start).
+        for (let i = 0; i < itemRanges.length && i < itemCount; i++) {
+            const { start, end } = itemRanges[i];
+            const view = template.hydrate(start, end);
+            this.views[i] = view;
+            this.bindView(view, this.items, i, this.controller);
         }
     }
 }
