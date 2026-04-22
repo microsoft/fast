@@ -1,5 +1,21 @@
 # Migrating from previous versions
 
+## Hydration Marker Format (v1-alpha → v1)
+
+The SSR output format for hydration markers has been simplified. If you have any tooling that inspects or generates hydration markers, update it to use the new format.
+
+| Old marker | New marker |
+|---|---|
+| `<!-- fe-b$$start$$...$$fe-b -->` | `<!--fe:b-->` |
+| `<!-- fe-b$$end$$...$$fe-b -->` | `<!--fe:/b-->` |
+| `<!-- fe-repeat$$start$$...$$fe-repeat -->` | `<!--fe:r-->` |
+| `<!-- fe-repeat$$end$$...$$fe-repeat -->` | `<!--fe:/r-->` |
+| `data-fe-b="0 1 2"` / `data-fe-b-0` / `data-fe-c-0-3` | `data-fe="N"` |
+
+The `@microsoft/fast-build` WASM binary emits the new markers automatically. Rebuild all fixtures and SSR output after upgrading.
+
+See the [`@microsoft/fast-element` MIGRATION.md](../fast-element/MIGRATION.md#hydration-marker-format-v3) for full details on API changes.
+
 ## Prerendered Content Optimization (v1-alpha → v1)
 
 ### Removed exports

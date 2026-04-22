@@ -37,6 +37,54 @@ The `install-hydratable-view-templates.js` side-effect import is still available
 3. Replace `element.$fastController instanceof HydratableElementController` checks with `await element.$fastController.isPrerendered`.
 4. Remove `defer-hydration` and `needs-hydration` attributes from server-rendered markup.
 
+## Hydration Marker Format (v3)
+
+### Changed format
+
+The hydration markers embedded in SSR output have been simplified from verbose, index-embedded comment markers to compact, data-free sequential markers.
+
+#### Comment markers
+
+| Marker type | Old format | New format |
+|---|---|---|
+| Content binding start | `<!-- fe-b$$start$$<index>$$<scopeId>$$fe-b -->` | `<!--fe:b-->` |
+| Content binding end | `<!-- fe-b$$end$$<index>$$<scopeId>$$fe-b -->` | `<!--fe:/b-->` |
+| Repeat item start | `<!-- fe-repeat$$start$$<itemIndex>$$fe-repeat -->` | `<!--fe:r-->` |
+| Repeat item end | `<!-- fe-repeat$$end$$<itemIndex>$$fe-repeat -->` | `<!--fe:/r-->` |
+| Element boundary start | `<!-- fe-eb$$start$$<elementId>$$fe-eb -->` | `<!--fe:e-->` |
+| Element boundary end | `<!-- fe-eb$$end$$<elementId>$$fe-eb -->` | `<!--fe:/e-->` |
+
+#### Attribute binding markers
+
+| Old format | New format |
+|---|---|
+| `data-fe-b="0 1 2"` (space-separated indices) | `data-fe="N"` (binding count) |
+| `data-fe-b-0` (enumerated, one per factory) | `data-fe="N"` |
+| `data-fe-c-0-3` (compact, start index + count) | `data-fe="N"` |
+
+### Removed APIs
+
+| Export | Replacement |
+|---|---|
+| `HydrationMarkup.contentBindingStartMarker(index, scopeId)` | `HydrationMarkup.contentBindingStartMarker()` |
+| `HydrationMarkup.contentBindingEndMarker(index, scopeId)` | `HydrationMarkup.contentBindingEndMarker()` |
+| `HydrationMarkup.isContentBindingStartMarker(data)` | `HydrationMarkup.isContentBindingStartMarker(data)` (unchanged signature, new implementation) |
+| `HydrationMarkup.isContentBindingEndMarker(data)` | `HydrationMarkup.isContentBindingEndMarker(data)` (unchanged signature, new implementation) |
+| `HydrationMarkup.parseAttributeBinding(element)` | `HydrationMarkup.parseAttributeBindingCount(element)` |
+| `HydrationMarkup.parseRepeatStartMarker(data)` | `HydrationMarkup.isRepeatViewStartMarker(data)` |
+| `HydrationMarkup.parseRepeatEndMarker(data)` | `HydrationMarkup.isRepeatViewEndMarker(data)` |
+| `HydrationMarkup.parseElementBoundaryStartMarker(content)` | `HydrationMarkup.isElementBoundaryStartMarker(node)` |
+| `HydrationMarkup.parseElementBoundaryEndMarker(content)` | `HydrationMarkup.isElementBoundaryEndMarker(node)` |
+
+### Impact
+
+This is a **breaking change** for SSR output format. Any system that produces or parses hydration markers must be updated to use the new format. The `@microsoft/fast-build` Rust crate and WASM binary have been updated accordingly.
+
+- Marker parsing uses string equality checks (`data === "fe:b"`) instead of regex
+- Start/end pairing uses balanced depth counting instead of embedded IDs
+- The hydration walker uses a sequential factory pointer instead of index-based lookup
+- SSR and client versions must match — mixing old SSR output with new client code (or vice versa) will fail
+
 ## Async define/compose/register API (v3)
 
 ### Removed APIs

@@ -5,9 +5,9 @@
         <title></title>
     </head>
     <body>
-        <test-camel-case foo-bar="hello"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$fooBar-0$$fe-b-->hello<!--fe-b$$end$$0$$fooBar-0$$fe-b--></span></template></test-camel-case>
-        <test-camel-case-multi my-custom-prop="world"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$myCustomProp-0$$fe-b-->world<!--fe-b$$end$$0$$myCustomProp-0$$fe-b--></span></template></test-camel-case-multi>
-        <test-camel-case-no-dash label="simple"><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$label-0$$fe-b-->simple<!--fe-b$$end$$0$$label-0$$fe-b--></span></template></test-camel-case-no-dash>
+        <test-camel-case foo-bar="hello"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->hello<!--fe:/b--></span></template></test-camel-case>
+        <test-camel-case-multi my-custom-prop="world"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->world<!--fe:/b--></span></template></test-camel-case-multi>
+        <test-camel-case-no-dash label="simple"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->simple<!--fe:/b--></span></template></test-camel-case-no-dash>
 <f-template name="test-camel-case">
     <template> <span>{{fooBar}}</span> </template>
 </f-template>

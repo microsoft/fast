@@ -289,42 +289,40 @@ The SSR renderer embeds comment nodes and data attributes into the HTML to mark 
 
 #### Attribute Binding Markers
 
-Elements with attribute/property/event bindings receive a `data-fe-b` attribute listing the factory indices:
+Elements with attribute/property/event bindings receive a `data-fe` attribute with the binding count:
 
 ```html
 <!-- SSR output for: <div class="${x => x.cls}" :value="${x => x.val}"> -->
-<div data-fe-b="0 1">server-rendered content</div>
+<div data-fe="2">server-rendered content</div>
 ```
 
-Three attribute marker formats are supported:
+The attribute marker format is:
 
-| Format | Example | Description |
+| Attribute | Example | Description |
 |---|---|---|
-| Space-separated | `data-fe-b="0 1 2"` | Default: factory indices in one attribute value |
-| Enumerated | `data-fe-b-0 data-fe-b-1` | Separate attributes per index |
-| Compact | `data-fe-c-0-3` | Start index and count (indices 0, 1, 2) |
+| `data-fe` | `data-fe="3"` | Binding count — the number of attribute bindings on the element |
 
 #### Content Binding Markers
 
-Text/template content bindings are wrapped in paired comment nodes with a unique ID:
+Text/template content bindings are wrapped in paired data-free comment nodes (matched by string equality, paired by balanced depth counting):
 
 ```html
-<!-- fe-b$$start$$2$$unique-id$$fe-b -->
+<!--fe:b-->
 Hello, World!
-<!-- fe-b$$end$$2$$unique-id$$fe-b -->
+<!--fe:/b-->
 ```
 
 #### Repeat Directive Markers
 
-Each repeated item is bracketed by repeat markers encoding the item index:
+Each repeated item is bracketed by data-free repeat markers:
 
 ```html
-<!-- fe-repeat$$start$$0$$fe-repeat -->
+<!--fe:r-->
 <li>First item</li>
-<!-- fe-repeat$$end$$0$$fe-repeat -->
-<!-- fe-repeat$$start$$1$$fe-repeat -->
+<!--fe:/r-->
+<!--fe:r-->
 <li>Second item</li>
-<!-- fe-repeat$$end$$1$$fe-repeat -->
+<!--fe:/r-->
 ```
 
 #### Element Boundary Markers
@@ -332,11 +330,11 @@ Each repeated item is bracketed by repeat markers encoding the item index:
 Nested custom elements that also need hydration are demarcated so the parent's walker can skip over them:
 
 ```html
-<!-- fe-eb$$start$$child-element-id$$fe-eb -->
+<!--fe:e-->
 <child-element>
   <template shadowrootmode="open">...child shadow DOM...</template>
 </child-element>
-<!-- fe-eb$$end$$child-element-id$$fe-eb -->
+<!--fe:/e-->
 ```
 
 ### Hydration Binding Flow
@@ -357,18 +355,18 @@ flowchart TD
     J --> K["Create TreeWalker over existing DOM range"]
     K --> L{"Walk each node"}
 
-    L -->|Element node| M["Parse data-fe-b attribute"]
+    L -->|Element node| M["Parse data-fe attribute"]
     M --> N["Map factory indices to this element via targetFactory()"]
-    N --> O["Remove data-fe-b marker attribute"]
+    N --> O["Remove data-fe marker attribute"]
 
-    L -->|Comment: content marker| P["Parse fe-b$$start$$ marker"]
-    P --> Q["Walk siblings to find matching fe-b$$end$$ marker"]
+    L -->|Comment: content marker| P["Match fe:b start marker by string equality"]
+    P --> Q["Walk siblings to find matching fe:/b end marker\nusing balanced depth counting"]
     Q --> R{"Content between markers?"}
     R -->|Single text node| S["Target factory to text node directly"]
     R -->|Multiple nodes / template| T["Store boundaries in ViewBehaviorBoundaries"]
     T --> U["Insert dummy text node as target for future string updates"]
     R -->|Empty null/false binding| U
-    L -->|Comment: element boundary| V["Skip to matching fe-eb$$end$$ marker"]
+    L -->|Comment: element boundary| V["Clear fe:e start marker data\nSkip to matching fe:/e end marker\nusing balanced depth counting\nClear fe:/e end marker data\nThrow if end marker not found"]
     L -->|Other| W["Continue walking"]
     J --> X["Return { targets, boundaries }"]
     X --> Y["Create behaviors from factories"]
@@ -454,7 +452,7 @@ flowchart TD
 
     F --> G{"Current node is comment?"}
     G -->|No| H["Skip, move to previousSibling"]
-    G -->|Yes| I{"parseRepeatEndMarker?"}
+    G -->|Yes| I{"isRepeatEndMarker (string equality)?"}
     I -->|No| H
     I -->|Yes, index N| J["Clear end marker comment data"]
 
@@ -517,8 +515,9 @@ When the server-rendered DOM doesn't match the client template, hydration throws
 
 | Error | Cause | Contains |
 |---|---|---|
-| `HydrationTargetElementError` | `data-fe-b` references a factory index that doesn't exist | Factory list, element node, template string |
+| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied, more content binding markers exist than factories, or an element boundary end marker is missing | Factory list, target node, template string |
 | `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets | Factory, cloned fragment, template string, available target IDs |
-| `HydrationRepeatError` | Repeat markers are mismatched or missing | Hydration stage, items length, view states |
+| `HydrationRepeatError` | Repeat hydration cannot match items while scanning backward through repeat markers with depth counting, or item count mismatches between SSR DOM and client data | Hydration stage, items length, view states |
+| `FAST.error(1210)` | `data-fe` attribute contains a non-numeric or non-positive value | Attribute value |
 
 These errors typically indicate a mismatch between the server-rendered HTML and the client-side template definition.

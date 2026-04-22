@@ -115,7 +115,7 @@ fn test_render_entry_with_locator_without_state_uses_empty_object() {
     let result = render_entry_with_locator_without_state("<my-el></my-el>", &locator, None)
         .expect("render entry without state");
     assert!(result.contains("<span>"), "shadow content rendered: {result}");
-    assert!(result.contains("<!--fe-b$$start$$0$$label-0$$fe-b--><!--fe-b$$end$$0$$label-0$$fe-b-->"));
+    assert!(result.contains("<!--fe:b--><!--fe:/b-->"));
 }
 
 // ── deeply nested property access ─────────────────────────────────────────────

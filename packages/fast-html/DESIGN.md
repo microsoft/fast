@@ -30,7 +30,7 @@ This document is intended for contributors who want to understand the internal a
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
 <my-component greeting="Hello">
     <template shadowrootmode="open" shadowroot="open">
-        <!--fe-b$$start$$0$$abc123$$fe-b-->Hello<!--fe-b$$end$$0$$abc123$$fe-b-->
+        <!--fe:b-->Hello<!--fe:/b-->
     </template>
 </my-component>
 
@@ -293,7 +293,7 @@ The high-level data flow from authoring to interactive component:
 
 ```mermaid
 flowchart TD
-    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe-b comments and data-fe-b attributes"]
+    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe:b comments and data-fe attributes"]
     B --> C[Browser loads JS bundle]
     C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
     C --> E["TemplateElement.define called\n→ registers f-template custom element"]
@@ -572,30 +572,28 @@ Connection gating is handled by the template-pending guard in `ElementController
 
 Build-time renderers (e.g. `@microsoft/fast-build`) forward attributes declared on the inner `<template>` element of an `<f-template>` onto the rendered host element opening tag. Static attributes are forwarded verbatim (HTML-escaped); `name="{{expr}}"` and `?name="{{expr}}"` are resolved against the element's initial child state (the root state with the host element's HTML attributes overlaid). Client-only attributes (`@event`, `:prop`, `f-ref`, `f-slotted`, `f-children`) are skipped — they have no meaning on a server-rendered host element.
 
-Author attributes on the host element always win on conflicts (case-insensitive name match; for `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` without the leading `?`). The hydration marker formats described below are unchanged — no additional `data-fe-c` marker is allocated for these propagated attributes.
+Author attributes on the host element always win on conflicts (case-insensitive name match; for `?name="{{expr}}"` template attrs, the dedupe key is the bare `name` without the leading `?`). The hydration marker formats described below are unchanged — no additional `data-fe` marker is allocated for these propagated attributes.
 
 ### Hydration marker formats
 
-**Content bindings** use HTML comments:
+**Content bindings** use HTML comments (data-free, matched by string equality):
 
 ```
-<!--fe-b$$start$$<index>$$<uuid>$$fe-b-->
-<!--fe-b$$end$$<index>$$<uuid>$$fe-b-->
+<!--fe:b-->
+<!--fe:/b-->
 ```
 
-**Attribute bindings** use `data-fe-b` dataset attributes (three equivalent formats — all supported):
+**Attribute bindings** use a single `data-fe` dataset attribute with binding count:
 
 ```html
-<!-- space-separated -->  <el data-fe-b="0 1 2">
-<!-- enumerated     -->  <el data-fe-b-0 data-fe-b-1 data-fe-b-2>
-<!-- compact        -->  <el data-fe-c-0-3>
+<el data-fe="3">
 ```
 
 **Repeat directives** wrap each item in comment pairs:
 ```
-<!--fe-repeat$$start$$<item-index>$$fe-repeat-->
+<!--fe:r-->
 ...item DOM...
-<!--fe-repeat$$end$$<item-index>$$fe-repeat-->
+<!--fe:/r-->
 ```
 
 For detailed examples see [RENDERING.md](./RENDERING.md).

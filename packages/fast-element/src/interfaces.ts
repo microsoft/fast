@@ -185,6 +185,7 @@ export const enum Message {
     onlySetTemplatePolicyOnce = 1207,
     cannotSetTemplatePolicyAfterCompilation = 1208,
     blockedByDOMPolicy = 1209,
+    invalidHydrationAttributeMarker = 1210,
     // 1301 - 1400 Styles
     // 1401 - 1500 Components
     missingElementDefinition = 1401,

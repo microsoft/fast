@@ -41,9 +41,11 @@ const mockDataSources = {
 };
 
 export class ItemList extends FASTElement {
-    public items!: Array<{ text: string }>;
+    @observable
+    public items: Array<{ text: string }> = [];
 
-    public title!: string;
+    @observable
+    public title: string = "";
 
     @attr
     public category!: string;
@@ -53,30 +55,31 @@ export class ItemList extends FASTElement {
     private static instanceMap = new WeakMap<ItemList, number>();
 
     connectedCallback() {
-        super.connectedCallback();
-
         if (!ItemList.instanceMap.has(this)) {
             ItemList.connectedCallCount++;
             ItemList.instanceMap.set(this, ItemList.connectedCallCount);
         }
 
         const instanceNumber = ItemList.instanceMap.get(this) || 0;
-
-        // Load data based on instance number, not from DOM
         const listIds = ["list-1", "list-2", "list-3"];
         const listId = listIds[instanceNumber - 1] || "list-1";
         const data = mockDataSources.getListData(listId);
 
-        // Set data from fresh source - should match pre-rendered content exactly
+        // Set data BEFORE super so items are in _items before
+        // ElementController.bindObservables replays boundObservables
         this.title = data.title;
         this.items = data.items;
+
+        super.connectedCallback();
     }
 }
 
 export class Item extends FASTElement {
-    public text!: string;
+    @observable
+    public text: string = "";
 
-    public idx!: number;
+    @observable
+    public idx: number = 0;
 
     @attr
     public category!: string;
@@ -86,21 +89,20 @@ export class Item extends FASTElement {
     private static instanceMap = new WeakMap<Item, number>();
 
     connectedCallback() {
-        super.connectedCallback();
-
         if (!Item.instanceMap.has(this)) {
             Item.connectedCallCount++;
             Item.instanceMap.set(this, Item.connectedCallCount);
         }
 
         const instanceNumber = Item.instanceMap.get(this) || 0;
-
-        // Fetch fresh data from data source
         const itemIds = ["item-1", "item-2", "item-3", "item-4"];
         const itemId = itemIds[instanceNumber - 1] || "item-1";
         const data = mockDataSources.getItemById(itemId);
 
+        // Set data before super so it's available during hydration
         deepMerge(this, data);
+
+        super.connectedCallback();
     }
 }
 
