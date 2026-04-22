@@ -1,19 +1,19 @@
 import {
     attr,
+    AttributeMap,
     ElementController,
     FAST,
     FASTElement,
     FASTElementDefinition,
     fastElementRegistry,
+    ObserverMap,
     pendingAttributeMaps,
     pendingObserverMaps,
+    Schema,
     type TemplateLifecycleCallbacks,
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
-import { AttributeMap } from "./attribute-map.js";
-import { ObserverMap } from "./observer-map.js";
-import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
 import { eventArgAccessor, transformInnerHTML } from "./utilities.js";
 

@@ -5,17 +5,9 @@
 ```ts
 
 import { FASTElement } from '@microsoft/fast-element';
-import type { ObserverMapConfig } from '@microsoft/fast-element';
+import { Schema } from '@microsoft/fast-element/extensions/schema.js';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
-
-// @public
-export class ObserverMap {
-    // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
-    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
-    // (undocumented)
-    defineProperties(): void;
-}
 
 // @public
 export interface ResolvedStringsAndValues {

@@ -1,6 +1,5 @@
-import { attr, FASTElement, observable, observerMap } from "@microsoft/fast-element";
+import { attr, deepMerge, FASTElement, observable, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
-import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 // Mock data sources - simulating fetched data
 const mockDataSources = {
