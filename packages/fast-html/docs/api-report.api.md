@@ -5,39 +5,9 @@
 ```ts
 
 import { FASTElement } from '@microsoft/fast-element';
+import { Schema } from '@microsoft/fast-element/extensions/schema.js';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
-
-// @public
-export interface AttributeMapConfig {
-    "attribute-name-strategy"?: "none" | "camelCase";
-}
-
-// @public
-export class ObserverMap {
-    // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
-    constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
-    // (undocumented)
-    defineProperties(): void;
-}
-
-// @public
-export interface ObserverMapConfig {
-    properties?: {
-        [rootProperty: string]: ObserverMapPathEntry;
-    };
-}
-
-// @public
-export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
-
-// @public
-export interface ObserverMapPathNode {
-    // (undocumented)
-    $observe?: boolean;
-    // (undocumented)
-    [propertyName: string]: ObserverMapPathEntry | undefined;
-}
 
 // @public
 export interface ResolvedStringsAndValues {
@@ -49,15 +19,11 @@ export interface ResolvedStringsAndValues {
 
 // @public
 export class TemplateElement extends FASTElement {
-    constructor();
     // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
     static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;
-    // Warning: (ae-forgotten-export) The symbol "ElementOptionsDictionary" needs to be exported by the entry point index.d.ts
-    static elementOptions: ElementOptionsDictionary;
     name?: string;
-    static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
 }
 
 // @public
