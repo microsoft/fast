@@ -74,10 +74,6 @@ export function createRangeForNodes(first: Node, last: Node): Range {
     return range;
 }
 
-function isShadowRoot(node: Node): node is ShadowRoot {
-    return node instanceof DocumentFragment && "mode" in node;
-}
-
 /**
  * Maps compiled ViewBehaviorFactory IDs to their corresponding DOM nodes in the
  * server-rendered shadow root. Uses a TreeWalker to scan the existing DOM between
@@ -179,6 +175,7 @@ export function buildViewBindingTargets(
                         node as Comment,
                         walker,
                         factory,
+                        factories,
                         targets,
                         boundaries,
                     );
@@ -198,6 +195,7 @@ function targetContentBinding(
     node: Comment,
     walker: TreeWalker,
     factory: CompiledViewBehaviorFactory,
+    factories: CompiledViewBehaviorFactory[],
     targets: ViewBehaviorTargets,
     boundaries: ViewBehaviorBoundaries,
 ) {
@@ -206,11 +204,12 @@ function targetContentBinding(
     node.data = "";
 
     if (current === null) {
-        const root = node.getRootNode();
-        throw new Error(
-            `Error hydrating Comment node inside "${
-                isShadowRoot(root) ? root.host.nodeName : root.nodeName
+        throw new HydrationTargetElementError(
+            `Error hydrating content binding inside "${
+                (node.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
             }": no sibling found after content binding start marker.`,
+            factories,
+            node,
         );
     }
 
@@ -232,11 +231,12 @@ function targetContentBinding(
     }
 
     if (current === null) {
-        const root = node.getRootNode();
-        throw new Error(
-            `Error hydrating Comment node inside "${
-                isShadowRoot(root) ? root.host.nodeName : root.nodeName
-            }".`,
+        throw new HydrationTargetElementError(
+            `Error hydrating content binding inside "${
+                (node.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
+            }": missing fe:/b end marker.`,
+            factories,
+            node,
         );
     }
 
