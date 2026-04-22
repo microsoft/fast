@@ -178,7 +178,7 @@ fn render_repeat_items(
                 let mut item_scope = HydrationScope::new();
                 let rendered = render_node(inner, root, &new_vars, locator, Some(&mut item_scope), false, config)?;
                 parts.push(format!(
-                    "<!--f:r-->{}<!--f:/r-->",
+                    "<!--fe:r-->{}<!--fe:/r-->",
                     rendered
                 ));
             }

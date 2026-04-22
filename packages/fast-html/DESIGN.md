@@ -30,7 +30,7 @@ This document is intended for contributors who want to understand the internal a
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
 <my-component greeting="Hello">
     <template shadowrootmode="open">
-        <!--f:b-->Hello<!--f:/b-->
+        <!--fe:b-->Hello<!--fe:/b-->
     </template>
 </my-component>
 
@@ -239,7 +239,7 @@ The high-level data flow from authoring to interactive component:
 
 ```mermaid
 flowchart TD
-    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith f:b comments and data-fe attributes"]
+    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe:b comments and data-fe attributes"]
     B --> C[Browser loads JS bundle]
     C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
     C --> E["TemplateElement.define called\n→ registers f-template custom element"]
@@ -518,8 +518,8 @@ Connection gating is handled by the template-pending guard in `ElementController
 **Content bindings** use HTML comments (data-free, matched by string equality):
 
 ```
-<!--f:b-->
-<!--f:/b-->
+<!--fe:b-->
+<!--fe:/b-->
 ```
 
 **Attribute bindings** use a single `data-fe` dataset attribute with binding count:
@@ -530,9 +530,9 @@ Connection gating is handled by the template-pending guard in `ElementController
 
 **Repeat directives** wrap each item in comment pairs:
 ```
-<!--f:r-->
+<!--fe:r-->
 ...item DOM...
-<!--f:/r-->
+<!--fe:/r-->
 ```
 
 For detailed examples see [RENDERING.md](./RENDERING.md).

@@ -20,23 +20,23 @@ impl HydrationScope {
         idx
     }
 
-    /// Content binding start marker: `<!--f:b-->`
+    /// Content binding start marker: `<!--fe:b-->`
     pub fn content_start_marker(&self) -> &'static str {
-        "<!--f:b-->"
+        "<!--fe:b-->"
     }
 
-    /// Content binding end marker: `<!--f:/b-->`
+    /// Content binding end marker: `<!--fe:/b-->`
     pub fn content_end_marker(&self) -> &'static str {
-        "<!--f:/b-->"
+        "<!--fe:/b-->"
     }
 
-    /// Repeat item start marker: `<!--f:r-->`
+    /// Repeat item start marker: `<!--fe:r-->`
     pub fn repeat_start_marker(&self) -> &'static str {
-        "<!--f:r-->"
+        "<!--fe:r-->"
     }
 
-    /// Repeat item end marker: `<!--f:/r-->`
+    /// Repeat item end marker: `<!--fe:/r-->`
     pub fn repeat_end_marker(&self) -> &'static str {
-        "<!--f:/r-->"
+        "<!--fe:/r-->"
     }
 }

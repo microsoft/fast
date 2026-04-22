@@ -413,7 +413,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         let itemIndex = itemCount - 1; // items render in order; walk backward
 
         while (current !== null && itemIndex >= 0) {
-            if (!isCommentNode(current) || current.data !== "f:/r") {
+            if (!isCommentNode(current) || current.data !== "fe:/r") {
                 current = current.previousSibling;
                 continue;
             }
@@ -434,9 +434,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             let depth = 0;
             while (start !== null) {
                 if (isCommentNode(start)) {
-                    if (start.data === "f:/r") {
+                    if (start.data === "fe:/r") {
                         depth++;
-                    } else if (start.data === "f:r") {
+                    } else if (start.data === "fe:r") {
                         if (depth === 0) {
                             start.data = "";
                             current = start.previousSibling;

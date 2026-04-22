@@ -5,8 +5,8 @@ export function render(index: number): string {
         <attr-reflect-bench-element needs-hydration label="${label}" count="${count}" active>
             <template shadowrootmode="open">
                 <span
-                    ><!--f:b-->${label}<!--f:/b-->
-                    (<!--f:b-->${count}<!--f:/b-->)</span
+                    ><!--fe:b-->${label}<!--fe:/b-->
+                    (<!--fe:b-->${count}<!--fe:/b-->)</span
                 >
             </template>
         </attr-reflect-bench-element>

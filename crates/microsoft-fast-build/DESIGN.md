@@ -81,7 +81,7 @@ The loop works like a cursor:
 2. Call `next_directive(template, pos, locator)` to find the earliest interesting position ahead.
 3. If nothing is found, append `template[pos..]` to output and break.
 4. Otherwise, append the literal text from `pos` up to the directive's start.
-5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--f:b-->VALUE<!--f:/b-->` markers.
+5. Dispatch the directive to the appropriate handler (returns `(chunk, next_pos)`). In hydration mode, content bindings (`{{expr}}`, `{{{expr}}}`) are wrapped in `<!--fe:b-->VALUE<!--fe:/b-->` markers.
 6. Append `chunk` and advance `pos` to `next_pos`.
 7. Repeat.
 
@@ -320,10 +320,10 @@ Scopes carry no numeric ID. Markers are data-free sequential strings matched by 
 When `hydration` is `Some`, `render_node` wraps each `{{expr}}` / `{{{expr}}}` result:
 
 ```
-<!--f:b-->VALUE<!--f:/b-->
+<!--fe:b-->VALUE<!--fe:/b-->
 ```
 
-Markers carry no binding index or expression name. They are paired by balanced depth counting — each `<!--f:b-->` increments a counter and each `<!--f:/b-->` decrements it; when the counter returns to zero the pair is complete.
+Markers carry no binding index or expression name. They are paired by balanced depth counting — each `<!--fe:b-->` increments a counter and each `<!--fe:/b-->` decrements it; when the counter returns to zero the pair is complete.
 
 ### Attribute binding markers
 
@@ -383,9 +383,9 @@ contenteditable="true"   →  state["contentEditable"] = "true"
 ### `f-when` markers
 
 ```
-<!--f:b-->
+<!--fe:b-->
 [inner content in child scope, or empty if falsy]
-<!--f:/b-->
+<!--fe:/b-->
 ```
 
 The binding index `N` is allocated from the outer (parent) scope's `binding_idx`. The markers are data-free and paired by balanced depth counting.
@@ -393,17 +393,17 @@ The binding index `N` is allocated from the outer (parent) scope's `binding_idx`
 ### `f-repeat` markers
 
 ```
-<!--f:b-->
-<!--f:r-->
+<!--fe:b-->
+<!--fe:r-->
   [item 0 rendered with fresh binding_idx = 0]
-<!--f:/r-->
-<!--f:r-->
+<!--fe:/r-->
+<!--fe:r-->
   [item 1 rendered with fresh binding_idx = 0]
-<!--f:/r-->
-<!--f:/b-->
+<!--fe:/r-->
+<!--fe:/b-->
 ```
 
-The outer `<!--f:b-->` / `<!--f:/b-->` markers wrap the entire repeat directive. Each item is wrapped in `<!--f:r-->` / `<!--f:/r-->` markers. All markers are data-free; pairing uses balanced depth counting. Each item gets its own fresh `HydrationScope`, so per-item content bindings restart at index 0.
+The outer `<!--fe:b-->` / `<!--fe:/b-->` markers wrap the entire repeat directive. Each item is wrapped in `<!--fe:r-->` / `<!--fe:/r-->` markers. All markers are data-free; pairing uses balanced depth counting. Each item gets its own fresh `HydrationScope`, so per-item content bindings restart at index 0.
 
 ### `$index` in `f-repeat`
 
@@ -542,7 +542,7 @@ A hand-rolled recursive-descent parser. No external crates.
 
 **`Option<&mut HydrationScope>` threading.** The hydration context is an optional mutable parameter on `render_node` and all directive renderers. Passing `None` disables all hydration marker emission and keeps non-custom-element rendering identical to the pre-hydration behaviour. The public API always passes `None` at the top level; hydration is only activated inside `render_custom_element`.
 
-**Named hydration markers.** Markers are data-free fixed strings (`<!--f:b-->`, `<!--f:/b-->`, `<!--f:r-->`, `<!--f:/r-->`) matched by string equality — no regex parsing required. Pairing uses balanced depth counting rather than ID matching. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`.
+**Named hydration markers.** Markers are data-free fixed strings (`<!--fe:b-->`, `<!--fe:/b-->`, `<!--fe:r-->`, `<!--fe:/r-->`) matched by string equality — no regex parsing required. Pairing uses balanced depth counting rather than ID matching. `HydrationScope` needs only `binding_idx` — no `Rc`, no `scope_id`, no `ScopeGen`.
 
 **Atomic tag processing for attribute bindings.** When a plain HTML opening tag in the literal region contains `{{expr}}` attribute values, those values are resolved and `data-fe` is injected into the tag as a whole before `next_directive` ever sees them. This prevents the `{{expr}}` inside attributes from being mistaken for content bindings. The cost is that `next_directive` is called once extra per tag iteration, but tags are short and rare enough that this has no meaningful performance impact.
 
