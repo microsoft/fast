@@ -73,7 +73,8 @@ Built during template parsing, one `Schema` instance per `<f-template>`. It reco
 
 - Describes the shape of each root property referenced in the template.
 - Tracks repeat context chains (parent/child array relationships).
-- Is stored statically per element name so it can be shared across instances.
+- Uses an instance-level `schemaMap` for its own property schemas.
+- Registers itself in the module-level `schemaRegistry` (keyed by custom element name) for cross-element `$ref` resolution.
 
 ### `ObserverMap` — automatic observable setup
 
@@ -164,8 +165,9 @@ packages/fast-html/
 │       ├── element.ts         # Element utilities
 │       ├── template.ts        # TemplateElement (<f-template>), lifecycle orchestration, options
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
-│       ├── schema.ts          # Schema class — JSON schema builder
-│       ├── observer-map.ts    # ObserverMap class — auto observable/proxy setup
+│       ├── schema.ts          # Schema class — JSON schema builder + schemaRegistry
+│       ├── observer-map.ts    # ObserverMap class + config types (ObserverMapConfig, ObserverMapPathEntry, etc.)
+│       ├── attribute-map.ts   # AttributeMap class + config types (AttributeMapConfig, AttributeMapOption)
 │       ├── utilities.ts       # Parsing engine, binding resolvers, proxy system
 │       └── syntax.ts          # Syntax delimiter constants
 ├── rules/                     # ast-grep YAML rules for converting html`` → declarative HTML
@@ -176,6 +178,19 @@ packages/fast-html/
     └── fixtures/              # One directory per feature, each with spec + index.html + main.ts
 ```
 
+### Module dependency direction
+
+Each module owns its configuration types and can be used independently:
+
+```
+template.ts ──imports──▶ observer-map.ts (ObserverMapConfig, ObserverMapOption)
+template.ts ──imports──▶ attribute-map.ts (AttributeMapConfig, AttributeMapOption)
+template.ts ──imports──▶ schema.ts (Schema)
+observer-map.ts ──imports──▶ schema.ts (Schema types)
+attribute-map.ts ──imports──▶ schema.ts (Schema types)
+utilities.ts ──imports──▶ schema.ts (schemaRegistry for cross-element $ref resolution)
+```
+
 ---
 
 ## Exports and Public API
@@ -184,28 +199,40 @@ packages/fast-html/
 import {
     TemplateElement,
     TemplateParser,
+    Schema,
+    schemaRegistry,
     ObserverMap,
+    AttributeMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
+    type AttributeMapConfig,
+    type JSONSchema,
+    type CachedPathMap,
 } from "@microsoft/fast-html";
 ```
 
-Three primary exports are intended for application code:
+Primary exports intended for application code:
 
 | Export | Purpose |
 |---|---|
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
 | `TemplateParser` | Standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
-| `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
+| `Schema` | JSON schema builder that records binding paths discovered during template parsing. Each instance owns its own schema map and registers itself in the `schemaRegistry` for cross-element `$ref` resolution. |
+| `schemaRegistry` | Module-level `Map<string, Map<string, JSONSchema>>` that indexes schemas by custom element name. Used for cross-element lookups (e.g. nested component `$ref` resolution). |
+| `ObserverMap` | Automatic observable setup using the schema; defines observable properties and installs proxy-based deep change tracking. Configuration types (`ObserverMapConfig`, `ObserverMapPathEntry`, `ObserverMapPathNode`) are co-located in this module. |
+| `AttributeMap` | Automatic `@attr` property registration for leaf bindings in the template. Configuration type (`AttributeMapConfig`) is co-located in this module. |
 
-Additionally, the following types are exported for use in `observerMap` configuration:
+Additionally, the following types are exported:
 
-| Type | Purpose |
-|---|---|
-| `ObserverMapConfig` | Configuration object for the `observerMap` option; accepts optional `properties` key. |
-| `ObserverMapPathEntry` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
-| `ObserverMapPathNode` | Object node with optional `$observe` and child property overrides. |
+| Type | Source Module | Purpose |
+|---|---|---|
+| `ObserverMapConfig` | `observer-map.ts` | Configuration object for the `observerMap` option; accepts optional `properties` key. |
+| `ObserverMapPathEntry` | `observer-map.ts` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
+| `ObserverMapPathNode` | `observer-map.ts` | Object node with optional `$observe` and child property overrides. |
+| `AttributeMapConfig` | `attribute-map.ts` | Configuration object for the `attributeMap` option; accepts `attribute-name-strategy`. |
+| `JSONSchema` | `schema.ts` | JSON Schema interface used by `Schema` for property structure. |
+| `CachedPathMap` | `schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
 
 ---
 
@@ -377,13 +404,14 @@ innerHTML token
 
 ## Schema and Observer Map
 
-The `Schema` class accumulates all binding paths discovered during parsing into a static JSON Schema map indexed by `customElementName → rootPropertyName → JSONSchema`.
+The `Schema` class accumulates all binding paths discovered during parsing into an instance-level JSON Schema map (`schemaMap`) indexed by `rootPropertyName → JSONSchema`. Each `Schema` instance also registers itself in the module-level `schemaRegistry` (keyed by custom element name) for cross-element `$ref` resolution.
 
 ```mermaid
 flowchart LR
     A["Template binding\nuser.details.age"] --> B[bindingResolver]
     B --> C[schema.addPath\ntype:'access'\npath:'user.details.age'\nrootProperty:'user']
-    C --> D["Schema.jsonSchemaMap\n{'my-el' => {'user' => JSONSchema}}"]
+    C --> D["schema.schemaMap\n{'user' => JSONSchema}"]
+    C --> D2["schemaRegistry\n{'my-el' => schemaMap}"]
     D --> E[ObserverMap.defineProperties]
     E --> E1["applyConfigToSchema\nstamps $observe: false on excluded schema nodes"]
     E1 --> F[Observable.defineProperty on prototype\nfor 'user']

@@ -58,7 +58,7 @@ The `Schema` class is responsible for building JSON Schema definitions that map 
 ```typescript
 constructor(name: string)
 ```
-Creates a new schema instance for a specific custom element name and initializes an entry in the static `jsonSchemaMap`.
+Creates a new schema instance for a specific custom element name and initializes an instance-level `schemaMap`. The instance also registers itself in the module-level `schemaRegistry` for cross-element `$ref` resolution.
 
 #### addPath
 ```typescript
@@ -131,7 +131,7 @@ Creates an observer map instance that will configure the provided class prototyp
 public defineProperties(): void
 ```
 The main method that:
-1. Iterates through all root properties defined in the schema (each custom element in the jsonSchemaMap contains multiple schemas, one for each root property)
+1. Iterates through all root properties defined in the schema (each schema instance contains multiple root property schemas)
 2. Defines observable properties using FAST Element's `Observable.defineProperty` (an alternative to the `@observable` decorator syntax used in custom element classes)
 3. Sets up property change handlers that create proxies for nested objects
 
@@ -375,16 +375,18 @@ This creates nested context definitions where the `post` context understands its
 
 ## Technical Details
 
-### Static Schema Map
+### Schema Registry
 
-The `Schema` class maintains a static `CachedPathMap`:
+The `Schema` module exports a module-level `schemaRegistry`:
 ```typescript
-public static jsonSchemaMap: CachedPathMap = new Map();
+export const schemaRegistry: CachedPathMap = new Map();
 ```
 
-This map structure is: `Map<customElementName, Map<rootPropertyName, JSONSchema>>`
+Each `Schema` instance owns an instance-level `schemaMap: Map<string, JSONSchema>` and registers itself in `schemaRegistry` on construction.
 
-**Rationale for Static Property**: The static nature of this map is essential for handling nested components inside f-templates. When an object or array is passed to another custom element within an f-template, that nested component needs to observe the entire root property's structure based on the binding paths within that nested component. The static map allows all components to access and contribute to the same schema definitions, ensuring consistent observation behavior across component boundaries.
+The registry structure is: `Map<customElementName, Map<rootPropertyName, JSONSchema>>`
+
+**Rationale for Module-level Registry**: The registry allows cross-element `$ref` resolution for nested components inside f-templates. When an object or array is passed to another custom element within an f-template, that nested component needs to observe the entire root property's structure based on the binding paths within that nested component. The registry allows all components to access and contribute to the same schema definitions, ensuring consistent observation behavior across component boundaries.
 
 ### Context Tracking
 
@@ -408,15 +410,13 @@ The schema system tracks binding contexts using special metadata:
 
 ### Schema Inspection
 
-You can inspect generated schemas from any f-template custom element in the browser using the console:
+You can inspect generated schemas using the module-level `schemaRegistry` import:
 
 ```typescript
-// First, select an f-template element in the browser's developer tools
-// Then access the static jsonSchemaMap from the console:
-$0.schema.__proto__.constructor.jsonSchemaMap
+import { schemaRegistry } from "@microsoft/fast-html";
 
-// To get a specific schema for an element and property:
-const elementSchemas = $0.schema.__proto__.constructor.jsonSchemaMap.get('my-element');
+// Get all schemas for an element:
+const elementSchemas = schemaRegistry.get('my-element');
 const userSchema = elementSchemas?.get('users');
 console.log(JSON.stringify(userSchema, null, 2));
 ```
