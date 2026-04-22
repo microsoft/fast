@@ -1,5 +1,4 @@
 export { AttributeMap } from "./attribute-map.js";
-export { RenderableFASTElement } from "./element.js";
 export { ObserverMap } from "./observer-map.js";
 export {
     type AttributeMapConfig,
@@ -13,3 +12,4 @@ export {
     type ObserverMapPathNode,
     TemplateElement,
 } from "./template.js";
+export { type ResolvedStringsAndValues, TemplateParser } from "./template-parser.js";

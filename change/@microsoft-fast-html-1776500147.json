@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Remove RenderableFASTElement mixin and defer-hydration/needs-hydration attribute handling. Components extend FASTElement directly and use defineAsync(). The prepare() lifecycle hook is replaced by setting state after connectedCallback. Hydration lifecycle callbacks (hydrationStarted, hydrationComplete) are now managed by TemplateElement.",
+  "packageName": "@microsoft/fast-html",
+  "email": "janechu@microsoft.com",
+  "dependentChangeType": "none"
+}

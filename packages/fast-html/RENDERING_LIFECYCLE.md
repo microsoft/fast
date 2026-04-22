@@ -7,14 +7,14 @@ This document describes the interaction between `@microsoft/fast-element` and `@
 The FAST Element rendering lifecycle involves a coordinated process between two main packages:
 
 - **`@microsoft/fast-element`**: Provides the core `FASTElement` base class and element definition system
-- **`@microsoft/fast-html`**: Provides the `f-template` custom element that processes HTML templates and attaches them to FAST elements as a `ViewTemplate` in lieu of an `html` template created during `FASTElement.define()`. When using `f-template` the `FASTElement.defineAsync()` method must be used instead.
+- **`@microsoft/fast-html`**: Provides the `f-template` custom element that processes HTML templates and attaches them to FAST elements as a `ViewTemplate` in lieu of an `html` template created during `FASTElement.define()`. When using `f-template` the `FASTElement.define()` method is called with `templateOptions: "defer-and-hydrate"` to defer template attachment.
 
 ## Lifecycle Phases
 
 Given a DOM which includes an `f-template` and a component:
 
 ```html
-<my-component defer-hydration needs-hydration text="Hello World">
+<my-component text="Hello World">
     <template shadowrootmode="open">
         <h1><!--fe-b$$start$$0$$abc123$$fe-b-->Hello World<!--fe-b$$end$$0$$abc123$$fe-b--></h1>
     </template>
@@ -31,7 +31,7 @@ The following phases will then be kicked off once the JavaScript is parsed.
 
 ### Phase 1: Partial Element Registration
 
-Custom elements begin their lifecycle by registering as partial definitions with the FAST Element Registry using the `defineAsync()` method. This allows the element to be registered before its template is available.
+Custom elements begin their lifecycle by registering as partial definitions with the FAST Element Registry using the `define()` method with `templateOptions: "defer-and-hydrate"`. This allows the element to be registered before its template is available.
 
 ```typescript
 // Custom element class definition
@@ -40,7 +40,7 @@ class MyComponent extends FASTElement {
 }
 
 // Register as partial definition - element is registered but incomplete
-MyComponent.defineAsync({
+MyComponent.define({
     name: "my-component",
 });
 ```
@@ -68,7 +68,7 @@ When an `f-template` element is connected to the DOM, it initiates the template 
 The lifecycle flow during this phase:
 
 1. **Template Element Connection**: The `f-template` element's `connectedCallback()` is invoked
-2. **Async Registration Lookup**: Uses `FASTElementDefinition.registerAsync(this.name)` to find the partial element definition
+2. **Async Registration Lookup**: Uses `FASTElementDefinition.register(this.name)` to find the partial element definition
 3. **Template Processing**: Processes the HTML template, resolving data bindings, directives, and other template features into the `ViewTemplate` model which is also used by the `@microsoft/fast-element` `html` tag template
 4. **Template Attachment**: Attaches the processed template to the partial element definition via `registeredFastElement.template = resolvedTemplate`
 
@@ -76,15 +76,17 @@ The lifecycle flow during this phase:
 
 Once the template is attached to the partial definition, the element completes its composition:
 
-1. **`composeAsync()` Execution**: The element definition internally completes its composition process
+1. **`compose()` Execution**: The element definition internally completes its composition process
 2. **Platform Registration**: The completed element definition is fully registered with the platform's custom element registry
 
 ### Phase 5: Element Instantiation and Hydration
 
-When custom elements are instantiated in the DOM: the following occurs:
+When custom elements are instantiated in the DOM, the following occurs:
 
 1. **Element Creation**: The platform creates instances of the custom element
-2. **Hydration**: Elements with `needs-hydration` attribute will now be hydrated, or this process may be delayed with the `defer-hydration` attribute which the developer can remove once they determine that the initial state has been provided to the custom element
+2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR and sets `isPrerendered = true`
+3. **Template-Pending Guard**: If `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives.
+4. **Hydration**: Once the template is available, `ElementController` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using `fe-b` markers
 
 The DOM after hydration should look like this:
 
@@ -102,15 +104,15 @@ The DOM after hydration should look like this:
 
 The `fastElementRegistry` serves as the central coordination point between the two packages:
 
-- Stores partial element definitions created by `defineAsync()`
-- Provides lookup mechanism via `registerAsync()` for template attachment
+- Stores partial element definitions created by `define()`
+- Provides lookup mechanism via `register()` for template attachment
 - Maintains the registry of all FAST element definitions
 
 ### Observable Pattern
 
 Both packages use the Observable pattern for coordination:
 
-- `FASTElementDefinition.registerAsync()` uses `Observable.getNotifier()` to notify when elements are registered
+- `FASTElementDefinition.register()` uses `Observable.getNotifier()` to notify when elements are registered
 - Template attachment triggers observable notifications to complete the lifecycle
 
 ## Error Handling
@@ -148,9 +150,12 @@ The lifecycle callbacks are organized into three categories:
 - `elementDidDefine(name: string)` - Called after the custom element has been fully defined with the platform
 
 **Hydration Callbacks:**
-- `elementWillHydrate(name: string)` - Called before an element begins hydration
-- `elementDidHydrate(name: string)` - Called after an element completes hydration
-- `hydrationComplete()` - Called once after all elements have completed hydration
+- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
+- `elementWillHydrate(source: HTMLElement)` - Called before an element begins hydration
+- `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
+- `hydrationComplete()` - Called once after all prerendered elements have completed hydration
+
+Hydration callbacks are tracked at the element level by `ElementController`. The `hydrationComplete` callback fires only after every prerendered element has finished binding.
 
 ### Callback Execution Order
 
@@ -166,13 +171,14 @@ Template Processing Phase (asynchronous):
   4. templateDidUpdate(name)
   5. elementDidDefine(name)
   
-Hydration Phase:
-  6. elementWillHydrate(name)
-  7. [Hydration occurs]
-  8. elementDidHydrate(name)
+Hydration Phase (per element):
+  6. hydrationStarted()           [once, on first element]
+  7. elementWillHydrate(source)
+  8. [Hydration occurs]
+  9. elementDidHydrate(source)
   
 Completion (called once for all elements):
-  9. hydrationComplete()
+  10. hydrationComplete()
 ```
 
 **Important:** Template processing is asynchronous and happens independently for each element. When multiple elements are being processed, the template and hydration callbacks can be interleaved across different elements.
@@ -197,11 +203,11 @@ TemplateElement.config({
     elementDidDefine(name) {
         console.log(`${name} fully defined`);
     },
-    elementWillHydrate(name) {
-        console.log(`${name} starting hydration`);
+    elementWillHydrate(source) {
+        console.log(`${source.localName} starting hydration`);
     },
-    elementDidHydrate(name) {
-        console.log(`${name} hydrated`);
+    elementDidHydrate(source) {
+        console.log(`${source.localName} hydrated`);
     },
     hydrationComplete() {
         console.log('All elements hydrated');
@@ -218,12 +224,12 @@ TemplateElement.define({
 **Performance Monitoring:**
 ```typescript
 TemplateElement.config({
-    elementWillHydrate(name) {
-        performance.mark(`${name}-hydration-start`);
+    elementWillHydrate(source) {
+        performance.mark(`${source.localName}-hydration-start`);
     },
-    elementDidHydrate(name) {
-        performance.mark(`${name}-hydration-end`);
-        performance.measure(`${name}-hydration`, `${name}-hydration-start`, `${name}-hydration-end`);
+    elementDidHydrate(source) {
+        performance.mark(`${source.localName}-hydration-end`);
+        performance.measure(`${source.localName}-hydration`, `${source.localName}-hydration-start`, `${source.localName}-hydration-end`);
     },
     hydrationComplete() {
         const measures = performance.getEntriesByType('measure');
@@ -235,7 +241,7 @@ TemplateElement.config({
 **Loading State Management:**
 ```typescript
 TemplateElement.config({
-    elementWillHydrate() {
+    hydrationStarted() {
         document.body.classList.add('hydrating');
     },
     hydrationComplete() {

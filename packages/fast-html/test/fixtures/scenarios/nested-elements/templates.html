@@ -1,0 +1,56 @@
+<f-template name="test-element-repeat-event">
+    <template>
+        <ul>
+            <f-repeat value="{{item in repeatEventItems}}">
+                <li>
+                    <button @click="{$c.parent.handleItemClick($e)}">{{item.name}}</button>
+                </li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-when-in-repeat">
+    <template>
+        <ul>
+            <f-repeat value="{{item in whenRepeatItems}}">
+                <li>
+                    <f-when value="{{showNames}}">
+                        <button class="name" @click="{$c.parent.handleItemClick(e)}">{{item.name}}</button>
+                    </f-when>
+                </li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="grand-child-element">
+    <template>
+        <span class="category">{{category}}</span>
+    </template>
+</f-template>
+<f-template name="child-element">
+    <template>
+        <div class="item">
+            <span class="index">{{idx}}</span>
+            <span class="text">{{text}}</span>
+            <grand-child-element
+                category="{{category}}"
+            ></grand-child-element>
+        </div>
+    </template>
+</f-template>
+<f-template name="parent-element">
+    <template>
+        <div class="list-container">
+            <h2>{{title}}</h2>
+            <div class="items">
+                <f-repeat value="{{item in items}}" positioning="true">
+                    <child-element
+                        text="{{item.text}}"
+                        idx="{{$index}}"
+                        category="{{category}}"
+                    ></child-element>
+                </f-repeat>
+            </div>
+        </div>
+    </template>
+</f-template>

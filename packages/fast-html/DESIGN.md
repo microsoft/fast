@@ -28,7 +28,7 @@ This document is intended for contributors who want to understand the internal a
 
 ```html
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
-<my-component defer-hydration needs-hydration greeting="Hello">
+<my-component greeting="Hello">
     <template shadowrootmode="open">
         <!--fe-b$$start$$0$$abc123$$fe-b-->Hello<!--fe-b$$end$$0$$abc123$$fe-b-->
     </template>
@@ -59,17 +59,13 @@ This document is intended for contributors who want to understand the internal a
 
 `<f-template>` is a custom element (class `TemplateElement`) that acts as the bridge between a declarative HTML template and the FAST element registry. When connected to the DOM it:
 
-1. Looks up the element definition registered via `defineAsync()`.
-2. Parses the inner `<template>` tag, converting declarative bindings into FAST `ViewTemplate` strings and values.
+1. Looks up the element definition registered via `define()`.
+2. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which converts declarative bindings into FAST `ViewTemplate` strings and values.
 3. Assigns the compiled `ViewTemplate` to the element definition.
 
-### `RenderableFASTElement` — hydration mixin
+### `TemplateParser` — declarative HTML parser
 
-A mixin function that extends any `FASTElement` subclass with hydration-aware logic:
-
-- Adds a `deferHydration` boolean attribute (`defer-hydration`).
-- Waits for any ancestor `defer-hydration` attributes to be removed before allowing its own hydration to begin.
-- Exposes an optional `prepare()` hook that developers can use to fetch initial state before hydration.
+A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parsing pipeline is fully synchronous — no promises are allocated during template resolution. A `StringsAccumulator` tracks the running concatenation of preceding HTML, eliminating repeated O(N) `join("")` calls at each binding site.
 
 ### `Schema` — JSON schema builder
 
@@ -165,8 +161,9 @@ packages/fast-html/
 │   ├── debug.ts               # Human-readable debug messages registered with FAST
 │   └── components/
 │       ├── index.ts           # Component barrel
-│       ├── element.ts         # RenderableFASTElement mixin
-│       ├── template.ts        # TemplateElement (<f-template>), ObserverMapOption, ElementOptions
+│       ├── element.ts         # Element utilities
+│       ├── template.ts        # TemplateElement (<f-template>), lifecycle orchestration, options
+│       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
 │       ├── schema.ts          # Schema class — JSON schema builder
 │       ├── observer-map.ts    # ObserverMap class — auto observable/proxy setup
 │       ├── utilities.ts       # Parsing engine, binding resolvers, proxy system
@@ -185,8 +182,8 @@ packages/fast-html/
 
 ```typescript
 import {
-    RenderableFASTElement,
     TemplateElement,
+    TemplateParser,
     ObserverMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
@@ -199,7 +196,7 @@ Three primary exports are intended for application code:
 | Export | Purpose |
 |---|---|
 | `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
-| `RenderableFASTElement(Base)` | Mixin applied to your `FASTElement` subclass for hydration support. |
+| `TemplateParser` | Standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
 | `ObserverMap` | Advanced: access the observer-map class directly if building tooling. |
 
 Additionally, the following types are exported for use in `observerMap` configuration:
@@ -244,18 +241,18 @@ The high-level data flow from authoring to interactive component:
 flowchart TD
     A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe-b comments and data-fe-b attributes"]
     B --> C[Browser loads JS bundle]
-    C --> D["MyElement.defineAsync called\n→ partial definition in fastElementRegistry"]
+    C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
     C --> E["TemplateElement.define called\n→ registers f-template custom element"]
     D & E --> F["f-template connects to DOM\n→ connectedCallback fires"]
-    F --> G["FASTElementDefinition.registerAsync\n→ looks up partial definition"]
+    F --> G["FASTElementDefinition.register\n→ looks up partial definition"]
     G --> H[transformInnerHTML normalises HTML entities]
     H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
     I --> J{observerMap enabled?}
     J -- yes --> K["ObserverMap.defineProperties\n→ applyConfigToSchema stamps $observe on schema nodes\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
     J -- no --> L
     K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
-    L --> M["FASTElementDefinition.composeAsync\n→ element fully registered with platform"]
-    M --> N["HydratableElementController hydrates\nexisting DOM using fe-b markers"]
+    L --> M["FASTElementDefinition.compose\n→ element fully registered with platform"]
+    M --> N["ElementController detects existing shadow root\nisPrerendered = true\nhydrates existing DOM using fe-b markers\nvia template.hydrate()"]
     N --> O[Interactive component]
 ```
 
@@ -263,40 +260,91 @@ flowchart TD
 
 ## Template Parsing Pipeline
 
-`TemplateElement.connectedCallback()` drives the pipeline via two cooperating private methods:
+`TemplateElement.connectedCallback()` orchestrates the pipeline by creating a `TemplateParser` instance and delegating all parsing logic to it. The recursive parsing context is encapsulated in a `TemplateResolutionContext` object internal to the parser, keeping method signatures lean.
+
+### Architecture
+
+The parsing pipeline is split across two classes:
+
+- **`TemplateElement`** (`template.ts`) — Custom element lifecycle: registration, options, callbacks, `ObserverMap`/`AttributeMap` wiring, and template assignment. ~120 lines.
+- **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser: converts declarative HTML into `strings`/`values` arrays for `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running previous-string in O(1) per binding site instead of O(N) `join("")` calls. Independently testable without DOM.
 
 ```mermaid
 sequenceDiagram
     participant DOM
     participant TE as TemplateElement
+    participant TP as TemplateParser
     participant U as utilities.ts
     participant S as Schema
     participant OM as ObserverMap
 
     DOM->>TE: connectedCallback()
     TE->>TE: new Schema(name)
-    TE->>TE: FASTElementDefinition.registerAsync(name)
+    TE->>TE: FASTElementDefinition.register(name)
     TE->>U: transformInnerHTML(this.innerHTML)
-    TE->>TE: resolveStringsAndValues(innerHTML, ...)
+    TE->>TP: parser.parse(innerHTML, schema)
     loop getNextBehavior(innerHTML)
-        TE->>U: getNextBehavior()
-        U-->>TE: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
-        alt data binding
-            TE->>TE: resolveDataBinding()
-            TE->>U: bindingResolver()
+        TP->>U: getNextBehavior()
+        U-->>TP: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
+        alt content binding
+            TP->>TP: resolveContentBinding()
+            TP->>TP: resolveAccessBinding()
+            TP->>U: bindingResolver()
             U->>S: schema.addPath()
-            U-->>TE: (x,c) => value function
-        else templateDirective (when / repeat)
-            TE->>TE: resolveTemplateDirective()
-            note over TE: recurses into resolveStringsAndValues
+            U-->>TP: (x,c) => value function
+        else attribute binding
+            TP->>TP: resolveAttributeBinding()
+            alt event (@)
+                TP->>TP: resolveEventBinding()
+            else boolean (?)
+                TP->>U: getBooleanBinding() or resolveAccessBinding()
+            else default
+                TP->>TP: resolveAccessBinding()
+            end
         else attributeDirective (slotted / children / ref)
-            TE->>TE: resolveAttributeDirective()
+            TP->>TP: resolveAttributeDirectiveBinding()
+        else templateDirective (when / repeat)
+            TP->>TP: resolveTemplateDirective()
+            note over TP: recurses into resolveStringsAndValues
         end
     end
+    TP-->>TE: { strings, values }
     TE->>OM: observerMap.defineProperties()
-    TE->>TE: ViewTemplate.create(strings, values)
+    TE->>TP: parser.createTemplate(strings, values)
     TE->>DOM: registeredFastElement.template = viewTemplate
 ```
+
+### TemplateParser method decomposition
+
+| Method | Visibility | Role |
+|---|---|---|
+| `parse()` | public | Entry point: parses declarative HTML into `{ strings, values }`. |
+| `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values. |
+| `hasDeprecatedEventSyntax` | public | Getter indicating whether the last parse encountered deprecated `e` event syntax. |
+| `resolveStringsAndValues()` | private | Creates `strings`/`values` arrays and delegates to `resolveInnerHTML()`. |
+| `resolveInnerHTML()` | private | Recursive HTML parser that dispatches to data binding or template directive handlers. |
+| `resolveDataBinding()` | private | Thin dispatcher that routes to `resolveContentBinding()`, `resolveAttributeBinding()`, or `resolveAttributeDirectiveBinding()`. |
+| `resolveContentBinding()` | private | Handles `{{expression}}` in text content. |
+| `resolveAttributeBinding()` | private | Handles `{{expression}}` in HTML attributes; dispatches to `resolveEventBinding()` or `resolveAccessBinding()` based on aspect. |
+| `resolveAttributeDirectiveBinding()` | private | Handles `f-children`, `f-slotted`, `f-ref` directives. |
+| `resolveAccessBinding()` | private | Shared helper for access-type bindings (content, boolean-attribute fallback, default attribute). |
+| `resolveEventBinding()` | private | Handles event bindings (`@event`), including arg parsing and owner resolution. |
+| `resolveTemplateDirective()` | private | Handles `<f-when>` and `<f-repeat>` directives. |
+| `resolveAttributeDirective()` | private | Creates FAST `children()`, `slotted()`, or `ref()` directives. |
+
+### TemplateResolutionContext
+
+The `TemplateResolutionContext` interface (internal to `TemplateParser`) groups the stable fields that flow through the recursive parsing pipeline:
+
+```typescript
+interface TemplateResolutionContext {
+    parentContext: string | null;  // Current repeat item alias (e.g. "item")
+    level: number;          // Nesting depth for repeat directives
+    schema: Schema;         // JSON schema builder for property tracking
+}
+```
+
+`rootPropertyName` is intentionally kept separate because it is selectively mutated per branch and must not leak across sibling binding resolutions.
 
 ### Key parsing functions (utilities.ts)
 
@@ -382,10 +430,10 @@ sequenceDiagram
     participant App as Application JS
     participant FER as fastElementRegistry
     participant TE as TemplateElement (f-template)
-    participant HEC as HydratableElementController
+    participant EC as ElementController
     participant Callbacks as HydrationLifecycleCallbacks
 
-    App->>FER: MyElement.defineAsync({name:'my-el', ...})
+    App->>FER: MyElement.define({name:'my-el', ...})
     note over FER: partial definition stored
 
     App->>TE: TemplateElement.define({name:'f-template'})
@@ -393,34 +441,38 @@ sequenceDiagram
     App->>TE: TemplateElement.options({'my-el':{observerMap:'all'}})
 
     DOM->>TE: f-template connected to DOM
-    TE->>FER: FASTElementDefinition.registerAsync('my-el')
+    TE->>FER: FASTElementDefinition.register('my-el')
     FER-->>TE: resolves with MyElement class
     TE->>Callbacks: elementDidRegister('my-el')
     TE->>Callbacks: templateWillUpdate('my-el')
     TE->>TE: parse template → ViewTemplate
     TE->>FER: registeredFastElement.template = viewTemplate
     TE->>Callbacks: templateDidUpdate('my-el')
-    FER->>FER: composeAsync() → platform registry
+    FER->>FER: compose() → platform registry
     FER->>Callbacks: elementDidDefine('my-el')
 
-    DOM->>HEC: element instance connected with needs-hydration
-    HEC->>Callbacks: elementWillHydrate('my-el')
-    HEC->>HEC: hydrate DOM using fe-b markers
-    HEC->>Callbacks: elementDidHydrate('my-el')
-    HEC->>Callbacks: hydrationComplete()
+    DOM->>EC: element instance connects with existing shadow root
+    EC->>EC: isPrerendered = true (existing shadow root detected)
+    EC->>EC: template-pending guard: wait if no template yet
+    EC->>Callbacks: hydrationStarted()
+    EC->>Callbacks: elementWillHydrate(element)
+    EC->>EC: template.hydrate() — maps existing DOM to binding targets
+    EC->>Callbacks: elementDidHydrate(element)
+    EC->>Callbacks: hydrationComplete()
 ```
 
 ### Lifecycle callback reference
 
 | Callback | When |
 |---|---|
-| `elementDidRegister(name)` | `FASTElementDefinition.registerAsync` resolves |
+| `elementDidRegister(name)` | `FASTElementDefinition.register` resolves |
 | `templateWillUpdate(name)` | Just before template HTML is parsed |
 | `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
-| `elementDidDefine(name)` | After `composeAsync` completes |
-| `elementWillHydrate(name)` | Before `HydratableElementController` hydrates an instance |
-| `elementDidHydrate(name)` | After an instance is fully hydrated |
-| `hydrationComplete()` | Once, after all elements have completed hydration |
+| `elementDidDefine(name)` | After `compose` completes |
+| `hydrationStarted()` | Once, when the first prerendered element begins hydrating |
+| `elementWillHydrate(source)` | Before `ElementController` hydrates a prerendered instance |
+| `elementDidHydrate(source)` | After an instance is fully hydrated |
+| `hydrationComplete()` | Once, after all prerendered elements have completed hydration |
 
 For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 
@@ -432,11 +484,11 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 
 | fast-element primitive | How fast-html uses it |
 |---|---|
-| `FASTElement` | Base class for both `TemplateElement` and user components |
-| `FASTElementDefinition.registerAsync()` | Deferred element registration — element waits for its template |
+| `FASTElement` | Base class for both `TemplateElement` and user components (components extend `FASTElement` directly) |
+| `FASTElementDefinition.register()` | Deferred element registration — element waits for its template |
 | `fastElementRegistry.getByType()` | Looks up a partial definition to attach the compiled template |
 | `ViewTemplate.create(strings, values)` | Compiles the resolved strings/values arrays into a `ViewTemplate` |
-| `HydratableElementController` | Hydrates server-rendered DOM using `fe-b` comment/dataset markers |
+| `ElementController` | Automatically detects prerendered content (`isPrerendered`) and hydrates server-rendered DOM using `fe-b` comment/dataset markers via `template.hydrate()` |
 | `Observable.defineProperty()` | Defines observable root properties on element prototypes (ObserverMap) |
 | `Observable.getNotifier()` | Triggers change notifications from proxy handlers |
 | `when(expr, template)` | FAST directive used for `<f-when>` |
@@ -444,13 +496,10 @@ For usage examples see [RENDERING_LIFECYCLE.md](./RENDERING_LIFECYCLE.md).
 | `slotted(options)` | FAST directive used for `f-slotted` |
 | `children(prop)` | FAST directive used for `f-children` |
 | `ref(prop)` | FAST directive used for `f-ref` |
-| `attr({...})` | Applies the `defer-hydration` boolean attribute on `RenderableFASTElement` |
-| `deferHydrationAttribute` | The `defer-hydration` attribute name constant |
-| `composedParent()` | Traverses the composed tree to find ancestor elements still deferring hydration |
 
-### defineAsync vs define
+### Deferred template attachment via define
 
-Standard `FASTElement.define()` requires a template at definition time. `defineAsync()` allows the definition to be created without a template; the element waits in a partial state until a `<f-template>` supplies one via `registerAsync()`.
+Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a template is provided at definition time. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the `Promise` resolves after a `<f-template>` supplies one via `register()`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
 
 ---
 
@@ -458,9 +507,11 @@ Standard `FASTElement.define()` requires a template at definition time. `defineA
 
 When `templateOptions: "defer-and-hydrate"` is used, the server must render:
 
-1. The custom element tag with `defer-hydration needs-hydration` attributes.
+1. The custom element tag with its attributes and initial state.
 2. A `<template shadowrootmode="open">` containing pre-rendered HTML annotated with FAST's hydration markers.
 3. An `<f-template>` element somewhere in the page that carries the template definition.
+
+Connection gating is handled by the template-pending guard in `ElementController.connect()`. When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
 
 ### Hydration marker formats
 
@@ -543,7 +594,7 @@ Some tests are conditionally skipped when running under the webui integration co
 
 Every fixture must wait for hydration to complete before running assertions. Each `main.ts` registers a `hydrationComplete()` callback via `TemplateElement.config()` that sets a global flag, and each spec file calls `page.waitForFunction()` after `page.goto()` to block until the flag is set. See [test/fixtures/README.md](./test/fixtures/README.md) for the implementation pattern.
 
-See [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) for the complete fixture authoring guide, [test/fixtures/README.md](./test/fixtures/README.md) for a quick reference, and [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) for an example of a complex multi-feature fixture.
+See [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) for the complete fixture authoring guide, [test/fixtures/README.md](./test/fixtures/README.md) for a quick reference, and [test/fixtures/extensions/observer-map-deep-merge/README.md](./test/fixtures/extensions/observer-map-deep-merge/README.md) for an example of a complex multi-feature fixture.
 
 ---
 
@@ -558,4 +609,4 @@ See [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) for
 | [rules/README.md](./rules/README.md) | ast-grep conversion rules for migrating `html` tagged templates |
 | [test/fixtures/README.md](./test/fixtures/README.md) | Quick reference for fixture structure |
 | [test/fixtures/WRITING_FIXTURES.md](./test/fixtures/WRITING_FIXTURES.md) | Complete guide to writing new Playwright fixture tests |
-| [test/fixtures/deep-merge/README.md](./test/fixtures/deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |
+| [test/fixtures/extensions/observer-map-deep-merge/README.md](./test/fixtures/extensions/observer-map-deep-merge/README.md) | Complex deep-merge fixture: observable arrays, nested repeats, conditionals |

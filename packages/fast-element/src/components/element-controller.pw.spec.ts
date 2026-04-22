@@ -20,10 +20,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -48,10 +50,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name, shadowOptions: { mode: "open" } };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name, shadowOptions: { mode: "open" } };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -78,10 +82,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name, shadowOptions: null };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name, shadowOptions: null };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -108,10 +114,15 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name, shadowOptions: { mode: "closed" } };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = {
+                                name,
+                                shadowOptions: { mode: "closed" },
+                            };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -136,10 +147,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -174,10 +187,12 @@ test.describe("The ElementController", () => {
                 };
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -215,10 +230,12 @@ test.describe("The ElementController", () => {
                 };
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name, shadowOptions: null };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name, shadowOptions: null };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -256,15 +273,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                template: html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    template: html`
                                     ${templateA}
                                 `,
-                            };
-                        }
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -276,7 +295,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -304,16 +323,18 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                shadowOptions: null,
-                                template: html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    shadowOptions: null,
+                                    template: html`
                                     ${templateA}
                                 `,
-                            };
-                        }
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -325,7 +346,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -353,15 +374,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                template: html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    template: html`
                                     ${templateA}
                                 `,
-                            };
-                        }
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -376,7 +399,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -404,16 +427,18 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                shadowOptions: null,
-                                template: html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    shadowOptions: null,
+                                    template: html`
                                     ${templateA}
                                 `,
-                            };
-                        }
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -428,7 +453,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -458,15 +483,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name };
-                            resolveTemplate() {
-                                return html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name };
+                                resolveTemplate() {
+                                    return html`
                                     ${templateA}
                                 `;
-                            }
-                        }
+                                }
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -478,7 +505,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -508,15 +535,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name, shadowOptions: null };
-                            resolveTemplate() {
-                                return html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name, shadowOptions: null };
+                                resolveTemplate() {
+                                    return html`
                                     ${templateA}
                                 `;
-                            }
-                        }
+                                }
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -528,7 +557,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                templateA
+                templateA,
             );
 
             expect(beforeConnect).toBe("");
@@ -558,15 +587,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name };
-                            resolveTemplate() {
-                                return html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name };
+                                resolveTemplate() {
+                                    return html`
                                     ${templateA}
                                 `;
-                            }
-                        }
+                                }
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -581,7 +612,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -611,15 +642,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name, shadowOptions: null };
-                            resolveTemplate() {
-                                return html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name, shadowOptions: null };
+                                resolveTemplate() {
+                                    return html`
                                     ${templateA}
                                 `;
-                            }
-                        }
+                                }
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -634,7 +667,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -664,10 +697,12 @@ test.describe("The ElementController", () => {
                     }
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name };
-                        }
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -721,10 +756,12 @@ test.describe("The ElementController", () => {
                     `;
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name, styles: stylesA };
-                        }
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name, styles: stylesA };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -779,10 +816,12 @@ test.describe("The ElementController", () => {
                         `;
 
                         const name = uniqueElementName();
-                        FASTElementDefinition.compose(
-                            class ControllerTest extends FASTElement {
-                                static definition = { name, styles: stylesA };
-                            }
+                        (
+                            await FASTElementDefinition.compose(
+                                class ControllerTest extends FASTElement {
+                                    static definition = { name, styles: stylesA };
+                                },
+                            )
                         ).define();
 
                         const element = document.createElement(name);
@@ -803,7 +842,7 @@ test.describe("The ElementController", () => {
                             cssText,
                         };
                     },
-                    { cssA, cssB }
+                    { cssA, cssB },
                 );
 
             if (supportsAdoptedStyleSheets) {
@@ -840,13 +879,15 @@ test.describe("The ElementController", () => {
                     `;
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name };
-                            resolveStyles() {
-                                return stylesA;
-                            }
-                        }
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name };
+                                resolveStyles() {
+                                    return stylesA;
+                                }
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -901,13 +942,15 @@ test.describe("The ElementController", () => {
                         `;
 
                         const name = uniqueElementName();
-                        FASTElementDefinition.compose(
-                            class ControllerTest extends FASTElement {
-                                static definition = { name };
-                                resolveStyles() {
-                                    return stylesA;
-                                }
-                            }
+                        (
+                            await FASTElementDefinition.compose(
+                                class ControllerTest extends FASTElement {
+                                    static definition = { name };
+                                    resolveStyles() {
+                                        return stylesA;
+                                    }
+                                },
+                            )
                         ).define();
 
                         const element = document.createElement(name);
@@ -928,7 +971,7 @@ test.describe("The ElementController", () => {
                             cssText,
                         };
                     },
-                    { cssA, cssB }
+                    { cssA, cssB },
                 );
 
             if (supportsAdoptedStyleSheets) {
@@ -962,15 +1005,17 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                template: html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    template: html`
                                     ${templateA}
                                 `,
-                            };
-                        }
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -986,7 +1031,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect, afterChange };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -1017,16 +1062,18 @@ test.describe("The ElementController", () => {
                     };
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                shadowOptions: null,
-                                template: html`
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    shadowOptions: null,
+                                    template: html`
                                     ${templateA}
                                 `,
-                            };
-                        }
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -1042,7 +1089,7 @@ test.describe("The ElementController", () => {
 
                     return { beforeConnect, afterConnect, afterChange };
                 },
-                { templateA, templateB }
+                { templateA, templateB },
             );
 
             expect(beforeConnect).toBe("");
@@ -1089,10 +1136,12 @@ test.describe("The ElementController", () => {
                     `;
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name, styles: stylesA };
-                        }
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name, styles: stylesA };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name);
@@ -1118,7 +1167,7 @@ test.describe("The ElementController", () => {
                         lengthAfterChange,
                     };
                 },
-                { cssA, cssB }
+                { cssA, cssB },
             );
 
             if (supportsAdoptedStyleSheets) {
@@ -1144,10 +1193,12 @@ test.describe("The ElementController", () => {
             } = await import("/main.js");
 
             const name = uniqueElementName();
-            FASTElementDefinition.compose(
-                class ControllerTest extends FASTElement {
-                    static definition = { name };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name);
@@ -1175,10 +1226,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -1199,7 +1252,7 @@ test.describe("The ElementController", () => {
                 const afterRemove = attached;
 
                 return { initialAttached, afterAppend, afterRemove };
-            }
+            },
         );
 
         expect(initialAttached).toBe(false);
@@ -1220,10 +1273,12 @@ test.describe("The ElementController", () => {
             } = await import("/main.js");
 
             const name = uniqueElementName();
-            FASTElementDefinition.compose(
-                class ControllerTest extends FASTElement {
-                    static definition = { name };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name);
@@ -1256,10 +1311,12 @@ test.describe("The ElementController", () => {
             } = await import("/main.js");
 
             const name = uniqueElementName();
-            FASTElementDefinition.compose(
-                class ControllerTest extends FASTElement {
-                    static definition = { name };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name);
@@ -1292,10 +1349,12 @@ test.describe("The ElementController", () => {
             } = await import("/main.js");
 
             const name = uniqueElementName();
-            FASTElementDefinition.compose(
-                class ControllerTest extends FASTElement {
-                    static definition = { name };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name);
@@ -1332,16 +1391,18 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = {
-                            name,
-                            shadowOptions: { mode: "open" },
-                            template: html`
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = {
+                                name,
+                                shadowOptions: { mode: "open" },
+                                template: html`
                                 ${templateA}
                             `,
-                        };
-                    }
+                            };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name);
@@ -1358,7 +1419,7 @@ test.describe("The ElementController", () => {
 
                 return { beforeAdd, afterAdd, afterRemove };
             },
-            templateA
+            templateA,
         );
 
         expect(beforeAdd).toBe(false);
@@ -1379,10 +1440,12 @@ test.describe("The ElementController", () => {
             } = await import("/main.js");
 
             const name = uniqueElementName();
-            FASTElementDefinition.compose(
-                class ControllerTest extends FASTElement {
-                    static definition = { name };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class ControllerTest extends FASTElement {
+                        static definition = { name };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name);
@@ -1415,19 +1478,45 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
                 const controller = ElementController.forCustomElement(element);
 
                 const behaviors = [
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
-                    { bound: false, connectedCallback() { this.bound = true; }, disconnectedCallback() { this.bound = false; } },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
+                    {
+                        bound: false,
+                        connectedCallback() {
+                            this.bound = true;
+                        },
+                        disconnectedCallback() {
+                            this.bound = false;
+                        },
+                    },
                 ];
                 behaviors.forEach(x => controller.addBehavior(x));
 
@@ -1459,10 +1548,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1503,10 +1594,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1551,10 +1644,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1562,8 +1657,12 @@ test.describe("The ElementController", () => {
 
                 const behavior = {
                     bound: false,
-                    connectedCallback() { this.bound = true; },
-                    disconnectedCallback() { this.bound = false; },
+                    connectedCallback() {
+                        this.bound = true;
+                    },
+                    disconnectedCallback() {
+                        this.bound = false;
+                    },
                 };
 
                 document.body.appendChild(element);
@@ -1605,10 +1704,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1616,8 +1717,12 @@ test.describe("The ElementController", () => {
 
                 const behavior = {
                     bound: false,
-                    connectedCallback() { this.bound = true; },
-                    disconnectedCallback() { this.bound = false; },
+                    connectedCallback() {
+                        this.bound = true;
+                    },
+                    disconnectedCallback() {
+                        this.bound = false;
+                    },
                 };
 
                 document.body.appendChild(element);
@@ -1654,10 +1759,12 @@ test.describe("The ElementController", () => {
                     } = await import("/main.js");
 
                     const name = uniqueElementName();
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = { name };
-                        }
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = { name };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name) as any;
@@ -1666,8 +1773,12 @@ test.describe("The ElementController", () => {
                     let connectedCalled = false;
                     let disconnectedCalled = false;
                     const behavior = {
-                        connectedCallback() { connectedCalled = true; },
-                        disconnectedCallback() { disconnectedCalled = true; },
+                        connectedCallback() {
+                            connectedCalled = true;
+                        },
+                        disconnectedCallback() {
+                            disconnectedCalled = true;
+                        },
                     };
 
                     controller.addStyles(css``.withBehaviors(behavior));
@@ -1678,8 +1789,11 @@ test.describe("The ElementController", () => {
                     controller.disconnect();
                     const disconnected = disconnectedCalled;
 
-                    return { connectedCalled: connected, disconnectedCalled: disconnected };
-                }
+                    return {
+                        connectedCalled: connected,
+                        disconnectedCalled: disconnected,
+                    };
+                },
             );
 
             expect(connectedCalled).toBe(true);
@@ -1707,17 +1821,23 @@ test.describe("The ElementController", () => {
                     let connectedCalled = false;
                     let disconnectedCalled = false;
                     const behavior = {
-                        connectedCallback() { connectedCalled = true; },
-                        disconnectedCallback() { disconnectedCalled = true; },
+                        connectedCallback() {
+                            connectedCalled = true;
+                        },
+                        disconnectedCallback() {
+                            disconnectedCalled = true;
+                        },
                     };
 
-                    FASTElementDefinition.compose(
-                        class ControllerTest extends FASTElement {
-                            static definition = {
-                                name,
-                                styles: css``.withBehaviors(behavior),
-                            };
-                        }
+                    (
+                        await FASTElementDefinition.compose(
+                            class ControllerTest extends FASTElement {
+                                static definition = {
+                                    name,
+                                    styles: css``.withBehaviors(behavior),
+                                };
+                            },
+                        )
                     ).define();
 
                     const element = document.createElement(name) as any;
@@ -1729,8 +1849,11 @@ test.describe("The ElementController", () => {
                     controller.disconnect();
                     const disconnected = disconnectedCalled;
 
-                    return { connectedCalled: connected, disconnectedCalled: disconnected };
-                }
+                    return {
+                        connectedCalled: connected,
+                        disconnectedCalled: disconnected,
+                    };
+                },
             );
 
             expect(connectedCalled).toBe(true);
@@ -1767,17 +1890,23 @@ test.describe("The ElementController", () => {
                 let connectCount = 0;
                 let disconnectCount = 0;
                 const behavior = {
-                    connectedCallback() { connectCount++; },
-                    disconnectedCallback() { disconnectCount++; },
+                    connectedCallback() {
+                        connectCount++;
+                    },
+                    disconnectedCallback() {
+                        disconnectCount++;
+                    },
                 };
 
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = {
-                            name,
-                            styles: css``.withBehaviors(behavior),
-                        };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = {
+                                name,
+                                styles: css``.withBehaviors(behavior),
+                            };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1824,10 +1953,12 @@ test.describe("The ElementController", () => {
                 } = await import("/main.js");
 
                 const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class ControllerTest extends FASTElement {
+                            static definition = { name };
+                        },
+                    )
                 ).define();
 
                 const element = document.createElement(name) as any;
@@ -1836,8 +1967,12 @@ test.describe("The ElementController", () => {
                 let addedCalled = false;
                 let removedCalled = false;
                 const behavior = {
-                    addedCallback() { addedCalled = true; },
-                    removedCallback() { removedCalled = true; },
+                    addedCallback() {
+                        addedCalled = true;
+                    },
+                    removedCallback() {
+                        removedCalled = true;
+                    },
                 };
 
                 const styles = css``.withBehaviors(behavior);
@@ -1861,12 +1996,8 @@ test.describe("The ElementController", () => {
 
             const innerHTML = await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    html,
-                    uniqueElementName,
-                } = await import("/main.js");
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
 
                 const name = uniqueElementName();
                 const element = document.createElement(name);
@@ -1875,13 +2006,15 @@ test.describe("The ElementController", () => {
 
                 document.body.append(element);
 
-                FASTElementDefinition.compose(
-                    class TestElement extends FASTElement {
-                        static definition = {
-                            name,
-                            template: html`Test 2`,
-                        };
-                    }
+                (
+                    await FASTElementDefinition.compose(
+                        class TestElement extends FASTElement {
+                            static definition = {
+                                name,
+                                template: html`Test 2`,
+                            };
+                        },
+                    )
                 ).define();
 
                 const result = root.innerHTML;
@@ -1937,10 +2070,12 @@ test.describe("The ElementController", () => {
             // @observable decorator does this automatically.
             (Test.prototype as any)._observed = true;
 
-            FASTElementDefinition.compose(
-                class extends Test {
-                    static definition = { name, template };
-                }
+            (
+                await FASTElementDefinition.compose(
+                    class extends Test {
+                        static definition = { name, template };
+                    },
+                )
             ).define();
 
             const element = document.createElement(name) as any;
@@ -1948,12 +2083,10 @@ test.describe("The ElementController", () => {
             Observable.getNotifier(controller).subscribe(
                 {
                     handleChange() {
-                        orderLog.push(
-                            `isConnected set ${controller.isConnected}`
-                        );
+                        orderLog.push(`isConnected set ${controller.isConnected}`);
                     },
                 },
-                "isConnected"
+                "isConnected",
             );
             controller.addBehavior({
                 connectedCallback() {
@@ -1986,104 +2119,5 @@ test.describe("The ElementController", () => {
         expect(order[5]).toBe("isConnected set false");
         expect(order[6]).toBe("parent behavior disconnected");
         expect(order[7]).toBe("child behavior disconnected");
-    });
-});
-
-test.describe("The HydratableElementController", () => {
-    test("should not set a defer-hydration and needs-hydration attribute if the template is set", async ({
-        page,
-    }) => {
-        await page.goto("/");
-
-        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(
-            async () => {
-                // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    ElementController,
-                    HydratableElementController,
-                    needsHydrationAttribute,
-                    deferHydrationAttribute,
-                    uniqueElementName,
-                } = await import("/main.js");
-
-                HydratableElementController.install();
-
-                const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = { name };
-                    }
-                ).define();
-
-                const element = document.createElement(name) as any;
-                element.setAttribute("needs-hydration", "");
-                ElementController.forCustomElement(element);
-
-                const result = {
-                    hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
-                    hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
-                };
-
-                ElementController.setStrategy(ElementController);
-                return result;
-            }
-        );
-
-        expect(hasDeferHydration).toBe(false);
-        expect(hasNeedsHydration).toBe(true);
-    });
-
-    test("should set a defer-hydration and needs-hydration attribute if the template is not set", async ({
-        page,
-    }) => {
-        await page.goto("/");
-
-        const { hasDeferHydration, hasNeedsHydration } = await page.evaluate(
-            async () => {
-                // @ts-expect-error: Client module.
-                const {
-                    FASTElement,
-                    FASTElementDefinition,
-                    ElementController,
-                    HydratableElementController,
-                    needsHydrationAttribute,
-                    deferHydrationAttribute,
-                    uniqueElementName,
-                } = await import("/main.js");
-
-                ElementController.setStrategy(HydratableElementController);
-
-                const name = uniqueElementName();
-                FASTElementDefinition.compose(
-                    class ControllerTest extends FASTElement {
-                        static definition = {
-                            name,
-                            shadowOptions: null,
-                            template: undefined,
-                            templateOptions: "defer-and-hydrate",
-                        };
-                    }
-                ).define();
-
-                const element = document.createElement(name) as any;
-                const controller = ElementController.forCustomElement(element);
-                controller.connect();
-
-                controller.shadowOptions = { mode: "open" };
-
-                const result = {
-                    hasDeferHydration: element.hasAttribute(deferHydrationAttribute),
-                    hasNeedsHydration: element.hasAttribute(needsHydrationAttribute),
-                };
-
-                ElementController.setStrategy(ElementController);
-                return result;
-            }
-        );
-
-        expect(hasDeferHydration).toBe(true);
-        expect(hasNeedsHydration).toBe(true);
     });
 });

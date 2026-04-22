@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nested Elements Hydration Tests</title>
+    </head>
+    <body>
+        <parent-element category="{{category}}"></parent-element>
+        <parent-element title="Empty List" :items="{{emptyItems}}" category="{{category}}"></parent-element>
+        <parent-element title="Single Item" :items="{{singleItem}}" category="{{category}}"></parent-element>
+        <test-element-repeat-event></test-element-repeat-event>
+        <test-when-in-repeat></test-when-in-repeat>
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

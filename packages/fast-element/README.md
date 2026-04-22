@@ -56,3 +56,52 @@ Looking for a quick guide on building components?  Check out [our Cheat Sheet](.
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/2.x/resources/export-sizes/) documentation page for the latest numbers.
+
+## Prerendered Content Optimization
+
+When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
+
+- **Hydration instead of re-render**: The template uses `hydrate()` to map existing DOM nodes to binding targets rather than cloning new DOM.
+- **Template-pending guard**: When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives.
+- **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
+- **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
+
+Component authors can await the promise to know when hydration is complete:
+
+```typescript
+this.$fastController.isPrerendered.then(prerendered => {
+    if (!prerendered) {
+        this.fetchData();
+    }
+});
+```
+
+Custom directives can also await `controller.isPrerendered` (a `Promise<boolean>` on the `ViewController` interface) to determine whether the view's content was prerendered.
+
+## Define Extensions
+
+`FASTElement.define()` accepts an optional second argument — an array of extension callbacks that are invoked with the resolved element definition before the element is registered with the platform. This enables a plugin pattern where reusable behaviors can hook into element registration.
+
+```typescript
+import { FASTElement } from "@microsoft/fast-element";
+import type { FASTElementExtension } from "@microsoft/fast-element";
+
+function logger(): FASTElementExtension {
+    return definition => {
+        console.log(`Defining element: ${definition.name}`);
+    };
+}
+
+class MyComponent extends FASTElement {
+    // component code
+}
+
+// Method style
+MyComponent.define({ name: "my-component", template, styles }, [logger()]);
+
+// Static style
+FASTElement.define(MyComponent, { name: "my-component" }, [logger()]);
+```
+
+Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.
+

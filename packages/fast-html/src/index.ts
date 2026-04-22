@@ -10,5 +10,7 @@ export {
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
     RenderableFASTElement,
+    type ResolvedStringsAndValues,
     TemplateElement,
+    TemplateParser,
 } from "./components/index.js";

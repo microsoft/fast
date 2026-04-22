@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Remove RenderableFASTElement from benchmarks; replace defineAsync with define in all fixtures",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

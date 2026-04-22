@@ -287,6 +287,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
     protected bindObservables(): void;
+    static configHydration(callbacks: ElementHydrationCallbacks): void;
     connect(): void;
     protected connectBehaviors(): void;
     get context(): ExecutionContext;
@@ -298,6 +299,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     protected hasExistingShadowRoot: boolean;
     get isBound(): boolean;
     get isConnected(): boolean;
+    readonly isPrerendered: Promise<boolean>;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     protected needsInitialization: boolean;
@@ -323,6 +325,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
 export interface ElementControllerStrategy {
     // (undocumented)
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
+}
+
+// @public
+export interface ElementHydrationCallbacks {
+    elementDidHydrate?(source: HTMLElement): void;
+    elementWillHydrate?(source: HTMLElement): void;
+    hydrationComplete?(): void;
+    hydrationStarted?(): void;
 }
 
 // @public
@@ -435,7 +445,6 @@ export const FASTElement: {
     new (): FASTElement;
     define: typeof define;
     compose: typeof compose;
-    defineAsync: typeof defineAsync;
     from: typeof from;
 };
 
@@ -443,10 +452,8 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
-    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): FASTElementDefinition<TType>;
-    // @alpha
-    static composeAsync<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
-    define(registry?: CustomElementRegistry): this;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+    define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -456,7 +463,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @alpha
-    static registerAsync: (name: string) => Promise<Function>;
+    static register: (name: string) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
@@ -467,6 +474,9 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     templateOptions?: TemplateOptions;
     readonly type: TType;
 }
+
+// @public
+export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // Warning: (ae-internal-missing-underscore) The name "fastElementRegistry" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -575,29 +585,20 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     firstChild: Node;
     insertBefore(node: Node): void;
     isBound: boolean;
+    isPrerendered: Promise<boolean>;
     lastChild: Node;
     // (undocumented)
     onUnbind(behavior: {
         unbind(controller: ViewController<TSource, TParent>): void;
     }): void;
     remove(): void;
+    // @internal
+    _skipAttrUpdates: boolean;
     source: TSource | null;
     readonly sourceLifetime: SourceLifetime;
     // (undocumented)
     readonly targets: ViewBehaviorTargets;
     unbind(): void;
-}
-
-// @beta
-export class HydratableElementController<TElement extends HTMLElement = HTMLElement> extends ElementController<TElement> {
-    static config(callbacks: HydrationControllerCallbacks): typeof HydratableElementController;
-    connect(): void;
-    disconnect(): void;
-    static install(): void;
-    static lifecycleCallbacks: HydrationControllerCallbacks;
-    protected needsHydration?: boolean;
-    get shadowOptions(): ShadowRootOptions | undefined;
-    set shadowOptions(value: ShadowRootOptions | undefined);
 }
 
 // @public (undocumented)
@@ -627,11 +628,11 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
-export interface HydrationControllerCallbacks<TElement extends HTMLElement = HTMLElement> {
-    elementDidHydrate?(source: TElement): void;
-    elementWillHydrate?(source: TElement): void;
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
+export class HydrationTracker {
+    constructor(callbacks: ElementHydrationCallbacks);
+    add(element: HTMLElement): void;
+    notifyWillHydrate(element: HTMLElement): void;
+    remove(element: HTMLElement): void;
 }
 
 // @public
@@ -678,9 +679,6 @@ export const Markup: Readonly<{
     attribute: (id: string) => string;
     comment: (id: string) => string;
 }>;
-
-// @public
-export const needsHydrationAttribute = "needs-hydration";
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
@@ -1086,6 +1084,9 @@ export type ViewBehaviorTargets = {
 
 // @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
+    readonly isPrerendered?: Promise<boolean>;
+    // @internal
+    readonly _skipAttrUpdates?: boolean;
     readonly targets: ViewBehaviorTargets;
 }
 
@@ -1111,10 +1112,9 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:63:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:64:5 - (ae-forgotten-export) The symbol "defineAsync" needs to be exported by the entry point index.d.ts
-// dist/dts/components/fast-element.d.ts:65:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
+// dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

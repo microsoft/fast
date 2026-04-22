@@ -3,7 +3,7 @@ import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
-import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
+import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
@@ -15,7 +15,7 @@ const fastElementBaseTypes = new Set<Function>();
  */
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
-    () => createTypeRegistry<FASTElementDefinition>()
+    () => createTypeRegistry<FASTElementDefinition>(),
 );
 
 export type { TypeRegistry };
@@ -62,6 +62,14 @@ export interface TemplateLifecycleCallbacks {
      */
     elementDidDefine?(name: string): void;
 }
+
+/**
+ * A callback that receives a FASTElementDefinition during element registration.
+ * Extensions are invoked before the element is registered with the platform,
+ * allowing plugins to inspect or act on the resolved definition.
+ * @public
+ */
+export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 /**
  * Represents metadata configuration for a custom element.
@@ -125,7 +133,7 @@ export interface PartialFASTElementDefinition {
  * @public
  */
 export class FASTElementDefinition<
-    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 > {
     private platformDefined = false;
 
@@ -204,7 +212,7 @@ export class FASTElementDefinition<
 
     private constructor(
         type: TType,
-        nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition
+        nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition,
     ) {
         if (isString(nameOrConfig)) {
             nameOrConfig = { name: nameOrConfig };
@@ -243,8 +251,8 @@ export class FASTElementDefinition<
             nameOrConfig.shadowOptions === void 0
                 ? defaultShadowOptions
                 : nameOrConfig.shadowOptions === null
-                ? void 0
-                : { ...defaultShadowOptions, ...nameOrConfig.shadowOptions };
+                  ? void 0
+                  : { ...defaultShadowOptions, ...nameOrConfig.shadowOptions };
 
         this.elementOptions =
             nameOrConfig.elementOptions === void 0
@@ -261,13 +269,24 @@ export class FASTElementDefinition<
     /**
      * Defines a custom element based on this definition.
      * @param registry - The element registry to define the element in.
+     * @param extensions - An optional array of extension callbacks to invoke
+     * with this definition before platform registration.
      * @remarks
      * This operation is idempotent per registry.
      */
-    public define(registry: CustomElementRegistry = this.registry): this {
+    public define(
+        registry: CustomElementRegistry = this.registry,
+        extensions?: FASTElementExtension[],
+    ): this {
         const type = this.type;
 
         if (!registry.get(this.name)) {
+            if (extensions) {
+                for (const extension of extensions) {
+                    extension(this);
+                }
+            }
+
             this.platformDefined = true;
             registry.define(this.name, type as any, this.elementOptions);
             this.lifecycleCallbacks?.elementDidDefine?.(this.name);
@@ -283,16 +302,17 @@ export class FASTElementDefinition<
      * that describes the element to define.
      */
     public static compose<
-        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
     >(
         type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition
-    ): FASTElementDefinition<TType> {
-        if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
-            return new FASTElementDefinition<TType>(class extends type {}, nameOrDef);
-        }
+        nameOrDef?: string | PartialFASTElementDefinition,
+    ): Promise<FASTElementDefinition<TType>> {
+        const definition =
+            fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)
+                ? new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
+                : new FASTElementDefinition<TType>(type, nameOrDef);
 
-        return new FASTElementDefinition<TType>(type, nameOrDef);
+        return Promise.resolve(definition);
     }
 
     /**
@@ -321,7 +341,7 @@ export class FASTElementDefinition<
      * @param name - The name of the defined custom element.
      * @alpha
      */
-    public static registerAsync = async (name: string): Promise<Function> => {
+    public static register = async (name: string): Promise<Function> => {
         return new Promise(resolve => {
             if (FASTElementDefinition.isRegistered[name]) {
                 resolve(FASTElementDefinition.isRegistered[name]);
@@ -329,48 +349,11 @@ export class FASTElementDefinition<
 
             Observable.getNotifier(FASTElementDefinition.isRegistered).subscribe(
                 { handleChange: () => resolve(FASTElementDefinition.isRegistered[name]) },
-                name
+                name,
             );
         });
     };
-
-    /**
-     * Creates an instance of FASTElementDefinition asynchronously. This option assumes
-     * that a template and shadowOptions will be provided and completes when those requirements
-     * are met.
-     * @param type - The type this definition is being created for.
-     * @param nameOrDef - The name of the element to define or a config object
-     * that describes the element to define.
-     * @alpha
-     */
-    public static composeAsync<
-        TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
-    >(
-        type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition
-    ): Promise<FASTElementDefinition<TType>> {
-        return new Promise(resolve => {
-            if (fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)) {
-                resolve(
-                    new FASTElementDefinition<TType>(class extends type {}, nameOrDef)
-                );
-            }
-
-            const definition = new FASTElementDefinition<TType>(type, nameOrDef);
-
-            Observable.getNotifier(definition).subscribe(
-                {
-                    handleChange: () => {
-                        definition.lifecycleCallbacks?.templateDidUpdate?.(
-                            definition.name
-                        );
-                        resolve(definition);
-                    },
-                },
-                "template"
-            );
-        });
-    }
+ 
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");
