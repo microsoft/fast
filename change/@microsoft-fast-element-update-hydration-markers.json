@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "Simplify hydration markers: replace verbose HTML comment markers with data-free sequential markers (f:b, f:/b, f:r, f:/r, f:e, f:/e). Replace regex parsing with string equality checks and balanced depth counting. Single data-fe=\"N\" attribute format replaces three old formats. Breaking change: SSR output format changed.",
-  "packageName": "@microsoft/fast-element",
-  "email": "janechu@microsoft.com",
-  "dependentChangeType": "patch"
-}
