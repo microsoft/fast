@@ -159,8 +159,9 @@ export function buildViewBindingTargets(
             case Node.COMMENT_NODE: {
                 const data = (node as Comment).data;
                 if (data === "fe:e") {
-                    // Element boundary — skip subtree
-                    skipToElementBoundaryEnd(walker);
+                    // Element boundary — clear start marker and skip subtree
+                    (node as Comment).data = "";
+                    skipToElementBoundaryEnd(walker, factories, node);
                 } else if (data === "fe:b") {
                     // Content binding — consume next factory
                     const factory = factories[factoryPointer++];
@@ -266,19 +267,34 @@ function targetContentBinding(
  * Skips past a nested custom element's shadow content using balanced
  * depth counting to handle nested element boundaries correctly.
  */
-function skipToElementBoundaryEnd(walker: TreeWalker) {
+function skipToElementBoundaryEnd(
+    walker: TreeWalker,
+    factories: CompiledViewBehaviorFactory[],
+    startNode: Node,
+) {
     let depth = 0;
     let current = walker.nextSibling();
     while (current !== null) {
         if (isComment(current)) {
             if (current.data === "fe:e") depth++;
             else if (current.data === "fe:/e") {
-                if (depth === 0) break;
+                if (depth === 0) {
+                    current.data = "";
+                    return;
+                }
                 depth--;
             }
         }
         current = walker.nextSibling();
     }
+
+    throw new HydrationTargetElementError(
+        `HydrationView could not find the end of an element boundary inside ${
+            (startNode.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
+        }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+        factories,
+        startNode,
+    );
 }
 
 /**
