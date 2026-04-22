@@ -410,7 +410,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         let serializer: XMLSerializer | null = null;
         const getSerializer = (): XMLSerializer =>
             serializer ?? (serializer = new XMLSerializer());
-        this.views = new Array(itemCount);
+        this.views = Array.from({ length: itemCount }, () => null as any);
 
         // Determine the scan boundary for this repeat directive.
         // Use the content binding boundaries (from the parent's fe:b/fe:/b
