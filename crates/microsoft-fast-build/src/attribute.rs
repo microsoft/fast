@@ -333,7 +333,7 @@ fn extract_bool_attr_prefix(result: &str) -> Option<String> {
 /// - `f-ref="{...}"`, `f-slotted="{...}"`, `f-children="{...}"` attribute directives
 ///
 /// These are resolved or reconnected entirely by the FAST client runtime and
-/// have no meaning in static HTML. The `data-fe-c` hydration binding count is
+/// have no meaning in static HTML. The `data-fe` hydration binding count is
 /// unaffected — callers use `count_tag_attribute_bindings` on the *original*
 /// tag string so the FAST runtime still allocates the correct number of binding slots.
 pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
@@ -369,9 +369,10 @@ pub(crate) fn strip_client_only_attrs(tag: &str) -> String {
     out
 }
 
-/// Insert `data-fe-c-{start}-{count}` as an attribute just before the closing `>` or `/>`.
-pub(crate) fn inject_compact_marker(tag: &str, start_idx: usize, count: usize) -> String {
-    let marker = format!(" data-fe-c-{}-{}", start_idx, count);
+/// Insert `data-fe="N"` as an attribute just before the closing `>` or `/>`.
+/// N is the count of attribute binding factories targeting this element.
+pub(crate) fn inject_count_marker(tag: &str, count: usize) -> String {
+    let marker = format!(" data-fe=\"{}\"", count);
     let trimmed = tag.trim_end();
     if trimmed.ends_with("/>") {
         let base = trimmed[..trimmed.len() - 2].trim_end();
