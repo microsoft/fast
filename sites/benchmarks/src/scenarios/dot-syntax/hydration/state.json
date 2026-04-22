@@ -1,0 +1,11 @@
+{
+    "user": {
+        "name": "Jane",
+        "address": {
+            "city": "Seattle",
+            "geo": {
+                "lat": 47.6
+            }
+        }
+    }
+}
