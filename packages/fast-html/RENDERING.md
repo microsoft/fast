@@ -107,8 +107,8 @@ When hydrating the HTML, FAST uses `ElementController` which detects an existing
 
 Content binding markers are represented using HTML comments. These comments are used to indicate where dynamic content exists in the template. Markers carry no embedded data — they are fixed strings matched by string equality (not regex).
 
-* Start binding: `<!--f:b-->`
-* End binding: `<!--f:/b-->`
+* Start binding: `<!--fe:b-->`
+* End binding: `<!--fe:/b-->`
 
 Binding pairs are matched using balanced depth counting: each start marker increments a depth counter and each end marker decrements it. When the counter returns to zero the pair is complete.
 
@@ -143,7 +143,7 @@ When combined with state such as:
 
 Should result in:
 ```html
-<h1><!--f:b-->Hello world<!--f:/b--></h1>
+<h1><!--fe:b-->Hello world<!--fe:/b--></h1>
 ```
 
 #### Attribute Bindings
@@ -208,9 +208,9 @@ Multiple attributes and content bindings such as:
 Should result in:
 ```html
 <div data-fe="3" show appearance="large" punctuation="!">
-    <h1><!--f:b-->Hello<!--f:/b--></h1>
-    <span><!--f:b-->world<!--f:/b--></span>
-    <span><!--f:b-->!<!--f:/b--></span>
+    <h1><!--fe:b-->Hello<!--fe:/b--></h1>
+    <span><!--fe:b-->world<!--fe:/b--></span>
+    <span><!--fe:b-->!<!--fe:/b--></span>
 </div>
 ```
 
@@ -238,31 +238,31 @@ Combined with state:
 
 Should result in:
 ```html
-<!--f:b-->
-<!--f:r-->
+<!--fe:b-->
+<!--fe:r-->
 <span>
-    <!--f:b-->Bob<!--f:/b-->
+    <!--fe:b-->Bob<!--fe:/b-->
 </span>
-<!--f:/r-->
-<!--f:r-->
+<!--fe:/r-->
+<!--fe:r-->
 <span>
-    <!--f:b-->Alice<!--f:/b-->
+    <!--fe:b-->Alice<!--fe:/b-->
 </span>
-<!--f:/r-->
-<!--f:r-->
+<!--fe:/r-->
+<!--fe:r-->
 <span>
-    <!--f:b-->Sue<!--f:/b-->
+    <!--fe:b-->Sue<!--fe:/b-->
 </span>
-<!--f:/r-->
-<!--f:/b-->
+<!--fe:/r-->
+<!--fe:/b-->
 ```
 
 Note that the repeat markers are data-free — they carry no index or ID. Pairing uses balanced depth counting. Additionally, a binding wraps the repeat markers; even if the array is empty, this binding must be rendered.
 
 Example result of an empty array:
 ```html
-<!--f:b-->
-<!--f:/b-->
+<!--fe:b-->
+<!--fe:/b-->
 ```
 
 #### When
@@ -286,11 +286,11 @@ Combined with state:
 
 Should result in:
 ```html
-<!--f:b-->
+<!--fe:b-->
 <span>
-    <!--f:b-->Hello world<!--f:/b-->
+    <!--fe:b-->Hello world<!--fe:/b-->
 </span>
-<!--f:/b-->
+<!--fe:/b-->
 ```
 
 If the when is evaluated to `falsy` then we can safely leave the binding markers only.
@@ -305,8 +305,8 @@ Example state:
 
 Should result in:
 ```html
-<!--f:b-->
-<!--f:/b-->
+<!--fe:b-->
+<!--fe:/b-->
 ```
 
 ### Client Side Bindings
@@ -367,16 +367,16 @@ Combined with state:
 
 Should result in:
 ```html
-<!--f:b-->
+<!--fe:b-->
 <span>
-    <!--f:b-->Hello world<!--f:/b-->
+    <!--fe:b-->Hello world<!--fe:/b-->
 </span>
-    <!--f:b-->
+    <!--fe:b-->
     <span>
-        <!--f:b-->Hello pluto<!--f:/b-->
+        <!--fe:b-->Hello pluto<!--fe:/b-->
     </span>
-    <!--f:/b-->
-<!--f:/b-->
+    <!--fe:/b-->
+<!--fe:/b-->
 ```
 
 ##### Nested Repeats
@@ -427,44 +427,44 @@ Combined with state:
 
 Should result in:
 ```html
-<!--f:b-->
-    <!--f:r-->
+<!--fe:b-->
+    <!--fe:r-->
     <div>
-        <span><!--f:b-->Bob<!--f:/b--></span>
-        <!--f:b--><!--f:/b-->
+        <span><!--fe:b-->Bob<!--fe:/b--></span>
+        <!--fe:b--><!--fe:/b-->
     </div>
-    <!--f:/r--><!--f:r-->
+    <!--fe:/r--><!--fe:r-->
     <div>
-        <span><!--f:b-->Alice<!--f:/b--></span>
-        <!--f:b--><!--f:/b-->
+        <span><!--fe:b-->Alice<!--fe:/b--></span>
+        <!--fe:b--><!--fe:/b-->
     </div>
-    <!--f:/r--><!--f:r-->
+    <!--fe:/r--><!--fe:r-->
     <div>
-        <span><!--f:b-->Sue<!--f:/b--></span>
-        <!--f:b-->
+        <span><!--fe:b-->Sue<!--fe:/b--></span>
+        <!--fe:b-->
             <ul>
-                <!--f:b-->
-                <!--f:r-->
+                <!--fe:b-->
+                <!--fe:r-->
                 <li>
-                    <!--f:b-->Amy<!--f:/b-->
+                    <!--fe:b-->Amy<!--fe:/b-->
                 </li>
-                <!--f:/r-->
-                <!--f:r-->
+                <!--fe:/r-->
+                <!--fe:r-->
                 <li>
-                    <!--f:b-->Clarice<!--f:/b-->
+                    <!--fe:b-->Clarice<!--fe:/b-->
                 </li>
-                <!--f:/r-->
-                <!--f:r-->
+                <!--fe:/r-->
+                <!--fe:r-->
                 <li>
-                    <!--f:b-->Lawrence<!--f:/b-->
+                    <!--fe:b-->Lawrence<!--fe:/b-->
                 </li>
-                <!--f:/r-->
-                <!--f:/b-->
+                <!--fe:/r-->
+                <!--fe:/b-->
             </ul>
-        <!--f:/b-->
+        <!--fe:/b-->
     </div>
-    <!--f:/r-->
-<!--f:/b-->
+    <!--fe:/r-->
+<!--fe:/b-->
 ```
 
 ##### Nested components with `<slot>`
@@ -498,16 +498,16 @@ Should result in:
 ```html
 <nested-components>
     <template shadowrootmode="open" shadowroot="open">
-        <!--f:b-->
+        <!--fe:b-->
         <my-button data-fe="1" appearance="fancy">
             <template shadowrootmode="open" shadowroot="open">
                 <button class="default" data-fe="1">
                     <slot></slot>
                 </button>
             </template>
-            <!--f:b-->Hello world<!--f:/b-->
+            <!--fe:b-->Hello world<!--fe:/b-->
         </my-button>
-        <!--f:/b-->
+        <!--fe:/b-->
     </template>
 </nested-components>
 ```

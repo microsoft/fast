@@ -20,13 +20,13 @@ import type { HydrationView } from "../templating/view.js";
  * by maintaining a sequential pointer through the factories array.
  *
  * Content binding markers bracket text/template content:
- *   <!--f:b--> ...content... <!--f:/b-->
+ *   <!--fe:b--> ...content... <!--fe:/b-->
  *
  * Repeat item markers bracket each repeated item:
- *   <!--f:r--> ...item... <!--f:/r-->
+ *   <!--fe:r--> ...item... <!--fe:/r-->
  *
  * Element boundary markers demarcate nested custom elements:
- *   <!--f:e--> ...shadow content... <!--f:/e-->
+ *   <!--fe:e--> ...shadow content... <!--fe:/e-->
  *
  * Attribute bindings use a single `data-fe` attribute whose value is
  * the count of attribute binding factories targeting the element:
@@ -47,46 +47,46 @@ export const HydrationMarkup = Object.freeze({
 
     // Content binding markers (no arguments)
     contentBindingStartMarker(): string {
-        return "f:b";
+        return "fe:b";
     },
     contentBindingEndMarker(): string {
-        return "f:/b";
+        return "fe:/b";
     },
 
     // Repeat item markers (no arguments)
     repeatStartMarker(): string {
-        return "f:r";
+        return "fe:r";
     },
     repeatEndMarker(): string {
-        return "f:/r";
+        return "fe:/r";
     },
 
     // Element boundary markers (no arguments)
     elementBoundaryStartMarker(): string {
-        return "f:e";
+        return "fe:e";
     },
     elementBoundaryEndMarker(): string {
-        return "f:/e";
+        return "fe:/e";
     },
 
     // Detection — simple string equality
     isContentBindingStartMarker(data: string): boolean {
-        return data === "f:b";
+        return data === "fe:b";
     },
     isContentBindingEndMarker(data: string): boolean {
-        return data === "f:/b";
+        return data === "fe:/b";
     },
     isRepeatViewStartMarker(data: string): boolean {
-        return data === "f:r";
+        return data === "fe:r";
     },
     isRepeatViewEndMarker(data: string): boolean {
-        return data === "f:/r";
+        return data === "fe:/r";
     },
     isElementBoundaryStartMarker(node: Node): boolean {
-        return isComment(node) && node.data === "f:e";
+        return isComment(node) && node.data === "fe:e";
     },
     isElementBoundaryEndMarker(node: Node): boolean {
-        return isComment(node) && node.data === "f:/e";
+        return isComment(node) && node.data === "fe:/e";
     },
 
     /**

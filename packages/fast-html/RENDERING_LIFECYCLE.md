@@ -16,7 +16,7 @@ Given a DOM which includes an `f-template` and a component:
 ```html
 <my-component text="Hello World">
     <template shadowrootmode="open">
-        <h1><!--f:b-->Hello World<!--f:/b--></h1>
+        <h1><!--fe:b-->Hello World<!--fe:/b--></h1>
     </template>
 </my-component>
 
@@ -86,7 +86,7 @@ When custom elements are instantiated in the DOM, the following occurs:
 1. **Element Creation**: The platform creates instances of the custom element
 2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR and sets `isPrerendered = true`
 3. **Template-Pending Guard**: If `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives.
-4. **Hydration**: Once the template is available, `ElementController` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using `f:b` / `f:/b` markers
+4. **Hydration**: Once the template is available, `ElementController` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using `fe:b` / `fe:/b` markers
 
 The DOM after hydration should look like this:
 
