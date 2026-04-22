@@ -5,16 +5,16 @@
         <title>Lifecycle Callbacks Test</title>
     </head>
     <body>
-        <simple-element needs-hydration><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Hello<!--fe:/b--> World</template></simple-element>
+        <simple-element needs-hydration><template shadowrootmode="open" shadowroot="open"><!--fe-b$$start$$0$$message-0$$fe-b-->Hello<!--fe-b$$end$$0$$message-0$$fe-b--> World</template></simple-element>
         <complex-element needs-hydration count="0"><template shadowrootmode="open" shadowroot="open"><div>
-            <h2><!--fe:b-->Complex<!--fe:/b--></h2>
-            <p>Count: <!--fe:b-->0<!--fe:/b--></p>
-            <nested-element label="Complex" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->Complex<!--fe:/b--></span></template></nested-element>
+            <h2><!--fe-b$$start$$0$$title-0$$fe-b-->Complex<!--fe-b$$end$$0$$title-0$$fe-b--></h2>
+            <p>Count: <!--fe-b$$start$$1$$count-1$$fe-b-->0<!--fe-b$$end$$1$$count-1$$fe-b--></p>
+            <nested-element label="Complex" data-fe-c-2-1><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$label-0$$fe-b-->Complex<!--fe-b$$end$$0$$label-0$$fe-b--></span></template></nested-element>
         </div></template></complex-element>
-        <deferred-element needs-hydration defer-hydration><template shadowrootmode="open" shadowroot="open"><p>Status: <!--fe:b-->pending<!--fe:/b--></p></template></deferred-element>
+        <deferred-element needs-hydration defer-hydration><template shadowrootmode="open" shadowroot="open"><p>Status: <!--fe-b$$start$$0$$status-0$$fe-b-->pending<!--fe-b$$end$$0$$status-0$$fe-b--></p></template></deferred-element>
         <deferred-parent-element needs-hydration defer-hydration><template shadowrootmode="open" shadowroot="open"><section>
-            <p><!--fe:b-->Parent<!--fe:/b--></p>
-            <deferred-child-element label="Parent" data-fe="1"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->Parent<!--fe:/b--></span></template></deferred-child-element>
+            <p><!--fe-b$$start$$0$$label-0$$fe-b-->Parent<!--fe-b$$end$$0$$label-0$$fe-b--></p>
+            <deferred-child-element label="Parent" data-fe-c-1-1><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$label-0$$fe-b-->Parent<!--fe-b$$end$$0$$label-0$$fe-b--></span></template></deferred-child-element>
         </section></template></deferred-parent-element>
 <f-template name="simple-element">
     <template>{{message}} World</template>

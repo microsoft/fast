@@ -156,127 +156,127 @@
             <!-- Stats Section with Deep Property Access -->
             <div class="stats">
                 <h2>Statistics</h2>
-                <p>Total Orders: <strong><!--fe:b-->3<!--fe:/b--></strong></p>
-                <p>Total Revenue: <strong>$<!--fe:b-->425.5<!--fe:/b--></strong></p>
-                <p>Active Users: <strong><!--fe:b-->2<!--fe:/b--></strong></p>
-                <button data-fe="1">Update Stats</button>
+                <p>Total Orders: <strong><!--fe-b$$start$$0$$stats.totalOrders-0$$fe-b-->3<!--fe-b$$end$$0$$stats.totalOrders-0$$fe-b--></strong></p>
+                <p>Total Revenue: <strong>$<!--fe-b$$start$$1$$stats.totalRevenue-1$$fe-b-->425.5<!--fe-b$$end$$1$$stats.totalRevenue-1$$fe-b--></strong></p>
+                <p>Active Users: <strong><!--fe-b$$start$$2$$stats.activeUsers-2$$fe-b-->2<!--fe-b$$end$$2$$stats.activeUsers-2$$fe-b--></strong></p>
+                <button data-fe-c-3-1>Update Stats</button>
             </div>
 
             <!-- Control Buttons -->
             <div class="controls">
                 <h2>Test Actions</h2>
-                <button data-fe="1">Update User Profile</button>
-                <button data-fe="1">Replace Orders</button>
-                <button data-fe="1">Remove Order Items</button>
-                <button data-fe="1">Update Product Tags</button>
-                <button data-fe="1">Add New User</button>
-                <button data-fe="1">Toggle Details</button>
-                <button data-fe="1">Increment Age</button>
-                <button data-fe="1">Test Undefined Merge</button>
+                <button data-fe-c-4-1>Update User Profile</button>
+                <button data-fe-c-5-1>Replace Orders</button>
+                <button data-fe-c-6-1>Remove Order Items</button>
+                <button data-fe-c-7-1>Update Product Tags</button>
+                <button data-fe-c-8-1>Add New User</button>
+                <button data-fe-c-9-1>Toggle Details</button>
+                <button data-fe-c-10-1>Increment Age</button>
+                <button data-fe-c-11-1>Test Undefined Merge</button>
             </div>
 
             <!-- Users List with Conditional Rendering -->
             <div class="users">
-                <h2>Users (<!--fe:b-->2<!--fe:/b--> total)</h2>
+                <h2>Users (<!--fe-b$$start$$12$$users.length-12$$fe-b-->2<!--fe-b$$end$$12$$users.length-12$$fe-b--> total)</h2>
 
-                <!--fe:b--><!--fe:r-->
+                <!--fe-b$$start$$13$$repeat-13$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
                     <div class="user-card">
-                        <h3><!--fe:b-->Alice Johnson<!--fe:/b--> (ID: <!--fe:b-->1<!--fe:/b-->)</h3>
-                        <p>Email: <!--fe:b-->alice@example.com<!--fe:/b--></p>
+                        <h3><!--fe-b$$start$$0$$user.name-0$$fe-b-->Alice Johnson<!--fe-b$$end$$0$$user.name-0$$fe-b--> (ID: <!--fe-b$$start$$1$$user.id-1$$fe-b-->1<!--fe-b$$end$$1$$user.id-1$$fe-b-->)</h3>
+                        <p>Email: <!--fe-b$$start$$2$$user.email-2$$fe-b-->alice@example.com<!--fe-b$$end$$2$$user.email-2$$fe-b--></p>
 
                         <!-- Conditional Details Section -->
-                        <!--fe:b-->
+                        <!--fe-b$$start$$3$$when-3$$fe-b-->
                             <div class="profile">
                                 <h4>Profile</h4>
-                                <p>Age: <!--fe:b-->28<!--fe:/b--></p>
-                                <p>Location: <!--fe:b-->New York<!--fe:/b-->, <!--fe:b-->USA<!--fe:/b--></p>
-                                <p>Theme: <!--fe:b-->dark<!--fe:/b--></p>
-                                <p>Notifications: <!--fe:b-->Enabled<!--fe:/b--><!--fe:b--><!--fe:/b--></p>
+                                <p>Age: <!--fe-b$$start$$0$$3-user.profile.age-0$$fe-b-->28<!--fe-b$$end$$0$$3-user.profile.age-0$$fe-b--></p>
+                                <p>Location: <!--fe-b$$start$$1$$3-user.profile.location.city-1$$fe-b-->New York<!--fe-b$$end$$1$$3-user.profile.location.city-1$$fe-b-->, <!--fe-b$$start$$2$$3-user.profile.location.country-2$$fe-b-->USA<!--fe-b$$end$$2$$3-user.profile.location.country-2$$fe-b--></p>
+                                <p>Theme: <!--fe-b$$start$$3$$3-user.profile.preferences.theme-3$$fe-b-->dark<!--fe-b$$end$$3$$3-user.profile.preferences.theme-3$$fe-b--></p>
+                                <p>Notifications: <!--fe-b$$start$$4$$3-when-4$$fe-b-->Enabled<!--fe-b$$end$$4$$3-when-4$$fe-b--><!--fe-b$$start$$5$$3-when-5$$fe-b--><!--fe-b$$end$$5$$3-when-5$$fe-b--></p>
                             </div>
-                        <!--fe:/b-->
+                        <!--fe-b$$end$$3$$when-3$$fe-b-->
 
                         <!-- Orders Section with Nested Repeats -->
                         <div class="orders">
-                            <h4>Orders (<!--fe:b-->1<!--fe:/b-->)</h4>
+                            <h4>Orders (<!--fe-b$$start$$4$$user.orders.length-4$$fe-b-->1<!--fe-b$$end$$4$$user.orders.length-4$$fe-b-->)</h4>
 
-                            <!--fe:b-->
-                                <!--fe:b--><!--fe:r-->
+                            <!--fe-b$$start$$5$$when-5$$fe-b-->
+                                <!--fe-b$$start$$0$$5-repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
                                     <div class="order">
-                                        <p><strong>Order #<!--fe:b-->101<!--fe:/b--></strong> - <!--fe:b-->2024-01-15<!--fe:/b--> - Total: $<!--fe:b-->150.5<!--fe:/b--></p>
+                                        <p><strong>Order #<!--fe-b$$start$$0$$order.id-0$$fe-b-->101<!--fe-b$$end$$0$$order.id-0$$fe-b--></strong> - <!--fe-b$$start$$1$$order.date-1$$fe-b-->2024-01-15<!--fe-b$$end$$1$$order.date-1$$fe-b--> - Total: $<!--fe-b$$start$$2$$order.total-2$$fe-b-->150.5<!--fe-b$$end$$2$$order.total-2$$fe-b--></p>
 
                                         <!-- Items with Nested Array -->
                                         <ul class="items">
-                                            <!--fe:b--><!--fe:r-->
+                                            <!--fe-b$$start$$3$$repeat-3$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
                                                 <li class="item">
-                                                    <strong><!--fe:b-->Laptop<!--fe:/b--></strong> - $<!--fe:b-->100<!--fe:/b-->
-                                                    <span class="stock"><!--fe:b-->✓ In Stock<!--fe:/b--><!--fe:b--><!--fe:/b--></span>
+                                                    <strong><!--fe-b$$start$$0$$item.name-0$$fe-b-->Laptop<!--fe-b$$end$$0$$item.name-0$$fe-b--></strong> - $<!--fe-b$$start$$1$$item.price-1$$fe-b-->100<!--fe-b$$end$$1$$item.price-1$$fe-b-->
+                                                    <span class="stock"><!--fe-b$$start$$2$$when-2$$fe-b-->✓ In Stock<!--fe-b$$end$$2$$when-2$$fe-b--><!--fe-b$$start$$3$$when-3$$fe-b--><!--fe-b$$end$$3$$when-3$$fe-b--></span>
 
                                                     <!-- Tags Array -->
                                                     <div class="tags">
-                                                        Tags: <!--fe:b--><!--fe:r--><span class="tag"><!--fe:b-->electronics<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span class="tag"><!--fe:b-->computers<!--fe:/b--></span><!--fe:/r--><!--fe:/b-->
+                                                        Tags: <!--fe-b$$start$$4$$repeat-4$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->electronics<!--fe-b$$end$$0$$tag-0$$fe-b--></span><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat--><span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->computers<!--fe-b$$end$$0$$tag-0$$fe-b--></span><!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$4$$repeat-4$$fe-b-->
                                                     </div>
 
                                                     <!-- Metadata -->
-                                                    <!--fe:b-->
+                                                    <!--fe-b$$start$$5$$when-5$$fe-b-->
                                                         <div class="metadata">
-                                                            <small>Views: <!--fe:b-->250<!--fe:/b--> | Rating: <!--fe:b-->4.5<!--fe:/b--></small>
+                                                            <small>Views: <!--fe-b$$start$$0$$5-item.metadata.views-0$$fe-b-->250<!--fe-b$$end$$0$$5-item.metadata.views-0$$fe-b--> | Rating: <!--fe-b$$start$$1$$5-item.metadata.rating-1$$fe-b-->4.5<!--fe-b$$end$$1$$5-item.metadata.rating-1$$fe-b--></small>
                                                         </div>
-                                                    <!--fe:/b-->
+                                                    <!--fe-b$$end$$5$$when-5$$fe-b-->
                                                 </li>
-                                            <!--fe:/r--><!--fe:r-->
+                                            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
                                                 <li class="item">
-                                                    <strong><!--fe:b-->Mouse<!--fe:/b--></strong> - $<!--fe:b-->50.5<!--fe:/b-->
-                                                    <span class="stock"><!--fe:b-->✓ In Stock<!--fe:/b--><!--fe:b--><!--fe:/b--></span>
+                                                    <strong><!--fe-b$$start$$0$$item.name-0$$fe-b-->Mouse<!--fe-b$$end$$0$$item.name-0$$fe-b--></strong> - $<!--fe-b$$start$$1$$item.price-1$$fe-b-->50.5<!--fe-b$$end$$1$$item.price-1$$fe-b-->
+                                                    <span class="stock"><!--fe-b$$start$$2$$when-2$$fe-b-->✓ In Stock<!--fe-b$$end$$2$$when-2$$fe-b--><!--fe-b$$start$$3$$when-3$$fe-b--><!--fe-b$$end$$3$$when-3$$fe-b--></span>
 
                                                     <!-- Tags Array -->
                                                     <div class="tags">
-                                                        Tags: <!--fe:b--><!--fe:r--><span class="tag"><!--fe:b-->electronics<!--fe:/b--></span><!--fe:/r--><!--fe:r--><span class="tag"><!--fe:b-->accessories<!--fe:/b--></span><!--fe:/r--><!--fe:/b-->
+                                                        Tags: <!--fe-b$$start$$4$$repeat-4$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat--><span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->electronics<!--fe-b$$end$$0$$tag-0$$fe-b--></span><!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat--><span class="tag"><!--fe-b$$start$$0$$tag-0$$fe-b-->accessories<!--fe-b$$end$$0$$tag-0$$fe-b--></span><!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$4$$repeat-4$$fe-b-->
                                                     </div>
 
                                                     <!-- Metadata -->
-                                                    <!--fe:b-->
+                                                    <!--fe-b$$start$$5$$when-5$$fe-b-->
                                                         <div class="metadata">
-                                                            <small>Views: <!--fe:b-->180<!--fe:/b--> | Rating: <!--fe:b-->4<!--fe:/b--></small>
+                                                            <small>Views: <!--fe-b$$start$$0$$5-item.metadata.views-0$$fe-b-->180<!--fe-b$$end$$0$$5-item.metadata.views-0$$fe-b--> | Rating: <!--fe-b$$start$$1$$5-item.metadata.rating-1$$fe-b-->4<!--fe-b$$end$$1$$5-item.metadata.rating-1$$fe-b--></small>
                                                         </div>
-                                                    <!--fe:/b-->
+                                                    <!--fe-b$$end$$5$$when-5$$fe-b-->
                                                 </li>
-                                            <!--fe:/r--><!--fe:/b-->
+                                            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$3$$repeat-3$$fe-b-->
                                         </ul>
                                     </div>
-                                <!--fe:/r--><!--fe:/b-->
-                            <!--fe:/b-->
+                                <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-b$$end$$0$$5-repeat-0$$fe-b-->
+                            <!--fe-b$$end$$5$$when-5$$fe-b-->
 
-                            <!--fe:b--><!--fe:/b-->
+                            <!--fe-b$$start$$6$$when-6$$fe-b--><!--fe-b$$end$$6$$when-6$$fe-b-->
                         </div>
                     </div>
-                <!--fe:/r--><!--fe:r-->
+                <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
                     <div class="user-card">
-                        <h3><!--fe:b-->Bob Smith<!--fe:/b--> (ID: <!--fe:b-->2<!--fe:/b-->)</h3>
-                        <p>Email: <!--fe:b-->bob@example.com<!--fe:/b--></p>
+                        <h3><!--fe-b$$start$$0$$user.name-0$$fe-b-->Bob Smith<!--fe-b$$end$$0$$user.name-0$$fe-b--> (ID: <!--fe-b$$start$$1$$user.id-1$$fe-b-->2<!--fe-b$$end$$1$$user.id-1$$fe-b-->)</h3>
+                        <p>Email: <!--fe-b$$start$$2$$user.email-2$$fe-b-->bob@example.com<!--fe-b$$end$$2$$user.email-2$$fe-b--></p>
 
                         <!-- Conditional Details Section -->
-                        <!--fe:b-->
+                        <!--fe-b$$start$$3$$when-3$$fe-b-->
                             <div class="profile">
                                 <h4>Profile</h4>
-                                <p>Age: <!--fe:b-->35<!--fe:/b--></p>
-                                <p>Location: <!--fe:b-->London<!--fe:/b-->, <!--fe:b-->UK<!--fe:/b--></p>
-                                <p>Theme: <!--fe:b-->light<!--fe:/b--></p>
-                                <p>Notifications: <!--fe:b--><!--fe:/b--><!--fe:b-->Disabled<!--fe:/b--></p>
+                                <p>Age: <!--fe-b$$start$$0$$3-user.profile.age-0$$fe-b-->35<!--fe-b$$end$$0$$3-user.profile.age-0$$fe-b--></p>
+                                <p>Location: <!--fe-b$$start$$1$$3-user.profile.location.city-1$$fe-b-->London<!--fe-b$$end$$1$$3-user.profile.location.city-1$$fe-b-->, <!--fe-b$$start$$2$$3-user.profile.location.country-2$$fe-b-->UK<!--fe-b$$end$$2$$3-user.profile.location.country-2$$fe-b--></p>
+                                <p>Theme: <!--fe-b$$start$$3$$3-user.profile.preferences.theme-3$$fe-b-->light<!--fe-b$$end$$3$$3-user.profile.preferences.theme-3$$fe-b--></p>
+                                <p>Notifications: <!--fe-b$$start$$4$$3-when-4$$fe-b--><!--fe-b$$end$$4$$3-when-4$$fe-b--><!--fe-b$$start$$5$$3-when-5$$fe-b-->Disabled<!--fe-b$$end$$5$$3-when-5$$fe-b--></p>
                             </div>
-                        <!--fe:/b-->
+                        <!--fe-b$$end$$3$$when-3$$fe-b-->
 
                         <!-- Orders Section with Nested Repeats -->
                         <div class="orders">
-                            <h4>Orders (<!--fe:b-->0<!--fe:/b-->)</h4>
+                            <h4>Orders (<!--fe-b$$start$$4$$user.orders.length-4$$fe-b-->0<!--fe-b$$end$$4$$user.orders.length-4$$fe-b-->)</h4>
 
-                            <!--fe:b--><!--fe:/b-->
+                            <!--fe-b$$start$$5$$when-5$$fe-b--><!--fe-b$$end$$5$$when-5$$fe-b-->
 
-                            <!--fe:b-->
+                            <!--fe-b$$start$$6$$when-6$$fe-b-->
                                 <p><em>No orders yet</em></p>
-                            <!--fe:/b-->
+                            <!--fe-b$$end$$6$$when-6$$fe-b-->
                         </div>
                     </div>
-                <!--fe:/r--><!--fe:/b-->
+                <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-b$$end$$13$$repeat-13$$fe-b-->
             </div>
         </div></template></deep-merge-test-element>
 <f-template name="deep-merge-test-element">
