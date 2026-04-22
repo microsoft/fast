@@ -4,7 +4,7 @@ import { isFunction, isString } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { CSSBindingDirective } from "./css-binding-directive.js";
 import { type AddBehavior, CSSDirective } from "./css-directive.js";
-import { type ComposableStyles, ElementStyles } from "./element-styles.js";
+import { addBehaviors, type ComposableStyles, ElementStyles } from "./element-styles.js";
 import type { HostBehavior, HostController } from "./host.js";
 
 /**
@@ -23,7 +23,7 @@ const nextCSSVariable = (): string => `--v${marker}${++varId}`;
 
 function collectStyles<TSource = any, TParent = any>(
     strings: TemplateStringsArray,
-    values: CSSValue<TSource, TParent>[]
+    values: CSSValue<TSource, TParent>[],
 ): { styles: ComposableStyles[]; behaviors: HostBehavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
     let cssString = "";
@@ -38,7 +38,7 @@ function collectStyles<TSource = any, TParent = any>(
 
         if (isFunction(value)) {
             value = new CSSBindingDirective(oneWay(value), nextCSSVariable()).createCSS(
-                add
+                add,
             );
         } else if (value instanceof Binding) {
             value = new CSSBindingDirective(value, nextCSSVariable()).createCSS(add);
@@ -108,8 +108,7 @@ export const css: CSSTemplateTag = (<TSource = any, TParent = any>(
     ...values: CSSValue<TSource, TParent>[]
 ): ElementStyles => {
     const { styles, behaviors } = collectStyles(strings, values);
-    const elementStyles = new ElementStyles(styles);
-    return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
+    return addBehaviors(new ElementStyles(styles), behaviors);
 }) as any;
 
 class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
@@ -118,13 +117,13 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
 
     constructor(
         styles: ComposableStyles[],
-        private behaviors: HostBehavior<HTMLElement>[]
+        private behaviors: HostBehavior<HTMLElement>[],
     ) {
         const stylesheets: ReadonlyArray<Exclude<ComposableStyles, string>> =
             styles.reduce(
                 (
                     accumulated: Exclude<ComposableStyles, string>[],
-                    current: ComposableStyles
+                    current: ComposableStyles,
                 ) => {
                     if (isString(current)) {
                         this.css += current;
@@ -134,7 +133,7 @@ class CSSPartial implements CSSDirective, HostBehavior<HTMLElement> {
 
                     return accumulated;
                 },
-                []
+                [],
             );
 
         if (stylesheets.length) {

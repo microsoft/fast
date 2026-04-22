@@ -932,7 +932,7 @@ test.describe("css", () => {
             });
         });
 
-        test("should add the behavior returned from CSSDirective.getBehavior() to the resulting ElementStyles", async ({
+        test("should add behaviors returned from CSSDirective.createCSS() to the resulting ElementStyles", async ({
             page,
         }) => {
             const includesBehavior = await page.evaluate(async () => {
@@ -959,6 +959,23 @@ test.describe("css", () => {
             });
 
             expect(includesBehavior).toBe(true);
+        });
+
+        test("should not expose withBehaviors on ElementStyles", async ({ page }) => {
+            const exposesWithBehaviors = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { css } = await import("/main.js");
+
+                const styles = css``;
+                const prototype = Object.getPrototypeOf(styles);
+
+                return (
+                    "withBehaviors" in styles ||
+                    Object.prototype.hasOwnProperty.call(prototype, "withBehaviors")
+                );
+            });
+
+            expect(exposesWithBehaviors).toBe(false);
         });
     });
 
@@ -1143,7 +1160,7 @@ test.describe("cssPartial", () => {
         const { partialIsCaptured, addStylesCalled, stylesIncluded } =
             await page.evaluate(async () => {
                 // @ts-expect-error: Client module.
-                const { css, ElementStyles, ExecutionContext } = await import("/main.js");
+                const { css, ExecutionContext } = await import("/main.js");
 
                 const styles = css`
                     :host {
