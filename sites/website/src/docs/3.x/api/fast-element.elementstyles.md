@@ -218,20 +218,6 @@ Sets the default strategy type to use when creating style strategies.
 </td></tr>
 <tr><td>
 
-[withBehaviors(behaviors)](../fast-element.elementstyles.withbehaviors/)
-
-
-</td><td>
-
-
-</td><td>
-
-Associates behaviors with this set of styles.
-
-
-</td></tr>
-<tr><td>
-
 [withStrategy(Strategy)](../fast-element.elementstyles.withstrategy/)
 
 

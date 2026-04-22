@@ -272,7 +272,7 @@ See [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) for more detail.
 
 **Files**: `src/styles/css.ts`, `src/styles/element-styles.ts`, `src/styles/css-directive.ts`
 
-The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. Styles can also contain dynamic `CSSDirective`s (e.g., CSS custom property bindings) that register as `HostBehavior`s and connect/disconnect alongside the element.
+The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. Styles can also contain dynamic `CSSDirective`s (e.g., CSS custom property bindings) that register as `HostBehavior`s and connect/disconnect alongside the element. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container and does not expose a public behavior-mutation API.
 
 ---
 

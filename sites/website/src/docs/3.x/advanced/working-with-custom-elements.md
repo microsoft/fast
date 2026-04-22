@@ -96,111 +96,38 @@ class MyComponent extends FASTElement {
 <my-component></my-component>
 ```
 
-## Adding and Removing Styles via `css` tag templates
-
-A similar method of adding and removing styles as seen in `FASTElement` can also be done via behaviors which can allow `css` tag templates to update based on some external factors. The `HostBehavior` and `HostController` utilities can be used to create these behaviors.
-
-`HostBehavior` provides access to a `HostController` in the `connectedCallback` method that can add or remove styles with methods `addStyles()` and `removeStyles()`.
-
-Here is an example using [matchMedia()](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) to change behaviors when a media query string is matched.
+For external signals such as [matchMedia()](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia), keep the listener on the element and toggle a separate stylesheet through the same controller APIs:
 
 ```ts
-import { css, HostBehavior, HostController } from "@microsoft/fast-element";
+import { css, FASTElement } from "@microsoft/fast-element";
 
-/**
- * A behavior to add or remove a stylesheet from an element based on a media query. The behavior ensures that
- * styles are applied while the a query matches the environment and that styles are not applied if the query does
- * not match the environment.
- *
- * @public
- */
-export class MatchMediaStyleSheetBehavior extends HostBehavior {
-  public readonly styles: ElementStyles;
+const darkStyles = css`
+  :host {
+    border-color: white;
+  }
+`;
 
-  /**
-   * The behavior needs to operate on element instances but elements might share a behavior instance.
-   * To ensure proper attachment / detachment per instance, we construct a listener for
-   * each bind invocation and cache the listeners by element reference.
-   */
-  private listenerCache = new WeakMap<HostController, MediaQueryListListener>();
+export class MyElement extends FASTElement {
+  private readonly darkMode = window.matchMedia("(prefers-color-scheme: dark)");
 
-  public readonly query: MediaQueryList;
-
-  /**
-   * Binds the behavior to the element.
-   * @param controller - The host controller orchestrating this behavior.
-   */
-  connectedCallback(controller: HostController) {
-    const { query } = this;
-    let listener = this.listenerCache.get(controller);
-
-    if (!listener) {
-      listener = this.constructListener(controller);
-      this.listenerCache.set(controller, listener);
+  private readonly syncDarkMode = () => {
+    if (this.darkMode.matches) {
+      this.$fastController.addStyles(darkStyles);
+    } else {
+      this.$fastController.removeStyles(darkStyles);
     }
+  };
 
-    // Invoke immediately to add if the query currently matches
-    listener.bind(query)();
-    query.addEventListener('change', listener);
+  connectedCallback() {
+    super.connectedCallback();
+    this.darkMode.addEventListener("change", this.syncDarkMode);
+    this.syncDarkMode();
   }
 
-  /**
-   * Unbinds the behavior from the element.
-   * @param controller - The host controller orchestrating this behavior.
-   */
-  disconnectedCallback(controller: HostController) {
-    const listener = this.listenerCache.get(controller);
-    if (listener) {
-      this.query.removeEventListener('change', listener);
-    }
-  }
-
-  constructor(query: MediaQueryList, styles: ElementStyles) {
-    this.query = query;
-    this.styles = styles;
-  }
-
-  public static with(query: MediaQueryList) {
-    return (styles: ElementStyles) => {
-      return new MatchMediaStyleSheetBehavior(query, styles);
-    };
-  }
-
-  protected constructListener(controller: HostController): MediaQueryListListener {
-    let attached = false;
-    const styles = this.styles;
-
-    return function listener(this: { matches: boolean }) {
-      const { matches } = this;
-
-      if (matches && !attached) {
-        controller.addStyles(styles);
-        attached = matches;
-      } else if (!matches && attached) {
-        controller.removeStyles(styles);
-        attached = matches;
-      }
-    };
-  }
-
-  public removedCallback(controller: HostController<any>): void {
-    controller.removeStyles(this.styles);
+  disconnectedCallback() {
+    this.darkMode.removeEventListener("change", this.syncDarkMode);
+    this.$fastController.removeStyles(darkStyles);
+    super.disconnectedCallback();
   }
 }
-
-const darkModeStylesheetBehavior = MatchMediaStyleSheetBehavior.with(
-  window.matchMedia('(prefers-color-scheme: dark)'),
-);
-
-export const styles = css`
-  :host {
-    border-color: black;
-  }
-`.withBehaviors(
-  darkModeStylesheetBehavior(css`
-    :host {
-      border-color: white;
-    }
-  `),
-);
 ```
