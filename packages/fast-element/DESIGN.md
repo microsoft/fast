@@ -64,8 +64,6 @@ The library's kernel (the `FAST` global, the `Updates` queue, and the `Observabl
 - `FAST.warn(code, values)` / `FAST.error(code, values)` – structured diagnostic messages
 - `FAST.addMessages(dict)` – registers human-readable debug messages (imported by `src/debug.ts`)
 
-FAST v3 intentionally does not expose a `versions` array on `FASTGlobal`. If an older bundle created one, `platform.ts` removes it during bootstrap.
-
 The `KernelServiceId` object controls which numeric/string keys are used for shared services. Three modes are supported via a `fast-kernel` attribute on the current `<script>` tag:
 
 | Mode | Behaviour |
