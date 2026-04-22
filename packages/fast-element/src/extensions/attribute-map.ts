@@ -1,7 +1,66 @@
-import type { FASTElementDefinition } from "@microsoft/fast-element";
-import { AttributeDefinition, Observable } from "@microsoft/fast-element";
+import { AttributeDefinition } from "../components/attributes.js";
+import type { FASTElementDefinition } from "../components/fast-definitions.js";
+import type { FASTElementExtension } from "../components/fast-definitions.js";
+import { Observable } from "../observation/observable.js";
 import type { Schema } from "./schema.js";
-import type { AttributeMapConfig } from "./template.js";
+
+/**
+ * Configuration object for the {@link attributeMap} extension.
+ * Passing no config (`attributeMap()`) is equivalent to `"all"`.
+ * @public
+ */
+export interface AttributeMapConfig {
+    /**
+     * Strategy for mapping template binding keys to HTML attribute names.
+     *
+     * - `"none"` (default): the binding key is used as-is for both the
+     *   property name and the attribute name (e.g. `{{foo-bar}}` →
+     *   property `foo-bar`, attribute `foo-bar`).
+     * - `"camelCase"`: the binding key is treated as a camelCase property
+     *   name and the attribute name is derived by converting it to
+     *   kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute
+     *   `foo-bar`). This matches the build-time `attribute-name-strategy`
+     *   option in `@microsoft/fast-build`.
+     */
+    attributeNameStrategy?: "none" | "camelCase";
+}
+
+/**
+ * Registry of pending attribute-map configurations keyed by element name.
+ * Consumed during `TemplateElement` connected callback.
+ * @internal
+ */
+export const pendingAttributeMaps: Map<string, AttributeMapConfig | undefined> =
+    new Map();
+
+/**
+ * Creates a {@link @microsoft/fast-element#FASTElementExtension | FASTElementExtension}
+ * that registers attribute-map configuration for a custom element.
+ * The configuration is stored in a pending registry and consumed by
+ * `TemplateElement` during template parsing.
+ *
+ * @param config - Optional configuration for attribute mapping strategy.
+ * @returns A `FASTElementExtension` callback.
+ *
+ * @example
+ * ```ts
+ * // Map all leaf properties as attributes (default strategy)
+ * MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+ *     attributeMap(),
+ * ]);
+ *
+ * // Use camelCase naming strategy
+ * MyElement.define({ name: "my-element", templateOptions: "defer-and-hydrate" }, [
+ *     attributeMap({ attributeNameStrategy: "camelCase" }),
+ * ]);
+ * ```
+ * @public
+ */
+export function attributeMap(config?: AttributeMapConfig): FASTElementExtension {
+    return definition => {
+        pendingAttributeMaps.set(definition.name, config);
+    };
+}
 
 /**
  * Converts a camelCase string to kebab-case.
@@ -16,21 +75,22 @@ function camelToKebab(str: string): string {
 
 /**
  * AttributeMap provides functionality for detecting simple (leaf) properties in
- * a generated JSON schema and defining them as @attr properties on a class prototype.
+ * a generated JSON schema and defining them as \@attr properties on a class prototype.
  *
- * A property is a candidate for @attr when its schema entry has no nested `properties`,
+ * A property is a candidate for \@attr when its schema entry has no nested `properties`,
  * no `type`, and no `anyOf` — i.e. it is a plain binding like {{foo}} or id="{{foo-bar}}".
  *
- * When `attribute-name-strategy` is `"none"` (the default), the binding key is used
+ * When `attributeNameStrategy` is `"none"` (the default), the binding key is used
  * as both the attribute name and property name — no normalization is applied.
  *
- * When `attribute-name-strategy` is `"camelCase"`, the binding key is treated as a
+ * When `attributeNameStrategy` is `"camelCase"`, the binding key is treated as a
  * camelCase property name and the HTML attribute name is derived by converting it to
  * kebab-case (e.g. property `fooBar` → attribute `foo-bar`). This matches the
  * build-time `attribute-name-strategy` option in `@microsoft/fast-build`.
  *
- * Properties already decorated with `@attr` or `@observable` on the class are left
+ * Properties already decorated with `\@attr` or `\@observable` on the class are left
  * untouched.
+ * @public
  */
 export class AttributeMap {
     private schema: Schema;
@@ -55,7 +115,7 @@ export class AttributeMap {
         const existingAccessorNames = new Set(
             Observable.getAccessors(this.classPrototype).map(a => a.name),
         );
-        const strategy = this.config?.["attribute-name-strategy"] ?? "none";
+        const strategy = this.config?.attributeNameStrategy ?? "none";
 
         for (const propertyName of propertyNames) {
             const propertySchema = this.schema.getSchema(propertyName);
