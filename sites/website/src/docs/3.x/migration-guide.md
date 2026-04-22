@@ -140,6 +140,19 @@ class MyComponent extends FASTElement {
 
 The `isPrerendered` parameter that was briefly added to `ViewTemplate.render()` has been removed. The prerendered path is handled entirely by `ElementController.renderPrerendered()`.
 
+### Hydration marker format changed
+
+The SSR hydration markers have been simplified from verbose, index-embedded comments to compact sequential markers. This is a breaking change to the SSR output format — SSR and client versions must match.
+
+| Old format | New format |
+|---|---|
+| `<!-- fe-b$$start$$0$$scopeId$$fe-b -->` | `<!--fe:b-->` |
+| `<!-- fe-b$$end$$0$$scopeId$$fe-b -->` | `<!--fe:/b-->` |
+| `<!-- fe-repeat$$start$$0$$fe-repeat -->` | `<!--fe:r-->` |
+| `data-fe-b="0 1 2"` / `data-fe-b-0` / `data-fe-c-0-3` | `data-fe="N"` |
+
+The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBinding` → `parseAttributeBindingCount`) and no longer accept index/scope parameters. See the [package MIGRATION.md](https://github.com/microsoft/fast/blob/releases/fast-element-v3/packages/fast-element/MIGRATION.md#hydration-marker-format-v3) for the complete API mapping.
+
 ## New Exports
 
 | Export | Package | Description |
