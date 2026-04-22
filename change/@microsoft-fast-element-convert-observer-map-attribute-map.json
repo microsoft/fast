@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add observerMap() and attributeMap() FASTElementExtension factories; add extensions parameter to FASTElementDefinition.compose()",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

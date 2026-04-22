@@ -1,0 +1,7 @@
+{
+  "type": "prerelease",
+  "comment": "Move observerMap() and attributeMap() to @microsoft/fast-element as FASTElementExtension factories; update imports and define() calls to use extensions array pattern",
+  "packageName": "@microsoft/fast-html",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

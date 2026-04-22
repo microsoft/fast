@@ -1,4 +1,4 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr, attributeMap, FASTElement } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 
 class AttributeMapTestElement extends FASTElement {
@@ -19,7 +19,7 @@ class AttributeMapTestElement extends FASTElement {
 AttributeMapTestElement.define({
     name: "attribute-map-test-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [attributeMap()]);
 
 class AttributeMapWithExistingAttrElement extends FASTElement {
     @attr
@@ -29,13 +29,6 @@ class AttributeMapWithExistingAttrElement extends FASTElement {
 AttributeMapWithExistingAttrElement.define({
     name: "attribute-map-existing-attr-test-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [attributeMap()]);
 
-TemplateElement.options({
-    "attribute-map-test-element": {
-        attributeMap: "all",
-    },
-    "attribute-map-existing-attr-test-element": {
-        attributeMap: "all",
-    },
-}).define({ name: "f-template" });
+TemplateElement.define({ name: "f-template" });

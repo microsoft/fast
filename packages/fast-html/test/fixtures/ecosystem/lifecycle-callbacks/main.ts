@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 
 // Track lifecycle callbacks for testing
@@ -58,7 +58,7 @@ class ComplexElement extends FASTElement {
 ComplexElement.define({
     name: "complex-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 // Nested element
 class NestedElement extends FASTElement {
@@ -120,11 +120,7 @@ DeferredChildElement.define({
 });
 
 // Define templates
-TemplateElement.options({
-    "complex-element": {
-        observerMap: "all",
-    },
-}).define({
+TemplateElement.define({
     name: "f-template",
 });
 
