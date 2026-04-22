@@ -24,7 +24,7 @@ export class HydrationTargetElementError extends Error {
         /**
          * The node to target factory.
          */
-        public readonly node: Element
+        public readonly node: Node,
     ) {
         super(message);
     }
@@ -69,32 +69,29 @@ export function createRangeForNodes(first: Node, last: Node): Range {
     // on usageNotes:  https://developer.mozilla.org/en-US/docs/Web/API/Range/setEnd#usage_notes
     range.setEnd(
         last,
-        isComment(last) || isText(last) ? last.data.length : last.childNodes.length
+        isComment(last) || isText(last) ? last.data.length : last.childNodes.length,
     );
     return range;
-}
-
-function isShadowRoot(node: Node): node is ShadowRoot {
-    return node instanceof DocumentFragment && "mode" in node;
 }
 
 /**
  * Maps compiled ViewBehaviorFactory IDs to their corresponding DOM nodes in the
  * server-rendered shadow root. Uses a TreeWalker to scan the existing DOM between
- * firstNode and lastNode, parsing hydration markers to build the targets map.
+ * firstNode and lastNode, processing data-free sequential hydration markers.
  *
- * For element nodes: parses `data-fe-b` (or variant) attributes to identify which
- * factories target each element, then removes the marker attribute.
+ * A sequential factory pointer advances through the factories array in DFS order.
+ * Since the template compiler and hydration walker both traverse the DOM in
+ * identical depth-first order, no embedded indices are needed in markers.
  *
- * For comment nodes: parses content binding markers (`fe-b$$start/end$$`) to find
- * the DOM range controlled by each content binding. Single text nodes become the
- * direct target; multi-node ranges are stored in boundaries for structural directives.
- * Element boundary markers (`fe-eb$$start/end$$`) cause the walker to skip over
- * nested custom elements that handle their own hydration.
+ * For element nodes: parses `data-fe="N"` to determine the count of attribute
+ * binding factories, then consumes N factories sequentially.
+ *
+ * For comment nodes: `fe:b` markers consume the next factory for content bindings,
+ * using balanced depth counting for nested marker pairing. `fe:e` markers cause
+ * the walker to skip nested custom element subtrees.
  *
  * Host bindings (targetNodeId='h') appear at the start of the factories array but
- * have no SSR markers — getHydrationIndexOffset() computes how many to skip so that
- * marker indices align with the correct non-host factories.
+ * have no SSR markers — getHydrationIndexOffset() computes the initial pointer value.
  *
  * @param firstNode - The first node of the view.
  * @param lastNode -  The last node of the view.
@@ -104,11 +101,10 @@ function isShadowRoot(node: Node): node is ShadowRoot {
 export function buildViewBindingTargets(
     firstNode: Node,
     lastNode: Node,
-    factories: CompiledViewBehaviorFactory[]
+    factories: CompiledViewBehaviorFactory[],
 ): { targets: ViewBehaviorTargets; boundaries: ViewBehaviorBoundaries } {
     const range = createRangeForNodes(firstNode, lastNode);
     const treeRoot = range.commonAncestorContainer;
-    const hydrationIndexOffset = getHydrationIndexOffset(factories);
     const walker = document.createTreeWalker(
         treeRoot,
         NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_COMMENT + NodeFilter.SHOW_TEXT,
@@ -118,29 +114,72 @@ export function buildViewBindingTargets(
                     ? NodeFilter.FILTER_ACCEPT
                     : NodeFilter.FILTER_REJECT;
             },
-        }
+        },
     );
+
     const targets: ViewBehaviorTargets = {};
     const boundaries: ViewBehaviorBoundaries = {};
+
+    // Sequential factory pointer — skip host bindings at the start
+    let factoryPointer = getHydrationIndexOffset(factories);
 
     let node: Node | null = (walker.currentNode = firstNode);
 
     while (node !== null) {
         switch (node.nodeType) {
             case Node.ELEMENT_NODE: {
-                targetElement(node as Element, factories, targets, hydrationIndexOffset);
+                const count = HydrationMarkup.parseAttributeBindingCount(node as Element);
+                if (count !== null) {
+                    for (let i = 0; i < count; i++) {
+                        const factory = factories[factoryPointer++];
+                        if (!factory) {
+                            throw new HydrationTargetElementError(
+                                `HydrationView was unable to successfully target factory on ${
+                                    node.nodeName
+                                } inside ${
+                                    (node.getRootNode() as ShadowRoot).host.nodeName
+                                }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+                                factories,
+                                node as Element,
+                            );
+                        }
+                        targetFactory(factory, node, targets);
+                    }
+                    (node as Element).removeAttribute(
+                        HydrationMarkup.attributeMarkerName,
+                    );
+                }
                 break;
             }
 
             case Node.COMMENT_NODE: {
-                targetComment(
-                    node as Comment,
-                    walker,
-                    factories,
-                    targets,
-                    boundaries,
-                    hydrationIndexOffset
-                );
+                const data = (node as Comment).data;
+                if (data === "fe:e") {
+                    // Element boundary — clear start marker and skip subtree
+                    (node as Comment).data = "";
+                    skipToElementBoundaryEnd(walker, factories, node);
+                } else if (data === "fe:b") {
+                    // Content binding — consume next factory
+                    const factory = factories[factoryPointer++];
+                    if (!factory) {
+                        throw new HydrationTargetElementError(
+                            `HydrationView ran out of factories while processing a content binding marker inside ${
+                                (node.getRootNode() as ShadowRoot).host?.nodeName ??
+                                "unknown"
+                            }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+                            factories,
+                            node,
+                        );
+                    }
+                    targetContentBinding(
+                        node as Comment,
+                        walker,
+                        factory,
+                        factories,
+                        targets,
+                        boundaries,
+                    );
+                }
                 break;
             }
         }
@@ -152,144 +191,116 @@ export function buildViewBindingTargets(
     return { targets, boundaries };
 }
 
-function targetElement(
-    node: Element,
-    factories: CompiledViewBehaviorFactory[],
-    targets: ViewBehaviorTargets,
-    hydrationIndexOffset: number
-) {
-    // Check for attributes and map any factories.
-    const attrFactoryIds =
-        HydrationMarkup.parseAttributeBinding(node) ??
-        HydrationMarkup.parseEnumeratedAttributeBinding(node) ??
-        HydrationMarkup.parseCompactAttributeBinding(node);
-
-    if (attrFactoryIds !== null) {
-        for (const id of attrFactoryIds) {
-            const factory = factories[id + hydrationIndexOffset];
-            if (!factory) {
-                throw new HydrationTargetElementError(
-                    `HydrationView was unable to successfully target factory on ${
-                        node.nodeName
-                    } inside ${
-                        (node.getRootNode() as ShadowRoot).host.nodeName
-                    }. This likely indicates a template mismatch between SSR rendering and hydration.`,
-                    factories,
-                    node
-                );
-            }
-            targetFactory(factory, node, targets);
-        }
-
-        node.removeAttribute(HydrationMarkup.attributeMarkerName);
-    }
-}
-
-function targetComment(
+function targetContentBinding(
     node: Comment,
     walker: TreeWalker,
+    factory: CompiledViewBehaviorFactory,
     factories: CompiledViewBehaviorFactory[],
     targets: ViewBehaviorTargets,
     boundaries: ViewBehaviorBoundaries,
-    hydrationIndexOffset: number
 ) {
-    if (HydrationMarkup.isElementBoundaryStartMarker(node)) {
-        skipToElementBoundaryEndMarker(node, walker);
-        return;
+    const nodes: Node[] = [];
+    let current: Node | null = walker.nextSibling();
+    node.data = "";
+
+    if (current === null) {
+        throw new HydrationTargetElementError(
+            `Error hydrating content binding inside "${
+                (node.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
+            }": no sibling found after content binding start marker.`,
+            factories,
+            node,
+        );
     }
 
-    if (HydrationMarkup.isContentBindingStartMarker(node.data)) {
-        const parsed = HydrationMarkup.parseContentBindingStartMarker(node.data);
+    const first = current;
 
-        if (parsed === null) {
-            return;
-        }
-
-        const [index, id] = parsed;
-
-        const factory = factories[index + hydrationIndexOffset];
-        const nodes: Node[] = [];
-        let current: Node | null = walker.nextSibling();
-        node.data = "";
-        const first = current!;
-
-        // Search for the binding end marker that closes the binding.
-        while (current !== null) {
-            if (isComment(current)) {
-                const parsed = HydrationMarkup.parseContentBindingEndMarker(current.data);
-
-                if (parsed && parsed[1] === id) {
-                    break;
-                }
+    // Balanced depth counting for nested content markers
+    let depth = 0;
+    while (current !== null) {
+        if (isComment(current)) {
+            if (current.data === "fe:b") {
+                depth++;
+            } else if (current.data === "fe:/b") {
+                if (depth === 0) break;
+                depth--;
             }
-
-            nodes.push(current);
-            current = walker.nextSibling();
         }
+        nodes.push(current);
+        current = walker.nextSibling();
+    }
 
-        if (current === null) {
-            const root = node.getRootNode();
-            throw new Error(
-                `Error hydrating Comment node inside "${
-                    isShadowRoot(root) ? root.host.nodeName : root.nodeName
-                }".`
-            );
-        }
+    if (current === null) {
+        throw new HydrationTargetElementError(
+            `Error hydrating content binding inside "${
+                (node.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
+            }": missing fe:/b end marker.`,
+            factories,
+            node,
+        );
+    }
 
-        (current as Comment).data = "";
-        if (nodes.length === 1 && isText(nodes[0])) {
-            targetFactory(factory, nodes[0], targets);
-        } else {
-            // If current === first, it means there is no content in
-            // the view. This happens when a `when` directive evaluates false,
-            // or whenever a content binding returns null or undefined.
-            // In that case, there will never be any content
-            // to hydrate and Binding can simply create a HTMLView
-            // whenever it needs to.
-            if (current !== first && current.previousSibling !== null) {
-                boundaries[factory.targetNodeId] = {
-                    first,
-                    last: current.previousSibling,
-                };
-            }
-            // Binding evaluates to null / undefined or a template.
-            // If binding revaluates to string, it will replace content in target
-            // So we always insert a text node to ensure that
-            // text content binding will be written to this text node instead of comment
-            const dummyTextNode = current.parentNode!.insertBefore(
-                document.createTextNode(""),
-                current
-            );
-            targetFactory(factory, dummyTextNode, targets);
+    (current as Comment).data = "";
+
+    if (nodes.length === 1 && isText(nodes[0])) {
+        targetFactory(factory, nodes[0], targets);
+    } else {
+        // If current === first, it means there is no content in
+        // the view. This happens when a `when` directive evaluates false,
+        // or whenever a content binding returns null or undefined.
+        if (current !== first && current.previousSibling !== null) {
+            boundaries[factory.targetNodeId] = {
+                first,
+                last: current.previousSibling,
+            };
         }
+        // Insert a text node so text content binding targets it
+        const dummyTextNode = current.parentNode!.insertBefore(
+            document.createTextNode(""),
+            current,
+        );
+        targetFactory(factory, dummyTextNode, targets);
     }
 }
 
 /**
- * Moves TreeWalker to element boundary end marker
- * @param node - element boundary start marker node
- * @param walker - tree walker
+ * Skips past a nested custom element's shadow content using balanced
+ * depth counting to handle nested element boundaries correctly.
  */
-function skipToElementBoundaryEndMarker(node: Comment, walker: TreeWalker) {
-    const id = HydrationMarkup.parseElementBoundaryStartMarker(node.data);
+function skipToElementBoundaryEnd(
+    walker: TreeWalker,
+    factories: CompiledViewBehaviorFactory[],
+    startNode: Node,
+) {
+    let depth = 0;
     let current = walker.nextSibling();
-
     while (current !== null) {
         if (isComment(current)) {
-            const parsed = HydrationMarkup.parseElementBoundaryEndMarker(current.data);
-            if (parsed && parsed === id) {
-                break;
+            if (current.data === "fe:e") depth++;
+            else if (current.data === "fe:/e") {
+                if (depth === 0) {
+                    current.data = "";
+                    return;
+                }
+                depth--;
             }
         }
-
         current = walker.nextSibling();
     }
+
+    throw new HydrationTargetElementError(
+        `HydrationView could not find the end of an element boundary inside ${
+            (startNode.getRootNode() as ShadowRoot).host?.nodeName ?? "unknown"
+        }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+        factories,
+        startNode,
+    );
 }
 
 /**
  * Counts how many factories at the start of the array are host bindings (targetNodeId='h').
  * Host bindings target the custom element itself and are not represented by SSR markers,
- * so the marker indices must be offset by this count to align with the correct factory.
+ * so the factory pointer must start past them.
  */
 function getHydrationIndexOffset(factories: CompiledViewBehaviorFactory[]): number {
     let offset = 0;
@@ -308,7 +319,7 @@ function getHydrationIndexOffset(factories: CompiledViewBehaviorFactory[]): numb
 export function targetFactory(
     factory: ViewBehaviorFactory,
     node: Node,
-    targets: ViewBehaviorTargets
+    targets: ViewBehaviorTargets,
 ): void {
     if (factory.targetNodeId === undefined) {
         // Dev error, this shouldn't ever be thrown
