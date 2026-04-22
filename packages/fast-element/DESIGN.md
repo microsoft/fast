@@ -48,7 +48,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
-The library's kernel (the `FAST` global, the `Updates` queue, and the `Observable` system) is stored on `globalThis.FAST`. FAST v3 does not expose version tracking on this global, and loading multiple FAST versions on the same page is not a supported scenario.
+The library's kernel (the `FAST` global, the `Updates` queue, and the `Observable` system) is stored on `globalThis.FAST`.
 
 ---
 
@@ -68,8 +68,8 @@ The `KernelServiceId` object controls which numeric/string keys are used for sha
 
 | Mode | Behaviour |
 |---|---|
-| `share` | Share the kernel across any FAST version |
-| `share-v2` | Share only with other v2 instances |
+| `share` | Use the shared numeric kernel service IDs |
+| `share-v2` | Use the alternate numeric kernel service IDs |
 | *(default)* | Fully isolated instance with a random postfix |
 
 ---
