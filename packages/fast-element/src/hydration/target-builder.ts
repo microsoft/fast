@@ -164,6 +164,16 @@ export function buildViewBindingTargets(
                 } else if (data === "fe:b") {
                     // Content binding — consume next factory
                     const factory = factories[factoryPointer++];
+                    if (!factory) {
+                        throw new HydrationTargetElementError(
+                            `HydrationView ran out of factories while processing a content binding marker inside ${
+                                (node.getRootNode() as ShadowRoot).host?.nodeName ??
+                                "unknown"
+                            }. This likely indicates a template mismatch between SSR rendering and hydration.`,
+                            factories,
+                            node as unknown as Element,
+                        );
+                    }
                     targetContentBinding(
                         node as Comment,
                         walker,
@@ -193,7 +203,17 @@ function targetContentBinding(
     const nodes: Node[] = [];
     let current: Node | null = walker.nextSibling();
     node.data = "";
-    const first = current!;
+
+    if (current === null) {
+        const root = node.getRootNode();
+        throw new Error(
+            `Error hydrating Comment node inside "${
+                isShadowRoot(root) ? root.host.nodeName : root.nodeName
+            }": no sibling found after content binding start marker.`,
+        );
+    }
+
+    const first = current;
 
     // Balanced depth counting for nested content markers
     let depth = 0;

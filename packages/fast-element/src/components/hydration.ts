@@ -14,7 +14,7 @@ import type { HydrationView } from "../templating/view.js";
 /**
  * Data-free sequential hydration markers.
  *
- * All markers use the `f:` prefix to namespace them to FAST. The closing
+ * All markers use the `fe:` prefix to namespace them to FAST Element. The closing
  * marker uses `/` following HTML/XML convention. Markers carry zero
  * embedded data — the hydration walker derives factory-to-node mappings
  * by maintaining a sequential pointer through the factories array.
@@ -98,7 +98,19 @@ export const HydrationMarkup = Object.freeze({
      */
     parseAttributeBindingCount(node: Element): number | null {
         const attr = node.getAttribute(this.attributeMarkerName);
-        return attr === null ? null : parseInt(attr, 10);
+        if (attr === null) {
+            return null;
+        }
+
+        const count = parseInt(attr, 10);
+
+        if (!Number.isFinite(count) || count < 1) {
+            throw new Error(
+                `Invalid ${this.attributeMarkerName} attribute value "${attr}". Expected a positive integer.`,
+            );
+        }
+
+        return count;
     },
 });
 
