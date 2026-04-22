@@ -1,15 +1,25 @@
-export { AttributeMap } from "./attribute-map.js";
-export { ObserverMap } from "./observer-map.js";
 export {
+    AttributeMap,
     type AttributeMapConfig,
     AttributeMapOption,
-    type ElementOptions,
-    type ElementOptionsDictionary,
-    type HydrationLifecycleCallbacks,
+} from "./attribute-map.js";
+export {
+    ObserverMap,
     type ObserverMapConfig,
     ObserverMapOption,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
+} from "./observer-map.js";
+export {
+    type CachedPathMap,
+    type JSONSchema,
+    Schema,
+    schemaRegistry,
+} from "./schema.js";
+export {
+    type ElementOptions,
+    type ElementOptionsDictionary,
+    type HydrationLifecycleCallbacks,
     TemplateElement,
 } from "./template.js";
 export { type ResolvedStringsAndValues, TemplateParser } from "./template-parser.js";

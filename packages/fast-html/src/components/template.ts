@@ -9,103 +9,29 @@ import {
 } from "@microsoft/fast-element";
 import "@microsoft/fast-element/install-hydratable-view-templates.js";
 import { Message } from "../interfaces.js";
-import { AttributeMap } from "./attribute-map.js";
-import { ObserverMap } from "./observer-map.js";
+import {
+    AttributeMap,
+    type AttributeMapConfig,
+    type AttributeMapOption,
+} from "./attribute-map.js";
+import { ObserverMap, type ObserverMapOption } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
 import { eventArgAccessor, transformInnerHTML } from "./utilities.js";
 
 /**
- * Values for the observerMap element option.
+ * Checks whether a map option (observerMap or attributeMap) is enabled.
+ * An option is enabled when it is `"all"` or a plain configuration object.
  */
-export const ObserverMapOption = {
-    all: "all",
-} as const;
+function isMapOptionEnabled(
+    option: ObserverMapOption | AttributeMapOption | undefined,
+): boolean {
+    if (option === "all") {
+        return true;
+    }
 
-/**
- * A node in the observer-map path tree.
- *
- * - `true`  → observe this path and all descendants (unless overridden by children).
- * - `false` → do NOT observe this path or its descendants (unless overridden by children).
- * - `ObserverMapPathNode` → configure child paths individually;
- *       the node itself is observed if `$observe` is true (default when parent is observed).
- */
-export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
-
-/**
- * A node object in the observer-map path tree.
- *
- * `$observe` controls whether this node itself is observed.
- * When omitted the value is inherited from the nearest ancestor
- * that explicitly sets `$observe`. At the root level the default is `true`.
- *
- * Child property overrides are keyed by property name.
- */
-export interface ObserverMapPathNode {
-    $observe?: boolean;
-    [propertyName: string]: ObserverMapPathEntry | undefined;
+    return typeof option === "object" && !Array.isArray(option);
 }
-
-/**
- * Configuration object for the observerMap element option.
- * When `properties` is omitted (i.e. `observerMap: {}`), behaves like `"all"` —
- * every root property is observed. When `properties` is present, only listed
- * root properties participate in observer-map observation.
- */
-export interface ObserverMapConfig {
-    /**
-     * Per-root-property observation control.
-     * Keys are root property names discovered in the template schema.
-     * Only root properties listed here participate in observer-map observation.
-     * Omitting this field is equivalent to `"all"`.
-     */
-    properties?: {
-        [rootProperty: string]: ObserverMapPathEntry;
-    };
-}
-
-/**
- * Type for the observerMap element option.
- * Accepts `"all"` or a configuration object.
- */
-export type ObserverMapOption =
-    | (typeof ObserverMapOption)[keyof typeof ObserverMapOption]
-    | ObserverMapConfig;
-
-/**
- * Values for the attributeMap element option.
- */
-export const AttributeMapOption = {
-    all: "all",
-} as const;
-
-/**
- * Configuration object for the attributeMap element option.
- * Passing an empty object (`{}`) is equivalent to `"all"`.
- */
-export interface AttributeMapConfig {
-    /**
-     * Strategy for mapping template binding keys to HTML attribute names.
-     *
-     * - `"none"` (default): the binding key is used as-is for both the
-     *   property name and the attribute name (e.g. `{{foo-bar}}` →
-     *   property `foo-bar`, attribute `foo-bar`).
-     * - `"camelCase"`: the binding key is treated as a camelCase property
-     *   name and the attribute name is derived by converting it to
-     *   kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute
-     *   `foo-bar`). This matches the build-time `attribute-name-strategy`
-     *   option in `@microsoft/fast-build`.
-     */
-    "attribute-name-strategy"?: "none" | "camelCase";
-}
-
-/**
- * Type for the attributeMap element option.
- * Accepts `"all"` or a configuration object.
- */
-export type AttributeMapOption =
-    | (typeof AttributeMapOption)[keyof typeof AttributeMapOption]
-    | AttributeMapConfig;
 
 /**
  * Element options the TemplateElement will use to update the registered element
@@ -120,20 +46,6 @@ export interface ElementOptions {
  */
 export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
     [key: string]: ElementOptionsType;
-}
-
-/**
- * Checks whether a map option (observerMap or attributeMap) is enabled.
- * An option is enabled when it is `"all"` or a plain configuration object.
- */
-function isMapOptionEnabled(
-    option: ObserverMapOption | AttributeMapOption | undefined,
-): boolean {
-    if (option === "all") {
-        return true;
-    }
-
-    return typeof option === "object" && !Array.isArray(option);
 }
 
 /**

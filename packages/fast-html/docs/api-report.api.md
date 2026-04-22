@@ -5,8 +5,16 @@
 ```ts
 
 import { FASTElement } from '@microsoft/fast-element';
+import type { FASTElementDefinition } from '@microsoft/fast-element';
 import { TemplateLifecycleCallbacks } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
+
+// @public
+export class AttributeMap {
+    constructor(classPrototype: any, schema: Schema, definition?: FASTElementDefinition, config?: AttributeMapConfig);
+    // (undocumented)
+    defineProperties(): void;
+}
 
 // @public
 export interface AttributeMapConfig {
@@ -14,8 +22,58 @@ export interface AttributeMapConfig {
 }
 
 // @public
+export const AttributeMapOption: {
+    readonly all: "all";
+};
+
+// @public
+export type AttributeMapOption = (typeof AttributeMapOption)[keyof typeof AttributeMapOption] | AttributeMapConfig;
+
+// @public (undocumented)
+export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
+
+// @public
+export interface ElementOptions {
+    // (undocumented)
+    attributeMap?: AttributeMapOption;
+    // Warning: (ae-forgotten-export) The symbol "ObserverMapOption" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    observerMap?: ObserverMapOption;
+}
+
+// @public
+export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
+    // (undocumented)
+    [key: string]: ElementOptionsType;
+}
+
+// @public
+export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
+    elementDidHydrate?(source: HTMLElement): void;
+    elementDidRegister?(name: string): void;
+    elementWillHydrate?(source: HTMLElement): void;
+    hydrationComplete?(): void;
+    hydrationStarted?(): void;
+    templateWillUpdate?(name: string): void;
+}
+
+// Warning: (ae-forgotten-export) The symbol "JSONSchemaCommon" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export interface JSONSchema extends JSONSchemaCommon {
+    // Warning: (ae-forgotten-export) The symbol "JSONSchemaDefinition" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    $defs?: Record<string, JSONSchemaDefinition>;
+    // (undocumented)
+    $id: string;
+    // (undocumented)
+    $schema: string;
+}
+
+// @public
 export class ObserverMap {
-    // Warning: (ae-forgotten-export) The symbol "Schema" needs to be exported by the entry point index.d.ts
     constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig);
     // (undocumented)
     defineProperties(): void;
@@ -48,13 +106,23 @@ export interface ResolvedStringsAndValues {
 }
 
 // @public
+export class Schema {
+    constructor(name: string);
+    // Warning: (ae-forgotten-export) The symbol "RegisterPathConfig" needs to be exported by the entry point index.d.ts
+    addPath(config: RegisterPathConfig): void;
+    getRootProperties(): IterableIterator<string>;
+    getSchema(rootPropertyName: string): JSONSchema | null;
+}
+
+// @public
+export const schemaRegistry: CachedPathMap;
+
+// @public
 export class TemplateElement extends FASTElement {
     constructor();
-    // Warning: (ae-forgotten-export) The symbol "HydrationLifecycleCallbacks" needs to be exported by the entry point index.d.ts
     static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;
-    // Warning: (ae-forgotten-export) The symbol "ElementOptionsDictionary" needs to be exported by the entry point index.d.ts
     static elementOptions: ElementOptionsDictionary;
     name?: string;
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
