@@ -366,7 +366,7 @@ flowchart TD
     R -->|Multiple nodes / template| T["Store boundaries in ViewBehaviorBoundaries"]
     T --> U["Insert dummy text node as target for future string updates"]
     R -->|Empty null/false binding| U
-    L -->|Comment: element boundary| V["Skip to matching fe:/e end marker\nusing balanced depth counting"]
+    L -->|Comment: element boundary| V["Clear fe:e start marker data\nSkip to matching fe:/e end marker\nusing balanced depth counting\nClear fe:/e end marker data\nThrow if end marker not found"]
     L -->|Other| W["Continue walking"]
     J --> X["Return { targets, boundaries }"]
     X --> Y["Create behaviors from factories"]
@@ -515,8 +515,9 @@ When the server-rendered DOM doesn't match the client template, hydration throws
 
 | Error | Cause | Contains |
 |---|---|---|
-| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied while consuming factories sequentially, or more content binding markers exist than factories | Factory list, element node, template string |
+| `HydrationTargetElementError` | `data-fe` specifies a binding count that cannot be satisfied, more content binding markers exist than factories, or an element boundary end marker is missing | Factory list, target node, template string |
 | `HydrationBindingError` | A factory's `targetNodeId` has no matching entry in targets | Factory, cloned fragment, template string, available target IDs |
-| `HydrationRepeatError` | Repeat hydration cannot match items while scanning backward through repeat markers with depth counting | Hydration stage, items length, view states |
+| `HydrationRepeatError` | Repeat hydration cannot match items while scanning backward through repeat markers with depth counting, or item count mismatches between SSR DOM and client data | Hydration stage, items length, view states |
+| `FAST.error(1210)` | `data-fe` attribute contains a non-numeric or non-positive value | Attribute value |
 
 These errors typically indicate a mismatch between the server-rendered HTML and the client-side template definition.
