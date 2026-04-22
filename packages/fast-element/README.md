@@ -53,6 +53,10 @@ For simplicity, examples throughout the documentation will assume the library ha
 Looking for a quick guide on building components?  Check out [our Cheat Sheet](../resources/cheat-sheet.md#building-components).
 :::
 
+## Export Sizes
+
+Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/2.x/resources/export-sizes/) documentation page for the latest numbers.
+
 ## Prerendered Content Optimization
 
 When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
@@ -100,3 +104,4 @@ FASTElement.define(MyComponent, { name: "my-component" }, [logger()]);
 ```
 
 Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.
+
