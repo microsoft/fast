@@ -412,10 +412,18 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             serializer ?? (serializer = new XMLSerializer());
         this.views = new Array(itemCount);
 
+        // Determine the scan boundary for this repeat directive.
+        // Use the content binding boundaries (from the parent's fe:b/fe:/b
+        // markers) to avoid scanning into sibling repeat blocks.
+        const boundaries =
+            isHydratable(this.controller) &&
+            this.controller.bindingViewBoundaries[this.directive.targetNodeId];
+        const scanStop: Node | null = boundaries ? boundaries.first : null;
+
         let current = this.location.previousSibling;
         let itemIndex = itemCount - 1; // items render in order; walk backward
 
-        while (current !== null && itemIndex >= 0) {
+        while (current !== null && current !== scanStop && itemIndex >= 0) {
             if (!isCommentNode(current) || current.data !== "fe:/r") {
                 current = current.previousSibling;
                 continue;
@@ -425,17 +433,26 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             current.data = "";
             const end = current.previousSibling;
             if (!end) {
-                throw new Error(
+                throw new HydrationRepeatError(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
                     }": end should never be null.`,
+                    {
+                        index: itemIndex,
+                        hydrationStage: "hydrateViews",
+                        itemsLength: itemCount,
+                        viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
+                        rootNodeContent: getSerializer().serializeToString(
+                            this.location.getRootNode() as any,
+                        ),
+                    },
                 );
             }
 
             // Find matching start marker via balanced counting
             let start: Node | null = end;
             let depth = 0;
-            while (start !== null) {
+            while (start !== null && start !== scanStop) {
                 if (isCommentNode(start)) {
                     if (start.data === "fe:/r") {
                         depth++;
@@ -446,12 +463,11 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                             current = startMarker.previousSibling;
                             const itemStart = startMarker.nextSibling!;
 
-                            // When the item is empty (start and end markers
-                            // are adjacent), itemStart IS the cleared end
-                            // marker and end IS the cleared start marker —
-                            // an inverted range. Detect this by checking if
-                            // end precedes itemStart in sibling order, and
-                            // use itemStart as both first and last.
+                            // Empty item: start and end markers are adjacent
+                            // with no content between them. end === startMarker
+                            // because previousSibling of the end marker IS the
+                            // start marker. Use the cleared end marker comment
+                            // as both first and last for a valid single-node range.
                             const itemEnd = end === startMarker ? itemStart : end;
 
                             const view = template.hydrate(itemStart, itemEnd);
@@ -465,7 +481,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 }
                 start = start.previousSibling;
             }
-            if (!start) {
+            if (!start || start === scanStop) {
                 throw new HydrationRepeatError(
                     `Error when hydrating inside "${
                         (this.location.getRootNode() as ShadowRoot).host.nodeName
@@ -500,10 +516,11 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
             );
         }
 
-        // Overflow check: detect extra repeat markers beyond items.length
-        if (current !== null) {
+        // Overflow check: detect extra repeat markers beyond items.length,
+        // bounded to this directive's scan range.
+        if (current !== null && current !== scanStop) {
             let remaining: Node | null = current;
-            while (remaining !== null) {
+            while (remaining !== null && remaining !== scanStop) {
                 if (isCommentNode(remaining) && remaining.data === "fe:/r") {
                     throw new HydrationRepeatError(
                         `Error when hydrating inside "${
