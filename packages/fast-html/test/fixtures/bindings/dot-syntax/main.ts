@@ -1,4 +1,4 @@
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 
 class TestElement extends FASTElement {
@@ -45,18 +45,12 @@ class TestElement extends FASTElement {
 TestElement.define({
     name: "test-element",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
-TemplateElement.options({
-    "test-element": {
-        observerMap: "all",
+TemplateElement.config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
     },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).define({
+    name: "f-template",
+});

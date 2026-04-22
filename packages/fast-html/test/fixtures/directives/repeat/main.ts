@@ -1,4 +1,4 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, FASTElement, observable, observerMap } from "@microsoft/fast-element";
 import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
@@ -46,7 +46,7 @@ export class TestElementIntervalUpdates extends FASTElement {
 TestElementIntervalUpdates.define({
     name: "test-element-interval-updates",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
 export class TestElementNoItemRepeatBinding extends FASTElement {
     @observable
@@ -91,21 +91,12 @@ export class TestElementWithObserverMap extends FASTElement {
 TestElementWithObserverMap.define({
     name: "test-element-with-observer-map",
     templateOptions: "defer-and-hydrate",
-});
+}, [observerMap()]);
 
-TemplateElement.options({
-    "test-element-interval-updates": {
-        observerMap: "all",
+TemplateElement.config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
     },
-    "test-element-with-observer-map": {
-        observerMap: "all",
-    },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).define({
+    name: "f-template",
+});

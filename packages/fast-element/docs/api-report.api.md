@@ -77,6 +77,14 @@ export class AttributeDefinition implements Accessor {
     setValue(source: HTMLElement, newValue: any): void;
 }
 
+// @public
+export function attributeMap(config?: AttributeMapConfig): FASTElementExtension;
+
+// @public
+export interface AttributeMapConfig {
+    attributeNameStrategy?: "none" | "camelCase";
+}
+
 // Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
 //
@@ -452,7 +460,7 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
-    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition, extensions?: FASTElementExtension[]): Promise<FASTElementDefinition<TType>>;
     define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -741,6 +749,27 @@ export interface ObservationRecord {
 }
 
 // @public
+export function observerMap(config?: ObserverMapConfig): FASTElementExtension;
+
+// @public
+export interface ObserverMapConfig {
+    properties?: {
+        [rootProperty: string]: ObserverMapPathEntry;
+    };
+}
+
+// @public
+export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
+
+// @public
+export interface ObserverMapPathNode {
+    // (undocumented)
+    $observe?: boolean;
+    // (undocumented)
+    [propertyName: string]: ObserverMapPathEntry | undefined;
+}
+
+// @public
 export function oneTime<T = any>(expression: Expression<T>, policy?: DOMPolicy): Binding<T>;
 
 // @public
@@ -769,6 +798,16 @@ export interface PartialFASTElementDefinition {
 export interface PartialHTMLDirectiveDefinition {
     aspected?: boolean;
 }
+
+// Warning: (ae-internal-missing-underscore) The name "pendingAttributeMaps" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const pendingAttributeMaps: Map<string, AttributeMapConfig | undefined>;
+
+// Warning: (ae-internal-missing-underscore) The name "pendingObserverMaps" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const pendingObserverMaps: Map<string, ObserverMapConfig | undefined>;
 
 // @public
 export class PropertyChangeNotifier implements Notifier {

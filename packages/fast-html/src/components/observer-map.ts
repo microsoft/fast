@@ -1,6 +1,6 @@
+import type { ObserverMapConfig, ObserverMapPathEntry } from "@microsoft/fast-element";
 import { Observable } from "@microsoft/fast-element/observable.js";
 import type { JSONSchema, Schema } from "./schema.js";
-import type { ObserverMapConfig, ObserverMapPathEntry } from "./template.js";
 import { assignObservables, deepMerge } from "./utilities.js";
 
 /**

@@ -1,7 +1,6 @@
-import type { FASTElementDefinition } from "@microsoft/fast-element";
+import type { AttributeMapConfig, FASTElementDefinition } from "@microsoft/fast-element";
 import { AttributeDefinition, Observable } from "@microsoft/fast-element";
 import type { Schema } from "./schema.js";
-import type { AttributeMapConfig } from "./template.js";
 
 /**
  * Converts a camelCase string to kebab-case.
@@ -55,7 +54,7 @@ export class AttributeMap {
         const existingAccessorNames = new Set(
             Observable.getAccessors(this.classPrototype).map(a => a.name),
         );
-        const strategy = this.config?.["attribute-name-strategy"] ?? "none";
+        const strategy = this.config?.attributeNameStrategy ?? "none";
 
         for (const propertyName of propertyNames) {
             const propertySchema = this.schema.getSchema(propertyName);
