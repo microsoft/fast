@@ -7,7 +7,7 @@ use crate::locator::Locator;
 use crate::hydration::HydrationScope;
 use crate::attribute::{
     find_next_plain_html_tag, count_tag_attribute_bindings,
-    resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_compact_marker, find_tag_end,
+    resolve_attribute_bindings_in_tag, strip_client_only_attrs, inject_count_marker, find_tag_end,
 };
 
 /// Recursively render a template fragment against root state and loop variables.
@@ -89,13 +89,12 @@ fn process_hydration_tags(
         let total = db + sb;
         if total > 0 {
             // Allocate binding indices for this tag's bindings, resolve {{expr}}
-            // attribute values, strip client-only attrs, then inject the compact
-            // hydration marker `data-fe-c-{start}-{count}`.
-            let start_idx = hy.binding_idx;
+            // attribute values, strip client-only attrs, then inject the
+            // hydration marker `data-fe="N"`.
             hy.binding_idx += total;
             let resolved = resolve_attribute_bindings_in_tag(tag_str, root, loop_vars);
             let stripped = strip_client_only_attrs(&resolved);
-            result.push_str(&inject_compact_marker(&stripped, start_idx, total));
+            result.push_str(&inject_count_marker(&stripped, total));
         } else {
             // No bindings — still strip client-only attrs but no marker needed.
             result.push_str(&strip_client_only_attrs(tag_str));
@@ -136,24 +135,22 @@ fn process_directive(
 
 fn wrap_content_binding(
     out: String,
-    template: &str,
-    p: usize,
-    open: &str,
-    close: &str,
+    _template: &str,
+    _p: usize,
+    _open: &str,
+    _close: &str,
     hydration: Option<&mut HydrationScope>,
 ) -> String {
     match hydration {
         None => out,
         Some(hy) => {
-            let idx = hy.next_binding();
-            let name = format!("{}-{}", binding_expr(template, p, open, close), idx);
-            format!("{}{}{}", hy.start_marker(idx, &name), out, hy.end_marker(idx, &name))
+            hy.next_binding();
+            format!(
+                "{}{}{}",
+                hy.content_start_marker(),
+                out,
+                hy.content_end_marker()
+            )
         }
     }
-}
-
-/// Extract the trimmed expression text from a `{{expr}}` or `{{{expr}}}` binding.
-fn binding_expr<'a>(template: &'a str, at: usize, open: &str, close: &str) -> &'a str {
-    let inner = &template[at + open.len()..];
-    inner.find(close).map(|e| inner[..e].trim()).unwrap_or("")
 }
