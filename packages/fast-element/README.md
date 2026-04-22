@@ -57,6 +57,35 @@ Looking for a quick guide on building components?  Check out [our Cheat Sheet](.
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
+## Declarative HTML
+
+FAST Element also publishes a declarative HTML runtime from
+`@microsoft/fast-element/declarative.js`. This entrypoint defines `<f-template>`,
+exports `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, and
+`AttributeMap`, and installs the hydratable `ViewTemplate` behavior without
+adding those side effects to the root `@microsoft/fast-element` import.
+
+```ts
+import { FASTElement } from "@microsoft/fast-element";
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+
+class MyElement extends FASTElement {}
+
+MyElement.define({
+    name: "my-element",
+    templateOptions: "defer-and-hydrate",
+});
+
+TemplateElement.define({ name: "f-template" });
+```
+
+Declarative utilities such as `deepMerge` are available from
+`@microsoft/fast-element/declarative/utilities.js`. See
+[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md),
+[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md), and
+[`DECLARATIVE_MIGRATION.md`](./DECLARATIVE_MIGRATION.md) for the dedicated
+declarative docs.
+
 ## Prerendered Content Optimization
 
 When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
@@ -104,4 +133,3 @@ FASTElement.define(MyComponent, { name: "my-component" }, [logger()]);
 ```
 
 Each extension receives the full `FASTElementDefinition`, which includes the resolved element name, type, template, styles, and attribute metadata. Extensions run before `customElements.define()`, so any setup they perform is available when existing DOM elements are upgraded.
-

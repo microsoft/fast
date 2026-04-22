@@ -1,5 +1,29 @@
 # Migrating from previous versions
 
+## Declarative HTML moved into fast-element (v3)
+
+Declarative HTML APIs now ship from `@microsoft/fast-element` instead of the
+removed `@microsoft/fast-html` package.
+
+### Import changes
+
+| Before | After |
+|---|---|
+| `@microsoft/fast-html` | `@microsoft/fast-element/declarative.js` |
+| `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element/declarative/utilities.js` |
+
+### Migration steps
+
+1. Update declarative runtime imports to
+   `@microsoft/fast-element/declarative.js`.
+2. Update declarative utility imports such as `deepMerge` to
+   `@microsoft/fast-element/declarative/utilities.js`.
+3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
+   `observable`) from `@microsoft/fast-element`.
+4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
+   APIs; the declarative entrypoint owns the debug-message and hydratable-view
+   side effects.
+
 ## Prerendered Content Optimization (v2 → v3)
 
 ### Removed exports
@@ -17,7 +41,9 @@
 |---|---|
 | `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
 
-The `install-hydratable-view-templates.js` side-effect import is still available and still required by `@microsoft/fast-html` for hydration marker support.
+The `install-hydratable-view-templates.js` side-effect import is still
+available and is applied automatically by
+`@microsoft/fast-element/declarative.js` for hydration marker support.
 
 ### Changed behavior
 

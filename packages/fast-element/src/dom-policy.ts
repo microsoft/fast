@@ -12,7 +12,7 @@ export type DOMSinkGuards = Record<
         tagName: string | null,
         aspect: DOMAspect,
         aspectName: string,
-        sink: DOMSink
+        sink: DOMSink,
     ) => DOMSink
 >;
 
@@ -73,7 +73,7 @@ function safeURL(
     tagName: string | null,
     aspect: DOMAspect,
     aspectName: string,
-    sink: DOMSink
+    sink: DOMSink,
 ): DOMSink {
     return (target: Node, name: string, value: string, ...rest: any[]) => {
         if (isString(value)) {
@@ -88,7 +88,7 @@ function block(
     tagName: string | null,
     aspect: DOMAspect,
     aspectName: string,
-    sink: DOMSink
+    sink: DOMSink,
 ): DOMSink {
     throw FAST.error(Message.blockedByDOMPolicy, {
         aspectName,
@@ -294,7 +294,7 @@ const defaultDOMGuards = {
 
 function createDomSinkGuards(
     config: Partial<DOMSinkGuards>,
-    defaults: DOMSinkGuards
+    defaults: DOMSinkGuards,
 ): DOMSinkGuards {
     const result = {};
 
@@ -329,7 +329,7 @@ function createDomSinkGuards(
 
 function createDOMAspectGuards(
     config: DOMAspectGuards,
-    defaults: DOMAspectGuards
+    defaults: DOMAspectGuards,
 ): DOMAspectGuards {
     const result = {};
 
@@ -364,7 +364,7 @@ function createDOMAspectGuards(
 
 function createElementGuards(
     config: DOMElementGuards,
-    defaults: DOMElementGuards
+    defaults: DOMElementGuards,
 ): DOMElementGuards {
     const result = {};
 
@@ -411,7 +411,7 @@ function createDOMGuards(config: Partial<DOMGuards>, defaults: DOMGuards): DOMGu
 function createTrustedType() {
     const createHTML = html => html;
     return globalThis.trustedTypes
-        ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+        ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
         : { createHTML };
 }
 
@@ -420,7 +420,7 @@ function tryGuard(
     tagName: string | null,
     aspect: DOMAspect,
     aspectName: string,
-    sink: DOMSink
+    sink: DOMSink,
 ) {
     const sinkGuards = aspectGuards[aspect];
 
@@ -471,7 +471,7 @@ const DOMPolicy = Object.freeze({
                 tagName: string | null,
                 aspect: DOMAspect,
                 aspectName: string,
-                sink: DOMSink
+                sink: DOMSink,
             ): DOMSink {
                 // Check for element-specific guards.
                 const key = (tagName ?? "").toLowerCase();
@@ -482,7 +482,7 @@ const DOMPolicy = Object.freeze({
                         tagName,
                         aspect,
                         aspectName,
-                        sink
+                        sink,
                     );
 
                     if (guard) {

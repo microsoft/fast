@@ -11,7 +11,7 @@ test.describe("the dom policy helper", () => {
             };
 
             return globalThis.trustedTypes
-                ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+                ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
                 : { createHTML };
         }
 
@@ -42,7 +42,7 @@ test.describe("the dom policy helper", () => {
                                     tagName,
                                     aspect,
                                     aspectName,
-                                    sink
+                                    sink,
                                 ) {
                                     states.created = true;
                                     return (target, name, value, ...rest) => {
@@ -97,7 +97,7 @@ test.describe("the dom policy helper", () => {
                                     tagName,
                                     aspect,
                                     aspectName,
-                                    sink
+                                    sink,
                                 ) {
                                     states.created++;
                                     return (target, name, value, ...rest) => {
@@ -180,7 +180,7 @@ test.describe("the dom policy helper", () => {
                                 tagName,
                                 aspect,
                                 aspectName,
-                                sink
+                                sink,
                             ) {
                                 states.created = true;
                                 return (target, name, value, ...rest) => {
