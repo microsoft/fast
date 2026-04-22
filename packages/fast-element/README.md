@@ -65,6 +65,17 @@ importing `@microsoft/fast-element`.
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
+## Dynamic Style Application
+
+When runtime state or external signals need to add or remove styles, create the
+`ElementStyles` with `css` and toggle it through
+`this.$fastController.addStyles()` / `this.$fastController.removeStyles()` from
+the element lifecycle or change handlers.
+
+`css` templates remain static style definitions. CSS directives and CSS bindings
+still compose their internal behaviors automatically, but `ElementStyles` no
+longer exposes a public API for attaching arbitrary behaviors.
+
 ## Prerendered Content Optimization
 
 When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:

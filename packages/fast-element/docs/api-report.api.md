@@ -346,7 +346,7 @@ export class ElementStyles {
     constructor(styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
-    readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
+    get behaviors(): ReadonlyArray<HostBehavior<HTMLElement>> | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
@@ -357,7 +357,6 @@ export class ElementStyles {
     // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
-    withBehaviors(...behaviors: HostBehavior<HTMLElement>[]): this;
     withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
 

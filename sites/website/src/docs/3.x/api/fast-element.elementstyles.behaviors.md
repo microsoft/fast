@@ -20,5 +20,5 @@ The behaviors associated with this set of styles.
 **Signature:**
 
 ```typescript
-readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
+get behaviors(): ReadonlyArray<HostBehavior<HTMLElement>> | null;
 ```

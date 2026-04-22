@@ -1755,6 +1755,7 @@ test.describe("The ElementController", () => {
                         FASTElementDefinition,
                         ElementController,
                         css,
+                        cssDirective,
                         uniqueElementName,
                     } = await import("/main.js");
 
@@ -1781,7 +1782,16 @@ test.describe("The ElementController", () => {
                         },
                     };
 
-                    controller.addStyles(css``.withBehaviors(behavior));
+                    class BehaviorDirective {
+                        createCSS(add: (behavior: any) => void) {
+                            add(behavior);
+                            return "";
+                        }
+                    }
+
+                    cssDirective()(BehaviorDirective);
+
+                    controller.addStyles(css`${new BehaviorDirective()}`);
 
                     controller.connect();
                     const connected = connectedCalled;
@@ -1813,6 +1823,7 @@ test.describe("The ElementController", () => {
                         FASTElementDefinition,
                         ElementController,
                         css,
+                        cssDirective,
                         uniqueElementName,
                     } = await import("/main.js");
 
@@ -1829,12 +1840,21 @@ test.describe("The ElementController", () => {
                         },
                     };
 
+                    class BehaviorDirective {
+                        createCSS(add: (behavior: any) => void) {
+                            add(behavior);
+                            return "";
+                        }
+                    }
+
+                    cssDirective()(BehaviorDirective);
+
                     (
                         await FASTElementDefinition.compose(
                             class ControllerTest extends FASTElement {
                                 static definition = {
                                     name,
-                                    styles: css``.withBehaviors(behavior),
+                                    styles: css`${new BehaviorDirective()}`,
                                 };
                             },
                         )
@@ -1872,6 +1892,7 @@ test.describe("The ElementController", () => {
                     FASTElementDefinition,
                     ElementController,
                     css,
+                    cssDirective,
                     uniqueElementName,
                 } = await import("/main.js");
 
@@ -1898,12 +1919,21 @@ test.describe("The ElementController", () => {
                     },
                 };
 
+                class BehaviorDirective {
+                    createCSS(add: (behavior: any) => void) {
+                        add(behavior);
+                        return "";
+                    }
+                }
+
+                cssDirective()(BehaviorDirective);
+
                 (
                     await FASTElementDefinition.compose(
                         class ControllerTest extends FASTElement {
                             static definition = {
                                 name,
-                                styles: css``.withBehaviors(behavior),
+                                styles: css`${new BehaviorDirective()}`,
                             };
                         },
                     )
@@ -1949,6 +1979,7 @@ test.describe("The ElementController", () => {
                     FASTElementDefinition,
                     ElementController,
                     css,
+                    cssDirective,
                     uniqueElementName,
                 } = await import("/main.js");
 
@@ -1975,7 +2006,16 @@ test.describe("The ElementController", () => {
                     },
                 };
 
-                const styles = css``.withBehaviors(behavior);
+                class BehaviorDirective {
+                    createCSS(add: (behavior: any) => void) {
+                        add(behavior);
+                        return "";
+                    }
+                }
+
+                cssDirective()(BehaviorDirective);
+
+                const styles = css`${new BehaviorDirective()}`;
                 controller.addStyles(styles);
                 const added = addedCalled;
 
@@ -2038,7 +2078,6 @@ test.describe("The ElementController", () => {
                 FASTElementDefinition,
                 ElementController,
                 Observable,
-                observable,
                 html,
                 uniqueElementName,
             } = await import("/main.js");

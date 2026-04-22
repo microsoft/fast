@@ -172,9 +172,28 @@ This is a **breaking change** for SSR output format. Any system that produces or
 4. Add `await` to `compose()` calls that chain `.define()`:
 
    ```typescript
-   // Before
-   FASTElementDefinition.compose(MyElement, options).define();
+    // Before
+    FASTElementDefinition.compose(MyElement, options).define();
 
-   // After
-   (await FASTElementDefinition.compose(MyElement, options)).define();
+    // After
+    (await FASTElementDefinition.compose(MyElement, options)).define();
    ```
+
+## Dynamic stylesheet behaviors (v3)
+
+### Removed API
+
+| Removed | Replacement |
+|---|---|
+| `ElementStyles.withBehaviors()` | Move the runtime condition into the element and call `this.$fastController.addStyles()` / `this.$fastController.removeStyles()` directly. |
+
+### Changed behavior
+
+- `css` and `css.partial()` still compose internal behaviors for CSS directives and CSS bindings.
+- `ElementStyles` remains a static style container; attaching arbitrary `HostBehavior`s is no longer part of the public API.
+
+### Migration steps
+
+1. Keep the conditional `ElementStyles` in a separate `css` value.
+2. Move the external listener or condition (for example `matchMedia()` or an app event subscription) into the element lifecycle.
+3. Call `this.$fastController.addStyles(styles)` when the condition is active and `this.$fastController.removeStyles(styles)` when it is inactive or during cleanup.
