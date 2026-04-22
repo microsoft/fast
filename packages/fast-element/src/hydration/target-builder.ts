@@ -24,7 +24,7 @@ export class HydrationTargetElementError extends Error {
         /**
          * The node to target factory.
          */
-        public readonly node: Element,
+        public readonly node: Node,
     ) {
         super(message);
     }
@@ -171,7 +171,7 @@ export function buildViewBindingTargets(
                                 "unknown"
                             }. This likely indicates a template mismatch between SSR rendering and hydration.`,
                             factories,
-                            node as unknown as Element,
+                            node,
                         );
                     }
                     targetContentBinding(

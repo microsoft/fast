@@ -487,6 +487,30 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                 },
             );
         }
+
+        // Overflow check: detect extra repeat markers beyond items.length
+        if (current !== null) {
+            let remaining: Node | null = current;
+            while (remaining !== null) {
+                if (isCommentNode(remaining) && remaining.data === "fe:/r") {
+                    throw new HydrationRepeatError(
+                        `Error when hydrating inside "${
+                            (this.location.getRootNode() as ShadowRoot).host.nodeName
+                        }": found more repeat items in the DOM than expected ${itemCount}.`,
+                        {
+                            index: -1,
+                            hydrationStage: "hydrateViews",
+                            itemsLength: itemCount,
+                            viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
+                            rootNodeContent: serializer.serializeToString(
+                                this.location.getRootNode() as any,
+                            ),
+                        },
+                    );
+                }
+                remaining = remaining.previousSibling;
+            }
+        }
     }
 }
 

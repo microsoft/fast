@@ -102,9 +102,17 @@ export const HydrationMarkup = Object.freeze({
             return null;
         }
 
-        const count = parseInt(attr, 10);
+        const trimmed = attr.trim();
 
-        if (!Number.isFinite(count) || count < 1) {
+        if (!/^\d+$/.test(trimmed)) {
+            throw new Error(
+                `Invalid ${this.attributeMarkerName} attribute value "${attr}". Expected a positive integer.`,
+            );
+        }
+
+        const count = parseInt(trimmed, 10);
+
+        if (count < 1) {
             throw new Error(
                 `Invalid ${this.attributeMarkerName} attribute value "${attr}". Expected a positive integer.`,
             );

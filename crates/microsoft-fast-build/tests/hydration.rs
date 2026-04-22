@@ -415,8 +415,11 @@ fn test_hydration_f_slotted_compact() {
         None,
     ).unwrap();
 
-    assert!(result.contains(r#"data-fe="1""#), "first slot: {result}");
-    assert!(result.contains(r#"data-fe="1""#), "second slot: {result}");
+    assert_eq!(
+        result.matches(r#"data-fe="1""#).count(),
+        2,
+        "expected both slot elements to receive compact markers: {result}"
+    );
 }
 
 // ── $index in f-repeat ────────────────────────────────────────────────────────

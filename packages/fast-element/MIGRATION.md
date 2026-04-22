@@ -66,13 +66,13 @@ The hydration markers embedded in SSR output have been simplified from verbose, 
 
 | Export | Replacement |
 |---|---|
-| `HydrationMarkup.bindingStartMarker(index, scopeId)` | `HydrationMarkup.contentBindingStartMarker()` |
-| `HydrationMarkup.bindingEndMarker(index, scopeId)` | `HydrationMarkup.contentBindingEndMarker()` |
-| `HydrationMarkup.isBindingStartMarker(data)` | `HydrationMarkup.isContentBindingStartMarker(data)` |
-| `HydrationMarkup.isBindingEndMarker(data)` | `HydrationMarkup.isContentBindingEndMarker(data)` |
+| `HydrationMarkup.contentBindingStartMarker(index, scopeId)` | `HydrationMarkup.contentBindingStartMarker()` |
+| `HydrationMarkup.contentBindingEndMarker(index, scopeId)` | `HydrationMarkup.contentBindingEndMarker()` |
+| `HydrationMarkup.isContentBindingStartMarker(data)` | `HydrationMarkup.isContentBindingStartMarker(data)` (unchanged signature, new implementation) |
+| `HydrationMarkup.isContentBindingEndMarker(data)` | `HydrationMarkup.isContentBindingEndMarker(data)` (unchanged signature, new implementation) |
 | `HydrationMarkup.parseAttributeBinding(element)` | `HydrationMarkup.parseAttributeBindingCount(element)` |
-| `HydrationMarkup.parseRepeatStartMarker(data)` | `HydrationMarkup.isRepeatStartMarker(data)` |
-| `HydrationMarkup.parseRepeatEndMarker(data)` | `HydrationMarkup.isRepeatEndMarker(data)` |
+| `HydrationMarkup.parseRepeatViewStartMarker(data)` | `HydrationMarkup.isRepeatViewStartMarker(data)` |
+| `HydrationMarkup.parseRepeatViewEndMarker(data)` | `HydrationMarkup.isRepeatViewEndMarker(data)` |
 | `HydrationMarkup.parseElementBoundaryStartMarker(node)` | `HydrationMarkup.isElementBoundaryStartMarker(node)` |
 | `HydrationMarkup.parseElementBoundaryEndMarker(node)` | `HydrationMarkup.isElementBoundaryEndMarker(node)` |
 
