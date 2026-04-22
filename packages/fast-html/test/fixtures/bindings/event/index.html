@@ -5,13 +5,13 @@
         <title></title>
     </head>
     <body>
-        <test-element foo="bar"><template shadowrootmode="open" shadowroot="open"><button data-fe="1">No arguments</button>
-        <button data-fe="1">event argument (e, deprecated)</button>
-        <button data-fe="1">modify foo</button>
-        <button data-fe="1">event argument ($e)</button>
-        <button data-fe="1">context argument ($c)</button>
-        <button data-fe="1">multiple arguments ($e, $c)</button>
-        <button data-fe="1">context event argument ($c.event)</button></template></test-element>
+        <test-element foo="bar"><template shadowrootmode="open" shadowroot="open"><button data-fe-c-0-1>No arguments</button>
+        <button data-fe-c-1-1>event argument (e, deprecated)</button>
+        <button data-fe-c-2-1>modify foo</button>
+        <button data-fe-c-3-1>event argument ($e)</button>
+        <button data-fe-c-4-1>context argument ($c)</button>
+        <button data-fe-c-5-1>multiple arguments ($e, $c)</button>
+        <button data-fe-c-6-1>context event argument ($c.event)</button></template></test-element>
 <f-template name="test-element">
     <template>
         <button @click="{handleNoArgsClick()}">No arguments</button>
