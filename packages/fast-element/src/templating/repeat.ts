@@ -441,10 +441,20 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                         depth++;
                     } else if (start.data === "fe:r") {
                         if (depth === 0) {
-                            start.data = "";
-                            current = start.previousSibling;
-                            start = start.nextSibling!;
-                            const view = template.hydrate(start, end);
+                            const startMarker = start;
+                            startMarker.data = "";
+                            current = startMarker.previousSibling;
+                            const itemStart = startMarker.nextSibling!;
+
+                            // When the item is empty (start and end markers
+                            // are adjacent), itemStart IS the cleared end
+                            // marker and end IS the cleared start marker —
+                            // an inverted range. Detect this by checking if
+                            // end precedes itemStart in sibling order, and
+                            // use itemStart as both first and last.
+                            const itemEnd = end === startMarker ? itemStart : end;
+
+                            const view = template.hydrate(itemStart, itemEnd);
                             this.views[itemIndex] = view;
                             this.bindView(view, this.items, itemIndex, this.controller);
                             itemIndex--;
