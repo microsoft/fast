@@ -407,7 +407,9 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         }
 
         const itemCount = this.items.length;
-        const serializer = new XMLSerializer();
+        let serializer: XMLSerializer | null = null;
+        const getSerializer = (): XMLSerializer =>
+            serializer ?? (serializer = new XMLSerializer());
         this.views = new Array(itemCount);
 
         let current = this.location.previousSibling;
@@ -463,7 +465,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                         hydrationStage: "hydrateViews",
                         itemsLength: itemCount,
                         viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                        rootNodeContent: serializer.serializeToString(
+                        rootNodeContent: getSerializer().serializeToString(
                             this.location.getRootNode() as any,
                         ),
                     },
@@ -481,7 +483,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                     hydrationStage: "hydrateViews",
                     itemsLength: itemCount,
                     viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                    rootNodeContent: serializer.serializeToString(
+                    rootNodeContent: getSerializer().serializeToString(
                         this.location.getRootNode() as any,
                     ),
                 },
@@ -502,7 +504,7 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
                             hydrationStage: "hydrateViews",
                             itemsLength: itemCount,
                             viewsState: this.views.map(v => (v ? "hydrated" : "empty")),
-                            rootNodeContent: serializer.serializeToString(
+                            rootNodeContent: getSerializer().serializeToString(
                                 this.location.getRootNode() as any,
                             ),
                         },

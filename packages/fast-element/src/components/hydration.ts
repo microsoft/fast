@@ -10,6 +10,8 @@ import type {
     SyntheticViewTemplate,
 } from "../templating/template.js";
 import type { HydrationView } from "../templating/view.js";
+import { Message } from "../interfaces.js";
+import { FAST } from "../platform.js";
 
 /**
  * Data-free sequential hydration markers.
@@ -105,17 +107,17 @@ export const HydrationMarkup = Object.freeze({
         const trimmed = attr.trim();
 
         if (!/^\d+$/.test(trimmed)) {
-            throw new Error(
-                `Invalid ${this.attributeMarkerName} attribute value "${attr}". Expected a positive integer.`,
-            );
+            throw FAST.error(Message.invalidHydrationAttributeMarker, {
+                value: attr,
+            });
         }
 
         const count = parseInt(trimmed, 10);
 
         if (count < 1) {
-            throw new Error(
-                `Invalid ${this.attributeMarkerName} attribute value "${attr}". Expected a positive integer.`,
-            );
+            throw FAST.error(Message.invalidHydrationAttributeMarker, {
+                value: attr,
+            });
         }
 
         return count;
