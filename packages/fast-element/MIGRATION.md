@@ -71,10 +71,10 @@ The hydration markers embedded in SSR output have been simplified from verbose, 
 | `HydrationMarkup.isContentBindingStartMarker(data)` | `HydrationMarkup.isContentBindingStartMarker(data)` (unchanged signature, new implementation) |
 | `HydrationMarkup.isContentBindingEndMarker(data)` | `HydrationMarkup.isContentBindingEndMarker(data)` (unchanged signature, new implementation) |
 | `HydrationMarkup.parseAttributeBinding(element)` | `HydrationMarkup.parseAttributeBindingCount(element)` |
-| `HydrationMarkup.parseRepeatViewStartMarker(data)` | `HydrationMarkup.isRepeatViewStartMarker(data)` |
-| `HydrationMarkup.parseRepeatViewEndMarker(data)` | `HydrationMarkup.isRepeatViewEndMarker(data)` |
-| `HydrationMarkup.parseElementBoundaryStartMarker(node)` | `HydrationMarkup.isElementBoundaryStartMarker(node)` |
-| `HydrationMarkup.parseElementBoundaryEndMarker(node)` | `HydrationMarkup.isElementBoundaryEndMarker(node)` |
+| `HydrationMarkup.parseRepeatStartMarker(data)` | `HydrationMarkup.isRepeatViewStartMarker(data)` |
+| `HydrationMarkup.parseRepeatEndMarker(data)` | `HydrationMarkup.isRepeatViewEndMarker(data)` |
+| `HydrationMarkup.parseElementBoundaryStartMarker(content)` | `HydrationMarkup.isElementBoundaryStartMarker(node)` |
+| `HydrationMarkup.parseElementBoundaryEndMarker(content)` | `HydrationMarkup.isElementBoundaryEndMarker(node)` |
 
 ### Impact
 

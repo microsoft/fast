@@ -415,10 +415,14 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
         // Determine the scan boundary for this repeat directive.
         // Use the content binding boundaries (from the parent's fe:b/fe:/b
         // markers) to avoid scanning into sibling repeat blocks.
+        // Set scanStop to the node BEFORE the boundary's first node so the
+        // boundary node itself is still eligible for matching as a start marker.
         const boundaries =
             isHydratable(this.controller) &&
             this.controller.bindingViewBoundaries[this.directive.targetNodeId];
-        const scanStop: Node | null = boundaries ? boundaries.first : null;
+        const scanStop: Node | null = boundaries
+            ? (boundaries.first.previousSibling ?? null)
+            : null;
 
         let current = this.location.previousSibling;
         let itemIndex = itemCount - 1; // items render in order; walk backward
