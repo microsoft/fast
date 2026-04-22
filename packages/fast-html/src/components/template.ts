@@ -116,14 +116,14 @@ export interface AttributeMapConfig {
     /**
      * Strategy for mapping template binding keys to HTML attribute names.
      *
-     * - `"none"` (default): the binding key is used as-is for both the
-     *   property name and the attribute name (e.g. `{{foo-bar}}` →
-     *   property `foo-bar`, attribute `foo-bar`).
-     * - `"camelCase"`: the binding key is treated as a camelCase property
-     *   name and the attribute name is derived by converting it to
+     * - `"camelCase"` (default): the binding key is treated as a camelCase
+     *   property name and the attribute name is derived by converting it to
      *   kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute
      *   `foo-bar`). This matches the build-time `attribute-name-strategy`
      *   option in `@microsoft/fast-build`.
+     * - `"none"`: the binding key is used as-is for both the
+     *   property name and the attribute name (e.g. `{{foo-bar}}` →
+     *   property `foo-bar`, attribute `foo-bar`).
      */
     "attribute-name-strategy"?: "none" | "camelCase";
 }

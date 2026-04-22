@@ -15,21 +15,21 @@ test.describe("AttributeMap", () => {
             const proto = Object.getPrototypeOf(node);
             const isAccessor = (name: string) =>
                 typeof Object.getOwnPropertyDescriptor(proto, name)?.get === "function";
-            return { foo: isAccessor("foo"), "foo-bar": isAccessor("foo-bar") };
+            return { foo: isAccessor("foo"), fooBar: isAccessor("fooBar") };
         });
 
         expect(accessors.foo).toBeTruthy();
-        expect(accessors["foo-bar"]).toBeTruthy();
+        expect(accessors.fooBar).toBeTruthy();
     });
 
-    test("should use binding key as-is for attribute and property name", async ({
+    test("should use camelCase property name and kebab-case attribute name", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
-        // Setting foo-bar attribute should update the foo-bar property (no conversion)
+        // Setting foo-bar attribute should update the fooBar property (camelCase conversion)
         await element.evaluate(node => node.setAttribute("foo-bar", "dash-test"));
-        const propValue = await element.evaluate(node => (node as any)["foo-bar"]);
+        const propValue = await element.evaluate(node => (node as any).fooBar);
 
         expect(propValue).toBe("dash-test");
     });
@@ -90,13 +90,13 @@ test.describe("AttributeMap", () => {
         expect(attrValue).toBe("reflected-value");
     });
 
-    test("should reflect foo-bar property value back to foo-bar attribute", async ({
+    test("should reflect fooBar property value back to foo-bar attribute", async ({
         page,
     }) => {
         const element = page.locator("attribute-map-test-element");
 
         await element.evaluate(node => {
-            (node as any)["foo-bar"] = "bar-reflected";
+            (node as any).fooBar = "bar-reflected";
         });
 
         await page.evaluate(() => new Promise(r => requestAnimationFrame(r)));
