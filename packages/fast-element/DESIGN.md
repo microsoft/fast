@@ -48,7 +48,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
-The library's kernel (the `FAST` global, the `Updates` queue, and the `Observable` system) is stored on `globalThis.FAST` and can be shared across multiple versions of the library loaded on the same page.
+The library's kernel (the `FAST` global, the `Updates` queue, and the `Observable` system) is stored on `globalThis.FAST`. FAST v3 does not expose version tracking on this global, and loading multiple FAST versions on the same page is not a supported scenario.
 
 ---
 
@@ -63,6 +63,8 @@ The library's kernel (the `FAST` global, the `Updates` queue, and the `Observabl
 - `FAST.getById(id, initializer)` – shared kernel slot registry (used to share the update queue and observable system across FAST instances)
 - `FAST.warn(code, values)` / `FAST.error(code, values)` – structured diagnostic messages
 - `FAST.addMessages(dict)` – registers human-readable debug messages (imported by `src/debug.ts`)
+
+FAST v3 intentionally does not expose a `versions` array on `FASTGlobal`. If an older bundle created one, `platform.ts` removes it during bootstrap.
 
 The `KernelServiceId` object controls which numeric/string keys are used for shared services. Three modes are supported via a `fast-kernel` attribute on the current `<script>` tag:
 

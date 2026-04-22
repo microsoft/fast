@@ -6,6 +6,10 @@ declare const FAST: FASTGlobal;
 
 test.describe("The FAST global", () => {
     test.describe("kernel API", () => {
+        test("does not expose a versions array", async () => {
+            expect(Reflect.has(FAST, "versions")).toBe(false);
+        });
+
         test("can get a lazily defined service by id", async () => {
             const id = "test-id";
             const service = {};
@@ -30,6 +34,19 @@ test.describe("The FAST global", () => {
             const found = FAST.getById(id);
 
             expect(found).toBeNull();
+        });
+
+        test("removes a pre-existing versions array from the FAST global", async ({
+            page,
+        }) => {
+            await page.goto("/legacy-fast-global.html");
+            await expect(page.locator("body")).toHaveAttribute("data-ready", "true");
+
+            const hasVersions = await page.evaluate(() =>
+                Reflect.has(globalThis.FAST, "versions"),
+            );
+
+            expect(hasVersions).toBe(false);
         });
     });
 });
