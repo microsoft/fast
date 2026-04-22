@@ -2,7 +2,7 @@ import { TemplateElement } from "@microsoft/fast-html";
 import { runBenchmark } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
-BenchElement.define({
+BenchElement.defineAsync({
     name: "dot-syntax-bench-element",
     templateOptions: "defer-and-hydrate",
 });

@@ -2,7 +2,7 @@ import { TemplateElement } from "@microsoft/fast-html";
 import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 
-BenchElement.define({
+BenchElement.defineAsync({
     name: "basic-bench-element",
 });
 
