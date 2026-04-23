@@ -12,7 +12,7 @@ applyTo: '**/*'
 
 ## Repository Overview
 
-FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-standards-compliant Web Components. The core package is `@microsoft/fast-element` — a lightweight, performant Web Component authoring library. Additional packages provide routing and declarative HTML support.
+FAST (`@microsoft/fast`) is a Microsoft open-source monorepo for building W3C-standards-compliant Web Components. The core package is `@microsoft/fast-element` — a lightweight, performant Web Component authoring library with a declarative HTML entrypoint. Additional packages provide routing plus declarative build and test tooling.
 
 ## Packages
 
@@ -20,8 +20,7 @@ Each package includes a DESIGN.md file, read that to gain a general understandin
 
 | Package | Status | Purpose |
 |---|---|---|
-| `@microsoft/fast-element` | Stable (v2) | Core Web Component library |
-| `@microsoft/fast-html` | Alpha | Declarative HTML parser |
+| `@microsoft/fast-element` | Stable (v2) | Core Web Component library, including declarative HTML via `@microsoft/fast-element/declarative.js` |
 | `@microsoft/fast-router` | Alpha | Web Component router |
 | `@microsoft/fast-build` | Prerelease | Declarative HTML server side renderer |
 | `@microsoft/fast-test-harness` | Prerelease | Testing utilities for FASTElement components |

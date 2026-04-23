@@ -42,6 +42,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Element authoring | `FASTElement` base class + `@customElement`, `@attr`, `@observable` decorators |
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
+| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, `AttributeMap` |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
@@ -326,6 +327,34 @@ See `docs/di/api-report.api.md` for the full public API surface.
 
 ---
 
+### Declarative HTML
+
+**Files**: `src/declarative.ts`, `src/declarative/*`
+
+FAST Element also owns the declarative HTML runtime that previously lived in a
+separate package. The dedicated `@microsoft/fast-element/declarative.js`
+entrypoint exports `TemplateElement`, `TemplateParser`, `Schema`,
+`schemaRegistry`, `ObserverMap`, `AttributeMap`, and the related config types.
+
+The declarative runtime intentionally reuses the same FAST Element primitives as
+the imperative `html` API:
+
+- `TemplateElement` attaches parsed `ViewTemplate` instances through
+  `FASTElementDefinition.register()` rather than introducing a second
+  registration pipeline.
+- `TemplateParser` lowers declarative syntax to the same `strings` / `values`
+  shape used by `ViewTemplate.create()`.
+- `ObserverMap` and `AttributeMap` layer on top of the core observable and
+  attribute-definition systems.
+
+The `src/declarative.ts` entrypoint owns the declarative-only side effects:
+registering debug messages and installing hydratable view templates. This keeps
+the root `@microsoft/fast-element` barrel free of declarative side effects and
+utility-subpath collisions. See [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md)
+for the detailed architecture.
+
+---
+
 ## Data Flow Diagrams
 
 ### Module Load & Registration
@@ -486,6 +515,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 src/
 ├── interfaces.ts          # Core types: Callable, Constructable, FASTGlobal, Message codes
 ├── platform.ts            # FAST global initialisation, KernelServiceId, TypeRegistry
+├── declarative.ts         # Declarative entrypoint (debug messages + hydratable view install)
 ├── dom.ts                 # DOMAspect enum, DOMPolicy, DOMSink
 ├── dom-policy.ts          # Default DOM security policy (TrustedTypes integration)
 ├── metadata.ts            # Reflect-based metadata helpers
@@ -528,6 +558,14 @@ src/
 ├── di/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
 ├── context.ts             # Context, FASTContext, Context protocol
+├── declarative/
+│   ├── template.ts        # TemplateElement, options, lifecycle callbacks
+│   ├── template-parser.ts # Declarative HTML parser → ViewTemplate strings/values
+│   ├── schema.ts          # Binding schema builder + schemaRegistry
+│   ├── observer-map.ts    # Proxy-backed deep observation helpers
+│   ├── attribute-map.ts   # Automatic @attr registration helpers
+│   ├── utilities.ts       # Declarative parsing and proxy utilities
+│   └── syntax.ts          # Declarative syntax constants
 ├── state/
 │   ├── state.ts           # state() helper (beta)
 │   └── watch.ts           # watch() helper (beta)
@@ -546,6 +584,7 @@ src/
 | [ARCHITECTURE_FASTELEMENT.md](./ARCHITECTURE_FASTELEMENT.md) | FASTElement & ElementController lifecycle in detail |
 | [ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md](./ARCHITECTURE_HTML_TAGGED_TEMPLATE_LITERAL.md) | `html` tag, directives, binding pre-processing |
 | [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) | Updates queue, attribute and observable change batching |
+| [DECLARATIVE_DESIGN.md](./DECLARATIVE_DESIGN.md) | Declarative HTML runtime, parser, schema, maps, and fixture architecture |
 | [src/templating/TEMPLATE-BINDINGS.md](./src/templating/TEMPLATE-BINDINGS.md) | Full template binding pipeline: authoring → compilation → binding → DOM updates |
 | [docs/fast-element-2-changes.md](./docs/fast-element-2-changes.md) | Breaking changes from v1 to v2 |
 
