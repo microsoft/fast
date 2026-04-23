@@ -12,9 +12,7 @@
             "!**/CHANGELOG.json",
             "!change/**/*.json",
             "!**/package.json",
-            "!package-lock.json",
-            "!packages/fast-element/test/declarative/fixtures/**/index.html",
-            "!packages/fast-element/test/declarative/fixtures/**/templates.html"
+            "!package-lock.json"
         ]
     },
     "html": {
