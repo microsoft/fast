@@ -17,7 +17,7 @@ navigationOptions:
 
 Converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes.
 
-This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->. The only per-parse state is `_hasDeprecatedEventSyntax`<!-- -->, which is reset at the start of each `parse()` call.
+This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->.
 
 The parsing pipeline is fully synchronous — no promises are allocated during template resolution.
 
@@ -26,52 +26,6 @@ The parsing pipeline is fully synchronous — no promises are allocated during t
 ```typescript
 export declare class TemplateParser 
 ```
-
-## Properties
-
-<table><thead><tr><th>
-
-Property
-
-
-</th><th>
-
-Modifiers
-
-
-</th><th>
-
-Type
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[hasDeprecatedEventSyntax](../fast-element.templateparser.hasdeprecatedeventsyntax/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-boolean
-
-
-</td><td>
-
-Whether the last parsed template contained deprecated "e" event syntax.
-
-
-</td></tr>
-</tbody></table>
 
 ## Methods
 

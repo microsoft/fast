@@ -154,7 +154,6 @@ All delimiters used by the parser are defined in a single `Syntax` interface and
 | `whenDirectiveOpen` / `whenDirectiveClose` | `<f-when` / `</f-when>` | When directive |
 | `attributeDirectivePrefix` | `f-` | Attribute directive prefix |
 | `eventArgAccessor` | `$e` | DOM event argument |
-| `deprecatedEventArgAccessor` | `e` | Deprecated DOM event argument (emits a deduplicated warning once per component) |
 | `executionContextAccessor` | `$c` | Execution context argument |
 
 ---
@@ -351,7 +350,6 @@ sequenceDiagram
 |---|---|---|
 | `parse()` | public | Entry point: parses declarative HTML into `{ strings, values }`. |
 | `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values. |
-| `hasDeprecatedEventSyntax` | public | Getter indicating whether the last parse encountered deprecated `e` event syntax. |
 | `resolveStringsAndValues()` | private | Creates `strings`/`values` arrays and delegates to `resolveInnerHTML()`. |
 | `resolveInnerHTML()` | private | Recursive HTML parser that dispatches to data binding or template directive handlers. |
 | `resolveDataBinding()` | private | Thin dispatcher that routes to `resolveContentBinding()`, `resolveAttributeBinding()`, or `resolveAttributeDirectiveBinding()`. |
