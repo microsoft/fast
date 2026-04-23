@@ -82,27 +82,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[behaviors](../fast-element.elementstyles.behaviors/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-ReadonlyArray&lt;[HostBehavior](../fast-element.hostbehavior/)<!-- -->&lt;HTMLElement&gt;&gt; \| null
-
-
-</td><td>
-
-The behaviors associated with this set of styles.
-
-
-</td></tr>
-<tr><td>
-
 [strategy](../fast-element.elementstyles.strategy/)
 
 

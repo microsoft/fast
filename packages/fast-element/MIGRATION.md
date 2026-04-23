@@ -186,14 +186,19 @@ This is a **breaking change** for SSR output format. Any system that produces or
 | Removed | Replacement |
 |---|---|
 | `ElementStyles.withBehaviors()` | Move the runtime condition into the element and call `this.$fastController.addStyles()` / `this.$fastController.removeStyles()` directly. |
+| `ElementStyles.behaviors` | Move any runtime behavior out of the stylesheet and into the element or controller lifecycle. |
+| CSS bindings in `css` (for example ``css`color: ${x => x.color}```) | Move the dynamic value into the element and update classes, attributes, or inline styles from element code. |
+| `CSSDirective.createCSS(add)` | Update directives to implement `createCSS()` and return only static CSS content. |
 
 ### Changed behavior
 
-- `css` and `css.partial()` still compose internal behaviors for CSS directives and CSS bindings.
-- `ElementStyles` remains a static style container; attaching arbitrary `HostBehavior`s is no longer part of the public API.
+- `css` and `css.partial()` no longer compose `HostBehavior`s.
+- `css` no longer accepts function or `Binding` interpolations.
+- `ElementStyles` is now a fully static style container.
 
 ### Migration steps
 
 1. Keep the conditional `ElementStyles` in a separate `css` value.
 2. Move the external listener or condition (for example `matchMedia()` or an app event subscription) into the element lifecycle.
 3. Call `this.$fastController.addStyles(styles)` when the condition is active and `this.$fastController.removeStyles(styles)` when it is inactive or during cleanup.
+4. If you previously interpolated bindings or behavior-producing directives into `css`, replace them with element state and standard DOM or controller updates.

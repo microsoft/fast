@@ -96,7 +96,7 @@ class MyComponent extends FASTElement {
 <my-component></my-component>
 ```
 
-For external signals such as [matchMedia()](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia), keep the listener on the element and toggle a separate stylesheet through the same controller APIs:
+For external signals such as [matchMedia()](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia), keep the listener on the element and toggle a separate stylesheet through the same controller APIs. `css` templates stay static, so move runtime conditions into the element rather than binding them inside the stylesheet:
 
 ```ts
 import { css, FASTElement } from "@microsoft/fast-element";

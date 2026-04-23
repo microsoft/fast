@@ -932,149 +932,33 @@ test.describe("css", () => {
             });
         });
 
-        test("should add behaviors returned from CSSDirective.createCSS() to the resulting ElementStyles", async ({
+        test("should not expose removed behavior APIs on ElementStyles", async ({
             page,
         }) => {
-            const includesBehavior = await page.evaluate(async () => {
-                // @ts-expect-error: Client module.
-                const { css, cssDirective } = await import("/main.js");
+            const { exposesBehaviors, exposesWithBehaviors } = await page.evaluate(
+                async () => {
+                    // @ts-expect-error: Client module.
+                    const { css } = await import("/main.js");
 
-                const behavior = {
-                    addedCallback() {},
-                };
+                    const styles = css``;
+                    const prototype = Object.getPrototypeOf(styles);
 
-                class Directive {
-                    createCSS(add: any) {
-                        add(behavior);
-                        return "";
-                    }
-                }
+                    return {
+                        exposesBehaviors:
+                            "behaviors" in styles ||
+                            Object.prototype.hasOwnProperty.call(prototype, "behaviors"),
+                        exposesWithBehaviors:
+                            "withBehaviors" in styles ||
+                            Object.prototype.hasOwnProperty.call(
+                                prototype,
+                                "withBehaviors",
+                            ),
+                    };
+                },
+            );
 
-                cssDirective()(Directive);
-
-                const styles = css`
-                    ${new Directive()}
-                `;
-                return styles.behaviors?.includes(behavior);
-            });
-
-            expect(includesBehavior).toBe(true);
-        });
-
-        test("should not expose withBehaviors on ElementStyles", async ({ page }) => {
-            const exposesWithBehaviors = await page.evaluate(async () => {
-                // @ts-expect-error: Client module.
-                const { css } = await import("/main.js");
-
-                const styles = css``;
-                const prototype = Object.getPrototypeOf(styles);
-
-                return (
-                    "withBehaviors" in styles ||
-                    Object.prototype.hasOwnProperty.call(prototype, "withBehaviors")
-                );
-            });
-
+            expect(exposesBehaviors).toBe(false);
             expect(exposesWithBehaviors).toBe(false);
-        });
-    });
-
-    test.describe("bindings", () => {
-        test("can be created from interpolated functions", async ({ page }) => {
-            const { bindingsLength, isBinding, startsWithV, result, hasVarInCss } =
-                await page.evaluate(async () => {
-                    // @ts-expect-error: Client module.
-                    const { css, CSSBindingDirective, Binding, ExecutionContext } =
-                        await import("/main.js");
-
-                    class Model {
-                        color: string;
-                        constructor(color: string) {
-                            this.color = color;
-                        }
-                    }
-
-                    const styles = css`
-                        host: {
-                            color: ${(x: any) => x.color};
-                        }
-                    `;
-                    const bindings = styles.behaviors!.filter(
-                        (x: any) => x instanceof CSSBindingDirective,
-                    );
-
-                    const b = bindings[0] as any;
-                    const result = b.dataBinding.evaluate(
-                        new Model("red"),
-                        ExecutionContext.default,
-                    );
-
-                    return {
-                        bindingsLength: bindings.length,
-                        isBinding: b.dataBinding instanceof Binding,
-                        startsWithV: b.targetAspect.startsWith("--v"),
-                        result,
-                        hasVarInCss:
-                            (styles.styles[0] as string).indexOf("var(--") !== -1,
-                    };
-                });
-
-            expect(bindingsLength).toBe(1);
-            expect(isBinding).toBe(true);
-            expect(startsWithV).toBe(true);
-            expect(result).toBe("red");
-            expect(hasVarInCss).toBe(true);
-        });
-
-        test("can be created from interpolated bindings", async ({ page }) => {
-            const { bindingsLength, isBinding, startsWithV, result, hasVarInCss } =
-                await page.evaluate(async () => {
-                    // @ts-expect-error: Client module.
-                    const {
-                        css,
-                        CSSBindingDirective,
-                        Binding,
-                        ExecutionContext,
-                        oneTime,
-                    } = await import("/main.js");
-
-                    class Model {
-                        color: string;
-                        constructor(color: string) {
-                            this.color = color;
-                        }
-                    }
-
-                    const styles = css`
-                        host: {
-                            color: ${oneTime((x: any) => x.color)};
-                        }
-                    `;
-                    const bindings = styles.behaviors!.filter(
-                        (x: any) => x instanceof CSSBindingDirective,
-                    );
-
-                    const b = bindings[0] as any;
-                    const result = b.dataBinding.evaluate(
-                        new Model("red"),
-                        ExecutionContext.default,
-                    );
-
-                    return {
-                        bindingsLength: bindings.length,
-                        isBinding: b.dataBinding instanceof Binding,
-                        startsWithV: b.targetAspect.startsWith("--v"),
-                        result,
-                        hasVarInCss:
-                            (styles.styles[0] as string).indexOf("var(--") !== -1,
-                    };
-                });
-
-            expect(bindingsLength).toBe(1);
-            expect(isBinding).toBe(true);
-            expect(startsWithV).toBe(true);
-            expect(result).toBe("red");
-            expect(hasVarInCss).toBe(true);
         });
     });
 });
@@ -1089,8 +973,6 @@ test.describe("cssPartial", () => {
             // @ts-expect-error: Client module.
             const { css, cssDirective } = await import("/main.js");
 
-            const add = () => void 0;
-
             class MyDirective {
                 createCSS() {
                     return "red";
@@ -1100,110 +982,52 @@ test.describe("cssPartial", () => {
             cssDirective()(MyDirective);
 
             const partial = css.partial`color: ${new MyDirective()}`;
-            return partial.createCSS(add);
+            return partial.createCSS();
         });
 
         expect(createCSSResult).toBe("color: red");
     });
 
-    test("Should add behaviors from interpolated CSS directives", async ({ page }) => {
-        await page.goto("/");
-
-        const { firstIsBehavior, secondIsBehavior2 } = await page.evaluate(async () => {
-            // @ts-expect-error: Client module.
-            const { css, cssDirective } = await import("/main.js");
-
-            const behavior = {
-                addedCallback() {},
-            };
-
-            const behavior2 = { ...behavior };
-
-            class DirectiveA {
-                createCSS(add: any) {
-                    add(behavior);
-                    return "";
-                }
-            }
-
-            class DirectiveB {
-                createCSS(add: any) {
-                    add(behavior2);
-                    return "";
-                }
-            }
-
-            cssDirective()(DirectiveA);
-            cssDirective()(DirectiveB);
-
-            const partial = css.partial`${new DirectiveA()}${new DirectiveB()}`;
-            const behaviors: any[] = [];
-            const add = (x: any) => behaviors.push(x);
-
-            partial.createCSS(add);
-
-            return {
-                firstIsBehavior: behaviors[0] === behavior,
-                secondIsBehavior2: behaviors[1] === behavior2,
-            };
-        });
-
-        expect(firstIsBehavior).toBe(true);
-        expect(secondIsBehavior2).toBe(true);
-    });
-
-    test("should add any ElementStyles interpolated into the template function when bound to an element", async ({
+    test("should return ElementStyles when the partial includes composable styles", async ({
         page,
     }) => {
         await page.goto("/");
 
-        const { partialIsCaptured, addStylesCalled, stylesIncluded } =
-            await page.evaluate(async () => {
+        const { hasDisplayRule, includesStyles, isElementStyles } = await page.evaluate(
+            async () => {
                 // @ts-expect-error: Client module.
-                const { css, ExecutionContext } = await import("/main.js");
+                const { css, ElementStyles } = await import("/main.js");
 
                 const styles = css`
                     :host {
                         color: blue;
                     }
                 `;
-                const partial = css.partial`${styles}`;
-                const capturedBehaviors: any[] = [];
-                let addStylesCalled = false;
-                let stylesIncluded = false;
-
-                const controller = {
-                    mainStyles: null,
-                    isConnected: false,
-                    isBound: false,
-                    source: {},
-                    context: ExecutionContext.default,
-                    addStyles(style: any) {
-                        stylesIncluded = style.styles.includes(styles);
-                        addStylesCalled = true;
-                    },
-                    removeStyles(s: any) {},
-                    addBehavior() {},
-                    removeBehavior() {},
-                    onUnbind() {},
-                };
-
-                const add = (x: any) => capturedBehaviors.push(x);
-                partial.createCSS(add);
-
-                const partialIsCaptured = capturedBehaviors[0] === partial;
-
-                (partial as any).addedCallback!(controller);
+                const partial = css.partial`
+                    :host {
+                        display: block;
+                    }
+                    ${styles}
+                `;
+                const created = partial.createCSS();
+                const cssText =
+                    created instanceof ElementStyles
+                        ? created.styles.find(x => typeof x === "string")
+                        : "";
 
                 return {
-                    partialIsCaptured,
-                    addStylesCalled,
-                    stylesIncluded,
+                    hasDisplayRule:
+                        typeof cssText === "string" && cssText.includes("display: block"),
+                    includesStyles:
+                        created instanceof ElementStyles &&
+                        created.styles.includes(styles),
+                    isElementStyles: created instanceof ElementStyles,
                 };
-            });
+            },
+        );
 
-        expect(partialIsCaptured).toBe(true);
-        expect(addStylesCalled).toBe(true);
-        expect(stylesIncluded).toBe(true);
+        expect(hasDisplayRule).toBe(true);
+        expect(includesStyles).toBe(true);
+        expect(isElementStyles).toBe(true);
     });
 });

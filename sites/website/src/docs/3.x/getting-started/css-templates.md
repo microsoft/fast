@@ -94,7 +94,8 @@ For runtime style changes, keep the `ElementStyles` in your component and call
 `$fastController.addStyles()` / `$fastController.removeStyles()` from element
 change handlers or lifecycle callbacks. Check out the
 [advanced documentation](/docs/advanced/working-with-custom-elements.md) for
-details.
+details. `css` templates are static and do not support runtime binding
+expressions.
 :::
 
 ## Adding external styles

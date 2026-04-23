@@ -1,13 +1,6 @@
 import type { Constructable } from "../interfaces.js";
 import { createTypeRegistry } from "../platform.js";
-import type { HostBehavior } from "./host.js";
 import type { ComposableStyles } from "./element-styles.js";
-
-/**
- * Used to add behaviors when constructing styles.
- * @public
- */
-export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
 
 /**
  * Directive for use in {@link css}.
@@ -16,10 +9,10 @@ export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
  */
 export interface CSSDirective {
     /**
-     * Creates a CSS fragment to interpolate into the CSS document.
-     * @returns - the string to interpolate into CSS
+     * Creates static styles to interpolate into the CSS document.
+     * @returns - the styles to interpolate into CSS
      */
-    createCSS(add: AddBehavior): ComposableStyles;
+    createCSS(): ComposableStyles;
 }
 
 /**
@@ -27,7 +20,7 @@ export interface CSSDirective {
  * @public
  */
 export interface CSSDirectiveDefinition<
-    TType extends Constructable<CSSDirective> = Constructable<CSSDirective>
+    TType extends Constructable<CSSDirective> = Constructable<CSSDirective>,
 > {
     /**
      * The type that the definition provides metadata for.
@@ -38,8 +31,7 @@ export interface CSSDirectiveDefinition<
 const registry = createTypeRegistry<CSSDirectiveDefinition>();
 
 /**
- * Instructs the css engine to provide dynamic styles or
- * associate behaviors with styles.
+ * Instructs the css engine to provide styles during CSS template composition.
  * @public
  */
 export const CSSDirective = Object.freeze({

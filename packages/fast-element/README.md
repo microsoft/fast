@@ -72,9 +72,10 @@ When runtime state or external signals need to add or remove styles, create the
 `this.$fastController.addStyles()` / `this.$fastController.removeStyles()` from
 the element lifecycle or change handlers.
 
-`css` templates remain static style definitions. CSS directives and CSS bindings
-still compose their internal behaviors automatically, but `ElementStyles` no
-longer exposes a public API for attaching arbitrary behaviors.
+`css` templates remain static style definitions. Runtime CSS bindings and
+behavior-producing CSS directives are no longer supported; keep the condition on
+the element and toggle a separate `ElementStyles` instance through the
+controller when styles need to change.
 
 ## Prerendered Content Optimization
 

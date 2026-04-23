@@ -1,4 +1,3 @@
-import type { HostBehavior } from "./host.js";
 import type { StyleStrategy, StyleTarget } from "./style-strategy.js";
 
 /**
@@ -20,33 +19,19 @@ export type ConstructibleStyleStrategy = {
 };
 
 let DefaultStyleStrategy: ConstructibleStyleStrategy;
-const behaviorLookup = new WeakMap<
-    ElementStyles,
-    ReadonlyArray<HostBehavior<HTMLElement>> | null
->();
 
 function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>,
 ): (string | CSSStyleSheet)[] {
-    return styles
-        .map((x: ComposableStyles) =>
-            x instanceof ElementStyles ? reduceStyles(x.styles) : [x],
-        )
-        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
-}
+    return styles.reduce<(string | CSSStyleSheet)[]>((reduced, current) => {
+        if (current instanceof ElementStyles) {
+            reduced.push(...reduceStyles(current.styles));
+        } else {
+            reduced.push(current);
+        }
 
-function reduceBehaviors(
-    styles: ReadonlyArray<ComposableStyles>,
-): ReadonlyArray<HostBehavior<HTMLElement>> | null {
-    return styles
-        .map((x: ComposableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
-        .reduce(
-            (
-                prev: ReadonlyArray<HostBehavior<HTMLElement>> | null,
-                curr: ReadonlyArray<HostBehavior<HTMLElement>> | null,
-            ) => (curr === null ? prev : prev === null ? curr : prev.concat(curr)),
-            null as ReadonlyArray<HostBehavior<HTMLElement>> | null,
-        );
+        return reduced;
+    }, []);
 }
 
 /**
@@ -56,13 +41,6 @@ function reduceBehaviors(
 export class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
     private _strategy: StyleStrategy | null = null;
-
-    /**
-     * The behaviors associated with this set of styles.
-     */
-    public get behaviors(): ReadonlyArray<HostBehavior<HTMLElement>> | null {
-        return behaviorLookup.get(this) ?? null;
-    }
 
     /**
      * Gets the StyleStrategy associated with these element styles.
@@ -79,9 +57,7 @@ export class ElementStyles {
      * Creates an instance of ElementStyles.
      * @param styles - The styles that will be associated with elements.
      */
-    public constructor(public readonly styles: ReadonlyArray<ComposableStyles>) {
-        behaviorLookup.set(this, reduceBehaviors(styles));
-    }
+    public constructor(public readonly styles: ReadonlyArray<ComposableStyles>) {}
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {
@@ -140,24 +116,4 @@ export class ElementStyles {
     public static readonly supportsAdoptedStyleSheets =
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype;
-}
-
-/** @internal */
-export function addBehaviors(
-    styles: ElementStyles,
-    behaviors: ReadonlyArray<HostBehavior<HTMLElement>>,
-): ElementStyles {
-    if (behaviors.length === 0) {
-        return styles;
-    }
-
-    const currentBehaviors = styles.behaviors;
-    behaviorLookup.set(
-        styles,
-        currentBehaviors === null
-            ? Array.from(behaviors)
-            : currentBehaviors.concat(behaviors),
-    );
-
-    return styles;
 }
