@@ -5,22 +5,36 @@
         <title></title>
     </head>
     <body>
-        <test-element foo="bar"><template shadowrootmode="open" shadowroot="open"><button data-fe="1">No arguments</button>
-        <button data-fe="1">event argument (e, deprecated)</button>
-        <button data-fe="1">modify foo</button>
-        <button data-fe="1">event argument ($e)</button>
-        <button data-fe="1">context argument ($c)</button>
-        <button data-fe="1">multiple arguments ($e, $c)</button>
-        <button data-fe="1">context event argument ($c.event)</button></template></test-element>
+        <test-element foo="bar"><template shadowrootmode="open" shadowroot="open"><button type="button" data-fe="1">No arguments</button>
+        <button type="button" data-fe="1">modify foo</button>
+        <button type="button" data-fe="1">
+            event argument ($e)
+        </button>
+        <button type="button" data-fe="1">
+            context argument ($c)
+        </button>
+        <button type="button" data-fe="1">
+            multiple arguments ($e, $c)
+        </button>
+        <button type="button" data-fe="1">
+            context event argument ($c.event)
+        </button></template></test-element>
 <f-template name="test-element">
     <template>
-        <button @click="{handleNoArgsClick()}">No arguments</button>
-        <button @click="{handleEventArgClick(e)}">event argument (e, deprecated)</button>
-        <button @click="{handleModifyAttributeClick()}">modify foo</button>
-        <button @click="{handleDollarEArgClick($e)}">event argument ($e)</button>
-        <button @click="{handleContextArgClick($c)}">context argument ($c)</button>
-        <button @click="{handleMultiArgClick($e, $c)}">multiple arguments ($e, $c)</button>
-        <button @click="{handleContextEventArgClick($c.event)}">context event argument ($c.event)</button>
+        <button type="button" @click="{handleNoArgsClick()}">No arguments</button>
+        <button type="button" @click="{handleModifyAttributeClick()}">modify foo</button>
+        <button type="button" @click="{handleDollarEArgClick($e)}">
+            event argument ($e)
+        </button>
+        <button type="button" @click="{handleContextArgClick($c)}">
+            context argument ($c)
+        </button>
+        <button type="button" @click="{handleMultiArgClick($e, $c)}">
+            multiple arguments ($e, $c)
+        </button>
+        <button type="button" @click="{handleContextEventArgClick($c.event)}">
+            context event argument ($c.event)
+        </button>
     </template>
 </f-template>
 

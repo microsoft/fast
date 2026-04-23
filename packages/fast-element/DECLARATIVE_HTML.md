@@ -358,15 +358,13 @@ You can pass the DOM event object, the execution context, or both as arguments. 
 <button @click="{handleClick($e, $c)}"></button>
 ```
 
-**Arbitrary binding expressions** — any token that is not `$e`, `$c`, or `e` is resolved as a binding path on the data source:
+**Arbitrary binding expressions** — any token that is not `$e` or `$c` is resolved as a binding path on the data source:
 ```html
 <button @click="{handleClick(user.id)}"></button>
 ```
 
-> **Deprecated:** The bare `e` token still works but will emit a console warning once per component. The warning includes the component name to help locate usage. Migrate to `$e`.
-> ```html
-> <button @click="{handleClick(e)}"></button>
-> ```
+Use `$e` for the DOM event object. Bare `e` is not special and resolves like any
+other binding path on the current data source.
 
 ### Directives
 

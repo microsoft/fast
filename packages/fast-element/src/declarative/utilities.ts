@@ -13,7 +13,6 @@ import {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
-    deprecatedEventArgAccessor,
     eventArgAccessor,
     executionContextAccessor,
     openExpression,
@@ -91,12 +90,12 @@ interface ObservedTargetsAndProperties {
 
 export const contextPrefixDot: string = `${executionContextAccessor}.`;
 
-export { deprecatedEventArgAccessor, eventArgAccessor, executionContextAccessor };
+export { eventArgAccessor, executionContextAccessor };
 
 /**
  * The type of a parsed event handler argument.
  */
-export type EventArgType = "event" | "deprecated-event" | "context" | "binding";
+export type EventArgType = "event" | "context" | "binding";
 
 /**
  * A parsed event handler argument descriptor.
@@ -114,8 +113,10 @@ export interface ParsedEventArg {
  *
  * Special arguments:
  * - `$e` — resolves to the DOM event object
- * - `e` — resolves to the DOM event object (deprecated, use `$e`)
  * - `$c` — resolves to the full execution context object
+ *
+ * Any other token, including bare `e`, is treated as a binding path and
+ * resolved against the current data source.
  *
  * @param argsString - The raw arguments string from between the parentheses,
  *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
@@ -132,8 +133,6 @@ export function parseEventArgs(argsString: string): ParsedEventArg[] {
             switch (arg) {
                 case eventArgAccessor:
                     return { type: "event" };
-                case deprecatedEventArgAccessor:
-                    return { type: "deprecated-event" };
                 case executionContextAccessor:
                     return { type: "context" };
                 default:
