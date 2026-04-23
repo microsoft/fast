@@ -30,6 +30,16 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
+    "./declarative.js": {
+      "types": "./dist/dts/declarative.d.ts",
+      "test": "./src/declarative.ts",
+      "default": "./dist/esm/declarative.js"
+    },
+    "./declarative/utilities.js": {
+      "types": "./dist/dts/declarative/utilities.d.ts",
+      "test": "./src/declarative/utilities.ts",
+      "default": "./dist/esm/declarative/utilities.js"
+    },
     "./binding/two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
       "default": "./dist/esm/binding/two-way.js"
@@ -95,6 +105,7 @@
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
     "./dist/esm/debug.js",
+    "./dist/esm/declarative.js",
     "./dist/esm/polyfills.js",
     "./dist/esm/components/install-hydration.js",
     "./dist/esm/templating/install-hydratable-view-templates.js",
@@ -106,18 +117,31 @@
     "doc:ci": "api-extractor run",
     "doc:exports": "node ./scripts/run-api-extractor.js",
     "doc:exports:ci": "node ./scripts/run-api-extractor.js ci",
-    "build": "npm run build:tsc && npm run build:rollup && npm run build:sizes && npm run doc && npm run doc:exports",
+    "build": "npm run build:tsc && npm run build:rollup && npm run build:sizes && npm run doc && npm run doc:exports && npm run build:fixtures",
+    "build:fixtures": "node scripts/declarative/build-fixtures.js",
+    "build:fixtures:webui": "node scripts/declarative/build-fixtures-with-webui.js",
     "build:rollup": "rollup -c",
     "build:sizes": "node scripts/measure-sizes.js",
     "build:tsc": "tsc -p ./tsconfig.json",
     "dev": "tsc -p ./tsconfig.json -w",
+    "dev:declarative": "concurrently -k -n tsc,server \"npm run dev\" \"npm run test-server:declarative\"",
     "prepublishOnly": "npm run clean && npm run build",
     "lint": "biome-changed",
     "lint:fix": "biome-changed -- --fix",
-    "test:playwright": "playwright test",
-    "test:chromium": "playwright test --project=chromium",
+    "test:playwright": "playwright test && npm run test:playwright:declarative",
+    "test:playwright:declarative": "playwright test --config=playwright.declarative.config.ts",
+    "test:chromium": "playwright test --project=chromium && npm run test:chromium:declarative",
+    "test:chromium:declarative": "playwright test --config=playwright.declarative.config.ts --project=chromium",
     "test-server": "npx vite test/ --clearScreen false",
+    "test-server:declarative": "npx vite test/declarative --clearScreen false --port 5174 --strictPort",
+    "test-server:declarative:webui": "npx vite temp/integrations/webui --clearScreen false --port 5174 --strictPort",
     "test": "npm run lint && npm run doc:ci && npm run doc:exports:ci && npm run test:playwright",
-    "test:ci": "npm run doc:ci && npm run doc:exports:ci && npm run test:playwright"
+    "test:ci": "npm run doc:ci && npm run doc:exports:ci && npm run test:playwright",
+    "test:ui:declarative": "concurrently -k -n tsc,playwright \"npm run dev\" \"npx playwright test --config=playwright.declarative.config.ts --ui\"",
+    "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
+  },
+  "devDependencies": {
+    "@microsoft/fast-build": "*",
+    "@microsoft/webui": "0.0.10"
   }
 }

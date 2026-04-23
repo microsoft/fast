@@ -48,12 +48,12 @@
     "express": "5.2.1"
   },
   "devDependencies": {
-    "@microsoft/fast-html": "*",
-    "@microsoft/fast-build": "*"
+    "@microsoft/fast-build": "*",
+    "@microsoft/fast-element": "*"
   },
   "peerDependencies": {
     "@microsoft/fast-build": ">=0.4.0 <1.0.0",
-    "@microsoft/fast-html": ">=1.0.0-alpha.50 <1.0.0",
+    "@microsoft/fast-element": ">=2.10.4 <3.0.0",
     "@playwright/test": ">=1.40.0",
     "vite": ">=7.0.0"
   },
@@ -61,7 +61,7 @@
     "@microsoft/fast-build": {
       "optional": true
     },
-    "@microsoft/fast-html": {
+    "@microsoft/fast-element": {
       "optional": true
     }
   },
