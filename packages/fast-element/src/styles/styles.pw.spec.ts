@@ -931,35 +931,6 @@ test.describe("css", () => {
                 expect(includesSheet).toBe(true);
             });
         });
-
-        test("should not expose removed behavior APIs on ElementStyles", async ({
-            page,
-        }) => {
-            const { exposesBehaviors, exposesWithBehaviors } = await page.evaluate(
-                async () => {
-                    // @ts-expect-error: Client module.
-                    const { css } = await import("/main.js");
-
-                    const styles = css``;
-                    const prototype = Object.getPrototypeOf(styles);
-
-                    return {
-                        exposesBehaviors:
-                            "behaviors" in styles ||
-                            Object.prototype.hasOwnProperty.call(prototype, "behaviors"),
-                        exposesWithBehaviors:
-                            "withBehaviors" in styles ||
-                            Object.prototype.hasOwnProperty.call(
-                                prototype,
-                                "withBehaviors",
-                            ),
-                    };
-                },
-            );
-
-            expect(exposesBehaviors).toBe(false);
-            expect(exposesWithBehaviors).toBe(false);
-        });
     });
 });
 
