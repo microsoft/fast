@@ -126,7 +126,7 @@ setTheme(lightTheme);
 **`entry-client.ts`** registers components for DSD hydration using `define`:
 
 ```ts
-import { TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 TemplateElement.define({ name: "f-template" });
 
 // Load all define-async modules

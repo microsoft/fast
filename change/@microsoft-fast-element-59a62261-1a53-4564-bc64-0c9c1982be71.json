@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Simplify fast-element declarative package documentation and test configuration without changing the published API.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
