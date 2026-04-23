@@ -72,28 +72,11 @@ class StringsAccumulator {
  *
  * This class is intentionally stateless across invocations — all mutable
  * parsing state lives on the call stack or in the `TemplateResolutionContext`.
- * The only per-parse state is `_hasDeprecatedEventSyntax`, which is reset at
- * the start of each `parse()` call.
  *
  * The parsing pipeline is fully synchronous — no promises are allocated
  * during template resolution.
  */
 export class TemplateParser {
-    /**
-     * Whether the template contains deprecated "e" event argument usage.
-     * Set during template processing; checked after parsing to emit a
-     * single warning per template.
-     */
-    // TODO: remove per https://github.com/microsoft/fast/issues/7314
-    private _hasDeprecatedEventSyntax = false;
-
-    /**
-     * Whether the last parsed template contained deprecated "e" event syntax.
-     */
-    public get hasDeprecatedEventSyntax(): boolean {
-        return this._hasDeprecatedEventSyntax;
-    }
-
     /**
      * Parse declarative HTML into strings and values for ViewTemplate creation.
      * @param innerHTML - The transformed innerHTML to parse.
@@ -101,8 +84,6 @@ export class TemplateParser {
      * @returns The resolved strings and values.
      */
     public parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues {
-        this._hasDeprecatedEventSyntax = false;
-
         return this.resolveStringsAndValues(null, innerHTML, {
             parentContext: null,
             level: 0,
@@ -370,14 +351,9 @@ export class TemplateParser {
 
         const parsedArgs = parseEventArgs(argsString);
 
-        if (parsedArgs.some(a => a.type === "deprecated-event")) {
-            this._hasDeprecatedEventSyntax = true;
-        }
-
         const argResolvers = parsedArgs.map((parsedArg): ((x: any, c: any) => any) => {
             switch (parsedArg.type) {
                 case "event":
-                case "deprecated-event":
                     return (_x, c) => c.event;
                 case "context":
                     return (_x, c) => c;

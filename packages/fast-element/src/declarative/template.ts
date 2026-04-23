@@ -18,7 +18,6 @@ import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
 import {
     escapeBracesInCodeElements,
-    eventArgAccessor,
     transformInnerHTML,
 } from "./utilities.js";
 
@@ -258,14 +257,6 @@ class TemplateElement extends FASTElement {
                 const parser = new TemplateParser();
 
                 const { strings, values } = parser.parse(innerHTML, schema);
-
-                if (parser.hasDeprecatedEventSyntax) {
-                    console.warn(
-                        `[fast-element/declarative] Using "e" as an event argument is deprecated` +
-                            ` in component "${name}".` +
-                            ` Use "${eventArgAccessor}" instead.`,
-                    );
-                }
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
                 this.observerMap?.defineProperties();

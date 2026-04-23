@@ -6,7 +6,6 @@ interface Syntax {
     clientSideCloseExpression: string;
     executionContextAccessor: string;
     eventArgAccessor: string;
-    deprecatedEventArgAccessor: string;
     openExpression: string;
     closeExpression: string;
     unescapedOpenExpression: string;
@@ -26,7 +25,6 @@ export const {
     clientSideCloseExpression,
     clientSideOpenExpression,
     closeExpression,
-    deprecatedEventArgAccessor,
     eventArgAccessor,
     executionContextAccessor,
     openExpression,
@@ -41,7 +39,6 @@ export const {
     clientSideCloseExpression: "}",
     clientSideOpenExpression: "{",
     closeExpression: "}}",
-    deprecatedEventArgAccessor: "e",
     eventArgAccessor: "$e",
     executionContextAccessor: "$c",
     openExpression: "{{",

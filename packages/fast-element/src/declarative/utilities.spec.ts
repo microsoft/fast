@@ -941,9 +941,6 @@ test.describe("utilities", async () => {
         test("should parse $e as an event argument", async () => {
             expect(parseEventArgs(eventArgAccessor)).toEqual([{ type: "event" }]);
         });
-        test("should parse e (no $) as a deprecated-event argument", async () => {
-            expect(parseEventArgs("e")).toEqual([{ type: "deprecated-event" }]);
-        });
         test("should parse $c as a context argument", async () => {
             expect(parseEventArgs("$c")).toEqual([{ type: "context" }]);
         });
@@ -969,12 +966,6 @@ test.describe("utilities", async () => {
         test("should parse multiple arguments without spaces", async () => {
             expect(parseEventArgs("$e,$c")).toEqual([
                 { type: "event" },
-                { type: "context" },
-            ]);
-        });
-        test("should parse e (deprecated) mixed with $c", async () => {
-            expect(parseEventArgs("e, $c")).toEqual([
-                { type: "deprecated-event" },
                 { type: "context" },
             ]);
         });

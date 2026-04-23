@@ -90,7 +90,7 @@ Acts as the bridge between declarative HTML templates and the FAST element regis
 
 Converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes.
 
-This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->. The only per-parse state is `_hasDeprecatedEventSyntax`<!-- -->, which is reset at the start of each `parse()` call.
+This class is intentionally stateless across invocations — all mutable parsing state lives on the call stack or in the `TemplateResolutionContext`<!-- -->.
 
 The parsing pipeline is fully synchronous — no promises are allocated during template resolution.
 

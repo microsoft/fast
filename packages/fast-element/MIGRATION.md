@@ -48,10 +48,30 @@ removed `@microsoft/fast-html` package.
 2. Update declarative utility imports such as `deepMerge` to
    `@microsoft/fast-element/declarative/utilities.js`.
 3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
-   `observable`) from `@microsoft/fast-element`.
+    `observable`) from `@microsoft/fast-element`.
 4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
-   APIs; the declarative entrypoint owns the debug-message and hydratable-view
-   side effects.
+    APIs; the declarative entrypoint owns the debug-message and hydratable-view
+    side effects.
+
+## Declarative event handler `e` removal (v3)
+
+### Removed behavior
+
+| Removed | Replacement |
+|---|---|
+| Bare `e` event arguments in declarative event handlers | `$e` |
+| `TemplateParser.hasDeprecatedEventSyntax` | No replacement |
+
+Only `$e` and `$c` are reserved event handler arguments in declarative
+templates. Bare `e` now resolves like any other binding path on the current
+data source.
+
+### Migration steps
+
+1. Replace declarative event bindings such as
+   `@click="{handleClick(e)}"` with `@click="{handleClick($e)}"`.
+2. Remove any `TemplateParser.hasDeprecatedEventSyntax` checks or warnings from
+   custom tooling.
 
 ## Prerendered Content Optimization (v2 → v3)
 
