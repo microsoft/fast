@@ -157,4 +157,6 @@ All keys are optional. Only the following keys are allowed: `entry`, `state`, `o
 
 ## Template syntax
 
-Template syntax follows the FAST declarative HTML format. See the [`@microsoft/fast-html` README](../fast-html/README.md) for full documentation on bindings, conditionals, repeats, and directives.
+Template syntax follows the FAST declarative HTML format. See the
+[`@microsoft/fast-element` declarative documentation](../fast-element/DECLARATIVE_HTML.md)
+for full documentation on bindings, conditionals, repeats, and directives.

@@ -88,6 +88,24 @@ connectedCallback() {
 }
 ```
 
+### Declarative HTML imports moved
+
+The `@microsoft/fast-html` package has been removed. Import declarative HTML
+APIs from the dedicated FAST Element entrypoints instead:
+
+```ts
+// Before
+import { TemplateElement } from "@microsoft/fast-html";
+import { deepMerge } from "@microsoft/fast-html/utilities.js";
+
+// After
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
+```
+
+This keeps the root `@microsoft/fast-element` import free of declarative
+side effects while moving the declarative runtime into the same package.
+
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
 The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `define()` directly.
