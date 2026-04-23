@@ -48,7 +48,7 @@ Use [conventional commit](https://www.conventionalcommits.org/) format for PR ti
 Common types: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `perf`.
 
 Examples:
-- `feat: add shadow DOM support to fast-html parser`
+- `feat: add shadow DOM support to declarative templates`
 - `fix: resolve memory leak in template binding`
 - `chore: update dev dependencies`
 

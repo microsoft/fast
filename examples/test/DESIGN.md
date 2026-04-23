@@ -4,7 +4,7 @@ End-to-end Playwright tests that exercise the example todo apps in
 [`examples/`](..) as black-box web applications. The same spec file runs
 against every app, asserting that the unified UI and functionality behave
 identically regardless of implementation (vanilla FAST, FAST + MobX, or SSR
-via `@microsoft/webui` + `@microsoft/fast-html`).
+via `@microsoft/webui` + `@microsoft/fast-element/declarative.js`).
 
 If you only need a quickstart, see [`README.md`](./README.md).
 
@@ -12,7 +12,7 @@ If you only need a quickstart, see [`README.md`](./README.md).
 
 - Provide one shared spec that runs against every example todo app so any
   user-visible regression — in either the UI or in supporting libraries
-  (`@microsoft/fast-element`, `@microsoft/webui`, `@microsoft/fast-html`) — is
+  (`@microsoft/fast-element`, `@microsoft/webui`) — is
   caught in CI.
 - Treat each app as a black box: tests never import app source, never poke
   internal state, and never reach into framework internals.

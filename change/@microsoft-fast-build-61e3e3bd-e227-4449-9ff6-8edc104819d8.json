@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update fast-build documentation to reference the fast-element declarative HTML docs.",
+  "packageName": "@microsoft/fast-build",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

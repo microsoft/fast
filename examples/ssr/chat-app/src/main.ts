@@ -1,5 +1,5 @@
 import "@microsoft/fast-examples-design-system/tokens.css";
-import { TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 
 // Side-effect imports — register the chat custom elements
 import "./chat-app.js";

@@ -1,11 +1,11 @@
 ---
 id: "fast-element.transformer_2"
-title: "Transformer\_2 type"
+title: "Transformer\\_2 type"
 layout: 3x-api
 eleventyNavigation:
   key: "di.jsapi3xfast-element.transformer_2"
   parent: "@microsoft/fast-element/di.js3x"
-  title: "Transformer\_2 type"
+  title: "Transformer\\_2 type"
 navigationOptions:
   activeKey: "di.jsapi3xfast-element.transformer_2"
 ---

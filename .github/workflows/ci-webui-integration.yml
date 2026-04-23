@@ -47,4 +47,4 @@ jobs:
       run: npx playwright install --with-deps chromium
 
     - name: Run WebUI integration tests
-      run: npm run test:webui-integration -w @microsoft/fast-html
+      run: npm run test:webui-integration -w @microsoft/fast-element

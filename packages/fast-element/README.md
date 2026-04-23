@@ -77,6 +77,32 @@ behavior-producing CSS directives are no longer supported; keep the condition on
 the element and toggle a separate `ElementStyles` instance through the
 controller when styles need to change.
 
+## Declarative HTML
+
+FAST Element also publishes a declarative HTML runtime from
+`@microsoft/fast-element/declarative.js`. This entrypoint defines `<f-template>`,
+exports `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, and
+`AttributeMap`, and installs the hydratable `ViewTemplate` behavior without
+adding those side effects to the root `@microsoft/fast-element` import.
+
+```ts
+import { FASTElement } from "@microsoft/fast-element";
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+
+class MyElement extends FASTElement {}
+
+MyElement.define({
+    name: "my-element",
+    templateOptions: "defer-and-hydrate",
+});
+
+TemplateElement.define({ name: "f-template" });
+```
+
+Declarative utilities such as `deepMerge` are available from
+`@microsoft/fast-element/declarative/utilities.js`. See
+[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative usage details.
+
 ## Prerendered Content Optimization
 
 When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:

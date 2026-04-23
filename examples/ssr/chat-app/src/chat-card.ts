@@ -1,12 +1,11 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement } from "@microsoft/fast-html";
 
-export class ChatCard extends RenderableFASTElement(FASTElement) {
+export class ChatCard extends FASTElement {
     @attr
     public heading?: string;
 }
 
-ChatCard.defineAsync({
+ChatCard.define({
     name: "chat-card",
     templateOptions: "defer-and-hydrate",
 });

@@ -1,4 +1,4 @@
-import { TemplateElement } from "@microsoft/fast-html";
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 import { signalDone } from "../../harness.js";
 import { BenchElement } from "../element.js";
 

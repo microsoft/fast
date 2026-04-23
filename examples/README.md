@@ -13,7 +13,7 @@ FAST patterns in a complete app context.
 | `csr/todo-app` | `@microsoft/fast-todo-app-example` | A To-Do app demonstrating `@microsoft/fast-element` patterns end to end, styled with the shared design-system tokens (light theme, no runtime toggle). |
 | `csr/todo-mobx-app` | `@microsoft/fast-todo-mobx-app-example` | A To-Do app showing how to integrate MobX state with `@microsoft/fast-element` using a single `autorun` per component (no custom bridge code), styled with the shared design-system tokens. |
 | `ssr/chat-app` | `@microsoft/fast-chat-app-example` | A declarative FAST chat demo that pre-renders with `@microsoft/fast-build` and streams canned assistant replies into the transcript, styled with the shared design-system tokens (dark theme, no runtime toggle). |
-| `ssr/webui-todo-app` | `@microsoft/fast-webui-todo-app-example` | A To-Do app pre-rendered by `@microsoft/webui` and hydrated by `@microsoft/fast-html`, styled with the shared design-system tokens (light theme, no runtime toggle). |
+| `ssr/webui-todo-app` | `@microsoft/fast-webui-todo-app-example` | A To-Do app pre-rendered by `@microsoft/webui` and hydrated by `@microsoft/fast-element/declarative.js`, styled with the shared design-system tokens (light theme, no runtime toggle). |
 
 Example apps are grouped by rendering strategy. Client-side-rendered (CSR)
 apps live under [`examples/csr/`](./csr/) and server-side-rendered (SSR) apps

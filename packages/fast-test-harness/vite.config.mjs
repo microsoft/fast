@@ -27,7 +27,7 @@ export default defineConfig({
         sourcemap: true,
     },
     optimizeDeps: {
-        exclude: ["@microsoft/fast-element", "@microsoft/fast-html"],
+        exclude: ["@microsoft/fast-element"],
     },
     preview: {
         port: PORT,

@@ -3,7 +3,7 @@
 A Todo app demonstrating FAST declarative HTML templates with
 [webui](https://github.com/microsoft/webui) prerendering and hydration.
 
-This example shows how to combine `@microsoft/fast-html` declarative templates
+This example shows how to combine `@microsoft/fast-element/declarative.js` declarative templates
 with `@microsoft/webui` for server-side prerendering, producing a fast initial
 render that hydrates into a fully interactive FAST web component application.
 
@@ -13,7 +13,7 @@ render that hydrates into a fully interactive FAST web component application.
   imperative `html`/`css` tagged template literals
 - **Server-side prerendering**: `webui serve` compiles declarative templates
   and renders initial state into static HTML
-- **Client-side hydration**: `@microsoft/fast-html` picks up prerendered DOM
+- **Client-side hydration**: `@microsoft/fast-element/declarative.js` picks up prerendered DOM
   and attaches FAST reactive bindings
 - **Todo functionality**: Add items via a form, filter by status (all,
   active, completed), toggle completion via native checkbox, delete items
@@ -94,14 +94,13 @@ Each component uses co-located files:
   and FAST bindings
 - `*.css` — Scoped styles loaded via `<link rel="stylesheet">` in the shadow
   DOM
-- `*.ts` — Component class using `RenderableFASTElement` mixin with
-  `defineAsync`
+- `*.ts` — Component class using `FASTElement` with `define()`
 
 ### Client entry (`src/index.ts`)
 
 Bootstraps hydration by:
 
-1. Importing components (side-effect registration via `defineAsync`)
+1. Importing components (side-effect registration via `define()`)
 2. Configuring `TemplateElement` with observer maps for reactive attribute
    tracking
 3. Defining `<f-template>` to trigger hydration of prerendered shadow DOM

@@ -12,8 +12,8 @@ This example demonstrates three pieces working together:
 - FAST declarative templates stored as co-located `*.html` and `*.css` files.
 - `@microsoft/webui` prerendering on the server, including Declarative Shadow
   DOM output.
-- Client-side hydration through `@microsoft/fast-html`, so the prerendered UI
-  becomes interactive without re-rendering from scratch.
+- Client-side hydration through `@microsoft/fast-element/declarative.js`, so
+  the prerendered UI becomes interactive without re-rendering from scratch.
 
 The app stays intentionally small: a single todo list with add, toggle, and
 delete behavior backed by a JSON state file.
@@ -111,13 +111,13 @@ parent handles.
 
 The description text is assigned imperatively in `connectedCallback` and a
 `descriptionChanged` callback (instead of via a `{{ description }}` text
-interpolation in the shadow template) to work around a known fast-html
+interpolation in the shadow template) to work around a known FAST declarative
 hydration mismatch for text-interpolation bindings inside hydrated
 declarative-HTML templates.
 
 ## Reactive update patterns
 
-`@microsoft/fast-html`'s `RenderableFASTElement` configures **deep observation**
+`@microsoft/fast-element/declarative.js` configures **deep observation**
 (`observerMap: "all"`) for the template's binding paths. To make nested
 properties on items reactive, the mixin replaces each item's enumerable own
 properties (`id`, `description`, `state`) with accessor pairs backed by

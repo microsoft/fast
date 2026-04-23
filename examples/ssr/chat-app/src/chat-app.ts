@@ -1,5 +1,4 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement } from "@microsoft/fast-html";
 import type { ChatTurn } from "./chat-data.js";
 import { cannedTurnMap, fallbackTurn } from "./chat-data.js";
 
@@ -15,7 +14,7 @@ function renderSuggestion(text: string): string {
     return `<chat-suggestion text="${escapeAttribute(text)}"></chat-suggestion>`;
 }
 
-export class ChatApp extends RenderableFASTElement(FASTElement) {
+export class ChatApp extends FASTElement {
     @attr({ attribute: "welcome-title" })
     public welcomeTitle: string = "FAST Chat Demo";
 
@@ -192,7 +191,7 @@ export class ChatApp extends RenderableFASTElement(FASTElement) {
     }
 }
 
-ChatApp.defineAsync({
+ChatApp.define({
     name: "chat-app",
     templateOptions: "defer-and-hydrate",
 });

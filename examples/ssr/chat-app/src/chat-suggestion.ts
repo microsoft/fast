@@ -1,7 +1,6 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement } from "@microsoft/fast-html";
 
-export class ChatSuggestion extends RenderableFASTElement(FASTElement) {
+export class ChatSuggestion extends FASTElement {
     @attr
     public text?: string;
 
@@ -10,7 +9,7 @@ export class ChatSuggestion extends RenderableFASTElement(FASTElement) {
     }
 }
 
-ChatSuggestion.defineAsync({
+ChatSuggestion.define({
     name: "chat-suggestion",
     templateOptions: "defer-and-hydrate",
 });

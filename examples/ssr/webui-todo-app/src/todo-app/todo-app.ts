@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 import { FASTElement, observable } from "@microsoft/fast-element";
-import { RenderableFASTElement } from "@microsoft/fast-html";
 
 interface TodoItemData {
     id: string;
@@ -12,7 +11,7 @@ interface TodoItemData {
 
 type TodoListFilter = "all" | "active" | "completed";
 
-export class TodoApp extends RenderableFASTElement(FASTElement) {
+export class TodoApp extends FASTElement {
     @observable items: TodoItemData[] = [];
     @observable activeFilter: TodoListFilter = "all";
     @observable description: string = "";
@@ -26,6 +25,7 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
 
     connectedCallback(): void {
         super.connectedCallback();
+        this.prepareItems();
         this.syncCounts();
     }
 
@@ -46,7 +46,7 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
         this.syncCounts();
     }
 
-    async prepare(): Promise<void> {
+    private prepareItems(): void {
         const items: TodoItemData[] = [];
 
         for (const el of this.shadowRoot!.querySelectorAll("todo-item")) {
@@ -135,7 +135,7 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
     }
 
     /**
-     * Work around the fast-html hydration text-binding mismatch (see the
+     * Work around the FAST declarative hydration text-binding mismatch (see the
      * `<todo-item>` `syncDescription()` helper for context): write the
      * footer counters into the shadow DOM imperatively rather than via
      * `{{ activeCount }}` / `{{ completedCount }}` text interpolations.
@@ -156,7 +156,7 @@ export class TodoApp extends RenderableFASTElement(FASTElement) {
     }
 }
 
-TodoApp.defineAsync({
+TodoApp.define({
     name: "todo-app",
     templateOptions: "defer-and-hydrate",
 });

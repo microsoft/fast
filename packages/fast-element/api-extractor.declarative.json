@@ -1,0 +1,14 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+    "extends": "../../api-extractor.json",
+    "mainEntryPointFilePath": "./dist/dts/declarative.d.ts",
+    "apiReport": {
+        "enabled": true,
+        "reportFolder": "<projectFolder>/docs/declarative",
+        "reportFileName": "api-report"
+    },
+    "docModel": {
+        "enabled": true,
+        "apiJsonFilePath": "<projectFolder>/dist/declarative/declarative.api.json"
+    }
+}

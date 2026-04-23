@@ -1,6 +1,6 @@
-const path = require("path");
-const { createInterface } = require("readline");
-const { exec } = require("child_process");
+const path = require("node:path");
+const { createInterface } = require("node:readline");
+const { exec } = require("node:child_process");
 const fs = require("fs-extra");
 const { getPackageJsonDir } = require("@microsoft/fast-build/get-package-json.js");
 
@@ -15,12 +15,13 @@ const markdownAPIDir = path.resolve(projectRoot, `src/docs/${versionDir}/api`);
 const packages = [
     {
         main: "fast-element",
-        exports: [
-            "context",
-            "di"
-        ]
-    }
+        exports: ["context", "declarative", "di"],
+    },
 ];
+
+function yamlString(value) {
+    return JSON.stringify(value);
+}
 
 async function safeCopy(source, dest) {
     if (!fs.existsSync(source)) {
@@ -50,9 +51,9 @@ async function copyAPI() {
         await safeCopy(
             path.resolve(
                 getPackageJsonDir(`@microsoft/${pkg.main}`),
-                `./dist/${pkg.main}.api.json`
+                `./dist/${pkg.main}.api.json`,
             ),
-            `${tempAPIDir}/${pkg.main}.api.json`
+            `${tempAPIDir}/${pkg.main}.api.json`,
         );
 
         if (Array.isArray(pkg.exports)) {
@@ -60,9 +61,9 @@ async function copyAPI() {
                 await safeCopy(
                     path.resolve(
                         getPackageJsonDir(`@microsoft/${pkg.main}`),
-                        `./dist/${pkgExport}/${pkgExport}.api.json`
+                        `./dist/${pkgExport}/${pkgExport}.api.json`,
                     ),
-                    `${tempAPIDir}/${pkg.main}/${pkgExport}/${pkgExport}.api.json`
+                    `${tempAPIDir}/${pkg.main}/${pkgExport}/${pkgExport}.api.json`,
                 );
             }
         }
@@ -81,9 +82,6 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
             const docPath = path.join(dir, docFile);
             let parent = `api${currentVersion}`;
             let title = "";
-            const folders = dir.split("/");
-            const folderName = folders[folders.length - 1];
-
             /**
              * Start file content modification
              */
@@ -132,8 +130,14 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                     if (!isAPIHome) {
                         // Apply link fixes to the extracted breadcrumb content
                         let breadcrumb = homeLink[1];
-                        breadcrumb = breadcrumb.replace(/\]\(\.\/index\.md\)/g, '](../index.html)');
-                        breadcrumb = breadcrumb.replace(/\]\(\.\/([^)]+)\.md\)/g, '](../$1/index.html)');
+                        breadcrumb = breadcrumb.replace(
+                            /\]\(\.\/index\.md\)/g,
+                            "](../index.html)",
+                        );
+                        breadcrumb = breadcrumb.replace(
+                            /\]\(\.\/([^)]+)\.md\)/g,
+                            "](../$1/index.html)",
+                        );
                         output.push(breadcrumb);
                     }
 
@@ -141,7 +145,7 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                 } else {
                     line = isAPIHome
                         ? line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](./$1/)`)
-                        : line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](../$1/)`)
+                        : line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](../$1/)`);
                 }
 
                 if (!skip) {
@@ -156,43 +160,44 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
              * End file content modification
              */
 
-            title = title.replace("\\\]", "");
-            title = title.replace("\\\[", "");
+            title = title.replace("\\]", "");
+            title = title.replace("\\[", "");
 
             if (isAPIHome) {
                 const key = `api${currentVersion}${parent}`;
 
                 const headerSidebarLink = [
                     "---",
-                    `id: "${id}"`,
-                    `title: "${title}"`,
+                    `id: ${yamlString(id)}`,
+                    `title: ${yamlString(title)}`,
                     `layout: ${currentVersion}`,
                     `eleventyNavigation:`,
-                    `  key: "${key}"`,
-                    `  parent: "api${currentVersion}"`,
-                    `  title: "${pkg ? `${pkg}/${exportPath}` : `@microsoft/fast-element`}"`,
+                    `  key: ${yamlString(key)}`,
+                    `  parent: ${yamlString(`api${currentVersion}`)}`,
+                    `  title: ${yamlString(pkg ? `${pkg}/${exportPath}` : `@microsoft/fast-element`)}`,
                     `navigationOptions:`,
-                    `  activeKey: "${key}"`,
+                    `  activeKey: ${yamlString(key)}`,
                     "---",
                 ];
 
                 await safeWrite(docPath, headerSidebarLink.concat(output).join("\n"));
             } else {
                 const key = `${exportPath ? exportPath : ""}api${currentVersion}${id}`;
-                parent = id.startsWith("fast-element.") && parent === `api${currentVersion}`
-                    ? `api${currentVersion}fast-element`
-                    : parent;
+                parent =
+                    id.startsWith("fast-element.") && parent === `api${currentVersion}`
+                        ? `api${currentVersion}fast-element`
+                        : parent;
                 const header = [
                     "---",
-                    `id: "${id}"`,
-                    `title: "${title}"`,
+                    `id: ${yamlString(id)}`,
+                    `title: ${yamlString(title)}`,
                     `layout: ${currentVersion}-api`,
                     `eleventyNavigation:`,
-                    `  key: "${key}"`,
-                    `  parent: "${parent}"`,
-                    `  title: "${title}"`,
+                    `  key: ${yamlString(key)}`,
+                    `  parent: ${yamlString(parent)}`,
+                    `  title: ${yamlString(title)}`,
                     `navigationOptions:`,
-                    `  activeKey: "${key}"`,
+                    `  activeKey: ${yamlString(key)}`,
                     "---",
                 ];
 
@@ -218,8 +223,8 @@ async function buildAPIMarkdown() {
                 }
 
                 return resolve();
-            }
-        )
+            },
+        ),
     );
 
     for (const pkg of packages) {
@@ -235,8 +240,8 @@ async function buildAPIMarkdown() {
                         }
 
                         return resolve();
-                    }
-                )
+                    },
+                ),
             );
         }
     }
@@ -250,7 +255,12 @@ async function buildAPIMarkdown() {
             const exportDir = `${markdownAPIDir}/${pkg.main}/${pkgExport}`;
             const exportDocFiles = await fs.readdir(exportDir);
 
-            convertDocFiles(exportDir, exportDocFiles, `@microsoft/${pkg.main}`, `${pkgExport}.js`);
+            convertDocFiles(
+                exportDir,
+                exportDocFiles,
+                `@microsoft/${pkg.main}`,
+                `${pkgExport}.js`,
+            );
         }
     }
 }
@@ -291,7 +301,10 @@ async function buildSizesPage() {
         "",
     ].join("\n");
 
-    const dest = path.resolve(projectRoot, `src/docs/${versionDir}/resources/export-sizes.md`);
+    const dest = path.resolve(
+        projectRoot,
+        `src/docs/${versionDir}/resources/export-sizes.md`,
+    );
     await safeWrite(dest, frontmatter + body);
     console.log("Export sizes page generated.");
 }

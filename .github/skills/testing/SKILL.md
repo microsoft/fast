@@ -27,22 +27,22 @@ All commands are run from the **monorepo root**. Use `-w` to target a specific p
 |---|---|
 | Run all tests (all browsers) | `npm run test` |
 | Run all tests (Chromium only) | `npm run test:chromium` |
-| Test a single package (all browsers) | `npm run test -w @microsoft/fast-html` |
-| Test a single package (Chromium only) | `npm run test:chromium -w @microsoft/fast-html` |
+| Test a single package (all browsers) | `npm run test -w @microsoft/fast-element` |
+| Test a single package (Chromium only) | `npm run test:chromium -w @microsoft/fast-element` |
 | Test changed packages only | `npx lage test:node test:chromium --since origin/main` |
 
 #### Interactive / debug workflows
 
-For `@microsoft/fast-html`, these additional scripts are available:
+For FAST declarative tests in `@microsoft/fast-element`, these additional scripts are available:
 
 | Task | Command |
 |---|---|
-| Playwright UI mode | `npm run test:ui -w @microsoft/fast-html` |
-| Start Vite dev server only | `npm run test-server -w @microsoft/fast-html` |
-| Dev mode (watch + server) | `npm run dev -w @microsoft/fast-html` |
-| Rebuild fixtures | `npm run build:fixtures -w @microsoft/fast-html` |
-| Build fixtures with webui | `npm run build:fixtures:webui -w @microsoft/fast-html` |
-| Run webui integration tests | `npm run test:webui-integration -w @microsoft/fast-html` |
+| Playwright UI mode | `npm run test:ui:declarative -w @microsoft/fast-element` |
+| Start Vite dev server only | `npm run test-server:declarative -w @microsoft/fast-element` |
+| Dev mode (watch + server) | `npm run dev:declarative -w @microsoft/fast-element` |
+| Rebuild fixtures | `npm run build:fixtures -w @microsoft/fast-element` |
+| Build fixtures with webui | `npm run build:fixtures:webui -w @microsoft/fast-element` |
+| Run webui integration tests | `npm run test:webui-integration -w @microsoft/fast-element` |
 
 **Playwright UI mode** (`test:ui`) starts a visual test runner where you can select and debug individual tests, view traces, and inspect DOM snapshots.
 
@@ -80,7 +80,7 @@ A dedicated workflow for validating FAST's integration with `@microsoft/webui`. 
 The workflow builds all packages, installs Playwright Chromium, and runs:
 
 ```bash
-npm run test:webui-integration -w @microsoft/fast-html
+npm run test:webui-integration -w @microsoft/fast-element
 ```
 
 This builds each fixture with `webui build --plugin=fast`, renders the protocol with the fixture's `state.json`, and runs the same Playwright specs against the webui-rendered output.
@@ -105,13 +105,13 @@ FAST tests are [Playwright](https://playwright.dev/) integration tests that run 
 - Fixture tests live inside their fixture directory: `test/fixtures/<category>/<feature>/<feature>.spec.ts`.
 - Source-level tests are co-located next to the code they test: `src/<feature>/<feature>.pw.spec.ts`.
 
-### Writing fixture tests for fast-html
+### Writing declarative fixture tests
 
-Fixture tests for `@microsoft/fast-html` are the primary way to verify declarative template features. Each fixture is a self-contained test case with its own HTML, state, templates, and component definitions.
+Fixture tests in `@microsoft/fast-element/test/declarative/fixtures` are the primary way to verify declarative template features. Each fixture is a self-contained test case with its own HTML, state, templates, and component definitions.
 
 For a complete guide on creating fixtures — including how to write `entry.html`, `state.json`, `templates.html`, `main.ts`, and spec files — see:
 
-📄 **[Writing Fixtures](../../../packages/fast-html/test/fixtures/WRITING_FIXTURES.md)**
+📄 **[Writing Fixtures](../../../packages/fast-element/test/declarative/fixtures/WRITING_FIXTURES.md)**
 
 ### Quick example
 

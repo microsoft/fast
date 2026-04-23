@@ -2,9 +2,8 @@
 // Licensed under the MIT license.
 
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { RenderableFASTElement } from "@microsoft/fast-html";
 
-export class TodoItem extends RenderableFASTElement(FASTElement) {
+export class TodoItem extends FASTElement {
     @attr id = "";
     @attr description = "";
     @attr state = "";
@@ -27,10 +26,10 @@ export class TodoItem extends RenderableFASTElement(FASTElement) {
     }
 
     /**
-     * Work around a known fast-html hydration mismatch for text-interpolation
+     * Work around a known FAST declarative hydration mismatch for text-interpolation
      * bindings inside `<todo-item>`: rather than rely on `{{ description }}` in
      * the shadow template, assign the description text imperatively. See the
-     * hydration warning fast-html logs when this binding is left in place.
+     * hydration warning the declarative runtime logs when this binding is left in place.
      */
     private syncDescription(): void {
         const span = this.shadowRoot?.querySelector(".description");
@@ -40,7 +39,7 @@ export class TodoItem extends RenderableFASTElement(FASTElement) {
     }
 }
 
-TodoItem.defineAsync({
+TodoItem.define({
     name: "todo-item",
     templateOptions: "defer-and-hydrate",
 });

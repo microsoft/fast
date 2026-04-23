@@ -87,8 +87,6 @@ extends:
         fastBuildReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastBuildReleaseTag'] ]
         fastElementNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementNeedsDeployment'] ]
         fastElementReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastElementReleaseTag'] ]
-        fastHtmlNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastHtmlNeedsDeployment'] ]
-        fastHtmlReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastHtmlReleaseTag'] ]
         fastRouterNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastRouterNeedsDeployment'] ]
         fastRouterReleaseTag: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastRouterReleaseTag'] ]
         fastTestHarnessNeedsDeployment: $[ stageDependencies.Check.CheckVersion.outputs['deploymentCheck.fastTestHarnessNeedsDeployment'] ]
@@ -140,16 +138,6 @@ extends:
               userRepository: microsoft/fast
               defaultVersionType: 'specificTag'
               version: '$(fastElementReleaseTag)'
-              downloadPath: '$(System.ArtifactsDirectory)'
-
-          - task: DownloadGitHubRelease@0
-            displayName: "Download @microsoft/fast-html release assets"
-            condition: and(succeeded(), eq(variables['fastHtmlNeedsDeployment'], 'true'))
-            inputs:
-              connection: fast
-              userRepository: microsoft/fast
-              defaultVersionType: 'specificTag'
-              version: '$(fastHtmlReleaseTag)'
               downloadPath: '$(System.ArtifactsDirectory)'
 
           - task: DownloadGitHubRelease@0

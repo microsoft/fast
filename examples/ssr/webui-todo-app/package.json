@@ -27,7 +27,6 @@
     "dependencies": {
         "@microsoft/fast-element": "^2.10.3",
         "@microsoft/fast-examples-design-system": "^1.0.0",
-        "@microsoft/fast-html": "*",
         "@microsoft/webui": "^0.0.12",
         "tslib": "^2.6.3"
     },
