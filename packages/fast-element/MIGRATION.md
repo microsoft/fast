@@ -53,6 +53,29 @@ removed `@microsoft/fast-html` package.
    APIs; the declarative entrypoint owns the debug-message and hydratable-view
    side effects.
 
+## Export path cleanup (v3)
+
+Optional binding and hydration helpers remain on their dedicated public
+sub-entrypoints:
+
+- `@microsoft/fast-element/binding/two-way.js`
+- `@microsoft/fast-element/binding/signal.js`
+- `@microsoft/fast-element/element-hydration.js`
+- `@microsoft/fast-element/install-element-hydration.js`
+- `@microsoft/fast-element/install-hydratable-view-templates.js`
+
+### Removed exports
+
+| Import | Replacement |
+|---|---|
+| `@microsoft/fast-element/metadata.js` | No public replacement |
+| `@microsoft/fast-element/pending-task.js` | No public replacement |
+
+### Migration steps
+
+1. Keep optional binding and hydration imports on their dedicated subpaths.
+2. Remove any direct imports from `metadata.js` or `pending-task.js`.
+
 ## Prerendered Content Optimization (v2 → v3)
 
 ### Removed exports

@@ -174,6 +174,10 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 
 `normalizeBinding(value)` converts raw arrow functions or static values into a `Binding` object.
 
+Optional binding helpers remain on dedicated public subpaths:
+`@microsoft/fast-element/binding/two-way.js` and
+`@microsoft/fast-element/binding/signal.js`.
+
 ---
 
 ### html Tagged Template Literal
@@ -350,8 +354,11 @@ the imperative `html` API:
 The `src/declarative.ts` entrypoint owns the declarative-only side effects:
 registering debug messages and installing hydratable view templates. This keeps
 the root `@microsoft/fast-element` barrel free of declarative side effects and
-utility-subpath collisions. See [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md)
-for the detailed architecture.
+utility-subpath collisions, while low-level hydration APIs stay on the dedicated
+`src/components/hydration.ts`, `src/components/install-hydration.ts`, and
+`src/templating/install-hydratable-view-templates.ts` modules. See
+[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
+architecture.
 
 ---
 
@@ -528,6 +535,8 @@ src/
 │   └── update-queue.ts    # Updates (UpdateQueue)
 ├── binding/
 │   ├── binding.ts         # Binding abstract base class, BindingDirective
+│   ├── signal.ts          # signal() and Signal
+│   ├── two-way.ts         # twoWay()
 │   ├── one-way.ts         # oneWay, listener
 │   ├── one-time.ts        # oneTime
 │   └── normalize.ts       # normalizeBinding helper
@@ -554,6 +563,8 @@ src/
 │   ├── fast-element.ts    # FASTElement, @customElement
 │   ├── element-controller.ts  # ElementController, Stages
 │   ├── fast-definitions.ts    # FASTElementDefinition, TemplateOptions
+│   ├── hydration.ts       # HydrationMarkup and hydration helpers
+│   ├── install-hydration.ts   # Legacy hydration install side-effect module
 │   └── attributes.ts          # AttributeDefinition, @attr, converters
 ├── di/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
@@ -567,6 +578,7 @@ src/
 │   ├── utilities.ts       # Declarative parsing and proxy utilities
 │   └── syntax.ts          # Declarative syntax constants
 ├── state/
+│   ├── exports.ts         # Focused state entrypoint (state.js)
 │   ├── state.ts           # state() helper (beta)
 │   └── watch.ts           # watch() helper (beta)
 └── hydration/

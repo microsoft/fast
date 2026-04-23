@@ -64,10 +64,6 @@
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"
     },
-    "./metadata.js": {
-      "types": "./dist/dts/metadata.d.ts",
-      "default": "./dist/esm/metadata.js"
-    },
     "./testing.js": {
       "types": "./dist/dts/testing/exports.d.ts",
       "default": "./dist/esm/testing/exports.js"
@@ -87,10 +83,6 @@
     "./install-hydratable-view-templates.js": {
       "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
       "default": "./dist/esm/templating/install-hydratable-view-templates.js"
-    },
-    "./pending-task.js": {
-      "types": "./dist/dts/pending-task.d.ts",
-      "default": "./dist/esm/pending-task.js"
     },
     "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",

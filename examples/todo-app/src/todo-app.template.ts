@@ -34,7 +34,7 @@ export const template = html<TodoApp>`
                         &times;
                     </button>
                 </li>
-            `
+            `,
         )}
     </ul>
 `;

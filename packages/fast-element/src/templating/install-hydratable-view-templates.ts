@@ -19,7 +19,7 @@ Object.defineProperties(ViewTemplate.prototype, {
             this: ViewTemplate,
             firstChild: Node,
             lastChild: Node,
-            hostBindingTarget?: Element
+            hostBindingTarget?: Element,
         ): HydrationView {
             return new HydrationView(firstChild, lastChild, this, hostBindingTarget);
         },
