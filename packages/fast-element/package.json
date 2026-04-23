@@ -40,9 +40,13 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
-    "./binding.js": {
-      "types": "./dist/dts/binding/exports.d.ts",
-      "default": "./dist/esm/binding/exports.js"
+    "./binding/two-way.js": {
+      "types": "./dist/dts/binding/two-way.d.ts",
+      "default": "./dist/esm/binding/two-way.js"
+    },
+    "./binding/signal.js": {
+      "types": "./dist/dts/binding/signal.d.ts",
+      "default": "./dist/esm/binding/signal.js"
     },
     "./render.js": {
       "types": "./dist/dts/templating/render.d.ts",
@@ -68,9 +72,17 @@
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
-    "./hydration.js": {
-      "types": "./dist/dts/hydration/exports.d.ts",
-      "default": "./dist/esm/hydration/exports.js"
+    "./element-hydration.js": {
+      "types": "./dist/dts/components/hydration.d.ts",
+      "default": "./dist/esm/components/hydration.js"
+    },
+    "./install-element-hydration.js": {
+      "types": "./dist/dts/components/install-hydration.d.ts",
+      "default": "./dist/esm/components/install-hydration.js"
+    },
+    "./install-hydratable-view-templates.js": {
+      "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
+      "default": "./dist/esm/templating/install-hydratable-view-templates.js"
     },
     "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
@@ -84,7 +96,12 @@
   },
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
-    "./dist/esm/debug.js"
+    "./dist/esm/debug.js",
+    "./dist/esm/declarative.js",
+    "./dist/esm/polyfills.js",
+    "./dist/esm/components/install-hydration.js",
+    "./dist/esm/templating/install-hydratable-view-templates.js",
+    "./dist/esm/interfaces.js"
   ],
   "scripts": {
     "clean": "clean dist temp test-results",

@@ -1,9 +1,8 @@
 import { debugMessages } from "./declarative/debug.js";
 import { FAST } from "./platform.js";
-import { installHydratableViewTemplates } from "./templating/install-hydratable-view-templates.js";
+import "./templating/install-hydratable-view-templates.js";
 
 FAST.addMessages(debugMessages);
-installHydratableViewTemplates();
 
 export type {
     AttributeMapConfig,

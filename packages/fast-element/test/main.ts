@@ -13,6 +13,11 @@ export {
 export type { FASTElementExtension } from "../src/components/fast-definitions.js";
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { customElement, FASTElement } from "../src/components/fast-element.js";
+export {
+    deferHydrationAttribute,
+    HydrationMarkup,
+    isHydratable,
+} from "../src/components/hydration.js";
 export { Context } from "../src/context.js";
 export {
     all,
@@ -33,11 +38,6 @@ export {
 } from "../src/di/di.js";
 export { DOM, DOMAspect } from "../src/dom.js";
 export { DOMPolicy } from "../src/dom-policy.js";
-export {
-    deferHydrationAttribute,
-    HydrationMarkup,
-    isHydratable,
-} from "../src/hydration/exports.js";
 export { Observable, observable, volatile } from "../src/observation/observable.js";
 export { Updates } from "../src/observation/update-queue.js";
 export { css } from "../src/styles/css.js";
@@ -63,15 +63,11 @@ export const conditionalTimeout = function (
     });
 };
 export { createTrackableDOMPolicy, toHTML } from "../src/__test__/helpers.js";
-export {
-    Binding,
-    listener,
-    oneTime,
-    oneWay,
-    Signal,
-    signal,
-    twoWay,
-} from "../src/binding/exports.js";
+export { Binding } from "../src/binding/binding.js";
+export { oneTime } from "../src/binding/one-time.js";
+export { listener, oneWay } from "../src/binding/one-way.js";
+export { Signal, signal } from "../src/binding/signal.js";
+export { twoWay } from "../src/binding/two-way.js";
 export { isString } from "../src/interfaces.js";
 export { Metadata } from "../src/metadata.js";
 export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";

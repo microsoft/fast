@@ -42,33 +42,18 @@ function tryWarn(name: string) {
     }
 }
 
-let warningHost: any;
+const warningHost = new Proxy(document.createElement("div"), {
+    get(target, property: string) {
+        tryWarn(property);
+        const value = Reflect.get(target, property);
+        return isFunction(value) ? value.bind(target) : value;
+    },
 
-function getWarningHost() {
-    if (warningHost !== void 0) {
-        return warningHost;
-    }
-
-    const target =
-        typeof document === "undefined"
-            ? Object.create(null)
-            : document.createElement("div");
-
-    warningHost = new Proxy(target, {
-        get(proxyTarget, property: string) {
-            tryWarn(property);
-            const value = Reflect.get(proxyTarget, property);
-            return isFunction(value) ? value.bind(proxyTarget) : value;
-        },
-
-        set(proxyTarget, property: string, value) {
-            tryWarn(property);
-            return Reflect.set(proxyTarget, property, value);
-        },
-    });
-
-    return warningHost;
-}
+    set(target, property: string, value) {
+        tryWarn(property);
+        return Reflect.set(target, property, value);
+    },
+});
 
 class CompilationContext<TSource = any, TParent = any>
     implements TemplateCompilationResult<TSource, TParent>
@@ -168,7 +153,7 @@ class CompilationContext<TSource = any, TParent = any>
         const targets = Object.create(this.proto);
 
         targets.r = fragment; // root — the cloned DocumentFragment
-        targets.h = hostBindingTarget ?? getWarningHost(); // host — the custom element
+        targets.h = hostBindingTarget ?? warningHost; // host — the custom element
 
         for (const id of this.nodeIds) {
             Reflect.get(targets, id); // trigger lazy getter to resolve and cache the DOM node

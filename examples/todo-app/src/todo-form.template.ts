@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import { twoWay } from "@microsoft/fast-element/binding.js";
+import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
 import type { TodoForm } from "./todo-form.js";
 
 export const template = html<TodoForm>`
