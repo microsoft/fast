@@ -101,10 +101,7 @@ TemplateElement.define({ name: "f-template" });
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See
-[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md),
-[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md), and
-[`DECLARATIVE_MIGRATION.md`](./DECLARATIVE_MIGRATION.md) for the dedicated
-declarative docs.
+[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative usage details.
 
 ## Prerendered Content Optimization
 

@@ -6,40 +6,22 @@
 The declarative entrypoint in `@microsoft/fast-element` interprets FAST
 declarative HTML syntax as a template for a FAST web component.
 
-## Installation
+This document focuses on declarative-runtime implementation details:
+template structure, prerendered markup requirements, lifecycle callbacks,
+binding configuration, syntax, and integration testing.
 
-### From NPM
+For package installation, importing `TemplateElement`, basic registration, and
+the package-level hydration overview, see the
+[FAST Element README](./README.md#declarative-html) and
+[Prerendered Content Optimization](./README.md#prerendered-content-optimization).
 
-To install the latest FAST Element library using `npm`:
+## Template Structure
 
-```shell
-npm install --save @microsoft/fast-element
-```
-
-## Declarative HTML
-
-### Usage
-
-In your JS bundle you will need to include the declarative FAST Element
-entrypoint:
-
-```typescript
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-import { MyCustomElement } from "./my-custom-element";
-
-MyCustomElement.define({
-    name: "my-custom-element",
-    templateOptions: "defer-and-hydrate",
-});
-
-TemplateElement.define({
-    name: "f-template",
-});
-```
-
-This will include the `<f-template>` custom element and all logic for interpreting the declarative HTML syntax for a FAST web component. Components use `define()` with `templateOptions: "defer-and-hydrate"` for deferred template attachment.
-
-The template must be wrapped in `<f-template name="[custom-element-name]"><template>[template logic]</template></f-template>` with a `name` attribute for the custom elements name, and the template logic inside.
+After registering the declarative entrypoint as shown in the README, templates
+are associated with an element through
+`<f-template name="[custom-element-name]"><template>...</template></f-template>`.
+The host custom element should be defined with
+`templateOptions: "defer-and-hydrate"`.
 
 Example:
 ```html
@@ -53,36 +35,26 @@ Example:
 </f-template>
 ```
 
-#### Non-browser HTML rendering
+The legacy `defer-hydration` and `needs-hydration` attributes are no longer
+required.
+
+## Non-browser HTML Rendering
 
 One of the benefits of FAST declarative HTML templates is that the server can
-be stack agnostic as JavaScript does not need to be interpreted. By default the
-declarative FAST Element runtime expects hydratable content and uses comments
-and datasets for tracking the binding logic. For more information on what that
-markup should look like, as well as an example of how initial state may be
-applied, read our [documentation](./DECLARATIVE_RENDERING.md) to understand what
-markup should be generated for a hydratable experience. For the sake of brevity
-hydratable markup will be excluded from the README.
+be stack agnostic because JavaScript does not need to be interpreted to emit
+the initial HTML. The declarative runtime expects hydratable comment markers
+and datasets when prerendered content is generated. For the required marker
+format and initial-state application details, see
+[DECLARATIVE_RENDERING.md](./DECLARATIVE_RENDERING.md).
 
-#### Prerendered Content Detection
-
-When an element connects and already has an existing shadow root (from SSR or declarative shadow DOM), `ElementController` automatically detects prerendered content. Connection gating is handled by the template-pending guard in `ElementController.connect()` — when `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
-
-The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves after hydration completes:
-
-```typescript
-const el = document.querySelector("my-custom-element");
-const wasPrerendered = await el.$fastController.isPrerendered; // true if prerendered
-```
-
-#### Lifecycle Callbacks
+## Lifecycle Callbacks
 
 FAST Element's declarative entrypoint provides lifecycle callbacks that allow
 you to hook into various stages of template processing and element hydration.
 These callbacks are useful for tracking the rendering lifecycle, gathering
 analytics, or coordinating complex initialization sequences.
 
-##### Available Callbacks
+### Available Callbacks
 
 **Template Lifecycle Callbacks:**
 - `elementDidRegister(name: string)` - Called after the JavaScript class definition has been registered
@@ -98,7 +70,7 @@ analytics, or coordinating complex initialization sequences.
 
 Hydration callbacks are tracked at the element level by `ElementController` — `hydrationComplete` fires only after every prerendered element has finished binding.
 
-##### Configuring Callbacks
+### Configuring Callbacks
 
 Configure lifecycle callbacks using `TemplateElement.config()`:
 
@@ -143,7 +115,7 @@ TemplateElement.config({
 });
 ```
 
-##### Lifecycle Order
+### Lifecycle Order
 
 The lifecycle callbacks occur in the following general sequence:
 
@@ -154,7 +126,7 @@ The lifecycle callbacks occur in the following general sequence:
 
 **Note:** Template processing is asynchronous and happens independently for each element. The template and hydration phases can be interleaved when multiple elements are being processed simultaneously.
 
-##### Use Cases
+### Use Cases
 
 **Performance Monitoring:**
 ```typescript
@@ -222,7 +194,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-#### `observerMap`
+## `observerMap`
 
 When `observerMap: "all"` (or `observerMap: {}`) is configured for an element,
 `@microsoft/fast-element/declarative.js` automatically sets up deep reactive
@@ -272,7 +244,7 @@ observerMap: {
 
 When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
 
-#### `attributeMap`
+## `attributeMap`
 
 When `attributeMap: "all"` (or `attributeMap: {}`) is configured for an
 element, `@microsoft/fast-element/declarative.js` automatically creates
@@ -306,7 +278,7 @@ With the template:
 
 This registers `greeting` (attribute `greeting`, property `greeting`) and `first-name` (attribute `first-name`, property `first-name`) as `@attr` properties on the element prototype, enabling `setAttribute("first-name", "Jane")` to trigger a template re-render automatically.
 
-##### `attribute-name-strategy`
+### `attribute-name-strategy`
 
 The `attribute-name-strategy` configuration option controls how template binding keys map to HTML attribute names. This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
 
@@ -338,7 +310,7 @@ With the template:
 
 This registers `greeting` (attribute `greeting`, property `greeting`) and `firstName` (attribute `first-name`, property `firstName`) as `@attr` properties. `setAttribute("first-name", "Jane")` triggers a re-render, and the property is accessible as `element.firstName`.
 
-### Syntax
+## Syntax
 
 All bindings use a handlebars-like syntax.
 
@@ -350,13 +322,13 @@ Browser-only bindings:
 - Event bindings
 - Attribute directives
 
-#### Content binding
+### Content binding
 
 ```html
 {{text}}
 ```
 
-#### Event binding
+### Event binding
 
 Event bindings must include the `()` as well as being preceeded by `@` in keeping with `@microsoft/fast-element` tagged template `html` syntax.
 
@@ -396,7 +368,7 @@ You can pass the DOM event object, the execution context, or both as arguments. 
 > <button @click="{handleClick(e)}"></button>
 > ```
 
-#### Directives
+### Directives
 
 Directives are assumed to be either an attribute directive or a directive that also serves a template. Both are prepended by `f-`. The logic of these directives and what their use cases are is explained in the [FAST html documentation](https://fast.design/docs/getting-started/html-directives).
 
@@ -460,7 +432,7 @@ Where the right operand can be either a reference to a value (string e.g. `{{foo
     <ul><f-repeat value="{{item in list}}"><li>{{item}} - {{title}}</li></f-repeat></ul>
     ```
 
-#### Execution Context Access
+### Execution Context Access
 
 In imperative fast-element templates, every binding expression receives both the data source and the execution context: `${(x, c) => c.parent.handleClick(c.event)}`. Declarative `<f-template>` expressions can access the same execution context using the `$c` prefix.
 
@@ -484,7 +456,7 @@ Conditional rendering using a host property inside a repeat:
 </f-repeat>
 ```
 
-#### Unescaped HTML
+### Unescaped HTML
 
 You can add unescaped HTML using triple braces, this will create an additional `div` element as the HTML needs an element to bind to. Where possible it is advisable to not use unescaped HTML and instead use other binding techniques.
 
@@ -493,13 +465,9 @@ Example:
 {{{html}}}
 ```
 
-### Writing Components
+## Writing Components
 
 When writing components with the intention of using the declarative HTML syntax, it is imperative that components are written with styling and rendering of the component to be less reliant on any JavaScript state management. An example of this is relying on `elementInterals` state to style a component.
-
-## Acknowledgements
-
-This project has been heavily inspired by [Handlebars](https://handlebarsjs.com/) and [Vue.js](https://vuejs.org/).
 
 ## WebUI Integration Testing
 
