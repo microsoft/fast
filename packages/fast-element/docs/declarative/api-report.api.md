@@ -138,7 +138,6 @@ export class TemplateElement extends FASTElement {
 export class TemplateParser {
     // Warning: (ae-forgotten-export) The symbol "ViewTemplate" needs to be exported by the entry point declarative.d.ts
     createTemplate(strings: Array<string>, values: Array<any>): ViewTemplate<any, any>;
-    get hasDeprecatedEventSyntax(): boolean;
     parse(innerHTML: string, schema: Schema): ResolvedStringsAndValues;
 }
 
