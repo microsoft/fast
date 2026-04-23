@@ -87,9 +87,7 @@ export { type UpdateQueue, Updates } from "./observation/update-queue.js";
 export { emptyArray, FAST } from "./platform.js";
 export { type CSSTemplateTag, type CSSValue, css } from "./styles/css.js";
 // Styles
-export { CSSBindingDirective } from "./styles/css-binding-directive.js";
 export {
-    type AddBehavior,
     CSSDirective,
     type CSSDirectiveDefinition,
     cssDirective,

@@ -15,7 +15,7 @@ navigationOptions:
 
 ## CSSDirective variable
 
-Instructs the css engine to provide dynamic styles or associate behaviors with styles.
+Instructs the css engine to provide styles during CSS template composition.
 
 **Signature:**
 

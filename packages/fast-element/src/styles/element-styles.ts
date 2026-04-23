@@ -1,5 +1,4 @@
 import type { StyleStrategy, StyleTarget } from "./style-strategy.js";
-import type { HostBehavior } from "./host.js";
 
 /**
  * Represents styles that can be composed into the ShadowDOM of a custom element.
@@ -22,13 +21,17 @@ export type ConstructibleStyleStrategy = {
 let DefaultStyleStrategy: ConstructibleStyleStrategy;
 
 function reduceStyles(
-    styles: ReadonlyArray<ComposableStyles>
+    styles: ReadonlyArray<ComposableStyles>,
 ): (string | CSSStyleSheet)[] {
-    return styles
-        .map((x: ComposableStyles) =>
-            x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
-        )
-        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
+    return styles.reduce<(string | CSSStyleSheet)[]>((reduced, current) => {
+        if (current instanceof ElementStyles) {
+            reduced.push(...reduceStyles(current.styles));
+        } else {
+            reduced.push(current);
+        }
+
+        return reduced;
+    }, []);
 }
 
 /**
@@ -38,11 +41,6 @@ function reduceStyles(
 export class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
     private _strategy: StyleStrategy | null = null;
-
-    /**
-     * The behaviors associated with this set of styles.
-     */
-    public readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
 
     /**
      * Gets the StyleStrategy associated with these element styles.
@@ -59,19 +57,7 @@ export class ElementStyles {
      * Creates an instance of ElementStyles.
      * @param styles - The styles that will be associated with elements.
      */
-    public constructor(public readonly styles: ReadonlyArray<ComposableStyles>) {
-        this.behaviors = styles
-            .map((x: ComposableStyles) =>
-                x instanceof ElementStyles ? x.behaviors : null
-            )
-            .reduce(
-                (
-                    prev: HostBehavior<HTMLElement>[] | null,
-                    curr: HostBehavior<HTMLElement>[] | null
-                ) => (curr === null ? prev : prev === null ? curr : prev.concat(curr)),
-                null as HostBehavior<HTMLElement>[] | null
-            );
-    }
+    public constructor(public readonly styles: ReadonlyArray<ComposableStyles>) {}
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {
@@ -88,17 +74,6 @@ export class ElementStyles {
     /** @internal */
     public isAttachedTo(target: StyleTarget): boolean {
         return this.targets.has(target);
-    }
-
-    /**
-     * Associates behaviors with this set of styles.
-     * @param behaviors - The behaviors to associate.
-     */
-    public withBehaviors(...behaviors: HostBehavior<HTMLElement>[]): this {
-        (this.behaviors as any) =
-            this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
-
-        return this;
     }
 
     /**
@@ -124,15 +99,15 @@ export class ElementStyles {
      * @returns A singular ElementStyles instance or undefined.
      */
     public static normalize(
-        styles: ComposableStyles | ComposableStyles[] | undefined
+        styles: ComposableStyles | ComposableStyles[] | undefined,
     ): ElementStyles | undefined {
         return styles === void 0
             ? void 0
             : Array.isArray(styles)
-            ? new ElementStyles(styles)
-            : styles instanceof ElementStyles
-            ? styles
-            : new ElementStyles([styles]);
+              ? new ElementStyles(styles)
+              : styles instanceof ElementStyles
+                ? styles
+                : new ElementStyles([styles]);
     }
 
     /**

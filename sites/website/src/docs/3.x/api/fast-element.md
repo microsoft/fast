@@ -51,17 +51,6 @@ The runtime behavior for child node observation.
 </td></tr>
 <tr><td>
 
-[CSSBindingDirective](../fast-element.cssbindingdirective/)
-
-
-</td><td>
-
-Enables bindings in CSS.
-
-
-</td></tr>
-<tr><td>
-
 [ElementController](../fast-element.elementcontroller/)
 
 
@@ -1292,7 +1281,7 @@ Transforms a template literal string into styles.
 
 </td><td>
 
-Instructs the css engine to provide dynamic styles or associate behaviors with styles.
+Instructs the css engine to provide styles during CSS template composition.
 
 
 </td></tr>
@@ -1521,17 +1510,6 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
-
-[AddBehavior](../fast-element.addbehavior/)
-
-
-</td><td>
-
-Used to add behaviors when constructing styles.
-
-
-</td></tr>
-<tr><td>
 
 [AddViewBehaviorFactory](../fast-element.addviewbehaviorfactory/)
 

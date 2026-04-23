@@ -20,12 +20,12 @@ Transforms a template literal string into styles.
 **Signature:**
 
 ```typescript
-export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]) => ElementStyles) & {
-    partial<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]): CSSDirective;
+export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: CSSValue[]) => ElementStyles) & {
+    partial(strings: TemplateStringsArray, ...values: CSSValue[]): CSSDirective;
 };
 ```
 **References:** [CSSValue](../fast-element.cssvalue/)<!-- -->, [ElementStyles](../fast-element.elementstyles/)<!-- -->, [CSSDirective](../fast-element.cssdirective/)
 
 ## Remarks
 
-The css helper supports interpolation of strings and ElementStyle instances. Use the .partial method to create partial CSS fragments.
+The css helper supports interpolation of static composable styles and CSS directives. Use the .partial method to create partial CSS fragments.

@@ -74,7 +74,6 @@ export { ArrayObserver, lengthOf, Splice } from "../src/observation/arrays.js";
 export { ExecutionContext } from "../src/observation/observable.js";
 export { emptyArray, FAST } from "../src/platform.js";
 export { ownedState, reactive, state, watch } from "../src/state/exports.js";
-export { CSSBindingDirective } from "../src/styles/css-binding-directive.js";
 export { CSSDirective, cssDirective } from "../src/styles/css-directive.js";
 export { ChildrenDirective, children } from "../src/templating/children.js";
 export { Compiler } from "../src/templating/compiler.js";

@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Remove ElementStyles.withBehaviors, CSS style behaviors, and CSS bindings in fast-element.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
