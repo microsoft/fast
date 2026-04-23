@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <test-element><template shadowrootmode="open" shadowroot="open"><slot data-fe-c-0-1></slot>
+        <slot name="foo" data-fe-c-1-1></slot>
+        <slot name="bar" data-fe-c-2-1></slot></template>
+            <div>Slotted</div>
+            Not slotted
+            <ul slot="foo"><li>Item 1</li><li>Item 2</li></ul>
+            <div slot="bar"></div>
+            <p slot="bar"></p>
+        </test-element>
+<f-template name="test-element">
+    <template>
+        <slot f-slotted="{slottedNodes filter elements()}"></slot>
+        <slot name="foo" f-slotted="{slottedFooNodes}"></slot>
+        <slot name="bar" f-slotted="{slottedBarNodes filter elements(p, ol)}"></slot>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <naming-strategy-test id="test-element" foo-bar="default-foo" my-custom-prop="default-prop"><template shadowrootmode="open" shadowroot="open"><div class="foo-bar-value"><!--fe-b$$start$$0$$fooBar-0$$fe-b-->default-foo<!--fe-b$$end$$0$$fooBar-0$$fe-b--></div>
+        <div class="my-custom-prop-value"><!--fe-b$$start$$1$$myCustomProp-1$$fe-b-->default-prop<!--fe-b$$end$$1$$myCustomProp-1$$fe-b--></div></template></naming-strategy-test>
+        <naming-strategy-no-dash-test id="no-dash-test" label="default-label"><template shadowrootmode="open" shadowroot="open"><div class="label-value"><!--fe-b$$start$$0$$label-0$$fe-b-->default-label<!--fe-b$$end$$0$$label-0$$fe-b--></div></template></naming-strategy-no-dash-test>
+<f-template name="naming-strategy-test">
+    <template>
+        <div class="foo-bar-value">{{fooBar}}</div>
+        <div class="my-custom-prop-value">{{myCustomProp}}</div>
+    </template>
+</f-template>
+<f-template name="naming-strategy-no-dash-test">
+    <template>
+        <div class="label-value">{{label}}</div>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>

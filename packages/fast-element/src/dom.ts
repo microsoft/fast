@@ -81,13 +81,13 @@ export interface DOMPolicy {
         tagName: string | null,
         aspect: DOMAspect,
         aspectName: string,
-        sink: DOMSink
+        sink: DOMSink,
     ): DOMSink;
 }
 
 const createHTML = html => html;
 const fastTrustedType: TrustedTypesPolicy = globalThis.trustedTypes
-    ? globalThis.trustedTypes.createPolicy("fast-html", { createHTML })
+    ? globalThis.trustedTypes.createPolicy("fast-element", { createHTML })
     : { createHTML };
 
 let defaultPolicy: DOMPolicy = Object.freeze({
@@ -99,7 +99,7 @@ let defaultPolicy: DOMPolicy = Object.freeze({
         tagName: string | null,
         aspect: DOMAspect,
         aspectName: string,
-        sink: DOMSink
+        sink: DOMSink,
     ): DOMSink {
         return sink;
     },
@@ -160,7 +160,7 @@ export const DOM = Object.freeze({
     setBooleanAttribute(
         element: HTMLElement,
         attributeName: string,
-        value: boolean
+        value: boolean,
     ): void {
         value
             ? element.setAttribute(attributeName, "")

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+        <test-element><template shadowrootmode="open" shadowroot="open"><span><!--fe-b$$start$$0$$object.b-0$$fe-b-->bar<!--fe-b$$end$$0$$object.b-0$$fe-b--></span>
+        <span><!--fe-b$$start$$1$$object.a.b1-1$$fe-b--><!--fe-b$$end$$1$$object.a.b1-1$$fe-b--></span>
+        <span><!--fe-b$$start$$2$$object.a.b2.c-2$$fe-b-->FOO<!--fe-b$$end$$2$$object.a.b2.c-2$$fe-b--></span>
+        <button data-fe-c-3-1>Set b</button>
+        <button data-fe-c-4-1>Set a.b1</button>
+        <button data-fe-c-5-1>Set a.b2.c</button>
+        <!--fe-b$$start$$6$$when-6$$fe-b-->
+            <!--fe-b$$start$$0$$6-repeat-0$$fe-b--><!--fe-repeat$$start$$0$$fe-repeat-->
+                <!--fe-b$$start$$0$$when-0$$fe-b-->
+                    <div><!--fe-b$$start$$0$$0-item.name-0$$fe-b-->Item 1<!--fe-b$$end$$0$$0-item.name-0$$fe-b--></div>
+                <!--fe-b$$end$$0$$when-0$$fe-b-->
+            <!--fe-repeat$$end$$0$$fe-repeat--><!--fe-repeat$$start$$1$$fe-repeat-->
+                <!--fe-b$$start$$0$$when-0$$fe-b-->
+                    <div><!--fe-b$$start$$0$$0-item.name-0$$fe-b-->Item 2<!--fe-b$$end$$0$$0-item.name-0$$fe-b--></div>
+                <!--fe-b$$end$$0$$when-0$$fe-b-->
+            <!--fe-repeat$$end$$1$$fe-repeat--><!--fe-repeat$$start$$2$$fe-repeat-->
+                <!--fe-b$$start$$0$$when-0$$fe-b--><!--fe-b$$end$$0$$when-0$$fe-b-->
+            <!--fe-repeat$$end$$2$$fe-repeat--><!--fe-b$$end$$0$$6-repeat-0$$fe-b-->
+        <!--fe-b$$end$$6$$when-6$$fe-b--></template></test-element>
+<f-template name="test-element">
+    <template>
+        <span>{{object.b}}</span>
+        <span>{{object.a.b1}}</span>
+        <span>{{object.a.b2.c}}</span>
+        <button @click="{handleBClick()}">Set b</button>
+        <button @click="{handleAB1Click()}">Set a.b1</button>
+        <button @click="{handleAB2CClick()}">Set a.b2.c</button>
+        <f-when value="{{object.c}}">
+            <f-repeat value="{{item in object.c}}">
+                <f-when value="{{item.name && item.status == 'active'}}">
+                    <div>{{item.name}}</div>
+                </f-when>
+            </f-repeat>
+        </f-when>
+    </template>
+</f-template>
+
+        <script type="module" src="./main.ts"></script>
+    </body>
+</html>
