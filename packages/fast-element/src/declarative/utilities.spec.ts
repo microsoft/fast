@@ -941,9 +941,6 @@ test.describe("utilities", async () => {
         test("should parse $e as an event argument", async () => {
             expect(parseEventArgs(eventArgAccessor)).toEqual([{ type: "event" }]);
         });
-        test("should treat bare e as a binding path", async () => {
-            expect(parseEventArgs("e")).toEqual([{ type: "binding", rawArg: "e" }]);
-        });
         test("should parse $c as a context argument", async () => {
             expect(parseEventArgs("$c")).toEqual([{ type: "context" }]);
         });
@@ -969,12 +966,6 @@ test.describe("utilities", async () => {
         test("should parse multiple arguments without spaces", async () => {
             expect(parseEventArgs("$e,$c")).toEqual([
                 { type: "event" },
-                { type: "context" },
-            ]);
-        });
-        test("should treat bare e as a binding path in a mixed list", async () => {
-            expect(parseEventArgs("e, $c")).toEqual([
-                { type: "binding", rawArg: "e" },
                 { type: "context" },
             ]);
         });

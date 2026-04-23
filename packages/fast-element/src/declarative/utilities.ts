@@ -115,8 +115,8 @@ export interface ParsedEventArg {
  * - `$e` — resolves to the DOM event object
  * - `$c` — resolves to the full execution context object
  *
- * Any other token, including bare `e`, is treated as a binding path and
- * resolved against the current data source.
+ * Any other token is treated as a binding path and resolved against the current
+ * data source.
  *
  * @param argsString - The raw arguments string from between the parentheses,
  *   e.g. `""`, `"$e"`, `"$c"`, or `"$e, $c"`.
