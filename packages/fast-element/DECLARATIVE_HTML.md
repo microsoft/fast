@@ -363,8 +363,7 @@ You can pass the DOM event object, the execution context, or both as arguments. 
 <button @click="{handleClick(user.id)}"></button>
 ```
 
-Use `$e` for the DOM event object. Bare `e` is not special and resolves like any
-other binding path on the current data source.
+Use `$e` for the DOM event object.
 
 ### Directives
 
