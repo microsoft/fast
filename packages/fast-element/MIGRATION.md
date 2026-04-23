@@ -8,10 +8,17 @@
 |---|---|
 | `FAST.versions` | No replacement. Multiple FAST versions on the same page are unsupported in v3. |
 
+### Removed configuration
+
+| Removed | Replacement |
+|---|---|
+| `fast-kernel="share"` / `fast-kernel="share-v2"` / `fast-kernel="isolate"` | No replacement. FAST now uses a single shared kernel contract, and multiple FAST versions on the same page are unsupported. |
+
 ### Migration steps
 
 1. Remove any runtime checks that read `FAST.versions`.
 2. Fix duplicate FAST installs in your bundler or dependency graph instead of relying on version tracking at runtime.
+3. Remove any `fast-kernel` script attributes. They no longer affect FAST initialization.
 
 ## Native `globalThis` requirement (v2 → v3)
 
