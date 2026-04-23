@@ -65,6 +65,28 @@ importing `@microsoft/fast-element`.
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
+## Focused Entry Points
+
+Use the dedicated sub-entrypoints when you only need optional binding or
+hydration APIs:
+
+```ts
+import { twoWay } from "@microsoft/fast-element/binding.js";
+import {
+    HydrationMarkup,
+    installHydratableViewTemplates,
+} from "@microsoft/fast-element/hydration.js";
+```
+
+`binding.js` groups the optional binding helpers (`twoWay`, `signal`,
+`Signal`, and related types) behind a single public path. `hydration.js`
+groups the low-level hydration utilities and the manual install hooks used
+outside `declarative.js`.
+
+`@microsoft/fast-element/declarative.js` still installs hydratable
+`ViewTemplate` support automatically. The legacy `metadata.js` and
+`pending-task.js` subpaths are no longer part of the public export map.
+
 ## Dynamic Style Application
 
 When runtime state or external signals need to add or remove styles, create the

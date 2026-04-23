@@ -40,13 +40,9 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
-    "./binding/two-way.js": {
-      "types": "./dist/dts/binding/two-way.d.ts",
-      "default": "./dist/esm/binding/two-way.js"
-    },
-    "./binding/signal.js": {
-      "types": "./dist/dts/binding/signal.d.ts",
-      "default": "./dist/esm/binding/signal.js"
+    "./binding.js": {
+      "types": "./dist/dts/binding/exports.d.ts",
+      "default": "./dist/esm/binding/exports.js"
     },
     "./render.js": {
       "types": "./dist/dts/templating/render.d.ts",
@@ -64,10 +60,6 @@
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"
     },
-    "./metadata.js": {
-      "types": "./dist/dts/metadata.d.ts",
-      "default": "./dist/esm/metadata.js"
-    },
     "./testing.js": {
       "types": "./dist/dts/testing/exports.d.ts",
       "default": "./dist/esm/testing/exports.js"
@@ -76,21 +68,9 @@
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
-    "./element-hydration.js": {
-      "types": "./dist/dts/components/hydration.d.ts",
-      "default": "./dist/esm/components/hydration.js"
-    },
-    "./install-element-hydration.js": {
-      "types": "./dist/dts/components/install-hydration.d.ts",
-      "default": "./dist/esm/components/install-hydration.js"
-    },
-    "./install-hydratable-view-templates.js": {
-      "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
-      "default": "./dist/esm/templating/install-hydratable-view-templates.js"
-    },
-    "./pending-task.js": {
-      "types": "./dist/dts/pending-task.d.ts",
-      "default": "./dist/esm/pending-task.js"
+    "./hydration.js": {
+      "types": "./dist/dts/hydration/exports.d.ts",
+      "default": "./dist/esm/hydration/exports.js"
     },
     "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
@@ -104,12 +84,7 @@
   },
   "unpkg": "dist/fast-element.min.js",
   "sideEffects": [
-    "./dist/esm/debug.js",
-    "./dist/esm/declarative.js",
-    "./dist/esm/polyfills.js",
-    "./dist/esm/components/install-hydration.js",
-    "./dist/esm/templating/install-hydratable-view-templates.js",
-    "./dist/esm/interfaces.js"
+    "./dist/esm/debug.js"
   ],
   "scripts": {
     "clean": "clean dist temp test-results",

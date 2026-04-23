@@ -53,6 +53,33 @@ removed `@microsoft/fast-html` package.
    APIs; the declarative entrypoint owns the debug-message and hydratable-view
    side effects.
 
+## Focused export paths (v3)
+
+FAST Element now groups optional bindings and hydration helpers behind dedicated
+sub-entrypoints instead of exposing multiple nested legacy paths.
+
+### Removed exports
+
+| Import | Replacement |
+|---|---|
+| `@microsoft/fast-element/binding/two-way.js` | `@microsoft/fast-element/binding.js` |
+| `@microsoft/fast-element/binding/signal.js` | `@microsoft/fast-element/binding.js` |
+| `@microsoft/fast-element/element-hydration.js` | `@microsoft/fast-element/hydration.js` |
+| `@microsoft/fast-element/install-element-hydration.js` | `@microsoft/fast-element/hydration.js` |
+| `@microsoft/fast-element/install-hydratable-view-templates.js` | `@microsoft/fast-element/hydration.js` |
+| `@microsoft/fast-element/metadata.js` | No public replacement |
+| `@microsoft/fast-element/pending-task.js` | No public replacement |
+
+### Migration steps
+
+1. Update two-way and signal imports to `@microsoft/fast-element/binding.js`.
+2. Update hydration utility imports to `@microsoft/fast-element/hydration.js`.
+3. Replace manual side-effect imports with
+   `installElementHydration()` or `installHydratableViewTemplates()` from
+   `@microsoft/fast-element/hydration.js` only when you need those hooks
+   outside `@microsoft/fast-element/declarative.js`.
+4. Remove any direct imports from `metadata.js` or `pending-task.js`.
+
 ## Prerendered Content Optimization (v2 → v3)
 
 ### Removed exports
@@ -70,9 +97,10 @@ removed `@microsoft/fast-html` package.
 |---|---|
 | `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
 
-The `install-hydratable-view-templates.js` side-effect import is still
-available and is applied automatically by
-`@microsoft/fast-element/declarative.js` for hydration marker support.
+Hydratable `ViewTemplate` support is still applied automatically by
+`@microsoft/fast-element/declarative.js`. For manual installation, import
+`installHydratableViewTemplates()` from
+`@microsoft/fast-element/hydration.js`.
 
 ### Changed behavior
 
