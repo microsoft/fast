@@ -941,8 +941,8 @@ test.describe("utilities", async () => {
         test("should parse $e as an event argument", async () => {
             expect(parseEventArgs(eventArgAccessor)).toEqual([{ type: "event" }]);
         });
-        test("should parse e (no $) as a deprecated-event argument", async () => {
-            expect(parseEventArgs("e")).toEqual([{ type: "deprecated-event" }]);
+        test("should treat bare e as a binding path", async () => {
+            expect(parseEventArgs("e")).toEqual([{ type: "binding", rawArg: "e" }]);
         });
         test("should parse $c as a context argument", async () => {
             expect(parseEventArgs("$c")).toEqual([{ type: "context" }]);
@@ -972,9 +972,9 @@ test.describe("utilities", async () => {
                 { type: "context" },
             ]);
         });
-        test("should parse e (deprecated) mixed with $c", async () => {
+        test("should treat bare e as a binding path in a mixed list", async () => {
             expect(parseEventArgs("e, $c")).toEqual([
-                { type: "deprecated-event" },
+                { type: "binding", rawArg: "e" },
                 { type: "context" },
             ]);
         });

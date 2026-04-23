@@ -18,6 +18,11 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 
+const ignoredPaths = [
+    /^packages\/fast-element\/test\/declarative\/fixtures\/.+\/index\.html$/,
+    /^packages\/fast-element\/test\/declarative\/fixtures\/.+\/templates\.html$/,
+];
+
 const root = execFileSync("git", ["rev-parse", "--show-toplevel"], {
     encoding: "utf-8",
 }).trim();
@@ -43,6 +48,7 @@ const files = execFileSync("git", gitArgs, {
     .trim()
     .split("\n")
     .filter(Boolean)
+    .filter(file => !ignoredPaths.some(pattern => pattern.test(file)))
     .map(f => resolve(root, f));
 
 if (files.length === 0) {
