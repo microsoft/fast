@@ -423,14 +423,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             const target = getShadowRoot(source) ?? this.source;
             target.append(styles);
         } else if (!styles.isAttachedTo(source)) {
-            const sourceBehaviors = styles.behaviors;
             styles.addStylesTo(source);
-
-            if (sourceBehaviors !== null) {
-                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    this.addBehavior(sourceBehaviors[i]);
-                }
-            }
         }
     }
 
@@ -451,15 +444,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             const target = getShadowRoot(source) ?? source;
             target.removeChild(styles);
         } else if (styles.isAttachedTo(source)) {
-            const sourceBehaviors = styles.behaviors;
-
             styles.removeStylesFrom(source);
-
-            if (sourceBehaviors !== null) {
-                for (let i = 0, ii = sourceBehaviors.length; i < ii; ++i) {
-                    this.removeBehavior(sourceBehaviors[i]);
-                }
-            }
         }
     }
 
