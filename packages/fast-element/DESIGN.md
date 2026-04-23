@@ -50,6 +50,10 @@ For deep dives into specific areas, see the linked detailed documents.
 
 The library's kernel (the `FAST` global, the `Updates` queue, and the `Observable` system) is stored on `globalThis.FAST`.
 
+The v3 runtime assumes native `globalThis`. `src/polyfills.ts` only backfills
+`requestIdleCallback` / `cancelIdleCallback`, so applications targeting older
+engines must install their own `globalThis` polyfill before FAST loads.
+
 ---
 
 ## Core Concepts
