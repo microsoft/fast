@@ -25,4 +25,4 @@ css: CSSTemplateTag
 
 ## Remarks
 
-The css helper supports interpolation of strings and ElementStyle instances.
+The css helper supports interpolation of static composable styles and CSS directives.

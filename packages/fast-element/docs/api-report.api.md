@@ -12,9 +12,6 @@ export interface Accessor {
 }
 
 // @public
-export type AddBehavior = (behavior: HostBehavior<HTMLElement>) => void;
-
-// @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
 // @public
@@ -186,29 +183,8 @@ export interface ContentView {
 export const css: CSSTemplateTag;
 
 // @public
-export class CSSBindingDirective implements HostBehavior, Subscriber, CSSDirective, BindingDirective {
-    constructor(dataBinding: Binding, targetAspect: string);
-    addedCallback(controller: HostController<HTMLElement & {
-        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
-    }>): void;
-    connectedCallback(controller: HostController<HTMLElement & {
-        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
-    }>): void;
-    createCSS(add: AddBehavior): ComposableStyles;
-    // (undocumented)
-    readonly dataBinding: Binding;
-    // @internal
-    handleChange(_: any, observer: ExpressionObserver): void;
-    removedCallback(controller: HostController<HTMLElement & {
-        $cssBindings: Map<CSSBindingDirective, CSSBindingEntry>;
-    }>): void;
-    // (undocumented)
-    readonly targetAspect: string;
-}
-
-// @public
 export interface CSSDirective {
-    createCSS(add: AddBehavior): ComposableStyles;
+    createCSS(): ComposableStyles;
 }
 
 // @public
@@ -227,12 +203,12 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
 }
 
 // @public
-export type CSSTemplateTag = (<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]) => ElementStyles) & {
-    partial<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: CSSValue<TSource, TParent>[]): CSSDirective;
+export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: CSSValue[]) => ElementStyles) & {
+    partial(strings: TemplateStringsArray, ...values: CSSValue[]): CSSDirective;
 };
 
 // @public
-export type CSSValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | ComposableStyles | CSSDirective;
+export type CSSValue = ComposableStyles | CSSDirective;
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
@@ -346,7 +322,6 @@ export class ElementStyles {
     constructor(styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
-    readonly behaviors: ReadonlyArray<HostBehavior<HTMLElement>> | null;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
@@ -357,7 +332,6 @@ export class ElementStyles {
     // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
-    withBehaviors(...behaviors: HostBehavior<HTMLElement>[]): this;
     withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
 
@@ -1114,7 +1088,6 @@ export function when<TSource = any, TReturn = any, TParent = any>(condition: Exp
 // dist/dts/components/fast-element.d.ts:60:5 - (ae-forgotten-export) The symbol "define" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:61:5 - (ae-forgotten-export) The symbol "compose" needs to be exported by the entry point index.d.ts
 // dist/dts/components/fast-element.d.ts:62:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
-// dist/dts/styles/css-binding-directive.d.ts:35:9 - (ae-forgotten-export) The symbol "CSSBindingEntry" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

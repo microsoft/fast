@@ -90,7 +90,12 @@ You can also pass a CSS `string` or a [CSSStyleSheet](https://developer.mozilla.
 :::
 
 :::tip
-Styles can be added or removed using `withBehaviors()` to the `css` tag template, or inside the `FASTElement`. check out the [advanced documentation](/docs/advanced/working-with-custom-elements.md) for details on these approaches.
+For runtime style changes, keep the `ElementStyles` in your component and call
+`$fastController.addStyles()` / `$fastController.removeStyles()` from element
+change handlers or lifecycle callbacks. Check out the
+[advanced documentation](/docs/advanced/working-with-custom-elements.md) for
+details. `css` templates are static and do not support runtime binding
+expressions.
 :::
 
 ## Adding external styles
