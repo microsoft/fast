@@ -16,7 +16,7 @@ import { Message } from "./interfaces.js";
 import { ObserverMap, type ObserverMapOption } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
-import { eventArgAccessor, transformInnerHTML } from "./utilities.js";
+import { transformInnerHTML } from "./utilities.js";
 
 /**
  * Checks whether a map option (observerMap or attributeMap) is enabled.
@@ -252,14 +252,6 @@ class TemplateElement extends FASTElement {
                 const parser = new TemplateParser();
 
                 const { strings, values } = parser.parse(innerHTML, schema);
-
-                if (parser.hasDeprecatedEventSyntax) {
-                    console.warn(
-                        `[fast-element/declarative] Using "e" as an event argument is deprecated` +
-                            ` in component "${name}".` +
-                            ` Use "${eventArgAccessor}" instead.`,
-                    );
-                }
 
                 // Define the root properties cached in the observer map as observable (only if observerMap exists)
                 this.observerMap?.defineProperties();
