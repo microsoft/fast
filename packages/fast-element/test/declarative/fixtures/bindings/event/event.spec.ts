@@ -17,36 +17,6 @@ test.describe("f-template", async () => {
 
         expect(message).toEqual("no args");
     });
-    test("create an event attribute with an event argument (deprecated e)", async ({
-        page,
-    }) => {
-        const warnings: string[] = [];
-        page.on("console", msg => {
-            if (msg.type() === "warning") {
-                warnings.push(msg.text());
-            }
-        });
-
-        const hydrationCompleted = page.waitForFunction(
-            () => (window as any).hydrationCompleted === true,
-        );
-        await page.goto("/fixtures/bindings/event/");
-        await hydrationCompleted;
-
-        const customElement = page.locator("test-element");
-
-        let message;
-        page.on("console", msg => (message = msg.text()));
-
-        await customElement.locator("button").nth(1).click();
-
-        expect(message).toEqual("click");
-
-        // The deprecation warning should include the component name
-        const deprecationWarnings = warnings.filter(w => w.includes("deprecated"));
-        expect(deprecationWarnings).toHaveLength(1);
-        expect(deprecationWarnings[0]).toContain('"test-element"');
-    });
     test("should properly bind events with `this`", async ({ page }) => {
         const hydrationCompleted = page.waitForFunction(
             () => (window as any).hydrationCompleted === true,
@@ -58,7 +28,7 @@ test.describe("f-template", async () => {
 
         await expect(customElement).toHaveJSProperty("foo", "bar");
 
-        await customElement.locator("button").nth(2).click();
+        await customElement.locator("button").nth(1).click();
 
         await expect(customElement).toHaveJSProperty("foo", "modified-by-click");
     });
@@ -74,7 +44,7 @@ test.describe("f-template", async () => {
         let message;
         page.on("console", msg => (message = msg.text()));
 
-        await customElement.locator("button").nth(3).click();
+        await customElement.locator("button").nth(2).click();
 
         expect(message).toEqual("click");
     });
@@ -90,7 +60,7 @@ test.describe("f-template", async () => {
         let message;
         page.on("console", msg => (message = msg.text()));
 
-        await customElement.locator("button").nth(4).click();
+        await customElement.locator("button").nth(3).click();
 
         expect(message).toEqual("click");
     });
@@ -108,7 +78,7 @@ test.describe("f-template", async () => {
         let message;
         page.on("console", msg => (message = msg.text()));
 
-        await customElement.locator("button").nth(5).click();
+        await customElement.locator("button").nth(4).click();
 
         expect(message).toEqual("click,click");
     });
@@ -124,7 +94,7 @@ test.describe("f-template", async () => {
         let message;
         page.on("console", msg => (message = msg.text()));
 
-        await customElement.locator("button").nth(6).click();
+        await customElement.locator("button").nth(5).click();
 
         expect(message).toEqual("click");
     });
