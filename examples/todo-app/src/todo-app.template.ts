@@ -1,5 +1,5 @@
 import { html, repeat } from "@microsoft/fast-element";
-import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { twoWay } from "@microsoft/fast-element/binding.js";
 import type { TodoApp } from "./todo-app.js";
 import type { Todo } from "./todo-list.js";
 import "./todo-form.js";
@@ -34,7 +34,7 @@ export const template = html<TodoApp>`
                         &times;
                     </button>
                 </li>
-            `
+            `,
         )}
     </ul>
 `;

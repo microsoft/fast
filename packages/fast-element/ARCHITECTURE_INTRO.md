@@ -1,6 +1,9 @@
 # Introduction
 
-This document (and the linked documents) explains how the exports and side effects of `@microsoft/fast-element` are used to create custom elements.
+This document (and the linked documents) explains how the exports and side
+effects of `@microsoft/fast-element` are used to create custom elements,
+including the focused `binding.js`, `hydration.js`, and `declarative.js`
+sub-entrypoints.
 
 ## Glossary
 

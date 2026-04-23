@@ -106,6 +106,30 @@ import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 This keeps the root `@microsoft/fast-element` import free of declarative
 side effects while moving the declarative runtime into the same package.
 
+### Focused export paths
+
+Optional binding and hydration helpers now ship from grouped FAST Element
+sub-entrypoints instead of multiple nested legacy paths.
+
+```ts
+// Before
+import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
+import { signal } from "@microsoft/fast-element/binding/signal.js";
+import { HydrationMarkup } from "@microsoft/fast-element/element-hydration.js";
+import "@microsoft/fast-element/install-hydratable-view-templates.js";
+
+// After
+import { signal, twoWay } from "@microsoft/fast-element/binding.js";
+import {
+    HydrationMarkup,
+    installHydratableViewTemplates,
+} from "@microsoft/fast-element/hydration.js";
+```
+
+The `@microsoft/fast-element/declarative.js` entrypoint still installs
+hydratable `ViewTemplate` support automatically. The legacy `metadata.js` and
+`pending-task.js` subpaths are no longer exported.
+
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
 The `RenderableFASTElement` mixin has been removed. Components extend `FASTElement` and call `define()` directly.

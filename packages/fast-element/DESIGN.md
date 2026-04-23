@@ -174,6 +174,12 @@ This gives FAST automatic, fine-grained dependency tracking without explicit dec
 
 `normalizeBinding(value)` converts raw arrow functions or static values into a `Binding` object.
 
+The focused public binding entrypoint
+`@microsoft/fast-element/binding.js` is implemented by
+`src/binding/exports.ts`. It groups the optional `signal` and `twoWay`
+helpers with the core binding primitives so callers no longer need nested
+subpath imports.
+
 ---
 
 ### html Tagged Template Literal
@@ -350,8 +356,11 @@ the imperative `html` API:
 The `src/declarative.ts` entrypoint owns the declarative-only side effects:
 registering debug messages and installing hydratable view templates. This keeps
 the root `@microsoft/fast-element` barrel free of declarative side effects and
-utility-subpath collisions. See [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md)
-for the detailed architecture.
+utility-subpath collisions, while `src/hydration/exports.ts` backs the grouped
+`@microsoft/fast-element/hydration.js` entrypoint for low-level hydration
+utilities and manual install hooks. See
+[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
+architecture.
 
 ---
 
@@ -528,6 +537,7 @@ src/
 │   └── update-queue.ts    # Updates (UpdateQueue)
 ├── binding/
 │   ├── binding.ts         # Binding abstract base class, BindingDirective
+│   ├── exports.ts         # Focused binding entrypoint (binding.js)
 │   ├── one-way.ts         # oneWay, listener
 │   ├── one-time.ts        # oneTime
 │   └── normalize.ts       # normalizeBinding helper
@@ -567,9 +577,11 @@ src/
 │   ├── utilities.ts       # Declarative parsing and proxy utilities
 │   └── syntax.ts          # Declarative syntax constants
 ├── state/
+│   ├── exports.ts         # Focused state entrypoint (state.js)
 │   ├── state.ts           # state() helper (beta)
 │   └── watch.ts           # watch() helper (beta)
 └── hydration/
+    ├── exports.ts         # Focused hydration entrypoint (hydration.js)
     └── target-builder.ts  # Hydration target resolution
 ```
 
