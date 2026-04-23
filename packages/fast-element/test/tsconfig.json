@@ -2,13 +2,14 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "isolatedModules": true,
+        "rootDir": "..",
         "paths": {
-            "@microsoft/fast-element": [
-                "../src"
+            "@microsoft/fast-element": ["../src"],
+            "@microsoft/fast-element/declarative.js": ["../src/declarative.ts"],
+            "@microsoft/fast-element/declarative/utilities.js": [
+                "../src/declarative/utilities.ts"
             ]
         }
     },
-    "include": [
-        "**/*.ts"
-    ]
+    "include": ["**/*.ts"]
 }

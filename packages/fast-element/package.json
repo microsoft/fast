@@ -141,20 +141,7 @@
     "test:webui-integration": "npm run build:fixtures:webui && playwright test --config=playwright.declarative.webui.config.ts"
   },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.58.1",
     "@microsoft/fast-build": "*",
-    "@microsoft/webui": "0.0.10",
-    "@playwright/test": "1.56.1",
-    "@rollup/plugin-node-resolve": "16.0.3",
-    "@rollup/plugin-terser": "1.0.0",
-    "@rollup/plugin-typescript": "12.3.0",
-    "@types/express": "^5.0.6",
-    "beachball": "2.63.0",
-    "concurrently": "9.2.1",
-    "esm": "3.2.25",
-    "glob": "10.5.0",
-    "rollup": "4.59.0",
-    "typescript": "5.3.3",
-    "vite": "7.3.2"
+    "@microsoft/webui": "0.0.10"
   }
 }
