@@ -39,7 +39,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element
+        hostBindingTarget?: Element,
     ): ElementView<TSource, TParent>;
 }
 
@@ -48,7 +48,7 @@ export interface HydratableElementViewTemplate<TSource = any, TParent = any>
     hydrate(
         firstChild: Node,
         lastChild: Node,
-        hostBindingTarget?: Element
+        hostBindingTarget?: Element,
     ): ElementView<TSource, TParent>;
 }
 
@@ -128,7 +128,7 @@ export class InlineTemplateDirective implements HTMLDirective {
      */
     public constructor(
         private html: string,
-        private factories: Record<string, ViewBehaviorFactory> = noFactories
+        private factories: Record<string, ViewBehaviorFactory> = noFactories,
     ) {}
 
     /**
@@ -152,7 +152,7 @@ function createHTML(
     value: HTMLDirective,
     prevString: string,
     add: AddViewBehaviorFactory,
-    definition: HTMLDirectiveDefinition = HTMLDirective.getForInstance(value)!
+    definition: HTMLDirectiveDefinition = HTMLDirective.getForInstance(value)!,
 ): string {
     if (definition.aspected) {
         const match = lastAttributeNameRegex.exec(prevString);
@@ -194,7 +194,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public constructor(
         html: string | HTMLTemplateElement,
         factories: Record<string, ViewBehaviorFactory> = {},
-        private policy?: DOMPolicy
+        private policy?: DOMPolicy,
     ) {
         this.html = html;
         this.factories = factories;
@@ -208,7 +208,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             this.result = Compiler.compile<TSource, TParent>(
                 this.html,
                 this.factories,
-                this.policy
+                this.policy,
             );
         }
 
@@ -229,7 +229,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public inline(): CaptureType<TSource, TParent> {
         return new InlineTemplateDirective(
             isString(this.html) ? this.html : this.html.innerHTML,
-            this.factories
+            this.factories,
         );
     }
 
@@ -264,7 +264,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element
+        hostBindingTarget?: Element,
     ): HTMLView<TSource, TParent> {
         const view = this.create(hostBindingTarget);
         view.bind(source);
@@ -306,7 +306,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public static create<TSource = any, TParent = any>(
         strings: string[],
         values: TemplateValue<TSource, TParent>[],
-        policy?: DOMPolicy
+        policy?: DOMPolicy,
     ): ViewTemplate<TSource, TParent> {
         let html = "";
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
@@ -325,7 +325,7 @@ export class ViewTemplate<TSource = any, TParent = any>
 
             if (isFunction(currentValue)) {
                 currentValue = new HTMLBindingDirective(
-                    oneWay(currentValue as Expression<TSource, any, TParent>)
+                    oneWay(currentValue as Expression<TSource, any, TParent>),
                 );
             } else if (currentValue instanceof Binding) {
                 currentValue = new HTMLBindingDirective(currentValue);
@@ -338,14 +338,14 @@ export class ViewTemplate<TSource = any, TParent = any>
                 currentValue as HTMLDirective,
                 currentString,
                 add,
-                definition
+                definition,
             );
         }
 
         return new ViewTemplate<TSource, TParent>(
             html + strings[strings.length - 1],
             factories,
-            policy
+            policy,
         );
     }
 }

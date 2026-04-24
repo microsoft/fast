@@ -64,33 +64,9 @@
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"
     },
-    "./metadata.js": {
-      "types": "./dist/dts/metadata.d.ts",
-      "default": "./dist/esm/metadata.js"
-    },
-    "./testing.js": {
-      "types": "./dist/dts/testing/exports.d.ts",
-      "default": "./dist/esm/testing/exports.js"
-    },
     "./di.js": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
-    },
-    "./element-hydration.js": {
-      "types": "./dist/dts/components/hydration.d.ts",
-      "default": "./dist/esm/components/hydration.js"
-    },
-    "./install-element-hydration.js": {
-      "types": "./dist/dts/components/install-hydration.d.ts",
-      "default": "./dist/esm/components/install-hydration.js"
-    },
-    "./install-hydratable-view-templates.js": {
-      "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
-      "default": "./dist/esm/templating/install-hydratable-view-templates.js"
-    },
-    "./pending-task.js": {
-      "types": "./dist/dts/pending-task.d.ts",
-      "default": "./dist/esm/pending-task.js"
     },
     "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
@@ -107,8 +83,6 @@
     "./dist/esm/debug.js",
     "./dist/esm/declarative.js",
     "./dist/esm/polyfills.js",
-    "./dist/esm/components/install-hydration.js",
-    "./dist/esm/templating/install-hydratable-view-templates.js",
     "./dist/esm/interfaces.js"
   ],
   "scripts": {
