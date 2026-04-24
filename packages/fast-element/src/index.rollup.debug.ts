@@ -1,6 +1,8 @@
-import "./debug.js";
+import { registerFASTDebugMessages } from "./debug.js";
 import { DOM } from "./dom.js";
 import { DOMPolicy } from "./dom-policy.js";
+
+registerFASTDebugMessages();
 
 // Binding
 export { Binding, type BindingDirective } from "./binding/binding.js";
@@ -51,9 +53,9 @@ export type {
     Class,
     Constructable,
     Disposable,
-    FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
+export type { FASTGlobal } from "./kernel.js";
 // Observation
 export {
     ArrayObserver,

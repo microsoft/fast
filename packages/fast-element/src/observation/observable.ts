@@ -1,10 +1,5 @@
-import {
-    type Disposable,
-    isFunction,
-    isString,
-    KernelServiceId,
-    Message,
-} from "../interfaces.js";
+import { type Disposable, isFunction, isString, Message } from "../interfaces.js";
+import { KernelServiceId } from "../kernel.js";
 import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
 import type { Notifier, Subscriber } from "./notifier.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
@@ -41,7 +36,7 @@ export interface Accessor {
  */
 export type Expression<TSource = any, TReturn = any, TParent = any> = (
     source: TSource,
-    context: ExecutionContext<TParent>
+    context: ExecutionContext<TParent>,
 ) => TReturn;
 
 /**
@@ -187,7 +182,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 ? (found = createArrayObserver(source))
                 : notifierLookup.set(
                       source,
-                      (found = new PropertyChangeNotifier(source))
+                      (found = new PropertyChangeNotifier(source)),
                   );
         }
 
@@ -250,7 +245,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         constructor(
             private expression: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
-            private isVolatileBinding: boolean = false
+            private isVolatileBinding: boolean = false,
         ) {
             super(expression, initialSubscriber);
         }
@@ -465,12 +460,12 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         binding<TSource = any, TReturn = any>(
             expression: Expression<TSource, TReturn>,
             initialSubscriber?: Subscriber,
-            isVolatileBinding: boolean = this.isVolatileBinding(expression)
+            isVolatileBinding: boolean = this.isVolatileBinding(expression),
         ): ExpressionNotifier<TSource, TReturn> {
             return new ExpressionNotifierImplementation(
                 expression,
                 initialSubscriber,
-                isVolatileBinding
+                isVolatileBinding,
             );
         },
 
@@ -480,7 +475,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * @param expression - The binding to inspect.
          */
         isVolatileBinding<TSource = any, TReturn = any>(
-            expression: Expression<TSource, TReturn>
+            expression: Expression<TSource, TReturn>,
         ): boolean {
             return volatileRegex.test(expression.toString());
         },
@@ -507,7 +502,7 @@ export function observable(target: {}, nameOrAccessor: string | Accessor): void 
 export function volatile(
     target: {},
     name: string | Accessor,
-    descriptor: PropertyDescriptor
+    descriptor: PropertyDescriptor,
 ): PropertyDescriptor {
     return Object.assign({}, descriptor, {
         get(this: any) {

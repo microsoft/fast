@@ -30,6 +30,30 @@
       "types": "./dist/dts/debug.d.ts",
       "default": "./dist/esm/debug.js"
     },
+    "./fast-element.js": {
+      "types": "./dist/dts/components/fast-element.d.ts",
+      "default": "./dist/esm/components/fast-element.js"
+    },
+    "./attr.js": {
+      "types": "./dist/dts/components/attributes.d.ts",
+      "default": "./dist/esm/components/attributes.js"
+    },
+    "./element-controller.js": {
+      "types": "./dist/dts/components/element-controller.d.ts",
+      "default": "./dist/esm/components/element-controller.js"
+    },
+    "./fast-definitions.js": {
+      "types": "./dist/dts/components/fast-definitions.d.ts",
+      "default": "./dist/esm/components/fast-definitions.js"
+    },
+    "./hydration.js": {
+      "types": "./dist/dts/components/hydration.d.ts",
+      "default": "./dist/esm/components/hydration.js"
+    },
+    "./hydration-tracker.js": {
+      "types": "./dist/dts/components/hydration-tracker.d.ts",
+      "default": "./dist/esm/components/hydration-tracker.js"
+    },
     "./declarative.js": {
       "types": "./dist/dts/declarative.d.ts",
       "test": "./src/declarative.ts",
@@ -48,9 +72,113 @@
       "types": "./dist/dts/binding/signal.d.ts",
       "default": "./dist/esm/binding/signal.js"
     },
+    "./binding.js": {
+      "types": "./dist/dts/binding/binding.d.ts",
+      "default": "./dist/esm/binding/binding.js"
+    },
+    "./binding/one-way.js": {
+      "types": "./dist/dts/binding/one-way.d.ts",
+      "default": "./dist/esm/binding/one-way.js"
+    },
+    "./binding/one-time.js": {
+      "types": "./dist/dts/binding/one-time.d.ts",
+      "default": "./dist/esm/binding/one-time.js"
+    },
+    "./binding/normalize.js": {
+      "types": "./dist/dts/binding/normalize.d.ts",
+      "default": "./dist/esm/binding/normalize.js"
+    },
+    "./dom.js": {
+      "types": "./dist/dts/dom.d.ts",
+      "default": "./dist/esm/dom.js"
+    },
+    "./platform.js": {
+      "types": "./dist/dts/platform.d.ts",
+      "default": "./dist/esm/platform.js"
+    },
+    "./types.js": {
+      "types": "./dist/dts/interfaces.d.ts",
+      "default": "./dist/esm/interfaces.js"
+    },
+    "./arrays.js": {
+      "types": "./dist/dts/observation/arrays.d.ts",
+      "default": "./dist/esm/observation/arrays.js"
+    },
+    "./notifier.js": {
+      "types": "./dist/dts/observation/notifier.d.ts",
+      "default": "./dist/esm/observation/notifier.js"
+    },
     "./render.js": {
       "types": "./dist/dts/templating/render.d.ts",
       "default": "./dist/esm/templating/render.js"
+    },
+    "./template.js": {
+      "types": "./dist/dts/templating/template.d.ts",
+      "default": "./dist/esm/templating/template.js"
+    },
+    "./html-directive.js": {
+      "types": "./dist/dts/templating/html-directive.d.ts",
+      "default": "./dist/esm/templating/html-directive.js"
+    },
+    "./html-binding-directive.js": {
+      "types": "./dist/dts/templating/html-binding-directive.d.ts",
+      "default": "./dist/esm/templating/html-binding-directive.js"
+    },
+    "./markup.js": {
+      "types": "./dist/dts/templating/markup.d.ts",
+      "default": "./dist/esm/templating/markup.js"
+    },
+    "./view.js": {
+      "types": "./dist/dts/templating/view.d.ts",
+      "default": "./dist/esm/templating/view.js"
+    },
+    "./children.js": {
+      "types": "./dist/dts/templating/children.d.ts",
+      "default": "./dist/esm/templating/children.js"
+    },
+    "./repeat.js": {
+      "types": "./dist/dts/templating/repeat.d.ts",
+      "default": "./dist/esm/templating/repeat.js"
+    },
+    "./ref.js": {
+      "types": "./dist/dts/templating/ref.d.ts",
+      "default": "./dist/esm/templating/ref.js"
+    },
+    "./slotted.js": {
+      "types": "./dist/dts/templating/slotted.d.ts",
+      "default": "./dist/esm/templating/slotted.js"
+    },
+    "./when.js": {
+      "types": "./dist/dts/templating/when.d.ts",
+      "default": "./dist/esm/templating/when.js"
+    },
+    "./compiler.js": {
+      "types": "./dist/dts/templating/compiler.d.ts",
+      "default": "./dist/esm/templating/compiler.js"
+    },
+    "./node-observation.js": {
+      "types": "./dist/dts/templating/node-observation.d.ts",
+      "default": "./dist/esm/templating/node-observation.js"
+    },
+    "./css.js": {
+      "types": "./dist/dts/styles/css.d.ts",
+      "default": "./dist/esm/styles/css.js"
+    },
+    "./css-directive.js": {
+      "types": "./dist/dts/styles/css-directive.d.ts",
+      "default": "./dist/esm/styles/css-directive.js"
+    },
+    "./element-styles.js": {
+      "types": "./dist/dts/styles/element-styles.d.ts",
+      "default": "./dist/esm/styles/element-styles.js"
+    },
+    "./host.js": {
+      "types": "./dist/dts/styles/host.d.ts",
+      "default": "./dist/esm/styles/host.js"
+    },
+    "./style-strategy.js": {
+      "types": "./dist/dts/styles/style-strategy.d.ts",
+      "default": "./dist/esm/styles/style-strategy.js"
     },
     "./utilities.js": {
       "types": "./dist/dts/utilities.d.ts",
@@ -64,25 +192,13 @@
       "types": "./dist/dts/context.d.ts",
       "default": "./dist/esm/context.js"
     },
-    "./testing.js": {
-      "types": "./dist/dts/testing/exports.d.ts",
-      "default": "./dist/esm/testing/exports.js"
-    },
     "./di.js": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
     },
-    "./element-hydration.js": {
-      "types": "./dist/dts/components/hydration.d.ts",
-      "default": "./dist/esm/components/hydration.js"
-    },
-    "./install-element-hydration.js": {
-      "types": "./dist/dts/components/install-hydration.d.ts",
-      "default": "./dist/esm/components/install-hydration.js"
-    },
-    "./install-hydratable-view-templates.js": {
-      "types": "./dist/dts/templating/install-hydratable-view-templates.d.ts",
-      "default": "./dist/esm/templating/install-hydratable-view-templates.js"
+    "./updates.js": {
+      "types": "./dist/dts/observation/update-queue.d.ts",
+      "default": "./dist/esm/observation/update-queue.js"
     },
     "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
@@ -95,14 +211,6 @@
     "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",
-  "sideEffects": [
-    "./dist/esm/debug.js",
-    "./dist/esm/declarative.js",
-    "./dist/esm/polyfills.js",
-    "./dist/esm/components/install-hydration.js",
-    "./dist/esm/templating/install-hydratable-view-templates.js",
-    "./dist/esm/interfaces.js"
-  ],
   "scripts": {
     "clean": "clean dist temp test-results",
     "doc": "api-extractor run --local",

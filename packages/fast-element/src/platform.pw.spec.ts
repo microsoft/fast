@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type { FASTGlobal } from "./interfaces.js";
+import type { FASTGlobal } from "./kernel.js";
 import { createTypeRegistry, type TypeDefinition } from "./platform.js";
 
 declare const FAST: FASTGlobal;

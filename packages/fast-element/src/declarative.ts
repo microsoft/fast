@@ -1,8 +1,7 @@
 import { debugMessages } from "./declarative/debug.js";
-import { FAST } from "./platform.js";
-import "./templating/install-hydratable-view-templates.js";
+import { registerFAST } from "./platform.js";
 
-FAST.addMessages(debugMessages);
+registerFAST().addMessages(debugMessages);
 
 export type {
     AttributeMapConfig,

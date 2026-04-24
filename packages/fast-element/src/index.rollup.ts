@@ -50,9 +50,9 @@ export type {
     Class,
     Constructable,
     Disposable,
-    FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
+export type { FASTGlobal } from "./kernel.js";
 // Observation
 export {
     ArrayObserver,
