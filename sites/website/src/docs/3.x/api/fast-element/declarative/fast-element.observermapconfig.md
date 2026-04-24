@@ -15,7 +15,7 @@ navigationOptions:
 
 ## ObserverMapConfig interface
 
-Configuration object for the observerMap element option. When `properties` is omitted (i.e. `observerMap: {}`<!-- -->), behaves like `"all"` — every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
 
 **Signature:**
 
@@ -61,7 +61,7 @@ Description
 
 </td><td>
 
-_(Optional)_ Per-root-property observation control. Keys are root property names discovered in the template schema. Only root properties listed here participate in observer-map observation. Omitting this field is equivalent to `"all"`<!-- -->.
+_(Optional)_ Per-root-property observation control. Keys are root property names discovered in the template schema. Only root properties listed here participate in observer-map observation. Omitting this field observes every discovered root property.
 
 
 </td></tr>

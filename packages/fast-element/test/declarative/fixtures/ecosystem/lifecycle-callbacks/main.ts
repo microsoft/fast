@@ -116,7 +116,7 @@ DeferredChildElement.define({
 // Define templates
 TemplateElement.options({
     "complex-element": {
-        observerMap: "all",
+        observerMap: {},
     },
 }).define({
     name: "f-template",

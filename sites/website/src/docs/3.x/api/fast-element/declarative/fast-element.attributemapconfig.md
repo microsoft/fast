@@ -15,7 +15,7 @@ navigationOptions:
 
 ## AttributeMapConfig interface
 
-Configuration object for the attributeMap element option. Passing an empty object (`{}`<!-- -->) is equivalent to `"all"`<!-- -->.
+Configuration object for the attributeMap element option. Omitting all fields uses the default attribute-mapping behavior.
 
 **Signature:**
 

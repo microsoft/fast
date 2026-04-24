@@ -164,16 +164,16 @@ GrandChildItem.define({
 
 TemplateElement.options({
     "parent-element": {
-        observerMap: "all",
+        observerMap: {},
     },
     "child-element": {
-        observerMap: "all",
+        observerMap: {},
     },
     "grand-child-element": {
-        observerMap: "all",
+        observerMap: {},
     },
     "test-when-in-repeat": {
-        observerMap: "all",
+        observerMap: {},
     },
 })
     .config({

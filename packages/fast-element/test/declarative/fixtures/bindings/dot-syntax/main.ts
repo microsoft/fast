@@ -48,7 +48,7 @@ TestElement.define({
 
 TemplateElement.options({
     "test-element": {
-        observerMap: "all",
+        observerMap: {},
     },
 })
     .config({

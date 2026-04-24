@@ -18,5 +18,5 @@ navigationOptions:
 **Signature:**
 
 ```typescript
-attributeMap?: AttributeMapOption;
+attributeMap?: AttributeMapConfig;
 ```

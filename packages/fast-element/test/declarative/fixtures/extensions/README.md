@@ -6,10 +6,10 @@ attribute mapping and deep property observation.
 
 | Fixture | Description |
 |---|---|
-| `attribute-map` | Automatic attribute mapping with `attributeMap: "all"` configuration. |
-| `attribute-map-naming-strategy` | The `attribute-name-strategy` configuration for mapping HTML attribute names to property names via `attributeMap` options. |
+| `attribute-map` | Automatic attribute mapping enabled with the `attributeMap()` definition extension. |
+| `attribute-map-naming-strategy` | The `attributeMap({ "attribute-name-strategy": "camelCase" })` definition extension for mapping HTML attribute names to property names. |
 | `attribute-map-naming-strategy-camel-case` | Explicit `@attr` decorator behavior with `camelCase` attribute name strategy in the build configuration. |
-| `observer-map` | The `observerMap: "all"` configuration for automatic deep reactive observation. |
-| `observer-map-config-object` | `observerMap` and `attributeMap` configuration objects applied via `TemplateElement.options()`. |
+| `observer-map` | Automatic deep reactive observation enabled with the `observerMap()` definition extension. |
+| `observer-map-config-object` | Explicit non-default configuration objects applied via `observerMap(...)` and `attributeMap(...)` definition extensions. |
 | `observer-map-deep-merge` | Nested object merging behavior for complex state structures. |
-| `observer-map-properties` | Selective property observation using `observerMap: { properties: {...} }` for fine-grained control. |
+| `observer-map-properties` | Selective property observation using `observerMap({ properties: {...} })` for fine-grained control. |

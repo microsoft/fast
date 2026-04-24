@@ -7,13 +7,13 @@ import {
 } from "../components/fast-definitions.js";
 import { FASTElement } from "../components/fast-element.js";
 import { FAST } from "../platform.js";
+import { AttributeMap, type AttributeMapConfig } from "./attribute-map.js";
 import {
-    AttributeMap,
-    type AttributeMapConfig,
-    type AttributeMapOption,
-} from "./attribute-map.js";
+    getDefinitionElementOptions,
+    mergeElementOptions,
+} from "./definition-options.js";
 import { Message } from "./interfaces.js";
-import { ObserverMap, type ObserverMapOption } from "./observer-map.js";
+import { ObserverMap, type ObserverMapConfig } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
 import {
@@ -23,15 +23,11 @@ import {
 
 /**
  * Checks whether a map option (observerMap or attributeMap) is enabled.
- * An option is enabled when it is `"all"` or a plain configuration object.
+ * An option is enabled when it is a plain configuration object.
  */
 function isMapOptionEnabled(
-    option: ObserverMapOption | AttributeMapOption | undefined,
+    option: ObserverMapConfig | AttributeMapConfig | undefined,
 ): boolean {
-    if (option === "all") {
-        return true;
-    }
-
     return typeof option === "object" && !Array.isArray(option);
 }
 
@@ -39,8 +35,8 @@ function isMapOptionEnabled(
  * Element options the TemplateElement will use to update the registered element
  */
 export interface ElementOptions {
-    observerMap?: ObserverMapOption;
-    attributeMap?: AttributeMapOption;
+    observerMap?: ObserverMapConfig;
+    attributeMap?: AttributeMapConfig;
 }
 
 /**
@@ -101,7 +97,7 @@ class TemplateElement extends FASTElement {
     public name?: string;
 
     /**
-     * A dictionary of custom element options
+     * A dictionary of fallback custom element options
      */
     public static elementOptions: ElementOptionsDictionary = {};
 
@@ -152,7 +148,7 @@ class TemplateElement extends FASTElement {
     }
 
     /**
-     * Set options for custom elements.
+     * Set fallback options for custom elements.
      *
      * @param elementOptions - A dictionary of custom element options
      * @returns The TemplateElement class.
@@ -206,6 +202,11 @@ class TemplateElement extends FASTElement {
         this.schema = new Schema(name);
 
         FASTElementDefinition.register(name).then(async value => {
+            // Definitions are registered before FASTElement.define() finishes applying
+            // extensions. Yield once so definition-scoped declarative options are
+            // available before schema processing and template assignment begin.
+            await Promise.resolve();
+
             TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
 
             if (!TemplateElement.elementOptions?.[name]) {
@@ -213,10 +214,15 @@ class TemplateElement extends FASTElement {
             }
 
             const schema = this.schema!;
+            const registeredFastElement: FASTElementDefinition | undefined =
+                fastElementRegistry.getByType(value);
+            const elementOptions = mergeElementOptions(
+                TemplateElement.elementOptions[name],
+                getDefinitionElementOptions(registeredFastElement),
+            );
 
-            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.observerMap)) {
-                const observerMapOption =
-                    TemplateElement.elementOptions[name]?.observerMap;
+            if (isMapOptionEnabled(elementOptions?.observerMap)) {
+                const observerMapOption = elementOptions?.observerMap;
                 const observerMapConfig =
                     typeof observerMapOption === "object" && observerMapOption !== null
                         ? observerMapOption
@@ -229,11 +235,8 @@ class TemplateElement extends FASTElement {
                 );
             }
 
-            const registeredFastElement: FASTElementDefinition | undefined =
-                fastElementRegistry.getByType(value);
-
-            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.attributeMap)) {
-                const mapOption = TemplateElement.elementOptions[name]?.attributeMap;
+            if (isMapOptionEnabled(elementOptions?.attributeMap)) {
+                const mapOption = elementOptions?.attributeMap;
                 const mapConfig: AttributeMapConfig | undefined =
                     typeof mapOption === "object" ? mapOption : undefined;
 

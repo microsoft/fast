@@ -18,5 +18,5 @@ navigationOptions:
 **Signature:**
 
 ```typescript
-observerMap?: ObserverMapOption;
+observerMap?: ObserverMapConfig;
 ```

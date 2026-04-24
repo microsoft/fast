@@ -88,10 +88,10 @@ TestElementWithObserverMap.define({
 
 TemplateElement.options({
     "test-element-interval-updates": {
-        observerMap: "all",
+        observerMap: {},
     },
     "test-element-with-observer-map": {
-        observerMap: "all",
+        observerMap: {},
     },
 })
     .config({

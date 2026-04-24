@@ -15,7 +15,7 @@ navigationOptions:
 
 ## ObserverMapConfig.properties property
 
-Per-root-property observation control. Keys are root property names discovered in the template schema. Only root properties listed here participate in observer-map observation. Omitting this field is equivalent to `"all"`<!-- -->.
+Per-root-property observation control. Keys are root property names discovered in the template schema. Only root properties listed here participate in observer-map observation. Omitting this field observes every discovered root property.
 
 **Signature:**
 

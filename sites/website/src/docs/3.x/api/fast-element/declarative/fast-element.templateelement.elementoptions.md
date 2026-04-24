@@ -15,7 +15,7 @@ navigationOptions:
 
 ## TemplateElement.elementOptions property
 
-A dictionary of custom element options
+A dictionary of fallback custom element options
 
 **Signature:**
 
