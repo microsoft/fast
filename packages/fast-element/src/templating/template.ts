@@ -58,7 +58,7 @@ export interface HydratableElementViewTemplate<TSource = any, TParent = any>
  * @public
  */
 /* eslint-disable-next-line */
-export interface CaptureType<TSource, TParent> {}
+export interface CaptureType {}
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
@@ -73,7 +73,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
      * Returns a directive that can inline the template.
      */
-    inline(): CaptureType<TSource, TParent>;
+    inline(): CaptureType;
 }
 
 export interface HydratableSyntheticViewTemplate<TSource = any, TParent = any>
@@ -108,7 +108,7 @@ export type TemplateValue<TSource, TParent = any> =
     | Expression<TSource, any, TParent>
     | Binding<TSource, any, TParent>
     | HTMLDirective
-    | CaptureType<TSource, TParent>;
+    | CaptureType;
 
 const noFactories = Object.create(null);
 
@@ -226,7 +226,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     /**
      * Returns a directive that can inline the template.
      */
-    public inline(): CaptureType<TSource, TParent> {
+    public inline(): CaptureType {
         return new InlineTemplateDirective(
             isString(this.html) ? this.html : this.html.innerHTML,
             this.factories,
