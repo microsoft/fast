@@ -125,7 +125,9 @@ available and is applied automatically by
 ### Changed behavior
 
 - **`attributeChangedCallback` during upgrade**: When `isPrerendered` is true and the element has not yet connected, attribute change callbacks are suppressed. After connection, all attribute changes are processed normally.
-- **Late template attachment**: Connected elements no longer rely on `templateOptions` to pause connection. If a definition receives a template later, the observable `template` update recreates the controller so rendering or hydration can continue. No `defer-hydration` attribute is needed.
+- **Declarative template resolution**: `declarativeTemplate()` waits for the
+  matching `<f-template>` before `define()` completes, so connected elements
+  hydrate with a concrete template. No `defer-hydration` attribute is needed.
 - **Binding evaluation with existing shadow root**: When an existing shadow root is detected, `attribute` and `booleanAttribute` bindings skip their initial DOM update. All other binding types (event, content, property, tokenList) run normally.
 
 ### New APIs
@@ -200,7 +202,10 @@ This is a **breaking change** for SSR output format. Any system that produces or
 
 ### Changed behavior
 
-- **`FASTElement.define()`** now returns `Promise<TType>`. When a template is provided at definition time — or when no template is provided — the Promise resolves immediately. If the definition uses an async template resolver, the Promise resolves after that resolver settles.
+- **`FASTElement.define()`** now returns `Promise<TType>`. When a concrete
+  template is provided at definition time, the Promise resolves immediately.
+  When `template: declarativeTemplate()` is used, the Promise resolves after
+  the matching `<f-template>` supplies the concrete template.
 - **`FASTElement.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
 - **`FASTElementDefinition.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
 - **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
@@ -217,8 +222,9 @@ This is a **breaking change** for SSR output format. Any system that produces or
     });
 
     // After
-    MyElement.define({
+    await MyElement.define({
         name: "my-element",
+        template: declarativeTemplate(),
     });
    ```
 

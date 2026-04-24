@@ -1,5 +1,8 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 // Track lifecycle callbacks for testing
 export const lifecycleEvents: Array<{ callback: string; name?: string }> = [];
@@ -32,6 +35,7 @@ class SimpleElement extends FASTElement {
 
 SimpleElement.define({
     name: "simple-element",
+    template: declarativeTemplate(),
 });
 
 // Complex element with multiple properties and methods
@@ -56,6 +60,7 @@ class ComplexElement extends FASTElement {
 
 ComplexElement.define({
     name: "complex-element",
+    template: declarativeTemplate(),
 });
 
 // Nested element
@@ -66,6 +71,7 @@ class NestedElement extends FASTElement {
 
 NestedElement.define({
     name: "nested-element",
+    template: declarativeTemplate(),
 });
 
 // Element with deferred hydration
@@ -84,6 +90,7 @@ class DeferredElement extends FASTElement {
 
 DeferredElement.define({
     name: "deferred-element",
+    template: declarativeTemplate(),
 });
 
 // Nested deferred elements to verify parent-first hydration
@@ -98,6 +105,7 @@ class DeferredParentElement extends FASTElement {
 
 DeferredParentElement.define({
     name: "deferred-parent-element",
+    template: declarativeTemplate(),
 });
 
 class DeferredChildElement extends FASTElement {
@@ -111,6 +119,7 @@ class DeferredChildElement extends FASTElement {
 
 DeferredChildElement.define({
     name: "deferred-child-element",
+    template: declarativeTemplate(),
 });
 
 // Define templates
@@ -118,8 +127,6 @@ TemplateElement.options({
     "complex-element": {
         observerMap: {},
     },
-}).define({
-    name: "f-template",
 });
 
 // Make lifecycleEvents available globally for testing

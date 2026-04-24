@@ -13,9 +13,9 @@ core runtime and its declarative entrypoint:
 - **`@microsoft/fast-element/declarative.js`**: Provides the `f-template`
   custom element that processes HTML templates and attaches them to FAST
   elements as a `ViewTemplate` in lieu of an `html` template created during
-  `FASTElement.define()`. When using `f-template`, the host element can be
-  defined without an initial template and the declarative runtime attaches the
-  template later.
+  `FASTElement.define()`. The preferred path uses `declarativeTemplate()` so
+  `FASTElement.define()` waits for the matching declarative template and keeps
+  the definition concrete before registration completes.
 
 ## Lifecycle Phases
 
@@ -37,10 +37,11 @@ Given a DOM which includes an `f-template` and a component:
 
 The following phases will then be kicked off once the JavaScript is parsed.
 
-### Phase 1: Partial Element Registration
+### Phase 1: Definition Resolution
 
-Custom elements begin their lifecycle by registering with FAST via the
-`define()` method before their declarative template is available.
+Custom elements begin their lifecycle by composing a definition that points at
+`declarativeTemplate()`. The resolver waits for a matching declarative template
+and returns a concrete `ViewTemplate` before the platform registration step.
 
 ```typescript
 // Custom element class definition
@@ -48,29 +49,22 @@ class MyComponent extends FASTElement {
     @attr text: string = "";
 }
 
-// Register the host element before the declarative template is attached
-MyComponent.define({
+// Register with the declarative template bridge
+await MyComponent.define({
     name: "my-component",
+    template: declarativeTemplate(),
 });
 ```
 
 Key characteristics of this phase:
-- Element is registered before template attachment
-- The definition is completed later when `<f-template>` assigns `definition.template`
+- The element definition stays unresolved until a matching declarative template is available
+- The resolved template is concrete before platform registration completes
 
-### Phase 2: Template Element Definition
+### Phase 2: Declarative Template Bridge
 
-The `f-template` custom element from
-`@microsoft/fast-element/declarative.js` is defined and becomes available in
-the DOM:
-
-```typescript
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-
-TemplateElement.define({
-    name: "f-template",
-});
-```
+`declarativeTemplate()` from `@microsoft/fast-element/declarative.js`
+automatically ensures that `f-template` is defined in the same registry as the
+FAST element being composed.
 
 ### Phase 3: Template Processing and Attachment
 
@@ -78,19 +72,24 @@ When an `f-template` element is connected to the DOM, it initiates the template 
 
 The lifecycle flow during this phase:
 
-1. **Template Element Connection**: The `f-template` element's `connectedCallback()` is invoked
-2. **Async Registration Lookup**: Uses `FASTElementDefinition.register(this.name)` to find the partial element definition
-3. **Template Processing**: Processes the HTML template, resolving data bindings, directives, and other template features into the `ViewTemplate` model which is also used by the `@microsoft/fast-element` `html` tag template
-4. **Template Attachment**: Attaches the processed template to the partial element definition via `registeredFastElement.template = resolvedTemplate`
+1. **Template Discovery**: The resolver waits for a matching
+   `<f-template name="...">` in the same registry as the element definition.
+2. **Template Element Connection**: The matching `f-template` element's
+   `connectedCallback()` registers it with the declarative template bridge.
+3. **Template Processing**: The bridge reads and transforms the markup, builds
+   the schema, applies `observerMap()` / `attributeMap()` behavior, and resolves
+   data bindings, directives, and other template features into the `ViewTemplate`
+   model which is also used by the `@microsoft/fast-element` `html` tag template.
+4. **Template Attachment**: The concrete `ViewTemplate` is returned to
+   `FASTElement.define()`, which assigns it to the definition before platform
+   registration completes.
 
-### Phase 4: Template Activation
+### Phase 4: Composition Completion
 
-Once the template is attached to the registered definition, FAST activates it
-for both future and already-connected elements:
+Once the template is attached to the partial definition, the element completes its composition:
 
-1. **Definition Update**: `TemplateElement` assigns the parsed `ViewTemplate` to `registeredFastElement.template`
-2. **Observable Notification**: Connected elements observing the definition recreate their controller when the `template` property changes
-3. **Future Connections**: New element instances use the attached template immediately
+1. **`compose()` Execution**: The element definition internally completes its composition process
+2. **Platform Registration**: The completed element definition is fully registered with the platform's custom element registry
 
 ### Phase 5: Element Instantiation and Hydration
 
@@ -98,8 +97,11 @@ When custom elements are instantiated in the DOM, the following occurs:
 
 1. **Element Creation**: The platform creates instances of the custom element
 2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR and sets `isPrerendered = true`
-3. **Late Template Attachment**: If an element connected before its template was attached, the observable `template` change recreates its controller.
-4. **Hydration**: Once the template is available, `ElementController` uses `template.hydrate()` to create a `HydrationView` that maps existing DOM nodes to binding targets using `fe:b` / `fe:/b` markers
+3. **Concrete Template Ready**: Because `declarativeTemplate()` resolved during
+   definition, `connect()` starts with the final template already attached.
+4. **Hydration**: `ElementController` uses `template.hydrate()` to create a
+   `HydrationView` that maps existing DOM nodes to binding targets using `fe:b`
+   / `fe:/b` markers
 
 The DOM after hydration should look like this:
 
@@ -126,7 +128,7 @@ The `fastElementRegistry` serves as the central coordination point between the t
 Both packages use the Observable pattern for coordination:
 
 - `FASTElementDefinition.register()` uses `Observable.getNotifier()` to notify when elements are registered
-- Template attachment triggers observable `template` notifications so connected elements can complete rendering or hydration
+- Template attachment triggers observable notifications to complete the lifecycle
 
 ## Error Handling
 
@@ -225,10 +227,6 @@ TemplateElement.config({
     hydrationComplete() {
         console.log('All elements hydrated');
     }
-});
-
-TemplateElement.define({
-    name: "f-template",
 });
 ```
 
