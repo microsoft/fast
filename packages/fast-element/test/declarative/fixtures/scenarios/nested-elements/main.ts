@@ -130,7 +130,6 @@ export class TestElementRepeatEvent extends FASTElement {
 }
 TestElementRepeatEvent.define({
     name: "test-element-repeat-event",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestWhenInRepeat extends FASTElement {
@@ -147,22 +146,18 @@ export class TestWhenInRepeat extends FASTElement {
 }
 TestWhenInRepeat.define({
     name: "test-when-in-repeat",
-    templateOptions: "defer-and-hydrate",
 });
 
 ItemList.define({
     name: "parent-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 Item.define({
     name: "child-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 GrandChildItem.define({
     name: "grand-child-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 (window as any).messages = [];

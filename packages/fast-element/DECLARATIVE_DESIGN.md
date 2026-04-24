@@ -533,21 +533,21 @@ tagged templates produce.
 | `children(prop)` | FAST directive used for `f-children` |
 | `ref(prop)` | FAST directive used for `f-ref` |
 
-### Deferred template attachment via define
+### Template attachment after define
 
-Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a template is provided at definition time. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the `Promise` resolves after a `<f-template>` supplies one via `register()`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
+Standard `FASTElement.define()` returns a `Promise` that resolves immediately once the definition has been composed and any async template resolver has settled. Declarative HTML can define a host element without an initial template and let `<f-template>` attach the template later through `FASTElementDefinition.template`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
 
 ---
 
 ## Hydration Model
 
-When `templateOptions: "defer-and-hydrate"` is used, the server must render:
+For declarative hydration, the server must render:
 
 1. The custom element tag with its attributes and initial state.
 2. A `<template shadowrootmode="open">` containing pre-rendered HTML annotated with FAST's hydration markers.
 3. An `<f-template>` element somewhere in the page that carries the template definition.
 
-Connection gating is handled by the template-pending guard in `ElementController.connect()`. When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early. An Observable subscription on `"template"` retriggers `connect()` when the template arrives. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
+If a template is attached after an element has already connected, the observable `template` update recreates the controller so hydration can proceed against the existing prerendered markup. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
 
 ### Hydration marker formats
 
