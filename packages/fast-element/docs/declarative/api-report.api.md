@@ -13,17 +13,12 @@ export class AttributeMap {
 }
 
 // @public
+export function attributeMap(option?: AttributeMapConfig): FASTElementExtension;
+
+// @public
 export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
-
-// @public
-export const AttributeMapOption: {
-    readonly all: "all";
-};
-
-// @public
-export type AttributeMapOption = (typeof AttributeMapOption)[keyof typeof AttributeMapOption] | AttributeMapConfig;
 
 // @public (undocumented)
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
@@ -31,9 +26,9 @@ export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 // @public
 export interface ElementOptions {
     // (undocumented)
-    attributeMap?: AttributeMapOption;
+    attributeMap?: AttributeMapConfig;
     // (undocumented)
-    observerMap?: ObserverMapOption;
+    observerMap?: ObserverMapConfig;
 }
 
 // @public
@@ -41,6 +36,9 @@ export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
     // (undocumented)
     [key: string]: ElementOptionsType;
 }
+
+// @public
+export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // Warning: (ae-forgotten-export) The symbol "TemplateLifecycleCallbacks" needs to be exported by the entry point declarative.d.ts
 //
@@ -76,19 +74,14 @@ export class ObserverMap {
 }
 
 // @public
+export function observerMap(option?: ObserverMapConfig): FASTElementExtension;
+
+// @public
 export interface ObserverMapConfig {
     properties?: {
         [rootProperty: string]: ObserverMapPathEntry;
     };
 }
-
-// @public
-export const ObserverMapOption: {
-    readonly all: "all";
-};
-
-// @public
-export type ObserverMapOption = (typeof ObserverMapOption)[keyof typeof ObserverMapOption] | ObserverMapConfig;
 
 // @public
 export type ObserverMapPathEntry = boolean | ObserverMapPathNode;

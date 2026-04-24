@@ -98,6 +98,43 @@ The parsing pipeline is fully synchronous — no promises are allocated during t
 </td></tr>
 </tbody></table>
 
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[attributeMap(option)](../fast-element.attributemap/)
+
+
+</td><td>
+
+Creates a FAST element extension that enables declarative attribute mapping for the resolved definition. When called without arguments, uses the default attribute-mapping behavior.
+
+
+</td></tr>
+<tr><td>
+
+[observerMap(option)](../fast-element.observermap/)
+
+
+</td><td>
+
+Creates a FAST element extension that enables declarative observer mapping for the resolved definition. When called without arguments, observes every discovered root property.
+
+
+</td></tr>
+</tbody></table>
+
 ## Interfaces
 
 <table><thead><tr><th>
@@ -118,7 +155,7 @@ Description
 
 </td><td>
 
-Configuration object for the attributeMap element option. Passing an empty object (`{}`<!-- -->) is equivalent to `"all"`<!-- -->.
+Configuration object for the attributeMap element option. Omitting all fields uses the default attribute-mapping behavior.
 
 
 </td></tr>
@@ -171,7 +208,7 @@ Lifecycle callbacks for template events. Combines template lifecycle callbacks w
 
 </td><td>
 
-Configuration object for the observerMap element option. When `properties` is omitted (i.e. `observerMap: {}`<!-- -->), behaves like `"all"` — every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
 
 
 </td></tr>
@@ -218,28 +255,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMapOption](../fast-element.attributemapoption/)
-
-
-</td><td>
-
-Values for the attributeMap element option.
-
-
-</td></tr>
-<tr><td>
-
-[ObserverMapOption](../fast-element.observermapoption/)
-
-
-</td><td>
-
-Values for the observerMap element option.
-
-
-</td></tr>
-<tr><td>
-
 [schemaRegistry](../fast-element.schemaregistry/)
 
 
@@ -266,17 +281,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMapOption](../fast-element.attributemapoption/)
-
-
-</td><td>
-
-Type for the attributeMap element option. Accepts `"all"` or a configuration object.
-
-
-</td></tr>
-<tr><td>
-
 [CachedPathMap](../fast-element.cachedpathmap/)
 
 
@@ -286,12 +290,12 @@ Type for the attributeMap element option. Accepts `"all"` or a configuration obj
 </td></tr>
 <tr><td>
 
-[ObserverMapOption](../fast-element.observermapoption/)
+[FASTElementExtension](../fast-element.fastelementextension/)
 
 
 </td><td>
 
-Type for the observerMap element option. Accepts `"all"` or a configuration object.
+A callback that receives a FASTElementDefinition during element registration. Extensions are invoked before the element is registered with the platform, allowing plugins to inspect or act on the resolved definition.
 
 
 </td></tr>

@@ -100,7 +100,7 @@ Description
 
 </td><td>
 
-A dictionary of custom element options
+A dictionary of fallback custom element options
 
 
 </td></tr>
@@ -183,7 +183,7 @@ Configure lifecycle callbacks for hydration events.
 
 </td><td>
 
-Set options for custom elements.
+Set fallback options for custom elements.
 
 
 </td></tr>
