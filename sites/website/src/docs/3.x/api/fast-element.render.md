@@ -20,7 +20,7 @@ Creates a RenderDirective for use in advanced rendering scenarios.
 **Signature:**
 
 ```typescript
-export declare function render<TSource = any, TItem = any, TParent = any>(value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {}, template?: ContentTemplate | string | Expression<TSource, ContentTemplate | string | Node, TParent> | Binding<TSource, ContentTemplate | string | Node, TParent>): CaptureType<TSource, TParent>;
+export declare function render<TSource = any, TItem = any, TParent = any>(value?: Expression<TSource, TItem> | Binding<TSource, TItem> | {}, template?: ContentTemplate | string | Expression<TSource, ContentTemplate | string | Node, TParent> | Binding<TSource, ContentTemplate | string | Node, TParent>): CaptureType;
 ```
 
 ## Parameters
@@ -77,7 +77,7 @@ _(Optional)_ A template to render the data with or a string to indicate which Re
 
 **Returns:**
 
-[CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;
+[CaptureType](../fast-element.capturetype/)
 
 A RenderDirective suitable for use in a template.
 

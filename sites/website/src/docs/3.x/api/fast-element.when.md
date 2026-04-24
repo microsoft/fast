@@ -20,7 +20,7 @@ A directive that enables basic conditional rendering in a template.
 **Signature:**
 
 ```typescript
-export declare function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType<TSource, TParent>;
+export declare function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType;
 ```
 
 ## Parameters
@@ -93,4 +93,4 @@ _(Optional)_ Optional template or binding that that gets the template to render 
 
 **Returns:**
 
-[CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;
+[CaptureType](../fast-element.capturetype/)

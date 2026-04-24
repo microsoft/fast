@@ -20,7 +20,7 @@ A directive that observes the updates a property with a reference to the element
 **Signature:**
 
 ```typescript
-ref: <TSource = any, TParent = any>(propertyName: keyof TSource & string) => CaptureType<TSource, TParent>
+ref: <TSource = any>(propertyName: keyof TSource & string) => CaptureType
 ```
 
 ## Parameters
@@ -61,4 +61,4 @@ The name of the property to assign the reference to.
 
 **Returns:**
 
-[CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;
+[CaptureType](../fast-element.capturetype/)

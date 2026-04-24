@@ -546,7 +546,7 @@ export function repeat<
         | Binding<TSource, ViewTemplate<any, TSource>>
         | ViewTemplate<any, TSource>,
     options: RepeatOptions = defaultRepeatOptions,
-): CaptureType<TSource, TParent> {
+): CaptureType {
     const dataBinding = normalizeBinding(items);
     const templateBinding = normalizeBinding(template);
     return new RepeatDirective(dataBinding, templateBinding, {

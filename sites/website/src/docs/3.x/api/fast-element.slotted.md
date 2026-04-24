@@ -20,7 +20,7 @@ A directive that observes the `assignedNodes()` of a slot and updates a property
 **Signature:**
 
 ```typescript
-export declare function slotted<TSource = any, TParent = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType<TSource, TParent>;
+export declare function slotted<TSource = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType;
 ```
 
 ## Parameters
@@ -61,4 +61,4 @@ The options used to configure slotted node observation.
 
 **Returns:**
 
-[CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;
+[CaptureType](../fast-element.capturetype/)
