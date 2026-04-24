@@ -15,10 +15,10 @@ navigationOptions:
 
 ## PartialFASTElementDefinition.template property
 
-The template to render for the custom element.
+The template, or template resolver, for the custom element.
 
 **Signature:**
 
 ```typescript
-readonly template?: ElementViewTemplate;
+readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
 ```
