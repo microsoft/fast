@@ -16,5 +16,5 @@ Bundle sizes for `@microsoft/fast-element` exports.
 | slotted | 5.36 KB | 2.08 KB | 1.83 KB |
 | volatile | 7.64 KB | 2.79 KB | 2.51 KB |
 | when | 1.99 KB | 770 B | 625 B |
-| html | 26.71 KB | 8.74 KB | 7.84 KB |
-| repeat | 30.37 KB | 9.67 KB | 8.70 KB |
+| html | 26.82 KB | 8.77 KB | 7.88 KB |
+| repeat | 30.48 KB | 9.70 KB | 8.74 KB |

@@ -1,4 +1,6 @@
-import "../src/debug.js";
+import { enableDebug } from "../src/debug.js";
+
+enableDebug();
 
 export {
     AttributeConfiguration,

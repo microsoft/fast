@@ -79,12 +79,7 @@
     "./package.json": "./package.json"
   },
   "unpkg": "dist/fast-element.min.js",
-  "sideEffects": [
-    "./dist/esm/debug.js",
-    "./dist/esm/declarative.js",
-    "./dist/esm/polyfills.js",
-    "./dist/esm/interfaces.js"
-  ],
+  "sideEffects": false,
   "scripts": {
     "clean": "clean dist temp test-results",
     "doc": "api-extractor run --local",

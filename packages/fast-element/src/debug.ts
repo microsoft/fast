@@ -1,17 +1,6 @@
-import type { FASTGlobal } from "./interfaces.js";
+import { FAST, getDebugMessageLookup } from "./platform.js";
 
-if (globalThis.FAST === void 0) {
-    Reflect.defineProperty(globalThis, "FAST", {
-        value: Object.create(null),
-        configurable: false,
-        enumerable: false,
-        writable: false,
-    });
-}
-
-const FAST: FASTGlobal = globalThis.FAST;
-
-const debugMessages = {
+const baseDebugMessages = {
     [1101 /* needsArrayObservation */]:
         "Must call ArrayObserver.enable() before observing arrays.",
     [1201 /* onlySetDOMPolicyOnce */]: "The DOM Policy can only be set once.",
@@ -82,16 +71,26 @@ function formatMessage(message: string, values: Record<string, any>) {
         .join("");
 }
 
-Object.assign(FAST, {
-    addMessages(messages: Record<number, string>) {
-        Object.assign(debugMessages, messages);
-    },
-    warn(code: number, values: Record<string, any> = noValues) {
-        const message = debugMessages[code] ?? "Unknown Warning";
-        console.warn(formatMessage(message, values));
-    },
-    error(code: number, values: Record<string, any> = noValues) {
-        const message = debugMessages[code] ?? "Unknown Error";
-        return new Error(formatMessage(message, values));
-    },
-});
+/**
+ * Enables human-readable FAST debug messages.
+ * @public
+ */
+export function enableDebug(): void {
+    const debugMessages = getDebugMessageLookup();
+
+    Object.assign(debugMessages, baseDebugMessages);
+
+    Object.assign(FAST, {
+        addMessages(messages: Record<number, string>) {
+            Object.assign(debugMessages, messages);
+        },
+        warn(code: number, values: Record<string, any> = noValues) {
+            const message = debugMessages[code] ?? "Unknown Warning";
+            console.warn(formatMessage(message, values));
+        },
+        error(code: number, values: Record<string, any> = noValues) {
+            const message = debugMessages[code] ?? "Unknown Error";
+            return new Error(formatMessage(message, values));
+        },
+    });
+}
