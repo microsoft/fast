@@ -116,7 +116,6 @@ import { RenderableFASTElement } from "@microsoft/fast-html";
 
 RenderableFASTElement(MyComponent).defineAsync({
     name: "my-component",
-    templateOptions: "defer-and-hydrate",
 });
 ```
 
@@ -124,7 +123,6 @@ RenderableFASTElement(MyComponent).defineAsync({
 ```ts
 MyComponent.define({
     name: "my-component",
-    templateOptions: "defer-and-hydrate",
 });
 ```
 
