@@ -263,6 +263,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
     protected bindObservables(): void;
+    protected captureBoundObservables(): void;
     static configHydration(callbacks: ElementHydrationCallbacks): void;
     connect(): void;
     protected connectBehaviors(): void;
@@ -279,6 +280,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     protected needsInitialization: boolean;
+    protected observeLateAttributes(): void;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TElement>): any;
@@ -292,6 +294,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     readonly source: TElement;
     get sourceLifetime(): SourceLifetime | undefined;
     protected stage: Stages;
+    protected syncLateAttributes(): void;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
     readonly view: ElementView<TElement> | null;

@@ -93,6 +93,11 @@ const extensionRegistries = new WeakMap<
     WeakSet<CustomElementRegistry>
 >();
 
+const lateAttributeLookups = new WeakMap<
+    FASTElementDefinition<Constructable<HTMLElement>>,
+    Record<string, AttributeDefinition>
+>();
+
 function isFASTElementTemplateResolver<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
@@ -163,6 +168,44 @@ export function applyFASTElementExtensions(
     for (const extension of extensions) {
         extension(definition);
     }
+}
+
+/**
+ * Tracks attribute definitions that were added after the element was already
+ * registered with the platform and therefore are not covered by the browser's
+ * static observedAttributes snapshot.
+ * @internal
+ */
+export function trackLateAttributeDefinition(
+    definition: FASTElementDefinition,
+    attribute: AttributeDefinition,
+): void {
+    const typedDefinition = definition as FASTElementDefinition<
+        Constructable<HTMLElement>
+    >;
+    let lateAttributeLookup = lateAttributeLookups.get(typedDefinition);
+
+    if (lateAttributeLookup === void 0) {
+        const lookup: Record<string, AttributeDefinition> = Object.create(null);
+        lateAttributeLookups.set(typedDefinition, lookup);
+        lateAttributeLookup = lookup;
+    }
+
+    lateAttributeLookup[attribute.attribute] = attribute;
+}
+
+/**
+ * Gets the attribute definitions that were added after platform registration.
+ * @internal
+ */
+export function getLateAttributeLookup(
+    definition: FASTElementDefinition,
+): Readonly<Record<string, AttributeDefinition>> | null {
+    return (
+        lateAttributeLookups.get(
+            definition as FASTElementDefinition<Constructable<HTMLElement>>,
+        ) ?? null
+    );
 }
 
 /**
