@@ -101,9 +101,12 @@ TemplateElement.define({ name: "f-template" });
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See
-[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative usage details.
-Declarative event bindings use `$e` for the DOM event object and `$c` for the
-execution context.
+[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative implementation
+details and the
+[Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/)
+for guides on writing f-templates, defining declarative elements, and
+server-side rendering. Declarative event bindings use `$e` for the DOM event
+object and `$c` for the execution context.
 
 ## Prerendered Content Optimization
 
