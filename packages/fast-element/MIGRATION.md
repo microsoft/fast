@@ -54,11 +54,44 @@ removed `@microsoft/fast-html` package.
    `@microsoft/fast-element/declarative.js`.
 2. Update declarative utility imports such as `deepMerge` to
    `@microsoft/fast-element/declarative/utilities.js`.
-3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
-    `observable`) from `@microsoft/fast-element`.
-4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
-    APIs; the declarative entrypoint owns the debug-message and hydratable-view
-    side effects.
+3. Import core FAST Element helpers from focused entrypoints such as
+   `@microsoft/fast-element/attr.js`,
+   `@microsoft/fast-element/observable.js`, and
+   `@microsoft/fast-element/template.js`. The root
+   `@microsoft/fast-element` export now only provides `FASTElement`.
+4. Keep declarative APIs on `@microsoft/fast-element/declarative.js`; they are
+   still separate from the root export surface.
+
+## Export path cleanup (v3)
+
+Optional binding helpers remain on their dedicated public sub-entrypoints, and
+hydration utilities now live on `@microsoft/fast-element/hydration.js`:
+
+- `@microsoft/fast-element/binding/two-way.js`
+- `@microsoft/fast-element/binding/signal.js`
+- `@microsoft/fast-element/hydration.js`
+
+### Removed exports
+
+| Import | Replacement |
+|---|---|
+| `@microsoft/fast-element/testing.js` | No public replacement |
+| `@microsoft/fast-element/element-hydration.js` | `@microsoft/fast-element/hydration.js` |
+| `@microsoft/fast-element/install-element-hydration.js` | No replacement needed |
+| `@microsoft/fast-element/install-hydratable-view-templates.js` | No replacement needed |
+| `@microsoft/fast-element/metadata.js` | No public replacement |
+| `@microsoft/fast-element/pending-task.js` | No public replacement |
+
+### Migration steps
+
+1. Move `attr`, `observable`, `html`, `css`, and other helpers off the root
+   `@microsoft/fast-element` barrel onto focused subpaths.
+2. Replace `@microsoft/fast-element/element-hydration.js` with
+   `@microsoft/fast-element/hydration.js`.
+3. Remove any direct imports from `metadata.js`, `testing.js`,
+   `pending-task.js`, `install-element-hydration.js`, or
+   `install-hydratable-view-templates.js`.
+4. Keep optional binding helpers on their dedicated `binding/*` subpaths.
 
 ## Declarative event handler `e` removal (v3)
 
@@ -95,11 +128,11 @@ data source.
 
 | Import | Replacement |
 |---|---|
-| `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
+| `@microsoft/fast-element/install-element-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
+| `@microsoft/fast-element/install-hydratable-view-templates.js` | No replacement needed — `ViewTemplate.hydrate()` is built into the template runtime |
 
-The `install-hydratable-view-templates.js` side-effect import is still
-available and is applied automatically by
-`@microsoft/fast-element/declarative.js` for hydration marker support.
+`@microsoft/fast-element/declarative.js` still exposes declarative-only APIs,
+but it no longer patches hydration behavior through installer side effects.
 
 ### Changed behavior
 
@@ -115,7 +148,9 @@ available and is applied automatically by
 ### Migration steps
 
 1. Remove `HydratableElementController.install()` calls.
-2. Remove `import "@microsoft/fast-element/install-hydration.js"` side-effect imports.
+2. Remove `import "@microsoft/fast-element/install-element-hydration.js"` and
+   `import "@microsoft/fast-element/install-hydratable-view-templates.js"`
+   side-effect imports.
 3. Replace `element.$fastController instanceof HydratableElementController` checks with `await element.$fastController.isPrerendered`.
 4. Remove `defer-hydration` and `needs-hydration` attributes from server-rendered markup.
 
