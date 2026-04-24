@@ -39,20 +39,6 @@ export interface ShadowRootOptions extends ShadowRootInit {
 }
 
 /**
- * Values for the `templateOptions` property.
- * @alpha
- */
-export const TemplateOptions = {
-    deferAndHydrate: "defer-and-hydrate",
-} as const;
-
-/**
- * Type for the `TemplateOptions` const enum.
- * @alpha
- */
-export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
-
-/**
  * Lifecycle callbacks for template events.
  * @public
  */
@@ -256,12 +242,6 @@ export interface PartialFASTElementDefinition<
     readonly template?: FASTElementTemplateInput<TType>;
 
     /**
-     * Options controlling how the template will be created.
-     * @alpha
-     */
-    readonly templateOptions?: TemplateOptions;
-
-    /**
      * The styles to associate with the custom element.
      */
     readonly styles?: ComposableStyles | ComposableStyles[];
@@ -344,12 +324,6 @@ export class FASTElementDefinition<
     public template?: ElementViewTemplate;
 
     /**
-     * The template options.
-     * @alpha
-     */
-    public templateOptions?: TemplateOptions;
-
-    /**
      * The styles to associate with the custom element.
      */
     public readonly styles?: ElementStyles;
@@ -390,7 +364,6 @@ export class FASTElementDefinition<
 
         this.type = type;
         this.name = nameOrConfig.name;
-        this.templateOptions = nameOrConfig.templateOptions;
         this.registry = nameOrConfig.registry ?? customElements;
 
         if (isFASTElementTemplateResolver(nameOrConfig.template)) {

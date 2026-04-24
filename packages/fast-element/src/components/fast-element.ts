@@ -1,5 +1,4 @@
 import { type Constructable, isFunction } from "../interfaces.js";
-import { Observable } from "../observation/observable.js";
 import { ElementController } from "./element-controller.js";
 import {
     applyFASTElementExtensions,
@@ -7,7 +6,6 @@ import {
     type FASTElementExtension,
     type PartialFASTElementDefinition,
     resolveFASTElementTemplate,
-    TemplateOptions,
 } from "./fast-definitions.js";
 
 /**
@@ -163,37 +161,13 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
     return composePromise.then(def => {
         applyFASTElementExtensions(def, def.registry, extensions);
 
-        const resolveDefinition = (
-            template: typeof def.template,
-        ): Promise<TType> | TType => {
-            if (def.templateOptions === TemplateOptions.deferAndHydrate && !template) {
-                return new Promise<TType>(resolve => {
-                    const notifier = Observable.getNotifier(def);
-                    const subscriber = {
-                        handleChange: () => {
-                            if (!def.template) {
-                                return;
-                            }
-
-                            notifier.unsubscribe(subscriber, "template");
-                            def.lifecycleCallbacks?.templateDidUpdate?.(def.name);
-                            resolve(def.define().type);
-                        },
-                    };
-                    notifier.subscribe(subscriber, "template");
-                });
-            }
-
-            return def.define().type;
-        };
-
         const template = resolveFASTElementTemplate(def);
 
         if (isPromiseLike(template)) {
-            return template.then(resolveDefinition);
+            return template.then(() => def.define().type);
         }
 
-        return resolveDefinition(template);
+        return def.define().type;
     });
 }
 

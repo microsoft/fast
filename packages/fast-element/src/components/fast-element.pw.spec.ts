@@ -305,7 +305,7 @@ test.describe("FASTElement", () => {
             expect(result.shadowText).toContain("resolved");
         });
 
-        test("should apply extensions before waiting for deferred templates", async ({
+        test("should apply extensions before defining elements without templates", async ({
             page,
         }) => {
             await page.goto("/");
@@ -323,7 +323,6 @@ test.describe("FASTElement", () => {
                 const definePromise = TestElement.define(
                     {
                         name: elName,
-                        templateOptions: "defer-and-hydrate",
                     },
                     [
                         definition => {
@@ -364,7 +363,7 @@ test.describe("FASTElement", () => {
                 "extension-template:true",
                 "extension-defined:false",
             ]);
-            expect(result.isDefinedBeforeTemplate).toBe(false);
+            expect(result.isDefinedBeforeTemplate).toBe(true);
             expect(result.templateBeforeAssign).toBe(true);
             expect(result.isDefinedAfter).toBe(true);
             expect(result.shadowText).toContain("deferred");

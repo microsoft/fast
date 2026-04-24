@@ -363,25 +363,6 @@ _(Optional)_ The template to render for the custom element.
 </td></tr>
 <tr><td>
 
-[templateOptions?](../fast-element.fastelementdefinition.templateoptions/)
-
-
-</td><td>
-
-
-</td><td>
-
-[TemplateOptions](../fast-element.templateoptions/)
-
-
-</td><td>
-
-**_(ALPHA)_** _(Optional)_ The template options.
-
-
-</td></tr>
-<tr><td>
-
 [type](../fast-element.fastelementdefinition.type/)
 
 

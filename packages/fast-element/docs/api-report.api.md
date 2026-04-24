@@ -444,8 +444,6 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate;
-    // @alpha
-    templateOptions?: TemplateOptions;
     readonly type: TType;
 }
 
@@ -738,8 +736,6 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
     readonly styles?: ComposableStyles | ComposableStyles[];
     // Warning: (ae-forgotten-export) The symbol "FASTElementTemplateInput" needs to be exported by the entry point index.d.ts
     readonly template?: FASTElementTemplateInput<TType>;
-    // @alpha
-    readonly templateOptions?: TemplateOptions;
 }
 
 // @public
@@ -984,14 +980,6 @@ export interface TemplateLifecycleCallbacks {
     elementDidDefine?(name: string): void;
     templateDidUpdate?(name: string): void;
 }
-
-// @alpha
-export const TemplateOptions: {
-    readonly deferAndHydrate: "defer-and-hydrate";
-};
-
-// @alpha
-export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;

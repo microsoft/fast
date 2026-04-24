@@ -214,25 +214,4 @@ _(Optional)_ The template to render for the custom element.
 
 
 </td></tr>
-<tr><td>
-
-[templateOptions?](../fast-element.partialfastelementdefinition.templateoptions/)
-
-
-</td><td>
-
-`readonly`
-
-
-</td><td>
-
-[TemplateOptions](../fast-element.templateoptions/)
-
-
-</td><td>
-
-**_(ALPHA)_** _(Optional)_ Options controlling how the template will be created.
-
-
-</td></tr>
 </tbody></table>
