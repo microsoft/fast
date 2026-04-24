@@ -1,0 +1,12 @@
+{%- set currentVersion = page.url | version -%}
+{%- set banner = versionBanners[currentVersion] -%}
+{%- if banner and banner.enabled and page.url and "/docs/" in page.url -%}
+<div class="version-banner version-banner--{{ banner.type }}" role="status">
+    <p class="version-banner__message">
+        {{ banner.message }}
+        {%- if banner.type == "legacy" %}
+        <a href="/docs/2.x/introduction" class="version-banner__link">View latest docs →</a>
+        {%- endif %}
+    </p>
+</div>
+{%- endif -%}
