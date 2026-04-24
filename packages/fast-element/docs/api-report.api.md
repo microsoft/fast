@@ -264,7 +264,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
     protected bindObservables(): void;
     protected captureBoundObservables(): void;
-    static configHydration(callbacks: ElementHydrationCallbacks): void;
     connect(): void;
     protected connectBehaviors(): void;
     get context(): ExecutionContext;
@@ -272,10 +271,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     disconnect(): void;
     protected disconnectBehaviors(): void;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
+    static enableHydration(tracker: HydrationTracker): void;
     static forCustomElement(element: HTMLElement, override?: boolean): ElementController;
     protected hasExistingShadowRoot: boolean;
     get isBound(): boolean;
     get isConnected(): boolean;
+    readonly isHydrated: Promise<boolean>;
     readonly isPrerendered: Promise<boolean>;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
@@ -304,14 +305,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
 export interface ElementControllerStrategy {
     // (undocumented)
     new (element: HTMLElement, definition: FASTElementDefinition): ElementController;
-}
-
-// @public
-export interface ElementHydrationCallbacks {
-    elementDidHydrate?(source: HTMLElement): void;
-    elementWillHydrate?(source: HTMLElement): void;
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
 }
 
 // @public
@@ -355,6 +348,9 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 
 // @public
 export const emptyArray: readonly never[];
+
+// @public
+export function enableHydration(options?: HydrationOptions): void;
 
 // @public
 export interface ExecutionContext<TParent = any> {
@@ -562,6 +558,7 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     firstChild: Node;
     insertBefore(node: Node): void;
     isBound: boolean;
+    isHydrated: Promise<boolean>;
     isPrerendered: Promise<boolean>;
     lastChild: Node;
     // (undocumented)
@@ -605,10 +602,15 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
+export interface HydrationOptions {
+    hydrationComplete?(): void;
+    hydrationStarted?(): void;
+}
+
+// @public
 export class HydrationTracker {
-    constructor(callbacks: ElementHydrationCallbacks);
+    constructor(options: HydrationOptions);
     add(element: HTMLElement): void;
-    notifyWillHydrate(element: HTMLElement): void;
     remove(element: HTMLElement): void;
 }
 
@@ -980,7 +982,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 // @public
 export interface TemplateLifecycleCallbacks {
     elementDidDefine?(name: string): void;
+    elementDidHydrate?(source: HTMLElement): void;
+    elementDidRegister?(name: string): void;
+    elementWillHydrate?(source: HTMLElement): void;
     templateDidUpdate?(name: string): void;
+    templateWillUpdate?(name: string): void;
 }
 
 // @public
@@ -1051,6 +1057,7 @@ export type ViewBehaviorTargets = {
 
 // @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
+    readonly isHydrated?: Promise<boolean>;
     readonly isPrerendered?: Promise<boolean>;
     // @internal
     readonly _skipAttrUpdates?: boolean;

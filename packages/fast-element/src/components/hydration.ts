@@ -1,3 +1,5 @@
+import { Message } from "../interfaces.js";
+import { FAST } from "../platform.js";
 import type {
     ContentTemplate,
     HydratableContentTemplate,
@@ -10,8 +12,6 @@ import type {
     SyntheticViewTemplate,
 } from "../templating/template.js";
 import type { HydrationView } from "../templating/view.js";
-import { Message } from "../interfaces.js";
-import { FAST } from "../platform.js";
 
 /**
  * Data-free sequential hydration markers.

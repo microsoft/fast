@@ -28,7 +28,19 @@ import { HydratableElementController } from "@microsoft/fast-element";
 HydratableElementController.install();
 ```
 
-3.x: No replacement needed — prerendered content detection is automatic.
+3.x: Hydration is now opt-in via `enableHydration()`:
+
+```ts
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
+```
+
+Remove any `import "@microsoft/fast-element/install-hydration.js"` side-effect
+imports as part of the migration. The older
+`install-hydratable-view-templates.js` helper remains available for advanced
+use cases, but `@microsoft/fast-element/declarative.js` now installs hydration
+support lazily when declarative APIs create a template.
 
 ### `needsHydrationAttribute` and `deferHydrationAttribute` removed
 
@@ -48,7 +60,7 @@ These attributes are no longer needed in server-rendered markup.
 </my-component>
 ```
 
-### `HydrationControllerCallbacks` replaced by `ElementHydrationCallbacks`
+### `HydrationControllerCallbacks` replaced by `enableHydration` + `declarativeTemplate` callbacks
 
 2.x Example:
 ```ts
@@ -61,30 +73,41 @@ HydratableElementController.config({
 
 3.x Example:
 ```ts
-import { ElementController } from "@microsoft/fast-element";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
-ElementController.configHydration({
+// Global hydration callbacks
+enableHydration({
     hydrationStarted() { /* ... */ },
-    elementWillHydrate(source: HTMLElement) { /* ... */ },
-    elementDidHydrate(source: HTMLElement) { /* ... */ },
-    hydrationComplete() { /* ... */ }
+    hydrationComplete() { /* ... */ },
+});
+
+// Per-element hydration callbacks
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementWillHydrate(source: HTMLElement) { /* ... */ },
+        elementDidHydrate(source: HTMLElement) { /* ... */ },
+    }),
 });
 ```
 
 Note: `elementWillHydrate` and `elementDidHydrate` now receive the `HTMLElement` instance instead of a string name.
 
-### `isPrerendered` is a `Promise<boolean>`
+### `isPrerendered` and `isHydrated` split
 
-The `isPrerendered` property on `ElementController` and `ViewController` is a `Promise<boolean>` that resolves after hydration completes (or immediately with `false` for client-side rendered components).
+The `isPrerendered` property on `ElementController` and `ViewController` now resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. A new `isHydrated: Promise<boolean>` property resolves `true` only when hydration actually ran successfully.
 
 ```ts
 connectedCallback() {
     super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
+    const ctrl = this.$fastController;
+    const prerendered = await ctrl.isPrerendered;
+    const hydrated = await ctrl.isHydrated;
+
+    if (prerendered && !hydrated) {
+        // Had DSD but hydration wasn't enabled
+    }
 }
 ```
 
@@ -103,8 +126,27 @@ import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 ```
 
-This keeps the root `@microsoft/fast-element` import free of declarative
-side effects while moving the declarative runtime into the same package.
+Keep importing core FAST Element APIs from `@microsoft/fast-element`. The
+dedicated declarative entrypoint owns the declarative runtime and installs
+hydration support lazily when declarative templates are created.
+
+### `debug.js` requires explicit enablement
+
+`@microsoft/fast-element/debug.js` no longer configures FAST just by being
+imported. Call `enableDebug()` explicitly instead:
+
+```ts
+// Before
+import "@microsoft/fast-element/debug.js";
+
+// After
+import { enableDebug } from "@microsoft/fast-element/debug.js";
+
+enableDebug();
+```
+
+If you want debug behavior enabled automatically, keep using the root package
+`development` export or the debug rollup bundle.
 
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
@@ -195,8 +237,10 @@ The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBindin
 
 | Export | Package | Description |
 |---|---|---|
-| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves after hydration |
+| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves `true` when element had DSD at connect time |
+| `ElementController.isHydrated` | `fast-element` | `Promise<boolean>` — resolves `true` only when hydration ran successfully |
 | `ElementController.configHydration()` | `fast-element` | Registers hydration lifecycle callbacks |
 | `HydrationTracker` | `fast-element` | Standalone hydration lifecycle tracker class |
 | `ElementHydrationCallbacks` | `fast-element` | Type for hydration lifecycle callbacks |
-| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — available to custom directives |
+| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — DSD detection for custom directives |
+| `ViewController.isHydrated` | `fast-element` | `Promise<boolean>` — hydration status for custom directives |

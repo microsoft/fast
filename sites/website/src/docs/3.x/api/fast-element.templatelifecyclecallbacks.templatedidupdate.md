@@ -15,7 +15,7 @@ navigationOptions:
 
 ## TemplateLifecycleCallbacks.templateDidUpdate() method
 
-Called after the template has been assigned to the definition
+Called after the template has been assigned to the definition.
 
 **Signature:**
 
