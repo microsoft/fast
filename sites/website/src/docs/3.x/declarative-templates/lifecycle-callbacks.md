@@ -154,3 +154,26 @@ MyComponent.define({
 ```
 
 In this case, `elementWillHydrate` and `elementDidHydrate` will never fire, and the element renders client-side.
+
+## `isPrerendered` vs `isHydrated`
+
+In addition to lifecycle callbacks, the controller exposes two promise-based properties for inspecting the rendering path:
+
+- **`isPrerendered: Promise<boolean>`** — resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran.
+- **`isHydrated: Promise<boolean>`** — resolves `true` only when hydration actually ran successfully.
+
+```typescript
+const controller = this.$fastController;
+const prerendered = await controller.isPrerendered;
+const hydrated = await controller.isHydrated;
+
+if (prerendered && hydrated) {
+    // Element had DSD and was hydrated
+} else if (prerendered && !hydrated) {
+    // Had DSD but hydration wasn't enabled — fell back to client-side render
+} else {
+    // No DSD — normal client-side render
+}
+```
+
+This distinction is useful when hydration is conditionally enabled or when you need to differentiate between "had prerendered content" and "successfully reused that content."

@@ -93,7 +93,7 @@ registry.
 - Extends `PropertyChangeNotifier` so the element itself participates in the observable system.
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
-- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. The `ViewController` interface also exposes `isPrerendered` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
+- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. Exposes `isHydrated: Promise<boolean>` which resolves to `true` only when hydration actually ran successfully. The `ViewController` interface also exposes both `isPrerendered` and `isHydrated` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
 - On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
 - Rendering is split into two modular paths via `renderPrerendered()` and `renderClientSide()`:
   - **Prerendered**: `renderPrerendered()` is only reachable when hydration has been explicitly enabled via `enableHydration()`. It registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
@@ -378,13 +378,13 @@ flowchart TD
 
     CONN[connectedCallback] --> STAGE[stage = connecting]
     STAGE --> PRERENDER{Existing shadow root\nfrom SSR/DSD?}
-    PRERENDER -->|yes| SETFLAG[isPrerendered = true]
-    PRERENDER -->|no| NORMAL[isPrerendered = false]
+    PRERENDER -->|yes| SETFLAG[isPrerendered = true\nisHydrated = pending]
+    PRERENDER -->|no| NORMAL[isPrerendered = false\nisHydrated = false]
     SETFLAG --> OBS[Restore pre-upgrade observable values]
     NORMAL --> OBS
     OBS --> BEHAV[Connect HostBehaviors]
     BEHAV --> RENDER{isPrerendered AND\ntemplate is hydratable?}
-    RENDER -->|yes| HYDRATE[template.hydrate → HydrationView\nmaps existing DOM to binding targets]
+    RENDER -->|yes| HYDRATE[template.hydrate → HydrationView\nmaps existing DOM to binding targets\nisHydrated = true]
     RENDER -->|no| CLONE[ViewTemplate.render → HTMLView.appendTo shadow root]
     HYDRATE --> STYLES[Apply ElementStyles to shadow root]
     CLONE --> STYLES

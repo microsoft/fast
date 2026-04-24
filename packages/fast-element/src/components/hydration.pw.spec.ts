@@ -30,15 +30,17 @@ test.describe("The prerendered content optimization", () => {
 
             return {
                 isPrerendered: await element.$fastController.isPrerendered,
+                isHydrated: await element.$fastController.isHydrated,
                 shadowContent: element.shadowRoot?.innerHTML ?? "",
             };
         });
 
         expect(result.isPrerendered).toBe(false);
+        expect(result.isHydrated).toBe(false);
         expect(result.shadowContent).toContain("hello");
     });
 
-    test("should set isPrerendered to false when DSD exists but hydration is not enabled", async ({
+    test("should detect DSD but not hydrate when hydration is not enabled", async ({
         page,
     }) => {
         await page.goto("/");
@@ -76,12 +78,15 @@ test.describe("The prerendered content optimization", () => {
             return {
                 hasShadowRootBefore,
                 isPrerendered: await element.$fastController.isPrerendered,
+                isHydrated: await element.$fastController.isHydrated,
             };
         });
 
         expect(result.hasShadowRootBefore).toBe(true);
-        // Without enableHydration(), prerendered content is not hydrated
-        expect(result.isPrerendered).toBe(false);
+        // DSD exists, so isPrerendered is true
+        expect(result.isPrerendered).toBe(true);
+        // Without enableHydration(), content is not hydrated
+        expect(result.isHydrated).toBe(false);
     });
 
     test("should connect immediately when a template is assigned later", async ({

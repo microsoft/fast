@@ -100,24 +100,26 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private _resolvePrerendered!: (value: boolean) => void;
 
     /**
-     * A promise that resolves with `true` after prerendered content has
-     * been hydrated, or `false` immediately when the component is
-     * client-side rendered. Component authors can await this to know
-     * when the element is fully interactive:
-     *
-     * ```typescript
-     * connectedCallback() {
-     *     super.connectedCallback();
-     *     this.$fastController.isPrerendered.then(prerendered => {
-     *         if (!prerendered) {
-     *             this.fetchData();
-     *         }
-     *     });
-     * }
-     * ```
+     * Resolves the isHydrated promise.
+     */
+    private _resolveHydrated!: (value: boolean) => void;
+
+    /**
+     * Resolves `true` when the element had an existing shadow root
+     * (from SSR or declarative shadow DOM) at connect time, `false`
+     * otherwise.
      */
     public readonly isPrerendered: Promise<boolean> = new Promise<boolean>(resolve => {
         this._resolvePrerendered = resolve;
+    });
+
+    /**
+     * Resolves `true` after prerendered content has been successfully
+     * hydrated, or `false` when the component is client-side rendered
+     * or hydration is not enabled.
+     */
+    public readonly isHydrated: Promise<boolean> = new Promise<boolean>(resolve => {
+        this._resolveHydrated = resolve;
     });
 
     /**
@@ -761,11 +763,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         if (template) {
+            const hasPrerenderedContent =
+                this.hasExistingShadowRoot && this.needsInitialization;
             const tracker = ElementController.hydrationTracker;
             const didHydrate =
+                hasPrerenderedContent &&
                 tracker !== null &&
-                this.hasExistingShadowRoot &&
-                this.needsInitialization &&
                 isHydratable(template);
 
             if (didHydrate) {
@@ -774,9 +777,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 this.renderClientSide(template, element, host);
             }
 
-            this._resolvePrerendered(didHydrate);
+            this._resolvePrerendered(hasPrerenderedContent);
+            this._resolveHydrated(didHydrate);
         } else if (this.needsInitialization) {
             this._resolvePrerendered(false);
+            this._resolveHydrated(false);
         }
     }
 
@@ -819,6 +824,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 // DOM updates during bind, and set the public promise.
                 (this.view as any)._skipAttrUpdates = true;
                 (this.view as any).isPrerendered = Promise.resolve(true);
+                (this.view as any).isHydrated = Promise.resolve(true);
                 this.view!.bind(this.source);
                 (this.view as any)._skipAttrUpdates = false;
             } finally {

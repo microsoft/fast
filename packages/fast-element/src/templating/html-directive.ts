@@ -33,11 +33,16 @@ export interface ViewController<TSource = any, TParent = any>
     readonly _skipAttrUpdates?: boolean;
 
     /**
-     * A promise that resolves with `true` after prerendered content
-     * has been hydrated, or `false` when the view is client-side
-     * rendered.
+     * Resolves `true` when the view's host element had prerendered
+     * content (existing shadow root).
      */
     readonly isPrerendered?: Promise<boolean>;
+
+    /**
+     * Resolves `true` after prerendered content has been hydrated,
+     * `false` when client-side rendered or hydration not enabled.
+     */
+    readonly isHydrated?: Promise<boolean>;
 }
 
 /**

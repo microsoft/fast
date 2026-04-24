@@ -96,10 +96,11 @@ Once the template is attached to the partial definition, the element completes i
 When custom elements are instantiated in the DOM, the following occurs:
 
 1. **Element Creation**: The platform creates instances of the custom element
-2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR and sets `isPrerendered = true`
-3. **Concrete Template Ready**: Because `declarativeTemplate()` resolved during
+2. **Prerendered Content Detection**: `ElementController` detects the existing shadow root from SSR — `isPrerendered` resolves `true`
+3. **Hydration Check**: If `enableHydration()` was called and the template is hydratable, the element hydrates — `isHydrated` resolves `true`. Otherwise it falls back to client-side rendering.
+4. **Concrete Template Ready**: Because `declarativeTemplate()` resolved during
    definition, `connect()` starts with the final template already attached.
-4. **Hydration**: `ElementController` uses `template.hydrate()` to create a
+5. **Hydration**: `ElementController` uses `template.hydrate()` to create a
    `HydrationView` that maps existing DOM nodes to binding targets using `fe:b`
    / `fe:/b` markers
 

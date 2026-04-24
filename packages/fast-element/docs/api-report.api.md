@@ -276,6 +276,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     protected hasExistingShadowRoot: boolean;
     get isBound(): boolean;
     get isConnected(): boolean;
+    readonly isHydrated: Promise<boolean>;
     readonly isPrerendered: Promise<boolean>;
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
@@ -557,6 +558,7 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     firstChild: Node;
     insertBefore(node: Node): void;
     isBound: boolean;
+    isHydrated: Promise<boolean>;
     isPrerendered: Promise<boolean>;
     lastChild: Node;
     // (undocumented)
@@ -1055,6 +1057,7 @@ export type ViewBehaviorTargets = {
 
 // @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
+    readonly isHydrated?: Promise<boolean>;
     readonly isPrerendered?: Promise<boolean>;
     // @internal
     readonly _skipAttrUpdates?: boolean;

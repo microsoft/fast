@@ -181,6 +181,27 @@ Indicates whether or not the custom element has been connected to the document.
 </td></tr>
 <tr><td>
 
+[isHydrated](../fast-element.elementcontroller.ishydrated/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Promise&lt;boolean&gt;
+
+
+</td><td>
+
+Resolves `true` after prerendered content has been successfully hydrated, or `false` when the component is client-side rendered or hydration is not enabled.
+
+
+</td></tr>
+<tr><td>
+
 [isPrerendered](../fast-element.elementcontroller.isprerendered/)
 
 
@@ -196,18 +217,7 @@ Promise&lt;boolean&gt;
 
 </td><td>
 
-A promise that resolves with `true` after prerendered content has been hydrated, or `false` immediately when the component is client-side rendered. Component authors can await this to know when the element is fully interactive:
-
-```typescript
-connectedCallback() {
-    super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
-}
-```
+Resolves `true` when the element had an existing shadow root (from SSR or declarative shadow DOM) at connect time, `false` otherwise.
 
 
 </td></tr>

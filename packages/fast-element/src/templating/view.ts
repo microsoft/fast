@@ -256,6 +256,12 @@ export class HTMLView<TSource = any, TParent = any>
     public isPrerendered: Promise<boolean> = Promise.resolve(false);
 
     /**
+     * Resolves `true` after prerendered content has been hydrated,
+     * `false` when client-side rendered or hydration not enabled.
+     */
+    public isHydrated: Promise<boolean> = Promise.resolve(false);
+
+    /**
      * The execution context the view is running within.
      */
     public context: ExecutionContext<TParent> = this;

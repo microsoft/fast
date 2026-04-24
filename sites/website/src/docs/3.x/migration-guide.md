@@ -94,18 +94,20 @@ MyComponent.define({
 
 Note: `elementWillHydrate` and `elementDidHydrate` now receive the `HTMLElement` instance instead of a string name.
 
-### `isPrerendered` is a `Promise<boolean>`
+### `isPrerendered` and `isHydrated` split
 
-The `isPrerendered` property on `ElementController` and `ViewController` is a `Promise<boolean>` that resolves after hydration completes (or immediately with `false` for client-side rendered components).
+The `isPrerendered` property on `ElementController` and `ViewController` now resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. A new `isHydrated: Promise<boolean>` property resolves `true` only when hydration actually ran successfully.
 
 ```ts
 connectedCallback() {
     super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
+    const ctrl = this.$fastController;
+    const prerendered = await ctrl.isPrerendered;
+    const hydrated = await ctrl.isHydrated;
+
+    if (prerendered && !hydrated) {
+        // Had DSD but hydration wasn't enabled
+    }
 }
 ```
 
@@ -235,8 +237,10 @@ The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBindin
 
 | Export | Package | Description |
 |---|---|---|
-| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves after hydration |
+| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves `true` when element had DSD at connect time |
+| `ElementController.isHydrated` | `fast-element` | `Promise<boolean>` — resolves `true` only when hydration ran successfully |
 | `ElementController.configHydration()` | `fast-element` | Registers hydration lifecycle callbacks |
 | `HydrationTracker` | `fast-element` | Standalone hydration lifecycle tracker class |
 | `ElementHydrationCallbacks` | `fast-element` | Type for hydration lifecycle callbacks |
-| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — available to custom directives |
+| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — DSD detection for custom directives |
+| `ViewController.isHydrated` | `fast-element` | `Promise<boolean>` — hydration status for custom directives |

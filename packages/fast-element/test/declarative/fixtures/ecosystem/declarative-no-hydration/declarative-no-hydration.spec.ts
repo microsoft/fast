@@ -75,19 +75,25 @@ test.describe("Declarative Template Without Hydration", () => {
         expect(hydrationEvents).toHaveLength(0);
     });
 
-    test("isPrerendered should resolve false without hydration", async ({ page }) => {
+    test("isPrerendered should resolve true with DSD, isHydrated should resolve false without enableHydration", async ({
+        page,
+    }) => {
         const allDefined = page.waitForFunction(
             () => (window as any).allDefined === true,
         );
         await page.goto("/fixtures/ecosystem/declarative-no-hydration/");
         await allDefined;
 
-        const isPrerendered = await page.evaluate(async () => {
+        const result = await page.evaluate(async () => {
             const el = document.querySelector("basic-element") as any;
-            return el.$fastController.isPrerendered;
+            return {
+                isPrerendered: await el.$fastController.isPrerendered,
+                isHydrated: await el.$fastController.isHydrated,
+            };
         });
 
-        expect(isPrerendered).toBe(false);
+        expect(result.isPrerendered).toBe(true);
+        expect(result.isHydrated).toBe(false);
     });
 
     test("should support interactivity after client-side render", async ({ page }) => {

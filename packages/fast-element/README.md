@@ -140,7 +140,12 @@ enableHydration({
 });
 ```
 
-When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
+When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. Two properties on the controller let you inspect the result:
+
+- **`isPrerendered: Promise<boolean>`** — resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran.
+- **`isHydrated: Promise<boolean>`** — resolves `true` only when hydration actually ran successfully.
+
+This enables several optimizations:
 
 - **Hydration instead of re-render**: The template uses `hydrate()` to map existing DOM nodes to binding targets rather than cloning new DOM.
 - **Declarative template resolution**: `declarativeTemplate()` waits for the
@@ -167,17 +172,19 @@ MyComponent.define({
 });
 ```
 
-Component authors can await the promise to know when hydration is complete:
+Component authors can await both promises to distinguish prerendered content from successful hydration:
 
 ```typescript
-this.$fastController.isPrerendered.then(prerendered => {
-    if (!prerendered) {
-        this.fetchData();
-    }
-});
+const controller = this.$fastController;
+const prerendered = await controller.isPrerendered;
+const hydrated = await controller.isHydrated;
+
+if (prerendered && !hydrated) {
+    // Had DSD but hydration wasn't enabled — client-side rendered
+}
 ```
 
-Custom directives can also await `controller.isPrerendered` (a `Promise<boolean>` on the `ViewController` interface) to determine whether the view's content was prerendered.
+Custom directives can also await `controller.isPrerendered` and `controller.isHydrated` (both `Promise<boolean>` on the `ViewController` interface) to determine how the view's content was rendered.
 
 ## Define Extensions
 
