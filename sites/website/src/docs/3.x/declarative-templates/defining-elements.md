@@ -8,23 +8,21 @@ eleventyNavigation:
   title: Defining Elements
 navigationOptions:
   activeKey: declarative-defining-elements3x
-description: Learn how to register declarative FASTElement components, configure lifecycle callbacks, and use observerMap and attributeMap.
+description: Learn how to register declarative FASTElement components and use observerMap and attributeMap extensions.
 keywords:
   - FASTElement
   - declarative
   - define
-  - TemplateElement
   - observerMap
   - attributeMap
-  - lifecycle
-  - hydration
+  - extensions
 ---
 
 {% raw %}
 
 # Defining Declarative Elements
 
-A declarative FASTElement component requires a JavaScript class definition with `template: declarativeTemplate()` and an `<f-template>` in the HTML. The `declarativeTemplate()` function automatically defines the `<f-template>` custom element and waits for the matching template before completing registration. This page covers the JavaScript setup, extensions, lifecycle callbacks, and configuration options.
+A declarative FASTElement component requires a JavaScript class definition with `template: declarativeTemplate()` and an `<f-template>` in the HTML. The `declarativeTemplate()` function automatically defines the `<f-template>` custom element and waits for the matching template before completing registration. This page covers the JavaScript setup and extension configuration.
 
 ## Basic Setup
 
@@ -119,87 +117,6 @@ TaskItem.define({
 </html>
 ```
 
-## Lifecycle Callbacks
-
-`TemplateElement.config()` registers callbacks that fire during template processing and hydration. This is useful for tracking progress, gathering performance metrics, or coordinating initialization. `TemplateElement` remains available for lifecycle configuration even though `declarativeTemplate()` handles the registration automatically.
-
-```ts
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-
-TemplateElement.config({
-    hydrationComplete() {
-        console.log("All elements hydrated");
-    },
-});
-```
-
-### Available Callbacks
-
-**Template lifecycle:**
-
-| Callback | Description |
-|---|---|
-| `elementDidRegister(name)` | Called after the element class is registered |
-| `templateWillUpdate(name)` | Called before the template is evaluated and assigned |
-| `templateDidUpdate(name)` | Called after the template is assigned to the definition |
-| `elementDidDefine(name)` | Called after the custom element is defined with the platform |
-
-**Hydration lifecycle:**
-
-| Callback | Description |
-|---|---|
-| `hydrationStarted()` | Called once when the first pre-rendered element begins hydrating |
-| `elementWillHydrate(source)` | Called before an individual element starts hydration |
-| `elementDidHydrate(source)` | Called after an individual element completes hydration |
-| `hydrationComplete()` | Called after all pre-rendered elements have finished hydrating |
-
-### Lifecycle Order
-
-1. **Registration** — `elementDidRegister`
-2. **Template processing** — `templateWillUpdate` → template parsing → `templateDidUpdate` → `elementDidDefine`
-3. **Hydration** — `hydrationStarted` → `elementWillHydrate` → hydration → `elementDidHydrate`
-4. **Completion** — `hydrationComplete`
-
-:::note
-Template processing is asynchronous and happens independently for each element. The template and hydration phases can be interleaved when multiple elements are being processed simultaneously.
-:::
-
-### Performance Monitoring Example
-
-```ts
-TemplateElement.config({
-    elementWillHydrate(source) {
-        performance.mark(`${source.localName}-hydration-start`);
-    },
-    elementDidHydrate(source) {
-        performance.mark(`${source.localName}-hydration-end`);
-        performance.measure(
-            `${source.localName}-hydration`,
-            `${source.localName}-hydration-start`,
-            `${source.localName}-hydration-end`
-        );
-    },
-    hydrationComplete() {
-        const entries = performance.getEntriesByType("measure");
-        console.log("Hydration metrics:", entries);
-    },
-});
-```
-
-### Loading State Example
-
-```ts
-TemplateElement.config({
-    hydrationStarted() {
-        document.body.classList.add("hydrating");
-    },
-    hydrationComplete() {
-        document.body.classList.remove("hydrating");
-        document.body.classList.add("hydrated");
-    },
-});
-```
-
 ## Extensions
 
 The `observerMap()` and `attributeMap()` functions are define extensions — they are passed as the second argument to `define()` and run before the element is registered with the platform.
@@ -224,33 +141,6 @@ MyElement.define(
 ```
 
 Calling `observerMap()` or `attributeMap()` with no arguments applies the default behavior for all properties. You can also pass configuration objects for fine-grained control (see below).
-
-`TemplateElement.options()` is also available for per-element configuration and can be combined with extensions:
-
-```ts
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-
-TemplateElement.options({
-    "my-element": {
-        observerMap: "all",
-        attributeMap: "all",
-    },
-});
-```
-
-Both `.config()` and `.options()` are chainable:
-
-```ts
-TemplateElement
-    .options({
-        "my-element": { observerMap: "all" },
-    })
-    .config({
-        hydrationComplete() {
-            console.log("Ready");
-        },
-    });
-```
 
 ## ObserverMap
 
@@ -408,7 +298,6 @@ import {
     declarativeTemplate,
     observerMap,
     attributeMap,
-    TemplateElement,
 } from "@microsoft/fast-element/declarative.js";
 
 class ProductCard extends FASTElement {}
@@ -420,12 +309,6 @@ ProductCard.define(
     },
     [observerMap(), attributeMap()],
 );
-
-TemplateElement.config({
-    hydrationComplete() {
-        console.log("Ready");
-    },
-});
 ```
 
 ```html

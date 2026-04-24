@@ -78,7 +78,7 @@ The end-to-end flow from server to interactive page follows these steps:
 6. **Interactive** — The page is fully interactive. Property changes trigger targeted DOM updates.
 
 :::tip
-Use the `hydrationComplete()` lifecycle callback to know when all elements have finished hydrating and the page is fully interactive. See [Defining Elements — Lifecycle Callbacks](./defining-elements#lifecycle-callbacks) for details.
+The `isPrerendered` property on `$fastController` is a `Promise<boolean>` that resolves to `true` after hydration completes, or `false` for client-side rendered elements. Use this to detect when the page is fully interactive.
 :::
 
 ## State Propagation

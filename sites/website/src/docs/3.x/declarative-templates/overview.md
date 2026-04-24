@@ -142,7 +142,7 @@ Both produce the same runtime behavior. The declarative version separates the te
 ## Next Steps
 
 - [Writing f-templates](./f-templates) — Template syntax, bindings, directives, and expressions.
-- [Defining Elements](./defining-elements) — Component registration, lifecycle callbacks, and configuration.
+- [Defining Elements](./defining-elements) — Component registration and extension configuration.
 - [Server-Side Rendering](./server-rendering) — Rendering templates on the server and hydrating on the client.
 
 {% endraw %}
