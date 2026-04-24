@@ -2,9 +2,11 @@ import { type Constructable, isFunction } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
 import { ElementController } from "./element-controller.js";
 import {
+    applyFASTElementExtensions,
     FASTElementDefinition,
     type FASTElementExtension,
     type PartialFASTElementDefinition,
+    resolveFASTElementTemplate,
     TemplateOptions,
 } from "./fast-definitions.js";
 
@@ -110,15 +112,15 @@ function createFASTElement<T extends typeof HTMLElement>(
 
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition,
+    nameOrDef: string | PartialFASTElementDefinition<TType>,
 ): Promise<FASTElementDefinition<TType>>;
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition,
+    nameOrDef?: string | PartialFASTElementDefinition<TType>,
 ): Promise<FASTElementDefinition<TType>>;
 function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-    type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition,
+    type: TType | string | PartialFASTElementDefinition<TType>,
+    nameOrDef?: string | PartialFASTElementDefinition<TType>,
 ): Promise<FASTElementDefinition<TType>> {
     if (isFunction(type)) {
         return FASTElementDefinition.compose(type, nameOrDef);
@@ -127,19 +129,23 @@ function compose<TType extends Constructable<HTMLElement> = Constructable<HTMLEl
     return FASTElementDefinition.compose(this, type);
 }
 
+function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
+    return typeof (value as PromiseLike<T> | undefined)?.then === "function";
+}
+
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     this: TType,
-    nameOrDef: string | PartialFASTElementDefinition,
+    nameOrDef: string | PartialFASTElementDefinition<TType>,
     extensions?: FASTElementExtension[],
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
     type: TType,
-    nameOrDef?: string | PartialFASTElementDefinition,
+    nameOrDef?: string | PartialFASTElementDefinition<TType>,
     extensions?: FASTElementExtension[],
 ): Promise<TType>;
 function define<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(
-    type: TType | string | PartialFASTElementDefinition,
-    nameOrDef?: string | PartialFASTElementDefinition | FASTElementExtension[],
+    type: TType | string | PartialFASTElementDefinition<TType>,
+    nameOrDef?: string | PartialFASTElementDefinition<TType> | FASTElementExtension[],
     extensions?: FASTElementExtension[],
 ): Promise<TType> {
     if (Array.isArray(nameOrDef)) {
@@ -150,26 +156,44 @@ function define<TType extends Constructable<HTMLElement> = Constructable<HTMLEle
     const composePromise = isFunction(type)
         ? FASTElementDefinition.compose(
               type,
-              nameOrDef as string | PartialFASTElementDefinition | undefined,
+              nameOrDef as string | PartialFASTElementDefinition<TType> | undefined,
           )
         : FASTElementDefinition.compose(this, type);
 
     return composePromise.then(def => {
-        if (def.templateOptions === TemplateOptions.deferAndHydrate && !def.template) {
-            return new Promise<TType>(resolve => {
-                const notifier = Observable.getNotifier(def);
-                const subscriber = {
-                    handleChange: () => {
-                        notifier.unsubscribe(subscriber, "template");
-                        def.lifecycleCallbacks?.templateDidUpdate?.(def.name);
-                        resolve(def.define(undefined, extensions).type);
-                    },
-                };
-                notifier.subscribe(subscriber, "template");
-            });
+        applyFASTElementExtensions(def, def.registry, extensions);
+
+        const resolveDefinition = (
+            template: typeof def.template,
+        ): Promise<TType> | TType => {
+            if (def.templateOptions === TemplateOptions.deferAndHydrate && !template) {
+                return new Promise<TType>(resolve => {
+                    const notifier = Observable.getNotifier(def);
+                    const subscriber = {
+                        handleChange: () => {
+                            if (!def.template) {
+                                return;
+                            }
+
+                            notifier.unsubscribe(subscriber, "template");
+                            def.lifecycleCallbacks?.templateDidUpdate?.(def.name);
+                            resolve(def.define().type);
+                        },
+                    };
+                    notifier.subscribe(subscriber, "template");
+                });
+            }
+
+            return def.define().type;
+        };
+
+        const template = resolveFASTElementTemplate(def);
+
+        if (isPromiseLike(template)) {
+            return template.then(resolveDefinition);
         }
 
-        return def.define(undefined, extensions).type;
+        return resolveDefinition(template);
     });
 }
 

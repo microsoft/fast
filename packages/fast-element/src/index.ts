@@ -26,6 +26,7 @@ export {
 } from "./components/element-controller.js";
 export type {
     FASTElementExtension,
+    FASTElementTemplateResolver,
     PartialFASTElementDefinition,
     ShadowRootOptions,
     TypeRegistry,
