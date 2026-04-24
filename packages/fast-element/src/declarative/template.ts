@@ -260,8 +260,9 @@ class TemplateElement extends FASTElement {
                 this.attributeMap?.defineProperties();
 
                 if (registeredFastElement) {
+                    const hadTemplate = registeredFastElement.template !== undefined;
+
                     // Attach lifecycle callbacks to the definition before assigning template
-                    // This allows the Observable notification to trigger the callbacks
                     (registeredFastElement as any).lifecycleCallbacks = {
                         templateDidUpdate:
                             TemplateElement.lifecycleCallbacks.templateDidUpdate,
@@ -275,6 +276,12 @@ class TemplateElement extends FASTElement {
                         strings,
                         values,
                     );
+
+                    TemplateElement.lifecycleCallbacks.templateDidUpdate?.(name);
+
+                    if (!hadTemplate && registeredFastElement.isDefined) {
+                        TemplateElement.lifecycleCallbacks.elementDidDefine?.(name);
+                    }
                 }
             } else if (templates.length > 1) {
                 throw FAST.error(Message.moreThanOneTemplateProvided, {

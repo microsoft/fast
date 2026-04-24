@@ -26,6 +26,7 @@ export {
 } from "./components/element-controller.js";
 export type {
     FASTElementExtension,
+    FASTElementTemplateResolver,
     PartialFASTElementDefinition,
     ShadowRootOptions,
     TypeRegistry,
@@ -34,7 +35,6 @@ export {
     FASTElementDefinition,
     fastElementRegistry,
     type TemplateLifecycleCallbacks,
-    TemplateOptions,
 } from "./components/fast-definitions.js";
 export { customElement, FASTElement } from "./components/fast-element.js";
 export { deferHydrationAttribute, isHydratable } from "./components/hydration.js";

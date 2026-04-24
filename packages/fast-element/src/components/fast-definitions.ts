@@ -1,4 +1,9 @@
-import { type Constructable, isString, KernelServiceId } from "../interfaces.js";
+import {
+    type Constructable,
+    isFunction,
+    isString,
+    KernelServiceId,
+} from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
@@ -34,20 +39,6 @@ export interface ShadowRootOptions extends ShadowRootInit {
 }
 
 /**
- * Values for the `templateOptions` property.
- * @alpha
- */
-export const TemplateOptions = {
-    deferAndHydrate: "defer-and-hydrate",
-} as const;
-
-/**
- * Type for the `TemplateOptions` const enum.
- * @alpha
- */
-export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
-
-/**
  * Lifecycle callbacks for template events.
  * @public
  */
@@ -72,25 +63,183 @@ export interface TemplateLifecycleCallbacks {
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 /**
+ * Resolves an element template from a composed definition.
+ * @public
+ */
+export type FASTElementTemplateResolver<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+> = (
+    definition: FASTElementDefinition<TType>,
+) =>
+    | ElementViewTemplate<InstanceType<TType>>
+    | Promise<ElementViewTemplate<InstanceType<TType>>>;
+
+type FASTElementTemplateInput<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+> = ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
+
+const templateResolvers = new WeakMap<
+    FASTElementDefinition<Constructable<HTMLElement>>,
+    FASTElementTemplateResolver<Constructable<HTMLElement>>
+>();
+
+const pendingTemplateResolutions = new WeakMap<
+    FASTElementDefinition<Constructable<HTMLElement>>,
+    Promise<ElementViewTemplate<HTMLElement> | undefined>
+>();
+
+const extensionRegistries = new WeakMap<
+    FASTElementDefinition<Constructable<HTMLElement>>,
+    WeakSet<CustomElementRegistry>
+>();
+
+function isFASTElementTemplateResolver<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(
+    value: FASTElementTemplateInput<TType> | undefined,
+): value is FASTElementTemplateResolver<TType> {
+    return isFunction(value);
+}
+
+function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
+    return typeof (value as PromiseLike<T> | undefined)?.then === "function";
+}
+
+function finalizeResolvedTemplate<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(
+    definition: FASTElementDefinition<TType>,
+    template?: ElementViewTemplate<InstanceType<TType>>,
+): ElementViewTemplate<InstanceType<TType>> | undefined {
+    pendingTemplateResolutions.delete(
+        definition as FASTElementDefinition<Constructable<HTMLElement>>,
+    );
+
+    if (definition.template === void 0 && template !== void 0) {
+        definition.template = template;
+        definition.lifecycleCallbacks?.templateDidUpdate?.(definition.name);
+    }
+
+    if (definition.template !== void 0) {
+        templateResolvers.delete(
+            definition as FASTElementDefinition<Constructable<HTMLElement>>,
+        );
+
+        return definition.template;
+    }
+
+    return void 0;
+}
+
+/**
+ * Applies extension callbacks to a FAST element definition.
+ * @internal
+ */
+export function applyFASTElementExtensions(
+    definition: FASTElementDefinition,
+    registry: CustomElementRegistry = definition.registry,
+    extensions?: FASTElementExtension[],
+): void {
+    if (!extensions?.length) {
+        return;
+    }
+
+    const typedDefinition = definition as FASTElementDefinition<
+        Constructable<HTMLElement>
+    >;
+    let registries = extensionRegistries.get(typedDefinition);
+
+    if (registries?.has(registry)) {
+        return;
+    }
+
+    if (registries === void 0) {
+        registries = new WeakSet<CustomElementRegistry>();
+        extensionRegistries.set(typedDefinition, registries);
+    }
+
+    registries.add(registry);
+
+    for (const extension of extensions) {
+        extension(definition);
+    }
+}
+
+/**
+ * Resolves the concrete template for a FAST element definition when the
+ * definition was composed with a template resolver.
+ * @internal
+ */
+export function resolveFASTElementTemplate<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(
+    definition: FASTElementDefinition<TType>,
+):
+    | ElementViewTemplate<InstanceType<TType>>
+    | Promise<ElementViewTemplate<InstanceType<TType>> | undefined>
+    | undefined {
+    if (definition.template !== void 0) {
+        return definition.template;
+    }
+
+    const pendingResolution = pendingTemplateResolutions.get(
+        definition as FASTElementDefinition<Constructable<HTMLElement>>,
+    ) as Promise<ElementViewTemplate<InstanceType<TType>> | undefined> | undefined;
+
+    if (pendingResolution) {
+        return pendingResolution;
+    }
+
+    const templateResolver = templateResolvers.get(
+        definition as FASTElementDefinition<Constructable<HTMLElement>>,
+    ) as FASTElementTemplateResolver<TType> | undefined;
+
+    if (!templateResolver) {
+        return void 0;
+    }
+
+    const template = templateResolver(definition);
+
+    if (isPromiseLike(template)) {
+        const resolution = Promise.resolve(template)
+            .then(resolvedTemplate =>
+                finalizeResolvedTemplate(definition, resolvedTemplate),
+            )
+            .catch(error => {
+                pendingTemplateResolutions.delete(
+                    definition as FASTElementDefinition<Constructable<HTMLElement>>,
+                );
+
+                throw error;
+            });
+
+        pendingTemplateResolutions.set(
+            definition as FASTElementDefinition<Constructable<HTMLElement>>,
+            resolution as Promise<ElementViewTemplate<HTMLElement> | undefined>,
+        );
+
+        return resolution;
+    }
+
+    return finalizeResolvedTemplate(definition, template);
+}
+
+/**
  * Represents metadata configuration for a custom element.
  * @public
  */
-export interface PartialFASTElementDefinition {
+export interface PartialFASTElementDefinition<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+> {
     /**
      * The name of the custom element.
      */
     readonly name: string;
 
     /**
-     * The template to render for the custom element.
+     * The template, or template resolver, for the custom element.
      */
-    readonly template?: ElementViewTemplate;
-
-    /**
-     * Options controlling how the template will be created.
-     * @alpha
-     */
-    readonly templateOptions?: TemplateOptions;
+    readonly template?: FASTElementTemplateInput<TType>;
 
     /**
      * The styles to associate with the custom element.
@@ -175,12 +324,6 @@ export class FASTElementDefinition<
     public template?: ElementViewTemplate;
 
     /**
-     * The template options.
-     * @alpha
-     */
-    public templateOptions?: TemplateOptions;
-
-    /**
      * The styles to associate with the custom element.
      */
     public readonly styles?: ElementStyles;
@@ -212,7 +355,8 @@ export class FASTElementDefinition<
 
     private constructor(
         type: TType,
-        nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition,
+        nameOrConfig: PartialFASTElementDefinition<TType> | string = (type as any)
+            .definition,
     ) {
         if (isString(nameOrConfig)) {
             nameOrConfig = { name: nameOrConfig };
@@ -220,9 +364,18 @@ export class FASTElementDefinition<
 
         this.type = type;
         this.name = nameOrConfig.name;
-        this.template = nameOrConfig.template;
-        this.templateOptions = nameOrConfig.templateOptions;
         this.registry = nameOrConfig.registry ?? customElements;
+
+        if (isFASTElementTemplateResolver(nameOrConfig.template)) {
+            templateResolvers.set(
+                this as FASTElementDefinition<Constructable<HTMLElement>>,
+                nameOrConfig.template as FASTElementTemplateResolver<
+                    Constructable<HTMLElement>
+                >,
+            );
+        } else {
+            this.template = nameOrConfig.template;
+        }
 
         const proto = type.prototype;
         const attributes = AttributeDefinition.collect(type, nameOrConfig.attributes);
@@ -281,10 +434,18 @@ export class FASTElementDefinition<
         const type = this.type;
 
         if (!registry.get(this.name)) {
-            if (extensions) {
-                for (const extension of extensions) {
-                    extension(this);
-                }
+            applyFASTElementExtensions(this, registry, extensions);
+
+            if (this.template === void 0 && templateResolvers.has(this)) {
+                void Promise.resolve(resolveFASTElementTemplate(this)).then(template => {
+                    if (template !== void 0 && !registry.get(this.name)) {
+                        this.platformDefined = true;
+                        registry.define(this.name, type as any, this.elementOptions);
+                        this.lifecycleCallbacks?.elementDidDefine?.(this.name);
+                    }
+                });
+
+                return this;
             }
 
             this.platformDefined = true;
@@ -305,7 +466,7 @@ export class FASTElementDefinition<
         TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
     >(
         type: TType,
-        nameOrDef?: string | PartialFASTElementDefinition,
+        nameOrDef?: string | PartialFASTElementDefinition<TType>,
     ): Promise<FASTElementDefinition<TType>> {
         const definition =
             fastElementBaseTypes.has(type) || fastElementRegistry.getByType(type)
@@ -353,7 +514,6 @@ export class FASTElementDefinition<
             );
         });
     };
- 
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

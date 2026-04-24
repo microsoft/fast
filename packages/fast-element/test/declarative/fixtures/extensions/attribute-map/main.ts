@@ -18,7 +18,6 @@ class AttributeMapTestElement extends FASTElement {
 
 AttributeMapTestElement.define({
     name: "attribute-map-test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 class AttributeMapWithExistingAttrElement extends FASTElement {
@@ -28,7 +27,6 @@ class AttributeMapWithExistingAttrElement extends FASTElement {
 
 AttributeMapWithExistingAttrElement.define({
     name: "attribute-map-existing-attr-test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.options({

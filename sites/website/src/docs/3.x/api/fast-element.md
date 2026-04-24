@@ -1474,17 +1474,6 @@ Indicates what level of feature support the splice strategy provides.
 </td></tr>
 <tr><td>
 
-[TemplateOptions](../fast-element.templateoptions/)
-
-
-</td><td>
-
-**_(ALPHA)_** Values for the `templateOptions` property.
-
-
-</td></tr>
-<tr><td>
-
 [Updates](../fast-element.updates/)
 
 
@@ -1748,17 +1737,6 @@ Describes how the source's lifetime relates to its controller's lifetime.
 </td><td>
 
 The available values for SpliceStrategySupport.
-
-
-</td></tr>
-<tr><td>
-
-[TemplateOptions](../fast-element.templateoptions/)
-
-
-</td><td>
-
-**_(ALPHA)_** Type for the `TemplateOptions` const enum.
 
 
 </td></tr>
