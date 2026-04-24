@@ -426,7 +426,7 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
-    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
     define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -456,6 +456,9 @@ export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 //
 // @internal
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
+
+// @public
+export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
 
 // @public
 export interface FASTGlobal {
@@ -725,7 +728,7 @@ export const Parser: Readonly<{
 }>;
 
 // @public
-export interface PartialFASTElementDefinition {
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
@@ -733,7 +736,8 @@ export interface PartialFASTElementDefinition {
     readonly registry?: CustomElementRegistry;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
-    readonly template?: ElementViewTemplate;
+    // Warning: (ae-forgotten-export) The symbol "FASTElementTemplateInput" needs to be exported by the entry point index.d.ts
+    readonly template?: FASTElementTemplateInput<TType>;
     // @alpha
     readonly templateOptions?: TemplateOptions;
 }

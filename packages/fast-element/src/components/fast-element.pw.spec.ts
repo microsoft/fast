@@ -220,5 +220,154 @@ test.describe("FASTElement", () => {
             expect(result.callCount).toBe(1);
             expect(result.firstCall).toBe(result.expectedCall);
         });
+
+        test("should resolve template resolvers after extensions and before registration", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, html, uniqueElementName } = await import("/main.js");
+
+                const calls: string[] = [];
+                let capturedDefinition: any = null;
+                let resolveTemplate!: (value: any) => void;
+
+                class TestElement extends FASTElement {}
+
+                const elName = uniqueElementName();
+                const template = html<TestElement>`<span>resolved</span>`;
+                const templatePromise = new Promise<any>(resolve => {
+                    resolveTemplate = resolve;
+                });
+
+                const definePromise = TestElement.define(
+                    {
+                        name: elName,
+                        template: definition => {
+                            capturedDefinition = definition;
+                            calls.push(
+                                `resolver-template:${definition.template === undefined}`,
+                            );
+                            calls.push(
+                                `resolver-defined:${customElements.get(elName) !== undefined}`,
+                            );
+
+                            return templatePromise;
+                        },
+                    },
+                    [
+                        definition => {
+                            capturedDefinition = definition;
+                            calls.push(
+                                `extension-template:${definition.template === undefined}`,
+                            );
+                            calls.push(
+                                `extension-defined:${customElements.get(elName) !== undefined}`,
+                            );
+                        },
+                    ],
+                );
+
+                await Promise.resolve();
+
+                const definedWhilePending = customElements.get(elName) !== undefined;
+                const templateBeforeResolve = capturedDefinition?.template === undefined;
+
+                resolveTemplate(template);
+                await definePromise;
+
+                const element = document.createElement(elName) as any;
+                document.body.appendChild(element);
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                return {
+                    calls,
+                    definedWhilePending,
+                    templateBeforeResolve,
+                    isDefinedAfter: customElements.get(elName) !== undefined,
+                    resolvedTemplateMatches: capturedDefinition?.template === template,
+                    shadowText: element.shadowRoot?.textContent ?? "",
+                };
+            });
+
+            expect(result.calls).toEqual([
+                "extension-template:true",
+                "extension-defined:false",
+                "resolver-template:true",
+                "resolver-defined:false",
+            ]);
+            expect(result.definedWhilePending).toBe(false);
+            expect(result.templateBeforeResolve).toBe(true);
+            expect(result.isDefinedAfter).toBe(true);
+            expect(result.resolvedTemplateMatches).toBe(true);
+            expect(result.shadowText).toContain("resolved");
+        });
+
+        test("should apply extensions before waiting for deferred templates", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
+
+                const calls: string[] = [];
+
+                class TestElement extends FASTElement {}
+
+                const elName = uniqueElementName();
+                const definePromise = TestElement.define(
+                    {
+                        name: elName,
+                        templateOptions: "defer-and-hydrate",
+                    },
+                    [
+                        definition => {
+                            calls.push(
+                                `extension-template:${definition.template === undefined}`,
+                            );
+                            calls.push(
+                                `extension-defined:${customElements.get(elName) !== undefined}`,
+                            );
+                        },
+                    ],
+                );
+
+                const definition = FASTElementDefinition.getByType(TestElement) as any;
+
+                await Promise.resolve();
+
+                const isDefinedBeforeTemplate = customElements.get(elName) !== undefined;
+                const templateBeforeAssign = definition?.template === undefined;
+
+                definition.template = html<TestElement>`<span>deferred</span>`;
+                await definePromise;
+
+                const element = document.createElement(elName) as any;
+                document.body.appendChild(element);
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                return {
+                    calls,
+                    isDefinedBeforeTemplate,
+                    templateBeforeAssign,
+                    isDefinedAfter: customElements.get(elName) !== undefined,
+                    shadowText: element.shadowRoot?.textContent ?? "",
+                };
+            });
+
+            expect(result.calls).toEqual([
+                "extension-template:true",
+                "extension-defined:false",
+            ]);
+            expect(result.isDefinedBeforeTemplate).toBe(false);
+            expect(result.templateBeforeAssign).toBe(true);
+            expect(result.isDefinedAfter).toBe(true);
+            expect(result.shadowText).toContain("deferred");
+        });
     });
 });
