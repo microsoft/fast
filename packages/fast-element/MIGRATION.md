@@ -213,6 +213,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
     // Before
     MyElement.defineAsync({
         name: "my-element",
+        templateOptions: "defer-and-hydrate",
     });
 
     // After
