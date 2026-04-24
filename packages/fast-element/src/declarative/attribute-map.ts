@@ -2,8 +2,10 @@ import { AttributeDefinition } from "../components/attributes.js";
 import {
     type FASTElementDefinition,
     trackLateAttributeDefinition,
+    FASTElementExtension,
 } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
+import { setDefinitionElementOptions } from "./definition-options.js";
 import type { Schema } from "./schema.js";
 
 /**
@@ -40,6 +42,22 @@ export interface AttributeMapConfig {
 export type AttributeMapOption =
     | (typeof AttributeMapOption)[keyof typeof AttributeMapOption]
     | AttributeMapConfig;
+
+/**
+ * Creates a FAST element extension that enables declarative attribute mapping
+ * for the resolved definition.
+ * When called without arguments, behaves like the `"all"` option.
+ * @public
+ */
+export function attributeMap(
+    option: AttributeMapOption = AttributeMapOption.all,
+): FASTElementExtension {
+    return definition => {
+        setDefinitionElementOptions(definition, {
+            attributeMap: option,
+        });
+    };
+}
 
 /**
  * Converts a camelCase string to kebab-case.

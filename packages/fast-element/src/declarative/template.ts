@@ -12,6 +12,10 @@ import {
     type AttributeMapConfig,
     type AttributeMapOption,
 } from "./attribute-map.js";
+import {
+    getDefinitionElementOptions,
+    mergeElementOptions,
+} from "./definition-options.js";
 import { Message } from "./interfaces.js";
 import { ObserverMap, type ObserverMapOption } from "./observer-map.js";
 import { Schema } from "./schema.js";
@@ -98,7 +102,7 @@ class TemplateElement extends FASTElement {
     public name?: string;
 
     /**
-     * A dictionary of custom element options
+     * A dictionary of fallback custom element options
      */
     public static elementOptions: ElementOptionsDictionary = {};
 
@@ -149,7 +153,7 @@ class TemplateElement extends FASTElement {
     }
 
     /**
-     * Set options for custom elements.
+     * Set fallback options for custom elements.
      *
      * @param elementOptions - A dictionary of custom element options
      * @returns The TemplateElement class.
@@ -203,6 +207,11 @@ class TemplateElement extends FASTElement {
         this.schema = new Schema(name);
 
         FASTElementDefinition.register(name).then(async value => {
+            // Definitions are registered before FASTElement.define() finishes applying
+            // extensions. Yield once so definition-scoped declarative options are
+            // available before schema processing and template assignment begin.
+            await Promise.resolve();
+
             TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
 
             if (!TemplateElement.elementOptions?.[name]) {
@@ -210,10 +219,15 @@ class TemplateElement extends FASTElement {
             }
 
             const schema = this.schema!;
+            const registeredFastElement: FASTElementDefinition | undefined =
+                fastElementRegistry.getByType(value);
+            const elementOptions = mergeElementOptions(
+                TemplateElement.elementOptions[name],
+                getDefinitionElementOptions(registeredFastElement),
+            );
 
-            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.observerMap)) {
-                const observerMapOption =
-                    TemplateElement.elementOptions[name]?.observerMap;
+            if (isMapOptionEnabled(elementOptions?.observerMap)) {
+                const observerMapOption = elementOptions?.observerMap;
                 const observerMapConfig =
                     typeof observerMapOption === "object" && observerMapOption !== null
                         ? observerMapOption
@@ -226,11 +240,8 @@ class TemplateElement extends FASTElement {
                 );
             }
 
-            const registeredFastElement: FASTElementDefinition | undefined =
-                fastElementRegistry.getByType(value);
-
-            if (isMapOptionEnabled(TemplateElement.elementOptions[name]?.attributeMap)) {
-                const mapOption = TemplateElement.elementOptions[name]?.attributeMap;
+            if (isMapOptionEnabled(elementOptions?.attributeMap)) {
+                const mapOption = elementOptions?.attributeMap;
                 const mapConfig: AttributeMapConfig | undefined =
                     typeof mapOption === "object" ? mapOption : undefined;
 

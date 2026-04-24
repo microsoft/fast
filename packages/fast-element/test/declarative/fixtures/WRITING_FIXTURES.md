@@ -221,16 +221,21 @@ await customElement.evaluate((node: TestElement) => {
 
 ### Using ObserverMap
 
-For fixtures that test deeply nested property reactivity, configure `TemplateElement` with `observerMap` options:
+For fixtures that test deeply nested property reactivity, prefer the
+definition-scoped `observerMap()` extension:
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        observerMap: "all",
+import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
+
+MyElement.define(
+    {
+        name: "my-element",
+        templateOptions: "defer-and-hydrate",
     },
-}).define({
-    name: "f-template",
-});
+    [observerMap()],
+);
+
+TemplateElement.define({ name: "f-template" });
 ```
 
 This enables the `ObserverMap` proxy system to track nested property changes without requiring `@observable` decorators on every property.

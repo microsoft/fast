@@ -91,16 +91,22 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via `TemplateElement.options({ "my-element": { observerMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { observerMap: {} } })`. Both forms are equivalent and observe all root properties.
+Enabled via the `observerMap()` definition extension (or `observerMap({})`).
+`TemplateElement.options({ "my-element": { observerMap: "all" } })` remains
+available as a compatibility fallback. Both forms observe all root properties.
 
 #### Path-level observation control
 
 The `ObserverMapConfig` interface accepts an optional `properties` key that maps root property names to a recursive path tree controlling observation granularity:
 
 ```typescript
-TemplateElement.options({
-    "my-element": {
-        observerMap: {
+MyElement.define(
+    {
+        name: "my-element",
+        templateOptions: "defer-and-hydrate",
+    },
+    [
+        observerMap({
             properties: {
                 user: {
                     name: true,          // user.name — observed
@@ -111,9 +117,9 @@ TemplateElement.options({
                 },
                 // root properties not listed here are skipped
             },
-        },
-    },
-});
+        }),
+    ],
+);
 ```
 
 Each path entry can be:
@@ -139,7 +145,11 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via `TemplateElement.options({ "my-element": { attributeMap: "all" } })` or by passing a configuration object `TemplateElement.options({ "my-element": { attributeMap: {} } })`. Both forms are equivalent and use the default `"none"` strategy. To use the `"camelCase"` strategy, pass `TemplateElement.options({ "my-element": { attributeMap: { "attribute-name-strategy": "camelCase" } } })`.
+Enabled via the `attributeMap()` definition extension (or `attributeMap({})`).
+`TemplateElement.options({ "my-element": { attributeMap: "all" } })` remains
+available as a compatibility fallback. Both forms use the default `"none"`
+strategy. To use the `"camelCase"` strategy, pass
+`attributeMap({ "attribute-name-strategy": "camelCase" })`.
 
 ### Syntax constants (`syntax.ts`)
 

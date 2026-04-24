@@ -13,6 +13,9 @@ export class AttributeMap {
 }
 
 // @public
+export function attributeMap(option?: AttributeMapOption): FASTElementExtension;
+
+// @public
 export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
@@ -41,6 +44,9 @@ export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
     // (undocumented)
     [key: string]: ElementOptionsType;
 }
+
+// @public
+export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
 // Warning: (ae-forgotten-export) The symbol "TemplateLifecycleCallbacks" needs to be exported by the entry point declarative.d.ts
 //
@@ -74,6 +80,9 @@ export class ObserverMap {
     // (undocumented)
     defineProperties(): void;
 }
+
+// @public
+export function observerMap(option?: ObserverMapOption): FASTElementExtension;
 
 // @public
 export interface ObserverMapConfig {
