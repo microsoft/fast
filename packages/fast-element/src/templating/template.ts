@@ -216,14 +216,6 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
-     * Creates an HTMLView instance based on this template definition.
-     * @param hostBindingTarget - The element that host behaviors will be bound to.
-     */
-    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
-        return this.compile().createView(hostBindingTarget);
-    }
-
-    /**
      * Returns a directive that can inline the template.
      */
     public inline(): CaptureType {
@@ -270,6 +262,14 @@ export class ViewTemplate<TSource = any, TParent = any>
         view.bind(source);
         view.appendTo(host);
         return view;
+    }
+
+    /**
+     * Creates an HTMLView instance based on this template definition.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
+     */
+    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
+        return this.compile().createView(hostBindingTarget);
     }
 
     /**
