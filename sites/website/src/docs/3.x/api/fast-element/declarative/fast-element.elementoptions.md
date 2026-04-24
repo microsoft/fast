@@ -56,7 +56,7 @@ Description
 
 </td><td>
 
-[AttributeMapOption](../fast-element.attributemapoption/)
+[AttributeMapConfig](../fast-element.attributemapconfig/)
 
 
 </td><td>
@@ -75,7 +75,7 @@ _(Optional)_
 
 </td><td>
 
-[ObserverMapOption](../fast-element.observermapoption/)
+[ObserverMapConfig](../fast-element.observermapconfig/)
 
 
 </td><td>
