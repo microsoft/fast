@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
 
 class SelectiveObsElement extends FASTElement {
     public user = {
@@ -64,6 +64,7 @@ class SelectiveObsElement extends FASTElement {
 SelectiveObsElement.define(
     {
         name: "selective-obs-element",
+        template: declarativeTemplate(),
     },
     [
         observerMap({
@@ -108,6 +109,7 @@ class AllObsElement extends FASTElement {
 AllObsElement.define(
     {
         name: "all-obs-element",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -133,6 +135,7 @@ class EmptyPropsElement extends FASTElement {
 EmptyPropsElement.define(
     {
         name: "empty-props-element",
+        template: declarativeTemplate(),
     },
     [
         observerMap({
@@ -159,6 +162,7 @@ class ArraySelectiveElement extends FASTElement {
 ArraySelectiveElement.define(
     {
         name: "array-selective-element",
+        template: declarativeTemplate(),
     },
     [
         observerMap({
@@ -168,7 +172,3 @@ ArraySelectiveElement.define(
         }),
     ],
 );
-
-TemplateElement.define({
-    name: "f-template",
-});

@@ -35,7 +35,10 @@ See the [`@microsoft/fast-element` MIGRATION.md](../fast-element/MIGRATION.md#hy
 
 ### Migration steps
 
-1. Replace `RenderableFASTElement(MyComponent).defineAsync({...})` with `MyComponent.define({...})`.
+1. Replace `RenderableFASTElement(MyComponent).defineAsync({...})` with
+   `await MyComponent.define({...})` and use `declarativeTemplate()` for
+   declarative templates. `declarativeTemplate()` is the waiting behavior: it
+   resolves the matching `<f-template>` before `define()` completes.
 
    ```typescript
    // Before
@@ -46,9 +49,9 @@ See the [`@microsoft/fast-element` MIGRATION.md](../fast-element/MIGRATION.md#hy
    });
 
    // After
-   MyComponent.define({
+   await MyComponent.define({
        name: "my-component",
-       templateOptions: "defer-and-hydrate",
+       template: declarativeTemplate(),
    });
    ```
 

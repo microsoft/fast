@@ -91,10 +91,16 @@ export class MyComponent extends FASTElement {
 
 MyComponent.define({
     name: "my-component",
+    template: declarativeTemplate(),
 });
 ```
 
-When the element connects, `ElementController` automatically detects the existing shadow root from SSR and sets `isPrerendered = true`. If the template is attached after the element has already connected, the observable `template` update recreates the controller so hydration can proceed. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
+When the element connects, `ElementController` automatically detects the
+existing shadow root from SSR and sets `isPrerendered = true`.
+`declarativeTemplate()` keeps the definition template concrete before
+registration completes, so the element can hydrate the prerendered shadow root
+immediately. The `defer-hydration` and `needs-hydration` attributes are no
+longer needed.
 
 ## Hydration Comments and Datasets
 

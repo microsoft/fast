@@ -1,5 +1,8 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 class TestElement extends FASTElement {
     @attr
@@ -31,12 +34,11 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
+    template: declarativeTemplate(),
 });
 
 TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },
-}).define({
-    name: "f-template",
 });

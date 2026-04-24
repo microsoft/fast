@@ -80,23 +80,29 @@ controller when styles need to change.
 ## Declarative HTML
 
 FAST Element also publishes a declarative HTML runtime from
-`@microsoft/fast-element/declarative.js`. This entrypoint defines `<f-template>`,
-exports `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, and
-`AttributeMap`, and installs the hydratable `ViewTemplate` behavior without
-adding those side effects to the root `@microsoft/fast-element` import.
+`@microsoft/fast-element/declarative.js`. This entrypoint exports
+`declarativeTemplate()`, `TemplateElement`, `TemplateParser`, `Schema`,
+`ObserverMap`, and `AttributeMap`, and installs the hydratable `ViewTemplate`
+behavior without adding those side effects to the root
+`@microsoft/fast-element` import.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {}
 
 MyElement.define({
     name: "my-element",
+    template: declarativeTemplate(),
 });
-
-TemplateElement.define({ name: "f-template" });
 ```
+
+`declarativeTemplate()` automatically defines `<f-template>` in the relevant
+registry, resolves the matching `<f-template name="my-element">`, and keeps the
+definition template concrete before `define()` resolves. `TemplateElement`
+remains available for lifecycle configuration and per-element options such as
+`TemplateElement.config()` and `TemplateElement.options()`.
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See
@@ -112,7 +118,9 @@ object and `$c` for the execution context.
 When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
 
 - **Hydration instead of re-render**: The template uses `hydrate()` to map existing DOM nodes to binding targets rather than cloning new DOM.
-- **Late template attachment**: If a definition gains a template after an element has already connected, the observable `template` update recreates the controller so the element can render or hydrate with the new template.
+- **Declarative template resolution**: `declarativeTemplate()` waits for the
+  matching `<f-template>` before `define()` completes, so connected elements
+  hydrate with a concrete template.
 - **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
 - **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
 

@@ -22,9 +22,11 @@ Acts as the bridge between declarative HTML templates and the FAST element regis
 **Signature:**
 
 ```typescript
-declare class TemplateElement extends FASTElement 
+declare class TemplateElement extends FASTElement implements TemplatePublisher 
 ```
 **Extends:** FASTElement
+
+**Implements:** TemplatePublisher
 
 ## Constructors
 
@@ -162,6 +164,30 @@ Configure lifecycle callbacks for hydration events.
 <tr><td>
 
 [connectedCallback()](../fast-element.templateelement.connectedcallback/)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[disconnectedCallback()](../fast-element.templateelement.disconnectedcallback/)
+
+
+</td><td>
+
+
+</td><td>
+
+
+</td></tr>
+<tr><td>
+
+[nameChanged(previousName, nextName)](../fast-element.templateelement.namechanged/)
 
 
 </td><td>

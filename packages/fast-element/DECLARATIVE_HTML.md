@@ -23,8 +23,10 @@ server-side rendering, see the
 After registering the declarative entrypoint as shown in the README, templates
 are associated with an element through
 `<f-template name="[custom-element-name]"><template>...</template></f-template>`.
-The host custom element should be defined before the declarative runtime
-processes the matching `<f-template>`.
+The host custom element should be defined with
+`template: declarativeTemplate()`. This automatically defines `<f-template>` in
+the relevant registry and waits for the matching declarative template when it is
+already present or inserted later.
 
 Example:
 ```html
@@ -211,7 +213,7 @@ For finer control, pass a configuration object with a `properties` key that maps
 UserProfile.define(
     {
         name: "user-profile",
-        templateOptions: "defer-and-hydrate",
+        template: declarativeTemplate(),
     },
     [
         observerMap({
@@ -228,8 +230,6 @@ UserProfile.define(
         }),
     ],
 );
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 Each path entry can be:
@@ -274,12 +274,10 @@ Properties already decorated with `@attr` or `@observable` on the class are left
 MyElement.define(
     {
         name: "my-element",
-        templateOptions: "defer-and-hydrate",
+        template: declarativeTemplate(),
     },
     [attributeMap()],
 );
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 With the template:
@@ -308,7 +306,7 @@ The `attribute-name-strategy` configuration option controls how template binding
 MyElement.define(
     {
         name: "my-element",
-        templateOptions: "defer-and-hydrate",
+        template: declarativeTemplate(),
     },
     [
         attributeMap({
@@ -316,8 +314,6 @@ MyElement.define(
         }),
     ],
 );
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 With the template:

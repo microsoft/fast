@@ -23,5 +23,5 @@ Indicates when a custom elements definition has been registered with the fastEle
 **Signature:**
 
 ```typescript
-static register: (name: string) => Promise<Function>;
+static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
 ```
