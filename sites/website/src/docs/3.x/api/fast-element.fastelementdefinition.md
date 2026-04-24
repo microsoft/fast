@@ -352,31 +352,12 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)
+[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt;
 
 
 </td><td>
 
 _(Optional)_ The template to render for the custom element.
-
-
-</td></tr>
-<tr><td>
-
-[templateOptions?](../fast-element.fastelementdefinition.templateoptions/)
-
-
-</td><td>
-
-
-</td><td>
-
-[TemplateOptions](../fast-element.templateoptions/)
-
-
-</td><td>
-
-**_(ALPHA)_** _(Optional)_ The template options.
 
 
 </td></tr>

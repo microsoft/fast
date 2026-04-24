@@ -20,8 +20,8 @@ the package-level hydration overview, see the
 After registering the declarative entrypoint as shown in the README, templates
 are associated with an element through
 `<f-template name="[custom-element-name]"><template>...</template></f-template>`.
-The host custom element should be defined with
-`templateOptions: "defer-and-hydrate"`.
+The host custom element should be defined before the declarative runtime
+processes the matching `<f-template>`.
 
 Example:
 ```html

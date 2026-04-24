@@ -426,7 +426,7 @@ export const FASTElement: {
 export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
-    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+    static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
     define(registry?: CustomElementRegistry, extensions?: FASTElementExtension[]): this;
     readonly elementOptions: ElementDefinitionOptions;
     static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
@@ -443,9 +443,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly registry: CustomElementRegistry;
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
-    template?: ElementViewTemplate;
-    // @alpha
-    templateOptions?: TemplateOptions;
+    template?: ElementViewTemplate<InstanceType<TType>>;
     readonly type: TType;
 }
 
@@ -456,6 +454,9 @@ export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 //
 // @internal
 export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
+
+// @public
+export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
 
 // @public
 export interface FASTGlobal {
@@ -725,7 +726,7 @@ export const Parser: Readonly<{
 }>;
 
 // @public
-export interface PartialFASTElementDefinition {
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
@@ -733,9 +734,7 @@ export interface PartialFASTElementDefinition {
     readonly registry?: CustomElementRegistry;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
-    readonly template?: ElementViewTemplate;
-    // @alpha
-    readonly templateOptions?: TemplateOptions;
+    readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
 }
 
 // @public
@@ -980,14 +979,6 @@ export interface TemplateLifecycleCallbacks {
     elementDidDefine?(name: string): void;
     templateDidUpdate?(name: string): void;
 }
-
-// @alpha
-export const TemplateOptions: {
-    readonly deferAndHydrate: "defer-and-hydrate";
-};
-
-// @alpha
-export type TemplateOptions = (typeof TemplateOptions)[keyof typeof TemplateOptions];
 
 // @public
 export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
