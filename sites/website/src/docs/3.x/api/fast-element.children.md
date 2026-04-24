@@ -20,7 +20,7 @@ A directive that observes the `childNodes` of an element and updates a property 
 **Signature:**
 
 ```typescript
-export declare function children<TSource = any, TParent = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType<TSource, TParent>;
+export declare function children<TSource = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType;
 ```
 
 ## Parameters
@@ -61,4 +61,4 @@ The options used to configure child node observation.
 
 **Returns:**
 
-[CaptureType](../fast-element.capturetype/)<!-- -->&lt;TSource, TParent&gt;
+[CaptureType](../fast-element.capturetype/)

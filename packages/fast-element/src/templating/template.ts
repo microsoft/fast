@@ -39,7 +39,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element
+        hostBindingTarget?: Element,
     ): ElementView<TSource, TParent>;
 }
 
@@ -48,7 +48,7 @@ export interface HydratableElementViewTemplate<TSource = any, TParent = any>
     hydrate(
         firstChild: Node,
         lastChild: Node,
-        hostBindingTarget?: Element
+        hostBindingTarget?: Element,
     ): ElementView<TSource, TParent>;
 }
 
@@ -58,7 +58,7 @@ export interface HydratableElementViewTemplate<TSource = any, TParent = any>
  * @public
  */
 /* eslint-disable-next-line */
-export interface CaptureType<TSource, TParent> {}
+export interface CaptureType {}
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
@@ -73,7 +73,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
      * Returns a directive that can inline the template.
      */
-    inline(): CaptureType<TSource, TParent>;
+    inline(): CaptureType;
 }
 
 export interface HydratableSyntheticViewTemplate<TSource = any, TParent = any>
@@ -108,7 +108,7 @@ export type TemplateValue<TSource, TParent = any> =
     | Expression<TSource, any, TParent>
     | Binding<TSource, any, TParent>
     | HTMLDirective
-    | CaptureType<TSource, TParent>;
+    | CaptureType;
 
 const noFactories = Object.create(null);
 
@@ -128,7 +128,7 @@ export class InlineTemplateDirective implements HTMLDirective {
      */
     public constructor(
         private html: string,
-        private factories: Record<string, ViewBehaviorFactory> = noFactories
+        private factories: Record<string, ViewBehaviorFactory> = noFactories,
     ) {}
 
     /**
@@ -152,7 +152,7 @@ function createHTML(
     value: HTMLDirective,
     prevString: string,
     add: AddViewBehaviorFactory,
-    definition: HTMLDirectiveDefinition = HTMLDirective.getForInstance(value)!
+    definition: HTMLDirectiveDefinition = HTMLDirective.getForInstance(value)!,
 ): string {
     if (definition.aspected) {
         const match = lastAttributeNameRegex.exec(prevString);
@@ -194,7 +194,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public constructor(
         html: string | HTMLTemplateElement,
         factories: Record<string, ViewBehaviorFactory> = {},
-        private policy?: DOMPolicy
+        private policy?: DOMPolicy,
     ) {
         this.html = html;
         this.factories = factories;
@@ -208,7 +208,7 @@ export class ViewTemplate<TSource = any, TParent = any>
             this.result = Compiler.compile<TSource, TParent>(
                 this.html,
                 this.factories,
-                this.policy
+                this.policy,
             );
         }
 
@@ -216,20 +216,12 @@ export class ViewTemplate<TSource = any, TParent = any>
     }
 
     /**
-     * Creates an HTMLView instance based on this template definition.
-     * @param hostBindingTarget - The element that host behaviors will be bound to.
-     */
-    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
-        return this.compile().createView(hostBindingTarget);
-    }
-
-    /**
      * Returns a directive that can inline the template.
      */
-    public inline(): CaptureType<TSource, TParent> {
+    public inline(): CaptureType {
         return new InlineTemplateDirective(
             isString(this.html) ? this.html : this.html.innerHTML,
-            this.factories
+            this.factories,
         );
     }
 
@@ -264,12 +256,20 @@ export class ViewTemplate<TSource = any, TParent = any>
     public render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element
+        hostBindingTarget?: Element,
     ): HTMLView<TSource, TParent> {
         const view = this.create(hostBindingTarget);
         view.bind(source);
         view.appendTo(host);
         return view;
+    }
+
+    /**
+     * Creates an HTMLView instance based on this template definition.
+     * @param hostBindingTarget - The element that host behaviors will be bound to.
+     */
+    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent> {
+        return this.compile().createView(hostBindingTarget);
     }
 
     /**
@@ -306,7 +306,7 @@ export class ViewTemplate<TSource = any, TParent = any>
     public static create<TSource = any, TParent = any>(
         strings: string[],
         values: TemplateValue<TSource, TParent>[],
-        policy?: DOMPolicy
+        policy?: DOMPolicy,
     ): ViewTemplate<TSource, TParent> {
         let html = "";
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
@@ -325,7 +325,7 @@ export class ViewTemplate<TSource = any, TParent = any>
 
             if (isFunction(currentValue)) {
                 currentValue = new HTMLBindingDirective(
-                    oneWay(currentValue as Expression<TSource, any, TParent>)
+                    oneWay(currentValue as Expression<TSource, any, TParent>),
                 );
             } else if (currentValue instanceof Binding) {
                 currentValue = new HTMLBindingDirective(currentValue);
@@ -338,14 +338,14 @@ export class ViewTemplate<TSource = any, TParent = any>
                 currentValue as HTMLDirective,
                 currentString,
                 add,
-                definition
+                definition,
             );
         }
 
         return new ViewTemplate<TSource, TParent>(
             html + strings[strings.length - 1],
             factories,
-            policy
+            policy,
         );
     }
 }

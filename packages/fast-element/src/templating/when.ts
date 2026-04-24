@@ -4,7 +4,7 @@ import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 const noTemplate = () => null;
 function normalizeBinding<TSource>(
-    value: SyntheticViewTemplate | Expression<TSource, SyntheticViewTemplate> | undefined
+    value: SyntheticViewTemplate | Expression<TSource, SyntheticViewTemplate> | undefined,
 ) {
     return value === undefined ? noTemplate : isFunction(value) ? value : () => value;
 }
@@ -24,8 +24,8 @@ export function when<TSource = any, TReturn = any, TParent = any>(
         | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>,
     elseTemplateOrTemplateBinding?:
         | SyntheticViewTemplate<TSource, TParent>
-        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>
-): CaptureType<TSource, TParent> {
+        | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>,
+): CaptureType {
     const dataBinding = isFunction(condition) ? condition : () => condition;
     const templateBinding = normalizeBinding(templateOrTemplateBinding);
     const elseBinding = normalizeBinding(elseTemplateOrTemplateBinding);
