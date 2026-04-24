@@ -6,130 +6,268 @@
     </head>
     <body>
         <!-- multiple -->
-        <test-element-multiple id="multiple1" planet="earth"><template shadowrootmode="open" shadowroot="open">Hello <!--fe:b-->world<!--fe:/b--><!--fe:b--><!--fe:/b--><!--fe:b--><!--fe:/b--></template></test-element-multiple>
-        <test-element-multiple id="multiple2" planet="pluto"><template shadowrootmode="open" shadowroot="open">Hello <!--fe:b--><!--fe:/b--><!--fe:b-->pluto<!--fe:/b--><!--fe:b--><!--fe:/b--></template></test-element-multiple>
-        <test-element-multiple id="multiple3" planet="mars"><template shadowrootmode="open" shadowroot="open">Hello <!--fe:b--><!--fe:/b--><!--fe:b--><!--fe:/b--><!--fe:b-->mars<!--fe:/b--></template></test-element-multiple>
+        <test-element-multiple id="multiple1" planet="earth"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Hello <!--fe:b-->world<!--fe:/b--><!--fe:b--><!--fe:/b--><!--fe:b--><!--fe:/b--></template
+            ></test-element-multiple
+        >
+        <test-element-multiple id="multiple2" planet="pluto"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Hello <!--fe:b--><!--fe:/b--><!--fe:b-->pluto<!--fe:/b--><!--fe:b--><!--fe:/b--></template
+            ></test-element-multiple
+        >
+        <test-element-multiple id="multiple3" planet="mars"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Hello <!--fe:b--><!--fe:/b--><!--fe:b--><!--fe:/b--><!--fe:b-->mars<!--fe:/b--></template
+            ></test-element-multiple
+        >
         <!-- boolean -->
-        <test-element id="show" show><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Hello world<!--fe:/b--></template></test-element>
-        <test-element id="hide"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element>
-        <!-- not -->
-        <test-element-not id="show-not"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Hello world<!--fe:/b--></template></test-element-not>
-        <test-element-not id="hide-not" hide><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-not>
-        <!-- equals -->
-        <test-element-equals id="equals-true" vara="3"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Equals 3<!--fe:/b--></template></test-element-equals>
-        <test-element-equals id="equals-false" vara="4"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-equals>
-        <!-- not equals -->
-        <test-element-not-equals id="not-equals-true" vara="4"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Not equals 3<!--fe:/b--></template></test-element-not-equals>
-        <test-element-not-equals id="not-equals-false" vara="3"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-not-equals>
-        <!-- greater than or equals -->
-        <test-element-ge id="ge-true" vara="3"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Two and Over<!--fe:/b--></template></test-element-ge>
-        <test-element-ge id="ge-false" vara="0"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-ge>
-        <!-- greater than -->
-        <test-element-gt id="gt-true" vara="3"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Over two<!--fe:/b--></template></test-element-gt>
-        <test-element-gt id="gt-false" vara="0"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-gt>
-        <!-- less than or equals -->
-        <test-element-le id="le-true" vara="2"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Two and Under<!--fe:/b--></template></test-element-le>
-        <test-element-le id="le-false" vara="4"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-le>
-        <!-- less than -->
-        <test-element-lt id="lt-true" vara="1"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->Under two<!--fe:/b--></template></test-element-lt>
-        <test-element-lt id="lt-false" vara="3"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-lt>
-        <!-- or -->
-        <test-element-or id="or-true" thisvar="3"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->This or That<!--fe:/b--></template></test-element-or>
-        <test-element-or id="or-false"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-or>
-        <!-- and -->
-        <test-element-and id="and-true" thisvar thatvar><template shadowrootmode="open" shadowroot="open"><!--fe:b-->This and That<!--fe:/b--></template></test-element-and>
-        <test-element-and id="and-false" thisvar><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-and>
-        <!-- nested when -->
-        <nested-when id="nested-when" error="false"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b-->
-        <div class="buttons">
-            <!--fe:b-->
+        <test-element id="show" show
+            ><template shadowrootmode="open" shadowroot="open"
+                >Hello world<!--fe:/b--></template
+            ></test-element
+        >
+        <test-element id="hide"
+            ><template shadowrootmode="open" shadowroot="open">
                 <!--fe:b-->
-                    <progress></progress>
                 <!--fe:/b-->
-                <!--fe:b--><!--fe:/b-->
-            <!--fe:/b-->
-            <!--fe:b--><!--fe:/b-->
-        </div></template></nested-when>
-        <!-- when false with repeat -->
-        <test-element-when-false-repeat id="when-false-repeat"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-when-false-repeat>
-        <!-- event -->
-        <test-element-event id="event-show" show><template shadowrootmode="open" shadowroot="open"><!--fe:b--><button data-fe="1">Click me</button><!--fe:/b--></template></test-element-event>
-        <test-element-event id="event-hide"><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b--></template></test-element-event>
-<!-- multiple -->
- <f-template name="test-element-multiple">
-    <template>Hello <f-when value="{{planet == 'earth'}}">world</f-when><f-when value="{{planet == 'pluto'}}">pluto</f-when><f-when value="{{planet == 'mars'}}">mars</f-when></template>
-</f-template>
-<!-- boolean -->
-<f-template name="test-element">
-    <template><f-when value="{{show}}">Hello world</f-when></template>
-</f-template>
-<!-- not -->
-<f-template name="test-element-not">
-    <template><f-when value="{{!hide}}">Hello world</f-when></template>
-</f-template>
-<!-- equals -->
-<f-template name="test-element-equals">
-    <template><f-when value="{{vara == 3}}">Equals 3</f-when></template>
-</f-template>
-<!-- not equals -->
-<f-template name="test-element-not-equals">
-    <template><f-when value="{{vara != 3}}">Not equals 3</f-when></template>
-</f-template>
-<!-- greater than or equals -->
-<f-template name="test-element-ge">
-    <template><f-when value="{{vara >= 2}}">Two and Over</f-when></template>
-</f-template>
-<!-- greater than -->
-<f-template name="test-element-gt">
-    <template><f-when value="{{vara > 2}}">Over two</f-when></template>
-</f-template>
-<!-- less than or equals -->
-<f-template name="test-element-le">
-    <template><f-when value="{{vara <= 2}}">Two and Under</f-when></template>
-</f-template>
-<!-- less than -->
-<f-template name="test-element-lt">
-    <template><f-when value="{{vara < 2}}">Under two</f-when></template>
-</f-template>
-<!-- or -->
-<f-template name="test-element-or">
-    <template><f-when value="{{thisvar || thatvar}}">This or That</f-when></template>
-</f-template>
-<!-- and -->
-<f-template name="test-element-and">
-    <template><f-when value="{{thisvar && thatvar}}">This and That</f-when></template>
-</f-template>
-<!-- nested when -->
-<f-template name="nested-when">
-    <template>
-        <f-when value="{{error}}">
-            <div class="error" role="alert">{{strings.errorMessage}}</div>
-        </f-when>
-        <div class="buttons">
-            <f-when value="{{!error}}">
-                <f-when value="{{showProgress}}">
+            </template></test-element
+        >
+        <!-- not -->
+        <test-element-not id="show-not"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Hello world<!--fe:/b--></template
+            ></test-element-not
+        >
+        <test-element-not id="hide-not" hide
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-not
+        >
+        <!-- equals -->
+        <test-element-equals id="equals-true" vara="3"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Equals 3<!--fe:/b--></template
+            ></test-element-equals
+        >
+        <test-element-equals id="equals-false" vara="4"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-equals
+        >
+        <!-- not equals -->
+        <test-element-not-equals id="not-equals-true" vara="4"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Not equals 3<!--fe:/b--></template
+            ></test-element-not-equals
+        >
+        <test-element-not-equals id="not-equals-false" vara="3"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-not-equals
+        >
+        <!-- greater than or equals -->
+        <test-element-ge id="ge-true" vara="3"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Two and Over<!--fe:/b--></template
+            ></test-element-ge
+        >
+        <test-element-ge id="ge-false" vara="0"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-ge
+        >
+        <!-- greater than -->
+        <test-element-gt id="gt-true" vara="3"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Over two<!--fe:/b--></template
+            ></test-element-gt
+        >
+        <test-element-gt id="gt-false" vara="0"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-gt
+        >
+        <!-- less than or equals -->
+        <test-element-le id="le-true" vara="2"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Two and Under<!--fe:/b--></template
+            ></test-element-le
+        >
+        <test-element-le id="le-false" vara="4"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-le
+        >
+        <!-- less than -->
+        <test-element-lt id="lt-true" vara="1"
+            ><template shadowrootmode="open" shadowroot="open"
+                >Under two<!--fe:/b--></template
+            ></test-element-lt
+        >
+        <test-element-lt id="lt-false" vara="3"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-lt
+        >
+        <!-- or -->
+        <test-element-or id="or-true" thisvar="3"
+            ><template shadowrootmode="open" shadowroot="open"
+                >This or That<!--fe:/b--></template
+            ></test-element-or
+        >
+        <test-element-or id="or-false"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-or
+        >
+        <!-- and -->
+        <test-element-and id="and-true" thisvar thatvar
+            ><template shadowrootmode="open" shadowroot="open"
+                >This and That<!--fe:/b--></template
+            ></test-element-and
+        >
+        <test-element-and id="and-false" thisvar
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-and
+        >
+        <!-- nested when -->
+        <nested-when id="nested-when" error="false"
+            ><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:/b-->
+                <div class="buttons">
+                    <!--fe:b-->
+                    <!--fe:b-->
                     <progress></progress>
+                    <!--fe:/b-->
+                    <!--fe:b--><!--fe:/b-->
+                    <!--fe:/b-->
+                    <!--fe:b--><!--fe:/b-->
+                </div></template
+            ></nested-when
+        >
+        <!-- when false with repeat -->
+        <test-element-when-false-repeat id="when-false-repeat"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-when-false-repeat
+        >
+        <!-- event -->
+        <test-element-event id="event-show" show
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b--> <button data-fe="1">Click me</button><!--fe:/b--></template
+            ></test-element-event
+        >
+        <test-element-event id="event-hide"
+            ><template shadowrootmode="open" shadowroot="open">
+                <!--fe:b-->
+                <!--fe:/b-->
+            </template></test-element-event
+        >
+        <!-- multiple -->
+        <f-template name="test-element-multiple">
+            <template
+                >Hello <f-when value="{{planet == 'earth'}}">world</f-when
+                ><f-when value="{{planet == 'pluto'}}">pluto</f-when
+                ><f-when value="{{planet == 'mars'}}">mars</f-when></template
+            >
+        </f-template>
+        <!-- boolean -->
+        <f-template name="test-element">
+            <template><f-when value="{{show}}">Hello world</f-when></template>
+        </f-template>
+        <!-- not -->
+        <f-template name="test-element-not">
+            <template><f-when value="{{!hide}}">Hello world</f-when></template>
+        </f-template>
+        <!-- equals -->
+        <f-template name="test-element-equals">
+            <template><f-when value="{{vara == 3}}">Equals 3</f-when></template>
+        </f-template>
+        <!-- not equals -->
+        <f-template name="test-element-not-equals">
+            <template><f-when value="{{vara != 3}}">Not equals 3</f-when></template>
+        </f-template>
+        <!-- greater than or equals -->
+        <f-template name="test-element-ge">
+            <template><f-when value="{{vara >= 2}}">Two and Over</f-when></template>
+        </f-template>
+        <!-- greater than -->
+        <f-template name="test-element-gt">
+            <template><f-when value="{{vara > 2}}">Over two</f-when></template>
+        </f-template>
+        <!-- less than or equals -->
+        <f-template name="test-element-le">
+            <template><f-when value="{{vara <= 2}}">Two and Under</f-when></template>
+        </f-template>
+        <!-- less than -->
+        <f-template name="test-element-lt">
+            <template><f-when value="{{vara < 2}}">Under two</f-when></template>
+        </f-template>
+        <!-- or -->
+        <f-template name="test-element-or">
+            <template
+                ><f-when value="{{thisvar || thatvar}}">This or That</f-when></template
+            >
+        </f-template>
+        <!-- and -->
+        <f-template name="test-element-and">
+            <template
+                ><f-when value="{{thisvar && thatvar}}">This and That</f-when></template
+            >
+        </f-template>
+        <!-- nested when -->
+        <f-template name="nested-when">
+            <template>
+                <f-when value="{{error}}">
+                    <div class="error" role="alert">{{ strings.errorMessage }}</div>
                 </f-when>
-                <f-when value="{{!showProgress}}">
-                    <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
-                        {{strings.continueButtonText}}
-                    </button>
-                </f-when>
-            </f-when>
-            <f-when value="{{error}}">
-                <button>{{strings.retryButtonText}}</button>
-            </f-when>
-        </div>
-    </template>
-</f-template>
-<!-- when false with repeat -->
-<f-template name="test-element-when-false-repeat">
-    <template><f-when value="{{show}}"><ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></f-when></template>
-</f-template>
-<!-- event -->
-<f-template name="test-element-event">
-    <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
-</f-template>
+                <div class="buttons">
+                    <f-when value="{{!error}}">
+                        <f-when value="{{showProgress}}"> <progress></progress> </f-when>
+                        <f-when value="{{!showProgress}}">
+                            <button
+                                ?disabled="{{!enableContinue}}"
+                                @click="{handleClick()}"
+                            >
+                                {{ strings.continueButtonText }}
+                            </button>
+                        </f-when>
+                    </f-when>
+                    <f-when value="{{error}}">
+                        <button>{{ strings.retryButtonText }}</button>
+                    </f-when>
+                </div>
+            </template>
+        </f-template>
+        <!-- when false with repeat -->
+        <f-template name="test-element-when-false-repeat">
+            <template
+                ><f-when value="{{show}}"
+                    ><ul>
+                        <f-repeat value="{{item in list}}"><li>{{ item }}</li></f-repeat>
+                    </ul></f-when
+                ></template
+            >
+        </f-template>
+        <!-- event -->
+        <f-template name="test-element-event">
+            <template
+                ><f-when value="{{show}}"
+                    ><button @click="{handleClick()}">Click me</button></f-when
+                ></template
+            >
+        </f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

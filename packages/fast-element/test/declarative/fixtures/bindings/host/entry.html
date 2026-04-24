@@ -4,23 +4,23 @@
         <meta charset="utf-8">
         <title>Host Bindings Test</title>
         <style>
-            /* Ensure custom elements display as block to prevent overlap */
-            host-event-element,
-            host-multi-element,
-            host-static-element,
-            host-events-element,
-            host-multi-content-element,
-            host-text-binding-element,
-            host-property-element,
-            host-all-types-element,
-            host-perm-attr-first,
-            host-perm-bool-first,
-            host-perm-prop-first {
-                display: block;
-                margin: 10px 0;
-                padding: 10px;
-                border: 1px solid #ccc;
-            }
+        /* Ensure custom elements display as block to prevent overlap */
+        host-event-element,
+        host-multi-element,
+        host-static-element,
+        host-events-element,
+        host-multi-content-element,
+        host-text-binding-element,
+        host-property-element,
+        host-all-types-element,
+        host-perm-attr-first,
+        host-perm-bool-first,
+        host-perm-prop-first {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
         </style>
     </head>
     <body>
@@ -31,10 +31,26 @@
         <host-multi-content-element first="a" second="b"></host-multi-content-element>
         <host-text-binding-element text="text content"></host-text-binding-element>
         <host-property-element text="property test"></host-property-element>
-        <host-all-types-element text="all types" attr="value" disabled></host-all-types-element>
-        <host-perm-attr-first text="perm attr first" attr="value" disabled></host-perm-attr-first>
-        <host-perm-bool-first text="perm bool first" attr="value" disabled></host-perm-bool-first>
-        <host-perm-prop-first text="perm prop first" attr="value" disabled></host-perm-prop-first>
+        <host-all-types-element
+            text="all types"
+            attr="value"
+            disabled
+        ></host-all-types-element>
+        <host-perm-attr-first
+            text="perm attr first"
+            attr="value"
+            disabled
+        ></host-perm-attr-first>
+        <host-perm-bool-first
+            text="perm bool first"
+            attr="value"
+            disabled
+        ></host-perm-bool-first>
+        <host-perm-prop-first
+            text="perm prop first"
+            attr="value"
+            disabled
+        ></host-perm-prop-first>
         <script type="module" src="./main.ts"></script>
     </body>
 </html>

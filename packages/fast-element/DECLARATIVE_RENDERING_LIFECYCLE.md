@@ -154,23 +154,21 @@ FAST HTML provides a set of lifecycle callbacks that allow you to hook into vari
 
 ### Available Callbacks
 
-The lifecycle callbacks are organized into three categories:
+The lifecycle callbacks are split between two APIs:
 
-**Template Registration Callbacks:**
+**Per-element callbacks** — passed to `declarativeTemplate()`:
 - `elementDidRegister(name: string)` - Called after the JavaScript class definition has been registered as a partial definition
 - `templateWillUpdate(name: string)` - Called before the template has been evaluated and assigned to the definition
-
-**Template Processing Callbacks:**
 - `templateDidUpdate(name: string)` - Called after the template has been assigned to the definition
 - `elementDidDefine(name: string)` - Called after the custom element has been fully defined with the platform
-
-**Hydration Callbacks:**
-- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
 - `elementWillHydrate(source: HTMLElement)` - Called before an element begins hydration
 - `elementDidHydrate(source: HTMLElement)` - Called after an element completes hydration
+
+**Global hydration callbacks** — passed to `enableHydration()`:
+- `hydrationStarted()` - Called once when the first prerendered element begins hydrating
 - `hydrationComplete()` - Called once after all prerendered elements have completed hydration
 
-Hydration callbacks are tracked at the element level by `ElementController`. The `hydrationComplete` callback fires only after every prerendered element has finished binding.
+The `hydrationComplete` callback fires only after every prerendered element has finished binding.
 
 ### Callback Execution Order
 
@@ -186,7 +184,7 @@ Template Processing Phase (asynchronous):
   4. templateDidUpdate(name)
   5. elementDidDefine(name)
   
-Hydration Phase (per element):
+Hydration Phase (per element, only when enableHydration() has been called):
   6. hydrationStarted()           [once, on first element]
   7. elementWillHydrate(source)
   8. [Hydration occurs]
@@ -200,33 +198,46 @@ Completion (called once for all elements):
 
 ### Configuring Callbacks
 
-Configure callbacks using `TemplateElement.config()` before defining the template element:
+Hydration must be explicitly opted into by calling `enableHydration()`. Per-element
+callbacks are passed directly to `declarativeTemplate()`:
 
 ```typescript
-import { TemplateElement, type HydrationLifecycleCallbacks } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
-TemplateElement.config({
-    elementDidRegister(name) {
-        console.log(`${name} registered`);
-    },
-    templateWillUpdate(name) {
-        console.log(`${name} template updating`);
-    },
-    templateDidUpdate(name) {
-        console.log(`${name} template updated`);
-    },
-    elementDidDefine(name) {
-        console.log(`${name} fully defined`);
-    },
-    elementWillHydrate(source) {
-        console.log(`${source.localName} starting hydration`);
-    },
-    elementDidHydrate(source) {
-        console.log(`${source.localName} hydrated`);
+// Global hydration events
+enableHydration({
+    hydrationStarted() {
+        console.log("Hydration started");
     },
     hydrationComplete() {
-        console.log('All elements hydrated');
-    }
+        console.log("All elements hydrated");
+    },
+});
+
+// Per-element lifecycle callbacks
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementDidRegister(name) {
+            console.log(`${name} registered`);
+        },
+        templateWillUpdate(name) {
+            console.log(`${name} template updating`);
+        },
+        templateDidUpdate(name) {
+            console.log(`${name} template updated`);
+        },
+        elementDidDefine(name) {
+            console.log(`${name} fully defined`);
+        },
+        elementWillHydrate(source) {
+            console.log(`${source.localName} starting hydration`);
+        },
+        elementDidHydrate(source) {
+            console.log(`${source.localName} hydrated`);
+        },
+    }),
 });
 ```
 
@@ -234,30 +245,43 @@ TemplateElement.config({
 
 **Performance Monitoring:**
 ```typescript
-TemplateElement.config({
-    elementWillHydrate(source) {
-        performance.mark(`${source.localName}-hydration-start`);
-    },
-    elementDidHydrate(source) {
-        performance.mark(`${source.localName}-hydration-end`);
-        performance.measure(`${source.localName}-hydration`, `${source.localName}-hydration-start`, `${source.localName}-hydration-end`);
-    },
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+enableHydration({
     hydrationComplete() {
-        const measures = performance.getEntriesByType('measure');
+        const measures = performance.getEntriesByType("measure");
         // Send metrics to analytics
-    }
+    },
+});
+
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementWillHydrate(source) {
+            performance.mark(`${source.localName}-hydration-start`);
+        },
+        elementDidHydrate(source) {
+            performance.mark(`${source.localName}-hydration-end`);
+            performance.measure(
+                `${source.localName}-hydration`,
+                `${source.localName}-hydration-start`,
+                `${source.localName}-hydration-end`,
+            );
+        },
+    }),
 });
 ```
 
 **Loading State Management:**
 ```typescript
-TemplateElement.config({
+enableHydration({
     hydrationStarted() {
-        document.body.classList.add('hydrating');
+        document.body.classList.add("hydrating");
     },
     hydrationComplete() {
-        document.body.classList.remove('hydrating');
-        document.body.classList.add('interactive');
-    }
+        document.body.classList.remove("hydrating");
+        document.body.classList.add("interactive");
+    },
 });
 ```

@@ -28,7 +28,13 @@ import { HydratableElementController } from "@microsoft/fast-element";
 HydratableElementController.install();
 ```
 
-3.x: No replacement needed — prerendered content detection is automatic.
+3.x: Hydration is now opt-in via `enableHydration()`:
+
+```ts
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
+```
 
 Remove any `import "@microsoft/fast-element/install-hydration.js"` side-effect
 imports as part of the migration. The older
@@ -54,7 +60,7 @@ These attributes are no longer needed in server-rendered markup.
 </my-component>
 ```
 
-### `HydrationControllerCallbacks` replaced by `ElementHydrationCallbacks`
+### `HydrationControllerCallbacks` replaced by `enableHydration` + `declarativeTemplate` callbacks
 
 2.x Example:
 ```ts
@@ -67,13 +73,22 @@ HydratableElementController.config({
 
 3.x Example:
 ```ts
-import { ElementController } from "@microsoft/fast-element";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
-ElementController.configHydration({
+// Global hydration callbacks
+enableHydration({
     hydrationStarted() { /* ... */ },
-    elementWillHydrate(source: HTMLElement) { /* ... */ },
-    elementDidHydrate(source: HTMLElement) { /* ... */ },
-    hydrationComplete() { /* ... */ }
+    hydrationComplete() { /* ... */ },
+});
+
+// Per-element hydration callbacks
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementWillHydrate(source: HTMLElement) { /* ... */ },
+        elementDidHydrate(source: HTMLElement) { /* ... */ },
+    }),
 });
 ```
 

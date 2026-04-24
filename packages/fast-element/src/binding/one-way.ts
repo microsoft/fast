@@ -13,7 +13,7 @@ class OneWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TParent
 > {
     createObserver(
-        subscriber: Subscriber
+        subscriber: Subscriber,
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return Observable.binding(this.evaluate, subscriber, this.isVolatile);
     }
@@ -30,7 +30,7 @@ class OneWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 export function oneWay<T = any>(
     expression: Expression<T>,
     policy?: DOMPolicy,
-    isVolatile = Observable.isVolatileBinding(expression)
+    isVolatile = Observable.isVolatileBinding(expression),
 ): Binding<T> {
     return new OneWayBinding(expression, policy, isVolatile);
 }
@@ -44,7 +44,7 @@ export function oneWay<T = any>(
  */
 export function listener<T = any>(
     expression: Expression<T>,
-    options?: AddEventListenerOptions
+    options?: AddEventListenerOptions,
 ): Binding<T> {
     const config = new OneWayBinding(expression);
     config.options = options;

@@ -128,7 +128,19 @@ object and `$c` for the execution context.
 
 ## Prerendered Content Optimization
 
-When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
+Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before any FAST elements connect to activate the hydration path:
+
+```typescript
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    hydrationComplete() {
+        console.log("hydration complete");
+    },
+});
+```
+
+When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
 
 - **Hydration instead of re-render**: The template uses `hydrate()` to map existing DOM nodes to binding targets rather than cloning new DOM.
 - **Declarative template resolution**: `declarativeTemplate()` waits for the
@@ -136,6 +148,24 @@ When a FAST element connects and already has an existing shadow root (from serve
   hydrate with a concrete template.
 - **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
 - **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
+
+Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
+
+```typescript
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementWillHydrate(source) {
+            console.log(`${source.localName} will hydrate`);
+        },
+        elementDidHydrate(source) {
+            console.log(`${source.localName} hydrated`);
+        },
+    }),
+});
+```
 
 Component authors can await the promise to know when hydration is complete:
 

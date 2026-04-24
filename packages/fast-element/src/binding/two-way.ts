@@ -2,7 +2,7 @@ import type { DOMPolicy } from "../dom.js";
 import { isString, Message } from "../interfaces.js";
 import type { Subscriber } from "../observation/notifier.js";
 import {
-    ExecutionContext,
+    type ExecutionContext,
     type Expression,
     type ExpressionController,
     type ExpressionObserver,
@@ -71,12 +71,12 @@ class TwoWayObserver<TSource = any, TReturn = any, TParent = any>
     constructor(
         private directive: BindingDirective,
         private subscriber: Subscriber,
-        private dataBinding: TwoWayBinding
+        private dataBinding: TwoWayBinding,
     ) {
         this.notifier = Observable.binding(
             dataBinding.evaluate,
             this,
-            dataBinding.isVolatile
+            dataBinding.isVolatile,
         );
     }
 
@@ -147,7 +147,7 @@ class TwoWayBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 > {
     createObserver(
         subscriber: Subscriber,
-        bindingSource: BindingDirective
+        bindingSource: BindingDirective,
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return new TwoWayObserver(bindingSource, subscriber, this);
     }
@@ -166,7 +166,7 @@ export function twoWay<T = any>(
     expression: Expression<T>,
     optionsOrChangeEvent?: TwoWayBindingOptions | string,
     policy?: DOMPolicy,
-    isBindingVolatile = Observable.isVolatileBinding(expression)
+    isBindingVolatile = Observable.isVolatileBinding(expression),
 ): Binding<T> {
     if (isString(optionsOrChangeEvent)) {
         optionsOrChangeEvent = { changeEvent: optionsOrChangeEvent };

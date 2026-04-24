@@ -23,7 +23,7 @@ import {
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { isHydratable } from "./hydration.js";
-import { type ElementHydrationCallbacks, HydrationTracker } from "./hydration-tracker.js";
+import type { HydrationTracker } from "./hydration-tracker.js";
 
 /**
  * No-op handler used during prerendered bind to discard the
@@ -761,15 +761,20 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         }
 
         if (template) {
-            const isPrerendered = this.hasExistingShadowRoot && this.needsInitialization;
+            const tracker = ElementController.hydrationTracker;
+            const didHydrate =
+                tracker !== null &&
+                this.hasExistingShadowRoot &&
+                this.needsInitialization &&
+                isHydratable(template);
 
-            if (isPrerendered && isHydratable(template)) {
+            if (didHydrate) {
                 this.renderPrerendered(template, element, host);
             } else {
                 this.renderClientSide(template, element, host);
             }
 
-            this._resolvePrerendered(isPrerendered);
+            this._resolvePrerendered(didHydrate);
         } else if (this.needsInitialization) {
             this._resolvePrerendered(false);
         }
@@ -785,38 +790,55 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         element: TElement,
         host: Node,
     ): void {
-        const tracker = ElementController.hydrationTracker;
-        tracker?.add(element);
-        tracker?.notifyWillHydrate(element);
+        const tracker = ElementController.hydrationTracker!;
+        const callbacks = this.definition.lifecycleCallbacks;
 
-        const firstChild = host.firstChild!;
-        const lastChild = host.lastChild!;
+        tracker.add(element);
 
-        (this as Mutable<this>).view = (
-            template as HydratableElementViewTemplate
-        ).hydrate(firstChild, lastChild, element);
+        try {
+            try {
+                callbacks?.elementWillHydrate?.(element);
+            } catch {
+                // A lifecycle callback must never prevent hydration.
+            }
 
-        // Swap to a no-op so the upgrade-time burst of
-        // attributeChangedCallbacks is silently discarded.
-        const realHandler = this.onAttributeChangedCallback;
-        this.onAttributeChangedCallback = noopAttributeHandler;
+            const firstChild = host.firstChild!;
+            const lastChild = host.lastChild!;
 
-        // Flag the view so directives skip attribute/booleanAttribute
-        // DOM updates during bind, and set the public promise.
-        (this.view as any)._skipAttrUpdates = true;
-        (this.view as any).isPrerendered = Promise.resolve(true);
-        this.view!.bind(this.source);
-        (this.view as any)._skipAttrUpdates = false;
+            (this as Mutable<this>).view = (
+                template as HydratableElementViewTemplate
+            ).hydrate(firstChild, lastChild, element);
 
-        // Restore the real handler — all future attribute changes
-        // flow through the standard path with zero overhead.
-        this.onAttributeChangedCallback = realHandler;
+            // Swap to a no-op so the upgrade-time burst of
+            // attributeChangedCallbacks is silently discarded.
+            const realHandler = this.onAttributeChangedCallback;
+            this.onAttributeChangedCallback = noopAttributeHandler;
 
-        (this.view as any as Mutable<ViewController>).sourceLifetime =
-            SourceLifetime.coupled;
-        this.hasExistingShadowRoot = false;
+            try {
+                // Flag the view so directives skip attribute/booleanAttribute
+                // DOM updates during bind, and set the public promise.
+                (this.view as any)._skipAttrUpdates = true;
+                (this.view as any).isPrerendered = Promise.resolve(true);
+                this.view!.bind(this.source);
+                (this.view as any)._skipAttrUpdates = false;
+            } finally {
+                // Restore the real handler — all future attribute changes
+                // flow through the standard path with zero overhead.
+                this.onAttributeChangedCallback = realHandler;
+            }
 
-        tracker?.remove(element);
+            (this.view as any as Mutable<ViewController>).sourceLifetime =
+                SourceLifetime.coupled;
+            this.hasExistingShadowRoot = false;
+
+            try {
+                callbacks?.elementDidHydrate?.(element);
+            } catch {
+                // A lifecycle callback must never prevent post-hydration work.
+            }
+        } finally {
+            tracker.remove(element);
+        }
     }
 
     /**
@@ -909,11 +931,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
     private static hydrationTracker: HydrationTracker | null = null;
 
     /**
-     * Configure lifecycle callbacks for element hydration tracking.
-     * @param callbacks - Lifecycle callbacks to configure.
+     * Enables hydration support for prerendered elements.
+     * Must be called before any FAST elements connect.
+     * @param tracker - A configured {@link HydrationTracker} instance.
      */
-    public static configHydration(callbacks: ElementHydrationCallbacks): void {
-        ElementController.hydrationTracker = new HydrationTracker(callbacks);
+    public static enableHydration(tracker: HydrationTracker): void {
+        ElementController.hydrationTracker = tracker;
     }
 }
 

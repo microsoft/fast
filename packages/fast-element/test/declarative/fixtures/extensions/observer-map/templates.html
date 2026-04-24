@@ -8,13 +8,13 @@
         <div class="stats">
             <h2>Global Stats</h2>
             <div class="nested-info">
-                <strong>Total Users:</strong> {{stats.totalusers}} |
-                <strong>Active Users:</strong> {{stats.activeusers}}
+                <strong>Total Users:</strong> {{ stats.totalusers }} |
+                <strong>Active Users:</strong> {{ stats.activeusers }}
             </div>
             <div class="nested-info">
                 <strong>Performance:</strong>
-                Load: {{stats.metrics.performance.loadtime}}s,
-                Render: {{stats.metrics.performance.rendertime}}s
+                Load: {{ stats.metrics.performance.loadtime }}s, Render:
+                {{ stats.metrics.performance.rendertime }}s
             </div>
             <div class="controls">
                 <button @click="{updateStats()}">Update Stats</button>
@@ -26,36 +26,46 @@
             <h2>Users List</h2>
             <f-repeat value="{{user in users}}">
                 <div class="user-card">
-                    <h3>{{user.name}} (ID: {{user.id}})
+                    <h3>
+                        {{ user.name }}
+                        (ID: {{ user.id }})
                         <f-when value="{{user.id == selecteduserid}}">
                             <span>⭐ SELECTED</span>
                         </f-when>
                     </h3>
 
                     <div class="nested-info">
-                        <strong>Age:</strong> {{user.details.personal.age}} years old
+                        <strong>Age:</strong> {{ user.details.personal.age }} years old
                     </div>
                     <div class="nested-info">
-                        <strong>Location:</strong> {{user.details.personal.location.city}}, {{user.details.personal.location.country}}
+                        <strong>Location:</strong>
+                        {{ user.details.personal.location.city }},
+                        {{ user.details.personal.location.country }}
                     </div>
                     <div class="nested-info">
                         <strong>Coordinates:</strong>
-                        Lat: {{user.details.personal.location.coordinates.lat}},
-                        Lng: {{user.details.personal.location.coordinates.lng}}
+                        Lat: {{ user.details.personal.location.coordinates.lat }}, Lng:
+                        {{ user.details.personal.location.coordinates.lng }}
                     </div>
 
                     <div class="nested-info">
-                        <strong>Theme:</strong> {{user.details.preferences.theme}} |
-                        <strong>Email Notifications:</strong> {{user.details.preferences.notifications.email}} |
-                        <strong>Push Notifications:</strong> {{user.details.preferences.notifications.push}}
+                        <strong>Theme:</strong> {{ user.details.preferences.theme }} |
+                        <strong>Email Notifications:</strong>
+                        {{ user.details.preferences.notifications.email }}
+                        |
+                        <strong>Push Notifications:</strong>
+                        {{ user.details.preferences.notifications.push }}
                     </div>
                     <div class="nested-info">
-                        <strong>Notification Frequency:</strong> {{user.details.preferences.notifications.settings.frequency}}
+                        <strong>Notification Frequency:</strong>
+                        {{ user.details.preferences.notifications.settings.frequency }}
                     </div>
                     <div class="nested-info">
                         <strong>Categories:</strong>
-                        <f-repeat value="{{category in user.details.preferences.notifications.settings.categories}}">
-                            <span class="tag">{{category}}</span>
+                        <f-repeat
+                            value="{{category in user.details.preferences.notifications.settings.categories}}"
+                        >
+                            <span class="tag">{{ category }}</span>
                         </f-repeat>
                     </div>
 
@@ -63,41 +73,61 @@
                         <button @click="{selectUser(user.id)}">Select User</button>
                         <button @click="{updateUserAge(user.id)}">Age +1</button>
                         <button @click="{toggleUserTheme(user.id)}">Toggle Theme</button>
-                        <button @click="{updateUserLocation(user.id)}">Change Location</button>
-                        <button @click="{updateNotificationSettings(user.id)}">Update Notifications</button>
-                        <button @click="{addNotificationCategory(user.id)}">Add Category</button>
-                        <button @click="{removeNotificationCategory(user.id)}">Remove Tech Category</button>
+                        <button @click="{updateUserLocation(user.id)}">
+                            Change Location
+                        </button>
+                        <button @click="{updateNotificationSettings(user.id)}">
+                            Update Notifications
+                        </button>
+                        <button @click="{addNotificationCategory(user.id)}">
+                            Add Category
+                        </button>
+                        <button @click="{removeNotificationCategory(user.id)}">
+                            Remove Tech Category
+                        </button>
                         <button @click="{removeUser(user.id)}">Remove User</button>
                     </div>
 
                     <div>
-                        <h4>Posts ({{user.posts.length}} posts)</h4>
+                        <h4>Posts ({{ user.posts.length }} posts)</h4>
                         <f-repeat value="{{post in user.posts}}">
                             <div class="post-card">
-                                <div><strong>{{post.title}}</strong> (ID: {{post.id}})</div>
-                                <div class="nested-info">{{post.content}}</div>
+                                <div>
+                                    <strong>{{ post.title }}</strong>
+                                    (ID: {{ post.id }})
+                                </div>
+                                <div class="nested-info">{{ post.content }}</div>
                                 <div class="nested-info">
-                                    <strong>Author:</strong> {{post.metadata.author.name}}
+                                    <strong>Author:</strong>
+                                    {{ post.metadata.author.name }}
                                     <f-when value="{{post.metadata.author.verified}}">
                                         <span>✓ Verified</span>
                                     </f-when>
                                 </div>
                                 <div class="nested-info">
-                                    <strong>Stats:</strong> {{post.metadata.views}} views, {{post.metadata.likes}} likes
+                                    <strong>Stats:</strong>
+                                    {{ post.metadata.views }}
+                                    views,
+                                    {{ post.metadata.likes }}
+                                    likes
                                 </div>
                                 <div class="nested-info">
                                     <strong>Tags:</strong>
                                     <f-repeat value="{{tag in post.metadata.tags}}">
-                                        <span class="tag">{{tag}}</span>
+                                        <span class="tag">{{ tag }}</span>
                                     </f-repeat>
                                 </div>
                                 <div class="controls">
-                                    <button @click="{incrementPostLikes(post.id)}">Like Post</button>
+                                    <button @click="{incrementPostLikes(post.id)}">
+                                        Like Post
+                                    </button>
                                 </div>
                             </div>
                         </f-repeat>
                         <div class="controls">
-                            <button @click="{addPostToUser(user.id)}">Add New Post</button>
+                            <button @click="{addPostToUser(user.id)}">
+                                Add New Post
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -107,36 +137,32 @@
 </f-template>
 <f-template name="observer-map-internal-test-element">
     <template>
-        selected user: {{selecteduserid}} <!-- because this is bound to an attribute property it must be lowercase -->
+        selected user:
+        {{ selecteduserid }}<!-- because this is bound to an attribute property it must be lowercase -->
         <br>
-        total users: {{totalusers}}
+        total users: {{ totalusers }}
         <br>
         <div class="stats">
             <div class="nested-info">
                 <strong>Engagement:</strong>
-                Daily: {{metrics.engagement.daily}},
-                Weekly: {{metrics.engagement.weekly}},
-                Monthly: {{metrics.engagement.monthly}}
+                Daily: {{ metrics.engagement.daily }}, Weekly:
+                {{ metrics.engagement.weekly }}, Monthly: {{ metrics.engagement.monthly }}
             </div>
         </div>
-        <f-when value="{{a}}">
-            <span class="nested-define">{{a.b.c}}</span>
-        </f-when>
+        <f-when value="{{a}}"> <span class="nested-define">{{ a.b.c }}</span> </f-when>
         <button @click="{defineB()}">Define B</button>
         <button @click="{updateC()}">Update C</button>
         <br>
-        <f-when value="{{x}}">
-            <span class="nested-define-2">{{x.y.z}}</span>
-        </f-when>
+        <f-when value="{{x}}"> <span class="nested-define-2">{{ x.y.z }}</span> </f-when>
         <button @click="{defineY()}">Define Y</button>
         <button @click="{updateZ()}">Update Z</button>
         <div>
             <f-repeat value="{{group in groups}}">
                 <f-repeat value="{{item in group.items}}">
-                    <div class="item">{{item.text}}</div>
+                    <div class="item">{{ item.text }}</div>
                     <span>
                         <f-repeat value="{{action in item.actions.trailing}}">
-                            <span class="action-label">{{action.label}}</span>
+                            <span class="action-label">{{ action.label }}</span>
                         </f-repeat>
                     </span>
                 </f-repeat>
@@ -152,10 +178,10 @@
 </f-template>
 <f-template name="observer-map-with-observables-test-element">
     <template>
-        Level 3 Value: {{value1}}
+        Level 3 Value: {{ value1 }}
         <button @click="{updateValue1()}">Update Value1</button>
         <br>
-        Level 3 Value Observable: {{value2}}
+        Level 3 Value Observable: {{ value2 }}
         <button @click="{updateValue2()}">Update Value2</button>
     </template>
 </f-template>
@@ -163,7 +189,7 @@
     <template>
         <ul>
             <f-repeat value="{{item in items}}">
-                <li class="simple-item">{{item}}</li>
+                <li class="simple-item">{{ item }}</li>
             </f-repeat>
         </ul>
         <button @click="{updateFirstItem()}">Update First Item</button>
