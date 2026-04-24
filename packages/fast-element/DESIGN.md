@@ -94,7 +94,7 @@ registry.
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
 - Exposes `isPrerendered: Promise<boolean>` which resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. The `ViewController` interface also exposes `isPrerendered` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
-- On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the template into the shadow root, and applies styles. When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early; an Observable subscription on `"template"` retriggers `connect()` when the template arrives (template-pending guard).
+- On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
 - Rendering is split into two modular paths via `renderPrerendered()` and `renderClientSide()`:
   - **Prerendered**: `renderPrerendered()` registers the element in the static hydration tracker, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, then restores the standard handler and removes the element from the tracker. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
@@ -103,11 +103,11 @@ registry.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
 
-`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or deferring when `templateOptions` is `"defer-and-hydrate"` and no template is provided. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
+`FASTElementDefinition` wraps all the metadata for a custom element class: its tag name, template, styles, and observed attribute list. It is created by `FASTElement.compose()` (which returns `Promise<FASTElementDefinition>`, always resolving immediately) and registered globally via `fastElementRegistry`. `PartialFASTElementDefinition.template` may be either a concrete `ElementViewTemplate<InstanceType<TType>>` or a `FASTElementTemplateResolver<TType>` function that receives the composed definition and returns the concrete template (sync or async). `FASTElementDefinition.template` always stores the concrete `ElementViewTemplate<InstanceType<TType>>` after composition or resolver settlement. `FASTElement.define()` returns `Promise<TType>` — resolving immediately for complete definitions or definitions without an initial template, and resolving async template resolver functions only after extensions have had a chance to update the definition. `FASTElementDefinition.register()` returns `Promise<Function>` — resolving when a definition with the given name has been registered.
 
 #### Extensions
 
-`FASTElement.define()` and `FASTElementDefinition.define()` accept an optional array of **extension callbacks** (`FASTElementExtension`). Each extension is a function that receives the resolved `FASTElementDefinition` and is invoked **before** the element is registered with the platform via `customElements.define()`. This allows plugins to inspect or act on the definition metadata (name, template, styles, attributes) before any existing DOM elements are upgraded.
+`FASTElement.define()` and `FASTElementDefinition.define()` accept an optional array of **extension callbacks** (`FASTElementExtension`). Each extension is a function that receives the resolved `FASTElementDefinition` and is invoked **before** the element is registered with the platform via `customElements.define()`. `FASTElement.define()` also invokes extensions before any template resolver function is asked to produce a concrete `ElementViewTemplate`, so plugins can attach state that affects template resolution without leaving non-template values on `definition.template`.
 
 ```typescript
 type FASTElementExtension = (definition: FASTElementDefinition) => void;
@@ -375,9 +375,7 @@ flowchart TD
     CTOR[constructor] --> EC[ElementController.forCustomElement creates or locates the controller]
     EC --> ATTACH[Controller captures element + definition, sets $fastController]
 
-    CONN[connectedCallback] --> TGUARD{templateOptions = defer-and-hydrate\nAND no template yet?}
-    TGUARD -->|yes| WAIT[Return early — Observable subscription\non 'template' retriggers connect]
-    TGUARD -->|no| STAGE[stage = connecting]
+    CONN[connectedCallback] --> STAGE[stage = connecting]
     STAGE --> PRERENDER{Existing shadow root\nfrom SSR/DSD?}
     PRERENDER -->|yes| SETFLAG[isPrerendered = true]
     PRERENDER -->|no| NORMAL[isPrerendered = false]
@@ -499,7 +497,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 1. Developer writes a class extending `FASTElement`, decorates properties with `@observable` / `@attr`, and calls `FASTElement.define({ name, template, styles })`.
 2. `FASTElement.define` → `FASTElementDefinition.compose(...).define()` registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
-4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content), `renderPrerendered()` uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
+4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content), `renderPrerendered()` uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
 6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. The next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
@@ -550,7 +548,7 @@ src/
 ├── components/
 │   ├── fast-element.ts    # FASTElement, @customElement
 │   ├── element-controller.ts  # ElementController, Stages
-│   ├── fast-definitions.ts    # FASTElementDefinition, TemplateOptions
+│   ├── fast-definitions.ts    # FASTElementDefinition
 │   └── attributes.ts          # AttributeDefinition, @attr, converters
 ├── di/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
