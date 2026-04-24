@@ -1,5 +1,5 @@
 import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [
@@ -425,17 +425,26 @@ class ObserverMapWithObservablesTestElement extends FASTElement {
     }
 }
 
-ObserverMapInternalTestElement.define({
-    name: "observer-map-internal-test-element",
-});
+ObserverMapInternalTestElement.define(
+    {
+        name: "observer-map-internal-test-element",
+    },
+    [observerMap()],
+);
 
-ObserverMapTestElement.define({
-    name: "observer-map-test-element",
-});
+ObserverMapTestElement.define(
+    {
+        name: "observer-map-test-element",
+    },
+    [observerMap()],
+);
 
-ObserverMapWithObservablesTestElement.define({
-    name: "observer-map-with-observables-test-element",
-});
+ObserverMapWithObservablesTestElement.define(
+    {
+        name: "observer-map-with-observables-test-element",
+    },
+    [observerMap()],
+);
 
 class ObserverMapSimpleArrayTestElement extends FASTElement {
     public items: string[] = ["foo", "baz"];
@@ -449,32 +458,20 @@ class ObserverMapSimpleArrayTestElement extends FASTElement {
     }
 }
 
-ObserverMapSimpleArrayTestElement.define({
-    name: "observer-map-simple-array-test-element",
-});
+ObserverMapSimpleArrayTestElement.define(
+    {
+        name: "observer-map-simple-array-test-element",
+    },
+    [observerMap()],
+);
 
-// Configure TemplateElement with observerMap enabled for this test
-TemplateElement.options({
-    "observer-map-test-element": {
-        observerMap: "all", // Enable ObserverMap to track all the nested property changes
+// Enable ObserverMap via definition-scoped extensions for this test
+TemplateElement.config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
     },
-    "observer-map-internal-test-element": {
-        observerMap: "all", // Enable ObserverMap to track all the nested property changes
-    },
-    "observer-map-with-observables-test-element": {
-        observerMap: "all",
-    },
-    "observer-map-simple-array-test-element": {
-        observerMap: "all",
-    },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).define({
+    name: "f-template",
+});
 
 (window as any).Observable = Observable;
