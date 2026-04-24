@@ -7,7 +7,6 @@ class TestElementMultiple extends FASTElement {
 }
 TestElementMultiple.define({
     name: "test-element-multiple",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElement extends FASTElement {
@@ -16,7 +15,6 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementNot extends FASTElement {
@@ -25,7 +23,6 @@ class TestElementNot extends FASTElement {
 }
 TestElementNot.define({
     name: "test-element-not",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementEquals extends FASTElement {
@@ -34,7 +31,6 @@ class TestElementEquals extends FASTElement {
 }
 TestElementEquals.define({
     name: "test-element-equals",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementNotEquals extends FASTElement {
@@ -43,7 +39,6 @@ class TestElementNotEquals extends FASTElement {
 }
 TestElementNotEquals.define({
     name: "test-element-not-equals",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementGe extends FASTElement {
@@ -52,7 +47,6 @@ class TestElementGe extends FASTElement {
 }
 TestElementGe.define({
     name: "test-element-ge",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementGt extends FASTElement {
@@ -61,7 +55,6 @@ class TestElementGt extends FASTElement {
 }
 TestElementGt.define({
     name: "test-element-gt",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementLe extends FASTElement {
@@ -70,7 +63,6 @@ class TestElementLe extends FASTElement {
 }
 TestElementLe.define({
     name: "test-element-le",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementLt extends FASTElement {
@@ -79,7 +71,6 @@ class TestElementLt extends FASTElement {
 }
 TestElementLt.define({
     name: "test-element-lt",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementOr extends FASTElement {
@@ -91,7 +82,6 @@ class TestElementOr extends FASTElement {
 }
 TestElementOr.define({
     name: "test-element-or",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementAnd extends FASTElement {
@@ -103,7 +93,6 @@ class TestElementAnd extends FASTElement {
 }
 TestElementAnd.define({
     name: "test-element-and",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementWhenFalseRepeat extends FASTElement {
@@ -115,7 +104,6 @@ export class TestElementWhenFalseRepeat extends FASTElement {
 }
 TestElementWhenFalseRepeat.define({
     name: "test-element-when-false-repeat",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementEvent extends FASTElement {
@@ -131,7 +119,6 @@ export class TestElementEvent extends FASTElement {
 }
 TestElementEvent.define({
     name: "test-element-event",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class NestedWhenElement extends FASTElement {
@@ -159,7 +146,6 @@ export class NestedWhenElement extends FASTElement {
 }
 NestedWhenElement.define({
     name: "nested-when",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.config({

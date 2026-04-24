@@ -20,7 +20,6 @@ class ConfigObserverMapTestElement extends FASTElement {
 
 ConfigObserverMapTestElement.define({
     name: "config-observer-map-test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 class ConfigAttributeMapTestElement extends FASTElement {
@@ -31,7 +30,6 @@ class ConfigAttributeMapTestElement extends FASTElement {
 
 ConfigAttributeMapTestElement.define({
     name: "config-attribute-map-test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Use configuration objects ({}) instead of "all" — should behave identically

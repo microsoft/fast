@@ -16,11 +16,7 @@ import type {
     HydratableElementViewTemplate,
 } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
-import {
-    FASTElementDefinition,
-    type ShadowRootOptions,
-    TemplateOptions,
-} from "./fast-definitions.js";
+import { FASTElementDefinition, type ShadowRootOptions } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { isHydratable } from "./hydration.js";
 import { type ElementHydrationCallbacks, HydrationTracker } from "./hydration-tracker.js";
@@ -231,7 +227,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 this._template = (this.source as any).resolveTemplate();
             } else if (definition.template) {
                 // 3. Default to the static definition.
-                this._template = definition.template ?? null;
+                this._template =
+                    (definition.template as ElementViewTemplate<TElement> | undefined) ??
+                    null;
             }
         }
 
@@ -456,16 +454,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        // If no template is available yet (deferred-hydration flow),
-        // wait — the observable subscription on "template" in
-        // forCustomElement() will call connect() when it arrives.
-        if (
-            !this.template &&
-            this.definition.templateOptions === TemplateOptions.deferAndHydrate
-        ) {
-            return;
-        }
-
         this.stage = Stages.connecting;
 
         this.bindObservables();
@@ -634,6 +622,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
 
             this._resolvePrerendered(isPrerendered);
+        } else if (this.needsInitialization) {
+            this._resolvePrerendered(false);
         }
     }
 
