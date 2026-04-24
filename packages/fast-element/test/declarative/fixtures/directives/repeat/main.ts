@@ -11,7 +11,6 @@ export class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementInnerWhen extends FASTElement {
@@ -29,7 +28,6 @@ export class TestElementInnerWhen extends FASTElement {
 }
 TestElementInnerWhen.define({
     name: "test-element-inner-when",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementIntervalUpdates extends FASTElement {
@@ -45,7 +43,6 @@ export class TestElementIntervalUpdates extends FASTElement {
 
 TestElementIntervalUpdates.define({
     name: "test-element-interval-updates",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementNoItemRepeatBinding extends FASTElement {
@@ -54,7 +51,6 @@ export class TestElementNoItemRepeatBinding extends FASTElement {
 }
 TestElementNoItemRepeatBinding.define({
     name: "test-element-no-item-repeat-binding",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementEmptyArray extends FASTElement {
@@ -63,7 +59,6 @@ export class TestElementEmptyArray extends FASTElement {
 }
 TestElementEmptyArray.define({
     name: "test-element-empty-array",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementEvent extends FASTElement {
@@ -79,7 +74,6 @@ export class TestElementEvent extends FASTElement {
 }
 TestElementEvent.define({
     name: "test-element-event",
-    templateOptions: "defer-and-hydrate",
 });
 
 export class TestElementWithObserverMap extends FASTElement {
@@ -90,7 +84,6 @@ export class TestElementWithObserverMap extends FASTElement {
 }
 TestElementWithObserverMap.define({
     name: "test-element-with-observer-map",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.options({

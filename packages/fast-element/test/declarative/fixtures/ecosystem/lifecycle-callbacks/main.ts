@@ -32,7 +32,6 @@ class SimpleElement extends FASTElement {
 
 SimpleElement.define({
     name: "simple-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Complex element with multiple properties and methods
@@ -57,7 +56,6 @@ class ComplexElement extends FASTElement {
 
 ComplexElement.define({
     name: "complex-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Nested element
@@ -68,7 +66,6 @@ class NestedElement extends FASTElement {
 
 NestedElement.define({
     name: "nested-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Element with deferred hydration
@@ -87,7 +84,6 @@ class DeferredElement extends FASTElement {
 
 DeferredElement.define({
     name: "deferred-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Nested deferred elements to verify parent-first hydration
@@ -102,7 +98,6 @@ class DeferredParentElement extends FASTElement {
 
 DeferredParentElement.define({
     name: "deferred-parent-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 class DeferredChildElement extends FASTElement {
@@ -116,7 +111,6 @@ class DeferredChildElement extends FASTElement {
 
 DeferredChildElement.define({
     name: "deferred-child-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Define templates

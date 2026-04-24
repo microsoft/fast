@@ -55,10 +55,31 @@ removed `@microsoft/fast-html` package.
 2. Update declarative utility imports such as `deepMerge` to
    `@microsoft/fast-element/declarative/utilities.js`.
 3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
-    `observable`) from `@microsoft/fast-element`.
+     `observable`) from `@microsoft/fast-element`.
 4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
-    APIs; the declarative entrypoint owns the debug-message and hydratable-view
-    side effects.
+     APIs; the declarative entrypoint owns the debug-message and hydratable-view
+     side effects.
+
+## `TemplateOptions` removal (v3)
+
+### Removed APIs
+
+| Removed | Replacement |
+|---|---|
+| `TemplateOptions` | No replacement |
+| `PartialFASTElementDefinition.templateOptions` | No replacement |
+| `FASTElementDefinition.templateOptions` | No replacement |
+
+### Changed behavior
+
+- `FASTElement.define()` no longer uses `templateOptions` to delay platform definition or connection.
+- Elements can still be defined before a template is attached; a later `FASTElementDefinition.template` update notifies connected elements so they can render or hydrate with the new template.
+
+### Migration steps
+
+1. Remove `templateOptions` from element definitions.
+2. Continue calling `define({ name })` when a definition needs to exist before its template is attached.
+3. If a template is supplied later, assign `FASTElementDefinition.template` (or use the declarative runtime that does so for you).
 
 ## Declarative event handler `e` removal (v3)
 
@@ -104,7 +125,7 @@ available and is applied automatically by
 ### Changed behavior
 
 - **`attributeChangedCallback` during upgrade**: When `isPrerendered` is true and the element has not yet connected, attribute change callbacks are suppressed. After connection, all attribute changes are processed normally.
-- **`connect()` with deferred template**: When `templateOptions` is `"defer-and-hydrate"` and no template is available, `connect()` returns early automatically. The `Observable` subscription on `"template"` retriggers connection when the template arrives. No `defer-hydration` attribute is needed.
+- **Late template attachment**: Connected elements no longer rely on `templateOptions` to pause connection. If a definition receives a template later, the observable `template` update recreates the controller so rendering or hydration can continue. No `defer-hydration` attribute is needed.
 - **Binding evaluation with existing shadow root**: When an existing shadow root is detected, `attribute` and `booleanAttribute` bindings skip their initial DOM update. All other binding types (event, content, property, tokenList) run normally.
 
 ### New APIs
@@ -179,7 +200,7 @@ This is a **breaking change** for SSR output format. Any system that produces or
 
 ### Changed behavior
 
-- **`FASTElement.define()`** now returns `Promise<TType>`. When a template is provided at definition time, the Promise resolves immediately. When `templateOptions` is `"defer-and-hydrate"` and no template is provided, the Promise resolves after a template is supplied (e.g. via `<f-template>`).
+- **`FASTElement.define()`** now returns `Promise<TType>`. When a template is provided at definition time — or when no template is provided — the Promise resolves immediately. If the definition uses an async template resolver, the Promise resolves after that resolver settles.
 - **`FASTElement.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
 - **`FASTElementDefinition.compose()`** now returns `Promise<FASTElementDefinition>`. The Promise always resolves immediately.
 - **`@customElement` decorator** calls `define()` internally but does not return the Promise (fire-and-forget). For complete definitions with a template, the element is registered via a microtask.
@@ -189,17 +210,16 @@ This is a **breaking change** for SSR output format. Any system that produces or
 1. Replace `defineAsync()` calls with `define()`:
 
    ```typescript
-   // Before
-   MyElement.defineAsync({
-       name: "my-element",
-       templateOptions: "defer-and-hydrate",
-   });
+    // Before
+    MyElement.defineAsync({
+        name: "my-element",
+        templateOptions: "defer-and-hydrate",
+    });
 
-   // After
-   MyElement.define({
-       name: "my-element",
-       templateOptions: "defer-and-hydrate",
-   });
+    // After
+    MyElement.define({
+        name: "my-element",
+    });
    ```
 
 2. Replace `composeAsync()` calls with `compose()` and add `await`:

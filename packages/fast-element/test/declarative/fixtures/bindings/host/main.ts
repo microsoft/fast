@@ -15,7 +15,6 @@ class HostEventElement extends FASTElement {
 }
 HostEventElement.define({
     name: "host-event-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 2: Element with multiple host bindings (event + boolean)
@@ -35,7 +34,6 @@ class HostMultiElement extends FASTElement {
 }
 HostMultiElement.define({
     name: "host-multi-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 3: Element with static attribute and multiple content bindings
@@ -55,7 +53,6 @@ class HostStaticElement extends FASTElement {
 }
 HostStaticElement.define({
     name: "host-static-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 4: Element with multiple host events
@@ -78,7 +75,6 @@ class HostEventsElement extends FASTElement {
 }
 HostEventsElement.define({
     name: "host-events-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 5: Element with host event and multiple content attribute bindings
@@ -99,7 +95,6 @@ class HostMultiContentElement extends FASTElement {
 }
 HostMultiContentElement.define({
     name: "host-multi-content-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 6: Element with host event and content text binding
@@ -116,7 +111,6 @@ class HostTextBindingElement extends FASTElement {
 }
 HostTextBindingElement.define({
     name: "host-text-binding-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 7: Element with host property binding
@@ -131,7 +125,6 @@ class HostPropertyElement extends FASTElement {
 }
 HostPropertyElement.define({
     name: "host-property-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 8: Element with all host binding types (event + boolean + property + attribute)
@@ -157,7 +150,6 @@ class HostAllTypesElement extends FASTElement {
 }
 HostAllTypesElement.define({
     name: "host-all-types-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Base class for permutation tests - all have same properties/behavior
@@ -189,7 +181,6 @@ class HostPermAttrFirst extends HostPermutationBase {
 }
 HostPermAttrFirst.define({
     name: "host-perm-attr-first",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 10: Permutation - boolean first
@@ -199,7 +190,6 @@ class HostPermBoolFirst extends HostPermutationBase {
 }
 HostPermBoolFirst.define({
     name: "host-perm-bool-first",
-    templateOptions: "defer-and-hydrate",
 });
 
 // Test 11: Permutation - property first
@@ -209,7 +199,6 @@ class HostPermPropFirst extends HostPermutationBase {
 }
 HostPermPropFirst.define({
     name: "host-perm-prop-first",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.config({

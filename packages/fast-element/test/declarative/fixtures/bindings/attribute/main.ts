@@ -7,7 +7,6 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementProperty extends FASTElement {
@@ -16,7 +15,6 @@ class TestElementProperty extends FASTElement {
 }
 TestElementProperty.define({
     name: "test-element-property",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementExpression extends FASTElement {
@@ -28,7 +26,6 @@ class TestElementExpression extends FASTElement {
 }
 TestElementExpression.define({
     name: "test-element-expression",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.config({
