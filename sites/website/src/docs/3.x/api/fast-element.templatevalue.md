@@ -20,6 +20,6 @@ Represents the types of values that can be interpolated into a template.
 **Signature:**
 
 ```typescript
-export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource, TParent>;
+export type TemplateValue<TSource, TParent = any> = Expression<TSource, any, TParent> | Binding<TSource, any, TParent> | HTMLDirective | CaptureType;
 ```
 **References:** [Expression](../fast-element.expression/)<!-- -->, [Binding](../fast-element.binding/)<!-- -->, [HTMLDirective](../fast-element.htmldirective/)<!-- -->, [CaptureType](../fast-element.capturetype/)

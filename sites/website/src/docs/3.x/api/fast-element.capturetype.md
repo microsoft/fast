@@ -20,5 +20,5 @@ A marker interface used to capture types when interpolating Directive helpers in
 **Signature:**
 
 ```typescript
-export interface CaptureType<TSource, TParent> 
+export interface CaptureType 
 ```
