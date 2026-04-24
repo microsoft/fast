@@ -1,5 +1,8 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 // Test 1: Element with single host event binding and content attribute binding
 class HostEventElement extends FASTElement {
@@ -15,6 +18,7 @@ class HostEventElement extends FASTElement {
 }
 HostEventElement.define({
     name: "host-event-element",
+    template: declarativeTemplate(),
 });
 
 // Test 2: Element with multiple host bindings (event + boolean)
@@ -34,6 +38,7 @@ class HostMultiElement extends FASTElement {
 }
 HostMultiElement.define({
     name: "host-multi-element",
+    template: declarativeTemplate(),
 });
 
 // Test 3: Element with static attribute and multiple content bindings
@@ -53,6 +58,7 @@ class HostStaticElement extends FASTElement {
 }
 HostStaticElement.define({
     name: "host-static-element",
+    template: declarativeTemplate(),
 });
 
 // Test 4: Element with multiple host events
@@ -75,6 +81,7 @@ class HostEventsElement extends FASTElement {
 }
 HostEventsElement.define({
     name: "host-events-element",
+    template: declarativeTemplate(),
 });
 
 // Test 5: Element with host event and multiple content attribute bindings
@@ -95,6 +102,7 @@ class HostMultiContentElement extends FASTElement {
 }
 HostMultiContentElement.define({
     name: "host-multi-content-element",
+    template: declarativeTemplate(),
 });
 
 // Test 6: Element with host event and content text binding
@@ -111,6 +119,7 @@ class HostTextBindingElement extends FASTElement {
 }
 HostTextBindingElement.define({
     name: "host-text-binding-element",
+    template: declarativeTemplate(),
 });
 
 // Test 7: Element with host property binding
@@ -125,6 +134,7 @@ class HostPropertyElement extends FASTElement {
 }
 HostPropertyElement.define({
     name: "host-property-element",
+    template: declarativeTemplate(),
 });
 
 // Test 8: Element with all host binding types (event + boolean + property + attribute)
@@ -150,6 +160,7 @@ class HostAllTypesElement extends FASTElement {
 }
 HostAllTypesElement.define({
     name: "host-all-types-element",
+    template: declarativeTemplate(),
 });
 
 // Base class for permutation tests - all have same properties/behavior
@@ -181,6 +192,7 @@ class HostPermAttrFirst extends HostPermutationBase {
 }
 HostPermAttrFirst.define({
     name: "host-perm-attr-first",
+    template: declarativeTemplate(),
 });
 
 // Test 10: Permutation - boolean first
@@ -190,6 +202,7 @@ class HostPermBoolFirst extends HostPermutationBase {
 }
 HostPermBoolFirst.define({
     name: "host-perm-bool-first",
+    template: declarativeTemplate(),
 });
 
 // Test 11: Permutation - property first
@@ -199,12 +212,11 @@ class HostPermPropFirst extends HostPermutationBase {
 }
 HostPermPropFirst.define({
     name: "host-perm-prop-first",
+    template: declarativeTemplate(),
 });
 
 TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },
-}).define({
-    name: "f-template",
 });

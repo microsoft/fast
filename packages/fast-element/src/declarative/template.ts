@@ -2,12 +2,13 @@ import { attr } from "../components/attributes.js";
 import { ElementController } from "../components/element-controller.js";
 import {
     FASTElementDefinition,
-    fastElementRegistry,
+    type FASTElementTemplateResolver,
     type TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 import { FASTElement } from "../components/fast-element.js";
 import { FAST } from "../platform.js";
 import { AttributeMap, type AttributeMapConfig } from "./attribute-map.js";
+import type { ElementViewTemplate } from "../templating/template.js";
 import {
     getDefinitionElementOptions,
     mergeElementOptions,
@@ -15,8 +16,70 @@ import {
 import { Message } from "./interfaces.js";
 import { ObserverMap, type ObserverMapConfig } from "./observer-map.js";
 import { Schema } from "./schema.js";
+import { declarativeTemplateBridge, type TemplatePublisher } from "./template-bridge.js";
 import { TemplateParser } from "./template-parser.js";
 import { transformInnerHTML } from "./utilities.js";
+
+const templateElementName = "f-template";
+
+const ensuredTemplateElements = new WeakMap<CustomElementRegistry, Promise<void>>();
+
+function isTemplateElementConstructor(value: Function | undefined): boolean {
+    return value === TemplateElement || value?.prototype instanceof TemplateElement;
+}
+
+async function ensureTemplateElementDefined(
+    registry: CustomElementRegistry,
+): Promise<void> {
+    const ensured = ensuredTemplateElements.get(registry);
+
+    if (ensured) {
+        return ensured;
+    }
+
+    const existing = registry.get(templateElementName);
+
+    const definitionPromise =
+        existing !== void 0
+            ? isTemplateElementConstructor(existing)
+                ? Promise.resolve()
+                : Promise.reject(
+                      new Error(
+                          "The <f-template> element is already defined in this registry by a different implementation.",
+                      ),
+                  )
+            : TemplateElement.define({
+                  name: templateElementName,
+                  registry,
+              }).then(() => void 0);
+
+    const pending = definitionPromise.catch(error => {
+        ensuredTemplateElements.delete(registry);
+        throw error;
+    });
+
+    ensuredTemplateElements.set(registry, pending);
+
+    return pending;
+}
+
+function chainLifecycleCallback<TArgs extends unknown[]>(
+    first: ((...args: TArgs) => void) | undefined,
+    second: ((...args: TArgs) => void) | undefined,
+): ((...args: TArgs) => void) | undefined {
+    if (!first) {
+        return second;
+    }
+
+    if (!second) {
+        return first;
+    }
+
+    return (...args: TArgs) => {
+        first(...args);
+        second(...args);
+    };
+}
 
 /**
  * Checks whether a map option (observerMap or attributeMap) is enabled.
@@ -27,6 +90,10 @@ function isMapOptionEnabled(
 ): boolean {
     return typeof option === "object" && !Array.isArray(option);
 }
+
+type MutableFASTElementDefinition = FASTElementDefinition & {
+    lifecycleCallbacks?: TemplateLifecycleCallbacks;
+};
 
 /**
  * Element options the TemplateElement will use to update the registered element
@@ -80,13 +147,25 @@ export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks 
 }
 
 /**
+ * Returns a declarative template resolver that waits for the matching
+ * `<f-template>` element and resolves it into a concrete `ViewTemplate`.
+ * @public
+ */
+export function declarativeTemplate(): FASTElementTemplateResolver {
+    return async definition => {
+        await ensureTemplateElementDefined(definition.registry);
+        return declarativeTemplateBridge.requestTemplate(definition);
+    };
+}
+
+/**
  * The <f-template> custom element that will provide view logic to the element.
  *
  * Acts as the bridge between declarative HTML templates and the FAST element
  * registry. Lifecycle orchestration (registration, options, callbacks) lives
  * here; template parsing is delegated to {@link TemplateParser}.
  */
-class TemplateElement extends FASTElement {
+class TemplateElement extends FASTElement implements TemplatePublisher {
     /**
      * The name of the custom element this template will be applied to
      */
@@ -99,24 +178,9 @@ class TemplateElement extends FASTElement {
     public static elementOptions: ElementOptionsDictionary = {};
 
     /**
-     * ObserverMap instance for caching binding paths
-     */
-    private observerMap?: ObserverMap;
-
-    /**
-     * AttributeMap instance for defining @attr properties
-     */
-    private attributeMap?: AttributeMap;
-
-    /**
      * Default element options
      */
     private static defaultElementOptions: ElementOptions = {};
-
-    /**
-     * Metadata containing JSON schema for properties on a custom element
-     */
-    private schema?: Schema;
 
     /**
      * Lifecycle callbacks for hydration events
@@ -169,7 +233,6 @@ class TemplateElement extends FASTElement {
     constructor() {
         super();
 
-        // Ensure elementOptions is initialized if it's empty
         if (
             !TemplateElement.elementOptions ||
             Object.keys(TemplateElement.elementOptions).length === 0
@@ -178,122 +241,134 @@ class TemplateElement extends FASTElement {
         }
     }
 
+    connectedCallback(): void {
+        super.connectedCallback();
+        declarativeTemplateBridge.registerPublisher(this.registry, this.name, this);
+    }
+
+    disconnectedCallback(): void {
+        declarativeTemplateBridge.unregisterPublisher(this.registry, this.name, this);
+        super.disconnectedCallback();
+    }
+
+    public nameChanged(
+        previousName: string | undefined,
+        nextName: string | undefined,
+    ): void {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+
+        declarativeTemplateBridge.movePublisher(
+            this.registry,
+            previousName,
+            nextName,
+            this,
+        );
+    }
+
     /**
-     * Set options for a custom element
-     * @param name - The name of the custom element to set options for.
+     * Publish a concrete template for the supplied definition.
+     * @internal
      */
+    public publishTemplate(definition: FASTElementDefinition): ElementViewTemplate {
+        const name = definition.name;
+        const templates = this.getElementsByTagName("template");
+
+        if (templates.length > 1) {
+            throw FAST.error(Message.moreThanOneTemplateProvided, {
+                name,
+            });
+        }
+
+        if (templates.length === 0) {
+            throw FAST.error(Message.noTemplateProvided, { name });
+        }
+
+        TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
+        TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
+
+        const schema = new Schema(name);
+        const innerHTML = transformInnerHTML(this.innerHTML);
+        const parser = new TemplateParser();
+        const { strings, values } = parser.parse(innerHTML, schema);
+
+        const elementOptions = this.getElementOptions(definition);
+
+        if (isMapOptionEnabled(elementOptions?.attributeMap)) {
+            const option = elementOptions!.attributeMap;
+            const config: AttributeMapConfig | undefined =
+                typeof option === "object" ? option : undefined;
+            const attributeMap = new AttributeMap(
+                definition.type.prototype,
+                schema,
+                definition,
+                config,
+            );
+
+            attributeMap.defineProperties();
+        }
+
+        if (isMapOptionEnabled(elementOptions?.observerMap)) {
+            const option = elementOptions!.observerMap;
+            const config =
+                typeof option === "object" && option !== null ? option : undefined;
+            const observerMap = new ObserverMap(
+                definition.type.prototype,
+                schema,
+                config,
+            );
+
+            observerMap.defineProperties();
+        }
+
+        this.attachLifecycleCallbacks(definition);
+
+        return parser.createTemplate(strings, values);
+    }
+
     private static setOptions(name: string): void {
         if (!TemplateElement.elementOptions[name]) {
             TemplateElement.elementOptions[name] = TemplateElement.defaultElementOptions;
         }
     }
 
-    connectedCallback(): void {
-        super.connectedCallback();
-        const name = this.name;
+    private get registry(): CustomElementRegistry {
+        return FASTElementDefinition.getForInstance(this)?.registry ?? customElements;
+    }
 
-        if (typeof name !== "string") {
+    private getElementOptions(
+        definition: FASTElementDefinition,
+    ): ElementOptions | undefined {
+        if (!TemplateElement.elementOptions?.[definition.name]) {
+            TemplateElement.setOptions(definition.name);
+        }
+
+        return mergeElementOptions(
+            TemplateElement.elementOptions[definition.name],
+            getDefinitionElementOptions(definition),
+        );
+    }
+
+    private attachLifecycleCallbacks(definition: FASTElementDefinition): void {
+        const templateDidUpdate = chainLifecycleCallback(
+            definition.lifecycleCallbacks?.templateDidUpdate,
+            TemplateElement.lifecycleCallbacks.templateDidUpdate,
+        );
+        const elementDidDefine = chainLifecycleCallback(
+            definition.lifecycleCallbacks?.elementDidDefine,
+            TemplateElement.lifecycleCallbacks.elementDidDefine,
+        );
+
+        if (!templateDidUpdate && !elementDidDefine) {
             return;
         }
 
-        this.schema = new Schema(name);
-
-        FASTElementDefinition.register(name).then(async value => {
-            // Definitions are registered before FASTElement.define() finishes applying
-            // extensions. Yield once so definition-scoped declarative options are
-            // available before schema processing and template assignment begin.
-            await Promise.resolve();
-
-            TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
-
-            if (!TemplateElement.elementOptions?.[name]) {
-                TemplateElement.setOptions(name);
-            }
-
-            const schema = this.schema!;
-            const registeredFastElement: FASTElementDefinition | undefined =
-                fastElementRegistry.getByType(value);
-            const elementOptions = mergeElementOptions(
-                TemplateElement.elementOptions[name],
-                getDefinitionElementOptions(registeredFastElement),
-            );
-
-            if (isMapOptionEnabled(elementOptions?.observerMap)) {
-                const observerMapOption = elementOptions?.observerMap;
-                const observerMapConfig =
-                    typeof observerMapOption === "object" && observerMapOption !== null
-                        ? observerMapOption
-                        : undefined;
-
-                this.observerMap = new ObserverMap(
-                    value.prototype,
-                    schema,
-                    observerMapConfig,
-                );
-            }
-
-            if (isMapOptionEnabled(elementOptions?.attributeMap)) {
-                const mapOption = elementOptions?.attributeMap;
-                const mapConfig: AttributeMapConfig | undefined =
-                    typeof mapOption === "object" ? mapOption : undefined;
-
-                this.attributeMap = new AttributeMap(
-                    value.prototype,
-                    schema,
-                    registeredFastElement,
-                    mapConfig,
-                );
-            }
-
-            const templates = this.getElementsByTagName("template");
-
-            if (templates.length === 1) {
-                // Callback: Before template has been evaluated and assigned
-                TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
-
-                const innerHTML = transformInnerHTML(this.innerHTML);
-                const parser = new TemplateParser();
-
-                const { strings, values } = parser.parse(innerHTML, schema);
-
-                // Define the root properties cached in the observer map as observable (only if observerMap exists)
-                this.observerMap?.defineProperties();
-
-                // Define the leaf properties as @attr (only if attributeMap exists)
-                this.attributeMap?.defineProperties();
-
-                if (registeredFastElement) {
-                    const hadTemplate = registeredFastElement.template !== undefined;
-
-                    // Attach lifecycle callbacks to the definition before assigning template
-                    (registeredFastElement as any).lifecycleCallbacks = {
-                        templateDidUpdate:
-                            TemplateElement.lifecycleCallbacks.templateDidUpdate,
-                        elementDidDefine:
-                            TemplateElement.lifecycleCallbacks.elementDidDefine,
-                    };
-
-                    // All new elements will get the updated template
-                    // This assignment triggers the Observable notification → callbacks fire
-                    registeredFastElement.template = parser.createTemplate(
-                        strings,
-                        values,
-                    );
-
-                    TemplateElement.lifecycleCallbacks.templateDidUpdate?.(name);
-
-                    if (!hadTemplate && registeredFastElement.isDefined) {
-                        TemplateElement.lifecycleCallbacks.elementDidDefine?.(name);
-                    }
-                }
-            } else if (templates.length > 1) {
-                throw FAST.error(Message.moreThanOneTemplateProvided, {
-                    name: this.name,
-                });
-            } else {
-                throw FAST.error(Message.noTemplateProvided, { name: this.name });
-            }
-        });
+        (definition as MutableFASTElementDefinition).lifecycleCallbacks = {
+            ...definition.lifecycleCallbacks,
+            templateDidUpdate,
+            elementDidDefine,
+        };
     }
 }
 

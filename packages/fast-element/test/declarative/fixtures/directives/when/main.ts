@@ -1,5 +1,8 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 class TestElementMultiple extends FASTElement {
     @attr()
@@ -7,6 +10,7 @@ class TestElementMultiple extends FASTElement {
 }
 TestElementMultiple.define({
     name: "test-element-multiple",
+    template: declarativeTemplate(),
 });
 
 class TestElement extends FASTElement {
@@ -15,6 +19,7 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
+    template: declarativeTemplate(),
 });
 
 class TestElementNot extends FASTElement {
@@ -23,6 +28,7 @@ class TestElementNot extends FASTElement {
 }
 TestElementNot.define({
     name: "test-element-not",
+    template: declarativeTemplate(),
 });
 
 class TestElementEquals extends FASTElement {
@@ -31,6 +37,7 @@ class TestElementEquals extends FASTElement {
 }
 TestElementEquals.define({
     name: "test-element-equals",
+    template: declarativeTemplate(),
 });
 
 class TestElementNotEquals extends FASTElement {
@@ -39,6 +46,7 @@ class TestElementNotEquals extends FASTElement {
 }
 TestElementNotEquals.define({
     name: "test-element-not-equals",
+    template: declarativeTemplate(),
 });
 
 class TestElementGe extends FASTElement {
@@ -47,6 +55,7 @@ class TestElementGe extends FASTElement {
 }
 TestElementGe.define({
     name: "test-element-ge",
+    template: declarativeTemplate(),
 });
 
 class TestElementGt extends FASTElement {
@@ -55,6 +64,7 @@ class TestElementGt extends FASTElement {
 }
 TestElementGt.define({
     name: "test-element-gt",
+    template: declarativeTemplate(),
 });
 
 class TestElementLe extends FASTElement {
@@ -63,6 +73,7 @@ class TestElementLe extends FASTElement {
 }
 TestElementLe.define({
     name: "test-element-le",
+    template: declarativeTemplate(),
 });
 
 class TestElementLt extends FASTElement {
@@ -71,6 +82,7 @@ class TestElementLt extends FASTElement {
 }
 TestElementLt.define({
     name: "test-element-lt",
+    template: declarativeTemplate(),
 });
 
 class TestElementOr extends FASTElement {
@@ -82,6 +94,7 @@ class TestElementOr extends FASTElement {
 }
 TestElementOr.define({
     name: "test-element-or",
+    template: declarativeTemplate(),
 });
 
 class TestElementAnd extends FASTElement {
@@ -93,6 +106,7 @@ class TestElementAnd extends FASTElement {
 }
 TestElementAnd.define({
     name: "test-element-and",
+    template: declarativeTemplate(),
 });
 
 export class TestElementWhenFalseRepeat extends FASTElement {
@@ -104,6 +118,7 @@ export class TestElementWhenFalseRepeat extends FASTElement {
 }
 TestElementWhenFalseRepeat.define({
     name: "test-element-when-false-repeat",
+    template: declarativeTemplate(),
 });
 
 export class TestElementEvent extends FASTElement {
@@ -119,6 +134,7 @@ export class TestElementEvent extends FASTElement {
 }
 TestElementEvent.define({
     name: "test-element-event",
+    template: declarativeTemplate(),
 });
 
 export class NestedWhenElement extends FASTElement {
@@ -146,12 +162,11 @@ export class NestedWhenElement extends FASTElement {
 }
 NestedWhenElement.define({
     name: "nested-when",
+    template: declarativeTemplate(),
 });
 
 TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },
-}).define({
-    name: "f-template",
 });
