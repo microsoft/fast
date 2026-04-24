@@ -47,7 +47,7 @@ A declarative FAST component requires three pieces: a JavaScript class, an `<f-t
 
 ```ts
 import { FASTElement, attr } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class HelloWorld extends FASTElement {
     @attr greeting: string = "Hello";
@@ -55,10 +55,8 @@ class HelloWorld extends FASTElement {
 
 HelloWorld.define({
     name: "hello-world",
-    templateOptions: "defer-and-hydrate",
+    template: declarativeTemplate(),
 });
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 **2. Write the template** (`templates.html`):
@@ -84,15 +82,15 @@ TemplateElement.define({ name: "f-template" });
 </html>
 ```
 
-When the page loads, `TemplateElement` finds the `<f-template name="hello-world">` element, parses its inner `<template>`, and assigns it to the `hello-world` definition. The component hydrates any pre-rendered content or renders client-side, and reactive bindings keep the DOM in sync with property changes.
+When the page loads, `declarativeTemplate()` automatically defines `<f-template>` in the relevant registry, finds the `<f-template name="hello-world">` element, parses its inner `<template>`, and resolves the template for the `hello-world` definition. The component hydrates any pre-rendered content or renders client-side, and reactive bindings keep the DOM in sync with property changes.
 
 ## How It Works
 
 The declarative pipeline follows these steps:
 
-1. **Define** — The component class is registered with `templateOptions: "defer-and-hydrate"`, which tells FAST to wait for a template instead of rendering immediately.
+1. **Define** — The component class is registered with `template: declarativeTemplate()`, which tells FAST to wait for a matching `<f-template>` element and automatically defines the `<f-template>` custom element in the registry.
 2. **Parse** — When `<f-template>` connects to the DOM, `TemplateParser` converts the declarative markup into the same internal `ViewTemplate` that the imperative `html` tag produces.
-3. **Bind** — The template is assigned to the element definition and reactive bindings are established.
+3. **Resolve** — The template is resolved through the bridge and assigned to the element definition before `define()` completes.
 4. **Hydrate** — If the page contains pre-rendered content (from a server), existing DOM nodes are reused rather than replaced. If no pre-rendered content exists, the template renders client-side.
 
 ## Declarative vs. Imperative Syntax
@@ -119,7 +117,7 @@ NameTag.define({ name: "name-tag", template });
 
 ```ts
 import { FASTElement, attr } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class NameTag extends FASTElement {
     @attr greeting: string = "Hello";
@@ -127,10 +125,8 @@ class NameTag extends FASTElement {
 
 NameTag.define({
     name: "name-tag",
-    templateOptions: "defer-and-hydrate",
+    template: declarativeTemplate(),
 });
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 ```html

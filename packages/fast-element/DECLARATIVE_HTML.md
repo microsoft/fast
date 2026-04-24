@@ -16,7 +16,7 @@ the package-level hydration overview, see the
 [Prerendered Content Optimization](./README.md#prerendered-content-optimization).
 For user-facing guides covering f-template syntax, element definition, and
 server-side rendering, see the
-[Declarative HTML docs](../../sites/website/src/docs/3.x/declarative-templates/).
+[Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/).
 
 ## Template Structure
 

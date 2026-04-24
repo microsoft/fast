@@ -29,7 +29,7 @@ One of the core benefits of FAST's declarative HTML templates is stack-agnostic 
 A server-side renderer must produce HTML that follows these conventions so the client-side FAST runtime can hydrate it:
 
 1. **Declarative Shadow DOM** — Custom element content is rendered inside a `<template shadowrootmode="open">` element, which the browser expands into a shadow root.
-2. **Hydration markers** — Binding slots are annotated with `data-fe="N"` attributes on elements, and content bindings are wrapped in `<!--fe:b-->VALUE<!--fe:/b-->` comment markers.
+2. **Hydration markers** — Attribute bindings are annotated with `data-fe="N"` attributes on elements (where `N` is the count of attribute bindings on that element). Content bindings are wrapped in `<!--fe:b-->VALUE<!--fe:/b-->` comment markers.
 3. **State resolution** — Binding expressions like `{{title}}` are resolved to their initial values from a state object.
 
 **Example:** Given this template and state:
@@ -38,25 +38,31 @@ A server-side renderer must produce HTML that follows these conventions so the c
 <f-template name="greeting-card">
     <template>
         <h2>{{title}}</h2>
-        <p>{{message}}</p>
+        <button ?disabled="{{!isActive}}" @click="{handleClick($e)}">
+            {{buttonLabel}}
+        </button>
     </template>
 </f-template>
 ```
 
 ```json
-{ "title": "Hello", "message": "Welcome to FAST" }
+{ "title": "Hello", "isActive": true, "buttonLabel": "Click me" }
 ```
 
 A server renderer produces:
 
 ```html
-<greeting-card title="Hello" message="Welcome to FAST">
+<greeting-card title="Hello" is-active button-label="Click me">
     <template shadowrootmode="open">
-        <h2 data-fe="0"><!--fe:b-->Hello<!--fe:/b--></h2>
-        <p data-fe="1"><!--fe:b-->Welcome to FAST<!--fe:/b--></p>
+        <h2><!--fe:b-->Hello<!--fe:/b--></h2>
+        <button data-fe="2">
+            <!--fe:b-->Click me<!--fe:/b-->
+        </button>
     </template>
 </greeting-card>
 ```
+
+Note that `data-fe="2"` appears on the `<button>` because it has two attribute bindings: the boolean `?disabled` binding and the `@click` event binding. Content bindings (`{{title}}` and `{{buttonLabel}}`) use comment markers instead. Event bindings and attribute directives are client-only — the server strips them but allocates binding slots for hydration.
 
 When the page loads, the FAST declarative runtime finds these markers and attaches reactive bindings to the existing DOM nodes instead of re-rendering.
 
@@ -66,8 +72,8 @@ The end-to-end flow from server to interactive page follows these steps:
 
 1. **Server renders** — The renderer resolves `{{bindings}}` against the state, injects Declarative Shadow DOM `<template>` elements, and adds hydration markers.
 2. **Browser loads HTML** — The browser parses the page. Declarative Shadow DOM `<template>` elements are automatically expanded into shadow roots.
-3. **JavaScript loads** — Component classes are defined with `templateOptions: "defer-and-hydrate"` and `TemplateElement` is registered.
-4. **Template assignment** — `TemplateElement` parses `<f-template>` markup and assigns the compiled template to each element definition.
+3. **JavaScript loads** — Component classes are defined with `template: declarativeTemplate()`, which waits for matching `<f-template>` elements and resolves the template.
+4. **Template resolution** — `declarativeTemplate()` coordinates with the `<f-template>` elements to parse the declarative markup and supply the compiled template to each element definition.
 5. **Hydration** — FAST detects the pre-rendered shadow DOM, maps existing DOM nodes to binding slots using hydration markers, and re-establishes reactive observations.
 6. **Interactive** — The page is fully interactive. Property changes trigger targeted DOM updates.
 
@@ -138,7 +144,7 @@ fast build --entry=index.html --state=state.json --output=output.html --template
 | `--state` | `state.json` | JSON file containing the initial state |
 | `--output` | `output.html` | Where to write the rendered HTML |
 | `--templates` | _(none)_ | Glob pattern(s) for `<f-template>` HTML files |
-| `--attribute-name-strategy` | `none` | How to map attribute names to properties |
+| `--attribute-name-strategy` | `camelCase` | How to map attribute names to properties |
 | `--config` | `fast-build.config.json` | Path to a configuration file |
 
 ### Example
@@ -209,15 +215,15 @@ The `--attribute-name-strategy` option controls how HTML attribute names on cust
 
 | Strategy | Behavior | Example |
 |---|---|---|
-| `none` (default) | Dashes preserved | `foo-bar` → `{{foo-bar}}` |
-| `camelCase` | Dashes converted to camelCase | `foo-bar` → `{{fooBar}}` |
+| `camelCase` (default) | Dashes converted to camelCase | `foo-bar` → `{{fooBar}}` |
+| `none` | Dashes preserved | `foo-bar` → `{{foo-bar}}` |
 
 ```shell
-fast build --attribute-name-strategy=camelCase --templates="./components/**/*.html"
+fast build --attribute-name-strategy=none --templates="./components/**/*.html"
 ```
 
 :::important
-The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=camelCase`, configure the client with `attributeMap: { "attribute-name-strategy": "camelCase" }`.
+The attribute name strategy must match between the server-side build and the client-side `attributeMap` configuration. If the build uses `--attribute-name-strategy=none`, configure the client with `attributeMap({ "attribute-name-strategy": "none" })`.
 :::
 
 ## Writing Components for SSR

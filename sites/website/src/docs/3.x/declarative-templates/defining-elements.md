@@ -24,14 +24,15 @@ keywords:
 
 # Defining Declarative Elements
 
-A declarative FASTElement component requires a JavaScript class definition, a `TemplateElement` registration, and an `<f-template>` in the HTML. This page covers the JavaScript setup, lifecycle callbacks, and configuration options.
+A declarative FASTElement component requires a JavaScript class definition with `template: declarativeTemplate()` and an `<f-template>` in the HTML. The `declarativeTemplate()` function automatically defines the `<f-template>` custom element and waits for the matching template before completing registration. This page covers the JavaScript setup, extensions, lifecycle callbacks, and configuration options.
 
 ## Basic Setup
 
-**1. Define the component class** with `templateOptions: "defer-and-hydrate"`:
+**1. Define the component class** with `template: declarativeTemplate()`:
 
 ```ts
 import { FASTElement, attr } from "@microsoft/fast-element";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyCounter extends FASTElement {
     @attr count: number = 0;
@@ -39,21 +40,13 @@ class MyCounter extends FASTElement {
 
 MyCounter.define({
     name: "my-counter",
-    templateOptions: "defer-and-hydrate",
+    template: declarativeTemplate(),
 });
 ```
 
-The `templateOptions: "defer-and-hydrate"` setting tells FAST to wait for a template from an `<f-template>` element instead of rendering immediately. If pre-rendered content exists in the DOM, it will be hydrated rather than replaced.
+The `template: declarativeTemplate()` setting tells FAST to wait for a matching `<f-template>` element before completing registration. It automatically defines the `<f-template>` custom element in the relevant registry. If pre-rendered content exists in the DOM, it will be hydrated rather than replaced.
 
-**2. Register the `TemplateElement`** so the browser recognizes `<f-template>`:
-
-```ts
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-
-TemplateElement.define({ name: "f-template" });
-```
-
-**3. Write the template** in an HTML file:
+**2. Write the template** in an HTML file:
 
 ```html
 <f-template name="my-counter">
@@ -65,7 +58,7 @@ TemplateElement.define({ name: "f-template" });
 ```
 
 :::important
-The `TemplateElement` must be defined **after** all component classes are defined, and the `<f-template>` elements must be present in the DOM when `TemplateElement` connects. A common pattern is to place `TemplateElement.define()` as the last registration call in your entry module and include the `<f-template>` elements directly in the HTML page.
+The `<f-template>` elements must be present in the DOM when the component definition resolves. A common pattern is to include the `<f-template>` elements directly in the HTML page before the script module loads.
 :::
 
 ## Complete File Structure
@@ -74,7 +67,7 @@ A typical declarative component setup involves these files:
 
 ```
 my-app/
-├── main.ts          # Component classes + TemplateElement registration
+├── main.ts          # Component classes + declarativeTemplate() setup
 ├── templates.html   # <f-template> elements
 ├── entry.html       # Page HTML with component instances
 ├── state.json       # Initial state for server rendering (optional)
@@ -85,7 +78,7 @@ my-app/
 
 ```ts
 import { FASTElement, attr, css, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class TaskItem extends FASTElement {
     @attr text: string = "";
@@ -95,10 +88,8 @@ class TaskItem extends FASTElement {
 TaskItem.define({
     name: "task-item",
     styles: css`:host { display: block; }`,
-    templateOptions: "defer-and-hydrate",
+    template: declarativeTemplate(),
 });
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 **`templates.html`:**
@@ -130,7 +121,7 @@ TemplateElement.define({ name: "f-template" });
 
 ## Lifecycle Callbacks
 
-`TemplateElement.config()` registers callbacks that fire during template processing and hydration. This is useful for tracking progress, gathering performance metrics, or coordinating initialization.
+`TemplateElement.config()` registers callbacks that fire during template processing and hydration. This is useful for tracking progress, gathering performance metrics, or coordinating initialization. `TemplateElement` remains available for lifecycle configuration even though `declarativeTemplate()` handles the registration automatically.
 
 ```ts
 import { TemplateElement } from "@microsoft/fast-element/declarative.js";
@@ -139,7 +130,7 @@ TemplateElement.config({
     hydrationComplete() {
         console.log("All elements hydrated");
     },
-}).define({ name: "f-template" });
+});
 ```
 
 ### Available Callbacks
@@ -209,20 +200,45 @@ TemplateElement.config({
 });
 ```
 
-## Element Options
+## Extensions
 
-`TemplateElement.options()` configures per-element behavior for `observerMap` and `attributeMap`. These are keyed by custom element name.
+The `observerMap()` and `attributeMap()` functions are define extensions — they are passed as the second argument to `define()` and run before the element is registered with the platform.
 
 ```ts
+import { FASTElement } from "@microsoft/fast-element";
+import {
+    declarativeTemplate,
+    observerMap,
+    attributeMap,
+} from "@microsoft/fast-element/declarative.js";
+
+class MyElement extends FASTElement {}
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [observerMap(), attributeMap()],
+);
+```
+
+Calling `observerMap()` or `attributeMap()` with no arguments applies the default behavior for all properties. You can also pass configuration objects for fine-grained control (see below).
+
+`TemplateElement.options()` is also available for per-element configuration and can be combined with extensions:
+
+```ts
+import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+
 TemplateElement.options({
     "my-element": {
         observerMap: "all",
         attributeMap: "all",
     },
-}).define({ name: "f-template" });
+});
 ```
 
-Both `.config()` and `.options()` are chainable and can be combined:
+Both `.config()` and `.options()` are chainable:
 
 ```ts
 TemplateElement
@@ -233,8 +249,7 @@ TemplateElement
         hydrationComplete() {
             console.log("Ready");
         },
-    })
-    .define({ name: "f-template" });
+    });
 ```
 
 ## ObserverMap
@@ -243,14 +258,18 @@ The `observerMap` option automatically sets up deep reactive observation for pro
 
 ### Observe All Properties
 
-Use `"all"` to observe every root property found in the template:
+Pass `observerMap()` with no arguments to observe every root property found in the template:
 
 ```ts
-TemplateElement.options({
-    "user-profile": {
-        observerMap: "all",
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+
+UserProfile.define(
+    {
+        name: "user-profile",
+        template: declarativeTemplate(),
     },
-});
+    [observerMap()],
+);
 ```
 
 With this template:
@@ -271,9 +290,13 @@ Changes to `user.name` or `user.address.city` will automatically trigger a re-re
 For fine-grained control, pass a configuration object with a `properties` key:
 
 ```ts
-TemplateElement.options({
-    "user-profile": {
-        observerMap: {
+UserProfile.define(
+    {
+        name: "user-profile",
+        template: declarativeTemplate(),
+    },
+    [
+        observerMap({
             properties: {
                 user: {
                     name: true,       // user.name — observed
@@ -283,9 +306,9 @@ TemplateElement.options({
                     },
                 },
             },
-        },
-    },
-});
+        }),
+    ],
+);
 ```
 
 Each entry in the path tree can be:
@@ -320,11 +343,15 @@ The `attributeMap` option automatically creates reactive `@attr` properties for 
 ### Enable for All Leaf Bindings
 
 ```ts
-TemplateElement.options({
-    "greeting-card": {
-        attributeMap: "all",
+import { declarativeTemplate, attributeMap } from "@microsoft/fast-element/declarative.js";
+
+GreetingCard.define(
+    {
+        name: "greeting-card",
+        template: declarativeTemplate(),
     },
-});
+    [attributeMap()],
+);
 ```
 
 With this template:
@@ -333,12 +360,12 @@ With this template:
 <f-template name="greeting-card">
     <template>
         <p>{{greeting}}</p>
-        <p>{{first-name}}</p>
+        <p>{{firstName}}</p>
     </template>
 </f-template>
 ```
 
-This automatically registers `greeting` and `first-name` as `@attr` properties. Setting `setAttribute("first-name", "Jane")` on the element triggers a re-render.
+This automatically registers `greeting` and `firstName` as `@attr` properties. By default, `attributeMap()` uses the `"camelCase"` attribute name strategy, so `firstName` maps to the HTML attribute `first-name`. Setting `setAttribute("first-name", "Jane")` on the element triggers a re-render.
 
 Properties already decorated with `@attr` or `@observable` on the class are left untouched.
 
@@ -348,50 +375,57 @@ The `attribute-name-strategy` option controls how template binding keys map to H
 
 | Strategy | Behavior | Example |
 |---|---|---|
-| `"none"` (default) | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
-| `"camelCase"` | Binding key is the camelCase property; attribute is kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+| `"camelCase"` (default) | Binding key is the camelCase property; attribute is kebab-case | `{{fooBar}}` → property `fooBar`, attribute `foo-bar` |
+| `"none"` | Binding key used as-is for both property and attribute | `{{foo-bar}}` → property `foo-bar`, attribute `foo-bar` |
 
 ```ts
-TemplateElement.options({
-    "my-element": {
-        attributeMap: {
-            "attribute-name-strategy": "camelCase",
-        },
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
     },
-});
+    [
+        attributeMap({
+            "attribute-name-strategy": "none",
+        }),
+    ],
+);
 ```
 
-With the `"camelCase"` strategy, a template binding `{{firstName}}` creates a property `firstName` with an HTML attribute `first-name`. This matches the behavior of the `--attribute-name-strategy` option in the `@microsoft/fast-build` CLI.
+With the `"camelCase"` strategy (the default), a template binding `{{firstName}}` creates a property `firstName` with an HTML attribute `first-name`. This matches the behavior of the `--attribute-name-strategy` option in the `@microsoft/fast-build` CLI.
 
 :::tip
-When using the `"camelCase"` strategy, ensure the server-side build tool uses the same strategy so that attribute names are consistent between the server-rendered HTML and the client-side runtime.
+Ensure the server-side build tool uses the same attribute name strategy as the client-side `attributeMap` configuration so that attribute names are consistent between the server-rendered HTML and the client-side runtime.
 :::
 
 ## Combining ObserverMap and AttributeMap
 
-Both options can be used together for a fully declarative component:
+Both extensions can be used together for a fully declarative component:
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    observerMap,
+    attributeMap,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 class ProductCard extends FASTElement {}
 
-ProductCard.define({
-    name: "product-card",
-    templateOptions: "defer-and-hydrate",
-});
-
-TemplateElement.options({
-    "product-card": {
-        observerMap: "all",
-        attributeMap: "all",
+ProductCard.define(
+    {
+        name: "product-card",
+        template: declarativeTemplate(),
     },
-}).config({
+    [observerMap(), attributeMap()],
+);
+
+TemplateElement.config({
     hydrationComplete() {
         console.log("Ready");
     },
-}).define({ name: "f-template" });
+});
 ```
 
 ```html
@@ -409,9 +443,9 @@ In this example:
 - `observerMap: "all"` enables deep observation so that changes to `details.description` trigger re-renders.
 - The `details` property is not registered as an `@attr` because it has nested paths — it would typically be set programmatically.
 
-## Define Extensions
+## Custom Extensions
 
-The element's `define()` call accepts an optional second argument — an array of extension callbacks. Extensions run before the element is registered with the platform, enabling a plugin pattern:
+In addition to `observerMap()` and `attributeMap()`, the element's `define()` call accepts any extension callback in the extensions array. Extensions run before the element is registered with the platform, enabling a plugin pattern:
 
 ```ts
 import type { FASTElementExtension } from "@microsoft/fast-element";
@@ -424,8 +458,8 @@ function logDefinition(): FASTElementExtension {
 
 MyComponent.define({
     name: "my-component",
-    templateOptions: "defer-and-hydrate",
-}, [logDefinition()]);
+    template: declarativeTemplate(),
+}, [observerMap(), attributeMap(), logDefinition()]);
 ```
 
 This is the same extension mechanism available for imperative components. See [FASTElement — Define Extensions](../getting-started/fast-element#define-extensions) for details.
