@@ -440,7 +440,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     // @alpha
-    static register: (name: string) => Promise<Function>;
+    static register: (name: string, registry?: CustomElementRegistry) => Promise<Function>;
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;

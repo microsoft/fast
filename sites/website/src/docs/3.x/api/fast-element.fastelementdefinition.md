@@ -272,7 +272,7 @@ A map enabling lookup of attribute by associated property name.
 
 </td><td>
 
-(name: string) =&gt; Promise&lt;Function&gt;
+(name: string, registry?: CustomElementRegistry) =&gt; Promise&lt;Function&gt;
 
 
 </td><td>

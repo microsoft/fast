@@ -124,6 +124,17 @@ Creates a FAST element extension that enables declarative attribute mapping for 
 </td></tr>
 <tr><td>
 
+[declarativeTemplate()](../fast-element.declarativetemplate/)
+
+
+</td><td>
+
+Returns a declarative template resolver that waits for the matching `<f-template>` element and resolves it into a concrete `ViewTemplate`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [observerMap(option)](../fast-element.observermap/)
 
 

@@ -88,6 +88,16 @@ const pendingTemplateResolutions = new WeakMap<
     Promise<ElementViewTemplate<HTMLElement> | undefined>
 >();
 
+const templateResolutionErrors = new WeakMap<
+    FASTElementDefinition<Constructable<HTMLElement>>,
+    unknown
+>();
+
+const registeredTypesByRegistry = new WeakMap<
+    CustomElementRegistry,
+    Record<string, Function>
+>();
+
 const extensionRegistries = new WeakMap<
     FASTElementDefinition<Constructable<HTMLElement>>,
     WeakSet<CustomElementRegistry>
@@ -110,6 +120,23 @@ function isPromiseLike<T>(value: T | PromiseLike<T>): value is PromiseLike<T> {
     return typeof (value as PromiseLike<T> | undefined)?.then === "function";
 }
 
+function getRegisteredTypes(
+    registry: CustomElementRegistry = customElements,
+): Record<string, Function> {
+    if (registry === customElements) {
+        return FASTElementDefinition.isRegistered;
+    }
+
+    let registeredTypes = registeredTypesByRegistry.get(registry);
+
+    if (!registeredTypes) {
+        registeredTypes = {};
+        registeredTypesByRegistry.set(registry, registeredTypes);
+    }
+
+    return registeredTypes;
+}
+
 function finalizeResolvedTemplate<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
@@ -126,6 +153,9 @@ function finalizeResolvedTemplate<
     }
 
     if (definition.template !== void 0) {
+        templateResolutionErrors.delete(
+            definition as FASTElementDefinition<Constructable<HTMLElement>>,
+        );
         templateResolvers.delete(
             definition as FASTElementDefinition<Constructable<HTMLElement>>,
         );
@@ -222,6 +252,9 @@ export function resolveFASTElementTemplate<
     | Promise<ElementViewTemplate<InstanceType<TType>> | undefined>
     | undefined {
     if (definition.template !== void 0) {
+        templateResolutionErrors.delete(
+            definition as FASTElementDefinition<Constructable<HTMLElement>>,
+        );
         return definition.template;
     }
 
@@ -241,7 +274,23 @@ export function resolveFASTElementTemplate<
         return void 0;
     }
 
-    const template = templateResolver(definition);
+    templateResolutionErrors.delete(
+        definition as FASTElementDefinition<Constructable<HTMLElement>>,
+    );
+
+    let template:
+        | ElementViewTemplate<InstanceType<TType>>
+        | Promise<ElementViewTemplate<InstanceType<TType>>>;
+
+    try {
+        template = templateResolver(definition);
+    } catch (error) {
+        templateResolutionErrors.set(
+            definition as FASTElementDefinition<Constructable<HTMLElement>>,
+            error,
+        );
+        throw error;
+    }
 
     if (isPromiseLike(template)) {
         const resolution = Promise.resolve(template)
@@ -251,6 +300,10 @@ export function resolveFASTElementTemplate<
             .catch(error => {
                 pendingTemplateResolutions.delete(
                     definition as FASTElementDefinition<Constructable<HTMLElement>>,
+                );
+                templateResolutionErrors.set(
+                    definition as FASTElementDefinition<Constructable<HTMLElement>>,
+                    error,
                 );
 
                 throw error;
@@ -265,6 +318,49 @@ export function resolveFASTElementTemplate<
     }
 
     return finalizeResolvedTemplate(definition, template);
+}
+
+/**
+ * Indicates whether a definition still has a pending template resolver.
+ * @internal
+ */
+export function hasFASTElementTemplateResolver<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(definition: FASTElementDefinition<TType>): boolean {
+    return templateResolvers.has(
+        definition as FASTElementDefinition<Constructable<HTMLElement>>,
+    );
+}
+
+/**
+ * Gets any pending template resolution error for a FAST element definition.
+ * @internal
+ */
+export function getFASTElementTemplateError<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(definition: FASTElementDefinition<TType>): unknown {
+    return templateResolutionErrors.get(
+        definition as FASTElementDefinition<Constructable<HTMLElement>>,
+    );
+}
+
+/**
+ * Sets or clears the template resolution error for a FAST element definition.
+ * @internal
+ */
+export function setFASTElementTemplateError<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
+>(definition: FASTElementDefinition<TType>, error?: unknown): void {
+    const typedDefinition = definition as FASTElementDefinition<
+        Constructable<HTMLElement>
+    >;
+
+    if (error === void 0) {
+        templateResolutionErrors.delete(typedDefinition);
+        return;
+    }
+
+    templateResolutionErrors.set(typedDefinition, error);
 }
 
 /**
@@ -460,8 +556,13 @@ export class FASTElementDefinition<
         this.styles = ElementStyles.normalize(nameOrConfig.styles);
 
         fastElementRegistry.register(this);
-        Observable.defineProperty(FASTElementDefinition.isRegistered, this.name);
-        FASTElementDefinition.isRegistered[this.name] = this.type;
+        const registeredTypes = getRegisteredTypes(this.registry);
+
+        if (!Object.prototype.hasOwnProperty.call(registeredTypes, this.name)) {
+            Observable.defineProperty(registeredTypes, this.name);
+        }
+
+        registeredTypes[this.name] = this.type;
     }
 
     /**
@@ -482,13 +583,19 @@ export class FASTElementDefinition<
             applyFASTElementExtensions(this, registry, extensions);
 
             if (this.template === void 0 && templateResolvers.has(this)) {
-                void Promise.resolve(resolveFASTElementTemplate(this)).then(template => {
-                    if (template !== void 0 && !registry.get(this.name)) {
-                        this.platformDefined = true;
-                        registry.define(this.name, type as any, this.elementOptions);
-                        this.lifecycleCallbacks?.elementDidDefine?.(this.name);
-                    }
-                });
+                void Promise.resolve()
+                    .then(() => resolveFASTElementTemplate(this))
+                    .then(template => {
+                        if (template !== void 0 && !registry.get(this.name)) {
+                            this.platformDefined = true;
+                            registry.define(this.name, type as any, this.elementOptions);
+                            this.lifecycleCallbacks?.elementDidDefine?.(this.name);
+                        }
+                    })
+                    .catch(error => {
+                        setFASTElementTemplateError(this, error);
+                        Observable.notify(this, "template");
+                    });
 
                 return this;
             }
@@ -547,16 +654,37 @@ export class FASTElementDefinition<
      * @param name - The name of the defined custom element.
      * @alpha
      */
-    public static register = async (name: string): Promise<Function> => {
+    public static register = async (
+        name: string,
+        registry: CustomElementRegistry = customElements,
+    ): Promise<Function> => {
+        const registeredTypes = getRegisteredTypes(registry);
+
+        if (!Object.prototype.hasOwnProperty.call(registeredTypes, name)) {
+            Observable.defineProperty(registeredTypes, name);
+        }
+
         return new Promise(resolve => {
-            if (FASTElementDefinition.isRegistered[name]) {
-                resolve(FASTElementDefinition.isRegistered[name]);
+            if (registeredTypes[name]) {
+                resolve(registeredTypes[name]);
+                return;
             }
 
-            Observable.getNotifier(FASTElementDefinition.isRegistered).subscribe(
-                { handleChange: () => resolve(FASTElementDefinition.isRegistered[name]) },
-                name,
-            );
+            const notifier = Observable.getNotifier(registeredTypes);
+            const subscriber = {
+                handleChange: () => {
+                    const value = registeredTypes[name];
+
+                    if (!value) {
+                        return;
+                    }
+
+                    notifier.unsubscribe(subscriber, name);
+                    resolve(value);
+                },
+            };
+
+            notifier.subscribe(subscriber, name);
         });
     };
 }

@@ -1,5 +1,8 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 class TestCamelCase extends FASTElement {
     @attr({ attribute: "foo-bar" })
@@ -7,6 +10,7 @@ class TestCamelCase extends FASTElement {
 }
 TestCamelCase.define({
     name: "test-camel-case",
+    template: declarativeTemplate(),
 });
 
 class TestCamelCaseMulti extends FASTElement {
@@ -15,6 +19,7 @@ class TestCamelCaseMulti extends FASTElement {
 }
 TestCamelCaseMulti.define({
     name: "test-camel-case-multi",
+    template: declarativeTemplate(),
 });
 
 class TestCamelCaseNoDash extends FASTElement {
@@ -23,12 +28,11 @@ class TestCamelCaseNoDash extends FASTElement {
 }
 TestCamelCaseNoDash.define({
     name: "test-camel-case-no-dash",
+    template: declarativeTemplate(),
 });
 
 TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },
-}).define({
-    name: "f-template",
 });

@@ -1,6 +1,10 @@
 import { FASTElement, Observable, observable, Updates } from "@microsoft/fast-element";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
-import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    observerMap,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 interface Product {
     id: number;
@@ -496,13 +500,12 @@ TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },
-}).define({
-    name: "f-template",
 });
 
 DeepMergeTestElement.define(
     {
         name: "deep-merge-test-element",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );

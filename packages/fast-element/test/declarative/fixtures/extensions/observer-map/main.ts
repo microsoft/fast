@@ -5,7 +5,11 @@ import {
     observable,
     Updates,
 } from "@microsoft/fast-element";
-import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    observerMap,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 
 class ObserverMapTestElement extends FASTElement {
@@ -579,6 +583,7 @@ class ObserverMapWithObservablesTestElement extends FASTElement {
 ObserverMapInternalTestElement.define(
     {
         name: "observer-map-internal-test-element",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -586,6 +591,7 @@ ObserverMapInternalTestElement.define(
 ObserverMapTestElement.define(
     {
         name: "observer-map-test-element",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -593,6 +599,7 @@ ObserverMapTestElement.define(
 ObserverMapWithObservablesTestElement.define(
     {
         name: "observer-map-with-observables-test-element",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -612,6 +619,7 @@ class ObserverMapSimpleArrayTestElement extends FASTElement {
 ObserverMapSimpleArrayTestElement.define(
     {
         name: "observer-map-simple-array-test-element",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
@@ -621,8 +629,6 @@ TemplateElement.config({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },
-}).define({
-    name: "f-template",
 });
 
 (window as any).Observable = Observable;

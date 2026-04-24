@@ -23,6 +23,11 @@ export interface AttributeMapConfig {
 // @public (undocumented)
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 
+// Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point declarative.d.ts
+//
+// @public
+export function declarativeTemplate(): FASTElementTemplateResolver;
+
 // @public
 export interface ElementOptions {
     // (undocumented)
@@ -115,16 +120,25 @@ export class Schema {
 export const schemaRegistry: CachedPathMap;
 
 // Warning: (ae-forgotten-export) The symbol "FASTElement" needs to be exported by the entry point declarative.d.ts
+// Warning: (ae-forgotten-export) The symbol "TemplatePublisher" needs to be exported by the entry point declarative.d.ts
 //
 // @public
-export class TemplateElement extends FASTElement {
+export class TemplateElement extends FASTElement implements TemplatePublisher {
     constructor();
     static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
     static elementOptions: ElementOptionsDictionary;
     name?: string;
+    // (undocumented)
+    nameChanged(previousName: string | undefined, nextName: string | undefined): void;
     static options(elementOptions?: ElementOptionsDictionary): typeof TemplateElement;
+    // Warning: (ae-forgotten-export) The symbol "ElementViewTemplate" needs to be exported by the entry point declarative.d.ts
+    //
+    // @internal
+    publishTemplate(definition: FASTElementDefinition): ElementViewTemplate;
 }
 
 // @public

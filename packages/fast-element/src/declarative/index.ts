@@ -14,6 +14,7 @@ export {
     schemaRegistry,
 } from "./schema.js";
 export {
+    declarativeTemplate,
     type ElementOptions,
     type ElementOptionsDictionary,
     type HydrationLifecycleCallbacks,

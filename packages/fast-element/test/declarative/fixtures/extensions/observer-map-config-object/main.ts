@@ -1,8 +1,8 @@
 import { FASTElement } from "@microsoft/fast-element";
 import {
     attributeMap,
+    declarativeTemplate,
     observerMap,
-    TemplateElement,
 } from "@microsoft/fast-element/declarative.js";
 
 class ConfigObserverMapTestElement extends FASTElement {
@@ -25,6 +25,7 @@ class ConfigObserverMapTestElement extends FASTElement {
 ConfigObserverMapTestElement.define(
     {
         name: "config-observer-map-test-element",
+        template: declarativeTemplate(),
     },
     [
         observerMap({
@@ -44,6 +45,7 @@ class ConfigAttributeMapTestElement extends FASTElement {
 ConfigAttributeMapTestElement.define(
     {
         name: "config-attribute-map-test-element",
+        template: declarativeTemplate(),
     },
     [
         attributeMap({
@@ -51,6 +53,3 @@ ConfigAttributeMapTestElement.define(
         }),
     ],
 );
-
-// Use explicit non-default configuration objects to exercise the config-object path
-TemplateElement.define({ name: "f-template" });

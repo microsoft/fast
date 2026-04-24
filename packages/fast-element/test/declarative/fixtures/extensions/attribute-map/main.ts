@@ -1,5 +1,8 @@
 import { attr, FASTElement } from "@microsoft/fast-element";
-import { attributeMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    attributeMap,
+    declarativeTemplate,
+} from "@microsoft/fast-element/declarative.js";
 
 class AttributeMapTestElement extends FASTElement {
     public setFoo() {
@@ -19,6 +22,7 @@ class AttributeMapTestElement extends FASTElement {
 AttributeMapTestElement.define(
     {
         name: "attribute-map-test-element",
+        template: declarativeTemplate(),
     },
     [attributeMap()],
 );
@@ -31,8 +35,7 @@ class AttributeMapWithExistingAttrElement extends FASTElement {
 AttributeMapWithExistingAttrElement.define(
     {
         name: "attribute-map-existing-attr-test-element",
+        template: declarativeTemplate(),
     },
     [attributeMap()],
 );
-
-TemplateElement.define({ name: "f-template" });

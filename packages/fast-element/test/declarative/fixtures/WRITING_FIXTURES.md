@@ -161,8 +161,10 @@ Multiple `<f-template>` elements can be defined in a single `templates.html` —
 The component definition file registers custom elements and configures the template system. Every fixture must:
 
 1. Define element classes extending `FASTElement`.
-2. Call `define()` on the element class with its element name. Declarative fixtures attach the template later through `<f-template>`.
-3. Call `TemplateElement.define()` to register the `<f-template>` custom element.
+2. Call `define()` on the element class with `template: declarativeTemplate()`.
+3. Use `TemplateElement.config()` or `TemplateElement.options()` only when the
+   fixture needs lifecycle callbacks or compatibility fallback options —
+   `declarativeTemplate()` registers `<f-template>` automatically.
 
 ### Import paths
 
@@ -178,7 +180,7 @@ The component definition file registers custom elements and configures the templ
 
 ```typescript
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {
     @attr
@@ -186,10 +188,7 @@ class MyElement extends FASTElement {
 }
 MyElement.define({
     name: "my-element",
-});
-
-TemplateElement.define({
-    name: "f-template",
+    template: declarativeTemplate(),
 });
 ```
 
@@ -225,17 +224,15 @@ For fixtures that test deeply nested property reactivity, prefer the
 definition-scoped `observerMap()` extension:
 
 ```typescript
-import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
 
 MyElement.define(
     {
         name: "my-element",
-        templateOptions: "defer-and-hydrate",
+        template: declarativeTemplate(),
     },
     [observerMap()],
 );
-
-TemplateElement.define({ name: "f-template" });
 ```
 
 This enables the `ObserverMap` proxy system to track nested property changes without requiring `@observable` decorators on every property.
