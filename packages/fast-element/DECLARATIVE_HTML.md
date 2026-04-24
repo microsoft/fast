@@ -14,6 +14,9 @@ For package installation, importing `TemplateElement`, basic registration, and
 the package-level hydration overview, see the
 [FAST Element README](./README.md#declarative-html) and
 [Prerendered Content Optimization](./README.md#prerendered-content-optimization).
+For user-facing guides covering f-template syntax, element definition, and
+server-side rendering, see the
+[Declarative HTML docs](https://fast.design/docs/3.x/declarative-templates/overview/).
 
 ## Template Structure
 
