@@ -22,4 +22,4 @@ Resolves an element template from a composed definition.
 ```typescript
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
 ```
-**References:** [Constructable](../fast-element.constructable/), [FASTElementDefinition](../fast-element.fastelementdefinition/), [ElementViewTemplate](../fast-element.elementviewtemplate/)
+**References:** [Constructable](../fast-element.constructable/)<!-- -->, [FASTElementDefinition](../fast-element.fastelementdefinition/)<!-- -->, [ElementViewTemplate](../fast-element.elementviewtemplate/)

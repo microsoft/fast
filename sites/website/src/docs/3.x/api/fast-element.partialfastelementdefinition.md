@@ -20,7 +20,7 @@ Represents metadata configuration for a custom element.
 **Signature:**
 
 ```typescript
-export interface PartialFASTElementDefinition 
+export interface PartialFASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> 
 ```
 
 ## Properties
@@ -205,7 +205,7 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt; | [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
+[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt; \| [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
 
 
 </td><td>
