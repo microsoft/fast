@@ -1,4 +1,6 @@
+import type { FASTElementExtension } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
+import { setDefinitionElementOptions } from "./definition-options.js";
 import type { JSONSchema, Schema } from "./schema.js";
 import { assignObservables, deepMerge } from "./utilities.js";
 
@@ -58,6 +60,22 @@ export interface ObserverMapConfig {
 export type ObserverMapOption =
     | (typeof ObserverMapOption)[keyof typeof ObserverMapOption]
     | ObserverMapConfig;
+
+/**
+ * Creates a FAST element extension that enables declarative observer mapping
+ * for the resolved definition.
+ * When called without arguments, behaves like the `"all"` option.
+ * @public
+ */
+export function observerMap(
+    option: ObserverMapOption = ObserverMapOption.all,
+): FASTElementExtension {
+    return definition => {
+        setDefinitionElementOptions(definition, {
+            observerMap: option,
+        });
+    };
+}
 
 /**
  * Determines whether a config entry (or any of its descendants) enables observation.

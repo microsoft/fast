@@ -1,5 +1,9 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    attributeMap,
+    observerMap,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 class ConfigObserverMapTestElement extends FASTElement {
     public data: any = {
@@ -18,9 +22,12 @@ class ConfigObserverMapTestElement extends FASTElement {
     }
 }
 
-ConfigObserverMapTestElement.define({
-    name: "config-observer-map-test-element",
-});
+ConfigObserverMapTestElement.define(
+    {
+        name: "config-observer-map-test-element",
+    },
+    [observerMap({})],
+);
 
 class ConfigAttributeMapTestElement extends FASTElement {
     public setLabel() {
@@ -28,16 +35,12 @@ class ConfigAttributeMapTestElement extends FASTElement {
     }
 }
 
-ConfigAttributeMapTestElement.define({
-    name: "config-attribute-map-test-element",
-});
+ConfigAttributeMapTestElement.define(
+    {
+        name: "config-attribute-map-test-element",
+    },
+    [attributeMap({})],
+);
 
 // Use configuration objects ({}) instead of "all" — should behave identically
-TemplateElement.options({
-    "config-observer-map-test-element": {
-        observerMap: {},
-    },
-    "config-attribute-map-test-element": {
-        attributeMap: {},
-    },
-}).define({ name: "f-template" });
+TemplateElement.define({ name: "f-template" });

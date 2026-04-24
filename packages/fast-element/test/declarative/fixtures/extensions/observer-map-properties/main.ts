@@ -1,5 +1,5 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { observerMap, TemplateElement } from "@microsoft/fast-element/declarative.js";
 
 class SelectiveObsElement extends FASTElement {
     public user = {
@@ -61,9 +61,31 @@ class SelectiveObsElement extends FASTElement {
     };
 }
 
-SelectiveObsElement.define({
-    name: "selective-obs-element",
-});
+SelectiveObsElement.define(
+    {
+        name: "selective-obs-element",
+    },
+    [
+        observerMap({
+            properties: {
+                user: {
+                    name: true,
+                    age: true,
+                    history: false,
+                    location: true,
+                },
+                // settings is NOT listed → skipped
+                analytics: {
+                    charts: {
+                        $observe: false,
+                        activeChart: true,
+                    },
+                    summary: true,
+                },
+            },
+        }),
+    ],
+);
 
 class AllObsElement extends FASTElement {
     public user = {
@@ -83,9 +105,12 @@ class AllObsElement extends FASTElement {
     };
 }
 
-AllObsElement.define({
-    name: "all-obs-element",
-});
+AllObsElement.define(
+    {
+        name: "all-obs-element",
+    },
+    [observerMap({})],
+);
 
 class EmptyPropsElement extends FASTElement {
     public user = {
@@ -105,9 +130,16 @@ class EmptyPropsElement extends FASTElement {
     };
 }
 
-EmptyPropsElement.define({
-    name: "empty-props-element",
-});
+EmptyPropsElement.define(
+    {
+        name: "empty-props-element",
+    },
+    [
+        observerMap({
+            properties: {},
+        }),
+    ],
+);
 
 class ArraySelectiveElement extends FASTElement {
     public items: any[] = [
@@ -124,46 +156,19 @@ class ArraySelectiveElement extends FASTElement {
     };
 }
 
-ArraySelectiveElement.define({
-    name: "array-selective-element",
-});
-
-TemplateElement.options({
-    "selective-obs-element": {
-        observerMap: {
-            properties: {
-                user: {
-                    name: true,
-                    age: true,
-                    history: false,
-                    location: true,
-                },
-                // settings is NOT listed → skipped
-                analytics: {
-                    charts: {
-                        $observe: false,
-                        activeChart: true,
-                    },
-                    summary: true,
-                },
-            },
-        },
+ArraySelectiveElement.define(
+    {
+        name: "array-selective-element",
     },
-    "all-obs-element": {
-        observerMap: {},
-    },
-    "empty-props-element": {
-        observerMap: {
-            properties: {},
-        },
-    },
-    "array-selective-element": {
-        observerMap: {
+    [
+        observerMap({
             properties: {
                 items: true,
             },
-        },
-    },
-}).define({
+        }),
+    ],
+);
+
+TemplateElement.define({
     name: "f-template",
 });
