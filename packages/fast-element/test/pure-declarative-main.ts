@@ -1,2 +1,1 @@
 export * from "../src/declarative.js";
-export * from "./main.js";

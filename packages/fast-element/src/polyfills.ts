@@ -1,4 +1,8 @@
-(function requestIdleCallbackPolyfill() {
+/**
+ * Ensures requestIdleCallback and cancelIdleCallback are available.
+ * @internal
+ */
+export function ensureRequestIdleCallback(): void {
     if ("requestIdleCallback" in globalThis) {
         return;
     }
@@ -37,4 +41,4 @@
     ): void {
         clearTimeout(id);
     };
-})();
+}

@@ -1,8 +1,10 @@
 import { expect, test } from "@playwright/test";
-import "./debug.js";
+import { enableDebug } from "./debug.js";
 import type { FASTGlobal } from "./interfaces.js";
 
 declare const FAST: FASTGlobal;
+
+enableDebug();
 
 test.describe("The debug module", () => {
     let keyBase = 1111111111;

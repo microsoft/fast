@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { DeclarativeTemplateBridge } from "./template-bridge.js";
 
+const pureDeclarativeEntrypointUrl = `/@fs${
+    new URL("../../test/pure-declarative-main.ts", import.meta.url).pathname
+}`;
+
 test.describe("DeclarativeTemplateBridge", () => {
     test("keys pending requests by registry and element name", async () => {
         const bridge = new DeclarativeTemplateBridge();
@@ -133,6 +137,41 @@ test.describe("DeclarativeTemplateBridge", () => {
 });
 
 test.describe("declarativeTemplate", () => {
+    test("keeps the declarative entrypoint pure until a declarative template is created", async ({
+        page,
+    }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async pureEntrypointUrl => {
+            // @ts-expect-error: Client module.
+            const { html, isHydratable } = await import("/main.js");
+
+            const beforeRuntimeTemplate = html`<span>before</span>`;
+            const beforeImport = isHydratable(beforeRuntimeTemplate);
+
+            // @ts-expect-error: Client module.
+            const { Schema, TemplateParser } = await import(pureEntrypointUrl);
+
+            const afterImport = isHydratable(html`<span>after import</span>`);
+            const parser = new TemplateParser();
+            const schema = new Schema("lazy-template");
+            const { strings, values } = parser.parse("<span>after create</span>", schema);
+            const declarativeTemplate = parser.createTemplate(strings, values);
+
+            return {
+                beforeImport,
+                afterImport,
+                beforeRuntimeTemplateAfterCreate: isHydratable(beforeRuntimeTemplate),
+                declarativeTemplateIsHydratable: isHydratable(declarativeTemplate),
+            };
+        }, pureDeclarativeEntrypointUrl);
+
+        expect(result.beforeImport).toBe(false);
+        expect(result.afterImport).toBe(false);
+        expect(result.beforeRuntimeTemplateAfterCreate).toBe(true);
+        expect(result.declarativeTemplateIsHydratable).toBe(true);
+    });
+
     test("resolves template-first markup, auto-defines <f-template>, and applies maps", async ({
         page,
     }) => {
