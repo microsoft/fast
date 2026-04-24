@@ -67,7 +67,7 @@ engines must install their own `globalThis` polyfill before FAST loads.
 
 - `FAST.getById(id, initializer)` – shared kernel slot registry (used to share the update queue and observable system across FAST instances)
 - `FAST.warn(code, values)` / `FAST.error(code, values)` – structured diagnostic messages
-- `FAST.addMessages(dict)` – registers human-readable debug messages (imported by `src/debug.ts`)
+- `FAST.addMessages(dict)` – registers human-readable debug messages used by `enableDebug()` and declarative runtime diagnostics
 
 The `KernelServiceId` enum provides the fixed numeric keys used for shared
 services on the `FAST` global. These stable IDs let FAST instances on the same
@@ -344,9 +344,10 @@ the imperative `html` API:
 - `ObserverMap` and `AttributeMap` layer on top of the core observable and
   attribute-definition systems.
 
-The `src/declarative.ts` entrypoint owns the declarative-only side effects:
-registering debug messages and installing hydratable view templates. This keeps
-the root `@microsoft/fast-element` barrel free of declarative side effects and
+The `src/declarative.ts` entrypoint is pure at module evaluation time. The
+declarative runtime installs its debug messages and hydratable `ViewTemplate`
+hooks lazily from `TemplateParser.createTemplate()`, keeping the root
+`@microsoft/fast-element` barrel free of declarative side effects and
 utility-subpath collisions. See [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md)
 for the detailed architecture.
 
@@ -510,12 +511,12 @@ Below is a conceptual map of the major subsystems and their relationships:
 src/
 ├── interfaces.ts          # Core types: Callable, Constructable, FASTGlobal, Message codes
 ├── platform.ts            # FAST global initialisation, KernelServiceId, TypeRegistry
-├── declarative.ts         # Declarative entrypoint (debug messages + hydratable view install)
+├── declarative.ts         # Pure declarative entrypoint
 ├── dom.ts                 # DOMAspect enum, DOMPolicy, DOMSink
 ├── dom-policy.ts          # Default DOM security policy (TrustedTypes integration)
 ├── metadata.ts            # Reflect-based metadata helpers
 ├── utilities.ts           # UnobservableMutationObserver and other helpers
-├── debug.ts               # Adds human-readable error messages to FAST global
+├── debug.ts               # Exports enableDebug() for human-readable FAST errors
 ├── observation/
 │   ├── observable.ts      # Observable, @observable, ExpressionNotifier, ExecutionContext
 │   ├── notifier.ts        # Subscriber, Notifier, SubscriberSet, PropertyChangeNotifier
