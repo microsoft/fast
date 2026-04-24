@@ -1,9 +1,6 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    nullableNumberConverter,
-} from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element/attr.js";
+import { html } from "@microsoft/fast-element/template.js";
 import {
     BenchElement as AttrReflectBenchElement,
     template as attrReflectTemplate,

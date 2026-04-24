@@ -1,6 +1,8 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 export class TestElement extends FASTElement {
     @observable

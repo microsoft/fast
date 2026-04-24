@@ -1,5 +1,7 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 class TestElementMultiple extends FASTElement {
     @attr()
