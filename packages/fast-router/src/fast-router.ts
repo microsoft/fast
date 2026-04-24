@@ -1,5 +1,6 @@
-import { customElement, FASTElement } from "@microsoft/fast-element";
-import { Router, RouterElement } from "./router.js";
+import { FASTElement } from "@microsoft/fast-element";
+import { customElement } from "@microsoft/fast-element/fast-element.js";
+import { Router, type RouterElement } from "./router.js";
 
 /**
  * @beta

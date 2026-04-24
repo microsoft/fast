@@ -1,4 +1,5 @@
-import { FASTElement, html } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element/template.js";
 
 export class BenchElement extends FASTElement {}
 

@@ -1,4 +1,7 @@
-import { FASTElement, html, observable, when } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element/observable.js";
+import { html } from "@microsoft/fast-element/template.js";
+import { when } from "@microsoft/fast-element/when.js";
 
 export class BenchElement extends FASTElement {
     @observable show = true;

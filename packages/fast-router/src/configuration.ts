@@ -1,14 +1,17 @@
-import { Constructable } from "@microsoft/fast-element";
-import { DefaultNavigationQueue, NavigationQueue } from "./navigation.js";
+import type { Constructable } from "@microsoft/fast-element/types.js";
+import {
+    isNavigationPhaseContributor,
+    type NavigationContributor,
+} from "./contributors.js";
+import { DefaultRoutingEventSink, type RoutingEventSink } from "./events.js";
+import { DefaultLinkHandler, type LinkHandler } from "./links.js";
+import { DefaultNavigationQueue, type NavigationQueue } from "./navigation.js";
+import type { NavigationPhaseHook, NavigationPhaseName } from "./phases.js";
+import { DefaultNavigationProcess, type NavigationProcess } from "./process.js";
+import { DefaultRouteRecognizer, type RouteRecognizer } from "./recognizer.js";
+import { RouteCollection, type RouteMatch } from "./routes.js";
+import { DefaultTitleBuilder, type TitleBuilder } from "./titles.js";
 import { Layout, Transition } from "./view.js";
-import { RouteCollection, RouteMatch } from "./routes.js";
-import { DefaultLinkHandler, LinkHandler } from "./links.js";
-import { DefaultNavigationProcess, NavigationProcess } from "./process.js";
-import { DefaultTitleBuilder, TitleBuilder } from "./titles.js";
-import { DefaultRoutingEventSink, RoutingEventSink } from "./events.js";
-import { isNavigationPhaseContributor, NavigationContributor } from "./contributors.js";
-import { NavigationPhaseHook, NavigationPhaseName } from "./phases.js";
-import { DefaultRouteRecognizer, RouteRecognizer } from "./recognizer.js";
 
 /**
  * @beta
@@ -17,7 +20,7 @@ export abstract class RouterConfiguration<TSettings = any> {
     private isConfigured = false;
 
     public readonly routes: RouteCollection<TSettings> = new RouteCollection<TSettings>(
-        this
+        this,
     );
     public readonly contributors: NavigationContributor<TSettings>[] = [];
     public defaultLayout: Layout = Layout.default;
@@ -72,7 +75,7 @@ export abstract class RouterConfiguration<TSettings = any> {
      */
     public async generateRouteFromName(
         name: string,
-        params: object
+        params: object,
     ): Promise<string | null> {
         await this.ensureConfigured();
         return this.routes.generateFromName(name, params);
@@ -88,17 +91,17 @@ export abstract class RouterConfiguration<TSettings = any> {
      */
     public async generateRouteFromPath(
         path: string,
-        params: object
+        params: object,
     ): Promise<string | null> {
         await this.ensureConfigured();
         return this.routes.generateFromPath(path, params);
     }
 
     public findContributors<T extends NavigationPhaseName>(
-        phase: T
+        phase: T,
     ): Record<T, NavigationPhaseHook<TSettings>>[] {
         return this.contributors.filter(x =>
-            isNavigationPhaseContributor(x, phase)
+            isNavigationPhaseContributor(x, phase),
         ) as any;
     }
 

@@ -1,4 +1,6 @@
-import "../src/debug.js";
+import { registerFASTDebugMessages } from "../src/debug.js";
+
+registerFASTDebugMessages();
 
 export {
     AttributeConfiguration,

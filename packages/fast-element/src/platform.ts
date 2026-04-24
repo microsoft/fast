@@ -1,52 +1,67 @@
-import { type FASTGlobal, noop } from "./interfaces.js";
-import "./polyfills.js";
+import { noop } from "./interfaces.js";
+import type { FASTGlobal } from "./kernel.js";
+import { installPolyfills } from "./polyfills.js";
 
-// ensure FAST global - duplicated debug.ts
 const propConfig = {
     configurable: false,
     enumerable: false,
     writable: false,
 };
 
-if (globalThis.FAST === void 0) {
-    Reflect.defineProperty(globalThis, "FAST", {
-        value: Object.create(null),
-        ...propConfig,
-    });
+let fast: FASTGlobal | undefined;
+
+export function registerFAST(): FASTGlobal {
+    installPolyfills();
+
+    if (fast !== void 0) {
+        return fast;
+    }
+
+    if (globalThis.FAST === void 0) {
+        Reflect.defineProperty(globalThis, "FAST", {
+            value: Object.create(null),
+            ...propConfig,
+        });
+    }
+
+    const resolvedFast = globalThis.FAST as FASTGlobal;
+    fast = resolvedFast;
+
+    if (resolvedFast.getById === void 0) {
+        const storage = Object.create(null);
+
+        Reflect.defineProperty(resolvedFast, "getById", {
+            value<T>(id: string | number, initialize?: () => T): T | null {
+                let found = storage[id];
+
+                if (found === void 0) {
+                    found = initialize ? (storage[id] = initialize()) : null;
+                }
+
+                return found;
+            },
+            ...propConfig,
+        });
+    }
+
+    if (resolvedFast.error === void 0) {
+        Object.assign(resolvedFast, {
+            warn() {},
+            error(code: number) {
+                return new Error(`Error ${code}`);
+            },
+            addMessages() {},
+        });
+    }
+
+    return resolvedFast;
 }
 
 /**
  * The FAST global.
  * @public
  */
-export const FAST: FASTGlobal = globalThis.FAST;
-
-if (FAST.getById === void 0) {
-    const storage = Object.create(null);
-
-    Reflect.defineProperty(FAST, "getById", {
-        value<T>(id: string | number, initialize?: () => T): T | null {
-            let found = storage[id];
-
-            if (found === void 0) {
-                found = initialize ? (storage[id] = initialize()) : null;
-            }
-
-            return found;
-        },
-        ...propConfig,
-    });
-}
-
-if (FAST.error === void 0) {
-    Object.assign(FAST, {
-        warn() {},
-        error(code: number) {
-            return new Error(`Error ${code}`);
-        },
-        addMessages() {},
-    });
-}
+export const FAST: FASTGlobal = registerFAST();
 
 /**
  * A readonly, empty array.

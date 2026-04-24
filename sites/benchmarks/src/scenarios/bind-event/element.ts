@@ -1,4 +1,6 @@
-import { attr, FASTElement, html } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { html } from "@microsoft/fast-element/template.js";
 
 export class BenchElement extends FASTElement {
     @attr count: string = "0";

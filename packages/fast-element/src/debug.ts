@@ -1,17 +1,7 @@
-import type { FASTGlobal } from "./interfaces.js";
+import type { FASTGlobal } from "./kernel.js";
+import { registerFAST } from "./platform.js";
 
-if (globalThis.FAST === void 0) {
-    Reflect.defineProperty(globalThis, "FAST", {
-        value: Object.create(null),
-        configurable: false,
-        enumerable: false,
-        writable: false,
-    });
-}
-
-const FAST: FASTGlobal = globalThis.FAST;
-
-const debugMessages = {
+export const debugMessages = {
     [1101 /* needsArrayObservation */]:
         "Must call ArrayObserver.enable() before observing arrays.",
     [1201 /* onlySetDOMPolicyOnce */]: "The DOM Policy can only be set once.",
@@ -71,6 +61,7 @@ const debugMessages = {
 const allPlaceholders = /(\$\{\w+?})/g;
 const placeholder = /\$\{(\w+?)}/g;
 const noValues: Record<string, string> = Object.freeze({});
+let debugMessagesRegistered = false;
 
 function formatMessage(message: string, values: Record<string, any>) {
     return message
@@ -82,16 +73,26 @@ function formatMessage(message: string, values: Record<string, any>) {
         .join("");
 }
 
-Object.assign(FAST, {
-    addMessages(messages: Record<number, string>) {
-        Object.assign(debugMessages, messages);
-    },
-    warn(code: number, values: Record<string, any> = noValues) {
-        const message = debugMessages[code] ?? "Unknown Warning";
-        console.warn(formatMessage(message, values));
-    },
-    error(code: number, values: Record<string, any> = noValues) {
-        const message = debugMessages[code] ?? "Unknown Error";
-        return new Error(formatMessage(message, values));
-    },
-});
+export function registerFASTDebugMessages(fast: FASTGlobal = registerFAST()): FASTGlobal {
+    if (debugMessagesRegistered) {
+        return fast;
+    }
+
+    Object.assign(fast, {
+        addMessages(messages: Record<number, string>) {
+            Object.assign(debugMessages, messages);
+        },
+        warn(code: number, values: Record<string, any> = noValues) {
+            const message = debugMessages[code] ?? "Unknown Warning";
+            console.warn(formatMessage(message, values));
+        },
+        error(code: number, values: Record<string, any> = noValues) {
+            const message = debugMessages[code] ?? "Unknown Error";
+            return new Error(formatMessage(message, values));
+        },
+    });
+
+    debugMessagesRegistered = true;
+
+    return fast;
+}

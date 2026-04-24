@@ -20,7 +20,7 @@ The `@microsoft/fast-element` package offers a named export `html` which is a [t
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element/template.js";
 
 export const template = html`
   <template>Hello world</template>
@@ -33,7 +33,9 @@ When working with the `html` template, bindings allow more complex behavior than
 
 **Example:**
 ```ts
-import { FASTElement, attr, html } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { html } from "@microsoft/fast-element/template.js";
 
 const template = html<NameTag>`
   <h3>${x => x.greeting.toUpperCase()}</h3>
@@ -87,7 +89,7 @@ Boolean bindings use the `?` symbol, use these for Boolean attributes.
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element/template.js";
 
 export const template = html`
   <button
@@ -104,7 +106,7 @@ Events bindings use the `@` symbol. All Element events are available see the [MD
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element/template.js";
 
 export const template = html`
   <button
@@ -125,7 +127,7 @@ Property bindings use the `:` symbol.
 
 **Example:**
 ```typescript
-import { html } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element/template.js";
 
 export const template = html`
   <input
@@ -141,7 +143,7 @@ Some complex use cases include binding to a custom property, updating that prope
 Your templates can be typed to the data model that they are rendering over. In TypeScript, we provide the type as part of the tag: `html<NameTag>`.
 
 ```ts
-import { html } from '@microsoft/fast-element';
+import { html } from "@microsoft/fast-element/template.js";
 
 const template = html<NameTag>`
   <div>${x => x.greeting}</div>

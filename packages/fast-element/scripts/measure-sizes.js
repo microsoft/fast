@@ -8,20 +8,56 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 
-const namedExports = [
-    "FASTElement",
-    "Updates",
-    "Observable",
-    "observable",
-    "attr",
-    "children",
-    "css",
-    "ref",
-    "slotted",
-    "volatile",
-    "when",
-    "html",
-    "repeat",
+const exportEntries = [
+    {
+        name: "FASTElement",
+        specifier: "@microsoft/fast-element",
+        importName: "FASTElement",
+    },
+    {
+        name: "Updates",
+        specifier: "@microsoft/fast-element/updates.js",
+        importName: "Updates",
+    },
+    {
+        name: "Observable",
+        specifier: "@microsoft/fast-element/observable.js",
+        importName: "Observable",
+    },
+    {
+        name: "observable",
+        specifier: "@microsoft/fast-element/observable.js",
+        importName: "observable",
+    },
+    { name: "attr", specifier: "@microsoft/fast-element/attr.js", importName: "attr" },
+    {
+        name: "children",
+        specifier: "@microsoft/fast-element/children.js",
+        importName: "children",
+    },
+    { name: "css", specifier: "@microsoft/fast-element/css.js", importName: "css" },
+    { name: "ref", specifier: "@microsoft/fast-element/ref.js", importName: "ref" },
+    {
+        name: "slotted",
+        specifier: "@microsoft/fast-element/slotted.js",
+        importName: "slotted",
+    },
+    {
+        name: "volatile",
+        specifier: "@microsoft/fast-element/observable.js",
+        importName: "volatile",
+    },
+    { name: "when", specifier: "@microsoft/fast-element/when.js", importName: "when" },
+    {
+        name: "html",
+        specifier: "@microsoft/fast-element/template.js",
+        importName: "html",
+    },
+    {
+        name: "repeat",
+        specifier: "@microsoft/fast-element/repeat.js",
+        importName: "repeat",
+    },
 ];
 
 function formatBytes(bytes) {
@@ -39,8 +75,8 @@ function measureBuffer(buffer) {
     };
 }
 
-async function measureExport(exportName) {
-    const contents = `import { ${exportName} } from "@microsoft/fast-element";\nexport { ${exportName} };\n`;
+async function measureExport({ importName, specifier }) {
+    const contents = `import { ${importName} } from "${specifier}";\nexport { ${importName} };\n`;
 
     const result = await build({
         stdin: {
@@ -74,9 +110,9 @@ async function main() {
 
     // Measure each named export in parallel
     const exportResults = await Promise.all(
-        namedExports.map(async name => {
-            const sizes = await measureExport(name);
-            return { name, ...sizes };
+        exportEntries.map(async entry => {
+            const sizes = await measureExport(entry);
+            return { name: entry.name, ...sizes };
         }),
     );
     results.push(...exportResults);

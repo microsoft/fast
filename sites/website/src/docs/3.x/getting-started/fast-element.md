@@ -23,7 +23,8 @@ Attributes are defined using the `@attr` decorator.
 
 **Example:**
 ```ts
-import { FASTElement, attr } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 
 export class MyElement extends FASTElement {
   @attr
@@ -46,7 +47,8 @@ An `@attr` can take a configuration with the following options:
 
 Example with a custom attribute name and boolean mode:
 ```ts
-import { FASTElement, attr } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 
 export class MyElement extends FASTElement {
   @attr({
@@ -89,7 +91,8 @@ Here's how it works:
 **Example: An Attribute in Reflect Mode with Custom Conversion**
 
 ```ts
-import { FASTElement, attr, ValueConverter } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { attr, ValueConverter } from "@microsoft/fast-element/attr.js";
 
 const numberConverter: ValueConverter = {
   toView(value: any): string {
@@ -127,7 +130,8 @@ Properties with only a getter, that function as a computed property over other o
 :::
 
 ```ts
-import { FASTElement, observable } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 export class MyComponent extends FASTElement {
   @observable
@@ -146,7 +150,8 @@ A common use case for `@observable` is with slotted elements.
 **Example: Track changes to elements being added/removed to a slot**
 
 ```ts
-import { FASTElement, observable } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 class MyComponent extends FASTElement {
   @observable
@@ -169,7 +174,7 @@ When `@attr` and `@observable` decorated properties are accessed during template
 **Example: Manual Observer Implementation**
 
 ```ts
-import { Observable } from '@microsoft/fast-element';
+import { Observable } from "@microsoft/fast-element/observable.js";
 
 export class Person {
   private _name: string;
@@ -217,7 +222,7 @@ When emitting custom events, ensure that your event name is always lower-case, s
 
 **Example:**
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
 
 export class MyElement extends FASTElement {}
 
@@ -245,7 +250,10 @@ A typical configuration will at least include `name`, `template`, and `styles`.
 
 **Example:**
 ```ts
-import { attr, css, FASTElement, html } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { css } from "@microsoft/fast-element/css.js";
+import { html } from "@microsoft/fast-element/template.js";
 
 const template = html`<span>Hello ${x => x.name}!</span>`
 
@@ -286,7 +294,7 @@ HelloWorld.compose({
 `define()` accepts an optional second argument — an array of extension callbacks. Each extension is a function that receives the resolved `FASTElementDefinition` and is called **before** the element is registered with `customElements.define()`. This enables a plugin pattern for hooking into element registration.
 
 ```ts
-import type { FASTElementExtension } from "@microsoft/fast-element";
+import type { FASTElementExtension } from "@microsoft/fast-element/fast-definitions.js";
 
 function myPlugin(): FASTElementExtension {
     return definition => {
@@ -314,7 +322,8 @@ All Web Components support a series of lifecycle events that you can tap into to
 **Example: Tapping into the Custom Element Lifecycle**
 
 ```ts
-import { FASTElement, attr } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 
 export class NameTag extends FASTElement {
   @attr

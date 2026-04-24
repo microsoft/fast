@@ -274,13 +274,13 @@ When a page is server-side rendered (SSR) with Declarative Shadow DOM, the HTML 
 
 ### Enabling Hydration
 
-Hydration is an opt-in, tree-shakeable feature. Importing `install-hydratable-view-templates.ts` patches `ViewTemplate.prototype` with:
+Hydration is a tree-shakeable feature that `ViewTemplate` now owns directly:
 1. A `Hydratable` symbol — marks the template as hydration-capable (checked via `isHydratable()`).
 2. A `hydrate(firstChild, lastChild, hostBindingTarget?)` method — creates a `HydrationView` instead of an `HTMLView`.
 
 ```typescript
-// This import enables hydration for all ViewTemplate instances
-import "@microsoft/fast-element/install-hydratable-view-templates";
+import { html } from "@microsoft/fast-element/template.js";
+import { HydrationMarkup } from "@microsoft/fast-element/hydration.js";
 ```
 
 ### Hydration Marker Format
@@ -342,15 +342,12 @@ Nested custom elements that also need hydration are demarcated so the parent's w
 ```mermaid
 flowchart TD
     A["Server renders HTML with Declarative Shadow DOM"] --> B["Browser parses HTML, creates DOM + shadow roots"]
-    B --> C["Custom element connects, HydratableElementController activates"]
-    C --> D{"Has 'defer-hydration' attribute?"}
-    D -->|Yes| E["Wait until attribute is removed"]
-    D -->|No| F["template.hydrate(firstChild, lastChild, hostBindingTarget)"]
-    E -->|Attribute removed| F
-    F --> G["new HydrationView(firstChild, lastChild, sourceTemplate)"]
-    G --> H["HydrationView.bind(source)"]
-    H --> I["Stage: unhydrated → hydrating"]
-    I --> J["buildViewBindingTargets(firstChild, lastChild, factories)"]
+    B --> C["Custom element connects, ElementController detects prerendered content"]
+    C --> D["template.hydrate(firstChild, lastChild, hostBindingTarget)"]
+    D --> E["new HydrationView(firstChild, lastChild, sourceTemplate)"]
+    E --> F["HydrationView.bind(source)"]
+    F --> G["Stage: unhydrated → hydrating"]
+    G --> J["buildViewBindingTargets(firstChild, lastChild, factories)"]
 
     J --> K["Create TreeWalker over existing DOM range"]
     K --> L{"Walk each node"}
