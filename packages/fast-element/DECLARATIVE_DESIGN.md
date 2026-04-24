@@ -487,7 +487,7 @@ sequenceDiagram
 
     App->>TE: TemplateElement.define({name:'f-template'})
     App->>TE: TemplateElement.config(callbacks)
-    App->>TE: TemplateElement.options({'my-el':{observerMap:'all'}})
+    App->>TE: TemplateElement.options({'my-el':{observerMap:{}}})
 
     DOM->>TE: f-template connected to DOM
     TE->>FER: FASTElementDefinition.register('my-el')

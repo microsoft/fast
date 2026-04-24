@@ -424,7 +424,7 @@ $0.__proto__.constructor.elementOptions
 
 // To check a specific element's observer map setting:
 const options = $0.__proto__.constructor.elementOptions['my-element'];
-console.log('Observer Map enabled:', options?.observerMap === 'all');
+console.log('Observer Map enabled:', options?.observerMap !== undefined);
 ```
 
 ### Proxy Detection
