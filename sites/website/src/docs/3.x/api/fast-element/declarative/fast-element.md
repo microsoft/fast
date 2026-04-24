@@ -98,6 +98,43 @@ The parsing pipeline is fully synchronous — no promises are allocated during t
 </td></tr>
 </tbody></table>
 
+## Functions
+
+<table><thead><tr><th>
+
+Function
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[attributeMap(option)](../fast-element.attributemap/)
+
+
+</td><td>
+
+Creates a FAST element extension that enables declarative attribute mapping for the resolved definition. When called without arguments, uses the default attribute-mapping behavior.
+
+
+</td></tr>
+<tr><td>
+
+[observerMap(option)](../fast-element.observermap/)
+
+
+</td><td>
+
+Creates a FAST element extension that enables declarative observer mapping for the resolved definition. When called without arguments, observes every discovered root property.
+
+
+</td></tr>
+</tbody></table>
+
 ## Interfaces
 
 <table><thead><tr><th>
@@ -248,6 +285,17 @@ Description
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+[FASTElementExtension](../fast-element.fastelementextension/)
+
+
+</td><td>
+
+A callback that receives a FASTElementDefinition during element registration. Extensions are invoked before the element is registered with the platform, allowing plugins to inspect or act on the resolved definition.
 
 
 </td></tr>

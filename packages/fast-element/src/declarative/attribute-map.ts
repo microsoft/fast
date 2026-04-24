@@ -1,8 +1,8 @@
 import { AttributeDefinition } from "../components/attributes.js";
 import {
     type FASTElementDefinition,
+    type FASTElementExtension,
     trackLateAttributeDefinition,
-    FASTElementExtension,
 } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
 import { setDefinitionElementOptions } from "./definition-options.js";
