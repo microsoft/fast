@@ -135,5 +135,17 @@ The following are now part of the public API:
 | `Schema` | JSON schema builder class |
 | `schemaRegistry` | Module-level registry for cross-element schema lookups |
 | `AttributeMap` | Automatic `@attr` property registration |
+| `AttributeMapOption` | Constant for the `"all"` option value |
 | `JSONSchema` | JSON Schema type interface |
 | `CachedPathMap` | Schema registry map type |
+
+## Simplified ObserverMap and AttributeMap defaults
+
+The explicit `ObserverMapOption.all` and `AttributeMapOption.all` constants have
+been removed. Calling `observerMap()` or `attributeMap()` with no arguments now
+applies the default "all properties" behavior.
+
+| Before | After |
+|---|---|
+| `observerMap(ObserverMapOption.all)` | `observerMap()` |
+| `attributeMap(AttributeMapOption.all)` | `attributeMap()` |
