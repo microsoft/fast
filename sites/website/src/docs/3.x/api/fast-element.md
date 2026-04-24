@@ -125,7 +125,7 @@ The standard View implementation, which also implements ElementView and Syntheti
 
 </td><td>
 
-Tracks prerendered elements through the hydration lifecycle and fires callbacks at each stage. Each element is added before its hydration bind and removed after. When the last element finishes and no new elements arrive, `hydrationComplete` is fired.
+Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)<!-- -->.
 
 
 </td></tr>
@@ -417,6 +417,17 @@ Decorator: Defines a platform custom element based on `FASTElement`<!-- -->.
 </td><td>
 
 Creates a function that can be used to filter a Node array, selecting only elements.
+
+
+</td></tr>
+<tr><td>
+
+[enableHydration(options)](../fast-element.enablehydration/)
+
+
+</td><td>
+
+Enables hydration support for prerendered FAST elements.
 
 
 </td></tr>
@@ -778,17 +789,6 @@ A type that instantiates an ElementController
 </td></tr>
 <tr><td>
 
-[ElementHydrationCallbacks](../fast-element.elementhydrationcallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for element hydration events.
-
-
-</td></tr>
-<tr><td>
-
 [ElementView](../fast-element.elementview/)
 
 
@@ -937,6 +937,17 @@ The result of a template compilation operation.
 
 </td><td>
 
+
+
+</td></tr>
+<tr><td>
+
+[HydrationOptions](../fast-element.hydrationoptions/)
+
+
+</td><td>
+
+Options for configuring global hydration lifecycle events.
 
 
 </td></tr>

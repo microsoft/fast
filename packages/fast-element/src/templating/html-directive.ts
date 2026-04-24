@@ -151,7 +151,7 @@ export interface PartialHTMLDirectiveDefinition {
  * @public
  */
 export interface HTMLDirectiveDefinition<
-    TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>
+    TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>,
 > extends Required<PartialHTMLDirectiveDefinition> {
     /**
      * The type that the definition provides metadata for.
@@ -185,7 +185,7 @@ export const HTMLDirective = Object.freeze({
      */
     define<TType extends Constructable<HTMLDirective>>(
         type: TType,
-        options?: PartialHTMLDirectiveDefinition
+        options?: PartialHTMLDirectiveDefinition,
     ): TType {
         options = options || {};
         (options as Mutable<HTMLDirectiveDefinition>).type = type;

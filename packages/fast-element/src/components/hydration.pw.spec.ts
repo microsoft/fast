@@ -38,7 +38,7 @@ test.describe("The prerendered content optimization", () => {
         expect(result.shadowContent).toContain("hello");
     });
 
-    test("should set isPrerendered to true when an existing shadow root is detected via DSD", async ({
+    test("should set isPrerendered to false when DSD exists but hydration is not enabled", async ({
         page,
     }) => {
         await page.goto("/");
@@ -59,7 +59,7 @@ test.describe("The prerendered content optimization", () => {
             const element = container.firstElementChild as any;
             const hasShadowRootBefore = !!element.shadowRoot;
 
-            // Now define — triggers upgrade with existing shadow root
+            // Define without enabling hydration — falls back to client-side render
             (
                 await FASTElementDefinition.compose(
                     class TestElement extends FASTElement {
@@ -80,7 +80,8 @@ test.describe("The prerendered content optimization", () => {
         });
 
         expect(result.hasShadowRootBefore).toBe(true);
-        expect(result.isPrerendered).toBe(true);
+        // Without enableHydration(), prerendered content is not hydrated
+        expect(result.isPrerendered).toBe(false);
     });
 
     test("should connect immediately when a template is assigned later", async ({

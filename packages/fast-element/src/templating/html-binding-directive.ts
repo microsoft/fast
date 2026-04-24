@@ -400,12 +400,7 @@ export class HTMLBindingDirective
                     break;
                 }
 
-                this.updateTarget!(
-                    target,
-                    this.targetAspect,
-                    value,
-                    controller,
-                );
+                this.updateTarget!(target, this.targetAspect, value, controller);
                 break;
             }
         }

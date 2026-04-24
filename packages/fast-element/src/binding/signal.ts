@@ -1,11 +1,11 @@
+import type { DOMPolicy } from "../dom.js";
+import { isString } from "../interfaces.js";
+import type { Subscriber } from "../observation/notifier.js";
 import type {
     Expression,
     ExpressionController,
     ExpressionObserver,
 } from "../observation/observable.js";
-import { isString } from "../interfaces.js";
-import type { Subscriber } from "../observation/notifier.js";
-import type { DOMPolicy } from "../dom.js";
 import { makeSerializationNoop } from "../platform.js";
 import { Binding } from "./binding.js";
 
@@ -68,7 +68,7 @@ class SignalObserver<TSource = any, TReturn = any, TParent = any> implements Sub
 
     constructor(
         private readonly dataBinding: SignalBinding,
-        private readonly subscriber: Subscriber
+        private readonly subscriber: Subscriber,
     ) {}
 
     bind(controller: ExpressionController<TSource, TParent>): TReturn {
@@ -106,7 +106,7 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
     TParent
 > {
     createObserver(
-        subscriber: Subscriber
+        subscriber: Subscriber,
     ): ExpressionObserver<TSource, TReturn, TParent> {
         return new SignalObserver(this, subscriber);
     }
@@ -123,7 +123,7 @@ class SignalBinding<TSource = any, TReturn = any, TParent = any> extends Binding
 export function signal<T = any>(
     expression: Expression<T>,
     options: string | Expression<T>,
-    policy?: DOMPolicy
+    policy?: DOMPolicy,
 ): Binding<T> {
     const binding = new SignalBinding(expression, policy);
     binding.options = options;

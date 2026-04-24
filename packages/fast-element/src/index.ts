@@ -24,6 +24,7 @@ export {
     ElementController,
     Stages,
 } from "./components/element-controller.js";
+export { enableHydration } from "./components/enable-hydration.js";
 export type {
     FASTElementExtension,
     FASTElementTemplateResolver,
@@ -39,7 +40,7 @@ export {
 export { customElement, FASTElement } from "./components/fast-element.js";
 export { deferHydrationAttribute, isHydratable } from "./components/hydration.js";
 export {
-    type ElementHydrationCallbacks,
+    type HydrationOptions,
     HydrationTracker,
 } from "./components/hydration-tracker.js";
 // DOM

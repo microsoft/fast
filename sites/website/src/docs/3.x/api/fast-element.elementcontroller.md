@@ -455,22 +455,6 @@ Captures own-properties that shadow observable accessors on the prototype so the
 </td></tr>
 <tr><td>
 
-[configHydration(callbacks)](../fast-element.elementcontroller.confighydration/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-Configure lifecycle callbacks for element hydration tracking.
-
-
-</td></tr>
-<tr><td>
-
 [connect()](../fast-element.elementcontroller.connect/)
 
 
@@ -540,6 +524,22 @@ Disconnects any behaviors on the associated element.
 </td><td>
 
 Emits a custom HTML event.
+
+
+</td></tr>
+<tr><td>
+
+[enableHydration(tracker)](../fast-element.elementcontroller.enablehydration/)
+
+
+</td><td>
+
+`static`
+
+
+</td><td>
+
+Enables hydration support for prerendered elements. Must be called before any FAST elements connect.
 
 
 </td></tr>
