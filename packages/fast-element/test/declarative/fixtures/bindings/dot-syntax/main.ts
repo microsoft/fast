@@ -1,5 +1,8 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 class TestElement extends FASTElement {
     public object: any = {
@@ -44,18 +47,15 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
+    template: declarativeTemplate(),
 });
 
 TemplateElement.options({
     "test-element": {
         observerMap: {},
     },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
+    },
+});

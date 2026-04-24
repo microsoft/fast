@@ -1,6 +1,9 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import {
+    declarativeTemplate,
+    TemplateElement,
+} from "@microsoft/fast-element/declarative.js";
 
 export class TestElement extends FASTElement {
     @observable
@@ -11,6 +14,7 @@ export class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
+    template: declarativeTemplate(),
 });
 
 export class TestElementInnerWhen extends FASTElement {
@@ -28,6 +32,7 @@ export class TestElementInnerWhen extends FASTElement {
 }
 TestElementInnerWhen.define({
     name: "test-element-inner-when",
+    template: declarativeTemplate(),
 });
 
 export class TestElementIntervalUpdates extends FASTElement {
@@ -43,6 +48,7 @@ export class TestElementIntervalUpdates extends FASTElement {
 
 TestElementIntervalUpdates.define({
     name: "test-element-interval-updates",
+    template: declarativeTemplate(),
 });
 
 export class TestElementNoItemRepeatBinding extends FASTElement {
@@ -51,6 +57,7 @@ export class TestElementNoItemRepeatBinding extends FASTElement {
 }
 TestElementNoItemRepeatBinding.define({
     name: "test-element-no-item-repeat-binding",
+    template: declarativeTemplate(),
 });
 
 export class TestElementEmptyArray extends FASTElement {
@@ -59,6 +66,7 @@ export class TestElementEmptyArray extends FASTElement {
 }
 TestElementEmptyArray.define({
     name: "test-element-empty-array",
+    template: declarativeTemplate(),
 });
 
 export class TestElementEvent extends FASTElement {
@@ -74,6 +82,7 @@ export class TestElementEvent extends FASTElement {
 }
 TestElementEvent.define({
     name: "test-element-event",
+    template: declarativeTemplate(),
 });
 
 export class TestElementWithObserverMap extends FASTElement {
@@ -84,6 +93,7 @@ export class TestElementWithObserverMap extends FASTElement {
 }
 TestElementWithObserverMap.define({
     name: "test-element-with-observer-map",
+    template: declarativeTemplate(),
 });
 
 TemplateElement.options({
@@ -93,12 +103,8 @@ TemplateElement.options({
     "test-element-with-observer-map": {
         observerMap: {},
     },
-})
-    .config({
-        hydrationComplete() {
-            (window as any).hydrationCompleted = true;
-        },
-    })
-    .define({
-        name: "f-template",
-    });
+}).config({
+    hydrationComplete() {
+        (window as any).hydrationCompleted = true;
+    },
+});

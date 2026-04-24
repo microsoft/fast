@@ -103,7 +103,7 @@ The `ObserverMapConfig` interface accepts an optional `properties` key that maps
 MyElement.define(
     {
         name: "my-element",
-        templateOptions: "defer-and-hydrate",
+        template: declarativeTemplate(),
     },
     [
         observerMap({
@@ -482,27 +482,25 @@ sequenceDiagram
     participant EC as ElementController
     participant Callbacks as HydrationLifecycleCallbacks
 
-    App->>FER: MyElement.define({name:'my-el', ...})
-    note over FER: partial definition stored
+    App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()})
+    note over FER: definition composed; resolver waits for template
 
-    App->>TE: TemplateElement.define({name:'f-template'})
     App->>TE: TemplateElement.config(callbacks)
     App->>TE: TemplateElement.options({'my-el':{observerMap:{}}})
 
     DOM->>TE: f-template connected to DOM
-    TE->>FER: FASTElementDefinition.register('my-el')
-    FER-->>TE: resolves with MyElement class
+    TE->>FER: bridge matches registry + name
     TE->>Callbacks: elementDidRegister('my-el')
     TE->>Callbacks: templateWillUpdate('my-el')
-    TE->>TE: parse template → ViewTemplate
-    TE->>FER: registeredFastElement.template = viewTemplate
+    TE->>TE: parse template → schema → maps → ViewTemplate
+    TE->>FER: return viewTemplate to resolver
     TE->>Callbacks: templateDidUpdate('my-el')
-    FER->>FER: compose() → platform registry
+    FER->>FER: customElements.define('my-el', MyElement)
     FER->>Callbacks: elementDidDefine('my-el')
 
     DOM->>EC: element instance connects with existing shadow root
     EC->>EC: isPrerendered = true (existing shadow root detected)
-    EC->>EC: template-pending guard: wait if no template yet
+    EC->>EC: concrete template already attached
     EC->>Callbacks: hydrationStarted()
     EC->>Callbacks: elementWillHydrate(element)
     EC->>EC: template.hydrate() — maps existing DOM to binding targets
@@ -550,21 +548,21 @@ tagged templates produce.
 | `children(prop)` | FAST directive used for `f-children` |
 | `ref(prop)` | FAST directive used for `f-ref` |
 
-### Template attachment after define
+### Deferred template attachment via define
 
-Standard `FASTElement.define()` returns a `Promise` that resolves immediately once the definition has been composed and any async template resolver has settled. Declarative HTML can define a host element without an initial template and let `<f-template>` attach the template later through `FASTElementDefinition.template`. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
+Standard `FASTElement.define()` returns a `Promise` that resolves immediately when a concrete template is provided at definition time. When `template: declarativeTemplate()` is used, the `Promise` resolves after the matching `<f-template>` supplies a concrete template through the bridge. This unified API replaces the previous `defineAsync()` / `composeAsync()` methods.
 
 ---
 
 ## Hydration Model
 
-For declarative hydration, the server must render:
+When declarative templates are used, the server must render:
 
 1. The custom element tag with its attributes and initial state.
 2. A `<template shadowrootmode="open">` containing pre-rendered HTML annotated with FAST's hydration markers.
 3. An `<f-template>` element somewhere in the page that carries the template definition.
 
-If a template is attached after an element has already connected, the observable `template` update recreates the controller so hydration can proceed against the existing prerendered markup. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
+With `declarativeTemplate()`, connection gating happens before platform registration: the resolver waits for the matching `<f-template>` and keeps the definition concrete before elements can connect. Hydration can therefore start immediately when `ElementController.connect()` runs. The `defer-hydration` and `needs-hydration` attributes are no longer needed in server-rendered markup.
 
 ### Hydration marker formats
 
