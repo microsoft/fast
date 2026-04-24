@@ -61,7 +61,7 @@ engines must install their own `globalThis` polyfill before FAST loads.
 
 ### FAST Global
 
-**File**: `src/platform.ts`, `src/interfaces.ts`
+**File**: `src/platform.ts`, `src/kernel.ts`
 
 `FAST` is a singleton object attached to `globalThis`. It provides:
 
@@ -351,12 +351,12 @@ the imperative `html` API:
 - `ObserverMap` and `AttributeMap` layer on top of the core observable and
   attribute-definition systems.
 
-The `src/declarative.ts` entrypoint owns the declarative-only side effects:
-registering debug messages and installing hydratable view templates. This keeps
-the root `@microsoft/fast-element` barrel free of declarative side effects and
-utility-subpath collisions, while low-level hydration APIs stay on the dedicated
-`src/components/hydration.ts`, `src/components/install-hydration.ts`, and
-`src/templating/install-hydratable-view-templates.ts` modules. See
+The `src/declarative.ts` entrypoint owns the declarative-only exports and
+registers debug messages for that runtime. This keeps the root
+`@microsoft/fast-element` barrel free of declarative APIs, while hydration
+support stays built into `ViewTemplate` and low-level hydration APIs remain on
+the dedicated `src/components/hydration.ts` and
+`src/components/hydration-tracker.ts` modules. See
 [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
 architecture.
 
@@ -520,9 +520,10 @@ Below is a conceptual map of the major subsystems and their relationships:
 
 ```
 src/
-├── interfaces.ts          # Core types: Callable, Constructable, FASTGlobal, Message codes
-├── platform.ts            # FAST global initialisation, KernelServiceId, TypeRegistry
-├── declarative.ts         # Declarative entrypoint (debug messages + hydratable view install)
+├── kernel.ts              # FASTGlobal and KernelServiceId
+├── interfaces.ts          # Core types: Callable, Constructable, Message codes
+├── platform.ts            # FAST global initialisation and TypeRegistry
+├── declarative.ts         # Declarative entrypoint (debug messages + declarative exports)
 ├── dom.ts                 # DOMAspect enum, DOMPolicy, DOMSink
 ├── dom-policy.ts          # Default DOM security policy (TrustedTypes integration)
 ├── metadata.ts            # Reflect-based metadata helpers
@@ -541,7 +542,7 @@ src/
 │   ├── one-time.ts        # oneTime
 │   └── normalize.ts       # normalizeBinding helper
 ├── templating/
-│   ├── template.ts        # ViewTemplate, html tag, InlineTemplateDirective
+│   ├── template.ts        # ViewTemplate, html tag, InlineTemplateDirective, hydration
 │   ├── compiler.ts        # Compiler, CompilationContext
 │   ├── view.ts            # HTMLView, ElementView, SyntheticView
 │   ├── html-directive.ts  # HTMLDirective, ViewBehavior, ViewBehaviorFactory
@@ -564,7 +565,6 @@ src/
 │   ├── element-controller.ts  # ElementController, Stages
 │   ├── fast-definitions.ts    # FASTElementDefinition, TemplateOptions
 │   ├── hydration.ts       # HydrationMarkup and hydration helpers
-│   ├── install-hydration.ts   # Legacy hydration install side-effect module
 │   └── attributes.ts          # AttributeDefinition, @attr, converters
 ├── di/
 │   └── di.ts              # DI container, decorators, resolvers, Registration

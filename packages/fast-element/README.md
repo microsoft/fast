@@ -18,7 +18,7 @@ npm install --save @microsoft/fast-element
 Within your JavaScript or TypeScript code, you can then import library APIs like this:
 
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
 ```
 
 ### From CDN
@@ -67,18 +67,23 @@ Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.
 
 ## Dedicated Entry Points
 
-Use the dedicated sub-entrypoints when you only need optional binding or
-hydration APIs:
+`@microsoft/fast-element` only exports `FASTElement`. Import decorators,
+templating, styling, binding, and hydration APIs from focused sub-entrypoints:
 
 ```ts
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { css } from "@microsoft/fast-element/css.js";
+import { html } from "@microsoft/fast-element/template.js";
 import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
-import { HydrationMarkup } from "@microsoft/fast-element/element-hydration.js";
-import "@microsoft/fast-element/install-hydratable-view-templates.js";
+import { HydrationMarkup } from "@microsoft/fast-element/hydration.js";
 ```
 
-`@microsoft/fast-element/declarative.js` still installs hydratable
-`ViewTemplate` support automatically. The legacy `metadata.js` and
-`pending-task.js` subpaths are no longer part of the public export map.
+Hydratable `ViewTemplate` support is built into the template runtime, so no
+installer import is needed. The legacy `metadata.js`, `testing.js`,
+`pending-task.js`, `element-hydration.js`, `install-element-hydration.js`, and
+`install-hydratable-view-templates.js` subpaths are no longer part of the
+public export map.
 
 ## Dynamic Style Application
 
@@ -97,8 +102,8 @@ controller when styles need to change.
 FAST Element also publishes a declarative HTML runtime from
 `@microsoft/fast-element/declarative.js`. This entrypoint defines `<f-template>`,
 exports `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, and
-`AttributeMap`, and installs the hydratable `ViewTemplate` behavior without
-adding those side effects to the root `@microsoft/fast-element` import.
+`AttributeMap`, while keeping declarative-only APIs off the root
+`@microsoft/fast-element` import.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
@@ -116,7 +121,8 @@ TemplateElement.define({ name: "f-template" });
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See
-[`DECLARATIVE_HTML.md`](./DECLARATIVE_HTML.md) for declarative usage details.
+[`DECLARATIVE_RENDERING.md`](./DECLARATIVE_RENDERING.md) for declarative usage
+details.
 
 ## Prerendered Content Optimization
 
@@ -145,7 +151,7 @@ Custom directives can also await `controller.isPrerendered` (a `Promise<boolean>
 
 ```typescript
 import { FASTElement } from "@microsoft/fast-element";
-import type { FASTElementExtension } from "@microsoft/fast-element";
+import type { FASTElementExtension } from "@microsoft/fast-element/fast-definitions.js";
 
 function logger(): FASTElementExtension {
     return definition => {

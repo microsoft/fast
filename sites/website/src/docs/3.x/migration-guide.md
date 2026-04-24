@@ -61,7 +61,7 @@ HydratableElementController.config({
 
 3.x Example:
 ```ts
-import { ElementController } from "@microsoft/fast-element";
+import { ElementController } from "@microsoft/fast-element/element-controller.js";
 
 ElementController.configHydration({
     hydrationStarted() { /* ... */ },
@@ -103,24 +103,26 @@ import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 ```
 
-This keeps the root `@microsoft/fast-element` import free of declarative
-side effects while moving the declarative runtime into the same package.
+This keeps declarative-only APIs off the root `@microsoft/fast-element` import
+while moving the declarative runtime into the same package.
 
 ### Focused export paths
 
-Optional binding and hydration helpers remain on dedicated FAST Element
-sub-entrypoints:
+The root `@microsoft/fast-element` export now only provides `FASTElement`.
+Import the rest of the API surface from focused FAST Element sub-entrypoints:
 
 ```ts
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { twoWay } from "@microsoft/fast-element/binding/two-way.js";
 import { signal } from "@microsoft/fast-element/binding/signal.js";
-import { HydrationMarkup } from "@microsoft/fast-element/element-hydration.js";
-import "@microsoft/fast-element/install-hydratable-view-templates.js";
+import { HydrationMarkup } from "@microsoft/fast-element/hydration.js";
 ```
 
-The `@microsoft/fast-element/declarative.js` entrypoint still installs
-hydratable `ViewTemplate` support automatically. The legacy `metadata.js` and
-`pending-task.js` subpaths are no longer exported.
+Hydratable `ViewTemplate` support is built into the template runtime, so no
+installer import is needed. The legacy `metadata.js`, `testing.js`,
+`pending-task.js`, `element-hydration.js`, `install-element-hydration.js`, and
+`install-hydratable-view-templates.js` subpaths are no longer exported.
 
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 

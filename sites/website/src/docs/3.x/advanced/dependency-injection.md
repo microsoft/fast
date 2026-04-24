@@ -113,7 +113,9 @@ container.register(transient(MyServiceConfig, MyService));
 Once the web component has reached the `connectedCallback` hook, you will be able to access any injected dependencies.
 
 ```ts
-import { FASTElement, html, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element/observable.js";
+import { html } from "@microsoft/fast-element/template.js";
 
 export class MyComponent extends FASTElement {
     @MyServiceConfig myService!: MyServiceConfig;
