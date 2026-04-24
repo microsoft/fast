@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { watch } from "./watch.js";
 import { reactive } from "./reactive.js";
+import { watch } from "./watch.js";
 
 function createComplexObject() {
     return {

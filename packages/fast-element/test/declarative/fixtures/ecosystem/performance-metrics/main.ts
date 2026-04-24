@@ -1,10 +1,19 @@
 import { attr, FASTElement, volatile } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 let markSequence = 0;
+
+// Enable hydration with global start/complete callbacks
+enableHydration({
+    hydrationStarted(): void {
+        performance.mark("hydration:started", { detail: { sequence: markSequence++ } });
+    },
+    hydrationComplete(): void {
+        performance.measure("hydration:complete", "hydration:started");
+        (window as any).hydrationCompleted = true;
+    },
+});
 
 class FastCard extends FASTElement {
     @attr({ attribute: "defer-delay" })
@@ -18,38 +27,30 @@ class FastCard extends FASTElement {
 
 FastCard.define({
     name: "fast-card",
-    template: declarativeTemplate(),
-});
+    template: declarativeTemplate({
+        templateWillUpdate(name: string) {
+            performance.mark(`template-update:${name}:start`, {
+                detail: { sequence: markSequence++ },
+            });
+        },
 
-TemplateElement.config({
-    hydrationStarted(): void {
-        performance.mark("hydration:started", { detail: { sequence: markSequence++ } });
-    },
+        templateDidUpdate(name) {
+            performance.measure(
+                `template-update:${name}`,
+                `template-update:${name}:start`,
+            );
+        },
 
-    templateWillUpdate(name: string) {
-        performance.mark(`template-update:${name}:start`, {
-            detail: { sequence: markSequence++ },
-        });
-    },
+        elementDidDefine(name) {
+            performance.mark(`element-define:${name}`, {
+                detail: { sequence: markSequence++ },
+            });
+        },
 
-    templateDidUpdate(name) {
-        performance.measure(`template-update:${name}`, `template-update:${name}:start`);
-    },
-
-    elementDidDefine(name) {
-        performance.mark(`element-define:${name}`, {
-            detail: { sequence: markSequence++ },
-        });
-    },
-
-    elementDidRegister(name) {
-        performance.mark(`element-register:${name}`, {
-            detail: { sequence: markSequence++ },
-        });
-    },
-
-    hydrationComplete(): void {
-        performance.measure("hydration:complete", "hydration:started");
-        (window as any).hydrationCompleted = true;
-    },
+        elementDidRegister(name) {
+            performance.mark(`element-register:${name}`, {
+                detail: { sequence: markSequence++ },
+            });
+        },
+    }),
 });

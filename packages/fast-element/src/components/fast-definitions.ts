@@ -44,14 +44,34 @@ export interface ShadowRootOptions extends ShadowRootInit {
  */
 export interface TemplateLifecycleCallbacks {
     /**
-     * Called after the template has been assigned to the definition
+     * Called after the JS class definition has been registered.
+     */
+    elementDidRegister?(name: string): void;
+
+    /**
+     * Called before the template has been evaluated and assigned.
+     */
+    templateWillUpdate?(name: string): void;
+
+    /**
+     * Called after the template has been assigned to the definition.
      */
     templateDidUpdate?(name: string): void;
 
     /**
-     * Called after the custom element has been defined
+     * Called after the custom element has been defined.
      */
     elementDidDefine?(name: string): void;
+
+    /**
+     * Called before an individual element's hydration begins.
+     */
+    elementWillHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after an individual element's hydration has finished.
+     */
+    elementDidHydrate?(source: HTMLElement): void;
 }
 
 /**

@@ -40,6 +40,11 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
+    "./hydration.js": {
+      "types": "./dist/dts/hydration.d.ts",
+      "test": "./src/hydration.ts",
+      "default": "./dist/esm/hydration.js"
+    },
     "./binding/two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
       "default": "./dist/esm/binding/two-way.js"

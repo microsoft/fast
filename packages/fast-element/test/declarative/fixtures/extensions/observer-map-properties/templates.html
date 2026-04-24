@@ -1,19 +1,19 @@
 <f-template name="selective-obs-element">
     <template>
         <div class="user-section">
-            <span class="user-name">{{user.name}}</span>
-            <span class="user-age">{{user.age}}</span>
-            <span class="user-history-joined">{{user.history.joined}}</span>
-            <span class="user-history-visits">{{user.history.visits}}</span>
-            <span class="user-location-city">{{user.location.city}}</span>
+            <span class="user-name">{{ user.name }}</span>
+            <span class="user-age">{{ user.age }}</span>
+            <span class="user-history-joined">{{ user.history.joined }}</span>
+            <span class="user-history-visits">{{ user.history.visits }}</span>
+            <span class="user-location-city">{{ user.location.city }}</span>
         </div>
         <div class="settings-section">
-            <span class="settings-theme">{{settings.theme}}</span>
+            <span class="settings-theme">{{ settings.theme }}</span>
         </div>
         <div class="analytics-section">
-            <span class="active-chart">{{analytics.charts.activeChart}}</span>
-            <span class="cached-data">{{analytics.charts.cachedData}}</span>
-            <span class="analytics-summary">{{analytics.summary}}</span>
+            <span class="active-chart">{{ analytics.charts.activeChart }}</span>
+            <span class="cached-data">{{ analytics.charts.cachedData }}</span>
+            <span class="analytics-summary">{{ analytics.summary }}</span>
         </div>
         <button @click="{updateUserName()}">Update Name</button>
         <button @click="{updateUserAge()}">Update Age</button>
@@ -27,16 +27,16 @@
 </f-template>
 <f-template name="all-obs-element">
     <template>
-        <span class="user-name">{{user.name}}</span>
-        <span class="settings-theme">{{settings.theme}}</span>
+        <span class="user-name">{{ user.name }}</span>
+        <span class="settings-theme">{{ settings.theme }}</span>
         <button @click="{updateUserName()}">Update Name</button>
         <button @click="{updateSettings()}">Update Settings</button>
     </template>
 </f-template>
 <f-template name="empty-props-element">
     <template>
-        <span class="user-name">{{user.name}}</span>
-        <span class="settings-theme">{{settings.theme}}</span>
+        <span class="user-name">{{ user.name }}</span>
+        <span class="settings-theme">{{ settings.theme }}</span>
         <button @click="{updateUserName()}">Update Name</button>
         <button @click="{updateSettings()}">Update Settings</button>
     </template>
@@ -45,8 +45,8 @@
     <template>
         <f-repeat value="{{item in items}}">
             <div class="item-row">
-                <span class="item-text">{{item.text}}</span>
-                <span class="item-count">{{item.meta.count}}</span>
+                <span class="item-text">{{ item.text }}</span>
+                <span class="item-count">{{ item.meta.count }}</span>
             </div>
         </f-repeat>
         <button @click="{updateItemText()}">Update Item Text</button>

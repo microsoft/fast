@@ -118,7 +118,7 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
             throw new Error(
                 `Unmatched first/last child inside "${
                     (lastNode.getRootNode() as ShadowRoot).host.nodeName
-                }".`
+                }".`,
             );
         }
         parent.removeChild(current);
@@ -278,7 +278,7 @@ export class HTMLView<TSource = any, TParent = any>
     public constructor(
         private fragment: DocumentFragment,
         private factories: ReadonlyArray<CompiledViewBehaviorFactory>,
-        public readonly targets: ViewBehaviorTargets
+        public readonly targets: ViewBehaviorTargets,
     ) {
         super();
         this.firstChild = fragment.firstChild!;
@@ -492,7 +492,7 @@ export class HydrationBindingError extends Error {
          * String representation of the HTML in the template that
          * threw the binding error.
          */
-        public readonly templateString: string
+        public readonly templateString: string,
     ) {
         super(message);
     }
@@ -528,7 +528,7 @@ export class HydrationView<TSource = any, TParent = any>
         public readonly firstChild: Node,
         public readonly lastChild: Node,
         private sourceTemplate: ViewTemplate,
-        private hostBindingTarget?: Element
+        private hostBindingTarget?: Element,
     ) {
         super();
         this.factories = sourceTemplate.compile().factories;
@@ -589,7 +589,7 @@ export class HydrationView<TSource = any, TParent = any>
                 throw new Error(
                     `Unmatched first/last child inside "${
                         (end.getRootNode() as ShadowRoot).host.nodeName
-                    }".`
+                    }".`,
                 );
             }
             fragment.appendChild(current);
@@ -617,7 +617,7 @@ export class HydrationView<TSource = any, TParent = any>
                 const { targets, boundaries } = buildViewBindingTargets(
                     this.firstChild,
                     this.lastChild,
-                    this.factories
+                    this.factories,
                 );
                 this._targets = targets;
                 this._bindingViewBoundaries = boundaries;
@@ -687,7 +687,7 @@ export class HydrationView<TSource = any, TParent = any>
                         `  3. The DOM structure was modified before hydration`,
                         `\nTemplate: ${templateString.slice(0, 200)}${
                             templateString.length > 200 ? "..." : ""
-                        }`
+                        }`,
                     );
 
                     throw new HydrationBindingError(
@@ -695,9 +695,9 @@ export class HydrationView<TSource = any, TParent = any>
                         factory,
                         createRangeForNodes(
                             this.firstChild,
-                            this.lastChild
+                            this.lastChild,
                         ).cloneContents(),
-                        templateString
+                        templateString,
                     );
                 }
             }

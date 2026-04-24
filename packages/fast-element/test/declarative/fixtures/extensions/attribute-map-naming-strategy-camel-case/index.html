@@ -5,18 +5,30 @@
         <title></title>
     </head>
     <body>
-        <test-camel-case foo-bar="hello"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->hello<!--fe:/b--></span></template></test-camel-case>
-        <test-camel-case-multi my-custom-prop="world"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->world<!--fe:/b--></span></template></test-camel-case-multi>
-        <test-camel-case-no-dash label="simple"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->simple<!--fe:/b--></span></template></test-camel-case-no-dash>
-<f-template name="test-camel-case">
-    <template> <span>{{fooBar}}</span> </template>
-</f-template>
-<f-template name="test-camel-case-multi">
-    <template> <span>{{myCustomProp}}</span> </template>
-</f-template>
-<f-template name="test-camel-case-no-dash">
-    <template> <span>{{label}}</span> </template>
-</f-template>
+        <test-camel-case foo-bar="hello"
+            ><template shadowrootmode="open" shadowroot="open"
+                ><span>hello<!--fe:/b--></span></template
+            ></test-camel-case
+        >
+        <test-camel-case-multi my-custom-prop="world"
+            ><template shadowrootmode="open" shadowroot="open"
+                ><span>world<!--fe:/b--></span></template
+            ></test-camel-case-multi
+        >
+        <test-camel-case-no-dash label="simple"
+            ><template shadowrootmode="open" shadowroot="open"
+                ><span>simple<!--fe:/b--></span></template
+            ></test-camel-case-no-dash
+        >
+        <f-template name="test-camel-case">
+            <template> <span>{{ fooBar }}</span> </template>
+        </f-template>
+        <f-template name="test-camel-case-multi">
+            <template> <span>{{ myCustomProp }}</span> </template>
+        </f-template>
+        <f-template name="test-camel-case-no-dash">
+            <template> <span>{{ label }}</span> </template>
+        </f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

@@ -1,6 +1,10 @@
- <!-- multiple -->
- <f-template name="test-element-multiple">
-    <template>Hello <f-when value="{{planet == 'earth'}}">world</f-when><f-when value="{{planet == 'pluto'}}">pluto</f-when><f-when value="{{planet == 'mars'}}">mars</f-when></template>
+<!-- multiple -->
+<f-template name="test-element-multiple">
+    <template
+        >Hello <f-when value="{{planet == 'earth'}}">world</f-when
+        ><f-when value="{{planet == 'pluto'}}">pluto</f-when
+        ><f-when value="{{planet == 'mars'}}">mars</f-when></template
+    >
 </f-template>
 <!-- boolean -->
 <f-template name="test-element">
@@ -46,30 +50,38 @@
 <f-template name="nested-when">
     <template>
         <f-when value="{{error}}">
-            <div class="error" role="alert">{{strings.errorMessage}}</div>
+            <div class="error" role="alert">{{ strings.errorMessage }}</div>
         </f-when>
         <div class="buttons">
             <f-when value="{{!error}}">
-                <f-when value="{{showProgress}}">
-                    <progress></progress>
-                </f-when>
+                <f-when value="{{showProgress}}"> <progress></progress> </f-when>
                 <f-when value="{{!showProgress}}">
                     <button ?disabled="{{!enableContinue}}" @click="{handleClick()}">
-                        {{strings.continueButtonText}}
+                        {{ strings.continueButtonText }}
                     </button>
                 </f-when>
             </f-when>
             <f-when value="{{error}}">
-                <button>{{strings.retryButtonText}}</button>
+                <button>{{ strings.retryButtonText }}</button>
             </f-when>
         </div>
     </template>
 </f-template>
 <!-- when false with repeat -->
 <f-template name="test-element-when-false-repeat">
-    <template><f-when value="{{show}}"><ul><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></f-when></template>
+    <template
+        ><f-when value="{{show}}"
+            ><ul>
+                <f-repeat value="{{item in list}}"><li>{{ item }}</li></f-repeat>
+            </ul></f-when
+        ></template
+    >
 </f-template>
 <!-- event -->
 <f-template name="test-element-event">
-    <template><f-when value="{{show}}"><button @click="{handleClick()}">Click me</button></f-when></template>
+    <template
+        ><f-when value="{{show}}"
+            ><button @click="{handleClick()}">Click me</button></f-when
+        ></template
+    >
 </f-template>
