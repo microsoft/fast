@@ -227,7 +227,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 this._template = (this.source as any).resolveTemplate();
             } else if (definition.template) {
                 // 3. Default to the static definition.
-                this._template = definition.template ?? null;
+                this._template =
+                    (definition.template as ElementViewTemplate<TElement> | undefined) ??
+                    null;
             }
         }
 

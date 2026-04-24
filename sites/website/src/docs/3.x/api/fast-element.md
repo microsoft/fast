@@ -1709,6 +1709,17 @@ A callback that receives a FASTElementDefinition during element registration. Ex
 </td></tr>
 <tr><td>
 
+[FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)
+
+
+</td><td>
+
+Resolves an element template from a composed definition.
+
+
+</td></tr>
+<tr><td>
+
 [HTMLTemplateTag](../fast-element.htmltemplatetag/)
 
 

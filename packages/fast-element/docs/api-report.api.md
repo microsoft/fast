@@ -443,7 +443,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     readonly registry: CustomElementRegistry;
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
-    template?: ElementViewTemplate;
+    template?: ElementViewTemplate<InstanceType<TType>>;
     readonly type: TType;
 }
 
@@ -734,8 +734,7 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
     readonly registry?: CustomElementRegistry;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
-    // Warning: (ae-forgotten-export) The symbol "FASTElementTemplateInput" needs to be exported by the entry point index.d.ts
-    readonly template?: FASTElementTemplateInput<TType>;
+    readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
 }
 
 // @public

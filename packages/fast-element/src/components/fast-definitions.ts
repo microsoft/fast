@@ -74,7 +74,7 @@ export type FASTElementTemplateResolver<
     | ElementViewTemplate<InstanceType<TType>>
     | Promise<ElementViewTemplate<InstanceType<TType>>>;
 
-type FASTElementTemplateInput<
+type FASTElementTemplateSource<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 > = ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
 
@@ -96,7 +96,7 @@ const extensionRegistries = new WeakMap<
 function isFASTElementTemplateResolver<
     TType extends Constructable<HTMLElement> = Constructable<HTMLElement>,
 >(
-    value: FASTElementTemplateInput<TType> | undefined,
+    value: FASTElementTemplateSource<TType> | undefined,
 ): value is FASTElementTemplateResolver<TType> {
     return isFunction(value);
 }
@@ -239,7 +239,9 @@ export interface PartialFASTElementDefinition<
     /**
      * The template, or template resolver, for the custom element.
      */
-    readonly template?: FASTElementTemplateInput<TType>;
+    readonly template?:
+        | ElementViewTemplate<InstanceType<TType>>
+        | FASTElementTemplateResolver<TType>;
 
     /**
      * The styles to associate with the custom element.
@@ -321,7 +323,7 @@ export class FASTElementDefinition<
     /**
      * The template to render for the custom element.
      */
-    public template?: ElementViewTemplate;
+    public template?: ElementViewTemplate<InstanceType<TType>>;
 
     /**
      * The styles to associate with the custom element.
