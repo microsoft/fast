@@ -5,23 +5,15 @@
         <title></title>
     </head>
     <body>
-        <test-element-no-template
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>No template element provided</span></template
-            ></test-element-no-template
-        >
-        <test-element-multiple-templates
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>First template</span></template
-            ></test-element-multiple-templates
-        >
-        <f-template name="test-element-no-template">
-            <span>No template element provided</span>
-        </f-template>
-        <f-template name="test-element-multiple-templates">
-            <template><span>First template</span></template>
-            <template><span>Second template</span></template>
-        </f-template>
+        <test-element-no-template><template shadowrootmode="open" shadowroot="open"><span>No template element provided</span></template></test-element-no-template>
+        <test-element-multiple-templates><template shadowrootmode="open" shadowroot="open"><span>First template</span></template></test-element-multiple-templates>
+<f-template name="test-element-no-template">
+    <span>No template element provided</span>
+</f-template>
+<f-template name="test-element-multiple-templates">
+    <template><span>First template</span></template>
+    <template><span>Second template</span></template>
+</f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

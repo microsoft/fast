@@ -1,8 +1,5 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, TemplateElement } from "@microsoft/fast-element/declarative.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 // Track lifecycle callbacks for testing

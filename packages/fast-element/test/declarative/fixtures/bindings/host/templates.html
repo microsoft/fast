@@ -1,19 +1,21 @@
 <f-template name="host-event-element">
-    <template @click="{handleClick()}"> <span>{{ greeting }}</span> </template>
+    <template @click="{handleClick()}">
+        <span>{{greeting}}</span>
+    </template>
 </f-template>
 <f-template name="host-multi-element">
     <template @click="{handleClick()}" ?disabled="{{isDisabled}}">
-        <span>{{ text }}</span>
+        <span>{{text}}</span>
     </template>
 </f-template>
 <f-template name="host-static-element">
     <template id="static-host" @click="{handleClick()}">
-        <span>{{ first }} {{ second }}</span>
+        <span>{{first}} {{second}}</span>
     </template>
 </f-template>
 <f-template name="host-events-element">
     <template @click="{handleClick()}" @mouseenter="{handleMouseEnter()}">
-        {{ text }}
+        {{text}}
     </template>
 </f-template>
 <f-template name="host-multi-content-element">
@@ -22,48 +24,32 @@
     </template>
 </f-template>
 <f-template name="host-text-binding-element">
-    <template @click="{handleClick()}"> <span>{{ text }}</span> </template>
+    <template @click="{handleClick()}">
+        <span>{{text}}</span>
+    </template>
 </f-template>
 <f-template name="host-property-element">
-    <template :title="{hostTitle}"> <span>{{ text }}</span> </template>
+    <template :title="{hostTitle}">
+        <span>{{text}}</span>
+    </template>
 </f-template>
 <f-template name="host-all-types-element">
-    <template
-        @click="{handleClick()}"
-        ?disabled="{{isDisabled}}"
-        :title="{hostTitle}"
-        attr="{{hostAttr}}"
-    >
-        <span>{{ text }}</span>
+    <template @click="{handleClick()}" ?disabled="{{isDisabled}}" :title="{hostTitle}" attr="{{hostAttr}}">
+        <span>{{text}}</span>
     </template>
 </f-template>
 <f-template name="host-perm-attr-first">
-    <template
-        attr="{{hostAttr}}"
-        :title="{hostTitle}"
-        ?disabled="{{isDisabled}}"
-        @click="{handleClick()}"
-    >
-        <span>{{ text }}</span>
+    <template attr="{{hostAttr}}" :title="{hostTitle}" ?disabled="{{isDisabled}}" @click="{handleClick()}">
+        <span>{{text}}</span>
     </template>
 </f-template>
 <f-template name="host-perm-bool-first">
-    <template
-        ?disabled="{{isDisabled}}"
-        @click="{handleClick()}"
-        attr="{{hostAttr}}"
-        :title="{hostTitle}"
-    >
-        <span>{{ text }}</span>
+    <template ?disabled="{{isDisabled}}" @click="{handleClick()}" attr="{{hostAttr}}" :title="{hostTitle}">
+        <span>{{text}}</span>
     </template>
 </f-template>
 <f-template name="host-perm-prop-first">
-    <template
-        :title="{hostTitle}"
-        attr="{{hostAttr}}"
-        @click="{handleClick()}"
-        ?disabled="{{isDisabled}}"
-    >
-        <span>{{ text }}</span>
+    <template :title="{hostTitle}" attr="{{hostAttr}}" @click="{handleClick()}" ?disabled="{{isDisabled}}">
+        <span>{{text}}</span>
     </template>
 </f-template>

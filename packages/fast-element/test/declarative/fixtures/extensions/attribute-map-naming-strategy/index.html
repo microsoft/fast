@@ -5,29 +5,20 @@
         <title></title>
     </head>
     <body>
-        <naming-strategy-test
-            id="test-element"
-            foo-bar="default-foo"
-            my-custom-prop="default-prop"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><div class="foo-bar-value">default-foo<!--fe:/b--></div>
-                <div class="my-custom-prop-value">default-prop<!--fe:/b--></div></template
-            ></naming-strategy-test
-        >
-        <naming-strategy-no-dash-test id="no-dash-test" label="default-label"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><div class="label-value">default-label<!--fe:/b--></div></template
-            ></naming-strategy-no-dash-test
-        >
-        <f-template name="naming-strategy-test">
-            <template>
-                <div class="foo-bar-value">{{ fooBar }}</div>
-                <div class="my-custom-prop-value">{{ myCustomProp }}</div>
-            </template>
-        </f-template>
-        <f-template name="naming-strategy-no-dash-test">
-            <template> <div class="label-value">{{ label }}</div> </template>
-        </f-template>
+        <naming-strategy-test id="test-element" foo-bar="default-foo" my-custom-prop="default-prop"><template shadowrootmode="open" shadowroot="open"><div class="foo-bar-value"><!--fe:b-->default-foo<!--fe:/b--></div>
+        <div class="my-custom-prop-value"><!--fe:b-->default-prop<!--fe:/b--></div></template></naming-strategy-test>
+        <naming-strategy-no-dash-test id="no-dash-test" label="default-label"><template shadowrootmode="open" shadowroot="open"><div class="label-value"><!--fe:b-->default-label<!--fe:/b--></div></template></naming-strategy-no-dash-test>
+<f-template name="naming-strategy-test">
+    <template>
+        <div class="foo-bar-value">{{fooBar}}</div>
+        <div class="my-custom-prop-value">{{myCustomProp}}</div>
+    </template>
+</f-template>
+<f-template name="naming-strategy-no-dash-test">
+    <template>
+        <div class="label-value">{{label}}</div>
+    </template>
+</f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

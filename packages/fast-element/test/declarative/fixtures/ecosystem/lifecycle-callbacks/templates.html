@@ -1,32 +1,34 @@
-<f-template name="simple-element"> <template>{{ message }} World</template> </f-template>
+<f-template name="simple-element">
+    <template>{{message}} World</template>
+</f-template>
 
 <f-template name="complex-element">
     <template>
         <div>
-            <h2>{{ title }}</h2>
-            <p>Count: {{ count }}</p>
+            <h2>{{title}}</h2>
+            <p>Count: {{count}}</p>
             <nested-element label="{{title}}"></nested-element>
         </div>
     </template>
 </f-template>
 
 <f-template name="nested-element">
-    <template><span>{{ label }}</span></template>
+    <template><span>{{label}}</span></template>
 </f-template>
 
 <f-template name="deferred-element">
-    <template><p>Status: {{ status }}</p></template>
+    <template><p>Status: {{status}}</p></template>
 </f-template>
 
 <f-template name="deferred-parent-element">
     <template>
         <section>
-            <p>{{ label }}</p>
+            <p>{{label}}</p>
             <deferred-child-element label="{{label}}"></deferred-child-element>
         </section>
     </template>
 </f-template>
 
 <f-template name="deferred-child-element">
-    <template><span>{{ label }}</span></template>
+    <template><span>{{label}}</span></template>
 </f-template>

@@ -1,7 +1,3 @@
 <f-template name="test-element">
-    <template
-        ><ul f-children="{listItems}">
-            <f-repeat value="{{item in list}}"><li>{{ item }}</li></f-repeat>
-        </ul></template
-    >
+    <template><ul f-children="{listItems}"><f-repeat value="{{item in list}}"><li>{{item}}</li></f-repeat></ul></template>
 </f-template>

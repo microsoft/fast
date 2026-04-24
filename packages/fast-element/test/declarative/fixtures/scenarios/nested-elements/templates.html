@@ -3,9 +3,7 @@
         <ul>
             <f-repeat value="{{item in repeatEventItems}}">
                 <li>
-                    <button type="button" @click="{$c.parent.handleItemClick($e)}">
-                        {{ item.name }}
-                    </button>
+                    <button type="button" @click="{$c.parent.handleItemClick($e)}">{{item.name}}</button>
                 </li>
             </f-repeat>
         </ul>
@@ -17,13 +15,7 @@
             <f-repeat value="{{item in whenRepeatItems}}">
                 <li>
                     <f-when value="{{showNames}}">
-                        <button
-                            class="name"
-                            type="button"
-                            @click="{$c.parent.handleItemClick($e)}"
-                        >
-                            {{ item.name }}
-                        </button>
+                        <button class="name" type="button" @click="{$c.parent.handleItemClick($e)}">{{item.name}}</button>
                     </f-when>
                 </li>
             </f-repeat>
@@ -31,13 +23,15 @@
     </template>
 </f-template>
 <f-template name="grand-child-element">
-    <template> <span class="category">{{ category }}</span> </template>
+    <template>
+        <span class="category">{{category}}</span>
+    </template>
 </f-template>
 <f-template name="child-element">
     <template>
         <div class="item">
-            <span class="index">{{ idx }}</span>
-            <span class="text">{{ text }}</span>
+            <span class="index">{{idx}}</span>
+            <span class="text">{{text}}</span>
             <grand-child-element category="{{category}}"></grand-child-element>
         </div>
     </template>
@@ -45,7 +39,7 @@
 <f-template name="parent-element">
     <template>
         <div class="list-container">
-            <h2>{{ title }}</h2>
+            <h2>{{title}}</h2>
             <div class="items">
                 <f-repeat value="{{item in items}}" positioning="true">
                     <child-element

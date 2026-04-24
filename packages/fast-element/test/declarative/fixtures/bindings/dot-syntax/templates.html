@@ -1,15 +1,15 @@
 <f-template name="test-element">
     <template>
-        <span>{{ object.b }}</span>
-        <span>{{ object.a.b1 }}</span>
-        <span>{{ object.a.b2.c }}</span>
+        <span>{{object.b}}</span>
+        <span>{{object.a.b1}}</span>
+        <span>{{object.a.b2.c}}</span>
         <button @click="{handleBClick()}">Set b</button>
         <button @click="{handleAB1Click()}">Set a.b1</button>
         <button @click="{handleAB2CClick()}">Set a.b2.c</button>
         <f-when value="{{object.c}}">
             <f-repeat value="{{item in object.c}}">
                 <f-when value="{{item.name && item.status == 'active'}}">
-                    <div>{{ item.name }}</div>
+                    <div>{{item.name}}</div>
                 </f-when>
             </f-repeat>
         </f-when>

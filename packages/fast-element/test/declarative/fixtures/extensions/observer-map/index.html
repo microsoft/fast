@@ -6,548 +6,436 @@
     </head>
     <body>
         <div class="container">
-            <observer-map-simple-array-test-element
-                ><template shadowrootmode="open" shadowroot="open"
-                    ><ul>
-                        <!--fe:b-->
-                        <!--fe:r-->
-                        <li class="simple-item">foo<!--fe:/b--></li>
-                        <!--fe:/r-->
-                        <!--fe:r-->
-                        <li class="simple-item">baz<!--fe:/b--></li>
-                        <!--fe:/r--><!--fe:/b-->
-                    </ul>
-                    <button data-fe="1">Update First Item</button>
-                    <button data-fe="1">Update Second Item</button></template
-                ></observer-map-simple-array-test-element
-            >
-            <observer-map-test-element
-                ><template shadowrootmode="open" shadowroot="open"
-                    ><observer-map-internal-test-element data-fe="3"
-                        ><template shadowrootmode="open" shadowroot="open"
-                            >selected user: <!--fe:b-->1<!--fe:/b--> <!-- because this is bound to an attribute property it must be lowercase -->
-                            <br>
-                            total users: <!--fe:b-->2<!--fe:/b-->
-                            <br>
-                            <div class="stats">
-                                <div class="nested-info">
-                                    <strong>Engagement:</strong>
-                                    Daily: <!--fe:b-->100<!--fe:/b-->, Weekly: <!--fe:b-->500<!--fe:/b-->,
-                                    Monthly: <!--fe:b-->2000<!--fe:/b-->
-                                </div>
-                            </div>
-                            <!--fe:b-->
-                            <span class="nested-define">
-                                <!--fe:b-->
-                                <!--fe:/b-->
-                            </span>
-                            <!--fe:/b-->
-                            <button data-fe="1">Define B</button>
-                            <button data-fe="1">Update C</button>
-                            <br>
-                            <!--fe:b--> <!--fe:/b-->
-                            <button data-fe="1">Define Y</button>
-                            <button data-fe="1">Update Z</button>
-                            <div>
-                                <!--fe:b-->
-                                <!--fe:r-->
-                                <!--fe:b-->
-                                <!--fe:r-->
-                                <div class="item">item A<!--fe:/b--></div>
-                                <span>
-                                    <!--fe:b--> <!--fe:r-->
-                                    <span class="action-label"
-                                        >action label A<!--fe:/b--></span
-                                    >
-                                    <!--fe:/r--><!--fe:/b-->
-                                </span>
-                                <!--fe:/r--><!--fe:/b-->
-                                <!--fe:/r--><!--fe:/b-->
-                            </div>
-                            <button data-fe="1">Remove all items</button>
-                            <button data-fe="1">Add an item</button>
-                            <button data-fe="1">Update an item</button>
-                            <button data-fe="1">Remove groups</button>
-                            <button data-fe="1">Add group</button>
-                            <button data-fe="1">Update an action label</button></template
-                        ></observer-map-internal-test-element
-                    >
-                    <div class="stats">
-                        <h2>Global Stats</h2>
-                        <div class="nested-info">
-                            <strong>Total Users:</strong>
-                            2<!--fe:/b--> |
-                            <strong>Active Users:</strong>
-                            1<!--fe:/b-->
-                        </div>
-                        <div class="nested-info">
-                            <strong>Performance:</strong>
-                            Load: <!--fe:b-->1.2<!--fe:/b-->s, Render: <!--fe:b-->0.8<!--fe:/b-->s
-                        </div>
-                        <div class="controls">
-                            <button data-fe="1">Update Stats</button>
-                            <button data-fe="1">Add New User</button>
-                        </div>
-                    </div>
-
-                    <div class="section">
-                        <h2>Users List</h2>
-                        <!--fe:b-->
-                        <!--fe:r-->
-                        <div class="user-card">
-                            <h3>
-                                Alice Johnson<!--fe:/b--> (ID: <!--fe:b-->1<!--fe:/b--> )
-                                <!--fe:b-->
-                                <span>⭐ SELECTED</span>
-                                <!--fe:/b-->
-                            </h3>
-
-                            <div class="nested-info">
-                                <strong>Age:</strong>
-                                28<!--fe:/b--> years old
-                            </div>
-                            <div class="nested-info">
-                                <strong>Location:</strong>
-                                New York<!--fe:/b-->, <!--fe:b-->USA<!--fe:/b-->
-                            </div>
-                            <div class="nested-info">
-                                <strong>Coordinates:</strong>
-                                Lat: <!--fe:b-->40.7128<!--fe:/b-->, Lng: <!--fe:b-->-74.006<!--fe:/b-->
-                            </div>
-
-                            <div class="nested-info">
-                                <strong>Theme:</strong>
-                                dark<!--fe:/b--> |
-                                <strong>Email Notifications:</strong>
-                                true<!--fe:/b--> |
-                                <strong>Push Notifications:</strong>
-                                false<!--fe:/b-->
-                            </div>
-                            <div class="nested-info">
-                                <strong>Notification Frequency:</strong>
-                                daily<!--fe:/b-->
-                            </div>
-                            <div class="nested-info">
-                                <strong>Categories:</strong>
-                                <!--fe:b--> <!--fe:r-->
-                                <span class="tag">tech<!--fe:/b--></span>
-                                <!--fe:/r--> <!--fe:r-->
-                                <span class="tag">news<!--fe:/b--></span>
-                                <!--fe:/r--><!--fe:/b-->
-                            </div>
-
-                            <div class="controls">
-                                <button data-fe="1">Select User</button>
-                                <button data-fe="1">Age +1</button>
-                                <button data-fe="1">Toggle Theme</button>
-                                <button data-fe="1">Change Location</button>
-                                <button data-fe="1">Update Notifications</button>
-                                <button data-fe="1">Add Category</button>
-                                <button data-fe="1">Remove Tech Category</button>
-                                <button data-fe="1">Remove User</button>
-                            </div>
-
-                            <div>
-                                <h4>Posts (<!--fe:b--> 2<!--fe:/b--> posts)</h4>
-                                <!--fe:b-->
-                                <!--fe:r-->
-                                <div class="post-card">
-                                    <div>
-                                        <strong>First Post<!--fe:/b--></strong>
-                                        (ID: <!--fe:b-->101<!--fe:/b-->)
-                                    </div>
-                                    <div class="nested-info">
-                                        Hello World!<!--fe:/b-->
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Author:</strong>
-                                        Alice Johnson<!--fe:/b-->
-                                        <!--fe:b-->
-                                        <span>✓ Verified</span>
-                                        <!--fe:/b-->
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Stats:</strong>
-                                        150<!--fe:/b--> views, <!--fe:b-->25<!--fe:/b--> likes
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Tags:</strong>
-                                        <!--fe:b--> <!--fe:r-->
-                                        <span class="tag">introduction<!--fe:/b--></span>
-                                        <!--fe:/r--> <!--fe:r-->
-                                        <span class="tag">hello<!--fe:/b--></span>
-                                        <!--fe:/r--><!--fe:/b-->
-                                    </div>
-                                    <div class="controls">
-                                        <button data-fe="1">Like Post</button>
-                                    </div>
-                                </div>
-                                <!--fe:/r-->
-                                <!--fe:r-->
-                                <div class="post-card">
-                                    <div>
-                                        <strong>Tech Update<!--fe:/b--></strong>
-                                        (ID: <!--fe:b-->102<!--fe:/b-->)
-                                    </div>
-                                    <div class="nested-info">
-                                        Latest in technology...<!--fe:/b-->
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Author:</strong>
-                                        Alice Johnson<!--fe:/b-->
-                                        <!--fe:b-->
-                                        <span>✓ Verified</span>
-                                        <!--fe:/b-->
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Stats:</strong>
-                                        320<!--fe:/b--> views, <!--fe:b-->45<!--fe:/b--> likes
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Tags:</strong>
-                                        <!--fe:b--> <!--fe:r-->
-                                        <span class="tag">tech<!--fe:/b--></span>
-                                        <!--fe:/r--> <!--fe:r-->
-                                        <span class="tag">update<!--fe:/b--></span>
-                                        <!--fe:/r--><!--fe:/b-->
-                                    </div>
-                                    <div class="controls">
-                                        <button data-fe="1">Like Post</button>
-                                    </div>
-                                </div>
-                                <!--fe:/r-->
-                                <!--fe:/b-->
-                                <div class="controls">
-                                    <button data-fe="1">Add New Post</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!--fe:/r-->
-                        <!--fe:r-->
-                        <div class="user-card">
-                            <h3>
-                                Bob Smith<!--fe:/b--> (ID: <!--fe:b-->2<!--fe:/b--> )
-                                <!--fe:b--><!--fe:/b-->
-                            </h3>
-
-                            <div class="nested-info">
-                                <strong>Age:</strong>
-                                35<!--fe:/b--> years old
-                            </div>
-                            <div class="nested-info">
-                                <strong>Location:</strong>
-                                London<!--fe:/b-->, <!--fe:b-->UK<!--fe:/b-->
-                            </div>
-                            <div class="nested-info">
-                                <strong>Coordinates:</strong>
-                                Lat: <!--fe:b-->51.5074<!--fe:/b-->, Lng: <!--fe:b-->-0.1278<!--fe:/b-->
-                            </div>
-
-                            <div class="nested-info">
-                                <strong>Theme:</strong>
-                                light<!--fe:/b--> |
-                                <strong>Email Notifications:</strong>
-                                false<!--fe:/b--> |
-                                <strong>Push Notifications:</strong>
-                                true<!--fe:/b-->
-                            </div>
-                            <div class="nested-info">
-                                <strong>Notification Frequency:</strong>
-                                weekly<!--fe:/b-->
-                            </div>
-                            <div class="nested-info">
-                                <strong>Categories:</strong>
-                                <!--fe:b--> <!--fe:r-->
-                                <span class="tag">sports<!--fe:/b--></span>
-                                <!--fe:/r--> <!--fe:r-->
-                                <span class="tag">music<!--fe:/b--></span>
-                                <!--fe:/r--><!--fe:/b-->
-                            </div>
-
-                            <div class="controls">
-                                <button data-fe="1">Select User</button>
-                                <button data-fe="1">Age +1</button>
-                                <button data-fe="1">Toggle Theme</button>
-                                <button data-fe="1">Change Location</button>
-                                <button data-fe="1">Update Notifications</button>
-                                <button data-fe="1">Add Category</button>
-                                <button data-fe="1">Remove Tech Category</button>
-                                <button data-fe="1">Remove User</button>
-                            </div>
-
-                            <div>
-                                <h4>Posts (<!--fe:b--> 1<!--fe:/b--> posts)</h4>
-                                <!--fe:b-->
-                                <!--fe:r-->
-                                <div class="post-card">
-                                    <div>
-                                        <strong>Music Review<!--fe:/b--></strong>
-                                        (ID: <!--fe:b-->201<!--fe:/b-->)
-                                    </div>
-                                    <div class="nested-info">
-                                        Amazing concert last night...<!--fe:/b-->
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Author:</strong>
-                                        Bob Smith<!--fe:/b-->
-                                        <!--fe:b--><!--fe:/b-->
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Stats:</strong>
-                                        89<!--fe:/b--> views, <!--fe:b-->12<!--fe:/b--> likes
-                                    </div>
-                                    <div class="nested-info">
-                                        <strong>Tags:</strong>
-                                        <!--fe:b--> <!--fe:r-->
-                                        <span class="tag">music<!--fe:/b--></span>
-                                        <!--fe:/r--> <!--fe:r-->
-                                        <span class="tag">review<!--fe:/b--></span>
-                                        <!--fe:/r--><!--fe:/b-->
-                                    </div>
-                                    <div class="controls">
-                                        <button data-fe="1">Like Post</button>
-                                    </div>
-                                </div>
-                                <!--fe:/r-->
-                                <!--fe:/b-->
-                                <div class="controls">
-                                    <button data-fe="1">Add New Post</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!--fe:/r--><!--fe:/b-->
-                    </div></template
-                ></observer-map-test-element
-            >
-            <observer-map-with-observables-test-element
-                ><template shadowrootmode="open" shadowroot="open"
-                    >Level 3 Value: <!--fe:b-->42<!--fe:/b-->
-                    <button data-fe="1">Update Value1</button>
-                    <br>
-                    Level 3 Value Observable: <!--fe:b-->42<!--fe:/b-->
-                    <button data-fe="1">Update Value2</button></template
-                ></observer-map-with-observables-test-element
-            >
+            <observer-map-simple-array-test-element><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:r-->
+                <li class="simple-item"><!--fe:b-->foo<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:r-->
+                <li class="simple-item"><!--fe:b-->baz<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:/b-->
+        </ul>
+        <button data-fe="1">Update First Item</button>
+        <button data-fe="1">Update Second Item</button></template></observer-map-simple-array-test-element>
+            <observer-map-test-element><template shadowrootmode="open" shadowroot="open"><observer-map-internal-test-element data-fe="3"><template shadowrootmode="open" shadowroot="open">selected user: <!--fe:b-->1<!--fe:/b--> <!-- because this is bound to an attribute property it must be lowercase -->
+        <br>
+        total users: <!--fe:b-->2<!--fe:/b-->
+        <br>
+        <div class="stats">
+            <div class="nested-info">
+                <strong>Engagement:</strong>
+                Daily: <!--fe:b-->100<!--fe:/b-->,
+                Weekly: <!--fe:b-->500<!--fe:/b-->,
+                Monthly: <!--fe:b-->2000<!--fe:/b-->
+            </div>
         </div>
-        <f-template name="observer-map-test-element">
-            <template>
-                <observer-map-internal-test-element
-                    :selecteduserid="{{selecteduserid}}"
-                    :totalusers="{{stats.totalusers}}"
-                    :metrics="{{stats.metrics}}"
-                ></observer-map-internal-test-element>
-                <div class="stats">
-                    <h2>Global Stats</h2>
+        <!--fe:b-->
+            <span class="nested-define"><!--fe:b--><!--fe:/b--></span>
+        <!--fe:/b-->
+        <button data-fe="1">Define B</button>
+        <button data-fe="1">Update C</button>
+        <br>
+        <!--fe:b--><!--fe:/b-->
+        <button data-fe="1">Define Y</button>
+        <button data-fe="1">Update Z</button>
+        <div>
+            <!--fe:b--><!--fe:r-->
+                <!--fe:b--><!--fe:r-->
+                    <div class="item"><!--fe:b-->item A<!--fe:/b--></div>
+                    <span>
+                        <!--fe:b--><!--fe:r-->
+                            <span class="action-label"><!--fe:b-->action label A<!--fe:/b--></span>
+                        <!--fe:/r--><!--fe:/b-->
+                    </span>
+                <!--fe:/r--><!--fe:/b-->
+            <!--fe:/r--><!--fe:/b-->
+        </div>
+        <button data-fe="1">Remove all items</button>
+        <button data-fe="1">Add an item</button>
+        <button data-fe="1">Update an item</button>
+        <button data-fe="1">Remove groups</button>
+        <button data-fe="1">Add group</button>
+        <button data-fe="1">Update an action label</button></template></observer-map-internal-test-element>
+        <div class="stats">
+            <h2>Global Stats</h2>
+            <div class="nested-info">
+                <strong>Total Users:</strong> <!--fe:b-->2<!--fe:/b--> |
+                <strong>Active Users:</strong> <!--fe:b-->1<!--fe:/b-->
+            </div>
+            <div class="nested-info">
+                <strong>Performance:</strong>
+                Load: <!--fe:b-->1.2<!--fe:/b-->s,
+                Render: <!--fe:b-->0.8<!--fe:/b-->s
+            </div>
+            <div class="controls">
+                <button data-fe="1">Update Stats</button>
+                <button data-fe="1">Add New User</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Users List</h2>
+            <!--fe:b--><!--fe:r-->
+                <div class="user-card">
+                    <h3><!--fe:b-->Alice Johnson<!--fe:/b--> (ID: <!--fe:b-->1<!--fe:/b-->)
+                        <!--fe:b-->
+                            <span>⭐ SELECTED</span>
+                        <!--fe:/b-->
+                    </h3>
+
                     <div class="nested-info">
-                        <strong>Total Users:</strong> {{ stats.totalusers }} |
-                        <strong>Active Users:</strong> {{ stats.activeusers }}
+                        <strong>Age:</strong> <!--fe:b-->28<!--fe:/b--> years old
                     </div>
                     <div class="nested-info">
-                        <strong>Performance:</strong>
-                        Load: {{ stats.metrics.performance.loadtime }}s, Render:
-                        {{ stats.metrics.performance.rendertime }}s
+                        <strong>Location:</strong> <!--fe:b-->New York<!--fe:/b-->, <!--fe:b-->USA<!--fe:/b-->
                     </div>
+                    <div class="nested-info">
+                        <strong>Coordinates:</strong>
+                        Lat: <!--fe:b-->40.7128<!--fe:/b-->,
+                        Lng: <!--fe:b-->-74.006<!--fe:/b-->
+                    </div>
+
+                    <div class="nested-info">
+                        <strong>Theme:</strong> <!--fe:b-->dark<!--fe:/b--> |
+                        <strong>Email Notifications:</strong> <!--fe:b-->true<!--fe:/b--> |
+                        <strong>Push Notifications:</strong> <!--fe:b-->false<!--fe:/b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Notification Frequency:</strong> <!--fe:b-->daily<!--fe:/b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Categories:</strong>
+                        <!--fe:b--><!--fe:r-->
+                            <span class="tag"><!--fe:b-->tech<!--fe:/b--></span>
+                        <!--fe:/r--><!--fe:r-->
+                            <span class="tag"><!--fe:b-->news<!--fe:/b--></span>
+                        <!--fe:/r--><!--fe:/b-->
+                    </div>
+
                     <div class="controls">
-                        <button @click="{updateStats()}">Update Stats</button>
-                        <button @click="{addNewUser()}">Add New User</button>
+                        <button data-fe="1">Select User</button>
+                        <button data-fe="1">Age +1</button>
+                        <button data-fe="1">Toggle Theme</button>
+                        <button data-fe="1">Change Location</button>
+                        <button data-fe="1">Update Notifications</button>
+                        <button data-fe="1">Add Category</button>
+                        <button data-fe="1">Remove Tech Category</button>
+                        <button data-fe="1">Remove User</button>
                     </div>
-                </div>
 
-                <div class="section">
-                    <h2>Users List</h2>
-                    <f-repeat value="{{user in users}}">
-                        <div class="user-card">
-                            <h3>
-                                {{ user.name }}
-                                (ID: {{ user.id }})
-                                <f-when value="{{user.id == selecteduserid}}">
-                                    <span>⭐ SELECTED</span>
-                                </f-when>
-                            </h3>
-
-                            <div class="nested-info">
-                                <strong>Age:</strong>
-                                {{ user.details.personal.age }}
-                                years old
-                            </div>
-                            <div class="nested-info">
-                                <strong>Location:</strong>
-                                {{ user.details.personal.location.city }},
-                                {{ user.details.personal.location.country }}
-                            </div>
-                            <div class="nested-info">
-                                <strong>Coordinates:</strong>
-                                Lat: {{ user.details.personal.location.coordinates.lat }},
-                                Lng: {{ user.details.personal.location.coordinates.lng }}
-                            </div>
-
-                            <div class="nested-info">
-                                <strong>Theme:</strong>
-                                {{ user.details.preferences.theme }}
-                                |
-                                <strong>Email Notifications:</strong>
-                                {{ user.details.preferences.notifications.email }}
-                                |
-                                <strong>Push Notifications:</strong>
-                                {{ user.details.preferences.notifications.push }}
-                            </div>
-                            <div class="nested-info">
-                                <strong>Notification Frequency:</strong>
-                                {{ user.details.preferences.notifications.settings.frequency }}
-                            </div>
-                            <div class="nested-info">
-                                <strong>Categories:</strong>
-                                <f-repeat
-                                    value="{{category in user.details.preferences.notifications.settings.categories}}"
-                                >
-                                    <span class="tag">{{ category }}</span>
-                                </f-repeat>
-                            </div>
-
-                            <div class="controls">
-                                <button @click="{selectUser(user.id)}">
-                                    Select User
-                                </button>
-                                <button @click="{updateUserAge(user.id)}">Age +1</button>
-                                <button @click="{toggleUserTheme(user.id)}">
-                                    Toggle Theme
-                                </button>
-                                <button @click="{updateUserLocation(user.id)}">
-                                    Change Location
-                                </button>
-                                <button @click="{updateNotificationSettings(user.id)}">
-                                    Update Notifications
-                                </button>
-                                <button @click="{addNotificationCategory(user.id)}">
-                                    Add Category
-                                </button>
-                                <button @click="{removeNotificationCategory(user.id)}">
-                                    Remove Tech Category
-                                </button>
-                                <button @click="{removeUser(user.id)}">
-                                    Remove User
-                                </button>
-                            </div>
-
-                            <div>
-                                <h4>Posts ({{ user.posts.length }} posts)</h4>
-                                <f-repeat value="{{post in user.posts}}">
-                                    <div class="post-card">
-                                        <div>
-                                            <strong>{{ post.title }}</strong>
-                                            (ID: {{ post.id }})
-                                        </div>
-                                        <div class="nested-info">{{ post.content }}</div>
-                                        <div class="nested-info">
-                                            <strong>Author:</strong>
-                                            {{ post.metadata.author.name }}
-                                            <f-when
-                                                value="{{post.metadata.author.verified}}"
-                                            >
-                                                <span>✓ Verified</span>
-                                            </f-when>
-                                        </div>
-                                        <div class="nested-info">
-                                            <strong>Stats:</strong>
-                                            {{ post.metadata.views }}
-                                            views,
-                                            {{ post.metadata.likes }}
-                                            likes
-                                        </div>
-                                        <div class="nested-info">
-                                            <strong>Tags:</strong>
-                                            <f-repeat
-                                                value="{{tag in post.metadata.tags}}"
-                                            >
-                                                <span class="tag">{{ tag }}</span>
-                                            </f-repeat>
-                                        </div>
-                                        <div class="controls">
-                                            <button
-                                                @click="{incrementPostLikes(post.id)}"
-                                            >
-                                                Like Post
-                                            </button>
-                                        </div>
-                                    </div>
-                                </f-repeat>
+                    <div>
+                        <h4>Posts (<!--fe:b-->2<!--fe:/b--> posts)</h4>
+                        <!--fe:b--><!--fe:r-->
+                            <div class="post-card">
+                                <div><strong><!--fe:b-->First Post<!--fe:/b--></strong> (ID: <!--fe:b-->101<!--fe:/b-->)</div>
+                                <div class="nested-info"><!--fe:b-->Hello World!<!--fe:/b--></div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> <!--fe:b-->Alice Johnson<!--fe:/b-->
+                                    <!--fe:b-->
+                                        <span>✓ Verified</span>
+                                    <!--fe:/b-->
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> <!--fe:b-->150<!--fe:/b--> views, <!--fe:b-->25<!--fe:/b--> likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <!--fe:b--><!--fe:r-->
+                                        <span class="tag"><!--fe:b-->introduction<!--fe:/b--></span>
+                                    <!--fe:/r--><!--fe:r-->
+                                        <span class="tag"><!--fe:b-->hello<!--fe:/b--></span>
+                                    <!--fe:/r--><!--fe:/b-->
+                                </div>
                                 <div class="controls">
-                                    <button @click="{addPostToUser(user.id)}">
-                                        Add New Post
-                                    </button>
+                                    <button data-fe="1">Like Post</button>
                                 </div>
                             </div>
+                        <!--fe:/r--><!--fe:r-->
+                            <div class="post-card">
+                                <div><strong><!--fe:b-->Tech Update<!--fe:/b--></strong> (ID: <!--fe:b-->102<!--fe:/b-->)</div>
+                                <div class="nested-info"><!--fe:b-->Latest in technology...<!--fe:/b--></div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> <!--fe:b-->Alice Johnson<!--fe:/b-->
+                                    <!--fe:b-->
+                                        <span>✓ Verified</span>
+                                    <!--fe:/b-->
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> <!--fe:b-->320<!--fe:/b--> views, <!--fe:b-->45<!--fe:/b--> likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <!--fe:b--><!--fe:r-->
+                                        <span class="tag"><!--fe:b-->tech<!--fe:/b--></span>
+                                    <!--fe:/r--><!--fe:r-->
+                                        <span class="tag"><!--fe:b-->update<!--fe:/b--></span>
+                                    <!--fe:/r--><!--fe:/b-->
+                                </div>
+                                <div class="controls">
+                                    <button data-fe="1">Like Post</button>
+                                </div>
+                            </div>
+                        <!--fe:/r--><!--fe:/b-->
+                        <div class="controls">
+                            <button data-fe="1">Add New Post</button>
                         </div>
-                    </f-repeat>
-                </div>
-            </template>
-        </f-template>
-        <f-template name="observer-map-internal-test-element">
-            <template>
-                selected user:
-                {{ selecteduserid }}<!-- because this is bound to an attribute property it must be lowercase -->
-                <br>
-                total users: {{ totalusers }}
-                <br>
-                <div class="stats">
-                    <div class="nested-info">
-                        <strong>Engagement:</strong>
-                        Daily: {{ metrics.engagement.daily }}, Weekly:
-                        {{ metrics.engagement.weekly }}, Monthly:
-                        {{ metrics.engagement.monthly }}
                     </div>
                 </div>
-                <f-when value="{{a}}">
-                    <span class="nested-define">{{ a.b.c }}</span>
-                </f-when>
-                <button @click="{defineB()}">Define B</button>
-                <button @click="{updateC()}">Update C</button>
-                <br>
-                <f-when value="{{x}}">
-                    <span class="nested-define-2">{{ x.y.z }}</span>
-                </f-when>
-                <button @click="{defineY()}">Define Y</button>
-                <button @click="{updateZ()}">Update Z</button>
-                <div>
-                    <f-repeat value="{{group in groups}}">
-                        <f-repeat value="{{item in group.items}}">
-                            <div class="item">{{ item.text }}</div>
-                            <span>
-                                <f-repeat value="{{action in item.actions.trailing}}">
-                                    <span class="action-label">{{ action.label }}</span>
-                                </f-repeat>
-                            </span>
-                        </f-repeat>
-                    </f-repeat>
+            <!--fe:/r--><!--fe:r-->
+                <div class="user-card">
+                    <h3><!--fe:b-->Bob Smith<!--fe:/b--> (ID: <!--fe:b-->2<!--fe:/b-->)
+                        <!--fe:b--><!--fe:/b-->
+                    </h3>
+
+                    <div class="nested-info">
+                        <strong>Age:</strong> <!--fe:b-->35<!--fe:/b--> years old
+                    </div>
+                    <div class="nested-info">
+                        <strong>Location:</strong> <!--fe:b-->London<!--fe:/b-->, <!--fe:b-->UK<!--fe:/b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Coordinates:</strong>
+                        Lat: <!--fe:b-->51.5074<!--fe:/b-->,
+                        Lng: <!--fe:b-->-0.1278<!--fe:/b-->
+                    </div>
+
+                    <div class="nested-info">
+                        <strong>Theme:</strong> <!--fe:b-->light<!--fe:/b--> |
+                        <strong>Email Notifications:</strong> <!--fe:b-->false<!--fe:/b--> |
+                        <strong>Push Notifications:</strong> <!--fe:b-->true<!--fe:/b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Notification Frequency:</strong> <!--fe:b-->weekly<!--fe:/b-->
+                    </div>
+                    <div class="nested-info">
+                        <strong>Categories:</strong>
+                        <!--fe:b--><!--fe:r-->
+                            <span class="tag"><!--fe:b-->sports<!--fe:/b--></span>
+                        <!--fe:/r--><!--fe:r-->
+                            <span class="tag"><!--fe:b-->music<!--fe:/b--></span>
+                        <!--fe:/r--><!--fe:/b-->
+                    </div>
+
+                    <div class="controls">
+                        <button data-fe="1">Select User</button>
+                        <button data-fe="1">Age +1</button>
+                        <button data-fe="1">Toggle Theme</button>
+                        <button data-fe="1">Change Location</button>
+                        <button data-fe="1">Update Notifications</button>
+                        <button data-fe="1">Add Category</button>
+                        <button data-fe="1">Remove Tech Category</button>
+                        <button data-fe="1">Remove User</button>
+                    </div>
+
+                    <div>
+                        <h4>Posts (<!--fe:b-->1<!--fe:/b--> posts)</h4>
+                        <!--fe:b--><!--fe:r-->
+                            <div class="post-card">
+                                <div><strong><!--fe:b-->Music Review<!--fe:/b--></strong> (ID: <!--fe:b-->201<!--fe:/b-->)</div>
+                                <div class="nested-info"><!--fe:b-->Amazing concert last night...<!--fe:/b--></div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> <!--fe:b-->Bob Smith<!--fe:/b-->
+                                    <!--fe:b--><!--fe:/b-->
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> <!--fe:b-->89<!--fe:/b--> views, <!--fe:b-->12<!--fe:/b--> likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <!--fe:b--><!--fe:r-->
+                                        <span class="tag"><!--fe:b-->music<!--fe:/b--></span>
+                                    <!--fe:/r--><!--fe:r-->
+                                        <span class="tag"><!--fe:b-->review<!--fe:/b--></span>
+                                    <!--fe:/r--><!--fe:/b-->
+                                </div>
+                                <div class="controls">
+                                    <button data-fe="1">Like Post</button>
+                                </div>
+                            </div>
+                        <!--fe:/r--><!--fe:/b-->
+                        <div class="controls">
+                            <button data-fe="1">Add New Post</button>
+                        </div>
+                    </div>
                 </div>
-                <button @click="{removeAllItems()}">Remove all items</button>
-                <button @click="{addAnItem()}">Add an item</button>
-                <button @click="{updateAnItem()}">Update an item</button>
-                <button @click="{removeGroup()}">Remove groups</button>
-                <button @click="{addGroup()}">Add group</button>
-                <button @click="{updateActionLabel()}">Update an action label</button>
-            </template>
-        </f-template>
-        <f-template name="observer-map-with-observables-test-element">
-            <template>
-                Level 3 Value: {{ value1 }}
-                <button @click="{updateValue1()}">Update Value1</button>
-                <br>
-                Level 3 Value Observable: {{ value2 }}
-                <button @click="{updateValue2()}">Update Value2</button>
-            </template>
-        </f-template>
-        <f-template name="observer-map-simple-array-test-element">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in items}}">
-                        <li class="simple-item">{{ item }}</li>
-                    </f-repeat>
-                </ul>
-                <button @click="{updateFirstItem()}">Update First Item</button>
-                <button @click="{updateSecondItem()}">Update Second Item</button>
-            </template>
-        </f-template>
+            <!--fe:/r--><!--fe:/b-->
+        </div></template></observer-map-test-element>
+            <observer-map-with-observables-test-element><template shadowrootmode="open" shadowroot="open">Level 3 Value: <!--fe:b-->42<!--fe:/b-->
+        <button data-fe="1">Update Value1</button>
+        <br>
+        Level 3 Value Observable: <!--fe:b-->42<!--fe:/b-->
+        <button data-fe="1">Update Value2</button></template></observer-map-with-observables-test-element>
+        </div>
+<f-template name="observer-map-test-element">
+    <template>
+        <observer-map-internal-test-element
+            :selecteduserid="{{selecteduserid}}"
+            :totalusers="{{stats.totalusers}}"
+            :metrics="{{stats.metrics}}"
+        ></observer-map-internal-test-element>
+        <div class="stats">
+            <h2>Global Stats</h2>
+            <div class="nested-info">
+                <strong>Total Users:</strong> {{stats.totalusers}} |
+                <strong>Active Users:</strong> {{stats.activeusers}}
+            </div>
+            <div class="nested-info">
+                <strong>Performance:</strong>
+                Load: {{stats.metrics.performance.loadtime}}s,
+                Render: {{stats.metrics.performance.rendertime}}s
+            </div>
+            <div class="controls">
+                <button @click="{updateStats()}">Update Stats</button>
+                <button @click="{addNewUser()}">Add New User</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Users List</h2>
+            <f-repeat value="{{user in users}}">
+                <div class="user-card">
+                    <h3>{{user.name}} (ID: {{user.id}})
+                        <f-when value="{{user.id == selecteduserid}}">
+                            <span>⭐ SELECTED</span>
+                        </f-when>
+                    </h3>
+
+                    <div class="nested-info">
+                        <strong>Age:</strong> {{user.details.personal.age}} years old
+                    </div>
+                    <div class="nested-info">
+                        <strong>Location:</strong> {{user.details.personal.location.city}}, {{user.details.personal.location.country}}
+                    </div>
+                    <div class="nested-info">
+                        <strong>Coordinates:</strong>
+                        Lat: {{user.details.personal.location.coordinates.lat}},
+                        Lng: {{user.details.personal.location.coordinates.lng}}
+                    </div>
+
+                    <div class="nested-info">
+                        <strong>Theme:</strong> {{user.details.preferences.theme}} |
+                        <strong>Email Notifications:</strong> {{user.details.preferences.notifications.email}} |
+                        <strong>Push Notifications:</strong> {{user.details.preferences.notifications.push}}
+                    </div>
+                    <div class="nested-info">
+                        <strong>Notification Frequency:</strong> {{user.details.preferences.notifications.settings.frequency}}
+                    </div>
+                    <div class="nested-info">
+                        <strong>Categories:</strong>
+                        <f-repeat value="{{category in user.details.preferences.notifications.settings.categories}}">
+                            <span class="tag">{{category}}</span>
+                        </f-repeat>
+                    </div>
+
+                    <div class="controls">
+                        <button @click="{selectUser(user.id)}">Select User</button>
+                        <button @click="{updateUserAge(user.id)}">Age +1</button>
+                        <button @click="{toggleUserTheme(user.id)}">Toggle Theme</button>
+                        <button @click="{updateUserLocation(user.id)}">Change Location</button>
+                        <button @click="{updateNotificationSettings(user.id)}">Update Notifications</button>
+                        <button @click="{addNotificationCategory(user.id)}">Add Category</button>
+                        <button @click="{removeNotificationCategory(user.id)}">Remove Tech Category</button>
+                        <button @click="{removeUser(user.id)}">Remove User</button>
+                    </div>
+
+                    <div>
+                        <h4>Posts ({{user.posts.length}} posts)</h4>
+                        <f-repeat value="{{post in user.posts}}">
+                            <div class="post-card">
+                                <div><strong>{{post.title}}</strong> (ID: {{post.id}})</div>
+                                <div class="nested-info">{{post.content}}</div>
+                                <div class="nested-info">
+                                    <strong>Author:</strong> {{post.metadata.author.name}}
+                                    <f-when value="{{post.metadata.author.verified}}">
+                                        <span>✓ Verified</span>
+                                    </f-when>
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Stats:</strong> {{post.metadata.views}} views, {{post.metadata.likes}} likes
+                                </div>
+                                <div class="nested-info">
+                                    <strong>Tags:</strong>
+                                    <f-repeat value="{{tag in post.metadata.tags}}">
+                                        <span class="tag">{{tag}}</span>
+                                    </f-repeat>
+                                </div>
+                                <div class="controls">
+                                    <button @click="{incrementPostLikes(post.id)}">Like Post</button>
+                                </div>
+                            </div>
+                        </f-repeat>
+                        <div class="controls">
+                            <button @click="{addPostToUser(user.id)}">Add New Post</button>
+                        </div>
+                    </div>
+                </div>
+            </f-repeat>
+        </div>
+    </template>
+</f-template>
+<f-template name="observer-map-internal-test-element">
+    <template>
+        selected user: {{selecteduserid}} <!-- because this is bound to an attribute property it must be lowercase -->
+        <br>
+        total users: {{totalusers}}
+        <br>
+        <div class="stats">
+            <div class="nested-info">
+                <strong>Engagement:</strong>
+                Daily: {{metrics.engagement.daily}},
+                Weekly: {{metrics.engagement.weekly}},
+                Monthly: {{metrics.engagement.monthly}}
+            </div>
+        </div>
+        <f-when value="{{a}}">
+            <span class="nested-define">{{a.b.c}}</span>
+        </f-when>
+        <button @click="{defineB()}">Define B</button>
+        <button @click="{updateC()}">Update C</button>
+        <br>
+        <f-when value="{{x}}">
+            <span class="nested-define-2">{{x.y.z}}</span>
+        </f-when>
+        <button @click="{defineY()}">Define Y</button>
+        <button @click="{updateZ()}">Update Z</button>
+        <div>
+            <f-repeat value="{{group in groups}}">
+                <f-repeat value="{{item in group.items}}">
+                    <div class="item">{{item.text}}</div>
+                    <span>
+                        <f-repeat value="{{action in item.actions.trailing}}">
+                            <span class="action-label">{{action.label}}</span>
+                        </f-repeat>
+                    </span>
+                </f-repeat>
+            </f-repeat>
+        </div>
+        <button @click="{removeAllItems()}">Remove all items</button>
+        <button @click="{addAnItem()}">Add an item</button>
+        <button @click="{updateAnItem()}">Update an item</button>
+        <button @click="{removeGroup()}">Remove groups</button>
+        <button @click="{addGroup()}">Add group</button>
+        <button @click="{updateActionLabel()}">Update an action label</button>
+    </template>
+</f-template>
+<f-template name="observer-map-with-observables-test-element">
+    <template>
+        Level 3 Value: {{value1}}
+        <button @click="{updateValue1()}">Update Value1</button>
+        <br>
+        Level 3 Value Observable: {{value2}}
+        <button @click="{updateValue2()}">Update Value2</button>
+    </template>
+</f-template>
+<f-template name="observer-map-simple-array-test-element">
+    <template>
+        <ul>
+            <f-repeat value="{{item in items}}">
+                <li class="simple-item">{{item}}</li>
+            </f-repeat>
+        </ul>
+        <button @click="{updateFirstItem()}">Update First Item</button>
+        <button @click="{updateSecondItem()}">Update Second Item</button>
+    </template>
+</f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

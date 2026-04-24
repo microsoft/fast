@@ -20,7 +20,7 @@ Constructs a new instance of the `HydrationTracker` class
 **Signature:**
 
 ```typescript
-constructor(callbacks: ElementHydrationCallbacks);
+constructor(options: HydrationOptions);
 ```
 
 ## Parameters
@@ -43,12 +43,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-callbacks
+options
 
 
 </td><td>
 
-[ElementHydrationCallbacks](../fast-element.elementhydrationcallbacks/)
+[HydrationOptions](../fast-element.hydrationoptions/)
 
 
 </td><td>

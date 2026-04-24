@@ -5,32 +5,20 @@
         <title></title>
     </head>
     <body>
-        <test-element type="checkbox"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><input type="checkbox" disabled data-fe="1"></template
-            ></test-element
-        >
-        <test-element-property
-            ><template shadowrootmode="open" shadowroot="open"
-                ><input type="checkbox" disabled data-fe="1"></template
-            ></test-element-property
-        >
-        <test-element-expression
-            ><template shadowrootmode="open" shadowroot="open"
-                ><input disabled type="button" data-fe="1"></template
-            ></test-element-expression
-        >
-        <f-template name="test-element">
-            <template> <input type="{{type}}" disabled> </template>
-        </f-template>
-        <f-template name="test-element-property">
-            <template> <input type="checkbox" ?disabled="{{!isEnabled}}"> </template>
-        </f-template>
-        <f-template name="test-element-expression">
-            <template>
-                <input ?disabled="{{activeGroup == currentGroup}}" type="button">
-            </template>
-        </f-template>
+        <test-element type="checkbox"><template shadowrootmode="open" shadowroot="open"><input type="checkbox" disabled data-fe="1"></template></test-element>
+        <test-element-property><template shadowrootmode="open" shadowroot="open"><input type="checkbox" disabled data-fe="1"></template></test-element-property>
+        <test-element-expression><template shadowrootmode="open" shadowroot="open"><input disabled type="button" data-fe="1"></template></test-element-expression>
+<f-template name="test-element">
+    <template> <input type="{{type}}" disabled> </template>
+</f-template>
+<f-template name="test-element-property">
+    <template> <input type="checkbox" ?disabled="{{!isEnabled}}"> </template>
+</f-template>
+<f-template name="test-element-expression">
+    <template>
+        <input ?disabled="{{activeGroup == currentGroup}}" type="button">
+    </template>
+</f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

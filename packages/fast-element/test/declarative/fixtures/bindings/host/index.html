@@ -4,150 +4,92 @@
         <meta charset="utf-8">
         <title>Host Bindings Test</title>
         <style>
-        /* Ensure custom elements display as block to prevent overlap */
-        host-event-element,
-        host-multi-element,
-        host-static-element,
-        host-events-element,
-        host-multi-content-element,
-        host-text-binding-element,
-        host-property-element,
-        host-all-types-element,
-        host-perm-attr-first,
-        host-perm-bool-first,
-        host-perm-prop-first {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
+            /* Ensure custom elements display as block to prevent overlap */
+            host-event-element,
+            host-multi-element,
+            host-static-element,
+            host-events-element,
+            host-multi-content-element,
+            host-text-binding-element,
+            host-property-element,
+            host-all-types-element,
+            host-perm-attr-first,
+            host-perm-bool-first,
+            host-perm-prop-first {
+                display: block;
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
         </style>
     </head>
     <body>
-        <host-event-element
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>Hello<!--fe:/b--></span></template
-            ></host-event-element
-        >
-        <host-multi-element disabled
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>World<!--fe:/b--></span></template
-            ></host-multi-element
-        >
-        <host-static-element id="static-host"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>first<!--fe:/b--> <!--fe:b-->second<!--fe:/b--></span></template
-            ></host-static-element
-        >
-        <host-events-element text="content text"
-            ><template shadowrootmode="open" shadowroot="open"
-                >content text<!--fe:/b--></template
-            ></host-events-element
-        >
-        <host-multi-content-element first="a" second="b"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span first="a" second="b" data-fe="2"></span></template
-            ></host-multi-content-element
-        >
-        <host-text-binding-element text="text content"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>text content<!--fe:/b--></span></template
-            ></host-text-binding-element
-        >
-        <host-property-element text="property test"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>property test<!--fe:/b--></span></template
-            ></host-property-element
-        >
-        <host-all-types-element text="all types" attr="value" disabled
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>all types<!--fe:/b--></span></template
-            ></host-all-types-element
-        >
-        <host-perm-attr-first text="perm attr first" attr="value" disabled
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>perm attr first<!--fe:/b--></span></template
-            ></host-perm-attr-first
-        >
-        <host-perm-bool-first text="perm bool first" attr="value" disabled
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>perm bool first<!--fe:/b--></span></template
-            ></host-perm-bool-first
-        >
-        <host-perm-prop-first text="perm prop first" attr="value" disabled
-            ><template shadowrootmode="open" shadowroot="open"
-                ><span>perm prop first<!--fe:/b--></span></template
-            ></host-perm-prop-first
-        >
-        <f-template name="host-event-element">
-            <template @click="{handleClick()}"> <span>{{ greeting }}</span> </template>
-        </f-template>
-        <f-template name="host-multi-element">
-            <template @click="{handleClick()}" ?disabled="{{isDisabled}}">
-                <span>{{ text }}</span>
-            </template>
-        </f-template>
-        <f-template name="host-static-element">
-            <template id="static-host" @click="{handleClick()}">
-                <span>{{ first }} {{ second }}</span>
-            </template>
-        </f-template>
-        <f-template name="host-events-element">
-            <template @click="{handleClick()}" @mouseenter="{handleMouseEnter()}">
-                {{ text }}
-            </template>
-        </f-template>
-        <f-template name="host-multi-content-element">
-            <template @click="{handleClick()}">
-                <span first="{{first}}" second="{{second}}"></span>
-            </template>
-        </f-template>
-        <f-template name="host-text-binding-element">
-            <template @click="{handleClick()}"> <span>{{ text }}</span> </template>
-        </f-template>
-        <f-template name="host-property-element">
-            <template :title="{hostTitle}"> <span>{{ text }}</span> </template>
-        </f-template>
-        <f-template name="host-all-types-element">
-            <template
-                @click="{handleClick()}"
-                ?disabled="{{isDisabled}}"
-                :title="{hostTitle}"
-                attr="{{hostAttr}}"
-            >
-                <span>{{ text }}</span>
-            </template>
-        </f-template>
-        <f-template name="host-perm-attr-first">
-            <template
-                attr="{{hostAttr}}"
-                :title="{hostTitle}"
-                ?disabled="{{isDisabled}}"
-                @click="{handleClick()}"
-            >
-                <span>{{ text }}</span>
-            </template>
-        </f-template>
-        <f-template name="host-perm-bool-first">
-            <template
-                ?disabled="{{isDisabled}}"
-                @click="{handleClick()}"
-                attr="{{hostAttr}}"
-                :title="{hostTitle}"
-            >
-                <span>{{ text }}</span>
-            </template>
-        </f-template>
-        <f-template name="host-perm-prop-first">
-            <template
-                :title="{hostTitle}"
-                attr="{{hostAttr}}"
-                @click="{handleClick()}"
-                ?disabled="{{isDisabled}}"
-            >
-                <span>{{ text }}</span>
-            </template>
-        </f-template>
+        <host-event-element><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->Hello<!--fe:/b--></span></template></host-event-element>
+        <host-multi-element disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->World<!--fe:/b--></span></template></host-multi-element>
+        <host-static-element id="static-host"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->first<!--fe:/b--> <!--fe:b-->second<!--fe:/b--></span></template></host-static-element>
+        <host-events-element text="content text"><template shadowrootmode="open" shadowroot="open"><!--fe:b-->content text<!--fe:/b--></template></host-events-element>
+        <host-multi-content-element first="a" second="b"><template shadowrootmode="open" shadowroot="open"><span first="a" second="b" data-fe="2"></span></template></host-multi-content-element>
+        <host-text-binding-element text="text content"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->text content<!--fe:/b--></span></template></host-text-binding-element>
+        <host-property-element text="property test"><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->property test<!--fe:/b--></span></template></host-property-element>
+        <host-all-types-element text="all types" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->all types<!--fe:/b--></span></template></host-all-types-element>
+        <host-perm-attr-first text="perm attr first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm attr first<!--fe:/b--></span></template></host-perm-attr-first>
+        <host-perm-bool-first text="perm bool first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm bool first<!--fe:/b--></span></template></host-perm-bool-first>
+        <host-perm-prop-first text="perm prop first" attr="value" disabled><template shadowrootmode="open" shadowroot="open"><span><!--fe:b-->perm prop first<!--fe:/b--></span></template></host-perm-prop-first>
+<f-template name="host-event-element">
+    <template @click="{handleClick()}">
+        <span>{{greeting}}</span>
+    </template>
+</f-template>
+<f-template name="host-multi-element">
+    <template @click="{handleClick()}" ?disabled="{{isDisabled}}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-static-element">
+    <template id="static-host" @click="{handleClick()}">
+        <span>{{first}} {{second}}</span>
+    </template>
+</f-template>
+<f-template name="host-events-element">
+    <template @click="{handleClick()}" @mouseenter="{handleMouseEnter()}">
+        {{text}}
+    </template>
+</f-template>
+<f-template name="host-multi-content-element">
+    <template @click="{handleClick()}">
+        <span first="{{first}}" second="{{second}}"></span>
+    </template>
+</f-template>
+<f-template name="host-text-binding-element">
+    <template @click="{handleClick()}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-property-element">
+    <template :title="{hostTitle}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-all-types-element">
+    <template @click="{handleClick()}" ?disabled="{{isDisabled}}" :title="{hostTitle}" attr="{{hostAttr}}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-perm-attr-first">
+    <template attr="{{hostAttr}}" :title="{hostTitle}" ?disabled="{{isDisabled}}" @click="{handleClick()}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-perm-bool-first">
+    <template ?disabled="{{isDisabled}}" @click="{handleClick()}" attr="{{hostAttr}}" :title="{hostTitle}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
+<f-template name="host-perm-prop-first">
+    <template :title="{hostTitle}" attr="{{hostAttr}}" @click="{handleClick()}" ?disabled="{{isDisabled}}">
+        <span>{{text}}</span>
+    </template>
+</f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>

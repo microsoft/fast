@@ -5,163 +5,128 @@
         <title></title>
     </head>
     <body>
-        <test-element item_parent="Bat"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><ul>
-                    <!--fe:b-->
-                    <!--fe:r-->
-                    <li>Foo<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
-                    <!--fe:/r-->
-                    <!--fe:r-->
-                    <li>Bar<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
-                    <!--fe:/r--><!--fe:/b-->
-                </ul></template
-            ></test-element
-        >
-        <test-element-with-observer-map item_parent="Bat"
-            ><template shadowrootmode="open" shadowroot="open"
-                ><ul>
-                    <!--fe:b-->
-                    <!--fe:r-->
-                    <li>Foo<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
-                    <!--fe:/r-->
-                    <!--fe:r-->
-                    <li>Bar<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
-                    <!--fe:/r--><!--fe:/b-->
-                </ul></template
-            ></test-element-with-observer-map
-        >
-        <test-element-inner-when
-            ><template shadowrootmode="open" shadowroot="open"
-                ><ul>
-                    <!--fe:b-->
-                    <!--fe:r-->
-                    <!--fe:b-->
-                    <!--fe:/b-->
-                    <!--fe:/r-->
-                    <!--fe:r-->
-                    <!--fe:b-->
-                    <!--fe:/b-->
-                    <!--fe:/r-->
-                    <!--fe:/b-->
-                </ul></template
-            ></test-element-inner-when
-        >
-        <test-element-interval-updates
-            ><template shadowrootmode="open" shadowroot="open"
-                ><ul>
-                    <!--fe:b-->
-                    <!--fe:r-->
-                    <li>
-                        <svg width="20px" height="20px">
-                            <use href="sprites.svg#repeat-icon" data-fe="1"></use>
-                        </svg>
-                    </li>
-                    <!--fe:/r-->
-                    <!--fe:/b-->
+        <test-element item_parent="Bat"><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:r-->
+                <li><!--fe:b-->Foo<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:r-->
+                <li><!--fe:b-->Bar<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:/b-->
+        </ul></template></test-element>
+        <test-element-with-observer-map item_parent="Bat"><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:r-->
+                <li><!--fe:b-->Foo<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:r-->
+                <li><!--fe:b-->Bar<!--fe:/b--> - <!--fe:b-->Bat<!--fe:/b--></li>
+            <!--fe:/r--><!--fe:/b-->
+        </ul></template></test-element-with-observer-map>
+        <test-element-inner-when><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:r-->
+                <!--fe:b--><!--fe:/b-->
+            <!--fe:/r--><!--fe:r-->
+                <!--fe:b--><!--fe:/b-->
+            <!--fe:/r--><!--fe:/b-->
+        </ul></template></test-element-inner-when>
+        <test-element-interval-updates><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:r-->
+                <li>
+                    <svg width="20px" height="20px">
+                        <use href="sprites.svg#repeat-icon" data-fe="1"></use>
+                    </svg>
+                </li>
+            <!--fe:/r--><!--fe:/b-->
 
-                    <!--fe:b-->
-                    <!--fe:r-->
-                    <li>
-                        <svg width="20px" height="20px">
-                            <use href="sprites.svg#repeat-icon" data-fe="1"></use>
-                        </svg>
-                    </li>
-                    <!--fe:/r--><!--fe:/b-->
-                </ul></template
-            ></test-element-interval-updates
-        >
-        <test-element-no-item-repeat-binding
-            ><template shadowrootmode="open" shadowroot="open"
-                ><ul>
-                    <!--fe:b-->
-                    <!--fe:/b-->
-                </ul></template
-            ></test-element-no-item-repeat-binding
-        >
-        <test-element-empty-array
-            ><template shadowrootmode="open" shadowroot="open"
-                ><ul>
-                    <!--fe:b-->
-                    <!--fe:/b-->
-                </ul></template
-            ></test-element-empty-array
-        >
-        <test-element-event
-            ><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:r-->
-                <button data-fe="1">Click</button>
-                <!--fe:/r--><!--fe:/b-->
-            </template></test-element-event
-        >
-        <f-template name="test-element">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in list}}">
-                        <li>{{ item }} - {{ item_parent }}</li>
-                    </f-repeat>
-                </ul>
-            </template>
-        </f-template>
-        <f-template name="test-element-inner-when">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in list}}">
-                        <f-when value="{{item.show}}"> <li>{{ item.text }}</li> </f-when>
-                    </f-repeat>
-                </ul>
-            </template>
-        </f-template>
-        <f-template name="test-element-with-observer-map">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in list}}">
-                        <li>{{ item }} - {{ item_parent }}</li>
-                    </f-repeat>
-                </ul>
-            </template>
-        </f-template>
-        <f-template name="test-element-no-item-repeat-binding">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in list}}"> <li>{{ item }}</li> </f-repeat>
-                </ul>
-            </template>
-        </f-template>
-        <f-template name="test-element-event">
-            <template>
-                <f-repeat value="{{item in list}}">
-                    <button @click="{handleClick()}">Click</button>
-                </f-repeat>
-            </template>
-        </f-template>
-        <f-template name="test-element-empty-array">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in list}}"> <li>{{ item }}</li> </f-repeat>
-                </ul>
-            </template>
-        </f-template>
-        <f-template name="test-element-interval-updates">
-            <template>
-                <ul>
-                    <f-repeat value="{{item in someData.list1}}">
-                        <li>
-                            <svg width="20px" height="20px">
-                                <use href="sprites.svg#{{item.icon}}-icon"></use>
-                            </svg>
-                        </li>
-                    </f-repeat>
+            <!--fe:b--><!--fe:r-->
+                <li>
+                    <svg width="20px" height="20px">
+                        <use href="sprites.svg#repeat-icon" data-fe="1"></use>
+                    </svg>
+                </li>
+            <!--fe:/r--><!--fe:/b-->
+        </ul></template></test-element-interval-updates>
+        <test-element-no-item-repeat-binding><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:/b-->
+        </ul></template></test-element-no-item-repeat-binding>
+        <test-element-empty-array><template shadowrootmode="open" shadowroot="open"><ul>
+            <!--fe:b--><!--fe:/b-->
+        </ul></template></test-element-empty-array>
+        <test-element-event><template shadowrootmode="open" shadowroot="open"><!--fe:b--><!--fe:r-->
+            <button data-fe="1">Click</button>
+        <!--fe:/r--><!--fe:/b--></template></test-element-event>
+<f-template name="test-element">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}} - {{item_parent}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-inner-when">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <f-when value="{{item.show}}">
+                    <li>{{item.text}}</li>
+                </f-when>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-with-observer-map">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}} - {{item_parent}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-no-item-repeat-binding">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-event">
+    <template>
+        <f-repeat value="{{item in list}}">
+            <button @click="{handleClick()}">Click</button>
+        </f-repeat>
+    </template>
+</f-template>
+<f-template name="test-element-empty-array">
+    <template>
+        <ul>
+            <f-repeat value="{{item in list}}">
+                <li>{{item}}</li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
+<f-template name="test-element-interval-updates">
+    <template>
+        <ul>
+            <f-repeat value="{{item in someData.list1}}">
+                <li>
+                    <svg width="20px" height="20px">
+                        <use href="sprites.svg#{{item.icon}}-icon"></use>
+                    </svg>
+                </li>
+            </f-repeat>
 
-                    <f-repeat value="{{item in someData.list2}}">
-                        <li>
-                            <svg width="20px" height="20px">
-                                <use href="sprites.svg#{{item.icon}}-icon"></use>
-                            </svg>
-                        </li>
-                    </f-repeat>
-                </ul>
-            </template>
-        </f-template>
+            <f-repeat value="{{item in someData.list2}}">
+                <li>
+                    <svg width="20px" height="20px">
+                        <use href="sprites.svg#{{item.icon}}-icon"></use>
+                    </svg>
+                </li>
+            </f-repeat>
+        </ul>
+    </template>
+</f-template>
 
         <script type="module" src="./main.ts"></script>
     </body>
