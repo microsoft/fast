@@ -389,4 +389,110 @@ test.describe("FASTElementDefinition", () => {
             expect(extendsFASTElement).toBe(true);
         });
     });
+
+    test.describe("template resolvers", () => {
+        test("keeps resolver-backed templates unresolved until define-time", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
+
+                let resolveTemplate!: (value: any) => void;
+
+                class TestElement extends FASTElement {}
+
+                const elName = uniqueElementName();
+                const template = html<TestElement>`<span>resolved</span>`;
+                const templatePromise = new Promise<any>(resolve => {
+                    resolveTemplate = resolve;
+                });
+
+                const definition = await FASTElementDefinition.compose(TestElement, {
+                    name: elName,
+                    template: () => templatePromise,
+                });
+
+                const templateBeforeResolve = definition.template === undefined;
+                const definedBeforeResolve = customElements.get(elName) !== undefined;
+
+                definition.define();
+
+                resolveTemplate(template);
+                await customElements.whenDefined(elName);
+
+                const element = document.createElement(elName) as any;
+                document.body.appendChild(element);
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                return {
+                    templateBeforeResolve,
+                    definedBeforeResolve,
+                    resolvedTemplateMatches: definition.template === template,
+                    shadowText: element.shadowRoot?.textContent ?? "",
+                };
+            });
+
+            expect(result.templateBeforeResolve).toBe(true);
+            expect(result.definedBeforeResolve).toBe(false);
+            expect(result.resolvedTemplateMatches).toBe(true);
+            expect(result.shadowText).toContain("resolved");
+        });
+
+        test("applies extensions only once while async registration is pending", async ({
+            page,
+        }) => {
+            await page.goto("/");
+
+            const result = await page.evaluate(async () => {
+                // @ts-expect-error: Client module.
+                const { FASTElement, FASTElementDefinition, html, uniqueElementName } =
+                    await import("/main.js");
+
+                let resolveTemplate!: (value: any) => void;
+                const extensionCalls: string[] = [];
+
+                class TestElement extends FASTElement {}
+
+                const elName = uniqueElementName();
+                const template = html<TestElement>`<span>resolved</span>`;
+                const templatePromise = new Promise<any>(resolve => {
+                    resolveTemplate = resolve;
+                });
+
+                const definition = await FASTElementDefinition.compose(TestElement, {
+                    name: elName,
+                    template: () => templatePromise,
+                });
+
+                const extension = () => {
+                    extensionCalls.push("called");
+                };
+
+                definition.define(customElements, [extension]);
+                definition.define(customElements, [extension]);
+
+                await Promise.resolve();
+
+                const definedWhilePending = customElements.get(elName) !== undefined;
+                const callCountWhilePending = extensionCalls.length;
+
+                resolveTemplate(template);
+                await customElements.whenDefined(elName);
+
+                return {
+                    definedWhilePending,
+                    callCountWhilePending,
+                    finalCallCount: extensionCalls.length,
+                };
+            });
+
+            expect(result.definedWhilePending).toBe(false);
+            expect(result.callCountWhilePending).toBe(1);
+            expect(result.finalCallCount).toBe(1);
+        });
+    });
 });

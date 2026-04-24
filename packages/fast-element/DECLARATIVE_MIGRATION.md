@@ -38,18 +38,16 @@ See the [`@microsoft/fast-element` MIGRATION.md](../fast-element/MIGRATION.md#hy
 1. Replace `RenderableFASTElement(MyComponent).defineAsync({...})` with `MyComponent.define({...})`.
 
    ```typescript
-   // Before
-   import { RenderableFASTElement } from "@microsoft/fast-html";
-   RenderableFASTElement(MyComponent).defineAsync({
-       name: "my-component",
-       templateOptions: "defer-and-hydrate",
-   });
+    // Before
+    import { RenderableFASTElement } from "@microsoft/fast-html";
+    RenderableFASTElement(MyComponent).defineAsync({
+        name: "my-component",
+    });
 
-   // After
-   MyComponent.define({
-       name: "my-component",
-       templateOptions: "defer-and-hydrate",
-   });
+    // After
+    MyComponent.define({
+        name: "my-component",
+    });
    ```
 
 2. Remove `prepare()` methods. Move any initialization logic to `connectedCallback`:
