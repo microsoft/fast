@@ -22,7 +22,7 @@ import {
     TemplateOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
-import { isHydratable } from "./hydration.js";
+import { HydrationMarkup, isHydratable } from "./hydration.js";
 import { type ElementHydrationCallbacks, HydrationTracker } from "./hydration-tracker.js";
 
 /**
@@ -43,6 +43,35 @@ const shadowRoots = new WeakMap<Element, ShadowRoot>();
 
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
+}
+
+function hasHydrationMarkup(host: Node): boolean {
+    const walker = document.createTreeWalker(
+        host,
+        NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_COMMENT,
+    );
+
+    let current: Node | null;
+
+    while ((current = walker.nextNode())) {
+        if (
+            current.nodeType === Node.ELEMENT_NODE &&
+            (current as Element).hasAttribute(HydrationMarkup.attributeMarkerName)
+        ) {
+            return true;
+        }
+
+        if (
+            current.nodeType === Node.COMMENT_NODE &&
+            (HydrationMarkup.isContentBindingStartMarker((current as Comment).data) ||
+                HydrationMarkup.isRepeatViewStartMarker((current as Comment).data) ||
+                HydrationMarkup.isElementBoundaryStartMarker(current))
+        ) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 let elementControllerStrategy: ElementControllerStrategy;
@@ -626,8 +655,14 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
         if (template) {
             const isPrerendered = this.hasExistingShadowRoot && this.needsInitialization;
+            const shouldHydratePrerenderedContent =
+                isPrerendered &&
+                host.firstChild !== null &&
+                isHydratable(template) &&
+                (this.definition.templateOptions === TemplateOptions.deferAndHydrate ||
+                    hasHydrationMarkup(host));
 
-            if (isPrerendered && isHydratable(template)) {
+            if (shouldHydratePrerenderedContent) {
                 this.renderPrerendered(template, element, host);
             } else {
                 this.renderClientSide(template, element, host);

@@ -1,4 +1,5 @@
-import { type Constructable, isString, KernelServiceId } from "../interfaces.js";
+import { type Constructable, isString } from "../interfaces.js";
+import { KernelServiceId } from "../kernel.js";
 import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
@@ -353,7 +354,6 @@ export class FASTElementDefinition<
             );
         });
     };
- 
 }
 
 Observable.defineProperty(FASTElementDefinition.prototype, "template");

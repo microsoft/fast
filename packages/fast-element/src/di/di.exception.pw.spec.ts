@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
-import "../debug";
+import { registerFASTDebugMessages } from "../debug.js";
 import { DI, inject, optional } from "./di.js";
+
+registerFASTDebugMessages();
 
 test.describe("DI Exception", () => {
     test("No registration for interface", async () => {
