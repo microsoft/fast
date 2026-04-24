@@ -1,11 +1,10 @@
 import {
-    ComposableStyles,
+    type ComposableStyles,
     ElementStyles,
-    ExecutionContext,
-    html,
-    ViewTemplate,
-} from "@microsoft/fast-element";
-import { isFASTElementHost, Router } from "./router.js";
+} from "@microsoft/fast-element/element-styles.js";
+import type { ExecutionContext } from "@microsoft/fast-element/observable.js";
+import { html, type ViewTemplate } from "@microsoft/fast-element/template.js";
+import { isFASTElementHost, type Router } from "./router.js";
 
 /**
  * @beta
@@ -41,17 +40,17 @@ export const Transition = Object.freeze({
         async begin(
             host: HTMLElement,
             prev: RouteView | null,
-            next: RouteView
+            next: RouteView,
         ): Promise<void> {},
         async rollback(
             host: HTMLElement,
             prev: RouteView | null,
-            next: RouteView
+            next: RouteView,
         ): Promise<void> {},
         async commit(
             host: HTMLElement,
             prev: RouteView | null,
-            next: RouteView
+            next: RouteView,
         ): Promise<void> {},
     } as Transition),
 });
@@ -73,7 +72,7 @@ export class FASTElementLayout implements Layout {
     constructor(
         private readonly template: ViewTemplate | null = null,
         styles: ComposableStyles | ComposableStyles[] | undefined = undefined,
-        private runBeforeCommit = true
+        private runBeforeCommit = true,
     ) {
         this.styles = ElementStyles.normalize(styles) ?? null;
     }
@@ -110,6 +109,6 @@ export const Layout = Object.freeze({
     default: new FASTElementLayout(
         html`
             <slot></slot>
-        `
+        `,
     ) as Readonly<Layout>,
 });
