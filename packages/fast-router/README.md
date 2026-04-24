@@ -102,7 +102,10 @@ export class AppRouterConfiguration extends RouterConfiguration<RouteSettings> {
 #### Using the Configuration with a Router
 
 ```ts
-import { FASTElement, customElement, html, css } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/css.js";
+import { customElement } from "@microsoft/fast-element/fast-element.js";
+import { html } from "@microsoft/fast-element/template.js";
 import { FASTRouter } from '@microsoft/fast-router';
 import { AppRouterConfiguration } from './routes';
 

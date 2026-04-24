@@ -1,6 +1,7 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 interface Product {
     id: number;

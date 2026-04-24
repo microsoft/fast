@@ -1,18 +1,20 @@
-import { Constructable, FASTElement, ViewTemplate } from "@microsoft/fast-element";
+import type { FASTElement } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element/template.js";
+import type { Constructable } from "@microsoft/fast-element/types.js";
+import { Ignore, type NavigationCommand, Redirect, Render } from "./commands.js";
+import type { RouterConfiguration } from "./configuration.js";
+import type { Route } from "./navigation.js";
+import { QueryString } from "./query-string.js";
 import {
     ConfigurableRoute,
     Endpoint,
     RecognizedRoute,
-    RouteParameterConverter,
-    RouteParameterConverterContext,
-    RouteRecognizer,
+    type RouteParameterConverter,
+    type RouteParameterConverterContext,
+    type RouteRecognizer,
 } from "./recognizer.js";
-import { Ignore, NavigationCommand, Redirect, Render } from "./commands.js";
-import { Layout, Transition } from "./view.js";
-import { RouterConfiguration } from "./configuration.js";
-import { Router } from "./router.js";
-import { QueryString } from "./query-string.js";
-import { Route } from "./navigation.js";
+import type { Router } from "./router.js";
+import type { Layout, Transition } from "./view.js";
 
 /**
  * @internal
@@ -192,7 +194,7 @@ export type RouteMatch<TSettings = any> = {
 
 function getFallbackCommand(
     config: RouterConfiguration,
-    definition: FallbackRouteDefinition
+    definition: FallbackRouteDefinition,
 ): NavigationCommand {
     if ("command" in definition) {
         return definition.command;
@@ -289,7 +291,7 @@ export class RouteCollection<TSettings = any> {
                         const childTitle = (x as HasTitle).title || "";
                         (childRoute as HasTitle).title = titleBuilder.joinTitles(
                             parentTitle,
-                            childTitle
+                            childTitle,
                         );
                     }
 
@@ -335,7 +337,7 @@ export class RouteCollection<TSettings = any> {
     }
 
     public fallback(
-        definitionOrCallback: FallbackRouteDefinition<TSettings> | DefinitionCallback
+        definitionOrCallback: FallbackRouteDefinition<TSettings> | DefinitionCallback,
     ) {
         const owner = this.owner;
 
@@ -361,10 +363,10 @@ export class RouteCollection<TSettings = any> {
             normalizedConverter = (
                 name: string,
                 value: string | undefined,
-                context: RouteParameterConverterContext
+                context: RouteParameterConverterContext,
             ) => {
                 const obj = this.owner.construct(
-                    converter as Constructable<RouteParameterConverterObject>
+                    converter as Constructable<RouteParameterConverterObject>,
                 );
 
                 return obj.convert(name, value, context);
@@ -396,11 +398,11 @@ export class RouteCollection<TSettings = any> {
                         new ConfigurableRoute("*", "", false),
                         [],
                         [],
-                        this.fallbackSettings
+                        this.fallbackSettings,
                     ),
                     {},
                     {},
-                    queryParams
+                    queryParams,
                 ),
                 command: this.fallbackCommand,
             };

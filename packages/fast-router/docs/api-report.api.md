@@ -4,15 +4,15 @@
 
 ```ts
 
-import { AddViewBehaviorFactory } from '@microsoft/fast-element';
-import { ComposableStyles } from '@microsoft/fast-element';
-import { Constructable } from '@microsoft/fast-element';
-import { ExecutionContext } from '@microsoft/fast-element';
+import { AddViewBehaviorFactory } from '@microsoft/fast-element/html-directive.js';
+import { ComposableStyles } from '@microsoft/fast-element/element-styles.js';
+import type { Constructable } from '@microsoft/fast-element/types.js';
+import type { ExecutionContext } from '@microsoft/fast-element/observable.js';
 import { FASTElement } from '@microsoft/fast-element';
-import { ViewBehavior } from '@microsoft/fast-element';
-import { ViewBehaviorFactory } from '@microsoft/fast-element';
-import { ViewController } from '@microsoft/fast-element';
-import { ViewTemplate } from '@microsoft/fast-element';
+import { ViewBehavior } from '@microsoft/fast-element/html-directive.js';
+import { ViewBehaviorFactory } from '@microsoft/fast-element/html-directive.js';
+import { ViewController } from '@microsoft/fast-element/html-directive.js';
+import { ViewTemplate } from '@microsoft/fast-element/template.js';
 
 // Warning: (ae-internal-missing-underscore) The name "childRouteParameter" should be prefixed with an underscore because the declaration is marked as @internal
 //

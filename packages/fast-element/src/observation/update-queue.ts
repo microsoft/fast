@@ -1,4 +1,5 @@
-import { type Callable, KernelServiceId } from "../interfaces.js";
+import type { Callable } from "../interfaces.js";
+import { KernelServiceId } from "../kernel.js";
 import { FAST } from "../platform.js";
 
 /**

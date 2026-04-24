@@ -1,4 +1,12 @@
-(function requestIdleCallbackPolyfill() {
+let polyfillsInstalled = false;
+
+export function installPolyfills(): void {
+    if (polyfillsInstalled) {
+        return;
+    }
+
+    polyfillsInstalled = true;
+
     if ("requestIdleCallback" in globalThis) {
         return;
     }
@@ -37,4 +45,4 @@
     ): void {
         clearTimeout(id);
     };
-})();
+}

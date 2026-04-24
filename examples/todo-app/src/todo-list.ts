@@ -1,5 +1,5 @@
-import { Observable, observable, volatile } from "@microsoft/fast-element";
 import { Context } from "@microsoft/fast-element/context.js";
+import { Observable, observable, volatile } from "@microsoft/fast-element/observable.js";
 import { reactive } from "@microsoft/fast-element/state.js";
 
 export type Todo = { description: string; done: boolean };

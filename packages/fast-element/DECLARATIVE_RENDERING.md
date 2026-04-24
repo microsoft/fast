@@ -60,7 +60,9 @@ Include the DI service to your component.
 
 Example:
 ```typescript
-import { attr, FASTElement, Observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { Observable } from "@microsoft/fast-element/observable.js";
 import {
     initialStateFactory,
     InitialStateService,

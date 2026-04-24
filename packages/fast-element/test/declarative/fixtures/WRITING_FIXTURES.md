@@ -177,7 +177,9 @@ The component definition file registers custom elements and configures the templ
 ### Basic pattern
 
 ```typescript
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {

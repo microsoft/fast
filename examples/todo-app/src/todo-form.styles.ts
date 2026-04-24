@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/css.js";
 
 export const styles = css`
     form {

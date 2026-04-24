@@ -1,18 +1,18 @@
 import {
-    AddViewBehaviorFactory,
+    type AddViewBehaviorFactory,
     HTMLDirective,
-    Markup,
-    ViewBehavior,
-    ViewBehaviorFactory,
-    ViewController,
-} from "@microsoft/fast-element";
-import {
+    type ViewBehavior,
+    type ViewBehaviorFactory,
+    type ViewController,
+} from "@microsoft/fast-element/html-directive.js";
+import { Markup } from "@microsoft/fast-element/markup.js";
+import type {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,
     NavigationPhaseName,
 } from "./phases.js";
 import { Router } from "./router.js";
-import { RouterExecutionContext } from "./view.js";
+import type { RouterExecutionContext } from "./view.js";
 
 /**
  * @beta
@@ -28,7 +28,7 @@ export type NavigationContributor<TSettings = any> = Partial<
  */
 export function isNavigationPhaseContributor<T extends NavigationPhaseName>(
     object: any,
-    phase: T
+    phase: T,
 ): object is Record<T, NavigationPhaseHook> {
     return phase in object;
 }
@@ -103,9 +103,9 @@ class NavigationContributorBehavior implements ViewBehavior {
  * @beta
  */
 export function navigationContributor(
-    options?: ContributorOptions
+    options?: ContributorOptions,
 ): NavigationContributorDirective {
     return new NavigationContributorDirective(
-        Object.assign({}, defaultOptions, options) as Required<ContributorOptions>
+        Object.assign({}, defaultOptions, options) as Required<ContributorOptions>,
     );
 }
