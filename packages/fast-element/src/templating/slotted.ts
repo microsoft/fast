@@ -60,16 +60,16 @@ HTMLDirective.define(SlottedDirective);
  * @param propertyOrOptions - The options used to configure slotted node observation.
  * @public
  */
-export function slotted<TSource = any, TParent = any>(
+export function slotted<TSource = any>(
     propertyOrOptions:
         | (keyof TSource & string)
-        | SlottedDirectiveOptions<keyof TSource & string>
-): CaptureType<TSource, TParent> {
+        | SlottedDirectiveOptions<keyof TSource & string>,
+): CaptureType {
     if (isString(propertyOrOptions)) {
         propertyOrOptions = { property: propertyOrOptions };
     }
 
     return new SlottedDirective(
-        propertyOrOptions as SlottedDirectiveOptions<keyof TSource & string>
+        propertyOrOptions as SlottedDirectiveOptions<keyof TSource & string>,
     );
 }
