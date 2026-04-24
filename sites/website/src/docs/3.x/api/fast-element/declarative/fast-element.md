@@ -118,7 +118,7 @@ Description
 
 </td><td>
 
-Configuration object for the attributeMap element option. Passing an empty object (`{}`<!-- -->) is equivalent to `"all"`<!-- -->.
+Configuration object for the attributeMap element option. Omitting all fields uses the default attribute-mapping behavior.
 
 
 </td></tr>
@@ -171,7 +171,7 @@ Lifecycle callbacks for template events. Combines template lifecycle callbacks w
 
 </td><td>
 
-Configuration object for the observerMap element option. When `properties` is omitted (i.e. `observerMap: {}`<!-- -->), behaves like `"all"` — every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
 
 
 </td></tr>
@@ -218,28 +218,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMapOption](../fast-element.attributemapoption/)
-
-
-</td><td>
-
-Values for the attributeMap element option.
-
-
-</td></tr>
-<tr><td>
-
-[ObserverMapOption](../fast-element.observermapoption/)
-
-
-</td><td>
-
-Values for the observerMap element option.
-
-
-</td></tr>
-<tr><td>
-
 [schemaRegistry](../fast-element.schemaregistry/)
 
 
@@ -266,32 +244,10 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMapOption](../fast-element.attributemapoption/)
-
-
-</td><td>
-
-Type for the attributeMap element option. Accepts `"all"` or a configuration object.
-
-
-</td></tr>
-<tr><td>
-
 [CachedPathMap](../fast-element.cachedpathmap/)
 
 
 </td><td>
-
-
-</td></tr>
-<tr><td>
-
-[ObserverMapOption](../fast-element.observermapoption/)
-
-
-</td><td>
-
-Type for the observerMap element option. Accepts `"all"` or a configuration object.
 
 
 </td></tr>
