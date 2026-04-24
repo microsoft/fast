@@ -4,7 +4,6 @@ import { BenchElement } from "../element.js";
 
 BenchElement.define({
     name: "dot-syntax-bench-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 performance.mark("bench-start");

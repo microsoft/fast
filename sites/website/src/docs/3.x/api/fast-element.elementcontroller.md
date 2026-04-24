@@ -439,6 +439,22 @@ Binds any observables that were set before upgrade.
 </td></tr>
 <tr><td>
 
+[captureBoundObservables()](../fast-element.elementcontroller.captureboundobservables/)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Captures own-properties that shadow observable accessors on the prototype so they can be rebound through the accessor before rendering.
+
+
+</td></tr>
+<tr><td>
+
 [configHydration(callbacks)](../fast-element.elementcontroller.confighydration/)
 
 
@@ -545,6 +561,22 @@ Locates or creates a controller for the specified element.
 </td></tr>
 <tr><td>
 
+[observeLateAttributes()](../fast-element.elementcontroller.observelateattributes/)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Observes late-defined attribute-map attributes that the platform does not surface through attributeChangedCallback because they were added after customElements.define() completed.
+
+
+</td></tr>
+<tr><td>
+
 [onAttributeChangedCallback(name, oldValue, newValue)](../fast-element.elementcontroller.onattributechangedcallback/)
 
 
@@ -628,6 +660,22 @@ Renders the provided template to the element.
 </td><td>
 
 Sets the strategy that ElementController.forCustomElement uses to construct ElementController instances for an element.
+
+
+</td></tr>
+<tr><td>
+
+[syncLateAttributes()](../fast-element.elementcontroller.synclateattributes/)
+
+
+</td><td>
+
+`protected`
+
+
+</td><td>
+
+Synchronizes late-defined attribute-map attributes from the live DOM to the associated property values before the initial render occurs.
 
 
 </td></tr>

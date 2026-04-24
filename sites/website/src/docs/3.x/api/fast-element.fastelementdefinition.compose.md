@@ -20,7 +20,7 @@ Creates an instance of FASTElementDefinition.
 **Signature:**
 
 ```typescript
-static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition): Promise<FASTElementDefinition<TType>>;
+static compose<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition<TType>): Promise<FASTElementDefinition<TType>>;
 ```
 
 ## Parameters
@@ -64,7 +64,7 @@ nameOrDef
 
 </td><td>
 
-string \| [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)
+string \| [PartialFASTElementDefinition](../fast-element.partialfastelementdefinition/)<!-- -->&lt;TType&gt;
 
 
 </td><td>

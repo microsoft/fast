@@ -7,7 +7,6 @@ class TestElement extends FASTElement {
 }
 TestElement.define({
     name: "test-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestElementUnescaped extends FASTElement {
@@ -15,7 +14,6 @@ class TestElementUnescaped extends FASTElement {
 }
 TestElementUnescaped.define({
     name: "test-element-unescaped",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.config({

@@ -124,7 +124,6 @@ RenderableFASTElement(MyComponent).defineAsync({
 ```ts
 MyComponent.define({
     name: "my-component",
-    templateOptions: "defer-and-hydrate",
 });
 ```
 

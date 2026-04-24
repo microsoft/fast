@@ -15,7 +15,6 @@ class FastCard extends FASTElement {
 
 FastCard.define({
     name: "fast-card",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.config({

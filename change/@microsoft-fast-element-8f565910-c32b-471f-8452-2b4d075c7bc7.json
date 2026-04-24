@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Remove TemplateOptions from fast-element definitions and drop templateOptions-based connection/define waiting.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

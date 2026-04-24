@@ -5,14 +5,12 @@ class NamingStrategyTestElement extends FASTElement {}
 
 NamingStrategyTestElement.define({
     name: "naming-strategy-test",
-    templateOptions: "defer-and-hydrate",
 });
 
 class NamingStrategyNoDashTestElement extends FASTElement {}
 
 NamingStrategyNoDashTestElement.define({
     name: "naming-strategy-no-dash-test",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.options({

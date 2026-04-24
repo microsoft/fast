@@ -93,7 +93,6 @@ class MyElement extends FASTElement {}
 
 MyElement.define({
     name: "my-element",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.define({ name: "f-template" });
@@ -110,7 +109,7 @@ execution context.
 When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
 
 - **Hydration instead of re-render**: The template uses `hydrate()` to map existing DOM nodes to binding targets rather than cloning new DOM.
-- **Template-pending guard**: When `templateOptions` is `"defer-and-hydrate"` and no template is available yet, `connect()` returns early and retriggers when the template arrives.
+- **Late template attachment**: If a definition gains a template after an element has already connected, the observable `template` update recreates the controller so the element can render or hydrate with the new template.
 - **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
 - **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
 

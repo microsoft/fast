@@ -1,5 +1,8 @@
 import { AttributeDefinition } from "../components/attributes.js";
-import type { FASTElementDefinition } from "../components/fast-definitions.js";
+import {
+    type FASTElementDefinition,
+    trackLateAttributeDefinition,
+} from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
 import type { Schema } from "./schema.js";
 
@@ -162,6 +165,10 @@ export class AttributeMap {
                     )
                 ) {
                     attrs.push(attrDef);
+                }
+
+                if (this.definition.isDefined) {
+                    trackLateAttributeDefinition(this.definition, attrDef);
                 }
             }
         }

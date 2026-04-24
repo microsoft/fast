@@ -18,8 +18,8 @@ import type {
 import type { ElementView } from "../templating/view.js";
 import {
     FASTElementDefinition,
+    getLateAttributeLookup,
     type ShadowRootOptions,
-    TemplateOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
 import { isHydratable } from "./hydration.js";
@@ -40,6 +40,7 @@ const defaultEventOptions: CustomEventInit = {
 const isConnectedPropertyName = "isConnected";
 
 const shadowRoots = new WeakMap<Element, ShadowRoot>();
+const lateAttributeObserver = Symbol("fast-late-attribute-observer");
 
 function getShadowRoot(element: Element): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
@@ -231,7 +232,9 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                 this._template = (this.source as any).resolveTemplate();
             } else if (definition.template) {
                 // 3. Default to the static definition.
-                this._template = definition.template ?? null;
+                this._template =
+                    (definition.template as ElementViewTemplate<TElement> | undefined) ??
+                    null;
             }
         }
 
@@ -327,14 +330,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         this.definition = definition;
         this.shadowOptions = definition.shadowOptions;
 
-        // Capture any observable values that were set by the binding engine before
-        // the browser upgraded the element. Then delete the property since it will
-        // shadow the getter/setter that is required to make the observable operate.
-        // Later, in the connect callback, we'll re-apply the values.
-        const accessors = Observable.getAccessors(element);
+        const prototype = Reflect.getPrototypeOf(element);
+        const accessors = prototype === null ? [] : Observable.getAccessors(prototype);
 
         if (accessors.length > 0) {
             const boundObservables = (this.boundObservables = Object.create(null));
+
             for (let i = 0, ii = accessors.length; i < ii; ++i) {
                 const propertyName = accessors[i].name as keyof TElement;
                 const value = (element as any)[propertyName];
@@ -344,7 +345,15 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
                     boundObservables[propertyName] = value;
                 }
             }
+
+            if (Object.keys(boundObservables).length === 0) {
+                this.boundObservables = null;
+            }
         }
+
+        // Capture any observable values that were set after construction but before
+        // the first connect (for example, late-defined declarative accessors).
+        this.captureBoundObservables();
     }
 
     /**
@@ -456,18 +465,11 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             return;
         }
 
-        // If no template is available yet (deferred-hydration flow),
-        // wait — the observable subscription on "template" in
-        // forCustomElement() will call connect() when it arrives.
-        if (
-            !this.template &&
-            this.definition.templateOptions === TemplateOptions.deferAndHydrate
-        ) {
-            return;
-        }
-
         this.stage = Stages.connecting;
 
+        this.captureBoundObservables();
+        this.syncLateAttributes();
+        this.observeLateAttributes();
         this.bindObservables();
         this.connectBehaviors();
 
@@ -500,6 +502,140 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
 
             this.boundObservables = null;
         }
+    }
+
+    /**
+     * Captures own-properties that shadow observable accessors on the prototype so
+     * they can be rebound through the accessor before rendering.
+     */
+    protected captureBoundObservables() {
+        const element = this.source;
+        const propertyNames = Object.getOwnPropertyNames(element);
+
+        const hasPrototypeAccessor = (propertyName: string): boolean => {
+            let currentTarget = Reflect.getPrototypeOf(element);
+
+            while (currentTarget !== null) {
+                const descriptor = Reflect.getOwnPropertyDescriptor(
+                    currentTarget,
+                    propertyName,
+                );
+
+                if (descriptor?.get || descriptor?.set) {
+                    return true;
+                }
+
+                currentTarget = Reflect.getPrototypeOf(currentTarget);
+            }
+
+            return false;
+        };
+
+        let boundObservables = this.boundObservables;
+
+        for (let i = 0, ii = propertyNames.length; i < ii; ++i) {
+            const ownPropertyName = propertyNames[i];
+            const propertyName = (
+                ownPropertyName[0] === "_" ? ownPropertyName.slice(1) : ownPropertyName
+            ) as keyof TElement;
+
+            if (!hasPrototypeAccessor(propertyName as string)) {
+                continue;
+            }
+
+            const value = (element as any)[propertyName];
+            const isBackingField = ownPropertyName !== propertyName;
+            const isRebindableObject =
+                value !== null &&
+                typeof value === "object" &&
+                !value?.$isProxy &&
+                !(Array.isArray(value) && (value as any)?.$fastController);
+
+            if (value === void 0) {
+                if (!isBackingField) {
+                    delete element[ownPropertyName as keyof TElement];
+                }
+
+                continue;
+            }
+
+            if (isBackingField && !isRebindableObject) {
+                continue;
+            }
+
+            delete element[ownPropertyName as keyof TElement];
+            (boundObservables ??= this.boundObservables = Object.create(null))[
+                propertyName
+            ] = value;
+        }
+    }
+
+    /**
+     * Synchronizes late-defined attribute-map attributes from the live DOM to the
+     * associated property values before the initial render occurs.
+     */
+    protected syncLateAttributes() {
+        const lateAttributes = getLateAttributeLookup(this.definition);
+
+        if (lateAttributes === null) {
+            return;
+        }
+
+        for (const attributeName of Object.keys(lateAttributes)) {
+            if (!this.source.hasAttribute(attributeName)) {
+                continue;
+            }
+
+            this.onAttributeChangedCallback(
+                attributeName,
+                null,
+                this.source.getAttribute(attributeName),
+            );
+        }
+    }
+
+    /**
+     * Observes late-defined attribute-map attributes that the platform does not
+     * surface through attributeChangedCallback because they were added after
+     * customElements.define() completed.
+     */
+    protected observeLateAttributes() {
+        if (getLateAttributeLookup(this.definition) === null) {
+            return;
+        }
+
+        const element = this.source as TElement & {
+            [lateAttributeObserver]?: MutationObserver;
+        };
+
+        if (element[lateAttributeObserver] !== void 0) {
+            return;
+        }
+
+        element[lateAttributeObserver] = new MutationObserver(records => {
+            const controller = (element as unknown as FASTElement).$fastController;
+            const lateAttributes = getLateAttributeLookup(controller.definition);
+
+            if (lateAttributes === null) {
+                return;
+            }
+
+            for (let i = 0, ii = records.length; i < ii; ++i) {
+                const attributeName = records[i].attributeName;
+
+                if (attributeName === null || lateAttributes[attributeName] === void 0) {
+                    continue;
+                }
+
+                controller.onAttributeChangedCallback(
+                    attributeName,
+                    null,
+                    element.getAttribute(attributeName),
+                );
+            }
+        });
+
+        element[lateAttributeObserver].observe(element, { attributes: true });
     }
 
     /**
@@ -634,6 +770,8 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
             }
 
             this._resolvePrerendered(isPrerendered);
+        } else if (this.needsInitialization) {
+            this._resolvePrerendered(false);
         }
     }
 

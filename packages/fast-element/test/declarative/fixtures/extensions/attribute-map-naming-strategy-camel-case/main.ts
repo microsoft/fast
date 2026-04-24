@@ -7,7 +7,6 @@ class TestCamelCase extends FASTElement {
 }
 TestCamelCase.define({
     name: "test-camel-case",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestCamelCaseMulti extends FASTElement {
@@ -16,7 +15,6 @@ class TestCamelCaseMulti extends FASTElement {
 }
 TestCamelCaseMulti.define({
     name: "test-camel-case-multi",
-    templateOptions: "defer-and-hydrate",
 });
 
 class TestCamelCaseNoDash extends FASTElement {
@@ -25,7 +23,6 @@ class TestCamelCaseNoDash extends FASTElement {
 }
 TestCamelCaseNoDash.define({
     name: "test-camel-case-no-dash",
-    templateOptions: "defer-and-hydrate",
 });
 
 TemplateElement.config({

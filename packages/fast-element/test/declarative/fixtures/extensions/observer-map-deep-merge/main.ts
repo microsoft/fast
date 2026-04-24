@@ -508,5 +508,4 @@ TemplateElement.options({
 
 DeepMergeTestElement.define({
     name: "deep-merge-test-element",
-    templateOptions: "defer-and-hydrate",
 });

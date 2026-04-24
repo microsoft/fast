@@ -91,11 +91,10 @@ export class MyComponent extends FASTElement {
 
 MyComponent.define({
     name: "my-component",
-    templateOptions: "defer-and-hydrate",
 });
 ```
 
-When the element connects, `ElementController` automatically detects the existing shadow root from SSR and sets `isPrerendered = true`. The template-pending guard in `ElementController.connect()` ensures the element waits for its template before hydrating. The `defer-hydration` and `needs-hydration` attributes are no longer needed — connection gating is handled internally by the template-pending guard.
+When the element connects, `ElementController` automatically detects the existing shadow root from SSR and sets `isPrerendered = true`. If the template is attached after the element has already connected, the observable `template` update recreates the controller so hydration can proceed. The `defer-hydration` and `needs-hydration` attributes are no longer needed.
 
 ## Hydration Comments and Datasets
 

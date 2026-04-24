@@ -83,7 +83,7 @@ test.describe("The prerendered content optimization", () => {
         expect(result.isPrerendered).toBe(true);
     });
 
-    test("should wait for template when templateOptions is defer-and-hydrate", async ({
+    test("should connect immediately when a template is assigned later", async ({
         page,
     }) => {
         await page.goto("/");
@@ -98,7 +98,6 @@ test.describe("The prerendered content optimization", () => {
             class TestElement extends FASTElement {
                 static definition = {
                     name,
-                    templateOptions: "defer-and-hydrate",
                 };
             }
 
@@ -122,7 +121,7 @@ test.describe("The prerendered content optimization", () => {
             };
         });
 
-        expect(result.isConnectedBefore).toBe(false);
+        expect(result.isConnectedBefore).toBe(true);
         expect(result.isConnectedAfter).toBe(true);
     });
 
