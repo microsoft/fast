@@ -7,32 +7,24 @@ import {
 } from "../components/fast-definitions.js";
 import { FASTElement } from "../components/fast-element.js";
 import { FAST } from "../platform.js";
-import {
-    AttributeMap,
-    type AttributeMapConfig,
-    type AttributeMapOption,
-} from "./attribute-map.js";
+import { AttributeMap, type AttributeMapConfig } from "./attribute-map.js";
 import {
     getDefinitionElementOptions,
     mergeElementOptions,
 } from "./definition-options.js";
 import { Message } from "./interfaces.js";
-import { ObserverMap, type ObserverMapOption } from "./observer-map.js";
+import { ObserverMap, type ObserverMapConfig } from "./observer-map.js";
 import { Schema } from "./schema.js";
 import { TemplateParser } from "./template-parser.js";
 import { transformInnerHTML } from "./utilities.js";
 
 /**
  * Checks whether a map option (observerMap or attributeMap) is enabled.
- * An option is enabled when it is `"all"` or a plain configuration object.
+ * An option is enabled when it is a plain configuration object.
  */
 function isMapOptionEnabled(
-    option: ObserverMapOption | AttributeMapOption | undefined,
+    option: ObserverMapConfig | AttributeMapConfig | undefined,
 ): boolean {
-    if (option === "all") {
-        return true;
-    }
-
     return typeof option === "object" && !Array.isArray(option);
 }
 
@@ -40,8 +32,8 @@ function isMapOptionEnabled(
  * Element options the TemplateElement will use to update the registered element
  */
 export interface ElementOptions {
-    observerMap?: ObserverMapOption;
-    attributeMap?: AttributeMapOption;
+    observerMap?: ObserverMapConfig;
+    attributeMap?: AttributeMapConfig;
 }
 
 /**

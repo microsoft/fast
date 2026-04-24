@@ -109,7 +109,7 @@ AllObsElement.define(
     {
         name: "all-obs-element",
     },
-    [observerMap({})],
+    [observerMap()],
 );
 
 class EmptyPropsElement extends FASTElement {

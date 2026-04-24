@@ -160,22 +160,14 @@ Observer Map functionality is enabled through template element options:
 ```typescript
 TemplateElement.options({
   "my-custom-element": {
-    observerMap: "all"
-  }
-});
-```
-
-A configuration object can also be passed instead of `"all"`:
-
-```typescript
-TemplateElement.options({
-  "my-custom-element": {
     observerMap: {}
   }
 });
 ```
 
-**Note**: Both `"all"` and `{}` are equivalent — they enable Observer Map observation for all root properties discovered in the template. The configuration object form is supported for future extensibility, allowing more granular control over observation behavior.
+When the `properties` key is omitted, all root properties discovered in the
+template are observed. Add a `properties` object to opt into selective
+observation behavior.
 
 ## Initial Path Processing Flow
 

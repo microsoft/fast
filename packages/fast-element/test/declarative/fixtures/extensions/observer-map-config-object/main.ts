@@ -26,7 +26,13 @@ ConfigObserverMapTestElement.define(
     {
         name: "config-observer-map-test-element",
     },
-    [observerMap({})],
+    [
+        observerMap({
+            properties: {
+                data: true,
+            },
+        }),
+    ],
 );
 
 class ConfigAttributeMapTestElement extends FASTElement {
@@ -39,8 +45,12 @@ ConfigAttributeMapTestElement.define(
     {
         name: "config-attribute-map-test-element",
     },
-    [attributeMap({})],
+    [
+        attributeMap({
+            "attribute-name-strategy": "none",
+        }),
+    ],
 );
 
-// Use configuration objects ({}) instead of "all" — should behave identically
+// Use explicit non-default configuration objects to exercise the config-object path
 TemplateElement.define({ name: "f-template" });

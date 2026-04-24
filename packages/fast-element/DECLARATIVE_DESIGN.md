@@ -91,8 +91,8 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via the `observerMap()` definition extension (or `observerMap({})`).
-`TemplateElement.options({ "my-element": { observerMap: "all" } })` remains
+Enabled via the `observerMap()` definition extension.
+`TemplateElement.options({ "my-element": { observerMap: {} } })` remains
 available as a compatibility fallback. Both forms observe all root properties.
 
 #### Path-level observation control
@@ -127,7 +127,9 @@ Each path entry can be:
 - **`false`** — skip this path and all descendants (unless overridden deeper).
 - **`ObserverMapPathNode`** — an object with an optional `$observe` boolean and child property overrides, allowing alternating opt-in/opt-out to arbitrary depth.
 
-When `properties` is omitted (`observerMap: {}` or `observerMap: "all"`), all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+When `properties` is omitted, all root properties are observed. When
+`properties` is present but empty (`{ properties: {} }`), no root properties
+are observed.
 
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
@@ -145,8 +147,8 @@ An optional layer that uses the `Schema` to automatically register `@attr`-style
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via the `attributeMap()` definition extension (or `attributeMap({})`).
-`TemplateElement.options({ "my-element": { attributeMap: "all" } })` remains
+Enabled via the `attributeMap()` definition extension.
+`TemplateElement.options({ "my-element": { attributeMap: {} } })` remains
 available as a compatibility fallback. Both forms use the default `"none"`
 strategy. To use the `"camelCase"` strategy, pass
 `attributeMap({ "attribute-name-strategy": "camelCase" })`.
@@ -182,7 +184,7 @@ packages/fast-element/
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
 │       ├── schema.ts          # Schema class — JSON schema builder + schemaRegistry
 │       ├── observer-map.ts    # ObserverMap class + config types (ObserverMapConfig, ObserverMapPathEntry, etc.)
-│       ├── attribute-map.ts   # AttributeMap class + config types (AttributeMapConfig, AttributeMapOption)
+│       ├── attribute-map.ts   # AttributeMap class + config types (AttributeMapConfig)
 │       ├── utilities.ts       # Parsing engine, binding resolvers, proxy system
 │       └── syntax.ts          # Syntax delimiter constants
 ├── scripts/
@@ -196,8 +198,8 @@ packages/fast-element/
 Each module owns its configuration types and can be used independently:
 
 ```
-template.ts ──imports──▶ observer-map.ts (ObserverMapConfig, ObserverMapOption)
-template.ts ──imports──▶ attribute-map.ts (AttributeMapConfig, AttributeMapOption)
+template.ts ──imports──▶ observer-map.ts (ObserverMapConfig)
+template.ts ──imports──▶ attribute-map.ts (AttributeMapConfig)
 template.ts ──imports──▶ schema.ts (Schema)
 observer-map.ts ──imports──▶ schema.ts (Schema types)
 attribute-map.ts ──imports──▶ schema.ts (Schema types)
@@ -446,13 +448,18 @@ When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.de
 
 **Convention: stamp-only-when-excluding.** The `$observe` flag is only ever set to `false` — it is never explicitly set to `true`. Absence of `$observe` (i.e. `undefined`) means the node is observed. This means:
 
-- When `observerMap: "all"` or `observerMap: {}` is used, `applyConfigToSchema` is never called and no schema nodes are mutated — zero overhead for the common case.
+- When Observer Map is enabled without a `properties` tree, `applyConfigToSchema`
+  is never called and no schema nodes are mutated — zero overhead for the
+  common case.
 - The proxy system uses `isSchemaExcluded(schema)` (checks `$observe === false` with no observed descendants) as the single predicate for all skip/suppress decisions.
 - Schema nodes without `$observe` are always treated as observed.
 
 ### AttributeMap and leaf bindings
 
-When `attributeMap` is enabled (via `"all"`, `{}`, or a configuration object), `AttributeMap.defineProperties()` is called after parsing. It iterates `Schema.getRootProperties()` and skips any property whose schema entry contains `properties`, `type`, or `anyOf` — keeping only plain leaf bindings. For each leaf:
+When `attributeMap` is enabled, `AttributeMap.defineProperties()` is called
+after parsing. It iterates `Schema.getRootProperties()` and skips any property
+whose schema entry contains `properties`, `type`, or `anyOf` — keeping only
+plain leaf bindings. For each leaf:
 
 1. The schema key is used as the **JS property name**.
 2. The **HTML attribute name** depends on the `attribute-name-strategy`:
