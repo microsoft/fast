@@ -9,15 +9,8 @@ import { setDefinitionElementOptions } from "./definition-options.js";
 import type { Schema } from "./schema.js";
 
 /**
- * Values for the attributeMap element option.
- */
-export const AttributeMapOption = {
-    all: "all",
-} as const;
-
-/**
  * Configuration object for the attributeMap element option.
- * Passing an empty object (`{}`) is equivalent to `"all"`.
+ * Omitting all fields uses the default attribute-mapping behavior.
  */
 export interface AttributeMapConfig {
     /**
@@ -36,22 +29,12 @@ export interface AttributeMapConfig {
 }
 
 /**
- * Type for the attributeMap element option.
- * Accepts `"all"` or a configuration object.
- */
-export type AttributeMapOption =
-    | (typeof AttributeMapOption)[keyof typeof AttributeMapOption]
-    | AttributeMapConfig;
-
-/**
  * Creates a FAST element extension that enables declarative attribute mapping
  * for the resolved definition.
- * When called without arguments, behaves like the `"all"` option.
+ * When called without arguments, uses the default attribute-mapping behavior.
  * @public
  */
-export function attributeMap(
-    option: AttributeMapOption = AttributeMapOption.all,
-): FASTElementExtension {
+export function attributeMap(option: AttributeMapConfig = {}): FASTElementExtension {
     return definition => {
         setDefinitionElementOptions(definition, {
             attributeMap: option,

@@ -5,13 +5,6 @@ import type { JSONSchema, Schema } from "./schema.js";
 import { assignObservables, deepMerge } from "./utilities.js";
 
 /**
- * Values for the observerMap element option.
- */
-export const ObserverMapOption = {
-    all: "all",
-} as const;
-
-/**
  * A node in the observer-map path tree.
  *
  * - `true`  → observe this path and all descendants (unless overridden by children).
@@ -37,16 +30,16 @@ export interface ObserverMapPathNode {
 
 /**
  * Configuration object for the observerMap element option.
- * When `properties` is omitted (i.e. `observerMap: {}`), behaves like `"all"` —
- * every root property is observed. When `properties` is present, only listed
- * root properties participate in observer-map observation.
+ * When `properties` is omitted, every root property is observed. When
+ * `properties` is present, only listed root properties participate in
+ * observer-map observation.
  */
 export interface ObserverMapConfig {
     /**
      * Per-root-property observation control.
      * Keys are root property names discovered in the template schema.
      * Only root properties listed here participate in observer-map observation.
-     * Omitting this field is equivalent to `"all"`.
+     * Omitting this field observes every discovered root property.
      */
     properties?: {
         [rootProperty: string]: ObserverMapPathEntry;
@@ -54,22 +47,12 @@ export interface ObserverMapConfig {
 }
 
 /**
- * Type for the observerMap element option.
- * Accepts `"all"` or a configuration object.
- */
-export type ObserverMapOption =
-    | (typeof ObserverMapOption)[keyof typeof ObserverMapOption]
-    | ObserverMapConfig;
-
-/**
  * Creates a FAST element extension that enables declarative observer mapping
  * for the resolved definition.
- * When called without arguments, behaves like the `"all"` option.
+ * When called without arguments, observes every discovered root property.
  * @public
  */
-export function observerMap(
-    option: ObserverMapOption = ObserverMapOption.all,
-): FASTElementExtension {
+export function observerMap(option: ObserverMapConfig = {}): FASTElementExtension {
     return definition => {
         setDefinitionElementOptions(definition, {
             observerMap: option,

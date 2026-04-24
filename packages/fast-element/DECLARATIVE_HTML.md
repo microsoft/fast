@@ -199,11 +199,11 @@ if (process.env.NODE_ENV === 'development') {
 
 ## `observerMap`
 
-When the `observerMap()` extension (or `observerMap({})`) is applied to an
-element definition, `@microsoft/fast-element/declarative.js` automatically
-sets up deep reactive observation for all root properties discovered in the
-template. Both `"all"` and `{}` are equivalent, and `TemplateElement.options()`
-remains available as a compatibility fallback.
+When the `observerMap()` extension is applied to an element definition,
+`@microsoft/fast-element/declarative.js` automatically sets up deep reactive
+observation for all root properties discovered in the template.
+`TemplateElement.options()` remains available as a compatibility fallback via
+`observerMap: {}`.
 
 For finer control, pass a configuration object with a `properties` key that maps root property names to a recursive path tree:
 
@@ -252,17 +252,19 @@ observerMap: {
 }
 ```
 
-When `properties` is omitted, all root properties are observed (backward compatible). When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+When `properties` is omitted, all root properties are observed. When
+`properties` is present but empty (`{ properties: {} }`), no root properties
+are observed.
 
 ## `attributeMap`
 
-When the `attributeMap()` extension (or `attributeMap({})`) is applied to an
-element definition, `@microsoft/fast-element/declarative.js` automatically
-creates reactive `@attr` properties for every **leaf binding** in the template
-— simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested
-properties. Both `"all"` and `{}` are equivalent and use the default `"none"`
-attribute name strategy. `TemplateElement.options()` remains available as a
-compatibility fallback.
+When the `attributeMap()` extension is applied to an element definition,
+`@microsoft/fast-element/declarative.js` automatically creates reactive `@attr`
+properties for every **leaf binding** in the template — simple expressions
+like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties. The
+default behavior uses the `"none"` attribute name strategy.
+`TemplateElement.options()` remains available as a compatibility fallback via
+`attributeMap: {}`.
 
 By default, the **attribute name** and **property name** are both the binding key exactly as written in the template — no normalization is applied. Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated). Properties with dashes must be accessed via bracket notation (e.g. `element["foo-bar"]`).
 
