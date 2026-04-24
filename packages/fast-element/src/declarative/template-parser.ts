@@ -5,6 +5,7 @@ import { repeat } from "../templating/repeat.js";
 import { slotted } from "../templating/slotted.js";
 import { ViewTemplate } from "../templating/template.js";
 import { when } from "../templating/when.js";
+import { ensureDeclarativeRuntime } from "./runtime.js";
 import type { Schema } from "./schema.js";
 import {
     type AttributeDirective,
@@ -100,6 +101,7 @@ export class TemplateParser {
         strings: Array<string>,
         values: Array<any>,
     ): ViewTemplate<any, any> {
+        ensureDeclarativeRuntime();
         return ViewTemplate.create(strings, values);
     }
 

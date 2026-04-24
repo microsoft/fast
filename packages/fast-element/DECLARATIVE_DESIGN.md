@@ -72,7 +72,7 @@ a waiting FAST element definition.
 
 ### `TemplateParser` — declarative HTML parser
 
-A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parsing pipeline is fully synchronous — no promises are allocated during template resolution. A `StringsAccumulator` tracks the running concatenation of preceding HTML, eliminating repeated O(N) `join("")` calls at each binding site.
+A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parsing pipeline is fully synchronous — no promises are allocated during template resolution. A `StringsAccumulator` tracks the running concatenation of preceding HTML, eliminating repeated O(N) `join("")` calls at each binding site. `createTemplate()` also performs the declarative runtime's lazy installation of hydratable `ViewTemplate` support and declarative debug messages.
 
 ### `Schema` — JSON schema builder
 
@@ -179,7 +179,7 @@ packages/fast-element/
 │   └── declarative/
 │       ├── index.ts           # Declarative barrel export
 │       ├── interfaces.ts      # Message enum (error codes)
-│       ├── debug.ts           # Human-readable debug messages registered with FAST
+│       ├── debug.ts           # Human-readable declarative debug messages
 │       ├── template.ts        # TemplateElement (<f-template>), lifecycle orchestration, options
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
 │       ├── schema.ts          # Schema class — JSON schema builder + schemaRegistry
@@ -361,7 +361,7 @@ sequenceDiagram
 | Method | Visibility | Role |
 |---|---|---|
 | `parse()` | public | Entry point: parses declarative HTML into `{ strings, values }`. |
-| `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values. |
+| `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values, lazily enabling declarative hydration support. |
 | `resolveStringsAndValues()` | private | Creates `strings`/`values` arrays and delegates to `resolveInnerHTML()`. |
 | `resolveInnerHTML()` | private | Recursive HTML parser that dispatches to data binding or template directive handlers. |
 | `resolveDataBinding()` | private | Thin dispatcher that routes to `resolveContentBinding()`, `resolveAttributeBinding()`, or `resolveAttributeDirectiveBinding()`. |

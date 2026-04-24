@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
-import "../debug";
+import { enableDebug } from "../debug.js";
 import { DI, inject, optional } from "./di.js";
+
+enableDebug();
 
 test.describe("DI Exception", () => {
     test("No registration for interface", async () => {

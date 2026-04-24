@@ -20,13 +20,18 @@ server-side rendering, see the
 
 ## Template Structure
 
-After registering the declarative entrypoint as shown in the README, templates
-are associated with an element through
+After importing the declarative APIs as shown in the README, templates are
+associated with an element through
 `<f-template name="[custom-element-name]"><template>...</template></f-template>`.
 The host custom element should be defined with
 `template: declarativeTemplate()`. This automatically defines `<f-template>` in
 the relevant registry and waits for the matching declarative template when it is
 already present or inserted later.
+
+The `@microsoft/fast-element/declarative.js` entrypoint itself remains
+side-effect free at import time. The hydratable `ViewTemplate` runtime is
+installed lazily when `TemplateParser`, `TemplateElement`, or
+`declarativeTemplate()` first create a declarative template.
 
 Example:
 ```html

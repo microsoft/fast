@@ -15,6 +15,7 @@ import {
 } from "./definition-options.js";
 import { Message } from "./interfaces.js";
 import { ObserverMap, type ObserverMapConfig } from "./observer-map.js";
+import { ensureDeclarativeRuntime } from "./runtime.js";
 import { Schema } from "./schema.js";
 import { declarativeTemplateBridge, type TemplatePublisher } from "./template-bridge.js";
 import { TemplateParser } from "./template-parser.js";
@@ -152,6 +153,8 @@ export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks 
  * @public
  */
 export function declarativeTemplate(): FASTElementTemplateResolver {
+    ensureDeclarativeRuntime();
+
     return async definition => {
         await ensureTemplateElementDefined(definition.registry);
         return declarativeTemplateBridge.requestTemplate(definition);
@@ -272,6 +275,8 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
      * @internal
      */
     public publishTemplate(definition: FASTElementDefinition): ElementViewTemplate {
+        ensureDeclarativeRuntime();
+
         const name = definition.name;
         const templates = this.getElementsByTagName("template");
 

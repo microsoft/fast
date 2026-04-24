@@ -61,6 +61,18 @@ internally, but it no longer patches `globalThis` for older engines. If you
 need to support an environment without `globalThis`, load that polyfill before
 importing `@microsoft/fast-element`.
 
+## Debug entrypoint
+
+`@microsoft/fast-element/debug.js` exports `enableDebug()` instead of
+configuring FAST at import time. The development root export and debug rollup
+bundle still enable debug behavior automatically.
+
+```ts
+import { enableDebug } from "@microsoft/fast-element/debug.js";
+
+enableDebug();
+```
+
 ## Export Sizes
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
@@ -82,8 +94,9 @@ controller when styles need to change.
 FAST Element also publishes a declarative HTML runtime from
 `@microsoft/fast-element/declarative.js`. This entrypoint exports
 `declarativeTemplate()`, `TemplateElement`, `TemplateParser`, `Schema`,
-`ObserverMap`, and `AttributeMap`, and installs the hydratable `ViewTemplate`
-behavior without adding those side effects to the root
+`ObserverMap`, and `AttributeMap`. The entrypoint stays pure at import time and
+installs the hydratable `ViewTemplate` behavior lazily when declarative APIs
+actually create a template, without adding those side effects to the root
 `@microsoft/fast-element` import.
 
 ```ts

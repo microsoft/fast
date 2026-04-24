@@ -1,12 +1,16 @@
 import { type FASTGlobal, noop } from "./interfaces.js";
-import "./polyfills.js";
+import { ensureRequestIdleCallback } from "./polyfills.js";
 
-// ensure FAST global - duplicated debug.ts
+const debugMessageLookupKey = "fast:debug-messages";
+
+// ensure FAST global
 const propConfig = {
     configurable: false,
     enumerable: false,
     writable: false,
 };
+
+ensureRequestIdleCallback();
 
 if (globalThis.FAST === void 0) {
     Reflect.defineProperty(globalThis, "FAST", {
@@ -38,13 +42,23 @@ if (FAST.getById === void 0) {
     });
 }
 
+/**
+ * Gets the shared FAST debug message lookup.
+ * @internal
+ */
+export function getDebugMessageLookup(): Record<number, string> {
+    return FAST.getById(debugMessageLookupKey, () => Object.create(null));
+}
+
 if (FAST.error === void 0) {
     Object.assign(FAST, {
         warn() {},
         error(code: number) {
             return new Error(`Error ${code}`);
         },
-        addMessages() {},
+        addMessages(messages: Record<number, string>) {
+            Object.assign(getDebugMessageLookup(), messages);
+        },
     });
 }
 

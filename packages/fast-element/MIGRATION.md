@@ -57,8 +57,8 @@ removed `@microsoft/fast-html` package.
 3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
      `observable`) from `@microsoft/fast-element`.
 4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
-     APIs; the declarative entrypoint owns the debug-message and hydratable-view
-     side effects.
+    APIs; the declarative entrypoint owns the declarative runtime and installs
+    hydration support lazily when declarative templates are created.
 
 ## `TemplateOptions` removal (v3)
 
@@ -72,14 +72,33 @@ removed `@microsoft/fast-html` package.
 
 ### Changed behavior
 
-- `FASTElement.define()` no longer uses `templateOptions` to delay platform definition or connection.
-- Elements can still be defined before a template is attached; a later `FASTElementDefinition.template` update notifies connected elements so they can render or hydrate with the new template.
+- `FASTElement.define()` no longer uses `templateOptions` to delay platform
+  definition or connection.
+- Elements can still be defined before a template is attached; a later
+  `FASTElementDefinition.template` update notifies connected elements so they
+  can render or hydrate with the new template.
 
 ### Migration steps
 
 1. Remove `templateOptions` from element definitions.
-2. Continue calling `define({ name })` when a definition needs to exist before its template is attached.
-3. If a template is supplied later, assign `FASTElementDefinition.template` (or use the declarative runtime that does so for you).
+2. Continue calling `define({ name })` when a definition needs to exist before
+   its template is attached.
+3. If a template is supplied later, assign `FASTElementDefinition.template` (or
+   use the declarative runtime that does so for you).
+
+## Debug entrypoint explicit enablement (v3)
+
+### Import changes
+
+| Before | After |
+|---|---|
+| `import "@microsoft/fast-element/debug.js";` | `import { enableDebug } from "@microsoft/fast-element/debug.js"; enableDebug();` |
+
+### Migration steps
+
+1. Replace setup-only `debug.js` imports with an explicit `enableDebug()` call.
+2. Keep using the root package `development` export or debug rollup bundle when
+   you want debug behavior enabled automatically.
 
 ## Declarative event handler `e` removal (v3)
 
@@ -119,8 +138,8 @@ data source.
 | `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
 
 The `install-hydratable-view-templates.js` side-effect import is still
-available and is applied automatically by
-`@microsoft/fast-element/declarative.js` for hydration marker support.
+available, but `@microsoft/fast-element/declarative.js` now installs the
+hydration runtime lazily when declarative APIs create a template.
 
 ### Changed behavior
 
