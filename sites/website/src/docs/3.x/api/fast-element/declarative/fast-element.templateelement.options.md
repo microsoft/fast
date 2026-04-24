@@ -15,7 +15,7 @@ navigationOptions:
 
 ## TemplateElement.options() method
 
-Set options for custom elements.
+Set fallback options for custom elements.
 
 **Signature:**
 
