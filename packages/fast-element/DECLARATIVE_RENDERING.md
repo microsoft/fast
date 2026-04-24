@@ -327,7 +327,7 @@ Event bindings such as `@keydown` and `@click` can be represented with hydration
 
 Example event binding:
 ```html
-<button @click="{handleClick(e)}">Button</button>
+<button @click="{handleClick($e)}">Button</button>
 ```
 
 Should result in:

@@ -10,11 +10,6 @@ class TestElement extends FASTElement {
         console.log("no args");
     };
 
-    /** @deprecated Use handleDollarEArgClick with $e instead */
-    public handleEventArgClick = (e: MouseEvent): void => {
-        console.log(e.type);
-    };
-
     public handleModifyAttributeClick = (): void => {
         this.foo = "modified-by-click";
     };

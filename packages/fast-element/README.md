@@ -123,6 +123,10 @@ Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See
 [`DECLARATIVE_RENDERING.md`](./DECLARATIVE_RENDERING.md) for declarative usage
 details.
+Declarative event bindings use `$e` for the DOM event object and `$c` for the
+execution context.
+Declarative event bindings use `$e` for the DOM event object and `$c` for the
+execution context.
 
 ## Prerendered Content Optimization
 

@@ -146,6 +146,24 @@ MyComponent.define({
 });
 ```
 
+### Bare `e` removed from declarative event handlers
+
+Declarative event handlers now reserve only `$e` for the DOM event and `$c`
+for the execution context. Bare `e` is no longer treated as the event object.
+
+Before:
+```html
+<button @click="{handleClick(e)}"></button>
+```
+
+After:
+```html
+<button @click="{handleClick($e)}"></button>
+```
+
+If you used `TemplateParser.hasDeprecatedEventSyntax` in custom tooling, remove
+that check as part of the migration.
+
 ### `prepare()` lifecycle hook removed (`@microsoft/fast-html`)
 
 The `prepare()` hook is no longer available. Move initialization logic to `connectedCallback`:
