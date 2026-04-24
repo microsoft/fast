@@ -92,7 +92,7 @@ import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {}
 
-await MyElement.define({
+MyElement.define({
     name: "my-element",
     template: declarativeTemplate(),
 });
