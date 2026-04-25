@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { Observable } from "./observable.js";
-import { ArrayObserver, lengthOf, Sort, Splice } from "./arrays.js";
+import { ArrayObserver, lengthOf, type Sort, type Splice } from "./arrays.js";
 import { SubscriberSet } from "./notifier.js";
+import { Observable } from "./observable.js";
 
 const conditionalTimeout = function (
     condition: boolean,
-    iteration = 0
+    iteration = 0,
 ): Promise<boolean> {
     return new Promise(function (resolve) {
         setTimeout(() => {
@@ -267,7 +267,7 @@ test.describe("The ArrayObserver", () => {
     test("observes sorts", async ({ page }) => {
         await page.goto("/");
 
-        let array = [1, 3, 2, 4, 3];
+        const array = [1, 3, 2, 4, 3];
 
         array.sort((a, b) => b - a);
         expect(array).toEqual([4, 3, 3, 2, 1]);
@@ -321,7 +321,7 @@ test.describe("The ArrayObserver", () => {
 
             ArrayObserver.enable();
 
-            let array: any[] = [1, "hello", "world", 4];
+            const array: any[] = [1, "hello", "world", 4];
 
             const observer = Observable.getNotifier<ArrayObserver>(array);
             let changeArgs: Splice[] | null = null;
@@ -365,7 +365,7 @@ test.describe("The ArrayObserver", () => {
 
             ArrayObserver.enable();
 
-            let array: string[] = ["bar", "foo"];
+            const array: string[] = ["bar", "foo"];
 
             const observer = Observable.getNotifier<ArrayObserver>(array);
             let changeArgs: Splice[] | null = null;
@@ -429,7 +429,7 @@ test.describe("The ArrayObserver", () => {
 
             ArrayObserver.enable();
 
-            let array: string[] = ["bar", "foo"];
+            const array: string[] = ["bar", "foo"];
 
             const observer = Observable.getNotifier<ArrayObserver>(array);
             let changeArgs: Splice[] | null = null;

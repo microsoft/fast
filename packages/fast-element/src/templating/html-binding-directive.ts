@@ -17,7 +17,7 @@ import {
     type ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
-import { HydrationStage } from "./view.js";
+import { HydrationStage } from "./hydration-view.js";
 
 type UpdateTarget = (
     this: HTMLBindingDirective,
@@ -400,12 +400,7 @@ export class HTMLBindingDirective
                     break;
                 }
 
-                this.updateTarget!(
-                    target,
-                    this.targetAspect,
-                    value,
-                    controller,
-                );
+                this.updateTarget!(target, this.targetAspect, value, controller);
                 break;
             }
         }

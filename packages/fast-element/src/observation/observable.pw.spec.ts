@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { ChildModel, DerivedModel, Model } from "../testing/models.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
-import { Expression, Observable } from "./observable.js";
+import { type Expression, Observable } from "./observable.js";
 
 test.describe("The Observable", () => {
     test.describe("facade", () => {
@@ -38,7 +38,7 @@ test.describe("The Observable", () => {
                         wasNotified = true;
                     },
                 },
-                "child"
+                "child",
             );
 
             expect(wasNotified).toBe(false);
@@ -899,7 +899,7 @@ test.describe("The Observable", () => {
                         wasCalledBefore,
                         wasCalledAfter,
                     };
-                }
+                },
             );
 
             expect(valueMatches).toBe(true);

@@ -124,7 +124,7 @@ Creates a FAST element extension that enables declarative attribute mapping for 
 </td></tr>
 <tr><td>
 
-[declarativeTemplate()](../fast-element.declarativetemplate/)
+[declarativeTemplate(callbacks)](../fast-element.declarativetemplate/)
 
 
 </td><td>
@@ -199,7 +199,7 @@ A dictionary of element options the TemplateElement will use to update the regis
 
 </td><td>
 
-Lifecycle callbacks for template events. Combines template lifecycle callbacks with template-processing events.
+Lifecycle callbacks for template events.
 
 
 </td></tr>

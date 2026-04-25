@@ -108,7 +108,7 @@ export function uniqueElementName(prefix: string = "fast-unique"): string {
  */
 export async function fixture<TElement = HTMLElement>(
     templateNameOrType: ViewTemplate | string | Constructable<TElement>,
-    options: FixtureOptions = {}
+    options: FixtureOptions = {},
 ): Promise<Fixture<TElement>> {
     const document = options.document || globalThis.document;
     const parent = options.parent || document.createElement("div");
