@@ -25,10 +25,11 @@ const namedExports = [
 
 const subpathExports = [
     { name: "css", path: "@microsoft/fast-element/styles.js", export: "css" },
-    { name: "ElementStyles", path: "@microsoft/fast-element/styles.js", export: "ElementStyles" },
     { name: "enableHydration", path: "@microsoft/fast-element/hydration.js", export: "enableHydration" },
     { name: "ArrayObserver", path: "@microsoft/fast-element/arrays.js", export: "ArrayObserver" },
     { name: "declarativeTemplate", path: "@microsoft/fast-element/declarative.js", export: "declarativeTemplate" },
+    { name: "observerMap", path: "@microsoft/fast-element/declarative.js", export: "observerMap" },
+    { name: "attributeMap", path: "@microsoft/fast-element/declarative.js", export: "attributeMap" },
 ];
 
 function formatBytes(bytes) {

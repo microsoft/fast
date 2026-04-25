@@ -18,7 +18,8 @@ Bundle sizes for `@microsoft/fast-element` exports.
 | html | 25.92 KB | 8.50 KB | 7.61 KB |
 | repeat | 29.57 KB | 9.42 KB | 8.47 KB |
 | css | 2.43 KB | 1.00 KB | 911 B |
-| ElementStyles | 1.65 KB | 729 B | 623 B |
 | enableHydration | 43.23 KB | 13.21 KB | 11.88 KB |
 | ArrayObserver | 12.51 KB | 4.45 KB | 4.01 KB |
 | declarativeTemplate | 85.68 KB | 26.22 KB | 23.09 KB |
+| observerMap | 339 B | 209 B | 179 B |
+| attributeMap | 341 B | 209 B | 178 B |
