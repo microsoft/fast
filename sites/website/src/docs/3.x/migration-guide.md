@@ -251,7 +251,8 @@ The `KernelServiceId` enum (used with `FAST.getById()`) has been removed. Import
 
 2.x Example:
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/styles.js";
 ```
 
 3.x Example:
@@ -313,8 +314,8 @@ The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBindin
 |---|---|---|
 | `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves `true` when element had DSD at connect time |
 | `ElementController.isHydrated` | `fast-element` | `Promise<boolean>` — resolves `true` only when hydration ran successfully |
-| `ElementController.configHydration()` | `fast-element` | Registers hydration lifecycle callbacks |
+| `enableHydration()` | `fast-element/hydration.js` | Enables hydration support for FAST elements |
 | `HydrationTracker` | `fast-element` | Standalone hydration lifecycle tracker class |
-| `ElementHydrationCallbacks` | `fast-element` | Type for hydration lifecycle callbacks |
+| `HydrationOptions` | `fast-element/hydration.js` | Type for hydration configuration options |
 | `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — DSD detection for custom directives |
 | `ViewController.isHydrated` | `fast-element` | `Promise<boolean>` — hydration status for custom directives |
