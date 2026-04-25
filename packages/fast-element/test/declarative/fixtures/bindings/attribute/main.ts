@@ -1,8 +1,6 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 class TestElement extends FASTElement {
     @attr
@@ -34,7 +32,7 @@ TestElementExpression.define({
     template: declarativeTemplate(),
 });
 
-TemplateElement.config({
+enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },

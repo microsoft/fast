@@ -5,11 +5,11 @@ import {
     trackLateAttributeDefinition,
 } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
-import { setDefinitionElementOptions } from "./definition-options.js";
+import { setDefinitionSchemaTransform } from "./definition-options.js";
 import type { Schema } from "./schema.js";
 
 /**
- * Configuration object for the attributeMap element option.
+ * Configuration object for the attributeMap extension.
  * Omitting all fields uses the default attribute-mapping behavior.
  */
 export interface AttributeMapConfig {
@@ -28,17 +28,30 @@ export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
 
+const attributeMapSchemaTransformKey = "attribute-map";
+const attributeMapSchemaTransformPriority = 0;
+
 /**
  * Creates a FAST element extension that enables declarative attribute mapping
  * for the resolved definition.
  * When called without arguments, uses the default attribute-mapping behavior.
  * @public
  */
-export function attributeMap(option: AttributeMapConfig = {}): FASTElementExtension {
+export function attributeMap(config: AttributeMapConfig = {}): FASTElementExtension {
     return definition => {
-        setDefinitionElementOptions(definition, {
-            attributeMap: option,
-        });
+        setDefinitionSchemaTransform(
+            definition,
+            attributeMapSchemaTransformKey,
+            ({ definition, schema }) => {
+                new AttributeMap(
+                    definition.type.prototype,
+                    schema,
+                    definition,
+                    config,
+                ).defineProperties();
+            },
+            attributeMapSchemaTransformPriority,
+        );
     };
 }
 
