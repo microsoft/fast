@@ -48,7 +48,7 @@ test.describe("Container#.getAll", () => {
 
                         class Foo {
                             public constructor(
-                                public readonly attrPatterns: IAttrPattern[]
+                                public readonly attrPatterns: IAttrPattern[],
                             ) {}
                             public patterns(): number[] {
                                 return this.attrPatterns.map(ap => ap.id);
@@ -66,11 +66,11 @@ test.describe("Container#.getAll", () => {
                                         public static register(c: any): void {
                                             Registration.singleton(
                                                 IAttrPattern,
-                                                this
+                                                this,
                                             ).register(c);
                                         }
                                         public id: number = idx;
-                                    }
+                                    },
                             ).forEach(klass => container.register(klass));
                         }
                         if (regInChild) {
@@ -81,11 +81,11 @@ test.describe("Container#.getAll", () => {
                                         public static register(c: any): void {
                                             Registration.singleton(
                                                 IAttrPattern,
-                                                this
+                                                this,
                                             ).register(c);
                                         }
                                         public id: number = idx + 5;
-                                    }
+                                    },
                             ).forEach(klass => child.register(klass));
                         }
                         let parentExpectation: number[] = [];

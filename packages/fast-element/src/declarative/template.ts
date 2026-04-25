@@ -1,14 +1,14 @@
 import { attr } from "../components/attributes.js";
-import { ElementController } from "../components/element-controller.js";
 import {
     FASTElementDefinition,
     type FASTElementTemplateResolver,
     type TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 import { FASTElement } from "../components/fast-element.js";
+import { enableHydration } from "../components/enable-hydration.js";
 import { FAST } from "../platform.js";
-import { AttributeMap, type AttributeMapConfig } from "./attribute-map.js";
 import type { ElementViewTemplate } from "../templating/template.js";
+import { AttributeMap, type AttributeMapConfig } from "./attribute-map.js";
 import {
     getDefinitionElementOptions,
     mergeElementOptions,
@@ -113,36 +113,26 @@ export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
 
 /**
  * Lifecycle callbacks for template events.
- * Combines template lifecycle callbacks with template-processing events.
+ *
+ * @remarks
+ * This interface combines template lifecycle callbacks with
+ * global hydration events. It is accepted by
+ * {@link TemplateElement.config} for backward compatibility.
+ * New code should prefer `enableHydration()` for global
+ * hydration events and pass per-element callbacks directly to
+ * {@link declarativeTemplate}.
+ *
+ * @deprecated Use `enableHydration()` and {@link declarativeTemplate} callbacks instead.
+ * @public
  */
 export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
-    /**
-     * Called after the JS class definition has been registered
-     */
-    elementDidRegister?(name: string): void;
-
-    /**
-     * Called before the template has been evaluated and assigned
-     */
-    templateWillUpdate?(name: string): void;
-
     /**
      * Called once when the first element enters the hydration pipeline.
      */
     hydrationStarted?(): void;
 
     /**
-     * Called before an individual element's hydration begins
-     */
-    elementWillHydrate?(source: HTMLElement): void;
-
-    /**
-     * Called after an individual element's hydration has finished
-     */
-    elementDidHydrate?(source: HTMLElement): void;
-
-    /**
-     * Called after all elements have completed hydration
+     * Called after all elements have completed hydration.
      */
     hydrationComplete?(): void;
 }
@@ -150,12 +140,46 @@ export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks 
 /**
  * Returns a declarative template resolver that waits for the matching
  * `<f-template>` element and resolves it into a concrete `ViewTemplate`.
+ *
+ * @param callbacks - Optional per-element lifecycle callbacks.
  * @public
  */
-export function declarativeTemplate(): FASTElementTemplateResolver {
+export function declarativeTemplate(
+    callbacks?: TemplateLifecycleCallbacks,
+): FASTElementTemplateResolver {
     ensureDeclarativeRuntime();
 
     return async definition => {
+        if (callbacks) {
+            const existing = definition.lifecycleCallbacks;
+            (definition as MutableFASTElementDefinition).lifecycleCallbacks = {
+                elementDidRegister: chainLifecycleCallback(
+                    existing?.elementDidRegister,
+                    callbacks.elementDidRegister,
+                ),
+                templateWillUpdate: chainLifecycleCallback(
+                    existing?.templateWillUpdate,
+                    callbacks.templateWillUpdate,
+                ),
+                templateDidUpdate: chainLifecycleCallback(
+                    existing?.templateDidUpdate,
+                    callbacks.templateDidUpdate,
+                ),
+                elementDidDefine: chainLifecycleCallback(
+                    existing?.elementDidDefine,
+                    callbacks.elementDidDefine,
+                ),
+                elementWillHydrate: chainLifecycleCallback(
+                    existing?.elementWillHydrate,
+                    callbacks.elementWillHydrate,
+                ),
+                elementDidHydrate: chainLifecycleCallback(
+                    existing?.elementDidHydrate,
+                    callbacks.elementDidHydrate,
+                ),
+            };
+        }
+
         await ensureTemplateElementDefined(definition.registry);
         return declarativeTemplateBridge.requestTemplate(definition);
     };
@@ -186,12 +210,16 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
     private static defaultElementOptions: ElementOptions = {};
 
     /**
-     * Lifecycle callbacks for hydration events
+     * Lifecycle callbacks configured via {@link TemplateElement.config}.
+     * @deprecated Prefer per-element callbacks via {@link declarativeTemplate}.
      */
     private static lifecycleCallbacks: HydrationLifecycleCallbacks = {};
 
     /**
      * Configure lifecycle callbacks for hydration events.
+     *
+     * @deprecated Use `enableHydration()` for global hydration events
+     * and pass per-element callbacks to {@link declarativeTemplate} instead.
      *
      * @param callbacks - Lifecycle callbacks to configure.
      * @returns The {@link TemplateElement} class.
@@ -199,14 +227,18 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
     public static config(callbacks: HydrationLifecycleCallbacks) {
         TemplateElement.lifecycleCallbacks = callbacks;
 
-        // Forward hydration callbacks to ElementController for
-        // element-level hydration tracking.
-        ElementController.configHydration({
-            hydrationStarted: callbacks.hydrationStarted,
-            elementWillHydrate: callbacks.elementWillHydrate,
-            elementDidHydrate: callbacks.elementDidHydrate,
-            hydrationComplete: callbacks.hydrationComplete,
-        });
+        // Forward global hydration callbacks to ElementController
+        if (
+            callbacks.hydrationStarted ||
+            callbacks.hydrationComplete ||
+            callbacks.elementWillHydrate ||
+            callbacks.elementDidHydrate
+        ) {
+            enableHydration({
+                hydrationStarted: callbacks.hydrationStarted,
+                hydrationComplete: callbacks.hydrationComplete,
+            });
+        }
 
         return this;
     }
@@ -290,7 +322,12 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
             throw FAST.error(Message.noTemplateProvided, { name });
         }
 
+        // Fire from definition-level callbacks (set by declarativeTemplate())
+        definition.lifecycleCallbacks?.elementDidRegister?.(name);
+        // Fire from static callbacks (set by TemplateElement.config())
         TemplateElement.lifecycleCallbacks.elementDidRegister?.(name);
+
+        definition.lifecycleCallbacks?.templateWillUpdate?.(name);
         TemplateElement.lifecycleCallbacks.templateWillUpdate?.(name);
 
         const schema = new Schema(name);
@@ -356,23 +393,41 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
     }
 
     private attachLifecycleCallbacks(definition: FASTElementDefinition): void {
+        const defCallbacks = definition.lifecycleCallbacks;
+        const staticCallbacks = TemplateElement.lifecycleCallbacks;
+
         const templateDidUpdate = chainLifecycleCallback(
-            definition.lifecycleCallbacks?.templateDidUpdate,
-            TemplateElement.lifecycleCallbacks.templateDidUpdate,
+            defCallbacks?.templateDidUpdate,
+            staticCallbacks.templateDidUpdate,
         );
         const elementDidDefine = chainLifecycleCallback(
-            definition.lifecycleCallbacks?.elementDidDefine,
-            TemplateElement.lifecycleCallbacks.elementDidDefine,
+            defCallbacks?.elementDidDefine,
+            staticCallbacks.elementDidDefine,
+        );
+        const elementWillHydrate = chainLifecycleCallback(
+            defCallbacks?.elementWillHydrate,
+            staticCallbacks.elementWillHydrate,
+        );
+        const elementDidHydrate = chainLifecycleCallback(
+            defCallbacks?.elementDidHydrate,
+            staticCallbacks.elementDidHydrate,
         );
 
-        if (!templateDidUpdate && !elementDidDefine) {
+        if (
+            !templateDidUpdate &&
+            !elementDidDefine &&
+            !elementWillHydrate &&
+            !elementDidHydrate
+        ) {
             return;
         }
 
         (definition as MutableFASTElementDefinition).lifecycleCallbacks = {
-            ...definition.lifecycleCallbacks,
+            ...defCallbacks,
             templateDidUpdate,
             elementDidDefine,
+            elementWillHydrate,
+            elementDidHydrate,
         };
     }
 }
