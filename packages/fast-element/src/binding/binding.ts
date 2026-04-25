@@ -44,7 +44,7 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
     public constructor(
         public evaluate: Expression<TSource, TReturn, TParent>,
         public policy?: DOMPolicy,
-        public isVolatile: boolean = false
+        public isVolatile: boolean = false,
     ) {}
 
     /**
@@ -54,6 +54,6 @@ export abstract class Binding<TSource = any, TReturn = any, TParent = any> {
      */
     abstract createObserver(
         subscriber: Subscriber,
-        directive: BindingDirective
+        directive: BindingDirective,
     ): ExpressionObserver<TSource, TReturn, TParent>;
 }

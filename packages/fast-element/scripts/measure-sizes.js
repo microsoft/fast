@@ -15,13 +15,19 @@ const namedExports = [
     "observable",
     "attr",
     "children",
-    "css",
     "ref",
     "slotted",
     "volatile",
     "when",
     "html",
     "repeat",
+];
+
+const subpathExports = [
+    { name: "css", path: "@microsoft/fast-element/styles.js", export: "css" },
+    { name: "ElementStyles", path: "@microsoft/fast-element/styles.js", export: "ElementStyles" },
+    { name: "enableHydration", path: "@microsoft/fast-element/hydration.js", export: "enableHydration" },
+    { name: "ArrayObserver", path: "@microsoft/fast-element/arrays.js", export: "ArrayObserver" },
 ];
 
 function formatBytes(bytes) {
@@ -39,8 +45,8 @@ function measureBuffer(buffer) {
     };
 }
 
-async function measureExport(exportName) {
-    const contents = `import { ${exportName} } from "@microsoft/fast-element";\nexport { ${exportName} };\n`;
+async function measureExport(exportName, importPath = "@microsoft/fast-element") {
+    const contents = `import { ${exportName} } from "${importPath}";\nexport { ${exportName} };\n`;
 
     const result = await build({
         stdin: {
@@ -80,6 +86,15 @@ async function main() {
         }),
     );
     results.push(...exportResults);
+
+    // Measure subpath exports in parallel
+    const subpathResults = await Promise.all(
+        subpathExports.map(async ({ name, path: importPath, export: exportName }) => {
+            const sizes = await measureExport(exportName, importPath);
+            return { name, ...sizes };
+        }),
+    );
+    results.push(...subpathResults);
 
     // Generate markdown table
     const lines = [
