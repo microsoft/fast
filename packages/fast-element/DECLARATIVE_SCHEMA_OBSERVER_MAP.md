@@ -122,7 +122,7 @@ The `ObserverMap` class uses schema information to automatically configure obser
 
 ### Constructor
 ```typescript
-constructor(classPrototype: any, schema: Schema)
+constructor(classPrototype: any, schema: Schema, config?: ObserverMapConfig)
 ```
 Creates an observer map instance that will configure the provided class prototype using the schema information.
 
@@ -155,14 +155,19 @@ The Schema and Observer Map classes integrate seamlessly with the f-template sys
 
 ### Configuration
 
-Observer Map functionality is enabled through template element options:
+Observer Map functionality is enabled through the `observerMap()` definition
+extension:
 
 ```typescript
-TemplateElement.options({
-  "my-custom-element": {
-    observerMap: {}
-  }
-});
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+
+MyElement.define(
+  {
+    name: "my-custom-element",
+    template: declarativeTemplate(),
+  },
+  [observerMap()]
+);
 ```
 
 When the `properties` key is omitted, all root properties discovered in the
@@ -415,16 +420,18 @@ console.log(JSON.stringify(userSchema, null, 2));
 
 ### Observer Map Status
 
-Check if observer map is enabled from the browser console by selecting an f-template element:
+`observerMap()` is applied as a definition extension before the element is
+registered. There is no public `TemplateElement.options()` state to inspect.
+To verify that observer mapping ran, inspect the generated schema and the
+observable accessors on the element prototype:
 
 ```typescript
-// First, select an f-template element in the browser's developer tools
-// Then check the element options from the console:
-$0.__proto__.constructor.elementOptions
+import { Observable } from "@microsoft/fast-element";
+import { schemaRegistry } from "@microsoft/fast-element/declarative.js";
 
-// To check a specific element's observer map setting:
-const options = $0.__proto__.constructor.elementOptions['my-element'];
-console.log('Observer Map enabled:', options?.observerMap !== undefined);
+const schemas = schemaRegistry.get("my-element");
+const accessors = Observable.getAccessors(MyElement.prototype).map(a => a.name);
+console.log(schemas, accessors);
 ```
 
 ### Proxy Detection

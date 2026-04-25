@@ -20,7 +20,7 @@ Creates a FAST element extension that enables declarative attribute mapping for 
 **Signature:**
 
 ```typescript
-export declare function attributeMap(option?: AttributeMapConfig): FASTElementExtension;
+export declare function attributeMap(config?: AttributeMapConfig): FASTElementExtension;
 ```
 
 ## Parameters
@@ -43,7 +43,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-option
+config
 
 
 </td><td>

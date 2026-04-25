@@ -29,55 +29,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[AttributeMap](../fast-element.attributemap/)
-
-
-</td><td>
-
-AttributeMap provides functionality for detecting simple (leaf) properties in a generated JSON schema and defining them as  properties on a class prototype.
-
-A property is a candidate for  when its schema entry has no nested `properties`<!-- -->, no `type`<!-- -->, and no `anyOf` — i.e. it is a plain binding like {<!-- -->{<!-- -->foo<!-- -->}<!-- -->} or id="<!-- -->{<!-- -->{<!-- -->foo-bar<!-- -->}<!-- -->}<!-- -->".
-
-When `attribute-name-strategy` is `"camelCase"` (the default), the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. property `fooBar` → attribute `foo-bar`<!-- -->). This matches the build-time `attribute-name-strategy` option in `@microsoft/fast-build`<!-- -->.
-
-When `attribute-name-strategy` is `"none"`<!-- -->, the binding key is used as both the attribute name and property name — no normalization is applied.
-
-Properties already decorated with `@attr` or `@observable` on the class are left untouched.
-
-
-</td></tr>
-<tr><td>
-
-[ObserverMap](../fast-element.observermap/)
-
-
-</td><td>
-
-ObserverMap provides functionality for caching binding paths, extracting root properties, and defining observable properties on class prototypes
-
-
-</td></tr>
-<tr><td>
-
 [Schema](../fast-element.schema/)
 
 
 </td><td>
 
 A constructed JSON schema from a template
-
-
-</td></tr>
-<tr><td>
-
-[TemplateElement](../fast-element.templateelement/)
-
-
-</td><td>
-
-The <f-template> custom element that will provide view logic to the element.
-
-Acts as the bridge between declarative HTML templates and the FAST element registry. Lifecycle orchestration (registration, options, callbacks) lives here; template parsing is delegated to [TemplateParser](../fast-element.templateparser/)<!-- -->.
 
 
 </td></tr>
@@ -113,7 +70,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[attributeMap(option)](../fast-element.attributemap/)
+[attributeMap(config)](../fast-element.attributemap/)
 
 
 </td><td>
@@ -135,7 +92,7 @@ Returns a declarative template resolver that waits for the matching `<f-template
 </td></tr>
 <tr><td>
 
-[observerMap(option)](../fast-element.observermap/)
+[observerMap(config)](../fast-element.observermap/)
 
 
 </td><td>
@@ -166,40 +123,7 @@ Description
 
 </td><td>
 
-Configuration object for the attributeMap element option. Omitting all fields uses the default attribute-mapping behavior.
-
-
-</td></tr>
-<tr><td>
-
-[ElementOptions](../fast-element.elementoptions/)
-
-
-</td><td>
-
-Element options the TemplateElement will use to update the registered element
-
-
-</td></tr>
-<tr><td>
-
-[ElementOptionsDictionary](../fast-element.elementoptionsdictionary/)
-
-
-</td><td>
-
-A dictionary of element options the TemplateElement will use to update the registered element
-
-
-</td></tr>
-<tr><td>
-
-[HydrationLifecycleCallbacks](../fast-element.hydrationlifecyclecallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for template events.
+Configuration object for the attributeMap extension. Omitting all fields uses the default attribute-mapping behavior.
 
 
 </td></tr>
@@ -219,7 +143,7 @@ Lifecycle callbacks for template events.
 
 </td><td>
 
-Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+Configuration object for the observerMap extension. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
 
 
 </td></tr>
@@ -246,6 +170,17 @@ Child property overrides are keyed by property name.
 </td><td>
 
 The return type for [TemplateParser.parse()](../fast-element.templateparser.parse/)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
+
+
+</td><td>
+
+Lifecycle callbacks for template events.
 
 
 </td></tr>

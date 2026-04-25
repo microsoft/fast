@@ -20,7 +20,7 @@ Creates a FAST element extension that enables declarative observer mapping for t
 **Signature:**
 
 ```typescript
-export declare function observerMap(option?: ObserverMapConfig): FASTElementExtension;
+export declare function observerMap(config?: ObserverMapConfig): FASTElementExtension;
 ```
 
 ## Parameters
@@ -43,7 +43,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-option
+config
 
 
 </td><td>
