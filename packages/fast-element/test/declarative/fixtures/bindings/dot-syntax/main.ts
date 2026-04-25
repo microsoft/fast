@@ -1,8 +1,6 @@
 import { FASTElement } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 class TestElement extends FASTElement {
     public object: any = {
@@ -45,16 +43,15 @@ class TestElement extends FASTElement {
         this.object.a.b2.c = "Pluto";
     };
 }
-TestElement.define({
-    name: "test-element",
-    template: declarativeTemplate(),
-});
-
-TemplateElement.options({
-    "test-element": {
-        observerMap: {},
+TestElement.define(
+    {
+        name: "test-element",
+        template: declarativeTemplate(),
     },
-}).config({
+    [observerMap()],
+);
+
+enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },

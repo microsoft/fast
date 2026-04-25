@@ -1,9 +1,7 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 export class TestElement extends FASTElement {
     @observable
@@ -46,10 +44,13 @@ export class TestElementIntervalUpdates extends FASTElement {
     }
 }
 
-TestElementIntervalUpdates.define({
-    name: "test-element-interval-updates",
-    template: declarativeTemplate(),
-});
+TestElementIntervalUpdates.define(
+    {
+        name: "test-element-interval-updates",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);
 
 export class TestElementNoItemRepeatBinding extends FASTElement {
     @observable
@@ -91,19 +92,15 @@ export class TestElementWithObserverMap extends FASTElement {
     @attr
     item_parent: string = "Bat";
 }
-TestElementWithObserverMap.define({
-    name: "test-element-with-observer-map",
-    template: declarativeTemplate(),
-});
+TestElementWithObserverMap.define(
+    {
+        name: "test-element-with-observer-map",
+        template: declarativeTemplate(),
+    },
+    [observerMap()],
+);
 
-TemplateElement.options({
-    "test-element-interval-updates": {
-        observerMap: {},
-    },
-    "test-element-with-observer-map": {
-        observerMap: {},
-    },
-}).config({
+enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },

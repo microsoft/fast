@@ -1,56 +1,58 @@
 import type { FASTElementDefinition } from "../components/fast-definitions.js";
-import type { ElementOptions } from "./template.js";
+import type { Schema } from "./schema.js";
 
-const definitionElementOptionsKey = Symbol("definitionElementOptions");
+const definitionSchemaHooksKey = Symbol("definitionSchemaHooks");
 
-type FASTElementDefinitionWithOptions = FASTElementDefinition & {
-    [definitionElementOptionsKey]?: ElementOptions;
+let schemaHookOrder = 0;
+
+type FASTElementDefinitionWithSchemaHooks = FASTElementDefinition & {
+    [definitionSchemaHooksKey]?: DefinitionSchemaHookRecord[];
 };
 
-export function mergeElementOptions(
-    base?: ElementOptions,
-    override?: ElementOptions,
-): ElementOptions | undefined {
-    let result: ElementOptions | undefined;
-
-    const assign = (options?: ElementOptions) => {
-        if (options === void 0) {
-            return;
-        }
-
-        result ??= {};
-
-        if (options.observerMap !== void 0) {
-            result.observerMap = options.observerMap;
-        }
-
-        if (options.attributeMap !== void 0) {
-            result.attributeMap = options.attributeMap;
-        }
-    };
-
-    assign(base);
-    assign(override);
-
-    return result;
+interface DefinitionSchemaHookRecord {
+    key: string;
+    hook: DeclarativeSchemaHook;
+    order: number;
+    priority: number;
 }
 
-export function setDefinitionElementOptions(
+export interface DeclarativeSchemaHookContext {
+    definition: FASTElementDefinition;
+    schema: Schema;
+}
+
+export type DeclarativeSchemaHook = (context: DeclarativeSchemaHookContext) => void;
+
+export function setDefinitionSchemaHook(
     definition: FASTElementDefinition,
-    options: ElementOptions,
+    key: string,
+    hook: DeclarativeSchemaHook,
+    priority: number,
 ): void {
-    const target = definition as FASTElementDefinitionWithOptions;
+    const target = definition as FASTElementDefinitionWithSchemaHooks;
+    const hooks = (target[definitionSchemaHooksKey] ??= []);
+    const existingIndex = hooks.findIndex(record => record.key === key);
 
-    target[definitionElementOptionsKey] = mergeElementOptions(
-        target[definitionElementOptionsKey],
-        options,
-    );
+    if (existingIndex !== -1) {
+        hooks.splice(existingIndex, 1);
+    }
+
+    hooks.push({
+        key,
+        hook,
+        order: schemaHookOrder++,
+        priority,
+    });
+
+    hooks.sort((a, b) => a.priority - b.priority || a.order - b.order);
 }
 
-export function getDefinitionElementOptions(
+export function getDefinitionSchemaHooks(
     definition?: FASTElementDefinition,
-): ElementOptions | undefined {
-    return (definition as FASTElementDefinitionWithOptions | undefined)?.[
-        definitionElementOptionsKey
+): readonly DeclarativeSchemaHook[] {
+    const hooks = (definition as FASTElementDefinitionWithSchemaHooks | undefined)?.[
+        definitionSchemaHooksKey
     ];
+
+    return hooks?.map(record => record.hook) ?? [];
 }
