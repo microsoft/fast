@@ -20,11 +20,9 @@ Controls the lifecycle and rendering of a `FASTElement`<!-- -->.
 **Signature:**
 
 ```typescript
-export declare class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> 
+export declare class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement> 
 ```
-**Extends:** [PropertyChangeNotifier](../fast-element.propertychangenotifier/)
-
-**Implements:** [HostController](../fast-element.hostcontroller/)<!-- -->&lt;TElement&gt;
+**Implements:** [Notifier](../fast-element.notifier/)<!-- -->, [HostController](../fast-element.hostcontroller/)<!-- -->&lt;TElement&gt;
 
 ## Remarks
 
@@ -181,6 +179,27 @@ Indicates whether or not the custom element has been connected to the document.
 </td></tr>
 <tr><td>
 
+[isHydrated](../fast-element.elementcontroller.ishydrated/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Promise&lt;boolean&gt;
+
+
+</td><td>
+
+Resolves `true` after prerendered content has been successfully hydrated, or `false` when the component is client-side rendered or hydration is not enabled.
+
+
+</td></tr>
+<tr><td>
+
 [isPrerendered](../fast-element.elementcontroller.isprerendered/)
 
 
@@ -196,18 +215,7 @@ Promise&lt;boolean&gt;
 
 </td><td>
 
-A promise that resolves with `true` after prerendered content has been hydrated, or `false` immediately when the component is client-side rendered. Component authors can await this to know when the element is fully interactive:
-
-```typescript
-connectedCallback() {
-    super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
-}
-```
+Resolves `true` when the element had an existing shadow root (from SSR or declarative shadow DOM) at connect time, `false` otherwise.
 
 
 </td></tr>
@@ -335,6 +343,27 @@ The current lifecycle stage of the controller.
 </td></tr>
 <tr><td>
 
+[subject](../fast-element.elementcontroller.subject/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+TElement
+
+
+</td><td>
+
+The subject that subscribers will receive notifications for.
+
+
+</td></tr>
+<tr><td>
+
 [template](../fast-element.elementcontroller.template/)
 
 
@@ -455,22 +484,6 @@ Captures own-properties that shadow observable accessors on the prototype so the
 </td></tr>
 <tr><td>
 
-[configHydration(callbacks)](../fast-element.elementcontroller.confighydration/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-Configure lifecycle callbacks for element hydration tracking.
-
-
-</td></tr>
-<tr><td>
-
 [connect()](../fast-element.elementcontroller.connect/)
 
 
@@ -556,6 +569,20 @@ Emits a custom HTML event.
 </td><td>
 
 Locates or creates a controller for the specified element.
+
+
+</td></tr>
+<tr><td>
+
+[notify(args)](../fast-element.elementcontroller.notify/)
+
+
+</td><td>
+
+
+</td><td>
+
+Notifies all subscribers of a property change.
 
 
 </td></tr>
@@ -665,6 +692,20 @@ Sets the strategy that ElementController.forCustomElement uses to construct Elem
 </td></tr>
 <tr><td>
 
+[subscribe(subscriber, propertyToWatch)](../fast-element.elementcontroller.subscribe/)
+
+
+</td><td>
+
+
+</td><td>
+
+Subscribes to notification of changes in the element's state.
+
+
+</td></tr>
+<tr><td>
+
 [syncLateAttributes()](../fast-element.elementcontroller.synclateattributes/)
 
 
@@ -676,6 +717,20 @@ Sets the strategy that ElementController.forCustomElement uses to construct Elem
 </td><td>
 
 Synchronizes late-defined attribute-map attributes from the live DOM to the associated property values before the initial render occurs.
+
+
+</td></tr>
+<tr><td>
+
+[unsubscribe(subscriber, propertyToUnwatch)](../fast-element.elementcontroller.unsubscribe/)
+
+
+</td><td>
+
+
+</td><td>
+
+Unsubscribes from notification of changes in the element's state.
 
 
 </td></tr>

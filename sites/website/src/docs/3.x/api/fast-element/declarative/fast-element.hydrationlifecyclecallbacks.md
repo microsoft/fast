@@ -15,7 +15,12 @@ navigationOptions:
 
 ## HydrationLifecycleCallbacks interface
 
-Lifecycle callbacks for template events. Combines template lifecycle callbacks with template-processing events.
+> Warning: This API is now obsolete.
+> 
+> Use `enableHydration()` and [declarativeTemplate()](../fast-element.declarativetemplate/) callbacks instead.
+> 
+
+Lifecycle callbacks for template events.
 
 **Signature:**
 
@@ -23,6 +28,10 @@ Lifecycle callbacks for template events. Combines template lifecycle callbacks w
 export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks 
 ```
 **Extends:** TemplateLifecycleCallbacks
+
+## Remarks
+
+This interface combines template lifecycle callbacks with global hydration events. It is accepted by [TemplateElement.config()](../fast-element.templateelement.config/) for backward compatibility. New code should prefer `enableHydration()` for global hydration events and pass per-element callbacks directly to [declarativeTemplate()](../fast-element.declarativetemplate/)<!-- -->.
 
 ## Methods
 
@@ -39,45 +48,12 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[elementDidHydrate(source)?](../fast-element.hydrationlifecyclecallbacks.elementdidhydrate/)
-
-
-</td><td>
-
-_(Optional)_ Called after an individual element's hydration has finished
-
-
-</td></tr>
-<tr><td>
-
-[elementDidRegister(name)?](../fast-element.hydrationlifecyclecallbacks.elementdidregister/)
-
-
-</td><td>
-
-_(Optional)_ Called after the JS class definition has been registered
-
-
-</td></tr>
-<tr><td>
-
-[elementWillHydrate(source)?](../fast-element.hydrationlifecyclecallbacks.elementwillhydrate/)
-
-
-</td><td>
-
-_(Optional)_ Called before an individual element's hydration begins
-
-
-</td></tr>
-<tr><td>
-
 [hydrationComplete()?](../fast-element.hydrationlifecyclecallbacks.hydrationcomplete/)
 
 
 </td><td>
 
-_(Optional)_ Called after all elements have completed hydration
+_(Optional)_ Called after all elements have completed hydration.
 
 
 </td></tr>
@@ -89,17 +65,6 @@ _(Optional)_ Called after all elements have completed hydration
 </td><td>
 
 _(Optional)_ Called once when the first element enters the hydration pipeline.
-
-
-</td></tr>
-<tr><td>
-
-[templateWillUpdate(name)?](../fast-element.hydrationlifecyclecallbacks.templatewillupdate/)
-
-
-</td><td>
-
-_(Optional)_ Called before the template has been evaluated and assigned
 
 
 </td></tr>

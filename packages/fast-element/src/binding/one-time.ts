@@ -31,7 +31,7 @@ makeSerializationNoop(OneTimeBinding);
  */
 export function oneTime<T = any>(
     expression: Expression<T>,
-    policy?: DOMPolicy
+    policy?: DOMPolicy,
 ): Binding<T> {
     return new OneTimeBinding(expression, policy);
 }

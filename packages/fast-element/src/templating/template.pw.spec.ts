@@ -194,8 +194,8 @@ test.describe("The html tag template helper", () => {
                     },
                     // mixed back-to-back
                     {
-                        template: html`${stringValue}${numberValue}${
-                            x => x.value}${new TestDirective()} end`,
+                        template: html`${stringValue}${numberValue}${x =>
+                            x.value}${new TestDirective()} end`,
                         result: `${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -204,9 +204,8 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`beginning ${stringValue}${numberValue}${
-                            x => x.value
-                        }${new TestDirective()} end`,
+                        template: html`beginning ${stringValue}${numberValue}${x =>
+                            x.value}${new TestDirective()} end`,
                         result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -215,9 +214,8 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`beginning ${stringValue}${numberValue}${
-                            x => x.value}${new TestDirective()
-                        }`,
+                        template: html`beginning ${stringValue}${numberValue}${x =>
+                            x.value}${new TestDirective()}`,
                         result: `beginning ${FAKE.interpolation}${FAKE.interpolation}${FAKE.interpolation}${FAKE.comment}`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -227,9 +225,8 @@ test.describe("The html tag template helper", () => {
                     },
                     // mixed separated
                     {
-                        template: html`${stringValue}separator${numberValue}separator${
-                            x => x.value
-                        }separator${new TestDirective()} end`,
+                        template: html`${stringValue}separator${numberValue}separator${x =>
+                            x.value}separator${new TestDirective()} end`,
                         result: `${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -238,9 +235,8 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`beginning ${stringValue}separator${numberValue}separator${
-                            x => x.value
-                        }separator${new TestDirective()} end`,
+                        template: html`beginning ${stringValue}separator${numberValue}separator${x =>
+                            x.value}separator${new TestDirective()} end`,
                         result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment} end`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -249,9 +245,8 @@ test.describe("The html tag template helper", () => {
                         ],
                     },
                     {
-                        template: html`beginning ${stringValue}separator${numberValue}separator${
-                            x => x.value
-                        }separator${new TestDirective()}`,
+                        template: html`beginning ${stringValue}separator${numberValue}separator${x =>
+                            x.value}separator${new TestDirective()}`,
                         result: `beginning ${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.interpolation}separator${FAKE.comment}`,
                         expectDirectives: [
                             HTMLBindingDirective,
@@ -273,15 +268,12 @@ test.describe("The html tag template helper", () => {
                         const result = parts.reduce(
                             (a, b) =>
                                 isString(b) ? a + b : a + Markup.interpolation("0"),
-                            ""
+                            "",
                         );
                         if (result !== expectedHTML)
                             return `html mismatch: got "${result}" expected "${expectedHTML}"`;
                     } else {
-                        if (
-                            template.html !==
-                            expectedHTML
-                        )
+                        if (template.html !== expectedHTML)
                             return `html mismatch: got "${template.html}" expected "${expectedHTML}"`;
                     }
 
@@ -310,10 +302,7 @@ test.describe("The html tag template helper", () => {
                                 }
                             }
 
-                            if (
-                                behaviorFactory.id !==
-                                id
-                            ) {
+                            if (behaviorFactory.id !== id) {
                                 return `id mismatch: expected "${id}", got "${behaviorFactory.id}"`;
                             }
                         }
@@ -354,7 +343,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -378,7 +367,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -422,7 +411,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -446,7 +435,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -491,7 +480,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -515,7 +504,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -565,7 +554,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -589,7 +578,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -637,7 +626,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -661,7 +650,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -705,7 +694,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -729,7 +718,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -775,7 +764,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -799,7 +788,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`
+                `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -844,7 +833,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -868,7 +857,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -912,7 +901,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -936,7 +925,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -983,7 +972,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -1007,7 +996,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -1059,7 +1048,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -1083,7 +1072,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -1135,7 +1124,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -1166,7 +1155,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+                `<my-element :someAttribute=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -1218,7 +1207,7 @@ test.describe("The html tag template helper", () => {
                 if (parts !== null) {
                     const result = parts.reduce(
                         (a, b) => (isString(b) ? a + b : a + Markup.interpolation("0")),
-                        ""
+                        "",
                     );
                     if (removeWhitespace(result) !== removeWhitespace(expectedHTML))
                         return `html mismatch: got "${result}" expected "${expectedHTML}"`;
@@ -1242,7 +1231,7 @@ test.describe("The html tag template helper", () => {
 
             const htmlErr = expectTemplateEquals(
                 template,
-                `<my-element @someEvent=${FAKE.interpolation}></my-element>`
+                `<my-element @someEvent=${FAKE.interpolation}></my-element>`,
             );
             if (htmlErr) return htmlErr;
 
@@ -1468,7 +1457,8 @@ test.describe("The ViewTemplate", () => {
             const nestedBehaviorPlaceholder = Markup.interpolation(nestedBehaviorId);
 
             const htmlMatch =
-                removeWhitespace(root.html) === `BeforeNested${nestedBehaviorPlaceholder}After`;
+                removeWhitespace(root.html) ===
+                `BeforeNested${nestedBehaviorPlaceholder}After`;
             const behaviorMatch = getFirstBehavior(root) === nestedBehavior;
 
             return htmlMatch && behaviorMatch;
@@ -1484,8 +1474,15 @@ test.describe("The ViewTemplate", () => {
 
         const result = await page.evaluate(async () => {
             // @ts-expect-error: Client module.
-            const { html, ViewTemplate, HTMLBindingDirective, Markup, nextId, oneWay, removeWhitespace } =
-                await import("/main.js");
+            const {
+                html,
+                ViewTemplate,
+                HTMLBindingDirective,
+                Markup,
+                nextId,
+                oneWay,
+                removeWhitespace,
+            } = await import("/main.js");
 
             function getFirstBehavior(template) {
                 for (const key in template.factories) {
@@ -1507,7 +1504,8 @@ test.describe("The ViewTemplate", () => {
             `;
 
             const htmlMatch =
-                removeWhitespace(root.html) === `BeforeNested${nestedBehaviorPlaceholder}After`;
+                removeWhitespace(root.html) ===
+                `BeforeNested${nestedBehaviorPlaceholder}After`;
             const behaviorMatch = getFirstBehavior(root) === nestedBehavior;
 
             return htmlMatch && behaviorMatch;
