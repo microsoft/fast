@@ -37,7 +37,14 @@ function noopAttributeHandler() {}
  * @param options - Optional callbacks for global hydration events.
  * @public
  */
+let hydrationEnabled = false;
+
 export function enableHydration(options?: HydrationOptions): void {
+    if (hydrationEnabled) {
+        return;
+    }
+    hydrationEnabled = true;
+
     ensureHydrationRuntime();
     const tracker = new HydrationTracker(options ?? {});
 

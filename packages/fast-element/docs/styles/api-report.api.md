@@ -8,6 +8,11 @@
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
 // @public
+export type Constructable<T = {}> = {
+    new (...args: any[]): T;
+};
+
+// @public
 export type ConstructibleStyleStrategy = {
     new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
@@ -62,6 +67,19 @@ export class ElementStyles {
 }
 
 // @public
+export interface ExpressionController<TSource = any, TParent = any> {
+    // Warning: (ae-forgotten-export) The symbol "ExecutionContext" needs to be exported by the entry point styles.d.ts
+    readonly context: ExecutionContext<TParent>;
+    readonly isBound: boolean;
+    onUnbind(behavior: {
+        unbind(controller: ExpressionController<TSource, TParent>): any;
+    }): void;
+    readonly source: TSource;
+    // Warning: (ae-forgotten-export) The symbol "SourceLifetime" needs to be exported by the entry point styles.d.ts
+    readonly sourceLifetime?: SourceLifetime;
+}
+
+// @public
 export interface HostBehavior<TSource = any> {
     addedCallback?(controller: HostController<TSource>): void;
     connectedCallback?(controller: HostController<TSource>): void;
@@ -69,8 +87,6 @@ export interface HostBehavior<TSource = any> {
     removedCallback?(controller: HostController<TSource>): void;
 }
 
-// Warning: (ae-forgotten-export) The symbol "ExpressionController" needs to be exported by the entry point styles.d.ts
-//
 // @public
 export interface HostController<TSource = any> extends ExpressionController<TSource> {
     addBehavior(behavior: HostBehavior<TSource>): void;
@@ -94,10 +110,6 @@ export interface StyleTarget extends Pick<Node, "getRootNode"> {
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
     removeChild(styles: HTMLStyleElement): void;
 }
-
-// Warnings were encountered during analysis:
-//
-// dist/dts/styles/css-directive.d.ts:34:5 - (ae-forgotten-export) The symbol "Constructable" needs to be exported by the entry point styles.d.ts
 
 // (No @packageDocumentation comment for this package)
 

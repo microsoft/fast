@@ -48,7 +48,7 @@ Strategy
 
 </td><td>
 
-ConstructibleStyleStrategy
+[ConstructibleStyleStrategy](../fast-element.constructiblestylestrategy/)
 
 
 </td><td>

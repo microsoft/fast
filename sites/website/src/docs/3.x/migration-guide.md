@@ -251,8 +251,7 @@ The `KernelServiceId` enum (used with `FAST.getById()`) has been removed. Import
 
 2.x Example:
 ```ts
-import { ElementStyles } from "@microsoft/fast-element";
-import { css } from "@microsoft/fast-element/styles.js";
+import { css, ElementStyles } from "@microsoft/fast-element";
 ```
 
 3.x Example:

@@ -4,8 +4,6 @@
 
 ```ts
 
-// Warning: (ae-forgotten-export) The symbol "SubscriberSet" needs to be exported by the entry point arrays.d.ts
-//
 // @public
 export interface ArrayObserver extends SubscriberSet {
     addSort(sort: Sort): void;
@@ -23,8 +21,6 @@ export const ArrayObserver: Readonly<{
     readonly enable: () => void;
 }>;
 
-// Warning: (ae-forgotten-export) The symbol "Subscriber" needs to be exported by the entry point arrays.d.ts
-//
 // @public
 export interface LengthObserver extends Subscriber {
     length: number;
@@ -89,6 +85,23 @@ export const SpliceStrategySupport: Readonly<{
 
 // @public
 export type SpliceStrategySupport = (typeof SpliceStrategySupport)[keyof typeof SpliceStrategySupport];
+
+// @public
+export interface Subscriber {
+    handleChange(subject: any, args: any): void;
+}
+
+// Warning: (ae-forgotten-export) The symbol "Notifier" needs to be exported by the entry point arrays.d.ts
+//
+// @public
+export class SubscriberSet implements Notifier {
+    constructor(subject: any, initialSubscriber?: Subscriber);
+    has(subscriber: Subscriber): boolean;
+    notify(args: any): void;
+    readonly subject: any;
+    subscribe(subscriber: Subscriber): void;
+    unsubscribe(subscriber: Subscriber): void;
+}
 
 // (No @packageDocumentation comment for this package)
 

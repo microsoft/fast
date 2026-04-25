@@ -416,8 +416,6 @@ Creates a function that can be used to filter a Node array, selecting only eleme
 
 </td><td>
 
-Enables hydration support for prerendered FAST elements.
-
 
 </td></tr>
 <tr><td>
@@ -1440,6 +1438,17 @@ Represents styles that can be composed into the ShadowDOM of a custom element.
 </td><td>
 
 Represents a type which can be constructed with the new operator.
+
+
+</td></tr>
+<tr><td>
+
+[ConstructibleStyleStrategy](../fast-element.constructiblestylestrategy/)
+
+
+</td><td>
+
+A type that instantiates a StyleStrategy.
 
 
 </td></tr>

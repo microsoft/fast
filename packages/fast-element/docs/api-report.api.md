@@ -143,6 +143,11 @@ export type Constructable<T = {}> = {
 };
 
 // @public
+export type ConstructibleStyleStrategy = {
+    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
+};
+
+// @public
 export interface ContentTemplate {
     create(): ContentView;
 }
@@ -277,7 +282,6 @@ export class ElementStyles {
     // (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     static readonly supportsAdoptedStyleSheets: boolean;
-    // Warning: (ae-forgotten-export) The symbol "ConstructibleStyleStrategy" needs to be exported by the entry point index.d.ts
     withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
 
@@ -299,7 +303,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 // @public
 export const emptyArray: readonly never[];
 
-// @public
+// @public (undocumented)
 export function enableHydration(options?: HydrationOptions): void;
 
 // @public
