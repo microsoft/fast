@@ -15,10 +15,14 @@ navigationOptions:
 
 ## FAST variable
 
-The FAST global.
+The FAST messaging API for warnings and errors.
 
 **Signature:**
 
 ```typescript
-FAST: FASTGlobal
+FAST: {
+    warn(_code: number, _values?: Record<string, any>): void;
+    error(code: number, _values?: Record<string, any>): Error;
+    addMessages(messages: Record<number, string>): void;
+}
 ```

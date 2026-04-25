@@ -65,7 +65,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Transient implements ITransient {}
 
             const ITransient = DI.createContext<ITransient>("ITransient", x =>
-                x.transient(Transient)
+                x.transient(Transient),
             );
 
             const container = DI.createContainer();
@@ -82,7 +82,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Singleton implements ISingleton {}
 
             const ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
-                x.singleton(Singleton)
+                x.singleton(Singleton),
             );
 
             const container = DI.createContainer();
@@ -100,7 +100,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const instance = new Instance();
             const IInstance = DI.createContext<IInstance>("IInstance", x =>
-                x.instance(instance)
+                x.instance(instance),
             );
 
             const container = DI.createContainer();
@@ -124,7 +124,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             };
 
             const ICallback = DI.createContext<ICallback>("ICallback", x =>
-                x.callback(callback)
+                x.callback(callback),
             );
 
             const container = DI.createContainer();
@@ -150,7 +150,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             const cachedCallback = "cachedCallBack";
             const container = DI.createContainer();
             container.register(
-                Registration.cachedCallback(cachedCallback, callbackToCache)
+                Registration.cachedCallback(cachedCallback, callbackToCache),
             );
 
             const child = container.createChild();
@@ -180,10 +180,10 @@ test.describe("DI.createContext() -> container.get()", () => {
             const container0 = DI.createContainer();
             const container1 = DI.createContainer();
             container0.register(
-                Registration.cachedCallback(cachedCallback, callbackToCache)
+                Registration.cachedCallback(cachedCallback, callbackToCache),
             );
             container1.register(
-                Registration.cachedCallback(cachedCallback, callbackToCache)
+                Registration.cachedCallback(cachedCallback, callbackToCache),
             );
 
             const actual11 = container0.get(cachedCallback);
@@ -249,7 +249,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ICachedCallback = DI.createContext<ICachedCallback>(
                 "ICachedCallback",
-                x => x.cachedCallback(callbackToCache)
+                x => x.cachedCallback(callbackToCache),
             );
 
             const container = DI.createContainer();
@@ -272,7 +272,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ICachedCallback = DI.createContext<ICachedCallback>(
                 "ICachedCallback",
-                x => x.cachedCallback(callbackToCache)
+                x => x.cachedCallback(callbackToCache),
             );
 
             const container0 = DI.createContainer();
@@ -298,7 +298,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Transient implements ITransient {}
 
             const ITransient = DI.createContext<ITransient>("ITransient", x =>
-                x.transient(Transient)
+                x.transient(Transient),
             );
 
             interface IAlias {}
@@ -318,7 +318,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Singleton implements ISingleton {}
 
             const ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
-                x.singleton(Singleton)
+                x.singleton(Singleton),
             );
 
             interface IAlias {}
@@ -339,7 +339,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const instance = new Instance();
             const IInstance = DI.createContext<IInstance>("IInstance", x =>
-                x.instance(instance)
+                x.instance(instance),
             );
 
             interface IAlias {}
@@ -366,7 +366,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             };
 
             const ICallback = DI.createContext<ICallback>("ICallback", x =>
-                x.callback(callback)
+                x.callback(callback),
             );
 
             interface IAlias {}
@@ -387,7 +387,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Transient implements ITransient {}
 
             const ITransient = DI.createContext<ITransient>("ITransient", x =>
-                x.transient(Transient)
+                x.transient(Transient),
             );
 
             const container = DI.createContainer();
@@ -406,7 +406,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Singleton implements ISingleton {}
 
             const ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
-                x.singleton(Singleton)
+                x.singleton(Singleton),
             );
 
             const container = DI.createContainer();
@@ -426,7 +426,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const instance = new Instance();
             const IInstance = DI.createContext<IInstance>("IInstance", x =>
-                x.instance(instance)
+                x.instance(instance),
             );
 
             const container = DI.createContainer();
@@ -452,7 +452,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             };
 
             const ICallback = DI.createContext<ICallback>("ICallback", x =>
-                x.callback(callback)
+                x.callback(callback),
             );
 
             const container = DI.createContainer();
@@ -474,7 +474,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Transient implements ITransient {}
 
             const ITransient = DI.createContext<ITransient>("ITransient", x =>
-                x.transient(Transient)
+                x.transient(Transient),
             );
 
             interface ITransientParent {
@@ -488,7 +488,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ITransientParent = DI.createContext<ITransientParent>(
                 "ITransientParent",
-                x => x.transient(TransientParent)
+                x => x.transient(TransientParent),
             );
 
             const container = DI.createContainer();
@@ -508,7 +508,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Singleton implements ISingleton {}
 
             const ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
-                x.singleton(Singleton)
+                x.singleton(Singleton),
             );
 
             interface ITransientParent {
@@ -522,7 +522,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ITransientParent = DI.createContext<ITransientParent>(
                 "ITransientParent",
-                x => x.transient(TransientParent)
+                x => x.transient(TransientParent),
             );
 
             const container = DI.createContainer();
@@ -543,7 +543,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const instance = new Instance();
             const IInstance = DI.createContext<IInstance>("IInstance", x =>
-                x.instance(instance)
+                x.instance(instance),
             );
 
             interface ITransientParent {
@@ -557,7 +557,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ITransientParent = DI.createContext<ITransientParent>(
                 "ITransientParent",
-                x => x.transient(TransientParent)
+                x => x.transient(TransientParent),
             );
 
             const container = DI.createContainer();
@@ -583,7 +583,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             };
 
             const ICallback = DI.createContext<ICallback>("ICallback", x =>
-                x.callback(callback)
+                x.callback(callback),
             );
 
             interface ITransientParent {
@@ -597,7 +597,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ITransientParent = DI.createContext<ITransientParent>(
                 "ITransientParent",
-                x => x.transient(TransientParent)
+                x => x.transient(TransientParent),
             );
 
             const container = DI.createContainer();
@@ -620,7 +620,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Transient implements ITransient {}
 
             const ITransient = DI.createContext<ITransient>("ITransient", x =>
-                x.transient(Transient)
+                x.transient(Transient),
             );
 
             interface ISingletonParent {
@@ -634,7 +634,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ISingletonParent = DI.createContext<ISingletonParent>(
                 "ISingletonParent",
-                x => x.singleton(SingletonParent)
+                x => x.singleton(SingletonParent),
             );
 
             const container = DI.createContainer();
@@ -654,7 +654,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Singleton implements ISingleton {}
 
             const ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
-                x.singleton(Singleton)
+                x.singleton(Singleton),
             );
 
             interface ISingletonParent {
@@ -668,7 +668,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ISingletonParent = DI.createContext<ISingletonParent>(
                 "ISingletonParent",
-                x => x.singleton(SingletonParent)
+                x => x.singleton(SingletonParent),
             );
 
             const container = DI.createContainer();
@@ -689,7 +689,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const instance = new Instance();
             const IInstance = DI.createContext<IInstance>("IInstance", x =>
-                x.instance(instance)
+                x.instance(instance),
             );
 
             interface ISingletonParent {
@@ -703,7 +703,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ISingletonParent = DI.createContext<ISingletonParent>(
                 "ISingletonParent",
-                x => x.singleton(SingletonParent)
+                x => x.singleton(SingletonParent),
             );
 
             const container = DI.createContainer();
@@ -729,7 +729,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             };
 
             const ICallback = DI.createContext<ICallback>("ICallback", x =>
-                x.callback(callback)
+                x.callback(callback),
             );
 
             interface ISingletonParent {
@@ -743,7 +743,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const ISingletonParent = DI.createContext<ISingletonParent>(
                 "ISingletonParent",
-                x => x.singleton(SingletonParent)
+                x => x.singleton(SingletonParent),
             );
 
             const container = DI.createContainer();
@@ -766,7 +766,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Transient implements ITransient {}
 
             const ITransient = DI.createContext<ITransient>("ITransient", x =>
-                x.transient(Transient)
+                x.transient(Transient),
             );
 
             interface IInstanceParent {
@@ -782,7 +782,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             const instanceParent = container.get(InstanceParent);
             const IInstanceParent = DI.createContext<IInstanceParent>(
                 "IInstanceParent",
-                x => x.instance(instanceParent)
+                x => x.instance(instanceParent),
             );
 
             const actual1 = container.get(IInstanceParent);
@@ -801,7 +801,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             class Singleton implements ISingleton {}
 
             const ISingleton = DI.createContext<ISingleton>("ISingleton", x =>
-                x.singleton(Singleton)
+                x.singleton(Singleton),
             );
 
             interface IInstanceParent {
@@ -817,7 +817,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             const instanceParent = container.get(InstanceParent);
             const IInstanceParent = DI.createContext<IInstanceParent>(
                 "IInstanceParent",
-                x => x.instance(instanceParent)
+                x => x.instance(instanceParent),
             );
 
             const actual1 = container.get(IInstanceParent);
@@ -837,7 +837,7 @@ test.describe("DI.createContext() -> container.get()", () => {
 
             const instance = new Instance();
             const IInstance = DI.createContext<IInstance>("IInstance", x =>
-                x.instance(instance)
+                x.instance(instance),
             );
 
             interface IInstanceParent {
@@ -853,7 +853,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             const instanceParent = container.get(InstanceParent);
             const IInstanceParent = DI.createContext<IInstanceParent>(
                 "IInstanceParent",
-                x => x.instance(instanceParent)
+                x => x.instance(instanceParent),
             );
 
             const actual1 = container.get(IInstanceParent);
@@ -878,7 +878,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             };
 
             const ICallback = DI.createContext<ICallback>("ICallback", x =>
-                x.callback(callback)
+                x.callback(callback),
             );
 
             interface IInstanceParent {
@@ -894,7 +894,7 @@ test.describe("DI.createContext() -> container.get()", () => {
             const instanceParent = container.get(InstanceParent);
             const IInstanceParent = DI.createContext<IInstanceParent>(
                 "IInstanceParent",
-                x => x.instance(instanceParent)
+                x => x.instance(instanceParent),
             );
 
             const actual1 = container.get(IInstanceParent);

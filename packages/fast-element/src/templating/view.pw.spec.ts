@@ -375,7 +375,7 @@ test.describe("The HTMLView", () => {
                 const parentView = new HTMLView(
                     document.createDocumentFragment(),
                     [],
-                    {}
+                    {},
                 );
                 const parentContext = parentView.context;
                 const childView = new HTMLView(document.createDocumentFragment(), [], {});
@@ -405,7 +405,7 @@ test.describe("The HTMLView", () => {
                 const parentView = new HTMLView(
                     document.createDocumentFragment(),
                     [],
-                    {}
+                    {},
                 );
                 const parentContext = parentView.context;
                 const itemView = new HTMLView(document.createDocumentFragment(), [], {});
@@ -496,13 +496,13 @@ test.describe("The HTMLView", () => {
                         const parentView = new HTMLView(
                             document.createDocumentFragment(),
                             [],
-                            {}
+                            {},
                         );
                         const parentContext = parentView.context;
                         const itemView = new HTMLView(
                             document.createDocumentFragment(),
                             [],
-                            {}
+                            {},
                         );
                         const itemContext = itemView.context;
 
@@ -562,13 +562,13 @@ test.describe("The HTMLView", () => {
                     const parentView = new HTMLView(
                         document.createDocumentFragment(),
                         [],
-                        {}
+                        {},
                     );
                     const parentContext = parentView.context;
                     const itemView = new HTMLView(
                         document.createDocumentFragment(),
                         [],
-                        {}
+                        {},
                     );
                     const itemContext = itemView.context;
 

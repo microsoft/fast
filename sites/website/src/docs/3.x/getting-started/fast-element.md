@@ -245,7 +245,8 @@ A typical configuration will at least include `name`, `template`, and `styles`.
 
 **Example:**
 ```ts
-import { attr, css, FASTElement, html } from "@microsoft/fast-element";
+import { attr, FASTElement, html } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/styles.js";
 
 const template = html`<span>Hello ${x => x.name}!</span>`
 

@@ -5,7 +5,7 @@
 import {
     Context,
     type ContextDecorator,
-    ContextEvent,
+    type ContextEvent,
     type UnknownContext,
 } from "../context.js";
 import { type Class, type Constructable, Message } from "../interfaces.js";
@@ -24,7 +24,7 @@ import { emptyArray, FAST } from "../platform.js";
 export type ResolveCallback<T = any> = (
     handler: Container,
     requestor: Container,
-    resolver: Resolver<T>
+    resolver: Resolver<T>,
 ) => T;
 
 // This interface exists only to break a circular type referencing issue in the ServiceLocator interface.
@@ -98,7 +98,7 @@ export interface Factory<T extends Constructable = any> {
      */
     constructAsync(
         container: Container,
-        dynamicDependencies?: Key[]
+        dynamicDependencies?: Key[],
     ): Promise<Resolved<T>>;
 }
 
@@ -175,7 +175,7 @@ export interface ServiceLocator {
      */
     getAll<K extends Key>(
         key: K | Key,
-        searchAncestors?: boolean
+        searchAncestors?: boolean,
     ): readonly Resolved<K>[];
 }
 
@@ -220,7 +220,7 @@ export interface Container extends ServiceLocator {
      */
     registerTransformer<K extends Key, T = K>(
         key: K,
-        transformer: Transformer<T>
+        transformer: Transformer<T>,
     ): boolean;
 
     /**
@@ -231,7 +231,7 @@ export interface Container extends ServiceLocator {
      */
     getResolver<K extends Key, T = K>(
         key: K | Key,
-        autoRegister?: boolean
+        autoRegister?: boolean,
     ): Resolver<T> | null;
 
     /**
@@ -252,7 +252,7 @@ export interface Container extends ServiceLocator {
      * @param config - The configuration for the new container.
      */
     createChild(
-        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
+        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>,
     ): Container;
 }
 
@@ -281,7 +281,10 @@ export class ResolverBuilder<K> {
      * @param container - The container to create resolvers for.
      * @param key - The key to register resolvers under.
      */
-    public constructor(private container: Container, private key: Key) {}
+    public constructor(
+        private container: Container,
+        private key: Key,
+    ) {}
 
     /**
      * Creates a resolver for an existing object instance.
@@ -330,7 +333,7 @@ export class ResolverBuilder<K> {
     public cachedCallback(value: ResolveCallback<K>): Resolver<K> {
         return this.registerResolver(
             ResolverStrategy.callback,
-            cacheCallbackResult(value)
+            cacheCallbackResult(value),
         );
     }
 
@@ -379,15 +382,16 @@ export type Key = PropertyKey | object | ContextDecorator | Constructable | Reso
  * Represents something resolved from a service locator.
  * @public
  */
-export type Resolved<K> = K extends ContextDecorator<infer T>
-    ? T
-    : K extends Constructable
-    ? InstanceType<K>
-    : K extends ResolverLike<any, infer T1>
-    ? T1 extends Constructable
-        ? InstanceType<T1>
-        : T1
-    : K;
+export type Resolved<K> =
+    K extends ContextDecorator<infer T>
+        ? T
+        : K extends Constructable
+          ? InstanceType<K>
+          : K extends ResolverLike<any, infer T1>
+            ? T1 extends Constructable
+                ? InstanceType<T1>
+                : T1
+            : K;
 
 /**
  * A class that declares constructor injected dependencies through
@@ -529,7 +533,7 @@ function createContext<K extends Key>(
         | string
         | ((builder: ResolverBuilder<K>) => Resolver<K>)
         | InterfaceConfiguration,
-    configuror?: (builder: ResolverBuilder<K>) => Resolver<K>
+    configuror?: (builder: ResolverBuilder<K>) => Resolver<K>,
 ): ContextDecorator<K> {
     const configure =
         typeof nameConfigOrCallback === "function" ? nameConfigOrCallback : configuror;
@@ -537,19 +541,19 @@ function createContext<K extends Key>(
         typeof nameConfigOrCallback === "string"
             ? nameConfigOrCallback
             : nameConfigOrCallback && "friendlyName" in nameConfigOrCallback
-            ? nameConfigOrCallback.friendlyName || defaultFriendlyName
-            : defaultFriendlyName;
+              ? nameConfigOrCallback.friendlyName || defaultFriendlyName
+              : defaultFriendlyName;
     const respectConnection: boolean =
         typeof nameConfigOrCallback === "string"
             ? false
             : nameConfigOrCallback && "respectConnection" in nameConfigOrCallback
-            ? nameConfigOrCallback.respectConnection || false
-            : false;
+              ? nameConfigOrCallback.respectConnection || false
+              : false;
 
     const Interface = function (
         target: Injectable<K>,
         property: string,
-        index: number
+        index: number,
     ): void {
         if (target == null || new.target !== undefined) {
             throw FAST.error(Message.noRegistrationForContext, { name: Interface.name });
@@ -571,7 +575,7 @@ function createContext<K extends Key>(
     if (configure != null) {
         (Interface as any).register = function (
             container: Container,
-            key?: Key
+            key?: Key,
         ): Resolver<K> {
             return configure(new ResolverBuilder(container, key ?? Interface));
         };
@@ -613,7 +617,7 @@ export const DI = Object.freeze({
     createContainer(config?: Partial<ContainerConfiguration>): Container {
         return new ContainerImpl(
             null,
-            Object.assign({}, ContainerConfiguration.default, config)
+            Object.assign({}, ContainerConfiguration.default, config),
         );
     },
 
@@ -629,7 +633,7 @@ export const DI = Object.freeze({
      */
     findResponsibleContainer(
         target: EventTarget,
-        fallback?: () => DOMContainer
+        fallback?: () => DOMContainer,
     ): DOMContainer {
         const owned = (target as any).$$container$$ as ContainerImpl;
 
@@ -651,7 +655,7 @@ export const DI = Object.freeze({
      */
     findParentContainer(
         target: EventTarget,
-        fallback?: () => DOMContainer
+        fallback?: () => DOMContainer,
     ): DOMContainer {
         // NOTE: If there are no node-specific containers in existence other
         // than the root, then we can bypass raising events and instead just grab
@@ -687,7 +691,7 @@ export const DI = Object.freeze({
      */
     getOrCreateDOMContainer(
         target?: EventTarget,
-        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
+        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>,
     ): DOMContainer {
         if (!target) {
             return (
@@ -696,7 +700,7 @@ export const DI = Object.freeze({
                     typeof window !== "undefined" ? window : null,
                     Object.assign({}, ContainerConfiguration.default, config, {
                         parentLocator: () => null,
-                    })
+                    }),
                 ))
             );
         }
@@ -710,7 +714,7 @@ export const DI = Object.freeze({
                 target,
                 Object.assign({}, ContainerConfiguration.default, config, {
                     parentLocator: DI.findParentContainer,
-                })
+                }),
             );
         }
 
@@ -751,7 +755,7 @@ export const DI = Object.freeze({
                         const Proto = Object.getPrototypeOf(Type);
                         if (typeof Proto === "function" && Proto !== Function.prototype) {
                             dependencies = cloneArrayWithPossibleProps(
-                                DI.getDependencies(Proto)
+                                DI.getDependencies(Proto),
                             );
                         } else {
                             dependencies = [];
@@ -812,7 +816,7 @@ export const DI = Object.freeze({
         target: {},
         propertyName: string,
         key: Key,
-        respectConnection = false
+        respectConnection = false,
     ) {
         const field = Symbol.for(`fast:di:${propertyName}`);
 
@@ -883,12 +887,12 @@ export const DI = Object.freeze({
     ): (
         target: any,
         key?: string | number,
-        descriptor?: PropertyDescriptor | number
+        descriptor?: PropertyDescriptor | number,
     ) => void {
         return function (
             target: any,
             key?: string | number,
-            descriptor?: PropertyDescriptor | number
+            descriptor?: PropertyDescriptor | number,
         ): void {
             if (typeof descriptor === "number") {
                 // It's a parameter decorator.
@@ -941,10 +945,10 @@ export const DI = Object.freeze({
      * @public
      */
     transient<T extends Constructable>(
-        target: T & Partial<RegisterSelf<T>>
+        target: T & Partial<RegisterSelf<T>>,
     ): T & RegisterSelf<T> {
         target.register = function register(
-            container: Container
+            container: Container,
         ): Resolver<InstanceType<T>> {
             const registration = Registration.transient(target as T, target as T);
             return registration.register(container);
@@ -978,10 +982,10 @@ export const DI = Object.freeze({
      */
     singleton<T extends Constructable>(
         target: T & Partial<RegisterSelf<T>>,
-        options: SingletonOptions = defaultSingletonOptions
+        options: SingletonOptions = defaultSingletonOptions,
     ): T & RegisterSelf<T> {
         target.register = function register(
-            container: Container
+            container: Container,
         ): Resolver<InstanceType<T>> {
             const registration = Registration.singleton(target, target);
             return registration.register(container);
@@ -1010,14 +1014,14 @@ export const DOMContainer = Container as unknown as ContextDecorator<DOMContaine
 export const ServiceLocator = Container as unknown as ContextDecorator<ServiceLocator>;
 
 function createResolver(
-    getter: (key: any, handler: Container, requestor: Container) => any
+    getter: (key: any, handler: Container, requestor: Container) => any,
 ): (key: any) => any {
     return function (key: any): ReturnType<typeof DI.inject> {
         const resolver: ReturnType<typeof DI.inject> &
             Partial<Pick<Resolver, "resolve">> & { $isResolver: true } = function (
             target: Injectable,
             property?: string | number,
-            descriptor?: PropertyDescriptor | number
+            descriptor?: PropertyDescriptor | number,
         ): void {
             DI.inject(resolver)(target, property, descriptor);
         };
@@ -1046,7 +1050,7 @@ function createResolver(
 export const inject = DI.inject;
 
 function transientDecorator<T extends Constructable>(
-    target: T & Partial<RegisterSelf<T>>
+    target: T & Partial<RegisterSelf<T>>,
 ): T & RegisterSelf<T> {
     return DI.transient(target);
 }
@@ -1081,11 +1085,11 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
  * @public
  */
 export function transient<T extends Constructable>(
-    target: T & Partial<RegisterSelf<T>>
+    target: T & Partial<RegisterSelf<T>>,
 ): T & RegisterSelf<T>;
 
 export function transient<T extends Constructable>(
-    target?: T & Partial<RegisterSelf<T>>
+    target?: T & Partial<RegisterSelf<T>>,
 ): (T & RegisterSelf<T>) | typeof transientDecorator {
     return target == null ? transientDecorator : transientDecorator(target);
 }
@@ -1094,7 +1098,7 @@ type SingletonOptions = { scoped: boolean };
 const defaultSingletonOptions = { scoped: false };
 
 function singletonDecorator<T extends Constructable>(
-    target: T & Partial<RegisterSelf<T>>
+    target: T & Partial<RegisterSelf<T>>,
 ): T & RegisterSelf<T> {
     return DI.singleton(target);
 }
@@ -1119,7 +1123,7 @@ export function singleton<T extends Constructable>(): typeof singletonDecorator;
  */
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function singleton<T extends Constructable>(
-    options?: SingletonOptions
+    options?: SingletonOptions,
 ): typeof singletonDecorator;
 
 /**
@@ -1137,14 +1141,14 @@ export function singleton<T extends Constructable>(
  * @public
  */
 export function singleton<T extends Constructable>(
-    target: T & Partial<RegisterSelf<T>>
+    target: T & Partial<RegisterSelf<T>>,
 ): T & RegisterSelf<T>;
 
 /**
  * @public
  */
 export function singleton<T extends Constructable>(
-    targetOrOptions?: (T & Partial<RegisterSelf<T>>) | SingletonOptions
+    targetOrOptions?: (T & Partial<RegisterSelf<T>>) | SingletonOptions,
 ): (T & RegisterSelf<T>) | typeof singletonDecorator {
     if (typeof targetOrOptions === "function") {
         return DI.singleton(targetOrOptions);
@@ -1159,8 +1163,8 @@ function createAllResolver(
         key: any,
         handler: Container,
         requestor: Container,
-        searchAncestors: boolean
-    ) => readonly any[]
+        searchAncestors: boolean,
+    ) => readonly any[],
 ): (key: any, searchAncestors?: boolean) => ReturnType<typeof DI.inject> {
     return function (key: any, searchAncestors?: boolean): ReturnType<typeof DI.inject> {
         searchAncestors = !!searchAncestors;
@@ -1168,7 +1172,7 @@ function createAllResolver(
             Required<Pick<Resolver, "resolve">> & { $isResolver: true } = function (
             target: Injectable,
             property?: string | number,
-            descriptor?: PropertyDescriptor | number
+            descriptor?: PropertyDescriptor | number,
         ): void {
             DI.inject(resolver)(target, property, descriptor);
         };
@@ -1192,7 +1196,7 @@ function createAllResolver(
  */
 export const all = createAllResolver(
     (key: any, handler: Container, requestor: Container, searchAncestors: boolean) =>
-        requestor.getAll(key, searchAncestors)
+        requestor.getAll(key, searchAncestors),
 );
 
 /**
@@ -1230,7 +1234,7 @@ export const all = createAllResolver(
 export const lazy = createResolver(
     (key: Key, handler: Container, requestor: Container) => {
         return () => requestor.get(key);
-    }
+    },
 );
 
 /**
@@ -1266,7 +1270,7 @@ export const optional = createResolver(
         } else {
             return undefined;
         }
-    }
+    },
 );
 
 /**
@@ -1277,7 +1281,7 @@ export const optional = createResolver(
 export function ignore(
     target: Injectable,
     property?: string | number,
-    descriptor?: PropertyDescriptor | number
+    descriptor?: PropertyDescriptor | number,
 ): void {
     DI.inject(ignore)(target, property, descriptor);
 }
@@ -1303,7 +1307,7 @@ export const newInstanceForScope = createResolver(
         const resolver = new ResolverImpl(key, ResolverStrategy.instance, instance);
         requestor.registerResolver(key, resolver);
         return instance;
-    }
+    },
 );
 
 /**
@@ -1316,7 +1320,7 @@ export const newInstanceForScope = createResolver(
  */
 export const newInstanceOf = createResolver(
     (key: any, handler: Container, _requestor: Container) =>
-        createNewInstance(key, handler)
+        createNewInstance(key, handler),
 );
 
 function createNewInstance(key: any, handler: Container) {
@@ -1339,7 +1343,7 @@ export class ResolverImpl implements Resolver, Registration {
     public constructor(
         public key: Key,
         public strategy: ResolverStrategy,
-        public state: any
+        public state: any,
     ) {}
 
     public get $isResolver(): true {
@@ -1446,14 +1450,17 @@ function transformInstance<T>(inst: Resolved<T>, transform: (instance: any) => a
 /** @internal */
 export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     private transformers: ((instance: any) => any)[] | null = null;
-    public constructor(public Type: T, private readonly dependencies: Key[]) {}
+    public constructor(
+        public Type: T,
+        private readonly dependencies: Key[],
+    ) {}
 
     public async constructAsync(
         container: Container,
-        dynamicDependencies?: Key[]
+        dynamicDependencies?: Key[],
     ): Promise<Resolved<T>> {
         const resolved = await Promise.all(
-            this.dependencies.map(x => container.getAsync(x))
+            this.dependencies.map(x => container.getAsync(x)),
         );
 
         return this.constructCore(resolved, dynamicDependencies);
@@ -1500,13 +1507,13 @@ function isRegistry(obj: Registry | Record<string, Registry>): obj is Registry {
 }
 
 function isSelfRegistry<T extends Constructable>(
-    obj: RegisterSelf<T>
+    obj: RegisterSelf<T>,
 ): obj is RegisterSelf<T> {
     return isRegistry(obj) && typeof obj.registerInRequestor === "boolean";
 }
 
 function isRegisterInRequester<T extends Constructable>(
-    obj: RegisterSelf<T>
+    obj: RegisterSelf<T>,
 ): obj is RegisterSelf<T> {
     return isSelfRegistry(obj) && obj.registerInRequestor;
 }
@@ -1577,7 +1584,10 @@ export class ContainerImpl implements DOMContainer {
         return this.config.responsibleForOwnerRequests;
     }
 
-    constructor(protected owner: any, protected config: ContainerConfiguration) {
+    constructor(
+        protected owner: any,
+        protected config: ContainerConfiguration,
+    ) {
         this.resolvers = new Map();
         this.resolvers.set(Container, containerResolver);
 
@@ -1662,7 +1672,7 @@ export class ContainerImpl implements DOMContainer {
 
     public registerResolver<K extends Key, T = K>(
         key: K,
-        resolver: Resolver<T>
+        resolver: Resolver<T>,
     ): Resolver<T> {
         validateKey(key);
 
@@ -1679,7 +1689,7 @@ export class ContainerImpl implements DOMContainer {
         } else {
             resolvers.set(
                 key,
-                new ResolverImpl(key, ResolverStrategy.array, [result, resolver])
+                new ResolverImpl(key, ResolverStrategy.array, [result, resolver]),
             );
         }
 
@@ -1688,7 +1698,7 @@ export class ContainerImpl implements DOMContainer {
 
     public registerTransformer<K extends Key, T = K>(
         key: K,
-        transformer: Transformer<T>
+        transformer: Transformer<T>,
     ): boolean {
         const resolver = this.getResolver(key);
 
@@ -1708,7 +1718,7 @@ export class ContainerImpl implements DOMContainer {
             // type Constructable. So the return type of that optional method has this additional constraint, which
             // seems to confuse the type checker.
             factory.registerTransformer(
-                transformer as unknown as Transformer<Constructable>
+                transformer as unknown as Transformer<Constructable>,
             );
 
             return true;
@@ -1719,7 +1729,7 @@ export class ContainerImpl implements DOMContainer {
 
     public getResolver<K extends Key, T = K>(
         key: K | Key,
-        autoRegister: boolean = true
+        autoRegister: boolean = true,
     ): Resolver<T> | null {
         validateKey(key);
 
@@ -1737,7 +1747,7 @@ export class ContainerImpl implements DOMContainer {
             if (resolver == null) {
                 if (current.parent == null) {
                     const handler = isRegisterInRequester(
-                        key as unknown as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>,
                     )
                         ? this
                         : current;
@@ -1757,8 +1767,8 @@ export class ContainerImpl implements DOMContainer {
         return this.resolvers.has(key)
             ? true
             : searchAncestors && this.parent != null
-            ? this.parent.has(key, true)
-            : false;
+              ? this.parent.has(key, true)
+              : false;
     }
 
     public async getAsync<K extends Key>(key: K): Promise<Resolved<K>> {
@@ -1784,7 +1794,7 @@ export class ContainerImpl implements DOMContainer {
                     }
 
                     const handler = isRegisterInRequester(
-                        key as unknown as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>,
                     )
                         ? this
                         : current;
@@ -1819,7 +1829,7 @@ export class ContainerImpl implements DOMContainer {
             if (resolver == null) {
                 if (current.parent == null) {
                     const handler = isRegisterInRequester(
-                        key as unknown as RegisterSelf<Constructable>
+                        key as unknown as RegisterSelf<Constructable>,
                     )
                         ? this
                         : current;
@@ -1838,13 +1848,11 @@ export class ContainerImpl implements DOMContainer {
 
     public getAll<K extends Key>(
         key: K,
-        searchAncestors: boolean = false
+        searchAncestors: boolean = false,
     ): readonly Resolved<K>[] {
         validateKey(key);
 
-        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
-        const requestor = this;
-        let current: ContainerImpl | null = requestor;
+        let current: ContainerImpl | null = this;
         let resolver: Resolver | undefined;
 
         if (searchAncestors) {
@@ -1856,7 +1864,7 @@ export class ContainerImpl implements DOMContainer {
                 if (resolver != null) {
                     resolutions = resolutions.concat(
                         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-                        buildAllResponse(resolver, current, requestor!)
+                        buildAllResponse(resolver, current, this!),
                     );
                 }
 
@@ -1875,7 +1883,7 @@ export class ContainerImpl implements DOMContainer {
                         return emptyArray;
                     }
                 } else {
-                    return buildAllResponse(resolver, current, requestor);
+                    return buildAllResponse(resolver, current, this);
                 }
             }
         }
@@ -1895,7 +1903,7 @@ export class ContainerImpl implements DOMContainer {
 
             factories.set(
                 Type,
-                (factory = new FactoryImpl<K>(Type, DI.getDependencies(Type)))
+                (factory = new FactoryImpl<K>(Type, DI.getDependencies(Type))),
             );
         }
 
@@ -1907,11 +1915,11 @@ export class ContainerImpl implements DOMContainer {
     }
 
     public createChild(
-        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
+        config?: Partial<Omit<ContainerConfiguration, "parentLocator">>,
     ): Container {
         return new ContainerImpl(
             null,
-            Object.assign({}, this.config, config, { parentLocator: () => this })
+            Object.assign({}, this.config, config, { parentLocator: () => this }),
         );
     }
 
@@ -2014,7 +2022,7 @@ export const Registration = Object.freeze({
      */
     singleton<T extends Constructable>(
         key: Key,
-        value: T
+        value: T,
     ): Registration<InstanceType<T>> {
         return new ResolverImpl(key, ResolverStrategy.singleton, value);
     },
@@ -2033,7 +2041,7 @@ export const Registration = Object.freeze({
      */
     transient<T extends Constructable>(
         key: Key,
-        value: T
+        value: T,
     ): Registration<InstanceType<T>> {
         return new ResolverImpl(key, ResolverStrategy.transient, value);
     },
@@ -2076,7 +2084,7 @@ export const Registration = Object.freeze({
         return new ResolverImpl(
             key,
             ResolverStrategy.callback,
-            cacheCallbackResult(callback)
+            cacheCallbackResult(callback),
         );
     },
 
@@ -2109,7 +2117,7 @@ export function validateKey(key: any): void {
 function buildAllResponse(
     resolver: Resolver,
     handler: Container,
-    requestor: Container
+    requestor: Container,
 ): any[] {
     if (
         resolver instanceof ResolverImpl &&

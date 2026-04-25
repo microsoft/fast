@@ -1,4 +1,4 @@
-import { css } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/styles.js";
 
 export const styles = css`
     :host {

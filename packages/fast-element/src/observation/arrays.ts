@@ -30,7 +30,7 @@ export class Splice {
     public constructor(
         public index: number,
         public removed: any[],
-        public addedCount: number
+        public addedCount: number,
     ) {}
 
     /**
@@ -112,7 +112,7 @@ export interface SpliceStrategy {
     normalize(
         previous: unknown[] | undefined,
         current: unknown[],
-        changes: Splice[] | undefined
+        changes: Splice[] | undefined,
     ): readonly Splice[];
 
     /**
@@ -126,7 +126,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         pop: typeof Array.prototype.pop,
-        args: any[]
+        args: any[],
     ): any;
 
     /**
@@ -140,7 +140,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         push: typeof Array.prototype.push,
-        args: any[]
+        args: any[],
     ): any;
 
     /**
@@ -154,7 +154,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         reverse: typeof Array.prototype.reverse,
-        args: any[]
+        args: any[],
     ): any;
 
     /**
@@ -168,7 +168,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         shift: typeof Array.prototype.shift,
-        args: any[]
+        args: any[],
     ): any;
 
     /**
@@ -182,7 +182,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         sort: typeof Array.prototype.sort,
-        args: any[]
+        args: any[],
     ): any[];
 
     /**
@@ -196,7 +196,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         splice: typeof Array.prototype.splice,
-        args: any[]
+        args: any[],
     ): any;
 
     /**
@@ -210,7 +210,7 @@ export interface SpliceStrategy {
         array: any[],
         observer: ArrayObserver,
         unshift: typeof Array.prototype.unshift,
-        args: any[]
+        args: any[],
     ): any[];
 }
 
@@ -242,7 +242,7 @@ function calcEditDistances(
     currentEnd: number,
     old: any[],
     oldStart: number,
-    oldEnd: number
+    oldEnd: number,
 ): any[] {
     // "Deletion" columns
     const rowCount = oldEnd - oldStart + 1;
@@ -399,7 +399,7 @@ function calc(
     currentEnd: number,
     old: unknown[],
     oldStart: number,
-    oldEnd: number
+    oldEnd: number,
 ): Splice[] {
     let prefixCount = 0;
     let suffixCount = 0;
@@ -435,7 +435,7 @@ function calc(
     }
 
     const ops = spliceOperationsFromEditDistances(
-        calcEditDistances(current, currentStart, currentEnd, old, oldStart, oldEnd)
+        calcEditDistances(current, currentStart, currentEnd, old, oldStart, oldEnd),
     );
 
     const splices: Splice[] = [];
@@ -508,7 +508,7 @@ function merge(splice: Splice, splices: Splice[]): void {
             splice.index,
             splice.index + splice.removed.length,
             current.index,
-            current.index + current.addedCount
+            current.index + current.addedCount,
         );
 
         if (intersectCount >= 0) {
@@ -542,7 +542,7 @@ function merge(splice: Splice, splices: Splice[]): void {
                 ) {
                     // some suffix of splice.removed is appended to current.removed.
                     const append = splice.removed.slice(
-                        current.index + current.addedCount - splice.index
+                        current.index + current.addedCount - splice.index,
                     );
                     currentRemoved.push(...append);
                 }
@@ -597,8 +597,8 @@ function project(array: unknown[], changes: Splice[]): Splice[] {
                 splice.index + splice.addedCount,
                 splice.removed,
                 0,
-                splice.removed.length
-            )
+                splice.removed.length,
+            ),
         );
     }
 
@@ -616,7 +616,7 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
     normalize(
         previous: unknown[] | undefined,
         current: unknown[],
-        changes: Splice[] | undefined
+        changes: Splice[] | undefined,
     ): readonly Splice[] {
         if (previous === void 0) {
             if (changes === void 0) {
@@ -632,7 +632,7 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         pop: typeof Array.prototype.pop,
-        args: any[]
+        args: any[],
     ) {
         const notEmpty = array.length > 0;
         const result = pop.apply(array, args);
@@ -648,11 +648,11 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         push: typeof Array.prototype.push,
-        args: any[]
+        args: any[],
     ): any {
         const result = push.apply(array, args);
         observer.addSplice(
-            new Splice(array.length - args.length, [], args.length).adjustTo(array)
+            new Splice(array.length - args.length, [], args.length).adjustTo(array),
         );
         return result;
     },
@@ -661,7 +661,7 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         reverse: typeof Array.prototype.reverse,
-        args: any[]
+        args: any[],
     ): any {
         const result = reverse.apply(array, args);
         (array as any).sorted++;
@@ -680,7 +680,7 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         shift: typeof Array.prototype.shift,
-        args: any[]
+        args: any[],
     ): any {
         const notEmpty = array.length > 0;
         const result = shift.apply(array, args);
@@ -696,7 +696,7 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         sort: typeof Array.prototype.sort,
-        args: any[]
+        args: any[],
     ): any[] {
         const map = new Map();
 
@@ -728,13 +728,13 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         splice: typeof Array.prototype.splice,
-        args: any[]
+        args: any[],
     ): any {
         const result = splice.apply(array, args);
         observer.addSplice(
             new Splice(+args[0], result, args.length > 2 ? args.length - 2 : 0).adjustTo(
-                array
-            )
+                array,
+            ),
         );
         return result;
     },
@@ -743,7 +743,7 @@ let defaultMutationStrategy: SpliceStrategy = Object.freeze({
         array: any[],
         observer: ArrayObserver,
         unshift: typeof Array.prototype.unshift,
-        args: any[]
+        args: any[],
     ): any[] {
         const result = unshift.apply(array, args);
         observer.addSplice(new Splice(0, [], args.length).adjustTo(array));
@@ -774,7 +774,7 @@ function setNonEnumerable(
     target: any,
     property: string,
     value: any,
-    writable: boolean = true
+    writable: boolean = true,
 ): void {
     Reflect.defineProperty(target, property, {
         value,
@@ -966,8 +966,8 @@ class DefaultArrayObserver extends SubscriberSet implements ArrayObserver {
                   (this._strategy ?? defaultMutationStrategy).normalize(
                       oldCollection,
                       this.subject,
-                      splices
-                  )
+                      splices,
+                  ),
               );
     }
 
@@ -1002,7 +1002,7 @@ export const ArrayObserver = Object.freeze({
         enabled = true;
 
         Observable.setArrayObserverFactory(
-            (collection: any[]): Notifier => new DefaultArrayObserver(collection)
+            (collection: any[]): Notifier => new DefaultArrayObserver(collection),
         );
 
         const proto = Array.prototype;
@@ -1028,7 +1028,7 @@ export const ArrayObserver = Object.freeze({
                               this,
                               o,
                               method,
-                              args
+                              args,
                           );
                 };
             });

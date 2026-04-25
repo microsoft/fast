@@ -20,8 +20,45 @@ Returns a declarative template resolver that waits for the matching `<f-template
 **Signature:**
 
 ```typescript
-export declare function declarativeTemplate(): FASTElementTemplateResolver;
+export declare function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
 ```
+
+## Parameters
+
+<table><thead><tr><th>
+
+Parameter
+
+
+</th><th>
+
+Type
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+callbacks
+
+
+</td><td>
+
+TemplateLifecycleCallbacks
+
+
+</td><td>
+
+_(Optional)_ Optional per-element lifecycle callbacks.
+
+
+</td></tr>
+</tbody></table>
+
 **Returns:**
 
 FASTElementTemplateResolver
