@@ -215,7 +215,81 @@ class MyComponent extends FASTElement {
 
 ### `ViewTemplate.render()` signature unchanged
 
-The `isPrerendered` parameter that was briefly added to `ViewTemplate.render()` has been removed. The prerendered path is handled entirely by `ElementController.renderPrerendered()`.
+The `isPrerendered` parameter that was briefly added to `ViewTemplate.render()` has been removed. The prerendered path is handled entirely by the pluggable hydration hook installed via `ElementController.installHydrationHook()`.
+
+### `globalThis.FAST` removed
+
+The `FAST` object is no longer attached to `globalThis`. It is now a module-scoped export from `@microsoft/fast-element`.
+
+2.x Example:
+```ts
+globalThis.FAST.addMessages({ ... });
+```
+
+3.x Example:
+```ts
+import { FAST } from "@microsoft/fast-element";
+
+FAST.addMessages({ ... });
+```
+
+### `FAST.getById()` removed
+
+The `FAST.getById(id, initializer)` slot registry has been removed. Kernel services (update queue, observable system, etc.) are resolved through standard ES module imports.
+
+### `FASTGlobal` type removed
+
+The `FASTGlobal` interface type has been removed. Code that referenced this type should be updated to use the `FAST` export directly.
+
+### `KernelServiceId` enum removed
+
+The `KernelServiceId` enum (used with `FAST.getById()`) has been removed. Import kernel services directly from their respective modules.
+
+### `css` and style APIs moved to `@microsoft/fast-element/styles.js`
+
+`css`, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are no longer exported from the main `@microsoft/fast-element` barrel.
+
+2.x Example:
+```ts
+import { css, ElementStyles } from "@microsoft/fast-element";
+```
+
+3.x Example:
+```ts
+import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
+```
+
+### Array observation moved to `@microsoft/fast-element/arrays.js`
+
+`ArrayObserver`, `Splice`, `SpliceStrategy`, `SpliceStrategySupport`, `lengthOf`, `sortedCount`, and `Sort` are now imported from `@microsoft/fast-element/arrays.js`.
+
+2.x Example:
+```ts
+import { ArrayObserver } from "@microsoft/fast-element";
+```
+
+3.x Example:
+```ts
+import { ArrayObserver } from "@microsoft/fast-element/arrays.js";
+```
+
+### `deferHydrationAttribute` moved to `@microsoft/fast-element/hydration.js`
+
+`deferHydrationAttribute` is no longer available from the main barrel. Import it from the hydration subpath.
+
+2.x Example:
+```ts
+import { deferHydrationAttribute } from "@microsoft/fast-element";
+```
+
+3.x Example:
+```ts
+import { deferHydrationAttribute } from "@microsoft/fast-element/hydration.js";
+```
+
+### `requestIdleCallback` polyfill removed
+
+The built-in `requestIdleCallback` / `cancelIdleCallback` polyfill has been removed. If your application targets environments without these APIs, provide your own polyfill.
 
 ### Hydration marker format changed
 

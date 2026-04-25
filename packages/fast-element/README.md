@@ -55,10 +55,9 @@ Looking for a quick guide on building components?  Check out [our Cheat Sheet](.
 
 ## Browser Requirements
 
-FAST Element v3 assumes a modern runtime with native `globalThis`. The package
-still installs its `requestIdleCallback` / `cancelIdleCallback` fallback
-internally, but it no longer patches `globalThis` for older engines. If you
-need to support an environment without `globalThis`, load that polyfill before
+FAST Element v3 assumes a modern runtime with native `globalThis`. The `FAST`
+object is now a module-scoped export (not on `globalThis`). If you need to
+support an environment without `globalThis`, load that polyfill before
 importing `@microsoft/fast-element`.
 
 ## Debug entrypoint
@@ -78,6 +77,14 @@ enableDebug();
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
 ## Dynamic Style Application
+
+Style APIs (`css`, `ElementStyles`, `CSSDirective`, `cssDirective`,
+`ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`,
+`StyleTarget`) are imported from `@microsoft/fast-element/styles.js`:
+
+```ts
+import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
+```
 
 When runtime state or external signals need to add or remove styles, create the
 `ElementStyles` with `css` and toggle it through
