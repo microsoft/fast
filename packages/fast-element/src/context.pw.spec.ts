@@ -194,7 +194,7 @@ test.describe("Context", () => {
                         event.stopImmediatePropagation();
                         event.callback(value);
                     },
-                    TestContext
+                    TestContext,
                 );
 
                 return Context.get(child, TestContext);
@@ -224,7 +224,7 @@ test.describe("Context", () => {
                         event.stopImmediatePropagation();
                         event.callback(value);
                     },
-                    TestContext
+                    TestContext,
                 );
 
                 let capture = "";
@@ -290,7 +290,7 @@ test.describe("Context", () => {
                             event.stopImmediatePropagation();
                             event.callback(rightValue);
                         },
-                        TestContext
+                        TestContext,
                     );
 
                     let capture = "";
@@ -301,7 +301,7 @@ test.describe("Context", () => {
 
                     return capture;
                 },
-                [wrongValue, rightValue]
+                [wrongValue, rightValue],
             );
 
             expect(capture).toBe(rightValue);
