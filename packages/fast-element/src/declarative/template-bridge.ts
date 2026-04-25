@@ -275,7 +275,4 @@ export class DeclarativeTemplateBridge {
  * Shared template bridge storage for the current FAST runtime.
  * @internal
  */
-export const declarativeTemplateBridge = FAST.getById(
-    "fast:declarative-template-bridge",
-    () => new DeclarativeTemplateBridge(),
-) as DeclarativeTemplateBridge;
+export const declarativeTemplateBridge = new DeclarativeTemplateBridge();

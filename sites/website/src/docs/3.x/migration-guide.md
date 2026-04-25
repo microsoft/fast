@@ -28,7 +28,19 @@ import { HydratableElementController } from "@microsoft/fast-element";
 HydratableElementController.install();
 ```
 
-3.x: No replacement needed — prerendered content detection is automatic.
+3.x: Hydration is now opt-in via `enableHydration()`:
+
+```ts
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
+```
+
+Remove any `import "@microsoft/fast-element/install-hydration.js"` side-effect
+imports as part of the migration. The older
+`install-hydratable-view-templates.js` helper remains available for advanced
+use cases, but `@microsoft/fast-element/declarative.js` now installs hydration
+support lazily when declarative APIs create a template.
 
 ### `needsHydrationAttribute` and `deferHydrationAttribute` removed
 
@@ -48,7 +60,7 @@ These attributes are no longer needed in server-rendered markup.
 </my-component>
 ```
 
-### `HydrationControllerCallbacks` replaced by `ElementHydrationCallbacks`
+### `HydrationControllerCallbacks` replaced by `enableHydration` + `declarativeTemplate` callbacks
 
 2.x Example:
 ```ts
@@ -61,30 +73,41 @@ HydratableElementController.config({
 
 3.x Example:
 ```ts
-import { ElementController } from "@microsoft/fast-element";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
-ElementController.configHydration({
+// Global hydration callbacks
+enableHydration({
     hydrationStarted() { /* ... */ },
-    elementWillHydrate(source: HTMLElement) { /* ... */ },
-    elementDidHydrate(source: HTMLElement) { /* ... */ },
-    hydrationComplete() { /* ... */ }
+    hydrationComplete() { /* ... */ },
+});
+
+// Per-element hydration callbacks
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementWillHydrate(source: HTMLElement) { /* ... */ },
+        elementDidHydrate(source: HTMLElement) { /* ... */ },
+    }),
 });
 ```
 
 Note: `elementWillHydrate` and `elementDidHydrate` now receive the `HTMLElement` instance instead of a string name.
 
-### `isPrerendered` is a `Promise<boolean>`
+### `isPrerendered` and `isHydrated` split
 
-The `isPrerendered` property on `ElementController` and `ViewController` is a `Promise<boolean>` that resolves after hydration completes (or immediately with `false` for client-side rendered components).
+The `isPrerendered` property on `ElementController` and `ViewController` now resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. A new `isHydrated: Promise<boolean>` property resolves `true` only when hydration actually ran successfully.
 
 ```ts
 connectedCallback() {
     super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
+    const ctrl = this.$fastController;
+    const prerendered = await ctrl.isPrerendered;
+    const hydrated = await ctrl.isHydrated;
+
+    if (prerendered && !hydrated) {
+        // Had DSD but hydration wasn't enabled
+    }
 }
 ```
 
@@ -103,8 +126,27 @@ import { TemplateElement } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 ```
 
-This keeps the root `@microsoft/fast-element` import free of declarative
-side effects while moving the declarative runtime into the same package.
+Keep importing core FAST Element APIs from `@microsoft/fast-element`. The
+dedicated declarative entrypoint owns the declarative runtime and installs
+hydration support lazily when declarative templates are created.
+
+### `debug.js` requires explicit enablement
+
+`@microsoft/fast-element/debug.js` no longer configures FAST just by being
+imported. Call `enableDebug()` explicitly instead:
+
+```ts
+// Before
+import "@microsoft/fast-element/debug.js";
+
+// After
+import { enableDebug } from "@microsoft/fast-element/debug.js";
+
+enableDebug();
+```
+
+If you want debug behavior enabled automatically, keep using the root package
+`development` export or the debug rollup bundle.
 
 ### `RenderableFASTElement` removed (`@microsoft/fast-html`)
 
@@ -173,7 +215,81 @@ class MyComponent extends FASTElement {
 
 ### `ViewTemplate.render()` signature unchanged
 
-The `isPrerendered` parameter that was briefly added to `ViewTemplate.render()` has been removed. The prerendered path is handled entirely by `ElementController.renderPrerendered()`.
+The `isPrerendered` parameter that was briefly added to `ViewTemplate.render()` has been removed. The prerendered path is handled entirely by the pluggable hydration hook installed via `ElementController.installHydrationHook()`.
+
+### `globalThis.FAST` removed
+
+The `FAST` object is no longer attached to `globalThis`. It is now a module-scoped export from `@microsoft/fast-element`.
+
+2.x Example:
+```ts
+globalThis.FAST.addMessages({ ... });
+```
+
+3.x Example:
+```ts
+import { FAST } from "@microsoft/fast-element";
+
+FAST.addMessages({ ... });
+```
+
+### `FAST.getById()` removed
+
+The `FAST.getById(id, initializer)` slot registry has been removed. Kernel services (update queue, observable system, etc.) are resolved through standard ES module imports.
+
+### `FASTGlobal` type removed
+
+The `FASTGlobal` interface type has been removed. Code that referenced this type should be updated to use the `FAST` export directly.
+
+### `KernelServiceId` enum removed
+
+The `KernelServiceId` enum (used with `FAST.getById()`) has been removed. Import kernel services directly from their respective modules.
+
+### `css` and style APIs moved to `@microsoft/fast-element/styles.js`
+
+`css`, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are no longer exported from the main `@microsoft/fast-element` barrel.
+
+2.x Example:
+```ts
+import { css, ElementStyles } from "@microsoft/fast-element";
+```
+
+3.x Example:
+```ts
+import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
+```
+
+### Array observation moved to `@microsoft/fast-element/arrays.js`
+
+`ArrayObserver`, `Splice`, `SpliceStrategy`, `SpliceStrategySupport`, `lengthOf`, `sortedCount`, and `Sort` are now imported from `@microsoft/fast-element/arrays.js`.
+
+2.x Example:
+```ts
+import { ArrayObserver } from "@microsoft/fast-element";
+```
+
+3.x Example:
+```ts
+import { ArrayObserver } from "@microsoft/fast-element/arrays.js";
+```
+
+### `deferHydrationAttribute` moved to `@microsoft/fast-element/hydration.js`
+
+`deferHydrationAttribute` is no longer available from the main barrel. Import it from the hydration subpath.
+
+2.x Example:
+```ts
+import { deferHydrationAttribute } from "@microsoft/fast-element";
+```
+
+3.x Example:
+```ts
+import { deferHydrationAttribute } from "@microsoft/fast-element/hydration.js";
+```
+
+### `requestIdleCallback` polyfill removed
+
+The built-in `requestIdleCallback` / `cancelIdleCallback` polyfill has been removed. If your application targets environments without these APIs, provide your own polyfill.
 
 ### Hydration marker format changed
 
@@ -195,8 +311,10 @@ The `HydrationMarkup` API methods have been renamed (e.g., `parseAttributeBindin
 
 | Export | Package | Description |
 |---|---|---|
-| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves after hydration |
+| `ElementController.isPrerendered` | `fast-element` | `Promise<boolean>` — resolves `true` when element had DSD at connect time |
+| `ElementController.isHydrated` | `fast-element` | `Promise<boolean>` — resolves `true` only when hydration ran successfully |
 | `ElementController.configHydration()` | `fast-element` | Registers hydration lifecycle callbacks |
 | `HydrationTracker` | `fast-element` | Standalone hydration lifecycle tracker class |
 | `ElementHydrationCallbacks` | `fast-element` | Type for hydration lifecycle callbacks |
-| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — available to custom directives |
+| `ViewController.isPrerendered` | `fast-element` | `Promise<boolean>` — DSD detection for custom directives |
+| `ViewController.isHydrated` | `fast-element` | `Promise<boolean>` — hydration status for custom directives |

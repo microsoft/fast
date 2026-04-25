@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: modularize hydration and expose lifecycle callbacks via enableHydration() and declarativeTemplate()",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

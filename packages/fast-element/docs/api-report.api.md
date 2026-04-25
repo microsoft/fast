@@ -15,23 +15,6 @@ export interface Accessor {
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
 // @public
-export interface ArrayObserver extends SubscriberSet {
-    addSort(sort: Sort): void;
-    addSplice(splice: Splice): void;
-    flush(): void;
-    readonly lengthObserver: LengthObserver;
-    reset(oldCollection: any[] | undefined): void;
-    readonly sortObserver: SortObserver;
-    strategy: SpliceStrategy | null;
-}
-
-// @public
-export const ArrayObserver: Readonly<{
-    readonly sorted: 0;
-    readonly enable: () => void;
-}>;
-
-// @public
 export interface Aspected {
     aspectType: DOMAspect;
     dataBinding?: Binding;
@@ -152,16 +135,8 @@ export const Compiler: {
 };
 
 // @public
-export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
-
-// @public
 export type Constructable<T = {}> = {
     new (...args: any[]): T;
-};
-
-// @public
-export type ConstructibleStyleStrategy = {
-    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
 
 // @public
@@ -180,44 +155,10 @@ export interface ContentView {
 }
 
 // @public
-export const css: CSSTemplateTag;
-
-// @public
-export interface CSSDirective {
-    createCSS(): ComposableStyles;
-}
-
-// @public
-export const CSSDirective: Readonly<{
-    getForInstance: (object: any) => CSSDirectiveDefinition<Constructable<CSSDirective>> | undefined;
-    getByType: (key: Function) => CSSDirectiveDefinition<Constructable<CSSDirective>> | undefined;
-    define<TType extends Constructable<CSSDirective>>(type: any): TType;
-}>;
-
-// @public
-export function cssDirective(): (type: Constructable<CSSDirective>) => void;
-
-// @public
-export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective> = Constructable<CSSDirective>> {
-    readonly type: TType;
-}
-
-// @public
-export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: CSSValue[]) => ElementStyles) & {
-    partial(strings: TemplateStringsArray, ...values: CSSValue[]): CSSDirective;
-};
-
-// @public
-export type CSSValue = ComposableStyles | CSSDirective;
-
-// @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
-
-// @beta
-export const deferHydrationAttribute = "defer-hydration";
 
 // @public
 export interface Disposable {
@@ -255,16 +196,18 @@ export interface DOMPolicy {
 // @public
 export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
 
+// Warning: (ae-forgotten-export) The symbol "HostController" needs to be exported by the entry point index.d.ts
+//
 // @public
-export class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> {
+export class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement> {
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    // Warning: (ae-forgotten-export) The symbol "HostBehavior" needs to be exported by the entry point index.d.ts
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
     protected bindObservables(): void;
     protected captureBoundObservables(): void;
-    static configHydration(callbacks: ElementHydrationCallbacks): void;
     connect(): void;
     protected connectBehaviors(): void;
     get context(): ExecutionContext;
@@ -274,12 +217,17 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement, override?: boolean): ElementController;
     protected hasExistingShadowRoot: boolean;
+    // @internal
+    static installHydrationHook(hook: (controller: ElementController, template: ElementViewTemplate, element: HTMLElement, host: Node) => boolean): void;
     get isBound(): boolean;
     get isConnected(): boolean;
+    readonly isHydrated: Promise<boolean>;
     readonly isPrerendered: Promise<boolean>;
+    // Warning: (ae-forgotten-export) The symbol "ElementStyles" needs to be exported by the entry point index.d.ts
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     protected needsInitialization: boolean;
+    notify(args: any): void;
     protected observeLateAttributes(): void;
     onAttributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
     onUnbind(behavior: {
@@ -294,9 +242,12 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> exten
     readonly source: TElement;
     get sourceLifetime(): SourceLifetime | undefined;
     protected stage: Stages;
+    get subject(): TElement;
+    subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
     protected syncLateAttributes(): void;
     get template(): ElementViewTemplate<TElement> | null;
     set template(value: ElementViewTemplate<TElement> | null);
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
     readonly view: ElementView<TElement> | null;
 }
 
@@ -307,36 +258,10 @@ export interface ElementControllerStrategy {
 }
 
 // @public
-export interface ElementHydrationCallbacks {
-    elementDidHydrate?(source: HTMLElement): void;
-    elementWillHydrate?(source: HTMLElement): void;
-    hydrationComplete?(): void;
-    hydrationStarted?(): void;
-}
-
-// @public
 export const elements: (selector?: string) => ElementsFilter;
 
 // @public
 export type ElementsFilter = (value: Node, index?: number, array?: Node[]) => boolean;
-
-// @public
-export class ElementStyles {
-    constructor(styles: ReadonlyArray<ComposableStyles>);
-    // @internal (undocumented)
-    addStylesTo(target: StyleTarget): void;
-    // @internal (undocumented)
-    isAttachedTo(target: StyleTarget): boolean;
-    static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
-    // @internal (undocumented)
-    removeStylesFrom(target: StyleTarget): void;
-    static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
-    get strategy(): StyleStrategy;
-    // (undocumented)
-    readonly styles: ReadonlyArray<ComposableStyles>;
-    static readonly supportsAdoptedStyleSheets: boolean;
-    withStrategy(Strategy: ConstructibleStyleStrategy): this;
-}
 
 // @public
 export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
@@ -355,6 +280,9 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 
 // @public
 export const emptyArray: readonly never[];
+
+// @public
+export function enableHydration(options?: HydrationOptions): void;
 
 // @public
 export interface ExecutionContext<TParent = any> {
@@ -406,7 +334,11 @@ export interface ExpressionObserver<TSource = any, TReturn = any, TParent = any>
 }
 
 // @public
-export const FAST: FASTGlobal;
+export const FAST: {
+    warn(_code: number, _values?: Record<string, any>): void;
+    error(code: number, _values?: Record<string, any>): Error;
+    addMessages(messages: Record<number, string>): void;
+};
 
 // @public
 export interface FASTElement extends HTMLElement {
@@ -460,34 +392,6 @@ export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
 
 // @public
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
-
-// @public
-export interface FASTGlobal {
-    addMessages(messages: Record<number, string>): void;
-    error(code: number, values?: Record<string, any>): Error;
-    getById<T>(id: string | number): T | null;
-    // (undocumented)
-    getById<T>(id: string | number, initialize: () => T): T;
-    warn(code: number, values?: Record<string, any>): void;
-}
-
-// @public
-export interface HostBehavior<TSource = any> {
-    addedCallback?(controller: HostController<TSource>): void;
-    connectedCallback?(controller: HostController<TSource>): void;
-    disconnectedCallback?(controller: HostController<TSource>): void;
-    removedCallback?(controller: HostController<TSource>): void;
-}
-
-// @public
-export interface HostController<TSource = any> extends ExpressionController<TSource> {
-    addBehavior(behavior: HostBehavior<TSource>): void;
-    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    readonly isConnected: boolean;
-    mainStyles: ElementStyles | null;
-    removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
-    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-}
 
 // @public
 export const html: HTMLTemplateTag;
@@ -562,6 +466,7 @@ export class HTMLView<TSource = any, TParent = any> extends DefaultExecutionCont
     firstChild: Node;
     insertBefore(node: Node): void;
     isBound: boolean;
+    isHydrated: Promise<boolean>;
     isPrerendered: Promise<boolean>;
     lastChild: Node;
     // (undocumented)
@@ -605,10 +510,15 @@ export class HydrationBindingError extends Error {
 }
 
 // @public
+export interface HydrationOptions {
+    hydrationComplete?(): void;
+    hydrationStarted?(): void;
+}
+
+// @public
 export class HydrationTracker {
-    constructor(callbacks: ElementHydrationCallbacks);
+    constructor(options: HydrationOptions);
     add(element: HTMLElement): void;
-    notifyWillHydrate(element: HTMLElement): void;
     remove(element: HTMLElement): void;
 }
 
@@ -638,14 +548,6 @@ export function isHydratable<TSource = any, TParent = any>(template: ElementView
 //
 // @beta (undocumented)
 export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
-
-// @public
-export interface LengthObserver extends Subscriber {
-    length: number;
-}
-
-// @public
-export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
 export function listener<T = any>(expression: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
@@ -736,6 +638,7 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
     readonly name: string;
     readonly registry?: CustomElementRegistry;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
+    // Warning: (ae-forgotten-export) The symbol "ComposableStyles" needs to be exported by the entry point index.d.ts
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
 }
@@ -796,6 +699,8 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     constructor(directive: RepeatDirective);
     bind(controller: ViewController): void;
+    // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
+    // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void;
     unbind(): void;
     // @internal (undocumented)
@@ -845,21 +750,6 @@ export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 }
 
 // @public
-export class Sort {
-    constructor(sorted?: number[] | undefined);
-    // (undocumented)
-    sorted?: number[] | undefined;
-}
-
-// @public
-export function sortedCount<T>(array: readonly T[]): number;
-
-// @public
-export interface SortObserver extends Subscriber {
-    sorted: number;
-}
-
-// @public
 export const SourceLifetime: Readonly<{
     readonly unknown: undefined;
     readonly coupled: 1;
@@ -867,48 +757,6 @@ export const SourceLifetime: Readonly<{
 
 // @public
 export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
-
-// @public
-export class Splice {
-    constructor(index: number, removed: any[], addedCount: number);
-    // (undocumented)
-    addedCount: number;
-    adjustTo(array: any[]): this;
-    // (undocumented)
-    index: number;
-    // (undocumented)
-    removed: any[];
-    reset?: boolean;
-}
-
-// @public
-export interface SpliceStrategy {
-    normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): readonly Splice[];
-    pop(array: any[], observer: ArrayObserver, pop: typeof Array.prototype.pop, args: any[]): any;
-    push(array: any[], observer: ArrayObserver, push: typeof Array.prototype.push, args: any[]): any;
-    reverse(array: any[], observer: ArrayObserver, reverse: typeof Array.prototype.reverse, args: any[]): any;
-    shift(array: any[], observer: ArrayObserver, shift: typeof Array.prototype.shift, args: any[]): any;
-    sort(array: any[], observer: ArrayObserver, sort: typeof Array.prototype.sort, args: any[]): any[];
-    splice(array: any[], observer: ArrayObserver, splice: typeof Array.prototype.splice, args: any[]): any;
-    readonly support: SpliceStrategySupport;
-    unshift(array: any[], observer: ArrayObserver, unshift: typeof Array.prototype.unshift, args: any[]): any[];
-}
-
-// @public
-export const SpliceStrategy: Readonly<{
-    readonly reset: Splice[];
-    readonly setDefaultStrategy: (strategy: SpliceStrategy) => void;
-}>;
-
-// @public
-export const SpliceStrategySupport: Readonly<{
-    readonly reset: 1;
-    readonly splice: 2;
-    readonly optimized: 3;
-}>;
-
-// @public
-export type SpliceStrategySupport = (typeof SpliceStrategySupport)[keyof typeof SpliceStrategySupport];
 
 // @public
 export const enum Stages {
@@ -926,20 +774,6 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     protected options: TOptions;
-}
-
-// @public
-export interface StyleStrategy {
-    addStylesTo(target: StyleTarget): void;
-    removeStylesFrom(target: StyleTarget): void;
-}
-
-// @public
-export interface StyleTarget extends Pick<Node, "getRootNode"> {
-    adoptedStyleSheets?: CSSStyleSheet[];
-    append(styles: HTMLStyleElement): void;
-    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-    removeChild(styles: HTMLStyleElement): void;
 }
 
 // @public
@@ -980,7 +814,11 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
 // @public
 export interface TemplateLifecycleCallbacks {
     elementDidDefine?(name: string): void;
+    elementDidHydrate?(source: HTMLElement): void;
+    elementDidRegister?(name: string): void;
+    elementWillHydrate?(source: HTMLElement): void;
     templateDidUpdate?(name: string): void;
+    templateWillUpdate?(name: string): void;
 }
 
 // @public
@@ -1051,6 +889,7 @@ export type ViewBehaviorTargets = {
 
 // @public
 export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> {
+    readonly isHydrated?: Promise<boolean>;
     readonly isPrerendered?: Promise<boolean>;
     // @internal
     readonly _skipAttrUpdates?: boolean;

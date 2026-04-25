@@ -62,17 +62,6 @@ Controls the lifecycle and rendering of a `FASTElement`<!-- -->.
 </td></tr>
 <tr><td>
 
-[ElementStyles](../fast-element.elementstyles/)
-
-
-</td><td>
-
-Represents styles that can be applied to a custom element.
-
-
-</td></tr>
-<tr><td>
-
 [FASTElementDefinition](../fast-element.fastelementdefinition/)
 
 
@@ -125,7 +114,7 @@ The standard View implementation, which also implements ElementView and Syntheti
 
 </td><td>
 
-Tracks prerendered elements through the hydration lifecycle and fires callbacks at each stage. Each element is added before its hydration bind and removed after. When the last element finishes and no new elements arrive, `hydrationComplete` is fired.
+Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)<!-- -->.
 
 
 </td></tr>
@@ -214,32 +203,6 @@ A directive that configures list rendering.
 </td><td>
 
 The runtime behavior for slotted node observation.
-
-
-</td></tr>
-<tr><td>
-
-[Sort](../fast-element.sort/)
-
-
-</td><td>
-
-A sort array indicates new index positions of array items.
-
-
-</td></tr>
-<tr><td>
-
-[Splice](../fast-element.splice/)
-
-
-</td><td>
-
-A splice map is a representation of how a previous array of items was transformed into a new array of items. Conceptually it is a list of tuples of
-
-(index, removed, addedCount)
-
-which are kept in ascending index order of. The tuple represents that at the \|index\|, \|removed\| sequence of items were removed, and counting forward from \|index\|, \|addedCount\| items were added.
 
 
 </td></tr>
@@ -389,17 +352,6 @@ A directive that observes the `childNodes` of an element and updates a property 
 </td></tr>
 <tr><td>
 
-[cssDirective()](../fast-element.cssdirective/)
-
-
-</td><td>
-
-Decorator: Defines a CSSDirective.
-
-
-</td></tr>
-<tr><td>
-
 [customElement(nameOrDef)](../fast-element.customelement/)
 
 
@@ -417,6 +369,17 @@ Decorator: Defines a platform custom element based on `FASTElement`<!-- -->.
 </td><td>
 
 Creates a function that can be used to filter a Node array, selecting only elements.
+
+
+</td></tr>
+<tr><td>
+
+[enableHydration(options)](../fast-element.enablehydration/)
+
+
+</td><td>
+
+Enables hydration support for prerendered FAST elements.
 
 
 </td></tr>
@@ -472,17 +435,6 @@ Decorator: Defines an HTMLDirective.
 </td><td>
 
 **_(BETA)_**
-
-
-</td></tr>
-<tr><td>
-
-[lengthOf(array)](../fast-element.lengthof/)
-
-
-</td><td>
-
-Enables observing the length of an array.
 
 
 </td></tr>
@@ -587,17 +539,6 @@ A directive that observes the `assignedNodes()` of a slot and updates a property
 </td></tr>
 <tr><td>
 
-[sortedCount(array)](../fast-element.sortedcount/)
-
-
-</td><td>
-
-Enables observing the sorted property of an array.
-
-
-</td></tr>
-<tr><td>
-
 [volatile(target, name, descriptor)](../fast-element.volatile/)
 
 
@@ -641,17 +582,6 @@ Description
 </td><td>
 
 Represents a getter/setter property accessor on an object.
-
-
-</td></tr>
-<tr><td>
-
-[ArrayObserver](../fast-element.arrayobserver/)
-
-
-</td><td>
-
-An observer for arrays.
 
 
 </td></tr>
@@ -723,28 +653,6 @@ A simple View that can be interpolated into HTML content.
 </td></tr>
 <tr><td>
 
-[CSSDirective](../fast-element.cssdirective/)
-
-
-</td><td>
-
-Directive for use in [css](../fast-element.css/)<!-- -->.
-
-
-</td></tr>
-<tr><td>
-
-[CSSDirectiveDefinition](../fast-element.cssdirectivedefinition/)
-
-
-</td><td>
-
-Defines metadata for a CSSDirective.
-
-
-</td></tr>
-<tr><td>
-
 [Disposable](../fast-element.disposable/)
 
 
@@ -773,17 +681,6 @@ A security policy that FAST can use to interact with the DOM.
 </td><td>
 
 A type that instantiates an ElementController
-
-
-</td></tr>
-<tr><td>
-
-[ElementHydrationCallbacks](../fast-element.elementhydrationcallbacks/)
-
-
-</td><td>
-
-Lifecycle callbacks for element hydration events.
 
 
 </td></tr>
@@ -866,39 +763,6 @@ Represents a custom element based on the FASTElement infrastructure.
 </td></tr>
 <tr><td>
 
-[FASTGlobal](../fast-element.fastglobal/)
-
-
-</td><td>
-
-The FAST global.
-
-
-</td></tr>
-<tr><td>
-
-[HostBehavior](../fast-element.hostbehavior/)
-
-
-</td><td>
-
-Represents an object that can contribute behavior to a host.
-
-
-</td></tr>
-<tr><td>
-
-[HostController](../fast-element.hostcontroller/)
-
-
-</td><td>
-
-Controls the lifecycle and context of behaviors and styles associated with a component host.
-
-
-</td></tr>
-<tr><td>
-
 [HTMLDirective](../fast-element.htmldirective/)
 
 
@@ -942,12 +806,12 @@ The result of a template compilation operation.
 </td></tr>
 <tr><td>
 
-[LengthObserver](../fast-element.lengthobserver/)
+[HydrationOptions](../fast-element.hydrationoptions/)
 
 
 </td><td>
 
-Observes array lengths.
+Options for configuring global hydration lifecycle events.
 
 
 </td></tr>
@@ -1036,50 +900,6 @@ Shadow root initialization options.
 </td><td>
 
 The options used to configure slotted node observation.
-
-
-</td></tr>
-<tr><td>
-
-[SortObserver](../fast-element.sortobserver/)
-
-
-</td><td>
-
-Observes array sort.
-
-
-</td></tr>
-<tr><td>
-
-[SpliceStrategy](../fast-element.splicestrategy/)
-
-
-</td><td>
-
-An approach to tracking changes in an array.
-
-
-</td></tr>
-<tr><td>
-
-[StyleStrategy](../fast-element.stylestrategy/)
-
-
-</td><td>
-
-Implemented to provide specific behavior when adding/removing styles for elements.
-
-
-</td></tr>
-<tr><td>
-
-[StyleTarget](../fast-element.styletarget/)
-
-
-</td><td>
-
-A node that can be targeted by styles.
 
 
 </td></tr>
@@ -1221,17 +1041,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[ArrayObserver](../fast-element.arrayobserver/)
-
-
-</td><td>
-
-An observer for arrays.
-
-
-</td></tr>
-<tr><td>
-
 [AttributeConfiguration](../fast-element.attributeconfiguration/)
 
 
@@ -1260,39 +1069,6 @@ A [ValueConverter](../fast-element.valueconverter/) that converts to and from `b
 </td><td>
 
 Common APIs related to compilation.
-
-
-</td></tr>
-<tr><td>
-
-[css](../fast-element.css/)
-
-
-</td><td>
-
-Transforms a template literal string into styles.
-
-
-</td></tr>
-<tr><td>
-
-[CSSDirective](../fast-element.cssdirective/)
-
-
-</td><td>
-
-Instructs the css engine to provide styles during CSS template composition.
-
-
-</td></tr>
-<tr><td>
-
-[deferHydrationAttribute](../fast-element.deferhydrationattribute/)
-
-
-</td><td>
-
-**_(BETA)_** The attribute used to defer hydration of an element.
 
 
 </td></tr>
@@ -1347,7 +1123,7 @@ Provides additional contextual information available to behaviors and expression
 
 </td><td>
 
-The FAST global.
+The FAST messaging API for warnings and errors.
 
 
 </td></tr>
@@ -1447,28 +1223,6 @@ Common APIs related to content parsing.
 </td><td>
 
 Describes how the source's lifetime relates to its controller's lifetime.
-
-
-</td></tr>
-<tr><td>
-
-[SpliceStrategy](../fast-element.splicestrategy/)
-
-
-</td><td>
-
-Functionality related to tracking changes in arrays.
-
-
-</td></tr>
-<tr><td>
-
-[SpliceStrategySupport](../fast-element.splicestrategysupport/)
-
-
-</td><td>
-
-Indicates what level of feature support the splice strategy provides.
 
 
 </td></tr>
@@ -1588,56 +1342,12 @@ Represents a ViewBehaviorFactory after the compilation process has completed.
 </td></tr>
 <tr><td>
 
-[ComposableStyles](../fast-element.composablestyles/)
-
-
-</td><td>
-
-Represents styles that can be composed into the ShadowDOM of a custom element.
-
-
-</td></tr>
-<tr><td>
-
 [Constructable](../fast-element.constructable/)
 
 
 </td><td>
 
 Represents a type which can be constructed with the new operator.
-
-
-</td></tr>
-<tr><td>
-
-[ConstructibleStyleStrategy](../fast-element.constructiblestylestrategy/)
-
-
-</td><td>
-
-A type that instantiates a StyleStrategy.
-
-
-</td></tr>
-<tr><td>
-
-[CSSTemplateTag](../fast-element.csstemplatetag/)
-
-
-</td><td>
-
-Transforms a template literal string into styles.
-
-
-</td></tr>
-<tr><td>
-
-[CSSValue](../fast-element.cssvalue/)
-
-
-</td><td>
-
-Represents the types of values that can be interpolated into a template.
 
 
 </td></tr>
@@ -1737,17 +1447,6 @@ Transforms a template literal string into a ViewTemplate.
 </td><td>
 
 Describes how the source's lifetime relates to its controller's lifetime.
-
-
-</td></tr>
-<tr><td>
-
-[SpliceStrategySupport](../fast-element.splicestrategysupport/)
-
-
-</td><td>
-
-The available values for SpliceStrategySupport.
 
 
 </td></tr>
