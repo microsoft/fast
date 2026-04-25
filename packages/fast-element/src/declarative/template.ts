@@ -118,11 +118,11 @@ export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
  * This interface combines template lifecycle callbacks with
  * global hydration events. It is accepted by
  * {@link TemplateElement.config} for backward compatibility.
- * New code should prefer {@link enableHydration} for global
+ * New code should prefer `enableHydration()` for global
  * hydration events and pass per-element callbacks directly to
  * {@link declarativeTemplate}.
  *
- * @deprecated Use {@link enableHydration} and {@link declarativeTemplate} callbacks instead.
+ * @deprecated Use `enableHydration()` and {@link declarativeTemplate} callbacks instead.
  * @public
  */
 export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {

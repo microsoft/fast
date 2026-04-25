@@ -17,7 +17,7 @@ navigationOptions:
 
 > Warning: This API is now obsolete.
 > 
-> Use  and [declarativeTemplate()](../fast-element.declarativetemplate/) callbacks instead.
+> Use `enableHydration()` and [declarativeTemplate()](../fast-element.declarativetemplate/) callbacks instead.
 > 
 
 Lifecycle callbacks for template events.
@@ -31,7 +31,7 @@ export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks
 
 ## Remarks
 
-This interface combines template lifecycle callbacks with global hydration events. It is accepted by [TemplateElement.config()](../fast-element.templateelement.config/) for backward compatibility. New code should prefer  for global hydration events and pass per-element callbacks directly to [declarativeTemplate()](../fast-element.declarativetemplate/)<!-- -->.
+This interface combines template lifecycle callbacks with global hydration events. It is accepted by [TemplateElement.config()](../fast-element.templateelement.config/) for backward compatibility. New code should prefer `enableHydration()` for global hydration events and pass per-element callbacks directly to [declarativeTemplate()](../fast-element.declarativetemplate/)<!-- -->.
 
 ## Methods
 

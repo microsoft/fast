@@ -95,7 +95,15 @@ function chainCallback(
     if (!first) return second;
     if (!second) return first;
     return () => {
-        first();
-        second();
+        try {
+            first();
+        } catch {
+            // Isolate callbacks so one consumer cannot suppress another.
+        }
+        try {
+            second();
+        } catch {
+            // Isolate callbacks so one consumer cannot suppress another.
+        }
     };
 }
