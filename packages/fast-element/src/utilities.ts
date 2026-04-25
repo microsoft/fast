@@ -76,7 +76,7 @@ export class UnobservableMutationObserver extends MutationObserver {
         function handler(mutations: MutationRecord[]) {
             this.callback.call(
                 null,
-                mutations.filter(record => this.observedNodes.has(record.target))
+                mutations.filter(record => this.observedNodes.has(record.target)),
             );
         }
 
@@ -138,7 +138,7 @@ export const ViewBehaviorOrchestrator = Object.freeze({
      * @returns A ViewBehaviorOrchestrator.
      */
     create<TSource = any, TParent = any>(
-        source: TSource
+        source: TSource,
     ): ViewBehaviorOrchestrator<TSource, TParent> {
         const behaviors: ViewBehavior[] = [];
         const targets: ViewBehaviorTargets = {};

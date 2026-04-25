@@ -50,7 +50,7 @@ export const elements = (selector?: string): ElementsFilter =>
  * Internally used by the SlottedDirective and the ChildrenDirective.
  */
 export abstract class NodeObservationDirective<
-    T extends NodeBehaviorOptions
+    T extends NodeBehaviorOptions,
 > extends StatelessAttachedAttributeDirective<T> {
     private _id: string;
     private _controllerProperty: string;

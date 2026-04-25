@@ -1,23 +1,19 @@
 /**
- * Lifecycle callbacks for element hydration events.
+ * Options for configuring global hydration lifecycle events.
  * @public
  */
-export interface ElementHydrationCallbacks {
+export interface HydrationOptions {
     /** Called once when the first prerendered element begins hydrating. */
     hydrationStarted?(): void;
-    /** Called before an individual element's hydration begins. */
-    elementWillHydrate?(source: HTMLElement): void;
-    /** Called after an individual element's hydration has finished. */
-    elementDidHydrate?(source: HTMLElement): void;
     /** Called after all prerendered elements have completed hydration. */
     hydrationComplete?(): void;
 }
 
 /**
  * Tracks prerendered elements through the hydration lifecycle and
- * fires callbacks at each stage. Each element is added before its
- * hydration bind and removed after. When the last element finishes
- * and no new elements arrive, `hydrationComplete` is fired.
+ * fires global callbacks at start and completion. Per-element callbacks
+ * (`elementWillHydrate`, `elementDidHydrate`) are handled through
+ * definition-level {@link TemplateLifecycleCallbacks}.
  *
  * @public
  */
@@ -26,7 +22,7 @@ export class HydrationTracker {
     private started = false;
     private checkTimer: ReturnType<typeof setTimeout> | null = null;
 
-    constructor(private callbacks: ElementHydrationCallbacks) {}
+    constructor(private options: HydrationOptions) {}
 
     /**
      * Registers an element as pending hydration.
@@ -36,7 +32,7 @@ export class HydrationTracker {
         if (!this.started) {
             this.started = true;
             try {
-                this.callbacks.hydrationStarted?.();
+                this.options.hydrationStarted?.();
             } catch {
                 // A lifecycle callback must never prevent hydration.
             }
@@ -46,28 +42,10 @@ export class HydrationTracker {
     }
 
     /**
-     * Fires the `elementWillHydrate` callback for an element.
-     */
-    public notifyWillHydrate(element: HTMLElement): void {
-        try {
-            this.callbacks.elementWillHydrate?.(element);
-        } catch {
-            // A lifecycle callback must never prevent hydration.
-        }
-    }
-
-    /**
-     * Removes an element from the pending set, fires
-     * `elementDidHydrate`, and schedules a debounced
-     * completion check.
+     * Removes an element from the pending set and schedules
+     * a debounced completion check.
      */
     public remove(element: HTMLElement): void {
-        try {
-            this.callbacks.elementDidHydrate?.(element);
-        } catch {
-            // A lifecycle callback must never prevent hydration.
-        }
-
         this.elements.delete(element);
 
         // Debounce: reset on every removal so we wait until no
@@ -82,7 +60,7 @@ export class HydrationTracker {
 
                 if (this.elements.size === 0) {
                     try {
-                        this.callbacks.hydrationComplete?.();
+                        this.options.hydrationComplete?.();
                     } catch {
                         // A lifecycle callback must never prevent post-hydration cleanup.
                     }
@@ -90,4 +68,42 @@ export class HydrationTracker {
             }, 0);
         }
     }
+
+    /**
+     * Merges additional options into the tracker, chaining
+     * callbacks so both the original and new callbacks fire.
+     */
+    public mergeOptions(incoming: HydrationOptions): void {
+        const prev = this.options;
+        this.options = {
+            hydrationStarted: chainCallback(
+                prev.hydrationStarted,
+                incoming.hydrationStarted,
+            ),
+            hydrationComplete: chainCallback(
+                prev.hydrationComplete,
+                incoming.hydrationComplete,
+            ),
+        };
+    }
+}
+
+function chainCallback(
+    first: (() => void) | undefined,
+    second: (() => void) | undefined,
+): (() => void) | undefined {
+    if (!first) return second;
+    if (!second) return first;
+    return () => {
+        try {
+            first();
+        } catch {
+            // Isolate callbacks so one consumer cannot suppress another.
+        }
+        try {
+            second();
+        } catch {
+            // Isolate callbacks so one consumer cannot suppress another.
+        }
+    };
 }

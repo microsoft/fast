@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { enableDebug } from "./debug.js";
-import type { FASTGlobal } from "./interfaces.js";
-
-declare const FAST: FASTGlobal;
+import { FAST } from "./platform.js";
 
 enableDebug();
 

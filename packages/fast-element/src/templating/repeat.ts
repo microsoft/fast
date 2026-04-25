@@ -24,9 +24,11 @@ import type {
     ViewTemplate,
 } from "./template.js";
 import {
-    HTMLView,
     HydrationStage,
     type HydrationView,
+} from "./hydration-view.js";
+import {
+    HTMLView,
     type SyntheticView,
 } from "./view.js";
 

@@ -15,6 +15,11 @@ navigationOptions:
 
 ## TemplateElement.config() method
 
+> Warning: This API is now obsolete.
+> 
+> Use `enableHydration()` for global hydration events and pass per-element callbacks to [declarativeTemplate()](../fast-element.declarativetemplate/) instead.
+> 
+
 Configure lifecycle callbacks for hydration events.
 
 **Signature:**

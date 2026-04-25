@@ -4,17 +4,21 @@ Bundle sizes for `@microsoft/fast-element` exports.
 
 | Export | Minified | Gzip | Brotli |
 |--------|----------|------|--------|
-| CDN Rollup Bundle | 65.46 KB | 19.45 KB | 17.44 KB |
-| FASTElement | 25.69 KB | 7.98 KB | 7.22 KB |
-| Updates | 3.13 KB | 1.28 KB | 1.09 KB |
-| Observable | 7.65 KB | 2.79 KB | 2.51 KB |
-| observable | 7.68 KB | 2.81 KB | 2.53 KB |
-| attr | 1.28 KB | 634 B | 552 B |
-| children | 5.68 KB | 2.19 KB | 1.95 KB |
-| css | 2.36 KB | 1.05 KB | 964 B |
-| ref | 4.65 KB | 1.86 KB | 1.63 KB |
-| slotted | 5.46 KB | 2.12 KB | 1.87 KB |
-| volatile | 7.74 KB | 2.83 KB | 2.54 KB |
-| when | 1.99 KB | 770 B | 625 B |
-| html | 26.82 KB | 8.77 KB | 7.88 KB |
-| repeat | 30.48 KB | 9.70 KB | 8.74 KB |
+| CDN Rollup Bundle | 65.07 KB | 19.35 KB | 17.29 KB |
+| FASTElement | 23.71 KB | 7.37 KB | 6.63 KB |
+| Updates | 473 B | 337 B | 287 B |
+| Observable | 6.70 KB | 2.49 KB | 2.22 KB |
+| observable | 6.74 KB | 2.50 KB | 2.24 KB |
+| attr | 477 B | 288 B | 244 B |
+| children | 4.81 KB | 1.86 KB | 1.64 KB |
+| ref | 3.78 KB | 1.53 KB | 1.33 KB |
+| slotted | 4.60 KB | 1.79 KB | 1.58 KB |
+| volatile | 6.79 KB | 2.53 KB | 2.25 KB |
+| when | 1.82 KB | 712 B | 568 B |
+| html | 25.92 KB | 8.50 KB | 7.61 KB |
+| repeat | 29.57 KB | 9.42 KB | 8.47 KB |
+| css | 2.43 KB | 1.00 KB | 911 B |
+| ElementStyles | 1.65 KB | 729 B | 623 B |
+| enableHydration | 43.23 KB | 13.21 KB | 11.88 KB |
+| ArrayObserver | 12.51 KB | 4.45 KB | 4.01 KB |
+| declarativeTemplate | 85.68 KB | 26.22 KB | 23.09 KB |

@@ -10,7 +10,7 @@ For deep dives into specific areas, see the linked detailed documents.
 
 1. [High-Level Overview](#high-level-overview)
 2. [Core Concepts](#core-concepts)
-   - [FAST Global](#fast-global)
+   - [FAST Object](#fast-object)
    - [FASTElement & ElementController](#fastelement--elementcontroller)
    - [Observables & Notifiers](#observables--notifiers)
    - [Bindings](#bindings)
@@ -49,30 +49,22 @@ For deep dives into specific areas, see the linked detailed documents.
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
-The library's kernel (the `FAST` global, the `Updates` queue, and the `Observable` system) is stored on `globalThis.FAST`.
-
-The v3 runtime assumes native `globalThis`. `src/polyfills.ts` only backfills
-`requestIdleCallback` / `cancelIdleCallback`, so applications targeting older
-engines must install their own `globalThis` polyfill before FAST loads.
+The library's kernel (the `FAST` object, the `Updates` queue, and the `Observable` system) is module-scoped — imported from `@microsoft/fast-element` rather than stored on `globalThis`.
 
 ---
 
 ## Core Concepts
 
-### FAST Global
+### FAST Object
 
 **File**: `src/platform.ts`, `src/interfaces.ts`
 
-`FAST` is a singleton object attached to `globalThis`. It provides:
+`FAST` is a module-scoped singleton exported from `@microsoft/fast-element`. It is **not** attached to `globalThis`. It provides:
 
-- `FAST.getById(id, initializer)` – shared kernel slot registry (used to share the update queue and observable system across FAST instances)
 - `FAST.warn(code, values)` / `FAST.error(code, values)` – structured diagnostic messages
 - `FAST.addMessages(dict)` – registers human-readable debug messages used by `enableDebug()` and declarative runtime diagnostics
 
-The `KernelServiceId` enum provides the fixed numeric keys used for shared
-services on the `FAST` global. These stable IDs let FAST instances on the same
-page reuse the update queue, observable system, context event, and element
-registry.
+The previous `FAST.getById()` slot registry, `FASTGlobal` type, and `KernelServiceId` enum have been removed. Kernel services (update queue, observable system, etc.) are resolved through standard ES module imports rather than a shared global registry.
 
 ---
 
@@ -90,15 +82,15 @@ registry.
 
 `ElementController` is the real workhorse. It:
 
-- Extends `PropertyChangeNotifier` so the element itself participates in the observable system.
+- Uses composition with an internal `_notifier` field (rather than extending `PropertyChangeNotifier`) and implements the `Notifier` interface directly, so the element still participates in the observable system.
 - Holds the element's `FASTElementDefinition` (name, template, styles, observed attributes).
 - Manages a `Stages` state machine: `disconnected → connecting → connected → disconnecting → disconnected`.
-- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. The `ViewController` interface also exposes `isPrerendered` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
+- Exposes `isPrerendered: Promise<boolean>` which resolves to `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran. Exposes `isHydrated: Promise<boolean>` which resolves to `true` only when hydration actually ran successfully. The `ViewController` interface also exposes both `isPrerendered` and `isHydrated` as `Promise<boolean>` for custom directives. Attribute-skip logic during the hydration bind uses an internal `_skipAttrUpdates` flag that is never exposed as a public boolean.
 - On `connect()`: restores pre-upgrade observable values, calls `connectedCallback` on all `HostBehavior`s, renders the current template into the shadow root when one is available, and applies styles.
-- Rendering is split into two modular paths via `renderPrerendered()` and `renderClientSide()`:
-  - **Prerendered**: `renderPrerendered()` registers the element in the static hydration tracker, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, then restores the standard handler and removes the element from the tracker. After this point, all future attribute changes flow through the real handler with zero overhead.
+- Rendering is split into two modular paths. Hydration is pluggable: `enableHydration()` from `@microsoft/fast-element/hydration.js` installs a hook via `ElementController.installHydrationHook()`, keeping zero hydration imports in the core controller:
+  - **Prerendered**: The hydration hook (installed by `enableHydration()`) registers the element in the static hydration tracker, fires the definition's `elementWillHydrate` callback, swaps `onAttributeChangedCallback` to a no-op so the upgrade-time burst of callbacks is discarded, hydrates the existing DOM via `template.hydrate()`, fires `elementDidHydrate`, then restores the standard handler and removes the element from the tracker. The entire method is wrapped in `try/finally` to guarantee cleanup even if an error occurs during hydration. After this point, all future attribute changes flow through the real handler with zero overhead.
   - **Client-side**: `renderClientSide()` clones the compiled fragment, binds, and appends to the host — the standard path with no prerender logic.
-- **Static hydration tracking**: `ElementController` delegates element-level hydration tracking to a `HydrationTracker` instance (in `hydration-tracker.ts`). `configHydration()` creates the tracker with the provided callbacks. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires per-element callbacks (`hydrationStarted`, `elementWillHydrate`, `elementDidHydrate`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first.
+- **Static hydration tracking**: Hydration is opt-in via `enableHydration()` from `@microsoft/fast-element/hydration.js`, which creates a `HydrationTracker` and installs a pluggable hydration hook on `ElementController` via `ElementController.installHydrationHook()`. Until this is called, `renderTemplate()` always uses the client-side path — even if the element has a pre-existing shadow root. `HydrationTracker` manages a `Set<HTMLElement>` of pending elements, fires global callbacks (`hydrationStarted`, `hydrationComplete`), and fires `hydrationComplete` via a debounced `setTimeout(0)` after the last element finishes binding — ensuring all async template batches settle first. Per-element hydration callbacks (`elementWillHydrate`, `elementDidHydrate`) are stored on the `FASTElementDefinition.lifecycleCallbacks` and fired directly by the hydration hook.
 - On `disconnect()`: calls `disconnectedCallback` on behaviors, unbinds the view.
 - `onAttributeChangedCallback()` is the standard handler that processes attribute changes. During the prerendered bind, it is temporarily swapped to a no-op (see above) to avoid redundant processing of server-rendered attribute values.
 - Exposes `addBehavior` / `removeBehavior` for dynamic `HostBehavior` management (used by `ElementStyles`).
@@ -255,7 +247,7 @@ See [src/templating/TEMPLATE-BINDINGS.md](./src/templating/TEMPLATE-BINDINGS.md)
 
 **Exported as**: `Updates`
 
-`Updates` is a shared, batched task queue used to synchronise writes to the DOM. It is stored on the `FAST` global (under `KernelServiceId.updateQueue`) so multiple FAST instances on the same page share a single flush cycle.
+`Updates` is a shared, batched task queue used to synchronise writes to the DOM. It is resolved through standard ES module imports so multiple parts of the application share a single flush cycle.
 
 - `Updates.enqueue(callable)` – schedules a task for the next batch.
 - `Updates.process()` – forces immediate synchronous flush (useful in tests).
@@ -274,7 +266,9 @@ See [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) for more detail.
 
 **Files**: `src/styles/css.ts`, `src/styles/element-styles.ts`, `src/styles/css-directive.ts`
 
-The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. `CSSDirective`s can contribute additional static CSS during template composition, but runtime CSS bindings and style-attached `HostBehavior`s are not supported. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container.
+**Subpath export**: `@microsoft/fast-element/styles.js`
+
+The `css` tag, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are imported from the `@microsoft/fast-element/styles.js` subpath rather than the main barrel. The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. `CSSDirective`s can contribute additional static CSS during template composition, but runtime CSS bindings and style-attached `HostBehavior`s are not supported. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container.
 
 ---
 
@@ -359,7 +353,7 @@ for the detailed architecture.
 
 ```mermaid
 flowchart TD
-    A([Browser loads script]) --> B[FAST global created on globalThis]
+    A([Browser loads script]) --> B[FAST module initialises singleton]
     B --> C[FASTElement subclass executes FASTElement.compose]
     C --> D[Observable decorators register accessors on the prototype]
     C --> E[Attribute decorators push AttributeDefinition to the class]
@@ -378,13 +372,13 @@ flowchart TD
 
     CONN[connectedCallback] --> STAGE[stage = connecting]
     STAGE --> PRERENDER{Existing shadow root\nfrom SSR/DSD?}
-    PRERENDER -->|yes| SETFLAG[isPrerendered = true]
-    PRERENDER -->|no| NORMAL[isPrerendered = false]
+    PRERENDER -->|yes| SETFLAG[isPrerendered = true\nisHydrated = pending]
+    PRERENDER -->|no| NORMAL[isPrerendered = false\nisHydrated = false]
     SETFLAG --> OBS[Restore pre-upgrade observable values]
     NORMAL --> OBS
     OBS --> BEHAV[Connect HostBehaviors]
     BEHAV --> RENDER{isPrerendered AND\ntemplate is hydratable?}
-    RENDER -->|yes| HYDRATE[template.hydrate → HydrationView\nmaps existing DOM to binding targets]
+    RENDER -->|yes| HYDRATE[template.hydrate → HydrationView\nmaps existing DOM to binding targets\nisHydrated = true]
     RENDER -->|no| CLONE[ViewTemplate.render → HTMLView.appendTo shadow root]
     HYDRATE --> STYLES[Apply ElementStyles to shadow root]
     CLONE --> STYLES
@@ -452,10 +446,10 @@ Below is a conceptual map of the major subsystems and their relationships:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│                           FAST Global (globalThis.FAST)                      │
-│  KernelServiceIds → Updates queue, Observable system, Element registry       │
+│                      FAST (module-scoped singleton)                          │
+│  warn / error / addMessages — diagnostic messaging                           │
 └────────────────────┬─────────────────────────────────────────────────────────┘
-                     │ shared kernel slots
+                     │ ES module imports
          ┌───────────┴───────────┐
          │                       │
 ┌────────▼──────────┐   ┌────────▼────────────────────┐
@@ -498,7 +492,7 @@ Below is a conceptual map of the major subsystems and their relationships:
 1. Developer writes a class extending `FASTElement`, decorates properties with `@observable` / `@attr`, and calls `FASTElement.define({ name, template, styles })`.
 2. `FASTElement.define` → `FASTElementDefinition.compose(...).define()` registers the element with the Custom Element Registry.
 3. When the browser upgrades the element, `ElementController.forCustomElement(element)` is called in the constructor.
-4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content), `renderPrerendered()` uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
+4. On `connectedCallback`, the controller renders the template into the shadow root. If the element already has a shadow root from SSR (prerendered content) and hydration has been enabled via `enableHydration()`, the installed hydration hook uses `template.hydrate()` to map existing DOM nodes to binding targets instead of cloning new DOM. If no template is available yet, the element connects without rendering until a later `definition.template` update recreates the controller. Compilation is lazy: the first render call triggers `Compiler.compile()`, subsequent calls clone the already-compiled `DocumentFragment`.
 5. `HTMLView.bind(source)` wires up each `ViewBehavior`. `oneWay` bindings create `ExpressionNotifier`s that track observable dependencies automatically.
 6. When an observed property changes, its notifier fans out to all subscribers. Each binding enqueues a DOM update via `Updates`. The next animation frame drains the queue and applies the mutations.
 7. On `disconnectedCallback`, `HTMLView.unbind()` tears down all bindings; behaviors disconnect; styles are removed.
@@ -509,8 +503,8 @@ Below is a conceptual map of the major subsystems and their relationships:
 
 ```
 src/
-├── interfaces.ts          # Core types: Callable, Constructable, FASTGlobal, Message codes
-├── platform.ts            # FAST global initialisation, KernelServiceId, TypeRegistry
+├── interfaces.ts          # Core types: Callable, Constructable, Message codes
+├── platform.ts            # FAST module-scoped singleton, TypeRegistry
 ├── declarative.ts         # Pure declarative entrypoint
 ├── dom.ts                 # DOMAspect enum, DOMPolicy, DOMSink
 ├── dom-policy.ts          # Default DOM security policy (TrustedTypes integration)
