@@ -1,5 +1,5 @@
 import type { Mutable } from "../interfaces.js";
-import { ensureDeclarativeRuntime } from "../declarative/runtime.js";
+import { ensureHydrationRuntime } from "../hydration/runtime.js";
 import { SourceLifetime } from "../observation/observable.js";
 import type { ViewController } from "../templating/html-directive.js";
 import type { HydratableElementViewTemplate } from "../templating/template.js";
@@ -38,7 +38,7 @@ function noopAttributeHandler() {}
  * @public
  */
 export function enableHydration(options?: HydrationOptions): void {
-    ensureDeclarativeRuntime();
+    ensureHydrationRuntime();
     const tracker = new HydrationTracker(options ?? {});
 
     ElementController.installHydrationHook(
