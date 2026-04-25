@@ -15,7 +15,7 @@ navigationOptions:
 
 ## HydrationTracker.remove() method
 
-Removes an element from the pending set, fires `elementDidHydrate`<!-- -->, and schedules a debounced completion check.
+Removes an element from the pending set and schedules a debounced completion check.
 
 **Signature:**
 

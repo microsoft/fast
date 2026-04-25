@@ -32,7 +32,7 @@ export type FASTContext<T> = ContextDecorator<T> & {
     request(target: EventTarget, callback: ContextCallback<T>, multiple?: boolean): void;
     handle(
         target: EventTarget,
-        callback: (event: ContextEvent<FASTContext<T>>) => void
+        callback: (event: ContextEvent<FASTContext<T>>) => void,
     ): void;
 };
 
@@ -46,7 +46,7 @@ export type FASTContextRequestStrategy = <T extends UnknownContext>(
     target: EventTarget,
     context: T,
     callback: ContextCallback<ContextType<T>>,
-    multiple
+    multiple,
 ) => void;
 
 const contextsByName = new Map<string, FASTContext<unknown>>();
@@ -91,7 +91,7 @@ export const Context = Object.freeze({
         const Interface = function (
             target: Constructable<Node>,
             property: string,
-            index: number
+            index: number,
         ): void {
             if (target == null || new.target !== undefined) {
                 throw FAST.error(Message.noRegistrationForContext, {
@@ -113,7 +113,7 @@ export const Context = Object.freeze({
 
         Interface.handle = (
             target: EventTarget,
-            callback: (event: ContextEvent<FASTContext<T>>) => void
+            callback: (event: ContextEvent<FASTContext<T>>) => void,
         ) => Context.handle(target, callback, Interface);
 
         Interface.provide = (target: EventTarget, value: T) =>
@@ -124,7 +124,7 @@ export const Context = Object.freeze({
         Interface.request = (
             target: EventTarget,
             callback: ContextCallback<T>,
-            multiple?: boolean
+            multiple?: boolean,
         ) => Context.request(target, Interface, callback, multiple);
 
         Interface.toString = () => `Context<${Interface.name}>`;
@@ -171,7 +171,7 @@ export const Context = Object.freeze({
         target: EventTarget,
         context: T,
         callback: ContextCallback<ContextType<T>>,
-        multiple = false
+        multiple = false,
     ): void {
         requestStrategy(target, context, callback, multiple);
     },
@@ -191,7 +191,7 @@ export const Context = Object.freeze({
         target: EventTarget,
         context: T,
         callback: ContextCallback<ContextType<T>>,
-        multiple = false
+        multiple = false,
     ) {
         target.dispatchEvent(new ContextEvent(context, callback, multiple));
     },
@@ -205,7 +205,7 @@ export const Context = Object.freeze({
     provide<T extends UnknownContext>(
         target: EventTarget,
         context: T,
-        value: ContextType<T>
+        value: ContextType<T>,
     ) {
         Context.handle(
             target,
@@ -213,7 +213,7 @@ export const Context = Object.freeze({
                 event.stopImmediatePropagation();
                 event.callback(value);
             },
-            context
+            context,
         );
     },
 
@@ -229,7 +229,7 @@ export const Context = Object.freeze({
     handle<T extends UnknownContext>(
         target: EventTarget,
         callback: (event: ContextEvent<T>) => void,
-        context?: T
+        context?: T,
     ) {
         if (context) {
             target.addEventListener(contextEventType, (event: ContextEvent<T>) => {
@@ -255,7 +255,7 @@ export const Context = Object.freeze({
     defineProperty<T extends UnknownContext>(
         target: Constructable<EventTarget> | EventTarget,
         propertyName: string,
-        context: T
+        context: T,
     ) {
         const field = Symbol.for(`fast:di:${propertyName}`);
 
@@ -279,9 +279,8 @@ export type UnknownContext = Context<unknown>;
  * A helper type which can extract a Context value type from a Context type
  * @public
  */
-export type ContextType<T extends UnknownContext> = T extends Context<infer Y>
-    ? Y
-    : never;
+export type ContextType<T extends UnknownContext> =
+    T extends Context<infer Y> ? Y : never;
 
 /**
  * A callback which is provided by a context requester and is called with the value satisfying the request.
@@ -305,7 +304,7 @@ export class ContextEvent<T extends UnknownContext> extends Event {
     public constructor(
         public readonly context: T,
         public readonly callback: ContextCallback<ContextType<T>>,
-        public readonly multiple?: boolean
+        public readonly multiple?: boolean,
     ) {
         super(contextEventType, { bubbles: true, composed: true });
     }

@@ -1,14 +1,20 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate, TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 // Track lifecycle callbacks for testing
 export const lifecycleEvents: Array<{ callback: string; name?: string }> = [];
 
-// Configure lifecycle callbacks
-TemplateElement.config({
+// Enable hydration with global callback
+enableHydration({
+    hydrationComplete(): void {
+        lifecycleEvents.push({ callback: "hydrationComplete" });
+        (window as any).hydrationCompleted = true;
+    },
+});
+
+// Per-element lifecycle callbacks
+const lifecycleCallbacks = {
     elementDidRegister(name: string): void {
         lifecycleEvents.push({ callback: "elementDidRegister", name });
     },
@@ -21,11 +27,7 @@ TemplateElement.config({
     elementDidDefine(name: string): void {
         lifecycleEvents.push({ callback: "elementDidDefine", name });
     },
-    hydrationComplete(): void {
-        lifecycleEvents.push({ callback: "hydrationComplete" });
-        (window as any).hydrationCompleted = true;
-    },
-});
+};
 
 // Simple element with basic property
 class SimpleElement extends FASTElement {
@@ -35,7 +37,7 @@ class SimpleElement extends FASTElement {
 
 SimpleElement.define({
     name: "simple-element",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 // Complex element with multiple properties and methods
@@ -60,7 +62,7 @@ class ComplexElement extends FASTElement {
 
 ComplexElement.define({
     name: "complex-element",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 // Nested element
@@ -71,7 +73,7 @@ class NestedElement extends FASTElement {
 
 NestedElement.define({
     name: "nested-element",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 // Element with deferred hydration
@@ -90,7 +92,7 @@ class DeferredElement extends FASTElement {
 
 DeferredElement.define({
     name: "deferred-element",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 // Nested deferred elements to verify parent-first hydration
@@ -105,7 +107,7 @@ class DeferredParentElement extends FASTElement {
 
 DeferredParentElement.define({
     name: "deferred-parent-element",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 class DeferredChildElement extends FASTElement {
@@ -119,7 +121,7 @@ class DeferredChildElement extends FASTElement {
 
 DeferredChildElement.define({
     name: "deferred-child-element",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 // Define templates
