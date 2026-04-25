@@ -62,6 +62,17 @@ Controls the lifecycle and rendering of a `FASTElement`<!-- -->.
 </td></tr>
 <tr><td>
 
+[ElementStyles](../fast-element.elementstyles/)
+
+
+</td><td>
+
+Represents styles that can be applied to a custom element.
+
+
+</td></tr>
+<tr><td>
+
 [FASTElementDefinition](../fast-element.fastelementdefinition/)
 
 
@@ -203,6 +214,32 @@ A directive that configures list rendering.
 </td><td>
 
 The runtime behavior for slotted node observation.
+
+
+</td></tr>
+<tr><td>
+
+[Sort](../fast-element.sort/)
+
+
+</td><td>
+
+A sort array indicates new index positions of array items.
+
+
+</td></tr>
+<tr><td>
+
+[Splice](../fast-element.splice/)
+
+
+</td><td>
+
+A splice map is a representation of how a previous array of items was transformed into a new array of items. Conceptually it is a list of tuples of
+
+(index, removed, addedCount)
+
+which are kept in ascending index order of. The tuple represents that at the \|index\|, \|removed\| sequence of items were removed, and counting forward from \|index\|, \|addedCount\| items were added.
 
 
 </td></tr>
@@ -763,6 +800,28 @@ Represents a custom element based on the FASTElement infrastructure.
 </td></tr>
 <tr><td>
 
+[HostBehavior](../fast-element.hostbehavior/)
+
+
+</td><td>
+
+Represents an object that can contribute behavior to a host.
+
+
+</td></tr>
+<tr><td>
+
+[HostController](../fast-element.hostcontroller/)
+
+
+</td><td>
+
+Controls the lifecycle and context of behaviors and styles associated with a component host.
+
+
+</td></tr>
+<tr><td>
+
 [HTMLDirective](../fast-element.htmldirective/)
 
 
@@ -900,6 +959,28 @@ Shadow root initialization options.
 </td><td>
 
 The options used to configure slotted node observation.
+
+
+</td></tr>
+<tr><td>
+
+[StyleStrategy](../fast-element.stylestrategy/)
+
+
+</td><td>
+
+Implemented to provide specific behavior when adding/removing styles for elements.
+
+
+</td></tr>
+<tr><td>
+
+[StyleTarget](../fast-element.styletarget/)
+
+
+</td><td>
+
+A node that can be targeted by styles.
 
 
 </td></tr>
@@ -1337,6 +1418,17 @@ A function capable of compiling a template from the preprocessed form produced b
 </td><td>
 
 Represents a ViewBehaviorFactory after the compilation process has completed.
+
+
+</td></tr>
+<tr><td>
+
+[ComposableStyles](../fast-element.composablestyles/)
+
+
+</td><td>
+
+Represents styles that can be composed into the ShadowDOM of a custom element.
 
 
 </td></tr>

@@ -228,7 +228,12 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
         TemplateElement.lifecycleCallbacks = callbacks;
 
         // Forward global hydration callbacks to ElementController
-        if (callbacks.hydrationStarted || callbacks.hydrationComplete) {
+        if (
+            callbacks.hydrationStarted ||
+            callbacks.hydrationComplete ||
+            callbacks.elementWillHydrate ||
+            callbacks.elementDidHydrate
+        ) {
             enableHydration({
                 hydrationStarted: callbacks.hydrationStarted,
                 hydrationComplete: callbacks.hydrationComplete,

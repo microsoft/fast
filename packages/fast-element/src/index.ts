@@ -75,6 +75,12 @@ export {
 export { type UpdateQueue, Updates } from "./observation/update-queue.js";
 export { emptyArray, FAST } from "./platform.js";
 
+// Type-only re-exports for types referenced by root public signatures
+export type { ComposableStyles, ElementStyles } from "./styles/element-styles.js";
+export type { HostBehavior, HostController } from "./styles/host.js";
+export type { StyleStrategy, StyleTarget } from "./styles/style-strategy.js";
+export type { Splice, Sort } from "./observation/arrays.js";
+
 export type {
     ChildListDirectiveOptions,
     ChildrenDirectiveOptions,

@@ -135,6 +135,9 @@ export const Compiler: {
 };
 
 // @public
+export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
+
+// @public
 export type Constructable<T = {}> = {
     new (...args: any[]): T;
 };
@@ -196,15 +199,12 @@ export interface DOMPolicy {
 // @public
 export type DOMSink = (target: Node, aspectName: string, value: any, ...args: any[]) => void;
 
-// Warning: (ae-forgotten-export) The symbol "HostController" needs to be exported by the entry point index.d.ts
-//
 // @public
 export class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement> {
     // @internal
     constructor(element: TElement, definition: FASTElementDefinition);
     addBehavior(behavior: HostBehavior<TElement>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
-    // Warning: (ae-forgotten-export) The symbol "HostBehavior" needs to be exported by the entry point index.d.ts
     protected behaviors: Map<HostBehavior<TElement>, number> | null;
     protected bindObservables(): void;
     protected captureBoundObservables(): void;
@@ -223,7 +223,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement> imple
     get isConnected(): boolean;
     readonly isHydrated: Promise<boolean>;
     readonly isPrerendered: Promise<boolean>;
-    // Warning: (ae-forgotten-export) The symbol "ElementStyles" needs to be exported by the entry point index.d.ts
     get mainStyles(): ElementStyles | null;
     set mainStyles(value: ElementStyles | null);
     protected needsInitialization: boolean;
@@ -262,6 +261,25 @@ export const elements: (selector?: string) => ElementsFilter;
 
 // @public
 export type ElementsFilter = (value: Node, index?: number, array?: Node[]) => boolean;
+
+// @public
+export class ElementStyles {
+    constructor(styles: ReadonlyArray<ComposableStyles>);
+    // @internal (undocumented)
+    addStylesTo(target: StyleTarget): void;
+    // @internal (undocumented)
+    isAttachedTo(target: StyleTarget): boolean;
+    static normalize(styles: ComposableStyles | ComposableStyles[] | undefined): ElementStyles | undefined;
+    // @internal (undocumented)
+    removeStylesFrom(target: StyleTarget): void;
+    static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
+    get strategy(): StyleStrategy;
+    // (undocumented)
+    readonly styles: ReadonlyArray<ComposableStyles>;
+    static readonly supportsAdoptedStyleSheets: boolean;
+    // Warning: (ae-forgotten-export) The symbol "ConstructibleStyleStrategy" needs to be exported by the entry point index.d.ts
+    withStrategy(Strategy: ConstructibleStyleStrategy): this;
+}
 
 // @public
 export interface ElementView<TSource = any, TParent = any> extends View<TSource, TParent> {
@@ -392,6 +410,24 @@ export const fastElementRegistry: TypeRegistry<FASTElementDefinition>;
 
 // @public
 export type FASTElementTemplateResolver<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> = (definition: FASTElementDefinition<TType>) => ElementViewTemplate<InstanceType<TType>> | Promise<ElementViewTemplate<InstanceType<TType>>>;
+
+// @public
+export interface HostBehavior<TSource = any> {
+    addedCallback?(controller: HostController<TSource>): void;
+    connectedCallback?(controller: HostController<TSource>): void;
+    disconnectedCallback?(controller: HostController<TSource>): void;
+    removedCallback?(controller: HostController<TSource>): void;
+}
+
+// @public
+export interface HostController<TSource = any> extends ExpressionController<TSource> {
+    addBehavior(behavior: HostBehavior<TSource>): void;
+    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+    readonly isConnected: boolean;
+    mainStyles: ElementStyles | null;
+    removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
+    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
+}
 
 // @public
 export const html: HTMLTemplateTag;
@@ -638,7 +674,6 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
     readonly name: string;
     readonly registry?: CustomElementRegistry;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
-    // Warning: (ae-forgotten-export) The symbol "ComposableStyles" needs to be exported by the entry point index.d.ts
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
 }
@@ -699,8 +734,6 @@ export function repeat<TSource = any, TArray extends ReadonlyArray<any> = Readon
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     constructor(directive: RepeatDirective);
     bind(controller: ViewController): void;
-    // Warning: (ae-forgotten-export) The symbol "Splice" needs to be exported by the entry point index.d.ts
-    // Warning: (ae-forgotten-export) The symbol "Sort" needs to be exported by the entry point index.d.ts
     handleChange(source: any, args: Splice[] | Sort[] | ExpressionObserver): void;
     unbind(): void;
     // @internal (undocumented)
@@ -750,6 +783,13 @@ export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 }
 
 // @public
+export class Sort {
+    constructor(sorted?: number[] | undefined);
+    // (undocumented)
+    sorted?: number[] | undefined;
+}
+
+// @public
 export const SourceLifetime: Readonly<{
     readonly unknown: undefined;
     readonly coupled: 1;
@@ -757,6 +797,19 @@ export const SourceLifetime: Readonly<{
 
 // @public
 export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
+
+// @public
+export class Splice {
+    constructor(index: number, removed: any[], addedCount: number);
+    // (undocumented)
+    addedCount: number;
+    adjustTo(array: any[]): this;
+    // (undocumented)
+    index: number;
+    // (undocumented)
+    removed: any[];
+    reset?: boolean;
+}
 
 // @public
 export const enum Stages {
@@ -774,6 +827,20 @@ export abstract class StatelessAttachedAttributeDirective<TOptions> implements H
     createHTML(add: AddViewBehaviorFactory): string;
     // (undocumented)
     protected options: TOptions;
+}
+
+// @public
+export interface StyleStrategy {
+    addStylesTo(target: StyleTarget): void;
+    removeStylesFrom(target: StyleTarget): void;
+}
+
+// @public
+export interface StyleTarget extends Pick<Node, "getRootNode"> {
+    adoptedStyleSheets?: CSSStyleSheet[];
+    append(styles: HTMLStyleElement): void;
+    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
+    removeChild(styles: HTMLStyleElement): void;
 }
 
 // @public

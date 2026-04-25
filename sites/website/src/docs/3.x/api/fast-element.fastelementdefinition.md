@@ -333,7 +333,7 @@ _(Optional)_ Options controlling the creation of the custom element's shadow DOM
 
 </td><td>
 
-ElementStyles
+[ElementStyles](../fast-element.elementstyles/)
 
 
 </td><td>

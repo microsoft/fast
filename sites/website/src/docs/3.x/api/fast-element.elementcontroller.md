@@ -22,7 +22,7 @@ Controls the lifecycle and rendering of a `FASTElement`<!-- -->.
 ```typescript
 export declare class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement> 
 ```
-**Implements:** [Notifier](../fast-element.notifier/)<!-- -->, HostController&lt;TElement&gt;
+**Implements:** [Notifier](../fast-element.notifier/)<!-- -->, [HostController](../fast-element.hostcontroller/)<!-- -->&lt;TElement&gt;
 
 ## Remarks
 
@@ -63,7 +63,7 @@ Description
 
 </td><td>
 
-Map&lt;HostBehavior&lt;TElement&gt;, number&gt; \| null
+Map&lt;[HostBehavior](../fast-element.hostbehavior/)<!-- -->&lt;TElement&gt;, number&gt; \| null
 
 
 </td><td>
@@ -229,7 +229,7 @@ Resolves `true` when the element had an existing shadow root (from SSR or declar
 
 </td><td>
 
-ElementStyles \| null
+[ElementStyles](../fast-element.elementstyles/) \| null
 
 
 </td><td>

@@ -48,7 +48,7 @@ behavior
 
 </td><td>
 
-HostBehavior&lt;TElement&gt;
+[HostBehavior](../fast-element.hostbehavior/)<!-- -->&lt;TElement&gt;
 
 
 </td><td>

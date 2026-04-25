@@ -184,7 +184,7 @@ _(Optional)_ Options controlling the creation of the custom element's shadow DOM
 
 </td><td>
 
-ComposableStyles \| ComposableStyles\[\]
+[ComposableStyles](../fast-element.composablestyles/) \| [ComposableStyles](../fast-element.composablestyles/)<!-- -->\[\]
 
 
 </td><td>
