@@ -1,58 +1,60 @@
 import type { FASTElementDefinition } from "../components/fast-definitions.js";
 import type { Schema } from "./schema.js";
 
-const definitionSchemaHooksKey = Symbol("definitionSchemaHooks");
+const definitionSchemaTransformsKey = Symbol("definitionSchemaTransforms");
 
-let schemaHookOrder = 0;
+let schemaTransformOrder = 0;
 
-type FASTElementDefinitionWithSchemaHooks = FASTElementDefinition & {
-    [definitionSchemaHooksKey]?: DefinitionSchemaHookRecord[];
+type FASTElementDefinitionWithSchemaTransforms = FASTElementDefinition & {
+    [definitionSchemaTransformsKey]?: DefinitionSchemaTransformRecord[];
 };
 
-interface DefinitionSchemaHookRecord {
+interface DefinitionSchemaTransformRecord {
     key: string;
-    hook: DeclarativeSchemaHook;
+    transform: DeclarativeSchemaTransform;
     order: number;
     priority: number;
 }
 
-export interface DeclarativeSchemaHookContext {
+export interface DeclarativeSchemaTransformContext {
     definition: FASTElementDefinition;
     schema: Schema;
 }
 
-export type DeclarativeSchemaHook = (context: DeclarativeSchemaHookContext) => void;
+export type DeclarativeSchemaTransform = (
+    context: DeclarativeSchemaTransformContext,
+) => void;
 
-export function setDefinitionSchemaHook(
+export function setDefinitionSchemaTransform(
     definition: FASTElementDefinition,
     key: string,
-    hook: DeclarativeSchemaHook,
+    transform: DeclarativeSchemaTransform,
     priority: number,
 ): void {
-    const target = definition as FASTElementDefinitionWithSchemaHooks;
-    const hooks = (target[definitionSchemaHooksKey] ??= []);
-    const existingIndex = hooks.findIndex(record => record.key === key);
+    const target = definition as FASTElementDefinitionWithSchemaTransforms;
+    const transforms = (target[definitionSchemaTransformsKey] ??= []);
+    const existingIndex = transforms.findIndex(record => record.key === key);
 
     if (existingIndex !== -1) {
-        hooks.splice(existingIndex, 1);
+        transforms.splice(existingIndex, 1);
     }
 
-    hooks.push({
+    transforms.push({
         key,
-        hook,
-        order: schemaHookOrder++,
+        transform,
+        order: schemaTransformOrder++,
         priority,
     });
 
-    hooks.sort((a, b) => a.priority - b.priority || a.order - b.order);
+    transforms.sort((a, b) => a.priority - b.priority || a.order - b.order);
 }
 
-export function getDefinitionSchemaHooks(
+export function getDefinitionSchemaTransforms(
     definition?: FASTElementDefinition,
-): readonly DeclarativeSchemaHook[] {
-    const hooks = (definition as FASTElementDefinitionWithSchemaHooks | undefined)?.[
-        definitionSchemaHooksKey
-    ];
+): readonly DeclarativeSchemaTransform[] {
+    const transforms = (
+        definition as FASTElementDefinitionWithSchemaTransforms | undefined
+    )?.[definitionSchemaTransformsKey];
 
-    return hooks?.map(record => record.hook) ?? [];
+    return transforms?.map(record => record.transform) ?? [];
 }

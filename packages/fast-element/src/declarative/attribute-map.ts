@@ -5,7 +5,7 @@ import {
     trackLateAttributeDefinition,
 } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
-import { setDefinitionSchemaHook } from "./definition-options.js";
+import { setDefinitionSchemaTransform } from "./definition-options.js";
 import type { Schema } from "./schema.js";
 
 /**
@@ -28,8 +28,8 @@ export interface AttributeMapConfig {
     "attribute-name-strategy"?: "none" | "camelCase";
 }
 
-const attributeMapSchemaHookKey = "attribute-map";
-const attributeMapSchemaHookPriority = 0;
+const attributeMapSchemaTransformKey = "attribute-map";
+const attributeMapSchemaTransformPriority = 0;
 
 /**
  * Creates a FAST element extension that enables declarative attribute mapping
@@ -39,9 +39,9 @@ const attributeMapSchemaHookPriority = 0;
  */
 export function attributeMap(config: AttributeMapConfig = {}): FASTElementExtension {
     return definition => {
-        setDefinitionSchemaHook(
+        setDefinitionSchemaTransform(
             definition,
-            attributeMapSchemaHookKey,
+            attributeMapSchemaTransformKey,
             ({ definition, schema }) => {
                 new AttributeMap(
                     definition.type.prototype,
@@ -50,7 +50,7 @@ export function attributeMap(config: AttributeMapConfig = {}): FASTElementExtens
                     config,
                 ).defineProperties();
             },
-            attributeMapSchemaHookPriority,
+            attributeMapSchemaTransformPriority,
         );
     };
 }

@@ -77,7 +77,7 @@ When connected to the DOM it:
 2. Publishes a template when a matching FAST element definition requests one.
 3. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which
    converts declarative bindings into FAST `ViewTemplate` strings and values.
-4. Runs definition-scoped schema hooks, such as `attributeMap()` and
+4. Runs definition-scoped schema transforms, such as `attributeMap()` and
    `observerMap()`, before returning the concrete `ViewTemplate`.
 
 ### `TemplateParser` — declarative HTML parser
@@ -196,7 +196,7 @@ packages/fast-element/
 │       ├── index.ts           # Declarative barrel export
 │       ├── interfaces.ts      # Message enum (error codes)
 │       ├── debug.ts           # Human-readable declarative debug messages
-│       ├── definition-options.ts # Definition-scoped schema hook storage
+│       ├── definition-options.ts # Definition-scoped schema transform storage
 │       ├── template.ts        # declarativeTemplate(), internal <f-template> publisher, lifecycle orchestration
 │       ├── template-bridge.ts # Registry/name bridge between definitions and publishers
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
@@ -214,22 +214,22 @@ packages/fast-element/
 ### Module dependency direction
 
 The default `declarativeTemplate()` path avoids importing optional map
-implementations. Map helpers attach schema hooks to the definition only when the
-consumer passes them as define extensions.
+implementations. Map helpers attach schema transforms to the definition only
+when the consumer passes them as define extensions.
 
 ```
-template.ts ──imports──▶ definition-options.ts (schema hook reads)
+template.ts ──imports──▶ definition-options.ts (schema transform reads)
 template.ts ──imports──▶ schema.ts (Schema)
-attribute-map.ts ──imports──▶ definition-options.ts (register attribute-map hook)
-observer-map.ts ──imports──▶ definition-options.ts (register observer-map hook)
+attribute-map.ts ──imports──▶ definition-options.ts (register attribute-map transform)
+observer-map.ts ──imports──▶ definition-options.ts (register observer-map transform)
 observer-map.ts ──imports──▶ schema.ts (Schema types)
 attribute-map.ts ──imports──▶ schema.ts (Schema types)
 utilities.ts ──imports──▶ schema.ts (schemaRegistry for cross-element $ref resolution)
 ```
 
-Schema hooks are sorted by priority and insertion order. `attributeMap()` uses a
-higher-priority slot than `observerMap()`, so generated attributes are available
-before observer mapping runs.
+Schema transforms are sorted by priority and insertion order. `attributeMap()`
+uses a higher-priority slot than `observerMap()`, so generated attributes are
+available before observer mapping runs.
 
 ---
 
@@ -332,7 +332,7 @@ via registry + name bridge"]
     G --> H[transformInnerHTML normalises HTML entities]
     H --> I["TemplateParser parses bindings/directives
 builds Schema, strings, values"]
-    I --> J["Run definition schema hooks
+    I --> J["Run definition schema transforms
 attributeMap before observerMap"]
     J --> K["ViewTemplate.create(strings, values)
 returned to definition"]
@@ -358,17 +358,18 @@ to the parser, keeping method signatures lean.
 
 ### Architecture
 
-The parsing pipeline is split across two classes plus definition-scoped hooks:
+The parsing pipeline is split across two classes plus definition-scoped
+transforms:
 
 - **Internal `<f-template>` publisher** (`template.ts`) — Custom element
   lifecycle, registry/name bridge registration, lifecycle callback dispatch, and
-  schema-hook execution. It is a native `HTMLElement`, not a `FASTElement`.
+  schema-transform execution. It is a native `HTMLElement`, not a `FASTElement`.
 - **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser:
   converts declarative HTML into `strings`/`values` arrays for
   `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running
   previous-string in O(1) per binding site instead of O(N) `join("")` calls.
   Independently testable without DOM.
-- **Schema hooks** (`definition-options.ts`) — Extension-provided callbacks run
+- **Schema transforms** (`definition-options.ts`) — Extension-provided callbacks run
   after parsing and before `ViewTemplate.create()`. `attributeMap()` runs before
   `observerMap()`.
 
@@ -379,7 +380,7 @@ sequenceDiagram
     participant TP as TemplateParser
     participant U as utilities.ts
     participant S as Schema
-    participant Hooks as schema hooks
+    participant Transforms as schema transforms
 
     DOM->>FTE: connectedCallback()
     FTE->>FTE: register publisher with bridge
@@ -413,7 +414,7 @@ sequenceDiagram
         end
     end
     TP-->>FTE: { strings, values }
-    FTE->>Hooks: attributeMap(), then observerMap()
+    FTE->>Transforms: attributeMap(), then observerMap()
     FTE->>TP: parser.createTemplate(strings, values)
     FTE-->>DOM: return ViewTemplate to definition resolver
 ```
@@ -518,11 +519,11 @@ When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.de
 
 ### AttributeMap and leaf bindings
 
-When `attributeMap()` is enabled, it registers a definition schema hook. After
-parsing, the hook constructs an `AttributeMap` implementation and calls
-`defineProperties()`. It iterates `Schema.getRootProperties()` and skips any
-property whose schema entry contains `properties`, `type`, or `anyOf` — keeping
-only plain leaf bindings. For each leaf:
+When `attributeMap()` is enabled, it registers a definition schema transform.
+After parsing, the transform constructs an `AttributeMap` implementation and
+calls `defineProperties()`. It iterates `Schema.getRootProperties()` and skips
+any property whose schema entry contains `properties`, `type`, or `anyOf` —
+keeping only plain leaf bindings. For each leaf:
 
 1. The schema key is used as the **JS property name**.
 2. The **HTML attribute name** depends on the `attribute-name-strategy`:
@@ -536,7 +537,7 @@ accessed via bracket notation (e.g. `element["foo-bar"]`). When using
 `"camelCase"`, property names are standard JS identifiers (e.g.
 `element.fooBar`).
 
-Because schema hooks are priority sorted, attribute mapping runs before observer
+Because schema transforms are priority sorted, attribute mapping runs before observer
 mapping when both extensions are supplied.
 
 ---
@@ -560,7 +561,7 @@ sequenceDiagram
     FTE->>FTE: bridge matches registry + name
     FTE->>PerEl: elementDidRegister('my-el')
     FTE->>PerEl: templateWillUpdate('my-el')
-    FTE->>FTE: parse template → schema → hooks → ViewTemplate
+    FTE->>FTE: parse template → schema → transforms → ViewTemplate
     FTE->>FER: return viewTemplate to resolver
     FER->>PerEl: templateDidUpdate('my-el')
     FER->>FER: customElements.define('my-el', MyElement)
@@ -608,7 +609,7 @@ tagged templates produce.
 |---|---|
 | `FASTElement` | Base class for user components; the internal `<f-template>` publisher is a native `HTMLElement` |
 | `FASTElementDefinition.register()` / template resolvers | Deferred element registration — element waits for its template |
-| `FASTElementExtension` | Extension callback mechanism used by `attributeMap()` and `observerMap()` to attach schema hooks before template resolution |
+| `FASTElementExtension` | Extension callback mechanism used by `attributeMap()` and `observerMap()` to attach schema transforms before template resolution |
 | `ViewTemplate.create(strings, values)` | Compiles the resolved strings/values arrays into a `ViewTemplate` |
 | `ElementController` | Automatically detects prerendered content (`isPrerendered`) and hydrates server-rendered DOM using `fe-b` comment/dataset markers via `template.hydrate()` |
 | `Observable.defineProperty()` | Defines observable root properties on element prototypes (ObserverMap) |

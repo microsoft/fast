@@ -339,8 +339,8 @@ the imperative `html` API:
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
 - `attributeMap()` and `observerMap()` are `FASTElementExtension` factories.
-  They register schema hooks on the element definition, and those hooks run
-  after parsing in deterministic order (`attributeMap()` before
+  They register schema transforms on the element definition, and those
+  transforms run after parsing in deterministic order (`attributeMap()` before
   `observerMap()`).
 
 The `src/declarative.ts` entrypoint is pure at module evaluation time. Running a
@@ -557,7 +557,7 @@ src/
 │   ├── template.ts        # declarativeTemplate() and internal f-template publisher
 │   ├── template-parser.ts # Declarative HTML parser → ViewTemplate strings/values
 │   ├── schema.ts          # Binding schema builder + schemaRegistry
-│   ├── definition-options.ts # Definition-scoped declarative schema hooks
+│   ├── definition-options.ts # Definition-scoped declarative schema transforms
 │   ├── observer-map.ts    # observerMap() extension and proxy-backed observation helpers
 │   ├── attribute-map.ts   # attributeMap() extension and automatic @attr helpers
 │   ├── utilities.ts       # Declarative parsing and proxy utilities

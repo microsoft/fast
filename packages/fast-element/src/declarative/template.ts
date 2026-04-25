@@ -5,7 +5,7 @@ import type {
 } from "../components/fast-definitions.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
-import { getDefinitionSchemaHooks } from "./definition-options.js";
+import { getDefinitionSchemaTransforms } from "./definition-options.js";
 import { Message } from "./interfaces.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
 import { Schema } from "./schema.js";
@@ -203,8 +203,8 @@ class FTemplateElement extends HTMLElement implements TemplatePublisher {
         const parser = new TemplateParser();
         const { strings, values } = parser.parse(innerHTML, schema);
 
-        for (const hook of getDefinitionSchemaHooks(definition)) {
-            hook({ definition, schema });
+        for (const transform of getDefinitionSchemaTransforms(definition)) {
+            transform({ definition, schema });
         }
 
         return parser.createTemplate(strings, values);

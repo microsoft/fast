@@ -1,6 +1,6 @@
 import type { FASTElementExtension } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
-import { setDefinitionSchemaHook } from "./definition-options.js";
+import { setDefinitionSchemaTransform } from "./definition-options.js";
 import type { JSONSchema, Schema } from "./schema.js";
 import { assignObservables, deepMerge } from "./utilities.js";
 
@@ -46,8 +46,8 @@ export interface ObserverMapConfig {
     };
 }
 
-const observerMapSchemaHookKey = "observer-map";
-const observerMapSchemaHookPriority = 1;
+const observerMapSchemaTransformKey = "observer-map";
+const observerMapSchemaTransformPriority = 1;
 
 /**
  * Creates a FAST element extension that enables declarative observer mapping
@@ -57,9 +57,9 @@ const observerMapSchemaHookPriority = 1;
  */
 export function observerMap(config: ObserverMapConfig = {}): FASTElementExtension {
     return definition => {
-        setDefinitionSchemaHook(
+        setDefinitionSchemaTransform(
             definition,
-            observerMapSchemaHookKey,
+            observerMapSchemaTransformKey,
             ({ definition, schema }) => {
                 new ObserverMap(
                     definition.type.prototype,
@@ -67,7 +67,7 @@ export function observerMap(config: ObserverMapConfig = {}): FASTElementExtensio
                     config,
                 ).defineProperties();
             },
-            observerMapSchemaHookPriority,
+            observerMapSchemaTransformPriority,
         );
     };
 }
