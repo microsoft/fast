@@ -75,7 +75,7 @@ test.describe("State", () => {
                         c: 2,
                     },
                 },
-                { deep: true }
+                { deep: true },
             );
 
             let callCount = 0;
@@ -189,7 +189,7 @@ test.describe("OwnedState", () => {
                         c: 2,
                     },
                 },
-                { deep: true }
+                { deep: true },
             );
             const owner1 = {};
 

@@ -18,7 +18,7 @@ export type ConstructibleStyleStrategy = {
     new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
 };
 
-let DefaultStyleStrategy: ConstructibleStyleStrategy;
+let DefaultStyleStrategy: ConstructibleStyleStrategy | undefined;
 
 function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>,
@@ -47,7 +47,14 @@ export class ElementStyles {
      */
     public get strategy(): StyleStrategy {
         if (this._strategy === null) {
-            this.withStrategy(DefaultStyleStrategy);
+            if (!DefaultStyleStrategy) {
+                ElementStyles.setDefaultStrategy(
+                    ElementStyles.supportsAdoptedStyleSheets
+                        ? createAdoptedSheetsStrategy()
+                        : createStyleElementStrategy(),
+                );
+            }
+            this.withStrategy(DefaultStyleStrategy!);
         }
 
         return this._strategy!;
@@ -116,4 +123,80 @@ export class ElementStyles {
     public static readonly supportsAdoptedStyleSheets =
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype;
+}
+
+// Fallback strategy factories used when no strategy has been explicitly set
+// via ElementStyles.setDefaultStrategy (e.g. when importing only from the
+// styles.js subpath without loading element-controller.ts).
+
+function createAdoptedSheetsStrategy(): ConstructibleStyleStrategy {
+    const cache = new Map<string, CSSStyleSheet>();
+
+    return class FallbackAdoptedSheetsStrategy implements StyleStrategy {
+        private readonly sheets: CSSStyleSheet[];
+
+        constructor(styles: (string | CSSStyleSheet)[]) {
+            this.sheets = styles.map(x => {
+                if (x instanceof CSSStyleSheet) {
+                    return x;
+                }
+
+                let sheet = cache.get(x);
+
+                if (sheet === void 0) {
+                    sheet = new CSSStyleSheet();
+                    (sheet as any).replaceSync(x);
+                    cache.set(x, sheet);
+                }
+
+                return sheet;
+            });
+        }
+
+        addStylesTo(target: StyleTarget): void {
+            const t = target as Required<StyleTarget>;
+            t.adoptedStyleSheets = [...t.adoptedStyleSheets!, ...this.sheets];
+        }
+
+        removeStylesFrom(target: StyleTarget): void {
+            const t = target as Required<StyleTarget>;
+            t.adoptedStyleSheets = t.adoptedStyleSheets!.filter(
+                (x: CSSStyleSheet) => this.sheets.indexOf(x) === -1,
+            );
+        }
+    };
+}
+
+let fallbackStyleId = 0;
+
+function createStyleElementStrategy(): ConstructibleStyleStrategy {
+    return class FallbackStyleElementStrategy implements StyleStrategy {
+        private readonly styleClass: string;
+
+        constructor(private readonly styles: string[]) {
+            this.styleClass = `fast-${++fallbackStyleId}`;
+        }
+
+        addStylesTo(target: StyleTarget): void {
+            const t = target === (document as any) ? document.body : target;
+
+            for (let i = 0; i < this.styles.length; i++) {
+                const element = document.createElement("style");
+                element.innerHTML = this.styles[i];
+                element.className = this.styleClass;
+                (t as any).append(element);
+            }
+        }
+
+        removeStylesFrom(target: StyleTarget): void {
+            const t = target === (document as any) ? document.body : target;
+            const styles: NodeListOf<HTMLStyleElement> = (t as any).querySelectorAll(
+                `.${this.styleClass}`,
+            );
+
+            for (let i = 0, ii = styles.length; i < ii; ++i) {
+                (t as any).removeChild(styles[i]);
+            }
+        }
+    };
 }

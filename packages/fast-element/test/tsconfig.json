@@ -8,7 +8,10 @@
             "@microsoft/fast-element/declarative.js": ["../src/declarative.ts"],
             "@microsoft/fast-element/declarative/utilities.js": [
                 "../src/declarative/utilities.ts"
-            ]
+            ],
+            "@microsoft/fast-element/arrays.js": ["../src/arrays.ts"],
+            "@microsoft/fast-element/hydration.js": ["../src/hydration.ts"],
+            "@microsoft/fast-element/styles.js": ["../src/styles.ts"]
         }
     },
     "include": ["**/*.ts"]

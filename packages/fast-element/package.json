@@ -40,6 +40,11 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
+    "./hydration.js": {
+      "types": "./dist/dts/hydration.d.ts",
+      "test": "./src/hydration.ts",
+      "default": "./dist/esm/hydration.js"
+    },
     "./binding/two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
       "default": "./dist/esm/binding/two-way.js"
@@ -72,9 +77,19 @@
       "types": "./dist/dts/dom-policy.d.ts",
       "default": "./dist/esm/dom-policy.js"
     },
+    "./arrays.js": {
+      "types": "./dist/dts/arrays.d.ts",
+      "test": "./src/arrays.ts",
+      "default": "./dist/esm/arrays.js"
+    },
     "./observable.js": {
       "types": "./dist/dts/observation/observable.d.ts",
       "default": "./dist/esm/observation/observable.js"
+    },
+    "./styles.js": {
+      "types": "./dist/dts/styles.d.ts",
+      "test": "./src/styles.ts",
+      "default": "./dist/esm/styles.js"
     },
     "./package.json": "./package.json"
   },

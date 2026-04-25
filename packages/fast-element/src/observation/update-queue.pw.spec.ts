@@ -98,7 +98,7 @@ test.describe("The UpdateQueue", () => {
                 // @ts-expect-error: Client module.
                 const { Updates } = await import("/main.js");
 
-                let calls: number[] = [];
+                const calls: number[] = [];
 
                 Updates.enqueue(() => {
                     calls.push(0);
@@ -595,7 +595,7 @@ test.describe("The UpdateQueue", () => {
                 let recurseCount1 = 0;
                 let recurseCount2 = 0;
                 let recurseCount3 = 0;
-                let calls: number[] = [];
+                const calls: number[] = [];
 
                 function go1() {
                     calls.push(recurseCount1 * 3);

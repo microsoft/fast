@@ -15,18 +15,7 @@ navigationOptions:
 
 ## ElementController.isPrerendered property
 
-A promise that resolves with `true` after prerendered content has been hydrated, or `false` immediately when the component is client-side rendered. Component authors can await this to know when the element is fully interactive:
-
-```typescript
-connectedCallback() {
-    super.connectedCallback();
-    this.$fastController.isPrerendered.then(prerendered => {
-        if (!prerendered) {
-            this.fetchData();
-        }
-    });
-}
-```
+Resolves `true` when the element had an existing shadow root (from SSR or declarative shadow DOM) at connect time, `false` otherwise.
 
 **Signature:**
 

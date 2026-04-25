@@ -1,65 +1,43 @@
-import { type FASTGlobal, noop } from "./interfaces.js";
-import { ensureRequestIdleCallback } from "./polyfills.js";
+import { noop } from "./interfaces.js";
 
-const debugMessageLookupKey = "fast:debug-messages";
-
-// ensure FAST global
-const propConfig = {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-};
-
-ensureRequestIdleCallback();
-
-if (globalThis.FAST === void 0) {
-    Reflect.defineProperty(globalThis, "FAST", {
-        value: Object.create(null),
-        ...propConfig,
-    });
-}
+const debugMessages: Record<number, string> = Object.create(null);
 
 /**
- * The FAST global.
+ * The FAST messaging API for warnings and errors.
  * @public
  */
-export const FAST: FASTGlobal = globalThis.FAST;
+export const FAST = {
+    /**
+     * Sends a warning to the developer.
+     * @param code - The warning code to send.
+     * @param values - Values relevant for the warning message.
+     */
+    warn(_code: number, _values?: Record<string, any>): void {},
 
-if (FAST.getById === void 0) {
-    const storage = Object.create(null);
+    /**
+     * Creates an error from a code.
+     * @param code - The error code.
+     * @param values - Values relevant for the error message.
+     */
+    error(code: number, _values?: Record<string, any>): Error {
+        return new Error(`Error ${code}`);
+    },
 
-    Reflect.defineProperty(FAST, "getById", {
-        value<T>(id: string | number, initialize?: () => T): T | null {
-            let found = storage[id];
-
-            if (found === void 0) {
-                found = initialize ? (storage[id] = initialize()) : null;
-            }
-
-            return found;
-        },
-        ...propConfig,
-    });
-}
+    /**
+     * Adds debug messages for errors and warnings.
+     * @param messages - The message dictionary to add.
+     */
+    addMessages(messages: Record<number, string>): void {
+        Object.assign(debugMessages, messages);
+    },
+};
 
 /**
- * Gets the shared FAST debug message lookup.
+ * Gets the shared debug message lookup.
  * @internal
  */
 export function getDebugMessageLookup(): Record<number, string> {
-    return FAST.getById(debugMessageLookupKey, () => Object.create(null));
-}
-
-if (FAST.error === void 0) {
-    Object.assign(FAST, {
-        warn() {},
-        error(code: number) {
-            return new Error(`Error ${code}`);
-        },
-        addMessages(messages: Record<number, string>) {
-            Object.assign(getDebugMessageLookup(), messages);
-        },
-    });
+    return debugMessages;
 }
 
 /**

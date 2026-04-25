@@ -30,7 +30,7 @@ const watchVisitor: ObjectVisitor<WatchData> = {
  */
 export function watch(
     object: any,
-    subscriber: Subscriber | ((subject: any, args: any) => void)
+    subscriber: Subscriber | ((subject: any, args: any) => void),
 ): Disposable {
     const data: WatchData = {
         notifiers: [],

@@ -13,7 +13,7 @@ test.describe("The repeat", () => {
                     () => [],
                     html`
                         test
-                    `
+                    `,
                 );
                 return directive instanceof RepeatDirective;
             });
@@ -34,7 +34,7 @@ test.describe("The repeat", () => {
                     () => [],
                     html`
                         test
-                    `
+                    `,
                 );
                 return {
                     isInstance: directive instanceof RepeatDirective,
@@ -63,7 +63,7 @@ test.describe("The repeat", () => {
                     html`
                         test
                     `,
-                    { positioning: true }
+                    { positioning: true },
                 );
                 return {
                     isInstance: directive instanceof RepeatDirective,
@@ -92,7 +92,7 @@ test.describe("The repeat", () => {
                     html`
                         test
                     `,
-                    { recycle: false }
+                    { recycle: false },
                 );
                 return {
                     isInstance: directive instanceof RepeatDirective,
@@ -121,7 +121,7 @@ test.describe("The repeat", () => {
                     html`
                         test
                     `,
-                    { positioning: true, recycle: false }
+                    { positioning: true, recycle: false },
                 );
                 return {
                     isInstance: directive instanceof RepeatDirective,
@@ -154,12 +154,12 @@ test.describe("The repeat", () => {
                     x => x.items,
                     html`
                         test
-                    `
+                    `,
                 );
 
                 const data = directive.dataBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
 
                 return data === source.items;
@@ -211,7 +211,7 @@ test.describe("The repeat", () => {
                 const directive = repeat(x => x.items, itemTemplate);
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === itemTemplate;
             });
@@ -238,11 +238,11 @@ test.describe("The repeat", () => {
                 `;
                 const directive = repeat(
                     x => x.items,
-                    () => itemTemplate
+                    () => itemTemplate,
                 );
                 const template = directive.templateBinding.evaluate(
                     source,
-                    Fake.executionContext()
+                    Fake.executionContext(),
                 );
                 return template === itemTemplate;
             });
@@ -268,7 +268,7 @@ test.describe("The repeat", () => {
                     () => [],
                     html`
                         test
-                    `
+                    `,
                 );
                 directive.targetNodeId = nodeId;
 
@@ -314,7 +314,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -404,7 +404,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -519,7 +519,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -579,7 +579,7 @@ test.describe("The repeat", () => {
                             s,
                             undefined,
                             undefined,
-                            input => `<div>${input}</div>`
+                            input => `<div>${input}</div>`,
                         );
 
                     data.items = [];
@@ -598,7 +598,7 @@ test.describe("The repeat", () => {
                             s,
                             undefined,
                             undefined,
-                            input => `<div>${input}</div>`
+                            input => `<div>${input}</div>`,
                         );
 
                     return before && empty && after;
@@ -643,7 +643,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -839,7 +839,7 @@ test.describe("The repeat", () => {
                         constructor(sz) {
                             this.items = createRandomizedArray(
                                 sz,
-                                randomizedOneThroughTen
+                                randomizedOneThroughTen,
                             );
                         }
                     }
@@ -940,7 +940,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1044,7 +1044,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1147,7 +1147,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1249,7 +1249,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1368,7 +1368,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1432,7 +1432,7 @@ test.describe("The repeat", () => {
                             undefined,
                             undefined,
                             undefined,
-                            mid + 1
+                            mid + 1,
                         )}`
                     );
                 }, size);
@@ -1474,7 +1474,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1553,7 +1553,7 @@ test.describe("The repeat", () => {
                             undefined,
                             undefined,
                             undefined,
-                            mid + 1
+                            mid + 1,
                         )}`;
 
                     return posBefore && posAfter && htmlCorrect;
@@ -1598,7 +1598,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1662,7 +1662,7 @@ test.describe("The repeat", () => {
                             undefined,
                             undefined,
                             undefined,
-                            mid + 2
+                            mid + 2,
                         )}`
                     );
                 }, size);
@@ -1704,7 +1704,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1770,7 +1770,7 @@ test.describe("The repeat", () => {
                             undefined,
                             undefined,
                             undefined,
-                            mid + 2
+                            mid + 2,
                         )}`
                     );
                 }, size);
@@ -1812,7 +1812,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -1931,7 +1931,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2037,7 +2037,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2088,7 +2088,7 @@ test.describe("The repeat", () => {
                     const vm = new ViewModel(s);
                     const directive = repeat(
                         x => x.items,
-                        x => vm.template
+                        x => vm.template,
                     );
                     directive.targetNodeId = nodeId;
                     const behavior = directive.createBehavior();
@@ -2181,7 +2181,7 @@ test.describe("The repeat", () => {
                             html`
                                 child-${x => x.name}root-${(x, c) =>
                                     c.parentContext.parent.name}
-                            `
+                            `,
                         )}
                     `;
 
@@ -2242,7 +2242,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2346,7 +2346,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2450,7 +2450,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2555,7 +2555,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2659,7 +2659,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2763,7 +2763,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2864,7 +2864,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -2968,7 +2968,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -3073,7 +3073,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -3178,7 +3178,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;
@@ -3245,7 +3245,7 @@ test.describe("The repeat", () => {
                             index => index !== 0,
                             undefined,
                             undefined,
-                            1
+                            1,
                         )}`
                     );
                 }, size);
@@ -3289,7 +3289,7 @@ test.describe("The repeat", () => {
                         filter = () => true,
                         prefix = "",
                         wrapper = input => input,
-                        fromIndex = 0
+                        fromIndex = 0,
                     ) {
                         let output = "";
                         const delta = fromIndex > 0 ? fromIndex : 0;

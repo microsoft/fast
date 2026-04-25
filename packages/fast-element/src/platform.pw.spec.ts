@@ -1,35 +1,12 @@
 import { expect, test } from "@playwright/test";
-import type { FASTGlobal } from "./interfaces.js";
-import { createTypeRegistry, type TypeDefinition } from "./platform.js";
+import { createTypeRegistry, FAST, type TypeDefinition } from "./platform.js";
 
-declare const FAST: FASTGlobal;
-
-test.describe("The FAST global", () => {
-    test.describe("kernel API", () => {
-        test("can get a lazily defined service by id", async () => {
-            const id = "test-id";
-            const service = {};
-            const found = FAST.getById(id, () => service);
-
-            expect(found).toBe(service);
-        });
-
-        test("returns the first service defined for an id", async () => {
-            const id = "test-id-2";
-            const service1 = {};
-            const service2 = {};
-            const found1 = FAST.getById(id, () => service1);
-            const found2 = FAST.getById(id, () => service2);
-
-            expect(found1).toBe(service1);
-            expect(found2).toBe(service1);
-        });
-
-        test("returns null for optional services", async () => {
-            const id = "test-id-3";
-            const found = FAST.getById(id);
-
-            expect(found).toBeNull();
+test.describe("The FAST module", () => {
+    test.describe("messaging API", () => {
+        test("can create errors with codes", async () => {
+            const error = FAST.error(42);
+            expect(error).toBeInstanceOf(Error);
+            expect(error.message).toContain("42");
         });
     });
 });

@@ -142,6 +142,25 @@ Indicates whether the controller is bound.
 </td></tr>
 <tr><td>
 
+[isHydrated](../fast-element.htmlview.ishydrated/)
+
+
+</td><td>
+
+
+</td><td>
+
+Promise&lt;boolean&gt;
+
+
+</td><td>
+
+Resolves `true` after prerendered content has been hydrated, `false` when client-side rendered or hydration not enabled.
+
+
+</td></tr>
+<tr><td>
+
 [isPrerendered](../fast-element.htmlview.isprerendered/)
 
 

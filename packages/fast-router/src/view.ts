@@ -1,10 +1,10 @@
 import {
-    ComposableStyles,
-    ElementStyles,
     ExecutionContext,
     html,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import type { ComposableStyles } from "@microsoft/fast-element/styles.js";
+import { ElementStyles } from "@microsoft/fast-element/styles.js";
 import { isFASTElementHost, Router } from "./router.js";
 
 /**

@@ -53,7 +53,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -78,7 +78,7 @@ test.describe("The children", () => {
                 const nodesLength = model.nodes.length;
                 const childrenLength = children.length;
                 const allMatch = children.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
 
                 return { nodesLength, childrenLength, allMatch };
@@ -106,7 +106,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -133,7 +133,7 @@ test.describe("The children", () => {
                 const nodesLength = model.nodes.length;
                 const filteredLength = filtered.length;
                 const allMatch = filtered.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
 
                 return { nodesLength, filteredLength, allMatch };
@@ -161,7 +161,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -184,7 +184,7 @@ test.describe("The children", () => {
                 controller.bind(model);
 
                 const initialMatch = children.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const initialLength = model.nodes.length;
 
@@ -193,7 +193,7 @@ test.describe("The children", () => {
                 await Updates.next();
 
                 const updatedMatch = updatedChildren.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const updatedLength = model.nodes.length;
 
@@ -229,7 +229,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -254,7 +254,7 @@ test.describe("The children", () => {
 
                 const initialFiltered = children.filter(elements("foo-bar"));
                 const initialMatch = initialFiltered.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const initialLength = model.nodes.length;
 
@@ -264,7 +264,7 @@ test.describe("The children", () => {
 
                 const updatedFiltered = updatedChildren.filter(elements("foo-bar"));
                 const updatedMatch = updatedFiltered.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const updatedLength = model.nodes.length;
 
@@ -304,7 +304,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -320,7 +320,7 @@ test.describe("The children", () => {
                 const subtreeElement = "foo-bar-baz";
                 const subtreeChildren: HTMLElement[] = [];
 
-                for (let child of children) {
+                for (const child of children) {
                     for (let i = 0; i < 3; ++i) {
                         const subChild = document.createElement("foo-bar-baz");
                         subtreeChildren.push(subChild);
@@ -341,13 +341,13 @@ test.describe("The children", () => {
                 controller.bind(model);
 
                 const initialMatch = subtreeChildren.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const initialLength = model.nodes.length;
 
                 const newChildren = createAndAppendChildren(host);
 
-                for (let child of newChildren) {
+                for (const child of newChildren) {
                     for (let i = 0; i < 3; ++i) {
                         const subChild = document.createElement("foo-bar-baz");
                         subtreeChildren.push(subChild);
@@ -358,7 +358,7 @@ test.describe("The children", () => {
                 await Updates.next();
 
                 const updatedMatch = subtreeChildren.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const updatedLength = model.nodes.length;
 
@@ -396,7 +396,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -419,7 +419,7 @@ test.describe("The children", () => {
                 controller.bind(model);
 
                 const initialMatch = children.every(
-                    (c: any, i: number) => model.nodes[i] === c
+                    (c: any, i: number) => model.nodes[i] === c,
                 );
                 const initialLength = model.nodes.length;
 
@@ -498,7 +498,7 @@ test.describe("The children", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -534,7 +534,7 @@ test.describe("The children", () => {
                 const controller = Fake.viewController(
                     targets,
                     elementsDirective,
-                    textDirective
+                    textDirective,
                 );
 
                 controller.bind(model);

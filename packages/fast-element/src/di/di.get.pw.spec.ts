@@ -859,7 +859,11 @@ test.describe("DI.getAsync", () => {
         });
 
         class Test {
-            constructor(public one: any, public two: any, public three: any) {}
+            constructor(
+                public one: any,
+                public two: any,
+                public three: any,
+            ) {}
         }
         inject(key1)(Test, undefined, 0);
         inject(key2)(Test, undefined, 1);
@@ -892,7 +896,11 @@ test.describe("DI.getAsync", () => {
         const instance3 = {};
 
         class Test {
-            constructor(public one: any, public two: any, public three: any) {}
+            constructor(
+                public one: any,
+                public two: any,
+                public three: any,
+            ) {}
         }
         inject(key1)(Test, undefined, 0);
         inject(key2)(Test, undefined, 1);

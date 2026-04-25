@@ -55,7 +55,7 @@ test.describe("The slotted", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -121,7 +121,7 @@ test.describe("The slotted", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -191,7 +191,7 @@ test.describe("The slotted", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -264,7 +264,7 @@ test.describe("The slotted", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);
@@ -342,7 +342,7 @@ test.describe("The slotted", () => {
                     const children = new Array(10);
                     for (let i = 0, ii = children.length; i < ii; ++i) {
                         const child = document.createElement(
-                            i % 1 === 0 ? elementName : "div"
+                            i % 1 === 0 ? elementName : "div",
                         );
                         children[i] = child;
                         host.appendChild(child);

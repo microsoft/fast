@@ -75,7 +75,8 @@ my-app/
 **`main.ts`:**
 
 ```ts
-import { FASTElement, attr, css, observable } from "@microsoft/fast-element";
+import { FASTElement, attr, observable } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/styles.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class TaskItem extends FASTElement {

@@ -15,7 +15,7 @@ navigationOptions:
 
 ## HydrationLifecycleCallbacks.hydrationComplete() method
 
-Called after all elements have completed hydration
+Called after all elements have completed hydration.
 
 **Signature:**
 

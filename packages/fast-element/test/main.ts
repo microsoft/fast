@@ -16,10 +16,13 @@ export type { FASTElementExtension } from "../src/components/fast-definitions.js
 export { FASTElementDefinition } from "../src/components/fast-definitions.js";
 export { customElement, FASTElement } from "../src/components/fast-element.js";
 export {
-    deferHydrationAttribute,
     HydrationMarkup,
     isHydratable,
 } from "../src/components/hydration.js";
+export {
+    deferHydrationAttribute,
+    enableHydration,
+} from "../src/components/enable-hydration.js";
 export { Context } from "../src/context.js";
 export {
     all,

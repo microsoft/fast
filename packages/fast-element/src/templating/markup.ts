@@ -65,7 +65,7 @@ export const Parser = Object.freeze({
      */
     parse(
         value: string,
-        factories: Record<string, ViewBehaviorFactory>
+        factories: Record<string, ViewBehaviorFactory>,
     ): (string | ViewBehaviorFactory)[] | null {
         // Split on the interpolation start marker. If there's only one part,
         // no placeholders exist and we return null to signal "no directives here."

@@ -192,7 +192,7 @@ test.describe("Metadata", () => {
                         (Reflect as any).defineMetadata(
                             "design:paramtypes",
                             [Object],
-                            FooDecoratorInvocation
+                            FooDecoratorInvocation,
                         );
                         decorator()(FooDecoratorInvocation);
 
@@ -228,7 +228,7 @@ test.describe("Metadata", () => {
                         (Reflect as any).defineMetadata(
                             "design:paramtypes",
                             [Object],
-                            FooDecoratorInvocation
+                            FooDecoratorInvocation,
                         );
                         decorator()(FooDecoratorInvocation);
 
@@ -242,7 +242,7 @@ test.describe("Metadata", () => {
                         (Reflect as any).defineMetadata(
                             "design:paramtypes",
                             [Object],
-                            FooDecoratorNonInvocation
+                            FooDecoratorNonInvocation,
                         );
                         (decorator as any)(FooDecoratorNonInvocation);
 
@@ -281,7 +281,7 @@ test.describe("Metadata", () => {
                         (Reflect as any).defineMetadata(
                             "design:paramtypes",
                             [Bar],
-                            FooBar
+                            FooBar,
                         );
                         decorator()(FooBar);
 
@@ -320,7 +320,7 @@ test.describe("Metadata", () => {
                         (Reflect as any).defineMetadata(
                             "design:paramtypes",
                             [Bar, Foo],
-                            FooBar
+                            FooBar,
                         );
                         decorator()(FooBar);
 
@@ -364,7 +364,7 @@ test.describe("Metadata", () => {
                         (Reflect as any).defineMetadata(
                             "design:paramtypes",
                             [Bar, Foo, Baz],
-                            FooBar
+                            FooBar,
                         );
                         decorator()(FooBar);
 

@@ -22,6 +22,21 @@ export const exportPaths = [
         docsFolder: "di",
         configPath: path.resolve(__dirname, "../api-extractor.di.json"),
     },
+    {
+        path: "./hydration.js",
+        docsFolder: "hydration",
+        configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
+    },
+    {
+        path: "./styles.js",
+        docsFolder: "styles",
+        configPath: path.resolve(__dirname, "../api-extractor.styles.json"),
+    },
+    {
+        path: "./arrays.js",
+        docsFolder: "arrays",
+        configPath: path.resolve(__dirname, "../api-extractor.arrays.json"),
+    },
 ];
 
 (function () {

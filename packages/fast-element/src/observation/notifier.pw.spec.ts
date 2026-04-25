@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { PropertyChangeNotifier, Subscriber, SubscriberSet } from "./notifier.js";
+import { PropertyChangeNotifier, type Subscriber, SubscriberSet } from "./notifier.js";
 
 test.describe(`A SubscriberSet`, () => {
     const oneThroughTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -60,7 +60,7 @@ test.describe(`A SubscriberSet`, () => {
                                 expect(args).toBe(argsValue);
                                 notified.push(this);
                             },
-                        })
+                        }),
                     );
                 });
 
@@ -165,7 +165,7 @@ test.describe(`A PropertyChangeNotifier`, () => {
                         expect(subscriber.invokedWith).toContain(propertyName);
                         expect(subscriber.invokedWith).toContain(nextPropertyName);
                         expect(subscriber.invokedWith).not.toContain(
-                            nextNextPropertyName
+                            nextNextPropertyName,
                         );
                     });
                 });

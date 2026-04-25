@@ -23,10 +23,11 @@ export interface AttributeMapConfig {
 // @public (undocumented)
 export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
 
+// Warning: (ae-forgotten-export) The symbol "TemplateLifecycleCallbacks" needs to be exported by the entry point declarative.d.ts
 // Warning: (ae-forgotten-export) The symbol "FASTElementTemplateResolver" needs to be exported by the entry point declarative.d.ts
 //
 // @public
-export function declarativeTemplate(): FASTElementTemplateResolver;
+export function declarativeTemplate(callbacks?: TemplateLifecycleCallbacks): FASTElementTemplateResolver;
 
 // @public
 export interface ElementOptions {
@@ -45,16 +46,10 @@ export interface ElementOptionsDictionary<ElementOptionsType = ElementOptions> {
 // @public
 export type FASTElementExtension = (definition: FASTElementDefinition) => void;
 
-// Warning: (ae-forgotten-export) The symbol "TemplateLifecycleCallbacks" needs to be exported by the entry point declarative.d.ts
-//
-// @public
+// @public @deprecated
 export interface HydrationLifecycleCallbacks extends TemplateLifecycleCallbacks {
-    elementDidHydrate?(source: HTMLElement): void;
-    elementDidRegister?(name: string): void;
-    elementWillHydrate?(source: HTMLElement): void;
     hydrationComplete?(): void;
     hydrationStarted?(): void;
-    templateWillUpdate?(name: string): void;
 }
 
 // Warning: (ae-forgotten-export) The symbol "JSONSchemaCommon" needs to be exported by the entry point declarative.d.ts
@@ -125,6 +120,7 @@ export const schemaRegistry: CachedPathMap;
 // @public
 export class TemplateElement extends FASTElement implements TemplatePublisher {
     constructor();
+    // @deprecated
     static config(callbacks: HydrationLifecycleCallbacks): typeof TemplateElement;
     // (undocumented)
     connectedCallback(): void;

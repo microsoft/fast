@@ -1,11 +1,6 @@
-import {
-    type Constructable,
-    isFunction,
-    isString,
-    KernelServiceId,
-} from "../interfaces.js";
+import { type Constructable, isFunction, isString } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
-import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
+import { createTypeRegistry, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
@@ -18,10 +13,8 @@ const fastElementBaseTypes = new Set<Function>();
  * The FAST custom element registry
  * @internal
  */
-export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
-    KernelServiceId.elementRegistry,
-    () => createTypeRegistry<FASTElementDefinition>(),
-);
+export const fastElementRegistry: TypeRegistry<FASTElementDefinition> =
+    createTypeRegistry<FASTElementDefinition>();
 
 export type { TypeRegistry };
 
@@ -44,14 +37,34 @@ export interface ShadowRootOptions extends ShadowRootInit {
  */
 export interface TemplateLifecycleCallbacks {
     /**
-     * Called after the template has been assigned to the definition
+     * Called after the JS class definition has been registered.
+     */
+    elementDidRegister?(name: string): void;
+
+    /**
+     * Called before the template has been evaluated and assigned.
+     */
+    templateWillUpdate?(name: string): void;
+
+    /**
+     * Called after the template has been assigned to the definition.
      */
     templateDidUpdate?(name: string): void;
 
     /**
-     * Called after the custom element has been defined
+     * Called after the custom element has been defined.
      */
     elementDidDefine?(name: string): void;
+
+    /**
+     * Called before an individual element's hydration begins.
+     */
+    elementWillHydrate?(source: HTMLElement): void;
+
+    /**
+     * Called after an individual element's hydration has finished.
+     */
+    elementDidHydrate?(source: HTMLElement): void;
 }
 
 /**
