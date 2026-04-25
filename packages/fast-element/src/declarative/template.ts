@@ -218,7 +218,7 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
     /**
      * Configure lifecycle callbacks for hydration events.
      *
-     * @deprecated Use {@link enableHydration} for global hydration events
+     * @deprecated Use `enableHydration()` for global hydration events
      * and pass per-element callbacks to {@link declarativeTemplate} instead.
      *
      * @param callbacks - Lifecycle callbacks to configure.
