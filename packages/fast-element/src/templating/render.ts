@@ -29,7 +29,7 @@ import {
     type TemplateValue,
     ViewTemplate,
 } from "./template.js";
-import { HydrationStage } from "./view.js";
+import { HydrationStage } from "./hydration-view.js";
 
 type ComposableView = ContentView & {
     isComposed?: boolean;

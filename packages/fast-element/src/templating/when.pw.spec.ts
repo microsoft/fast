@@ -14,7 +14,7 @@ test.describe("The 'when' template function", () => {
                 () => true,
                 html`
                     test
-                `
+                `,
             );
             return typeof expression;
         });
@@ -154,7 +154,7 @@ test.describe("The 'when' template function", () => {
                 `;
                 const expression = when(
                     () => true,
-                    () => template
+                    () => template,
                 );
                 const r = expression(scope, Fake.executionContext());
                 return r === template;

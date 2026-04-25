@@ -15,7 +15,7 @@ navigationOptions:
 
 ## HydrationTracker class
 
-Tracks prerendered elements through the hydration lifecycle and fires callbacks at each stage. Each element is added before its hydration bind and removed after. When the last element finishes and no new elements arrive, `hydrationComplete` is fired.
+Tracks prerendered elements through the hydration lifecycle and fires global callbacks at start and completion. Per-element callbacks (`elementWillHydrate`<!-- -->, `elementDidHydrate`<!-- -->) are handled through definition-level [TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)<!-- -->.
 
 **Signature:**
 
@@ -43,7 +43,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)(callbacks)](../fast-element.hydrationtracker._constructor_/)
+[(constructor)(options)](../fast-element.hydrationtracker._constructor_/)
 
 
 </td><td>
@@ -91,20 +91,6 @@ Registers an element as pending hydration. Fires `hydrationStarted` on the first
 </td></tr>
 <tr><td>
 
-[notifyWillHydrate(element)](../fast-element.hydrationtracker.notifywillhydrate/)
-
-
-</td><td>
-
-
-</td><td>
-
-Fires the `elementWillHydrate` callback for an element.
-
-
-</td></tr>
-<tr><td>
-
 [remove(element)](../fast-element.hydrationtracker.remove/)
 
 
@@ -113,7 +99,7 @@ Fires the `elementWillHydrate` callback for an element.
 
 </td><td>
 
-Removes an element from the pending set, fires `elementDidHydrate`<!-- -->, and schedules a debounced completion check.
+Removes an element from the pending set and schedules a debounced completion check.
 
 
 </td></tr>

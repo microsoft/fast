@@ -18,7 +18,7 @@ export function visitObject<TVisitorData>(
     deep: boolean,
     visitor: ObjectVisitor<TVisitorData>,
     data: TVisitorData,
-    traversed: WeakSet<any> | Set<any>
+    traversed: WeakSet<any> | Set<any>,
 ): void {
     if (!shouldTraverse(object, traversed)) {
         return;

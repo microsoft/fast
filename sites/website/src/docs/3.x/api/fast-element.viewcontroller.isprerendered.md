@@ -15,7 +15,7 @@ navigationOptions:
 
 ## ViewController.isPrerendered property
 
-A promise that resolves with `true` after prerendered content has been hydrated, or `false` when the view is client-side rendered.
+Resolves `true` when the view's host element had prerendered content (existing shadow root).
 
 **Signature:**
 

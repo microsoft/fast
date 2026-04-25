@@ -24,6 +24,7 @@ export {
     ElementController,
     Stages,
 } from "./components/element-controller.js";
+export { enableHydration } from "./components/enable-hydration.js";
 export type {
     FASTElementExtension,
     FASTElementTemplateResolver,
@@ -37,9 +38,9 @@ export {
     type TemplateLifecycleCallbacks,
 } from "./components/fast-definitions.js";
 export { customElement, FASTElement } from "./components/fast-element.js";
-export { deferHydrationAttribute, isHydratable } from "./components/hydration.js";
+export { isHydratable } from "./components/hydration.js";
 export {
-    type ElementHydrationCallbacks,
+    type HydrationOptions,
     HydrationTracker,
 } from "./components/hydration-tracker.js";
 // DOM
@@ -49,21 +50,9 @@ export type {
     Class,
     Constructable,
     Disposable,
-    FASTGlobal,
     TrustedTypesPolicy,
 } from "./interfaces.js";
 // Observation
-export {
-    ArrayObserver,
-    type LengthObserver,
-    lengthOf,
-    Sort,
-    type SortObserver,
-    Splice,
-    SpliceStrategy,
-    SpliceStrategySupport,
-    sortedCount,
-} from "./observation/arrays.js";
 export {
     type Notifier,
     PropertyChangeNotifier,
@@ -85,20 +74,13 @@ export {
 } from "./observation/observable.js";
 export { type UpdateQueue, Updates } from "./observation/update-queue.js";
 export { emptyArray, FAST } from "./platform.js";
-export { type CSSTemplateTag, type CSSValue, css } from "./styles/css.js";
-// Styles
-export {
-    CSSDirective,
-    type CSSDirectiveDefinition,
-    cssDirective,
-} from "./styles/css-directive.js";
-export {
-    type ComposableStyles,
-    type ConstructibleStyleStrategy,
-    ElementStyles,
-} from "./styles/element-styles.js";
+
+// Type-only re-exports for types referenced by root public signatures
+export type { ComposableStyles, ElementStyles } from "./styles/element-styles.js";
 export type { HostBehavior, HostController } from "./styles/host.js";
 export type { StyleStrategy, StyleTarget } from "./styles/style-strategy.js";
+export type { Splice, Sort } from "./observation/arrays.js";
+
 export type {
     ChildListDirectiveOptions,
     ChildrenDirectiveOptions,
@@ -152,9 +134,10 @@ export type {
 export { html, InlineTemplateDirective, ViewTemplate } from "./templating/template.js";
 export type {
     ElementView,
-    HydratableView,
     SyntheticView,
     View,
 } from "./templating/view.js";
-export { HTMLView, HydrationBindingError } from "./templating/view.js";
+export type { HydratableView } from "./templating/hydration-view.js";
+export { HTMLView } from "./templating/view.js";
+export { HydrationBindingError } from "./templating/hydration-view.js";
 export { when } from "./templating/when.js";
