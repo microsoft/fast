@@ -1,8 +1,8 @@
 import { isFunction } from "../interfaces.js";
 import type { Expression } from "../observation/observable.js";
 import { Binding } from "./binding.js";
-import { oneWay } from "./one-way.js";
 import { oneTime } from "./one-time.js";
+import { oneWay } from "./one-way.js";
 
 /**
  * Normalizes the input value into a binding.
@@ -11,11 +11,14 @@ import { oneTime } from "./one-time.js";
  * @public
  */
 export function normalizeBinding<TSource = any, TReturn = any, TParent = any>(
-    value: Expression<TSource, TReturn, TParent> | Binding<TSource, TReturn, TParent> | {}
+    value:
+        | Expression<TSource, TReturn, TParent>
+        | Binding<TSource, TReturn, TParent>
+        | {},
 ): Binding<TSource, TReturn, TParent> {
     return isFunction(value)
         ? oneWay(value as Expression<TSource, TReturn, TParent>)
         : value instanceof Binding
-        ? value
-        : oneTime(() => value);
+          ? value
+          : oneTime(() => value);
 }

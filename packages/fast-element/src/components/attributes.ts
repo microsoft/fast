@@ -1,8 +1,8 @@
-import { type Accessor, Observable } from "../observation/observable.js";
-import type { Notifier } from "../observation/notifier.js";
-import { isString } from "../interfaces.js";
-import { Updates } from "../observation/update-queue.js";
 import { DOM } from "../dom.js";
+import { isString } from "../interfaces.js";
+import type { Notifier } from "../observation/notifier.js";
+import { type Accessor, Observable } from "../observation/observable.js";
+import { Updates } from "../observation/update-queue.js";
 import { createMetadataLocator } from "../platform.js";
 
 /**
@@ -183,7 +183,7 @@ export class AttributeDefinition implements Accessor {
         name: string,
         attribute: string = name.toLowerCase(),
         mode: AttributeMode = reflectMode,
-        converter?: ValueConverter
+        converter?: ValueConverter,
     ) {
         this.Owner = Owner;
         this.name = name;
@@ -259,14 +259,17 @@ export class AttributeDefinition implements Accessor {
             const latestValue = element[this.fieldName];
 
             switch (mode) {
-                case reflectMode:
+                case reflectMode: {
                     const converter = this.converter;
                     DOM.setAttribute(
                         element,
                         this.attribute,
-                        converter !== void 0 ? converter.toView(latestValue) : latestValue
+                        converter !== void 0
+                            ? converter.toView(latestValue)
+                            : latestValue,
                     );
                     break;
+                }
                 case booleanMode:
                     DOM.setBooleanAttribute(element, this.attribute, latestValue);
                     break;
@@ -309,8 +312,8 @@ export class AttributeDefinition implements Accessor {
                             config.property,
                             config.attribute,
                             config.mode,
-                            config.converter
-                        )
+                            config.converter,
+                        ),
                     );
                 }
             }
@@ -326,7 +329,7 @@ export class AttributeDefinition implements Accessor {
  * @public
  */
 export function attr(
-    config?: DecoratorAttributeConfiguration
+    config?: DecoratorAttributeConfiguration,
 ): (target: {}, property: string) => void;
 
 /**
@@ -338,7 +341,7 @@ export function attr(
 export function attr(target: {}, prop: string): void;
 export function attr(
     configOrTarget?: DecoratorAttributeConfiguration | {},
-    prop?: string
+    prop?: string,
 ): void | ((target: {}, property: string) => void) {
     let config: AttributeConfiguration;
 

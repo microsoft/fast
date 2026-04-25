@@ -9,7 +9,7 @@ import type {
 export const Fake = Object.freeze({
     executionContext<TParent = any>(
         parent?: TParent,
-        parentContext?: ExecutionContext<TParent>
+        parentContext?: ExecutionContext<TParent>,
     ): ExecutionContext<TParent> {
         return {
             /**
@@ -112,7 +112,7 @@ export const Fake = Object.freeze({
             toJSON: noop,
             bind(
                 source: TSource,
-                context: ExecutionContext<TParent> = Fake.executionContext()
+                context: ExecutionContext<TParent> = Fake.executionContext(),
             ) {
                 if (this.isBound) {
                     return;
