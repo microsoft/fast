@@ -11,7 +11,7 @@ import type {
     HydratableSyntheticViewTemplate,
     SyntheticViewTemplate,
 } from "../templating/template.js";
-import type { HydrationView } from "../templating/view.js";
+import type { HydrationView } from "../templating/hydration-view.js";
 
 /**
  * Data-free sequential hydration markers.
@@ -152,8 +152,3 @@ export function isHydratable(value: any): any {
     return value[Hydratable] === Hydratable;
 }
 
-/**
- * The attribute used to defer hydration of an element.
- * @beta
- */
-export const deferHydrationAttribute = "defer-hydration";

@@ -17,7 +17,7 @@ import {
     type ViewController,
 } from "./html-directive.js";
 import { Markup } from "./markup.js";
-import { HydrationStage } from "./view.js";
+import { HydrationStage } from "./hydration-view.js";
 
 type UpdateTarget = (
     this: HTMLBindingDirective,

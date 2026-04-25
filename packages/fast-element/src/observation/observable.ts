@@ -2,7 +2,6 @@ import {
     type Disposable,
     isFunction,
     isString,
-    KernelServiceId,
     Message,
 } from "../interfaces.js";
 import { createMetadataLocator, FAST, makeSerializationNoop } from "../platform.js";
@@ -170,7 +169,7 @@ export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any>
  * Common Observable APIs.
  * @public
  */
-export const Observable = FAST.getById(KernelServiceId.observable, () => {
+export const Observable = (() => {
     const queueUpdate = Updates.enqueue;
     const volatileRegex = /(:|&&|\|\||if|\?\.)/;
     const notifierLookup = new WeakMap<any, Notifier>();
@@ -485,7 +484,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             return volatileRegex.test(expression.toString());
         },
     });
-});
+})();
 
 /**
  * Decorator: Defines an observable property on the target.
@@ -588,7 +587,7 @@ export interface ExecutionContext<TParent = any> {
     eventTarget<TTarget extends EventTarget>(): TTarget;
 }
 
-const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
+const contextEvent = (() => {
     let current: Event | null = null;
 
     return {
@@ -599,7 +598,7 @@ const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
             current = event;
         },
     };
-});
+})();
 
 /**
  * Provides additional contextual information available to behaviors and expressions.

@@ -1,7 +1,7 @@
 import { Hydratable } from "../components/hydration.js";
 import { FAST } from "../platform.js";
 import { ViewTemplate } from "../templating/template.js";
-import { HydrationView } from "../templating/view.js";
+import { HydrationView } from "../templating/hydration-view.js";
 import { debugMessages } from "./debug.js";
 
 type HydratableTemplate = ViewTemplate & {

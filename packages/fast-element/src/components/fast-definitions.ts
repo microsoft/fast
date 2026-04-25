@@ -1,11 +1,6 @@
-import {
-    type Constructable,
-    isFunction,
-    isString,
-    KernelServiceId,
-} from "../interfaces.js";
+import { type Constructable, isFunction, isString } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
-import { createTypeRegistry, FAST, type TypeRegistry } from "../platform.js";
+import { createTypeRegistry, type TypeRegistry } from "../platform.js";
 import { type ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { type AttributeConfiguration, AttributeDefinition } from "./attributes.js";
@@ -18,10 +13,8 @@ const fastElementBaseTypes = new Set<Function>();
  * The FAST custom element registry
  * @internal
  */
-export const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
-    KernelServiceId.elementRegistry,
-    () => createTypeRegistry<FASTElementDefinition>(),
-);
+export const fastElementRegistry: TypeRegistry<FASTElementDefinition> =
+    createTypeRegistry<FASTElementDefinition>();
 
 export type { TypeRegistry };
 

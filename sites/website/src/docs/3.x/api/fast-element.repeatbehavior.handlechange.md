@@ -64,7 +64,7 @@ args
 
 </td><td>
 
-[Splice](../fast-element.splice/)<!-- -->\[\] \| [Sort](../fast-element.sort/)<!-- -->\[\] \| [ExpressionObserver](../fast-element.expressionobserver/)
+Splice\[\] \| Sort\[\] \| [ExpressionObserver](../fast-element.expressionobserver/)
 
 
 </td><td>

@@ -20,11 +20,9 @@ Controls the lifecycle and rendering of a `FASTElement`<!-- -->.
 **Signature:**
 
 ```typescript
-export declare class ElementController<TElement extends HTMLElement = HTMLElement> extends PropertyChangeNotifier implements HostController<TElement> 
+export declare class ElementController<TElement extends HTMLElement = HTMLElement> implements Notifier, HostController<TElement> 
 ```
-**Extends:** [PropertyChangeNotifier](../fast-element.propertychangenotifier/)
-
-**Implements:** [HostController](../fast-element.hostcontroller/)<!-- -->&lt;TElement&gt;
+**Implements:** [Notifier](../fast-element.notifier/)<!-- -->, HostController&lt;TElement&gt;
 
 ## Remarks
 
@@ -65,7 +63,7 @@ Description
 
 </td><td>
 
-Map&lt;[HostBehavior](../fast-element.hostbehavior/)<!-- -->&lt;TElement&gt;, number&gt; \| null
+Map&lt;HostBehavior&lt;TElement&gt;, number&gt; \| null
 
 
 </td><td>
@@ -231,7 +229,7 @@ Resolves `true` when the element had an existing shadow root (from SSR or declar
 
 </td><td>
 
-[ElementStyles](../fast-element.elementstyles/) \| null
+ElementStyles \| null
 
 
 </td><td>
@@ -340,6 +338,27 @@ Indicates how the source's lifetime relates to the controller's lifetime.
 </td><td>
 
 The current lifecycle stage of the controller.
+
+
+</td></tr>
+<tr><td>
+
+[subject](../fast-element.elementcontroller.subject/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+TElement
+
+
+</td><td>
+
+The subject that subscribers will receive notifications for.
 
 
 </td></tr>
@@ -539,22 +558,6 @@ Emits a custom HTML event.
 </td></tr>
 <tr><td>
 
-[enableHydration(tracker)](../fast-element.elementcontroller.enablehydration/)
-
-
-</td><td>
-
-`static`
-
-
-</td><td>
-
-Enables hydration support for prerendered elements. Must be called before any FAST elements connect.
-
-
-</td></tr>
-<tr><td>
-
 [forCustomElement(element, override)](../fast-element.elementcontroller.forcustomelement/)
 
 
@@ -566,6 +569,20 @@ Enables hydration support for prerendered elements. Must be called before any FA
 </td><td>
 
 Locates or creates a controller for the specified element.
+
+
+</td></tr>
+<tr><td>
+
+[notify(args)](../fast-element.elementcontroller.notify/)
+
+
+</td><td>
+
+
+</td><td>
+
+Notifies all subscribers of a property change.
 
 
 </td></tr>
@@ -675,6 +692,20 @@ Sets the strategy that ElementController.forCustomElement uses to construct Elem
 </td></tr>
 <tr><td>
 
+[subscribe(subscriber, propertyToWatch)](../fast-element.elementcontroller.subscribe/)
+
+
+</td><td>
+
+
+</td><td>
+
+Subscribes to notification of changes in the element's state.
+
+
+</td></tr>
+<tr><td>
+
 [syncLateAttributes()](../fast-element.elementcontroller.synclateattributes/)
 
 
@@ -686,6 +717,20 @@ Sets the strategy that ElementController.forCustomElement uses to construct Elem
 </td><td>
 
 Synchronizes late-defined attribute-map attributes from the live DOM to the associated property values before the initial render occurs.
+
+
+</td></tr>
+<tr><td>
+
+[unsubscribe(subscriber, propertyToUnwatch)](../fast-element.elementcontroller.unsubscribe/)
+
+
+</td><td>
+
+
+</td><td>
+
+Unsubscribes from notification of changes in the element's state.
 
 
 </td></tr>

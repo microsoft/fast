@@ -1,4 +1,5 @@
 import { Message, type Mutable } from "../interfaces.js";
+import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import {
     ExecutionContext,
@@ -11,10 +12,7 @@ import { ElementStyles } from "../styles/element-styles.js";
 import type { HostBehavior, HostController } from "../styles/host.js";
 import type { StyleStrategy, StyleTarget } from "../styles/style-strategy.js";
 import type { ViewController } from "../templating/html-directive.js";
-import type {
-    ElementViewTemplate,
-    HydratableElementViewTemplate,
-} from "../templating/template.js";
+import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import {
     FASTElementDefinition,
@@ -22,14 +20,6 @@ import {
     type ShadowRootOptions,
 } from "./fast-definitions.js";
 import type { FASTElement } from "./fast-element.js";
-import { isHydratable } from "./hydration.js";
-import type { HydrationTracker } from "./hydration-tracker.js";
-
-/**
- * No-op handler used during prerendered bind to discard the
- * upgrade-time burst of attributeChangedCallbacks.
- */
-function noopAttributeHandler() {}
 
 const defaultEventOptions: CustomEventInit = {
     bubbles: true,
@@ -76,9 +66,13 @@ export const enum Stages {
  * @public
  */
 export class ElementController<TElement extends HTMLElement = HTMLElement>
-    extends PropertyChangeNotifier
-    implements HostController<TElement>
+    implements Notifier, HostController<TElement>
 {
+    /**
+     * Internal notifier used to delegate subscriber management.
+     */
+    private _notifier!: PropertyChangeNotifier;
+
     /**
      * A map of observable properties that were set on the element before upgrade.
      */
@@ -326,7 +320,7 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
      * @internal
      */
     public constructor(element: TElement, definition: FASTElementDefinition) {
-        super(element);
+        this._notifier = new PropertyChangeNotifier(element);
 
         this.source = element;
         this.definition = definition;
@@ -356,6 +350,39 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         // Capture any observable values that were set after construction but before
         // the first connect (for example, late-defined declarative accessors).
         this.captureBoundObservables();
+    }
+
+    /**
+     * The subject that subscribers will receive notifications for.
+     */
+    public get subject(): TElement {
+        return this._notifier.subject;
+    }
+
+    /**
+     * Notifies all subscribers of a property change.
+     * @param args - The property name that changed.
+     */
+    public notify(args: any): void {
+        this._notifier.notify(args);
+    }
+
+    /**
+     * Subscribes to notification of changes in the element's state.
+     * @param subscriber - The object that is subscribing for change notification.
+     * @param propertyToWatch - The name of the property to watch for changes.
+     */
+    public subscribe(subscriber: Subscriber, propertyToWatch?: any): void {
+        this._notifier.subscribe(subscriber, propertyToWatch);
+    }
+
+    /**
+     * Unsubscribes from notification of changes in the element's state.
+     * @param subscriber - The object that is unsubscribing from change notification.
+     * @param propertyToUnwatch - The name of the property to unsubscribe from.
+     */
+    public unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void {
+        this._notifier.unsubscribe(subscriber, propertyToUnwatch);
     }
 
     /**
@@ -765,15 +792,18 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         if (template) {
             const hasPrerenderedContent =
                 this.hasExistingShadowRoot && this.needsInitialization;
-            const tracker = ElementController.hydrationTracker;
-            const didHydrate =
-                hasPrerenderedContent &&
-                tracker !== null &&
-                isHydratable(template);
+            let didHydrate = false;
 
-            if (didHydrate) {
-                this.renderPrerendered(template, element, host);
-            } else {
+            if (hasPrerenderedContent && ElementController.hydrationHook) {
+                didHydrate = ElementController.hydrationHook(
+                    this,
+                    template,
+                    element,
+                    host,
+                );
+            }
+
+            if (!didHydrate) {
                 this.renderClientSide(template, element, host);
             }
 
@@ -782,68 +812,6 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         } else if (this.needsInitialization) {
             this._resolvePrerendered(false);
             this._resolveHydrated(false);
-        }
-    }
-
-    /**
-     * Hydration path: maps existing DOM nodes to binding targets,
-     * swaps onAttributeChangedCallback to a no-op during bind, then
-     * restores it and resolves the isPrerendered promise.
-     */
-    private renderPrerendered(
-        template: ElementViewTemplate,
-        element: TElement,
-        host: Node,
-    ): void {
-        const tracker = ElementController.hydrationTracker!;
-        const callbacks = this.definition.lifecycleCallbacks;
-
-        tracker.add(element);
-
-        try {
-            try {
-                callbacks?.elementWillHydrate?.(element);
-            } catch {
-                // A lifecycle callback must never prevent hydration.
-            }
-
-            const firstChild = host.firstChild!;
-            const lastChild = host.lastChild!;
-
-            (this as Mutable<this>).view = (
-                template as HydratableElementViewTemplate
-            ).hydrate(firstChild, lastChild, element);
-
-            // Swap to a no-op so the upgrade-time burst of
-            // attributeChangedCallbacks is silently discarded.
-            const realHandler = this.onAttributeChangedCallback;
-            this.onAttributeChangedCallback = noopAttributeHandler;
-
-            try {
-                // Flag the view so directives skip attribute/booleanAttribute
-                // DOM updates during bind, and set the public promise.
-                (this.view as any)._skipAttrUpdates = true;
-                (this.view as any).isPrerendered = Promise.resolve(true);
-                (this.view as any).isHydrated = Promise.resolve(true);
-                this.view!.bind(this.source);
-                (this.view as any)._skipAttrUpdates = false;
-            } finally {
-                // Restore the real handler — all future attribute changes
-                // flow through the standard path with zero overhead.
-                this.onAttributeChangedCallback = realHandler;
-            }
-
-            (this.view as any as Mutable<ViewController>).sourceLifetime =
-                SourceLifetime.coupled;
-            this.hasExistingShadowRoot = false;
-
-            try {
-                callbacks?.elementDidHydrate?.(element);
-            } catch {
-                // A lifecycle callback must never prevent post-hydration work.
-            }
-        } finally {
-            tracker.remove(element);
         }
     }
 
@@ -929,20 +897,36 @@ export class ElementController<TElement extends HTMLElement = HTMLElement>
         elementControllerStrategy = strategy;
     }
 
-    // --- Static hydration tracking ---
+    // --- Static hydration hook ---
 
     /**
-     * Tracks prerendered elements through the hydration lifecycle.
+     * A hook that, when set, handles prerendered content hydration.
+     * Called by renderTemplate when an existing shadow root is detected.
+     * Returns true if hydration was performed, false to fall back to client-side.
+     * @internal
      */
-    private static hydrationTracker: HydrationTracker | null = null;
+    private static hydrationHook:
+        | ((
+              controller: ElementController,
+              template: ElementViewTemplate,
+              element: HTMLElement,
+              host: Node,
+          ) => boolean)
+        | null = null;
 
     /**
-     * Enables hydration support for prerendered elements.
-     * Must be called before any FAST elements connect.
-     * @param tracker - A configured {@link HydrationTracker} instance.
+     * Installs the hydration hook. Called by enableHydration().
+     * @internal
      */
-    public static enableHydration(tracker: HydrationTracker): void {
-        ElementController.hydrationTracker = tracker;
+    public static installHydrationHook(
+        hook: (
+            controller: ElementController,
+            template: ElementViewTemplate,
+            element: HTMLElement,
+            host: Node,
+        ) => boolean,
+    ): void {
+        ElementController.hydrationHook = hook;
     }
 }
 

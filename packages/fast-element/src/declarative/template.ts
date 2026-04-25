@@ -1,12 +1,11 @@
 import { attr } from "../components/attributes.js";
-import { ElementController } from "../components/element-controller.js";
 import {
     FASTElementDefinition,
     type FASTElementTemplateResolver,
     type TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
 import { FASTElement } from "../components/fast-element.js";
-import { HydrationTracker } from "../components/hydration-tracker.js";
+import { enableHydration } from "../components/enable-hydration.js";
 import { FAST } from "../platform.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeMap, type AttributeMapConfig } from "./attribute-map.js";
@@ -230,12 +229,10 @@ class TemplateElement extends FASTElement implements TemplatePublisher {
 
         // Forward global hydration callbacks to ElementController
         if (callbacks.hydrationStarted || callbacks.hydrationComplete) {
-            ElementController.enableHydration(
-                new HydrationTracker({
-                    hydrationStarted: callbacks.hydrationStarted,
-                    hydrationComplete: callbacks.hydrationComplete,
-                }),
-            );
+            enableHydration({
+                hydrationStarted: callbacks.hydrationStarted,
+                hydrationComplete: callbacks.hydrationComplete,
+            });
         }
 
         return this;

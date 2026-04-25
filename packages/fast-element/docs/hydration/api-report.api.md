@@ -4,6 +4,9 @@
 
 ```ts
 
+// @beta
+export const deferHydrationAttribute = "defer-hydration";
+
 // @public
 export function enableHydration(options?: HydrationOptions): void;
 

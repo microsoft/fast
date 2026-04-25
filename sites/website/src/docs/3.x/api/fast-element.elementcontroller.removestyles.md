@@ -48,7 +48,7 @@ styles
 
 </td><td>
 
-[ElementStyles](../fast-element.elementstyles/) \| HTMLStyleElement \| null \| undefined
+ElementStyles \| HTMLStyleElement \| null \| undefined
 
 
 </td><td>
