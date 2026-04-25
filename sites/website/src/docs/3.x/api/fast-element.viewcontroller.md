@@ -49,6 +49,27 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[isHydrated?](../fast-element.viewcontroller.ishydrated/)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+Promise&lt;boolean&gt;
+
+
+</td><td>
+
+_(Optional)_ Resolves `true` after prerendered content has been hydrated, `false` when client-side rendered or hydration not enabled.
+
+
+</td></tr>
+<tr><td>
+
 [isPrerendered?](../fast-element.viewcontroller.isprerendered/)
 
 
@@ -64,7 +85,7 @@ Promise&lt;boolean&gt;
 
 </td><td>
 
-_(Optional)_ A promise that resolves with `true` after prerendered content has been hydrated, or `false` when the view is client-side rendered.
+_(Optional)_ Resolves `true` when the view's host element had prerendered content (existing shadow root).
 
 
 </td></tr>
