@@ -67,15 +67,36 @@ export class ElementStyles {
 }
 
 // @public
+export interface ExecutionContext<TParent = any> {
+    readonly event: Event;
+    eventDetail<TDetail>(): TDetail;
+    eventTarget<TTarget extends EventTarget>(): TTarget;
+    index: number;
+    readonly isEven: boolean;
+    readonly isFirst: boolean;
+    readonly isInMiddle: boolean;
+    readonly isLast: boolean;
+    readonly isOdd: boolean;
+    length: number;
+    parent: TParent;
+    parentContext: ExecutionContext<TParent>;
+}
+
+// @public
+export const ExecutionContext: Readonly<{
+    default: ExecutionContext<any>;
+    getEvent(): Event | null;
+    setEvent(event: Event | null): void;
+}>;
+
+// @public
 export interface ExpressionController<TSource = any, TParent = any> {
-    // Warning: (ae-forgotten-export) The symbol "ExecutionContext" needs to be exported by the entry point styles.d.ts
     readonly context: ExecutionContext<TParent>;
     readonly isBound: boolean;
     onUnbind(behavior: {
         unbind(controller: ExpressionController<TSource, TParent>): any;
     }): void;
     readonly source: TSource;
-    // Warning: (ae-forgotten-export) The symbol "SourceLifetime" needs to be exported by the entry point styles.d.ts
     readonly sourceLifetime?: SourceLifetime;
 }
 
@@ -96,6 +117,15 @@ export interface HostController<TSource = any> extends ExpressionController<TSou
     removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
 }
+
+// @public
+export const SourceLifetime: Readonly<{
+    readonly unknown: undefined;
+    readonly coupled: 1;
+}>;
+
+// @public
+export type SourceLifetime = (typeof SourceLifetime)[keyof typeof SourceLifetime];
 
 // @public
 export interface StyleStrategy {

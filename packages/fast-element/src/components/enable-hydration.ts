@@ -15,6 +15,9 @@ export type { HydrationOptions };
  */
 function noopAttributeHandler() {}
 
+let tracker: HydrationTracker | null = null;
+let hookInstalled = false;
+
 /**
  * Enables hydration support for prerendered FAST elements.
  *
@@ -22,6 +25,9 @@ function noopAttributeHandler() {}
  * Call this before any FAST elements connect to the DOM. Hydration
  * logic is not active unless this function is called, keeping
  * `FASTElement` lightweight for client-side-only applications.
+ *
+ * Safe to call multiple times — the hydration hook is installed once
+ * and subsequent calls merge their options into the shared tracker.
  *
  * @example
  * ```ts
@@ -37,25 +43,22 @@ function noopAttributeHandler() {}
  * @param options - Optional callbacks for global hydration events.
  * @public
  */
-let hydrationEnabled = false;
-
 export function enableHydration(options?: HydrationOptions): void {
-    if (hydrationEnabled) {
-        return;
-    }
-    hydrationEnabled = true;
-
     ensureHydrationRuntime();
-    const tracker = new HydrationTracker(options ?? {});
 
-    ElementController.installHydrationHook(
+    if (!hookInstalled) {
+        tracker = new HydrationTracker(options ?? {});
+        hookInstalled = true;
+        const activeTracker = tracker;
+
+        ElementController.installHydrationHook(
         (controller, template, element, host) => {
             if (!isHydratable(template)) {
                 return false;
             }
 
             const callbacks = controller.definition.lifecycleCallbacks;
-            tracker.add(element);
+            activeTracker.add(element);
 
             try {
                 try {
@@ -96,12 +99,16 @@ export function enableHydration(options?: HydrationOptions): void {
                     // A lifecycle callback must never prevent post-hydration work.
                 }
             } finally {
-                tracker.remove(element);
+                activeTracker.remove(element);
             }
 
             return true;
         },
     );
+    } else if (options && tracker) {
+        // Merge options into existing tracker for subsequent calls
+        tracker.mergeOptions(options);
+    }
 }
 
 /**

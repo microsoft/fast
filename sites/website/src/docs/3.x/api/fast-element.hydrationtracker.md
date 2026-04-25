@@ -91,6 +91,20 @@ Registers an element as pending hydration. Fires `hydrationStarted` on the first
 </td></tr>
 <tr><td>
 
+[mergeOptions(incoming)](../fast-element.hydrationtracker.mergeoptions/)
+
+
+</td><td>
+
+
+</td><td>
+
+Merges additional options into the tracker, chaining callbacks so both the original and new callbacks fire.
+
+
+</td></tr>
+<tr><td>
+
 [remove(element)](../fast-element.hydrationtracker.remove/)
 
 

@@ -416,6 +416,8 @@ Creates a function that can be used to filter a Node array, selecting only eleme
 
 </td><td>
 
+Enables hydration support for prerendered FAST elements.
+
 
 </td></tr>
 <tr><td>

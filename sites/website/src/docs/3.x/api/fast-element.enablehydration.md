@@ -15,6 +15,8 @@ navigationOptions:
 
 ## enableHydration() function
 
+Enables hydration support for prerendered FAST elements.
+
 **Signature:**
 
 ```typescript
@@ -51,7 +53,7 @@ options
 
 </td><td>
 
-_(Optional)_
+_(Optional)_ Optional callbacks for global hydration events.
 
 
 </td></tr>
@@ -60,3 +62,22 @@ _(Optional)_
 **Returns:**
 
 void
+
+## Remarks
+
+Call this before any FAST elements connect to the DOM. Hydration logic is not active unless this function is called, keeping `FASTElement` lightweight for client-side-only applications.
+
+Safe to call multiple times — the hydration hook is installed once and subsequent calls merge their options into the shared tracker.
+
+## Example
+
+
+```ts
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    hydrationComplete() {
+        console.log("hydration complete");
+    },
+});
+```

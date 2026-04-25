@@ -9,4 +9,4 @@ export {
     SpliceStrategySupport,
     sortedCount,
 } from "./observation/arrays.js";
-export type { Subscriber, SubscriberSet } from "./observation/notifier.js";
+export type { Notifier, Subscriber, SubscriberSet } from "./observation/notifier.js";

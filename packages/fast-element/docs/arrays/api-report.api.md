@@ -30,6 +30,14 @@ export interface LengthObserver extends Subscriber {
 export function lengthOf<T>(array: readonly T[]): number;
 
 // @public
+export interface Notifier {
+    notify(args: any): void;
+    readonly subject: any;
+    subscribe(subscriber: Subscriber, propertyToWatch?: any): void;
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch?: any): void;
+}
+
+// @public
 export class Sort {
     constructor(sorted?: number[] | undefined);
     // (undocumented)
@@ -91,8 +99,6 @@ export interface Subscriber {
     handleChange(subject: any, args: any): void;
 }
 
-// Warning: (ae-forgotten-export) The symbol "Notifier" needs to be exported by the entry point arrays.d.ts
-//
 // @public
 export class SubscriberSet implements Notifier {
     constructor(subject: any, initialSubscriber?: Subscriber);

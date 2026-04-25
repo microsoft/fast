@@ -303,7 +303,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
 // @public
 export const emptyArray: readonly never[];
 
-// @public (undocumented)
+// @public
 export function enableHydration(options?: HydrationOptions): void;
 
 // @public
@@ -559,6 +559,7 @@ export interface HydrationOptions {
 export class HydrationTracker {
     constructor(options: HydrationOptions);
     add(element: HTMLElement): void;
+    mergeOptions(incoming: HydrationOptions): void;
     remove(element: HTMLElement): void;
 }
 

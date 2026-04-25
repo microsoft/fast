@@ -68,4 +68,34 @@ export class HydrationTracker {
             }, 0);
         }
     }
+
+    /**
+     * Merges additional options into the tracker, chaining
+     * callbacks so both the original and new callbacks fire.
+     */
+    public mergeOptions(incoming: HydrationOptions): void {
+        const prev = this.options;
+        this.options = {
+            hydrationStarted: chainCallback(
+                prev.hydrationStarted,
+                incoming.hydrationStarted,
+            ),
+            hydrationComplete: chainCallback(
+                prev.hydrationComplete,
+                incoming.hydrationComplete,
+            ),
+        };
+    }
+}
+
+function chainCallback(
+    first: (() => void) | undefined,
+    second: (() => void) | undefined,
+): (() => void) | undefined {
+    if (!first) return second;
+    if (!second) return first;
+    return () => {
+        first();
+        second();
+    };
 }
