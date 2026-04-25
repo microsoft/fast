@@ -55,10 +55,9 @@ Looking for a quick guide on building components?  Check out [our Cheat Sheet](.
 
 ## Browser Requirements
 
-FAST Element v3 assumes a modern runtime with native `globalThis`. The package
-still installs its `requestIdleCallback` / `cancelIdleCallback` fallback
-internally, but it no longer patches `globalThis` for older engines. If you
-need to support an environment without `globalThis`, load that polyfill before
+FAST Element v3 assumes a modern runtime with native `globalThis`. The `FAST`
+object is now a module-scoped export (not on `globalThis`). If you need to
+support an environment without `globalThis`, load that polyfill before
 importing `@microsoft/fast-element`.
 
 ## Debug entrypoint
@@ -78,6 +77,14 @@ enableDebug();
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
 ## Dynamic Style Application
+
+Style APIs (`css`, `ElementStyles`, `CSSDirective`, `cssDirective`,
+`ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`,
+`StyleTarget`) are imported from `@microsoft/fast-element/styles.js`:
+
+```ts
+import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
+```
 
 When runtime state or external signals need to add or remove styles, create the
 `ElementStyles` with `css` and toggle it through
@@ -128,7 +135,24 @@ object and `$c` for the execution context.
 
 ## Prerendered Content Optimization
 
-When a FAST element connects and already has an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` automatically detects this. The `isPrerendered` property on the controller is a `Promise<boolean>` that resolves to `true` after prerendered content has been hydrated, or `false` when the component is client-side rendered. This enables several optimizations:
+Hydration of prerendered content is **opt-in**. Call `enableHydration()` from `@microsoft/fast-element/hydration.js` before any FAST elements connect to activate the hydration path:
+
+```typescript
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration({
+    hydrationComplete() {
+        console.log("hydration complete");
+    },
+});
+```
+
+When hydration is enabled and a FAST element connects with an existing shadow root (from server-side rendering or declarative shadow DOM), `ElementController` detects this and hydrates instead of re-rendering. Two properties on the controller let you inspect the result:
+
+- **`isPrerendered: Promise<boolean>`** — resolves `true` when the element had a declarative shadow root (DSD) at connect time, regardless of whether hydration ran.
+- **`isHydrated: Promise<boolean>`** — resolves `true` only when hydration actually ran successfully.
+
+This enables several optimizations:
 
 - **Hydration instead of re-render**: The template uses `hydrate()` to map existing DOM nodes to binding targets rather than cloning new DOM.
 - **Declarative template resolution**: `declarativeTemplate()` waits for the
@@ -137,17 +161,37 @@ When a FAST element connects and already has an existing shadow root (from serve
 - **Attribute skip**: `onAttributeChangedCallback()` skips processing during initial upgrade when the element is prerendered, since server-rendered attribute values are already correct.
 - **Binding skip**: `HTMLBindingDirective.bind()` skips `updateTarget` for `attribute` and `booleanAttribute` aspect types when the view is prerendered.
 
-Component authors can await the promise to know when hydration is complete:
+Per-element lifecycle callbacks can be passed directly to `declarativeTemplate()`:
 
 ```typescript
-this.$fastController.isPrerendered.then(prerendered => {
-    if (!prerendered) {
-        this.fetchData();
-    }
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+MyComponent.define({
+    name: "my-component",
+    template: declarativeTemplate({
+        elementWillHydrate(source) {
+            console.log(`${source.localName} will hydrate`);
+        },
+        elementDidHydrate(source) {
+            console.log(`${source.localName} hydrated`);
+        },
+    }),
 });
 ```
 
-Custom directives can also await `controller.isPrerendered` (a `Promise<boolean>` on the `ViewController` interface) to determine whether the view's content was prerendered.
+Component authors can await both promises to distinguish prerendered content from successful hydration:
+
+```typescript
+const controller = this.$fastController;
+const prerendered = await controller.isPrerendered;
+const hydrated = await controller.isHydrated;
+
+if (prerendered && !hydrated) {
+    // Had DSD but hydration wasn't enabled — client-side rendered
+}
+```
+
+Custom directives can also await `controller.isPrerendered` and `controller.isHydrated` (both `Promise<boolean>` on the `ViewController` interface) to determine how the view's content was rendered.
 
 ## Define Extensions
 

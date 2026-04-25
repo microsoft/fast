@@ -72,7 +72,7 @@ export type State<T> = ReadonlyState<T> & {
  */
 export function state<T>(
     value: T,
-    options: string | StateOptions = defaultStateOptions
+    options: string | StateOptions = defaultStateOptions,
 ): State<T> {
     if (isString(options)) {
         options = { deep: false, name: options };
@@ -146,7 +146,7 @@ export type OwnedState<T> = ReadonlyOwnedState<T> & {
  */
 export function ownedState<T>(
     value: T | (() => T),
-    options: string | StateOptions = defaultStateOptions
+    options: string | StateOptions = defaultStateOptions,
 ): OwnedState<T> {
     if (isString(options)) {
         options = { deep: false, name: options };
@@ -164,7 +164,7 @@ export function ownedState<T>(
         if (host === void 0) {
             host = reactive(
                 { value: (value as () => T)() },
-                (options as StateOptions).deep
+                (options as StateOptions).deep,
             );
 
             storage.set(owner, host);
@@ -251,7 +251,7 @@ export type ComputedInitializer<T> = (builder: ComputedBuilder) => () => T;
  */
 export function computedState<T>(
     initialize: ComputedInitializer<T>,
-    name = "ComputedState"
+    name = "ComputedState",
 ): ComputedState<T> {
     let setupCallback: ComputedSetupCallback | null = null;
     const builder: ComputedBuilder = {
