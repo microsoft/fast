@@ -20,7 +20,7 @@ The standard View implementation, which also implements ElementView and Syntheti
 **Signature:**
 
 ```typescript
-export declare class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent> 
+export declare class HTMLView<TSource = any, TParent = any> extends DefaultExecutionContext<TParent> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent>, ExecutionContext<TParent>
 ```
 **Extends:** DefaultExecutionContext&lt;TParent&gt;
 

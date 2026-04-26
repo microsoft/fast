@@ -21,9 +21,9 @@ Constructs a new instance of the `HydrationBindingError` class
 
 ```typescript
 constructor(
-    message: string | undefined, 
-    factory: ViewBehaviorFactory, 
-    fragment: DocumentFragment, 
+    message: string | undefined,
+    factory: ViewBehaviorFactory,
+    fragment: DocumentFragment,
     templateString: string);
 ```
 

@@ -1,10 +1,9 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
-import {
-    declarativeTemplate,
-    observerMap,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 interface Product {
     id: number;
@@ -352,7 +351,7 @@ class DeepMergeTestElement extends FASTElement {
     }
 }
 
-TemplateElement.config({
+enableHydration({
     hydrationComplete() {
         (window as any).hydrationCompleted = true;
     },

@@ -28,7 +28,7 @@ Let's step back from defining the Custom Element and consider what is happening 
 
 First, a global `FAST` property will be created if one does not already exist, typically in browser on the `window`.
 
-Additionally, when Custom Elements are included in a script a few things might happen even before a Custom Element gets detected by the browser. First, there are initial side effects caused by the use of decorators. These include the `attr` and `observable` decorators made available by the `@microsoft/fast-element` package.
+Additionally, when Custom Elements are included in a script a few things might happen even before a Custom Element gets detected by the browser. First, there are initial side effects caused by the use of decorators. These include the `attr` decorator from `@microsoft/fast-element/attr.js` and the `observable` decorator from `@microsoft/fast-element/observable.js`.
 
 Here is a basic flow of what code is executed and when during initial load of a script that contains a FAST defined Custom Element:
 

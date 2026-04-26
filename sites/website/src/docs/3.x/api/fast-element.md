@@ -208,6 +208,17 @@ A directive that configures list rendering.
 </td></tr>
 <tr><td>
 
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+A constructed JSON schema from a template
+
+
+</td></tr>
+<tr><td>
+
 [SlottedDirective](../fast-element.slotteddirective/)
 
 
@@ -356,39 +367,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[attr(config)](../fast-element.attr/)
-
-
-</td><td>
-
-Decorator: Specifies an HTML attribute.
-
-
-</td></tr>
-<tr><td>
-
-[attr(target, prop)](../fast-element.attr_1/)
-
-
-</td><td>
-
-Decorator: Specifies an HTML attribute.
-
-
-</td></tr>
-<tr><td>
-
-[children(propertyOrOptions)](../fast-element.children/)
-
-
-</td><td>
-
-A directive that observes the `childNodes` of an element and updates a property whenever they change.
-
-
-</td></tr>
-<tr><td>
-
 [customElement(nameOrDef)](../fast-element.customelement/)
 
 
@@ -499,17 +477,6 @@ Normalizes the input value into a binding.
 </td></tr>
 <tr><td>
 
-[observable(target, nameOrAccessor)](../fast-element.observable/)
-
-
-</td><td>
-
-Decorator: Defines an observable property on the target.
-
-
-</td></tr>
-<tr><td>
-
 [oneTime(expression, policy)](../fast-element.onetime/)
 
 
@@ -532,67 +499,12 @@ Creates an standard binding.
 </td></tr>
 <tr><td>
 
-[ref(propertyName)](../fast-element.ref/)
-
-
-</td><td>
-
-A directive that observes the updates a property with a reference to the element.
-
-
-</td></tr>
-<tr><td>
-
 [render(value, template)](../fast-element.render/)
 
 
 </td><td>
 
 Creates a RenderDirective for use in advanced rendering scenarios.
-
-
-</td></tr>
-<tr><td>
-
-[repeat(items, template, options)](../fast-element.repeat/)
-
-
-</td><td>
-
-A directive that enables list rendering.
-
-
-</td></tr>
-<tr><td>
-
-[slotted(propertyOrOptions)](../fast-element.slotted/)
-
-
-</td><td>
-
-A directive that observes the `assignedNodes()` of a slot and updates a property whenever they change.
-
-
-</td></tr>
-<tr><td>
-
-[volatile(target, name, descriptor)](../fast-element.volatile/)
-
-
-</td><td>
-
-Decorator: Marks a property getter as having volatile observable dependencies.
-
-
-</td></tr>
-<tr><td>
-
-[when(condition, templateOrTemplateBinding, elseTemplateOrTemplateBinding)](../fast-element.when/)
-
-
-</td><td>
-
-A directive that enables basic conditional rendering in a template.
 
 
 </td></tr>
@@ -612,6 +524,17 @@ Description
 
 </th></tr></thead>
 <tbody><tr><td>
+
+[AccessCachedPath](../fast-element.accesscachedpath/)
+
+
+</td><td>
+
+A path discovered from an access expression.
+
+
+</td></tr>
+<tr><td>
 
 [Accessor](../fast-element.accessor/)
 
@@ -646,6 +569,17 @@ The directive from which a binding originates.
 </td></tr>
 <tr><td>
 
+[CachedPathCommon](../fast-element.cachedpathcommon/)
+
+
+</td><td>
+
+Common metadata for paths cached while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
 [CaptureType](../fast-element.capturetype/)
 
 
@@ -668,6 +602,17 @@ The options used to configure child list observation.
 </td></tr>
 <tr><td>
 
+[ChildrenMap](../fast-element.childrenmap/)
+
+
+</td><td>
+
+Describes a child custom element binding referenced by a schema path.
+
+
+</td></tr>
+<tr><td>
+
 [ContentTemplate](../fast-element.contenttemplate/)
 
 
@@ -685,6 +630,17 @@ A simple template that can create ContentView instances.
 </td><td>
 
 A simple View that can be interpolated into HTML content.
+
+
+</td></tr>
+<tr><td>
+
+[DefaultCachedPath](../fast-element.defaultcachedpath/)
+
+
+</td><td>
+
+A path discovered from a default binding.
 
 
 </td></tr>
@@ -740,6 +696,17 @@ A View representing DOM nodes specifically for rendering the view of a custom el
 </td><td>
 
 A template capable of creating views specifically for rendering custom elements.
+
+
+</td></tr>
+<tr><td>
+
+[EventCachedPath](../fast-element.eventcachedpath/)
+
+
+</td><td>
+
+A path discovered from an event binding.
 
 
 </td></tr>
@@ -876,6 +843,39 @@ Options for configuring global hydration lifecycle events.
 </td></tr>
 <tr><td>
 
+[JSONSchema](../fast-element.jsonschema/)
+
+
+</td><td>
+
+A JSON schema describing a root property.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchemaCommon](../fast-element.jsonschemacommon/)
+
+
+</td><td>
+
+Common properties shared by schema nodes.
+
+
+</td></tr>
+<tr><td>
+
+[JSONSchemaDefinition](../fast-element.jsonschemadefinition/)
+
+
+</td><td>
+
+A reusable JSON schema definition.
+
+
+</td></tr>
+<tr><td>
+
 [NodeBehaviorOptions](../fast-element.nodebehavioroptions/)
 
 
@@ -926,6 +926,28 @@ Represents metadata configuration for a custom element.
 </td><td>
 
 Represents metadata configuration for an HTMLDirective.
+
+
+</td></tr>
+<tr><td>
+
+[RegisterPathConfig](../fast-element.registerpathconfig/)
+
+
+</td><td>
+
+Configuration for registering a path with a schema.
+
+
+</td></tr>
+<tr><td>
+
+[RepeatCachedPath](../fast-element.repeatcachedpath/)
+
+
+</td><td>
+
+A path discovered from a repeat directive.
 
 
 </td></tr>
@@ -1036,17 +1058,6 @@ A template capable of rendering views not specifically connected to custom eleme
 </td><td>
 
 Lifecycle callbacks for template events.
-
-
-</td></tr>
-<tr><td>
-
-[UpdateQueue](../fast-element.updatequeue/)
-
-
-</td><td>
-
-A work queue used to synchronize writes to the DOM.
 
 
 </td></tr>
@@ -1221,17 +1232,6 @@ A minimal base class for FASTElements that also provides static helpers for work
 </td></tr>
 <tr><td>
 
-[html](../fast-element.html/)
-
-
-</td><td>
-
-Transforms a template literal string into a ViewTemplate.
-
-
-</td></tr>
-<tr><td>
-
 [HTMLDirective](../fast-element.htmldirective/)
 
 
@@ -1276,17 +1276,6 @@ A [ValueConverter](../fast-element.valueconverter/) that converts to and from `n
 </td></tr>
 <tr><td>
 
-[Observable](../fast-element.observable/)
-
-
-</td><td>
-
-Common Observable APIs.
-
-
-</td></tr>
-<tr><td>
-
 [Parser](../fast-element.parser/)
 
 
@@ -1298,23 +1287,23 @@ Common APIs related to content parsing.
 </td></tr>
 <tr><td>
 
+[schemaRegistry](../fast-element.schemaregistry/)
+
+
+</td><td>
+
+Module-level registry that maps custom element names to their schema maps. Used for cross-element `$ref` resolution (e.g. nested element schemas). Each Schema instance registers itself here on construction.
+
+
+</td></tr>
+<tr><td>
+
 [SourceLifetime](../fast-element.sourcelifetime/)
 
 
 </td><td>
 
 Describes how the source's lifetime relates to its controller's lifetime.
-
-
-</td></tr>
-<tr><td>
-
-[Updates](../fast-element.updates/)
-
-
-</td><td>
-
-The default UpdateQueue.
 
 
 </td></tr>
@@ -1363,6 +1352,28 @@ Metadata used to configure a custom attribute's behavior.
 </td><td>
 
 The mode that specifies the runtime behavior of the attribute.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPath](../fast-element.cachedpath/)
+
+
+</td><td>
+
+A path discovered while parsing a template.
+
+
+</td></tr>
+<tr><td>
+
+[CachedPathMap](../fast-element.cachedpathmap/)
+
+
+</td><td>
+
+A map from element names and root properties to JSON schemas.
 
 
 </td></tr>

@@ -1,4 +1,6 @@
-import { FASTElement, html, repeat } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { repeat } from "@microsoft/fast-element/directives/repeat.js";
+import { html } from "@microsoft/fast-element/html.js";
 
 const items = Array.from({ length: 20 }, (_, i) => `Item ${i}`);
 

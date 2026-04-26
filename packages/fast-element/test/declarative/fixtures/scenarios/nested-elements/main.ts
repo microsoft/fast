@@ -1,9 +1,42 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
-import {
-    declarativeTemplate,
-    TemplateElement,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { observable } from "@microsoft/fast-element/observable.js";
+
+(window as any).messages = [];
+
+const lifecycleCallbacks = {
+    elementDidDefine(name: string) {
+        (window as any).messages.push(
+            `Element did define: ${name} [${performance.now()}]`,
+        );
+    },
+    elementDidRegister(name: string) {
+        (window as any).messages.push(
+            `Element did register: ${name} [${performance.now()}]`,
+        );
+    },
+    templateDidUpdate(name: string) {
+        (window as any).messages.push(
+            `Template did update: ${name} [${performance.now()}]`,
+        );
+    },
+    templateWillUpdate(name: string) {
+        (window as any).messages.push(
+            `Template will update: ${name} [${performance.now()}]`,
+        );
+    },
+};
+
+enableHydration({
+    hydrationComplete() {
+        (window as any).messages.push(`Hydration complete [${performance.now()}]`);
+        (window as any).hydrationCompleted = true;
+    },
+});
 
 // Mock data sources - simulating fetched data
 const mockDataSources = {
@@ -133,7 +166,7 @@ export class TestElementRepeatEvent extends FASTElement {
 }
 TestElementRepeatEvent.define({
     name: "test-element-repeat-event",
-    template: declarativeTemplate(),
+    template: declarativeTemplate(lifecycleCallbacks),
 });
 
 export class TestWhenInRepeat extends FASTElement {
@@ -148,64 +181,34 @@ export class TestWhenInRepeat extends FASTElement {
         this.clickedItemName = (e.currentTarget as HTMLButtonElement).textContent!;
     }
 }
-TestWhenInRepeat.define({
-    name: "test-when-in-repeat",
-    template: declarativeTemplate(),
-});
+TestWhenInRepeat.define(
+    {
+        name: "test-when-in-repeat",
+        template: declarativeTemplate(lifecycleCallbacks),
+    },
+    [observerMap()],
+);
 
-ItemList.define({
-    name: "parent-element",
-    template: declarativeTemplate(),
-});
+ItemList.define(
+    {
+        name: "parent-element",
+        template: declarativeTemplate(lifecycleCallbacks),
+    },
+    [observerMap()],
+);
 
-Item.define({
-    name: "child-element",
-    template: declarativeTemplate(),
-});
+Item.define(
+    {
+        name: "child-element",
+        template: declarativeTemplate(lifecycleCallbacks),
+    },
+    [observerMap()],
+);
 
-GrandChildItem.define({
-    name: "grand-child-element",
-    template: declarativeTemplate(),
-});
-
-(window as any).messages = [];
-
-TemplateElement.options({
-    "parent-element": {
-        observerMap: {},
+GrandChildItem.define(
+    {
+        name: "grand-child-element",
+        template: declarativeTemplate(lifecycleCallbacks),
     },
-    "child-element": {
-        observerMap: {},
-    },
-    "grand-child-element": {
-        observerMap: {},
-    },
-    "test-when-in-repeat": {
-        observerMap: {},
-    },
-}).config({
-    elementDidDefine(name: string) {
-        (window as any).messages.push(
-            `Element did define: ${name} [${performance.now()}]`,
-        );
-    },
-    elementDidRegister(name: string) {
-        (window as any).messages.push(
-            `Element did register: ${name} [${performance.now()}]`,
-        );
-    },
-    hydrationComplete() {
-        (window as any).messages.push(`Hydration complete [${performance.now()}]`);
-        (window as any).hydrationCompleted = true;
-    },
-    templateDidUpdate(name: string) {
-        (window as any).messages.push(
-            `Template did update: ${name} [${performance.now()}]`,
-        );
-    },
-    templateWillUpdate(name: string) {
-        (window as any).messages.push(
-            `Template will update: ${name} [${performance.now()}]`,
-        );
-    },
-});
+    [observerMap()],
+);

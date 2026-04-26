@@ -1,9 +1,7 @@
 import { FASTElement } from "@microsoft/fast-element";
-import {
-    attributeMap,
-    declarativeTemplate,
-    observerMap,
-} from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 class ConfigObserverMapTestElement extends FASTElement {
     public data: any = {

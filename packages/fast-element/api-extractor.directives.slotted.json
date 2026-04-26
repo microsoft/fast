@@ -1,0 +1,17 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+    "extends": "../../api-extractor.json",
+    "mainEntryPointFilePath": "./dist/dts/directives/slotted.d.ts",
+    "dtsRollup": {
+        "enabled": false
+    },
+    "apiReport": {
+        "enabled": true,
+        "reportFolder": "<projectFolder>/docs/directives/slotted",
+        "reportFileName": "api-report"
+    },
+    "docModel": {
+        "enabled": true,
+        "apiJsonFilePath": "<projectFolder>/dist/directives/slotted/slotted.api.json"
+    }
+}

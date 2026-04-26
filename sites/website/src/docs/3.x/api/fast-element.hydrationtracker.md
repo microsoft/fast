@@ -20,7 +20,7 @@ Tracks prerendered elements through the hydration lifecycle and fires global cal
 **Signature:**
 
 ```typescript
-export declare class HydrationTracker 
+export declare class HydrationTracker
 ```
 
 ## Constructors

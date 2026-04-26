@@ -5,6 +5,12 @@
 ```ts
 
 // @public
+export interface AccessCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "access";
+}
+
+// @public
 export interface Accessor {
     getValue(source: any): any;
     name: string;
@@ -21,12 +27,6 @@ export interface Aspected {
     sourceAspect: string;
     targetAspect: string;
 }
-
-// @public
-export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
-
-// @public
-export function attr(target: {}, prop: string): void;
 
 // @public
 export type AttributeConfiguration = {
@@ -87,6 +87,22 @@ export interface BindingDirective {
 export const booleanConverter: ValueConverter;
 
 // @public
+export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
+
+// @public
+export interface CachedPathCommon {
+    // (undocumented)
+    currentContext: string | null;
+    // (undocumented)
+    parentContext: string | null;
+    // (undocumented)
+    path: string;
+}
+
+// @public
+export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
+
+// @public
 export type Callable = typeof Function.prototype.call | {
     call(): void;
 };
@@ -100,9 +116,6 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 }
 
 // @public
-export function children<TSource = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType;
-
-// @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
     constructor(options: ChildrenDirectiveOptions);
     disconnect(target: any): void;
@@ -112,6 +125,14 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 
 // @public
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
+
+// @public
+export interface ChildrenMap {
+    // (undocumented)
+    attributeName: string;
+    // (undocumented)
+    customElementName: string;
+}
 
 // @public
 export type Class<T, C = {}> = C & Constructable<T> & {
@@ -167,6 +188,12 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
+
+// @public
+export interface DefaultCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "default";
+}
 
 // @public
 export interface Disposable {
@@ -307,6 +334,12 @@ export const emptyArray: readonly never[];
 export function enableHydration(options?: HydrationOptions): void;
 
 // @public
+export interface EventCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "event";
+}
+
+// @public
 export interface ExecutionContext<TParent = any> {
     readonly event: Event;
     eventDetail<TDetail>(): TDetail;
@@ -398,6 +431,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
+    schema?: Schema;
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate<InstanceType<TType>>;
@@ -432,9 +466,6 @@ export interface HostController<TSource = any> extends ExpressionController<TSou
     removeBehavior(behavior: HostBehavior<TSource>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
 }
-
-// @public
-export const html: HTMLTemplateTag;
 
 // @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective {
@@ -591,6 +622,39 @@ export function isHydratable<TSource = any, TParent = any>(template: ElementView
 export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
 
 // @public
+export interface JSONSchema extends JSONSchemaCommon {
+    // (undocumented)
+    $defs?: Record<string, JSONSchemaDefinition>;
+    // (undocumented)
+    $id: string;
+    // (undocumented)
+    $schema: string;
+}
+
+// @public
+export interface JSONSchemaCommon {
+    $observe?: boolean;
+    // (undocumented)
+    $ref?: string;
+    // (undocumented)
+    anyOf?: Array<any>;
+    // (undocumented)
+    items?: any;
+    // (undocumented)
+    properties?: any;
+    // (undocumented)
+    type?: string;
+}
+
+// @public
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
+    // (undocumented)
+    $fast_context: string;
+    // (undocumented)
+    $fast_parent_contexts: Array<string>;
+}
+
+// @public
 export function listener<T = any>(expression: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
 
 // @public
@@ -639,22 +703,6 @@ export const nullableBooleanConverter: ValueConverter;
 export const nullableNumberConverter: ValueConverter;
 
 // @public
-export const Observable: Readonly<{
-    setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
-    getNotifier: <T extends Notifier = Notifier>(source: any) => T;
-    track(source: unknown, propertyName: string): void;
-    trackVolatile(): void;
-    notify(source: unknown, args: any): void;
-    defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
-    getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(expression: Expression<TSource_1, TReturn_1, any>): boolean;
-}>;
-
-// @public
-export function observable(target: {}, nameOrAccessor: string | Accessor): void;
-
-// @public
 export interface ObservationRecord {
     propertyName: string;
     propertySource: any;
@@ -678,6 +726,7 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
+    readonly schema?: Schema;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
@@ -698,12 +747,19 @@ export class PropertyChangeNotifier implements Notifier {
 }
 
 // @public
-export const ref: <TSource = any>(propertyName: keyof TSource & string) => CaptureType;
-
-// @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(controller: ViewController): void;
     targetNodeId: string;
+}
+
+// @public
+export interface RegisterPathConfig {
+    // (undocumented)
+    childrenMap: ChildrenMap | null;
+    // (undocumented)
+    pathConfig: CachedPath;
+    // (undocumented)
+    rootPropertyName: string;
 }
 
 // @public
@@ -733,9 +789,6 @@ export class RenderDirective<TSource = any> implements HTMLDirective, ViewBehavi
 }
 
 // @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType;
-
-// @public
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     constructor(directive: RepeatDirective);
     bind(controller: ViewController): void;
@@ -743,6 +796,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
     unbind(): void;
     // @internal (undocumented)
     views: SyntheticView[];
+}
+
+// @public
+export interface RepeatCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "repeat";
 }
 
 // @public
@@ -766,13 +825,21 @@ export interface RepeatOptions {
 }
 
 // @public
+export class Schema {
+    constructor(name: string);
+    addPath(config: RegisterPathConfig): void;
+    getRootProperties(): IterableIterator<string>;
+    getSchema(rootPropertyName: string): JSONSchema | null;
+}
+
+// @public
+export const schemaRegistry: CachedPathMap;
+
+// @public
 export interface ShadowRootOptions extends ShadowRootInit {
     // @beta
     registry?: CustomElementRegistry;
 }
-
-// @public
-export function slotted<TSource = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType;
 
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
@@ -915,17 +982,6 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
 }
 
 // @public
-export interface UpdateQueue {
-    enqueue(callable: Callable): void;
-    next(): Promise<void>;
-    process(): void;
-    setMode(isAsync: boolean): void;
-}
-
-// @public
-export const Updates: UpdateQueue;
-
-// @public
 export interface ValueConverter {
     fromView(value: any): any;
     toView(value: any): any;
@@ -981,12 +1037,6 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     withPolicy(policy: DOMPolicy): this;
 }
-
-// @public
-export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
-
-// @public
-export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType;
 
 // Warnings were encountered during analysis:
 //

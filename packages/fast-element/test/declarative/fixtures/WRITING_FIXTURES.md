@@ -162,9 +162,11 @@ The component definition file registers custom elements and configures the templ
 
 1. Define element classes extending `FASTElement`.
 2. Call `define()` on the element class with `template: declarativeTemplate()`.
-3. Use `TemplateElement.config()` or `TemplateElement.options()` only when the
-   fixture needs lifecycle callbacks or compatibility fallback options —
-   `declarativeTemplate()` registers `<f-template>` automatically.
+3. Use `declarativeTemplate(callbacks)` for per-element lifecycle callbacks,
+   `enableHydration()` for hydration callbacks, and define extensions such as
+   `attributeMap()` / `observerMap()` for schema behavior.
+   `declarativeTemplate()` registers FAST's internal `<f-template>` publisher
+   automatically.
 
 ### Import paths
 
@@ -179,7 +181,9 @@ The component definition file registers custom elements and configures the templ
 ### Basic pattern
 
 ```typescript
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyElement extends FASTElement {
@@ -224,7 +228,8 @@ For fixtures that test deeply nested property reactivity, prefer the
 definition-scoped `observerMap()` extension:
 
 ```typescript
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 MyElement.define(
     {
