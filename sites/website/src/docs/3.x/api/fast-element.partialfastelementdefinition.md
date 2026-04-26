@@ -58,7 +58,7 @@ Description
 
 </td><td>
 
-([AttributeConfiguration](../fast-element.attributeconfiguration/) \| string)\[\]
+(AttributeConfiguration \| string)\[\]
 
 
 </td><td>
@@ -163,7 +163,7 @@ _(Optional)_ The registry to register this component in by default.
 
 </td><td>
 
-[Schema](../fast-element.schema/)
+Schema
 
 
 </td><td>
@@ -226,7 +226,7 @@ _(Optional)_ The styles to associate with the custom element.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;InstanceType&lt;TType&gt;&gt; \| [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
+ElementViewTemplate&lt;InstanceType&lt;TType&gt;&gt; \| [FASTElementTemplateResolver](../fast-element.fastelementtemplateresolver/)<!-- -->&lt;TType&gt;
 
 
 </td><td>

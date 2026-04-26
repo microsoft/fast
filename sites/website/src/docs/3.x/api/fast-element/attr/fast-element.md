@@ -34,7 +34,7 @@ Description
 
 </td><td>
 
-An implementation of  that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
+An implementation of `Accessor` that supports reactivity, change callbacks, attribute reflection, and type conversion for custom elements.
 
 
 </td></tr>

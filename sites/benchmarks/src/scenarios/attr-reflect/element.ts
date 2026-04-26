@@ -1,5 +1,5 @@
-import { FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
-import { attr } from "@microsoft/fast-element/attr.js";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter } from "@microsoft/fast-element/attr.js";
 import { html } from "@microsoft/fast-element/html.js";
 export class BenchElement extends FASTElement {
     @attr

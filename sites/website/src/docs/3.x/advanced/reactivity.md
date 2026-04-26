@@ -192,8 +192,7 @@ In addition to watching properties and arrays, you can also watch volatile prope
 **Example: Subscribing to a Volatile Property**
 
 ```ts
-import { defaultExecutionContext } from '@microsoft/fast-element';
-import { Observable } from '@microsoft/fast-element/observable.js';
+import { ExecutionContext, Observable } from '@microsoft/fast-element/observable.js';
 
 const myObject = new MyClass();
 const handler = {
@@ -203,7 +202,7 @@ const handler = {
   }
 };
 const bindingObserver = Observable.binding(myObject.computedValue, handler);
-bindingObserver.observe(myObject, defaultExecutionContext);
+bindingObserver.observe(myObject, ExecutionContext.default);
 
 // Call this to dismantle the observer
 bindingObserver.disconnect();
@@ -215,9 +214,11 @@ To inspect which observable objects and properties were accessed from a `Binding
 
 **Example: Getting observation records**
 ```ts
+import { ExecutionContext, Observable } from '@microsoft/fast-element/observable.js';
+
 const binding = (x: MyClass) => x.someBoolean ? x.valueA : x.valueB;
 const bindingObserver = Observable.binding(binding);
-const value = bindingObserver.observe({}, defaultExecutionContext);
+const value = bindingObserver.observe({}, ExecutionContext.default);
 
 for (const record of bindingObserver.records()) {
   // Do something with the binding's observable dependencies

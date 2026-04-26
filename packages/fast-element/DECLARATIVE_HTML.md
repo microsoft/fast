@@ -197,7 +197,8 @@ are observed.
 Manual schema example:
 
 ```typescript
-import { FASTElement, Schema } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { Schema } from "@microsoft/fast-element/schema.js";
 import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 class MyElement extends FASTElement {}

@@ -11,4 +11,4 @@ export {
     type TemplateValue,
     ViewTemplate,
 } from "./templating/template.js";
-export type { ElementView, HTMLView, SyntheticView } from "./templating/view.js";
+export { type ElementView, HTMLView, type SyntheticView } from "./templating/view.js";

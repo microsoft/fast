@@ -186,7 +186,8 @@ For non-declarative/manual schema use, pass the schema in the observer map
 configuration:
 
 ```typescript
-import { FASTElement, Schema } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { Schema } from "@microsoft/fast-element/schema.js";
 import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 class MyElement extends FASTElement {}
@@ -460,7 +461,7 @@ The schema system tracks binding contexts using special metadata:
 You can inspect generated schemas using the module-level `schemaRegistry` import:
 
 ```typescript
-import { schemaRegistry } from "@microsoft/fast-element";
+import { schemaRegistry } from "@microsoft/fast-element/schema.js";
 
 // Get all schemas for an element:
 const elementSchemas = schemaRegistry.get('my-element');
@@ -476,7 +477,7 @@ To verify that observer mapping ran, inspect the generated schema and the
 observable accessors on the element prototype:
 
 ```typescript
-import { schemaRegistry } from "@microsoft/fast-element";
+import { schemaRegistry } from "@microsoft/fast-element/schema.js";
 import { Observable } from "@microsoft/fast-element/observable.js";
 
 const schemas = schemaRegistry.get("my-element");

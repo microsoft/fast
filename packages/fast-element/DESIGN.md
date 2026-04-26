@@ -52,6 +52,12 @@ For deep dives into specific areas, see the linked detailed documents.
 
 The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element/updates.js`, and `Observable` from `@microsoft/fast-element/observable.js`.
 
+The root entrypoint intentionally stays small: it keeps `FASTElement`, `FAST`,
+`ElementController`, `FASTElementDefinition`, and related controller/definition
+types. Optional feature groups use dedicated subpaths, such as `attr.js`,
+`binding.js`, `dom.js`, `schema.js`, `html.js`, `templating.js`, `render.js`,
+`hydration.js`, and the directive subpaths.
+
 ---
 
 ## Core Concepts

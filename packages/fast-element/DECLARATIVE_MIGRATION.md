@@ -194,7 +194,8 @@ a schema in the element definition, and `observerMap()` can also take a schema
 directly in configuration:
 
 ```ts
-import { FASTElement, Schema } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { Schema } from "@microsoft/fast-element/schema.js";
 import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 class MyElement extends FASTElement {}

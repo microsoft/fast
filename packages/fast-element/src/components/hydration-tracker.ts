@@ -13,7 +13,7 @@ export interface HydrationOptions {
  * Tracks prerendered elements through the hydration lifecycle and
  * fires global callbacks at start and completion. Per-element callbacks
  * (`elementWillHydrate`, `elementDidHydrate`) are handled through
- * definition-level {@link TemplateLifecycleCallbacks}.
+ * definition-level `TemplateLifecycleCallbacks`.
  *
  * @public
  */

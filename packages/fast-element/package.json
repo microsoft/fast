@@ -55,6 +55,11 @@
       "test": "./src/hydration.ts",
       "default": "./dist/esm/hydration.js"
     },
+    "./binding.js": {
+      "types": "./dist/dts/binding.d.ts",
+      "test": "./src/binding.ts",
+      "default": "./dist/esm/binding.js"
+    },
     "./binding/two-way.js": {
       "types": "./dist/dts/binding/two-way.d.ts",
       "default": "./dist/esm/binding/two-way.js"
@@ -64,8 +69,9 @@
       "default": "./dist/esm/binding/signal.js"
     },
     "./render.js": {
-      "types": "./dist/dts/templating/render.d.ts",
-      "default": "./dist/esm/templating/render.js"
+      "types": "./dist/dts/render.d.ts",
+      "test": "./src/render.ts",
+      "default": "./dist/esm/render.js"
     },
     "./utilities.js": {
       "types": "./dist/dts/utilities.d.ts",
@@ -82,6 +88,11 @@
     "./di.js": {
       "types": "./dist/dts/di/di.d.ts",
       "default": "./dist/esm/di/di.js"
+    },
+    "./dom.js": {
+      "types": "./dist/dts/dom.d.ts",
+      "test": "./src/dom.ts",
+      "default": "./dist/esm/dom.js"
     },
     "./dom-policy.js": {
       "types": "./dist/dts/dom-policy.d.ts",
@@ -101,6 +112,11 @@
       "types": "./dist/dts/array-observer.d.ts",
       "test": "./src/array-observer.ts",
       "default": "./dist/esm/array-observer.js"
+    },
+    "./schema.js": {
+      "types": "./dist/dts/schema.d.ts",
+      "test": "./src/schema.ts",
+      "default": "./dist/esm/schema.js"
     },
     "./observable.js": {
       "types": "./dist/dts/observable.d.ts",
@@ -127,10 +143,20 @@
       "test": "./src/html.ts",
       "default": "./dist/esm/html.js"
     },
+    "./templating.js": {
+      "types": "./dist/dts/templating.d.ts",
+      "test": "./src/templating.ts",
+      "default": "./dist/esm/templating.js"
+    },
     "./directives/children.js": {
       "types": "./dist/dts/directives/children.d.ts",
       "test": "./src/directives/children.ts",
       "default": "./dist/esm/directives/children.js"
+    },
+    "./directives/node-observation.js": {
+      "types": "./dist/dts/directives/node-observation.d.ts",
+      "test": "./src/directives/node-observation.ts",
+      "default": "./dist/esm/directives/node-observation.js"
     },
     "./directives/ref.js": {
       "types": "./dist/dts/directives/ref.d.ts",

@@ -372,7 +372,7 @@ The subject that subscribers will receive notifications for.
 
 </td><td>
 
-[ElementViewTemplate](../fast-element.elementviewtemplate/)<!-- -->&lt;TElement&gt; \| null
+ElementViewTemplate&lt;TElement&gt; \| null
 
 
 </td><td>
@@ -393,7 +393,7 @@ Gets/sets the template used to render the component.
 
 </td><td>
 
-[ElementView](../fast-element.elementview/)<!-- -->&lt;TElement&gt; \| null
+ElementView&lt;TElement&gt; \| null
 
 
 </td><td>

@@ -78,20 +78,28 @@ Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.
 
 ## Core Helper Subpaths
 
-The root `@microsoft/fast-element` entrypoint keeps core types and unrelated
-exports such as `FASTElement`, `FAST`, and `Schema`. Import these helpers from
-their dedicated subpaths:
+The root `@microsoft/fast-element` entrypoint keeps the element base class,
+kernel, controller, and definition APIs such as `FASTElement`, `FAST`,
+`ElementController`, `FASTElementDefinition`, and related controller/definition
+types. Optional feature groups are available from dedicated subpaths:
 
 | API | Import path |
 |---|---|
 | `Updates` | `@microsoft/fast-element/updates.js` |
 | `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
-| `attr` | `@microsoft/fast-element/attr.js` |
+| `attr`, `AttributeDefinition`, converters, `ValueConverter` | `@microsoft/fast-element/attr.js` |
+| `Binding`, `oneWay`, `oneTime`, `listener` | `@microsoft/fast-element/binding.js` |
+| `DOM`, `DOMAspect`, `DOMPolicy` | `@microsoft/fast-element/dom.js` |
+| `Schema`, `schemaRegistry`, schema types | `@microsoft/fast-element/schema.js` |
 | `css` | `@microsoft/fast-element/css.js` |
-| `html` | `@microsoft/fast-element/html.js` |
+| `html`, `ViewTemplate`, `HTMLView` | `@microsoft/fast-element/html.js` |
+| `Compiler`, `HTMLDirective`, `htmlDirective`, templating/view types | `@microsoft/fast-element/templating.js` |
+| `render`, `RenderBehavior`, `RenderDirective` | `@microsoft/fast-element/render.js` |
+| `enableHydration`, `HydrationTracker`, hydration types | `@microsoft/fast-element/hydration.js` |
 | `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
 | `volatile` | `@microsoft/fast-element/volatile.js` |
 | `children` | `@microsoft/fast-element/directives/children.js` |
+| `elements`, `NodeObservationDirective` | `@microsoft/fast-element/directives/node-observation.js` |
 | `ref` | `@microsoft/fast-element/directives/ref.js` |
 | `slotted` | `@microsoft/fast-element/directives/slotted.js` |
 | `when` | `@microsoft/fast-element/directives/when.js` |
@@ -176,8 +184,9 @@ MyElement.define(
 `observerMap()` creates deep observable accessors for discovered root
 properties. Declarative templates assign `definition.schema` during template
 resolution so these extensions always have schema data when used with
-`declarativeTemplate()`. For non-declarative/manual schema use, pass a `Schema`
-on the element definition; `observerMap()` can also receive
+`declarativeTemplate()`. For non-declarative/manual schema use, import `Schema`
+from `@microsoft/fast-element/schema.js` and pass it on the element definition;
+`observerMap()` can also receive
 `observerMap({ schema })` directly. When both extensions are present, attribute
 mapping runs before observer mapping.
 

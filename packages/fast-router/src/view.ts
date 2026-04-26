@@ -1,7 +1,8 @@
-import type { ExecutionContext, ViewTemplate } from "@microsoft/fast-element";
+import type { ExecutionContext } from "@microsoft/fast-element";
 import { html } from "@microsoft/fast-element/html.js";
 import type { ComposableStyles } from "@microsoft/fast-element/styles.js";
 import { ElementStyles } from "@microsoft/fast-element/styles.js";
+import type { ViewTemplate } from "@microsoft/fast-element/templating.js";
 import { isFASTElementHost, type Router } from "./router.js";
 
 /**

@@ -91,8 +91,8 @@ Here's how it works:
 **Example: An Attribute in Reflect Mode with Custom Conversion**
 
 ```ts
-import { FASTElement, ValueConverter } from '@microsoft/fast-element';
-import { attr } from '@microsoft/fast-element/attr.js';
+import { FASTElement } from '@microsoft/fast-element';
+import { attr, type ValueConverter } from '@microsoft/fast-element/attr.js';
 
 const numberConverter: ValueConverter = {
   toView(value: any): string {
@@ -115,9 +115,9 @@ MyCounter.define({
 
 A few commonly used converters are available as well:
 
-- [booleanConverter](/docs/api/fast-element.booleanconverter)
-- [nullableBooleanConverter](/docs/api/fast-element.nullablebooleanconverter)
-- [nullableNumberConverter](/docs/api/fast-element.nullablenumberconverter)
+- [booleanConverter](/docs/3.x/api/fast-element/attr/fast-element.booleanconverter/)
+- [nullableBooleanConverter](/docs/3.x/api/fast-element/attr/fast-element.nullablebooleanconverter/)
+- [nullableNumberConverter](/docs/3.x/api/fast-element/attr/fast-element.nullablenumberconverter/)
 
 ## Observables
 

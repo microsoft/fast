@@ -234,7 +234,8 @@ When `properties` is omitted, all root properties are observed. When `properties
 For components that do not use `declarativeTemplate()`, create or obtain a `Schema` and pass it to `observerMap()`:
 
 ```ts
-import { FASTElement, Schema } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { Schema } from "@microsoft/fast-element/schema.js";
 import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 
 class UserProfile extends FASTElement {}

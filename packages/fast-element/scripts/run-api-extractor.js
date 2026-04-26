@@ -44,6 +44,21 @@ export const exportPaths = [
         configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
     },
     {
+        path: "./binding.js",
+        docsFolder: "binding",
+        configPath: path.resolve(__dirname, "../api-extractor.binding.json"),
+    },
+    {
+        path: "./schema.js",
+        docsFolder: "schema",
+        configPath: path.resolve(__dirname, "../api-extractor.schema.json"),
+    },
+    {
+        path: "./dom.js",
+        docsFolder: "dom",
+        configPath: path.resolve(__dirname, "../api-extractor.dom.json"),
+    },
+    {
         path: "./updates.js",
         docsFolder: "updates",
         configPath: path.resolve(__dirname, "../api-extractor.updates.json"),
@@ -89,9 +104,27 @@ export const exportPaths = [
         configPath: path.resolve(__dirname, "../api-extractor.html.json"),
     },
     {
+        path: "./templating.js",
+        docsFolder: "templating",
+        configPath: path.resolve(__dirname, "../api-extractor.templating.json"),
+    },
+    {
+        path: "./render.js",
+        docsFolder: "render",
+        configPath: path.resolve(__dirname, "../api-extractor.render.json"),
+    },
+    {
         path: "./directives/children.js",
         docsFolder: "directives/children",
         configPath: path.resolve(__dirname, "../api-extractor.directives.children.json"),
+    },
+    {
+        path: "./directives/node-observation.js",
+        docsFolder: "directives/node-observation",
+        configPath: path.resolve(
+            __dirname,
+            "../api-extractor.directives.node-observation.json",
+        ),
     },
     {
         path: "./directives/ref.js",
