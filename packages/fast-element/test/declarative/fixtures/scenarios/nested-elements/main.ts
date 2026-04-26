@@ -1,6 +1,7 @@
 import { attr, FASTElement, observable } from "@microsoft/fast-element";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
 
 (window as any).messages = [];

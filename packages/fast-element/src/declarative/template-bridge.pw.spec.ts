@@ -180,6 +180,25 @@ test.describe("declarativeTemplate", () => {
         expect(result.declarativeTemplateAfterHydration).toBe(true);
     });
 
+    test("does not export map helpers from declarative entrypoint", async ({ page }) => {
+        await page.goto("/");
+
+        const result = await page.evaluate(async pureEntrypointUrl => {
+            // @ts-expect-error: Client module.
+            const declarative = await import(pureEntrypointUrl);
+
+            return {
+                hasAttributeMap: "attributeMap" in declarative,
+                hasObserverMap: "observerMap" in declarative,
+            };
+        }, pureDeclarativeEntrypointUrl);
+
+        expect(result).toEqual({
+            hasAttributeMap: false,
+            hasObserverMap: false,
+        });
+    });
+
     test("does not bundle map modules for plain declarativeTemplate", async () => {
         const result = await build({
             stdin: {
@@ -232,11 +251,13 @@ test.describe("declarativeTemplate", () => {
             const {
                 FASTElement,
                 FASTElementDefinition,
-                attributeMap,
                 declarativeTemplate,
-                observerMap,
                 uniqueElementName,
             } = await import("/declarative-main.js");
+            // @ts-expect-error: Client module.
+            const { attributeMap, observerMap } = await import(
+                "/extension-subpaths-main.js"
+            );
 
             const elementName = uniqueElementName();
 

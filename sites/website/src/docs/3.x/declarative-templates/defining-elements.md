@@ -120,7 +120,7 @@ TaskItem.define({
 
 ## Extensions
 
-The `observerMap()` and `attributeMap()` functions are define extensions — they are passed as the second argument to `define()` and run before the element is registered with the platform. They are factored into dedicated extension subpaths so they can be used with declarative templates or with manually supplied schemas. Existing imports from `@microsoft/fast-element/declarative.js` remain valid for declarative code; new code should prefer the extension subpaths shown below.
+The `observerMap()` and `attributeMap()` functions are define extensions — they are passed as the second argument to `define()` and run before the element is registered with the platform. They are exported from dedicated extension subpaths so they can be used with declarative templates or with manually supplied schemas.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";

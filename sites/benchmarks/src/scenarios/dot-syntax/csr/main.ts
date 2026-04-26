@@ -1,4 +1,5 @@
-import { declarativeTemplate, observerMap } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 import { runBenchmark } from "../../harness.js";
 import { BenchElement } from "../element.js";
 

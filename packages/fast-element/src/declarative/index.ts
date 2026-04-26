@@ -2,13 +2,6 @@ export type {
     FASTElementExtension,
     TemplateLifecycleCallbacks,
 } from "../components/fast-definitions.js";
-export { type AttributeMapConfig, attributeMap } from "./attribute-map.js";
-export type {
-    ObserverMapConfig,
-    ObserverMapPathEntry,
-    ObserverMapPathNode,
-} from "./observer-map.js";
-export { observerMap } from "./observer-map.js";
 export {
     type AccessCachedPath,
     type CachedPath,

@@ -142,12 +142,11 @@ when an element uses `template: declarativeTemplate()`.
 | `TemplateElement` public export | `declarativeTemplate()` |
 | `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
 | `TemplateElement.config(callbacks)` | `declarativeTemplate(callbacks)` for per-element callbacks and `enableHydration(options)` for global hydration callbacks |
-| `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
-| `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
+| `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions from dedicated extension subpaths |
+| `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types from dedicated extension subpaths |
 
-Existing imports from `@microsoft/fast-element/declarative.js` remain valid for
-declarative templates. New code that only needs the schema-driven map extensions
-should prefer their dedicated subpaths:
+Import `declarativeTemplate()` from `@microsoft/fast-element/declarative.js`.
+Import schema-driven map extensions from their dedicated subpaths:
 
 ```ts
 import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";

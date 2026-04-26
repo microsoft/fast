@@ -42,7 +42,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Element authoring | `FASTElement` base class + `@customElement`, `@attr`, `@observable` decorators |
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
-| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`, `Schema`, `attributeMap()`, `observerMap()` |
+| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`, `Schema` |
 | Schema-driven extensions | `@microsoft/fast-element/extensions/attribute-map.js` and `@microsoft/fast-element/extensions/observer-map.js` → tree-shakeable map helpers usable with declarative or manually supplied schemas |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
@@ -325,16 +325,14 @@ See `docs/di/api-report.api.md` for the full public API surface.
 
 FAST Element also owns the declarative HTML runtime that previously lived in a
 separate package. The dedicated `@microsoft/fast-element/declarative.js`
-entrypoint exports the functional public API: `declarativeTemplate()`,
-`attributeMap()`, `observerMap()`, `TemplateParser`, `Schema`,
-`schemaRegistry`, and related config types. Existing declarative imports remain
-supported. For consumers that only need map helpers, the preferred entrypoints
-are `@microsoft/fast-element/extensions/attribute-map.js` and
-`@microsoft/fast-element/extensions/observer-map.js`. These subpaths keep the
-schema-driven map extensions factored away from declarative templating so they
-can also be used with manually supplied schemas. The `<f-template>` element is
-an internal native `HTMLElement` publisher that `declarativeTemplate()` defines
-in the target registry; it is not part of the public API.
+entrypoint exports the declarative runtime API: `declarativeTemplate()`,
+`TemplateParser`, `Schema`, `schemaRegistry`, and related parser/schema types.
+Import map helpers from `@microsoft/fast-element/extensions/attribute-map.js`
+and `@microsoft/fast-element/extensions/observer-map.js`. These subpaths keep
+the schema-driven map extensions factored away from declarative templating so
+they can also be used with manually supplied schemas. The `<f-template>` element
+is an internal native `HTMLElement` publisher that `declarativeTemplate()`
+defines in the target registry; it is not part of the public API.
 
 The declarative runtime intentionally reuses the same FAST Element primitives as
 the imperative `html` API:
@@ -344,12 +342,13 @@ the imperative `html` API:
   bridge.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
-- `attributeMap()` and `observerMap()` are `FASTElementExtension` factories.
-  With `declarativeTemplate()` they register schema transforms on the element
-  definition, and those transforms run after parsing in deterministic order
-  (`attributeMap()` before `observerMap()`). Outside declarative templates,
-  `attributeMap()` uses `definition.schema`, while `observerMap()` can use
-  either `definition.schema` or `observerMap({ schema })`.
+- `attributeMap()` and `observerMap()` are `FASTElementExtension` factories
+  exported from dedicated extension subpaths. With `declarativeTemplate()` they
+  register schema transforms on the element definition, and those transforms run
+  after parsing in deterministic order (`attributeMap()` before
+  `observerMap()`). Outside declarative templates, `attributeMap()` uses
+  `definition.schema`, while `observerMap()` can use either `definition.schema`
+  or `observerMap({ schema })`.
 
 The `src/declarative.ts` entrypoint is pure at module evaluation time. Running a
 declarative API lazily installs declarative debug messages only. Hydration hooks
@@ -571,8 +570,8 @@ src/
 │   ├── template-parser.ts # Declarative HTML parser → ViewTemplate strings/values
 │   ├── schema.ts          # Compatibility re-export for Schema
 │   ├── definition-options.ts # Compatibility re-export for schema transforms
-│   ├── observer-map.ts    # Compatibility re-export for observerMap()
-│   ├── attribute-map.ts   # Compatibility re-export for attributeMap()
+│   ├── observer-map.ts    # Internal observer-map extension alias (not a package export)
+│   ├── attribute-map.ts   # Internal attribute-map extension alias (not a package export)
 │   ├── utilities.ts       # Declarative parsing utilities
 │   └── syntax.ts          # Declarative syntax constants
 ├── state/

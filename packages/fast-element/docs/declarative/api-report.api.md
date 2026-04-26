@@ -11,14 +11,6 @@ export interface AccessCachedPath extends CachedPathCommon {
 }
 
 // @public
-export function attributeMap(config?: AttributeMapConfig): FASTElementExtension;
-
-// @public
-export interface AttributeMapConfig {
-    "attribute-name-strategy"?: "none" | "camelCase";
-}
-
-// @public
 export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
 
 // @public
@@ -95,28 +87,6 @@ export interface JSONSchemaDefinition extends JSONSchemaCommon {
     $fast_context: string;
     // (undocumented)
     $fast_parent_contexts: Array<string>;
-}
-
-// @public
-export function observerMap(config?: ObserverMapConfig): FASTElementExtension;
-
-// @public
-export interface ObserverMapConfig {
-    properties?: {
-        [rootProperty: string]: ObserverMapPathEntry;
-    };
-    schema?: Schema;
-}
-
-// @public
-export type ObserverMapPathEntry = boolean | ObserverMapPathNode;
-
-// @public
-export interface ObserverMapPathNode {
-    // (undocumented)
-    $observe?: boolean;
-    // (undocumented)
-    [propertyName: string]: ObserverMapPathEntry | undefined;
 }
 
 // @public
