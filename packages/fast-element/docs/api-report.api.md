@@ -5,6 +5,12 @@
 ```ts
 
 // @public
+export interface AccessCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "access";
+}
+
+// @public
 export interface Accessor {
     getValue(source: any): any;
     name: string;
@@ -87,6 +93,22 @@ export interface BindingDirective {
 export const booleanConverter: ValueConverter;
 
 // @public
+export type CachedPath = DefaultCachedPath | RepeatCachedPath | AccessCachedPath | EventCachedPath;
+
+// @public
+export interface CachedPathCommon {
+    // (undocumented)
+    currentContext: string | null;
+    // (undocumented)
+    parentContext: string | null;
+    // (undocumented)
+    path: string;
+}
+
+// @public
+export type CachedPathMap = Map<string, Map<string, JSONSchema>>;
+
+// @public
 export type Callable = typeof Function.prototype.call | {
     call(): void;
 };
@@ -112,6 +134,14 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 
 // @public
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
+
+// @public
+export interface ChildrenMap {
+    // (undocumented)
+    attributeName: string;
+    // (undocumented)
+    customElementName: string;
+}
 
 // @public
 export type Class<T, C = {}> = C & Constructable<T> & {
@@ -167,6 +197,12 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
+
+// @public
+export interface DefaultCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "default";
+}
 
 // @public
 export interface Disposable {
@@ -307,6 +343,12 @@ export const emptyArray: readonly never[];
 export function enableHydration(options?: HydrationOptions): void;
 
 // @public
+export interface EventCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "event";
+}
+
+// @public
 export interface ExecutionContext<TParent = any> {
     readonly event: Event;
     eventDetail<TDetail>(): TDetail;
@@ -398,6 +440,7 @@ export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Co
     // @internal
     static registerBaseType(type: Function): void;
     readonly registry: CustomElementRegistry;
+    schema?: Schema;
     shadowOptions?: ShadowRootOptions;
     readonly styles?: ElementStyles;
     template?: ElementViewTemplate<InstanceType<TType>>;
@@ -591,6 +634,39 @@ export function isHydratable<TSource = any, TParent = any>(template: ElementView
 export function isHydratable(template: ContentTemplate): template is HydratableContentTemplate;
 
 // @public
+export interface JSONSchema extends JSONSchemaCommon {
+    // (undocumented)
+    $defs?: Record<string, JSONSchemaDefinition>;
+    // (undocumented)
+    $id: string;
+    // (undocumented)
+    $schema: string;
+}
+
+// @public
+export interface JSONSchemaCommon {
+    $observe?: boolean;
+    // (undocumented)
+    $ref?: string;
+    // (undocumented)
+    anyOf?: Array<any>;
+    // (undocumented)
+    items?: any;
+    // (undocumented)
+    properties?: any;
+    // (undocumented)
+    type?: string;
+}
+
+// @public
+export interface JSONSchemaDefinition extends JSONSchemaCommon {
+    // (undocumented)
+    $fast_context: string;
+    // (undocumented)
+    $fast_parent_contexts: Array<string>;
+}
+
+// @public
 export function listener<T = any>(expression: Expression<T>, options?: AddEventListenerOptions): Binding<T>;
 
 // @public
@@ -678,6 +754,7 @@ export interface PartialFASTElementDefinition<TType extends Constructable<HTMLEl
     readonly lifecycleCallbacks?: TemplateLifecycleCallbacks;
     readonly name: string;
     readonly registry?: CustomElementRegistry;
+    readonly schema?: Schema;
     readonly shadowOptions?: Partial<ShadowRootOptions> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate<InstanceType<TType>> | FASTElementTemplateResolver<TType>;
@@ -704,6 +781,16 @@ export const ref: <TSource = any>(propertyName: keyof TSource & string) => Captu
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(controller: ViewController): void;
     targetNodeId: string;
+}
+
+// @public
+export interface RegisterPathConfig {
+    // (undocumented)
+    childrenMap: ChildrenMap | null;
+    // (undocumented)
+    pathConfig: CachedPath;
+    // (undocumented)
+    rootPropertyName: string;
 }
 
 // @public
@@ -746,6 +833,12 @@ export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
 }
 
 // @public
+export interface RepeatCachedPath extends CachedPathCommon {
+    // (undocumented)
+    type: "repeat";
+}
+
+// @public
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory, BindingDirective {
     constructor(dataBinding: Binding<TSource>, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(): RepeatBehavior<TSource>;
@@ -764,6 +857,17 @@ export interface RepeatOptions {
     positioning?: boolean;
     recycle?: boolean;
 }
+
+// @public
+export class Schema {
+    constructor(name: string);
+    addPath(config: RegisterPathConfig): void;
+    getRootProperties(): IterableIterator<string>;
+    getSchema(rootPropertyName: string): JSONSchema | null;
+}
+
+// @public
+export const schemaRegistry: CachedPathMap;
 
 // @public
 export interface ShadowRootOptions extends ShadowRootInit {

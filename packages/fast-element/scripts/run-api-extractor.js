@@ -23,6 +23,22 @@ export const exportPaths = [
         configPath: path.resolve(__dirname, "../api-extractor.di.json"),
     },
     {
+        path: "./extensions/attribute-map.js",
+        docsFolder: "extensions/attribute-map",
+        configPath: path.resolve(
+            __dirname,
+            "../api-extractor.extensions.attribute-map.json",
+        ),
+    },
+    {
+        path: "./extensions/observer-map.js",
+        docsFolder: "extensions/observer-map",
+        configPath: path.resolve(
+            __dirname,
+            "../api-extractor.extensions.observer-map.json",
+        ),
+    },
+    {
         path: "./hydration.js",
         docsFolder: "hydration",
         configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
