@@ -7,6 +7,7 @@ import { build } from "esbuild";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
+const rootImportPath = "@microsoft/fast-element";
 
 const namedExports = [
     "FASTElement",
@@ -24,13 +25,37 @@ const namedExports = [
 ];
 
 const subpathExports = [
-    { name: "css", path: "@microsoft/fast-element/styles.js", export: "css" },
-    { name: "enableHydration", path: "@microsoft/fast-element/hydration.js", export: "enableHydration" },
-    { name: "ArrayObserver", path: "@microsoft/fast-element/arrays.js", export: "ArrayObserver" },
-    { name: "declarativeTemplate", path: "@microsoft/fast-element/declarative.js", export: "declarativeTemplate" },
-    { name: "observerMap", path: "@microsoft/fast-element/declarative.js", export: "observerMap" },
-    { name: "attributeMap", path: "@microsoft/fast-element/declarative.js", export: "attributeMap" },
+    { name: "css", importPath: "@microsoft/fast-element/styles.js", export: "css" },
+    {
+        name: "enableHydration",
+        importPath: "@microsoft/fast-element/hydration.js",
+        export: "enableHydration",
+    },
+    {
+        name: "ArrayObserver",
+        importPath: "@microsoft/fast-element/arrays.js",
+        export: "ArrayObserver",
+    },
+    {
+        name: "declarativeTemplate",
+        importPath: "@microsoft/fast-element/declarative.js",
+        export: "declarativeTemplate",
+    },
+    {
+        name: "observerMap",
+        importPath: "@microsoft/fast-element/extensions/observer-map.js",
+        export: "observerMap",
+    },
+    {
+        name: "attributeMap",
+        importPath: "@microsoft/fast-element/extensions/attribute-map.js",
+        export: "attributeMap",
+    },
 ];
+
+function formatExportLabel(name, importPath) {
+    return `${name} (${importPath})`;
+}
 
 function formatBytes(bytes) {
     if (bytes < 1024) return `${bytes} B`;
@@ -47,7 +72,7 @@ function measureBuffer(buffer) {
     };
 }
 
-async function measureExport(exportName, importPath = "@microsoft/fast-element") {
+async function measureExport(exportName, importPath = rootImportPath) {
     const contents = `import { ${exportName} } from "${importPath}";\nexport { ${exportName} };\n`;
 
     const result = await build({
@@ -84,16 +109,16 @@ async function main() {
     const exportResults = await Promise.all(
         namedExports.map(async name => {
             const sizes = await measureExport(name);
-            return { name, ...sizes };
+            return { name: formatExportLabel(name, rootImportPath), ...sizes };
         }),
     );
     results.push(...exportResults);
 
     // Measure subpath exports in parallel
     const subpathResults = await Promise.all(
-        subpathExports.map(async ({ name, path: importPath, export: exportName }) => {
+        subpathExports.map(async ({ name, importPath, export: exportName }) => {
             const sizes = await measureExport(exportName, importPath);
-            return { name, ...sizes };
+            return { name: formatExportLabel(name, importPath), ...sizes };
         }),
     );
     results.push(...subpathResults);

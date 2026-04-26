@@ -40,6 +40,16 @@
       "test": "./src/declarative/utilities.ts",
       "default": "./dist/esm/declarative/utilities.js"
     },
+    "./extensions/attribute-map.js": {
+      "types": "./dist/dts/extensions/attribute-map.d.ts",
+      "test": "./src/extensions/attribute-map.ts",
+      "default": "./dist/esm/extensions/attribute-map.js"
+    },
+    "./extensions/observer-map.js": {
+      "types": "./dist/dts/extensions/observer-map.d.ts",
+      "test": "./src/extensions/observer-map.ts",
+      "default": "./dist/esm/extensions/observer-map.js"
+    },
     "./hydration.js": {
       "types": "./dist/dts/hydration.d.ts",
       "test": "./src/hydration.ts",

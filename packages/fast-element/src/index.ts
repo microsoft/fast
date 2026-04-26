@@ -43,6 +43,22 @@ export {
     type HydrationOptions,
     HydrationTracker,
 } from "./components/hydration-tracker.js";
+export {
+    type AccessCachedPath,
+    type CachedPath,
+    type CachedPathCommon,
+    type CachedPathMap,
+    type ChildrenMap,
+    type DefaultCachedPath,
+    type EventCachedPath,
+    type JSONSchema,
+    type JSONSchemaCommon,
+    type JSONSchemaDefinition,
+    type RegisterPathConfig,
+    type RepeatCachedPath,
+    Schema,
+    schemaRegistry,
+} from "./components/schema.js";
 // DOM
 export { DOM, DOMAspect, type DOMPolicy, type DOMSink } from "./dom.js";
 export type {
@@ -52,6 +68,7 @@ export type {
     Disposable,
     TrustedTypesPolicy,
 } from "./interfaces.js";
+export type { Sort, Splice } from "./observation/arrays.js";
 // Observation
 export {
     type Notifier,
@@ -74,7 +91,6 @@ export {
 } from "./observation/observable.js";
 export { type UpdateQueue, Updates } from "./observation/update-queue.js";
 export { emptyArray, FAST } from "./platform.js";
-
 // Type-only re-exports for types referenced by root public signatures
 export type {
     ComposableStyles,
@@ -83,8 +99,6 @@ export type {
 } from "./styles/element-styles.js";
 export type { HostBehavior, HostController } from "./styles/host.js";
 export type { StyleStrategy, StyleTarget } from "./styles/style-strategy.js";
-export type { Splice, Sort } from "./observation/arrays.js";
-
 export type {
     ChildListDirectiveOptions,
     ChildrenDirectiveOptions,
@@ -115,6 +129,8 @@ export {
     htmlDirective,
     StatelessAttachedAttributeDirective,
 } from "./templating/html-directive.js";
+export type { HydratableView } from "./templating/hydration-view.js";
+export { HydrationBindingError } from "./templating/hydration-view.js";
 export { Markup, Parser } from "./templating/markup.js";
 export type {
     ElementsFilter,
@@ -141,7 +157,5 @@ export type {
     SyntheticView,
     View,
 } from "./templating/view.js";
-export type { HydratableView } from "./templating/hydration-view.js";
 export { HTMLView } from "./templating/view.js";
-export { HydrationBindingError } from "./templating/hydration-view.js";
 export { when } from "./templating/when.js";
