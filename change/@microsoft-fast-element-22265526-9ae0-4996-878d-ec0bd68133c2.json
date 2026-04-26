@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Move optional helpers such as Updates, Observable, attr, binding, DOM, Schema, html, templating, render, hydration, directives, volatile, and ArrayObserver to dedicated fast-element subpath exports while keeping controller and definition internals on the root entrypoint.",
+  "packageName": "@microsoft/fast-element",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}

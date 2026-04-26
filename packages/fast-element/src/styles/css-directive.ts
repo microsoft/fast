@@ -3,7 +3,7 @@ import { createTypeRegistry } from "../platform.js";
 import type { ComposableStyles } from "./element-styles.js";
 
 /**
- * Directive for use in {@link css}.
+ * Directive for use in CSS templates.
  *
  * @public
  */

@@ -11,7 +11,25 @@
             ],
             "@microsoft/fast-element/arrays.js": ["../src/arrays.ts"],
             "@microsoft/fast-element/hydration.js": ["../src/hydration.ts"],
-            "@microsoft/fast-element/styles.js": ["../src/styles.ts"]
+            "@microsoft/fast-element/styles.js": ["../src/styles.ts"],
+            "@microsoft/fast-element/updates.js": ["../src/updates.ts"],
+            "@microsoft/fast-element/observable.js": ["../src/observable.ts"],
+            "@microsoft/fast-element/volatile.js": ["../src/volatile.ts"],
+            "@microsoft/fast-element/attr.js": ["../src/attr.ts"],
+            "@microsoft/fast-element/css.js": ["../src/css.ts"],
+            "@microsoft/fast-element/html.js": ["../src/html.ts"],
+            "@microsoft/fast-element/array-observer.js": ["../src/array-observer.ts"],
+            "@microsoft/fast-element/directives/children.js": [
+                "../src/directives/children.ts"
+            ],
+            "@microsoft/fast-element/directives/ref.js": ["../src/directives/ref.ts"],
+            "@microsoft/fast-element/directives/slotted.js": [
+                "../src/directives/slotted.ts"
+            ],
+            "@microsoft/fast-element/directives/when.js": ["../src/directives/when.ts"],
+            "@microsoft/fast-element/directives/repeat.js": [
+                "../src/directives/repeat.ts"
+            ]
         }
     },
     "include": ["**/*.ts"]

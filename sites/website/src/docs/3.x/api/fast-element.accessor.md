@@ -20,7 +20,7 @@ Represents a getter/setter property accessor on an object.
 **Signature:**
 
 ```typescript
-export interface Accessor 
+export interface Accessor
 ```
 
 ## Properties

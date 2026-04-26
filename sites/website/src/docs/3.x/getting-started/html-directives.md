@@ -29,7 +29,10 @@ Sometimes you need a direct reference to a single DOM node from your template. T
 **Example: Referencing an Element**
 
 ```ts
-import { FASTElement, attr, html, ref } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
+import { attr } from '@microsoft/fast-element/attr.js';
+import { html } from '@microsoft/fast-element/html.js';
+import { ref } from '@microsoft/fast-element/directives/ref.js';
 
 const template = html<MP4Player>`
   <video ${ref('video')}>
@@ -66,7 +69,9 @@ If you provide a type for your HTML template, TypeScript will type check the pro
 Sometimes you may want references to all nodes that are assigned to a particular slot. To accomplish this, use the `slotted` directive. (For more on slots, see [Working with Shadow DOM](/docs/advanced/working-with-custom-elements.md).)
 
 ```ts
-import { FASTElement, html, slotted } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element/html.js';
+import { slotted } from '@microsoft/fast-element/directives/slotted.js';
 
 const template = html<MyElement>`
   <div>
@@ -101,7 +106,10 @@ Besides using `ref` to reference a single DOM node, you can use `children` to ge
 **Example: Referencing Child Nodes**
 
 ```ts
-import { FASTElement, html, children, repeat } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element/html.js';
+import { children } from '@microsoft/fast-element/directives/children.js';
+import { repeat } from '@microsoft/fast-element/directives/repeat.js';
 
 const template = html<FriendList>`
   <ul ${children('listItems')}>
@@ -167,7 +175,10 @@ The `when` directive enables you to conditionally render blocks of HTML. When yo
 **Example: Conditional Rendering**
 
 ```ts
-import { FASTElement, observable, html, when } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element/html.js';
+import { when } from '@microsoft/fast-element/directives/when.js';
+import { observable } from '@microsoft/fast-element/observable.js';
 
 const template = html<MyApp>`
   <h1>My App</h1>
@@ -231,7 +242,10 @@ To render a list of data, use the `repeat` directive, providing the list to rend
 **Example: List Rendering**
 
 ```ts
-import { FASTElement, observable, html, repeat } from '@microsoft/fast-element';
+import { FASTElement } from '@microsoft/fast-element';
+import { html } from '@microsoft/fast-element/html.js';
+import { repeat } from '@microsoft/fast-element/directives/repeat.js';
+import { observable } from '@microsoft/fast-element/observable.js';
 
 const template = html<FriendList>`
   <h1>Friends</h1>

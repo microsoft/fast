@@ -1,5 +1,7 @@
-import { FASTElement, html, ref, slotted } from "@microsoft/fast-element";
-
+import { FASTElement } from "@microsoft/fast-element";
+import { ref } from "@microsoft/fast-element/directives/ref.js";
+import { slotted } from "@microsoft/fast-element/directives/slotted.js";
+import { html } from "@microsoft/fast-element/html.js";
 export class BenchElement extends FASTElement {
     heading!: HTMLHeadingElement;
     slottedItems!: Element[];

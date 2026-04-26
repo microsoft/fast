@@ -1,7 +1,3 @@
-/**
- * Observable exports for easy access to the Observable API
- */
-
 export type { Notifier, Subscriber } from "./observation/notifier.js";
 export { PropertyChangeNotifier, SubscriberSet } from "./observation/notifier.js";
 export type {
@@ -17,5 +13,4 @@ export {
     Observable,
     observable,
     SourceLifetime,
-    volatile,
 } from "./observation/observable.js";

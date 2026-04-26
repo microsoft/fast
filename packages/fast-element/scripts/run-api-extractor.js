@@ -23,9 +23,45 @@ export const exportPaths = [
         configPath: path.resolve(__dirname, "../api-extractor.di.json"),
     },
     {
+        path: "./extensions/attribute-map.js",
+        docsFolder: "extensions/attribute-map",
+        configPath: path.resolve(
+            __dirname,
+            "../api-extractor.extensions.attribute-map.json",
+        ),
+    },
+    {
+        path: "./extensions/observer-map.js",
+        docsFolder: "extensions/observer-map",
+        configPath: path.resolve(
+            __dirname,
+            "../api-extractor.extensions.observer-map.json",
+        ),
+    },
+    {
         path: "./hydration.js",
         docsFolder: "hydration",
         configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
+    },
+    {
+        path: "./binding.js",
+        docsFolder: "binding",
+        configPath: path.resolve(__dirname, "../api-extractor.binding.json"),
+    },
+    {
+        path: "./schema.js",
+        docsFolder: "schema",
+        configPath: path.resolve(__dirname, "../api-extractor.schema.json"),
+    },
+    {
+        path: "./dom.js",
+        docsFolder: "dom",
+        configPath: path.resolve(__dirname, "../api-extractor.dom.json"),
+    },
+    {
+        path: "./updates.js",
+        docsFolder: "updates",
+        configPath: path.resolve(__dirname, "../api-extractor.updates.json"),
     },
     {
         path: "./styles.js",
@@ -37,6 +73,79 @@ export const exportPaths = [
         docsFolder: "arrays",
         configPath: path.resolve(__dirname, "../api-extractor.arrays.json"),
     },
+    {
+        path: "./array-observer.js",
+        docsFolder: "array-observer",
+        configPath: path.resolve(__dirname, "../api-extractor.array-observer.json"),
+    },
+    {
+        path: "./observable.js",
+        docsFolder: "observable",
+        configPath: path.resolve(__dirname, "../api-extractor.observable.json"),
+    },
+    {
+        path: "./volatile.js",
+        docsFolder: "volatile",
+        configPath: path.resolve(__dirname, "../api-extractor.volatile.json"),
+    },
+    {
+        path: "./attr.js",
+        docsFolder: "attr",
+        configPath: path.resolve(__dirname, "../api-extractor.attr.json"),
+    },
+    {
+        path: "./css.js",
+        docsFolder: "css",
+        configPath: path.resolve(__dirname, "../api-extractor.css.json"),
+    },
+    {
+        path: "./html.js",
+        docsFolder: "html",
+        configPath: path.resolve(__dirname, "../api-extractor.html.json"),
+    },
+    {
+        path: "./templating.js",
+        docsFolder: "templating",
+        configPath: path.resolve(__dirname, "../api-extractor.templating.json"),
+    },
+    {
+        path: "./render.js",
+        docsFolder: "render",
+        configPath: path.resolve(__dirname, "../api-extractor.render.json"),
+    },
+    {
+        path: "./directives/children.js",
+        docsFolder: "directives/children",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.children.json"),
+    },
+    {
+        path: "./directives/node-observation.js",
+        docsFolder: "directives/node-observation",
+        configPath: path.resolve(
+            __dirname,
+            "../api-extractor.directives.node-observation.json",
+        ),
+    },
+    {
+        path: "./directives/ref.js",
+        docsFolder: "directives/ref",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.ref.json"),
+    },
+    {
+        path: "./directives/slotted.js",
+        docsFolder: "directives/slotted",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.slotted.json"),
+    },
+    {
+        path: "./directives/when.js",
+        docsFolder: "directives/when",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.when.json"),
+    },
+    {
+        path: "./directives/repeat.js",
+        docsFolder: "directives/repeat",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.repeat.json"),
+    },
 ];
 
 (function () {
@@ -44,7 +153,7 @@ export const exportPaths = [
         const docsFolder = path.resolve(__dirname, `../docs/${exportPath.docsFolder}`);
         // Create folders in the docs directory
         if (!fs.existsSync(docsFolder)) {
-            fs.mkdirSync(docsFolder);
+            fs.mkdirSync(docsFolder, { recursive: true });
         }
 
         // Load and parse the api-extractor.json file
