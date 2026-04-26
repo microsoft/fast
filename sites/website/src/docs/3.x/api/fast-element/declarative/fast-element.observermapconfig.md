@@ -15,7 +15,7 @@ navigationOptions:
 
 ## ObserverMapConfig interface
 
-Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+Configuration object for the observerMap extension. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
 
 **Signature:**
 

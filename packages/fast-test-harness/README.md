@@ -123,11 +123,15 @@ setTheme(lightTheme);
 </html>
 ```
 
-**`entry-client.ts`** registers components for DSD hydration using `define`:
+**`entry-client.ts`** enables hydration and registers components. Component
+definition modules should use `template: declarativeTemplate()`; this
+automatically defines FAST's internal `<f-template>` publisher, so there is no
+manual `TemplateElement.define()` step.
 
 ```ts
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
-TemplateElement.define({ name: "f-template" });
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
 
 // Load all define-async modules
 const modules = import.meta.glob("../../src/*/define-async.{ts,js}");

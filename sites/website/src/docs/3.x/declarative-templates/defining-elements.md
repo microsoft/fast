@@ -42,7 +42,7 @@ MyCounter.define({
 });
 ```
 
-The `template: declarativeTemplate()` setting tells FAST to wait for a matching `<f-template>` element before completing registration. It automatically defines the `<f-template>` custom element in the relevant registry. If pre-rendered content exists in the DOM, it will be hydrated rather than replaced.
+The `template: declarativeTemplate()` setting tells FAST to wait for a matching `<f-template>` element before completing registration. It automatically defines FAST's internal `<f-template>` publisher in the relevant registry. If pre-rendered content exists in the DOM, call `enableHydration()` before elements connect to hydrate it; otherwise the element renders client-side.
 
 **2. Write the template** in an HTML file:
 
@@ -213,7 +213,7 @@ Each entry in the path tree can be:
 Use `$observe: false` on a node to skip it by default, then selectively include specific children:
 
 ```ts
-observerMap: {
+observerMap({
     properties: {
         analytics: {
             charts: {
@@ -222,10 +222,10 @@ observerMap: {
             },
         },
     },
-}
+});
 ```
 
-When `properties` is omitted or set to `"all"`, all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
+When `properties` is omitted, all root properties are observed. When `properties` is present but empty (`{ properties: {} }`), no root properties are observed.
 
 ## AttributeMap
 
@@ -323,8 +323,8 @@ ProductCard.define(
 ```
 
 In this example:
-- `attributeMap: "all"` auto-registers `name` and `price` as `@attr` properties (leaf bindings).
-- `observerMap: "all"` enables deep observation so that changes to `details.description` trigger re-renders.
+- `attributeMap()` auto-registers `name` and `price` as `@attr` properties (leaf bindings).
+- `observerMap()` enables deep observation so that changes to `details.description` trigger re-renders.
 - The `details` property is not registered as an `@attr` because it has nested paths — it would typically be set programmatically.
 
 ## Custom Extensions

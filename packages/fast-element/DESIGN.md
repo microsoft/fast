@@ -42,7 +42,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Element authoring | `FASTElement` base class + `@customElement`, `@attr`, `@observable` decorators |
 | Reactive data binding | `Observable`, `ExpressionNotifier`, `oneWay`/`oneTime`/`listener` bindings |
 | Declarative templating | `html` tagged template literal → `ViewTemplate` → compiled `HTMLView` |
-| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `TemplateElement`, `TemplateParser`, `Schema`, `ObserverMap`, `AttributeMap` |
+| Declarative HTML runtime | `@microsoft/fast-element/declarative.js` → `declarativeTemplate()`, `TemplateParser`, `Schema`, `attributeMap()`, `observerMap()` |
 | Async DOM updates | `Updates` queue (batched, `requestAnimationFrame`-aligned) |
 | Scoped styles | `css` tagged template literal → `ElementStyles` → `adoptedStylesheets` / `<style>` |
 | Dependency injection | `DI` container, `@inject`, `@singleton`, `@transient`, resolvers |
@@ -324,26 +324,31 @@ See `docs/di/api-report.api.md` for the full public API surface.
 
 FAST Element also owns the declarative HTML runtime that previously lived in a
 separate package. The dedicated `@microsoft/fast-element/declarative.js`
-entrypoint exports `TemplateElement`, `TemplateParser`, `Schema`,
-`schemaRegistry`, `ObserverMap`, `AttributeMap`, and the related config types.
+entrypoint exports the functional public API: `declarativeTemplate()`,
+`attributeMap()`, `observerMap()`, `TemplateParser`, `Schema`,
+`schemaRegistry`, and related config types. The `<f-template>` element is an
+internal native `HTMLElement` publisher that `declarativeTemplate()` defines in
+the target registry; it is not part of the public API.
 
 The declarative runtime intentionally reuses the same FAST Element primitives as
 the imperative `html` API:
 
-- `TemplateElement` attaches parsed `ViewTemplate` instances through
-  `FASTElementDefinition.register()` rather than introducing a second
-  registration pipeline.
+- The internal `<f-template>` publisher parses HTML and returns concrete
+  `ViewTemplate` instances through the registry-aware declarative template
+  bridge.
 - `TemplateParser` lowers declarative syntax to the same `strings` / `values`
   shape used by `ViewTemplate.create()`.
-- `ObserverMap` and `AttributeMap` layer on top of the core observable and
-  attribute-definition systems.
+- `attributeMap()` and `observerMap()` are `FASTElementExtension` factories.
+  They register schema transforms on the element definition, and those
+  transforms run after parsing in deterministic order (`attributeMap()` before
+  `observerMap()`).
 
-The `src/declarative.ts` entrypoint is pure at module evaluation time. The
-declarative runtime installs its debug messages and hydratable `ViewTemplate`
-hooks lazily from `TemplateParser.createTemplate()`, keeping the root
-`@microsoft/fast-element` barrel free of declarative side effects and
-utility-subpath collisions. See [`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md)
-for the detailed architecture.
+The `src/declarative.ts` entrypoint is pure at module evaluation time. Running a
+declarative API lazily installs declarative debug messages only. Hydration hooks
+and hydratable `ViewTemplate` support are installed exclusively by
+`enableHydration()` from `@microsoft/fast-element/hydration.js`. See
+[`DECLARATIVE_DESIGN.md`](./DECLARATIVE_DESIGN.md) for the detailed
+architecture.
 
 ---
 
@@ -549,11 +554,12 @@ src/
 │   └── di.ts              # DI container, decorators, resolvers, Registration
 ├── context.ts             # Context, FASTContext, Context protocol
 ├── declarative/
-│   ├── template.ts        # TemplateElement, options, lifecycle callbacks
+│   ├── template.ts        # declarativeTemplate() and internal f-template publisher
 │   ├── template-parser.ts # Declarative HTML parser → ViewTemplate strings/values
 │   ├── schema.ts          # Binding schema builder + schemaRegistry
-│   ├── observer-map.ts    # Proxy-backed deep observation helpers
-│   ├── attribute-map.ts   # Automatic @attr registration helpers
+│   ├── definition-options.ts # Definition-scoped declarative schema transforms
+│   ├── observer-map.ts    # observerMap() extension and proxy-backed observation helpers
+│   ├── attribute-map.ts   # attributeMap() extension and automatic @attr helpers
 │   ├── utilities.ts       # Declarative parsing and proxy utilities
 │   └── syntax.ts          # Declarative syntax constants
 ├── state/

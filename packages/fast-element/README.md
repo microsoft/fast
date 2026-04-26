@@ -99,12 +99,13 @@ controller when styles need to change.
 ## Declarative HTML
 
 FAST Element also publishes a declarative HTML runtime from
-`@microsoft/fast-element/declarative.js`. This entrypoint exports
-`declarativeTemplate()`, `TemplateElement`, `TemplateParser`, `Schema`,
-`ObserverMap`, and `AttributeMap`. The entrypoint stays pure at import time and
-installs the hydratable `ViewTemplate` behavior lazily when declarative APIs
-actually create a template, without adding those side effects to the root
-`@microsoft/fast-element` import.
+`@microsoft/fast-element/declarative.js`. This entrypoint exports the
+functional APIs for declarative templates: `declarativeTemplate()`,
+`attributeMap()`, `observerMap()`, `TemplateParser`, `Schema`,
+`schemaRegistry`, and related configuration types. It is pure at import time;
+declarative APIs lazily install only declarative debug messages. Hydration is
+separate and remains opt-in through `enableHydration()` from
+`@microsoft/fast-element/hydration.js`.
 
 ```ts
 import { FASTElement } from "@microsoft/fast-element";
@@ -118,11 +119,34 @@ MyElement.define({
 });
 ```
 
-`declarativeTemplate()` automatically defines `<f-template>` in the relevant
-registry, resolves the matching `<f-template name="my-element">`, and keeps the
-definition template concrete before `define()` resolves. `TemplateElement`
-remains available for lifecycle configuration and per-element options such as
-`TemplateElement.config()` and `TemplateElement.options()`.
+`declarativeTemplate()` automatically defines FAST's internal native
+`<f-template>` publisher in the relevant registry, resolves the matching
+`<f-template name="my-element">`, and keeps the definition template concrete
+before `define()` resolves. Consumers should not import or define the
+`<f-template>` implementation directly.
+
+Declarative schema behavior is enabled with define extensions:
+
+```ts
+import {
+    attributeMap,
+    declarativeTemplate,
+    observerMap,
+} from "@microsoft/fast-element/declarative.js";
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [attributeMap(), observerMap()],
+);
+```
+
+`attributeMap()` creates `@attr`-style accessors for leaf bindings, and
+`observerMap()` creates deep observable accessors for discovered root
+properties. When both extensions are present, attribute mapping runs before
+observer mapping.
 
 Declarative utilities such as `deepMerge` are available from
 `@microsoft/fast-element/declarative/utilities.js`. See

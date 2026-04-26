@@ -1,56 +1,60 @@
 import type { FASTElementDefinition } from "../components/fast-definitions.js";
-import type { ElementOptions } from "./template.js";
+import type { Schema } from "./schema.js";
 
-const definitionElementOptionsKey = Symbol("definitionElementOptions");
+const definitionSchemaTransformsKey = Symbol("definitionSchemaTransforms");
 
-type FASTElementDefinitionWithOptions = FASTElementDefinition & {
-    [definitionElementOptionsKey]?: ElementOptions;
+let schemaTransformOrder = 0;
+
+type FASTElementDefinitionWithSchemaTransforms = FASTElementDefinition & {
+    [definitionSchemaTransformsKey]?: DefinitionSchemaTransformRecord[];
 };
 
-export function mergeElementOptions(
-    base?: ElementOptions,
-    override?: ElementOptions,
-): ElementOptions | undefined {
-    let result: ElementOptions | undefined;
-
-    const assign = (options?: ElementOptions) => {
-        if (options === void 0) {
-            return;
-        }
-
-        result ??= {};
-
-        if (options.observerMap !== void 0) {
-            result.observerMap = options.observerMap;
-        }
-
-        if (options.attributeMap !== void 0) {
-            result.attributeMap = options.attributeMap;
-        }
-    };
-
-    assign(base);
-    assign(override);
-
-    return result;
+interface DefinitionSchemaTransformRecord {
+    key: string;
+    transform: DeclarativeSchemaTransform;
+    order: number;
+    priority: number;
 }
 
-export function setDefinitionElementOptions(
+export interface DeclarativeSchemaTransformContext {
+    definition: FASTElementDefinition;
+    schema: Schema;
+}
+
+export type DeclarativeSchemaTransform = (
+    context: DeclarativeSchemaTransformContext,
+) => void;
+
+export function setDefinitionSchemaTransform(
     definition: FASTElementDefinition,
-    options: ElementOptions,
+    key: string,
+    transform: DeclarativeSchemaTransform,
+    priority: number,
 ): void {
-    const target = definition as FASTElementDefinitionWithOptions;
+    const target = definition as FASTElementDefinitionWithSchemaTransforms;
+    const transforms = (target[definitionSchemaTransformsKey] ??= []);
+    const existingIndex = transforms.findIndex(record => record.key === key);
 
-    target[definitionElementOptionsKey] = mergeElementOptions(
-        target[definitionElementOptionsKey],
-        options,
-    );
+    if (existingIndex !== -1) {
+        transforms.splice(existingIndex, 1);
+    }
+
+    transforms.push({
+        key,
+        transform,
+        order: schemaTransformOrder++,
+        priority,
+    });
+
+    transforms.sort((a, b) => a.priority - b.priority || a.order - b.order);
 }
 
-export function getDefinitionElementOptions(
+export function getDefinitionSchemaTransforms(
     definition?: FASTElementDefinition,
-): ElementOptions | undefined {
-    return (definition as FASTElementDefinitionWithOptions | undefined)?.[
-        definitionElementOptionsKey
-    ];
+): readonly DeclarativeSchemaTransform[] {
+    const transforms = (
+        definition as FASTElementDefinitionWithSchemaTransforms | undefined
+    )?.[definitionSchemaTransformsKey];
+
+    return transforms?.map(record => record.transform) ?? [];
 }

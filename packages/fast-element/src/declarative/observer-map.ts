@@ -1,6 +1,6 @@
 import type { FASTElementExtension } from "../components/fast-definitions.js";
 import { Observable } from "../observation/observable.js";
-import { setDefinitionElementOptions } from "./definition-options.js";
+import { setDefinitionSchemaTransform } from "./definition-options.js";
 import type { JSONSchema, Schema } from "./schema.js";
 import { assignObservables, deepMerge } from "./utilities.js";
 
@@ -29,7 +29,7 @@ export interface ObserverMapPathNode {
 }
 
 /**
- * Configuration object for the observerMap element option.
+ * Configuration object for the observerMap extension.
  * When `properties` is omitted, every root property is observed. When
  * `properties` is present, only listed root properties participate in
  * observer-map observation.
@@ -46,17 +46,29 @@ export interface ObserverMapConfig {
     };
 }
 
+const observerMapSchemaTransformKey = "observer-map";
+const observerMapSchemaTransformPriority = 1;
+
 /**
  * Creates a FAST element extension that enables declarative observer mapping
  * for the resolved definition.
  * When called without arguments, observes every discovered root property.
  * @public
  */
-export function observerMap(option: ObserverMapConfig = {}): FASTElementExtension {
+export function observerMap(config: ObserverMapConfig = {}): FASTElementExtension {
     return definition => {
-        setDefinitionElementOptions(definition, {
-            observerMap: option,
-        });
+        setDefinitionSchemaTransform(
+            definition,
+            observerMapSchemaTransformKey,
+            ({ definition, schema }) => {
+                new ObserverMap(
+                    definition.type.prototype,
+                    schema,
+                    config,
+                ).defineProperties();
+            },
+            observerMapSchemaTransformPriority,
+        );
     };
 }
 
