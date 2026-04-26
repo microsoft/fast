@@ -227,9 +227,8 @@ attribute-map.ts ──imports──▶ schema.ts (Schema types)
 utilities.ts ──imports──▶ schema.ts (schemaRegistry for cross-element $ref resolution)
 ```
 
-Schema transforms are sorted by priority and insertion order. `attributeMap()`
-uses a higher-priority slot than `observerMap()`, so generated attributes are
-available before observer mapping runs.
+Schema transforms run in deterministic order. `attributeMap()` runs before
+`observerMap()`, so generated attributes are available to observer mapping.
 
 ---
 
@@ -537,8 +536,8 @@ accessed via bracket notation (e.g. `element["foo-bar"]`). When using
 `"camelCase"`, property names are standard JS identifiers (e.g.
 `element.fooBar`).
 
-Because schema transforms are priority sorted, attribute mapping runs before observer
-mapping when both extensions are supplied.
+Schema transforms run in deterministic order. When both extensions are supplied,
+attribute mapping runs before observer mapping.
 
 ---
 
