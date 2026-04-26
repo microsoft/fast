@@ -1,3 +1,4 @@
+import type { Schema } from "../components/schema.js";
 import { children } from "../templating/children.js";
 import { elements } from "../templating/node-observation.js";
 import { ref } from "../templating/ref.js";
@@ -6,7 +7,6 @@ import { slotted } from "../templating/slotted.js";
 import { ViewTemplate } from "../templating/template.js";
 import { when } from "../templating/when.js";
 import { ensureDeclarativeRuntime } from "./runtime.js";
-import type { Schema } from "./schema.js";
 import {
     type AttributeDirective,
     type AttributeDirectiveBindingBehaviorConfig,

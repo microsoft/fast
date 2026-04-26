@@ -57,8 +57,10 @@ removed `@microsoft/fast-html` package.
 3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
      `observable`) from `@microsoft/fast-element`.
 4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
-    APIs; the declarative entrypoint owns the declarative runtime and installs
-    hydration support lazily when declarative templates are created.
+    APIs; the declarative entrypoint owns the declarative runtime but does not
+    install hydration. Call `enableHydration()` from
+    `@microsoft/fast-element/hydration.js` when prerendered content should be
+    hydrated.
 
 ## `TemplateOptions` removal (v3)
 
@@ -85,6 +87,67 @@ removed `@microsoft/fast-html` package.
    its template is attached.
 3. If a template is supplied later, assign `FASTElementDefinition.template` (or
    use the declarative runtime that does so for you).
+
+
+## Declarative TemplateElement API removal (v3)
+
+### Removed APIs
+
+| Removed | Replacement |
+|---|---|
+| `TemplateElement` public export | `declarativeTemplate()` on each FAST element definition |
+| `TemplateElement.define({ name: "f-template" })` | No manual definition; `declarativeTemplate()` defines FAST's internal `<f-template>` publisher in the target registry |
+| `TemplateElement.config(callbacks)` / `HydrationLifecycleCallbacks` | Per-element callbacks via `declarativeTemplate(callbacks)` and global callbacks via `enableHydration(options)` |
+| `TemplateElement.options(...)`, `ElementOptions`, `ElementOptionsDictionary` | Define extensions: `attributeMap(...)` and `observerMap(...)` passed as the second argument to `define()` |
+| `AttributeMap` / `ObserverMap` exports from the old declarative public surface | `attributeMap()` / `observerMap()` extension helpers and their config types |
+
+### Migration steps
+
+1. Replace manual `<f-template>` registration with `template: declarativeTemplate()`:
+
+   ```typescript
+   // Before
+   import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+   TemplateElement.define({ name: "f-template" });
+
+   MyElement.define({ name: "my-element" });
+
+   // After
+   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+
+   MyElement.define({
+       name: "my-element",
+       template: declarativeTemplate(),
+   });
+   ```
+
+2. Replace `TemplateElement.options()` with definition extensions:
+
+   ```typescript
+   import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+   import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+   import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+   MyElement.define(
+       {
+           name: "my-element",
+           template: declarativeTemplate(),
+       },
+       [attributeMap(), observerMap()],
+   );
+   ```
+
+   Existing `attributeMap()` and `observerMap()` imports from
+   `@microsoft/fast-element/declarative.js` remain valid for declarative
+   templates. Prefer the extension subpaths when only the schema-driven maps are
+   needed or when using manually supplied schemas. `FASTElementDefinition.schema`
+   is optional; `declarativeTemplate()` assigns it automatically, and
+   `observerMap()` can take a manual schema with `observerMap({ schema })`.
+
+3. Replace `TemplateElement.config()` with `declarativeTemplate(callbacks)` for
+   per-element callbacks and `enableHydration(options)` for global hydration
+   callbacks. Hydration is not installed by `declarative.js`; call
+   `enableHydration()` before elements connect when SSR content should hydrate.
 
 ## Debug entrypoint explicit enablement (v3)
 
@@ -138,8 +201,9 @@ data source.
 | `@microsoft/fast-element/install-hydration.js` | No replacement needed — prerendered path is built into `ElementController` |
 
 The `install-hydratable-view-templates.js` side-effect import is still
-available, but `@microsoft/fast-element/declarative.js` now installs the
-hydration runtime lazily when declarative APIs create a template.
+available for advanced scenarios, but the preferred API is
+`enableHydration()` from `@microsoft/fast-element/hydration.js`. The
+declarative entrypoint no longer installs hydration automatically.
 
 ### Changed behavior
 

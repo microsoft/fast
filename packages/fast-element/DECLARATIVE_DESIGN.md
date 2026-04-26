@@ -2,8 +2,10 @@
 
 This document is intended for contributors who want to understand the internal
 architecture of the declarative runtime in
-`@microsoft/fast-element/declarative.js`. It covers the feature's purpose, core
-concepts, data flow, and its integration with the rest of
+`@microsoft/fast-element/declarative.js` and the schema-driven map extensions in
+`@microsoft/fast-element/extensions/attribute-map.js` and
+`@microsoft/fast-element/extensions/observer-map.js`. It covers the feature's
+purpose, core concepts, data flow, and its integration with the rest of
 `@microsoft/fast-element`.
 
 ## Table of Contents
@@ -29,9 +31,10 @@ concepts, data flow, and its integration with the rest of
 
 `@microsoft/fast-element/declarative.js` lets you write FAST Web Component
 templates as plain HTML rather than JavaScript `html` tagged template literals.
-The browser-side JS bundle includes the `<f-template>` custom element, which
-parses a declarative template at runtime and attaches it as a `ViewTemplate` to
-a waiting FAST element definition.
+The browser-side JS bundle defines FAST's internal native `<f-template>`
+publisher on demand. It parses declarative template markup at runtime and
+returns a `ViewTemplate` to the waiting FAST element definition through the
+registry-aware declarative template bridge.
 
 ```html
 <!-- Declarative template — stack-agnostic, no JS needed to render -->
@@ -62,26 +65,50 @@ a waiting FAST element definition.
 
 ## Core Concepts
 
-### `<f-template>` — the template element
+### `<f-template>` — the internal template publisher
 
-`<f-template>` is a custom element (class `TemplateElement`) that acts as the bridge between a declarative HTML template and the FAST element registry. When connected to the DOM it:
+`<f-template>` is an internal custom element implemented as a lightweight native
+`HTMLElement`. It is defined automatically by `declarativeTemplate()` in the same
+`CustomElementRegistry` as the FAST element definition. Consumers should not
+import, subclass, or define the implementation directly.
 
-1. Looks up the element definition registered via `define()`.
-2. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which converts declarative bindings into FAST `ViewTemplate` strings and values.
-3. Assigns the compiled `ViewTemplate` to the element definition.
+When connected to the DOM it:
+
+1. Registers itself with the declarative template bridge using its registry and
+   `name` attribute.
+2. Publishes a template when a matching FAST element definition requests one.
+3. Delegates parsing of the inner `<template>` tag to `TemplateParser`, which
+   converts declarative bindings into FAST `ViewTemplate` strings and values.
+4. Runs definition-scoped schema transforms, such as `attributeMap()` and
+   `observerMap()`, before returning the concrete `ViewTemplate`.
 
 ### `TemplateParser` — declarative HTML parser
 
-A standalone class that converts declarative HTML template markup into the `strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used by `TemplateElement` internally but can also be used independently for programmatic template compilation. The parsing pipeline is fully synchronous — no promises are allocated during template resolution. A `StringsAccumulator` tracks the running concatenation of preceding HTML, eliminating repeated O(N) `join("")` calls at each binding site. `createTemplate()` also performs the declarative runtime's lazy installation of hydratable `ViewTemplate` support and declarative debug messages.
+A standalone class that converts declarative HTML template markup into the
+`strings` and `values` arrays that `ViewTemplate.create()` consumes. It is used
+by the internal `<f-template>` publisher but can also be used independently for
+programmatic template compilation. The parsing pipeline is fully synchronous —
+no promises are allocated during template resolution. A `StringsAccumulator`
+tracks the running concatenation of preceding HTML, eliminating repeated O(N)
+`join("")` calls at each binding site. `createTemplate()` lazily installs the
+declarative runtime's debug messages; hydration support is installed only by
+`enableHydration()`.
 
 ### `Schema` — JSON schema builder
 
-Built during template parsing, one `Schema` instance per `<f-template>`. It records every binding path discovered in the template and constructs a JSON Schema-compatible data structure. This schema:
+Built during declarative template parsing, one `Schema` instance per
+`<f-template>`. Non-declarative callers can also create and attach a `Schema`
+manually. It records every binding path discovered in the template or supplied
+by code and constructs a JSON Schema-compatible data structure. This schema:
 
 - Describes the shape of each root property referenced in the template.
 - Tracks repeat context chains (parent/child array relationships).
 - Uses an instance-level `schemaMap` for its own property schemas.
 - Registers itself in the module-level `schemaRegistry` (keyed by custom element name) for cross-element `$ref` resolution.
+
+`FASTElementDefinition.schema` is optional. `declarativeTemplate()` assigns it
+automatically after parsing; manual schema users can pass `schema` in the
+definition object.
 
 ### `ObserverMap` — automatic observable setup
 
@@ -91,13 +118,18 @@ An optional layer that uses the `Schema` to automatically:
 - Install property-change handlers that wrap newly assigned objects/arrays in `Proxy` instances.
 - Propagate deep property mutations back through FAST's observable system so bindings re-render.
 
-Enabled via the `observerMap()` definition extension.
-`TemplateElement.options({ "my-element": { observerMap: {} } })` remains
-available as a compatibility fallback. Both forms observe all root properties.
+Enabled via the `observerMap()` definition extension. Prefer importing the
+extension from `@microsoft/fast-element/extensions/observer-map.js`; the
+declarative entrypoint continues to re-export it for existing declarative
+imports. Calling `observerMap()` without arguments observes all root properties
+discovered in the template or supplied schema.
 
 #### Path-level observation control
 
-The `ObserverMapConfig` interface accepts an optional `properties` key that maps root property names to a recursive path tree controlling observation granularity:
+The `ObserverMapConfig` interface accepts an optional `schema` for
+non-declarative/manual schema use and an optional `properties` key that maps
+root property names to a recursive path tree controlling observation
+granularity:
 
 ```typescript
 MyElement.define(
@@ -131,6 +163,29 @@ When `properties` is omitted, all root properties are observed. When
 `properties` is present but empty (`{ properties: {} }`), no root properties
 are observed.
 
+For non-declarative elements, pass a schema directly to `observerMap()`:
+
+```typescript
+import { FASTElement, Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+class MyElement extends FASTElement {}
+
+const schema = new Schema("my-element");
+schema.addPath({
+    rootPropertyName: "user",
+    pathConfig: {
+        type: "default",
+        parentContext: null,
+        currentContext: null,
+        path: "user.name",
+    },
+    childrenMap: null,
+});
+
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```
+
 The resolution algorithm walks the schema and configuration tree in parallel:
 1. If `properties` is present and a root property is not listed, it is skipped.
 2. `true`/`false` booleans apply to the entire subtree.
@@ -141,17 +196,20 @@ The resolution algorithm walks the schema and configuration tree in parallel:
 
 An optional layer that uses the `Schema` to automatically register `@attr`-style reactive properties for every **leaf binding** in the template — i.e. simple expressions like `{{foo}}` or `id="{{foo-bar}}"` that have no nested properties, no explicit type, and no child element references.
 
-- By default (`attribute-name-strategy: "none"`), the **attribute name** and **property name** are both the binding key exactly as written in the template (e.g. `{{foo-bar}}` → attribute `foo-bar`, property `foo-bar`). No normalization is applied.
-- When `attribute-name-strategy` is `"camelCase"`, the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute `foo-bar`). This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+- By default (`attribute-name-strategy: "camelCase"`), the binding key is treated as a camelCase property name and the HTML attribute name is derived by converting it to kebab-case (e.g. `{{fooBar}}` → property `fooBar`, attribute `foo-bar`). This matches the build-time `--attribute-name-strategy` option in `@microsoft/fast-build`.
+- When `attribute-name-strategy` is `"none"`, the **attribute name** and **property name** are both the binding key exactly as written in the template (e.g. `{{foo-bar}}` → attribute `foo-bar`, property `foo-bar`). No normalization is applied.
 - Because HTML attributes are case-insensitive, binding keys should use lowercase names (optionally dash-separated) when using the `"none"` strategy.
 - Properties already decorated with `@attr` or `@observable` are left untouched.
 - `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name, and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` correctly delegates to the new `AttributeDefinition`.
 
-Enabled via the `attributeMap()` definition extension.
-`TemplateElement.options({ "my-element": { attributeMap: {} } })` remains
-available as a compatibility fallback. Both forms use the default `"none"`
-strategy. To use the `"camelCase"` strategy, pass
-`attributeMap({ "attribute-name-strategy": "camelCase" })`.
+Enabled via the `attributeMap()` definition extension. Prefer importing the
+extension from `@microsoft/fast-element/extensions/attribute-map.js`; the
+declarative entrypoint continues to re-export it for existing declarative
+imports. Calling `attributeMap()` without arguments uses the default
+`"camelCase"` strategy. To preserve binding keys exactly as written, pass
+`attributeMap({ "attribute-name-strategy": "none" })`. Outside declarative
+templates, `attributeMap()` uses the optional `schema` on the FAST element
+definition.
 
 ### Syntax constants (`syntax.ts`)
 
@@ -176,16 +234,24 @@ All delimiters used by the parser are defined in a single `Syntax` interface and
 packages/fast-element/
 ├── src/
 │   ├── declarative.ts         # Public declarative entrypoint
+│   ├── components/
+│   │   ├── schema.ts          # Shared Schema class + schemaRegistry
+│   │   └── definition-schema-transforms.ts # Definition-scoped schema transform storage
+│   ├── extensions/
+│   │   ├── attribute-map.ts   # attributeMap() subpath implementation
+│   │   └── observer-map.ts    # observerMap() subpath implementation
 │   └── declarative/
 │       ├── index.ts           # Declarative barrel export
 │       ├── interfaces.ts      # Message enum (error codes)
 │       ├── debug.ts           # Human-readable declarative debug messages
-│       ├── template.ts        # TemplateElement (<f-template>), lifecycle orchestration, options
+│       ├── definition-options.ts # Compatibility re-export for schema transform storage
+│       ├── template.ts        # declarativeTemplate(), internal <f-template> publisher, lifecycle orchestration
+│       ├── template-bridge.ts # Registry/name bridge between definitions and publishers
 │       ├── template-parser.ts # TemplateParser — converts declarative HTML to ViewTemplate strings/values
-│       ├── schema.ts          # Schema class — JSON schema builder + schemaRegistry
-│       ├── observer-map.ts    # ObserverMap class + config types (ObserverMapConfig, ObserverMapPathEntry, etc.)
-│       ├── attribute-map.ts   # AttributeMap class + config types (AttributeMapConfig)
-│       ├── utilities.ts       # Parsing engine, binding resolvers, proxy system
+│       ├── schema.ts          # Compatibility re-export for Schema
+│       ├── observer-map.ts    # Compatibility re-export for observerMap()
+│       ├── attribute-map.ts   # Compatibility re-export for attributeMap()
+│       ├── utilities.ts       # Declarative parsing helpers
 │       └── syntax.ts          # Syntax delimiter constants
 ├── scripts/
 │   └── declarative/           # Fixture build + webui integration scripts
@@ -195,16 +261,22 @@ packages/fast-element/
 
 ### Module dependency direction
 
-Each module owns its configuration types and can be used independently:
+The default `declarativeTemplate()` path avoids importing optional map
+implementations. Map helpers attach schema transforms to the definition only
+when the consumer passes them as define extensions.
 
 ```
-template.ts ──imports──▶ observer-map.ts (ObserverMapConfig)
-template.ts ──imports──▶ attribute-map.ts (AttributeMapConfig)
-template.ts ──imports──▶ schema.ts (Schema)
-observer-map.ts ──imports──▶ schema.ts (Schema types)
-attribute-map.ts ──imports──▶ schema.ts (Schema types)
-utilities.ts ──imports──▶ schema.ts (schemaRegistry for cross-element $ref resolution)
+declarative/template.ts ──imports──▶ components/definition-schema-transforms.ts (schema transform reads)
+declarative/template.ts ──imports──▶ components/schema.ts (Schema)
+extensions/attribute-map.ts ──imports──▶ components/definition-schema-transforms.ts (register attribute-map transform)
+extensions/observer-map.ts ──imports──▶ components/definition-schema-transforms.ts (register observer-map transform)
+extensions/observer-map.ts ──imports──▶ components/schema.ts (Schema types)
+extensions/attribute-map.ts ──imports──▶ components/schema.ts (Schema types)
+declarative/utilities.ts ──imports──▶ components/schema.ts (schemaRegistry for cross-element $ref resolution)
 ```
+
+Schema transforms run in deterministic order. `attributeMap()` runs before
+`observerMap()`, so generated attributes are available to observer mapping.
 
 ---
 
@@ -212,42 +284,65 @@ utilities.ts ──imports──▶ schema.ts (schemaRegistry for cross-element 
 
 ```typescript
 import {
-    TemplateElement,
+    declarativeTemplate,
     TemplateParser,
     Schema,
     schemaRegistry,
-    ObserverMap,
-    AttributeMap,
+    type CachedPathMap,
+    type FASTElementExtension,
+    type JSONSchema,
+    type ResolvedStringsAndValues,
+    type TemplateLifecycleCallbacks,
+} from "@microsoft/fast-element/declarative.js";
+
+import {
+    attributeMap,
+    type AttributeMapConfig,
+} from "@microsoft/fast-element/extensions/attribute-map.js";
+import {
+    observerMap,
     type ObserverMapConfig,
     type ObserverMapPathEntry,
     type ObserverMapPathNode,
-    type AttributeMapConfig,
-    type JSONSchema,
-    type CachedPathMap,
-} from "@microsoft/fast-element/declarative.js";
+} from "@microsoft/fast-element/extensions/observer-map.js";
 ```
+
+`@microsoft/fast-element/declarative.js` still re-exports `attributeMap()`,
+`observerMap()`, and their configuration types for existing declarative imports.
+The extension subpaths are preferred when a consumer only needs the maps or is
+using manually supplied schemas.
 
 Primary exports intended for application code:
 
 | Export | Purpose |
 |---|---|
-| `TemplateElement` | Define the `<f-template>` element; configure callbacks and per-element options. |
+| `declarativeTemplate()` | Template resolver for `FASTElement.define()`; auto-defines the internal `<f-template>` publisher and waits for the matching template. |
+| `attributeMap()` | Define extension that registers `@attr`-style properties for leaf bindings discovered during parsing or supplied by `definition.schema`. |
+| `observerMap()` | Define extension that defines observable root properties and proxy-based deep change tracking from `config.schema`, `definition.schema`, or a declarative template schema. |
 | `TemplateParser` | Standalone parser that converts declarative HTML into `ViewTemplate` strings/values. Can be used independently of `<f-template>` for programmatic template compilation. |
 | `Schema` | JSON schema builder that records binding paths discovered during template parsing. Each instance owns its own schema map and registers itself in the `schemaRegistry` for cross-element `$ref` resolution. |
 | `schemaRegistry` | Module-level `Map<string, Map<string, JSONSchema>>` that indexes schemas by custom element name. Used for cross-element lookups (e.g. nested component `$ref` resolution). |
-| `ObserverMap` | Automatic observable setup using the schema; defines observable properties and installs proxy-based deep change tracking. Configuration types (`ObserverMapConfig`, `ObserverMapPathEntry`, `ObserverMapPathNode`) are co-located in this module. |
-| `AttributeMap` | Automatic `@attr` property registration for leaf bindings in the template. Configuration type (`AttributeMapConfig`) is co-located in this module. |
+
+The implementation element class (`<f-template>`), `TemplateElement.config()`,
+`TemplateElement.options()`, `ElementOptions*`, and
+`HydrationLifecycleCallbacks` are not exported from the public declarative
+entrypoint. Use `declarativeTemplate()`, `attributeMap()`, `observerMap()`, and
+`enableHydration()` instead. The `AttributeMap` and `ObserverMap` implementation
+classes are available from their extension subpaths for advanced scenarios, but
+application code should normally use the extension factories.
 
 Additionally, the following types are exported:
 
 | Type | Source Module | Purpose |
 |---|---|---|
-| `ObserverMapConfig` | `observer-map.ts` | Configuration object for the `observerMap` option; accepts optional `properties` key. |
+| `FASTElementExtension` | `fast-definitions.ts` | Definition extension callback signature used by `attributeMap()` and `observerMap()`. |
+| `TemplateLifecycleCallbacks` | `fast-definitions.ts` | Per-element lifecycle callbacks accepted by `declarativeTemplate()`. |
+| `ObserverMapConfig` | `extensions/observer-map.ts` | Configuration object for `observerMap()`; accepts optional `schema` and `properties` keys. |
 | `ObserverMapPathEntry` | `observer-map.ts` | `boolean \| ObserverMapPathNode` — a node in the observation path tree. |
 | `ObserverMapPathNode` | `observer-map.ts` | Object node with optional `$observe` and child property overrides. |
-| `AttributeMapConfig` | `attribute-map.ts` | Configuration object for the `attributeMap` option; accepts `attribute-name-strategy`. |
-| `JSONSchema` | `schema.ts` | JSON Schema interface used by `Schema` for property structure. |
-| `CachedPathMap` | `schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
+| `AttributeMapConfig` | `extensions/attribute-map.ts` | Configuration object for `attributeMap()`; accepts `attribute-name-strategy`. |
+| `JSONSchema` | `components/schema.ts` | JSON Schema interface used by `Schema` for property structure. |
+| `CachedPathMap` | `components/schema.ts` | `Map<string, Map<string, JSONSchema>>` — the shape of the schema registry. |
 
 ---
 
@@ -281,50 +376,77 @@ The high-level data flow from authoring to interactive component:
 
 ```mermaid
 flowchart TD
-    A["Author writes declarative HTML\nusing f-template with binding expressions"] --> B["Server renders hydratable HTML\nwith fe:b comments and data-fe attributes"]
+    A["Author writes declarative HTML
+using f-template with binding expressions"] --> B["Server renders hydratable HTML
+with fe:b comments and data-fe attributes"]
     B --> C[Browser loads JS bundle]
-    C --> D["MyElement.define called\n→ partial definition in fastElementRegistry"]
-    C --> E["TemplateElement.define called\n→ registers f-template custom element"]
-    D & E --> F["f-template connects to DOM\n→ connectedCallback fires"]
-    F --> G["FASTElementDefinition.register\n→ looks up partial definition"]
+    C --> D["MyElement.define called
+with template: declarativeTemplate()"]
+    D --> E["declarativeTemplate() defines internal f-template
+in the target registry"]
+    E --> F["f-template connects to DOM
+→ registers publisher with bridge"]
+    F --> G["definition requests template
+via registry + name bridge"]
     G --> H[transformInnerHTML normalises HTML entities]
-    H --> I["resolveStringsAndValues\nparses bindings and directives\nbuilds Schema, builds strings+values arrays"]
-    I --> J{observerMap enabled?}
-    J -- yes --> K["ObserverMap.defineProperties\n→ applyConfigToSchema stamps $observe on schema nodes\n→ Observable.defineProperty for each root prop\n→ install proxy change handlers"]
-    J -- no --> L
-    K --> L["ViewTemplate.create strings,values\n→ registeredFastElement.template = viewTemplate"]
-    L --> M["FASTElementDefinition.compose\n→ element fully registered with platform"]
-    M --> N["ElementController detects existing shadow root\nisPrerendered = true\nhydrates existing DOM using fe-b markers\nvia template.hydrate()"]
-    N --> O[Interactive component]
+    H --> I["TemplateParser parses bindings/directives
+builds Schema, strings, values"]
+    I --> J["Run definition schema transforms
+attributeMap before observerMap"]
+    J --> K["ViewTemplate.create(strings, values)
+returned to definition"]
+    K --> L["FASTElementDefinition.define
+registers element with platform"]
+    L --> M{"enableHydration() called?"}
+    M -- yes --> N["ElementController hydrates existing DOM
+via template.hydrate()"]
+    M -- no --> O["ElementController client-side renders
+existing DSD is not reused"]
+    N --> P[Interactive component]
+    O --> P
 ```
 
 ---
 
 ## Template Parsing Pipeline
 
-`TemplateElement.connectedCallback()` orchestrates the pipeline by creating a `TemplateParser` instance and delegating all parsing logic to it. The recursive parsing context is encapsulated in a `TemplateResolutionContext` object internal to the parser, keeping method signatures lean.
+The internal `<f-template>` publisher orchestrates the pipeline by creating a
+`TemplateParser` instance and delegating all parsing logic to it. The recursive
+parsing context is encapsulated in a `TemplateResolutionContext` object internal
+to the parser, keeping method signatures lean.
 
 ### Architecture
 
-The parsing pipeline is split across two classes:
+The parsing pipeline is split across two classes plus definition-scoped
+transforms:
 
-- **`TemplateElement`** (`template.ts`) — Custom element lifecycle: registration, options, callbacks, `ObserverMap`/`AttributeMap` wiring, and template assignment. ~120 lines.
-- **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser: converts declarative HTML into `strings`/`values` arrays for `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running previous-string in O(1) per binding site instead of O(N) `join("")` calls. Independently testable without DOM.
+- **Internal `<f-template>` publisher** (`template.ts`) — Custom element
+  lifecycle, registry/name bridge registration, lifecycle callback dispatch, and
+  schema-transform execution. It is a native `HTMLElement`, not a `FASTElement`.
+- **`TemplateParser`** (`template-parser.ts`) — Synchronous template parser:
+  converts declarative HTML into `strings`/`values` arrays for
+  `ViewTemplate.create()`. Uses a `StringsAccumulator` to track the running
+  previous-string in O(1) per binding site instead of O(N) `join("")` calls.
+  Independently testable without DOM.
+- **Schema transforms** (`definition-options.ts`) — Extension-provided callbacks run
+  after parsing and before `ViewTemplate.create()`. `attributeMap()` runs before
+  `observerMap()`.
 
 ```mermaid
 sequenceDiagram
     participant DOM
-    participant TE as TemplateElement
+    participant FTE as internal f-template
     participant TP as TemplateParser
     participant U as utilities.ts
     participant S as Schema
-    participant OM as ObserverMap
+    participant Transforms as schema transforms
 
-    DOM->>TE: connectedCallback()
-    TE->>TE: new Schema(name)
-    TE->>TE: FASTElementDefinition.register(name)
-    TE->>U: transformInnerHTML(this.innerHTML)
-    TE->>TP: parser.parse(innerHTML, schema)
+    DOM->>FTE: connectedCallback()
+    FTE->>FTE: register publisher with bridge
+    FTE->>FTE: publishTemplate(definition)
+    FTE->>S: new Schema(name)
+    FTE->>U: transformInnerHTML(this.innerHTML)
+    FTE->>TP: parser.parse(innerHTML, schema)
     loop getNextBehavior(innerHTML)
         TP->>U: getNextBehavior()
         U-->>TP: DataBindingBehaviorConfig | TemplateDirectiveBehaviorConfig
@@ -350,10 +472,10 @@ sequenceDiagram
             note over TP: recurses into resolveStringsAndValues
         end
     end
-    TP-->>TE: { strings, values }
-    TE->>OM: observerMap.defineProperties()
-    TE->>TP: parser.createTemplate(strings, values)
-    TE->>DOM: registeredFastElement.template = viewTemplate
+    TP-->>FTE: { strings, values }
+    FTE->>Transforms: attributeMap(), then observerMap()
+    FTE->>TP: parser.createTemplate(strings, values)
+    FTE-->>DOM: return ViewTemplate to definition resolver
 ```
 
 ### TemplateParser method decomposition
@@ -361,7 +483,7 @@ sequenceDiagram
 | Method | Visibility | Role |
 |---|---|---|
 | `parse()` | public | Entry point: parses declarative HTML into `{ strings, values }`. |
-| `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values, lazily enabling declarative hydration support. |
+| `createTemplate()` | public | Creates a `ViewTemplate` from resolved strings and values, lazily installing declarative debug messages. |
 | `resolveStringsAndValues()` | private | Creates `strings`/`values` arrays and delegates to `resolveInnerHTML()`. |
 | `resolveInnerHTML()` | private | Recursive HTML parser that dispatches to data binding or template directive handlers. |
 | `resolveDataBinding()` | private | Thin dispatcher that routes to `resolveContentBinding()`, `resolveAttributeBinding()`, or `resolveAttributeDirectiveBinding()`. |
@@ -456,19 +578,27 @@ When an `ObserverMapConfig` with a `properties` key is provided, `ObserverMap.de
 
 ### AttributeMap and leaf bindings
 
-When `attributeMap` is enabled, `AttributeMap.defineProperties()` is called
-after parsing. It iterates `Schema.getRootProperties()` and skips any property
-whose schema entry contains `properties`, `type`, or `anyOf` — keeping only
-plain leaf bindings. For each leaf:
+When `attributeMap()` is enabled with a declarative template, it registers a
+definition schema transform. With a manually supplied definition schema, it runs
+immediately. The extension constructs an `AttributeMap` implementation and calls
+`defineProperties()`. It iterates `Schema.getRootProperties()` and skips any
+property whose schema entry contains `properties`, `type`, or `anyOf` — keeping
+only plain leaf bindings. For each leaf:
 
 1. The schema key is used as the **JS property name**.
 2. The **HTML attribute name** depends on the `attribute-name-strategy`:
-   - `"none"` (default): the attribute name equals the property name (e.g. `foo-bar` → `foo-bar`).
-   - `"camelCase"`: the attribute name is derived by converting the camelCase property name to kebab-case (e.g. `fooBar` → `foo-bar`).
+   - `"camelCase"` (default): the attribute name is derived by converting the camelCase property name to kebab-case (e.g. `fooBar` → `foo-bar`).
+   - `"none"`: the attribute name equals the property name (e.g. `foo-bar` → `foo-bar`).
 3. A new `AttributeDefinition` is registered via `Observable.defineProperty`.
 4. `FASTElementDefinition.attributeLookup` is keyed by the HTML attribute name and `propertyLookup` is keyed by the JS property name so `attributeChangedCallback` can route attribute changes to the correct property.
 
-When using the `"none"` strategy, property names may contain dashes and must be accessed via bracket notation (e.g. `element["foo-bar"]`). When using `"camelCase"`, property names are standard JS identifiers (e.g. `element.fooBar`).
+When using the `"none"` strategy, property names may contain dashes and must be
+accessed via bracket notation (e.g. `element["foo-bar"]`). When using
+`"camelCase"`, property names are standard JS identifiers (e.g.
+`element.fooBar`).
+
+Schema transforms run in deterministic order. When both extensions are supplied,
+attribute mapping runs before observer mapping.
 
 ---
 
@@ -477,49 +607,51 @@ When using the `"none"` strategy, property names may contain dashes and must be 
 ```mermaid
 sequenceDiagram
     participant App as Application JS
-    participant FER as fastElementRegistry
-    participant TE as TemplateElement (f-template)
+    participant FER as FASTElementDefinition
+    participant FTE as internal f-template
     participant EC as ElementController
-    participant Callbacks as HydrationLifecycleCallbacks
+    participant PerEl as TemplateLifecycleCallbacks
+    participant Global as HydrationOptions
 
-    App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate()})
+    App->>Global: enableHydration(globalCallbacks) [optional]
+    App->>FER: await MyElement.define({name:'my-el', template: declarativeTemplate(callbacks)}, [attributeMap(), observerMap()])
     note over FER: definition composed; resolver waits for template
 
-    App->>TE: TemplateElement.config(callbacks)
-    App->>TE: TemplateElement.options({'my-el':{observerMap:{}}})
-
-    DOM->>TE: f-template connected to DOM
-    TE->>FER: bridge matches registry + name
-    TE->>Callbacks: elementDidRegister('my-el')
-    TE->>Callbacks: templateWillUpdate('my-el')
-    TE->>TE: parse template → schema → maps → ViewTemplate
-    TE->>FER: return viewTemplate to resolver
-    TE->>Callbacks: templateDidUpdate('my-el')
+    DOM->>FTE: f-template connected to DOM
+    FTE->>FTE: bridge matches registry + name
+    FTE->>PerEl: elementDidRegister('my-el')
+    FTE->>PerEl: templateWillUpdate('my-el')
+    FTE->>FTE: parse template → schema → transforms → ViewTemplate
+    FTE->>FER: return viewTemplate to resolver
+    FER->>PerEl: templateDidUpdate('my-el')
     FER->>FER: customElements.define('my-el', MyElement)
-    FER->>Callbacks: elementDidDefine('my-el')
+    FER->>PerEl: elementDidDefine('my-el')
 
     DOM->>EC: element instance connects with existing shadow root
     EC->>EC: isPrerendered = true (existing shadow root detected)
-    EC->>EC: concrete template already attached
-    EC->>Callbacks: hydrationStarted()
-    EC->>Callbacks: elementWillHydrate(element)
-    EC->>EC: template.hydrate() — maps existing DOM to binding targets
-    EC->>Callbacks: elementDidHydrate(element)
-    EC->>Callbacks: hydrationComplete()
+    alt enableHydration() was called
+        EC->>Global: hydrationStarted()
+        EC->>PerEl: elementWillHydrate(element)
+        EC->>EC: template.hydrate() — maps existing DOM to binding targets
+        EC->>PerEl: elementDidHydrate(element)
+        EC->>Global: hydrationComplete()
+    else hydration not enabled
+        EC->>EC: client-side render; isHydrated = false
+    end
 ```
 
 ### Lifecycle callback reference
 
-| Callback | When |
-|---|---|
-| `elementDidRegister(name)` | `FASTElementDefinition.register` resolves |
-| `templateWillUpdate(name)` | Just before template HTML is parsed |
-| `templateDidUpdate(name)` | After `ViewTemplate` is assigned to the definition |
-| `elementDidDefine(name)` | After `compose` completes |
-| `hydrationStarted()` | Once, when the first prerendered element begins hydrating |
-| `elementWillHydrate(source)` | Before `ElementController` hydrates a prerendered instance |
-| `elementDidHydrate(source)` | After an instance is fully hydrated |
-| `hydrationComplete()` | Once, after all prerendered elements have completed hydration |
+| Callback | API | When |
+|---|---|---|
+| `elementDidRegister(name)` | `declarativeTemplate(callbacks)` | The matching `<f-template>` begins publishing for the definition. |
+| `templateWillUpdate(name)` | `declarativeTemplate(callbacks)` | Just before template HTML is parsed. |
+| `templateDidUpdate(name)` | `declarativeTemplate(callbacks)` | After `ViewTemplate` is assigned to the definition. |
+| `elementDidDefine(name)` | `declarativeTemplate(callbacks)` | After platform registration completes. |
+| `elementWillHydrate(source)` | `declarativeTemplate(callbacks)` | Before `ElementController` hydrates a prerendered instance; only after `enableHydration()`. |
+| `elementDidHydrate(source)` | `declarativeTemplate(callbacks)` | After an instance is fully hydrated; only after `enableHydration()`. |
+| `hydrationStarted()` | `enableHydration(options)` | Once, when the first prerendered element begins hydrating. |
+| `hydrationComplete()` | `enableHydration(options)` | Once, after all prerendered elements have completed hydration. |
 
 For usage examples see
 [DECLARATIVE_RENDERING_LIFECYCLE.md](./DECLARATIVE_RENDERING_LIFECYCLE.md).
@@ -535,9 +667,10 @@ tagged templates produce.
 
 | fast-element primitive | How the declarative runtime uses it |
 |---|---|
-| `FASTElement` | Base class for both `TemplateElement` and user components (components extend `FASTElement` directly) |
-| `FASTElementDefinition.register()` | Deferred element registration — element waits for its template |
-| `fastElementRegistry.getByType()` | Looks up a partial definition to attach the compiled template |
+| `FASTElement` | Base class for user components; the internal `<f-template>` publisher is a native `HTMLElement` |
+| `FASTElementDefinition.register()` / template resolvers | Deferred element registration — element waits for its template |
+| `FASTElementDefinition.schema` | Optional schema used by schema-driven extensions; assigned automatically by `declarativeTemplate()` and available for manual schemas |
+| `FASTElementExtension` | Extension callback mechanism used by `attributeMap()` and `observerMap()` to attach schema transforms before template resolution or consume manually supplied schemas |
 | `ViewTemplate.create(strings, values)` | Compiles the resolved strings/values arrays into a `ViewTemplate` |
 | `ElementController` | Automatically detects prerendered content (`isPrerendered`) and hydrates server-rendered DOM using `fe-b` comment/dataset markers via `template.hydrate()` |
 | `Observable.defineProperty()` | Defines observable root properties on element prototypes (ObserverMap) |
@@ -603,7 +736,7 @@ test/declarative/fixtures/<feature>/
 ├── entry.html               # Entry template with root custom elements
 ├── fast-build.config.json   # Build configuration for @microsoft/fast-build
 ├── index.html               # Pre-rendered page (GENERATED by scripts/declarative/build-fixtures.js — do not edit)
-├── main.ts                  # Component definition + TemplateElement setup
+├── main.ts                  # Component definitions, declarativeTemplate(), extensions, and enableHydration() setup
 ├── state.json               # Initial state for server-side rendering
 └── templates.html           # Declarative <f-template> definitions
 ```
@@ -643,9 +776,9 @@ between `fast-build` and `webui` rendering:
 
 ### Hydration readiness
 
-Every fixture must wait for hydration to complete before running assertions.
-Each `main.ts` registers a `hydrationComplete()` callback via
-`TemplateElement.config()` that sets a global flag, and each spec file calls
+Fixtures that exercise prerendered output wait for hydration to complete before
+running assertions. Each `main.ts` calls `enableHydration({
+hydrationComplete() { ... } })` to set a global flag, and each spec file calls
 `page.waitForFunction()` after `page.goto()` to block until the flag is set.
 See [test/declarative/fixtures/README.md](./test/declarative/fixtures/README.md)
 for the implementation pattern.

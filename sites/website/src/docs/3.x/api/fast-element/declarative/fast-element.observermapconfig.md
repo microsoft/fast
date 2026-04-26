@@ -15,12 +15,12 @@ navigationOptions:
 
 ## ObserverMapConfig interface
 
-Configuration object for the observerMap element option. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
+Configuration object for the observerMap extension. `schema` enables non-declarative/manual schema use. When `properties` is omitted, every root property is observed. When `properties` is present, only listed root properties participate in observer-map observation.
 
 **Signature:**
 
 ```typescript
-export interface ObserverMapConfig 
+export interface ObserverMapConfig
 ```
 
 ## Properties
@@ -62,6 +62,25 @@ Description
 </td><td>
 
 _(Optional)_ Per-root-property observation control. Keys are root property names discovered in the template schema. Only root properties listed here participate in observer-map observation. Omitting this field observes every discovered root property.
+
+
+</td></tr>
+<tr><td>
+
+[schema?](../fast-element.observermapconfig.schema/)
+
+
+</td><td>
+
+
+</td><td>
+
+[Schema](../fast-element.schema/)
+
+
+</td><td>
+
+_(Optional)_ The schema to use for observer-map configuration. Pass this for non-declarative/manual schema use. When omitted, the extension uses the schema on the FAST element definition.
 
 
 </td></tr>

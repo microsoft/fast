@@ -25,11 +25,31 @@ const namedExports = [
 
 const subpathExports = [
     { name: "css", path: "@microsoft/fast-element/styles.js", export: "css" },
-    { name: "enableHydration", path: "@microsoft/fast-element/hydration.js", export: "enableHydration" },
-    { name: "ArrayObserver", path: "@microsoft/fast-element/arrays.js", export: "ArrayObserver" },
-    { name: "declarativeTemplate", path: "@microsoft/fast-element/declarative.js", export: "declarativeTemplate" },
-    { name: "observerMap", path: "@microsoft/fast-element/declarative.js", export: "observerMap" },
-    { name: "attributeMap", path: "@microsoft/fast-element/declarative.js", export: "attributeMap" },
+    {
+        name: "enableHydration",
+        path: "@microsoft/fast-element/hydration.js",
+        export: "enableHydration",
+    },
+    {
+        name: "ArrayObserver",
+        path: "@microsoft/fast-element/arrays.js",
+        export: "ArrayObserver",
+    },
+    {
+        name: "declarativeTemplate",
+        path: "@microsoft/fast-element/declarative.js",
+        export: "declarativeTemplate",
+    },
+    {
+        name: "observerMap (extensions/observer-map.js)",
+        path: "@microsoft/fast-element/extensions/observer-map.js",
+        export: "observerMap",
+    },
+    {
+        name: "attributeMap (extensions/attribute-map.js)",
+        path: "@microsoft/fast-element/extensions/attribute-map.js",
+        export: "attributeMap",
+    },
 ];
 
 function formatBytes(bytes) {

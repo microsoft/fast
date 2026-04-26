@@ -48,7 +48,7 @@ callbacks
 
 </td><td>
 
-TemplateLifecycleCallbacks
+[TemplateLifecycleCallbacks](../fast-element.templatelifecyclecallbacks/)
 
 
 </td><td>

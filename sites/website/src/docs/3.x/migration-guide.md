@@ -39,8 +39,9 @@ enableHydration();
 Remove any `import "@microsoft/fast-element/install-hydration.js"` side-effect
 imports as part of the migration. The older
 `install-hydratable-view-templates.js` helper remains available for advanced
-use cases, but `@microsoft/fast-element/declarative.js` now installs hydration
-support lazily when declarative APIs create a template.
+use cases, but the preferred API is `enableHydration()`.
+`@microsoft/fast-element/declarative.js` no longer installs hydration
+automatically.
 
 ### `needsHydrationAttribute` and `deferHydrationAttribute` removed
 
@@ -122,13 +123,61 @@ import { TemplateElement } from "@microsoft/fast-html";
 import { deepMerge } from "@microsoft/fast-html/utilities.js";
 
 // After
-import { TemplateElement } from "@microsoft/fast-element/declarative.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 ```
 
 Keep importing core FAST Element APIs from `@microsoft/fast-element`. The
-dedicated declarative entrypoint owns the declarative runtime and installs
-hydration support lazily when declarative templates are created.
+dedicated declarative entrypoint owns declarative template parsing. Hydration
+is opt-in via `enableHydration()` from
+`@microsoft/fast-element/hydration.js`.
+
+### Declarative `TemplateElement` API removed
+
+The `<f-template>` implementation is now internal and is defined automatically
+when an element uses `template: declarativeTemplate()`.
+
+| Removed | Replacement |
+|---|---|
+| `TemplateElement` public export | `declarativeTemplate()` |
+| `TemplateElement.define({ name: "f-template" })` | No manual definition needed |
+| `TemplateElement.config(callbacks)` | `declarativeTemplate(callbacks)` for per-element callbacks and `enableHydration(options)` for global hydration callbacks |
+| `TemplateElement.options(...)` | `attributeMap()` and `observerMap()` define extensions |
+| `AttributeMap` / `ObserverMap` class exports from the old declarative public surface | `attributeMap()` / `observerMap()` helpers and config types |
+
+Existing imports from `@microsoft/fast-element/declarative.js` remain valid for
+declarative templates. New code that only needs the schema-driven map extensions
+should prefer their dedicated subpaths:
+
+```ts
+import { attributeMap } from "@microsoft/fast-element/extensions/attribute-map.js";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
+import { enableHydration } from "@microsoft/fast-element/hydration.js";
+
+enableHydration();
+
+MyElement.define(
+    {
+        name: "my-element",
+        template: declarativeTemplate(),
+    },
+    [attributeMap(), observerMap()],
+);
+```
+
+`FASTElementDefinition.schema` is optional. Declarative templates assign it
+automatically during template resolution. Non-declarative users can provide a
+manual schema on the definition, or pass one directly to `observerMap({ schema
+})`.
+
+```ts
+import { Schema } from "@microsoft/fast-element";
+import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
+
+const schema = new Schema("my-element");
+MyElement.define({ name: "my-element" }, [observerMap({ schema })]);
+```
 
 ### `debug.js` requires explicit enablement
 
