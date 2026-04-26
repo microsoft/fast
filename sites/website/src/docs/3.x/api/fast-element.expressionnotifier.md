@@ -20,7 +20,7 @@ Enables evaluation of and subscription to a binding.
 **Signature:**
 
 ```typescript
-export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any> extends Notifier, ExpressionObserver<TSource, TReturn, TParent>, Disposable 
+export interface ExpressionNotifier<TSource = any, TReturn = any, TParent = any> extends Notifier, ExpressionObserver<TSource, TReturn, TParent>, Disposable
 ```
 **Extends:** [Notifier](../fast-element.notifier/)<!-- -->, [ExpressionObserver](../fast-element.expressionobserver/)<!-- -->&lt;TSource, TReturn, TParent&gt;, [Disposable](../fast-element.disposable/)
 

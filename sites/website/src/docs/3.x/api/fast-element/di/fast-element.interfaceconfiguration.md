@@ -20,7 +20,7 @@ Used to configure a dependency injection interface key.
 **Signature:**
 
 ```typescript
-export interface InterfaceConfiguration 
+export interface InterfaceConfiguration
 ```
 
 ## Properties

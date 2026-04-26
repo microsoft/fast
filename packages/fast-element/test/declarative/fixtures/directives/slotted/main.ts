@@ -1,6 +1,7 @@
-import { FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 class TestElement extends FASTElement {
     @observable

@@ -309,7 +309,7 @@ Browser-only bindings:
 
 ### Event binding
 
-Event bindings must include the `()` as well as being preceeded by `@` in keeping with `@microsoft/fast-element` tagged template `html` syntax.
+Event bindings must include the `()` as well as being preceeded by `@` in keeping with the `@microsoft/fast-element/html.js` tagged template syntax.
 
 ```html
 <button @click="{handleClick()}"></button>

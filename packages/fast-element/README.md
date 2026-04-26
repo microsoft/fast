@@ -76,14 +76,38 @@ enableDebug();
 
 Bundle sizes for each tree-shakeable export are tracked in [`SIZES.md`](./SIZES.md) and regenerated on every build. See the [Export Sizes](https://www.fast.design/docs/3.x/resources/export-sizes/) documentation page for the latest numbers.
 
+## Core Helper Subpaths
+
+The root `@microsoft/fast-element` entrypoint keeps core types and unrelated
+exports such as `FASTElement`, `FAST`, and `Schema`. Import these helpers from
+their dedicated subpaths:
+
+| API | Import path |
+|---|---|
+| `Updates` | `@microsoft/fast-element/updates.js` |
+| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
+| `attr` | `@microsoft/fast-element/attr.js` |
+| `css` | `@microsoft/fast-element/css.js` |
+| `html` | `@microsoft/fast-element/html.js` |
+| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
+| `volatile` | `@microsoft/fast-element/volatile.js` |
+| `children` | `@microsoft/fast-element/directives/children.js` |
+| `ref` | `@microsoft/fast-element/directives/ref.js` |
+| `slotted` | `@microsoft/fast-element/directives/slotted.js` |
+| `when` | `@microsoft/fast-element/directives/when.js` |
+| `repeat` | `@microsoft/fast-element/directives/repeat.js` |
+
 ## Dynamic Style Application
 
-Style APIs (`css`, `ElementStyles`, `CSSDirective`, `cssDirective`,
-`ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`,
-`StyleTarget`) are imported from `@microsoft/fast-element/styles.js`:
+Import `css`, `CSSTemplateTag`, and `CSSValue` from
+`@microsoft/fast-element/css.js`. Other style APIs (`ElementStyles`,
+`CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`,
+`HostController`, `StyleStrategy`, `StyleTarget`) are imported from
+`@microsoft/fast-element/styles.js`:
 
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
+import { css } from "@microsoft/fast-element/css.js";
+import { ElementStyles } from "@microsoft/fast-element/styles.js";
 ```
 
 When runtime state or external signals need to add or remove styles, create the

@@ -14,7 +14,6 @@ export type {
 export {
     AttributeConfiguration,
     AttributeDefinition,
-    attr,
     booleanConverter,
     nullableBooleanConverter,
     nullableNumberConverter,
@@ -76,20 +75,15 @@ export {
     type Subscriber,
     SubscriberSet,
 } from "./observation/notifier.js";
-export {
-    type Accessor,
-    ExecutionContext,
-    type Expression,
-    type ExpressionController,
-    type ExpressionNotifier,
-    type ExpressionObserver,
-    Observable,
-    type ObservationRecord,
-    observable,
-    SourceLifetime,
-    volatile,
+export type {
+    Accessor,
+    Expression,
+    ExpressionController,
+    ExpressionNotifier,
+    ExpressionObserver,
+    ObservationRecord,
 } from "./observation/observable.js";
-export { type UpdateQueue, Updates } from "./observation/update-queue.js";
+export { ExecutionContext, SourceLifetime } from "./observation/observable.js";
 export { emptyArray, FAST } from "./platform.js";
 // Type-only re-exports for types referenced by root public signatures
 export type {
@@ -105,7 +99,7 @@ export type {
     SubtreeDirectiveOptions,
 } from "./templating/children.js";
 // Templating
-export { ChildrenDirective, children } from "./templating/children.js";
+export { ChildrenDirective } from "./templating/children.js";
 export type { CompilationStrategy } from "./templating/compiler.js";
 export { Compiler } from "./templating/compiler.js";
 export type {
@@ -137,12 +131,12 @@ export type {
     NodeBehaviorOptions,
 } from "./templating/node-observation.js";
 export { elements, NodeObservationDirective } from "./templating/node-observation.js";
-export { RefDirective, ref } from "./templating/ref.js";
+export { RefDirective } from "./templating/ref.js";
 export { RenderBehavior, RenderDirective, render } from "./templating/render.js";
 export type { RepeatOptions } from "./templating/repeat.js";
-export { RepeatBehavior, RepeatDirective, repeat } from "./templating/repeat.js";
+export { RepeatBehavior, RepeatDirective } from "./templating/repeat.js";
 export type { SlottedDirectiveOptions } from "./templating/slotted.js";
-export { SlottedDirective, slotted } from "./templating/slotted.js";
+export { SlottedDirective } from "./templating/slotted.js";
 export type {
     CaptureType,
     ElementViewTemplate,
@@ -151,11 +145,10 @@ export type {
     SyntheticViewTemplate,
     TemplateValue,
 } from "./templating/template.js";
-export { html, InlineTemplateDirective, ViewTemplate } from "./templating/template.js";
+export { InlineTemplateDirective, ViewTemplate } from "./templating/template.js";
 export type {
     ElementView,
     SyntheticView,
     View,
 } from "./templating/view.js";
 export { HTMLView } from "./templating/view.js";
-export { when } from "./templating/when.js";

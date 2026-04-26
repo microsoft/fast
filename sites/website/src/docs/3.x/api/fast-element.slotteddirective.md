@@ -20,7 +20,7 @@ The runtime behavior for slotted node observation.
 **Signature:**
 
 ```typescript
-export declare class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> 
+export declare class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions>
 ```
 **Extends:** [NodeObservationDirective](../fast-element.nodeobservationdirective/)<!-- -->&lt;[SlottedDirectiveOptions](../fast-element.slotteddirectiveoptions/)<!-- -->&gt;
 

@@ -7,7 +7,7 @@
 import { AddViewBehaviorFactory } from '@microsoft/fast-element';
 import type { ComposableStyles } from '@microsoft/fast-element/styles.js';
 import { Constructable } from '@microsoft/fast-element';
-import { ExecutionContext } from '@microsoft/fast-element';
+import type { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { ViewBehavior } from '@microsoft/fast-element';
 import { ViewBehaviorFactory } from '@microsoft/fast-element';

@@ -20,6 +20,6 @@ The options used to configure child list observation.
 **Signature:**
 
 ```typescript
-export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> 
+export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList">
 ```
 **Extends:** [NodeBehaviorOptions](../fast-element.nodebehavioroptions/)<!-- -->&lt;T&gt;, Omit&lt;MutationObserverInit, "subtree" \| "childList"&gt;

@@ -29,12 +29,6 @@ export interface Aspected {
 }
 
 // @public
-export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
-
-// @public
-export function attr(target: {}, prop: string): void;
-
-// @public
 export type AttributeConfiguration = {
     property: string;
     attribute?: string;
@@ -120,9 +114,6 @@ export interface CaptureType {
 // @public
 export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> {
 }
-
-// @public
-export function children<TSource = any>(propertyOrOptions: (keyof TSource & string) | ChildrenDirectiveOptions<keyof TSource & string>): CaptureType;
 
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
@@ -477,9 +468,6 @@ export interface HostController<TSource = any> extends ExpressionController<TSou
 }
 
 // @public
-export const html: HTMLTemplateTag;
-
-// @public
 export class HTMLBindingDirective implements HTMLDirective, ViewBehaviorFactory, ViewBehavior, Aspected, BindingDirective {
     constructor(dataBinding: Binding);
     aspectType: DOMAspect;
@@ -715,22 +703,6 @@ export const nullableBooleanConverter: ValueConverter;
 export const nullableNumberConverter: ValueConverter;
 
 // @public
-export const Observable: Readonly<{
-    setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
-    getNotifier: <T extends Notifier = Notifier>(source: any) => T;
-    track(source: unknown, propertyName: string): void;
-    trackVolatile(): void;
-    notify(source: unknown, args: any): void;
-    defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
-    getAccessors: (target: {}) => Accessor[];
-    binding<TSource = any, TReturn = any>(expression: Expression<TSource, TReturn, any>, initialSubscriber?: Subscriber, isVolatileBinding?: boolean): ExpressionNotifier<TSource, TReturn, any>;
-    isVolatileBinding<TSource_1 = any, TReturn_1 = any>(expression: Expression<TSource_1, TReturn_1, any>): boolean;
-}>;
-
-// @public
-export function observable(target: {}, nameOrAccessor: string | Accessor): void;
-
-// @public
 export interface ObservationRecord {
     propertyName: string;
     propertySource: any;
@@ -775,9 +747,6 @@ export class PropertyChangeNotifier implements Notifier {
 }
 
 // @public
-export const ref: <TSource = any>(propertyName: keyof TSource & string) => CaptureType;
-
-// @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(controller: ViewController): void;
     targetNodeId: string;
@@ -818,9 +787,6 @@ export class RenderDirective<TSource = any> implements HTMLDirective, ViewBehavi
     // (undocumented)
     readonly templateBindingDependsOnData: boolean;
 }
-
-// @public
-export function repeat<TSource = any, TArray extends ReadonlyArray<any> = ReadonlyArray<any>, TParent = any>(items: Expression<TSource, TArray, TParent> | Binding<TSource, TArray, TParent> | ReadonlyArray<any>, template: Expression<TSource, ViewTemplate<any, TSource>> | Binding<TSource, ViewTemplate<any, TSource>> | ViewTemplate<any, TSource>, options?: RepeatOptions): CaptureType;
 
 // @public
 export class RepeatBehavior<TSource = any> implements ViewBehavior, Subscriber {
@@ -874,9 +840,6 @@ export interface ShadowRootOptions extends ShadowRootInit {
     // @beta
     registry?: CustomElementRegistry;
 }
-
-// @public
-export function slotted<TSource = any>(propertyOrOptions: (keyof TSource & string) | SlottedDirectiveOptions<keyof TSource & string>): CaptureType;
 
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
@@ -1019,17 +982,6 @@ export interface TypeRegistry<TDefinition extends TypeDefinition> {
 }
 
 // @public
-export interface UpdateQueue {
-    enqueue(callable: Callable): void;
-    next(): Promise<void>;
-    process(): void;
-    setMode(isAsync: boolean): void;
-}
-
-// @public
-export const Updates: UpdateQueue;
-
-// @public
 export interface ValueConverter {
     fromView(value: any): any;
     toView(value: any): any;
@@ -1085,12 +1037,6 @@ export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTe
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent>;
     withPolicy(policy: DOMPolicy): this;
 }
-
-// @public
-export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
-
-// @public
-export function when<TSource = any, TReturn = any, TParent = any>(condition: Expression<TSource, TReturn, TParent> | boolean, templateOrTemplateBinding: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>, elseTemplateOrTemplateBinding?: SyntheticViewTemplate<TSource, TParent> | Expression<TSource, SyntheticViewTemplate<TSource, TParent>, TParent>): CaptureType;
 
 // Warnings were encountered during analysis:
 //

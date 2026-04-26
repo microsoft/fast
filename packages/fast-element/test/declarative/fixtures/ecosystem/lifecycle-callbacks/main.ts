@@ -1,7 +1,9 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { observable } from "@microsoft/fast-element/observable.js";
 
 // Track lifecycle callbacks for testing
 export const lifecycleEvents: Array<{ callback: string; name?: string }> = [];

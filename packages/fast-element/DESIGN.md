@@ -50,7 +50,7 @@ For deep dives into specific areas, see the linked detailed documents.
 | Context protocol | W3C community Context protocol (`Context.create`, `Context.for`) |
 | Reactive state helpers | `state()`, `watch()` (beta) |
 
-The library's kernel (the `FAST` object, the `Updates` queue, and the `Observable` system) is module-scoped — imported from `@microsoft/fast-element` rather than stored on `globalThis`.
+The library's kernel is module-scoped rather than stored on `globalThis`: import `FAST` from `@microsoft/fast-element`, `Updates` from `@microsoft/fast-element/updates.js`, and `Observable` from `@microsoft/fast-element/observable.js`.
 
 ---
 
@@ -267,9 +267,9 @@ See [ARCHITECTURE_UPDATES.md](./ARCHITECTURE_UPDATES.md) for more detail.
 
 **Files**: `src/styles/css.ts`, `src/styles/element-styles.ts`, `src/styles/css-directive.ts`
 
-**Subpath export**: `@microsoft/fast-element/styles.js`
+**Subpath exports**: `@microsoft/fast-element/css.js` and `@microsoft/fast-element/styles.js`
 
-The `css` tag, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are imported from the `@microsoft/fast-element/styles.js` subpath rather than the main barrel. The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. `CSSDirective`s can contribute additional static CSS during template composition, but runtime CSS bindings and style-attached `HostBehavior`s are not supported. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container.
+The `css` tag is imported from `@microsoft/fast-element/css.js`. `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are imported from `@microsoft/fast-element/styles.js` rather than the main barrel. The `css` tag (analogous to `html`) builds `ElementStyles` objects. During `ElementController.connect()`, styles are applied to the element's shadow root either via `adoptedStylesheets` (preferred) or an appended `<style>` node, depending on platform support. `CSSDirective`s can contribute additional static CSS during template composition, but runtime CSS bindings and style-attached `HostBehavior`s are not supported. Arbitrary runtime style toggling is handled through `ElementController.addStyles()` / `removeStyles()`; `ElementStyles` itself is a static container.
 
 ---
 

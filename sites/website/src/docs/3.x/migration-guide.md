@@ -127,9 +127,27 @@ import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { deepMerge } from "@microsoft/fast-element/declarative/utilities.js";
 ```
 
-Keep importing core FAST Element APIs from `@microsoft/fast-element`. The
-dedicated declarative entrypoint owns declarative template parsing. Hydration
-is opt-in via `enableHydration()` from
+Keep importing root FAST Element APIs such as `FASTElement`, `Schema`, and
+`FAST` from `@microsoft/fast-element`. Import moved helpers from their
+dedicated subpaths:
+
+| API | Import path |
+|---|---|
+| `Updates` | `@microsoft/fast-element/updates.js` |
+| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
+| `attr` | `@microsoft/fast-element/attr.js` |
+| `css` | `@microsoft/fast-element/css.js` |
+| `html` | `@microsoft/fast-element/html.js` |
+| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
+| `volatile` | `@microsoft/fast-element/volatile.js` |
+| `children` | `@microsoft/fast-element/directives/children.js` |
+| `ref` | `@microsoft/fast-element/directives/ref.js` |
+| `slotted` | `@microsoft/fast-element/directives/slotted.js` |
+| `when` | `@microsoft/fast-element/directives/when.js` |
+| `repeat` | `@microsoft/fast-element/directives/repeat.js` |
+
+The dedicated declarative entrypoint owns declarative template parsing.
+Hydration is opt-in via `enableHydration()` from
 `@microsoft/fast-element/hydration.js`.
 
 ### Declarative `TemplateElement` API removed
@@ -293,32 +311,23 @@ The `FASTGlobal` interface type has been removed. Code that referenced this type
 
 The `KernelServiceId` enum (used with `FAST.getById()`) has been removed. Import kernel services directly from their respective modules.
 
-### `css` and style APIs moved to `@microsoft/fast-element/styles.js`
+### `css` moved to `@microsoft/fast-element/css.js`
 
-`css`, `ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget` are no longer exported from the main `@microsoft/fast-element` barrel.
+`css`, `CSSTemplateTag`, and `CSSValue` are imported from `@microsoft/fast-element/css.js`. Other style APIs (`ElementStyles`, `CSSDirective`, `cssDirective`, `ComposableStyles`, `HostBehavior`, `HostController`, `StyleStrategy`, and `StyleTarget`) are imported from `@microsoft/fast-element/styles.js`.
 
-2.x Example:
+Update imports to:
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element/css.js";
+import { ElementStyles } from "@microsoft/fast-element/styles.js";
 ```
 
-3.x Example:
+### `ArrayObserver` moved to `@microsoft/fast-element/array-observer.js`
+
+`ArrayObserver` is imported from `@microsoft/fast-element/array-observer.js`. Other array helpers such as `Splice`, `SpliceStrategy`, `SpliceStrategySupport`, `lengthOf`, `sortedCount`, and `Sort` remain available from `@microsoft/fast-element/arrays.js`.
+
+Update imports to:
 ```ts
-import { css, ElementStyles } from "@microsoft/fast-element/styles.js";
-```
-
-### Array observation moved to `@microsoft/fast-element/arrays.js`
-
-`ArrayObserver`, `Splice`, `SpliceStrategy`, `SpliceStrategySupport`, `lengthOf`, `sortedCount`, and `Sort` are now imported from `@microsoft/fast-element/arrays.js`.
-
-2.x Example:
-```ts
-import { ArrayObserver } from "@microsoft/fast-element";
-```
-
-3.x Example:
-```ts
-import { ArrayObserver } from "@microsoft/fast-element/arrays.js";
+import { ArrayObserver } from "@microsoft/fast-element/array-observer.js";
 ```
 
 ### `deferHydrationAttribute` moved to `@microsoft/fast-element/hydration.js`

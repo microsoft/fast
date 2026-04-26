@@ -9,32 +9,66 @@ const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const rootImportPath = "@microsoft/fast-element";
 
-const namedExports = [
-    "FASTElement",
-    "Updates",
-    "Observable",
-    "observable",
-    "attr",
-    "children",
-    "ref",
-    "slotted",
-    "volatile",
-    "when",
-    "html",
-    "repeat",
-];
+const namedExports = ["FASTElement"];
 
 const subpathExports = [
-    { name: "css", importPath: "@microsoft/fast-element/styles.js", export: "css" },
+    {
+        name: "Updates",
+        importPath: "@microsoft/fast-element/updates.js",
+        export: "Updates",
+    },
+    {
+        name: "Observable",
+        importPath: "@microsoft/fast-element/observable.js",
+        export: "Observable",
+    },
+    {
+        name: "observable",
+        importPath: "@microsoft/fast-element/observable.js",
+        export: "observable",
+    },
+    { name: "attr", importPath: "@microsoft/fast-element/attr.js", export: "attr" },
+    {
+        name: "children",
+        importPath: "@microsoft/fast-element/directives/children.js",
+        export: "children",
+    },
+    {
+        name: "ref",
+        importPath: "@microsoft/fast-element/directives/ref.js",
+        export: "ref",
+    },
+    {
+        name: "slotted",
+        importPath: "@microsoft/fast-element/directives/slotted.js",
+        export: "slotted",
+    },
+    {
+        name: "volatile",
+        importPath: "@microsoft/fast-element/volatile.js",
+        export: "volatile",
+    },
+    {
+        name: "when",
+        importPath: "@microsoft/fast-element/directives/when.js",
+        export: "when",
+    },
+    { name: "html", importPath: "@microsoft/fast-element/html.js", export: "html" },
+    {
+        name: "repeat",
+        importPath: "@microsoft/fast-element/directives/repeat.js",
+        export: "repeat",
+    },
+    { name: "css", importPath: "@microsoft/fast-element/css.js", export: "css" },
+    {
+        name: "ArrayObserver",
+        importPath: "@microsoft/fast-element/array-observer.js",
+        export: "ArrayObserver",
+    },
     {
         name: "enableHydration",
         importPath: "@microsoft/fast-element/hydration.js",
         export: "enableHydration",
-    },
-    {
-        name: "ArrayObserver",
-        importPath: "@microsoft/fast-element/arrays.js",
-        export: "ArrayObserver",
     },
     {
         name: "declarativeTemplate",
@@ -73,7 +107,9 @@ function measureBuffer(buffer) {
 }
 
 async function measureExport(exportName, importPath = rootImportPath) {
-    const contents = `import { ${exportName} } from "${importPath}";\nexport { ${exportName} };\n`;
+    const contents = `import { ${exportName} } from "${importPath}";
+export { ${exportName} };
+`;
 
     const result = await build({
         stdin: {

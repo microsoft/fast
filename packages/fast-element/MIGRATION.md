@@ -48,14 +48,33 @@ removed `@microsoft/fast-html` package.
 | `@microsoft/fast-html` | `@microsoft/fast-element/declarative.js` |
 | `@microsoft/fast-html/utilities.js` | `@microsoft/fast-element/declarative/utilities.js` |
 
+Core FAST Element helpers now use dedicated subpaths:
+
+| API | Import path |
+|---|---|
+| `Updates` | `@microsoft/fast-element/updates.js` |
+| `Observable`, `observable` | `@microsoft/fast-element/observable.js` |
+| `attr` | `@microsoft/fast-element/attr.js` |
+| `css` | `@microsoft/fast-element/css.js` |
+| `html` | `@microsoft/fast-element/html.js` |
+| `ArrayObserver` | `@microsoft/fast-element/array-observer.js` |
+| `volatile` | `@microsoft/fast-element/volatile.js` |
+| `children` | `@microsoft/fast-element/directives/children.js` |
+| `ref` | `@microsoft/fast-element/directives/ref.js` |
+| `slotted` | `@microsoft/fast-element/directives/slotted.js` |
+| `when` | `@microsoft/fast-element/directives/when.js` |
+| `repeat` | `@microsoft/fast-element/directives/repeat.js` |
+
 ### Migration steps
 
 1. Update declarative runtime imports to
    `@microsoft/fast-element/declarative.js`.
 2. Update declarative utility imports such as `deepMerge` to
    `@microsoft/fast-element/declarative/utilities.js`.
-3. Keep importing core FAST Element APIs (for example `FASTElement`, `attr`,
-     `observable`) from `@microsoft/fast-element`.
+3. Keep importing root FAST Element APIs such as `FASTElement` from
+   `@microsoft/fast-element`, and import moved helpers from their dedicated
+   subpaths (for example `attr` from `@microsoft/fast-element/attr.js` and
+   `observable` from `@microsoft/fast-element/observable.js`).
 4. Do not switch to the root `@microsoft/fast-element` barrel for declarative
     APIs; the declarative entrypoint owns the declarative runtime but does not
     install hydration. Call `enableHydration()` from

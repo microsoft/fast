@@ -1,7 +1,9 @@
-import { attr, FASTElement, Observable, observable } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 import { observerMap } from "@microsoft/fast-element/extensions/observer-map.js";
 import { enableHydration } from "@microsoft/fast-element/hydration.js";
+import { Observable, observable } from "@microsoft/fast-element/observable.js";
 
 class ObserverMapTestElement extends FASTElement {
     public users: any[] = [

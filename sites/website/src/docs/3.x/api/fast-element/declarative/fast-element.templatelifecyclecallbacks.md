@@ -20,7 +20,7 @@ Lifecycle callbacks for template events.
 **Signature:**
 
 ```typescript
-export interface TemplateLifecycleCallbacks 
+export interface TemplateLifecycleCallbacks
 ```
 
 ## Methods

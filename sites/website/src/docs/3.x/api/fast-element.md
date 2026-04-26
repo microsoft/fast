@@ -367,39 +367,6 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[attr(config)](../fast-element.attr/)
-
-
-</td><td>
-
-Decorator: Specifies an HTML attribute.
-
-
-</td></tr>
-<tr><td>
-
-[attr(target, prop)](../fast-element.attr_1/)
-
-
-</td><td>
-
-Decorator: Specifies an HTML attribute.
-
-
-</td></tr>
-<tr><td>
-
-[children(propertyOrOptions)](../fast-element.children/)
-
-
-</td><td>
-
-A directive that observes the `childNodes` of an element and updates a property whenever they change.
-
-
-</td></tr>
-<tr><td>
-
 [customElement(nameOrDef)](../fast-element.customelement/)
 
 
@@ -510,17 +477,6 @@ Normalizes the input value into a binding.
 </td></tr>
 <tr><td>
 
-[observable(target, nameOrAccessor)](../fast-element.observable/)
-
-
-</td><td>
-
-Decorator: Defines an observable property on the target.
-
-
-</td></tr>
-<tr><td>
-
 [oneTime(expression, policy)](../fast-element.onetime/)
 
 
@@ -543,67 +499,12 @@ Creates an standard binding.
 </td></tr>
 <tr><td>
 
-[ref(propertyName)](../fast-element.ref/)
-
-
-</td><td>
-
-A directive that observes the updates a property with a reference to the element.
-
-
-</td></tr>
-<tr><td>
-
 [render(value, template)](../fast-element.render/)
 
 
 </td><td>
 
 Creates a RenderDirective for use in advanced rendering scenarios.
-
-
-</td></tr>
-<tr><td>
-
-[repeat(items, template, options)](../fast-element.repeat/)
-
-
-</td><td>
-
-A directive that enables list rendering.
-
-
-</td></tr>
-<tr><td>
-
-[slotted(propertyOrOptions)](../fast-element.slotted/)
-
-
-</td><td>
-
-A directive that observes the `assignedNodes()` of a slot and updates a property whenever they change.
-
-
-</td></tr>
-<tr><td>
-
-[volatile(target, name, descriptor)](../fast-element.volatile/)
-
-
-</td><td>
-
-Decorator: Marks a property getter as having volatile observable dependencies.
-
-
-</td></tr>
-<tr><td>
-
-[when(condition, templateOrTemplateBinding, elseTemplateOrTemplateBinding)](../fast-element.when/)
-
-
-</td><td>
-
-A directive that enables basic conditional rendering in a template.
 
 
 </td></tr>
@@ -1162,17 +1063,6 @@ Lifecycle callbacks for template events.
 </td></tr>
 <tr><td>
 
-[UpdateQueue](../fast-element.updatequeue/)
-
-
-</td><td>
-
-A work queue used to synchronize writes to the DOM.
-
-
-</td></tr>
-<tr><td>
-
 [ValueConverter](../fast-element.valueconverter/)
 
 
@@ -1342,17 +1232,6 @@ A minimal base class for FASTElements that also provides static helpers for work
 </td></tr>
 <tr><td>
 
-[html](../fast-element.html/)
-
-
-</td><td>
-
-Transforms a template literal string into a ViewTemplate.
-
-
-</td></tr>
-<tr><td>
-
 [HTMLDirective](../fast-element.htmldirective/)
 
 
@@ -1397,17 +1276,6 @@ A [ValueConverter](../fast-element.valueconverter/) that converts to and from `n
 </td></tr>
 <tr><td>
 
-[Observable](../fast-element.observable/)
-
-
-</td><td>
-
-Common Observable APIs.
-
-
-</td></tr>
-<tr><td>
-
 [Parser](../fast-element.parser/)
 
 
@@ -1436,17 +1304,6 @@ Module-level registry that maps custom element names to their schema maps. Used 
 </td><td>
 
 Describes how the source's lifetime relates to its controller's lifetime.
-
-
-</td></tr>
-<tr><td>
-
-[Updates](../fast-element.updates/)
-
-
-</td><td>
-
-The default UpdateQueue.
 
 
 </td></tr>

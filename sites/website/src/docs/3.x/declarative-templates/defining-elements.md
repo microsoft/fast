@@ -29,7 +29,8 @@ A declarative FASTElement component requires a JavaScript class definition with 
 **1. Define the component class** with `template: declarativeTemplate()`:
 
 ```ts
-import { FASTElement, attr } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class MyCounter extends FASTElement {
@@ -75,8 +76,10 @@ my-app/
 **`main.ts`:**
 
 ```ts
-import { FASTElement, attr, observable } from "@microsoft/fast-element";
-import { css } from "@microsoft/fast-element/styles.js";
+import { FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element/attr.js";
+import { observable } from "@microsoft/fast-element/observable.js";
+import { css } from "@microsoft/fast-element/css.js";
 import { declarativeTemplate } from "@microsoft/fast-element/declarative.js";
 
 class TaskItem extends FASTElement {

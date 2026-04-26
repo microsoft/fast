@@ -44,6 +44,11 @@ export const exportPaths = [
         configPath: path.resolve(__dirname, "../api-extractor.hydration.json"),
     },
     {
+        path: "./updates.js",
+        docsFolder: "updates",
+        configPath: path.resolve(__dirname, "../api-extractor.updates.json"),
+    },
+    {
         path: "./styles.js",
         docsFolder: "styles",
         configPath: path.resolve(__dirname, "../api-extractor.styles.json"),
@@ -53,6 +58,61 @@ export const exportPaths = [
         docsFolder: "arrays",
         configPath: path.resolve(__dirname, "../api-extractor.arrays.json"),
     },
+    {
+        path: "./array-observer.js",
+        docsFolder: "array-observer",
+        configPath: path.resolve(__dirname, "../api-extractor.array-observer.json"),
+    },
+    {
+        path: "./observable.js",
+        docsFolder: "observable",
+        configPath: path.resolve(__dirname, "../api-extractor.observable.json"),
+    },
+    {
+        path: "./volatile.js",
+        docsFolder: "volatile",
+        configPath: path.resolve(__dirname, "../api-extractor.volatile.json"),
+    },
+    {
+        path: "./attr.js",
+        docsFolder: "attr",
+        configPath: path.resolve(__dirname, "../api-extractor.attr.json"),
+    },
+    {
+        path: "./css.js",
+        docsFolder: "css",
+        configPath: path.resolve(__dirname, "../api-extractor.css.json"),
+    },
+    {
+        path: "./html.js",
+        docsFolder: "html",
+        configPath: path.resolve(__dirname, "../api-extractor.html.json"),
+    },
+    {
+        path: "./directives/children.js",
+        docsFolder: "directives/children",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.children.json"),
+    },
+    {
+        path: "./directives/ref.js",
+        docsFolder: "directives/ref",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.ref.json"),
+    },
+    {
+        path: "./directives/slotted.js",
+        docsFolder: "directives/slotted",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.slotted.json"),
+    },
+    {
+        path: "./directives/when.js",
+        docsFolder: "directives/when",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.when.json"),
+    },
+    {
+        path: "./directives/repeat.js",
+        docsFolder: "directives/repeat",
+        configPath: path.resolve(__dirname, "../api-extractor.directives.repeat.json"),
+    },
 ];
 
 (function () {
@@ -60,7 +120,7 @@ export const exportPaths = [
         const docsFolder = path.resolve(__dirname, `../docs/${exportPath.docsFolder}`);
         // Create folders in the docs directory
         if (!fs.existsSync(docsFolder)) {
-            fs.mkdirSync(docsFolder);
+            fs.mkdirSync(docsFolder, { recursive: true });
         }
 
         // Load and parse the api-extractor.json file

@@ -19,6 +19,38 @@ const packages = [
             "context",
             "declarative",
             "di",
+            "updates",
+            "observable",
+            "attr",
+            "volatile",
+            "css",
+            "html",
+            "array-observer",
+            {
+                docsFolder: "directives/children",
+                publicPath: "directives/children.js",
+                apiJsonPath: "directives/children/children.api.json",
+            },
+            {
+                docsFolder: "directives/ref",
+                publicPath: "directives/ref.js",
+                apiJsonPath: "directives/ref/ref.api.json",
+            },
+            {
+                docsFolder: "directives/slotted",
+                publicPath: "directives/slotted.js",
+                apiJsonPath: "directives/slotted/slotted.api.json",
+            },
+            {
+                docsFolder: "directives/when",
+                publicPath: "directives/when.js",
+                apiJsonPath: "directives/when/when.api.json",
+            },
+            {
+                docsFolder: "directives/repeat",
+                publicPath: "directives/repeat.js",
+                apiJsonPath: "directives/repeat/repeat.api.json",
+            },
             {
                 docsFolder: "extensions/attribute-map",
                 publicPath: "extensions/attribute-map.js",
@@ -176,6 +208,8 @@ async function convertDocFiles(dir, docFiles, pkg, exportPath) {
                         ? line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](./$1/)`)
                         : line.replace(/\]\(\.\/([^)]+)\.md\)/g, `](../$1/)`);
                 }
+
+                line = line.replace(/[ \t]+$/u, "");
 
                 if (!skip) {
                     output.push(line);

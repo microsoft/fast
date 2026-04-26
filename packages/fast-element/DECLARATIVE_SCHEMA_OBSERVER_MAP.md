@@ -476,7 +476,8 @@ To verify that observer mapping ran, inspect the generated schema and the
 observable accessors on the element prototype:
 
 ```typescript
-import { Observable, schemaRegistry } from "@microsoft/fast-element";
+import { schemaRegistry } from "@microsoft/fast-element";
+import { Observable } from "@microsoft/fast-element/observable.js";
 
 const schemas = schemaRegistry.get("my-element");
 const accessors = Observable.getAccessors(MyElement.prototype).map(a => a.name);

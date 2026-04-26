@@ -20,7 +20,7 @@ Controls the lifecycle of a view and provides relevant context.
 **Signature:**
 
 ```typescript
-export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent> 
+export interface ViewController<TSource = any, TParent = any> extends ExpressionController<TSource, TParent>
 ```
 **Extends:** [ExpressionController](../fast-element.expressioncontroller/)<!-- -->&lt;TSource, TParent&gt;
 

@@ -87,14 +87,70 @@
       "types": "./dist/dts/dom-policy.d.ts",
       "default": "./dist/esm/dom-policy.js"
     },
+    "./updates.js": {
+      "types": "./dist/dts/updates.d.ts",
+      "test": "./src/updates.ts",
+      "default": "./dist/esm/updates.js"
+    },
     "./arrays.js": {
       "types": "./dist/dts/arrays.d.ts",
       "test": "./src/arrays.ts",
       "default": "./dist/esm/arrays.js"
     },
+    "./array-observer.js": {
+      "types": "./dist/dts/array-observer.d.ts",
+      "test": "./src/array-observer.ts",
+      "default": "./dist/esm/array-observer.js"
+    },
     "./observable.js": {
-      "types": "./dist/dts/observation/observable.d.ts",
-      "default": "./dist/esm/observation/observable.js"
+      "types": "./dist/dts/observable.d.ts",
+      "test": "./src/observable.ts",
+      "default": "./dist/esm/observable.js"
+    },
+    "./volatile.js": {
+      "types": "./dist/dts/volatile.d.ts",
+      "test": "./src/volatile.ts",
+      "default": "./dist/esm/volatile.js"
+    },
+    "./attr.js": {
+      "types": "./dist/dts/attr.d.ts",
+      "test": "./src/attr.ts",
+      "default": "./dist/esm/attr.js"
+    },
+    "./css.js": {
+      "types": "./dist/dts/css.d.ts",
+      "test": "./src/css.ts",
+      "default": "./dist/esm/css.js"
+    },
+    "./html.js": {
+      "types": "./dist/dts/html.d.ts",
+      "test": "./src/html.ts",
+      "default": "./dist/esm/html.js"
+    },
+    "./directives/children.js": {
+      "types": "./dist/dts/directives/children.d.ts",
+      "test": "./src/directives/children.ts",
+      "default": "./dist/esm/directives/children.js"
+    },
+    "./directives/ref.js": {
+      "types": "./dist/dts/directives/ref.d.ts",
+      "test": "./src/directives/ref.ts",
+      "default": "./dist/esm/directives/ref.js"
+    },
+    "./directives/slotted.js": {
+      "types": "./dist/dts/directives/slotted.d.ts",
+      "test": "./src/directives/slotted.ts",
+      "default": "./dist/esm/directives/slotted.js"
+    },
+    "./directives/when.js": {
+      "types": "./dist/dts/directives/when.d.ts",
+      "test": "./src/directives/when.ts",
+      "default": "./dist/esm/directives/when.js"
+    },
+    "./directives/repeat.js": {
+      "types": "./dist/dts/directives/repeat.d.ts",
+      "test": "./src/directives/repeat.ts",
+      "default": "./dist/esm/directives/repeat.js"
     },
     "./styles.js": {
       "types": "./dist/dts/styles.d.ts",

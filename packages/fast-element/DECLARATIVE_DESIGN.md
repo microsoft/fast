@@ -58,7 +58,7 @@ registry-aware declarative template bridge.
 |---|---|
 | **Server-agnostic rendering** | Templates are plain HTML strings with no dependency on Node.js or any specific SSR framework. |
 | **Progressive enhancement** | Components can be server-rendered and then hydrated client-side without a full re-render. |
-| **FAST parity** | The declarative syntax maps 1-to-1 to `@microsoft/fast-element` directives (`repeat`, `when`, `slotted`, `children`, `ref`). |
+| **FAST parity** | The declarative syntax maps 1-to-1 to FAST Element directive helpers (`repeat`, `when`, `slotted`, `children`, `ref`) from their `@microsoft/fast-element/directives/*` subpaths. |
 | **Minimal authoring overhead** | Component authors write HTML, not tagged template strings, while retaining full reactive capabilities. |
 
 ---

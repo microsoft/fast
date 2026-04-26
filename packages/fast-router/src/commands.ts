@@ -1,24 +1,29 @@
 import {
-    CompiledViewBehaviorFactory,
+    type CompiledViewBehaviorFactory,
     FASTElementDefinition,
-    html,
     HTMLView,
-    ViewBehaviorFactory,
+    type ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { RenderOperation, Router } from "./router.js";
-import { RouterConfiguration } from "./configuration.js";
-import { FASTElementLayout, Layout, RouteView, Transition } from "./view.js";
-import {
+import { html } from "@microsoft/fast-element/html.js";
+import type { RouterConfiguration } from "./configuration.js";
+import { type NavigationContributor, navigationContributor } from "./contributors.js";
+import { Route } from "./navigation.js";
+import type { NavigationCommitPhase, NavigationPhase } from "./phases.js";
+import type { RecognizedRoute } from "./recognizer.js";
+import type { RenderOperation, Router } from "./router.js";
+import type {
     ElementFallbackRouteDefinition,
     ElementRouteDefinition,
     TemplateFallbackRouteDefinition,
     TemplateRouteDefinition,
 } from "./routes.js";
-import { Route } from "./navigation.js";
-import { RecognizedRoute } from "./recognizer.js";
-import { navigationContributor, NavigationContributor } from "./contributors.js";
-import { NavigationCommitPhase, NavigationPhase } from "./phases.js";
+import {
+    FASTElementLayout,
+    type Layout,
+    type RouteView,
+    type Transition,
+} from "./view.js";
 
 /**
  * @beta
@@ -26,7 +31,7 @@ import { NavigationCommitPhase, NavigationPhase } from "./phases.js";
 export interface NavigationCommand {
     createContributor(
         router: Router,
-        route: RecognizedRoute
+        route: RecognizedRoute,
     ): Promise<NavigationContributor>;
 }
 
@@ -66,13 +71,13 @@ export class Redirect implements NavigationCommand {
                 const path =
                     (await config.generateRouteFromName(
                         redirect,
-                        phase.route.allParams
+                        phase.route.allParams,
                     )) ||
                     (await config.generateRouteFromPath(redirect, phase.route.allParams));
 
                 if (path === null) {
                     throw new Error(
-                        `Invalid redirect. Name or path not found: ${redirect}`
+                        `Invalid redirect. Name or path not found: ${redirect}`,
                     );
                 }
 
@@ -114,7 +119,7 @@ class RenderContributor {
     constructor(
         private router: Router,
         private route: RecognizedRoute,
-        private command: Render
+        private command: Render,
     ) {}
 
     async construct(phase: NavigationPhase) {
@@ -147,7 +152,7 @@ export class Render implements RenderCommand {
 
     constructor(
         private owner: RouterConfiguration,
-        public createView: () => Promise<RouteView>
+        public createView: () => Promise<RouteView>,
     ) {}
 
     public get transition(): Transition {
@@ -176,7 +181,7 @@ export class Render implements RenderCommand {
             | ElementRouteDefinition
             | TemplateRouteDefinition
             | ElementFallbackRouteDefinition
-            | TemplateFallbackRouteDefinition
+            | TemplateFallbackRouteDefinition,
     ): Render {
         let createView: () => Promise<RouteView>;
 
@@ -218,7 +223,7 @@ export class Render implements RenderCommand {
                                 factory = factoryFromElementName(def.name);
                             } else {
                                 throw new Error(
-                                    "Invalid value for element in route config."
+                                    "Invalid value for element in route config.",
                                 );
                             }
                         }

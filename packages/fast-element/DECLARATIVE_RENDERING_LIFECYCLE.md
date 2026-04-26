@@ -79,7 +79,7 @@ The lifecycle flow during this phase:
 3. **Template Processing**: The bridge reads and transforms the markup, builds
    the schema, applies `observerMap()` / `attributeMap()` behavior, and resolves
    data bindings, directives, and other template features into the `ViewTemplate`
-   model which is also used by the `@microsoft/fast-element` `html` tag template.
+   model which is also used by the `@microsoft/fast-element/html.js` `html` tag template.
 4. **Template Attachment**: The concrete `ViewTemplate` is returned to
    `FASTElement.define()`, which assigns it to the definition before platform
    registration completes.

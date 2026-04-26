@@ -20,7 +20,7 @@ Options for configuring global hydration lifecycle events.
 **Signature:**
 
 ```typescript
-export interface HydrationOptions 
+export interface HydrationOptions
 ```
 
 ## Methods

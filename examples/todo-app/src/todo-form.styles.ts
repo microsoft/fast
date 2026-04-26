@@ -1,5 +1,4 @@
-import { css } from "@microsoft/fast-element/styles.js";
-
+import { css } from "@microsoft/fast-element/css.js";
 export const styles = css`
     form {
         display: flex;
